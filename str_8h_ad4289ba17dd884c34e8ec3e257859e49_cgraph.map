@@ -1,0 +1,4 @@
+<map id="a_str_putn" name="a_str_putn">
+<area shape="rect" id="node1" title="Put data to an instance of string structure." alt="" coords="5,5,96,32"/>
+<area shape="rect" id="node2" href="$str_8c.html#a250db38f35480708213a37f9d8b69939" title="Resize memory for a pointer to string structure." alt="" coords="144,5,244,32"/>
+</map>

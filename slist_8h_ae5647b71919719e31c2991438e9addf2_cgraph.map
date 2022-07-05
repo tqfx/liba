@@ -1,0 +1,5 @@
+<map id="a_slist_del" name="a_slist_del">
+<area shape="rect" id="node1" title="Delete a node from a list." alt="" coords="5,31,96,57"/>
+<area shape="rect" id="node2" href="$slist_8h.html#a19f0a6883fbdd5b1f0180c92f39d82f5" title="Link head node and tail node." alt="" coords="144,5,239,32"/>
+<area shape="rect" id="node3" href="$slist_8h.html#a2426f11c8049772eaeb6b8032782a5e2" title="Testing whether a list node is a tail node." alt="" coords="145,56,237,83"/>
+</map>

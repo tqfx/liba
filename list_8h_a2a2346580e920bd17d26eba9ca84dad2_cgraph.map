@@ -1,0 +1,7 @@
+<map id="a_list_rot_prev" name="a_list_rot_prev">
+<area shape="rect" id="node1" title="Rotate a node in the list backward." alt="" coords="5,31,124,57"/>
+<area shape="rect" id="node2" href="$list_8h.html#aac9471e9b9b076adf73845cc24e11fe1" title="Insert a node to a list backward." alt="" coords="172,5,296,32"/>
+<area shape="rect" id="node5" href="$list_8h.html#a71c4534c85480b025aa52d086309e8c6" title="Delete a section of a list." alt="" coords="346,56,437,83"/>
+<area shape="rect" id="node3" href="$list_8h.html#a6efa1196e5f2f844c41f56ac833bb003" title="Connect list1 and list2." alt="" coords="344,5,439,32"/>
+<area shape="rect" id="node4" href="$list_8h.html#ae001845aa5dd2e565656b7352db32550" title="Link head node and tail node." alt="" coords="487,31,575,57"/>
+</map>

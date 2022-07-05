@@ -1,0 +1,10 @@
+<map id="src/misc/ahrs.c" name="src/misc/ahrs.c">
+<area shape="rect" id="node1" title="AHRS(Automatic Heading Reference System) algorithm library." alt="" coords="143,5,262,32"/>
+<area shape="rect" id="node2" href="$ahrs_8h.html" title="AHRS(Automatic Heading Reference System) algorithm library." alt="" coords="12,80,121,107"/>
+<area shape="rect" id="node6" href="$math_8h.html" title="Calculate math library." alt="" coords="145,80,260,107"/>
+<area shape="rect" id="node8" title=" " alt="" coords="284,80,359,107"/>
+<area shape="rect" id="node3" href="$def_8h.html" title="algorithm library definition" alt="" coords="57,155,124,181"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,229,80,256"/>
+<area shape="rect" id="node5" title=" " alt="" coords="105,229,175,256"/>
+<area shape="rect" id="node7" title=" " alt="" coords="171,155,234,181"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="a_slist_add_head" name="a_slist_add_head">
+<area shape="rect" id="node1" title="Insert a node to a list head." alt="" coords="5,31,140,57"/>
+<area shape="rect" id="node2" href="$slist_8h.html#a19f0a6883fbdd5b1f0180c92f39d82f5" title="Link head node and tail node." alt="" coords="192,5,287,32"/>
+<area shape="rect" id="node3" href="$slist_8h.html#a7a0d12231089a9365c4359db665cf693" title="Testing whether a list head is none." alt="" coords="188,56,291,83"/>
+</map>

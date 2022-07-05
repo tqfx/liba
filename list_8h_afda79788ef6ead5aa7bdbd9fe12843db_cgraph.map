@@ -1,0 +1,5 @@
+<map id="a_list_del_next" name="a_list_del_next">
+<area shape="rect" id="node1" title="Delete a node from a list forward." alt="" coords="5,5,125,32"/>
+<area shape="rect" id="node2" href="$list_8h.html#a71c4534c85480b025aa52d086309e8c6" title="Delete a section of a list." alt="" coords="173,5,264,32"/>
+<area shape="rect" id="node3" href="$list_8h.html#ae001845aa5dd2e565656b7352db32550" title="Link head node and tail node." alt="" coords="312,5,400,32"/>
+</map>

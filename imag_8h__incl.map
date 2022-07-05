@@ -1,0 +1,9 @@
+<map id="include/a/imag.h" name="include/a/imag.h">
+<area shape="rect" id="node1" title="imaginary number" alt="" coords="67,5,197,32"/>
+<area shape="rect" id="node2" href="$real_8h.html" title="real number" alt="" coords="59,80,117,107"/>
+<area shape="rect" id="node6" href="$math_8h.html" title="Calculate math library." alt="" coords="142,80,210,107"/>
+<area shape="rect" id="node3" href="$def_8h.html" title="algorithm library definition" alt="" coords="63,155,118,181"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,229,80,256"/>
+<area shape="rect" id="node5" title=" " alt="" coords="105,229,175,256"/>
+<area shape="rect" id="node7" title=" " alt="" coords="145,155,207,181"/>
+</map>

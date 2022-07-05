@@ -1,0 +1,13 @@
+<map id="include/a/misc/math.h" name="include/a/misc/math.h">
+<area shape="rect" id="node1" title="Calculate math library." alt="" coords="575,5,741,32"/>
+<area shape="rect" id="node2" href="$mf_8h.html" title="membership function" alt="" coords="5,87,185,114"/>
+<area shape="rect" id="node4" href="$fpid_8c.html" title="Fuzzy Proportional Integral Derivative Algorithm." alt="" coords="86,259,233,285"/>
+<area shape="rect" id="node5" href="$fuzzy_8h.html" title="Fuzzy operator." alt="" coords="261,80,407,121"/>
+<area shape="rect" id="node6" href="$imag_8h.html" title="imaginary number" alt="" coords="431,87,562,114"/>
+<area shape="rect" id="node7" href="$pid_8c.html" title="Proportional Integral Derivative Algorithm." alt="" coords="587,87,729,114"/>
+<area shape="rect" id="node8" href="$ahrs_8c.html" title="AHRS(Automatic Heading Reference System) algorithm library." alt="" coords="753,87,872,114"/>
+<area shape="rect" id="node9" href="$math_8c.html" title="Calculate math library." alt="" coords="897,87,1022,114"/>
+<area shape="rect" id="node10" href="$mean_8c.html" title="mean calculation" alt="" coords="1046,87,1174,114"/>
+<area shape="rect" id="node11" href="$zyx_8c.html" title="yaw (Z), pitch (Y), roll (X)" alt="" coords="1198,87,1313,114"/>
+<area shape="rect" id="node3" href="$fpid_8h.html" title="Fuzzy Proportional Integral Derivative Algorithm." alt="" coords="31,169,178,211"/>
+</map>

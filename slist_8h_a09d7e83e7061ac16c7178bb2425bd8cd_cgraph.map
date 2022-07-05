@@ -1,0 +1,4 @@
+<map id="a_slist_add_tail" name="a_slist_add_tail">
+<area shape="rect" id="node1" title="Insert a node to a list tail." alt="" coords="5,5,128,32"/>
+<area shape="rect" id="node2" href="$slist_8h.html#a19f0a6883fbdd5b1f0180c92f39d82f5" title="Link head node and tail node." alt="" coords="176,5,271,32"/>
+</map>

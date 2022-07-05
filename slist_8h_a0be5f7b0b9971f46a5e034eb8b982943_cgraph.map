@@ -1,0 +1,5 @@
+<map id="a_slist_add" name="a_slist_add">
+<area shape="rect" id="node1" title="Insert a node to a list." alt="" coords="5,31,100,57"/>
+<area shape="rect" id="node2" href="$slist_8h.html#a19f0a6883fbdd5b1f0180c92f39d82f5" title="Link head node and tail node." alt="" coords="148,5,243,32"/>
+<area shape="rect" id="node3" href="$slist_8h.html#a2426f11c8049772eaeb6b8032782a5e2" title="Testing whether a list node is a tail node." alt="" coords="149,56,241,83"/>
+</map>

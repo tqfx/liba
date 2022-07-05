@@ -1,0 +1,4 @@
+<map id="a_fpid_time" name="a_fpid_time">
+<area shape="rect" id="node1" title="Set sampling period for Fuzzy PID control." alt="" coords="5,5,104,32"/>
+<area shape="rect" id="node2" href="$pid_8h.html#af8b7b81ab8467dede6787d6002c79957" title="Set sampling period for PID control." alt="" coords="152,5,247,32"/>
+</map>

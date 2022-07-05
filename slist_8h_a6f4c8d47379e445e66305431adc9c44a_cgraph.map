@@ -1,0 +1,6 @@
+<map id="a_slist_mov" name="a_slist_mov">
+<area shape="rect" id="node1" title="Moving a list to another list." alt="" coords="5,56,105,83"/>
+<area shape="rect" id="node2" href="$slist_8h.html#a19f0a6883fbdd5b1f0180c92f39d82f5" title="Link head node and tail node." alt="" coords="157,5,252,32"/>
+<area shape="rect" id="node3" href="$slist_8h.html#a7a0d12231089a9365c4359db665cf693" title="Testing whether a list head is none." alt="" coords="153,56,256,83"/>
+<area shape="rect" id="node4" href="$slist_8h.html#a2426f11c8049772eaeb6b8032782a5e2" title="Testing whether a list node is a tail node." alt="" coords="159,107,251,133"/>
+</map>
