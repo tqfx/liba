@@ -1,0 +1,20 @@
+[package]
+name = "liba"
+version = "0.1.1-rc3"
+authors = ["tqfx <tqfx@foxmail.com>"]
+edition = "2018"
+description = """
+An algorithm library based on C/C++ language
+"""
+documentation = "https://tqfx.org/liba/"
+repository = "https://github.com/tqfx/liba.git"
+homepage = "https://github.com/tqfx/liba.git"
+license = "MPL-2.0"
+keywords = ["algorithm"]
+categories = ["algorithms"]
+
+[build-dependencies]
+cmake = "0.1"
+
+[dependencies]
+libc = "0.2"

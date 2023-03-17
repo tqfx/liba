@@ -1,0 +1,7 @@
+function(TARGET_SUPPORTS_EXECUTABLES)
+  set(CMAKE_REQUIRED_QUIET 1)
+  include(CheckCSourceCompiles)
+  set(CMAKE_TRY_COMPILE_TARGET_TYPE EXECUTABLE)
+  check_c_source_compiles("int main() {}" TARGET_SUPPORTS_EXECUTABLES)
+endfunction()
+TARGET_SUPPORTS_EXECUTABLES()

@@ -1,0 +1,4 @@
+---
+Checks: '-*,bugprone-*,-bugprone-easily-swappable-parameters,cert-*,clang-diagnostic-*,misc-*,-misc-misplaced-const,performance-*,portability-*'
+FormatStyle: file
+...

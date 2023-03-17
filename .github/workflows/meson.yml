@@ -1,0 +1,72 @@
+name: meson
+on:
+  workflow_dispatch:
+jobs:
+  MSVC:
+    strategy:
+      fail-fast: false
+      matrix:
+        include: [
+          { backend: vs },
+          { backend: ninja },
+        ]
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          submodules: true
+      - name: Run meson
+        run: |
+          Set-PSDebug -Trace 1
+          python -m pip install -U meson ninja
+          meson setup builddir --prefix ${pwd}/_ --backend ${{ matrix.backend }}
+          meson install -C builddir
+          meson test -C builddir
+  MacOS:
+    strategy:
+      fail-fast: false
+      matrix:
+        include: [
+          { cc: clang, cxx: clang++ },
+        ]
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          submodules: true
+      - name: Run meson clang
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        run: |
+          set -x
+          python3 -m pip install -U meson ninja
+          meson setup builddir --prefix `pwd`/_
+          meson install -C builddir
+          meson test -C builddir
+  Linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        include: [
+          { cc: gcc, cxx: g++ },
+          { cc: clang, cxx: clang++ },
+        ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          submodules: true
+      - name: Run meson
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        run: |
+          set -x
+          python3 -m pip install -U meson ninja
+          meson setup builddir --prefix `pwd`/_
+          meson install -C builddir
+          meson test -C builddir

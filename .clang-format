@@ -1,0 +1,31 @@
+---
+BasedOnStyle: LLVM
+AccessModifierOffset: -4
+AlignEscapedNewlines: Left
+AlignTrailingComments: false
+AlwaysBreakTemplateDeclarations: Yes
+BreakBeforeBraces: Custom
+BreakInheritanceList: BeforeComma
+BreakConstructorInitializers: BeforeComma
+BraceWrapping:
+  AfterEnum: true
+  AfterClass: true
+  AfterUnion: true
+  AfterStruct: true
+  AfterFunction: true
+  AfterCaseLabel: true
+  AfterNamespace: true
+  AfterControlStatement: true
+  BeforeElse: true
+  BeforeCatch: true
+ColumnLimit: 0
+IndentWidth: 4
+KeepEmptyLinesAtTheStartOfBlocks: false
+ObjCBlockIndentWidth: 4
+ReflowComments: false
+SortIncludes: false
+SpaceBeforeCtorInitializerColon: false
+SpaceBeforeInheritanceColon: false
+SpacesInContainerLiterals: false
+TabWidth: 4
+...

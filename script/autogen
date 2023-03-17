@@ -1,0 +1,48 @@
+#!/usr/bin/env sh
+cd $(dirname $0)
+
+mkdir -p ../build
+cp config.h.in configure.ac ../build
+cd ..
+cp -r src include/a build
+cd build
+
+for i in $(find a -regex ".*\.\(h\|hpp\)")
+do
+    HEADERS="$HEADERS $i"
+done
+
+for i in $(find src -regex ".*\.\(c\|h\)")
+do
+    C_SOURCES="$C_SOURCES $i"
+done
+
+for i in $(find src -regex ".*\.\(cpp\|hpp\)")
+do
+    CPP_SOURCES="$CPP_SOURCES $i"
+done
+
+echo "ACLOCAL_AMFLAGS = -I m4
+lib_LTLIBRARIES = liba.la
+liba_la_CPPFLAGS = -std=c11
+liba_la_LDFLAGS = -version-info 1:1:1
+liba_la_SOURCES =$C_SOURCES autogen.sh
+liba_la_LIBADD = \$(liba__la_OBJECTS)
+noinst_LTLIBRARIES = liba+.la
+liba__la_CPPFLAGS = -std=c++11
+liba__la_SOURCES =$CPP_SOURCES
+nobase_include_HEADERS =$HEADERS
+install-data-hook:
+	\$(INSTALL_DATA) config.h \$(DESTDIR)\$(includedir)/a
+	@sed -i 's|#if defined(A_HAVE_H)|#include \"config.h\"\\\\n#if defined(A_HAVE_H)|g' \$(DESTDIR)\$(includedir)/a/a.h
+uninstall-hook:
+	\$(RM) \$(DESTDIR)\$(includedir)/a/config.h" > Makefile.am
+
+echo "libtoolize
+aclocal -Wall
+autoconf -Wall
+automake -Wall --add-missing" > autogen.sh
+chmod +x autogen.sh
+./autogen.sh
+./configure
+make distcheck dist-xz

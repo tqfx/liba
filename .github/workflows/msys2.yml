@@ -1,0 +1,76 @@
+name: msys2
+on:
+  workflow_dispatch:
+jobs:
+  MSYS2:
+    strategy:
+      fail-fast: false
+      matrix:
+        include: [
+          { triple: x64, sys: MINGW64 },
+          { triple: x86, sys: MINGW32 },
+          { triple: x64, sys: CLANG64 },
+          { triple: x64, sys: UCRT64 },
+        ]
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          submodules: true
+      - uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          location: D:\
+          path-type: strict
+          msystem: ${{ matrix.sys }}
+          pacboy: >-
+            toolchain:p
+            cmake:p
+            make:p
+            rust:p
+            cython:p
+            python:p
+            python-pip:p
+            python-setuptools:p
+      - name: Run debug
+        shell: msys2 {0}
+        env:
+          MSYS2_PATH_TYPE: strict
+          MSYSTEM: ${{ matrix.sys }}
+        run: env
+      - name: Run cmake
+        shell: msys2 {0}
+        env:
+          MSYS2_PATH_TYPE: strict
+          MSYSTEM: ${{ matrix.sys }}
+        run: |
+          set -x
+          cmake -S . -B build -G "MinGW Makefiles" -DPython_ROOT_DIR=D:/msys64/${{ matrix.sys }} \
+            -DLIBA_WARNINGS=1 \
+            -DLIBA_PYTHON=1 \
+            -DLIBA_VCPKG=1 \
+            -DLIBA_JAVA=1 \
+            -DLIBA_LUA=1 \
+            -DBUILD_TESTING=1
+          cmake --build build --target package
+      - name: Run vcpkg
+        shell: msys2 {0}
+        env:
+          MSYS2_PATH_TYPE: strict
+          MSYSTEM: ${{ matrix.sys }}
+        run: |
+          set -x
+          cp -r build/vcpkg/* $VCPKG_INSTALLATION_ROOT
+          $VCPKG_INSTALLATION_ROOT/vcpkg install liba[lto,pkgconfig]:${{ matrix.triple }}-mingw-static
+          $VCPKG_INSTALLATION_ROOT/vcpkg install liba[lto,pkgconfig]:${{ matrix.triple }}-mingw-dynamic
+      - name: Run ctest
+        if: ${{ matrix.triple == 'x64' }}
+        shell: msys2 {0}
+        env:
+          MSYS2_PATH_TYPE: strict
+          MSYSTEM: ${{ matrix.sys }}
+          CTEST_OUTPUT_ON_FAILURE: 1
+        run: |
+          set -x
+          cmake --build build --target test

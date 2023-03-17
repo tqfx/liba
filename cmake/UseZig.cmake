@@ -1,0 +1,5 @@
+include(${CMAKE_CURRENT_LIST_DIR}/FindZig.cmake)
+if(ZIG_FOUND)
+  set(CMAKE_CXX_COMPILER ${ZIG_EXECUTABLE} c++)
+  set(CMAKE_C_COMPILER ${ZIG_EXECUTABLE} cc)
+endif()

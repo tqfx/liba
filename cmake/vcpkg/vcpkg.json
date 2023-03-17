@@ -1,0 +1,18 @@
+{
+  "name": "@PROJECT_NAME@",
+  "version": "@PROJECT_VERSION@",
+  "license": "@PROJECT_LICENSE@",
+  "homepage": "@PROJECT_HOMEPAGE_URL@",
+  "description": "@PROJECT_DESCRIPTION@",
+  "features": {
+    "pkgconfig": {
+      "description": "Enable pkg configuration"
+    },
+    "symlink": {
+      "description": "Enable create symbolic link"
+    },
+    "lto": {
+      "description": "Enable interprocedural optimization"
+    }
+  }
+}

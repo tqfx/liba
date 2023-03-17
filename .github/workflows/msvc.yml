@@ -1,0 +1,70 @@
+name: msvc
+on:
+  workflow_dispatch:
+jobs:
+  MSVC:
+    strategy:
+      fail-fast: false
+      matrix:
+        include: [
+          { triple: x64, arch: x64, type: Debug },
+          { triple: x86, arch: win32, type: Debug },
+          { triple: x64, arch: x64, type: RelWithDebInfo },
+          { triple: x86, arch: win32, type: RelWithDebInfo },
+        ]
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          submodules: true
+      - name: Run debug
+        run: |
+          Get-ChildItem Env: | Sort Name
+      - name: Run cmake
+        run: |
+          Set-PSDebug -Trace 1
+          cmake -S . -B build/cl -A ${{ matrix.arch }} `
+            -DLIBA_WARNINGS=1 `
+            -DLIBA_SANITIZE=1 `
+            -DLIBA_PYTHON=1 `
+            -DLIBA_VCPKG=1 `
+            -DLIBA_JAVA=1 `
+            -DLIBA_LUA=1 `
+            -DBUILD_TESTING=1
+          cmake --build build/cl --target apip -- -noLogo
+          cmake -S . -B build/cl
+          cmake --build build/cl --config ${{ matrix.type }} --target package -- -noLogo
+      - name: Run vcpkg
+        if: ${{ matrix.type == 'Debug' }}
+        run: |
+          Set-PSDebug -Trace 1
+          cp -r -Force build/cl/vcpkg/* $ENV:VCPKG_INSTALLATION_ROOT
+          vcpkg install liba[lto,pkgconfig]:${{ matrix.triple }}-windows
+          vcpkg install liba[lto,pkgconfig]:${{ matrix.triple }}-windows-static
+      - name: Run ctest
+        env:
+          CTEST_OUTPUT_ON_FAILURE: 1
+        run: |
+          Set-PSDebug -Trace 1
+          cmake --build build/cl --config ${{ matrix.type }} --target run_tests -- -noLogo
+      - name: Run cmake
+        if: ${{ matrix.arch == 'x64' }}
+        run: |
+          Set-PSDebug -Trace 1
+          cmake -S . -B build/clang -G "Ninja Multi-Config" --toolchain cmake/UseClang.cmake `
+            -DLIBA_WARNINGS=1 `
+            -DLIBA_PYTHON=1 `
+            -DLIBA_VCPKG=1 `
+            -DLIBA_JAVA=1 `
+            -DLIBA_LUA=1 `
+            -DBUILD_TESTING=1
+          cmake -S . -B build/clang
+          cmake --build build/clang --config ${{ matrix.type }} --target package
+      - name: Run ctest
+        if: ${{ matrix.arch == 'x64' }}
+        env:
+          CTEST_OUTPUT_ON_FAILURE: 1
+        run: |
+          Set-PSDebug -Trace 1
+          cmake --build build/clang --config ${{ matrix.type }} --target test

@@ -1,0 +1,76 @@
+name: conan
+on:
+  workflow_dispatch:
+jobs:
+  MSVC:
+    strategy:
+      fail-fast: false
+      matrix:
+        include: [
+          { arch: x86, type: Debug },
+          { arch: x86_64, type: Debug },
+          { arch: x86, type: RelWithDebInfo },
+          { arch: x86_64, type: RelWithDebInfo },
+        ]
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          submodules: true
+      - name: Run conan
+        run: |
+          Set-PSDebug -Trace 1
+          python -m pip install -U conan
+          conan profile new default --detect
+          conan create . -s arch=${{ matrix.arch }} -s build_type=${{ matrix.type }}
+  MacOS:
+    strategy:
+      fail-fast: false
+      matrix:
+        include: [
+          { cc: clang, cxx: clang++, type: Debug },
+          { cc: clang, cxx: clang++, type: RelWithDebInfo },
+        ]
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          submodules: true
+      - name: Run conan clang
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        run: |
+          set -x
+          python3 -m pip install -U conan
+          conan profile new default --detect
+          conan profile update settings.compiler=${{ matrix.cc }} default
+          conan create . -s build_type=${{ matrix.type }}
+  Linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        include: [
+          { cc: gcc, cxx: g++, type: Debug },
+          { cc: clang, cxx: clang++, type: Debug },
+          { cc: gcc, cxx: g++, type: RelWithDebInfo },
+          { cc: clang, cxx: clang++, type: RelWithDebInfo },
+        ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          submodules: true
+      - name: Run conan
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        run: |
+          set -x
+          python3 -m pip install -U conan
+          conan profile new default --detect
+          conan profile update settings.compiler.libcxx=libstdc++11 default
+          conan create . -s build_type=${{ matrix.type }}

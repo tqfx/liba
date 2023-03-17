@@ -1,0 +1,56 @@
+if(NOT EMSCRIPTEN)
+  set(CMAKE_EXECUTABLE_SUFFIX .js)
+  set(CMAKE_C_COMPILER ${EMCC_EXECUTABLE})
+  set(CMAKE_CXX_COMPILER ${EMXX_EXECUTABLE})
+  set(CMAKE_C_COMPILER_AR ${EMAR_EXECUTABLE})
+  set(CMAKE_CXX_COMPILER_AR ${EMAR_EXECUTABLE})
+  set(CMAKE_C_COMPILER_RANLIB ${EMRANLIB_EXECUTABLE})
+  set(CMAKE_CXX_COMPILER_RANLIB ${EMRANLIB_EXECUTABLE})
+  set(CMAKE_CROSSCOMPILING_EMULATOR ${NODE_JS_EXECUTABLE})
+  list(FIND CMAKE_C_COMPILER_PREDEFINES_COMMAND -m64 emcc)
+
+  if(${emcc} GREATER 0)
+    unset(CMAKE_C_COMPILER_ARG${emcc} CACHE)
+    unset(CMAKE_C_COMPILER_ARG${emcc})
+  endif()
+
+  list(FIND CMAKE_CXX_COMPILER_PREDEFINES_COMMAND -m64 emxx)
+
+  if(${emxx} GREATER 0)
+    unset(CMAKE_CXX_COMPILER_ARG${emxx} CACHE)
+    unset(CMAKE_CXX_COMPILER_ARG${emxx})
+  endif()
+endif()
+
+if(EMSCRIPTEN)
+  set(OBJECTS $<TARGET_OBJECTS:a>)
+else()
+  get_property(OBJECTS TARGET a PROPERTY SOURCES)
+endif()
+
+set(CMAKE_POSITION_INDEPENDENT_CODE ${LIBA_PIE})
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${LIBA_LTO})
+
+# https://emscripten.org/docs/tools_reference/emcc.html
+string_append(LDFLAGS -sSINGLE_FILE=1 -sWASM=0)
+string_append(LDFLAGS -sWASM_ASYNC_COMPILATION=0)
+string_append(LDFLAGS -sEXPORTED_RUNTIME_METHODS=ccall,cwrap)
+
+file_scaner(SOURCES RECURSE src)
+add_executable(ajs ${OBJECTS} ${SOURCES})
+target_compile_definitions(ajs PRIVATE $<TARGET_PROPERTY:a,COMPILE_DEFINITIONS>)
+target_include_directories(ajs PRIVATE $<TARGET_PROPERTY:a,INCLUDE_DIRECTORIES>)
+set_target_properties(ajs PROPERTIES LINK_FLAGS ${LDFLAGS} OUTPUT_NAME liba)
+target_link_libraries(ajs PRIVATE embind)
+
+if(NOT CMAKE_VERSION VERSION_LESS 3.3 AND LIBA_WARNINGS)
+  target_compile_options(ajs PRIVATE -Weverything -Wno-documentation
+    -Wno-documentation-unknown-command -Wno-used-but-marked-unused
+    $<$<COMPILE_LANGUAGE:C>:-Wno-declaration-after-statement>
+    $<$<COMPILE_LANGUAGE:CXX>:-Wno-c++98-compat-pedantic>
+  )
+endif()
+
+if(CMAKE_CROSSCOMPILING_EMULATOR)
+  include(test.cmake)
+endif()

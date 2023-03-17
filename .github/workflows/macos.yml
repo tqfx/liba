@@ -1,0 +1,57 @@
+name: macos
+on:
+  workflow_dispatch:
+jobs:
+  MacOS:
+    strategy:
+      fail-fast: false
+      matrix:
+        include: [
+          { cc: gcc, cxx: g++, type: Debug },
+          { cc: clang, cxx: clang++, type: Debug },
+          { cc: gcc, cxx: g++, type: RelWithDebInfo },
+          { cc: clang, cxx: clang++, type: RelWithDebInfo },
+        ]
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          submodules: true
+      - name: Run debug
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        run: env
+      - name: Run cmake
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        run: |
+          set -x
+          cmake -S . -B build/${{ matrix.cc }} -DCMAKE_BUILD_TYPE=${{ matrix.type }} \
+            -DLIBA_WARNINGS=1 \
+            -DLIBA_SANITIZE=1 \
+            -DLIBA_PYTHON=1 \
+            -DLIBA_VCPKG=1 \
+            -DLIBA_JAVA=1 \
+            -DLIBA_LUA=1 \
+            -DBUILD_TESTING=1
+          cmake --build build/${{ matrix.cc }} --target apip
+          cmake -S . -B build/${{ matrix.cc }}
+          cmake --build build/${{ matrix.cc }} --config ${{ matrix.type }} --target package
+      - name: Run vcpkg
+        if: ${{ matrix.type == 'Debug' }}
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        run: |
+          set -x
+          cp -r build/${{ matrix.cc }}/vcpkg/* $VCPKG_INSTALLATION_ROOT
+          vcpkg install liba[lto,pkgconfig]
+      - name: Run ctest
+        env:
+          CTEST_OUTPUT_ON_FAILURE: 1
+        run: |
+          set -x
+          cmake --build build/${{ matrix.cc }} --target test

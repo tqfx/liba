@@ -1,0 +1,69 @@
+name: docs
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          submodules: true
+      - name: Run apt-get
+        run: |
+          set -x
+          sudo apt-get -y update
+          sudo apt-get -y install doxygen graphviz mscgen dia
+          sudo apt-get -y install lua5.4 liblua5.4-dev
+      - uses: actions/checkout@v2
+        with:
+          repository: luarocks/luarocks
+          path: luarocks
+      - name: Install luarocks
+        working-directory: luarocks
+        run: |
+          set -x
+          ./configure
+          make
+          sudo make install
+      - name: Install LDoc
+        run: sudo luarocks install ldoc
+      - name: Build docs
+        run: |
+          set -x
+          cmake -S . -B build -DLIBA_DOXYGEN=1 \
+                              -DLIBA_LUA=1 -DLIBA_LDOC=1 \
+                              -DLIBA_JAVA=1 -DLIBA_JAVADOC=1
+          cmake --build build --target adoc
+          cargo doc --release --no-deps
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          submodules: true
+          repository: ${{ github.repository_owner }}/tqfx.github.io
+          path: _/${{ github.repository_owner }}
+      - name: Update docs
+        run: |
+          set -x
+          rm -rf _/${{ github.repository }}
+          mv build/html _/${{ github.repository }}
+          mv target/doc _/${{ github.repository }}/rust
+          mv build/lua/doc _/${{ github.repository }}/lua
+          mv build/java/javadoc/liba _/${{ github.repository }}/java
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          commit_message: ${{ github.event.head_commit.message }}
+          external_repository: ${{ github.repository_owner }}/tqfx.github.io
+          publish_dir: _/${{ github.repository_owner }}
+      - name: Run autotools
+        run: script/autogen
+      - uses: actions/upload-artifact@v2
+        with:
+          if-no-files-found: ignore
+          name: ${{ github.sha }}
+          path: build/*.tar.*

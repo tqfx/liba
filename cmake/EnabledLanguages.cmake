@@ -1,0 +1,1 @@
+get_cmake_property(ENABLED_LANGUAGES ENABLED_LANGUAGES)

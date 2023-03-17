@@ -1,0 +1,1 @@
+DEF A_SIZE_REAL = 8

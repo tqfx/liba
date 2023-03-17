@@ -1,0 +1,45 @@
+name: freebsd
+on:
+  workflow_dispatch:
+jobs:
+  FreeBSD:
+    strategy:
+      fail-fast: false
+      matrix:
+        include: [
+          { type: Debug },
+          { type: RelWithDebInfo },
+        ]
+    runs-on: macos-12
+    env:
+      CTEST_OUTPUT_ON_FAILURE: 1
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          submodules: true
+      - uses: vmactions/freebsd-vm@v0
+        with:
+          envs: 'CTEST_OUTPUT_ON_FAILURE'
+          copyback: false
+          mem: 2048
+          prepare: |
+            pkg install -y cmake gmake
+            pkg install -y python && curl -sSL https://bootstrap.pypa.io/get-pip.py | python -
+            pkg install -y openjdk8
+            pkg install -y lua54
+            pkg install -y rust
+          run: |
+            cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }} \
+              -DLIBA_WARNINGS=1 \
+              -DLIBA_SANITIZE=1 \
+              -DLIBA_PYTHON=1 \
+              -DLIBA_VCPKG=1 \
+              -DLIBA_JAVA=1 \
+              -DLIBA_LUA=1 \
+              -DBUILD_TESTING=1
+            cmake --build build --target apip
+            cmake -S . -B build
+            cmake --build build --config ${{ matrix.type }} --target package
+            cmake --build build --target test
+            cargo test

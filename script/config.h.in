@@ -1,0 +1,79 @@
+#undef A_BYTE_ORDER
+
+/* version string */
+#undef A_VERSION
+
+/* major version number */
+#undef A_VERSION_MAJOR
+
+/* minor version number */
+#undef A_VERSION_MINOR
+
+/* patch version number */
+#undef A_VERSION_PATCH
+
+/* The size of `void *`, as computed by sizeof. */
+#undef A_SIZE_VPTR
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#undef A_HAVE_STDINT_H
+
+/* Define to 1 if you have the <complex.h> header file. */
+#undef A_HAVE_COMPLEX_H
+
+/* Define to 1 if you have `atan2`, as a function or macro. */
+#undef A_HAVE_ATAN2
+
+/* Define to 1 if you have `cacos`, as a function or macro. */
+#undef A_HAVE_CACOS
+
+/* Define to 1 if you have `cacosh`, as a function or macro. */
+#undef A_HAVE_CACOSH
+
+/* Define to 1 if you have `casin`, as a function or macro. */
+#undef A_HAVE_CASIN
+
+/* Define to 1 if you have `casinh`, as a function or macro. */
+#undef A_HAVE_CASINH
+
+/* Define to 1 if you have `catan`, as a function or macro. */
+#undef A_HAVE_CATAN
+
+/* Define to 1 if you have `catanh`, as a function or macro. */
+#undef A_HAVE_CATANH
+
+/* Define to 1 if you have `ccos`, as a function or macro. */
+#undef A_HAVE_CCOS
+
+/* Define to 1 if you have `ccosh`, as a function or macro. */
+#undef A_HAVE_CCOSH
+
+/* Define to 1 if you have `cexp`, as a function or macro. */
+#undef A_HAVE_CEXP
+
+/* Define to 1 if you have `clog`, as a function or macro. */
+#undef A_HAVE_CLOG
+
+/* Define to 1 if you have `cpow`, as a function or macro. */
+#undef A_HAVE_CPOW
+
+/* Define to 1 if you have `csin`, as a function or macro. */
+#undef A_HAVE_CSIN
+
+/* Define to 1 if you have `csinh`, as a function or macro. */
+#undef A_HAVE_CSINH
+
+/* Define to 1 if you have `csqrt`, as a function or macro. */
+#undef A_HAVE_CSQRT
+
+/* Define to 1 if you have `ctan`, as a function or macro. */
+#undef A_HAVE_CTAN
+
+/* Define to 1 if you have `ctanh`, as a function or macro. */
+#undef A_HAVE_CTANH
+
+/* Define to 1 if you have `hypot`, as a function or macro. */
+#undef A_HAVE_HYPOT
+
+/* Define to 1 if you have `log1p`, as a function or macro. */
+#undef A_HAVE_LOG1P

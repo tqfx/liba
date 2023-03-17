@@ -1,0 +1,2 @@
+option('a_real', type: 'combo', choices: ['4', '8', '16'], value: '8')
+option('a_math', type: 'string', value: '', description: '')

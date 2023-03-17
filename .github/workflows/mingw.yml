@@ -1,0 +1,37 @@
+name: mingw
+on:
+  workflow_dispatch:
+jobs:
+  MinGW:
+    strategy:
+      fail-fast: false
+      matrix:
+        include: [
+          { mingw: MinGW64 },
+          { mingw: MinGW32 },
+        ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+          submodules: true
+      - name: Run apt-get
+        run: |
+          set -x
+          sudo dpkg --add-architecture i386 && sudo apt-get -y update
+          sudo apt-get -y install mingw-w64 wine wine64
+      - name: Run cmake
+        run: |
+          set -x
+          cmake -S . -B build --toolchain cmake/Use${{ matrix.mingw }}.cmake \
+            -DLIBA_WARNINGS=1 \
+            -DBUILD_TESTING=1
+          cmake --build build --target package
+      - name: Run ctest
+        if: ${{ matrix.mingw == 'MinGW64' }}
+        env:
+          CTEST_OUTPUT_ON_FAILURE: 1
+        run: |
+          set -x && winecfg
+          cmake --build build --target test
