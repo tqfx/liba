@@ -21,8 +21,8 @@ jobs:
       - name: Run conan
         run: |
           Set-PSDebug -Trace 1
-          python -m pip install -U 'conan<2'
-          conan profile new default --detect
+          python -m pip install -U conan
+          conan profile detect --force
           conan create . -s arch=${{ matrix.arch }} -s build_type=${{ matrix.type }}
   MacOS:
     strategy:
@@ -44,9 +44,8 @@ jobs:
           CXX: ${{ matrix.cxx }}
         run: |
           set -x
-          python3 -m pip install -U 'conan<2'
-          conan profile new default --detect
-          conan profile update settings.compiler=${{ matrix.cc }} default
+          python3 -m pip install -U conan
+          conan profile detect --force
           conan create . -s build_type=${{ matrix.type }}
   Linux:
     strategy:
@@ -70,7 +69,6 @@ jobs:
           CXX: ${{ matrix.cxx }}
         run: |
           set -x
-          python3 -m pip install -U 'conan<2'
-          conan profile new default --detect
-          conan profile update settings.compiler.libcxx=libstdc++11 default
+          python3 -m pip install -U conan
+          conan profile detect --force
           conan create . -s build_type=${{ matrix.type }}
