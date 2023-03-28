@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 import sys, os, re
 
 
@@ -21,7 +20,7 @@ class single(object):
             self._include_dirs.append(value)
 
     def read(self, name):
-        self.name = os.path.relpath(name).replace('\\', '/')
+        self.name = os.path.relpath(name).replace("\\", "/")
         with open(self.name, "r") as f:
             self.source = f.read()
         return self
@@ -35,16 +34,16 @@ class single(object):
         sys.stdout.write(self.source)
 
     def __call__(self, *args):
-        macros = ''
+        macros = ""
         if args:
             name = args[0]
         else:
             name = self.name
-        name = name.replace('\\', '/')
+        name = name.replace("\\", "/")
         if not os.path.exists(name):
-            return ''
+            return ""
         if name in self._include_files:
-            return ''
+            return ""
         if args:
             with open(name, "r") as f:
                 source = f.read()
@@ -53,7 +52,7 @@ class single(object):
         include_dirs = [os.path.dirname(name)] + self._include_dirs
         includes = re.findall(r"#include \"([^\"]+)\"", source)
         for include in includes:
-            old = "#include \"{}\"\n".format(include)
+            old = '#include "{}"\n'.format(include)
             for include_dir in include_dirs:
                 new = os.path.join(include_dir, include)
                 if not os.path.exists(new):

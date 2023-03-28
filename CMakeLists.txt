@@ -480,7 +480,7 @@ if(CLANG_FORMAT_FOUND)
 endif()
 
 if(BLACK_FOUND)
-  add_black(ablack ${CMAKE_CURRENT_LIST_DIR} OPTIONS -S)
+  add_black(ablack ${CMAKE_CURRENT_LIST_DIR})
   add_dependencies(afmt ablack)
 endif()
 

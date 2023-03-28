@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from subprocess import Popen
 import urllib.request
 import urllib.parse
@@ -108,4 +107,4 @@ if __name__ == "__main__":
                 if type(err) == type(""):
                     sys.stdout.write(err)  # type: ignore
                 if err != False:
-                    sys.stdout.write('\n')
+                    sys.stdout.write("\n")

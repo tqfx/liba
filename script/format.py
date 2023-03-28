@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from subprocess import Popen
 from typing import Any, Iterable
 from glob import glob
@@ -8,7 +7,6 @@ import os
 
 
 class format:
-
     SUFFIX = (".c", ".h", ".cc", ".hh", ".cpp", ".hpp", ".cxx", ".hxx")
 
     def __init__(self, dirs: Any) -> None:
@@ -24,7 +22,7 @@ class format:
             Popen(script).wait()
         except Exception as e:
             print(e)
-        script = ("black", "-S", os.getcwd())
+        script = ("black", os.getcwd())
         try:
             Popen(script).wait()
         except Exception as e:
