@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 import os, re
 
 SUFFIXS = (".c", ".h", ".cc", ".hh", ".cpp", ".hpp", ".cxx", ".hxx")
@@ -17,6 +16,7 @@ for dirpath, dirnames, filenames in os.walk("src"):
         prefix, suffix = os.path.splitext(source)
         if suffix in SUFFIXS:
             sources.append(source)
+sources = sorted(sources)
 
 with open("meson.build", "r") as f:
     meson = f.read()

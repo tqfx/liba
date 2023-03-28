@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 import os, argparse
 
 parser = argparse.ArgumentParser()
@@ -13,7 +13,7 @@ if args[0].dst:
     old = "#if defined(A_HAVE_H)"
     dst = os.path.dirname(args[0].src)
     src = os.path.basename(args[0].src)
-    new = "#include \"{}\"\n{}".format(src, old)
+    new = '#include "{}"\n{}'.format(src, old)
     text = text.replace(old, new)
 
     with open(os.path.join(dst, os.path.basename(args[0].dst)), "wb") as f:
