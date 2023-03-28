@@ -40,9 +40,9 @@
 ### xmake
 
 ```bash
-xmake f -m release
-xmake --build --all
-xmake install --all
+xmake f
+xmake
+xmake i
 ```
 
 ### cmake
