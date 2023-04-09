@@ -639,8 +639,8 @@ a_void_t a_avl_remove(a_avl_u *const root, a_avl_s *const node)
 
 a_avl_s *a_avl_insert(a_avl_u *const root, a_avl_s *const node, a_int_t (*const cmp)(a_cptr_t, a_cptr_t))
 {
-    a_avl_s **link = &root->node;
     a_avl_s *parent = root->node;
+    a_avl_s **link = &root->node;
     while (*link)
     {
         parent = *link;

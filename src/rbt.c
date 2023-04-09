@@ -555,8 +555,8 @@ a_void_t a_rbt_remove(a_rbt_u *const root, a_rbt_s *const node)
 
 a_rbt_s *a_rbt_insert(a_rbt_u *const root, a_rbt_s *const node, a_int_t (*const cmp)(a_cptr_t, a_cptr_t))
 {
-    a_rbt_s **link = &root->node;
     a_rbt_s *parent = root->node;
+    a_rbt_s **link = &root->node;
     while (*link)
     {
         parent = *link;
