@@ -120,18 +120,17 @@ liba/[~0.1]
 ### Lua
 
 ```lua
-local a = require("liba")
-print("version", a.version())
+local liba = require("liba")
+print("version", liba.version())
 ```
 
 ### Java
 
 ```java
-import liba.a;
 public class test {
     public static void main(String[] args) {
-        a.init();
-        System.out.println("version " + a.version());
+        liba.init();
+        System.out.println("version " + liba.version());
     }
 }
 ```
