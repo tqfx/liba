@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-var Module = require("./liba.js")
+var Module = require("../liba.js")
 
 var ctx = new Module.polytrack3(0, 1, 0, 1, 0, 1)
 console.log(ctx.out(0.5))

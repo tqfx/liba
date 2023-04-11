@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-var Module = require("./liba.js")
+var Module = require("../liba.js")
 var NB = -3
 var NM = -2
 var NS = -1

@@ -52,5 +52,5 @@ if(NOT CMAKE_VERSION VERSION_LESS 3.3 AND LIBA_WARNINGS)
 endif()
 
 if(CMAKE_CROSSCOMPILING_EMULATOR)
-  include(test.cmake)
+  add_subdirectory(test)
 endif()
