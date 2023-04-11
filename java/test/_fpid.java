@@ -1,11 +1,10 @@
-import liba.a;
 import liba.mf;
 import liba.pid;
 import liba.fpid;
 
-public class test_fpid {
+public class _fpid {
     public static void main(String[] args) {
-        a.init();
+        liba.init();
         final int NB = -3;
         final int NM = -2;
         final int NS = -1;

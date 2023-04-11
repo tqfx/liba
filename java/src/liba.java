@@ -1,9 +1,7 @@
-package liba;
-
 /**
  * algorithm library
  */
-public final class a {
+public final class liba {
     /**
      * initialize algorithm library
      */

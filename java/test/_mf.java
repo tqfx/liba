@@ -1,9 +1,8 @@
-import liba.a;
 import liba.mf;
 
-public class test_mf {
+public class _mf {
     public static void main(String[] args) {
-        a.init();
+        liba.init();
         mf.gauss(0, 0, 0);
         mf.gbell(0, 0, 0, 0);
         mf.sig(0, 0, 0);

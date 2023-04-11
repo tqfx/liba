@@ -1,9 +1,8 @@
-import liba.a;
 import liba.polytrack7;
 
-public class test_polytrack7 {
+public class _polytrack7 {
     public static void main(String[] args) {
-        a.init();
+        liba.init();
         double[] t = { 0, 1 };
         double[] q = { 0, 1 };
         double[] v = { 0, 1 };

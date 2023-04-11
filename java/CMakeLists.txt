@@ -1,7 +1,7 @@
 # https://cmake.org/cmake/help/latest/module/UseJava.html
 include(UseJava)
 
-file(GLOB_RECURSE SOURCES src/${PROJECT_NAME}/*.java)
+file(GLOB_RECURSE SOURCES src/*.java)
 add_jar(ajar GENERATE_NATIVE_HEADERS jar-native-a
   ENTRY_POINT a OUTPUT_NAME a SOURCES ${SOURCES}
 )
@@ -55,5 +55,6 @@ else()
 endif()
 
 if(CMAKE_SIZEOF_VOID_P EQUAL JAVA_SIZEOF_VOID_P AND BUILD_TESTING)
-  include(test.cmake)
+  file(GLOB_RECURSE SOURCES src/*.java)
+  add_subdirectory(test)
 endif()

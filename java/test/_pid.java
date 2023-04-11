@@ -1,9 +1,8 @@
-import liba.a;
 import liba.pid;
 
-public class test_pid {
+public class _pid {
     public static void main(String[] args) {
-        a.init();
+        liba.init();
         pid obj = new pid(1, -10, +10);
         System.out.print(obj.proc(1, 0) + " ");
         obj.off().inc().pos(10);
