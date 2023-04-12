@@ -1,7 +1,7 @@
 package liba;
 
 /** proportional integral derivative controller */
-public final class pid {
+public class pid {
     /** turn off PID controller */
     public static final int OFF = 0;
     /** positional PID controller */

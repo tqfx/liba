@@ -1,7 +1,7 @@
 package liba;
 
 /** transfer function */
-public final class tf {
+public class tf {
     /** numerator */
     public double num[];
     /** denominator */

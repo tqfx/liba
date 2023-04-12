@@ -1,7 +1,7 @@
 package liba;
 
 /** fuzzy proportional integral derivative controller */
-public final class fpid {
+public class fpid {
     /** proportional integral derivative controller */
     public pid pid;
     double[] mmp;

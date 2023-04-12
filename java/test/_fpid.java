@@ -2,7 +2,7 @@ import liba.mf;
 import liba.pid;
 import liba.fpid;
 
-public class _fpid {
+class _fpid {
     public static void main(String[] args) {
         liba.init();
         final int NB = -3;

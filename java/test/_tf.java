@@ -1,6 +1,6 @@
 import liba.tf;
 
-public class _tf {
+class _tf {
     public static void main(String[] args) {
         liba.init();
         double num[] = { 6.59492796e-05, 6.54019884e-05 };

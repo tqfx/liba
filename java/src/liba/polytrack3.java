@@ -1,7 +1,7 @@
 package liba;
 
 /** cubic polynomial trajectory */
-public final class polytrack3 {
+public class polytrack3 {
     /** quantity */
     public double[] k = new double[4];
     /** time */

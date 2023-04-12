@@ -1,7 +1,7 @@
 package liba;
 
 /** quintic polynomial trajectory */
-public final class polytrack5 {
+public class polytrack5 {
     /** quantity */
     public double[] k = new double[6];
     /** time */

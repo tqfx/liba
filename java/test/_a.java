@@ -1,4 +1,4 @@
-public class _a {
+class _a {
     public static void main(String[] args) {
         liba.init();
         System.out.println("version " + liba.version());

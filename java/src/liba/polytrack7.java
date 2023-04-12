@@ -1,7 +1,7 @@
 package liba;
 
 /** hepta polynomial trajectory */
-public final class polytrack7 {
+public class polytrack7 {
     /** quantity */
     public double[] k = new double[8];
     /** time */

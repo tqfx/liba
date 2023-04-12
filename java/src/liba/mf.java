@@ -1,7 +1,7 @@
 package liba;
 
 /** membership function */
-public final class mf {
+public class mf {
     /** none */
     public static final int NUL = 0;
     /** gaussian membership function */

@@ -1,6 +1,6 @@
 import liba.pid;
 
-public class _pid {
+class _pid {
     public static void main(String[] args) {
         liba.init();
         pid obj = new pid(1, -10, +10);

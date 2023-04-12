@@ -1,6 +1,6 @@
 import liba.polytrack5;
 
-public class _polytrack5 {
+class _polytrack5 {
     public static void main(String[] args) {
         liba.init();
         double[] t = { 0, 1 };

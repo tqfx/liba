@@ -1,6 +1,6 @@
 import liba.mf;
 
-public class _mf {
+class _mf {
     public static void main(String[] args) {
         liba.init();
         mf.gauss(0, 0, 0);
