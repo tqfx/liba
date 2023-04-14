@@ -100,7 +100,7 @@ target("a.objs")
     }
     check_math(funcs, {includes = "complex.h"})
     -- set the auto-generated a.xmake.h
-    a_have_h = path.relative("$(buildir)/a.xmake.h", "include")
+    a_have_h = path.relative(os.projectdir().."/$(buildir)/a.xmake.h", "include")
     add_defines("A_HAVE_H=\""..a_have_h.."\"", {public = true})
     set_configvar("A_SIZE_REAL", real, {quote = false})
     add_configfiles("include/a.xmake.h.in")
