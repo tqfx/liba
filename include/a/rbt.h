@@ -319,6 +319,23 @@ A_EXTERN a_void_t a_rbt_remove(a_rbt_u *root, a_rbt_s *node);
 #define a_rbt_post_foreach_reverse(cur, root) \
     for (a_rbt_s *cur = a_rbt_post_tail(root); cur; cur = a_rbt_post_prev(cur))
 
+/*!
+ @brief tear a red–black binary search tree using postorder traversal
+ @code{.c}
+ typedef struct { a_rbt_u node; } T;
+ a_rbt_u root = A_AVL_ROOT;
+ a_rbt_fortear(cur, next, &root)
+ {
+     T *it = a_rbt_entry(cur, T, node);
+ }
+ @endcode
+ @param cur the &a_rbt_s to use as a loop counter
+ @param next the &a_rbt_s to use as next node
+ @param root red–black binary search tree root
+*/
+#define a_rbt_fortear(cur, next, root) \
+    for (a_rbt_s *next = A_NULL, *cur = a_rbt_tear(root, &next); cur; cur = a_rbt_tear(root, &next))
+
 /*! @} A_RBT */
 
 #endif /* rbt.h */

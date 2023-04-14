@@ -322,6 +322,23 @@ A_EXTERN a_void_t a_avl_remove(a_avl_u *root, a_avl_s *node);
 #define a_avl_post_foreach_reverse(cur, root) \
     for (a_avl_s *cur = a_avl_post_tail(root); cur; cur = a_avl_post_prev(cur))
 
+/*!
+ @brief tear a AVL binary search tree using postorder traversal
+ @code{.c}
+ typedef struct { a_avl_u node; } T;
+ a_avl_u root = A_AVL_ROOT;
+ a_avl_fortear(cur, next, &root)
+ {
+     T *it = a_avl_entry(cur, T, node);
+ }
+ @endcode
+ @param cur the &a_avl_s to use as a loop counter
+ @param next the &a_avl_s to use as next node
+ @param root AVL binary search tree root
+*/
+#define a_avl_fortear(cur, next, root) \
+    for (a_avl_s *next = A_NULL, *cur = a_avl_tear(root, &next); cur; cur = a_avl_tear(root, &next))
+
 /*! @} A_AVL */
 
 #endif /* avl.h */

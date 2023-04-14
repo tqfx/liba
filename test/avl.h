@@ -221,7 +221,7 @@ static int test(int argc, char *argv[])
         a_avl_insert(&root, &vec[i].node, int_cmp);
         vec[i].reached = 0;
     }
-    for (a_avl_s *next = A_NULL, *cur = a_avl_tear(&root, &next); cur; cur = a_avl_tear(&root, &next))
+    a_avl_fortear(cur, next, &root)
     {
         int_entry(cur)->reached = 1;
     }

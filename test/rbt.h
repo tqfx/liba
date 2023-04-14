@@ -171,7 +171,7 @@ static int test(int argc, char *argv[])
         a_rbt_insert(&root, &vec[i].node, int_cmp);
         vec[i].reached = 0;
     }
-    for (a_rbt_s *next = A_NULL, *cur = a_rbt_tear(&root, &next); cur; cur = a_rbt_tear(&root, &next))
+    a_rbt_fortear(cur, next, &root)
     {
         int_entry(cur)->reached = 1;
     }
