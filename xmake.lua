@@ -60,7 +60,7 @@ option("rpath")
     set_description("dynamic library search path")
 option_end()
 
-target("a.objs")
+target("a")
     -- make as a collection of objects
     set_kind("object")
     -- detect c code functions
@@ -76,9 +76,9 @@ target("a.objs")
     function check_math(funcs, opt)
         includes("check_cfuncs.lua")
         for i, func in pairs(funcs) do
-            local have = "A_HAVE_" .. string.upper(func)
-            if real == "16" then func = func .. 'l' end
-            if real == "4" then func = func .. 'f' end
+            local have = "A_HAVE_"..string.upper(func)
+            if real == "16" then func = func..'l' end
+            if real == "4" then func = func..'f' end
             configvar_check_cfuncs(have, func, opt)
         end
     end
@@ -120,11 +120,10 @@ target("a.objs")
     end
 target_end()
 
-target("a")
+target("alib")
+    set_basename("a")
     -- make as a static library
     set_kind("static")
-    -- add the dependent target
-    add_deps("a.objs")
     -- add the header files for installing
     if not table.empty(os.files("include/**.hpp")) and has_config("with-cxx") then
         add_headerfiles("include/(**.hpp)")
@@ -134,11 +133,13 @@ target("a")
     after_install(function (target)
         if target:installdir() then
             local old = "#if defined(A_HAVE_H)"
-            local new = "#include \"a.xmake.h\"\n" .. old
+            local new = "#include \"a.xmake.h\"\n"..old
             local includedir = path.join(target:installdir(), "include")
             io.replace(path.join(includedir, "a", "a.h"), old, new, {plain = true})
         end
     end)
+    -- add the dependent target
+    add_deps("a")
 target_end()
 
 target("liba")
@@ -146,12 +147,12 @@ target("liba")
     set_prefixname("lib")
     -- make as a shared library
     set_kind("shared")
-    -- add the dependent target
-    add_deps("a.objs")
     -- add the platform options
     if is_plat("windows") then
         add_defines("A_IMPORTS", {interface = true})
     end
+    -- add the dependent target
+    add_deps("a")
 target_end()
 
 -- include lua sources
@@ -168,12 +169,12 @@ option_end()
 
 if has_config("with-rust") then
     add_requires("cargo::liba", {configs = {cargo_toml = path.join(os.projectdir(), "Cargo.toml")}})
-    target("a.rust")
+    target("arust")
         set_basename("a")
         set_kind("static")
-        add_deps("a.objs")
         add_files("src/lib.rs")
         add_packages("cargo::liba")
+        add_deps("a")
     target_end()
 end
 

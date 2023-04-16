@@ -7,10 +7,9 @@ option_end()
 
 if has_config("with-lua") then
     add_requires(get_config("with-lua"))
-    target("a.lua")
+    target("alua")
         set_basename("a")
         set_kind("shared")
-        add_deps("a.objs")
         add_files("src/**.c")
         set_prefixname("lib")
         add_packages(get_config("with-lua"))
@@ -24,5 +23,6 @@ if has_config("with-lua") then
             target:set("targetdir", path.join(target:targetdir(), subdir))
             target:set("installfiles", target:targetfile(), {prefixdir = libdir})
         end)
+        add_deps("a")
     target_end()
 end
