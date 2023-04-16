@@ -61,16 +61,10 @@ option("rpath")
 option_end()
 
 target("a.objs")
-    real = get_config("real")
-    rpath = get_config("rpath")
     -- make as a collection of objects
     set_kind("object")
-    -- custom load target configuration
-    on_load(function (target)
-        import("lib.detect.find_programver")
-        target:set("configvar", "XMAKE_VERSION", find_programver("xmake"))
-    end)
     -- detect c code functions
+    real = get_config("real")
     includes("check_csnippets.lua")
     local source = 'int x = 1; puts(*(char *)&x ? "1234" : "4321");'
     configvar_check_csnippets("A_BYTE_ORDER", source, {output = true, number = true})
@@ -102,6 +96,7 @@ target("a.objs")
     -- set the auto-generated a.xmake.h
     a_have_h = path.relative(os.projectdir().."/$(buildir)/a.xmake.h", "include")
     add_defines("A_HAVE_H=\""..a_have_h.."\"", {public = true})
+    set_configvar("XMAKE_VERSION", tostring(xmake.version()))
     set_configvar("A_SIZE_REAL", real, {quote = false})
     add_configfiles("include/a.xmake.h.in")
     -- add include directories
@@ -109,11 +104,12 @@ target("a.objs")
     -- set export library symbols
     add_defines("A_EXPORTS")
     -- add the common source files
-    if has_config("with-cxx") then
+    if not table.empty(os.files("src/**.cpp")) and has_config("with-cxx") then
         add_files("src/**.cpp")
     end
     add_files("src/**.c")
     -- add the platform options
+    rpath = get_config("rpath")
     if rpath then
         add_rpathdirs(rpath, {public = true})
         add_linkdirs(rpath, {public = true})
@@ -130,7 +126,7 @@ target("a")
     -- add the dependent target
     add_deps("a.objs")
     -- add the header files for installing
-    if has_config("with-cxx") then
+    if not table.empty(os.files("include/**.hpp")) and has_config("with-cxx") then
         add_headerfiles("include/(**.hpp)")
     end
     add_headerfiles("include/(**.h)")
@@ -159,7 +155,9 @@ target("liba")
 target_end()
 
 -- include lua sources
-includes("lua")
+if os.exists("lua/xmake.lua") then
+    includes("lua")
+end
 
 -- option: with-rust
 option("with-rust")
@@ -180,4 +178,6 @@ if has_config("with-rust") then
 end
 
 -- include test sources
-includes("test")
+if os.exists("test/xmake.lua") then
+    includes("test")
+end
