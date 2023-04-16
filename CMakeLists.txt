@@ -421,13 +421,13 @@ if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/python/CMakeLists.txt)
 endif()
 
 if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/quickjs/CMakeLists.txt)
-  option(LIBA_QJS "Enable/Disable quickjs" 0)
+  option(LIBA_QUICKJS "Enable/Disable quickjs" 0)
 
-  if(LIBA_QJS)
+  if(LIBA_QUICKJS)
     find_package(QuickJS)
   endif()
 
-  if(LIBA_QJS AND QUICKJS_FOUND)
+  if(LIBA_QUICKJS AND QUICKJS_FOUND)
     add_subdirectory(quickjs)
   endif()
 endif()

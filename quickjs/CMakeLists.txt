@@ -1,5 +1,3 @@
-set(OBJECTS $<TARGET_OBJECTS:a>)
-
 if(WIN32)
   set(CMAKE_SHARED_LIBRARY_PREFIX lib)
 else()
@@ -7,7 +5,7 @@ else()
 endif()
 
 file_scaner(SOURCES RECURSE src)
-add_library(aqjs SHARED ${SOURCES} ${OBJECTS})
+add_library(aqjs SHARED ${SOURCES} $<TARGET_OBJECTS:a>)
 set_target_properties(aqjs PROPERTIES DEFINE_SYMBOL A_EXPORTS OUTPUT_NAME a)
 target_include_directories(aqjs PRIVATE ${QUICKJS_INCLUDE_DIR})
 add_library_properties(aqjs PRIVATE alib)
