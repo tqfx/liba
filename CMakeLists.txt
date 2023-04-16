@@ -349,15 +349,15 @@ endif()
 
 option(LIBA_VCPKG "Enable/Disable vcpkg" 0)
 
-if(LIBA_VCPKG AND GIT_COMMIT)
+if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/vcpkg AND LIBA_VCPKG AND GIT_COMMIT)
   install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/vcpkg DESTINATION ${CMAKE_INSTALL_DATADIR})
   configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/vcpkg/portfile.cmake
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/portfile.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/vcpkg/ports/${PROJECT_NAME}/portfile.cmake
     @ONLY
   )
   configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/vcpkg/vcpkg.json
+    ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/vcpkg.json
     ${CMAKE_CURRENT_BINARY_DIR}/vcpkg/ports/${PROJECT_NAME}/vcpkg.json
     @ONLY
   )
