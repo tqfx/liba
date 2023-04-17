@@ -155,11 +155,6 @@ target("liba")
     add_deps("a")
 target_end()
 
--- include lua sources
-if os.exists("lua/xmake.lua") then
-    includes("lua")
-end
-
 -- option: with-rust
 option("with-rust")
     set_default(false)
@@ -178,7 +173,7 @@ if has_config("with-rust") then
     target_end()
 end
 
--- include test sources
-if os.exists("test/xmake.lua") then
-    includes("test")
+-- include module sources
+if not table.empty(os.files("*/xmake.lua")) then
+    includes("*/xmake.lua")
 end

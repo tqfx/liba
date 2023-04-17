@@ -81,4 +81,6 @@ target("test/version")
     building({"version.c", "version.cpp"})
 target_end()
 
-includes("host")
+if not table.empty(os.files("*/xmake.lua")) then
+    includes("*/xmake.lua")
+end

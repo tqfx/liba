@@ -137,4 +137,6 @@ unittest(slist)
 building(version version.c version.cpp)
 unittest(version)
 
-add_subdirectory(host)
+if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/host/CMakeLists.txt)
+    add_subdirectory(host)
+endif()
