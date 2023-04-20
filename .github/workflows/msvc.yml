@@ -27,6 +27,7 @@ jobs:
           cmake -S . -B build/cl -A ${{ matrix.arch }} `
             -DLIBA_WARNINGS=1 `
             -DLIBA_SANITIZE=1 `
+            -DLIBA_WITH_LUA=1 `
             -DLIBA_PYTHON=1 `
             -DLIBA_VCPKG=1 `
             -DLIBA_JAVA=1 `

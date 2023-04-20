@@ -28,6 +28,7 @@ jobs:
             toolchain:p
             cmake:p
             make:p
+            lua:p
             rust:p
             cython:p
             python:p

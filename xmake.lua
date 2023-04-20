@@ -7,8 +7,8 @@ set_xmakever("2.5.0")
 -- set project version
 set_version("0.1.1", {build = "%Y%m%d%H%M"})
 
--- option: with-cxx
-option("with-cxx")
+-- option: liba-cxx
+option("liba-cxx")
     set_default(true)
     set_showmenu(true)
     set_description("Enable/Disable c++")
@@ -18,7 +18,7 @@ option_end()
 option("warning")
     set_default(false)
     set_showmenu(true)
-    set_description("Enable/Disable warning")
+    set_description("Enable/Disable warnings")
 option_end()
 
 if has_config("warning") then
@@ -47,7 +47,7 @@ if is_mode("check") and not is_plat("mingw") then
 end
 
 -- option: real
-option("real")
+option("liba-real")
     set_default("8")
     set_showmenu(true)
     set_values("4", "8", "16")
@@ -55,7 +55,7 @@ option("real")
 option_end()
 
 -- option: rpath
-option("rpath")
+option("liba-rpath")
     set_showmenu(true)
     set_description("dynamic library search path")
 option_end()
@@ -64,7 +64,7 @@ target("a")
     -- make as a collection of objects
     set_kind("object")
     -- detect c code functions
-    real = get_config("real")
+    real = get_config("liba-real")
     includes("check_csnippets.lua")
     local source = 'int x = 1; puts(*(char *)&x ? "1234" : "4321");'
     configvar_check_csnippets("A_BYTE_ORDER", source, {output = true, number = true})
@@ -104,12 +104,12 @@ target("a")
     -- set export library symbols
     add_defines("A_EXPORTS")
     -- add the common source files
-    if not table.empty(os.files("src/**.cpp")) and has_config("with-cxx") then
+    if not table.empty(os.files("src/**.cpp")) and has_config("liba-cxx") then
         add_files("src/**.cpp")
     end
     add_files("src/**.c")
     -- add the platform options
-    rpath = get_config("rpath")
+    rpath = get_config("liba-rpath")
     if rpath then
         add_rpathdirs(rpath, {public = true})
         add_linkdirs(rpath, {public = true})
@@ -125,7 +125,7 @@ target("alib")
     -- make as a static library
     set_kind("static")
     -- add the header files for installing
-    if not table.empty(os.files("include/**.hpp")) and has_config("with-cxx") then
+    if not table.empty(os.files("include/**.hpp")) and has_config("liba-cxx") then
         add_headerfiles("include/(**.hpp)")
     end
     add_headerfiles("include/(**.h)")
@@ -155,14 +155,14 @@ target("liba")
     add_deps("a")
 target_end()
 
--- option: with-rust
-option("with-rust")
+-- option: liba-rust
+option("liba-rust")
     set_default(false)
     set_showmenu(true)
     set_description("Enable/Disable rust")
 option_end()
 
-if has_config("with-rust") then
+if has_config("liba-rust") then
     add_requires("cargo::liba", {configs = {cargo_toml = path.join(os.projectdir(), "Cargo.toml")}})
     target("arust")
         set_basename("a")

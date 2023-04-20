@@ -5,7 +5,7 @@ function building(sources)
     set_default(false)
     set_kind("binary")
     add_files(sources)
-    if has_config("with-cxx") then
+    if has_config("liba-cxx") then
         add_defines("HAS_CXX")
     else
         remove_files("*.cpp")
