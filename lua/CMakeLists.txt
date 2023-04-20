@@ -34,19 +34,27 @@ install(TARGETS alua
 )
 
 if(PROJECT_IS_TOP_LEVEL)
-  find_package(StyLua)
-  find_package(LuaFormat)
   file(GLOB_RECURSE SOURCES test/*.lua)
-endif()
 
-if(STYLUA_FOUND)
-  add_stylua(astylua VERBOSE ${SOURCES})
-  add_dependencies(afmt astylua)
-endif()
+  function(find_format)
+    find_package(StyLua)
 
-if(LUA_FORMAT_FOUND)
-  add_lua_format(aluaformat VERBOSE ${SOURCES})
-  add_dependencies(afmt aluaformat)
+    if(STYLUA_FOUND)
+      add_stylua(astylua VERBOSE ${ARGN})
+      add_dependencies(afmt astylua)
+      return()
+    endif()
+
+    find_package(LuaFormat)
+
+    if(LUA_FORMAT_FOUND)
+      add_lua_format(aluaformat VERBOSE ${ARGN})
+      add_dependencies(afmt aluaformat)
+      return()
+    endif()
+  endfunction()
+
+  find_format(${SOURCES})
 endif()
 
 option(LIBA_LDOC "Enable/Disable ffi ldoc" 0)
