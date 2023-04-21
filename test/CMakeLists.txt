@@ -134,6 +134,9 @@ unittest(rbt)
 building(slist slist.c slist.cpp)
 unittest(slist)
 
+building(utf utf.c utf.cpp)
+unittest(utf)
+
 building(version version.c version.cpp)
 unittest(version)
 

@@ -77,6 +77,10 @@ target("test/slist")
     building({"slist.c", "slist.cpp"})
 target_end()
 
+target("test/utf")
+    building({"utf.c", "utf.cpp"})
+target_end()
+
 target("test/version")
     building({"version.c", "version.cpp"})
 target_end()

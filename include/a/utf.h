@@ -1,0 +1,59 @@
+/*!
+ @file utf.h
+ @brief Unicode Transformation Format
+  | Unicode | UTF-8 |
+  |---------|-------|
+  | U+0000000 ~ U+0000007F | 0XXXXXXX |
+  | U+0000080 ~ U+000007FF | 110XXXXX 10XXXXXX |
+  | U+0000800 ~ U+0000FFFF | 1110XXXX 10XXXXXX 10XXXXXX |
+  | U+0010000 ~ U+001FFFFF | 11110XXX 10XXXXXX 10XXXXXX 10XXXXXX |
+  | U+0200000 ~ U+03FFFFFF | 111110XX 10XXXXXX 10XXXXXX 10XXXXXX 10XXXXXX |
+  | U+4000000 ~ U+7FFFFFFF | 1111110X 10XXXXXX 10XXXXXX 10XXXXXX 10XXXXXX 10XXXXXX |
+*/
+
+#ifndef LIBA_UTF_H
+#define LIBA_UTF_H
+
+#include "a.h"
+
+/*!
+ @ingroup A
+ @addtogroup A_UTF Unicode Transformation Format
+ @{
+*/
+
+#if defined(__cplusplus)
+extern "C" {
+#endif /* __cplusplus */
+
+/*!
+ @brief encode one unicode code point into UTF-8
+ @param[in] str a buffer to store a UTF-8 character
+ @param[in] val the unicode value to be encoded
+ @return address of the next character
+*/
+A_EXTERN a_str_t a_utf_encode(a_str_t str, a_u32_t val);
+
+/*!
+ @brief decode one unicode code point from UTF-8
+ @param[in] str string terminated with a null character
+ @param[in,out] val a pointer to a variable that stores unicode
+ @return address of the next character
+  @retval NULL null or invalid
+*/
+A_EXTERN a_cstr_t a_utf_decode(a_cstr_t str, a_u32_t *val);
+
+/*!
+ @brief length of a UTF-8 string terminated with a null character
+ @param[in] str string terminated with a null character
+ @return length of the UTF-8 string
+*/
+A_EXTERN a_size_t a_utf_len(a_cstr_t str);
+
+#if defined(__cplusplus)
+} /* extern "C" */
+#endif /* __cplusplus */
+
+/*! @} A_UTF */
+
+#endif /* utf.h */

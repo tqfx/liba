@@ -121,12 +121,17 @@ static void testc(void)
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-    (void)(argc);
-    (void)(argv);
     printf("%s\n", A_FUNC);
     tests();
     testt();
     testc();
+    for (int i = 1; i < argc; ++i)
+    {
+        a_str_s *ctx = a_str_new();
+        a_str_putn_(ctx, argv[i], strlen(argv[i]));
+        printf("%s %u\n", argv[i], a_uint_c(a_str_utflen(ctx)));
+        a_str_die(ctx);
+    }
     return 0;
 }
 

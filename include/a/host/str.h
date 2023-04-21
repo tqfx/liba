@@ -267,6 +267,13 @@ A_EXTERN a_int_t a_str_vprintf(a_str_s *ctx, a_cstr_t fmt, va_list va) A_FORMAT(
 */
 A_EXTERN a_int_t a_str_printf(a_str_s *ctx, a_cstr_t fmt, ...) A_FORMAT(printf, 2, 3);
 
+/*!
+ @brief length for a pointer to string structure using UTF-8
+ @param[in] ctx points to an instance of string structure
+ @return number of code points
+*/
+A_EXTERN a_size_t a_str_utflen(a_str_s const *ctx);
+
 #if defined(__cplusplus)
 } /* extern "C" */
 #endif /* __cplusplus */

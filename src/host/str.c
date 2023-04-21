@@ -4,7 +4,6 @@
 #endif /* _CRT_SECURE_NO_WARNINGS */
 #endif /* _MSC_VER */
 #include "a/host/str.h"
-#include <stdio.h>
 
 a_str_s *a_str_new(void)
 {
@@ -123,6 +122,8 @@ a_int_t a_str_alloc(a_str_s *const ctx, a_size_t const mem)
 {
     return ctx->_mem < mem ? a_str_alloc_(ctx, mem) : A_SUCCESS;
 }
+
+#include <stdio.h>
 
 a_int_t a_str_getc_(a_str_s *const ctx)
 {
@@ -244,4 +245,25 @@ a_int_t a_str_printf(a_str_s *const ctx, a_cstr_t const fmt, ...)
     a_int_t num = a_str_vprintf(ctx, fmt, va);
     va_end(va);
     return num;
+}
+
+#include "a/utf.h"
+
+a_size_t a_str_utflen(a_str_s const *const ctx)
+{
+    a_size_t length = 0;
+    if (ctx->_num)
+    {
+        a_cstr_t head = ctx->_ptr;
+        a_cstr_t const tail = head + ctx->_num;
+        while ((void)(head = a_utf_decode(head, A_NULL)), head)
+        {
+            ++length;
+            if (head >= tail)
+            {
+                break;
+            }
+        }
+    }
+    return length;
 }

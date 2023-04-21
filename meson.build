@@ -77,6 +77,7 @@ sources = [
     'include/a/real.h',
     'include/a/slist.h',
     'include/a/tf.h',
+    'include/a/utf.h',
     'include/a/version.h',
     'src/a.c',
     'src/avl.c',
@@ -102,6 +103,7 @@ sources = [
     'src/rbt.c',
     'src/real.c',
     'src/tf.c',
+    'src/utf.c',
     'src/version.c',
     'src/version.cpp',
 ]
