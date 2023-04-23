@@ -1,6 +1,6 @@
 #include "a/utf.h"
 
-A_EXTERN a_str_t a_utf_encode(a_str_t str, a_u32_t const val)
+a_str_t a_utf_encode(a_str_t str, a_u32_t const val)
 {
     a_u32_t mask = 0;
     a_uint_t offset = 0;
@@ -91,7 +91,7 @@ a_cstr_t a_utf_decode(a_cstr_t str, a_u32_t *const val)
         {
             return A_NULL;
         }
-        goto done;
+        goto skip;
     }
     a_cstr_t ptr = str;
     for (; chr & 0x40; chr <<= 1)
@@ -104,7 +104,7 @@ a_cstr_t a_utf_decode(a_cstr_t str, a_u32_t *const val)
         res = (res << 6) | (c & 0x3F);
     }
     res |= a_u32_c(chr & 0x7F) << (str - ptr) * 5;
-done:
+skip:
     if (val)
     {
         *val = res;

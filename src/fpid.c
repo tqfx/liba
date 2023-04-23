@@ -72,7 +72,7 @@ a_uint_t a_fpid_mf(a_real_t const *a, a_real_t const x, a_uint_t *idx, a_real_t 
             break;
         case A_MF_NUL:
         default:
-            goto done;
+            goto skip;
         }
         if (y > 0)
         {
@@ -81,7 +81,7 @@ a_uint_t a_fpid_mf(a_real_t const *a, a_real_t const x, a_uint_t *idx, a_real_t 
             *mms++ = y;
         }
     }
-done:
+skip:
     return num;
 }
 

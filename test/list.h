@@ -16,7 +16,7 @@ static a_size_t a_list_len(a_list_s const *ctx)
     a_size_t count = 0;
     if (ctx == A_NULL)
     {
-        goto done;
+        goto skip;
     }
     if (ctx != ctx->next)
     {
@@ -42,7 +42,7 @@ static a_size_t a_list_len(a_list_s const *ctx)
             ++count;
         }
     }
-done:
+skip:
     return count;
 }
 
