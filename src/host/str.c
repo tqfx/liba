@@ -254,11 +254,13 @@ a_size_t a_str_utflen(a_str_s const *const ctx)
     a_size_t length = 0;
     if (ctx->_num)
     {
+        a_uint_t offset;
         a_cstr_t head = ctx->_ptr;
         a_cstr_t const tail = head + ctx->_num;
-        while ((void)(head = a_utf_decode(head, A_NULL)), head)
+        while ((void)(offset = a_utf_decode(head, A_NULL)), offset)
         {
             ++length;
+            head += offset;
             if (head >= tail)
             {
                 break;

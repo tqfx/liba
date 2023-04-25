@@ -1,6 +1,6 @@
 #include "a/utf.h"
 
-a_str_t a_utf_encode(a_str_t str, a_u32_t const val)
+a_uint_t a_utf_encode(a_vptr_t const _str, a_u32_t const val)
 {
     a_u32_t mask = 0;
     a_uint_t offset = 0;
@@ -46,76 +46,80 @@ a_str_t a_utf_encode(a_str_t str, a_u32_t const val)
             }
         }
     }
-    if (str)
+    if (_str)
     {
+        a_u8_t *const str = a_u8_p(_str);
         switch (offset)
         {
         case 6:
-            str[5] = a_char_c(0x80 | (x & 0x3F));
+            str[5] = a_u8_c(0x80 | (x & 0x3F));
             x >>= 6;
             A_FALLTHROUGH;
         case 5:
-            str[4] = a_char_c(0x80 | (x & 0x3F));
+            str[4] = a_u8_c(0x80 | (x & 0x3F));
             x >>= 6;
             A_FALLTHROUGH;
         case 4:
-            str[3] = a_char_c(0x80 | (x & 0x3F));
+            str[3] = a_u8_c(0x80 | (x & 0x3F));
             x >>= 6;
             A_FALLTHROUGH;
         case 3:
-            str[2] = a_char_c(0x80 | (x & 0x3F));
+            str[2] = a_u8_c(0x80 | (x & 0x3F));
             x >>= 6;
             A_FALLTHROUGH;
         case 2:
-            str[1] = a_char_c(0x80 | (x & 0x3F));
+            str[1] = a_u8_c(0x80 | (x & 0x3F));
             x >>= 6;
             A_FALLTHROUGH;
         case 1:
-            str[0] = a_char_c(mask | x);
+            str[0] = a_u8_c(mask | x);
             A_FALLTHROUGH;
         default:
             break;
         }
     }
-    return str + offset;
+    return offset;
 }
 
-a_cstr_t a_utf_decode(a_cstr_t str, a_u32_t *const val)
+a_uint_t a_utf_decode(a_cptr_t const _str, a_u32_t *const val)
 {
-    a_uint_t chr = a_uint_c(*str);
+    a_u8_t const *str = A_U8_P(_str);
+    a_uint_t offset = 0;
+    a_uint_t chr = *str;
     a_u32_t res = 0;
     if (chr < 0x80)
     {
         res = chr;
         if (!chr)
         {
-            return A_NULL;
+            return offset;
         }
         goto skip;
     }
-    a_cstr_t ptr = str;
     for (; chr & 0x40; chr <<= 1)
     {
-        a_uint_t c = a_uint_c(*(++str));
+        a_uint_t c = *(++str);
         if ((c & 0xC0) != 0x80)
         {
-            return A_NULL;
+            return offset;
         }
         res = (res << 6) | (c & 0x3F);
     }
-    res |= a_u32_c(chr & 0x7F) << (str - ptr) * 5;
+    offset = a_uint_c(str - A_U8_P(_str));
+    res |= a_u32_c(chr & 0x7F) << offset * 5;
 skip:
     if (val)
     {
         *val = res;
     }
-    return ++str;
+    return offset + 1;
 }
 
-a_size_t a_utf_len(a_cstr_t str)
+a_size_t a_utf_len(a_cptr_t const _str)
 {
     a_size_t length = 0;
-    while ((void)(str = a_utf_decode(str, A_NULL)), str)
+    a_cstr_t str = a_cstr_c(_str);
+    for (a_uint_t offset; (void)(offset = a_utf_decode(str, A_NULL)), offset; str += offset)
     {
         ++length;
     }

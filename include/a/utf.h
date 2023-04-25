@@ -30,25 +30,25 @@ extern "C" {
  @brief encode one unicode code point into UTF-8
  @param[in] str a buffer to store a UTF-8 character
  @param[in] val the unicode value to be encoded
- @return address of the next character
+ @return offset to the next character
 */
-A_EXTERN a_str_t a_utf_encode(a_str_t str, a_u32_t val);
+A_EXTERN a_uint_t a_utf_encode(a_vptr_t str, a_u32_t val);
 
 /*!
  @brief decode one unicode code point from UTF-8
  @param[in] str string terminated with a null character
  @param[in,out] val a pointer to a variable that stores unicode
- @return address of the next character
-  @retval NULL null or invalid
+ @return offset to the next character
+  @retval 0 null character or invalid
 */
-A_EXTERN a_cstr_t a_utf_decode(a_cstr_t str, a_u32_t *val);
+A_EXTERN a_uint_t a_utf_decode(a_cptr_t str, a_u32_t *val);
 
 /*!
  @brief length of a UTF-8 string terminated with a null character
  @param[in] str string terminated with a null character
  @return length of the UTF-8 string
 */
-A_EXTERN a_size_t a_utf_len(a_cstr_t str);
+A_EXTERN a_size_t a_utf_len(a_cptr_t str);
 
 #if defined(__cplusplus)
 } /* extern "C" */
