@@ -35,6 +35,24 @@ typedef union a_slist_u
 A_INTERN a_slist_u *a_slist_from(a_vptr_t const obj) { return a_cast_s(a_slist_u *, obj); }
 
 /*!
+ @brief test whether a list node is null
+ @param[in] ctx points to circular singly linked list node
+ @return int bool
+  @retval 0 non-null
+  @retval 1 null
+*/
+A_INTERN a_bool_t a_slist_null(a_slist_u const *const ctx) { return ctx->next == ctx; }
+
+/*!
+ @brief test whether a list node is used
+ @param[in] ctx points to circular singly linked list node
+ @return int bool
+  @retval 0 unused
+  @retval 1 used
+*/
+A_INTERN a_bool_t a_slist_used(a_slist_u const *const ctx) { return ctx->next != ctx; }
+
+/*!
  @brief initialize for circular singly linked list node
  @param[in,out] ctx points to circular singly linked list node
 */
@@ -77,42 +95,6 @@ typedef struct a_slist_s
          at = (it && it == at->next) ? it : at, it = at->next)
 
 /*!
- @brief constructor for circular singly linked list head
- @param[in,out] ctx points to circular singly linked list head
-*/
-A_INTERN a_void_t a_slist_ctor(a_slist_s *const ctx) { ctx->tail = ctx->head->next = ctx->head; }
-
-/*!
- @brief initialize for circular singly linked list head
- @param[in,out] ctx points to circular singly linked list head
-*/
-A_INTERN a_void_t a_slist_init(a_slist_s *const ctx) { ctx->tail = ctx->head->next = ctx->head; }
-
-/*!
- @brief destructor for circular singly linked list head
- @param[in,out] ctx points to circular singly linked list head
-*/
-A_INTERN a_void_t a_slist_dtor(a_slist_s *const ctx) { ctx->tail = ctx->head->next = ctx->head; }
-
-/*!
- @brief test whether a list node is null
- @param[in] ctx points to circular singly linked list node
- @return int bool
-  @retval 0 non-null
-  @retval 1 null
-*/
-A_INTERN a_bool_t a_slist_null(a_slist_u const *const ctx) { return ctx->next == ctx; }
-
-/*!
- @brief test whether a list node is used
- @param[in] ctx points to circular singly linked list node
- @return int bool
-  @retval 0 unused
-  @retval 1 used
-*/
-A_INTERN a_bool_t a_slist_used(a_slist_u const *const ctx) { return ctx->next != ctx; }
-
-/*!
  @brief test whether a list head is none
  @param[in] ctx points to circular singly linked list head
  @return int bool
@@ -130,6 +112,24 @@ A_INTERN a_bool_t a_slist_none(a_slist_s const *const ctx) { return ctx->head ==
   @retval 1 it is a tail node
 */
 A_INTERN a_bool_t a_slist_tail(a_slist_s const *const ctx, a_slist_u const *const node) { return ctx->head == node->next; }
+
+/*!
+ @brief constructor for circular singly linked list head
+ @param[in,out] ctx points to circular singly linked list head
+*/
+A_INTERN a_void_t a_slist_ctor(a_slist_s *const ctx) { ctx->tail = ctx->head->next = ctx->head; }
+
+/*!
+ @brief initialize for circular singly linked list head
+ @param[in,out] ctx points to circular singly linked list head
+*/
+A_INTERN a_void_t a_slist_init(a_slist_s *const ctx) { ctx->tail = ctx->head->next = ctx->head; }
+
+/*!
+ @brief destructor for circular singly linked list head
+ @param[in,out] ctx points to circular singly linked list head
+*/
+A_INTERN a_void_t a_slist_dtor(a_slist_s *const ctx) { ctx->tail = ctx->head->next = ctx->head; }
 
 /*!
  @brief link head node and tail node

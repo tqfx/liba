@@ -64,6 +64,24 @@ typedef struct a_list_s
 #define a_list_forsafe_prev(it, at, ctx) a_list_forsafe_(it, at, ctx, prev)
 
 /*!
+ @brief test whether a list is null
+ @param[in] ctx points to circular doubly linked list
+ @return int bool
+  @retval 0 non-null
+  @retval 1 null
+*/
+A_INTERN a_bool_t a_list_null(a_list_s const *const ctx) { return ctx->next == ctx || ctx->next->prev != ctx; }
+
+/*!
+ @brief test whether a list is used
+ @param[in] ctx points to circular doubly linked list
+ @return int bool
+  @retval 0 unused
+  @retval 1 used
+*/
+A_INTERN a_bool_t a_list_used(a_list_s const *const ctx) { return ctx->next != ctx && ctx->next->prev == ctx; }
+
+/*!
  @brief cast a list pointer from another type pointer
  @param[in] obj points to circular doubly linked list
  @return a pointer to circular doubly linked list
@@ -87,24 +105,6 @@ A_INTERN a_void_t a_list_init(a_list_s *const ctx) { ctx->prev = ctx->next = ctx
  @param[in,out] ctx points to circular doubly linked list
 */
 A_INTERN a_void_t a_list_dtor(a_list_s *const ctx) { ctx->prev = ctx->next = ctx; }
-
-/*!
- @brief test whether a list is null
- @param[in] ctx points to circular doubly linked list
- @return int bool
-  @retval 0 non-null
-  @retval 1 null
-*/
-A_INTERN a_bool_t a_list_null(a_list_s const *const ctx) { return ctx->next == ctx || ctx->next->prev != ctx; }
-
-/*!
- @brief test whether a list is used
- @param[in] ctx points to circular doubly linked list
- @return int bool
-  @retval 0 unused
-  @retval 1 used
-*/
-A_INTERN a_bool_t a_list_used(a_list_s const *const ctx) { return ctx->next != ctx && ctx->next->prev == ctx; }
 
 /*!
  @brief link head node and tail node
