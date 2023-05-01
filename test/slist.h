@@ -14,11 +14,7 @@ typedef struct
 static a_size_t a_slist_len(a_slist_s const *const ctx)
 {
     a_size_t count = 0;
-    if (ctx == A_NULL)
-    {
-        goto skip;
-    }
-    if (a_slist_used(ctx->head))
+    if (ctx && a_slist_used(ctx->head))
     {
         a_slist_foreach(it, ctx)
         {
@@ -30,7 +26,6 @@ static a_size_t a_slist_len(a_slist_s const *const ctx)
             ++count;
         }
     }
-skip:
     return count;
 }
 

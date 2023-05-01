@@ -94,20 +94,21 @@ a_uint_t a_utf_decode(a_cptr_t const _str, a_u32_t *const val)
         {
             return offset;
         }
-        goto skip;
     }
-    for (; chr & 0x40; chr <<= 1)
+    else
     {
-        a_uint_t c = *(++str);
-        if ((c & 0xC0) != 0x80)
+        for (; chr & 0x40; chr <<= 1)
         {
-            return offset;
+            a_uint_t c = *(++str);
+            if ((c & 0xC0) != 0x80)
+            {
+                return offset;
+            }
+            res = (res << 6) | (c & 0x3F);
         }
-        res = (res << 6) | (c & 0x3F);
+        offset = a_uint_c(str - A_U8_P(_str));
+        res |= a_u32_c(chr & 0x7F) << offset * 5;
     }
-    offset = a_uint_c(str - A_U8_P(_str));
-    res |= a_u32_c(chr & 0x7F) << offset * 5;
-skip:
     if (val)
     {
         *val = res;

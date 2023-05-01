@@ -72,7 +72,7 @@ a_uint_t a_fpid_mf(a_real_t const *a, a_real_t const x, a_uint_t *idx, a_real_t 
             break;
         case A_MF_NUL:
         default:
-            goto skip;
+            goto out;
         }
         if (y > 0)
         {
@@ -81,7 +81,7 @@ a_uint_t a_fpid_mf(a_real_t const *a, a_real_t const x, a_uint_t *idx, a_real_t 
             *mms++ = y;
         }
     }
-skip:
+out:
     return num;
 }
 
@@ -220,51 +220,45 @@ static void a_fpid_proc_(a_fpid_s *const ctx, a_real_t ev[2], a_uint_t const num
     inv = ctx->alpha / inv;
     /* mean of centers defuzzifier */
     a_real_t qv[3] = {0, 0, 0};
-    if (ctx->mkp == A_NULL)
+    if (ctx->mkp)
     {
-        goto skip_kp;
-    }
-    for (a_uint_t i = 0; i != ne; ++i)
-    {
-        a_uint_t const col = i * nc;
-        a_uint_t const idx = ctx->idx[i] * num;
-        for (a_uint_t j = 0; j != nc; ++j)
+        for (a_uint_t i = 0; i != ne; ++i)
         {
-            qv[0] += ctx->mat[col + j] * ctx->mkp[ctx->idx[ne + j] + idx]; /* mat(i,j)*kp(e[i],ec[j]) */
+            a_uint_t const col = i * nc;
+            a_uint_t const idx = ctx->idx[i] * num;
+            for (a_uint_t j = 0; j != nc; ++j) /* mat(i,j) * kp(e[i],ec[j]) */
+            {
+                qv[0] += ctx->mat[col + j] * ctx->mkp[ctx->idx[ne + j] + idx];
+            }
         }
+        qv[0] *= inv;
     }
-    qv[0] *= inv;
-skip_kp:
-    if (ctx->mki == A_NULL)
+    if (ctx->mki)
     {
-        goto skip_ki;
-    }
-    for (a_uint_t i = 0; i != ne; ++i)
-    {
-        a_uint_t const col = i * nc;
-        a_uint_t const idx = ctx->idx[i] * num;
-        for (a_uint_t j = 0; j != nc; ++j)
+        for (a_uint_t i = 0; i != ne; ++i)
         {
-            qv[1] += ctx->mat[col + j] * ctx->mki[ctx->idx[ne + j] + idx]; /* mat(i,j)*ki(e[i],ec[j]) */
+            a_uint_t const col = i * nc;
+            a_uint_t const idx = ctx->idx[i] * num;
+            for (a_uint_t j = 0; j != nc; ++j) /* mat(i,j) * ki(e[i],ec[j]) */
+            {
+                qv[1] += ctx->mat[col + j] * ctx->mki[ctx->idx[ne + j] + idx];
+            }
         }
+        qv[1] *= inv;
     }
-    qv[1] *= inv;
-skip_ki:
-    if (ctx->mkd == A_NULL)
+    if (ctx->mkd)
     {
-        goto skip_kd;
-    }
-    for (a_uint_t i = 0; i != ne; ++i)
-    {
-        a_uint_t const col = i * nc;
-        a_uint_t const idx = ctx->idx[i] * num;
-        for (a_uint_t j = 0; j != nc; ++j)
+        for (a_uint_t i = 0; i != ne; ++i)
         {
-            qv[2] += ctx->mat[col + j] * ctx->mkd[ctx->idx[ne + j] + idx]; /* mat(i,j)*kd(e[i],ec[j]) */
+            a_uint_t const col = i * nc;
+            a_uint_t const idx = ctx->idx[i] * num;
+            for (a_uint_t j = 0; j != nc; ++j) /* mat(i,j) * kd(e[i],ec[j]) */
+            {
+                qv[2] += ctx->mat[col + j] * ctx->mkd[ctx->idx[ne + j] + idx];
+            }
         }
+        qv[2] *= inv;
     }
-    qv[2] *= inv;
-skip_kd:
     a_pid_kpid(ctx->pid, qv[0] + ctx->kp, qv[1] + ctx->ki, qv[2] + ctx->kd);
 }
 
