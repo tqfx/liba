@@ -9,13 +9,13 @@ for dirpath, dirnames, filenames in os.walk("include"):
         source = os.path.join(dirpath, filename)
         prefix, suffix = os.path.splitext(source)
         if suffix in SUFFIXS:
-            sources.append(source)
+            sources.append(source.replace("\\", "/"))
 for dirpath, dirnames, filenames in os.walk("src"):
     for filename in filenames:
         source = os.path.join(dirpath, filename)
         prefix, suffix = os.path.splitext(source)
         if suffix in SUFFIXS:
-            sources.append(source)
+            sources.append(source.replace("\\", "/"))
 sources = sorted(sources)
 
 with open("meson.build", "r") as f:
