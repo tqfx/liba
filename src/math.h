@@ -7,7 +7,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-a_f64_t a_f64_sq(a_f64_t x, a_f64_t *o);
+A_HIDDEN a_f64_t a_f64_sq(a_f64_t x, a_f64_t *o);
 
 #if defined(__cplusplus)
 } /* extern "C" */
