@@ -44,20 +44,15 @@ typedef struct a_fpid_s
 {
     a_pid_s pid; //!< instance structure for PID controller
 
-    a_real_t const *mmp; //!< points to membership function parameter table, an array terminated by @ref A_MF_NUL
-    a_real_t const *mkp; //!< points to Kp's rule base table, the rule base must be square
-    a_real_t const *mki; //!< points to Ki's rule base table, the rule base must be square
-    a_real_t const *mkd; //!< points to Kd's rule base table, the rule base must be square
+    a_real_t const *me; //!< points to membership function parameter table, terminated by @ref A_MF_NUL
+    a_real_t const *mec; //!< points to membership function parameter table, terminated by @ref A_MF_NUL
+    a_real_t const *mkp; //!< points to Kp's rule base table, the rule base must be square matrix
+    a_real_t const *mki; //!< points to Ki's rule base table, the rule base must be square matrix
+    a_real_t const *mkd; //!< points to Kd's rule base table, the rule base must be square matrix
 
-    a_uint_t *idx; //!< the memory cache for membership index
-    /*!< the length must be greater than or equal to twice the maximum number triggered by the rule */
-    a_real_t *mms; //!< the memory cache for membership value
-    /*!< the length must be greater than or equal to twice the maximum number triggered by the rule */
-    a_real_t *mat; //!< the memory cache for matrix of the membership outer product of e and ec
+    a_uint_t *idx; //!< the memory cache for membership index, >= 2N
+    a_real_t *val; //!< the memory cache for membership value and membership outer product of e and ec, >= (2+N)N
     a_real_t (*op)(a_real_t, a_real_t); //!< fuzzy relational operator
-
-    a_real_t sigma; //!< the coefficient of the input, ((num-1)>>1<<1)/(Imax-Imin)
-    a_real_t alpha; //!< the coefficient of the output, (Omax-Omin)/((num-1)>>1<<1)
 
     a_real_t kp; //!< base proportional constant
     a_real_t ki; //!< base integral constant
@@ -78,10 +73,10 @@ A_EXTERN a_size_t A_FPID_BUF1(a_uint_t max);
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
 A_INTERN a_size_t A_FPID_BUF1(a_uint_t const max)
 {
-    return (sizeof(a_uint_t) << 1) * max + sizeof(a_real_t) * (max + 2) * max;
+    return sizeof(a_uint_t) * 2 * max + sizeof(a_real_t) * (2 + max) * max;
 }
 #endif /* A_HAVE_INLINE */
-#define A_FPID_BUF1(N) ((sizeof(a_uint_t) << 1) * (N) + sizeof(a_real_t) * ((N) + 2) * (N))
+#define A_FPID_BUF1(N) (sizeof(a_uint_t) * 2 * (N) + sizeof(a_real_t) * (2 + (N)) * (N))
 
 #if !defined A_HAVE_INLINE || defined(LIBA_FPID_C)
 A_EXTERN a_vptr_t a_fpid_bufptr(a_fpid_s const *ctx);
@@ -105,13 +100,13 @@ A_INTERN a_uint_t a_fpid_bufnum(a_fpid_s const *const ctx)
 #endif /* A_HAVE_INLINE */
 
 #if !defined A_HAVE_INLINE || defined(LIBA_FPID_C)
-A_EXTERN a_void_t a_fpid_set_bufnum(a_fpid_s *ctx, a_uint_t num);
+A_EXTERN a_void_t a_fpid_set_bufmax(a_fpid_s *ctx, a_uint_t max);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
-A_INTERN a_void_t a_fpid_set_bufnum(a_fpid_s *const ctx, a_uint_t const num)
+A_INTERN a_void_t a_fpid_set_bufmax(a_fpid_s *const ctx, a_uint_t const max)
 {
     ctx->pid.num &= A_PID_NUM_MASK;
-    ctx->pid.num |= num << A_PID_NUM_BITS;
+    ctx->pid.num |= max << A_PID_NUM_BITS;
 }
 #endif /* A_HAVE_INLINE */
 
@@ -168,20 +163,13 @@ A_EXTERN a_fpid_s *a_fpid_inc(a_fpid_s *ctx);
 A_EXTERN a_fpid_s *a_fpid_pos(a_fpid_s *ctx, a_real_t max);
 
 /*!
- @brief set input extreme value for fuzzy PID controller
+ @brief set proportional integral derivative constant for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
- @param[in] min mininum input
- @param[in] max maxinum input
+ @param[in] kp proportional constant
+ @param[in] ki integral constant
+ @param[in] kd derivative constant
 */
-A_EXTERN a_fpid_s *a_fpid_ilim(a_fpid_s *ctx, a_real_t min, a_real_t max);
-
-/*!
- @brief set output extreme value for fuzzy PID controller
- @param[in,out] ctx points to an instance of fuzzy PID controller
- @param[in] min mininum output
- @param[in] max maxinum output
-*/
-A_EXTERN a_fpid_s *a_fpid_olim(a_fpid_s *ctx, a_real_t min, a_real_t max);
+A_EXTERN a_fpid_s *a_fpid_kpid(a_fpid_s *ctx, a_real_t kp, a_real_t ki, a_real_t kd);
 
 /*!
  @brief set one cache buffer for fuzzy PID controller
@@ -192,33 +180,19 @@ A_EXTERN a_fpid_s *a_fpid_olim(a_fpid_s *ctx, a_real_t min, a_real_t max);
 A_EXTERN a_fpid_s *a_fpid_buf1(a_fpid_s *ctx, a_vptr_t ptr, a_size_t max);
 
 /*!
- @brief set proportional integral derivative constant for fuzzy PID controller
- @param[in,out] ctx points to an instance of fuzzy PID controller
- @param[in] kp proportional constant
- @param[in] ki integral constant
- @param[in] kd derivative constant
-*/
-A_EXTERN a_fpid_s *a_fpid_kpid(a_fpid_s *ctx, a_real_t kp, a_real_t ki, a_real_t kd);
-
-/*!
  @brief set buffer for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
- @param[in] idx the memory cache for membership index
-  the length must be greater than or equal to twice the maximum number triggered by the rule
- @param[in] mms the memory cache for membership
-  the length must be greater than or equal to twice the maximum number triggered by the rule
- @param[in] mat the memory cache for matrix of the membership outer product of e and ec
+ @param[in] idx the memory cache for membership index, >= 2N
+ @param[in] val the memory cache for membership value and membership outer product of e and ec, >= (2+N)N
 */
-A_EXTERN a_fpid_s *a_fpid_buff(a_fpid_s *ctx, a_uint_t *idx, a_real_t *mms, a_real_t *mat);
-#define A_FPID_MAT1(N) (sizeof(a_real_t) * (N) * (N))
-#define A_FPID_MMS1(N) (sizeof(a_real_t) * 2 * (N))
+A_EXTERN a_fpid_s *a_fpid_buff(a_fpid_s *ctx, a_uint_t *idx, a_real_t *val);
+#define A_FPID_VAL1(N) (sizeof(a_real_t) * (2 + (N)) * (N))
 #define A_FPID_IDX1(N) (sizeof(a_uint_t) * 2 * (N))
-#define A_FPID_MAT(N) ((N) * (N))
-#define A_FPID_MMS(N) (2 * (N))
+#define A_FPID_VAL(N) ((2 + (N)) * (N))
 #define A_FPID_IDX(N) (2 * (N))
 
 /*!
- @brief set buffer for fuzzy PID controller
+ @brief set buffer for multichannel fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
  @param[in] num number of controllers output
  @param[in] out points to controllers output
@@ -227,49 +201,50 @@ A_EXTERN a_fpid_s *a_fpid_buff(a_fpid_s *ctx, a_uint_t *idx, a_real_t *mms, a_re
  @param[in] ec points to error change buffer
  @param[in] e points to error input buffer
 */
-A_EXTERN a_fpid_s *a_fpid_setp(a_fpid_s *ctx, a_uint_t num, a_real_t *out, a_real_t *fdb, a_real_t *sum, a_real_t *ec, a_real_t *e);
+A_EXTERN a_fpid_s *a_fpid_chan(a_fpid_s *ctx, a_uint_t num, a_real_t *out, a_real_t *fdb,
+                               a_real_t *sum, a_real_t *ec, a_real_t *e);
 
 /*!
  @brief set rule base for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
- @param[in] num number of columns in the rule base
- @param[in] mmp points to membership function parameter table, an array terminated by @ref A_MF_NUL
+ @param[in] col number of columns in the rule base
+ @param[in] me points to membership function parameter table, terminated by @ref A_MF_NUL
+ @param[in] mec points to membership function parameter table, terminated by @ref A_MF_NUL
  @param[in] mkp points to Kp's rule base table, the rule base must be square
  @param[in] mki points to Ki's rule base table, the rule base must be square
  @param[in] mkd points to Kd's rule base table, the rule base must be square
 */
-A_EXTERN a_fpid_s *a_fpid_base(a_fpid_s *ctx, a_uint_t num, a_real_t const *mmp, a_real_t const *mkp, a_real_t const *mki, a_real_t const *mkd);
+A_EXTERN a_fpid_s *a_fpid_base(a_fpid_s *ctx, a_uint_t col, a_real_t const *me, a_real_t const *const mec,
+                               a_real_t const *mkp, a_real_t const *mki, a_real_t const *mkd);
 
 /*!
  @brief initialize function for fuzzy PID controller, default setting is off
  @param[in,out] ctx points to an instance of fuzzy PID controller
  @param[in] dt sampling time unit(s)
- @param[in] num number of columns in the rule base
- @param[in] mmp points to membership function parameter table, an array terminated by @ref A_MF_NUL
+ @param[in] col number of columns in the rule base
+ @param[in] me points to membership function parameter table, terminated by @ref A_MF_NUL
+ @param[in] mec points to membership function parameter table, terminated by @ref A_MF_NUL
  @param[in] mkp points to Kp's rule base table, the rule base must be square
  @param[in] mki points to Ki's rule base table, the rule base must be square
  @param[in] mkd points to Kd's rule base table, the rule base must be square
- @param[in] imin mininum input
- @param[in] imax maxinum input
- @param[in] omin mininum output
- @param[in] omax maxinum output
+ @param[in] min mininum output
+ @param[in] max maxinum output
 */
-A_EXTERN a_fpid_s *a_fpid_init(a_fpid_s *ctx, a_real_t dt, a_uint_t num, a_real_t const *mmp,
-                               a_real_t const *mkp, a_real_t const *mki, a_real_t const *mkd,
-                               a_real_t imin, a_real_t imax, a_real_t omin, a_real_t omax);
+A_EXTERN a_fpid_s *a_fpid_init(a_fpid_s *ctx, a_real_t dt, a_uint_t col, a_real_t const *me, a_real_t const *mec,
+                               a_real_t const *mkp, a_real_t const *mki, a_real_t const *mkd, a_real_t min, a_real_t max);
 
 /*!
  @brief calculate function for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
  @param[in] set setpoint
  @param[in] fdb feedback
- @return output
+ @return output value
   @retval set when fuzzy PID controller is off
 */
 A_EXTERN a_real_t a_fpid_outv(a_fpid_s *ctx, a_real_t set, a_real_t fdb);
 
 /*!
- @brief calculate function for fuzzy PID controller
+ @brief calculate function for multichannel fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
  @param[in] set points to setpoint
  @param[in] fdb points to feedback

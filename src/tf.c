@@ -34,7 +34,7 @@ a_tf_s *a_tf_init(a_tf_s *const ctx,
     return ctx;
 }
 
-a_real_t a_tf_proc(a_tf_s *const ctx, a_real_t const x)
+a_real_t a_tf_iter(a_tf_s *const ctx, a_real_t const x)
 {
     a_real_t y = 0;
     a_tf_roll(ctx->u, ctx->m, x);

@@ -142,9 +142,9 @@ JNIEXPORT jdoubleArray JNICALL JPACKAGE(polytrack7_out)(JNIEnv *jenv, jobject jo
     j_polytrack7_s jctx;
     j_polytrack7_get(j_polytrack7_new(jenv, jobj, &jctx), &ctx);
     a_polytrack7_out(&ctx, jts, out);
-    jdoubleArray jresult = (*jenv)->NewDoubleArray(jenv, JCOUNTOF(out));
-    (*jenv)->SetDoubleArrayRegion(jenv, jresult, 0, JCOUNTOF(out), out);
-    return jresult;
+    jdoubleArray jres = (*jenv)->NewDoubleArray(jenv, JCOUNTOF(out));
+    (*jenv)->SetDoubleArrayRegion(jenv, jres, 0, JCOUNTOF(out), out);
+    return jres;
 }
 
 JNIEXPORT jdouble JNICALL JPACKAGE(polytrack7_pos)(JNIEnv *jenv, jobject jobj, jdouble jts)

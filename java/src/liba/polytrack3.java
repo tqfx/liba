@@ -102,7 +102,7 @@ public class polytrack3 {
     public final native polytrack3 init(double[] source, double[] target);
 
     /**
-     * process function for cubic polynomial trajectory
+     * calculate function for cubic polynomial trajectory
      *
      * @param ts current time unit(s)
      * @return current output
@@ -110,7 +110,7 @@ public class polytrack3 {
     public final native double[] out(double ts);
 
     /**
-     * process function for cubic polynomial trajectory position
+     * calculate function for cubic polynomial trajectory position
      *
      * @param ts current time unit(s)
      * @return position output
@@ -118,7 +118,7 @@ public class polytrack3 {
     public final native double pos(double ts);
 
     /**
-     * process function for cubic polynomial trajectory velocity
+     * calculate function for cubic polynomial trajectory velocity
      *
      * @param ts current time unit(s)
      * @return velocity output
@@ -126,7 +126,7 @@ public class polytrack3 {
     public final native double vec(double ts);
 
     /**
-     * process function for cubic polynomial trajectory acceleration
+     * calculate function for cubic polynomial trajectory acceleration
      *
      * @param ts current time unit(s)
      * @return acceleration output

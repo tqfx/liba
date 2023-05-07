@@ -43,7 +43,7 @@ static void test(void)
     a_real_t sum[3];
     a_real_t ec[3];
     a_real_t e[3];
-    a_pid_setp(ctx + 1, 3, out, fdb, sum, ec, e);
+    a_pid_chan(ctx + 1, 3, out, fdb, sum, ec, e);
     for (a_real_t t = 0; t < A_REAL_C(0.4); t += A_REAL_C(0.001))
     {
         a_real_t buf[3];
@@ -53,9 +53,9 @@ static void test(void)
         a_real_t *ptr = a_pid_outp(ctx + 1, set, buf);
         for (a_uint_t i = 0; i != 3; ++i)
         {
-            a_tf_proc(tf + 1 + i, ptr[i]);
+            a_tf_iter(tf + 1 + i, ptr[i]);
         }
-        a_tf_proc(tf, a_pid_outv(ctx + 0, 1, v[0]));
+        a_tf_iter(tf, a_pid_outv(ctx + 0, 1, v[0]));
 #if defined(MAIN_ONCE)
         printf(A_REAL_PRI(".3", "f ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g\n"),
                t, A_REAL_C(1.0), v[0], v0[0], v1[0], v2[0]);

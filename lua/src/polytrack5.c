@@ -150,7 +150,7 @@ int LMODULE(polytrack5_gen)(lua_State *const L)
 }
 
 /***
- process function for quintic polynomial trajectory
+ calculate function for quintic polynomial trajectory
  @param ctx quintic polynomial trajectory userdata
  @tparam number ts current time unit(s)
  @treturn table {position,velocity,acceleration}
@@ -172,7 +172,7 @@ int LMODULE(polytrack5_out)(lua_State *const L)
 }
 
 /***
- process function for quintic polynomial trajectory position
+ calculate function for quintic polynomial trajectory position
  @param ctx quintic polynomial trajectory userdata
  @tparam number ts current time unit(s)
  @treturn number position output
@@ -191,7 +191,7 @@ int LMODULE(polytrack5_pos)(lua_State *const L)
 }
 
 /***
- process function for quintic polynomial trajectory velocity
+ calculate function for quintic polynomial trajectory velocity
  @param ctx quintic polynomial trajectory userdata
  @tparam number ts current time unit(s)
  @treturn number velocity output
@@ -210,7 +210,7 @@ int LMODULE(polytrack5_vec)(lua_State *const L)
 }
 
 /***
- process function for quintic polynomial trajectory acceleration
+ calculate function for quintic polynomial trajectory acceleration
  @param ctx quintic polynomial trajectory userdata
  @tparam number ts current time unit(s)
  @treturn number acceleration output

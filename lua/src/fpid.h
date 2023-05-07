@@ -45,14 +45,15 @@ A_PUBLIC int LMODULE(fpid_die)(lua_State *L);
  constructor for fuzzy PID controller
  @tparam int num maximum number triggered by the rule
  @tparam number dt sampling time unit(s)
- @tparam table mmp points to membership function parameter table, an array terminated by 0
+ @tparam table me points to membership function parameter table, terminated by 0
+ @tparam table mec points to membership function parameter table, terminated by 0
  @tparam table mkp points to Kp's rule base table, the rule base must be square
  @tparam table mki points to Ki's rule base table, the rule base must be square
  @tparam table mkd points to Kd's rule base table, the rule base must be square
  @tparam number imin minimum input
  @tparam number imax maximum input
- @tparam number omin minimum output
- @tparam number omax maximum output
+ @tparam number min minimum output
+ @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
  @treturn fpid fuzzy PID controller userdata
  @function new
@@ -63,14 +64,13 @@ A_PUBLIC int LMODULE(fpid_new)(lua_State *L);
  initialize function for fuzzy PID controller
  @tparam int num maximum number triggered by the rule
  @tparam number dt sampling time unit(s)
- @tparam table mmp points to membership function parameter table, an array terminated by 0
+ @tparam table me points to membership function parameter table, terminated by 0
+ @tparam table mec points to membership function parameter table, terminated by 0
  @tparam table mkp points to Kp's rule base table, the rule base must be square
  @tparam table mki points to Ki's rule base table, the rule base must be square
  @tparam table mkd points to Kd's rule base table, the rule base must be square
- @tparam number imin minimum input
- @tparam number imax maximum input
- @tparam number omin minimum output
- @tparam number omax maximum output
+ @tparam number min minimum output
+ @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
  @treturn fpid fuzzy PID controller userdata
  @function init
@@ -82,9 +82,9 @@ A_PUBLIC int LMODULE(fpid_init)(lua_State *L);
  @tparam number set setpoint
  @tparam number fdb feedback
  @treturn number output
- @function proc
+ @function iter
 */
-A_PUBLIC int LMODULE(fpid_proc)(lua_State *L);
+A_PUBLIC int LMODULE(fpid_iter)(lua_State *L);
 
 /***
  zero function for fuzzy PID controller
@@ -95,7 +95,8 @@ A_PUBLIC int LMODULE(fpid_zero)(lua_State *L);
 
 /***
  set rule base for fuzzy PID controller
- @tparam table mmp points to membership function parameter table, an array terminated by 0
+ @tparam table me points to membership function parameter table, terminated by 0
+ @tparam table mec points to membership function parameter table, terminated by 0
  @tparam table mkp points to Kp's rule base table, the rule base must be square
  @tparam table mki points to Ki's rule base table, the rule base must be square
  @tparam table mkd points to Kd's rule base table, the rule base must be square
@@ -113,24 +114,6 @@ A_PUBLIC int LMODULE(fpid_base)(lua_State *L);
  @function kpid
 */
 A_PUBLIC int LMODULE(fpid_kpid)(lua_State *L);
-
-/***
- set input extreme value for fuzzy PID controller
- @tparam number min mininum input
- @tparam number max maxinum input
- @treturn fpid fuzzy PID controller userdata
- @function ilim
-*/
-A_PUBLIC int LMODULE(fpid_ilim)(lua_State *L);
-
-/***
- set output extreme value for fuzzy PID controller
- @tparam number min mininum output
- @tparam number max maxinum output
- @treturn fpid fuzzy PID controller userdata
- @function olim
-*/
-A_PUBLIC int LMODULE(fpid_olim)(lua_State *L);
 
 /***
  positional fuzzy PID controller

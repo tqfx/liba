@@ -160,7 +160,7 @@ public class polytrack5 {
     public final native polytrack5 init(double[] source, double[] target);
 
     /**
-     * process function for quintic polynomial trajectory
+     * calculate function for quintic polynomial trajectory
      *
      * @param ts current time unit(s)
      * @return current output
@@ -168,7 +168,7 @@ public class polytrack5 {
     public final native double[] out(double ts);
 
     /**
-     * process function for quintic polynomial trajectory position
+     * calculate function for quintic polynomial trajectory position
      *
      * @param ts current time unit(s)
      * @return position output
@@ -176,7 +176,7 @@ public class polytrack5 {
     public final native double pos(double ts);
 
     /**
-     * process function for quintic polynomial trajectory velocity
+     * calculate function for quintic polynomial trajectory velocity
      *
      * @param ts current time unit(s)
      * @return velocity output
@@ -184,7 +184,7 @@ public class polytrack5 {
     public final native double vec(double ts);
 
     /**
-     * process function for quintic polynomial trajectory acceleration
+     * calculate function for quintic polynomial trajectory acceleration
      *
      * @param ts current time unit(s)
      * @return acceleration output

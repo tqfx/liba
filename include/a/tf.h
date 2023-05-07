@@ -64,12 +64,12 @@ A_EXTERN a_tf_s *a_tf_init(a_tf_s *ctx,
                            a_uint_t n, a_real_t const *den, a_real_t *v);
 
 /*!
- @brief process function for transfer function
+ @brief calculate function for transfer function
  @param[in,out] ctx points to an instance of transfer function
  @param[in] x controller output
  @return feedback
 */
-A_EXTERN a_real_t a_tf_proc(a_tf_s *ctx, a_real_t x);
+A_EXTERN a_real_t a_tf_iter(a_tf_s *ctx, a_real_t x);
 
 /*!
  @brief terminate function for transfer function

@@ -224,7 +224,7 @@ public class polytrack7 {
     public final native polytrack7 init(double[] source, double[] target);
 
     /**
-     * process function for hepta polynomial trajectory
+     * calculate function for hepta polynomial trajectory
      *
      * @param ts current time unit(s)
      * @return current output
@@ -232,7 +232,7 @@ public class polytrack7 {
     public final native double[] out(double ts);
 
     /**
-     * process function for hepta polynomial trajectory position
+     * calculate function for hepta polynomial trajectory position
      *
      * @param ts current time unit(s)
      * @return position output
@@ -240,7 +240,7 @@ public class polytrack7 {
     public final native double pos(double ts);
 
     /**
-     * process function for hepta polynomial trajectory velocity
+     * calculate function for hepta polynomial trajectory velocity
      *
      * @param ts current time unit(s)
      * @return velocity output
@@ -248,7 +248,7 @@ public class polytrack7 {
     public final native double vec(double ts);
 
     /**
-     * process function for hepta polynomial trajectory acceleration
+     * calculate function for hepta polynomial trajectory acceleration
      *
      * @param ts current time unit(s)
      * @return acceleration output
@@ -256,7 +256,7 @@ public class polytrack7 {
     public final native double acc(double ts);
 
     /**
-     * process function for hepta polynomial trajectory jerk
+     * calculate function for hepta polynomial trajectory jerk
      *
      * @param ts current time unit(s)
      * @return jerk output

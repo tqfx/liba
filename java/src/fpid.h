@@ -9,26 +9,24 @@ typedef struct
     j_pid_s pid;
     JNIEnv *jenv;
     jobject jobj;
-    jfieldID mmp;
-    jobject jmmp;
+    jfieldID me;
+    jobject jme;
+    jfieldID mec;
+    jobject jmec;
     jfieldID mkp;
     jobject jmkp;
     jfieldID mki;
     jobject jmki;
     jfieldID mkd;
     jobject jmkd;
-    jfieldID mat;
-    jobject jmat;
-    jfieldID mms;
-    jobject jmms;
     jfieldID idx;
     jobject jidx;
-    jfieldID sigma;
-    jfieldID alpha;
+    jfieldID val;
+    jobject jval;
+    jfieldID op;
     jfieldID kp;
     jfieldID ki;
     jfieldID kd;
-    jfieldID op;
 } j_fpid_s;
 
 #if defined(__cplusplus)

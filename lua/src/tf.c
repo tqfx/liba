@@ -84,19 +84,19 @@ int LMODULE(tf_init)(lua_State *const L)
 }
 
 /***
- process function for transfer function
+ calculate function for transfer function
  @param ctx transfer function userdata
  @tparam number x controller output
  @treturn number feedback
- @function proc
+ @function iter
 */
-int LMODULE(tf_proc)(lua_State *const L)
+int LMODULE(tf_iter)(lua_State *const L)
 {
     a_tf_s *const ctx = (a_tf_s *)lua_touserdata(L, -2);
     if (ctx)
     {
         a_real_t x = (a_real_t)luaL_checknumber(L, -1);
-        lua_pushnumber(L, (lua_Number)a_tf_proc(ctx, x));
+        lua_pushnumber(L, (lua_Number)a_tf_iter(ctx, x));
         return 1;
     }
     return 0;
@@ -180,8 +180,8 @@ static int LMODULE(tf_get)(lua_State *const L)
     case 0x0E2ED8A0: // init
         lua_pushcfunction(L, LMODULE(tf_init));
         break;
-    case 0x0F200702: // proc
-        lua_pushcfunction(L, LMODULE(tf_proc));
+    case 0x0E3068C8: // iter
+        lua_pushcfunction(L, LMODULE(tf_iter));
         break;
     case 0x1073A930: // zero
         lua_pushcfunction(L, LMODULE(tf_zero));
@@ -190,7 +190,7 @@ static int LMODULE(tf_get)(lua_State *const L)
     {
         l_func_s const funcs[] = {
             {"init", LMODULE(tf_init)},
-            {"proc", LMODULE(tf_proc)},
+            {"iter", LMODULE(tf_iter)},
             {"zero", LMODULE(tf_zero)},
             {"new", LMODULE(tf_new)},
             {"die", LMODULE(tf_die)},
@@ -217,7 +217,7 @@ int LMODULE_(tf, lua_State *const L)
 {
     l_func_s const funcs[] = {
         {"init", LMODULE(tf_init)},
-        {"proc", LMODULE(tf_proc)},
+        {"iter", LMODULE(tf_iter)},
         {"zero", LMODULE(tf_zero)},
         {"new", LMODULE(tf_new)},
         {"die", LMODULE(tf_die)},
@@ -231,7 +231,7 @@ int LMODULE_(tf, lua_State *const L)
     lua_setmetatable(L, -2);
 
     l_func_s const metas[] = {
-        {L_NEW, LMODULE(tf_proc)},
+        {L_NEW, LMODULE(tf_iter)},
         {L_DIE, LMODULE(tf_die)},
         {L_SET, LMODULE(tf_set)},
         {L_GET, LMODULE(tf_get)},

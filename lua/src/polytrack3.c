@@ -140,7 +140,7 @@ int LMODULE(polytrack3_gen)(lua_State *const L)
 }
 
 /***
- process function for cubic polynomial trajectory
+ calculate function for cubic polynomial trajectory
  @param ctx cubic polynomial trajectory userdata
  @tparam number ts current time unit(s)
  @treturn table {position,velocity,acceleration}
@@ -162,7 +162,7 @@ int LMODULE(polytrack3_out)(lua_State *const L)
 }
 
 /***
- process function for cubic polynomial trajectory position
+ calculate function for cubic polynomial trajectory position
  @param ctx cubic polynomial trajectory userdata
  @tparam number ts current time unit(s)
  @treturn number position output
@@ -181,7 +181,7 @@ int LMODULE(polytrack3_pos)(lua_State *const L)
 }
 
 /***
- process function for cubic polynomial trajectory velocity
+ calculate function for cubic polynomial trajectory velocity
  @param ctx cubic polynomial trajectory userdata
  @tparam number ts current time unit(s)
  @treturn number velocity output
@@ -200,7 +200,7 @@ int LMODULE(polytrack3_vec)(lua_State *const L)
 }
 
 /***
- process function for cubic polynomial trajectory acceleration
+ calculate function for cubic polynomial trajectory acceleration
  @param ctx cubic polynomial trajectory userdata
  @tparam number ts current time unit(s)
  @treturn number acceleration output

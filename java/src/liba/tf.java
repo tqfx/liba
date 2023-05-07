@@ -29,12 +29,12 @@ public class tf {
     public final native tf init(double num[], double den[]);
 
     /**
-     * process function for transfer function
+     * calculate function for transfer function
      *
      * @param x controller output
      * @return feedback
      */
-    public final native double proc(double x);
+    public final native double iter(double x);
 
     /**
      * zero function for transfer function

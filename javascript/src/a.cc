@@ -37,7 +37,7 @@ public:
         a_pid_pos(&this->ctx, jsum);
     }
     ~pid() { a_pid_exit(&this->ctx); }
-    a_real_t proc(a_real_t jset, a_real_t jfdb)
+    a_real_t iter(a_real_t jset, a_real_t jfdb)
     {
         return a_pid_outv(&this->ctx, jset, jfdb);
     }
@@ -57,7 +57,8 @@ public:
 class fpid
 {
     a_fpid_s ctx;
-    a_real_t *mmp;
+    a_real_t *me;
+    a_real_t *mec;
     a_real_t *mkp;
     a_real_t *mki;
     a_real_t *mkd;
@@ -76,33 +77,32 @@ class fpid
     }
 
 public:
-    fpid(a_uint_t jmax, a_real_t jdt, emscripten::val jmmp,
-         emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd,
-         a_real_t jimin, a_real_t jimax, a_real_t jomin, a_real_t jomax)
+    fpid(a_uint_t jnum, a_real_t jdt, emscripten::val jme, emscripten::val jmec,
+         emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd, a_real_t jmin, a_real_t jmax)
     {
-        this->mmp = from(jmmp);
+        this->me = from(jme);
+        this->mec = from(jmec);
         this->mkp = from(jmkp);
         this->mki = from(jmki);
         this->mkd = from(jmkd);
-        a_uint_t num = jmkp["length"].as<a_uint_t>();
-        a_fpid_init(&this->ctx, jdt, num, this->mmp,
-                    this->mkp, this->mki, this->mkd,
-                    jimin, jimax, jomin, jomax);
-        this->buf = malloc(A_FPID_BUF1(jmax));
-        a_fpid_buf1(&this->ctx, this->buf, jmax);
+        a_uint_t col = jmkp["length"].as<a_uint_t>();
+        a_fpid_init(&this->ctx, jdt, col, this->me, this->mec,
+                    this->mkp, this->mki, this->mkd, jmin, jmax);
+        this->buf = malloc(A_FPID_BUF1(jnum));
+        a_fpid_buf1(&this->ctx, this->buf, jnum);
         a_fpid_inc(&this->ctx);
     }
-    fpid(a_uint_t jmax, a_real_t jdt, emscripten::val jmmp,
-         emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd,
-         a_real_t jimin, a_real_t jimax, a_real_t jomin, a_real_t jomax, a_real_t jsum)
+    fpid(a_uint_t jnum, a_real_t jdt, emscripten::val jme, emscripten::val jmec,
+         emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd, a_real_t jmin, a_real_t jmax, a_real_t jsum)
     {
-        fpid(jmax, jdt, jmmp, jmkp, jmki, jmkd, jimin, jimax, jomin, jomax);
+        fpid(jnum, jdt, jme, jmec, jmkp, jmki, jmkd, jmin, jmax);
         a_fpid_pos(&this->ctx, jsum);
     }
     ~fpid()
     {
         a_fpid_exit(&this->ctx);
-        delete[] this->mmp;
+        delete[] this->me;
+        delete[] this->mec;
         delete[] this->mkp;
         delete[] this->mki;
         delete[] this->mkd;
@@ -113,16 +113,17 @@ public:
         this->buf = realloc(this->buf, A_FPID_BUF1(jmax));
         a_fpid_buf1(&this->ctx, this->buf, jmax);
     }
-    void base(emscripten::val jmmp, emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd)
+    void base(emscripten::val jme, emscripten::val jmec, emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd)
     {
-        this->mmp = from(jmmp);
+        this->me = from(jme);
+        this->mec = from(jmec);
         this->mkp = from(jmkp);
         this->mki = from(jmki);
         this->mkd = from(jmkd);
-        a_uint_t num = jmkp["length"].as<a_uint_t>();
-        a_fpid_base(&this->ctx, num, this->mmp, this->mkp, this->mki, this->mkd);
+        a_uint_t col = jmkp["length"].as<a_uint_t>();
+        a_fpid_base(&this->ctx, col, this->me, this->mec, this->mkp, this->mki, this->mkd);
     }
-    a_real_t proc(a_real_t jset, a_real_t jfdb)
+    a_real_t iter(a_real_t jset, a_real_t jfdb)
     {
         return a_fpid_outv(&this->ctx, jset, jfdb);
     }
@@ -255,7 +256,7 @@ EMSCRIPTEN_BINDINGS(module)
         .constructor<a_real_t, a_real_t, a_real_t, a_real_t>()
         .constructor<a_real_t, a_real_t, a_real_t, a_real_t, a_real_t, a_real_t>()
         .constructor<a_real_t, a_real_t, a_real_t, a_real_t, a_real_t, a_real_t, a_real_t>()
-        .function("proc", &pid::proc)
+        .function("iter", &pid::iter)
         .function("zero", &pid::zero)
         .function("kpid", &pid::kpid)
         .function("time", &pid::time)
@@ -263,13 +264,11 @@ EMSCRIPTEN_BINDINGS(module)
         .function("inc", &pid::inc)
         .function("off", &pid::off);
     emscripten::class_<fpid>("fpid")
-        .constructor<a_uint_t, a_real_t, emscripten::val,
-                     emscripten::val, emscripten::val, emscripten::val,
-                     a_real_t, a_real_t, a_real_t, a_real_t>()
-        .constructor<a_uint_t, a_real_t, emscripten::val,
-                     emscripten::val, emscripten::val, emscripten::val,
-                     a_real_t, a_real_t, a_real_t, a_real_t, a_real_t>()
-        .function("proc", &fpid::proc)
+        .constructor<a_uint_t, a_real_t, emscripten::val, emscripten::val,
+                     emscripten::val, emscripten::val, emscripten::val, a_real_t, a_real_t>()
+        .constructor<a_uint_t, a_real_t, emscripten::val, emscripten::val,
+                     emscripten::val, emscripten::val, emscripten::val, a_real_t, a_real_t, a_real_t>()
+        .function("iter", &fpid::iter)
         .function("zero", &fpid::zero)
         .function("buff", &fpid::buff)
         .function("base", &fpid::base)

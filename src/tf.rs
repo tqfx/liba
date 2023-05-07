@@ -32,7 +32,7 @@ extern "C" {
         den: *const Real,
         v: *mut Real,
     ) -> *mut TF;
-    fn a_tf_proc(ctx: *mut TF, x: Real) -> Real;
+    fn a_tf_iter(ctx: *mut TF, x: Real) -> Real;
     fn a_tf_zero(ctx: *mut TF) -> *mut TF;
 }
 
@@ -61,9 +61,9 @@ impl TF {
         ctx
     }
 
-    /// process function for transfer function
-    pub fn proc(&mut self, x: Real) -> Real {
-        unsafe { a_tf_proc(self, x) }
+    /// calculate function for transfer function
+    pub fn iter(&mut self, x: Real) -> Real {
+        unsafe { a_tf_iter(self, x) }
     }
 
     /// zero function for transfer function
@@ -111,7 +111,7 @@ fn tf() {
     let mut u = [0.0; 2];
     let mut v = [0.0; 2];
     let mut a = crate::TF::new(&num, &mut u, &den, &mut v);
-    println!("{} {}", a.proc(10.0), a.proc(10.0));
+    println!("{} {}", a.iter(10.0), a.iter(10.0));
     println!("{:?} {:?}", a.num(), a.u());
     println!("{:?} {:?}", a.den(), a.v());
     a.zero();

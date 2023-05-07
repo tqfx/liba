@@ -128,14 +128,14 @@ JNIEXPORT jobject JNICALL JPACKAGE(pid_init)(JNIEnv *jenv, jobject jobj, jdouble
     return j_pid_set(&jctx, &ctx);
 }
 
-JNIEXPORT jdouble JNICALL JPACKAGE(pid_proc)(JNIEnv *jenv, jobject jobj, jdouble jset, jdouble jfdb)
+JNIEXPORT jdouble JNICALL JPACKAGE(pid_iter)(JNIEnv *jenv, jobject jobj, jdouble jset, jdouble jfdb)
 {
     a_pid_s ctx;
     j_pid_s jctx;
     j_pid_get(j_pid_new(jenv, jobj, &jctx), &ctx);
-    jdouble jresult = a_pid_outv(&ctx, jset, jfdb);
+    jdouble jres = a_pid_outv(&ctx, jset, jfdb);
     j_pid_set(&jctx, &ctx);
-    return jresult;
+    return jres;
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(pid_zero)(JNIEnv *jenv, jobject jobj)

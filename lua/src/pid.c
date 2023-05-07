@@ -118,9 +118,9 @@ int LMODULE(pid_init)(lua_State *const L)
  @tparam number set setpoint
  @tparam number fdb feedback
  @treturn number output
- @function proc
+ @function iter
 */
-int LMODULE(pid_proc)(lua_State *const L)
+int LMODULE(pid_iter)(lua_State *const L)
 {
     a_pid_s *const ctx = (a_pid_s *)lua_touserdata(L, -3);
     if (ctx)
@@ -320,8 +320,8 @@ static int LMODULE(pid_get)(lua_State *const L)
     case 0x0E2ED8A0: // init
         lua_pushcfunction(L, LMODULE(pid_init));
         break;
-    case 0x0F200702: // proc
-        lua_pushcfunction(L, LMODULE(pid_proc));
+    case 0x0E3068C8: // iter
+        lua_pushcfunction(L, LMODULE(pid_iter));
         break;
     case 0x1073A930: // zero
         lua_pushcfunction(L, LMODULE(pid_zero));
@@ -360,7 +360,7 @@ static int LMODULE(pid_get)(lua_State *const L)
         };
         l_func_s const funcs[] = {
             {"init", LMODULE(pid_init)},
-            {"proc", LMODULE(pid_proc)},
+            {"iter", LMODULE(pid_iter)},
             {"zero", LMODULE(pid_zero)},
             {"kpid", LMODULE(pid_kpid)},
             {"pos", LMODULE(pid_pos)},
@@ -399,7 +399,7 @@ int LMODULE_(pid, lua_State *const L)
     };
     l_func_s const funcs[] = {
         {"init", LMODULE(pid_init)},
-        {"proc", LMODULE(pid_proc)},
+        {"iter", LMODULE(pid_iter)},
         {"zero", LMODULE(pid_zero)},
         {"kpid", LMODULE(pid_kpid)},
         {"pos", LMODULE(pid_pos)},
@@ -417,7 +417,7 @@ int LMODULE_(pid, lua_State *const L)
     lua_setmetatable(L, -2);
 
     l_func_s const metas[] = {
-        {L_NEW, LMODULE(pid_proc)},
+        {L_NEW, LMODULE(pid_iter)},
         {L_SET, LMODULE(pid_set)},
         {L_GET, LMODULE(pid_get)},
         {NULL, NULL},

@@ -82,24 +82,24 @@ impl PolyTrack3 {
         self
     }
 
-    /// process function for cubic polynomial trajectory
+    /// calculate function for cubic polynomial trajectory
     pub fn out(&mut self, ts: Real) -> [Real; 3] {
         let mut out: [Real; 3] = [0.0; 3];
         unsafe { a_polytrack3_out(self, ts, &mut out) };
         out
     }
 
-    /// process function for cubic polynomial trajectory position
+    /// calculate function for cubic polynomial trajectory position
     pub fn pos(&mut self, ts: Real) -> Real {
         unsafe { a_polytrack3_pos(self, ts) }
     }
 
-    /// process function for cubic polynomial trajectory velocity
+    /// calculate function for cubic polynomial trajectory velocity
     pub fn vec(&mut self, ts: Real) -> Real {
         unsafe { a_polytrack3_vec(self, ts) }
     }
 
-    /// process function for cubic polynomial trajectory acceleration
+    /// calculate function for cubic polynomial trajectory acceleration
     pub fn acc(&mut self, ts: Real) -> Real {
         unsafe { a_polytrack3_acc(self, ts) }
     }
@@ -226,24 +226,24 @@ impl PolyTrack5 {
         self
     }
 
-    /// process function for quintic polynomial trajectory
+    /// calculate function for quintic polynomial trajectory
     pub fn out(&mut self, ts: Real) -> [Real; 3] {
         let mut out: [Real; 3] = [0.0; 3];
         unsafe { a_polytrack5_out(self, ts, &mut out) };
         out
     }
 
-    /// process function for quintic polynomial trajectory position
+    /// calculate function for quintic polynomial trajectory position
     pub fn pos(&mut self, ts: Real) -> Real {
         unsafe { a_polytrack5_pos(self, ts) }
     }
 
-    /// process function for quintic polynomial trajectory velocity
+    /// calculate function for quintic polynomial trajectory velocity
     pub fn vec(&mut self, ts: Real) -> Real {
         unsafe { a_polytrack5_vec(self, ts) }
     }
 
-    /// process function for quintic polynomial trajectory acceleration
+    /// calculate function for quintic polynomial trajectory acceleration
     pub fn acc(&mut self, ts: Real) -> Real {
         unsafe { a_polytrack5_acc(self, ts) }
     }
@@ -382,29 +382,29 @@ impl PolyTrack7 {
         self
     }
 
-    /// process function for hepta polynomial trajectory
+    /// calculate function for hepta polynomial trajectory
     pub fn out(&mut self, ts: Real) -> [Real; 4] {
         let mut out: [Real; 4] = [0.0; 4];
         unsafe { a_polytrack7_out(self, ts, &mut out) };
         out
     }
 
-    /// process function for hepta polynomial trajectory position
+    /// calculate function for hepta polynomial trajectory position
     pub fn pos(&mut self, ts: Real) -> Real {
         unsafe { a_polytrack7_pos(self, ts) }
     }
 
-    /// process function for hepta polynomial trajectory velocity
+    /// calculate function for hepta polynomial trajectory velocity
     pub fn vec(&mut self, ts: Real) -> Real {
         unsafe { a_polytrack7_vec(self, ts) }
     }
 
-    /// process function for hepta polynomial trajectory acceleration
+    /// calculate function for hepta polynomial trajectory acceleration
     pub fn acc(&mut self, ts: Real) -> Real {
         unsafe { a_polytrack7_acc(self, ts) }
     }
 
-    /// process function for hepta polynomial trajectory jerk
+    /// calculate function for hepta polynomial trajectory jerk
     pub fn jer(&mut self, ts: Real) -> Real {
         unsafe { a_polytrack7_jer(self, ts) }
     }

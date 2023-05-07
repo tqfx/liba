@@ -21,8 +21,7 @@ ZO = 0
 PS = +1
 PM = +2
 PB = +3
-
-mmp = [
+me = [
     [a.mf.TRI, NB, NB, NM],
     [a.mf.TRI, NB, NM, NS],
     [a.mf.TRI, NM, NS, ZO],
@@ -32,6 +31,30 @@ mmp = [
     [a.mf.TRI, PM, PB, PB],
     [a.mf.NUL, ZO, ZO, ZO],
 ]
+NB = -6
+NM = -4
+NS = -3
+ZO = 0
+PS = +2
+PM = +4
+PB = +6
+mec = [
+    [a.mf.TRI, NB, NB, NM],
+    [a.mf.TRI, NB, NM, NS],
+    [a.mf.TRI, NM, NS, ZO],
+    [a.mf.TRI, NS, ZO, PS],
+    [a.mf.TRI, ZO, PS, PM],
+    [a.mf.TRI, PS, PM, PB],
+    [a.mf.TRI, PM, PB, PB],
+    [a.mf.NUL, ZO, ZO, ZO],
+]
+NB = -15
+NM = -10
+NS = -5
+ZO = 0
+PS = +5
+PM = +10
+PB = +15
 mkp = [
     [NB, NB, NM, NM, NS, ZO, ZO],
     [NB, NB, NM, NS, NS, ZO, PS],
@@ -41,6 +64,13 @@ mkp = [
     [NS, ZO, PS, PM, PM, PM, PB],
     [ZO, ZO, PM, PM, PM, PB, PB],
 ]
+NB = -3
+NM = -2
+NS = -1
+ZO = 0
+PS = +1
+PM = +2
+PB = +3
 mki = [
     [PB, PB, PM, PM, PS, ZO, ZO],
     [PB, PB, PM, PS, PS, ZO, ZO],
@@ -60,61 +90,48 @@ mkd = [
     [NB, NM, NM, NM, NS, NS, NB],
 ]
 
-IMIN = -3
-IMAX = +3
-OMIN = -10
-OMAX = +10
-
 
 def fuzzy(e: float, c: float):
-    e = 6 / (IMAX - IMIN) * e
-    c = 3 / (IMAX - IMIN) * c
-
-    mmse = []
     idxe = []
+    vale = []
     mf = a.mf()
-    for idx, param in enumerate(mmp[:-1]):
+    for idx, param in enumerate(me[:-1]):
         ms = mf(param[0], e, param[1:])
         if ms > 0:
             idxe.append(idx)
-            mmse.append(ms)
-    mmsc = []
-    idxc = []
-    for idx, param in enumerate(mmp[:-1]):
+            vale.append(ms)
+    idxec = []
+    valec = []
+    for idx, param in enumerate(me[:-1]):
         ms = mf(param[0], c, param[1:])
         if ms > 0:
-            idxc.append(idx)
-            mmsc.append(ms)
-    if mmse == [] or mmsc == []:
+            idxec.append(idx)
+            valec.append(ms)
+    if vale == [] or valec == []:
         return 0, 0, 0
 
     num = 0.0
     joint = []
-    for e in mmse:
+    for e in vale:
         row = []
-        for c in mmsc:
+        for c in valec:
             y = pow(e * c, 0.5) * pow(1 - (1 - e) * (1 - c), 0.5)
             row.append(y)
             num += y
         joint.append(row)
 
     kp = 0.0
-    for i in range(len(mmse)):
-        for j in range(len(mmsc)):
-            kp += joint[i][j] * mkp[idxe[i]][idxc[j]]
+    for i in range(len(vale)):
+        for j in range(len(valec)):
+            kp += joint[i][j] * mkp[idxe[i]][idxec[j]]
     ki = 0.0
-    for i in range(len(mmse)):
-        for j in range(len(mmsc)):
-            ki += joint[i][j] * mki[idxe[i]][idxc[j]]
+    for i in range(len(vale)):
+        for j in range(len(valec)):
+            ki += joint[i][j] * mki[idxe[i]][idxec[j]]
     kd = 0.0
-    for i in range(len(mmse)):
-        for j in range(len(mmsc)):
-            kd += joint[i][j] * mkd[idxe[i]][idxc[j]]
-
-    alpha = (OMAX - OMIN) / 6.0 / num
-    kp *= alpha
-    ki *= alpha
-    kd *= alpha
+    for i in range(len(vale)):
+        for j in range(len(valec)):
+            kd += joint[i][j] * mkd[idxe[i]][idxec[j]]
 
     return kp, ki, kd
 
@@ -140,8 +157,11 @@ except Exception as e:
     print(e)
     exit()
 
+
+MIN = -10
+MAX = +10
 tf = a.tf(num, den[1:])
-fpid = a.fpid(2, Ts, mmp, mkp, mki, mkd, IMIN, IMAX, OMIN, OMAX)
+fpid = a.fpid(2, Ts, me, mec, mkp, mki, mkd, MIN, MAX)
 
 r = 1.0
 setpoint = [r] * len(data)
@@ -175,10 +195,10 @@ for i in data:
     dkp, dki, dkd = fuzzy(e[0], e[0] - e[1])
     s += (kp + dkp) * x[0] + (ki + dki) * x[1] + (kd + dkd) * x[2]
     u = s
-    if u < OMIN:
-        u = OMIN
-    elif u > OMAX:
-        u = OMAX
+    if u < MIN:
+        u = MIN
+    elif u > MAX:
+        u = MAX
     y = tf(u)
     feedback2.append(y)
     error2.append(r - y)

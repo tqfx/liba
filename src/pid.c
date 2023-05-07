@@ -40,14 +40,21 @@ a_pid_s *a_pid_kpid(a_pid_s *const ctx, a_real_t const kp, a_real_t const ki, a_
     return ctx;
 }
 
-a_pid_s *a_pid_setp(a_pid_s *const ctx, a_uint_t const num, a_real_t *const out, a_real_t *const fdb, a_real_t *const sum, a_real_t *const ec, a_real_t *const e)
+a_pid_s *a_pid_chan(a_pid_s *const ctx, a_uint_t const num, a_real_t *const out, a_real_t *const fdb, a_real_t *const sum, a_real_t *const ec, a_real_t *const e)
 {
-    a_pid_set_num(ctx, num);
-    ctx->out.p = out;
-    ctx->fdb.p = fdb;
-    ctx->sum.p = sum;
-    ctx->ec.p = ec;
-    ctx->e.p = e;
+    if (num > 1)
+    {
+        a_pid_set_num(ctx, num);
+        ctx->out.p = out;
+        ctx->fdb.p = fdb;
+        ctx->sum.p = sum;
+        ctx->ec.p = ec;
+        ctx->e.p = e;
+    }
+    else
+    {
+        a_pid_set_num(ctx, 0);
+    }
     return a_pid_zero(ctx);
 }
 
@@ -70,15 +77,18 @@ a_pid_s *a_pid_exit(a_pid_s *const ctx) { return a_pid_zero(ctx); }
 a_pid_s *a_pid_zero(a_pid_s *const ctx)
 {
     a_uint_t const num = a_pid_num(ctx);
-    for (a_uint_t i = 0; i != num; ++i)
+    if (num > 1)
     {
-        ctx->sum.p[i] = 0;
-        ctx->out.p[i] = 0;
-        ctx->fdb.p[i] = 0;
-        ctx->ec.p[i] = 0;
-        ctx->e.p[i] = 0;
+        for (a_uint_t i = 0; i != num; ++i)
+        {
+            ctx->sum.p[i] = 0;
+            ctx->out.p[i] = 0;
+            ctx->fdb.p[i] = 0;
+            ctx->ec.p[i] = 0;
+            ctx->e.p[i] = 0;
+        }
     }
-    if (num == 0)
+    else
     {
         ctx->out.v = 0;
         ctx->sum.v = 0;
@@ -193,12 +203,12 @@ a_real_t a_pid_outv(a_pid_s *const ctx, a_real_t const set, a_real_t const fdb)
 a_real_t *a_pid_outp(a_pid_s *const ctx, a_real_t *const set, a_real_t *const fdb)
 {
     a_uint_t const num = a_pid_num(ctx);
-    a_uint_t const reg = a_pid_mode(ctx);
+    a_uint_t const mode = a_pid_mode(ctx);
     for (a_uint_t i = 0; i != num; ++i)
     {
         a_real_t const e = set[i] - fdb[i];
         a_real_t const ec = e - ctx->e.p[i];
-        a_pid_outp_(ctx, reg, set[i], fdb[i], ec, e, i);
+        a_pid_outp_(ctx, mode, set[i], fdb[i], ec, e, i);
     }
     return ctx->out.p;
 }

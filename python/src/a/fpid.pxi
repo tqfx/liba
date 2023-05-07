@@ -7,27 +7,30 @@ cdef class fpid:
     '''fuzzy proportional integral derivative controller'''
     cdef a_fpid_s ctx
     cdef a_vptr_t ptr
-    cdef array mmp
+    cdef array me
+    cdef array mec
     cdef array mkp
     cdef array mki
     cdef array mkd
-    def __cinit__(self, a_uint_t num, a_real_t dt, mmp, mkp, mki, mkd, a_real_t imin, a_real_t imax, a_real_t omin, a_real_t omax, a_real_t sum = 0):
-        self.mmp = reals((i for j in mmp for i in j))
+    def __cinit__(self, a_uint_t num, a_real_t dt, me, mec, mkp, mki, mkd, a_real_t min, a_real_t max, a_real_t sum = 0):
+        self.me = reals((i for j in me for i in j))
+        self.mec = reals((i for j in mec for i in j))
         self.mkp = reals((i for j in mkp for i in j))
         self.mki = reals((i for j in mki for i in j))
         self.mkd = reals((i for j in mkd for i in j))
-        cdef a_real_t *mp = <a_real_t *>self.mmp.data.as_voidptr
+        cdef a_real_t *e = <a_real_t *>self.me.data.as_voidptr
+        cdef a_real_t *ec = <a_real_t *>self.mec.data.as_voidptr
         cdef a_real_t *kp = <a_real_t *>self.mkp.data.as_voidptr
         cdef a_real_t *ki = <a_real_t *>self.mki.data.as_voidptr
         cdef a_real_t *kd = <a_real_t *>self.mkd.data.as_voidptr
-        a_fpid_init(&self.ctx, dt, <a_uint_t>len(mkp), mp, kp, ki, kd, imin, imax, omin, omax)
+        a_fpid_init(&self.ctx, dt, <a_uint_t>len(mkp), e, ec, kp, ki, kd, min, max)
         if sum:
             a_fpid_pos(&self.ctx, sum)
         else:
             a_fpid_inc(&self.ctx)
         self.buf = num
     def __call__(self, set: a_real_t, fdb: a_real_t) -> a_real_t:
-        '''process function for fuzzy PID controller'''
+        '''calculate function for fuzzy PID controller'''
         return a_fpid_outv(&self.ctx, set, fdb)
     def __dealloc__(self):
         '''terminate function for fuzzy PID controller'''
@@ -37,29 +40,23 @@ cdef class fpid:
         '''zero function for fuzzy PID controller'''
         a_fpid_zero(&self.ctx)
         return self
-    def base(self, mmp, mkp, mki, mkd):
+    def base(self, me, mec, mkp, mki, mkd):
         '''set rule base for fuzzy PID controller'''
-        self.mmp = reals((i for j in mmp for i in j))
+        self.me = reals((i for j in me for i in j))
+        self.mec = reals((i for j in mec for i in j))
         self.mkp = reals((i for j in mkp for i in j))
         self.mki = reals((i for j in mki for i in j))
         self.mkd = reals((i for j in mkd for i in j))
-        cdef a_real_t *mp = <a_real_t *>self.mmp.data.as_voidptr
+        cdef a_real_t *e = <a_real_t *>self.me.data.as_voidptr
+        cdef a_real_t *ec = <a_real_t *>self.mec.data.as_voidptr
         cdef a_real_t *kp = <a_real_t *>self.mkp.data.as_voidptr
         cdef a_real_t *ki = <a_real_t *>self.mki.data.as_voidptr
         cdef a_real_t *kd = <a_real_t *>self.mkd.data.as_voidptr
-        a_fpid_base(&self.ctx, <a_uint_t>len(mkp), mp, kp, ki, kd)
+        a_fpid_base(&self.ctx, <a_uint_t>len(mkp), e, ec, kp, ki, kd)
         return self
     def kpid(self, kp: a_real_t, ki: a_real_t, kd: a_real_t):
         '''set proportional integral derivative constant for fuzzy PID controller'''
         a_fpid_kpid(&self.ctx, kp, ki, kd)
-        return self
-    def olim(self, min: a_real_t, max: a_real_t):
-        '''set output extreme value for fuzzy PID controller'''
-        a_fpid_olim(&self.ctx, min, max)
-        return self
-    def ilim(self, min: a_real_t, max: a_real_t):
-        '''set input extreme value for fuzzy PID controller'''
-        a_fpid_ilim(&self.ctx, min, max)
         return self
     def pos(self, max: a_real_t):
         '''positional fuzzy PID controller'''

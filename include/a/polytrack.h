@@ -118,7 +118,7 @@ A_EXTERN a_void_t a_polytrack3_init(a_polytrack3_s *ctx,
 A_EXTERN a_void_t a_polytrack3_gen(a_polytrack3_s *ctx);
 
 /*!
- @brief process function for cubic polynomial trajectory
+ @brief calculate function for cubic polynomial trajectory
  @f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3} \\
@@ -136,7 +136,7 @@ A_EXTERN a_void_t a_polytrack3_gen(a_polytrack3_s *ctx);
 A_EXTERN a_void_t a_polytrack3_out(a_polytrack3_s const *ctx, a_real_t ts, a_real_t out[3]);
 
 /*!
- @brief process function for cubic polynomial trajectory position
+ @brief calculate function for cubic polynomial trajectory position
  @f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3} \\
@@ -149,7 +149,7 @@ A_EXTERN a_void_t a_polytrack3_out(a_polytrack3_s const *ctx, a_real_t ts, a_rea
 A_EXTERN a_real_t a_polytrack3_pos(a_polytrack3_s const *ctx, a_real_t ts);
 
 /*!
- @brief process function for cubic polynomial trajectory velocity
+ @brief calculate function for cubic polynomial trajectory velocity
  @f{aligned}{
   \begin{array}{l}
   \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2} \\
@@ -162,7 +162,7 @@ A_EXTERN a_real_t a_polytrack3_pos(a_polytrack3_s const *ctx, a_real_t ts);
 A_EXTERN a_real_t a_polytrack3_vec(a_polytrack3_s const *ctx, a_real_t ts);
 
 /*!
- @brief process function for cubic polynomial trajectory acceleration
+ @brief calculate function for cubic polynomial trajectory acceleration
  @f{aligned}{
   \begin{array}{l}
   \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)
@@ -247,7 +247,7 @@ A_EXTERN a_void_t a_polytrack5_init(a_polytrack5_s *ctx,
 A_EXTERN a_void_t a_polytrack5_gen(a_polytrack5_s *ctx);
 
 /*!
- @brief process function for quintic polynomial trajectory
+ @brief calculate function for quintic polynomial trajectory
  @f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3}+k_{4}\left(t-t_{0}\right)^{4}+k_{5}\left(t-t_{0}\right)^{5}\\
@@ -265,7 +265,7 @@ A_EXTERN a_void_t a_polytrack5_gen(a_polytrack5_s *ctx);
 A_EXTERN a_void_t a_polytrack5_out(a_polytrack5_s const *ctx, a_real_t ts, a_real_t out[3]);
 
 /*!
- @brief process function for quintic polynomial trajectory position
+ @brief calculate function for quintic polynomial trajectory position
  @f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3}+k_{4}\left(t-t_{0}\right)^{4}+k_{5}\left(t-t_{0}\right)^{5}\\
@@ -278,7 +278,7 @@ A_EXTERN a_void_t a_polytrack5_out(a_polytrack5_s const *ctx, a_real_t ts, a_rea
 A_EXTERN a_real_t a_polytrack5_pos(a_polytrack5_s const *ctx, a_real_t ts);
 
 /*!
- @brief process function for quintic polynomial trajectory velocity
+ @brief calculate function for quintic polynomial trajectory velocity
  @f{aligned}{
   \begin{array}{l}
   \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2}+4 k_{4}\left(t-t_{0}\right)^{3}+5 k_{5}\left(t-t_{0}\right)^{4}\\
@@ -291,7 +291,7 @@ A_EXTERN a_real_t a_polytrack5_pos(a_polytrack5_s const *ctx, a_real_t ts);
 A_EXTERN a_real_t a_polytrack5_vec(a_polytrack5_s const *ctx, a_real_t ts);
 
 /*!
- @brief process function for quintic polynomial trajectory acceleration
+ @brief calculate function for quintic polynomial trajectory acceleration
  @f{aligned}{
   \begin{array}{l}
   \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)+12 k_{4}\left(t-t_{0}\right)^{2}+20 k_{5}\left(t-t_{0}\right)^{3}
@@ -386,7 +386,7 @@ A_EXTERN a_void_t a_polytrack7_init(a_polytrack7_s *ctx,
 A_EXTERN a_void_t a_polytrack7_gen(a_polytrack7_s *ctx);
 
 /*!
- @brief process function for hepta polynomial trajectory
+ @brief calculate function for hepta polynomial trajectory
  @f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3}+k_{4}\left(t-t_{0}\right)^{4}+k_{5}\left(t-t_{0}\right)^{5}+k_{6}\left(t-t_{0}\right)^{6}+k_{7}\left(t-t_{0}\right)^{7}\\
@@ -406,7 +406,7 @@ A_EXTERN a_void_t a_polytrack7_gen(a_polytrack7_s *ctx);
 A_EXTERN a_void_t a_polytrack7_out(a_polytrack7_s const *ctx, a_real_t ts, a_real_t out[4]);
 
 /*!
- @brief process function for hepta polynomial trajectory position
+ @brief calculate function for hepta polynomial trajectory position
  @f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3}+k_{4}\left(t-t_{0}\right)^{4}+k_{5}\left(t-t_{0}\right)^{5}+k_{6}\left(t-t_{0}\right)^{6}+k_{7}\left(t-t_{0}\right)^{7}\\
@@ -419,7 +419,7 @@ A_EXTERN a_void_t a_polytrack7_out(a_polytrack7_s const *ctx, a_real_t ts, a_rea
 A_EXTERN a_real_t a_polytrack7_pos(a_polytrack7_s const *ctx, a_real_t ts);
 
 /*!
- @brief process function for hepta polynomial trajectory velocity
+ @brief calculate function for hepta polynomial trajectory velocity
  @f{aligned}{
   \begin{array}{l}
   \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2}+4 k_{4}\left(t-t_{0}\right)^{3}+5 k_{5}\left(t-t_{0}\right)^{4}+6 k_{6}\left(t-t_{0}\right)^{5}+7 k_{7}\left(t-t_{0}\right)^{6}\\
@@ -432,7 +432,7 @@ A_EXTERN a_real_t a_polytrack7_pos(a_polytrack7_s const *ctx, a_real_t ts);
 A_EXTERN a_real_t a_polytrack7_vec(a_polytrack7_s const *ctx, a_real_t ts);
 
 /*!
- @brief process function for hepta polynomial trajectory acceleration
+ @brief calculate function for hepta polynomial trajectory acceleration
  @f{aligned}{
   \begin{array}{l}
   \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)+12 k_{4}\left(t-t_{0}\right)^{2}+20 k_{5}\left(t-t_{0}\right)^{3}+30 k_{6}\left(t-t_{0}\right)^{4}+42 k_{7}\left(t-t_{0}\right)^{5}\\
@@ -445,7 +445,7 @@ A_EXTERN a_real_t a_polytrack7_vec(a_polytrack7_s const *ctx, a_real_t ts);
 A_EXTERN a_real_t a_polytrack7_acc(a_polytrack7_s const *ctx, a_real_t ts);
 
 /*!
- @brief process function for hepta polynomial trajectory jerk
+ @brief calculate function for hepta polynomial trajectory jerk
  @f{aligned}{
   \begin{array}{l}
   q^{(3)}(t)=6 k_{3}+24 k_{4}\left(t-t_{0}\right)+60 k_{5}\left(t-t_{0}\right)^{2}+120 k_{6}\left(t-t_{0}\right)^{3}+210 k_{7}\left(t-t_{0}\right)^{4}

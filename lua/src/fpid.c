@@ -9,25 +9,25 @@
 static int LMODULE(fpid_init_)(lua_State *const L, a_fpid_s *const ctx)
 {
     a_vptr_t const buf = a_fpid_bufptr(ctx);
-    a_uint_t const max = (a_uint_t)luaL_checkinteger(L, 1);
+    a_uint_t const num = (a_uint_t)luaL_checkinteger(L, 1);
     a_real_t const dt = (a_real_t)luaL_checknumber(L, 2);
     luaL_checktype(L, 3, LUA_TTABLE);
     luaL_checktype(L, 4, LUA_TTABLE);
     luaL_checktype(L, 5, LUA_TTABLE);
     luaL_checktype(L, 6, LUA_TTABLE);
-    a_real_t const imin = (a_real_t)luaL_checknumber(L, 7);
-    a_real_t const imax = (a_real_t)luaL_checknumber(L, 8);
-    a_real_t const omin = (a_real_t)luaL_checknumber(L, 9);
-    a_real_t const omax = (a_real_t)luaL_checknumber(L, 10);
-    a_uint_t const num = (a_uint_t)lua_rawlen(L, 4);
-    a_real_t const *const mmp = l_table_num_get(L, 3, ctx->mmp, 0);
-    a_real_t const *const mkp = l_table_num_get(L, 4, ctx->mkp, 0);
-    a_real_t const *const mki = l_table_num_get(L, 5, ctx->mki, 0);
-    a_real_t const *const mkd = l_table_num_get(L, 6, ctx->mkd, 0);
-    a_fpid_init(ctx, dt, num, mmp, mkp, mki, mkd, imin, imax, omin, omax);
-    a_fpid_buf1(ctx, l_alloc(L, buf, A_FPID_BUF1(max)), max);
-    lua_isnumber(L, 11)
-        ? a_fpid_pos(ctx, (a_real_t)lua_tonumber(L, 11))
+    luaL_checktype(L, 7, LUA_TTABLE);
+    a_real_t const min = (a_real_t)luaL_checknumber(L, 8);
+    a_real_t const max = (a_real_t)luaL_checknumber(L, 9);
+    a_uint_t const col = (a_uint_t)lua_rawlen(L, 5);
+    a_real_t const *const me = l_table_num_get(L, 3, ctx->me, 0);
+    a_real_t const *const mec = l_table_num_get(L, 4, ctx->mec, 0);
+    a_real_t const *const mkp = l_table_num_get(L, 5, ctx->mkp, 0);
+    a_real_t const *const mki = l_table_num_get(L, 6, ctx->mki, 0);
+    a_real_t const *const mkd = l_table_num_get(L, 7, ctx->mkd, 0);
+    a_fpid_init(ctx, dt, col, me, mec, mkp, mki, mkd, min, max);
+    a_fpid_buf1(ctx, l_alloc(L, buf, A_FPID_BUF1(num)), num);
+    lua_isnumber(L, 10)
+        ? a_fpid_pos(ctx, (a_real_t)lua_tonumber(L, 10))
         : a_fpid_inc(ctx);
     return 1;
 }
@@ -42,13 +42,13 @@ int LMODULE(fpid_die)(lua_State *const L)
     a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, 1);
     if (ctx)
     {
-        ctx->mmp = A_REAL_P(l_alloc(L, ctx->mmp, 0));
+        ctx->me = A_REAL_P(l_alloc(L, ctx->me, 0));
+        ctx->mec = A_REAL_P(l_alloc(L, ctx->mec, 0));
         ctx->mkp = A_REAL_P(l_alloc(L, ctx->mkp, 0));
         ctx->mki = A_REAL_P(l_alloc(L, ctx->mki, 0));
         ctx->mkd = A_REAL_P(l_alloc(L, ctx->mkd, 0));
         ctx->idx = a_uint_p(l_alloc(L, a_fpid_bufptr(ctx), 0));
-        ctx->mms = 0;
-        ctx->mat = 0;
+        ctx->val = 0;
     }
     return 0;
 }
@@ -57,21 +57,20 @@ int LMODULE(fpid_die)(lua_State *const L)
  constructor for fuzzy PID controller
  @tparam int num maximum number triggered by the rule
  @tparam number dt sampling time unit(s)
- @tparam table mmp points to membership function parameter table, an array terminated by 0
+ @tparam table me points to membership function parameter table, terminated by 0
+ @tparam table mec points to membership function parameter table, terminated by 0
  @tparam table mkp points to Kp's rule base table, the rule base must be square
  @tparam table mki points to Ki's rule base table, the rule base must be square
  @tparam table mkd points to Kd's rule base table, the rule base must be square
- @tparam number imin minimum input
- @tparam number imax maximum input
- @tparam number omin minimum output
- @tparam number omax maximum output
+ @tparam number min minimum output
+ @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
  @treturn fpid fuzzy PID controller userdata
  @function new
 */
 int LMODULE(fpid_new)(lua_State *const L)
 {
-    if (lua_gettop(L) > 9)
+    if (lua_gettop(L) > 8)
     {
         while (lua_type(L, 1) == LUA_TTABLE)
         {
@@ -91,21 +90,20 @@ int LMODULE(fpid_new)(lua_State *const L)
  @param ctx fuzzy PID controller userdata
  @tparam int num maximum number triggered by the rule
  @tparam number dt sampling time unit(s)
- @tparam table mmp points to membership function parameter table, an array terminated by 0
+ @tparam table me points to membership function parameter table, terminated by 0
+ @tparam table mec points to membership function parameter table, terminated by 0
  @tparam table mkp points to Kp's rule base table, the rule base must be square
  @tparam table mki points to Ki's rule base table, the rule base must be square
  @tparam table mkd points to Kd's rule base table, the rule base must be square
- @tparam number imin minimum input
- @tparam number imax maximum input
- @tparam number omin minimum output
- @tparam number omax maximum output
+ @tparam number min minimum output
+ @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
  @treturn fpid fuzzy PID controller userdata
  @function init
 */
 int LMODULE(fpid_init)(lua_State *const L)
 {
-    if (lua_gettop(L) > 10)
+    if (lua_gettop(L) > 9)
     {
         while (lua_type(L, 1) == LUA_TTABLE)
         {
@@ -126,9 +124,9 @@ int LMODULE(fpid_init)(lua_State *const L)
  @tparam number set setpoint
  @tparam number fdb feedback
  @treturn number output
- @function proc
+ @function iter
 */
-int LMODULE(fpid_proc)(lua_State *const L)
+int LMODULE(fpid_iter)(lua_State *const L)
 {
     a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, -3);
     if (ctx)
@@ -162,7 +160,8 @@ int LMODULE(fpid_zero)(lua_State *const L)
 /***
  set rule base for fuzzy PID controller
  @param ctx fuzzy PID controller userdata
- @tparam table mmp points to membership function parameter table, an array terminated by 0
+ @tparam table me points to membership function parameter table, terminated by 0
+ @tparam table mec points to membership function parameter table, terminated by 0
  @tparam table mkp points to Kp's rule base table, the rule base must be square
  @tparam table mki points to Ki's rule base table, the rule base must be square
  @tparam table mkd points to Kd's rule base table, the rule base must be square
@@ -171,16 +170,17 @@ int LMODULE(fpid_zero)(lua_State *const L)
 */
 int LMODULE(fpid_base)(lua_State *const L)
 {
-    a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, -5);
+    a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, -6);
     if (ctx)
     {
         a_uint_t const num = (a_uint_t)lua_rawlen(L, -3);
-        a_real_t const *const mmp = l_table_num_get(L, -4, ctx->mmp, 0);
+        a_real_t const *const me = l_table_num_get(L, -5, ctx->me, 0);
+        a_real_t const *const mec = l_table_num_get(L, -4, ctx->mec, 0);
         a_real_t const *const mkp = l_table_num_get(L, -3, ctx->mkp, 0);
         a_real_t const *const mki = l_table_num_get(L, -2, ctx->mki, 0);
         a_real_t const *const mkd = l_table_num_get(L, -1, ctx->mkd, 0);
-        a_fpid_base(ctx, num, mmp, mkp, mki, mkd);
-        lua_pop(L, 4);
+        a_fpid_base(ctx, num, me, mec, mkp, mki, mkd);
+        lua_pop(L, 5);
         return 1;
     }
     return 0;
@@ -205,50 +205,6 @@ int LMODULE(fpid_kpid)(lua_State *const L)
         a_real_t const kd = (a_real_t)luaL_checknumber(L, -1);
         a_fpid_kpid(ctx, kp, ki, kd);
         lua_pop(L, 3);
-        return 1;
-    }
-    return 0;
-}
-
-/***
- set input extreme value for fuzzy PID controller
- @param ctx fuzzy PID controller userdata
- @tparam number min mininum input
- @tparam number max maxinum input
- @treturn fpid fuzzy PID controller userdata
- @function ilim
-*/
-int LMODULE(fpid_ilim)(lua_State *const L)
-{
-    a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, -3);
-    if (ctx)
-    {
-        a_real_t const min = (a_real_t)luaL_checknumber(L, -2);
-        a_real_t const max = (a_real_t)luaL_checknumber(L, -1);
-        a_fpid_ilim(ctx, min, max);
-        lua_pop(L, 2);
-        return 1;
-    }
-    return 0;
-}
-
-/***
- set output extreme value for fuzzy PID controller
- @param ctx fuzzy PID controller userdata
- @tparam number min mininum output
- @tparam number max maxinum output
- @treturn fpid fuzzy PID controller userdata
- @function olim
-*/
-int LMODULE(fpid_olim)(lua_State *const L)
-{
-    a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, -3);
-    if (ctx)
-    {
-        a_real_t const min = (a_real_t)luaL_checknumber(L, -2);
-        a_real_t const max = (a_real_t)luaL_checknumber(L, -1);
-        a_fpid_olim(ctx, min, max);
-        lua_pop(L, 2);
         return 1;
     }
     return 0;
@@ -406,8 +362,8 @@ static int LMODULE(fpid_get)(lua_State *const L)
     case 0x0E2ED8A0: // init
         lua_pushcfunction(L, LMODULE(fpid_init));
         break;
-    case 0x0F200702: // proc
-        lua_pushcfunction(L, LMODULE(fpid_proc));
+    case 0x0E3068C8: // iter
+        lua_pushcfunction(L, LMODULE(fpid_iter));
         break;
     case 0x1073A930: // zero
         lua_pushcfunction(L, LMODULE(fpid_zero));
@@ -417,12 +373,6 @@ static int LMODULE(fpid_get)(lua_State *const L)
         break;
     case 0x0E73F9D8: // kpid
         lua_pushcfunction(L, LMODULE(fpid_kpid));
-        break;
-    case 0x0E2E5287: // ilim
-        lua_pushcfunction(L, LMODULE(fpid_ilim));
-        break;
-    case 0x0EFC2429: // olim
-        lua_pushcfunction(L, LMODULE(fpid_olim));
         break;
     case 0x001D8D30: // pos
         lua_pushcfunction(L, LMODULE(fpid_pos));
@@ -457,12 +407,10 @@ static int LMODULE(fpid_get)(lua_State *const L)
         };
         l_func_s const funcs[] = {
             {"init", LMODULE(fpid_init)},
-            {"proc", LMODULE(fpid_proc)},
+            {"iter", LMODULE(fpid_iter)},
             {"zero", LMODULE(fpid_zero)},
             {"base", LMODULE(fpid_base)},
             {"kpid", LMODULE(fpid_kpid)},
-            {"ilim", LMODULE(fpid_ilim)},
-            {"olim", LMODULE(fpid_olim)},
             {"pos", LMODULE(fpid_pos)},
             {"inc", LMODULE(fpid_inc)},
             {"off", LMODULE(fpid_off)},
@@ -499,12 +447,10 @@ int LMODULE_(fpid, lua_State *const L)
     };
     l_func_s const funcs[] = {
         {"init", LMODULE(fpid_init)},
-        {"proc", LMODULE(fpid_proc)},
+        {"iter", LMODULE(fpid_iter)},
         {"zero", LMODULE(fpid_zero)},
         {"base", LMODULE(fpid_base)},
         {"kpid", LMODULE(fpid_kpid)},
-        {"ilim", LMODULE(fpid_ilim)},
-        {"olim", LMODULE(fpid_olim)},
         {"pos", LMODULE(fpid_pos)},
         {"inc", LMODULE(fpid_inc)},
         {"off", LMODULE(fpid_off)},
@@ -520,7 +466,7 @@ int LMODULE_(fpid, lua_State *const L)
     lua_setmetatable(L, -2);
 
     l_func_s const metas[] = {
-        {L_NEW, LMODULE(fpid_proc)},
+        {L_NEW, LMODULE(fpid_iter)},
         {L_DIE, LMODULE(fpid_die)},
         {L_SET, LMODULE(fpid_set)},
         {L_GET, LMODULE(fpid_get)},

@@ -13,8 +13,8 @@ cdef class tf:
         self.num = num
         self.den = den
     def __call__(self, x: a_real_t) -> a_real_t:
-        '''process function for transfer function'''
-        return a_tf_proc(&self.ctx, x)
+        '''calculate function for transfer function'''
+        return a_tf_iter(&self.ctx, x)
     def __dealloc__(self):
         '''terminate function for transfer function'''
         a_tf_exit(&self.ctx)

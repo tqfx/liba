@@ -7,7 +7,7 @@ var ZO = 0
 var PS = +1
 var PM = +2
 var PB = +3
-var mmp = [
+var me = [
     [Module.MF_TRI, NB, NB, NM],
     [Module.MF_TRI, NB, NM, NS],
     [Module.MF_TRI, NM, NS, ZO],
@@ -17,6 +17,30 @@ var mmp = [
     [Module.MF_TRI, PM, PB, PB],
     [Module.MF_NUL, ZO, ZO, ZO],
 ]
+var NB = -6
+var NM = -4
+var NS = -2
+var ZO = 0
+var PS = +2
+var PM = +4
+var PB = +6
+var mec = [
+    [Module.MF_TRI, NB, NB, NM],
+    [Module.MF_TRI, NB, NM, NS],
+    [Module.MF_TRI, NM, NS, ZO],
+    [Module.MF_TRI, NS, ZO, PS],
+    [Module.MF_TRI, ZO, PS, PM],
+    [Module.MF_TRI, PS, PM, PB],
+    [Module.MF_TRI, PM, PB, PB],
+    [Module.MF_NUL, ZO, ZO, ZO],
+]
+var NB = -15
+var NM = -10
+var NS = -5
+var ZO = 0
+var PS = +5
+var PM = +10
+var PB = +15
 var mkp = [
     [NB, NB, NM, NM, NS, ZO, ZO],
     [NB, NB, NM, NS, NS, ZO, PS],
@@ -26,6 +50,13 @@ var mkp = [
     [NS, ZO, PS, PM, PM, PM, PB],
     [ZO, ZO, PM, PM, PM, PB, PB],
 ]
+var NB = -3
+var NM = -2
+var NS = -1
+var ZO = 0
+var PS = +1
+var PM = +2
+var PB = +3
 var mki = [
     [PB, PB, PM, PM, PS, ZO, ZO],
     [PB, PB, PM, PS, PS, ZO, ZO],
@@ -45,12 +76,12 @@ var mkd = [
     [NB, NM, NM, NM, NS, NS, NB],
 ]
 
-var ctx = new Module.fpid(2, 1, mmp, mkp, mki, mkd, -3, 3, -10, 10)
+var ctx = new Module.fpid(2, 1, me, mec, mkp, mki, mkd, -10, 10)
 ctx.kpid(10, 0.1, 1)
-console.log(ctx.proc(10, 0))
+console.log(ctx.iter(10, 0))
 ctx.delete()
 
-var ctx = new Module.fpid(2, 1, mmp, mkp, mki, mkd, -3, 3, -10, 10, 10)
+var ctx = new Module.fpid(2, 1, me, mec, mkp, mki, mkd, -10, 10, 10)
 ctx.kpid(10, 0.1, 1)
-console.log(ctx.proc(10, 0))
+console.log(ctx.iter(10, 0))
 ctx.delete()

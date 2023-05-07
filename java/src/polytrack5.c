@@ -114,9 +114,9 @@ JNIEXPORT jdoubleArray JNICALL JPACKAGE(polytrack5_out)(JNIEnv *jenv, jobject jo
     j_polytrack5_s jctx;
     j_polytrack5_get(j_polytrack5_new(jenv, jobj, &jctx), &ctx);
     a_polytrack5_out(&ctx, ts, out);
-    jdoubleArray jresult = (*jenv)->NewDoubleArray(jenv, JCOUNTOF(out));
-    (*jenv)->SetDoubleArrayRegion(jenv, jresult, 0, JCOUNTOF(out), out);
-    return jresult;
+    jdoubleArray jres = (*jenv)->NewDoubleArray(jenv, JCOUNTOF(out));
+    (*jenv)->SetDoubleArrayRegion(jenv, jres, 0, JCOUNTOF(out), out);
+    return jres;
 }
 
 JNIEXPORT jdouble JNICALL JPACKAGE(polytrack5_pos)(JNIEnv *jenv, jobject jobj, jdouble jts)

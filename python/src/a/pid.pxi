@@ -15,7 +15,7 @@ cdef class pid:
         else:
             a_pid_inc(&self.ctx)
     def __call__(self, set: a_real_t, fdb: a_real_t) -> a_real_t:
-        '''process function for PID controller'''
+        '''calculate function for PID controller'''
         return a_pid_outv(&self.ctx, set, fdb)
     def __dealloc__(self):
         '''terminate function for PID controller'''

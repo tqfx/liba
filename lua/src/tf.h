@@ -48,12 +48,12 @@ A_PUBLIC int LMODULE(tf_new)(lua_State *L);
 A_PUBLIC int LMODULE(tf_init)(lua_State *L);
 
 /***
- process function for transfer function
+ calculate function for transfer function
  @tparam number x controller output
  @treturn number feedback
- @function proc
+ @function iter
 */
-A_PUBLIC int LMODULE(tf_proc)(lua_State *L);
+A_PUBLIC int LMODULE(tf_iter)(lua_State *L);
 
 /***
  zero function for transfer function

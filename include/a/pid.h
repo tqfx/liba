@@ -247,7 +247,7 @@ A_EXTERN a_pid_s *a_pid_pos(a_pid_s *ctx, a_real_t max);
 A_EXTERN a_pid_s *a_pid_kpid(a_pid_s *ctx, a_real_t kp, a_real_t ki, a_real_t kd);
 
 /*!
- @brief set buffer for PID controller
+ @brief set buffer for multichannel PID controller
  @param[in,out] ctx points to an instance of PID controller
  @param[in] num number of controllers output
  @param[in] out points to controllers output
@@ -256,7 +256,7 @@ A_EXTERN a_pid_s *a_pid_kpid(a_pid_s *ctx, a_real_t kp, a_real_t ki, a_real_t kd
  @param[in] ec points to error change buffer
  @param[in] e points to error input buffer
 */
-A_EXTERN a_pid_s *a_pid_setp(a_pid_s *ctx, a_uint_t num, a_real_t *out, a_real_t *fdb, a_real_t *sum, a_real_t *ec, a_real_t *e);
+A_EXTERN a_pid_s *a_pid_chan(a_pid_s *ctx, a_uint_t num, a_real_t *out, a_real_t *fdb, a_real_t *sum, a_real_t *ec, a_real_t *e);
 
 /*!
  @brief initialize function for PID controller, default is turn off
@@ -272,13 +272,13 @@ A_EXTERN a_pid_s *a_pid_init(a_pid_s *ctx, a_real_t dt, a_real_t min, a_real_t m
  @param[in,out] ctx points to an instance of PID controller
  @param[in] set setpoint
  @param[in] fdb feedback
- @return output
+ @return output value
   @retval set when PID controller is off
 */
 A_EXTERN a_real_t a_pid_outv(a_pid_s *ctx, a_real_t set, a_real_t fdb);
 
 /*!
- @brief calculate function for PID controller
+ @brief calculate function for multichannel PID controller
  @param[in,out] ctx points to an instance of PID controller
  @param[in] set points to setpoint
  @param[in] fdb points to feedback

@@ -160,7 +160,7 @@ int LMODULE(polytrack7_gen)(lua_State *const L)
 }
 
 /***
- process function for hepta polynomial trajectory
+ calculate function for hepta polynomial trajectory
  @param ctx hepta polynomial trajectory userdata
  @tparam number ts current time unit(s)
  @treturn table {position,velocity,acceleration,jerk}
@@ -182,7 +182,7 @@ int LMODULE(polytrack7_out)(lua_State *const L)
 }
 
 /***
- process function for hepta polynomial trajectory position
+ calculate function for hepta polynomial trajectory position
  @param ctx hepta polynomial trajectory userdata
  @tparam number ts current time unit(s)
  @treturn number position output
@@ -201,7 +201,7 @@ int LMODULE(polytrack7_pos)(lua_State *const L)
 }
 
 /***
- process function for hepta polynomial trajectory velocity
+ calculate function for hepta polynomial trajectory velocity
  @param ctx hepta polynomial trajectory userdata
  @tparam number ts current time unit(s)
  @treturn number velocity output
@@ -220,7 +220,7 @@ int LMODULE(polytrack7_vec)(lua_State *const L)
 }
 
 /***
- process function for hepta polynomial trajectory acceleration
+ calculate function for hepta polynomial trajectory acceleration
  @param ctx hepta polynomial trajectory userdata
  @tparam number ts current time unit(s)
  @treturn number acceleration output
@@ -239,7 +239,7 @@ int LMODULE(polytrack7_acc)(lua_State *const L)
 }
 
 /***
- process function for hepta polynomial trajectory jerk
+ calculate function for hepta polynomial trajectory jerk
  @param ctx hepta polynomial trajectory userdata
  @tparam number ts current time unit(s)
  @treturn number jerk output

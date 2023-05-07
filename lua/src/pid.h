@@ -66,9 +66,9 @@ A_PUBLIC int LMODULE(pid_init)(lua_State *L);
  @tparam number set setpoint
  @tparam number fdb feedback
  @treturn number output
- @function proc
+ @function iter
 */
-A_PUBLIC int LMODULE(pid_proc)(lua_State *L);
+A_PUBLIC int LMODULE(pid_iter)(lua_State *L);
 
 /***
  zero function for PID controller

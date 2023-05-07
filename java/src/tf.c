@@ -82,14 +82,14 @@ JNIEXPORT jobject JNICALL JPACKAGE(tf_init)(JNIEnv *jenv, jobject jobj, jdoubleA
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL JPACKAGE(tf_proc)(JNIEnv *jenv, jobject jobj, jdouble jx)
+JNIEXPORT jdouble JNICALL JPACKAGE(tf_iter)(JNIEnv *jenv, jobject jobj, jdouble jx)
 {
     a_tf_s ctx;
     j_tf_s jctx;
     j_tf_get(j_tf_new(jenv, jobj, &jctx), &ctx);
-    jdouble jresult = a_tf_proc(&ctx, jx);
+    jdouble jres = a_tf_iter(&ctx, jx);
     j_tf_set(&jctx, &ctx);
-    return jresult;
+    return jres;
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(tf_zero)(JNIEnv *jenv, jobject jobj)

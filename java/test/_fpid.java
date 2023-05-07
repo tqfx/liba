@@ -5,14 +5,14 @@ import liba.fpid;
 class _fpid {
     public static void main(String[] args) {
         liba.init();
-        final int NB = -3;
-        final int NM = -2;
-        final int NS = -1;
-        final int ZO = 0;
-        final int PS = +1;
-        final int PM = +2;
-        final int PB = +3;
-        double[][] mmp = {
+        int NB = -3;
+        int NM = -2;
+        int NS = -1;
+        int ZO = 0;
+        int PS = +1;
+        int PM = +2;
+        int PB = +3;
+        double[][] me = {
                 { mf.TRI, NB, NB, NM },
                 { mf.TRI, NB, NM, NS },
                 { mf.TRI, NM, NS, ZO },
@@ -22,6 +22,30 @@ class _fpid {
                 { mf.TRI, PM, PB, PB },
                 { mf.NUL },
         };
+        NB = -6;
+        NM = -4;
+        NS = -2;
+        ZO = 0;
+        PS = +2;
+        PM = +4;
+        PB = +6;
+        double[][] mec = {
+                { mf.TRI, NB, NB, NM },
+                { mf.TRI, NB, NM, NS },
+                { mf.TRI, NM, NS, ZO },
+                { mf.TRI, NS, ZO, PS },
+                { mf.TRI, ZO, PS, PM },
+                { mf.TRI, PS, PM, PB },
+                { mf.TRI, PM, PB, PB },
+                { mf.NUL },
+        };
+        NB = -15;
+        NM = -10;
+        NS = -5;
+        ZO = 0;
+        PS = +5;
+        PM = +10;
+        PB = +15;
         double[][] mkp = {
                 { NB, NB, NM, NM, NS, ZO, ZO },
                 { NB, NB, NM, NS, NS, ZO, PS },
@@ -31,6 +55,13 @@ class _fpid {
                 { NS, ZO, PS, PM, PM, PM, PB },
                 { ZO, ZO, PM, PM, PM, PB, PB },
         };
+        NB = -3;
+        NM = -2;
+        NS = -1;
+        ZO = 0;
+        PS = +1;
+        PM = +2;
+        PB = +3;
         double[][] mki = {
                 { PB, PB, PM, PM, PS, ZO, ZO },
                 { PB, PB, PM, PS, PS, ZO, ZO },
@@ -49,12 +80,12 @@ class _fpid {
                 { NB, NS, NS, NS, NS, NS, NB },
                 { NB, NM, NM, NM, NS, NS, NB },
         };
-        fpid obj = new fpid(0, 1, mmp, mkp, mki, mkd, -3, 3, -10, +10);
-        System.out.print(obj.proc(1, 0) + " ");
+        fpid obj = new fpid(7, 1, me, mec, mkp, mki, mkd, -10, +10);
+        System.out.print(obj.iter(1, 0) + " ");
         obj.off().inc().pos(10).buff(2);
         obj.kpid(10, 0.1, 1);
         obj.mode(pid.INC);
         obj.time(0.1).zero();
-        System.out.println(obj.proc(1, 0));
+        System.out.println(obj.iter(1, 0));
     }
 }

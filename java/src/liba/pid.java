@@ -146,13 +146,13 @@ public class pid {
     public final native pid init(double dt, double min, double max);
 
     /**
-     * process function for PID controller
+     * calculate function for PID controller
      *
      * @param set setpoint
      * @param fdb feedback
      * @return output
      */
-    public final native double proc(double set, double fdb);
+    public final native double iter(double set, double fdb);
 
     /**
      * zero function for PID controller

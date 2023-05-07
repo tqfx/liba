@@ -149,8 +149,8 @@ impl PID {
         unsafe { a_pid_kpid(self, kp, ki, kd).as_mut().unwrap_unchecked() }
     }
 
-    /// process function for PID controller
-    pub fn proc(&mut self, set: Real, fdb: Real) -> Real {
+    /// calculate function for PID controller
+    pub fn iter(&mut self, set: Real, fdb: Real) -> Real {
         unsafe { a_pid_outv(self, set, fdb) }
     }
 
@@ -214,16 +214,16 @@ impl PID {
 fn pid() {
     {
         let mut a = crate::PID::new_pos(0.1, 10.0, 0.1, 1.0, -10.0, 10.0, 10.0);
-        println!("{}", a.proc(1.0, 0.0));
+        println!("{}", a.iter(1.0, 0.0));
     }
     {
         let mut a = crate::PID::new_inc(0.1, 10.0, 0.1, 1.0, -10.0, 10.0);
-        println!("{}", a.proc(1.0, 0.0));
+        println!("{}", a.iter(1.0, 0.0));
     }
     let mut a = crate::PID::new(1.0, -10.0, 10.0);
     a.kpid(10.0, 0.1, 1.0);
     a.pos(10.0).off().inc().set_dt(0.1);
     assert!(a.mode() == crate::pid::INC);
-    println!("{}", a.proc(1.0, 0.0));
+    println!("{}", a.iter(1.0, 0.0));
     a.zero();
 }

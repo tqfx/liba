@@ -83,7 +83,7 @@ A_PUBLIC int LMODULE(polytrack7_init)(lua_State *L);
 A_PUBLIC int LMODULE(polytrack7_gen)(lua_State *L);
 
 /***
- process function for hepta polynomial trajectory
+ calculate function for hepta polynomial trajectory
  @tparam number ts current time unit(s)
  @treturn table {position,velocity,acceleration,jerk}
  @function out
@@ -91,7 +91,7 @@ A_PUBLIC int LMODULE(polytrack7_gen)(lua_State *L);
 A_PUBLIC int LMODULE(polytrack7_out)(lua_State *L);
 
 /***
- process function for hepta polynomial trajectory position
+ calculate function for hepta polynomial trajectory position
  @tparam number ts current time unit(s)
  @treturn number position output
  @function pos
@@ -99,7 +99,7 @@ A_PUBLIC int LMODULE(polytrack7_out)(lua_State *L);
 A_PUBLIC int LMODULE(polytrack7_pos)(lua_State *L);
 
 /***
- process function for hepta polynomial trajectory velocity
+ calculate function for hepta polynomial trajectory velocity
  @tparam number ts current time unit(s)
  @treturn number velocity output
  @function vec
@@ -107,7 +107,7 @@ A_PUBLIC int LMODULE(polytrack7_pos)(lua_State *L);
 A_PUBLIC int LMODULE(polytrack7_vec)(lua_State *L);
 
 /***
- process function for hepta polynomial trajectory acceleration
+ calculate function for hepta polynomial trajectory acceleration
  @tparam number ts current time unit(s)
  @treturn number acceleration output
  @function acc
@@ -115,7 +115,7 @@ A_PUBLIC int LMODULE(polytrack7_vec)(lua_State *L);
 A_PUBLIC int LMODULE(polytrack7_acc)(lua_State *L);
 
 /***
- process function for hepta polynomial trajectory jerk
+ calculate function for hepta polynomial trajectory jerk
  @tparam number ts current time unit(s)
  @treturn number jerk output
  @function jer

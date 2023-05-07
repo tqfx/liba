@@ -10,7 +10,7 @@ local ZO = 0
 local PS = 1
 local PM = 2
 local PB = 3
-local mmp = {
+local me = {
   -- LuaFormatter off
   { a.mf.TRI, NB, NB, NM },
   { a.mf.TRI, NB, NM, NS },
@@ -22,6 +22,32 @@ local mmp = {
   { a.mf.NUL },
   -- LuaFormatter on
 }
+local NB = -6
+local NM = -4
+local NS = -3
+local ZO = 0
+local PS = 2
+local PM = 4
+local PB = 6
+local mec = {
+  -- LuaFormatter off
+  { a.mf.TRI, NB, NB, NM },
+  { a.mf.TRI, NB, NM, NS },
+  { a.mf.TRI, NM, NS, ZO },
+  { a.mf.TRI, NS, ZO, PS },
+  { a.mf.TRI, ZO, PS, PM },
+  { a.mf.TRI, PS, PM, PB },
+  { a.mf.TRI, PM, PB, PB },
+  { a.mf.NUL },
+  -- LuaFormatter on
+}
+local NB = -15
+local NM = -10
+local NS = -5
+local ZO = 0
+local PS = 5
+local PM = 10
+local PB = 15
 local mkp = {
   -- LuaFormatter off
   { NB, NB, NM, NM, NS, ZO, ZO },
@@ -33,6 +59,13 @@ local mkp = {
   { ZO, ZO, PM, PM, PM, PB, PB },
   -- LuaFormatter on
 }
+local NB = -3
+local NM = -2
+local NS = -1
+local ZO = 0
+local PS = 1
+local PM = 2
+local PB = 3
 local mki = {
   -- LuaFormatter off
   { PB, PB, PM, PM, PS, ZO, ZO },
@@ -56,17 +89,13 @@ local mkd = {
   -- LuaFormatter on
 }
 test:r(getmetatable(a.fpid))
-ctx = a.fpid.new(2, 1, mmp, mkp, mki, mkd, -3, 3, -10, 10)
-assert(type(a.fpid.base(ctx, mmp, mkp, mki, mkd)) == "userdata")
-assert(type(a.fpid:base(ctx, mmp, mkp, mki, mkd)) == "userdata")
+ctx = a.fpid.new(2, 1, me, mec, mkp, mki, mkd, -10, 10)
+assert(type(a.fpid.base(ctx, me, mec, mkp, mki, mkd)) == "userdata")
+assert(type(a.fpid:base(ctx, me, mec, mkp, mki, mkd)) == "userdata")
 assert(type(a.fpid.kpid(ctx, 3, 2, 1)) == "userdata")
 assert(type(a.fpid:kpid(ctx, 3, 2, 1)) == "userdata")
-assert(type(a.fpid.ilim(ctx, -3, 3)) == "userdata")
-assert(type(a.fpid:ilim(ctx, -3, 3)) == "userdata")
-assert(type(a.fpid.olim(ctx, -10, 10)) == "userdata")
-assert(type(a.fpid:olim(ctx, -10, 10)) == "userdata")
-assert(type(a.fpid.proc(ctx, 1, 0)) == "number")
-assert(type(a.fpid:proc(ctx, 1, 0)) == "number")
+assert(type(a.fpid.iter(ctx, 1, 0)) == "number")
+assert(type(a.fpid:iter(ctx, 1, 0)) == "number")
 assert(type(a.fpid.zero(ctx)) == "userdata")
 assert(type(a.fpid:zero(ctx)) == "userdata")
 assert(type(a.fpid.pos(ctx, 10)) == "userdata")
@@ -76,7 +105,7 @@ assert(type(a.fpid:inc(ctx)) == "userdata")
 assert(type(a.fpid.off(ctx)) == "userdata")
 assert(type(a.fpid:off(ctx)) == "userdata")
 test:r(getmetatable(ctx))
-ctx = a:fpid(2, 1, mmp, mkp, mki, mkd, -3, 3, -10, 10)
+ctx = a:fpid(2, 1, me, mec, mkp, mki, mkd, -10, 10)
 ctx:kpid(3, 2, 1):off():inc():pos(10)
 assert(type(ctx(1, 0)) == "number")
 assert(type(ctx.outmin) == "number")
