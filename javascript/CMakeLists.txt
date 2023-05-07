@@ -22,6 +22,10 @@ if(NOT EMSCRIPTEN)
   endif()
 endif()
 
+if(NOT DEFINED EMSDK_COMPILER_VERSION)
+  set(EMSDK_COMPILER_VERSION ${CMAKE_C_COMPILER_VERSION})
+endif()
+
 if(EMSCRIPTEN)
   set(OBJECTS $<TARGET_OBJECTS:a>)
 else()
@@ -49,6 +53,10 @@ if(NOT CMAKE_VERSION VERSION_LESS 3.3 AND LIBA_WARNINGS)
     $<$<COMPILE_LANGUAGE:C>:-Wno-declaration-after-statement>
     $<$<COMPILE_LANGUAGE:CXX>:-Wno-c++98-compat-pedantic>
   )
+
+  if(NOT EMSDK_COMPILER_VERSION VERSION_LESS 16)
+    target_compile_options(ajs PRIVATE -Wno-unsafe-buffer-usage)
+  endif()
 endif()
 
 if(CMAKE_CROSSCOMPILING_EMULATOR)
