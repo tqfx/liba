@@ -67,82 +67,82 @@ jobject j_pid_set(j_pid_s const *const jctx, a_pid_s const *const ctx)
 
 JNIEXPORT jobject JNICALL JPACKAGE(pid_off)(JNIEnv *jenv, jobject jobj)
 {
-    a_pid_s ctx[1];
-    j_pid_s jctx[1];
-    j_pid_get(j_pid_new(jenv, jobj, jctx), ctx);
-    a_pid_off(ctx);
-    return j_pid_set(jctx, ctx);
+    a_pid_s ctx;
+    j_pid_s jctx;
+    j_pid_get(j_pid_new(jenv, jobj, &jctx), &ctx);
+    a_pid_off(&ctx);
+    return j_pid_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(pid_inc)(JNIEnv *jenv, jobject jobj)
 {
-    a_pid_s ctx[1];
-    j_pid_s jctx[1];
-    j_pid_get(j_pid_new(jenv, jobj, jctx), ctx);
-    a_pid_inc(ctx);
-    return j_pid_set(jctx, ctx);
+    a_pid_s ctx;
+    j_pid_s jctx;
+    j_pid_get(j_pid_new(jenv, jobj, &jctx), &ctx);
+    a_pid_inc(&ctx);
+    return j_pid_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(pid_pos)(JNIEnv *jenv, jobject jobj, jdouble jmax)
 {
-    a_pid_s ctx[1];
-    j_pid_s jctx[1];
-    j_pid_get(j_pid_new(jenv, jobj, jctx), ctx);
-    a_pid_pos(ctx, jmax);
-    return j_pid_set(jctx, ctx);
+    a_pid_s ctx;
+    j_pid_s jctx;
+    j_pid_get(j_pid_new(jenv, jobj, &jctx), &ctx);
+    a_pid_pos(&ctx, jmax);
+    return j_pid_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(pid_mode)(JNIEnv *jenv, jobject jobj, jint jmode)
 {
-    a_pid_s ctx[1];
-    j_pid_s jctx[1];
-    j_pid_get(j_pid_new(jenv, jobj, jctx), ctx);
-    a_pid_set_mode(ctx, (a_uint_t)jmode);
-    return j_pid_set(jctx, ctx);
+    a_pid_s ctx;
+    j_pid_s jctx;
+    j_pid_get(j_pid_new(jenv, jobj, &jctx), &ctx);
+    a_pid_set_mode(&ctx, (a_uint_t)jmode);
+    return j_pid_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(pid_time)(JNIEnv *jenv, jobject jobj, jdouble jdt)
 {
-    a_pid_s ctx[1];
-    j_pid_s jctx[1];
-    j_pid_get(j_pid_new(jenv, jobj, jctx), ctx);
-    a_pid_set_dt(ctx, jdt);
-    return j_pid_set(jctx, ctx);
+    a_pid_s ctx;
+    j_pid_s jctx;
+    j_pid_get(j_pid_new(jenv, jobj, &jctx), &ctx);
+    a_pid_set_dt(&ctx, jdt);
+    return j_pid_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(pid_kpid)(JNIEnv *jenv, jobject jobj, jdouble jkp, jdouble jki, jdouble jkd)
 {
-    a_pid_s ctx[1];
-    j_pid_s jctx[1];
-    j_pid_get(j_pid_new(jenv, jobj, jctx), ctx);
-    a_pid_kpid(ctx, jkp, jki, jkd);
-    return j_pid_set(jctx, ctx);
+    a_pid_s ctx;
+    j_pid_s jctx;
+    j_pid_get(j_pid_new(jenv, jobj, &jctx), &ctx);
+    a_pid_kpid(&ctx, jkp, jki, jkd);
+    return j_pid_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(pid_init)(JNIEnv *jenv, jobject jobj, jdouble jdt, jdouble jmin, jdouble jmax)
 {
-    a_pid_s ctx[1];
-    j_pid_s jctx[1];
-    j_pid_new(jenv, jobj, jctx);
-    a_pid_init(ctx, jdt, jmin, jmax);
-    return j_pid_set(jctx, ctx);
+    a_pid_s ctx;
+    j_pid_s jctx;
+    j_pid_new(jenv, jobj, &jctx);
+    a_pid_init(&ctx, jdt, jmin, jmax);
+    return j_pid_set(&jctx, &ctx);
 }
 
 JNIEXPORT jdouble JNICALL JPACKAGE(pid_proc)(JNIEnv *jenv, jobject jobj, jdouble jset, jdouble jfdb)
 {
-    a_pid_s ctx[1];
-    j_pid_s jctx[1];
-    j_pid_get(j_pid_new(jenv, jobj, jctx), ctx);
-    jdouble jresult = a_pid_outv(ctx, jset, jfdb);
-    j_pid_set(jctx, ctx);
+    a_pid_s ctx;
+    j_pid_s jctx;
+    j_pid_get(j_pid_new(jenv, jobj, &jctx), &ctx);
+    jdouble jresult = a_pid_outv(&ctx, jset, jfdb);
+    j_pid_set(&jctx, &ctx);
     return jresult;
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(pid_zero)(JNIEnv *jenv, jobject jobj)
 {
-    a_pid_s ctx[1];
-    j_pid_s jctx[1];
-    j_pid_get(j_pid_new(jenv, jobj, jctx), ctx);
-    a_pid_zero(ctx);
-    return j_pid_set(jctx, ctx);
+    a_pid_s ctx;
+    j_pid_s jctx;
+    j_pid_get(j_pid_new(jenv, jobj, &jctx), &ctx);
+    a_pid_zero(&ctx);
+    return j_pid_set(&jctx, &ctx);
 }

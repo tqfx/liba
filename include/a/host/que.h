@@ -20,7 +20,7 @@
 */
 typedef struct a_que_node_s
 {
-    a_list_s _node[1]; /*!< element node */
+    a_list_s _node; /*!< element node */
     a_vptr_t _data; /*!< element data */
 } a_que_node_s;
 
@@ -37,7 +37,7 @@ A_INTERN a_que_node_s *a_que_from(a_vptr_t const obj) { return a_cast_s(a_que_no
 typedef struct a_que_s
 {
     a_que_node_s **_ptr; /*!< mempool block */
-    a_list_s _head[1]; /*!< element head */
+    a_list_s _head; /*!< element head */
     a_size_t _size; /*!< element sizeof */
     a_size_t _num; /*!< element number */
     a_size_t _cur; /*!< mempool cursor */
@@ -64,7 +64,7 @@ A_INTERN a_size_t a_que_num(a_que_s const *const ctx) { return ctx->_num; }
 */
 A_INTERN a_vptr_t a_que_fore_(a_que_s const *const ctx)
 {
-    return a_que_from(ctx->_head->next)->_data;
+    return a_que_from(ctx->_head.next)->_data;
 }
 
 /*!
@@ -75,7 +75,7 @@ A_INTERN a_vptr_t a_que_fore_(a_que_s const *const ctx)
 */
 A_INTERN a_vptr_t a_que_back_(a_que_s const *const ctx)
 {
-    return a_que_from(ctx->_head->prev)->_data;
+    return a_que_from(ctx->_head.prev)->_data;
 }
 
 /*!
@@ -86,7 +86,7 @@ A_INTERN a_vptr_t a_que_back_(a_que_s const *const ctx)
 */
 A_INTERN a_vptr_t a_que_fore(a_que_s const *const ctx)
 {
-    return a_likely(a_list_used(ctx->_head)) ? a_que_fore_(ctx) : A_NULL;
+    return a_likely(a_list_used(&ctx->_head)) ? a_que_fore_(ctx) : A_NULL;
 }
 
 /*!
@@ -97,7 +97,7 @@ A_INTERN a_vptr_t a_que_fore(a_que_s const *const ctx)
 */
 A_INTERN a_vptr_t a_que_back(a_que_s const *const ctx)
 {
-    return a_likely(a_list_used(ctx->_head)) ? a_que_back_(ctx) : A_NULL;
+    return a_likely(a_list_used(&ctx->_head)) ? a_que_back_(ctx) : A_NULL;
 }
 
 #if defined(__cplusplus)
@@ -290,9 +290,9 @@ A_EXTERN a_vptr_t a_que_remove(a_que_s *ctx, a_size_t idx);
  @param ctx points to an instance of queue structure
 */
 #define a_que_foreach(T, it, ctx)                                     \
-    for (T *it = a_cast_r(T *, (ctx)->_head->next),                   \
+    for (T *it = a_cast_r(T *, (ctx)->_head.next),                    \
            *it##_ = a_cast_r(T *, a_list_from(it)->next);             \
-         a_list_from(it) != (ctx)->_head                              \
+         a_list_from(it) != &(ctx)->_head                             \
              ? ((void)(it = a_cast_s(T *, a_que_from(it)->_data)), 1) \
              : (0);                                                   \
          it = it##_, it##_ = a_cast_r(T *, a_list_from(it)->next))
@@ -310,9 +310,9 @@ A_EXTERN a_vptr_t a_que_remove(a_que_s *ctx, a_size_t idx);
  @param ctx points to an instance of queue structure
 */
 #define a_que_foreach_reverse(T, it, ctx)                             \
-    for (T *it = a_cast_r(T *, (ctx)->_head->prev),                   \
+    for (T *it = a_cast_r(T *, (ctx)->_head.prev),                    \
            *it##_ = a_cast_r(T *, a_list_from(it)->prev);             \
-         a_list_from(it) != (ctx)->_head                              \
+         a_list_from(it) != &(ctx)->_head                             \
              ? ((void)(it = a_cast_s(T *, a_que_from(it)->_data)), 1) \
              : (0);                                                   \
          it = it##_, it##_ = a_cast_r(T *, a_list_from(it)->prev))

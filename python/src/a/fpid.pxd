@@ -2,7 +2,7 @@ from a.pid cimport *
 
 cdef extern from "a/fpid.h":
     ctypedef struct a_fpid_s:
-        a_pid_s pid[1]
+        a_pid_s pid
         a_real_t kp
         a_real_t ki
         a_real_t kd

@@ -5,7 +5,7 @@ j_fpid_s *j_fpid_new(JNIEnv *const jenv, jobject const jobj, j_fpid_s *const jct
 {
     jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "fpid");
     jfieldID pid = (*jenv)->GetFieldID(jenv, jcls, "pid", "L" CLASSPATH "pid;");
-    j_pid_new(jenv, (*jenv)->GetObjectField(jenv, jobj, pid), jctx->pid);
+    j_pid_new(jenv, (*jenv)->GetObjectField(jenv, jobj, pid), &jctx->pid);
     jctx->mmp = (*jenv)->GetFieldID(jenv, jcls, "mmp", "[D");
     jctx->jmmp = (*jenv)->GetObjectField(jenv, jobj, jctx->mmp);
     jctx->mkp = (*jenv)->GetFieldID(jenv, jcls, "mkp", "[D");
@@ -35,7 +35,7 @@ jobject j_fpid_get(j_fpid_s const *const jctx, a_fpid_s *const ctx)
 {
     JNIEnv *jenv = jctx->jenv;
     jobject jobj = jctx->jobj;
-    j_pid_get(jctx->pid, ctx->pid);
+    j_pid_get(&jctx->pid, &ctx->pid);
     ctx->mmp = NULL;
     if (jctx->jmmp)
     {
@@ -85,7 +85,7 @@ jobject j_fpid_set(j_fpid_s const *const jctx, a_fpid_s const *const ctx)
 {
     JNIEnv *jenv = jctx->jenv;
     jobject jobj = jctx->jobj;
-    j_pid_set(jctx->pid, ctx->pid);
+    j_pid_set(&jctx->pid, &ctx->pid);
     if (ctx->mmp)
     {
         // NOLINTNEXTLINE(performance-no-int-to-ptr)
@@ -133,83 +133,83 @@ jobject j_fpid_set(j_fpid_s const *const jctx, a_fpid_s const *const ctx)
 
 JNIEXPORT jobject JNICALL JPACKAGE(fpid_inc)(JNIEnv *jenv, jobject jobj)
 {
-    a_fpid_s ctx[1];
-    j_fpid_s jctx[1];
-    j_fpid_get(j_fpid_new(jenv, jobj, jctx), ctx);
-    a_fpid_inc(ctx);
-    return j_fpid_set(jctx, ctx);
+    a_fpid_s ctx;
+    j_fpid_s jctx;
+    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
+    a_fpid_inc(&ctx);
+    return j_fpid_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(fpid_off)(JNIEnv *jenv, jobject jobj)
 {
-    a_fpid_s ctx[1];
-    j_fpid_s jctx[1];
-    j_fpid_get(j_fpid_new(jenv, jobj, jctx), ctx);
-    a_fpid_off(ctx);
-    return j_fpid_set(jctx, ctx);
+    a_fpid_s ctx;
+    j_fpid_s jctx;
+    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
+    a_fpid_off(&ctx);
+    return j_fpid_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(fpid_pos)(JNIEnv *jenv, jobject jobj, jdouble jmax)
 {
-    a_fpid_s ctx[1];
-    j_fpid_s jctx[1];
-    j_fpid_get(j_fpid_new(jenv, jobj, jctx), ctx);
-    a_fpid_pos(ctx, jmax);
-    return j_fpid_set(jctx, ctx);
+    a_fpid_s ctx;
+    j_fpid_s jctx;
+    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
+    a_fpid_pos(&ctx, jmax);
+    return j_fpid_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(fpid_mode)(JNIEnv *jenv, jobject jobj, jint jmode)
 {
-    a_fpid_s ctx[1];
-    j_fpid_s jctx[1];
-    j_fpid_get(j_fpid_new(jenv, jobj, jctx), ctx);
-    a_pid_set_mode(ctx->pid, (a_uint_t)jmode);
-    return j_fpid_set(jctx, ctx);
+    a_fpid_s ctx;
+    j_fpid_s jctx;
+    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
+    a_pid_set_mode(&ctx.pid, (a_uint_t)jmode);
+    return j_fpid_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(fpid_time)(JNIEnv *jenv, jobject jobj, jdouble jdt)
 {
-    a_fpid_s ctx[1];
-    j_fpid_s jctx[1];
-    j_fpid_get(j_fpid_new(jenv, jobj, jctx), ctx);
-    a_pid_set_dt(ctx->pid, jdt);
-    return j_fpid_set(jctx, ctx);
+    a_fpid_s ctx;
+    j_fpid_s jctx;
+    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
+    a_pid_set_dt(&ctx.pid, jdt);
+    return j_fpid_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(fpid_ilim)(JNIEnv *jenv, jobject jobj, jdouble jmin, jdouble jmax)
 {
-    a_fpid_s ctx[1];
-    j_fpid_s jctx[1];
-    j_fpid_get(j_fpid_new(jenv, jobj, jctx), ctx);
-    a_fpid_ilim(ctx, jmin, jmax);
-    return j_fpid_set(jctx, ctx);
+    a_fpid_s ctx;
+    j_fpid_s jctx;
+    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
+    a_fpid_ilim(&ctx, jmin, jmax);
+    return j_fpid_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(fpid_olim)(JNIEnv *jenv, jobject jobj, jdouble jmin, jdouble jmax)
 {
-    a_fpid_s ctx[1];
-    j_fpid_s jctx[1];
-    j_fpid_get(j_fpid_new(jenv, jobj, jctx), ctx);
-    a_fpid_olim(ctx, jmin, jmax);
-    return j_fpid_set(jctx, ctx);
+    a_fpid_s ctx;
+    j_fpid_s jctx;
+    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
+    a_fpid_olim(&ctx, jmin, jmax);
+    return j_fpid_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(fpid_kpid)(JNIEnv *jenv, jobject jobj, jdouble jkp, jdouble jki, jdouble jkd)
 {
-    a_fpid_s ctx[1];
-    j_fpid_s jctx[1];
-    j_fpid_get(j_fpid_new(jenv, jobj, jctx), ctx);
-    a_fpid_kpid(ctx, jkp, jki, jkd);
-    return j_fpid_set(jctx, ctx);
+    a_fpid_s ctx;
+    j_fpid_s jctx;
+    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
+    a_fpid_kpid(&ctx, jkp, jki, jkd);
+    return j_fpid_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(fpid_buff)(JNIEnv *jenv, jobject jobj, jint jnum)
 {
-    j_fpid_s jctx[1];
-    j_fpid_new(jenv, jobj, jctx);
-    (*jenv)->SetObjectField(jenv, jobj, jctx->mat, (*jenv)->NewDoubleArray(jenv, jnum * jnum));
-    (*jenv)->SetObjectField(jenv, jobj, jctx->mmp, (*jenv)->NewDoubleArray(jenv, jnum << 1));
-    (*jenv)->SetObjectField(jenv, jobj, jctx->idx, (*jenv)->NewIntArray(jenv, jnum << 1));
+    j_fpid_s jctx;
+    j_fpid_new(jenv, jobj, &jctx);
+    (*jenv)->SetObjectField(jenv, jobj, jctx.mat, (*jenv)->NewDoubleArray(jenv, jnum * jnum));
+    (*jenv)->SetObjectField(jenv, jobj, jctx.mmp, (*jenv)->NewDoubleArray(jenv, jnum << 1));
+    (*jenv)->SetObjectField(jenv, jobj, jctx.idx, (*jenv)->NewIntArray(jenv, jnum << 1));
     return jobj;
 }
 
@@ -237,12 +237,12 @@ static jobject concat(j_fpid_s const *jctx, jobjectArray jmat)
 JNIEXPORT jobject JNICALL JPACKAGE(fpid_base)(JNIEnv *jenv, jobject jobj, jobjectArray jmmp,
                                               jobjectArray jmkp, jobjectArray jmki, jobjectArray jmkd)
 {
-    j_fpid_s jctx[1];
-    j_fpid_new(jenv, jobj, jctx);
-    (*jenv)->SetObjectField(jenv, jobj, jctx->mkp, concat(jctx, jmkp));
-    (*jenv)->SetObjectField(jenv, jobj, jctx->mki, concat(jctx, jmki));
-    (*jenv)->SetObjectField(jenv, jobj, jctx->mkd, concat(jctx, jmkd));
-    (*jenv)->SetObjectField(jenv, jobj, jctx->mmp, concat(jctx, jmmp));
+    j_fpid_s jctx;
+    j_fpid_new(jenv, jobj, &jctx);
+    (*jenv)->SetObjectField(jenv, jobj, jctx.mkp, concat(&jctx, jmkp));
+    (*jenv)->SetObjectField(jenv, jobj, jctx.mki, concat(&jctx, jmki));
+    (*jenv)->SetObjectField(jenv, jobj, jctx.mkd, concat(&jctx, jmkd));
+    (*jenv)->SetObjectField(jenv, jobj, jctx.mmp, concat(&jctx, jmmp));
     return jobj;
 }
 
@@ -250,33 +250,33 @@ JNIEXPORT jobject JNICALL JPACKAGE(fpid_init)(JNIEnv *jenv, jobject jobj, jdoubl
                                               jobjectArray jmkp, jobjectArray jmki, jobjectArray jmkd,
                                               jdouble jimin, jdouble jimax, jdouble jomin, jdouble jomax)
 {
-    a_fpid_s ctx[1];
-    j_fpid_s jctx[1];
+    a_fpid_s ctx;
+    j_fpid_s jctx;
     a_uint_t num = (a_uint_t)(*jenv)->GetArrayLength(jenv, jmkp);
-    j_fpid_new(jenv, jobj, jctx);
-    (*jenv)->SetObjectField(jenv, jobj, jctx->mkp, concat(jctx, jmkp));
-    (*jenv)->SetObjectField(jenv, jobj, jctx->mki, concat(jctx, jmki));
-    (*jenv)->SetObjectField(jenv, jobj, jctx->mkd, concat(jctx, jmkd));
-    (*jenv)->SetObjectField(jenv, jobj, jctx->mmp, concat(jctx, jmmp));
-    a_fpid_init(ctx, jdt, num, 0, 0, 0, 0, jimin, jimax, jomin, jomax);
-    return j_fpid_set(jctx, ctx);
+    j_fpid_new(jenv, jobj, &jctx);
+    (*jenv)->SetObjectField(jenv, jobj, jctx.mkp, concat(&jctx, jmkp));
+    (*jenv)->SetObjectField(jenv, jobj, jctx.mki, concat(&jctx, jmki));
+    (*jenv)->SetObjectField(jenv, jobj, jctx.mkd, concat(&jctx, jmkd));
+    (*jenv)->SetObjectField(jenv, jobj, jctx.mmp, concat(&jctx, jmmp));
+    a_fpid_init(&ctx, jdt, num, 0, 0, 0, 0, jimin, jimax, jomin, jomax);
+    return j_fpid_set(&jctx, &ctx);
 }
 
 JNIEXPORT jdouble JNICALL JPACKAGE(fpid_proc)(JNIEnv *jenv, jobject jobj, jdouble jset, jdouble jfdb)
 {
-    a_fpid_s ctx[1];
-    j_fpid_s jctx[1];
-    j_fpid_get(j_fpid_new(jenv, jobj, jctx), ctx);
-    jdouble jresult = a_fpid_outv(ctx, jset, jfdb);
-    j_fpid_set(jctx, ctx);
+    a_fpid_s ctx;
+    j_fpid_s jctx;
+    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
+    jdouble jresult = a_fpid_outv(&ctx, jset, jfdb);
+    j_fpid_set(&jctx, &ctx);
     return jresult;
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(fpid_zero)(JNIEnv *jenv, jobject jobj)
 {
-    a_fpid_s ctx[1];
-    j_fpid_s jctx[1];
-    j_fpid_get(j_fpid_new(jenv, jobj, jctx), ctx);
-    a_fpid_zero(ctx);
-    return j_fpid_set(jctx, ctx);
+    a_fpid_s ctx;
+    j_fpid_s jctx;
+    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
+    a_fpid_zero(&ctx);
+    return j_fpid_set(&jctx, &ctx);
 }

@@ -4,9 +4,9 @@ from a.polytrack cimport *
 @cython.boundscheck(False)
 cdef class polytrack3:
     '''cubic polynomial trajectory'''
-    cdef a_polytrack3_s ctx[1]
+    cdef a_polytrack3_s ctx
     def __cinit__(self, a_real_t t0, a_real_t t1, a_real_t q0, a_real_t q1, a_real_t v0 = 0, a_real_t v1 = 0):
-        a_polytrack3_init(self.ctx, t0, t1, q0, q1, v0, v1)
+        a_polytrack3_init(&self.ctx, t0, t1, q0, q1, v0, v1)
     def __call__(self, ts):
         '''calculate all'''
         cdef a_real_t out[3]
@@ -15,40 +15,40 @@ cdef class polytrack3:
             v = reals(ts)
             a = reals(ts)
             for i, it in enumerate(ts):
-                a_polytrack3_out(self.ctx, it, out)
+                a_polytrack3_out(&self.ctx, it, out)
                 p[i] = out[0]
                 v[i] = out[1]
                 a[i] = out[2]
             return p, v, a
-        a_polytrack3_out(self.ctx, ts, out)
+        a_polytrack3_out(&self.ctx, ts, out)
         return out[0], out[1], out[2]
     def pos(self, ts):
         '''calculate position'''
         if iterable(ts):
             out = reals(ts)
             for i, it in enumerate(ts):
-                out[i] = a_polytrack3_pos(self.ctx, it)
+                out[i] = a_polytrack3_pos(&self.ctx, it)
             return out
-        return a_polytrack3_pos(self.ctx, ts)
+        return a_polytrack3_pos(&self.ctx, ts)
     def vec(self, ts):
         '''calculate velocity'''
         if iterable(ts):
             out = reals(ts)
             for i, it in enumerate(ts):
-                out[i] = a_polytrack3_vec(self.ctx, it)
+                out[i] = a_polytrack3_vec(&self.ctx, it)
             return out
-        return a_polytrack3_vec(self.ctx, ts)
+        return a_polytrack3_vec(&self.ctx, ts)
     def acc(self, ts):
         '''calculate acceleration'''
         if iterable(ts):
             out = reals(ts)
             for i, it in enumerate(ts):
-                out[i] = a_polytrack3_acc(self.ctx, it)
+                out[i] = a_polytrack3_acc(&self.ctx, it)
             return out
-        return a_polytrack3_acc(self.ctx, ts)
+        return a_polytrack3_acc(&self.ctx, ts)
     def gen(self):
         '''generation function'''
-        a_polytrack3_gen(self.ctx)
+        a_polytrack3_gen(&self.ctx)
 
     @property
     def k(self):
@@ -124,9 +124,9 @@ cdef class polytrack3:
 @cython.boundscheck(False)
 cdef class polytrack5:
     '''quintic polynomial trajectory'''
-    cdef a_polytrack5_s ctx[1]
+    cdef a_polytrack5_s ctx
     def __cinit__(self, a_real_t t0, a_real_t t1, a_real_t q0, a_real_t q1, a_real_t v0 = 0, a_real_t v1 = 0, a_real_t a0 = 0, a_real_t a1 = 0):
-        a_polytrack5_init(self.ctx, t0, t1, q0, q1, v0, v1, a0, a1)
+        a_polytrack5_init(&self.ctx, t0, t1, q0, q1, v0, v1, a0, a1)
     def __call__(self, ts):
         '''calculate all'''
         cdef a_real_t out[3]
@@ -135,40 +135,40 @@ cdef class polytrack5:
             v = reals(ts)
             a = reals(ts)
             for i, it in enumerate(ts):
-                a_polytrack5_out(self.ctx, it, out)
+                a_polytrack5_out(&self.ctx, it, out)
                 p[i] = out[0]
                 v[i] = out[1]
                 a[i] = out[2]
             return p, v, a
-        a_polytrack5_out(self.ctx, ts, out)
+        a_polytrack5_out(&self.ctx, ts, out)
         return out[0], out[1], out[2]
     def pos(self, ts):
         '''calculate position'''
         if iterable(ts):
             out = reals(ts)
             for i, it in enumerate(ts):
-                out[i] = a_polytrack5_pos(self.ctx, it)
+                out[i] = a_polytrack5_pos(&self.ctx, it)
             return out
-        return a_polytrack5_pos(self.ctx, ts)
+        return a_polytrack5_pos(&self.ctx, ts)
     def vec(self, ts):
         '''calculate velocity'''
         if iterable(ts):
             out = reals(ts)
             for i, it in enumerate(ts):
-                out[i] = a_polytrack5_vec(self.ctx, it)
+                out[i] = a_polytrack5_vec(&self.ctx, it)
             return out
-        return a_polytrack5_vec(self.ctx, ts)
+        return a_polytrack5_vec(&self.ctx, ts)
     def acc(self, ts):
         '''calculate acceleration'''
         if iterable(ts):
             out = reals(ts)
             for i, it in enumerate(ts):
-                out[i] = a_polytrack5_acc(self.ctx, it)
+                out[i] = a_polytrack5_acc(&self.ctx, it)
             return out
-        return a_polytrack5_acc(self.ctx, ts)
+        return a_polytrack5_acc(&self.ctx, ts)
     def gen(self):
         '''generation function'''
-        a_polytrack5_gen(self.ctx)
+        a_polytrack5_gen(&self.ctx)
 
     @property
     def k(self):
@@ -266,9 +266,9 @@ cdef class polytrack5:
 @cython.boundscheck(False)
 cdef class polytrack7:
     '''hepta polynomial trajectory'''
-    cdef a_polytrack7_s ctx[1]
+    cdef a_polytrack7_s ctx
     def __cinit__(self, a_real_t t0, a_real_t t1, a_real_t q0, a_real_t q1, a_real_t v0 = 0, a_real_t v1 = 0, a_real_t a0 = 0, a_real_t a1 = 0, a_real_t j0 = 0, a_real_t j1 = 0):
-        a_polytrack7_init(self.ctx, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1)
+        a_polytrack7_init(&self.ctx, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1)
     def __call__(self, ts):
         '''calculate all'''
         cdef a_real_t out[4]
@@ -278,49 +278,49 @@ cdef class polytrack7:
             a = reals(ts)
             j = reals(ts)
             for i, it in enumerate(ts):
-                a_polytrack7_out(self.ctx, it, out)
+                a_polytrack7_out(&self.ctx, it, out)
                 p[i] = out[0]
                 v[i] = out[1]
                 a[i] = out[2]
                 j[i] = out[3]
             return p, v, a, j
-        a_polytrack7_out(self.ctx, ts, out)
+        a_polytrack7_out(&self.ctx, ts, out)
         return out[0], out[1], out[2], out[3]
     def pos(self, ts):
         '''calculate position'''
         if iterable(ts):
             out = reals(ts)
             for i, it in enumerate(ts):
-                out[i] = a_polytrack7_pos(self.ctx, it)
+                out[i] = a_polytrack7_pos(&self.ctx, it)
             return out
-        return a_polytrack7_pos(self.ctx, ts)
+        return a_polytrack7_pos(&self.ctx, ts)
     def vec(self, ts):
         '''calculate velocity'''
         if iterable(ts):
             out = reals(ts)
             for i, it in enumerate(ts):
-                out[i] = a_polytrack7_vec(self.ctx, it)
+                out[i] = a_polytrack7_vec(&self.ctx, it)
             return out
-        return a_polytrack7_vec(self.ctx, ts)
+        return a_polytrack7_vec(&self.ctx, ts)
     def acc(self, ts):
         '''calculate acceleration'''
         if iterable(ts):
             out = reals(ts)
             for i, it in enumerate(ts):
-                out[i] = a_polytrack7_acc(self.ctx, it)
+                out[i] = a_polytrack7_acc(&self.ctx, it)
             return out
-        return a_polytrack7_acc(self.ctx, ts)
+        return a_polytrack7_acc(&self.ctx, ts)
     def jer(self, ts):
         '''calculate jerk'''
         if iterable(ts):
             out = reals(ts)
             for i, it in enumerate(ts):
-                out[i] = a_polytrack7_jer(self.ctx, it)
+                out[i] = a_polytrack7_jer(&self.ctx, it)
             return out
-        return a_polytrack7_jer(self.ctx, ts)
+        return a_polytrack7_jer(&self.ctx, ts)
     def gen(self):
         '''generation function'''
-        a_polytrack7_gen(self.ctx)
+        a_polytrack7_gen(&self.ctx)
 
     @property
     def k(self):

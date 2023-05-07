@@ -82,10 +82,10 @@ static void test(void)
     a_fpid_s ctx[2];
     A_FPID_INIT7(ctx + 0, A_REAL_C(0.01), NB, PB, -10, +10);
     a_fpid_kpid(ctx + 0, 400, 200, A_REAL_C(0.005));
-    a_pid_set_dt(ctx[0].pid, A_REAL_C(0.001));
+    a_pid_set_dt(&ctx[0].pid, A_REAL_C(0.001));
     A_FPID_INIT7(ctx + 1, A_REAL_C(0.01), NB, PB, -10, +10);
     a_fpid_kpid(ctx + 1, 400, 200, A_REAL_C(0.005));
-    a_pid_set_dt(ctx[1].pid, A_REAL_C(0.001));
+    a_pid_set_dt(&ctx[1].pid, A_REAL_C(0.001));
     a_real_t set[3] = {1, 1, 1};
     a_real_t out[3];
     a_real_t fdb[3];

@@ -16,7 +16,7 @@
 
 // clang-format off
 #define A_SLIST_NODE(node) {&(node)}
-#define A_SLIST_INIT(list) {{{(list).head}}, (list).head}
+#define A_SLIST_INIT(list) {{&(list).head}, &(list).head}
 // clang-format on
 
 /*!
@@ -63,7 +63,7 @@ A_INTERN a_void_t a_slist_node(a_slist_u *const ctx) { ctx->next = ctx; }
 */
 typedef struct a_slist_s
 {
-    a_slist_u head[1];
+    a_slist_u head;
     a_slist_u *tail;
 } a_slist_s;
 
@@ -82,7 +82,7 @@ typedef struct a_slist_s
  @param ctx points to circular singly linked list head
 */
 #define a_slist_foreach(it, ctx) \
-    for (a_slist_u *it = (ctx)->head->next; it != (ctx)->head; it = it->next)
+    for (a_slist_u *it = (ctx)->head.next; it != &(ctx)->head; it = it->next)
 
 /*!
  @brief iterate over a list safe against removal of list entry
@@ -90,8 +90,8 @@ typedef struct a_slist_s
  @param at another &a_slist_u to use as temporary storage
  @param ctx points to circular singly linked list head
 */
-#define a_slist_forsafe(it, at, ctx)                                     \
-    for (a_slist_u *at = (ctx)->head, *it = at->next; it != (ctx)->head; \
+#define a_slist_forsafe(it, at, ctx)                                       \
+    for (a_slist_u *at = &(ctx)->head, *it = at->next; it != &(ctx)->head; \
          at = (it && it == at->next) ? it : at, it = at->next)
 
 /*!
@@ -101,7 +101,7 @@ typedef struct a_slist_s
   @retval 0 exist
   @retval 1 none
 */
-A_INTERN a_bool_t a_slist_none(a_slist_s const *const ctx) { return ctx->head == ctx->head->next; }
+A_INTERN a_bool_t a_slist_none(a_slist_s const *const ctx) { return &ctx->head == ctx->head.next; }
 
 /*!
  @brief test whether a list node is a tail node
@@ -111,25 +111,25 @@ A_INTERN a_bool_t a_slist_none(a_slist_s const *const ctx) { return ctx->head ==
   @retval 0 it's not a tail node
   @retval 1 it is a tail node
 */
-A_INTERN a_bool_t a_slist_tail(a_slist_s const *const ctx, a_slist_u const *const node) { return ctx->head == node->next; }
+A_INTERN a_bool_t a_slist_tail(a_slist_s const *const ctx, a_slist_u const *const node) { return &ctx->head == node->next; }
 
 /*!
  @brief constructor for circular singly linked list head
  @param[in,out] ctx points to circular singly linked list head
 */
-A_INTERN a_void_t a_slist_ctor(a_slist_s *const ctx) { ctx->tail = ctx->head->next = ctx->head; }
+A_INTERN a_void_t a_slist_ctor(a_slist_s *const ctx) { ctx->tail = ctx->head.next = &ctx->head; }
 
 /*!
  @brief initialize for circular singly linked list head
  @param[in,out] ctx points to circular singly linked list head
 */
-A_INTERN a_void_t a_slist_init(a_slist_s *const ctx) { ctx->tail = ctx->head->next = ctx->head; }
+A_INTERN a_void_t a_slist_init(a_slist_s *const ctx) { ctx->tail = ctx->head.next = &ctx->head; }
 
 /*!
  @brief destructor for circular singly linked list head
  @param[in,out] ctx points to circular singly linked list head
 */
-A_INTERN a_void_t a_slist_dtor(a_slist_s *const ctx) { ctx->tail = ctx->head->next = ctx->head; }
+A_INTERN a_void_t a_slist_dtor(a_slist_s *const ctx) { ctx->tail = ctx->head.next = &ctx->head; }
 
 /*!
  @brief link head node and tail node
@@ -165,8 +165,8 @@ A_INTERN a_void_t a_slist_add_head(a_slist_s *const ctx, a_slist_u *const node)
     {
         ctx->tail = node;
     }
-    a_slist_link(node, ctx->head->next);
-    a_slist_link(ctx->head, node);
+    a_slist_link(node, ctx->head.next);
+    a_slist_link(&ctx->head, node);
 }
 
 /*!
@@ -176,7 +176,7 @@ A_INTERN a_void_t a_slist_add_head(a_slist_s *const ctx, a_slist_u *const node)
 */
 A_INTERN a_void_t a_slist_add_tail(a_slist_s *const ctx, a_slist_u *const node)
 {
-    a_slist_link(node, ctx->head);
+    a_slist_link(node, &ctx->head);
     a_slist_link(ctx->tail, node);
     ctx->tail = node;
 }
@@ -202,11 +202,11 @@ A_INTERN a_void_t a_slist_del(a_slist_s *const ctx, a_slist_u *const prev)
 */
 A_INTERN a_void_t a_slist_del_head(a_slist_s *const ctx)
 {
-    a_slist_u *const node = ctx->head->next;
-    a_slist_link(ctx->head, node->next);
+    a_slist_u *const node = ctx->head.next;
+    a_slist_link(&ctx->head, node->next);
     if (a_slist_tail(ctx, node))
     {
-        ctx->tail = ctx->head;
+        ctx->tail = &ctx->head;
     }
 }
 
@@ -227,7 +227,7 @@ A_INTERN a_void_t a_slist_mov(a_slist_s *const ctx, a_slist_u *const at, a_slist
         ctx->tail = src->tail;
     }
     a_slist_link(src->tail, at->next);
-    a_slist_link(at, src->head->next);
+    a_slist_link(at, src->head.next);
 }
 
 /*!
@@ -236,8 +236,8 @@ A_INTERN a_void_t a_slist_mov(a_slist_s *const ctx, a_slist_u *const at, a_slist
 */
 A_INTERN a_void_t a_slist_rot(a_slist_s *const ctx)
 {
-    a_slist_u *const node = ctx->head->next;
-    a_slist_link(ctx->head, node->next);
+    a_slist_u *const node = ctx->head.next;
+    a_slist_link(&ctx->head, node->next);
     a_slist_link(node, ctx->tail->next);
     a_slist_link(ctx->tail, node);
     ctx->tail = node;

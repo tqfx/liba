@@ -42,7 +42,7 @@ typedef enum a_fpid_e
 */
 typedef struct a_fpid_s
 {
-    a_pid_s pid[1]; //!< instance structure for PID controller
+    a_pid_s pid; //!< instance structure for PID controller
 
     a_real_t const *mmp; //!< points to membership function parameter table, an array terminated by @ref A_MF_NUL
     a_real_t const *mkp; //!< points to Kp's rule base table, the rule base must be square
@@ -100,7 +100,7 @@ A_EXTERN a_uint_t a_fpid_bufnum(a_fpid_s const *ctx);
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
 A_INTERN a_uint_t a_fpid_bufnum(a_fpid_s const *const ctx)
 {
-    return ctx->pid->num >> A_PID_NUM_BITS;
+    return ctx->pid.num >> A_PID_NUM_BITS;
 }
 #endif /* A_HAVE_INLINE */
 
@@ -110,8 +110,8 @@ A_EXTERN a_void_t a_fpid_set_bufnum(a_fpid_s *ctx, a_uint_t num);
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
 A_INTERN a_void_t a_fpid_set_bufnum(a_fpid_s *const ctx, a_uint_t const num)
 {
-    ctx->pid->num &= A_PID_NUM_MASK;
-    ctx->pid->num |= num << A_PID_NUM_BITS;
+    ctx->pid.num &= A_PID_NUM_MASK;
+    ctx->pid.num |= num << A_PID_NUM_BITS;
 }
 #endif /* A_HAVE_INLINE */
 
@@ -121,7 +121,7 @@ A_EXTERN a_uint_t a_fpid_col(a_fpid_s const *ctx);
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
 A_INTERN a_uint_t a_fpid_col(a_fpid_s const *const ctx)
 {
-    return ctx->pid->reg >> A_PID_REG_BITS;
+    return ctx->pid.reg >> A_PID_REG_BITS;
 }
 #endif /* A_HAVE_INLINE */
 
@@ -131,8 +131,8 @@ A_EXTERN a_void_t a_fpid_set_col(a_fpid_s *ctx, a_uint_t reg);
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
 A_INTERN a_void_t a_fpid_set_col(a_fpid_s *const ctx, a_uint_t const reg)
 {
-    ctx->pid->reg &= A_PID_REG_MASK;
-    ctx->pid->reg |= reg << A_PID_REG_BITS;
+    ctx->pid.reg &= A_PID_REG_MASK;
+    ctx->pid.reg |= reg << A_PID_REG_BITS;
 }
 #endif /* A_HAVE_INLINE */
 
@@ -142,7 +142,7 @@ A_EXTERN a_uint_t a_fpid_op(a_fpid_s const *ctx);
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
 A_INTERN a_uint_t a_fpid_op(a_fpid_s const *const ctx)
 {
-    return ctx->pid->reg & A_FPID_FUZZY_MASK;
+    return ctx->pid.reg & A_FPID_FUZZY_MASK;
 }
 #endif /* A_HAVE_INLINE */
 

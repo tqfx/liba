@@ -39,20 +39,20 @@ jobject j_polytrack3_set(j_polytrack3_s const *const jctx, a_polytrack3_s const 
 
 JNIEXPORT jobject JNICALL JPACKAGE(polytrack3_init__DDDDDD)(JNIEnv *jenv, jobject jobj, jdouble jt0, jdouble jt1, jdouble jq0, jdouble jq1, jdouble jv0, jdouble jv1)
 {
-    a_polytrack3_s ctx[1];
-    j_polytrack3_s jctx[1];
-    j_polytrack3_new(jenv, jobj, jctx);
-    a_polytrack3_init(ctx, jt0, jt1, jq0, jq1, jv0, jv1);
-    return j_polytrack3_set(jctx, ctx);
+    a_polytrack3_s ctx;
+    j_polytrack3_s jctx;
+    j_polytrack3_new(jenv, jobj, &jctx);
+    a_polytrack3_init(&ctx, jt0, jt1, jq0, jq1, jv0, jv1);
+    return j_polytrack3_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(polytrack3_init__DDDD)(JNIEnv *jenv, jobject jobj, jdouble jt0, jdouble jt1, jdouble jq0, jdouble jq1)
 {
-    a_polytrack3_s ctx[1];
-    j_polytrack3_s jctx[1];
-    j_polytrack3_new(jenv, jobj, jctx);
-    a_polytrack3_init(ctx, jt0, jt1, jq0, jq1, 0, 0);
-    return j_polytrack3_set(jctx, ctx);
+    a_polytrack3_s ctx;
+    j_polytrack3_s jctx;
+    j_polytrack3_new(jenv, jobj, &jctx);
+    a_polytrack3_init(&ctx, jt0, jt1, jq0, jq1, 0, 0);
+    return j_polytrack3_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(polytrack3_init___3D_3D_3D)(JNIEnv *jenv, jobject jobj, jdoubleArray jt, jdoubleArray jq, jdoubleArray jv)
@@ -61,11 +61,11 @@ JNIEXPORT jobject JNICALL JPACKAGE(polytrack3_init___3D_3D_3D)(JNIEnv *jenv, job
     (*jenv)->GetDoubleArrayRegion(jenv, jt, 0, GetArrayLengthN(jenv, jt, JCOUNTOF(t)), t);
     (*jenv)->GetDoubleArrayRegion(jenv, jq, 0, GetArrayLengthN(jenv, jq, JCOUNTOF(q)), q);
     (*jenv)->GetDoubleArrayRegion(jenv, jv, 0, GetArrayLengthN(jenv, jv, JCOUNTOF(v)), v);
-    a_polytrack3_s ctx[1];
-    j_polytrack3_s jctx[1];
-    j_polytrack3_new(jenv, jobj, jctx);
-    a_polytrack3_init1(ctx, t, q, v);
-    return j_polytrack3_set(jctx, ctx);
+    a_polytrack3_s ctx;
+    j_polytrack3_s jctx;
+    j_polytrack3_new(jenv, jobj, &jctx);
+    a_polytrack3_init1(&ctx, t, q, v);
+    return j_polytrack3_set(&jctx, &ctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(polytrack3_init___3D_3D)(JNIEnv *jenv, jobject jobj, jdoubleArray jsource, jdoubleArray jtarget)
@@ -73,20 +73,20 @@ JNIEXPORT jobject JNICALL JPACKAGE(polytrack3_init___3D_3D)(JNIEnv *jenv, jobjec
     jdouble source[3] = {0}, target[3] = {0};
     (*jenv)->GetDoubleArrayRegion(jenv, jsource, 0, GetArrayLengthN(jenv, jsource, JCOUNTOF(source)), source);
     (*jenv)->GetDoubleArrayRegion(jenv, jtarget, 0, GetArrayLengthN(jenv, jtarget, JCOUNTOF(target)), target);
-    a_polytrack3_s ctx[1];
-    j_polytrack3_s jctx[1];
-    j_polytrack3_new(jenv, jobj, jctx);
-    a_polytrack3_init2(ctx, source, target);
-    return j_polytrack3_set(jctx, ctx);
+    a_polytrack3_s ctx;
+    j_polytrack3_s jctx;
+    j_polytrack3_new(jenv, jobj, &jctx);
+    a_polytrack3_init2(&ctx, source, target);
+    return j_polytrack3_set(&jctx, &ctx);
 }
 
 JNIEXPORT jdoubleArray JNICALL JPACKAGE(polytrack3_out)(JNIEnv *jenv, jobject jobj, jdouble jts)
 {
     jdouble out[3] = {0};
-    a_polytrack3_s ctx[1];
-    j_polytrack3_s jctx[1];
-    j_polytrack3_get(j_polytrack3_new(jenv, jobj, jctx), ctx);
-    a_polytrack3_out(ctx, jts, out);
+    a_polytrack3_s ctx;
+    j_polytrack3_s jctx;
+    j_polytrack3_get(j_polytrack3_new(jenv, jobj, &jctx), &ctx);
+    a_polytrack3_out(&ctx, jts, out);
     jdoubleArray jresult = (*jenv)->NewDoubleArray(jenv, JCOUNTOF(out));
     (*jenv)->SetDoubleArrayRegion(jenv, jresult, 0, JCOUNTOF(out), out);
     return jresult;
@@ -94,24 +94,24 @@ JNIEXPORT jdoubleArray JNICALL JPACKAGE(polytrack3_out)(JNIEnv *jenv, jobject jo
 
 JNIEXPORT jdouble JNICALL JPACKAGE(polytrack3_pos)(JNIEnv *jenv, jobject jobj, jdouble jts)
 {
-    a_polytrack3_s ctx[1];
-    j_polytrack3_s jctx[1];
-    j_polytrack3_get(j_polytrack3_new(jenv, jobj, jctx), ctx);
-    return a_polytrack3_pos(ctx, jts);
+    a_polytrack3_s ctx;
+    j_polytrack3_s jctx;
+    j_polytrack3_get(j_polytrack3_new(jenv, jobj, &jctx), &ctx);
+    return a_polytrack3_pos(&ctx, jts);
 }
 
 JNIEXPORT jdouble JNICALL JPACKAGE(polytrack3_vec)(JNIEnv *jenv, jobject jobj, jdouble jts)
 {
-    a_polytrack3_s ctx[1];
-    j_polytrack3_s jctx[1];
-    j_polytrack3_get(j_polytrack3_new(jenv, jobj, jctx), ctx);
-    return a_polytrack3_vec(ctx, jts);
+    a_polytrack3_s ctx;
+    j_polytrack3_s jctx;
+    j_polytrack3_get(j_polytrack3_new(jenv, jobj, &jctx), &ctx);
+    return a_polytrack3_vec(&ctx, jts);
 }
 
 JNIEXPORT jdouble JNICALL JPACKAGE(polytrack3_acc)(JNIEnv *jenv, jobject jobj, jdouble jts)
 {
-    a_polytrack3_s ctx[1];
-    j_polytrack3_s jctx[1];
-    j_polytrack3_get(j_polytrack3_new(jenv, jobj, jctx), ctx);
-    return a_polytrack3_acc(ctx, jts);
+    a_polytrack3_s ctx;
+    j_polytrack3_s jctx;
+    j_polytrack3_get(j_polytrack3_new(jenv, jobj, &jctx), &ctx);
+    return a_polytrack3_acc(&ctx, jts);
 }

@@ -94,12 +94,12 @@ static void test(void)
     putchar('\n');
 
     {
-        a_vector_s obj[1];
-        a_vector_copy(obj, ctx, u32dup);
+        a_vector_s obj;
+        a_vector_copy(&obj, ctx, u32dup);
         putchar('\n');
         a_vector_dtor(ctx);
         putchar('\n');
-        a_vector_move(ctx, obj);
+        a_vector_move(ctx, &obj);
     }
 
     a_vector_die(ctx);

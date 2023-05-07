@@ -315,7 +315,7 @@ static int LMODULE(fpid_set)(lua_State *const L)
     switch (hash)
     {
     case 0x000033A0: // dt
-        a_pid_set_dt(ctx->pid, (a_real_t)luaL_checknumber(L, 3));
+        a_pid_set_dt(&ctx->pid, (a_real_t)luaL_checknumber(L, 3));
         break;
     case 0x00003731: // kp
         ctx->kp = (a_real_t)luaL_checknumber(L, 3);
@@ -334,10 +334,10 @@ static int LMODULE(fpid_set)(lua_State *const L)
         break;
     }
     case 0x10E9FF9D: // summax
-        ctx->pid->summax = (a_real_t)luaL_checknumber(L, 3);
+        ctx->pid.summax = (a_real_t)luaL_checknumber(L, 3);
         break;
     case 0x0EB84F77: // mode
-        a_pid_set_mode(ctx->pid, (a_uint_t)luaL_checkinteger(L, 3));
+        a_pid_set_mode(&ctx->pid, (a_uint_t)luaL_checkinteger(L, 3));
         break;
     case 0xE8859EEB: // __name
     case 0xA65758B2: // __index
@@ -359,7 +359,7 @@ static int LMODULE(fpid_get)(lua_State *const L)
     switch (hash)
     {
     case 0x000033A0: // dt
-        lua_pushnumber(L, (lua_Number)a_pid_dt(ctx->pid));
+        lua_pushnumber(L, (lua_Number)a_pid_dt(&ctx->pid));
         break;
     case 0x00003731: // kp
         lua_pushnumber(L, (lua_Number)ctx->kp);
@@ -371,25 +371,25 @@ static int LMODULE(fpid_get)(lua_State *const L)
         lua_pushnumber(L, (lua_Number)ctx->kd);
         break;
     case 0x23C8F51C: // outmin
-        lua_pushnumber(L, (lua_Number)ctx->pid->outmin);
+        lua_pushnumber(L, (lua_Number)ctx->pid.outmin);
         break;
     case 0x23C8F10E: // outmax
-        lua_pushnumber(L, (lua_Number)ctx->pid->outmax);
+        lua_pushnumber(L, (lua_Number)ctx->pid.outmax);
         break;
     case 0x10E9FF9D: // summax
-        lua_pushnumber(L, (lua_Number)ctx->pid->summax);
+        lua_pushnumber(L, (lua_Number)ctx->pid.summax);
         break;
     case 0x001D4D3A: // out
-        lua_pushnumber(L, (lua_Number)ctx->pid->out.v);
+        lua_pushnumber(L, (lua_Number)ctx->pid.out.v);
         break;
     case 0x001AE924: // fdb
-        lua_pushnumber(L, (lua_Number)ctx->pid->fdb.v);
+        lua_pushnumber(L, (lua_Number)ctx->pid.fdb.v);
         break;
     case 0x00003412: // ec
-        lua_pushnumber(L, (lua_Number)ctx->pid->ec.v);
+        lua_pushnumber(L, (lua_Number)ctx->pid.ec.v);
         break;
     case 0x00000065: // e
-        lua_pushnumber(L, (lua_Number)ctx->pid->e.v);
+        lua_pushnumber(L, (lua_Number)ctx->pid.e.v);
         break;
     case 0x001A25B4: // col
         lua_pushinteger(L, (lua_Integer)a_fpid_col(ctx));
@@ -398,7 +398,7 @@ static int LMODULE(fpid_get)(lua_State *const L)
         lua_pushinteger(L, (lua_Integer)a_fpid_bufnum(ctx));
         break;
     case 0x0EB84F77: // mode
-        lua_pushinteger(L, (lua_Integer)a_pid_mode(ctx->pid));
+        lua_pushinteger(L, (lua_Integer)a_pid_mode(&ctx->pid));
         break;
     case 0x001D0204: // new
         lua_pushcfunction(L, LMODULE(fpid_new));
@@ -438,21 +438,21 @@ static int LMODULE(fpid_get)(lua_State *const L)
         l_int_s const enums[] = {
             {"col", (lua_Integer)a_fpid_col(ctx)},
             {"buf", (lua_Integer)a_fpid_bufnum(ctx)},
-            {"mode", (lua_Integer)a_pid_mode(ctx->pid)},
+            {"mode", (lua_Integer)a_pid_mode(&ctx->pid)},
             {NULL, 0},
         };
         l_num_s const datas[] = {
-            {"dt", a_pid_dt(ctx->pid)},
+            {"dt", a_pid_dt(&ctx->pid)},
             {"kp", ctx->kp},
             {"ki", ctx->ki},
             {"kd", ctx->kd},
-            {"outmin", ctx->pid->outmin},
-            {"outmax", ctx->pid->outmax},
-            {"summax", ctx->pid->summax},
-            {"out", ctx->pid->out.v},
-            {"fdb", ctx->pid->fdb.v},
-            {"ec", ctx->pid->ec.v},
-            {"e", ctx->pid->e.v},
+            {"outmin", ctx->pid.outmin},
+            {"outmax", ctx->pid.outmax},
+            {"summax", ctx->pid.summax},
+            {"out", ctx->pid.out.v},
+            {"fdb", ctx->pid.fdb.v},
+            {"ec", ctx->pid.ec.v},
+            {"e", ctx->pid.e.v},
             {NULL, 0},
         };
         l_func_s const funcs[] = {

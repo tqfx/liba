@@ -69,34 +69,34 @@ jobject j_tf_set(j_tf_s const *const jctx, a_tf_s const *const ctx)
 
 JNIEXPORT jobject JNICALL JPACKAGE(tf_init)(JNIEnv *jenv, jobject jobj, jdoubleArray jnum, jdoubleArray jden)
 {
-    j_tf_s jctx[1];
+    j_tf_s jctx;
     jsize m = (*jenv)->GetArrayLength(jenv, jnum);
     jobject ju = (*jenv)->NewDoubleArray(jenv, m);
     jsize n = (*jenv)->GetArrayLength(jenv, jden);
     jobject jv = (*jenv)->NewDoubleArray(jenv, n);
-    j_tf_new(jenv, jobj, jctx);
-    (*jenv)->SetObjectField(jenv, jobj, jctx->u, ju);
-    (*jenv)->SetObjectField(jenv, jobj, jctx->v, jv);
-    (*jenv)->SetObjectField(jenv, jobj, jctx->num, jnum);
-    (*jenv)->SetObjectField(jenv, jobj, jctx->den, jden);
+    j_tf_new(jenv, jobj, &jctx);
+    (*jenv)->SetObjectField(jenv, jobj, jctx.u, ju);
+    (*jenv)->SetObjectField(jenv, jobj, jctx.v, jv);
+    (*jenv)->SetObjectField(jenv, jobj, jctx.num, jnum);
+    (*jenv)->SetObjectField(jenv, jobj, jctx.den, jden);
     return jobj;
 }
 
 JNIEXPORT jdouble JNICALL JPACKAGE(tf_proc)(JNIEnv *jenv, jobject jobj, jdouble jx)
 {
-    a_tf_s ctx[1];
-    j_tf_s jctx[1];
-    j_tf_get(j_tf_new(jenv, jobj, jctx), ctx);
-    jdouble jresult = a_tf_proc(ctx, jx);
-    j_tf_set(jctx, ctx);
+    a_tf_s ctx;
+    j_tf_s jctx;
+    j_tf_get(j_tf_new(jenv, jobj, &jctx), &ctx);
+    jdouble jresult = a_tf_proc(&ctx, jx);
+    j_tf_set(&jctx, &ctx);
     return jresult;
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(tf_zero)(JNIEnv *jenv, jobject jobj)
 {
-    a_tf_s ctx[1];
-    j_tf_s jctx[1];
-    j_tf_get(j_tf_new(jenv, jobj, jctx), ctx);
-    a_tf_zero(ctx);
-    return j_tf_set(jctx, ctx);
+    a_tf_s ctx;
+    j_tf_s jctx;
+    j_tf_get(j_tf_new(jenv, jobj, &jctx), &ctx);
+    a_tf_zero(&ctx);
+    return j_tf_set(&jctx, &ctx);
 }

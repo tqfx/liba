@@ -3,7 +3,7 @@
 
 a_void_t a_pid_set_dt(a_pid_s *const ctx, a_real_t const dt)
 {
-    a_real_t t = dt / ctx->dt;
+    a_real_t const t = dt / ctx->dt;
     ctx->ki *= t;
     ctx->kd /= t;
     ctx->dt = dt;

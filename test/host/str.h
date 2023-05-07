@@ -6,21 +6,21 @@
 
 static void tests(void)
 {
-    a_str_s ctx[1] = {A_STR_NUL};
-    a_str_t str = a_str_exit(ctx);
+    a_str_s ctx = A_STR_NUL;
+    a_str_t str = a_str_exit(&ctx);
     printf("0x%" PRIXPTR " ", a_cast_r(a_uptr_t, str));
-    a_str_getc(ctx);
-    a_str_getc_(ctx);
-    a_str_putc_(ctx, 0);
-    a_str_putn_(ctx, A_NULL, 0);
-    a_str_putc(ctx, 0);
-    a_str_puts(ctx, "");
-    a_str_putn(ctx, A_NULL, 0);
-    TEST_BUG(a_str_idx(ctx, 0) == 0);
-    TEST_BUG(a_str_at(ctx, 0) == 0);
-    str = a_str_ptr(ctx);
+    a_str_getc(&ctx);
+    a_str_getc_(&ctx);
+    a_str_putc_(&ctx, 0);
+    a_str_putn_(&ctx, A_NULL, 0);
+    a_str_putc(&ctx, 0);
+    a_str_puts(&ctx, "");
+    a_str_putn(&ctx, A_NULL, 0);
+    TEST_BUG(a_str_idx(&ctx, 0) == 0);
+    TEST_BUG(a_str_at(&ctx, 0) == 0);
+    str = a_str_ptr(&ctx);
     printf("0x%" PRIXPTR " ", a_cast_r(a_uptr_t, str));
-    a_str_dtor(ctx);
+    a_str_dtor(&ctx);
 }
 
 static void testt(void)

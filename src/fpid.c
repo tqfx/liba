@@ -12,9 +12,9 @@ a_real_t a_fpid_op_equ(a_real_t const l, a_real_t const r)
 
 a_void_t a_fpid_set_op(a_fpid_s *const ctx, a_uint_t op)
 {
-    ctx->pid->reg &= ~A_FPID_FUZZY_MASK;
+    ctx->pid.reg &= ~A_FPID_FUZZY_MASK;
     op &= A_FPID_FUZZY_MASK;
-    ctx->pid->reg |= op;
+    ctx->pid.reg |= op;
     switch (op)
     {
     case A_FPID_OR_ALGEBRA:
@@ -87,19 +87,19 @@ out:
 
 a_fpid_s *a_fpid_off(a_fpid_s *const ctx)
 {
-    a_pid_off(ctx->pid);
+    a_pid_off(&ctx->pid);
     return ctx;
 }
 
 a_fpid_s *a_fpid_inc(a_fpid_s *const ctx)
 {
-    a_pid_inc(ctx->pid);
+    a_pid_inc(&ctx->pid);
     return ctx;
 }
 
 a_fpid_s *a_fpid_pos(a_fpid_s *const ctx, a_real_t const max)
 {
-    a_pid_pos(ctx->pid, max);
+    a_pid_pos(&ctx->pid, max);
     return ctx;
 }
 
@@ -114,8 +114,8 @@ a_fpid_s *a_fpid_olim(a_fpid_s *const ctx, a_real_t const min, a_real_t const ma
 {
     a_real_t const x = a_real_c((a_fpid_col(ctx) - 1) >> 1 << 1);
     ctx->alpha = (max - min) / x;
-    ctx->pid->outmin = min;
-    ctx->pid->outmax = max;
+    ctx->pid.outmin = min;
+    ctx->pid.outmax = max;
     return ctx;
 }
 
@@ -133,7 +133,7 @@ a_fpid_s *a_fpid_buf1(a_fpid_s *const ctx, a_vptr_t ptr, a_size_t max)
 
 a_fpid_s *a_fpid_kpid(a_fpid_s *const ctx, a_real_t const kp, a_real_t const ki, a_real_t const kd)
 {
-    a_pid_kpid(ctx->pid, kp, ki, kd);
+    a_pid_kpid(&ctx->pid, kp, ki, kd);
     ctx->kp = kp;
     ctx->ki = ki;
     ctx->kd = kd;
@@ -151,7 +151,7 @@ a_fpid_s *a_fpid_buff(a_fpid_s *const ctx, a_uint_t *const idx, a_real_t *const 
 a_fpid_s *a_fpid_setp(a_fpid_s *const ctx, a_uint_t const num, a_real_t *const out, a_real_t *const fdb,
                       a_real_t *const sum, a_real_t *const ec, a_real_t *const e)
 {
-    a_pid_setp(ctx->pid, num, out, fdb, sum, ec, e);
+    a_pid_setp(&ctx->pid, num, out, fdb, sum, ec, e);
     return ctx;
 }
 
@@ -171,7 +171,7 @@ a_fpid_s *a_fpid_init(a_fpid_s *const ctx, a_real_t const dt, a_uint_t const num
                       a_real_t const imin, a_real_t const imax, a_real_t const omin, a_real_t const omax)
 {
     a_real_t x = a_real_c((num - 1) >> 1 << 1);
-    a_pid_init(ctx->pid, dt, omin, omax);
+    a_pid_init(&ctx->pid, dt, omin, omax);
     a_fpid_base(ctx, num, mmp, mkp, mki, mkd);
     ctx->sigma = x / (imax - imin);
     ctx->alpha = (omax - omin) / x;
@@ -189,7 +189,7 @@ a_fpid_s *a_fpid_exit(a_fpid_s *const ctx) { return a_fpid_zero(ctx); }
 
 a_fpid_s *a_fpid_zero(a_fpid_s *const ctx)
 {
-    a_pid_zero(ctx->pid);
+    a_pid_zero(&ctx->pid);
     return ctx;
 }
 
@@ -259,30 +259,30 @@ static void a_fpid_proc_(a_fpid_s *const ctx, a_real_t ev[2], a_uint_t const num
         }
         qv[2] *= inv;
     }
-    a_pid_kpid(ctx->pid, qv[0] + ctx->kp, qv[1] + ctx->ki, qv[2] + ctx->kd);
+    a_pid_kpid(&ctx->pid, qv[0] + ctx->kp, qv[1] + ctx->ki, qv[2] + ctx->kd);
 }
 
 a_real_t a_fpid_outv(a_fpid_s *const ctx, a_real_t const set, a_real_t const fdb)
 {
     a_real_t ev[2];
     a_real_t const e = ev[0] = set - fdb;
-    a_real_t const ec = ev[1] = e - ctx->pid->e.v;
+    a_real_t const ec = ev[1] = e - ctx->pid.e.v;
     a_fpid_proc_(ctx, ev, a_fpid_col(ctx));
-    return a_pid_outv_(ctx->pid, a_pid_mode(ctx->pid), set, fdb, ec, e);
+    return a_pid_outv_(&ctx->pid, a_pid_mode(&ctx->pid), set, fdb, ec, e);
 }
 
 a_real_t *a_fpid_outp(a_fpid_s *const ctx, a_real_t *const set, a_real_t *const fdb)
 {
     a_uint_t const col = a_fpid_col(ctx);
-    a_uint_t const num = a_pid_num(ctx->pid);
-    a_uint_t const reg = a_pid_mode(ctx->pid);
+    a_uint_t const num = a_pid_num(&ctx->pid);
+    a_uint_t const reg = a_pid_mode(&ctx->pid);
     for (a_uint_t i = 0; i != num; ++i)
     {
         a_real_t ev[2];
         a_real_t const e = ev[0] = set[i] - fdb[i];
-        a_real_t const ec = ev[1] = e - ctx->pid->e.p[i];
+        a_real_t const ec = ev[1] = e - ctx->pid.e.p[i];
         a_fpid_proc_(ctx, ev, col);
-        a_pid_outp_(ctx->pid, reg, set[i], fdb[i], ec, e, i);
+        a_pid_outp_(&ctx->pid, reg, set[i], fdb[i], ec, e, i);
     }
-    return ctx->pid->out.p;
+    return ctx->pid.out.p;
 }

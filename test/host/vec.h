@@ -94,11 +94,11 @@ static void test(void)
     putchar('\n');
 
     {
-        a_vec_s obj[1];
-        a_vec_copy(obj, ctx, u32dup);
+        a_vec_s obj;
+        a_vec_copy(&obj, ctx, u32dup);
         putchar('\n');
         a_vec_dtor(ctx, A_NULL);
-        a_vec_move(ctx, obj);
+        a_vec_move(ctx, &obj);
     }
 
     a_vec_die(ctx, dtor);

@@ -11,52 +11,52 @@ emscripten::val version()
 
 class pid
 {
-    a_pid_s ctx[1];
+    a_pid_s ctx;
 
 public:
     pid(a_real_t jdt, a_real_t jmin, a_real_t jmax)
     {
-        a_pid_init(this->ctx, jdt, jmin, jmax);
-        a_pid_inc(this->ctx);
+        a_pid_init(&this->ctx, jdt, jmin, jmax);
+        a_pid_inc(&this->ctx);
     }
     pid(a_real_t jdt, a_real_t jmin, a_real_t jmax, a_real_t jsum)
     {
-        a_pid_init(this->ctx, jdt, jmin, jmax);
-        a_pid_pos(this->ctx, jsum);
+        a_pid_init(&this->ctx, jdt, jmin, jmax);
+        a_pid_pos(&this->ctx, jsum);
     }
     pid(a_real_t jdt, a_real_t jkp, a_real_t jki, a_real_t jkd, a_real_t jmin, a_real_t jmax)
     {
-        a_pid_init(this->ctx, jdt, jmin, jmax);
-        a_pid_kpid(this->ctx, jkp, jki, jkd);
-        a_pid_inc(this->ctx);
+        a_pid_init(&this->ctx, jdt, jmin, jmax);
+        a_pid_kpid(&this->ctx, jkp, jki, jkd);
+        a_pid_inc(&this->ctx);
     }
     pid(a_real_t jdt, a_real_t jkp, a_real_t jki, a_real_t jkd, a_real_t jmin, a_real_t jmax, a_real_t jsum)
     {
-        a_pid_init(this->ctx, jdt, jmin, jmax);
-        a_pid_kpid(this->ctx, jkp, jki, jkd);
-        a_pid_pos(this->ctx, jsum);
+        a_pid_init(&this->ctx, jdt, jmin, jmax);
+        a_pid_kpid(&this->ctx, jkp, jki, jkd);
+        a_pid_pos(&this->ctx, jsum);
     }
-    ~pid() { a_pid_exit(this->ctx); }
+    ~pid() { a_pid_exit(&this->ctx); }
     a_real_t proc(a_real_t jset, a_real_t jfdb)
     {
-        return a_pid_outv(this->ctx, jset, jfdb);
+        return a_pid_outv(&this->ctx, jset, jfdb);
     }
-    void zero() { a_pid_zero(this->ctx); }
+    void zero() { a_pid_zero(&this->ctx); }
     void kpid(a_real_t jkp, a_real_t jki, a_real_t jkd)
     {
-        a_pid_kpid(this->ctx, jkp, jki, jkd);
+        a_pid_kpid(&this->ctx, jkp, jki, jkd);
     }
-    void time(a_real_t jdt) { a_pid_set_dt(this->ctx, jdt); }
-    void pos(a_real_t jmax) { a_pid_pos(this->ctx, jmax); }
-    void inc() { a_pid_inc(this->ctx); }
-    void off() { a_pid_off(this->ctx); }
+    void time(a_real_t jdt) { a_pid_set_dt(&this->ctx, jdt); }
+    void pos(a_real_t jmax) { a_pid_pos(&this->ctx, jmax); }
+    void inc() { a_pid_inc(&this->ctx); }
+    void off() { a_pid_off(&this->ctx); }
 };
 
 #include "a/fpid.h"
 
 class fpid
 {
-    a_fpid_s ctx[1];
+    a_fpid_s ctx;
     a_real_t *mmp;
     a_real_t *mkp;
     a_real_t *mki;
@@ -85,23 +85,23 @@ public:
         this->mki = from(jmki);
         this->mkd = from(jmkd);
         a_uint_t num = jmkp["length"].as<a_uint_t>();
-        a_fpid_init(this->ctx, jdt, num, this->mmp,
+        a_fpid_init(&this->ctx, jdt, num, this->mmp,
                     this->mkp, this->mki, this->mkd,
                     jimin, jimax, jomin, jomax);
         this->buf = malloc(A_FPID_BUF1(jmax));
-        a_fpid_buf1(this->ctx, this->buf, jmax);
-        a_fpid_inc(this->ctx);
+        a_fpid_buf1(&this->ctx, this->buf, jmax);
+        a_fpid_inc(&this->ctx);
     }
     fpid(a_uint_t jmax, a_real_t jdt, emscripten::val jmmp,
          emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd,
          a_real_t jimin, a_real_t jimax, a_real_t jomin, a_real_t jomax, a_real_t jsum)
     {
         fpid(jmax, jdt, jmmp, jmkp, jmki, jmkd, jimin, jimax, jomin, jomax);
-        a_fpid_pos(this->ctx, jsum);
+        a_fpid_pos(&this->ctx, jsum);
     }
     ~fpid()
     {
-        a_fpid_exit(this->ctx);
+        a_fpid_exit(&this->ctx);
         delete[] this->mmp;
         delete[] this->mkp;
         delete[] this->mki;
@@ -111,7 +111,7 @@ public:
     void buff(a_uint_t jmax)
     {
         this->buf = realloc(this->buf, A_FPID_BUF1(jmax));
-        a_fpid_buf1(this->ctx, this->buf, jmax);
+        a_fpid_buf1(&this->ctx, this->buf, jmax);
     }
     void base(emscripten::val jmmp, emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd)
     {
@@ -120,112 +120,112 @@ public:
         this->mki = from(jmki);
         this->mkd = from(jmkd);
         a_uint_t num = jmkp["length"].as<a_uint_t>();
-        a_fpid_base(this->ctx, num, this->mmp, this->mkp, this->mki, this->mkd);
+        a_fpid_base(&this->ctx, num, this->mmp, this->mkp, this->mki, this->mkd);
     }
     a_real_t proc(a_real_t jset, a_real_t jfdb)
     {
-        return a_fpid_outv(this->ctx, jset, jfdb);
+        return a_fpid_outv(&this->ctx, jset, jfdb);
     }
-    void zero() { a_fpid_zero(this->ctx); }
+    void zero() { a_fpid_zero(&this->ctx); }
     void kpid(a_real_t jkp, a_real_t jki, a_real_t jkd)
     {
-        a_fpid_kpid(this->ctx, jkp, jki, jkd);
+        a_fpid_kpid(&this->ctx, jkp, jki, jkd);
     }
-    void time(a_real_t jdt) { a_pid_set_dt(this->ctx->pid, jdt); }
-    void pos(a_real_t jmax) { a_fpid_pos(this->ctx, jmax); }
-    void inc() { a_fpid_inc(this->ctx); }
-    void off() { a_fpid_off(this->ctx); }
+    void time(a_real_t jdt) { a_pid_set_dt(&this->ctx.pid, jdt); }
+    void pos(a_real_t jmax) { a_fpid_pos(&this->ctx, jmax); }
+    void inc() { a_fpid_inc(&this->ctx); }
+    void off() { a_fpid_off(&this->ctx); }
 };
 
 #include "a/polytrack.h"
 
 class polytrack3
 {
-    a_polytrack3_s ctx[1];
+    a_polytrack3_s ctx;
 
 public:
     polytrack3(a_real_t jt0, a_real_t jt1, a_real_t jq0, a_real_t jq1, a_real_t jv0 = 0, a_real_t jv1 = 0)
     {
-        a_polytrack3_init(this->ctx, jt0, jt1, jq0, jq1, jv0, jv1);
+        a_polytrack3_init(&this->ctx, jt0, jt1, jq0, jq1, jv0, jv1);
     }
     a_real_t pos(a_real_t jts)
     {
-        return a_polytrack3_pos(this->ctx, jts);
+        return a_polytrack3_pos(&this->ctx, jts);
     }
     a_real_t vec(a_real_t jts)
     {
-        return a_polytrack3_vec(this->ctx, jts);
+        return a_polytrack3_vec(&this->ctx, jts);
     }
     a_real_t acc(a_real_t jts)
     {
-        return a_polytrack3_acc(this->ctx, jts);
+        return a_polytrack3_acc(&this->ctx, jts);
     }
     emscripten::val out(a_real_t jts)
     {
         a_real_t out[3];
-        a_polytrack3_out(this->ctx, jts, out);
+        a_polytrack3_out(&this->ctx, jts, out);
         return emscripten::val(emscripten::typed_memory_view(3, out));
     }
 };
 
 class polytrack5
 {
-    a_polytrack5_s ctx[1];
+    a_polytrack5_s ctx;
 
 public:
     polytrack5(a_real_t jt0, a_real_t jt1, a_real_t jq0, a_real_t jq1, a_real_t jv0 = 0, a_real_t jv1 = 0, a_real_t ja0 = 0, a_real_t ja1 = 0)
     {
-        a_polytrack5_init(this->ctx, jt0, jt1, jq0, jq1, jv0, jv1, ja0, ja1);
+        a_polytrack5_init(&this->ctx, jt0, jt1, jq0, jq1, jv0, jv1, ja0, ja1);
     }
     a_real_t pos(a_real_t jts)
     {
-        return a_polytrack5_pos(this->ctx, jts);
+        return a_polytrack5_pos(&this->ctx, jts);
     }
     a_real_t vec(a_real_t jts)
     {
-        return a_polytrack5_vec(this->ctx, jts);
+        return a_polytrack5_vec(&this->ctx, jts);
     }
     a_real_t acc(a_real_t jts)
     {
-        return a_polytrack5_acc(this->ctx, jts);
+        return a_polytrack5_acc(&this->ctx, jts);
     }
     emscripten::val out(a_real_t jts)
     {
         a_real_t out[3];
-        a_polytrack5_out(this->ctx, jts, out);
+        a_polytrack5_out(&this->ctx, jts, out);
         return emscripten::val(emscripten::typed_memory_view(3, out));
     }
 };
 
 class polytrack7
 {
-    a_polytrack7_s ctx[1];
+    a_polytrack7_s ctx;
 
 public:
     polytrack7(a_real_t jt0, a_real_t jt1, a_real_t jq0, a_real_t jq1, a_real_t jv0 = 0, a_real_t jv1 = 0, a_real_t ja0 = 0, a_real_t ja1 = 0, a_real_t jj0 = 0, a_real_t jj1 = 0)
     {
-        a_polytrack7_init(this->ctx, jt0, jt1, jq0, jq1, jv0, jv1, ja0, ja1, jj0, jj1);
+        a_polytrack7_init(&this->ctx, jt0, jt1, jq0, jq1, jv0, jv1, ja0, ja1, jj0, jj1);
     }
     a_real_t pos(a_real_t jts)
     {
-        return a_polytrack7_pos(this->ctx, jts);
+        return a_polytrack7_pos(&this->ctx, jts);
     }
     a_real_t vec(a_real_t jts)
     {
-        return a_polytrack7_vec(this->ctx, jts);
+        return a_polytrack7_vec(&this->ctx, jts);
     }
     a_real_t acc(a_real_t jts)
     {
-        return a_polytrack7_acc(this->ctx, jts);
+        return a_polytrack7_acc(&this->ctx, jts);
     }
     a_real_t jer(a_real_t jts)
     {
-        return a_polytrack7_jer(this->ctx, jts);
+        return a_polytrack7_jer(&this->ctx, jts);
     }
     emscripten::val out(a_real_t jts)
     {
         a_real_t out[4];
-        a_polytrack7_out(this->ctx, jts, out);
+        a_polytrack7_out(&this->ctx, jts, out);
         return emscripten::val(emscripten::typed_memory_view(4, out));
     }
 };

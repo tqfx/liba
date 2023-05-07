@@ -6,7 +6,7 @@
 
 typedef struct
 {
-    j_pid_s pid[1];
+    j_pid_s pid;
     JNIEnv *jenv;
     jobject jobj;
     jfieldID mmp;
