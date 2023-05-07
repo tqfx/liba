@@ -13,7 +13,7 @@
 #define A_SIZE_VPTR @CMAKE_SIZEOF_VOID_P@
 #endif /* A_SIZE_VPTR */
 #if !defined A_SIZE_REAL
-#define A_SIZE_REAL @A_SIZE_REAL@
+#define A_SIZE_REAL @LIBA_REAL@
 #endif /* A_SIZE_REAL */
 
 #cmakedefine A_HAVE_COMPLEX_H @A_HAVE_COMPLEX_H@
