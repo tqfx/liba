@@ -1,6 +1,7 @@
 -- option: liba-lua
 option("liba-lua")
     set_showmenu(true)
+    set_category("liba")
     set_values("lua", "luajit")
     set_description("Enable/Disable lua")
 option_end()
