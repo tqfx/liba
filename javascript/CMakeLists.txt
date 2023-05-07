@@ -30,13 +30,13 @@ endif()
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ${LIBA_PIE})
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${LIBA_LTO})
+file_scaner(SOURCES RECURSE src EXT c h cc hh cpp hpp)
 
 # https://emscripten.org/docs/tools_reference/emcc.html
 string_append(LDFLAGS -sSINGLE_FILE=1 -sWASM=0)
 string_append(LDFLAGS -sWASM_ASYNC_COMPILATION=0)
 string_append(LDFLAGS -sEXPORTED_RUNTIME_METHODS=ccall,cwrap)
 
-file_scaner(SOURCES RECURSE src)
 add_executable(ajs ${OBJECTS} ${SOURCES})
 target_compile_definitions(ajs PRIVATE $<TARGET_PROPERTY:a,COMPILE_DEFINITIONS>)
 target_include_directories(ajs PRIVATE $<TARGET_PROPERTY:a,INCLUDE_DIRECTORIES>)

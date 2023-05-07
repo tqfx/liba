@@ -247,7 +247,12 @@ function(set_library_compile target)
   set_library_options(${target})
 endfunction()
 
-file_scaner(SOURCES RECURSE include src)
+if(LIBA_CXX)
+  file_scaner(SOURCES RECURSE include src EXT c h cc hh cpp hpp)
+else()
+  file_scaner(SOURCES RECURSE include src EXT c h)
+endif()
+
 add_library(a OBJECT ${SOURCES})
 set_library_compile(a)
 
@@ -494,7 +499,7 @@ if(PROJECT_IS_TOP_LEVEL)
 endif()
 
 if(CLANG_FORMAT_FOUND)
-  file_scaner(SOURCES RECURSE include src test java/src javascript/src lua/src quickjs/src)
+  file_scaner(SOURCES RECURSE include src test java/src javascript/src lua/src quickjs/src EXT c h cc hh cpp hpp)
   add_clang_format(aformat VERBOSE ${SOURCES})
   add_dependencies(afmt aformat)
 endif()
@@ -513,7 +518,7 @@ endif()
 
 if(PYTHON_FOUND AND CYTHON_FOUND)
   set(OPTIONS)
-  file_scaner(SOURCES RECURSE python/src)
+  file_scaner(SOURCES RECURSE python/src EXT c h cc hh cpp hpp)
   file(GLOB PRODUCTS ${PROJECT_NAME}*.so ${PROJECT_NAME}*.pyd)
 
   if(NOT CMAKE_VERSION VERSION_LESS 3.2)

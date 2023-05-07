@@ -26,7 +26,12 @@ else()
   get_property(OBJECTS TARGET a PROPERTY SOURCES)
 endif()
 
-file_scaner(SOURCES RECURSE src)
+if(LIBA_CXX)
+  file_scaner(SOURCES RECURSE src EXT c h cc hh cpp hpp)
+else()
+  file_scaner(SOURCES RECURSE src EXT c h)
+endif()
+
 add_library(ajni SHARED ${OBJECTS} ${SOURCES})
 set_target_properties(ajni PROPERTIES DEFINE_SYMBOL A_EXPORTS OUTPUT_NAME a)
 target_link_libraries(ajni PRIVATE jar-native-a)
