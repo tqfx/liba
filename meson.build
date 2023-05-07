@@ -15,7 +15,7 @@ a_have_h.set('A_VERSION', meson.project_version())
 a_have_h.set('A_VERSION_MAJOR', meson.project_version().split('.')[0])
 a_have_h.set('A_VERSION_MINOR', meson.project_version().split('.')[1])
 a_have_h.set('A_VERSION_PATCH', meson.project_version().split('.')[2])
-a_have_h.set('A_SIZE_REAL', get_option('a_real'))
+a_have_h.set('A_SIZE_REAL', get_option('real'))
 if target_machine.endian() == 'little'
     a_have_h.set('A_BYTE_ORDER', 1234)
 elif target_machine.endian() == 'big'
@@ -39,7 +39,7 @@ math = ['hypot', 'log1p', 'atan2',
         'casinh', 'cacosh', 'catanh']
 
 foreach func: math
-    real = get_option('a_real').to_int()
+    real = get_option('real').to_int()
     have = 'A_HAVE_@0@'.format(func.to_upper())
     if  real == 4
         func = func + 'f'
@@ -122,7 +122,7 @@ library('a', sources,
         include_directories: include_directories('include'),
         soversion: meson.project_version().split('.')[0],
         version: meson.project_version(),
-        link_args: get_option('a_math'),
+        link_args: get_option('math'),
         install: true)
 
 install_headers(a_h, subdir: 'a')
