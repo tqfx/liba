@@ -430,8 +430,15 @@
 #if defined(A_HAVE_VARIADIC_MACROS)
 #define A_SINGLE_FN(F, ...) F##f(__VA_ARGS__)
 #endif /* A_HAVE_VARIADIC_MACROS */
-#define A_SINGLE_MIN FLT_MIN
+#define A_SINGLE_DIG FLT_DIG
+#define A_SINGLE_EPSILON FLT_EPSILON
+#define A_SINGLE_MANT_DIG FLT_MANT_DIG
 #define A_SINGLE_MAX FLT_MAX
+#define A_SINGLE_MAX_10_EXP FLT_MAX_10_EXP
+#define A_SINGLE_MAX_EXP FLT_MAX_EXP
+#define A_SINGLE_MIN FLT_MIN
+#define A_SINGLE_MIN_10_EXP FLT_MIN_10_EXP
+#define A_SINGLE_MIN_EXP FLT_MIN_EXP
 #define A_SINGLE_INF a_single_c(A_DOUBLE_INF)
 #define A_SINGLE_NAN (A_SINGLE_C(0.0) * A_SINGLE_INF)
 /*! format constants for the fprintf family of functions */
@@ -454,8 +461,15 @@
 #if defined(A_HAVE_VARIADIC_MACROS)
 #define A_DOUBLE_FN(F, ...) F(__VA_ARGS__)
 #endif /* A_HAVE_VARIADIC_MACROS */
-#define A_DOUBLE_MIN DBL_MIN
+#define A_DOUBLE_DIG DBL_DIG
+#define A_DOUBLE_EPSILON DBL_EPSILON
+#define A_DOUBLE_MANT_DIG DBL_MANT_DIG
 #define A_DOUBLE_MAX DBL_MAX
+#define A_DOUBLE_MAX_10_EXP DBL_MAX_10_EXP
+#define A_DOUBLE_MAX_EXP DBL_MAX_EXP
+#define A_DOUBLE_MIN DBL_MIN
+#define A_DOUBLE_MIN_10_EXP DBL_MIN_10_EXP
+#define A_DOUBLE_MIN_EXP DBL_MIN_EXP
 #define A_DOUBLE_INF (DBL_MAX * DBL_MAX)
 #define A_DOUBLE_NAN (A_DOUBLE_C(0.0) * A_DOUBLE_INF)
 /*! format constants for the fprintf family of functions */
@@ -478,8 +492,15 @@
 #if defined(A_HAVE_VARIADIC_MACROS)
 #define A_EXTEND_FN(F, ...) F##l(__VA_ARGS__)
 #endif /* A_HAVE_VARIADIC_MACROS */
-#define A_EXTEND_MIN LDBL_MIN
+#define A_EXTEND_DIG LDBL_DIG
+#define A_EXTEND_EPSILON LDBL_EPSILON
+#define A_EXTEND_MANT_DIG LDBL_MANT_DIG
 #define A_EXTEND_MAX LDBL_MAX
+#define A_EXTEND_MAX_10_EXP LDBL_MAX_10_EXP
+#define A_EXTEND_MAX_EXP LDBL_MAX_EXP
+#define A_EXTEND_MIN LDBL_MIN
+#define A_EXTEND_MIN_10_EXP LDBL_MIN_10_EXP
+#define A_EXTEND_MIN_EXP LDBL_MIN_EXP
 #define A_EXTEND_INF (LDBL_MAX * LDBL_MAX)
 #define A_EXTEND_NAN (A_EXTEND_C(0.0) * A_EXTEND_INF)
 /*! format constants for the fprintf family of functions */
@@ -734,8 +755,15 @@
 #if defined(A_HAVE_VARIADIC_MACROS)
 #define A_F32_FN(F, ...) F##f(__VA_ARGS__)
 #endif /* A_HAVE_VARIADIC_MACROS */
-#define A_F32_MIN FLT_MIN
+#define A_F32_DIG FLT_DIG
+#define A_F32_EPSILON FLT_EPSILON
+#define A_F32_MANT_DIG FLT_MANT_DIG
 #define A_F32_MAX FLT_MAX
+#define A_F32_MAX_10_EXP FLT_MAX_10_EXP
+#define A_F32_MAX_EXP FLT_MAX_EXP
+#define A_F32_MIN FLT_MIN
+#define A_F32_MIN_10_EXP FLT_MIN_10_EXP
+#define A_F32_MIN_EXP FLT_MIN_EXP
 #define A_F32_INF a_f32_c(A_F64_INF)
 #define A_F32_NAN (A_F32_C(0.0) * A_F32_INF)
 #define A_F32_NNAN A_U32_C(0xFFC00000)
@@ -762,8 +790,15 @@
 #if defined(A_HAVE_VARIADIC_MACROS)
 #define A_F64_FN(F, ...) F(__VA_ARGS__)
 #endif /* A_HAVE_VARIADIC_MACROS */
-#define A_F64_MIN DBL_MIN
+#define A_F64_DIG DBL_DIG
+#define A_F64_EPSILON DBL_EPSILON
+#define A_F64_MANT_DIG DBL_MANT_DIG
 #define A_F64_MAX DBL_MAX
+#define A_F64_MAX_10_EXP DBL_MAX_10_EXP
+#define A_F64_MAX_EXP DBL_MAX_EXP
+#define A_F64_MIN DBL_MIN
+#define A_F64_MIN_10_EXP DBL_MIN_10_EXP
+#define A_F64_MIN_EXP DBL_MIN_EXP
 #define A_F64_INF (DBL_MAX * DBL_MAX)
 #define A_F64_NAN (A_F64_C(0.0) * A_F64_INF)
 #define A_F64_NNAN A_U64_C(0xFFF8000000000000)
@@ -906,8 +941,15 @@ typedef a_f64_t f64_t;
 
 /*! real number stored using `float` */
 #define A_REAL_T float
-#define A_REAL_MIN FLT_MIN
+#define A_REAL_DIG FLT_DIG
+#define A_REAL_EPSILON FLT_EPSILON
+#define A_REAL_MANT_DIG FLT_MANT_DIG
 #define A_REAL_MAX FLT_MAX
+#define A_REAL_MAX_10_EXP FLT_MAX_10_EXP
+#define A_REAL_MAX_EXP FLT_MAX_EXP
+#define A_REAL_MIN FLT_MIN
+#define A_REAL_MIN_10_EXP FLT_MIN_10_EXP
+#define A_REAL_MIN_EXP FLT_MIN_EXP
 
 /*!
  expands to a floating-point constant expression having the value specified by its argument and the type \ref a_real_t
@@ -933,8 +975,15 @@ typedef a_f64_t f64_t;
 
 /*! real number stored using `double` */
 #define A_REAL_T double
-#define A_REAL_MIN DBL_MIN
+#define A_REAL_DIG DBL_DIG
+#define A_REAL_EPSILON DBL_EPSILON
+#define A_REAL_MANT_DIG DBL_MANT_DIG
 #define A_REAL_MAX DBL_MAX
+#define A_REAL_MAX_10_EXP DBL_MAX_10_EXP
+#define A_REAL_MAX_EXP DBL_MAX_EXP
+#define A_REAL_MIN DBL_MIN
+#define A_REAL_MIN_10_EXP DBL_MIN_10_EXP
+#define A_REAL_MIN_EXP DBL_MIN_EXP
 
 /*!
  expands to a floating-point constant expression having the value specified by its argument and the type \ref a_real_t
@@ -960,8 +1009,15 @@ typedef a_f64_t f64_t;
 
 /*! real number stored using `long double` */
 #define A_REAL_T long double
-#define A_REAL_MIN LDBL_MIN
+#define A_REAL_DIG LDBL_DIG
+#define A_REAL_EPSILON LDBL_EPSILON
+#define A_REAL_MANT_DIG LDBL_MANT_DIG
 #define A_REAL_MAX LDBL_MAX
+#define A_REAL_MAX_10_EXP LDBL_MAX_10_EXP
+#define A_REAL_MAX_EXP LDBL_MAX_EXP
+#define A_REAL_MIN LDBL_MIN
+#define A_REAL_MIN_10_EXP LDBL_MIN_10_EXP
+#define A_REAL_MIN_EXP LDBL_MIN_EXP
 
 /*!
  expands to a floating-point constant expression having the value specified by its argument and the type \ref a_real_t
