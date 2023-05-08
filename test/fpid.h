@@ -1,12 +1,30 @@
 #ifndef TEST_FPID_H
 #define TEST_FPID_H
+#if defined(_MSC_VER)
+#define _CRT_SECURE_NO_WARNINGS
+#endif /* _MSC_VER */
 #define MAIN_(s, argc, argv) fpid##s(argc, argv)
 #include "test.h"
 #include "a/tf.h"
 #include "a/fpid.h"
 
-static void test(void)
+int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
+#if defined(MAIN_ONCE)
+    FILE *log = stdout;
+    if (argc > 1)
+    {
+        log = fopen(argv[1], "wb");
+        if (!log)
+        {
+            log = stdout;
+        }
+    }
+#else /* !MAIN_ONCE */
+    (void)(argc);
+    (void)(argv);
+#endif /* MAIN_ONCE */
+
     a_real_t num[] = {A_REAL_C(6.59492796e-05), A_REAL_C(6.54019884e-05)};
     a_real_t den[] = {A_REAL_C(-1.97530991), A_REAL_C(0.97530991)};
     a_real_t num1[] = {A_REAL_C(5.59492796e-05), A_REAL_C(5.54019884e-05)};
@@ -163,8 +181,8 @@ static void test(void)
         }
         a_tf_iter(tf, a_fpid_outv(ctx + 0, 1, v[0]));
 #if defined(MAIN_ONCE)
-        printf(A_REAL_PRI(".3", "f ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g\n"),
-               t, A_REAL_C(1.0), v[0], v0[0], v1[0], v2[0]);
+        fprintf(log, A_REAL_PRI(".3", "f ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g\n"),
+                t, A_REAL_C(1.0), v[0], v0[0], v1[0], v2[0]);
 #endif /* MAIN_ONCE */
     }
     a_tf_zero(tf);
@@ -190,13 +208,17 @@ static void test(void)
     a_fpid_set_op(ctx, A_FPID_AND_BOUNDED);
     TEST_BUG(a_fpid_op(ctx) == A_FPID_AND_BOUNDED);
     a_fpid_exit(ctx);
-}
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
-{
-    (void)(argc);
-    (void)(argv);
-    test();
+#if defined(MAIN_ONCE)
+    if (log != stdout)
+    {
+        if (fclose(log))
+        {
+            clearerr(log);
+        }
+    }
+#endif /* MAIN_ONCE */
+
     return 0;
 }
 

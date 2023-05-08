@@ -69,7 +69,7 @@ function(unittest target)
     set(TEST_NAME ${target})
   endif()
 
-  if(${IS_MULTI_CONFIG})
+  if(IS_MULTI_CONFIG)
     set(WORKING_DIRECTORY $<TARGET_FILE_DIR:alib>)
   else()
     set(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
@@ -83,6 +83,38 @@ function(unittest target)
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${TARGET}> ${TEST_ARGS}
   )
 endfunction()
+
+option(LIBA_GNUPLOT "Enable/Disable gnuplot" 0)
+
+if(LIBA_GNUPLOT)
+  find_package(Gnuplot)
+endif()
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  function(unitplot target script input image)
+    set(TARGET "${TARGET_PREFIX}${target}")
+    cmake_parse_arguments(TEST "" "NAME" "ARGS" ${ARGN})
+
+    if(NOT TEST_NAME)
+      set(TEST_NAME ${target})
+    endif()
+
+    if(IS_MULTI_CONFIG)
+      set(WORKING_DIRECTORY $<TARGET_FILE_DIR:alib>)
+    else()
+      set(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+    endif()
+
+    if(NOT TARGET_SUPPORTS_EXECUTABLES AND NOT CMAKE_CROSSCOMPILING_EMULATOR)
+      return()
+    endif()
+
+    add_custom_command(TARGET ${TARGET} POST_BUILD WORKING_DIRECTORY ${WORKING_DIRECTORY}
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${TARGET}> ${input}
+      COMMAND ${GNUPLOT_EXECUTABLE} -c ${CMAKE_CURRENT_SOURCE_DIR}/${script} ${input} ${image}
+    )
+  endfunction()
+endif()
 
 building(a a.c a.cpp)
 unittest(a NAME bkdr ARGS bkdr bkdr)
@@ -104,6 +136,10 @@ unittest(crc ARGS crc.c)
 building(fpid fpid.c fpid.cpp)
 unittest(fpid)
 
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(fpid pid.gp fpid.txt fpid.png)
+endif()
+
 building(list list.c list.cpp)
 unittest(list)
 
@@ -121,6 +157,10 @@ unittest(operator)
 
 building(pid pid.c pid.cpp)
 unittest(pid)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(pid pid.gp pid.txt pid.png)
+endif()
 
 building(poly poly.c poly.cpp)
 unittest(poly)
@@ -141,5 +181,5 @@ building(version version.c version.cpp)
 unittest(version)
 
 if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/host/CMakeLists.txt)
-    add_subdirectory(host)
+  add_subdirectory(host)
 endif()
