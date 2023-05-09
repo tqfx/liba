@@ -9,13 +9,25 @@ endfunction()
 set(JAVA_EXECUTABLE ${Java_JAVA_EXECUTABLE} -Djava.library.path=.)
 
 function(unittest source name)
+  set(ARGS)
+
+  foreach(arg ${ARGN})
+    get_filename_component(ext ${arg} EXT)
+
+    if(NOT ext OR IS_ABSOLUTE ${arg})
+      list(APPEND ARGS ${arg})
+    else()
+      list(APPEND ARGS ${CMAKE_CURRENT_BINARY_DIR}/${arg})
+    endif()
+  endforeach()
+
   add_test(NAME jar-${name} WORKING_DIRECTORY $<TARGET_FILE_DIR:ajni>
-    COMMAND ${JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_BINARY_DIR}/${source}.jar ${ARGN}
+    COMMAND ${JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_BINARY_DIR}/${source}.jar ${ARGS}
   )
 endfunction()
 
 building(_a a)
-unittest(_a a)
+unittest(_a a a.log)
 
 building(_fpid fpid)
 unittest(_fpid fpid)

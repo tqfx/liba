@@ -1,37 +1,37 @@
 local test = {}
 function test:r(...)
-  local print_r_cache = {}
-  local function print_r(indent, ...)
-    if print_r_cache[tostring(...)] then
-      print(indent .. "*" .. tostring(...))
+  local io_write_cache = {}
+  local function io_write(indent, ...)
+    if io_write_cache[tostring(...)] then
+      io.write(indent .. "*" .. tostring(...) .. "\n")
     else
-      print_r_cache[tostring(...)] = true
+      io_write_cache[tostring(...)] = true
       if type(...) == "table" then
         for pos, val in pairs(...) do
           if type(val) == "table" then
-            print(indent .. "[" .. pos .. "] => " .. tostring(...) .. " {")
-            print_r(indent .. string.rep(" ", string.len(pos) + 8), val)
-            print(indent .. string.rep(" ", string.len(pos) + 6) .. "}")
+            io.write(indent .. "[" .. pos .. "] => " .. tostring(...) .. " {\n")
+            io_write(indent .. string.rep(" ", string.len(pos) + 8), val)
+            io.write(indent .. string.rep(" ", string.len(pos) + 6) .. "}\n")
           elseif type(val) == "string" then
-            print(indent .. "[" .. pos .. '] => "' .. val .. '"')
+            io.write(indent .. "[" .. pos .. '] => "' .. val .. '"\n')
           else
-            print(indent .. "[" .. pos .. "] => " .. tostring(val))
+            io.write(indent .. "[" .. pos .. "] => " .. tostring(val) .. "\n")
           end
         end
       else
-        print(indent .. tostring(...))
+        io.write(indent .. tostring(...) .. "\n")
       end
     end
   end
   if type(...) == "table" then
-    print(tostring(...) .. " {")
-    print_r("  ", ...)
-    print("}")
+    io.write(tostring(...) .. " {\n")
+    io_write("  ", ...)
+    io.write("}\n")
   else
-    print_r("  ", ...)
+    io_write("  ", ...)
   end
 end
 function test:p(...)
-  print(...)
+  io.write(tostring(...) .. "\n")
 end
 return test

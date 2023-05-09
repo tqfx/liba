@@ -11,14 +11,10 @@
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
 #if defined(MAIN_ONCE)
-    FILE *log = stdout;
+    FILE *log = A_NULL;
     if (argc > 1)
     {
-        log = fopen(argv[1], "wb");
-        if (!log)
-        {
-            log = stdout;
-        }
+        log = freopen(argv[1], "wb", stdout);
     }
 #else /* !MAIN_ONCE */
     (void)(argc);
@@ -181,8 +177,8 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         }
         a_tf_iter(tf, a_fpid_outv(ctx + 0, 1, v[0]));
 #if defined(MAIN_ONCE)
-        fprintf(log, A_REAL_PRI(".3", "f ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g\n"),
-                t, A_REAL_C(1.0), v[0], v0[0], v1[0], v2[0]);
+        printf(A_REAL_PRI(".3", "f ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g\n"),
+               t, A_REAL_C(1.0), v[0], v0[0], v1[0], v2[0]);
 #endif /* MAIN_ONCE */
     }
     a_tf_zero(tf);
@@ -210,7 +206,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_fpid_exit(ctx);
 
 #if defined(MAIN_ONCE)
-    if (log != stdout)
+    if (log)
     {
         if (fclose(log))
         {

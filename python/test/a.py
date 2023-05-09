@@ -1,8 +1,10 @@
 #!/usr/bin/env python
-import sys
-import os
+import os, sys
+from typing import Any
 
 sys.path.insert(0, os.getcwd())
+if len(sys.argv) > 1:
+    sys.stdout = open(sys.argv[1], "w")
 
 import liba
 

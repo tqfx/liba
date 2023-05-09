@@ -1,10 +1,22 @@
 function(unittest source name)
+  set(ARGS)
+
+  foreach(arg ${ARGN})
+    get_filename_component(ext ${arg} EXT)
+
+    if(NOT ext OR IS_ABSOLUTE ${arg})
+      list(APPEND ARGS ${arg})
+    else()
+      list(APPEND ARGS ${CMAKE_CURRENT_BINARY_DIR}/${arg})
+    endif()
+  endforeach()
+
   add_test(NAME lua-${name} WORKING_DIRECTORY $<TARGET_FILE_DIR:alua>
-    COMMAND ${LUA_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/${source}.lua ${ARGN}
+    COMMAND ${LUA_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/${source}.lua ${ARGS}
   )
 endfunction()
 
-unittest(a a)
+unittest(a a a.log)
 
 unittest(complex complex)
 

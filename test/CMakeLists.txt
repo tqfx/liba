@@ -64,23 +64,40 @@ endfunction()
 function(unittest target)
   set(TARGET "${TARGET_PREFIX}${target}")
   cmake_parse_arguments(TEST "" "NAME" "ARGS" ${ARGN})
+  set(ARG)
 
   if(NOT TEST_NAME)
     set(TEST_NAME ${target})
   endif()
 
   if(IS_MULTI_CONFIG)
+    set(BINARY_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>)
+  else()
+    set(BINARY_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+  endif()
+
+  if(IS_MULTI_CONFIG AND BUILD_SHARED_LIBS)
     set(WORKING_DIRECTORY $<TARGET_FILE_DIR:alib>)
   else()
-    set(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+    set(WORKING_DIRECTORY ${BINARY_DIRECTORY})
   endif()
+
+  foreach(arg ${TEST_ARGS})
+    get_filename_component(ext ${arg} EXT)
+
+    if(NOT ext OR IS_ABSOLUTE ${arg})
+      list(APPEND ARGS ${arg})
+    elseif(NOT EMSCRIPTEN)
+      list(APPEND ARGS ${BINARY_DIRECTORY}/${arg})
+    endif()
+  endforeach()
 
   if(NOT TARGET_SUPPORTS_EXECUTABLES AND NOT CMAKE_CROSSCOMPILING_EMULATOR)
     return()
   endif()
 
   add_test(NAME ${TEST_NAME} WORKING_DIRECTORY ${WORKING_DIRECTORY}
-    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${TARGET}> ${TEST_ARGS}
+    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${TARGET}> ${ARGS}
   )
 endfunction()
 
@@ -93,16 +110,31 @@ endif()
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   function(unitplot target script input image)
     set(TARGET "${TARGET_PREFIX}${target}")
+    set(SOURCE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     cmake_parse_arguments(TEST "" "NAME" "ARGS" ${ARGN})
 
-    if(NOT TEST_NAME)
-      set(TEST_NAME ${target})
+    if(IS_MULTI_CONFIG)
+      set(BINARY_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>)
+    else()
+      set(BINARY_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
     endif()
 
-    if(IS_MULTI_CONFIG)
+    if(IS_MULTI_CONFIG AND BUILD_SHARED_LIBS)
       set(WORKING_DIRECTORY $<TARGET_FILE_DIR:alib>)
     else()
-      set(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+      set(WORKING_DIRECTORY ${BINARY_DIRECTORY})
+    endif()
+
+    if(NOT IS_ABSOLUTE ${script})
+      file(TO_CMAKE_PATH ${SOURCE_DIRECTORY}/${script} script)
+    endif()
+
+    if(NOT IS_ABSOLUTE ${input})
+      file(TO_CMAKE_PATH ${BINARY_DIRECTORY}/${input} input)
+    endif()
+
+    if(NOT IS_ABSOLUTE ${image})
+      file(TO_CMAKE_PATH ${BINARY_DIRECTORY}/${image} image)
     endif()
 
     if(NOT TARGET_SUPPORTS_EXECUTABLES AND NOT CMAKE_CROSSCOMPILING_EMULATOR)
@@ -111,7 +143,7 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
 
     add_custom_command(TARGET ${TARGET} POST_BUILD WORKING_DIRECTORY ${WORKING_DIRECTORY}
       COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${TARGET}> ${input}
-      COMMAND ${GNUPLOT_EXECUTABLE} -c ${CMAKE_CURRENT_SOURCE_DIR}/${script} ${input} ${image}
+      COMMAND ${GNUPLOT_EXECUTABLE} -c ${script} ${input} ${image}
     )
   endfunction()
 endif()
@@ -137,7 +169,7 @@ building(fpid fpid.c fpid.cpp)
 unittest(fpid)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(fpid pid.gp fpid.txt fpid.png)
+  unitplot(fpid pid.gp fpid.log fpid.png)
 endif()
 
 building(list list.c list.cpp)
@@ -159,7 +191,7 @@ building(pid pid.c pid.cpp)
 unittest(pid)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(pid pid.gp pid.txt pid.png)
+  unitplot(pid pid.gp pid.log pid.png)
 endif()
 
 building(poly poly.c poly.cpp)
