@@ -1,6 +1,6 @@
 [package]
 name = "liba"
-version = "0.1.1-rc3"
+version = "0.1.1-rc4"
 authors = ["tqfx <tqfx@foxmail.com>"]
 edition = "2018"
 description = """
