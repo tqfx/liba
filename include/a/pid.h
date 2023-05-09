@@ -275,7 +275,7 @@ A_EXTERN a_pid_s *a_pid_init(a_pid_s *ctx, a_real_t dt, a_real_t min, a_real_t m
  @return output value
   @retval set when PID controller is off
 */
-A_EXTERN a_real_t a_pid_outv(a_pid_s *ctx, a_real_t set, a_real_t fdb);
+A_EXTERN a_real_t a_pid_outf(a_pid_s *ctx, a_real_t set, a_real_t fdb);
 
 /*!
  @brief calculate function for multichannel PID controller

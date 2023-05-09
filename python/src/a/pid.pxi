@@ -16,7 +16,7 @@ cdef class pid:
             a_pid_inc(&self.ctx)
     def __call__(self, set: a_real_t, fdb: a_real_t) -> a_real_t:
         '''calculate function for PID controller'''
-        return a_pid_outv(&self.ctx, set, fdb)
+        return a_pid_outf(&self.ctx, set, fdb)
     def __dealloc__(self):
         '''terminate function for PID controller'''
         a_pid_exit(&self.ctx)
@@ -99,13 +99,13 @@ cdef class pid:
 
     @property
     def out(self) -> a_real_t:
-        return self.ctx.out.v
+        return self.ctx.out.f
     @property
     def fdb(self) -> a_real_t:
-        return self.ctx.fdb.v
+        return self.ctx.fdb.f
     @property
     def ec(self) -> a_real_t:
-        return self.ctx.ec.v
+        return self.ctx.ec.f
     @property
     def e(self) -> a_real_t:
-        return self.ctx.e.v
+        return self.ctx.e.f

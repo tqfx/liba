@@ -133,7 +133,7 @@ int LMODULE(fpid_iter)(lua_State *const L)
     {
         a_real_t const set = (a_real_t)luaL_checknumber(L, -2);
         a_real_t const fdb = (a_real_t)luaL_checknumber(L, -1);
-        lua_pushnumber(L, (lua_Number)a_fpid_outv(ctx, set, fdb));
+        lua_pushnumber(L, (lua_Number)a_fpid_outf(ctx, set, fdb));
         lua_pop(L, 2);
         return 1;
     }
@@ -336,16 +336,16 @@ static int LMODULE(fpid_get)(lua_State *const L)
         lua_pushnumber(L, (lua_Number)ctx->pid.summax);
         break;
     case 0x001D4D3A: // out
-        lua_pushnumber(L, (lua_Number)ctx->pid.out.v);
+        lua_pushnumber(L, (lua_Number)ctx->pid.out.f);
         break;
     case 0x001AE924: // fdb
-        lua_pushnumber(L, (lua_Number)ctx->pid.fdb.v);
+        lua_pushnumber(L, (lua_Number)ctx->pid.fdb.f);
         break;
     case 0x00003412: // ec
-        lua_pushnumber(L, (lua_Number)ctx->pid.ec.v);
+        lua_pushnumber(L, (lua_Number)ctx->pid.ec.f);
         break;
     case 0x00000065: // e
-        lua_pushnumber(L, (lua_Number)ctx->pid.e.v);
+        lua_pushnumber(L, (lua_Number)ctx->pid.e.f);
         break;
     case 0x001A25B4: // col
         lua_pushinteger(L, (lua_Integer)a_fpid_col(ctx));
@@ -399,10 +399,10 @@ static int LMODULE(fpid_get)(lua_State *const L)
             {"outmin", ctx->pid.outmin},
             {"outmax", ctx->pid.outmax},
             {"summax", ctx->pid.summax},
-            {"out", ctx->pid.out.v},
-            {"fdb", ctx->pid.fdb.v},
-            {"ec", ctx->pid.ec.v},
-            {"e", ctx->pid.e.v},
+            {"out", ctx->pid.out.f},
+            {"fdb", ctx->pid.fdb.f},
+            {"ec", ctx->pid.ec.f},
+            {"e", ctx->pid.e.f},
             {NULL, 0},
         };
         l_func_s const funcs[] = {

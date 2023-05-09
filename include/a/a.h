@@ -1055,8 +1055,8 @@ typedef a_f64_t f64_t;
 
 typedef union a_real_u
 {
-    a_real_t v; //!< a real value
-    a_real_t *p; //!< real vector
+    a_real_t f; //!< as a real number
+    a_real_t *p; //!< as a real array
 } a_real_u;
 
 #if defined(__cplusplus)

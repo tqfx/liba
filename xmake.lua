@@ -167,13 +167,14 @@ option("liba-rust")
 option_end()
 
 if has_config("liba-rust") then
-    add_requires("cargo::liba", {configs = {cargo_toml = path.join(os.projectdir(), "Cargo.toml")}})
-    target("arust")
-        set_basename("a")
-        set_kind("static")
-        add_files("src/lib.rs")
-        add_packages("cargo::liba")
+    target("ars")
         add_deps("a")
+        set_kind("static")
+        set_basename("liba")
+        add_files("src/lib.rs")
+        if get_config("liba-real") == "4" then
+            add_rcflags('--cfg=feature="float"')
+        end
     target_end()
 end
 

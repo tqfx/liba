@@ -253,7 +253,7 @@ JNIEXPORT jdouble JNICALL JPACKAGE(fpid_iter)(JNIEnv *jenv, jobject jobj, jdoubl
     a_fpid_s ctx;
     j_fpid_s jctx;
     j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
-    jdouble jres = a_fpid_outv(&ctx, jset, jfdb);
+    jdouble jres = a_fpid_outf(&ctx, jset, jfdb);
     j_fpid_set(&jctx, &ctx);
     return jres;
 }

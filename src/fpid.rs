@@ -1,74 +1,74 @@
 //! fuzzy proportional integral derivative controller
 
 use crate::pid::PID;
-use crate::Real;
-use crate::Uint;
+use crate::real;
+use crate::uint;
 
 /// fuzzy proportional integral derivative controller
 #[repr(C)]
 pub struct FPID {
     /// proportional integral derivative controller
     pub pid: PID,
-    me: *const Real,
-    mec: *const Real,
-    mkp: *const Real,
-    mki: *const Real,
-    mkd: *const Real,
-    idx: *mut Uint,
-    val: *mut Real,
+    me: *const real,
+    mec: *const real,
+    mkp: *const real,
+    mki: *const real,
+    mkd: *const real,
+    idx: *mut uint,
+    val: *mut real,
     /// fuzzy relational operator
-    op: Option<extern "C" fn(Real, Real) -> Real>,
+    op: Option<extern "C" fn(real, real) -> real>,
     /// base proportional constant
-    pub kp: Real,
+    pub kp: real,
     /// base integral constant
-    pub ki: Real,
+    pub ki: real,
     /// base derivative constant
-    pub kd: Real,
+    pub kd: real,
 }
 
 extern "C" {
     fn a_fpid_off(ctx: *mut FPID) -> *mut FPID;
     fn a_fpid_inc(ctx: *mut FPID) -> *mut FPID;
-    fn a_fpid_pos(ctx: *mut FPID, max: Real) -> *mut FPID;
-    fn a_fpid_kpid(ctx: *mut FPID, kp: Real, ki: Real, kd: Real) -> *mut FPID;
-    fn a_fpid_buff(ctx: *mut FPID, idx: *mut Uint, val: *mut Real) -> *mut FPID;
+    fn a_fpid_pos(ctx: *mut FPID, max: real) -> *mut FPID;
+    fn a_fpid_kpid(ctx: *mut FPID, kp: real, ki: real, kd: real) -> *mut FPID;
+    fn a_fpid_buff(ctx: *mut FPID, idx: *mut uint, val: *mut real) -> *mut FPID;
     fn a_fpid_base(
         ctx: *mut FPID,
-        num: Uint,
-        me: *const Real,
-        mec: *const Real,
-        mkp: *const Real,
-        mki: *const Real,
-        mkd: *const Real,
+        num: uint,
+        me: *const real,
+        mec: *const real,
+        mkp: *const real,
+        mki: *const real,
+        mkd: *const real,
     ) -> *mut FPID;
     fn a_fpid_init(
         ctx: *mut FPID,
-        dt: Real,
-        col: Uint,
-        me: *const Real,
-        mec: *const Real,
-        mkp: *const Real,
-        mki: *const Real,
-        mkd: *const Real,
-        min: Real,
-        max: Real,
+        dt: real,
+        col: uint,
+        me: *const real,
+        mec: *const real,
+        mkp: *const real,
+        mki: *const real,
+        mkd: *const real,
+        min: real,
+        max: real,
     ) -> *mut FPID;
-    fn a_fpid_outv(ctx: *mut FPID, set: Real, fdb: Real) -> Real;
+    fn a_fpid_outf(ctx: *mut FPID, set: real, fdb: real) -> real;
     fn a_fpid_zero(ctx: *mut FPID) -> *mut FPID;
 }
 
 impl FPID {
     /// initialize function for fuzzy PID controller, default is turn off
     pub fn new(
-        dt: Real,
+        dt: real,
         col: usize,
-        me: &[Real],
-        mec: &[Real],
-        mkp: &[Real],
-        mki: &[Real],
-        mkd: &[Real],
-        min: Real,
-        max: Real,
+        me: &[real],
+        mec: &[real],
+        mkp: &[real],
+        mki: &[real],
+        mkd: &[real],
+        min: real,
+        max: real,
     ) -> Self {
         let mut ctx: Self = Self {
             pid: PID::new(dt, min, max),
@@ -88,7 +88,7 @@ impl FPID {
             a_fpid_init(
                 &mut ctx,
                 dt,
-                col as Uint,
+                col as uint,
                 me.as_ptr(),
                 mec.as_ptr(),
                 mkp.as_ptr(),
@@ -112,17 +112,17 @@ impl FPID {
     }
 
     /// positional fuzzy PID controller
-    pub fn pos(&mut self, max: Real) -> &mut Self {
+    pub fn pos(&mut self, max: real) -> &mut Self {
         unsafe { a_fpid_pos(self, max).as_mut().unwrap_unchecked() }
     }
 
     /// set proportional integral derivative constant for fuzzy PID controller
-    pub fn kpid(&mut self, kp: Real, ki: Real, kd: Real) -> &mut Self {
+    pub fn kpid(&mut self, kp: real, ki: real, kd: real) -> &mut Self {
         unsafe { a_fpid_kpid(self, kp, ki, kd).as_mut().unwrap_unchecked() }
     }
 
     /// set buffer for fuzzy PID controller
-    pub fn buff(&mut self, idx: &mut [u32], val: &mut [Real]) -> &mut Self {
+    pub fn buff(&mut self, idx: &mut [u32], val: &mut [real]) -> &mut Self {
         unsafe {
             a_fpid_buff(self, idx.as_mut_ptr(), val.as_mut_ptr())
                 .as_mut()
@@ -134,16 +134,16 @@ impl FPID {
     pub fn base(
         &mut self,
         col: usize,
-        me: &[Real],
-        mec: &[Real],
-        mkp: &[Real],
-        mki: &[Real],
-        mkd: &[Real],
+        me: &[real],
+        mec: &[real],
+        mkp: &[real],
+        mki: &[real],
+        mkd: &[real],
     ) -> &mut Self {
         unsafe {
             a_fpid_base(
                 self,
-                col as Uint,
+                col as uint,
                 me.as_ptr(),
                 mec.as_ptr(),
                 mkp.as_ptr(),
@@ -156,8 +156,8 @@ impl FPID {
     }
 
     /// calculate function for fuzzy PID controller
-    pub fn iter(&mut self, set: Real, fdb: Real) -> Real {
-        unsafe { a_fpid_outv(self, set, fdb) }
+    pub fn iter(&mut self, set: real, fdb: real) -> real {
+        unsafe { a_fpid_outf(self, set, fdb) }
     }
 
     /// zero function for fuzzy PID controller
@@ -166,21 +166,21 @@ impl FPID {
     }
 
     /// get sampling time unit(s) for fuzzy PID controller
-    pub fn dt(&self) -> Uint {
+    pub fn dt(&self) -> uint {
         self.pid.mode()
     }
     /// set sampling time unit(s) for fuzzy PID controller
-    pub fn set_dt(&mut self, dt: Real) -> &mut Self {
+    pub fn set_dt(&mut self, dt: real) -> &mut Self {
         self.pid.set_dt(dt);
         self
     }
 
     /// get mode for fuzzy PID controller
-    pub fn mode(&self) -> Uint {
+    pub fn mode(&self) -> uint {
         self.pid.mode()
     }
     /// set mode for PID controller
-    pub fn set_mode(&mut self, reg: Uint) -> &mut Self {
+    pub fn set_mode(&mut self, reg: uint) -> &mut Self {
         self.pid.set_mode(reg);
         self
     }
@@ -189,13 +189,13 @@ impl FPID {
 #[test]
 #[allow(non_snake_case)]
 fn fpid() {
-    let NB: Real = -3.0;
-    let NM: Real = -2.0;
-    let NS: Real = -1.0;
-    let ZO: Real = 0.0;
-    let PS: Real = 1.0;
-    let PM: Real = 2.0;
-    let PB: Real = 3.0;
+    let NB: real = -3.0;
+    let NM: real = -2.0;
+    let NS: real = -1.0;
+    let ZO: real = 0.0;
+    let PS: real = 1.0;
+    let PM: real = 2.0;
+    let PB: real = 3.0;
     let me = [
         crate::mf::TRI,
         NB,
@@ -227,13 +227,13 @@ fn fpid() {
         PB,
         crate::mf::NUL,
     ];
-    let NB: Real = -3.0;
-    let NM: Real = -2.0;
-    let NS: Real = -1.0;
-    let ZO: Real = 0.0;
-    let PS: Real = 1.0;
-    let PM: Real = 2.0;
-    let PB: Real = 3.0;
+    let NB: real = -3.0;
+    let NM: real = -2.0;
+    let NS: real = -1.0;
+    let ZO: real = 0.0;
+    let PS: real = 1.0;
+    let PM: real = 2.0;
+    let PB: real = 3.0;
     let mec = [
         crate::mf::TRI,
         NB,
@@ -265,13 +265,13 @@ fn fpid() {
         PB,
         crate::mf::NUL,
     ];
-    let NB: Real = -15.0;
-    let NM: Real = -10.0;
-    let NS: Real = -5.0;
-    let ZO: Real = 0.0;
-    let PS: Real = 5.0;
-    let PM: Real = 10.0;
-    let PB: Real = 15.0;
+    let NB: real = -15.0;
+    let NM: real = -10.0;
+    let NS: real = -5.0;
+    let ZO: real = 0.0;
+    let PS: real = 5.0;
+    let PM: real = 10.0;
+    let PB: real = 15.0;
     let mkp = [
         [NB, NB, NM, NM, NS, ZO, ZO],
         [NB, NB, NM, NS, NS, ZO, PS],
@@ -281,13 +281,13 @@ fn fpid() {
         [NS, ZO, PS, PM, PM, PM, PB],
         [ZO, ZO, PM, PM, PM, PB, PB],
     ];
-    let NB: Real = -3.0;
-    let NM: Real = -2.0;
-    let NS: Real = -1.0;
-    let ZO: Real = 0.0;
-    let PS: Real = 1.0;
-    let PM: Real = 2.0;
-    let PB: Real = 3.0;
+    let NB: real = -3.0;
+    let NM: real = -2.0;
+    let NS: real = -1.0;
+    let ZO: real = 0.0;
+    let PS: real = 1.0;
+    let PM: real = 2.0;
+    let PB: real = 3.0;
     let mki = [
         [PB, PB, PM, PM, PS, ZO, ZO],
         [PB, PB, PM, PS, PS, ZO, ZO],

@@ -236,12 +236,12 @@ static void a_fpid_iter_(a_fpid_s *const ctx, a_uint_t const col, a_real_t ec, a
     a_pid_kpid(&ctx->pid, ctx->kp + qv[0], ctx->ki + qv[1], ctx->kd + qv[2]);
 }
 
-a_real_t a_fpid_outv(a_fpid_s *const ctx, a_real_t const set, a_real_t const fdb)
+a_real_t a_fpid_outf(a_fpid_s *const ctx, a_real_t const set, a_real_t const fdb)
 {
     a_real_t const e = set - fdb;
-    a_real_t const ec = e - ctx->pid.e.v;
+    a_real_t const ec = e - ctx->pid.e.f;
     a_fpid_iter_(ctx, a_fpid_col(ctx), ec, e);
-    return a_pid_outv_(&ctx->pid, a_pid_mode(&ctx->pid), set, fdb, ec, e);
+    return a_pid_outf_(&ctx->pid, a_pid_mode(&ctx->pid), set, fdb, ec, e);
 }
 
 a_real_t *a_fpid_outp(a_fpid_s *const ctx, a_real_t *const set, a_real_t *const fdb)

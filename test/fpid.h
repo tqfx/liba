@@ -175,7 +175,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         {
             a_tf_iter(tf + 1 + i, ptr[i]);
         }
-        a_tf_iter(tf, a_fpid_outv(ctx + 0, 1, v[0]));
+        a_tf_iter(tf, a_fpid_outf(ctx + 0, 1, v[0]));
 #if defined(MAIN_ONCE)
         printf(A_REAL_PRI(".3", "f ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g\n"),
                t, A_REAL_C(1.0), v[0], v0[0], v1[0], v2[0]);
@@ -187,7 +187,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_fpid_buf1(ctx, buff, 2);
     for (a_real_t t = 0; t < A_REAL_C(0.2); t += A_REAL_C(0.001))
     {
-        u[0] = a_fpid_outv(ctx, 1, v[0]);
+        u[0] = a_fpid_outf(ctx, 1, v[0]);
         v[0] = a_tf_iter(tf, u[0]);
     }
     TEST_BUG(a_fpid_op(ctx) == A_FPID_EQU);

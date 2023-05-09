@@ -127,7 +127,7 @@ int LMODULE(pid_iter)(lua_State *const L)
     {
         a_real_t const set = (a_real_t)luaL_checknumber(L, -2);
         a_real_t const fdb = (a_real_t)luaL_checknumber(L, -1);
-        lua_pushnumber(L, (lua_Number)a_pid_outv(ctx, set, fdb));
+        lua_pushnumber(L, (lua_Number)a_pid_outf(ctx, set, fdb));
         lua_pop(L, 2);
         return 1;
     }
@@ -303,16 +303,16 @@ static int LMODULE(pid_get)(lua_State *const L)
         lua_pushnumber(L, (lua_Number)ctx->summax);
         break;
     case 0x001D4D3A: // out
-        lua_pushnumber(L, (lua_Number)ctx->out.v);
+        lua_pushnumber(L, (lua_Number)ctx->out.f);
         break;
     case 0x001AE924: // fdb
-        lua_pushnumber(L, (lua_Number)ctx->fdb.v);
+        lua_pushnumber(L, (lua_Number)ctx->fdb.f);
         break;
     case 0x00003412: // ec
-        lua_pushnumber(L, (lua_Number)ctx->ec.v);
+        lua_pushnumber(L, (lua_Number)ctx->ec.f);
         break;
     case 0x00000065: // e
-        lua_pushnumber(L, (lua_Number)ctx->e.v);
+        lua_pushnumber(L, (lua_Number)ctx->e.f);
         break;
     case 0x001D0204: // new
         lua_pushcfunction(L, LMODULE(pid_new));
@@ -352,10 +352,10 @@ static int LMODULE(pid_get)(lua_State *const L)
             {"outmin", ctx->outmin},
             {"outmax", ctx->outmax},
             {"summax", ctx->summax},
-            {"out", ctx->out.v},
-            {"fdb", ctx->fdb.v},
-            {"ec", ctx->ec.v},
-            {"e", ctx->e.v},
+            {"out", ctx->out.f},
+            {"fdb", ctx->fdb.f},
+            {"ec", ctx->ec.f},
+            {"e", ctx->e.f},
             {NULL, 0},
         };
         l_func_s const funcs[] = {

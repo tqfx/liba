@@ -12,10 +12,26 @@ liba = "0.1"
 */
 
 #![warn(missing_docs)]
-#[allow(missing_docs)]
-pub type Uint = libc::c_uint;
-#[allow(missing_docs)]
-pub type Real = f64;
+#![allow(non_camel_case_types)]
+
+/// Equivalent to C’s char type.
+type c_char = std::os::raw::c_char;
+/// Equivalent to C’s unsigned int type.
+pub type uint = std::os::raw::c_uint;
+/// real number stored using `f64`
+#[cfg(not(feature = "float"))]
+pub type real = f64;
+/// real number stored using `f32`
+#[cfg(feature = "float")]
+pub type real = f32;
+/// real number union
+#[repr(C)]
+pub union Real {
+    /// as a real number
+    pub f: real,
+    /// as a real array
+    pub p: *mut real,
+}
 
 pub mod mf;
 pub mod tf;
@@ -30,10 +46,10 @@ pub use crate::polytrack::PolyTrack5;
 pub use crate::polytrack::PolyTrack7;
 
 extern "C" {
-    fn a_version() -> *const libc::c_char;
-    fn a_version_major() -> Uint;
-    fn a_version_minor() -> Uint;
-    fn a_version_patch() -> Uint;
+    fn a_version() -> *const c_char;
+    fn a_version_major() -> uint;
+    fn a_version_minor() -> uint;
+    fn a_version_patch() -> uint;
 }
 
 /**

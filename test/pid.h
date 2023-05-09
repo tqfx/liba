@@ -69,7 +69,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         {
             a_tf_iter(tf + 1 + i, ptr[i]);
         }
-        a_tf_iter(tf, a_pid_outv(ctx + 0, 1, v[0]));
+        a_tf_iter(tf, a_pid_outf(ctx + 0, 1, v[0]));
 #if defined(MAIN_ONCE)
         printf(A_REAL_PRI(".3", "f ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g\n"),
                t, A_REAL_C(1.0), v[0], v0[0], v1[0], v2[0]);

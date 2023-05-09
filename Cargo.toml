@@ -1,6 +1,6 @@
 [package]
 name = "liba"
-version = "0.1.1-rc4"
+version = "0.1.1-rc5"
 authors = ["tqfx <tqfx@foxmail.com>"]
 edition = "2018"
 description = """
@@ -16,5 +16,6 @@ categories = ["algorithms"]
 [build-dependencies]
 cmake = "0.1"
 
-[dependencies]
-libc = "0.2"
+[features]
+# Real number are stored using C’s float type
+float = []

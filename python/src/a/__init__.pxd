@@ -49,5 +49,5 @@ cdef extern from "a/a.h":
     IF A_SIZE_REAL == 4:
         ctypedef float a_real_t
     ctypedef union a_real_u:
-        a_real_t v
+        a_real_t f
         a_real_t *p

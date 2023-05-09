@@ -1,26 +1,27 @@
 //! proportional integral derivative controller
 
+use crate::real;
+use crate::uint;
 use crate::Real;
-use crate::Uint;
 
 /// turn off PID controller
-pub const OFF: Uint = 0;
+pub const OFF: uint = 0;
 /// positional PID controller
-pub const POS: Uint = 1;
+pub const POS: uint = 1;
 /// incremental PID controller
-pub const INC: Uint = 2;
+pub const INC: uint = 2;
 
 /// proportional integral derivative controller
 #[repr(C)]
 pub struct PID {
     /// sampling time unit(s)
-    dt: Real,
+    dt: real,
     /// proportional constant
-    kp: Real,
+    kp: real,
     /// integral constant
-    ki: Real,
+    ki: real,
     /// derivative constant
-    kd: Real,
+    kd: real,
     /// controller output
     pub out: Real,
     /// (integral) output item sum
@@ -32,50 +33,50 @@ pub struct PID {
     /// error input
     pub e: Real,
     /// minimum output
-    pub outmin: Real,
+    pub outmin: real,
     /// maximum output
-    pub outmax: Real,
+    pub outmax: real,
     /// maximum integral output
-    pub summax: Real,
-    num: Uint,
-    reg: Uint,
+    pub summax: real,
+    num: uint,
+    reg: uint,
 }
 
 extern "C" {
     fn a_pid_off(ctx: *mut PID) -> *mut PID;
     fn a_pid_inc(ctx: *mut PID) -> *mut PID;
-    fn a_pid_pos(ctx: *mut PID, max: Real) -> *mut PID;
-    fn a_pid_kpid(ctx: *mut PID, kp: Real, ki: Real, kd: Real) -> *mut PID;
-    fn a_pid_outv(ctx: *mut PID, set: Real, fdb: Real) -> Real;
+    fn a_pid_pos(ctx: *mut PID, max: real) -> *mut PID;
+    fn a_pid_kpid(ctx: *mut PID, kp: real, ki: real, kd: real) -> *mut PID;
+    fn a_pid_outf(ctx: *mut PID, set: real, fdb: real) -> real;
     fn a_pid_zero(ctx: *mut PID) -> *mut PID;
-    fn a_pid_set_dt(ctx: *mut PID, dt: Real);
-    fn a_pid_dt(ctx: *const PID) -> Real;
-    fn a_pid_set_kp(ctx: *mut PID, kp: Real);
-    fn a_pid_kp(ctx: *const PID) -> Real;
-    fn a_pid_set_ki(ctx: *mut PID, ki: Real);
-    fn a_pid_ki(ctx: *const PID) -> Real;
-    fn a_pid_set_kd(ctx: *mut PID, kd: Real);
-    fn a_pid_kd(ctx: *const PID) -> Real;
-    fn a_pid_set_mode(ctx: *mut PID, mode: Uint);
-    fn a_pid_mode(ctx: *const PID) -> Uint;
+    fn a_pid_set_dt(ctx: *mut PID, dt: real);
+    fn a_pid_dt(ctx: *const PID) -> real;
+    fn a_pid_set_kp(ctx: *mut PID, kp: real);
+    fn a_pid_kp(ctx: *const PID) -> real;
+    fn a_pid_set_ki(ctx: *mut PID, ki: real);
+    fn a_pid_ki(ctx: *const PID) -> real;
+    fn a_pid_set_kd(ctx: *mut PID, kd: real);
+    fn a_pid_kd(ctx: *const PID) -> real;
+    fn a_pid_set_mode(ctx: *mut PID, mode: uint);
+    fn a_pid_mode(ctx: *const PID) -> uint;
 }
 
 impl PID {
     /// initialize function for PID controller, default is turn off
-    pub fn new(dt: Real, outmin: Real, outmax: Real) -> Self {
+    pub fn new(dt: real, outmin: real, outmax: real) -> Self {
         Self {
             dt,
             kp: 0.0,
             ki: 0.0,
             kd: 0.0,
-            out: 0.0,
+            out: Real { f: 0.0 },
+            sum: Real { f: 0.0 },
+            fdb: Real { f: 0.0 },
+            ec: Real { f: 0.0 },
+            e: Real { f: 0.0 },
             outmin,
             outmax,
-            sum: 0.0,
             summax: 0.0,
-            e: 0.0,
-            ec: 0.0,
-            fdb: 0.0,
             reg: OFF,
             num: 0,
         }
@@ -83,47 +84,47 @@ impl PID {
 
     /// initialize function for positional PID controller
     pub fn new_pos(
-        dt: Real,
-        kp: Real,
-        ki: Real,
-        kd: Real,
-        outmin: Real,
-        outmax: Real,
-        summax: Real,
+        dt: real,
+        kp: real,
+        ki: real,
+        kd: real,
+        outmin: real,
+        outmax: real,
+        summax: real,
     ) -> Self {
         Self {
             dt,
             kp,
             ki,
             kd,
-            out: 0.0,
+            out: Real { f: 0.0 },
+            sum: Real { f: 0.0 },
+            fdb: Real { f: 0.0 },
+            ec: Real { f: 0.0 },
+            e: Real { f: 0.0 },
             outmin,
             outmax,
-            sum: 0.0,
             summax,
-            e: 0.0,
-            ec: 0.0,
-            fdb: 0.0,
             reg: POS,
             num: 0,
         }
     }
 
     /// initialize function for incremental PID controller
-    pub fn new_inc(dt: Real, kp: Real, ki: Real, kd: Real, outmin: Real, outmax: Real) -> Self {
+    pub fn new_inc(dt: real, kp: real, ki: real, kd: real, outmin: real, outmax: real) -> Self {
         Self {
             dt,
             kp,
             ki,
             kd,
-            out: 0.0,
+            out: Real { f: 0.0 },
+            sum: Real { f: 0.0 },
+            fdb: Real { f: 0.0 },
+            ec: Real { f: 0.0 },
+            e: Real { f: 0.0 },
             outmin,
             outmax,
-            sum: 0.0,
             summax: 0.0,
-            e: 0.0,
-            ec: 0.0,
-            fdb: 0.0,
             reg: INC,
             num: 0,
         }
@@ -140,18 +141,18 @@ impl PID {
     }
 
     /// positional PID controller
-    pub fn pos(&mut self, max: Real) -> &mut Self {
+    pub fn pos(&mut self, max: real) -> &mut Self {
         unsafe { a_pid_pos(self, max).as_mut().unwrap_unchecked() }
     }
 
     /// set proportional integral derivative constant for PID controller
-    pub fn kpid(&mut self, kp: Real, ki: Real, kd: Real) -> &mut Self {
+    pub fn kpid(&mut self, kp: real, ki: real, kd: real) -> &mut Self {
         unsafe { a_pid_kpid(self, kp, ki, kd).as_mut().unwrap_unchecked() }
     }
 
     /// calculate function for PID controller
-    pub fn iter(&mut self, set: Real, fdb: Real) -> Real {
-        unsafe { a_pid_outv(self, set, fdb) }
+    pub fn iter(&mut self, set: real, fdb: real) -> real {
+        unsafe { a_pid_outf(self, set, fdb) }
     }
 
     /// zero function for PID controller
@@ -160,51 +161,51 @@ impl PID {
     }
 
     /// get sampling time unit(s) for PID controller
-    pub fn dt(&self) -> Real {
+    pub fn dt(&self) -> real {
         unsafe { a_pid_dt(self) }
     }
     /// set sampling time unit(s) for PID controller
-    pub fn set_dt(&mut self, dt: Real) -> &mut Self {
+    pub fn set_dt(&mut self, dt: real) -> &mut Self {
         unsafe { a_pid_set_dt(self, dt) };
         self
     }
 
     /// get proportional constant for PID controller
-    pub fn kp(&self) -> Real {
+    pub fn kp(&self) -> real {
         unsafe { a_pid_kp(self) }
     }
     /// set proportional constant for PID controller
-    pub fn set_kp(&mut self, kp: Real) -> &mut Self {
+    pub fn set_kp(&mut self, kp: real) -> &mut Self {
         unsafe { a_pid_set_kp(self, kp) };
         self
     }
 
     /// get integral constant for PID controller
-    pub fn ki(&self) -> Real {
+    pub fn ki(&self) -> real {
         unsafe { a_pid_ki(self) }
     }
     /// set integral constant for PID controller
-    pub fn set_ki(&mut self, ki: Real) -> &mut Self {
+    pub fn set_ki(&mut self, ki: real) -> &mut Self {
         unsafe { a_pid_set_ki(self, ki) };
         self
     }
 
     /// get derivative constant for PID controller
-    pub fn kd(&self) -> Real {
+    pub fn kd(&self) -> real {
         unsafe { a_pid_kd(self) }
     }
     /// set derivative constant for PID controller
-    pub fn set_kd(&mut self, kd: Real) -> &mut Self {
+    pub fn set_kd(&mut self, kd: real) -> &mut Self {
         unsafe { a_pid_set_kd(self, kd) };
         self
     }
 
     /// get mode for PID controller
-    pub fn mode(&self) -> Uint {
+    pub fn mode(&self) -> uint {
         unsafe { a_pid_mode(self) }
     }
     /// set mode for PID controller
-    pub fn set_mode(&mut self, mode: Uint) -> &mut Self {
+    pub fn set_mode(&mut self, mode: uint) -> &mut Self {
         unsafe { a_pid_set_mode(self, mode) };
         self
     }

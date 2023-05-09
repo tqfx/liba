@@ -90,16 +90,16 @@ a_pid_s *a_pid_zero(a_pid_s *const ctx)
     }
     else
     {
-        ctx->out.v = 0;
-        ctx->sum.v = 0;
-        ctx->fdb.v = 0;
-        ctx->ec.v = 0;
-        ctx->e.v = 0;
+        ctx->out.f = 0;
+        ctx->sum.f = 0;
+        ctx->fdb.f = 0;
+        ctx->ec.f = 0;
+        ctx->e.f = 0;
     }
     return ctx;
 }
 
-a_real_t a_pid_outv_(a_pid_s *const ctx, a_uint_t const mode, a_real_t const set, a_real_t const fdb, a_real_t const ec, a_real_t const e)
+a_real_t a_pid_outf_(a_pid_s *const ctx, a_uint_t const mode, a_real_t const set, a_real_t const fdb, a_real_t const ec, a_real_t const e)
 {
     /* calculation */
     switch (mode)
@@ -107,8 +107,8 @@ a_real_t a_pid_outv_(a_pid_s *const ctx, a_uint_t const mode, a_real_t const set
     case A_PID_INC:
     {
         /* K_p[e(k)-e(k-1)]+K_i e(k)+K_d[ec(k)-ec(k-1)] */
-        ctx->sum.v += ctx->kp * ec + ctx->ki * e + ctx->kd * (ec - ctx->ec.v);
-        ctx->out.v = ctx->sum.v;
+        ctx->sum.f += ctx->kp * ec + ctx->ki * e + ctx->kd * (ec - ctx->ec.f);
+        ctx->out.f = ctx->sum.f;
         break;
     }
     case A_PID_POS:
@@ -116,34 +116,34 @@ a_real_t a_pid_outv_(a_pid_s *const ctx, a_uint_t const mode, a_real_t const set
         a_real_t const sum = ctx->ki * e;
         /* when the limit of integration is exceeded or */
         /* the direction of integration is the same, the integration stops. */
-        if ((-ctx->summax < ctx->sum.v && ctx->sum.v < ctx->summax) || ctx->sum.v * sum < 0)
+        if ((-ctx->summax < ctx->sum.f && ctx->sum.f < ctx->summax) || ctx->sum.f * sum < 0)
         {
             /* sum = K_i \sum^k_{i=0} e(i) */
-            ctx->sum.v += sum;
+            ctx->sum.f += sum;
         }
         /* avoid derivative kick, fdb[k-1]-fdb[k] */
         /* out = K_p e(k) + sum + K_d [fdb(k-1)-fdb(k)] */
-        ctx->out.v = ctx->kp * e + ctx->sum.v + ctx->kd * (ctx->fdb.v - fdb);
+        ctx->out.f = ctx->kp * e + ctx->sum.f + ctx->kd * (ctx->fdb.f - fdb);
         break;
     }
     case A_PID_OFF:
     default:
-        ctx->out.v = ctx->sum.v = set;
+        ctx->out.f = ctx->sum.f = set;
     }
     /* output limiter */
-    if (ctx->outmax < ctx->out.v)
+    if (ctx->outmax < ctx->out.f)
     {
-        ctx->out.v = ctx->outmax;
+        ctx->out.f = ctx->outmax;
     }
-    else if (ctx->out.v < ctx->outmin)
+    else if (ctx->out.f < ctx->outmin)
     {
-        ctx->out.v = ctx->outmin;
+        ctx->out.f = ctx->outmin;
     }
     /* cache data */
-    ctx->fdb.v = fdb;
-    ctx->ec.v = ec;
-    ctx->e.v = e;
-    return ctx->out.v;
+    ctx->fdb.f = fdb;
+    ctx->ec.f = ec;
+    ctx->e.f = e;
+    return ctx->out.f;
 }
 
 a_real_t a_pid_outp_(a_pid_s *const ctx, a_uint_t const mode, a_real_t const set, a_real_t const fdb, a_real_t const ec, a_real_t const e, a_uint_t const i)
@@ -193,11 +193,11 @@ a_real_t a_pid_outp_(a_pid_s *const ctx, a_uint_t const mode, a_real_t const set
     return ctx->out.p[i];
 }
 
-a_real_t a_pid_outv(a_pid_s *const ctx, a_real_t const set, a_real_t const fdb)
+a_real_t a_pid_outf(a_pid_s *const ctx, a_real_t const set, a_real_t const fdb)
 {
     a_real_t const e = set - fdb;
-    a_real_t const ec = e - ctx->e.v;
-    return a_pid_outv_(ctx, a_pid_mode(ctx), set, fdb, ec, e);
+    a_real_t const ec = e - ctx->e.f;
+    return a_pid_outf_(ctx, a_pid_mode(ctx), set, fdb, ec, e);
 }
 
 a_real_t *a_pid_outp(a_pid_s *const ctx, a_real_t *const set, a_real_t *const fdb)

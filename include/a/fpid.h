@@ -241,7 +241,7 @@ A_EXTERN a_fpid_s *a_fpid_init(a_fpid_s *ctx, a_real_t dt, a_uint_t col, a_real_
  @return output value
   @retval set when fuzzy PID controller is off
 */
-A_EXTERN a_real_t a_fpid_outv(a_fpid_s *ctx, a_real_t set, a_real_t fdb);
+A_EXTERN a_real_t a_fpid_outf(a_fpid_s *ctx, a_real_t set, a_real_t fdb);
 
 /*!
  @brief calculate function for multichannel fuzzy PID controller

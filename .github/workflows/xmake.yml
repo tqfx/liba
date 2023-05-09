@@ -22,4 +22,4 @@ jobs:
       - run: xmake i -vD -o_
       - run: xmake run --all
       - name: Run cargo
-        run: cargo test
+        run: cargo test --all-features

@@ -36,11 +36,11 @@ jobject j_pid_get(j_pid_s const *const jctx, a_pid_s *const ctx)
     ctx->outmin = (*jenv)->GetDoubleField(jenv, jobj, jctx->outmin);
     ctx->outmax = (*jenv)->GetDoubleField(jenv, jobj, jctx->outmax);
     ctx->summax = (*jenv)->GetDoubleField(jenv, jobj, jctx->summax);
-    ctx->sum.v = (*jenv)->GetDoubleField(jenv, jobj, jctx->sum);
-    ctx->out.v = (*jenv)->GetDoubleField(jenv, jobj, jctx->out);
-    ctx->fdb.v = (*jenv)->GetDoubleField(jenv, jobj, jctx->fdb);
-    ctx->ec.v = (*jenv)->GetDoubleField(jenv, jobj, jctx->ec);
-    ctx->e.v = (*jenv)->GetDoubleField(jenv, jobj, jctx->e);
+    ctx->sum.f = (*jenv)->GetDoubleField(jenv, jobj, jctx->sum);
+    ctx->out.f = (*jenv)->GetDoubleField(jenv, jobj, jctx->out);
+    ctx->fdb.f = (*jenv)->GetDoubleField(jenv, jobj, jctx->fdb);
+    ctx->ec.f = (*jenv)->GetDoubleField(jenv, jobj, jctx->ec);
+    ctx->e.f = (*jenv)->GetDoubleField(jenv, jobj, jctx->e);
     return jctx->jobj;
 }
 
@@ -57,11 +57,11 @@ jobject j_pid_set(j_pid_s const *const jctx, a_pid_s const *const ctx)
     (*jenv)->SetDoubleField(jenv, jobj, jctx->outmin, ctx->outmin);
     (*jenv)->SetDoubleField(jenv, jobj, jctx->outmax, ctx->outmax);
     (*jenv)->SetDoubleField(jenv, jobj, jctx->summax, ctx->summax);
-    (*jenv)->SetDoubleField(jenv, jobj, jctx->sum, ctx->sum.v);
-    (*jenv)->SetDoubleField(jenv, jobj, jctx->out, ctx->out.v);
-    (*jenv)->SetDoubleField(jenv, jobj, jctx->fdb, ctx->fdb.v);
-    (*jenv)->SetDoubleField(jenv, jobj, jctx->ec, ctx->ec.v);
-    (*jenv)->SetDoubleField(jenv, jobj, jctx->e, ctx->e.v);
+    (*jenv)->SetDoubleField(jenv, jobj, jctx->sum, ctx->sum.f);
+    (*jenv)->SetDoubleField(jenv, jobj, jctx->out, ctx->out.f);
+    (*jenv)->SetDoubleField(jenv, jobj, jctx->fdb, ctx->fdb.f);
+    (*jenv)->SetDoubleField(jenv, jobj, jctx->ec, ctx->ec.f);
+    (*jenv)->SetDoubleField(jenv, jobj, jctx->e, ctx->e.f);
     return jctx->jobj;
 }
 
@@ -133,7 +133,7 @@ JNIEXPORT jdouble JNICALL JPACKAGE(pid_iter)(JNIEnv *jenv, jobject jobj, jdouble
     a_pid_s ctx;
     j_pid_s jctx;
     j_pid_get(j_pid_new(jenv, jobj, &jctx), &ctx);
-    jdouble jres = a_pid_outv(&ctx, jset, jfdb);
+    jdouble jres = a_pid_outf(&ctx, jset, jfdb);
     j_pid_set(&jctx, &ctx);
     return jres;
 }
