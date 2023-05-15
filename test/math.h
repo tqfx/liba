@@ -26,6 +26,15 @@ static void test_sgn(void)
     TEST_BUG(A_SGN(zero) == 0);
 }
 
+static void test_sat(void)
+{
+    a_double_t max = A_DOUBLE_C(+10.0);
+    a_double_t min = A_DOUBLE_C(-10.0);
+    TEST_BUG(A_SAT(0, min, max) >= 0);
+    TEST_BUG(A_SAT(+100, min, max) <= max);
+    TEST_BUG(A_SAT(-100, min, max) >= min);
+}
+
 static void test_u32_sqrt(void)
 {
     a_u32_t x;
@@ -123,6 +132,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     test_sq();
     test_abs();
     test_sgn();
+    test_sat();
     test_u32_sqrt();
     test_u64_sqrt();
     test_f32_rsqrt();

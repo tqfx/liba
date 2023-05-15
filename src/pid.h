@@ -2,6 +2,7 @@
 #define PID_H
 
 #include "a/pid.h"
+#include "a/real.h"
 
 #if defined(__cplusplus)
 extern "C" {

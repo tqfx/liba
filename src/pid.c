@@ -106,7 +106,7 @@ a_real_t a_pid_outf_(a_pid_s *const ctx, a_uint_t const mode, a_real_t const set
     {
     case A_PID_INC:
     {
-        /* K_p[e(k)-e(k-1)]+K_i e(k)+K_d[ec(k)-ec(k-1)] */
+        /* K_p[e(k)-e(k-1)]+K_i[e(k)]+K_d[ec(k)-ec(k-1)] */
         ctx->sum.f += ctx->kp * ec + ctx->ki * e + ctx->kd * (ec - ctx->ec.f);
         ctx->out.f = ctx->sum.f;
         break;
@@ -118,11 +118,11 @@ a_real_t a_pid_outf_(a_pid_s *const ctx, a_uint_t const mode, a_real_t const set
         /* the direction of integration is the same, the integration stops. */
         if ((-ctx->summax < ctx->sum.f && ctx->sum.f < ctx->summax) || ctx->sum.f * sum < 0)
         {
-            /* sum = K_i \sum^k_{i=0} e(i) */
+            /* sum = K_i[\sum^k_{i=0}e(i)] */
             ctx->sum.f += sum;
         }
         /* avoid derivative kick, fdb[k-1]-fdb[k] */
-        /* out = K_p e(k) + sum + K_d [fdb(k-1)-fdb(k)] */
+        /* out = K_p[e(k)]+sum+K_d[fdb(k-1)-fdb(k)] */
         ctx->out.f = ctx->kp * e + ctx->sum.f + ctx->kd * (ctx->fdb.f - fdb);
         break;
     }
@@ -130,15 +130,7 @@ a_real_t a_pid_outf_(a_pid_s *const ctx, a_uint_t const mode, a_real_t const set
     default:
         ctx->out.f = ctx->sum.f = set;
     }
-    /* output limiter */
-    if (ctx->outmax < ctx->out.f)
-    {
-        ctx->out.f = ctx->outmax;
-    }
-    else if (ctx->out.f < ctx->outmin)
-    {
-        ctx->out.f = ctx->outmin;
-    }
+    ctx->out.f = A_SAT(ctx->out.f, ctx->outmin, ctx->outmax);
     /* cache data */
     ctx->fdb.f = fdb;
     ctx->ec.f = ec;
@@ -153,7 +145,7 @@ a_real_t a_pid_outp_(a_pid_s *const ctx, a_uint_t const mode, a_real_t const set
     {
     case A_PID_INC:
     {
-        /* K_p[e(k)-e(k-1)]+K_i e(k)+K_d[ec(k)-ec(k-1)] */
+        /* K_p[e(k)-e(k-1)]+K_i[e(k)]+K_d[ec(k)-ec(k-1)] */
         ctx->sum.p[i] += ctx->kp * ec + ctx->ki * e + ctx->kd * (ec - ctx->ec.p[i]);
         ctx->out.p[i] = ctx->sum.p[i];
         break;
@@ -165,11 +157,11 @@ a_real_t a_pid_outp_(a_pid_s *const ctx, a_uint_t const mode, a_real_t const set
         /* the direction of integration is the same, the integration stops. */
         if ((-ctx->summax < ctx->sum.p[i] && ctx->sum.p[i] < ctx->summax) || ctx->sum.p[i] * sum < 0)
         {
-            /* sum = K_i \sum^k_{i=0} e(i) */
+            /* sum = K_i[\sum^k_{i=0}e(i)] */
             ctx->sum.p[i] += sum;
         }
         /* avoid derivative kick, fdb[k-1]-fdb[k] */
-        /* out = K_p e(k) + sum + K_d [fdb(k-1)-fdb(k)] */
+        /* out = K_p[e(k)]+sum+K_d[fdb(k-1)-fdb(k)] */
         ctx->out.p[i] = ctx->kp * e + ctx->sum.p[i] + ctx->kd * (ctx->fdb.p[i] - fdb);
         break;
     }
@@ -177,15 +169,7 @@ a_real_t a_pid_outp_(a_pid_s *const ctx, a_uint_t const mode, a_real_t const set
     default:
         ctx->out.p[i] = ctx->sum.p[i] = set;
     }
-    /* output limiter */
-    if (ctx->outmax < ctx->out.p[i])
-    {
-        ctx->out.p[i] = ctx->outmax;
-    }
-    else if (ctx->out.p[i] < ctx->outmin)
-    {
-        ctx->out.p[i] = ctx->outmin;
-    }
+    ctx->out.p[i] = A_SAT(ctx->out.p[i], ctx->outmin, ctx->outmax);
     /* cache data */
     ctx->fdb.p[i] = fdb;
     ctx->ec.p[i] = ec;

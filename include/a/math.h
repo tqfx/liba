@@ -57,6 +57,11 @@
 */
 #define A_SGN(x) ((0 < (x)) - ((x) < 0))
 
+/*!
+ @brief saturation value of x, \f$ \texttt{sat}(x,min,max)=\begin{cases}min&min>x\\max&x>max\\x&else\end{cases} \f$
+*/
+#define A_SAT(x, min, max) ((min) < (x) ? (x) < (max) ? (x) : (max) : (min))
+
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
