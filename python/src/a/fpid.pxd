@@ -18,8 +18,8 @@ cdef extern from "a/fpid.h":
                           const a_real_t *mkp, const a_real_t *mki, const a_real_t *mkd)
     a_fpid_s *a_fpid_init(a_fpid_s *ctx, a_real_t dt, a_uint_t col, const a_real_t *mec, const a_real_t *mec,
                           const a_real_t *mkp, const a_real_t *mki, const a_real_t *mkd, a_real_t min, a_real_t max)
-    a_real_t *a_fpid_outp(a_fpid_s *ctx, a_real_t *set, a_real_t *fdb)
     a_real_t a_fpid_outf(a_fpid_s *ctx, a_real_t set, a_real_t fdb)
+    const a_real_t *a_fpid_outp(a_fpid_s *ctx, const a_real_t *set, const a_real_t *fdb)
     a_fpid_s *a_fpid_exit(a_fpid_s *ctx)
     a_fpid_s *a_fpid_zero(a_fpid_s *ctx)
     a_uint_t a_fpid_bufnum(const a_fpid_s *ctx)

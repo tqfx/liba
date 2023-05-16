@@ -47,18 +47,29 @@ extern "C" {
     fn a_pid_inc(ctx: *mut PID) -> *mut PID;
     fn a_pid_pos(ctx: *mut PID, max: real) -> *mut PID;
     fn a_pid_kpid(ctx: *mut PID, kp: real, ki: real, kd: real) -> *mut PID;
+    fn a_pid_chan(
+        ctx: *mut PID,
+        num: uint,
+        out: *mut real,
+        fdb: *mut real,
+        sum: *mut real,
+        ec: *mut real,
+        e: *mut real,
+    ) -> *mut PID;
     fn a_pid_outf(ctx: *mut PID, set: real, fdb: real) -> real;
+    fn a_pid_outp(ctx: *mut PID, set: *const real, fdb: *const real) -> *const real;
     fn a_pid_zero(ctx: *mut PID) -> *mut PID;
-    fn a_pid_set_dt(ctx: *mut PID, dt: real);
+    fn a_pid_num(ctx: *const PID) -> uint;
     fn a_pid_dt(ctx: *const PID) -> real;
-    fn a_pid_set_kp(ctx: *mut PID, kp: real);
+    fn a_pid_set_dt(ctx: *mut PID, dt: real);
     fn a_pid_kp(ctx: *const PID) -> real;
-    fn a_pid_set_ki(ctx: *mut PID, ki: real);
+    fn a_pid_set_kp(ctx: *mut PID, kp: real);
     fn a_pid_ki(ctx: *const PID) -> real;
-    fn a_pid_set_kd(ctx: *mut PID, kd: real);
+    fn a_pid_set_ki(ctx: *mut PID, ki: real);
     fn a_pid_kd(ctx: *const PID) -> real;
-    fn a_pid_set_mode(ctx: *mut PID, mode: uint);
+    fn a_pid_set_kd(ctx: *mut PID, kd: real);
     fn a_pid_mode(ctx: *const PID) -> uint;
+    fn a_pid_set_mode(ctx: *mut PID, mode: uint);
 }
 
 impl PID {
@@ -95,8 +106,8 @@ impl PID {
         Self {
             dt,
             kp,
-            ki,
-            kd,
+            ki: ki * dt,
+            kd: kd / dt,
             out: Real { f: 0.0 },
             sum: Real { f: 0.0 },
             fdb: Real { f: 0.0 },
@@ -115,8 +126,8 @@ impl PID {
         Self {
             dt,
             kp,
-            ki,
-            kd,
+            ki: ki * dt,
+            kd: kd / dt,
             out: Real { f: 0.0 },
             sum: Real { f: 0.0 },
             fdb: Real { f: 0.0 },
@@ -150,9 +161,42 @@ impl PID {
         unsafe { a_pid_kpid(self, kp, ki, kd).as_mut().unwrap_unchecked() }
     }
 
+    /// set buffer for multichannel PID controller
+    pub fn chan(
+        &mut self,
+        out: &mut [real],
+        fdb: &mut [real],
+        sum: &mut [real],
+        ec: &mut [real],
+        e: &mut [real],
+    ) -> &mut Self {
+        unsafe {
+            a_pid_chan(
+                self,
+                out.len() as uint,
+                out.as_mut_ptr(),
+                fdb.as_mut_ptr(),
+                sum.as_mut_ptr(),
+                ec.as_mut_ptr(),
+                e.as_mut_ptr(),
+            )
+            .as_mut()
+            .unwrap_unchecked()
+        }
+    }
+
     /// calculate function for PID controller
-    pub fn iter(&mut self, set: real, fdb: real) -> real {
+    pub fn outf(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_outf(self, set, fdb) }
+    }
+    /// calculate function for multichannel PID controller
+    pub fn outp(&mut self, set: &[real], fdb: &[real]) -> &[real] {
+        unsafe {
+            std::slice::from_raw_parts(
+                a_pid_outp(self, set.as_ptr(), fdb.as_ptr()),
+                a_pid_num(self) as usize,
+            )
+        }
     }
 
     /// zero function for PID controller
@@ -215,16 +259,25 @@ impl PID {
 fn pid() {
     {
         let mut a = crate::PID::new_pos(0.1, 10.0, 0.1, 1.0, -10.0, 10.0, 10.0);
-        println!("{}", a.iter(1.0, 0.0));
+        println!("{}", a.outf(1.0, 0.0));
     }
     {
         let mut a = crate::PID::new_inc(0.1, 10.0, 0.1, 1.0, -10.0, 10.0);
-        println!("{}", a.iter(1.0, 0.0));
+        println!("{}", a.outf(1.0, 0.0));
     }
     let mut a = crate::PID::new(1.0, -10.0, 10.0);
-    a.kpid(10.0, 0.1, 1.0);
-    a.pos(10.0).off().inc().set_dt(0.1);
+    a.kpid(10.0, 0.1, 1.0).pos(10.0).off().inc().set_dt(0.1);
     assert!(a.mode() == crate::pid::INC);
-    println!("{}", a.iter(1.0, 0.0));
+    println!("{}", a.outf(1.0, 0.0));
     a.zero();
+    {
+        let mut out: [real; 4] = [0.0, 0.0, 0.0, 0.0];
+        let mut fdb: [real; 4] = [0.0, 0.0, 0.0, 0.0];
+        let mut sum: [real; 4] = [0.0, 0.0, 0.0, 0.0];
+        let mut ec: [real; 4] = [0.0, 0.0, 0.0, 0.0];
+        let mut e: [real; 4] = [0.0, 0.0, 0.0, 0.0];
+        a.chan(&mut out, &mut fdb, &mut sum, &mut ec, &mut e);
+        a.outp(&[0.1, 0.2, 0.3, 0.4], &[0.0, 0.0, 0.0, 0.0]);
+        println!("{:?}", out);
+    }
 }

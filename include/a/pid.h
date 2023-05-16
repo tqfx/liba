@@ -285,7 +285,7 @@ A_EXTERN a_real_t a_pid_outf(a_pid_s *ctx, a_real_t set, a_real_t fdb);
  @return points to output
   @retval set when PID controller is off
 */
-A_EXTERN a_real_t *a_pid_outp(a_pid_s *ctx, a_real_t *set, a_real_t *fdb);
+A_EXTERN a_real_t const *a_pid_outp(a_pid_s *ctx, a_real_t const *set, a_real_t const *fdb);
 
 /*!
  @brief terminate function for PID controller

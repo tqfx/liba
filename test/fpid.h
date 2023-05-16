@@ -170,7 +170,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         buf[0] = *v0;
         buf[1] = *v1;
         buf[2] = *v2;
-        a_real_t *ptr = a_fpid_outp(ctx + 1, set, buf);
+        a_real_t const *const ptr = a_fpid_outp(ctx + 1, set, buf);
         for (a_uint_t i = 0; i != 3; ++i)
         {
             a_tf_iter(tf + 1 + i, ptr[i]);

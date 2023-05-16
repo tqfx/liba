@@ -26,15 +26,15 @@
 */
 typedef enum a_fpid_e
 {
-    A_FPID_EQU,
+    A_FPID_EQU, //!< sqrt(l,r)*sqrt(1-(1-r)*(1-r))
     A_FPID_AND = (1 << (A_FPID_FUZZY_BITL + 2)), // 00010000 + 0100 * 0
-    A_FPID_AND_DEFAULT = A_FPID_AND + (A_FUZZY_DEFAULT << A_FPID_FUZZY_BITL),
-    A_FPID_AND_ALGEBRA = A_FPID_AND + (A_FUZZY_ALGEBRA << A_FPID_FUZZY_BITL),
-    A_FPID_AND_BOUNDED = A_FPID_AND + (A_FUZZY_BOUNDED << A_FPID_FUZZY_BITL),
+    A_FPID_AND_DEFAULT = A_FPID_AND + (A_FUZZY_DEFAULT << A_FPID_FUZZY_BITL), //!< min(l,r)
+    A_FPID_AND_ALGEBRA = A_FPID_AND + (A_FUZZY_ALGEBRA << A_FPID_FUZZY_BITL), //!< l*r
+    A_FPID_AND_BOUNDED = A_FPID_AND + (A_FUZZY_BOUNDED << A_FPID_FUZZY_BITL), //!< max(l,r)
     A_FPID_OR = (1 << (A_FPID_FUZZY_BITL + 3)), // 00100000 + 0100 * 0
-    A_FPID_OR_DEFAULT = A_FPID_OR + (A_FUZZY_DEFAULT << A_FPID_FUZZY_BITL),
-    A_FPID_OR_ALGEBRA = A_FPID_OR + (A_FUZZY_ALGEBRA << A_FPID_FUZZY_BITL),
-    A_FPID_OR_BOUNDED = A_FPID_OR + (A_FUZZY_BOUNDED << A_FPID_FUZZY_BITL)
+    A_FPID_OR_DEFAULT = A_FPID_OR + (A_FUZZY_DEFAULT << A_FPID_FUZZY_BITL), //!< max(l,r)
+    A_FPID_OR_ALGEBRA = A_FPID_OR + (A_FUZZY_ALGEBRA << A_FPID_FUZZY_BITL), //!< l+r-l*r
+    A_FPID_OR_BOUNDED = A_FPID_OR + (A_FUZZY_BOUNDED << A_FPID_FUZZY_BITL) //!< min(l,r)
 } a_fpid_e;
 
 /*!
@@ -251,7 +251,7 @@ A_EXTERN a_real_t a_fpid_outf(a_fpid_s *ctx, a_real_t set, a_real_t fdb);
  @return points to output
   @retval set when fuzzy PID controller is off
 */
-A_EXTERN a_real_t *a_fpid_outp(a_fpid_s *ctx, a_real_t *set, a_real_t *fdb);
+A_EXTERN a_real_t const *a_fpid_outp(a_fpid_s *ctx, a_real_t const *set, a_real_t const *fdb);
 
 /*!
  @brief terminate function for fuzzy PID controller

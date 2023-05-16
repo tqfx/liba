@@ -31,6 +31,5 @@ a_real_t a_fuzzy_and(a_uint_t const e, a_real_t const l, a_real_t const r)
 
 a_real_t a_fuzzy_equ(a_real_t const gamma, a_real_t const l, a_real_t const r)
 {
-    return a_real_pow(l * r, 1 - gamma) *
-           a_real_pow(1 - (1 - l) * (1 - r), gamma);
+    return a_real_pow(l * r, 1 - gamma) * a_real_pow(1 - (1 - l) * (1 - r), gamma);
 }

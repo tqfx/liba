@@ -21,14 +21,14 @@ a_void_t a_fpid_set_op(a_fpid_s *const ctx, a_uint_t op)
         ctx->op = a_fpid_op_or;
         break;
     case A_FPID_OR_BOUNDED:
-    case A_FPID_AND:
+    case A_FPID_AND_DEFAULT:
         ctx->op = a_real_min;
         break;
     case A_FPID_AND_ALGEBRA:
         ctx->op = a_fpid_op_and;
         break;
     case A_FPID_AND_BOUNDED:
-    case A_FPID_OR:
+    case A_FPID_OR_DEFAULT:
         ctx->op = a_real_max;
         break;
     case A_FPID_EQU:
@@ -244,7 +244,7 @@ a_real_t a_fpid_outf(a_fpid_s *const ctx, a_real_t const set, a_real_t const fdb
     return a_pid_outf_(&ctx->pid, a_pid_mode(&ctx->pid), set, fdb, ec, e);
 }
 
-a_real_t *a_fpid_outp(a_fpid_s *const ctx, a_real_t *const set, a_real_t *const fdb)
+a_real_t const *a_fpid_outp(a_fpid_s *const ctx, a_real_t const *const set, a_real_t const *const fdb)
 {
     a_uint_t const col = a_fpid_col(ctx);
     a_uint_t const num = a_pid_num(&ctx->pid);

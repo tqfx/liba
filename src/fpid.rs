@@ -4,6 +4,25 @@ use crate::pid::PID;
 use crate::real;
 use crate::uint;
 
+/// enumeration for fuzzy PID controller operator
+#[repr(C)]
+pub enum op {
+    /// sqrt(l,r)*sqrt(1-(1-r)*(1-r))
+    EQU,
+    /// min(l,r)
+    AND = 0b00010000,
+    /// l*r
+    AND_ALGEBRA = 0b00010100,
+    /// max(l,r)
+    AND_BOUNDED = 0b00011000,
+    /// max(l,r)
+    OR = 0b00100000,
+    /// l+r-l*r
+    OR_ALGEBRA = 0b00100100,
+    /// min(l,r)
+    OR_BOUNDED = 0b00101000,
+}
+
 /// fuzzy proportional integral derivative controller
 #[repr(C)]
 pub struct FPID {
@@ -32,6 +51,15 @@ extern "C" {
     fn a_fpid_pos(ctx: *mut FPID, max: real) -> *mut FPID;
     fn a_fpid_kpid(ctx: *mut FPID, kp: real, ki: real, kd: real) -> *mut FPID;
     fn a_fpid_buff(ctx: *mut FPID, idx: *mut uint, val: *mut real) -> *mut FPID;
+    fn a_fpid_chan(
+        ctx: *mut FPID,
+        num: uint,
+        out: *mut real,
+        fdb: *mut real,
+        sum: *mut real,
+        ec: *mut real,
+        e: *mut real,
+    ) -> *mut FPID;
     fn a_fpid_base(
         ctx: *mut FPID,
         num: uint,
@@ -54,7 +82,10 @@ extern "C" {
         max: real,
     ) -> *mut FPID;
     fn a_fpid_outf(ctx: *mut FPID, set: real, fdb: real) -> real;
+    fn a_fpid_outp(ctx: *mut FPID, set: *const real, fdb: *const real) -> *const real;
     fn a_fpid_zero(ctx: *mut FPID) -> *mut FPID;
+    fn a_fpid_set_op(ctx: *mut FPID, op: uint);
+    fn a_pid_num(ctx: *const PID) -> uint;
 }
 
 impl FPID {
@@ -130,6 +161,30 @@ impl FPID {
         }
     }
 
+    /// set buffer for multichannel fuzzy PID controller
+    pub fn chan(
+        &mut self,
+        out: &mut [real],
+        fdb: &mut [real],
+        sum: &mut [real],
+        ec: &mut [real],
+        e: &mut [real],
+    ) -> &mut Self {
+        unsafe {
+            a_fpid_chan(
+                self,
+                out.len() as uint,
+                out.as_mut_ptr(),
+                fdb.as_mut_ptr(),
+                sum.as_mut_ptr(),
+                ec.as_mut_ptr(),
+                e.as_mut_ptr(),
+            )
+            .as_mut()
+            .unwrap_unchecked()
+        }
+    }
+
     /// set rule base for fuzzy PID controller
     pub fn base(
         &mut self,
@@ -156,13 +211,28 @@ impl FPID {
     }
 
     /// calculate function for fuzzy PID controller
-    pub fn iter(&mut self, set: real, fdb: real) -> real {
+    pub fn outf(&mut self, set: real, fdb: real) -> real {
         unsafe { a_fpid_outf(self, set, fdb) }
+    }
+    /// calculate function for multichannel fuzzy PID controller
+    pub fn outp(&mut self, set: &[real], fdb: &[real]) -> &[real] {
+        unsafe {
+            std::slice::from_raw_parts(
+                a_fpid_outp(self, set.as_ptr(), fdb.as_ptr()),
+                a_pid_num(&self.pid) as usize,
+            )
+        }
     }
 
     /// zero function for fuzzy PID controller
     pub fn zero(&mut self) -> &mut Self {
         unsafe { a_fpid_zero(self).as_mut().unwrap_unchecked() }
+    }
+
+    /// set fuzzy relational operator for fuzzy PID controller
+    pub fn set_op(&mut self, op: op) -> &mut Self {
+        unsafe { a_fpid_set_op(self, op as uint) };
+        self
     }
 
     /// get sampling time unit(s) for fuzzy PID controller
@@ -331,6 +401,16 @@ fn fpid() {
     a.buff(&mut idx, &mut val);
     a.pos(10.0).off().inc().set_dt(0.1);
     assert!(a.mode() == crate::pid::INC);
-    println!("{}", a.iter(1.0, 0.0));
-    a.zero();
+    println!("{}", a.outf(1.0, 0.0));
+    a.set_op(op::AND_ALGEBRA).zero();
+    {
+        let mut out: [real; 4] = [0.0, 0.0, 0.0, 0.0];
+        let mut fdb: [real; 4] = [0.0, 0.0, 0.0, 0.0];
+        let mut sum: [real; 4] = [0.0, 0.0, 0.0, 0.0];
+        let mut ec: [real; 4] = [0.0, 0.0, 0.0, 0.0];
+        let mut e: [real; 4] = [0.0, 0.0, 0.0, 0.0];
+        a.chan(&mut out, &mut fdb, &mut sum, &mut ec, &mut e);
+        a.outp(&[0.1, 0.2, 0.3, 0.4], &[0.0, 0.0, 0.0, 0.0]);
+        println!("{:?}", out);
+    }
 }

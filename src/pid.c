@@ -184,7 +184,7 @@ a_real_t a_pid_outf(a_pid_s *const ctx, a_real_t const set, a_real_t const fdb)
     return a_pid_outf_(ctx, a_pid_mode(ctx), set, fdb, ec, e);
 }
 
-a_real_t *a_pid_outp(a_pid_s *const ctx, a_real_t *const set, a_real_t *const fdb)
+a_real_t const *a_pid_outp(a_pid_s *const ctx, a_real_t const *const set, a_real_t const *const fdb)
 {
     a_uint_t const num = a_pid_num(ctx);
     a_uint_t const mode = a_pid_mode(ctx);
