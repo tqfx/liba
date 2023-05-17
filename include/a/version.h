@@ -23,16 +23,19 @@
 #ifndef A_VERSION_MAJOR
 #define A_VERSION_MAJOR 0
 #endif /* A_VERSION_MAJOR */
+#undef major
 
 /*! algorithm library version minor */
 #ifndef A_VERSION_MINOR
 #define A_VERSION_MINOR 0
 #endif /* A_VERSION_MINOR */
+#undef minor
 
 /*! algorithm library version patch */
 #ifndef A_VERSION_PATCH
 #define A_VERSION_PATCH 0
 #endif /* A_VERSION_PATCH */
+#undef patch
 
 /*! algorithm library version tweak */
 #ifndef A_VERSION_TWEAK
@@ -40,46 +43,16 @@
 #endif /* A_VERSION_TWEAK */
 
 #if defined(__cplusplus)
-#define A_VERSION_C(maj, min, pat) a_version_s(maj, min, pat)
+#define A_VERSION_C(maj, min, pat) a::version(maj, min, pat)
 #else /* !__cplusplus */
 // clang-format off
 #define A_VERSION_C(maj, min, pat) {maj, min, pat}
 // clang-format on
 #endif /* __cplusplus */
 
-/*!
- @brief instance structure for version
-*/
-typedef struct a_version_s
-{
-#undef major
-#undef minor
-#undef patch
-#if defined(__cplusplus)
-    A_PUBLIC a_bool_t operator<(a_version_s const &ver) const;
-    A_PUBLIC a_bool_t operator>(a_version_s const &ver) const;
-    A_PUBLIC a_bool_t operator<=(a_version_s const &ver) const;
-    A_PUBLIC a_bool_t operator>=(a_version_s const &ver) const;
-    A_PUBLIC a_bool_t operator==(a_version_s const &ver) const;
-    A_PUBLIC a_bool_t operator!=(a_version_s const &ver) const;
-    A_PUBLIC a_version_s(a_uint_t const maj = 0,
-                         a_uint_t const min = 0,
-                         a_uint_t const pat = 0)
-        : major(maj)
-        , minor(min)
-        , patch(pat)
-    {
-    }
-#endif /* __cplusplus */
-    a_uint_t major;
-    a_uint_t minor;
-    a_uint_t patch;
-} a_version_s;
-
 #if defined(__cplusplus)
 namespace a
 {
-
 /*! algorithm library version string */
 cstr_t const VERSION = A_VERSION;
 /*! algorithm library version major */
@@ -90,10 +63,44 @@ uint_t const VERSION_MINOR = A_VERSION_MINOR;
 uint_t const VERSION_PATCH = A_VERSION_PATCH;
 /*! algorithm library version tweak */
 u64_t const VERSION_TWEAK = A_VERSION_TWEAK;
-/* instance structure for version */
-typedef a_version_s version;
+#endif /* __cplusplus */
 
+/*!
+ @brief instance structure for version
+*/
+#if defined(__cplusplus)
+struct version
+{
+    A_PUBLIC a_bool_t operator<(version const &ver) const;
+    A_PUBLIC a_bool_t operator>(version const &ver) const;
+    A_PUBLIC a_bool_t operator<=(version const &ver) const;
+    A_PUBLIC a_bool_t operator>=(version const &ver) const;
+    A_PUBLIC a_bool_t operator==(version const &ver) const;
+    A_PUBLIC a_bool_t operator!=(version const &ver) const;
+    A_PUBLIC version(a_uint_t const maj = 0,
+                     a_uint_t const min = 0,
+                     a_uint_t const pat = 0)
+        : major(maj)
+        , minor(min)
+        , patch(pat)
+    {
+    }
+#else /* !__cplusplus */
+typedef struct a_version_s
+{
+#endif /* __cplusplus */
+    a_uint_t major; //!< major number
+    a_uint_t minor; //!< minor number
+    a_uint_t patch; //!< patch number
+#if defined(__cplusplus)
+};
+#else /* !__cplusplus */
+} a_version_s;
+#endif /* __cplusplus */
+
+#if defined(__cplusplus)
 } /* namespace a */
+typedef a::version a_version_s;
 extern "C" {
 #endif /* __cplusplus */
 
@@ -210,6 +217,7 @@ A_INTERN a_bool_t a_version_le(a_version_s const *const lhs, a_version_s const *
     return !a_version_lt(rhs, lhs);
 }
 #endif /* A_HAVE_INLINE */
+
 /*!
  @brief version lhs greater than or equal version rhs
  @param[in] lhs operand on the left
