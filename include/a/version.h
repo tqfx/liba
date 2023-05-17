@@ -99,6 +99,18 @@ typedef struct a_version_s
 #endif /* __cplusplus */
 
 #if defined(__cplusplus)
+/*!
+ @brief algorithm library version major
+*/
+A_EXTERN uint_t version_major(void);
+/*!
+ @brief algorithm library version minor
+*/
+A_EXTERN uint_t version_minor(void);
+/*!
+ @brief algorithm library version patch
+*/
+A_EXTERN uint_t version_patch(void);
 } /* namespace a */
 typedef a::version a_version_s;
 extern "C" {
@@ -273,25 +285,6 @@ A_INTERN a_bool_t a_version_ne(a_version_s const *const lhs, a_version_s const *
 
 #if defined(__cplusplus)
 } /* extern "C" */
-namespace a
-{
-
-/*!
- @brief algorithm library version major
-*/
-A_EXTERN uint_t version_major(void);
-
-/*!
- @brief algorithm library version minor
-*/
-A_EXTERN uint_t version_minor(void);
-
-/*!
- @brief algorithm library version patch
-*/
-A_EXTERN uint_t version_patch(void);
-
-} /* namespace a */
 #endif /* __cplusplus */
 
 /*! @} A_VERSION */

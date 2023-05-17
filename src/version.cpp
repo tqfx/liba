@@ -3,21 +3,6 @@
 namespace a
 {
 
-uint_t version_major(void)
-{
-    return VERSION_MAJOR;
-}
-
-uint_t version_minor(void)
-{
-    return VERSION_MINOR;
-}
-
-uint_t version_patch(void)
-{
-    return VERSION_PATCH;
-}
-
 a_bool_t version::operator<(version const &ver) const
 {
     return a_version_lt(this, &ver);
@@ -46,6 +31,21 @@ a_bool_t version::operator==(version const &ver) const
 a_bool_t version::operator!=(version const &ver) const
 {
     return a_version_ne(this, &ver);
+}
+
+uint_t version_major(void)
+{
+    return VERSION_MAJOR;
+}
+
+uint_t version_minor(void)
+{
+    return VERSION_MINOR;
+}
+
+uint_t version_patch(void)
+{
+    return VERSION_PATCH;
 }
 
 } /* namespace a */
