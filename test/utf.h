@@ -13,7 +13,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         char buf[7];
         a_u32_t val = 0;
         a_uint_t offset;
-        printf("%s %zu", argv[i], a_utf_len(argv[i]));
+        printf("%s %zu", argv[i], a_utf_length(argv[i]));
         for (char const *s = argv[i]; (void)(offset = a_utf_decode(s, &val)), offset; s += offset)
         {
             a_utf_encode(A_NULL, val);

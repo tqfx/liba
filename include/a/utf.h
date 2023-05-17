@@ -48,11 +48,13 @@ A_EXTERN a_uint_t a_utf_decode(a_cptr_t str, a_u32_t *val);
  @param[in] str string terminated with a null character
  @return length of the UTF-8 string
 */
-A_EXTERN a_size_t a_utf_len(a_cptr_t str);
+A_EXTERN a_size_t a_utf_length(a_cptr_t str);
 
 #if defined(__cplusplus)
 } /* extern "C" */
 #endif /* __cplusplus */
+
+#define a_utf_len(str) a_utf_length(str)
 
 /*! @} A_UTF */
 

@@ -116,7 +116,7 @@ a_uint_t a_utf_decode(a_cptr_t const _str, a_u32_t *const val)
     return offset + 1;
 }
 
-a_size_t a_utf_len(a_cptr_t const _str)
+a_size_t a_utf_length(a_cptr_t const _str)
 {
     a_size_t length = 0;
     a_cstr_t str = a_cstr_c(_str);
