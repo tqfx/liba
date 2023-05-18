@@ -83,7 +83,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     {
         if (fclose(log))
         {
-            clearerr(log);
+            perror(A_FUNC);
         }
     }
 #endif /* MAIN_ONCE */
