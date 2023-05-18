@@ -13,7 +13,7 @@
 #define WRITE_TABLE(bit, row, fmt)                                                       \
     static void write_table##bit(FILE *out, a_u##bit##_t ctx[A_CRC_SIZ], a_cstr_t label) \
     {                                                                                    \
-        (void)fprintf(out, "const uint%i_t %s[0x%X] = {\n", bit, label, A_CRC_SIZ);      \
+        (void)fprintf(out, "uint%i_t const %s[0x%X] = {\n", bit, label, A_CRC_SIZ);      \
         (void)fprintf(out, "    /* clang-format off */\n");                              \
         for (a_size_t i = 0; i != A_CRC_SIZ / (row); ++i)                                \
         {                                                                                \
