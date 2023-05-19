@@ -64,7 +64,7 @@ endfunction()
 function(unittest target)
   set(TARGET "${TARGET_PREFIX}${target}")
   cmake_parse_arguments(TEST "" "NAME" "ARGS" ${ARGN})
-  set(ARG)
+  set(ARGS)
 
   if(NOT TEST_NAME)
     set(TEST_NAME ${target})
@@ -82,7 +82,7 @@ function(unittest target)
     set(WORKING_DIRECTORY ${BINARY_DIRECTORY})
   endif()
 
-  foreach(arg ${TEST_ARGS})
+  foreach(arg ${TEST_ARGS} ${TEST_UNPARSED_ARGUMENTS})
     get_filename_component(ext ${arg} EXT)
 
     if(NOT ext OR IS_ABSOLUTE ${arg})
@@ -108,10 +108,9 @@ if(LIBA_GNUPLOT)
 endif()
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  function(unitplot target script input image)
+  function(unitplot target script output)
     set(TARGET "${TARGET_PREFIX}${target}")
     set(SOURCE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-    cmake_parse_arguments(TEST "" "NAME" "ARGS" ${ARGN})
 
     if(IS_MULTI_CONFIG)
       set(BINARY_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>)
@@ -129,12 +128,8 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
       file(TO_CMAKE_PATH ${SOURCE_DIRECTORY}/${script} script)
     endif()
 
-    if(NOT IS_ABSOLUTE ${input})
-      file(TO_CMAKE_PATH ${BINARY_DIRECTORY}/${input} input)
-    endif()
-
-    if(NOT IS_ABSOLUTE ${image})
-      file(TO_CMAKE_PATH ${BINARY_DIRECTORY}/${image} image)
+    if(NOT IS_ABSOLUTE ${output})
+      file(TO_CMAKE_PATH ${BINARY_DIRECTORY}/${output} output)
     endif()
 
     if(NOT TARGET_SUPPORTS_EXECUTABLES AND NOT CMAKE_CROSSCOMPILING_EMULATOR)
@@ -142,8 +137,8 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
     endif()
 
     add_custom_command(TARGET ${TARGET} POST_BUILD WORKING_DIRECTORY ${WORKING_DIRECTORY}
-      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${TARGET}> ${input}
-      COMMAND ${GNUPLOT_EXECUTABLE} -c ${script} ${input} ${image}
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${TARGET}> ${output} ${ARGN}
+      COMMAND ${GNUPLOT_EXECUTABLE} -c ${script} ${output} $<TARGET_FILE:${TARGET}>
     )
   endfunction()
 endif()
@@ -169,7 +164,7 @@ building(fpid fpid.c fpid.cpp)
 unittest(fpid)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(fpid pid.gp fpid.log fpid.png)
+  unitplot(fpid pid.gp fpid.log)
 endif()
 
 building(list list.c list.cpp)
@@ -191,14 +186,18 @@ building(pid pid.c pid.cpp)
 unittest(pid)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(pid pid.gp pid.log pid.png)
+  unitplot(pid pid.gp pid.log)
 endif()
 
 building(poly poly.c poly.cpp)
 unittest(poly)
 
 building(polytrack polytrack.c polytrack.cpp)
-unittest(polytrack)
+unittest(polytrack ARGS polytrack.log 0 10 0 10)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(polytrack polytrack.gp polytrack.log 0 10 0 10)
+endif()
 
 building(rbt rbt.c rbt.cpp)
 unittest(rbt)

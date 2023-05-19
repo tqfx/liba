@@ -21,9 +21,6 @@
 typedef struct a_polytrack3_s
 {
     a_real_t k[4]; //!< quantity
-    a_real_t t[2]; //!< time unit(s)
-    a_real_t q[2]; //!< position
-    a_real_t v[2]; //!< velocity
 } a_polytrack3_s;
 
 /*!
@@ -32,10 +29,6 @@ typedef struct a_polytrack3_s
 typedef struct a_polytrack5_s
 {
     a_real_t k[6]; //!< quantity
-    a_real_t t[2]; //!< time unit(s)
-    a_real_t q[2]; //!< position
-    a_real_t v[2]; //!< velocity
-    a_real_t a[2]; //!< acceleration
 } a_polytrack5_s;
 
 /*!
@@ -44,11 +37,6 @@ typedef struct a_polytrack5_s
 typedef struct a_polytrack7_s
 {
     a_real_t k[8]; //!< quantity
-    a_real_t t[2]; //!< time unit(s)
-    a_real_t q[2]; //!< position
-    a_real_t v[2]; //!< velocity
-    a_real_t a[2]; //!< acceleration
-    a_real_t j[2]; //!< jerk
 } a_polytrack7_s;
 
 #if defined(__cplusplus)
@@ -56,50 +44,6 @@ extern "C" {
 #endif /* __cplusplus */
 
 /* function for cubic polynomial trajectory */
-
-/*!
- @brief initialize function for cubic polynomial trajectory
- @param[in,out] ctx points to an instance of cubic polynomial trajectory
- @param[in] t time
-  @arg 0 source
-  @arg 1 target
- @param[in] q position
-  @arg 0 source
-  @arg 1 target
- @param[in] v velocity
-  @arg 0 source
-  @arg 1 target
-*/
-A_EXTERN a_void_t a_polytrack3_init1(a_polytrack3_s *ctx, a_real_t const t[2], a_real_t const q[2], a_real_t const v[2]);
-
-/*!
- @brief initialize function for cubic polynomial trajectory
- @param[in,out] ctx points to an instance of cubic polynomial trajectory
- @param[in] source source for trajectory
-  @arg 0 time for source
-  @arg 1 position for source
-  @arg 2 velocity for source
- @param[in] target target for trajectory
-  @arg 0 time for target
-  @arg 1 position for target
-  @arg 2 velocity for target
-*/
-A_EXTERN a_void_t a_polytrack3_init2(a_polytrack3_s *ctx, a_real_t const source[3], a_real_t const target[3]);
-
-/*!
- @brief initialize function for cubic polynomial trajectory
- @param[in,out] ctx points to an instance of cubic polynomial trajectory
- @param[in] t0 time for source
- @param[in] t1 time for target
- @param[in] q0 position for source
- @param[in] q1 position for target
- @param[in] v0 velocity for source
- @param[in] v1 velocity for target
-*/
-A_EXTERN a_void_t a_polytrack3_init(a_polytrack3_s *ctx,
-                                    a_real_t t0, a_real_t t1,
-                                    a_real_t q0, a_real_t q1,
-                                    a_real_t v0, a_real_t v1);
 
 /*!
  @brief generation function for cubic polynomial trajectory
@@ -114,8 +58,17 @@ A_EXTERN a_void_t a_polytrack3_init(a_polytrack3_s *ctx,
   \end{array}\right.
  @f}
  @param[in,out] ctx points to an instance of cubic polynomial trajectory
+ @param[in] t0 time for source
+ @param[in] t1 time for target
+ @param[in] q0 position for source
+ @param[in] q1 position for target
+ @param[in] v0 velocity for source
+ @param[in] v1 velocity for target
 */
-A_EXTERN a_void_t a_polytrack3_gen(a_polytrack3_s *ctx);
+A_EXTERN a_void_t a_polytrack3_gen(a_polytrack3_s *ctx,
+                                   a_real_t t0, a_real_t t1,
+                                   a_real_t q0, a_real_t q1,
+                                   a_real_t v0, a_real_t v1);
 
 /*!
  @brief calculate function for cubic polynomial trajectory
@@ -127,13 +80,13 @@ A_EXTERN a_void_t a_polytrack3_gen(a_polytrack3_s *ctx);
   \end{array}
  @f}
  @param[in] ctx points to an instance of cubic polynomial trajectory
- @param[in] ts current time unit(s)
+ @param[in] dt difference between current time and initial time
  @param[out] out buffer for result
   @arg 0 position output
   @arg 1 velocity output
   @arg 2 acceleration output
 */
-A_EXTERN a_void_t a_polytrack3_out(a_polytrack3_s const *ctx, a_real_t ts, a_real_t out[3]);
+A_EXTERN a_void_t a_polytrack3_out(a_polytrack3_s const *ctx, a_real_t dt, a_real_t out[3]);
 
 /*!
  @brief calculate function for cubic polynomial trajectory position
@@ -143,10 +96,10 @@ A_EXTERN a_void_t a_polytrack3_out(a_polytrack3_s const *ctx, a_real_t ts, a_rea
   \end{array}
  @f}
  @param[in] ctx points to an instance of cubic polynomial trajectory
- @param[in] ts current time unit(s)
+ @param[in] dt difference between current time and initial time
  @return position output
 */
-A_EXTERN a_real_t a_polytrack3_pos(a_polytrack3_s const *ctx, a_real_t ts);
+A_EXTERN a_real_t a_polytrack3_pos(a_polytrack3_s const *ctx, a_real_t dt);
 
 /*!
  @brief calculate function for cubic polynomial trajectory velocity
@@ -156,10 +109,10 @@ A_EXTERN a_real_t a_polytrack3_pos(a_polytrack3_s const *ctx, a_real_t ts);
   \end{array}
  @f}
  @param[in] ctx points to an instance of cubic polynomial trajectory
- @param[in] ts current time unit(s)
+ @param[in] dt difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_real_t a_polytrack3_vec(a_polytrack3_s const *ctx, a_real_t ts);
+A_EXTERN a_real_t a_polytrack3_vec(a_polytrack3_s const *ctx, a_real_t dt);
 
 /*!
  @brief calculate function for cubic polynomial trajectory acceleration
@@ -169,64 +122,12 @@ A_EXTERN a_real_t a_polytrack3_vec(a_polytrack3_s const *ctx, a_real_t ts);
   \end{array}
  @f}
  @param[in] ctx points to an instance of cubic polynomial trajectory
- @param[in] ts current time unit(s)
+ @param[in] dt difference between current time and initial time
  @return acceleration output
 */
-A_EXTERN a_real_t a_polytrack3_acc(a_polytrack3_s const *ctx, a_real_t ts);
+A_EXTERN a_real_t a_polytrack3_acc(a_polytrack3_s const *ctx, a_real_t dt);
 
 /* function for quintic polynomial trajectory */
-
-/*!
- @brief initialize function for quintic polynomial trajectory
- @param[in,out] ctx points to an instance of quintic polynomial trajectory
- @param[in] t time
-  @arg 0 source
-  @arg 1 target
- @param[in] q position
-  @arg 0 source
-  @arg 1 target
- @param[in] v velocity
-  @arg 0 source
-  @arg 1 target
- @param[in] a acceleration
-  @arg 0 source
-  @arg 1 target
-*/
-A_EXTERN a_void_t a_polytrack5_init1(a_polytrack5_s *ctx, a_real_t const t[2], a_real_t const q[2], a_real_t const v[2], a_real_t const a[2]);
-
-/*!
- @brief initialize function for quintic polynomial trajectory
- @param[in,out] ctx points to an instance of quintic polynomial trajectory
- @param[in] source source for trajectory
-  @arg 0 time for source
-  @arg 1 position for source
-  @arg 2 velocity for source
-  @arg 3 acceleration for source
- @param[in] target target for trajectory
-  @arg 0 time for target
-  @arg 1 position for target
-  @arg 2 velocity for target
-  @arg 3 acceleration for target
-*/
-A_EXTERN a_void_t a_polytrack5_init2(a_polytrack5_s *ctx, a_real_t const source[4], a_real_t const target[4]);
-
-/*!
- @brief initialize function for quintic polynomial trajectory
- @param[in,out] ctx points to an instance of quintic polynomial trajectory
- @param[in] t0 time for source
- @param[in] t1 time for target
- @param[in] q0 position for source
- @param[in] q1 position for target
- @param[in] v0 velocity for source
- @param[in] v1 velocity for target
- @param[in] a0 acceleration for source
- @param[in] a1 acceleration for target
-*/
-A_EXTERN a_void_t a_polytrack5_init(a_polytrack5_s *ctx,
-                                    a_real_t t0, a_real_t t1,
-                                    a_real_t q0, a_real_t q1,
-                                    a_real_t v0, a_real_t v1,
-                                    a_real_t a0, a_real_t a1);
 
 /*!
  @brief generation function for quintic polynomial trajectory
@@ -243,8 +144,20 @@ A_EXTERN a_void_t a_polytrack5_init(a_polytrack5_s *ctx,
   \end{array}\right.
  @f}
  @param[in,out] ctx points to an instance of quintic polynomial trajectory
+ @param[in] t0 time for source
+ @param[in] t1 time for target
+ @param[in] q0 position for source
+ @param[in] q1 position for target
+ @param[in] v0 velocity for source
+ @param[in] v1 velocity for target
+ @param[in] a0 acceleration for source
+ @param[in] a1 acceleration for target
 */
-A_EXTERN a_void_t a_polytrack5_gen(a_polytrack5_s *ctx);
+A_EXTERN a_void_t a_polytrack5_gen(a_polytrack5_s *ctx,
+                                   a_real_t t0, a_real_t t1,
+                                   a_real_t q0, a_real_t q1,
+                                   a_real_t v0, a_real_t v1,
+                                   a_real_t a0, a_real_t a1);
 
 /*!
  @brief calculate function for quintic polynomial trajectory
@@ -256,13 +169,13 @@ A_EXTERN a_void_t a_polytrack5_gen(a_polytrack5_s *ctx);
   \end{array}
  @f}
  @param[in] ctx points to an instance of quintic polynomial trajectory
- @param[in] ts current time unit(s)
+ @param[in] dt difference between current time and initial time
  @param[out] out buffer for result
   @arg 0 position output
   @arg 1 velocity output
   @arg 2 acceleration output
 */
-A_EXTERN a_void_t a_polytrack5_out(a_polytrack5_s const *ctx, a_real_t ts, a_real_t out[3]);
+A_EXTERN a_void_t a_polytrack5_out(a_polytrack5_s const *ctx, a_real_t dt, a_real_t out[3]);
 
 /*!
  @brief calculate function for quintic polynomial trajectory position
@@ -272,10 +185,10 @@ A_EXTERN a_void_t a_polytrack5_out(a_polytrack5_s const *ctx, a_real_t ts, a_rea
   \end{array}
  @f}
  @param[in] ctx points to an instance of quintic polynomial trajectory
- @param[in] ts current time unit(s)
+ @param[in] dt difference between current time and initial time
  @return position output
 */
-A_EXTERN a_real_t a_polytrack5_pos(a_polytrack5_s const *ctx, a_real_t ts);
+A_EXTERN a_real_t a_polytrack5_pos(a_polytrack5_s const *ctx, a_real_t dt);
 
 /*!
  @brief calculate function for quintic polynomial trajectory velocity
@@ -285,10 +198,10 @@ A_EXTERN a_real_t a_polytrack5_pos(a_polytrack5_s const *ctx, a_real_t ts);
   \end{array}
  @f}
  @param[in] ctx points to an instance of quintic polynomial trajectory
- @param[in] ts current time unit(s)
+ @param[in] dt difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_real_t a_polytrack5_vec(a_polytrack5_s const *ctx, a_real_t ts);
+A_EXTERN a_real_t a_polytrack5_vec(a_polytrack5_s const *ctx, a_real_t dt);
 
 /*!
  @brief calculate function for quintic polynomial trajectory acceleration
@@ -298,72 +211,12 @@ A_EXTERN a_real_t a_polytrack5_vec(a_polytrack5_s const *ctx, a_real_t ts);
   \end{array}
  @f}
  @param[in] ctx points to an instance of quintic polynomial trajectory
- @param[in] ts current time unit(s)
+ @param[in] dt difference between current time and initial time
  @return acceleration output
 */
-A_EXTERN a_real_t a_polytrack5_acc(a_polytrack5_s const *ctx, a_real_t ts);
+A_EXTERN a_real_t a_polytrack5_acc(a_polytrack5_s const *ctx, a_real_t dt);
 
 /* function for hepta polynomial trajectory */
-
-/*!
- @brief initialize function for hepta polynomial trajectory
- @param[in,out] ctx points to an instance of hepta polynomial trajectory
- @param[in] t time
-  @arg 0 source
-  @arg 1 target
- @param[in] q position
-  @arg 0 source
-  @arg 1 target
- @param[in] v velocity
-  @arg 0 source
-  @arg 1 target
- @param[in] a acceleration
-  @arg 0 source
-  @arg 1 target
- @param[in] j jerk
-  @arg 0 source
-  @arg 1 target
-*/
-A_EXTERN a_void_t a_polytrack7_init1(a_polytrack7_s *ctx, a_real_t const t[2], a_real_t const q[2], a_real_t const v[2], a_real_t const a[2], a_real_t const j[2]);
-
-/*!
- @brief initialize function for hepta polynomial trajectory
- @param[in,out] ctx points to an instance of hepta polynomial trajectory
- @param[in] source source for trajectory
-  @arg 0 time for source
-  @arg 1 position for source
-  @arg 2 velocity for source
-  @arg 3 acceleration for source
-  @arg 4 jerk for source
- @param[in] target target for trajectory
-  @arg 0 time for target
-  @arg 1 position for target
-  @arg 2 velocity for target
-  @arg 3 acceleration for target
-  @arg 4 jerk for target
-*/
-A_EXTERN a_void_t a_polytrack7_init2(a_polytrack7_s *ctx, a_real_t const source[5], a_real_t const target[5]);
-
-/*!
- @brief initialize function for hepta polynomial trajectory
- @param[in,out] ctx points to an instance of hepta polynomial trajectory
- @param[in] t0 time for source
- @param[in] t1 time for target
- @param[in] q0 position for source
- @param[in] q1 position for target
- @param[in] v0 velocity for source
- @param[in] v1 velocity for target
- @param[in] a0 acceleration for source
- @param[in] a1 acceleration for target
- @param[in] j0 jerk for source
- @param[in] j1 jerk for target
-*/
-A_EXTERN a_void_t a_polytrack7_init(a_polytrack7_s *ctx,
-                                    a_real_t t0, a_real_t t1,
-                                    a_real_t q0, a_real_t q1,
-                                    a_real_t v0, a_real_t v1,
-                                    a_real_t a0, a_real_t a1,
-                                    a_real_t j0, a_real_t j1);
 
 /*!
  @brief generation function for hepta polynomial trajectory
@@ -382,8 +235,23 @@ A_EXTERN a_void_t a_polytrack7_init(a_polytrack7_s *ctx,
   \end{array}\right.
  @f}
  @param[in,out] ctx points to an instance of hepta polynomial trajectory
+ @param[in] t0 time for source
+ @param[in] t1 time for target
+ @param[in] q0 position for source
+ @param[in] q1 position for target
+ @param[in] v0 velocity for source
+ @param[in] v1 velocity for target
+ @param[in] a0 acceleration for source
+ @param[in] a1 acceleration for target
+ @param[in] j0 jerk for source
+ @param[in] j1 jerk for target
 */
-A_EXTERN a_void_t a_polytrack7_gen(a_polytrack7_s *ctx);
+A_EXTERN a_void_t a_polytrack7_gen(a_polytrack7_s *ctx,
+                                   a_real_t t0, a_real_t t1,
+                                   a_real_t q0, a_real_t q1,
+                                   a_real_t v0, a_real_t v1,
+                                   a_real_t a0, a_real_t a1,
+                                   a_real_t j0, a_real_t j1);
 
 /*!
  @brief calculate function for hepta polynomial trajectory
@@ -396,14 +264,14 @@ A_EXTERN a_void_t a_polytrack7_gen(a_polytrack7_s *ctx);
   \end{array}
  @f}
  @param[in] ctx points to an instance of hepta polynomial trajectory
- @param[in] ts current time unit(s)
+ @param[in] dt difference between current time and initial time
  @param[out] out buffer for result
   @arg 0 position output
   @arg 1 velocity output
   @arg 2 acceleration output
   @arg 3 jerk output
 */
-A_EXTERN a_void_t a_polytrack7_out(a_polytrack7_s const *ctx, a_real_t ts, a_real_t out[4]);
+A_EXTERN a_void_t a_polytrack7_out(a_polytrack7_s const *ctx, a_real_t dt, a_real_t out[4]);
 
 /*!
  @brief calculate function for hepta polynomial trajectory position
@@ -413,10 +281,10 @@ A_EXTERN a_void_t a_polytrack7_out(a_polytrack7_s const *ctx, a_real_t ts, a_rea
   \end{array}
  @f}
  @param[in] ctx points to an instance of hepta polynomial trajectory
- @param[in] ts current time unit(s)
+ @param[in] dt difference between current time and initial time
  @return position output
 */
-A_EXTERN a_real_t a_polytrack7_pos(a_polytrack7_s const *ctx, a_real_t ts);
+A_EXTERN a_real_t a_polytrack7_pos(a_polytrack7_s const *ctx, a_real_t dt);
 
 /*!
  @brief calculate function for hepta polynomial trajectory velocity
@@ -426,10 +294,10 @@ A_EXTERN a_real_t a_polytrack7_pos(a_polytrack7_s const *ctx, a_real_t ts);
   \end{array}
  @f}
  @param[in] ctx points to an instance of hepta polynomial trajectory
- @param[in] ts current time unit(s)
+ @param[in] dt difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_real_t a_polytrack7_vec(a_polytrack7_s const *ctx, a_real_t ts);
+A_EXTERN a_real_t a_polytrack7_vec(a_polytrack7_s const *ctx, a_real_t dt);
 
 /*!
  @brief calculate function for hepta polynomial trajectory acceleration
@@ -439,10 +307,10 @@ A_EXTERN a_real_t a_polytrack7_vec(a_polytrack7_s const *ctx, a_real_t ts);
   \end{array}
  @f}
  @param[in] ctx points to an instance of hepta polynomial trajectory
- @param[in] ts current time unit(s)
+ @param[in] dt difference between current time and initial time
  @return acceleration output
 */
-A_EXTERN a_real_t a_polytrack7_acc(a_polytrack7_s const *ctx, a_real_t ts);
+A_EXTERN a_real_t a_polytrack7_acc(a_polytrack7_s const *ctx, a_real_t dt);
 
 /*!
  @brief calculate function for hepta polynomial trajectory jerk
@@ -452,10 +320,10 @@ A_EXTERN a_real_t a_polytrack7_acc(a_polytrack7_s const *ctx, a_real_t ts);
   \end{array}
  @f}
  @param[in] ctx points to an instance of hepta polynomial trajectory
- @param[in] ts current time unit(s)
+ @param[in] dt difference between current time and initial time
  @return jerk output
 */
-A_EXTERN a_real_t a_polytrack7_jer(a_polytrack7_s const *ctx, a_real_t ts);
+A_EXTERN a_real_t a_polytrack7_jer(a_polytrack7_s const *ctx, a_real_t dt);
 
 #if defined(__cplusplus)
 } /* extern "C" */

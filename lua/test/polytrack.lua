@@ -29,24 +29,6 @@ assert(type(ctx:vec(0.5)) == "number")
 assert(type(ctx:acc(0.5)) == "number")
 assert(type(ctx(0.5)) == "table")
 assert(type(ctx.k) == "table")
-assert(type(ctx.q) == "table")
-assert(type(ctx.v) == "table")
-assert(type(ctx.t0) == "number")
-assert(type(ctx.q0) == "number")
-assert(type(ctx.v0) == "number")
-assert(type(ctx.t1) == "number")
-assert(type(ctx.q1) == "number")
-assert(type(ctx.v1) == "number")
-ctx.t = { 0, 1 }
-ctx.q = { 0, 1 }
-ctx.v = { 0, 1 }
-ctx.t0 = 0
-ctx.q0 = 0
-ctx.v0 = 0
-ctx.t1 = 1
-ctx.q1 = 1
-ctx.v1 = 1
-ctx:gen()
 
 test:p("polytrack5")
 test:r(getmetatable(a.polytrack5))
@@ -73,30 +55,6 @@ assert(type(ctx:vec(0.5)) == "number")
 assert(type(ctx:acc(0.5)) == "number")
 assert(type(ctx(0.5)) == "table")
 assert(type(ctx.k) == "table")
-assert(type(ctx.q) == "table")
-assert(type(ctx.v) == "table")
-assert(type(ctx.a) == "table")
-assert(type(ctx.t0) == "number")
-assert(type(ctx.q0) == "number")
-assert(type(ctx.v0) == "number")
-assert(type(ctx.a0) == "number")
-assert(type(ctx.t1) == "number")
-assert(type(ctx.q1) == "number")
-assert(type(ctx.v1) == "number")
-assert(type(ctx.a1) == "number")
-ctx.t = { 0, 1 }
-ctx.q = { 0, 1 }
-ctx.v = { 0, 1 }
-ctx.a = { 0, 1 }
-ctx.t0 = 0
-ctx.q0 = 0
-ctx.v0 = 0
-ctx.a0 = 0
-ctx.t1 = 1
-ctx.q1 = 1
-ctx.v1 = 1
-ctx.a1 = 1
-ctx:gen()
 
 test:p("polytrack7")
 test:r(getmetatable(a.polytrack7))
@@ -127,33 +85,3 @@ assert(type(ctx:acc(0.5)) == "number")
 assert(type(ctx:jer(0.5)) == "number")
 assert(type(ctx(0.5)) == "table")
 assert(type(ctx.k) == "table")
-assert(type(ctx.q) == "table")
-assert(type(ctx.v) == "table")
-assert(type(ctx.a) == "table")
-assert(type(ctx.j) == "table")
-assert(type(ctx.t0) == "number")
-assert(type(ctx.q0) == "number")
-assert(type(ctx.v0) == "number")
-assert(type(ctx.a0) == "number")
-assert(type(ctx.j0) == "number")
-assert(type(ctx.t1) == "number")
-assert(type(ctx.q1) == "number")
-assert(type(ctx.v1) == "number")
-assert(type(ctx.a1) == "number")
-assert(type(ctx.j1) == "number")
-ctx.t = { 0, 1 }
-ctx.q = { 0, 1 }
-ctx.v = { 0, 1 }
-ctx.a = { 0, 1 }
-ctx.j = { 0, 1 }
-ctx.t0 = 0
-ctx.q0 = 0
-ctx.v0 = 0
-ctx.a0 = 0
-ctx.j0 = 0
-ctx.t1 = 1
-ctx.q1 = 1
-ctx.v1 = 1
-ctx.a1 = 1
-ctx.j1 = 1
-ctx:gen()

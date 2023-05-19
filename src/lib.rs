@@ -41,9 +41,9 @@ pub use crate::pid::PID;
 pub mod fpid;
 pub use crate::fpid::FPID;
 pub mod polytrack;
-pub use crate::polytrack::PolyTrack3;
-pub use crate::polytrack::PolyTrack5;
-pub use crate::polytrack::PolyTrack7;
+pub use crate::polytrack::polytrack3;
+pub use crate::polytrack::polytrack5;
+pub use crate::polytrack::polytrack7;
 
 extern "C" {
     fn a_version() -> *const c_char;

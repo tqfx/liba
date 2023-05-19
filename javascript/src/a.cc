@@ -147,24 +147,24 @@ class polytrack3
 public:
     polytrack3(a_real_t jt0, a_real_t jt1, a_real_t jq0, a_real_t jq1, a_real_t jv0 = 0, a_real_t jv1 = 0)
     {
-        a_polytrack3_init(&this->ctx, jt0, jt1, jq0, jq1, jv0, jv1);
+        a_polytrack3_gen(&this->ctx, jt0, jt1, jq0, jq1, jv0, jv1);
     }
-    a_real_t pos(a_real_t jts)
+    a_real_t pos(a_real_t jdt)
     {
-        return a_polytrack3_pos(&this->ctx, jts);
+        return a_polytrack3_pos(&this->ctx, jdt);
     }
-    a_real_t vec(a_real_t jts)
+    a_real_t vec(a_real_t jdt)
     {
-        return a_polytrack3_vec(&this->ctx, jts);
+        return a_polytrack3_vec(&this->ctx, jdt);
     }
-    a_real_t acc(a_real_t jts)
+    a_real_t acc(a_real_t jdt)
     {
-        return a_polytrack3_acc(&this->ctx, jts);
+        return a_polytrack3_acc(&this->ctx, jdt);
     }
-    emscripten::val out(a_real_t jts)
+    emscripten::val out(a_real_t jdt)
     {
         a_real_t out[3];
-        a_polytrack3_out(&this->ctx, jts, out);
+        a_polytrack3_out(&this->ctx, jdt, out);
         return emscripten::val(emscripten::typed_memory_view(3, out));
     }
 };
@@ -176,24 +176,24 @@ class polytrack5
 public:
     polytrack5(a_real_t jt0, a_real_t jt1, a_real_t jq0, a_real_t jq1, a_real_t jv0 = 0, a_real_t jv1 = 0, a_real_t ja0 = 0, a_real_t ja1 = 0)
     {
-        a_polytrack5_init(&this->ctx, jt0, jt1, jq0, jq1, jv0, jv1, ja0, ja1);
+        a_polytrack5_gen(&this->ctx, jt0, jt1, jq0, jq1, jv0, jv1, ja0, ja1);
     }
-    a_real_t pos(a_real_t jts)
+    a_real_t pos(a_real_t jdt)
     {
-        return a_polytrack5_pos(&this->ctx, jts);
+        return a_polytrack5_pos(&this->ctx, jdt);
     }
-    a_real_t vec(a_real_t jts)
+    a_real_t vec(a_real_t jdt)
     {
-        return a_polytrack5_vec(&this->ctx, jts);
+        return a_polytrack5_vec(&this->ctx, jdt);
     }
-    a_real_t acc(a_real_t jts)
+    a_real_t acc(a_real_t jdt)
     {
-        return a_polytrack5_acc(&this->ctx, jts);
+        return a_polytrack5_acc(&this->ctx, jdt);
     }
-    emscripten::val out(a_real_t jts)
+    emscripten::val out(a_real_t jdt)
     {
         a_real_t out[3];
-        a_polytrack5_out(&this->ctx, jts, out);
+        a_polytrack5_out(&this->ctx, jdt, out);
         return emscripten::val(emscripten::typed_memory_view(3, out));
     }
 };
@@ -205,28 +205,28 @@ class polytrack7
 public:
     polytrack7(a_real_t jt0, a_real_t jt1, a_real_t jq0, a_real_t jq1, a_real_t jv0 = 0, a_real_t jv1 = 0, a_real_t ja0 = 0, a_real_t ja1 = 0, a_real_t jj0 = 0, a_real_t jj1 = 0)
     {
-        a_polytrack7_init(&this->ctx, jt0, jt1, jq0, jq1, jv0, jv1, ja0, ja1, jj0, jj1);
+        a_polytrack7_gen(&this->ctx, jt0, jt1, jq0, jq1, jv0, jv1, ja0, ja1, jj0, jj1);
     }
-    a_real_t pos(a_real_t jts)
+    a_real_t pos(a_real_t jdt)
     {
-        return a_polytrack7_pos(&this->ctx, jts);
+        return a_polytrack7_pos(&this->ctx, jdt);
     }
-    a_real_t vec(a_real_t jts)
+    a_real_t vec(a_real_t jdt)
     {
-        return a_polytrack7_vec(&this->ctx, jts);
+        return a_polytrack7_vec(&this->ctx, jdt);
     }
-    a_real_t acc(a_real_t jts)
+    a_real_t acc(a_real_t jdt)
     {
-        return a_polytrack7_acc(&this->ctx, jts);
+        return a_polytrack7_acc(&this->ctx, jdt);
     }
-    a_real_t jer(a_real_t jts)
+    a_real_t jer(a_real_t jdt)
     {
-        return a_polytrack7_jer(&this->ctx, jts);
+        return a_polytrack7_jer(&this->ctx, jdt);
     }
-    emscripten::val out(a_real_t jts)
+    emscripten::val out(a_real_t jdt)
     {
         a_real_t out[4];
-        a_polytrack7_out(&this->ctx, jts, out);
+        a_polytrack7_out(&this->ctx, jdt, out);
         return emscripten::val(emscripten::typed_memory_view(4, out));
     }
 };

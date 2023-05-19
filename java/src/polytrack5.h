@@ -10,14 +10,6 @@ typedef struct
     jobject jobj;
     jfieldID k;
     jobject jk;
-    jfieldID t;
-    jobject jt;
-    jfieldID q;
-    jobject jq;
-    jfieldID v;
-    jobject jv;
-    jfieldID a;
-    jobject ja;
 } j_polytrack5_s;
 
 #if defined(__cplusplus)
