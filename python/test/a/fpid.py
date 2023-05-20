@@ -14,13 +14,14 @@ except Exception as e:
     print(e)
     exit()
 
-NB = -3
-NM = -2
-NS = -1
-ZO = 0
-PS = +1
-PM = +2
-PB = +3
+S = 1
+NB = -3 * S
+NM = -2 * S
+NS = -1 * S
+ZO = +0 * S
+PS = +1 * S
+PM = +2 * S
+PB = +3 * S
 me = [
     [a.mf.TRI, NB, NB, NM],
     [a.mf.TRI, NB, NM, NS],
@@ -31,13 +32,13 @@ me = [
     [a.mf.TRI, PM, PB, PB],
     [a.mf.NUL, ZO, ZO, ZO],
 ]
-NB = -6
-NM = -4
-NS = -3
-ZO = 0
-PS = +2
-PM = +4
-PB = +6
+NB = -6 * S
+NM = -4 * S
+NS = -2 * S
+ZO = +0 * S
+PS = +2 * S
+PM = +4 * S
+PB = +6 * S
 mec = [
     [a.mf.TRI, NB, NB, NM],
     [a.mf.TRI, NB, NM, NS],
@@ -48,13 +49,14 @@ mec = [
     [a.mf.TRI, PM, PB, PB],
     [a.mf.NUL, ZO, ZO, ZO],
 ]
-NB = -15
-NM = -10
-NS = -5
-ZO = 0
-PS = +5
-PM = +10
-PB = +15
+S = 10 / 3
+NB = -3 * S
+NM = -2 * S
+NS = -1 * S
+ZO = +0 * S
+PS = +1 * S
+PM = +2 * S
+PB = +3 * S
 mkp = [
     [NB, NB, NM, NM, NS, ZO, ZO],
     [NB, NB, NM, NS, NS, ZO, PS],
@@ -64,13 +66,14 @@ mkp = [
     [NS, ZO, PS, PM, PM, PM, PB],
     [ZO, ZO, PM, PM, PM, PB, PB],
 ]
-NB = -3
-NM = -2
-NS = -1
-ZO = 0
-PS = +1
-PM = +2
-PB = +3
+S = 10 / 3
+NB = -3 * S
+NM = -2 * S
+NS = -1 * S
+ZO = +0 * S
+PS = +1 * S
+PM = +2 * S
+PB = +3 * S
 mki = [
     [PB, PB, PM, PM, PS, ZO, ZO],
     [PB, PB, PM, PS, PS, ZO, ZO],
@@ -80,6 +83,14 @@ mki = [
     [ZO, ZO, NS, NS, NM, NB, NB],
     [ZO, ZO, NS, NM, NM, NB, NB],
 ]
+S = 10 / 3
+NB = -3 * S
+NM = -2 * S
+NS = -1 * S
+ZO = +0 * S
+PS = +1 * S
+PM = +2 * S
+PB = +3 * S
 mkd = [
     [NS, PS, PB, PB, PB, PM, NS],
     [NS, PS, PB, PM, PM, PS, ZO],
@@ -92,14 +103,18 @@ mkd = [
 
 
 def fuzzy(e: float, c: float):
+    mf = a.mf()
+
     idxe = []
     vale = []
-    mf = a.mf()
     for idx, param in enumerate(me[:-1]):
         ms = mf(param[0], e, param[1:])
         if ms > 0:
             idxe.append(idx)
             vale.append(ms)
+    if idxe == []:
+        return 0, 0, 0
+
     idxec = []
     valec = []
     for idx, param in enumerate(me[:-1]):
@@ -107,32 +122,37 @@ def fuzzy(e: float, c: float):
         if ms > 0:
             idxec.append(idx)
             valec.append(ms)
-    if vale == [] or valec == []:
+    if idxec == []:
         return 0, 0, 0
 
-    num = 0.0
+    inv = 0.0
     joint = []
     for e in vale:
         row = []
         for c in valec:
             y = pow(e * c, 0.5) * pow(1 - (1 - e) * (1 - c), 0.5)
             row.append(y)
-            num += y
+            inv += y
         joint.append(row)
+    inv = 1 / inv
 
     kp = 0.0
     for i in range(len(vale)):
         for j in range(len(valec)):
             kp += joint[i][j] * mkp[idxe[i]][idxec[j]]
+    kp *= inv
     ki = 0.0
     for i in range(len(vale)):
         for j in range(len(valec)):
             ki += joint[i][j] * mki[idxe[i]][idxec[j]]
+    ki *= inv
     kd = 0.0
     for i in range(len(vale)):
         for j in range(len(valec)):
             kd += joint[i][j] * mkd[idxe[i]][idxec[j]]
+    kd *= inv
 
+    print(kp, ki, kd)
     return kp, ki, kd
 
 

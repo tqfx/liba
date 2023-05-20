@@ -171,12 +171,17 @@ a_fpid_s *a_fpid_zero(a_fpid_s *const ctx)
 
 static void a_fpid_iter_(a_fpid_s *const ctx, a_uint_t const col, a_real_t ec, a_real_t e)
 {
+    a_real_t kv[3] = {0, 0, 0};
     /* calculate membership */
     a_uint_t const ne = a_fpid_mf(ctx->me, e, ctx->idx, ctx->val);
-    a_uint_t const nec = a_fpid_mf(ctx->mec, ec, ctx->idx + ne, ctx->val + ne);
-    if (!ne || !nec)
+    if (!ne)
     {
-        return;
+        goto pid;
+    }
+    a_uint_t const nec = a_fpid_mf(ctx->mec, ec, ctx->idx + ne, ctx->val + ne);
+    if (!nec)
+    {
+        goto pid;
     }
     a_real_t *const mat = ctx->val + ne + nec;
     /* joint membership */
@@ -193,7 +198,6 @@ static void a_fpid_iter_(a_fpid_s *const ctx, a_uint_t const col, a_real_t ec, a
     }
     inv = 1 / inv;
     /* mean of centers defuzzifier */
-    a_real_t qv[3] = {0, 0, 0};
     if (ctx->mkp)
     {
         for (a_uint_t i = 0; i != ne; ++i)
@@ -202,10 +206,10 @@ static void a_fpid_iter_(a_fpid_s *const ctx, a_uint_t const col, a_real_t ec, a
             a_uint_t const idx = col * ctx->idx[i];
             for (a_uint_t j = 0; j != nec; ++j) /* mat(i,j) * kp(e[i],ec[j]) */
             {
-                qv[0] += mat[row + j] * ctx->mkp[idx + ctx->idx[ne + j]];
+                kv[0] += mat[row + j] * ctx->mkp[idx + ctx->idx[ne + j]];
             }
         }
-        qv[0] *= inv;
+        kv[0] *= inv;
     }
     if (ctx->mki)
     {
@@ -215,10 +219,10 @@ static void a_fpid_iter_(a_fpid_s *const ctx, a_uint_t const col, a_real_t ec, a
             a_uint_t const idx = col * ctx->idx[i];
             for (a_uint_t j = 0; j != nec; ++j) /* mat(i,j) * ki(e[i],ec[j]) */
             {
-                qv[1] += mat[row + j] * ctx->mki[idx + ctx->idx[ne + j]];
+                kv[1] += mat[row + j] * ctx->mki[idx + ctx->idx[ne + j]];
             }
         }
-        qv[1] *= inv;
+        kv[1] *= inv;
     }
     if (ctx->mkd)
     {
@@ -228,12 +232,13 @@ static void a_fpid_iter_(a_fpid_s *const ctx, a_uint_t const col, a_real_t ec, a
             a_uint_t const idx = col * ctx->idx[i];
             for (a_uint_t j = 0; j != nec; ++j) /* mat(i,j) * kd(e[i],ec[j]) */
             {
-                qv[2] += mat[row + j] * ctx->mkd[idx + ctx->idx[ne + j]];
+                kv[2] += mat[row + j] * ctx->mkd[idx + ctx->idx[ne + j]];
             }
         }
-        qv[2] *= inv;
+        kv[2] *= inv;
     }
-    a_pid_kpid(&ctx->pid, ctx->kp + qv[0], ctx->ki + qv[1], ctx->kd + qv[2]);
+pid:
+    a_pid_kpid(&ctx->pid, ctx->kp + kv[0], ctx->ki + kv[1], ctx->kd + kv[2]);
 }
 
 a_real_t a_fpid_outf(a_fpid_s *const ctx, a_real_t const set, a_real_t const fdb)
