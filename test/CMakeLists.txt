@@ -138,7 +138,7 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
 
     add_custom_command(TARGET ${TARGET} POST_BUILD WORKING_DIRECTORY ${WORKING_DIRECTORY}
       COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${TARGET}> ${output} ${ARGN}
-      COMMAND ${GNUPLOT_EXECUTABLE} -c ${script} ${output} $<TARGET_FILE:${TARGET}>
+      COMMAND ${GNUPLOT_EXECUTABLE} -c ${script} ${output} ${BINARY_DIRECTORY}/${target}
     )
   endfunction()
 endif()
