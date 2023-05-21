@@ -14,8 +14,7 @@ liba = "0.1"
 #![warn(missing_docs)]
 #![allow(non_camel_case_types)]
 
-/// Equivalent to C’s char type.
-type c_char = std::os::raw::c_char;
+use std::os::raw::c_char;
 /// Equivalent to C’s unsigned int type.
 pub type uint = std::os::raw::c_uint;
 /// real number stored using `f64`
@@ -61,11 +60,8 @@ algorithm library version
 println!("version {}", liba::version());
 ```
 */
-pub fn version() -> String {
-    let c_str: &std::ffi::CStr = unsafe { std::ffi::CStr::from_ptr(a_version()) };
-    let str_slice: &str = c_str.to_str().unwrap();
-    let str_buf: String = str_slice.to_owned();
-    str_buf
+pub fn version() -> &'static str {
+    unsafe { std::ffi::CStr::from_ptr(a_version()).to_str().unwrap() }
 }
 
 /// algorithm library version major
