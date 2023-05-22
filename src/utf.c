@@ -107,7 +107,7 @@ a_uint_t a_utf_decode(a_cptr_t const _str, a_u32_t *const val)
             res = (res << 6) | (c & 0x3F);
         }
         offset = a_uint_c(str - A_U8_P(_str));
-        res |= a_u32_c(chr & 0x7F) << offset * 5;
+        res |= a_u32_c(chr & 0x7F) << (offset * 5);
     }
     if (val)
     {

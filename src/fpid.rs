@@ -250,8 +250,8 @@ impl FPID {
         self.pid.mode()
     }
     /// set mode for PID controller
-    pub fn set_mode(&mut self, reg: uint) -> &mut Self {
-        self.pid.set_mode(reg);
+    pub fn set_mode(&mut self, mode: uint) -> &mut Self {
+        self.pid.set_mode(mode);
         self
     }
 }

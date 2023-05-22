@@ -12,9 +12,8 @@ a_real_t a_fpid_op_equ(a_real_t const l, a_real_t const r)
 
 a_void_t a_fpid_set_op(a_fpid_s *const ctx, a_uint_t op)
 {
-    ctx->pid.reg &= ~A_FPID_FUZZY_MASK;
-    op &= A_FPID_FUZZY_MASK;
-    ctx->pid.reg |= op;
+    op &= A_FPID_FUZZY_MSK;
+    ctx->pid.reg = (~A_FPID_FUZZY_MSK & ctx->pid.reg) | op;
     switch (op)
     {
     case A_FPID_OR_ALGEBRA:
@@ -116,7 +115,7 @@ a_fpid_s *a_fpid_buf1(a_fpid_s *const ctx, a_vptr_t ptr, a_size_t max)
 {
     a_fpid_set_bufmax(ctx, (a_uint_t)max);
     ctx->idx = a_uint_p(ptr);
-    ptr = a_byte_p(ptr) + sizeof(a_uint_t) * (max << 1);
+    ptr = a_byte_p(ptr) + sizeof(a_uint_t) * 2 * max;
     ctx->val = a_real_p(ptr);
     return ctx;
 }

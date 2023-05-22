@@ -16,10 +16,10 @@
  @{
 */
 
-#define A_FPID_FUZZY_BITS 0x4 // 00111100
-#define A_FPID_FUZZY_BITL A_PID_MODE_BITS
-#define A_FPID_FUZZY_BITH (A_FPID_FUZZY_BITL + A_FPID_FUZZY_BITS)
-#define A_FPID_FUZZY_MASK (~((1U << A_FPID_FUZZY_BITL) - 1U) & ((1U << A_FPID_FUZZY_BITH) - 1U))
+#define A_FPID_FUZZY_BITL A_PID_MODE_BITH
+#define A_FPID_FUZZY_BIT 0x04 // 00111100
+#define A_FPID_FUZZY_BITH (A_FPID_FUZZY_BITL + A_FPID_FUZZY_BIT)
+#define A_FPID_FUZZY_MSK (~(~0U << A_FPID_FUZZY_BITH) & (~0U << A_FPID_FUZZY_BITL))
 
 /*!
  @brief instance enumeration for fuzzy PID controller operator
@@ -95,7 +95,7 @@ A_EXTERN a_uint_t a_fpid_bufnum(a_fpid_s const *ctx);
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
 A_INTERN a_uint_t a_fpid_bufnum(a_fpid_s const *const ctx)
 {
-    return ctx->pid.num >> A_PID_NUM_BITS;
+    return ctx->pid.num >> A_PID_NUM_BITH;
 }
 #endif /* A_HAVE_INLINE */
 
@@ -105,8 +105,7 @@ A_EXTERN a_void_t a_fpid_set_bufmax(a_fpid_s *ctx, a_uint_t max);
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
 A_INTERN a_void_t a_fpid_set_bufmax(a_fpid_s *const ctx, a_uint_t const max)
 {
-    ctx->pid.num &= A_PID_NUM_MASK;
-    ctx->pid.num |= max << A_PID_NUM_BITS;
+    ctx->pid.num = (ctx->pid.num & A_PID_NUM_MSK) | (max << A_PID_NUM_BITH);
 }
 #endif /* A_HAVE_INLINE */
 
@@ -116,18 +115,17 @@ A_EXTERN a_uint_t a_fpid_col(a_fpid_s const *ctx);
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
 A_INTERN a_uint_t a_fpid_col(a_fpid_s const *const ctx)
 {
-    return ctx->pid.reg >> A_PID_REG_BITS;
+    return ctx->pid.reg >> A_PID_REG_BITH;
 }
 #endif /* A_HAVE_INLINE */
 
 #if !defined A_HAVE_INLINE || defined(LIBA_FPID_C)
-A_EXTERN a_void_t a_fpid_set_col(a_fpid_s *ctx, a_uint_t reg);
+A_EXTERN a_void_t a_fpid_set_col(a_fpid_s *ctx, a_uint_t col);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
-A_INTERN a_void_t a_fpid_set_col(a_fpid_s *const ctx, a_uint_t const reg)
+A_INTERN a_void_t a_fpid_set_col(a_fpid_s *const ctx, a_uint_t const col)
 {
-    ctx->pid.reg &= A_PID_REG_MASK;
-    ctx->pid.reg |= reg << A_PID_REG_BITS;
+    ctx->pid.reg = (ctx->pid.reg & A_PID_REG_MSK) | (col << A_PID_REG_BITH);
 }
 #endif /* A_HAVE_INLINE */
 
@@ -137,7 +135,7 @@ A_EXTERN a_uint_t a_fpid_op(a_fpid_s const *ctx);
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
 A_INTERN a_uint_t a_fpid_op(a_fpid_s const *const ctx)
 {
-    return ctx->pid.reg & A_FPID_FUZZY_MASK;
+    return ctx->pid.reg & A_FPID_FUZZY_MSK;
 }
 #endif /* A_HAVE_INLINE */
 

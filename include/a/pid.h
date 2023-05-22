@@ -37,22 +37,29 @@
  @{
 */
 
+#define A_PID_NUM_BITL 0x00
 #if defined(A_UINT_MAX) && (A_UINT_MAX > 0xFFFF)
-#define A_PID_NUM_BITS 0x10 // 00000000 00000000 11111111 11111111
+#define A_PID_NUM_BIT 0x10 // 00000000 00000000 11111111 11111111
 #else /* !A_UINT_MAX */
-#define A_PID_NUM_BITS 0x08 // 00000000 11111111
+#define A_PID_NUM_BIT 0x08 // 00000000 11111111
 #endif /* A_UINT_MAX */
-#define A_PID_NUM_MASK ((1U << A_PID_NUM_BITS) - 1U)
+#define A_PID_NUM_BITH (A_PID_NUM_BITL + A_PID_NUM_BIT)
+#define A_PID_NUM_MSK (~(~0U << A_PID_NUM_BITH) & (~0U << A_PID_NUM_BITL))
+#define A_PID_NUM_MAX (~(~0U << A_PID_NUM_BIT))
 
+#define A_PID_REG_BITL 0x00
 #if defined(A_UINT_MAX) && (A_UINT_MAX > 0xFFFF)
-#define A_PID_REG_BITS 0x10 // 00000000 00000000 11111111 11111111
+#define A_PID_REG_BIT 0x10 // 00000000 00000000 11111111 11111111
 #else /* !A_UINT_MAX */
-#define A_PID_REG_BITS 0x08 // 00000000 11111111
+#define A_PID_REG_BIT 0x08 // 00000000 11111111
 #endif /* A_UINT_MAX */
-#define A_PID_REG_MASK ((1U << A_PID_REG_BITS) - 1U)
+#define A_PID_REG_BITH (A_PID_REG_BITL + A_PID_REG_BIT)
+#define A_PID_REG_MSK (~(~0U << A_PID_REG_BITH) & (~0U << A_PID_REG_BITL))
 
-#define A_PID_MODE_BITS 0x2 // 00000011
-#define A_PID_MODE_MASK ((1U << A_PID_MODE_BITS) - 1U)
+#define A_PID_MODE_BITL 0x00
+#define A_PID_MODE_BIT 0x02 // 00000011
+#define A_PID_MODE_BITH (A_PID_MODE_BITL + A_PID_MODE_BIT)
+#define A_PID_MODE_MSK (~(~0U << A_PID_MODE_BITH) & (~0U << A_PID_MODE_BITL))
 
 /*!
  @brief instance enumeration for PID controller mode
@@ -171,7 +178,7 @@ A_EXTERN a_uint_t a_pid_num(a_pid_s const *ctx);
 #if defined(A_HAVE_INLINE) || defined(LIBA_PID_C)
 A_INTERN a_uint_t a_pid_num(a_pid_s const *const ctx)
 {
-    return ctx->num & A_PID_NUM_MASK;
+    return ctx->num & A_PID_NUM_MSK;
 }
 #endif /* A_HAVE_INLINE */
 
@@ -181,8 +188,7 @@ A_EXTERN a_void_t a_pid_set_num(a_pid_s *ctx, a_uint_t num);
 #if defined(A_HAVE_INLINE) || defined(LIBA_PID_C)
 A_INTERN a_void_t a_pid_set_num(a_pid_s *const ctx, a_uint_t const num)
 {
-    ctx->num &= ~A_PID_NUM_MASK;
-    ctx->num |= num & A_PID_NUM_MASK;
+    ctx->num = (~A_PID_NUM_MSK & ctx->num) | (A_PID_NUM_MSK & num);
 }
 #endif /* A_HAVE_INLINE */
 
@@ -192,7 +198,7 @@ A_EXTERN a_uint_t a_pid_reg(a_pid_s const *ctx);
 #if defined(A_HAVE_INLINE) || defined(LIBA_PID_C)
 A_INTERN a_uint_t a_pid_reg(a_pid_s const *const ctx)
 {
-    return ctx->reg & A_PID_REG_MASK;
+    return ctx->reg & A_PID_REG_MSK;
 }
 #endif /* A_HAVE_INLINE */
 
@@ -202,8 +208,7 @@ A_EXTERN a_void_t a_pid_set_reg(a_pid_s *ctx, a_uint_t reg);
 #if defined(A_HAVE_INLINE) || defined(LIBA_PID_C)
 A_INTERN a_void_t a_pid_set_reg(a_pid_s *const ctx, a_uint_t const reg)
 {
-    ctx->reg &= ~A_PID_REG_MASK;
-    ctx->reg |= reg & A_PID_REG_MASK;
+    ctx->reg = (~A_PID_REG_MSK & ctx->reg) | (A_PID_REG_MSK & reg);
 }
 #endif /* A_HAVE_INLINE */
 
@@ -213,7 +218,7 @@ A_EXTERN a_uint_t a_pid_mode(a_pid_s const *mode);
 #if defined(A_HAVE_INLINE) || defined(LIBA_PID_C)
 A_INTERN a_uint_t a_pid_mode(a_pid_s const *const ctx)
 {
-    return ctx->reg & A_PID_MODE_MASK;
+    return ctx->reg & A_PID_MODE_MSK;
 }
 #endif /* A_HAVE_INLINE */
 
@@ -223,8 +228,7 @@ A_EXTERN a_void_t a_pid_set_mode(a_pid_s *ctx, a_uint_t mode);
 #if defined(A_HAVE_INLINE) || defined(LIBA_PID_C)
 A_INTERN a_void_t a_pid_set_mode(a_pid_s *const ctx, a_uint_t const mode)
 {
-    ctx->reg &= ~A_PID_MODE_MASK;
-    ctx->reg |= mode & A_PID_MODE_MASK;
+    ctx->reg = (~A_PID_MODE_MSK & ctx->reg) | (A_PID_MODE_MSK & mode);
 }
 #endif /* A_HAVE_INLINE */
 
