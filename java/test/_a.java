@@ -2,7 +2,6 @@ import java.io.*;
 
 class _a {
     public static void main(String[] args) throws FileNotFoundException {
-        liba.init();
         if (args.length > 0) {
             System.setOut(new PrintStream(new FileOutputStream(args[0])));
         }

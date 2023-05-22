@@ -16,6 +16,9 @@ public class mf {
     public static final int TRI = 5;
     /** z-shaped membership function */
     public static final int Z = 6;
+    static {
+        System.loadLibrary("a");
+    }
 
     /**
      * gaussian membership function

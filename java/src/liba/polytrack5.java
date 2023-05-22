@@ -4,6 +4,9 @@ package liba;
 public class polytrack5 {
     /** quantity */
     public double[] k = new double[6];
+    static {
+        System.loadLibrary("a");
+    }
 
     /**
      * construct a new {@link polytrack5} object

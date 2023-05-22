@@ -34,6 +34,9 @@ public class pid {
     public double e;
     int num;
     int reg;
+    static {
+        System.loadLibrary("a");
+    }
 
     /**
      * construct a new {@link pid} object

@@ -18,6 +18,9 @@ public class fpid {
     /** base derivative constant */
     public double kd;
     long op;
+    static {
+        System.loadLibrary("a");
+    }
 
     /**
      * construct a new {@link fpid} object

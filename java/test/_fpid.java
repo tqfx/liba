@@ -4,7 +4,6 @@ import liba.fpid;
 
 class _fpid {
     public static void main(String[] args) {
-        liba.init();
         int NB = -3;
         int NM = -2;
         int NS = -1;

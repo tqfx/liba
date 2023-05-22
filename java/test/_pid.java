@@ -2,7 +2,6 @@ import liba.pid;
 
 class _pid {
     public static void main(String[] args) {
-        liba.init();
         pid obj = new pid(1, -10, +10);
         System.out.print(obj.iter(1, 0) + " ");
         obj.off().inc().pos(10);

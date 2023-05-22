@@ -8,6 +8,9 @@ public class tf {
     public double den[];
     double u[];
     double v[];
+    static {
+        System.loadLibrary("a");
+    }
 
     /**
      * construct a new {@link tf} object

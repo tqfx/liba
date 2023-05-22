@@ -2,10 +2,7 @@
  * algorithm library
  */
 public class liba {
-    /**
-     * initialize algorithm library
-     */
-    public static final void init() {
+    static {
         System.loadLibrary("a");
     }
 
