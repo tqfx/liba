@@ -8,6 +8,21 @@
 #include "a/tf.h"
 #include "a/fpid.h"
 
+#undef NB
+#undef NM
+#undef NS
+#undef ZO
+#undef PS
+#undef PM
+#undef PB
+#define NB -3 * S
+#define NM -2 * S
+#define NS -1 * S
+#define ZO +0 * S
+#define PS +1 * S
+#define PM +2 * S
+#define PB +3 * S
+
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
 #if defined(MAIN_ONCE)
@@ -41,20 +56,8 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_tf_init(tf + 2, a_count_of(num1), num1, u1, a_count_of(den1), den1, v1);
     a_tf_init(tf + 3, a_count_of(num2), num2, u2, a_count_of(den2), den2, v2);
     a_fpid_s ctx[2];
-#undef NB
-#undef NM
-#undef NS
-#undef ZO
-#undef PS
-#undef PM
-#undef PB
-#define NB -3
-#define NM -2
-#define NS -1
-#define ZO 0
-#define PS +1
-#define PM +2
-#define PB +3
+#undef S
+#define S 1
     static a_real_t const me[] = {
         A_MF_TRI, NB, NB, NM,
         A_MF_TRI, NB, NM, NS,
@@ -64,20 +67,8 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         A_MF_TRI, PS, PM, PB,
         A_MF_TRI, PM, PB, PB,
         A_MF_NUL};
-#undef NB
-#undef NM
-#undef NS
-#undef ZO
-#undef PS
-#undef PM
-#undef PB
-#define NB -6
-#define NM -4
-#define NS -2
-#define ZO 0
-#define PS +2
-#define PM +4
-#define PB +6
+#undef S
+#define S 2
     static a_real_t const mec[] = {
         A_MF_TRI, NB, NB, NM,
         A_MF_TRI, NB, NM, NS,
@@ -87,20 +78,8 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         A_MF_TRI, PS, PM, PB,
         A_MF_TRI, PM, PB, PB,
         A_MF_NUL};
-#undef NB
-#undef NM
-#undef NS
-#undef ZO
-#undef PS
-#undef PM
-#undef PB
-#define NB -15
-#define NM -10
-#define NS -5
-#define ZO 0
-#define PS +5
-#define PM +10
-#define PB +15
+#undef S
+#define S 5
     static a_real_t const mkp[] = {
         NB, NB, NM, NM, NS, ZO, ZO,
         NB, NB, NM, NS, NS, ZO, PS,
@@ -109,20 +88,8 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         NS, NS, ZO, PS, PS, PM, PM,
         NS, ZO, PS, PM, PM, PM, PB,
         ZO, ZO, PM, PM, PM, PB, PB};
-#undef NB
-#undef NM
-#undef NS
-#undef ZO
-#undef PS
-#undef PM
-#undef PB
-#define NB -3
-#define NM -2
-#define NS -1
-#define ZO 0
-#define PS +1
-#define PM +2
-#define PB +3
+#undef S
+#define S 1
     static a_real_t const mki[] = {
         PB, PB, PM, PM, PS, ZO, ZO,
         PB, PB, PM, PS, PS, ZO, ZO,
@@ -131,6 +98,8 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         PM, PS, ZO, NS, NS, NM, NB,
         ZO, ZO, NS, NS, NM, NB, NB,
         ZO, ZO, NS, NM, NM, NB, NB};
+#undef S
+#define S 1
     static a_real_t const mkd[] = {
         NS, PS, PB, PB, PB, PM, NS,
         NS, PS, PB, PM, PM, PS, ZO,
