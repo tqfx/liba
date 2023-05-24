@@ -5,7 +5,7 @@
 #include "a/host/que.h"
 #include <string.h>
 
-static void dtor(a_vptr_t ptr)
+static void dtor(void *ptr)
 {
     a_u32_t *obj = a_u32_p(ptr);
     printf("%" PRIu32 " ", *obj);
@@ -112,26 +112,26 @@ static void test(void)
 
 #include <time.h>
 
-static a_int_t cmp(a_cptr_t lhs, a_cptr_t rhs)
+static int cmp(void const *lhs, void const *rhs)
 {
     return *A_INT_P(lhs) - *A_INT_P(rhs);
 }
 
-static a_int_t cmpr(a_cptr_t lhs, a_cptr_t rhs)
+static int cmpr(void const *lhs, void const *rhs)
 {
     return *A_INT_P(rhs) - *A_INT_P(lhs);
 }
 
 static void test_sort(void)
 {
-    a_uint_t t = a_uint_c(time(A_NULL));
-    a_que_s *ctx = a_que_new(sizeof(a_int_t));
+    unsigned int t = a_cast_s(unsigned int, time(A_NULL));
+    a_que_s *ctx = a_que_new(sizeof(int));
 
     srand(t);
     a_que_drop(ctx, A_NULL);
-    for (a_int_t i = 0; i != 10; ++i)
+    for (int i = 0; i != 10; ++i)
     {
-        a_int_t *obj = a_que_push_fore(a_int_t, ctx);
+        int *obj = a_que_push_fore(int, ctx);
         if (obj)
         {
             *obj = rand() % 10;
@@ -140,7 +140,7 @@ static void test_sort(void)
         }
     }
     printf("-> ");
-    a_que_foreach(a_int_t, it, ctx)
+    a_que_foreach(int, it, ctx)
     {
         printf("%i ", *it);
     }
@@ -148,9 +148,9 @@ static void test_sort(void)
 
     srand(t);
     a_que_drop(ctx, A_NULL);
-    for (a_int_t i = 0; i != 10; ++i)
+    for (int i = 0; i != 10; ++i)
     {
-        a_int_t *obj = a_que_push_back(a_int_t, ctx);
+        int *obj = a_que_push_back(int, ctx);
         if (obj)
         {
             *obj = rand() % 10;
@@ -159,7 +159,7 @@ static void test_sort(void)
         }
     }
     printf("-> ");
-    a_que_foreach(a_int_t, it, ctx)
+    a_que_foreach(int, it, ctx)
     {
         printf("%i ", *it);
     }

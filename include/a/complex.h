@@ -15,33 +15,33 @@
 */
 
 /*! format constants for the fprintf family of functions */
-#define A_COMPLEX_PRI(RF, RC, IF, IC) "(" A_REAL_PRI(RF, RC) "," A_REAL_PRI(IF, IC) ")"
+#define A_COMPLEX_PRI(RF, RC, IF, IC) "(" A_FLOAT_PRI(RF, RC) "," A_FLOAT_PRI(IF, IC) ")"
 
 /*! constructs a complex number constant from real and imaginary parts */
 #if !defined __cplusplus
-#define a_complex_c(r, i)        \
-    (a_complex_s)                \
-    {                            \
-        a_real_c(r), a_real_c(i) \
+#define a_complex_c(r, i)          \
+    (a_complex_s)                  \
+    {                              \
+        a_float_c(r), a_float_c(i) \
     }
 #else /* !__cplusplus */
-#define a_complex_c(r, i)        \
-    {                            \
-        a_real_c(r), a_real_c(i) \
+#define a_complex_c(r, i)          \
+    {                              \
+        a_float_c(r), a_float_c(i) \
     }
 #endif /* __cplusplus */
 
 /*! constructs a complex number from real and imaginary parts */
 #if !defined __cplusplus
-#define A_COMPLEX_C(R, I)        \
-    (a_complex_s)                \
-    {                            \
-        A_REAL_C(R), A_REAL_C(I) \
+#define A_COMPLEX_C(R, I)          \
+    (a_complex_s)                  \
+    {                              \
+        A_FLOAT_C(R), A_FLOAT_C(I) \
     }
 #else /* !__cplusplus */
-#define A_COMPLEX_C(R, I)        \
-    {                            \
-        A_REAL_C(R), A_REAL_C(I) \
+#define A_COMPLEX_C(R, I)          \
+    {                              \
+        A_FLOAT_C(R), A_FLOAT_C(I) \
     }
 #endif /* __cplusplus */
 
@@ -55,8 +55,8 @@
 */
 typedef struct a_complex_s
 {
-    a_real_t real; //!< real part of complex number
-    a_real_t imag; //!< imaginary part of complex number
+    a_float_t real; //!< real part of complex number
+    a_float_t imag; //!< imaginary part of complex number
 } a_complex_s;
 
 #if defined(__cplusplus)
@@ -73,7 +73,7 @@ extern "C" {
  @param theta an angle from a reference direction
  @return = \f$ (r\cos\theta,r\sin\theta{i}) \f$
 */
-A_EXTERN a_complex_s a_complex_polar(a_real_t r, a_real_t theta);
+A_EXTERN a_complex_s a_complex_polar(a_float_t r, a_float_t theta);
 
 /* Properties of complex numbers */
 
@@ -82,28 +82,28 @@ A_EXTERN a_complex_s a_complex_polar(a_real_t r, a_real_t theta);
  @param z a complex number
  @return = \f$ \log\left|x\right| \f$
 */
-A_EXTERN a_real_t a_complex_logabs(a_complex_s z);
+A_EXTERN a_float_t a_complex_logabs(a_complex_s z);
 
 /*!
  @brief computes the squared magnitude of a complex number
  @param z a complex number
  @return = \f$ a^2+b^2 \f$
 */
-A_EXTERN a_real_t a_complex_abs2(a_complex_s z);
+A_EXTERN a_float_t a_complex_abs2(a_complex_s z);
 
 /*!
  @brief computes the magnitude of a complex number
  @param z a complex number
  @return = \f$ \sqrt{a^2+b^2} \f$
 */
-A_EXTERN a_real_t a_complex_abs(a_complex_s z);
+A_EXTERN a_float_t a_complex_abs(a_complex_s z);
 
 /*!
  @brief computes the phase angle of a complex number
  @param z a complex number
  @return = \f$ \arctan\frac{b}{a} \f$
 */
-A_EXTERN a_real_t a_complex_arg(a_complex_s z);
+A_EXTERN a_float_t a_complex_arg(a_complex_s z);
 
 /* Complex arithmetic operators */
 
@@ -147,8 +147,8 @@ A_INTERN a_complex_s a_complex_neg(a_complex_s z)
  @return = \f$ x + y \f$
 */
 A_EXTERN a_complex_s a_complex_add(a_complex_s x, a_complex_s y);
-A_EXTERN a_complex_s a_complex_add_real(a_complex_s x, a_real_t y);
-A_EXTERN a_complex_s a_complex_add_imag(a_complex_s x, a_real_t y);
+A_EXTERN a_complex_s a_complex_add_real(a_complex_s x, a_float_t y);
+A_EXTERN a_complex_s a_complex_add_imag(a_complex_s x, a_float_t y);
 
 /*!
  @brief subtraction of complex numbers \f[ (a+b i)-(c+d i)=(a-c)+(b-d)i \f]
@@ -157,8 +157,8 @@ A_EXTERN a_complex_s a_complex_add_imag(a_complex_s x, a_real_t y);
  @return = \f$ x - y \f$
 */
 A_EXTERN a_complex_s a_complex_sub(a_complex_s x, a_complex_s y);
-A_EXTERN a_complex_s a_complex_sub_real(a_complex_s x, a_real_t y);
-A_EXTERN a_complex_s a_complex_sub_imag(a_complex_s x, a_real_t y);
+A_EXTERN a_complex_s a_complex_sub_real(a_complex_s x, a_float_t y);
+A_EXTERN a_complex_s a_complex_sub_imag(a_complex_s x, a_float_t y);
 
 /*!
  @brief multiplication of complex numbers \f[ (a+b i)(c+d i)=a c+b c i+a d i+b d i^{2}=(a c-b d)+(b c+a d) i \f]
@@ -167,8 +167,8 @@ A_EXTERN a_complex_s a_complex_sub_imag(a_complex_s x, a_real_t y);
  @return = \f$ x \times y \f$
 */
 A_EXTERN a_complex_s a_complex_mul(a_complex_s x, a_complex_s y);
-A_EXTERN a_complex_s a_complex_mul_real(a_complex_s x, a_real_t y);
-A_EXTERN a_complex_s a_complex_mul_imag(a_complex_s x, a_real_t y);
+A_EXTERN a_complex_s a_complex_mul_real(a_complex_s x, a_float_t y);
+A_EXTERN a_complex_s a_complex_mul_imag(a_complex_s x, a_float_t y);
 
 /*!
  @brief division of complex numbers \f[ \frac{(a+b i)}{(c+d i)}=\frac{(a+b i)(c-d i)}{(c+d i)(c-d i)}=\frac{a c+b c i-a d i-b d i^{2}}{c^{2}-(d i)^{2}}=\frac{(a c+b d)+(b c-a d) i}{c^{2}+d^{2}}=\left(\frac{a c+b d}{c^{2}+d^{2}}\right)+\left(\frac{b c-a d}{c^{2}+d^{2}}\right) i \f]
@@ -177,8 +177,8 @@ A_EXTERN a_complex_s a_complex_mul_imag(a_complex_s x, a_real_t y);
  @return = \f$ x \div y \f$
 */
 A_EXTERN a_complex_s a_complex_div(a_complex_s x, a_complex_s y);
-A_EXTERN a_complex_s a_complex_div_real(a_complex_s x, a_real_t y);
-A_EXTERN a_complex_s a_complex_div_imag(a_complex_s x, a_real_t y);
+A_EXTERN a_complex_s a_complex_div_real(a_complex_s x, a_float_t y);
+A_EXTERN a_complex_s a_complex_div_imag(a_complex_s x, a_float_t y);
 
 /*!
  @brief inverse of a complex number \f[ \frac{a-bi}{a^2+b^2}=\left(\frac{a}{a^2+b^2}\right)-\left(\frac{b}{a^2+b^2}\right)i \f]
@@ -201,7 +201,7 @@ A_EXTERN a_complex_s a_complex_sqrt(a_complex_s z);
  @param x a real number
  @return = \f$ \sqrt{x} \f$
 */
-A_EXTERN a_complex_s a_complex_sqrt_real(a_real_t x);
+A_EXTERN a_complex_s a_complex_sqrt_real(a_float_t x);
 
 /*!
  @brief complex number z raised to complex power a
@@ -217,7 +217,7 @@ A_EXTERN a_complex_s a_complex_pow(a_complex_s z, a_complex_s a);
  @param a a real number
  @return = \f$ z^a \f$
 */
-A_EXTERN a_complex_s a_complex_pow_real(a_complex_s z, a_real_t a);
+A_EXTERN a_complex_s a_complex_pow_real(a_complex_s z, a_float_t a);
 
 /*!
  @brief computes the complex base-e exponential
@@ -299,14 +299,14 @@ A_EXTERN a_complex_s a_complex_cot(a_complex_s z);
  @return = \f$ \arcsin(z) \f$
 */
 A_EXTERN a_complex_s a_complex_asin(a_complex_s z);
-A_EXTERN a_complex_s a_complex_asin_real(a_real_t x);
+A_EXTERN a_complex_s a_complex_asin_real(a_float_t x);
 /*!
  @brief computes the complex arc cosine
  @param z a complex number
  @return = \f$ \arccos(z) \f$
 */
 A_EXTERN a_complex_s a_complex_acos(a_complex_s z);
-A_EXTERN a_complex_s a_complex_acos_real(a_real_t x);
+A_EXTERN a_complex_s a_complex_acos_real(a_float_t x);
 /*!
  @brief computes the complex arc tangent
  @param z a complex number
@@ -319,14 +319,14 @@ A_EXTERN a_complex_s a_complex_atan(a_complex_s z);
  @return = \f$ \mathrm{arcsec}(z) \f$
 */
 A_EXTERN a_complex_s a_complex_asec(a_complex_s z);
-A_EXTERN a_complex_s a_complex_asec_real(a_real_t x);
+A_EXTERN a_complex_s a_complex_asec_real(a_float_t x);
 /*!
  @brief computes the complex arc cosecant \f[ \mathrm{arccsc}(z)=\mathrm{arcsin}(\frac{1}{z}) \f]
  @param z a complex number
  @return = \f$ \mathrm{arccsc}(z) \f$
 */
 A_EXTERN a_complex_s a_complex_acsc(a_complex_s z);
-A_EXTERN a_complex_s a_complex_acsc_real(a_real_t x);
+A_EXTERN a_complex_s a_complex_acsc_real(a_float_t x);
 /*!
  @brief computes the complex arc cotangent \f[ \mathrm{arccot}(z)=\mathrm{arctan}(\frac{1}{z}) \f]
  @param z a complex number
@@ -387,14 +387,14 @@ A_EXTERN a_complex_s a_complex_asinh(a_complex_s z);
  @return = \f$ \mathrm{arccosh}(z) \f$
 */
 A_EXTERN a_complex_s a_complex_acosh(a_complex_s z);
-A_EXTERN a_complex_s a_complex_acosh_real(a_real_t x);
+A_EXTERN a_complex_s a_complex_acosh_real(a_float_t x);
 /*!
  @brief computes the complex arc hyperbolic tangent
  @param z a complex number
  @return = \f$ \mathrm{arctanh}(z) \f$
 */
 A_EXTERN a_complex_s a_complex_atanh(a_complex_s z);
-A_EXTERN a_complex_s a_complex_atanh_real(a_real_t x);
+A_EXTERN a_complex_s a_complex_atanh_real(a_float_t x);
 /*!
  @brief computes the complex arc hyperbolic secant \f[ \mathrm{arcsech}(z)=\mathrm{arccosh}(\frac{1}{z}) \f]
  @param z a complex number

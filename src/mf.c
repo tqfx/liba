@@ -1,22 +1,22 @@
-#include "a/real.h"
+#include "a/math.h"
 #include "a/mf.h"
 
-a_real_t a_mf_gauss(a_real_t const x, a_real_t const sigma, a_real_t const c)
+a_float_t a_mf_gauss(a_float_t const x, a_float_t const sigma, a_float_t const c)
 {
-    return a_real_exp(a_real_pow((x - c) / sigma, 2) / -2);
+    return a_float_exp(a_float_pow((x - c) / sigma, 2) / -2);
 }
 
-a_real_t a_mf_gbell(a_real_t const x, a_real_t const a, a_real_t const b, a_real_t const c)
+a_float_t a_mf_gbell(a_float_t const x, a_float_t const a, a_float_t const b, a_float_t const c)
 {
-    return 1 / (a_real_pow(a_real_abs((x - c) / a), 2 * b) + 1);
+    return 1 / (a_float_pow(a_float_abs((x - c) / a), 2 * b) + 1);
 }
 
-a_real_t a_mf_sig(a_real_t const x, a_real_t const a, a_real_t const c)
+a_float_t a_mf_sig(a_float_t const x, a_float_t const a, a_float_t const c)
 {
-    return 1 / (a_real_exp((c - x) * a) + 1);
+    return 1 / (a_float_exp((c - x) * a) + 1);
 }
 
-a_real_t a_mf_trap(a_real_t x, a_real_t const a, a_real_t const b, a_real_t const c, a_real_t const d)
+a_float_t a_mf_trap(a_float_t x, a_float_t const a, a_float_t const b, a_float_t const c, a_float_t const d)
 {
     if (x < b)
     {
@@ -47,7 +47,7 @@ a_real_t a_mf_trap(a_real_t x, a_real_t const a, a_real_t const b, a_real_t cons
     return x;
 }
 
-a_real_t a_mf_tri(a_real_t x, a_real_t const a, a_real_t const b, a_real_t const c)
+a_float_t a_mf_tri(a_float_t x, a_float_t const a, a_float_t const b, a_float_t const c)
 {
     if (x < b)
     {
@@ -74,7 +74,7 @@ a_real_t a_mf_tri(a_real_t x, a_real_t const a, a_real_t const b, a_real_t const
     return x;
 }
 
-a_real_t a_mf_z(a_real_t x, a_real_t const a, a_real_t const b)
+a_float_t a_mf_z(a_float_t x, a_float_t const a, a_float_t const b)
 {
     if (x < a)
     {
@@ -82,11 +82,11 @@ a_real_t a_mf_z(a_real_t x, a_real_t const a, a_real_t const b)
     }
     else if (x < (a + b) / 2)
     {
-        x = 1 - 2 * a_real_pow((x - a) / (b - a), 2);
+        x = 1 - 2 * a_float_pow((x - a) / (b - a), 2);
     }
     else if (x < b)
     {
-        x = 2 * a_real_pow((x - b) / (b - a), 2);
+        x = 2 * a_float_pow((x - b) / (b - a), 2);
     }
     else
     {
@@ -95,7 +95,7 @@ a_real_t a_mf_z(a_real_t x, a_real_t const a, a_real_t const b)
     return x;
 }
 
-a_real_t a_mf(a_uint_t const e, a_real_t const x, a_real_t const *const a)
+a_float_t a_mf(unsigned int const e, a_float_t const x, a_float_t const *const a)
 {
     switch (e)
     {

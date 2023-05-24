@@ -8,33 +8,33 @@
 typedef struct
 {
     a_avl_s node;
-    a_int_t data;
-    a_int_t height;
-    a_int_t reached;
+    int data;
+    int height;
+    int reached;
 } int_node;
 
-static A_INLINE a_int_t int_factor(a_avl_s *node)
+static A_INLINE int int_factor(a_avl_s *node)
 {
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 3)
-    return a_int_c(node->_parent & 3) - 1;
-#else /* !A_SIZE_VPTR */
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
+    return a_cast_s(int, node->_parent & 3) - 1;
+#else /* !A_SIZE_POINTER */
     return node->factor;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
 }
 
-static A_INLINE int_node *int_entry(a_cptr_t node)
+static A_INLINE int_node *int_entry(void const *node)
 {
     return a_avl_entry(node, int_node, node); // NOLINT
 }
 
-static a_int_t int_cmp(a_cptr_t lhs, a_cptr_t rhs)
+static int int_cmp(void const *lhs, void const *rhs)
 {
     return int_entry(lhs)->data - int_entry(rhs)->data;
 }
 
 #define int_max(a, b) ((a) > (b) ? (a) : (b))
 #define int_height(node) ((node) ? int_entry(node)->height : 0)
-static a_void_t set_height(a_avl_s *node) // NOLINT
+static void set_height(a_avl_s *node) // NOLINT
 {
     if (node)
     {
@@ -42,17 +42,17 @@ static a_void_t set_height(a_avl_s *node) // NOLINT
         TEST_BUG(node->right != node);
         set_height(node->left);
         set_height(node->right);
-        a_int_t hl = int_height(node->left);
-        a_int_t hr = int_height(node->right);
+        int hl = int_height(node->left);
+        int hr = int_height(node->right);
         int_entry(node)->height = int_max(hl, hr) + 1;
     }
 }
 
-static a_void_t check_tree(a_avl_s *node) // NOLINT
+static void check_tree(a_avl_s *node) // NOLINT
 {
     if (node)
     {
-        a_int_t e = int_factor(node);
+        int e = int_factor(node);
         TEST_BUG(-1 <= e && e <= 1);
         TEST_BUG(int_height(node->right) - int_height(node->left) == e);
         if (node->left)
@@ -68,7 +68,7 @@ static a_void_t check_tree(a_avl_s *node) // NOLINT
     }
 }
 
-static a_int_t intcmp(a_cptr_t lhs, a_cptr_t rhs)
+static int intcmp(void const *lhs, void const *rhs)
 {
     return *A_INT_P(lhs) - *A_INT_P(rhs);
 }
@@ -78,16 +78,16 @@ static int test(int argc, char *argv[])
     (void)(argc);
     (void)(argv);
 
-    const a_uint_t n = 0x1000;
+    unsigned int const n = 0x1000;
 
     a_str_s str = A_STR_NUL;
     a_avl_u root = A_AVL_ROOT;
     int_node *vec = a_new(int_node, A_NULL, n);
-    a_int_t *sorted = a_new(a_int_t, A_NULL, n);
-    for (a_uint_t i = 0; i < n; ++i)
+    int *sorted = a_new(int, A_NULL, n);
+    for (unsigned int i = 0; i < n; ++i)
     {
         a_str_printf(&str, "%u", i);
-        vec[i].data = a_int_c(a_hash_bkdr(a_str_ptr(&str), 0));
+        vec[i].data = a_cast_s(int, a_hash_bkdr(a_str_ptr(&str), 0));
         a_str_drop(&str);
         sorted[i] = vec[i].data;
         a_avl_insert(&root, &vec[i].node, int_cmp);
@@ -102,16 +102,16 @@ static int test(int argc, char *argv[])
     }
     a_str_dtor(&str);
 
-    for (a_uint_t i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
         TEST_BUG(a_avl_search(&root, &vec[i].node, int_cmp));
     }
 
-    a_uint_t x;
+    unsigned int x;
     qsort(sorted, n, sizeof(int), intcmp);
 
     x = 0;
-    for (a_uint_t i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
         vec[i].reached = 0;
     }
@@ -122,14 +122,14 @@ static int test(int argc, char *argv[])
         it->reached = 1;
         ++x;
     }
-    for (a_uint_t i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
         TEST_BUG(vec[i].reached);
     }
     TEST_BUG(x == n);
 
     x = n;
-    for (a_uint_t i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
         vec[i].reached = 0;
     }
@@ -139,13 +139,13 @@ static int test(int argc, char *argv[])
         TEST_BUG(it->data == sorted[--x]);
         it->reached = 1;
     }
-    for (a_uint_t i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
         TEST_BUG(vec[i].reached);
     }
     TEST_BUG(x == 0);
 
-    for (a_uint_t i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
         vec[i].reached = 0;
     }
@@ -154,12 +154,12 @@ static int test(int argc, char *argv[])
         int_node *it = int_entry(cur);
         it->reached = 1;
     }
-    for (a_uint_t i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
         TEST_BUG(vec[i].reached);
     }
 
-    for (a_uint_t i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
         vec[i].reached = 0;
     }
@@ -168,12 +168,12 @@ static int test(int argc, char *argv[])
         int_node *it = int_entry(cur);
         it->reached = 1;
     }
-    for (a_uint_t i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
         TEST_BUG(vec[i].reached);
     }
 
-    for (a_uint_t i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
         vec[i].reached = 0;
     }
@@ -182,12 +182,12 @@ static int test(int argc, char *argv[])
         int_node *it = int_entry(cur);
         it->reached = 1;
     }
-    for (a_uint_t i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
         TEST_BUG(vec[i].reached);
     }
 
-    for (a_uint_t i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
         vec[i].reached = 0;
     }
@@ -196,12 +196,12 @@ static int test(int argc, char *argv[])
         int_node *it = int_entry(cur);
         it->reached = 1;
     }
-    for (a_uint_t i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
         TEST_BUG(vec[i].reached);
     }
 
-    for (a_uint_t i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
         a_avl_remove(&root, &vec[i].node);
         set_height(root.node);
@@ -216,7 +216,7 @@ static int test(int argc, char *argv[])
 
     TEST_BUG(a_avl_search(&root, &vec->node, int_cmp) == A_NULL);
 
-    for (a_uint_t i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
         a_avl_insert(&root, &vec[i].node, int_cmp);
         vec[i].reached = 0;
@@ -225,12 +225,12 @@ static int test(int argc, char *argv[])
     {
         int_entry(cur)->reached = 1;
     }
-    for (a_uint_t i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
         TEST_BUG(vec[i].reached);
     }
 
-    sorted = a_die(a_int_t, sorted);
+    sorted = a_die(int, sorted);
     vec = a_die(int_node, vec);
     return 0;
 }

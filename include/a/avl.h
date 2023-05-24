@@ -37,12 +37,12 @@ typedef struct a_avl_s
      The rest of the bits are the pointer to the parent node. It must be 4-byte aligned,
      and it will be NULL if this is the root node and therefore has no parent.
     */
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 3)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
     a_uptr_t _parent;
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
     struct a_avl_s *parent;
-    a_int_t factor;
-#endif /* A_SIZE_VPTR */
+    int factor;
+#endif /* A_SIZE_POINTER */
 } a_avl_s;
 
 /*!
@@ -53,11 +53,11 @@ typedef struct a_avl_s
 */
 A_INTERN a_avl_s *a_avl_parent(a_avl_s const *const node)
 {
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 3)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
     return a_cast_r(a_avl_s *, node->_parent & ~a_uptr_c(3));
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
     return node->parent;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
 }
 
 /*!
@@ -68,12 +68,12 @@ A_INTERN a_avl_s *a_avl_parent(a_avl_s const *const node)
 */
 A_INTERN a_avl_s *a_avl_init(a_avl_s *const node, a_avl_s *const parent)
 {
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 3)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
     node->_parent = a_cast_r(a_uptr_t, parent) | 1;
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
     node->parent = parent;
     node->factor = 0;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
     node->right = A_NULL;
     node->left = A_NULL;
     return node;
@@ -91,7 +91,7 @@ typedef union a_avl_u
  @brief initialize function for AVL binary search tree root
  @param[in,out] root AVL binary search tree root
 */
-A_INTERN a_void_t a_avl_root(a_avl_u *const root) { root->node = A_NULL; }
+A_INTERN void a_avl_root(a_avl_u *const root) { root->node = A_NULL; }
 
 #if defined(__cplusplus)
 extern "C" {
@@ -186,7 +186,7 @@ A_EXTERN a_avl_s *a_avl_tear(a_avl_u *root, a_avl_s **next);
   @arg cmp(lhs,rhs)>0 *lhs goes after *rhs
  @return specified node or NULL
 */
-A_EXTERN a_avl_s *a_avl_search(a_avl_u const *root, a_cptr_t ctx, a_int_t (*cmp)(a_cptr_t, a_cptr_t));
+A_EXTERN a_avl_s *a_avl_search(a_avl_u const *root, void const *ctx, int (*cmp)(void const *, void const *));
 
 /*!
  @brief insert specified node into AVL binary search tree
@@ -198,21 +198,21 @@ A_EXTERN a_avl_s *a_avl_search(a_avl_u const *root, a_cptr_t ctx, a_int_t (*cmp)
   @arg cmp(lhs,rhs)>0 *lhs goes after *rhs
  @return NULL or duplicate node
 */
-A_EXTERN a_avl_s *a_avl_insert(a_avl_u *root, a_avl_s *node, a_int_t (*cmp)(a_cptr_t, a_cptr_t));
+A_EXTERN a_avl_s *a_avl_insert(a_avl_u *root, a_avl_s *node, int (*cmp)(void const *, void const *));
 
 /*!
  @brief rebalance the tree after insertion of the specified node
  @param[in] root AVL binary search tree root
  @param[in] node insert tree node
 */
-A_EXTERN a_void_t a_avl_insert_adjust(a_avl_u *root, a_avl_s *node);
+A_EXTERN void a_avl_insert_adjust(a_avl_u *root, a_avl_s *node);
 
 /*!
  @brief remove specified node from AVL binary search tree
  @param[in] root AVL binary search tree root
  @param[in] node specified tree node
 */
-A_EXTERN a_void_t a_avl_remove(a_avl_u *root, a_avl_s *node);
+A_EXTERN void a_avl_remove(a_avl_u *root, a_avl_s *node);
 
 #if defined(__cplusplus)
 } /* extern "C" */

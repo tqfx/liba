@@ -31,12 +31,12 @@ jobject j_tf_get(j_tf_s const *const jctx, a_tf_s *const ctx)
     if (jctx->jnum)
     {
         ctx->num = (*jenv)->GetDoubleArrayElements(jenv, jctx->jnum, NULL);
-        ctx->m = (a_uint_t)(*jenv)->GetArrayLength(jenv, jctx->jnum);
+        ctx->m = (unsigned int)(*jenv)->GetArrayLength(jenv, jctx->jnum);
     }
     if (jctx->jden)
     {
         ctx->den = (*jenv)->GetDoubleArrayElements(jenv, jctx->jden, NULL);
-        ctx->n = (a_uint_t)(*jenv)->GetArrayLength(jenv, jctx->jden);
+        ctx->n = (unsigned int)(*jenv)->GetArrayLength(jenv, jctx->jden);
     }
     return jctx->jobj;
 }

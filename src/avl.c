@@ -1,53 +1,53 @@
 #include "a/avl.h"
 
 /* Sets the parent and balance factor of the specified AVL tree node. */
-static A_INLINE a_void_t a_avl_set_parent_factor(a_avl_s *const node, a_avl_s *const parent, a_int_t const factor)
+static A_INLINE void a_avl_set_parent_factor(a_avl_s *const node, a_avl_s *const parent, int const factor)
 {
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 3)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
     node->_parent = (a_uptr_t)parent | (a_uptr_t)(factor + 1);
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
     node->parent = parent;
     node->factor = factor;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
 }
 
 /* Sets the parent of the specified AVL tree node. */
-static A_INLINE a_void_t a_avl_set_parent(a_avl_s *const node, a_avl_s *const parent)
+static A_INLINE void a_avl_set_parent(a_avl_s *const node, a_avl_s *const parent)
 {
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 3)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
     node->_parent = (a_uptr_t)parent | (node->_parent & 3);
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
     node->parent = parent;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
 }
 
 /*
 Returns the balance factor of the specified AVL tree node --- that is,
 the height of its right subtree minus the height of its left subtree.
 */
-static A_INLINE a_int_t a_avl_factor(a_avl_s const *const node)
+static A_INLINE int a_avl_factor(a_avl_s const *const node)
 {
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 3)
-    return (a_int_t)(node->_parent & 3) - 1;
-#else /* !A_SIZE_VPTR */
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
+    return (int)(node->_parent & 3) - 1;
+#else /* !A_SIZE_POINTER */
     return node->factor;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
 }
 
 /*
 Adds %amount to the balance factor of the specified AVL tree node.
 The caller must ensure this still results in a valid balance factor (-1, 0, or 1).
 */
-static A_INLINE a_void_t a_avl_set_factor(a_avl_s *const node, a_int_t const amount)
+static A_INLINE void a_avl_set_factor(a_avl_s *const node, int const amount)
 {
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 3)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
     node->_parent += (a_uptr_t)amount;
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
     node->factor += amount;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
 }
 
-static A_INLINE a_avl_s *a_avl_child(a_avl_s const *const node, a_int_t const sign)
+static A_INLINE a_avl_s *a_avl_child(a_avl_s const *const node, int const sign)
 {
     if (sign < 0)
     {
@@ -56,7 +56,7 @@ static A_INLINE a_avl_s *a_avl_child(a_avl_s const *const node, a_int_t const si
     return node->right;
 }
 
-static A_INLINE a_void_t a_avl_set_child(a_avl_s *const node, a_avl_s *const child, a_int_t const sign)
+static A_INLINE void a_avl_set_child(a_avl_s *const node, a_avl_s *const child, int const sign)
 {
     if (sign < 0)
     {
@@ -68,7 +68,7 @@ static A_INLINE a_void_t a_avl_set_child(a_avl_s *const node, a_avl_s *const chi
     }
 }
 
-static A_INLINE a_void_t a_avl_mod_child(a_avl_u *const root, a_avl_s *const parent, a_avl_s *const oldnode, a_avl_s *const newnode)
+static A_INLINE void a_avl_mod_child(a_avl_u *const root, a_avl_s *const parent, a_avl_s *const oldnode, a_avl_s *const newnode)
 {
     if (parent)
     {
@@ -112,7 +112,7 @@ sign < 0: Rotate counterclockwise (left) rooted at A:
 
 This updates pointers but not balance factors!
 */
-static a_void_t a_avl_rotate(a_avl_u *const root, a_avl_s *const A, a_int_t const sign)
+static void a_avl_rotate(a_avl_u *const root, a_avl_s *const A, int const sign)
 {
     a_avl_s *const P = a_avl_parent(A);
     a_avl_s *const B = a_avl_child(A, -sign);
@@ -164,13 +164,13 @@ Returns a pointer to E and updates balance factors. Except for those two things,
     a_avl_rotate(root, B, -sign);
     a_avl_rotate(root, A, +sign);
 */
-static a_avl_s *a_avl_rotate2(a_avl_u *const root, a_avl_s *const B, a_avl_s *const A, a_int_t const sign)
+static a_avl_s *a_avl_rotate2(a_avl_u *const root, a_avl_s *const B, a_avl_s *const A, int const sign)
 {
     a_avl_s *const P = a_avl_parent(A);
     a_avl_s *const E = a_avl_child(B, +sign);
     a_avl_s *const F = a_avl_child(E, -sign);
     a_avl_s *const G = a_avl_child(E, +sign);
-    a_int_t const e = a_avl_factor(E);
+    int const e = a_avl_factor(E);
 
     a_avl_set_child(A, G, -sign);
     a_avl_set_parent_factor(A, E, (sign * e >= 0) ? 0 : -e);
@@ -220,9 +220,9 @@ so the caller should continue up the tree.
 Note that if %false is returned, no rotation will have been done.
 Indeed, a single node insertion cannot require that more than one (single or double) rotation be done.
 */
-static a_bool_t a_avl_handle_growth(a_avl_u *const root, a_avl_s *const parent, a_avl_s *const node, a_int_t const sign)
+static a_bool_t a_avl_handle_growth(a_avl_u *const root, a_avl_s *const parent, a_avl_s *const node, int const sign)
 {
-    a_int_t const old_factor = a_avl_factor(parent);
+    int const old_factor = a_avl_factor(parent);
     if (old_factor == 0)
     {
         /* %parent is still sufficiently balanced (-1 or +1 balance factor), but must have increased in height. Continue up the tree. */
@@ -230,7 +230,7 @@ static a_bool_t a_avl_handle_growth(a_avl_u *const root, a_avl_s *const parent, 
         return A_FALSE;
     }
 
-    a_int_t const new_factor = old_factor + sign;
+    int const new_factor = old_factor + sign;
     if (new_factor == 0)
     {
         /* %parent is now perfectly balanced (0 balance factor). It cannot have increased in height, so there is nothing more to do. */
@@ -327,7 +327,7 @@ static a_bool_t a_avl_handle_growth(a_avl_u *const root, a_avl_s *const parent, 
     return A_TRUE;
 }
 
-a_void_t a_avl_insert_adjust(a_avl_u *const root, a_avl_s *node)
+void a_avl_insert_adjust(a_avl_u *const root, a_avl_s *node)
 {
     /* Adjust balance factor of new node's parent. No rotation will need to be done at this level. */
 
@@ -399,9 +399,9 @@ The return value will be NULL if the full AVL tree is now adequately balanced,
 or a pointer to the parent of parent if parent is now adequately balanced but has decreased in height by 1.
 Also in the latter case, *left will be set.
 */
-static a_avl_s *a_avl_handle_shrink(a_avl_u *const root, a_avl_s *parent, a_int_t const sign, a_bool_t *const left)
+static a_avl_s *a_avl_handle_shrink(a_avl_u *const root, a_avl_s *parent, int const sign, a_bool_t *const left)
 {
-    a_int_t const old_factor = a_avl_factor(parent);
+    int const old_factor = a_avl_factor(parent);
     if (old_factor == 0)
     {
         /*
@@ -413,7 +413,7 @@ static a_avl_s *a_avl_handle_shrink(a_avl_u *const root, a_avl_s *parent, a_int_
     }
 
     a_avl_s *node;
-    a_int_t const new_factor = old_factor + sign;
+    int const new_factor = old_factor + sign;
     if (new_factor == 0)
     {
         /*
@@ -558,18 +558,18 @@ static A_INLINE a_avl_s *a_avl_handle_remove(a_avl_u *const root, a_avl_s *const
     Y->left = X->left;
     a_avl_set_parent(X->left, Y);
 
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 3)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
     Y->_parent = X->_parent;
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
     Y->parent = X->parent;
     Y->factor = X->factor;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
     a_avl_mod_child(root, a_avl_parent(X), X, Y);
 
     return node;
 }
 
-a_void_t a_avl_remove(a_avl_u *const root, a_avl_s *const node)
+void a_avl_remove(a_avl_u *const root, a_avl_s *const node)
 {
     a_avl_s *parent;
     a_bool_t left = A_FALSE;
@@ -637,14 +637,14 @@ a_void_t a_avl_remove(a_avl_u *const root, a_avl_s *const node)
     } while (parent);
 }
 
-a_avl_s *a_avl_insert(a_avl_u *const root, a_avl_s *const node, a_int_t (*const cmp)(a_cptr_t, a_cptr_t))
+a_avl_s *a_avl_insert(a_avl_u *const root, a_avl_s *const node, int (*const cmp)(void const *, void const *))
 {
     a_avl_s *parent = root->node;
     a_avl_s **link = &root->node;
     while (*link)
     {
         parent = *link;
-        a_int_t const res = cmp(node, parent);
+        int const res = cmp(node, parent);
         if (res < 0)
         {
             link = &parent->left;
@@ -663,11 +663,11 @@ a_avl_s *a_avl_insert(a_avl_u *const root, a_avl_s *const node, a_int_t (*const 
     return A_NULL;
 }
 
-a_avl_s *a_avl_search(a_avl_u const *const root, a_cptr_t const ctx, a_int_t (*const cmp)(a_cptr_t, a_cptr_t))
+a_avl_s *a_avl_search(a_avl_u const *const root, void const *const ctx, int (*const cmp)(void const *, void const *))
 {
     for (a_avl_s *cur = root->node; cur;)
     {
-        a_int_t const res = cmp(ctx, cur);
+        int const res = cmp(ctx, cur);
         if (res < 0)
         {
             cur = cur->left;

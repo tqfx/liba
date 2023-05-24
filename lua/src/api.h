@@ -5,7 +5,7 @@
 #define L_API
 #endif /* L_API */
 #if !defined L_NUM
-#define L_NUM a_real_t
+#define L_NUM a_float_t
 #endif /* L_NUM */
 #if !defined L_INT
 #define L_INT lua_Integer

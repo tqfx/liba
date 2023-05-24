@@ -48,7 +48,7 @@ static void test_next(void)
 {
     a_list_s *list1 = a_new(a_list_s, A_NULL, 1);
     a_list_ctor(list1);
-    for (a_int_t i = 0; i != 10; ++i)
+    for (int i = 0; i != 10; ++i)
     {
         a_data_s *node = a_new(a_data_s, A_NULL, 1);
         node->data.i = i;
@@ -57,7 +57,7 @@ static void test_next(void)
     a_list_rot_prev(list1);
     a_list_s *list2 = a_new(a_list_s, A_NULL, 1);
     a_list_ctor(list2);
-    for (a_int_t i = 10; i != 21; ++i)
+    for (int i = 10; i != 21; ++i)
     {
         a_data_s *node = a_new(a_data_s, A_NULL, 1);
         node->data.i = i;
@@ -95,7 +95,7 @@ static void test_prev(void)
 {
     a_list_s *list1 = a_new(a_list_s, A_NULL, 1);
     a_list_ctor(list1);
-    for (a_int_t i = 0; i != 10; ++i)
+    for (int i = 0; i != 10; ++i)
     {
         a_data_s *node = a_new(a_data_s, A_NULL, 1);
         node->data.i = i;
@@ -104,7 +104,7 @@ static void test_prev(void)
     a_list_rot_next(list1);
     a_list_s *list2 = a_new(a_list_s, A_NULL, 1);
     a_list_ctor(list2);
-    for (a_int_t i = 10; i != 21; ++i)
+    for (int i = 10; i != 21; ++i)
     {
         a_data_s *node = a_new(a_data_s, A_NULL, 1);
         node->data.i = i;
@@ -142,7 +142,7 @@ static void test_func(void)
 {
     a_list_s *list1 = a_new(a_list_s, A_NULL, 1);
     a_list_ctor(list1);
-    for (a_int_t i = 0; i != 10; ++i)
+    for (int i = 0; i != 10; ++i)
     {
         a_data_s *node = a_new(a_data_s, A_NULL, 1);
         node->data.i = i;
@@ -150,7 +150,7 @@ static void test_func(void)
     }
     a_list_s *list2 = a_new(a_list_s, A_NULL, 1);
     a_list_ctor(list2);
-    for (a_int_t i = 10; i != 20; ++i)
+    for (int i = 10; i != 20; ++i)
     {
         a_data_s *node = a_new(a_data_s, A_NULL, 1);
         node->data.i = i;

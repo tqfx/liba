@@ -16,10 +16,10 @@ int LMODULE(tf_die)(lua_State *const L)
     a_tf_s *const ctx = (a_tf_s *)lua_touserdata(L, 1);
     if (ctx)
     {
-        ctx->num = A_REAL_P(l_alloc(L, ctx->num, 0));
+        ctx->num = (a_float_t const *)l_alloc(L, ctx->num, 0);
         ctx->u = 0;
         ctx->m = 0;
-        ctx->den = A_REAL_P(l_alloc(L, ctx->den, 0));
+        ctx->den = (a_float_t const *)l_alloc(L, ctx->den, 0);
         ctx->v = 0;
         ctx->n = 0;
     }
@@ -39,11 +39,11 @@ int LMODULE(tf_new)(lua_State *const L)
     {
         luaL_checktype(L, -2, LUA_TTABLE);
         luaL_checktype(L, -1, LUA_TTABLE);
-        a_uint_t const m = (a_uint_t)lua_rawlen(L, -2);
-        a_real_t *const num = (a_real_t *)l_alloc(L, NULL, sizeof(a_real_t) * m * 2);
+        unsigned int const m = (unsigned int)lua_rawlen(L, -2);
+        a_float_t *const num = (a_float_t *)l_alloc(L, NULL, sizeof(a_float_t) * m * 2);
         l_array_num_get(L, -2, num, m);
-        a_uint_t const n = (a_uint_t)lua_rawlen(L, -1);
-        a_real_t *const den = (a_real_t *)l_alloc(L, NULL, sizeof(a_real_t) * n * 2);
+        unsigned int const n = (unsigned int)lua_rawlen(L, -1);
+        a_float_t *const den = (a_float_t *)l_alloc(L, NULL, sizeof(a_float_t) * n * 2);
         l_array_num_get(L, -1, den, n);
         a_tf_s *const ctx = (a_tf_s *)lua_newuserdata(L, sizeof(a_tf_s));
         LMODULE2(tf_meta_, L, 1);
@@ -70,11 +70,11 @@ int LMODULE(tf_init)(lua_State *const L)
         a_tf_s *const ctx = (a_tf_s *)lua_touserdata(L, -3);
         luaL_checktype(L, -2, LUA_TTABLE);
         luaL_checktype(L, -1, LUA_TTABLE);
-        a_uint_t const m = (a_uint_t)lua_rawlen(L, -2);
-        a_real_t *const num = (a_real_t *)l_alloc(L, NULL, sizeof(a_real_t) * m * 2);
+        unsigned int const m = (unsigned int)lua_rawlen(L, -2);
+        a_float_t *const num = (a_float_t *)l_alloc(L, NULL, sizeof(a_float_t) * m * 2);
         l_array_num_get(L, -2, num, m);
-        a_uint_t const n = (a_uint_t)lua_rawlen(L, -1);
-        a_real_t *const den = (a_real_t *)l_alloc(L, NULL, sizeof(a_real_t) * n * 2);
+        unsigned int const n = (unsigned int)lua_rawlen(L, -1);
+        a_float_t *const den = (a_float_t *)l_alloc(L, NULL, sizeof(a_float_t) * n * 2);
         l_array_num_get(L, -1, den, n);
         a_tf_init(ctx, m, num, num + m, n, den, den + n);
         lua_pop(L, 2);
@@ -95,7 +95,7 @@ int LMODULE(tf_iter)(lua_State *const L)
     a_tf_s *const ctx = (a_tf_s *)lua_touserdata(L, -2);
     if (ctx)
     {
-        a_real_t x = (a_real_t)luaL_checknumber(L, -1);
+        a_float_t x = (a_float_t)luaL_checknumber(L, -1);
         lua_pushnumber(L, (lua_Number)a_tf_iter(ctx, x));
         return 1;
     }
@@ -129,8 +129,8 @@ static int LMODULE(tf_set)(lua_State *const L)
     case 0x001D0A2A: // num
     {
         luaL_checktype(L, 3, LUA_TTABLE);
-        a_uint_t const m = (a_uint_t)lua_rawlen(L, 3);
-        a_real_t *const num = (a_real_t *)l_alloc(L, ctx->num, sizeof(a_real_t) * m * 2);
+        unsigned int const m = (unsigned int)lua_rawlen(L, 3);
+        a_float_t *const num = (a_float_t *)l_alloc(L, ctx->num, sizeof(a_float_t) * m * 2);
         l_array_num_get(L, 3, num, m);
         a_tf_set_num(ctx, m, num, num + m);
         break;
@@ -138,8 +138,8 @@ static int LMODULE(tf_set)(lua_State *const L)
     case 0x001A63A1: // den
     {
         luaL_checktype(L, 3, LUA_TTABLE);
-        a_uint_t const n = (a_uint_t)lua_rawlen(L, 3);
-        a_real_t *const den = (a_real_t *)l_alloc(L, ctx->den, sizeof(a_real_t) * n * 2);
+        unsigned int const n = (unsigned int)lua_rawlen(L, 3);
+        a_float_t *const den = (a_float_t *)l_alloc(L, ctx->den, sizeof(a_float_t) * n * 2);
         l_array_num_get(L, 3, den, n);
         a_tf_set_den(ctx, n, den, den + n);
         break;

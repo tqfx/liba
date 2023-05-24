@@ -47,13 +47,13 @@ if is_mode("check") and not is_plat("mingw") then
     add_ldflags(flags)
 end
 
--- option: real
-option("liba-real")
+-- option: float
+option("liba-float")
     set_default("8")
     set_showmenu(true)
     set_category("liba")
     set_values("4", "8", "16")
-    set_description("real number bytes")
+    set_description("floating-point number bytes")
 option_end()
 
 -- option: rpath
@@ -67,12 +67,12 @@ target("a")
     -- make as a collection of objects
     set_kind("object")
     -- detect c code functions
-    real = get_config("liba-real")
+    float = get_config("liba-float")
     includes("check_csnippets.lua")
+    local source = 'printf("%u", (unsigned int)sizeof(size_t));'
+    configvar_check_csnippets("A_SIZE_POINTER", source, {output = true, number = true})
     local source = 'int x = 1; puts(*(char *)&x ? "1234" : "4321");'
     configvar_check_csnippets("A_BYTE_ORDER", source, {output = true, number = true})
-    local source = 'printf("%u", (unsigned int)sizeof(size_t));'
-    configvar_check_csnippets("A_SIZE_VPTR", source, {output = true, number = true})
     includes("check_cincludes.lua")
     configvar_check_cincludes("A_HAVE_COMPLEX_H", "complex.h")
     configvar_check_cincludes("A_HAVE_STDINT_H", "stdint.h")
@@ -80,8 +80,8 @@ target("a")
         includes("check_cfuncs.lua")
         for i, func in pairs(funcs) do
             local have = "A_HAVE_"..string.upper(func)
-            if real == "16" then func = func..'l' end
-            if real == "4" then func = func..'f' end
+            if float == "16" then func = func..'l' end
+            if float == "4" then func = func..'f' end
             configvar_check_cfuncs(have, func, opt)
         end
     end
@@ -100,7 +100,7 @@ target("a")
     a_have_h = path.relative(os.projectdir().."/$(buildir)/a.xmake.h", "include")
     add_defines("A_HAVE_H=\""..a_have_h.."\"", {public = true})
     set_configvar("XMAKE_VERSION", tostring(xmake.version()))
-    set_configvar("A_SIZE_REAL", real, {quote = false})
+    set_configvar("A_SIZE_FLOAT", float, {quote = false})
     add_configfiles("include/a.xmake.h.in")
     -- add include directories
     add_includedirs("include", {public = true})
@@ -172,7 +172,7 @@ if has_config("liba-rust") then
         set_kind("static")
         set_basename("liba")
         add_files("src/lib.rs")
-        if get_config("liba-real") == "4" then
+        if get_config("liba-float") == "4" then
             add_rcflags('--cfg=feature="float"')
         end
     target_end()

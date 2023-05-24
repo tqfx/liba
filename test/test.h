@@ -17,9 +17,9 @@
 #pragma GCC diagnostic ignored "-Wpadded"
 #endif /* -Wpadded */
 #if A_PREREQ_GNUC(4, 6) || __has_warning("-Wdouble-promotion")
-#if A_REAL_TYPE == A_REAL_SINGLE
+#if A_FLOAT_TYPE == A_FLOAT_SINGLE
 #pragma GCC diagnostic ignored "-Wdouble-promotion"
-#endif /* A_REAL_TYPE == 0x04 */
+#endif /* A_FLOAT_TYPE == 0x04 */
 #endif /* -Wdouble-promotion */
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ > 199900L) || \
     defined(__cplusplus) && (__cplusplus > 201100L) || defined(_MSC_VER)

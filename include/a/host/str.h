@@ -25,7 +25,7 @@
 */
 typedef struct a_str_s
 {
-    a_str_t _ptr; /*!< string */
+    char *_ptr; /*!< string */
     a_size_t _num; /*!< length */
     a_size_t _mem; /*!< memory */
 } a_str_s;
@@ -35,7 +35,7 @@ typedef struct a_str_s
  @param[in] ctx points to an instance of string structure
  @return string
 */
-A_INTERN a_str_t a_str_ptr(a_str_s const *const ctx) { return ctx->_ptr; }
+A_INTERN char *a_str_ptr(a_str_s const *const ctx) { return ctx->_ptr; }
 
 /*!
  @brief length for a pointer to string structure
@@ -58,7 +58,7 @@ A_INTERN a_size_t a_str_mem(a_str_s const *const ctx) { return ctx->_mem; }
  @note should check if string is empty
  @return specified character
 */
-A_INTERN a_char_t a_str_at_(a_str_s const *const ctx, a_size_t const idx) { return ctx->_ptr[idx]; }
+A_INTERN char a_str_at_(a_str_s const *const ctx, a_size_t const idx) { return ctx->_ptr[idx]; }
 
 /*!
  @brief access specified character for a pointer to string structure
@@ -67,7 +67,7 @@ A_INTERN a_char_t a_str_at_(a_str_s const *const ctx, a_size_t const idx) { retu
  @return specified character
   @retval 0 out of bounds
 */
-A_INTERN a_char_t a_str_at(a_str_s const *const ctx, a_size_t const idx)
+A_INTERN char a_str_at(a_str_s const *const ctx, a_size_t const idx)
 {
     return a_likely(idx < ctx->_num) ? ctx->_ptr[idx] : 0;
 }
@@ -79,7 +79,7 @@ A_INTERN a_char_t a_str_at(a_str_s const *const ctx, a_size_t const idx)
  @return specified character
   @retval 0 out of bounds
 */
-A_INTERN a_char_t a_str_idx(a_str_s const *const ctx, a_diff_t const idx)
+A_INTERN char a_str_idx(a_str_s const *const ctx, a_diff_t const idx)
 {
     a_size_t const num = idx < 0 ? a_size_c(idx) + ctx->_num : a_size_c(idx);
     return a_likely(num < ctx->_num) ? ctx->_ptr[num] : 0;
@@ -91,7 +91,7 @@ A_INTERN a_char_t a_str_idx(a_str_s const *const ctx, a_diff_t const idx)
  @param[in] len new length for a pointer to string structure
  @note length must less than memory
 */
-A_INLINE a_void_t a_str_set_len_(a_str_s *const ctx, a_size_t const len) { ctx->_num = len; }
+A_INLINE void a_str_set_len_(a_str_s *const ctx, a_size_t const len) { ctx->_num = len; }
 
 /*!
  @brief set length for a pointer to string structure
@@ -101,7 +101,7 @@ A_INLINE a_void_t a_str_set_len_(a_str_s *const ctx, a_size_t const len) { ctx->
   @retval 0 success
   @retval 1 failure
 */
-A_INLINE a_int_t a_str_set_len(a_str_s *const ctx, a_size_t const len)
+A_INLINE int a_str_set_len(a_str_s *const ctx, a_size_t const len)
 {
     return a_likely(len < ctx->_mem) ? ((void)(ctx->_num = len), A_SUCCESS) : A_FAILURE;
 }
@@ -110,7 +110,7 @@ A_INLINE a_int_t a_str_set_len(a_str_s *const ctx, a_size_t const len)
  @brief drop all characters for a pointer to string structure
  @param[in] ctx points to an instance of string structure
 */
-A_INTERN a_void_t a_str_drop(a_str_s *const ctx) { ctx->_num = 0; }
+A_INTERN void a_str_drop(a_str_s *const ctx) { ctx->_num = 0; }
 
 #if defined(__cplusplus)
 extern "C" {
@@ -125,19 +125,19 @@ A_EXTERN a_str_s *a_str_new(void);
  @brief deallocate a pointer to string structure
  @param[in] ctx points to an instance of string structure
 */
-A_EXTERN a_void_t a_str_die(a_str_s *ctx);
+A_EXTERN void a_str_die(a_str_s *ctx);
 
 /*!
  @brief constructor for string structure
  @param[in] ctx points to an instance of string structure
 */
-A_EXTERN a_void_t a_str_ctor(a_str_s *ctx);
+A_EXTERN void a_str_ctor(a_str_s *ctx);
 
 /*!
  @brief destructor for string structure
  @param[in] ctx points to an instance of string structure
 */
-A_EXTERN a_void_t a_str_dtor(a_str_s *ctx);
+A_EXTERN void a_str_dtor(a_str_s *ctx);
 
 /*!
  @brief initialize a pointer to string structure
@@ -148,7 +148,7 @@ A_EXTERN a_void_t a_str_dtor(a_str_s *ctx);
   @retval 0 success
   @retval 1 failure
 */
-A_EXTERN a_int_t a_str_init(a_str_s *ctx, a_cptr_t pdata, a_size_t nbyte);
+A_EXTERN int a_str_init(a_str_s *ctx, void const *pdata, a_size_t nbyte);
 
 /*!
  @brief initialize a pointer to string structure by copying
@@ -158,7 +158,7 @@ A_EXTERN a_int_t a_str_init(a_str_s *ctx, a_cptr_t pdata, a_size_t nbyte);
   @retval 0 success
   @retval 1 failure
 */
-A_EXTERN a_int_t a_str_copy(a_str_s *ctx, a_str_s const *obj);
+A_EXTERN int a_str_copy(a_str_s *ctx, a_str_s const *obj);
 
 /*!
  @brief initialize a pointer to string structure by moving
@@ -173,7 +173,7 @@ A_EXTERN a_str_s *a_str_move(a_str_s *ctx, a_str_s *obj);
  @note should use free to release this memory
  @return string of string structure
 */
-A_EXTERN a_str_t a_str_exit(a_str_s *ctx);
+A_EXTERN char *a_str_exit(a_str_s *ctx);
 
 /*!
  @brief compare the string lhs with the string rhs
@@ -184,7 +184,7 @@ A_EXTERN a_str_t a_str_exit(a_str_s *ctx);
   @retval >0 string lhs > string rhs
   @retval 0 string lhs == string rhs
 */
-A_EXTERN a_int_t a_str_cmp(a_str_s const *lhs, a_str_s const *rhs);
+A_EXTERN int a_str_cmp(a_str_s const *lhs, a_str_s const *rhs);
 
 /*!
  @brief allocate memory for a pointer to string structure
@@ -194,8 +194,8 @@ A_EXTERN a_int_t a_str_cmp(a_str_s const *lhs, a_str_s const *rhs);
   @retval 0 success
   @retval 1 failure
 */
-A_EXTERN a_int_t a_str_alloc(a_str_s *ctx, a_size_t mem);
-A_EXTERN a_int_t a_str_alloc_(a_str_s *ctx, a_size_t mem);
+A_EXTERN int a_str_alloc(a_str_s *ctx, a_size_t mem);
+A_EXTERN int a_str_alloc_(a_str_s *ctx, a_size_t mem);
 
 /*!
  @brief get character for a pointer to string structure
@@ -203,8 +203,8 @@ A_EXTERN a_int_t a_str_alloc_(a_str_s *ctx, a_size_t mem);
  @return deleted character
   @retval EOF failure
 */
-A_EXTERN a_int_t a_str_getc(a_str_s *ctx);
-A_EXTERN a_int_t a_str_getc_(a_str_s *ctx);
+A_EXTERN int a_str_getc(a_str_s *ctx);
+A_EXTERN int a_str_getc_(a_str_s *ctx);
 
 /*!
  @brief put character to a pointer to string structure
@@ -213,8 +213,8 @@ A_EXTERN a_int_t a_str_getc_(a_str_s *ctx);
  @return printed character
   @retval EOF failure
 */
-A_EXTERN a_int_t a_str_putc(a_str_s *ctx, a_int_t c);
-A_EXTERN a_int_t a_str_putc_(a_str_s *ctx, a_int_t c);
+A_EXTERN int a_str_putc(a_str_s *ctx, int c);
+A_EXTERN int a_str_putc_(a_str_s *ctx, int c);
 
 /*!
  @brief put memory block to a pointer to string structure
@@ -225,8 +225,8 @@ A_EXTERN a_int_t a_str_putc_(a_str_s *ctx, a_int_t c);
   @retval 0 success
   @retval 1 failure
 */
-A_EXTERN a_int_t a_str_putn(a_str_s *ctx, a_cptr_t pdata, a_size_t nbyte);
-A_EXTERN a_int_t a_str_putn_(a_str_s *ctx, a_cptr_t pdata, a_size_t nbyte);
+A_EXTERN int a_str_putn(a_str_s *ctx, void const *pdata, a_size_t nbyte);
+A_EXTERN int a_str_putn_(a_str_s *ctx, void const *pdata, a_size_t nbyte);
 
 /*!
  @brief put string to a pointer to string structure
@@ -236,7 +236,7 @@ A_EXTERN a_int_t a_str_putn_(a_str_s *ctx, a_cptr_t pdata, a_size_t nbyte);
   @retval 0 success
   @retval 1 failure
 */
-A_EXTERN a_int_t a_str_puts(a_str_s *ctx, a_cptr_t str);
+A_EXTERN int a_str_puts(a_str_s *ctx, void const *str);
 
 /*!
  @brief concat the string structure obj to the string structure ctx
@@ -246,7 +246,7 @@ A_EXTERN a_int_t a_str_puts(a_str_s *ctx, a_cptr_t str);
   @retval 0 success
   @retval 1 failure
 */
-A_EXTERN a_int_t a_str_cat(a_str_s *ctx, a_str_s const *obj);
+A_EXTERN int a_str_cat(a_str_s *ctx, a_str_s const *obj);
 
 /*!
  @brief print string to a pointer to string structure
@@ -256,7 +256,7 @@ A_EXTERN a_int_t a_str_cat(a_str_s *ctx, a_str_s const *obj);
  @return number of printed characters
   @retval EOF failure
 */
-A_EXTERN a_int_t a_str_vprintf(a_str_s *ctx, a_cstr_t fmt, va_list va) A_FORMAT(printf, 2, 0);
+A_EXTERN int a_str_vprintf(a_str_s *ctx, char const *fmt, va_list va) A_FORMAT(printf, 2, 0);
 
 /*!
  @brief print string to a pointer to string structure
@@ -265,7 +265,7 @@ A_EXTERN a_int_t a_str_vprintf(a_str_s *ctx, a_cstr_t fmt, va_list va) A_FORMAT(
  @return number of printed characters
   @retval EOF failure
 */
-A_EXTERN a_int_t a_str_printf(a_str_s *ctx, a_cstr_t fmt, ...) A_FORMAT(printf, 2, 3);
+A_EXTERN int a_str_printf(a_str_s *ctx, char const *fmt, ...) A_FORMAT(printf, 2, 3);
 
 /*!
  @brief length for a pointer to string structure using UTF-8
@@ -279,10 +279,10 @@ A_EXTERN a_size_t a_str_utflen(a_str_s const *ctx);
 #endif /* __cplusplus */
 
 /* inline function for generic */
-A_INTERN a_vptr_t a_str_new_(void) { return a_str_new(); }
-A_INTERN a_void_t a_str_die_(a_vptr_t ctx) { a_str_die(a_cast_s(a_str_s *, ctx)); }
-A_INTERN a_void_t a_str_ctor_(a_vptr_t ctx) { a_str_ctor(a_cast_s(a_str_s *, ctx)); }
-A_INTERN a_void_t a_str_dtor_(a_vptr_t ctx) { a_str_dtor(a_cast_s(a_str_s *, ctx)); }
+A_INTERN void *a_str_new_(void) { return a_str_new(); }
+A_INTERN void a_str_die_(void *ctx) { a_str_die(a_cast_s(a_str_s *, ctx)); }
+A_INTERN void a_str_ctor_(void *ctx) { a_str_ctor(a_cast_s(a_str_s *, ctx)); }
+A_INTERN void a_str_dtor_(void *ctx) { a_str_dtor(a_cast_s(a_str_s *, ctx)); }
 
 /*! @} A_STR */
 

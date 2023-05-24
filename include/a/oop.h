@@ -64,7 +64,7 @@
  @param dtor destructor
 */
 #define A_OOP_DIE(type, func, dtor) \
-    a_void_t func(type *ctx)        \
+    void func(type *ctx)            \
     {                               \
         if (ctx)                    \
         {                           \
@@ -87,7 +87,7 @@
  @param ... declared parameter variable name
 */
 #define A_OOP_DIE_VA(type, func, dtor, args, ...) \
-    a_void_t func(type *ctx, args)                \
+    void func(type *ctx, args)                    \
     {                                             \
         if (ctx)                                  \
         {                                         \

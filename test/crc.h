@@ -10,26 +10,26 @@
 
 #if defined(MAIN_ONCE)
 
-#define WRITE_TABLE(bit, row, fmt)                                                       \
-    static void write_table##bit(FILE *out, a_u##bit##_t ctx[A_CRC_SIZ], a_cstr_t label) \
-    {                                                                                    \
-        (void)fprintf(out, "uint%i_t const %s[0x%X] = {\n", bit, label, A_CRC_SIZ);      \
-        (void)fprintf(out, "    /* clang-format off */\n");                              \
-        for (a_size_t i = 0; i != A_CRC_SIZ / (row); ++i)                                \
-        {                                                                                \
-            (void)fprintf(out, "    ");                                                  \
-            for (a_size_t j = 0; j != (row); ++j)                                        \
-            {                                                                            \
-                (void)fprintf(out, "0x%0" #fmt PRIX##bit ",", ctx[(row)*i + j]);         \
-                if (j != (row)-1)                                                        \
-                {                                                                        \
-                    (void)fputc(' ', out);                                               \
-                }                                                                        \
-            }                                                                            \
-            (void)fputc('\n', out);                                                      \
-        }                                                                                \
-        (void)fprintf(out, "    /* clang-format on */\n");                               \
-        (void)fprintf(out, "};\n");                                                      \
+#define WRITE_TABLE(bit, row, fmt)                                                                \
+    static void write_table##bit(FILE *out, a_u##bit##_t ctx[A_CRC_SIZ], char const *const label) \
+    {                                                                                             \
+        (void)fprintf(out, "uint%i_t const %s[0x%X] = {\n", bit, label, A_CRC_SIZ);               \
+        (void)fprintf(out, "    /* clang-format off */\n");                                       \
+        for (a_size_t i = 0; i != A_CRC_SIZ / (row); ++i)                                         \
+        {                                                                                         \
+            (void)fprintf(out, "    ");                                                           \
+            for (a_size_t j = 0; j != (row); ++j)                                                 \
+            {                                                                                     \
+                (void)fprintf(out, "0x%0" #fmt PRIX##bit ",", ctx[(row)*i + j]);                  \
+                if (j != (row)-1)                                                                 \
+                {                                                                                 \
+                    (void)fputc(' ', out);                                                        \
+                }                                                                                 \
+            }                                                                                     \
+            (void)fputc('\n', out);                                                               \
+        }                                                                                         \
+        (void)fprintf(out, "    /* clang-format on */\n");                                        \
+        (void)fprintf(out, "};\n");                                                               \
     }
 WRITE_TABLE(8, 8, 2)
 WRITE_TABLE(16, 8, 4)
@@ -37,7 +37,7 @@ WRITE_TABLE(32, 8, 8)
 WRITE_TABLE(64, 4, 16)
 #undef WRITE_TABLE
 
-static void create_table(a_cstr_t name)
+static void create_table(char const *const name)
 {
     FILE *out = stdout;
 

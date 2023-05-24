@@ -9,10 +9,10 @@ cdef extern from "a/mf.h":
         A_MF_TRAP
         A_MF_TRI
         A_MF_Z
-    a_real_t a_mf_gauss(a_real_t x, a_real_t sigma, a_real_t c)
-    a_real_t a_mf_gbell(a_real_t x, a_real_t a, a_real_t b, a_real_t c)
-    a_real_t a_mf_sig(a_real_t x, a_real_t a, a_real_t c)
-    a_real_t a_mf_trap(a_real_t x, a_real_t a, a_real_t b, a_real_t c, a_real_t d)
-    a_real_t a_mf_tri(a_real_t x, a_real_t a, a_real_t b, a_real_t c)
-    a_real_t a_mf_z(a_real_t x, a_real_t a, a_real_t b)
-    a_real_t a_mf(a_uint_t t, a_real_t x, a_real_t *a)
+    a_float_t a_mf_gauss(a_float_t x, a_float_t sigma, a_float_t c)
+    a_float_t a_mf_gbell(a_float_t x, a_float_t a, a_float_t b, a_float_t c)
+    a_float_t a_mf_sig(a_float_t x, a_float_t a, a_float_t c)
+    a_float_t a_mf_trap(a_float_t x, a_float_t a, a_float_t b, a_float_t c, a_float_t d)
+    a_float_t a_mf_tri(a_float_t x, a_float_t a, a_float_t b, a_float_t c)
+    a_float_t a_mf_z(a_float_t x, a_float_t a, a_float_t b)
+    a_float_t a_mf(unsigned int t, a_float_t x, a_float_t *a)

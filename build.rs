@@ -5,9 +5,9 @@ fn main() {
 
     config.define("BUILD_TESTING", "0");
     #[cfg(not(feature = "float"))]
-    config.define("LIBA_REAL", "8");
+    config.define("LIBA_FLOAT", "8");
     #[cfg(feature = "float")]
-    config.define("LIBA_REAL", "4");
+    config.define("LIBA_FLOAT", "4");
     config.static_crt(true);
 
     let out = config.build();

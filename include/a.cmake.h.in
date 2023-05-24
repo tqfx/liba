@@ -6,15 +6,15 @@
 #define A_VERSION_PATCH @PROJECT_VERSION_PATCH@
 #define A_VERSION_TWEAK A_U64_C(@PROJECT_VERSION_TWEAK@)
 
+#if !defined A_SIZE_POINTER
+#define A_SIZE_POINTER @CMAKE_SIZEOF_VOID_P@
+#endif /* A_SIZE_POINTER */
 #if !defined A_BYTE_ORDER
 #define A_BYTE_ORDER @CMAKE_BYTE_ORDER@
 #endif /* A_BYTE_ORDER */
-#if !defined A_SIZE_VPTR
-#define A_SIZE_VPTR @CMAKE_SIZEOF_VOID_P@
-#endif /* A_SIZE_VPTR */
-#if !defined A_SIZE_REAL
-#define A_SIZE_REAL @LIBA_REAL@
-#endif /* A_SIZE_REAL */
+#if !defined A_SIZE_FLOAT
+#define A_SIZE_FLOAT @LIBA_FLOAT@
+#endif /* A_SIZE_FLOAT */
 
 #cmakedefine A_HAVE_COMPLEX_H @A_HAVE_COMPLEX_H@
 #cmakedefine A_HAVE_STDINT_H @A_HAVE_STDINT_H@

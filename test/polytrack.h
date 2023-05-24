@@ -10,7 +10,7 @@
 
 static void test(void)
 {
-    a_real_t out[4];
+    a_float_t out[4];
     {
         a_polytrack3_s ctx;
         a_polytrack3_gen(&ctx, 0, 10, 0, 10, 0, 10);
@@ -47,13 +47,13 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     if (argc > 1)
     {
         char *endptr = A_NULL;
-#if A_REAL_TYPE == A_REAL_SINGLE
+#if A_FLOAT_TYPE == A_FLOAT_SINGLE
         (void)strtof(argv[1], &endptr);
-#elif A_REAL_TYPE == A_REAL_DOUBLE
+#elif A_FLOAT_TYPE == A_FLOAT_DOUBLE
         (void)strtod(argv[1], &endptr);
-#elif A_REAL_TYPE == A_REAL_EXTEND
+#elif A_FLOAT_TYPE == A_FLOAT_EXTEND
         (void)strtold(argv[1], &endptr);
-#endif /* A_REAL_TYPE */
+#endif /* A_FLOAT_TYPE */
         if (argv[1] == endptr)
         {
 #if defined(MAIN_ONCE)
@@ -63,16 +63,16 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         }
     }
 
-    a_real_t arg[10] = {0};
+    a_float_t arg[10] = {0};
     for (int i = start; i < argc; ++i)
     {
-#if A_REAL_TYPE == A_REAL_SINGLE
+#if A_FLOAT_TYPE == A_FLOAT_SINGLE
         arg[i - start] = strtof(argv[i], A_NULL);
-#elif A_REAL_TYPE == A_REAL_DOUBLE
+#elif A_FLOAT_TYPE == A_FLOAT_DOUBLE
         arg[i - start] = strtod(argv[i], A_NULL);
-#elif A_REAL_TYPE == A_REAL_EXTEND
+#elif A_FLOAT_TYPE == A_FLOAT_EXTEND
         arg[i - start] = strtold(argv[i], A_NULL);
-#endif /* A_REAL_TYPE */
+#endif /* A_FLOAT_TYPE */
     }
     a_polytrack3_s pt3;
     a_polytrack3_gen(&pt3, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5]);
@@ -80,19 +80,19 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_polytrack5_gen(&pt5, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7]);
     a_polytrack7_s pt7;
     a_polytrack7_gen(&pt7, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7], arg[8], arg[9]);
-    for (a_real_t dt = arg[0], delta = (arg[1] - arg[0]) / 1000; dt < arg[1]; dt += delta)
+    for (a_float_t dt = arg[0], delta = (arg[1] - arg[0]) / 1000; dt < arg[1]; dt += delta)
     {
-        a_real_t out3[3];
+        a_float_t out3[3];
         a_polytrack3_out(&pt3, dt, out3);
-        a_real_t out5[3];
+        a_float_t out5[3];
         a_polytrack5_out(&pt5, dt, out5);
-        a_real_t out7[4];
+        a_float_t out7[4];
         a_polytrack7_out(&pt7, dt, out7);
 #if defined(MAIN_ONCE)
-        printf(A_REAL_PRI("", "g "), dt);
-        printf(A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g "), out3[0], out3[1], out3[2]);
-        printf(A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g "), out5[0], out5[1], out5[2]);
-        printf(A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g ") A_REAL_PRI("", "g\n"), out7[0], out7[1], out7[2], out7[3]);
+        printf(A_FLOAT_PRI("", "g "), dt);
+        printf(A_FLOAT_PRI("", "g ") A_FLOAT_PRI("", "g ") A_FLOAT_PRI("", "g "), out3[0], out3[1], out3[2]);
+        printf(A_FLOAT_PRI("", "g ") A_FLOAT_PRI("", "g ") A_FLOAT_PRI("", "g "), out5[0], out5[1], out5[2]);
+        printf(A_FLOAT_PRI("", "g ") A_FLOAT_PRI("", "g ") A_FLOAT_PRI("", "g ") A_FLOAT_PRI("", "g\n"), out7[0], out7[1], out7[2], out7[3]);
 #endif /* MAIN_ONCE */
     }
 

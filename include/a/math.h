@@ -195,4 +195,109 @@ A_EXTERN a_u64_t a_u64_sqrt(a_u64_t x, a_u64_t *o);
 
 /*! @} A_MATH */
 
+/*!
+ @ingroup A
+ @addtogroup A_FLOAT floating-point number
+ @{
+*/
+
+/*! \f$ e \f$ */
+#define A_FLOAT_E A_FLOAT_C(2.71828182845904523536)
+/*! \f$ \log_{2}{e}=\frac{1}{\ln{2}} \f$ */
+#define A_FLOAT_LOG2E A_FLOAT_C(1.44269504088896340736)
+/*! \f$ \lg{e}=\frac{1}{\ln{2}+\ln{5}} \f$ */
+#define A_FLOAT_LOG10E A_FLOAT_C(0.434294481903251827651)
+/*! \f$ \ln{2} \f$ */
+#define A_FLOAT_LN2 A_FLOAT_C(0.693147180559945309417)
+/*! \f$ \ln{10} \f$ */
+#define A_FLOAT_LN10 A_FLOAT_C(2.30258509299404568402)
+/*! \f$ \pi \f$ */
+#define A_FLOAT_PI A_FLOAT_C(3.14159265358979323846)
+/*! \f$ \frac{\pi}{2} \f$ */
+#define A_FLOAT_PI_2 A_FLOAT_C(1.57079632679489661923)
+/*! \f$ \frac{\pi}{4} \f$ */
+#define A_FLOAT_PI_4 A_FLOAT_C(0.785398163397448309616)
+/*! \f$ \frac{1}{\pi} \f$ */
+#define A_FLOAT_1_PI A_FLOAT_C(0.318309886183790671538)
+/*! \f$ \frac{2}{\pi} \f$ */
+#define A_FLOAT_2_PI A_FLOAT_C(0.636619772367581343076)
+/*! \f$ \frac{2}{\sqrt{\pi}} \f$ */
+#define A_FLOAT_2_SQRTPI A_FLOAT_C(1.12837916709551257390)
+/*! \f$ \sqrt{2} \f$ */
+#define A_FLOAT_SQRT2 A_FLOAT_C(1.41421356237309504880)
+/*! \f$ \frac{1}{\sqrt{2}}=\frac{\sqrt{2}}{2} \f$ */
+#define A_FLOAT_SQRT1_2 A_FLOAT_C(0.707106781186547524401)
+
+#if defined(__cplusplus)
+extern "C" {
+#endif /* __cplusplus */
+
+A_EXTERN a_float_t a_float_log1p(a_float_t x);
+A_EXTERN a_float_t a_float_hypot(a_float_t x, a_float_t y);
+A_EXTERN a_float_t a_float_atan2(a_float_t x, a_float_t y);
+
+#if defined(__cplusplus)
+} /* extern "C" */
+#endif /* __cplusplus */
+
+#define a_float_fpclassify A_FLOAT_F(fpclassify)
+#define a_float_copysign A_FLOAT_F(copysign)
+#define a_float_isfinite A_FLOAT_F(isfinite)
+#define a_float_isnormal A_FLOAT_F(isnormal)
+#define a_float_signbit A_FLOAT_F(signbit)
+#define a_float_isinf A_FLOAT_F(isinf)
+#define a_float_isnan A_FLOAT_F(isnan)
+#define a_float_islt A_FLOAT_F(isless)
+#define a_float_isle A_FLOAT_F(islessequal)
+#define a_float_isgt A_FLOAT_F(isgreater)
+#define a_float_isge A_FLOAT_F(isgreaterequal)
+#define a_float_islg A_FLOAT_F(islessgreater)
+#define a_float_isun A_FLOAT_F(isunordered)
+
+#define a_float_ma A_FLOAT_F(fma)
+#define a_float_nan A_FLOAT_F(nan)
+#define a_float_abs A_FLOAT_F(fabs)
+#define a_float_mod A_FLOAT_F(fmod)
+#define a_float_max A_FLOAT_F(fmax)
+#define a_float_min A_FLOAT_F(fmin)
+#define a_float_dim A_FLOAT_F(fdim)
+
+#define a_float_exp A_FLOAT_F(exp)
+#define a_float_exp2 A_FLOAT_F(exp2)
+#define a_float_expm1 A_FLOAT_F(expm1)
+
+#define a_float_log A_FLOAT_F(log)
+#define a_float_logb A_FLOAT_F(logb)
+#define a_float_log2 A_FLOAT_F(log2)
+#define a_float_log10 A_FLOAT_F(log10)
+#if defined(A_HAVE_LOG1P) && (A_HAVE_LOG1P + 0 > 0)
+#define a_float_log1p A_FLOAT_F(log1p)
+#endif /* A_HAVE_LOG1P */
+
+#define a_float_pow A_FLOAT_F(pow)
+#define a_float_sqrt A_FLOAT_F(sqrt)
+#define a_float_cbrt A_FLOAT_F(cbrt)
+#if defined(A_HAVE_HYPOT) && (A_HAVE_HYPOT + 0 > 0)
+#define a_float_hypot A_FLOAT_F(hypot)
+#endif /* A_HAVE_HYPOT */
+
+#define a_float_sin A_FLOAT_F(sin)
+#define a_float_cos A_FLOAT_F(cos)
+#define a_float_tan A_FLOAT_F(tan)
+#define a_float_asin A_FLOAT_F(asin)
+#define a_float_acos A_FLOAT_F(acos)
+#define a_float_atan A_FLOAT_F(atan)
+#if defined(A_HAVE_ATAN2) && (A_HAVE_ATAN2 + 0 > 0)
+#define a_float_atan2 A_FLOAT_F(atan2)
+#endif /* A_HAVE_ATAN2 */
+
+#define a_float_sinh A_FLOAT_F(sinh)
+#define a_float_cosh A_FLOAT_F(cosh)
+#define a_float_tanh A_FLOAT_F(tanh)
+#define a_float_asinh A_FLOAT_F(asinh)
+#define a_float_acosh A_FLOAT_F(acosh)
+#define a_float_atanh A_FLOAT_F(atanh)
+
+/*! @} A_FLOAT */
+
 #endif /* math.h */

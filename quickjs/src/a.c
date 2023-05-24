@@ -8,11 +8,11 @@ static JSValue js_hash_bkdr(JSContext *const ctx, JSValueConst const this_val, i
     a_umax_t max = 0;
     for (int i = 0; i < argc; ++i)
     {
-        a_cstr_t str = JS_ToCString(ctx, argv[i]);
+        char const *str = JS_ToCString(ctx, argv[i]);
         max = a_hash_bkdr(str, max);
         JS_FreeCString(ctx, str);
     }
-    return JS_NewUint32(ctx, a_u32_c(max));
+    return JS_NewUint32(ctx, (a_u32_t)max);
 }
 
 static JSValue js_rsqrt(JSContext *const ctx, JSValueConst const this_val, int const argc, JSValueConst *const argv)

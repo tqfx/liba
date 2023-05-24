@@ -1,19 +1,19 @@
 //! transfer function
 
-use crate::real;
+use crate::float;
 use crate::uint;
 
 /// transfer function
 #[repr(C)]
 pub struct TF {
     /// input
-    u: *mut real,
+    u: *mut float,
     /// output
-    v: *mut real,
+    v: *mut float,
     /// numerator
-    num: *const real,
+    num: *const float,
     /// denominator
-    den: *const real,
+    den: *const float,
     /// numerator number
     m: uint,
     /// denominator number
@@ -21,24 +21,24 @@ pub struct TF {
 }
 
 extern "C" {
-    fn a_tf_set_num(ctx: *mut TF, m: uint, num: *const real, u: *mut real);
-    fn a_tf_set_den(ctx: *mut TF, n: uint, den: *const real, v: *mut real);
+    fn a_tf_set_num(ctx: *mut TF, m: uint, num: *const float, u: *mut float);
+    fn a_tf_set_den(ctx: *mut TF, n: uint, den: *const float, v: *mut float);
     fn a_tf_init(
         ctx: *mut TF,
         m: uint,
-        num: *const real,
-        u: *mut real,
+        num: *const float,
+        u: *mut float,
         n: uint,
-        den: *const real,
-        v: *mut real,
+        den: *const float,
+        v: *mut float,
     ) -> *mut TF;
-    fn a_tf_iter(ctx: *mut TF, x: real) -> real;
+    fn a_tf_iter(ctx: *mut TF, x: float) -> float;
     fn a_tf_zero(ctx: *mut TF) -> *mut TF;
 }
 
 impl TF {
     /// initialize function for transfer function
-    pub fn new(num: &[real], u: &mut [real], den: &[real], v: &mut [real]) -> Self {
+    pub fn new(num: &[float], u: &mut [float], den: &[float], v: &mut [float]) -> Self {
         let mut ctx: Self = Self {
             u: std::ptr::null_mut(),
             v: std::ptr::null_mut(),
@@ -62,7 +62,7 @@ impl TF {
     }
 
     /// calculate function for transfer function
-    pub fn iter(&mut self, x: real) -> real {
+    pub fn iter(&mut self, x: float) -> float {
         unsafe { a_tf_iter(self, x) }
     }
 
@@ -72,33 +72,33 @@ impl TF {
     }
 
     /// get input for transfer function
-    pub fn u(&self) -> &mut [real] {
+    pub fn u(&self) -> &mut [float] {
         unsafe { std::slice::from_raw_parts_mut(self.u, self.m as usize) }
     }
 
     /// get numerator for transfer function
-    pub fn num(&self) -> &[real] {
+    pub fn num(&self) -> &[float] {
         unsafe { std::slice::from_raw_parts(self.num, self.m as usize) }
     }
 
     /// set numerator for transfer function
-    pub fn set_num(&mut self, num: &[real], u: &mut [real]) -> &mut Self {
+    pub fn set_num(&mut self, num: &[float], u: &mut [float]) -> &mut Self {
         unsafe { a_tf_set_num(self, num.len() as uint, num.as_ptr(), u.as_mut_ptr()) };
         self
     }
 
     /// get output for transfer function
-    pub fn v(&self) -> &mut [real] {
+    pub fn v(&self) -> &mut [float] {
         unsafe { std::slice::from_raw_parts_mut(self.v, self.n as usize) }
     }
 
     /// get denominator for transfer function
-    pub fn den(&self) -> &[real] {
+    pub fn den(&self) -> &[float] {
         unsafe { std::slice::from_raw_parts(self.den, self.n as usize) }
     }
 
     /// set denominator for transfer function
-    pub fn set_den(&mut self, den: &[real], v: &mut [real]) -> &mut Self {
+    pub fn set_den(&mut self, den: &[float], v: &mut [float]) -> &mut Self {
         unsafe { a_tf_set_den(self, den.len() as uint, den.as_ptr(), v.as_mut_ptr()) };
         self
     }

@@ -54,15 +54,15 @@
 namespace a
 {
 /*! algorithm library version string */
-cstr_t const VERSION = A_VERSION;
+char const *const VERSION = A_VERSION;
 /*! algorithm library version major */
-uint_t const VERSION_MAJOR = A_VERSION_MAJOR;
+unsigned int const VERSION_MAJOR = A_VERSION_MAJOR;
 /*! algorithm library version minor */
-uint_t const VERSION_MINOR = A_VERSION_MINOR;
+unsigned int const VERSION_MINOR = A_VERSION_MINOR;
 /*! algorithm library version patch */
-uint_t const VERSION_PATCH = A_VERSION_PATCH;
+unsigned int const VERSION_PATCH = A_VERSION_PATCH;
 /*! algorithm library version tweak */
-u64_t const VERSION_TWEAK = A_VERSION_TWEAK;
+a_u64_t const VERSION_TWEAK = A_VERSION_TWEAK;
 #endif /* __cplusplus */
 
 /*!
@@ -71,15 +71,15 @@ u64_t const VERSION_TWEAK = A_VERSION_TWEAK;
 #if defined(__cplusplus)
 struct version
 {
-    A_PUBLIC a_bool_t operator<(version const &ver) const;
-    A_PUBLIC a_bool_t operator>(version const &ver) const;
-    A_PUBLIC a_bool_t operator<=(version const &ver) const;
-    A_PUBLIC a_bool_t operator>=(version const &ver) const;
-    A_PUBLIC a_bool_t operator==(version const &ver) const;
-    A_PUBLIC a_bool_t operator!=(version const &ver) const;
-    A_PUBLIC version(a_uint_t const maj = 0,
-                     a_uint_t const min = 0,
-                     a_uint_t const pat = 0)
+    A_PUBLIC bool operator<(version const &ver) const;
+    A_PUBLIC bool operator>(version const &ver) const;
+    A_PUBLIC bool operator<=(version const &ver) const;
+    A_PUBLIC bool operator>=(version const &ver) const;
+    A_PUBLIC bool operator==(version const &ver) const;
+    A_PUBLIC bool operator!=(version const &ver) const;
+    A_PUBLIC version(unsigned int const maj = 0,
+                     unsigned int const min = 0,
+                     unsigned int const pat = 0)
         : major(maj)
         , minor(min)
         , patch(pat)
@@ -89,9 +89,9 @@ struct version
 typedef struct a_version_s
 {
 #endif /* __cplusplus */
-    a_uint_t major; //!< major number
-    a_uint_t minor; //!< minor number
-    a_uint_t patch; //!< patch number
+    unsigned int major; //!< major number
+    unsigned int minor; //!< minor number
+    unsigned int patch; //!< patch number
 #if defined(__cplusplus)
 };
 #else /* !__cplusplus */
@@ -102,15 +102,15 @@ typedef struct a_version_s
 /*!
  @brief algorithm library version major
 */
-A_EXTERN uint_t version_major(void);
+A_EXTERN unsigned int version_major(void);
 /*!
  @brief algorithm library version minor
 */
-A_EXTERN uint_t version_minor(void);
+A_EXTERN unsigned int version_minor(void);
 /*!
  @brief algorithm library version patch
 */
-A_EXTERN uint_t version_patch(void);
+A_EXTERN unsigned int version_patch(void);
 } /* namespace a */
 typedef a::version a_version_s;
 extern "C" {
@@ -119,22 +119,22 @@ extern "C" {
 /*!
  @brief algorithm library version string
 */
-A_EXTERN a_cstr_t a_version(void);
+A_EXTERN char const *a_version(void);
 
 /*!
  @brief algorithm library version major
 */
-A_EXTERN a_uint_t a_version_major(void);
+A_EXTERN unsigned int a_version_major(void);
 
 /*!
  @brief algorithm library version minor
 */
-A_EXTERN a_uint_t a_version_minor(void);
+A_EXTERN unsigned int a_version_minor(void);
 
 /*!
  @brief algorithm library version patch
 */
-A_EXTERN a_uint_t a_version_patch(void);
+A_EXTERN unsigned int a_version_patch(void);
 
 /*!
  @brief compare the version lhs with the version rhs
@@ -145,12 +145,12 @@ A_EXTERN a_uint_t a_version_patch(void);
   @retval >0 version lhs > version rhs
   @retval 0 version lhs == version rhs
 */
-A_EXTERN a_int_t a_version_cmp(a_version_s const *lhs, a_version_s const *rhs);
+A_EXTERN int a_version_cmp(a_version_s const *lhs, a_version_s const *rhs);
 
 /*!
  @brief algorithm library version check
 */
-A_EXTERN a_int_t a_version_check(a_uint_t major, a_uint_t minor, a_uint_t patch);
+A_EXTERN int a_version_check(unsigned int major, unsigned int minor, unsigned int patch);
 #define a_version_check() a_version_check(A_VERSION_MAJOR, A_VERSION_MINOR, A_VERSION_PATCH)
 
 #if defined(LIBA_VERSION_C)

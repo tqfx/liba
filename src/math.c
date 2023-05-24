@@ -83,7 +83,7 @@ a_f32_t a_f32_hypot(a_f32_t x, a_f32_t y)
         x *= MAX;
         y *= MAX;
     }
-    return z * a_f32_sqrt(a_f32_c(a_f64_c(x) * a_f64_c(x) + a_f64_c(y) * a_f64_c(y)));
+    return z * a_f32_sqrt((a_f32_t)((a_f64_t)x * (a_f64_t)x + (a_f64_t)y * (a_f64_t)y));
 #undef MIN
 #undef MAX
 }
@@ -111,7 +111,7 @@ a_f64_t a_f64_hypot(a_f64_t x, a_f64_t y)
         a_f64_t x;
         a_u64_t u;
     } ux, uy;
-    a_int_t ex, ey;
+    unsigned int ex, ey;
     a_f64_t hx, lx, hy, ly, z;
 
     ux.x = x;
@@ -127,8 +127,8 @@ a_f64_t a_f64_hypot(a_f64_t x, a_f64_t y)
 
     x = ux.x;
     y = uy.x;
-    ex = a_int_c(ux.u >> 52);
-    ey = a_int_c(uy.u >> 52);
+    ex = (unsigned int)(ux.u >> 52);
+    ey = (unsigned int)(uy.u >> 52);
     /* hypot(inf,nan) == inf */
     if (ey == 0x7FF)
     {
@@ -232,7 +232,7 @@ a_f64_t a_f64_rsqrt(a_f64_t const x)
 a_u32_t a_u32_sqrt(a_u32_t x, a_u32_t *const o)
 {
     a_u32_t y = 0;
-    for (a_uint_t i = 0; i < 32; i += 2)
+    for (unsigned int i = 0; i < 32; i += 2)
     {
         a_u32_t k = A_U32_C(0x40000000) >> i;
         a_u32_t j = y + k;
@@ -256,7 +256,7 @@ a_u32_t a_u32_sqrt(a_u32_t x, a_u32_t *const o)
 a_u64_t a_u64_sqrt(a_u64_t x, a_u64_t *const o)
 {
     a_u64_t y = 0;
-    for (a_uint_t i = 0; i < 64; i += 2)
+    for (unsigned int i = 0; i < 64; i += 2)
     {
         a_u64_t k = A_U64_C(0x4000000000000000) >> i;
         a_u64_t j = y + k;
@@ -275,4 +275,48 @@ a_u64_t a_u64_sqrt(a_u64_t x, a_u64_t *const o)
         *o = x;
     }
     return y;
+}
+
+#undef a_float_log1p
+a_float_t a_float_log1p(a_float_t const x)
+{
+    return A_FLOAT_F1(log, x + 1);
+}
+
+#undef a_float_hypot
+a_float_t a_float_hypot(a_float_t const x, a_float_t const y)
+{
+#if A_FLOAT_TYPE == A_FLOAT_SINGLE
+    return a_f32_hypot(x, y);
+#elif A_FLOAT_TYPE == A_FLOAT_DOUBLE
+    return a_f64_hypot(x, y);
+#elif A_FLOAT_TYPE == A_FLOAT_EXTEND
+    return A_FLOAT_F1(sqrt, x * x + y * y);
+#endif /* A_FLOAT_TYPE */
+}
+
+#undef a_float_atan2
+a_float_t a_float_atan2(a_float_t const x, a_float_t const y)
+{
+    if (x > 0)
+    {
+        return A_FLOAT_F1(atan, y / x);
+    }
+    if (x < 0)
+    {
+        if (y >= 0)
+        {
+            return A_FLOAT_F1(atan, y / x) + A_FLOAT_PI;
+        }
+        return A_FLOAT_F1(atan, y / x) - A_FLOAT_PI;
+    }
+    if (y > 0)
+    {
+        return +A_FLOAT_PI;
+    }
+    if (y < 0)
+    {
+        return -A_FLOAT_PI;
+    }
+    return 0;
 }

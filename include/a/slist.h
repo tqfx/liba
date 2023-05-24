@@ -32,7 +32,7 @@ typedef union a_slist_u
  @param[in] obj points to circular singly linked list node
  @return a pointer to circular singly linked list node
 */
-A_INTERN a_slist_u *a_slist_from(a_vptr_t const obj) { return a_cast_s(a_slist_u *, obj); }
+A_INTERN a_slist_u *a_slist_from(void *const obj) { return a_cast_s(a_slist_u *, obj); }
 
 /*!
  @brief test whether a list node is null
@@ -56,7 +56,7 @@ A_INTERN a_bool_t a_slist_used(a_slist_u const *const ctx) { return ctx->next !=
  @brief initialize for circular singly linked list node
  @param[in,out] ctx points to circular singly linked list node
 */
-A_INTERN a_void_t a_slist_node(a_slist_u *const ctx) { ctx->next = ctx; }
+A_INTERN void a_slist_node(a_slist_u *const ctx) { ctx->next = ctx; }
 
 /*!
  @brief instance structure for circular singly linked list head
@@ -117,26 +117,26 @@ A_INTERN a_bool_t a_slist_tail(a_slist_s const *const ctx, a_slist_u const *cons
  @brief constructor for circular singly linked list head
  @param[in,out] ctx points to circular singly linked list head
 */
-A_INTERN a_void_t a_slist_ctor(a_slist_s *const ctx) { ctx->tail = ctx->head.next = &ctx->head; }
+A_INTERN void a_slist_ctor(a_slist_s *const ctx) { ctx->tail = ctx->head.next = &ctx->head; }
 
 /*!
  @brief initialize for circular singly linked list head
  @param[in,out] ctx points to circular singly linked list head
 */
-A_INTERN a_void_t a_slist_init(a_slist_s *const ctx) { ctx->tail = ctx->head.next = &ctx->head; }
+A_INTERN void a_slist_init(a_slist_s *const ctx) { ctx->tail = ctx->head.next = &ctx->head; }
 
 /*!
  @brief destructor for circular singly linked list head
  @param[in,out] ctx points to circular singly linked list head
 */
-A_INTERN a_void_t a_slist_dtor(a_slist_s *const ctx) { ctx->tail = ctx->head.next = &ctx->head; }
+A_INTERN void a_slist_dtor(a_slist_s *const ctx) { ctx->tail = ctx->head.next = &ctx->head; }
 
 /*!
  @brief link head node and tail node
  @param[in,out] head the head node of a list
  @param[in,out] tail the tail node of a list
 */
-A_INTERN a_void_t a_slist_link(a_slist_u *const head, a_slist_u *const tail) { head->next = tail; }
+A_INTERN void a_slist_link(a_slist_u *const head, a_slist_u *const tail) { head->next = tail; }
 
 /*!
  @brief insert a node to a list
@@ -144,7 +144,7 @@ A_INTERN a_void_t a_slist_link(a_slist_u *const head, a_slist_u *const tail) { h
  @param[in] prev previous list node
  @param[in] node a list node
 */
-A_INTERN a_void_t a_slist_add(a_slist_s *const ctx, a_slist_u *const prev, a_slist_u *const node)
+A_INTERN void a_slist_add(a_slist_s *const ctx, a_slist_u *const prev, a_slist_u *const node)
 {
     if (a_slist_tail(ctx, prev))
     {
@@ -159,7 +159,7 @@ A_INTERN a_void_t a_slist_add(a_slist_s *const ctx, a_slist_u *const prev, a_sli
  @param[in,out] ctx points to circular singly linked list head
  @param[in] node a list node
 */
-A_INTERN a_void_t a_slist_add_head(a_slist_s *const ctx, a_slist_u *const node)
+A_INTERN void a_slist_add_head(a_slist_s *const ctx, a_slist_u *const node)
 {
     if (a_slist_none(ctx))
     {
@@ -174,7 +174,7 @@ A_INTERN a_void_t a_slist_add_head(a_slist_s *const ctx, a_slist_u *const node)
  @param[in,out] ctx points to circular singly linked list head
  @param[in] node a list node
 */
-A_INTERN a_void_t a_slist_add_tail(a_slist_s *const ctx, a_slist_u *const node)
+A_INTERN void a_slist_add_tail(a_slist_s *const ctx, a_slist_u *const node)
 {
     a_slist_link(node, &ctx->head);
     a_slist_link(ctx->tail, node);
@@ -186,7 +186,7 @@ A_INTERN a_void_t a_slist_add_tail(a_slist_s *const ctx, a_slist_u *const node)
  @param[in,out] ctx points to circular singly linked list head
  @param[in] prev previous list node
 */
-A_INTERN a_void_t a_slist_del(a_slist_s *const ctx, a_slist_u *const prev)
+A_INTERN void a_slist_del(a_slist_s *const ctx, a_slist_u *const prev)
 {
     a_slist_u *const node = prev->next;
     a_slist_link(prev, node->next);
@@ -200,7 +200,7 @@ A_INTERN a_void_t a_slist_del(a_slist_s *const ctx, a_slist_u *const prev)
  @brief delete a node from a list head
  @param[in,out] ctx points to circular singly linked list head
 */
-A_INTERN a_void_t a_slist_del_head(a_slist_s *const ctx)
+A_INTERN void a_slist_del_head(a_slist_s *const ctx)
 {
     a_slist_u *const node = ctx->head.next;
     a_slist_link(&ctx->head, node->next);
@@ -216,7 +216,7 @@ A_INTERN a_void_t a_slist_del_head(a_slist_s *const ctx)
  @param[in] at the previous &a_slist_u of the inserted node
  @param[in] src source list
 */
-A_INTERN a_void_t a_slist_mov(a_slist_s *const ctx, a_slist_u *const at, a_slist_s *const src)
+A_INTERN void a_slist_mov(a_slist_s *const ctx, a_slist_u *const at, a_slist_s *const src)
 {
     if (a_slist_none(src))
     {
@@ -234,7 +234,7 @@ A_INTERN a_void_t a_slist_mov(a_slist_s *const ctx, a_slist_u *const at, a_slist
  @brief rotate a node in the list
  @param[in,out] ctx points to circular singly linked list head
 */
-A_INTERN a_void_t a_slist_rot(a_slist_s *const ctx)
+A_INTERN void a_slist_rot(a_slist_s *const ctx)
 {
     a_slist_u *const node = ctx->head.next;
     a_slist_link(&ctx->head, node->next);
@@ -244,8 +244,8 @@ A_INTERN a_void_t a_slist_rot(a_slist_s *const ctx)
 }
 
 /* inline function for generic */
-A_INTERN a_void_t a_slist_ctor_(a_vptr_t const ctx) { a_slist_ctor(a_cast_s(a_slist_s *, ctx)); }
-A_INTERN a_void_t a_slist_dtor_(a_vptr_t const ctx) { a_slist_dtor(a_cast_s(a_slist_s *, ctx)); }
+A_INTERN void a_slist_ctor_(void *const ctx) { a_slist_ctor(a_cast_s(a_slist_s *, ctx)); }
+A_INTERN void a_slist_dtor_(void *const ctx) { a_slist_dtor(a_cast_s(a_slist_s *, ctx)); }
 
 /*! @} A_SLIST */
 

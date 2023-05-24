@@ -12,7 +12,7 @@ cdef class tf:
     def __cinit__(self, num, den):
         self.num = num
         self.den = den
-    def __call__(self, x: a_real_t) -> a_real_t:
+    def __call__(self, x: a_float_t) -> a_float_t:
         '''calculate function for transfer function'''
         return a_tf_iter(&self.ctx, x)
     def __dealloc__(self):
@@ -28,17 +28,17 @@ cdef class tf:
         return self._num
     @num.setter
     def num(self, num):
-        cdef a_uint_t m = <a_uint_t>len(num)
-        self._num = reals(num)
-        self._u = reals(num)
-        a_tf_set_num(&self.ctx, m, <a_real_t *>self._num.data.as_voidptr, <a_real_t *>self._u.data.as_voidptr)
+        cdef unsigned int m = <unsigned int>len(num)
+        self._num = floats(num)
+        self._u = floats(num)
+        a_tf_set_num(&self.ctx, m, <a_float_t *>self._num.data.as_voidptr, <a_float_t *>self._u.data.as_voidptr)
 
     @property
     def den(self):
         return self._den
     @den.setter
     def den(self, den):
-        cdef a_uint_t n = <a_uint_t>len(den)
-        self._den = reals(den)
-        self._v = reals(den)
-        a_tf_set_den(&self.ctx, n, <a_real_t *>self._den.data.as_voidptr, <a_real_t *>self._v.data.as_voidptr)
+        cdef unsigned int n = <unsigned int>len(den)
+        self._den = floats(den)
+        self._v = floats(den)
+        a_tf_set_den(&self.ctx, n, <a_float_t *>self._den.data.as_voidptr, <a_float_t *>self._v.data.as_voidptr)

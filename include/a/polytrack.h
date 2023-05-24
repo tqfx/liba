@@ -20,7 +20,7 @@
 */
 typedef struct a_polytrack3_s
 {
-    a_real_t k[4]; //!< quantity
+    a_float_t k[4]; //!< quantity
 } a_polytrack3_s;
 
 /*!
@@ -28,7 +28,7 @@ typedef struct a_polytrack3_s
 */
 typedef struct a_polytrack5_s
 {
-    a_real_t k[6]; //!< quantity
+    a_float_t k[6]; //!< quantity
 } a_polytrack5_s;
 
 /*!
@@ -36,7 +36,7 @@ typedef struct a_polytrack5_s
 */
 typedef struct a_polytrack7_s
 {
-    a_real_t k[8]; //!< quantity
+    a_float_t k[8]; //!< quantity
 } a_polytrack7_s;
 
 #if defined(__cplusplus)
@@ -65,10 +65,10 @@ extern "C" {
  @param[in] v0 velocity for source
  @param[in] v1 velocity for target
 */
-A_EXTERN a_void_t a_polytrack3_gen(a_polytrack3_s *ctx,
-                                   a_real_t t0, a_real_t t1,
-                                   a_real_t q0, a_real_t q1,
-                                   a_real_t v0, a_real_t v1);
+A_EXTERN void a_polytrack3_gen(a_polytrack3_s *ctx,
+                               a_float_t t0, a_float_t t1,
+                               a_float_t q0, a_float_t q1,
+                               a_float_t v0, a_float_t v1);
 
 /*!
  @brief calculate function for cubic polynomial trajectory
@@ -86,7 +86,7 @@ A_EXTERN a_void_t a_polytrack3_gen(a_polytrack3_s *ctx,
   @arg 1 velocity output
   @arg 2 acceleration output
 */
-A_EXTERN a_void_t a_polytrack3_out(a_polytrack3_s const *ctx, a_real_t dt, a_real_t out[3]);
+A_EXTERN void a_polytrack3_out(a_polytrack3_s const *ctx, a_float_t dt, a_float_t out[3]);
 
 /*!
  @brief calculate function for cubic polynomial trajectory position
@@ -99,7 +99,7 @@ A_EXTERN a_void_t a_polytrack3_out(a_polytrack3_s const *ctx, a_real_t dt, a_rea
  @param[in] dt difference between current time and initial time
  @return position output
 */
-A_EXTERN a_real_t a_polytrack3_pos(a_polytrack3_s const *ctx, a_real_t dt);
+A_EXTERN a_float_t a_polytrack3_pos(a_polytrack3_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for cubic polynomial trajectory velocity
@@ -112,7 +112,7 @@ A_EXTERN a_real_t a_polytrack3_pos(a_polytrack3_s const *ctx, a_real_t dt);
  @param[in] dt difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_real_t a_polytrack3_vec(a_polytrack3_s const *ctx, a_real_t dt);
+A_EXTERN a_float_t a_polytrack3_vec(a_polytrack3_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for cubic polynomial trajectory acceleration
@@ -125,7 +125,7 @@ A_EXTERN a_real_t a_polytrack3_vec(a_polytrack3_s const *ctx, a_real_t dt);
  @param[in] dt difference between current time and initial time
  @return acceleration output
 */
-A_EXTERN a_real_t a_polytrack3_acc(a_polytrack3_s const *ctx, a_real_t dt);
+A_EXTERN a_float_t a_polytrack3_acc(a_polytrack3_s const *ctx, a_float_t dt);
 
 /* function for quintic polynomial trajectory */
 
@@ -153,11 +153,11 @@ A_EXTERN a_real_t a_polytrack3_acc(a_polytrack3_s const *ctx, a_real_t dt);
  @param[in] a0 acceleration for source
  @param[in] a1 acceleration for target
 */
-A_EXTERN a_void_t a_polytrack5_gen(a_polytrack5_s *ctx,
-                                   a_real_t t0, a_real_t t1,
-                                   a_real_t q0, a_real_t q1,
-                                   a_real_t v0, a_real_t v1,
-                                   a_real_t a0, a_real_t a1);
+A_EXTERN void a_polytrack5_gen(a_polytrack5_s *ctx,
+                               a_float_t t0, a_float_t t1,
+                               a_float_t q0, a_float_t q1,
+                               a_float_t v0, a_float_t v1,
+                               a_float_t a0, a_float_t a1);
 
 /*!
  @brief calculate function for quintic polynomial trajectory
@@ -175,7 +175,7 @@ A_EXTERN a_void_t a_polytrack5_gen(a_polytrack5_s *ctx,
   @arg 1 velocity output
   @arg 2 acceleration output
 */
-A_EXTERN a_void_t a_polytrack5_out(a_polytrack5_s const *ctx, a_real_t dt, a_real_t out[3]);
+A_EXTERN void a_polytrack5_out(a_polytrack5_s const *ctx, a_float_t dt, a_float_t out[3]);
 
 /*!
  @brief calculate function for quintic polynomial trajectory position
@@ -188,7 +188,7 @@ A_EXTERN a_void_t a_polytrack5_out(a_polytrack5_s const *ctx, a_real_t dt, a_rea
  @param[in] dt difference between current time and initial time
  @return position output
 */
-A_EXTERN a_real_t a_polytrack5_pos(a_polytrack5_s const *ctx, a_real_t dt);
+A_EXTERN a_float_t a_polytrack5_pos(a_polytrack5_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for quintic polynomial trajectory velocity
@@ -201,7 +201,7 @@ A_EXTERN a_real_t a_polytrack5_pos(a_polytrack5_s const *ctx, a_real_t dt);
  @param[in] dt difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_real_t a_polytrack5_vec(a_polytrack5_s const *ctx, a_real_t dt);
+A_EXTERN a_float_t a_polytrack5_vec(a_polytrack5_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for quintic polynomial trajectory acceleration
@@ -214,7 +214,7 @@ A_EXTERN a_real_t a_polytrack5_vec(a_polytrack5_s const *ctx, a_real_t dt);
  @param[in] dt difference between current time and initial time
  @return acceleration output
 */
-A_EXTERN a_real_t a_polytrack5_acc(a_polytrack5_s const *ctx, a_real_t dt);
+A_EXTERN a_float_t a_polytrack5_acc(a_polytrack5_s const *ctx, a_float_t dt);
 
 /* function for hepta polynomial trajectory */
 
@@ -246,12 +246,12 @@ A_EXTERN a_real_t a_polytrack5_acc(a_polytrack5_s const *ctx, a_real_t dt);
  @param[in] j0 jerk for source
  @param[in] j1 jerk for target
 */
-A_EXTERN a_void_t a_polytrack7_gen(a_polytrack7_s *ctx,
-                                   a_real_t t0, a_real_t t1,
-                                   a_real_t q0, a_real_t q1,
-                                   a_real_t v0, a_real_t v1,
-                                   a_real_t a0, a_real_t a1,
-                                   a_real_t j0, a_real_t j1);
+A_EXTERN void a_polytrack7_gen(a_polytrack7_s *ctx,
+                               a_float_t t0, a_float_t t1,
+                               a_float_t q0, a_float_t q1,
+                               a_float_t v0, a_float_t v1,
+                               a_float_t a0, a_float_t a1,
+                               a_float_t j0, a_float_t j1);
 
 /*!
  @brief calculate function for hepta polynomial trajectory
@@ -271,7 +271,7 @@ A_EXTERN a_void_t a_polytrack7_gen(a_polytrack7_s *ctx,
   @arg 2 acceleration output
   @arg 3 jerk output
 */
-A_EXTERN a_void_t a_polytrack7_out(a_polytrack7_s const *ctx, a_real_t dt, a_real_t out[4]);
+A_EXTERN void a_polytrack7_out(a_polytrack7_s const *ctx, a_float_t dt, a_float_t out[4]);
 
 /*!
  @brief calculate function for hepta polynomial trajectory position
@@ -284,7 +284,7 @@ A_EXTERN a_void_t a_polytrack7_out(a_polytrack7_s const *ctx, a_real_t dt, a_rea
  @param[in] dt difference between current time and initial time
  @return position output
 */
-A_EXTERN a_real_t a_polytrack7_pos(a_polytrack7_s const *ctx, a_real_t dt);
+A_EXTERN a_float_t a_polytrack7_pos(a_polytrack7_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for hepta polynomial trajectory velocity
@@ -297,7 +297,7 @@ A_EXTERN a_real_t a_polytrack7_pos(a_polytrack7_s const *ctx, a_real_t dt);
  @param[in] dt difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_real_t a_polytrack7_vec(a_polytrack7_s const *ctx, a_real_t dt);
+A_EXTERN a_float_t a_polytrack7_vec(a_polytrack7_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for hepta polynomial trajectory acceleration
@@ -310,7 +310,7 @@ A_EXTERN a_real_t a_polytrack7_vec(a_polytrack7_s const *ctx, a_real_t dt);
  @param[in] dt difference between current time and initial time
  @return acceleration output
 */
-A_EXTERN a_real_t a_polytrack7_acc(a_polytrack7_s const *ctx, a_real_t dt);
+A_EXTERN a_float_t a_polytrack7_acc(a_polytrack7_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for hepta polynomial trajectory jerk
@@ -323,7 +323,7 @@ A_EXTERN a_real_t a_polytrack7_acc(a_polytrack7_s const *ctx, a_real_t dt);
  @param[in] dt difference between current time and initial time
  @return jerk output
 */
-A_EXTERN a_real_t a_polytrack7_jer(a_polytrack7_s const *ctx, a_real_t dt);
+A_EXTERN a_float_t a_polytrack7_jer(a_polytrack7_s const *ctx, a_float_t dt);
 
 #if defined(__cplusplus)
 } /* extern "C" */

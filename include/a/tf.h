@@ -19,12 +19,12 @@
 */
 typedef struct a_tf_s
 {
-    a_real_t *u; //!< input
-    a_real_t *v; //!< output
-    a_real_t const *num; //!< numerator
-    a_real_t const *den; //!< denominator
-    a_uint_t m; //!< numerator number
-    a_uint_t n; //!< denominator number
+    a_float_t *u; //!< input
+    a_float_t *v; //!< output
+    a_float_t const *num; //!< numerator
+    a_float_t const *den; //!< denominator
+    unsigned int m; //!< numerator number
+    unsigned int n; //!< denominator number
 } a_tf_s;
 
 #if defined(__cplusplus)
@@ -38,7 +38,7 @@ extern "C" {
  @param[in] num numerator
  @param[in] u input buffer
 */
-A_EXTERN a_void_t a_tf_set_num(a_tf_s *ctx, a_uint_t m, a_real_t const *num, a_real_t *u);
+A_EXTERN void a_tf_set_num(a_tf_s *ctx, unsigned int m, a_float_t const *num, a_float_t *u);
 
 /*!
  @brief set denominator for transfer function
@@ -47,7 +47,7 @@ A_EXTERN a_void_t a_tf_set_num(a_tf_s *ctx, a_uint_t m, a_real_t const *num, a_r
  @param[in] den denominator
  @param[in] v output buffer
 */
-A_EXTERN a_void_t a_tf_set_den(a_tf_s *ctx, a_uint_t n, a_real_t const *den, a_real_t *v);
+A_EXTERN void a_tf_set_den(a_tf_s *ctx, unsigned int n, a_float_t const *den, a_float_t *v);
 
 /*!
  @brief initialize function for transfer function
@@ -60,8 +60,8 @@ A_EXTERN a_void_t a_tf_set_den(a_tf_s *ctx, a_uint_t n, a_real_t const *den, a_r
  @param[in] v output buffer
 */
 A_EXTERN a_tf_s *a_tf_init(a_tf_s *ctx,
-                           a_uint_t m, a_real_t const *num, a_real_t *u,
-                           a_uint_t n, a_real_t const *den, a_real_t *v);
+                           unsigned int m, a_float_t const *num, a_float_t *u,
+                           unsigned int n, a_float_t const *den, a_float_t *v);
 
 /*!
  @brief calculate function for transfer function
@@ -69,7 +69,7 @@ A_EXTERN a_tf_s *a_tf_init(a_tf_s *ctx,
  @param[in] x controller output
  @return feedback
 */
-A_EXTERN a_real_t a_tf_iter(a_tf_s *ctx, a_real_t x);
+A_EXTERN a_float_t a_tf_iter(a_tf_s *ctx, a_float_t x);
 
 /*!
  @brief terminate function for transfer function

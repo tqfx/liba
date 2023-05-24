@@ -1,47 +1,47 @@
 #include "a/rbt.h"
 
 /* Sets the parent and color of the specified red–black tree node. */
-static A_INLINE a_void_t a_rbt_set_parent_color(a_rbt_s *const node, a_rbt_s *const parent, a_uint_t const color)
+static A_INLINE void a_rbt_set_parent_color(a_rbt_s *const node, a_rbt_s *const parent, unsigned int const color)
 {
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 1)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
     node->_parent = (a_uptr_t)parent | color;
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
     node->parent = parent;
     node->color = color;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
 }
 
 /* Sets the parent of the specified red–black tree node. */
-static A_INLINE a_void_t a_rbt_set_parent(a_rbt_s *const node, a_rbt_s *const parent)
+static A_INLINE void a_rbt_set_parent(a_rbt_s *const node, a_rbt_s *const parent)
 {
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 1)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
     node->_parent = (a_uptr_t)parent | (node->_parent & 1);
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
     node->parent = parent;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
 }
 
 /* Returns the color of the specified red–black tree node. */
-static A_INLINE a_uint_t a_rbt_color(a_rbt_s const *const node)
+static A_INLINE unsigned int a_rbt_color(a_rbt_s const *const node)
 {
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 1)
-    return (a_uint_t)(node->_parent & 1);
-#else /* !A_SIZE_VPTR */
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
+    return (unsigned int)(node->_parent & 1);
+#else /* !A_SIZE_POINTER */
     return node->color;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
 }
 
 /* Sets the black color of the specified red–black tree node. */
-static A_INLINE a_void_t a_rbt_set_black(a_rbt_s *const node)
+static A_INLINE void a_rbt_set_black(a_rbt_s *const node)
 {
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 1)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
     node->_parent |= A_RBT_B;
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
     node->color = A_RBT_B;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
 }
 
-static A_INLINE a_void_t a_rbt_mod_child(a_rbt_u *const root, a_rbt_s *const parent, a_rbt_s *const oldnode, a_rbt_s *const newnode)
+static A_INLINE void a_rbt_mod_child(a_rbt_u *const root, a_rbt_s *const parent, a_rbt_s *const oldnode, a_rbt_s *const newnode)
 {
     if (parent)
     {
@@ -84,20 +84,20 @@ Helper function for rotations:
  - old's parent and color get assigned to new
  - old gets assigned new as a parent and 'color' as a color.
 */
-static A_INLINE a_void_t a_rbt_set_parents(a_rbt_u *const root, a_rbt_s *const oldnode, a_rbt_s *const newnode, a_uint_t const color)
+static A_INLINE void a_rbt_set_parents(a_rbt_u *const root, a_rbt_s *const oldnode, a_rbt_s *const newnode, unsigned int const color)
 {
     a_rbt_s *const parent = a_rbt_parent(oldnode);
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 1)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
     newnode->_parent = oldnode->_parent;
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
     newnode->parent = oldnode->parent;
     newnode->color = oldnode->color;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
     a_rbt_set_parent_color(oldnode, newnode, color);
     a_rbt_mod_child(root, parent, oldnode, newnode);
 }
 
-a_void_t a_rbt_insert_adjust(a_rbt_u *const root, a_rbt_s *node)
+void a_rbt_insert_adjust(a_rbt_u *const root, a_rbt_s *node)
 {
     for (a_rbt_s *parent = a_rbt_parent(node), *gparent, *tmp;;)
     {
@@ -229,7 +229,7 @@ a_void_t a_rbt_insert_adjust(a_rbt_u *const root, a_rbt_s *node)
     }
 }
 
-static A_INLINE a_void_t a_rbt_remove_adjust(a_rbt_u *const root, a_rbt_s *node, a_rbt_s *parent)
+static A_INLINE void a_rbt_remove_adjust(a_rbt_u *const root, a_rbt_s *node, a_rbt_s *parent)
 {
     for (a_rbt_s *sibling, *tmp1, *tmp2;;)
     {
@@ -412,16 +412,16 @@ static A_INLINE a_void_t a_rbt_remove_adjust(a_rbt_u *const root, a_rbt_s *node,
     }
 }
 
-a_void_t a_rbt_remove(a_rbt_u *const root, a_rbt_s *const node)
+void a_rbt_remove(a_rbt_u *const root, a_rbt_s *const node)
 {
     a_rbt_s *tmp = node->left;
     a_rbt_s *child = node->right;
     a_rbt_s *parent, *adjust;
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 1)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
     a_uptr_t pc;
-#else /* !A_SIZE_VPTR */
-    a_uint_t color;
-#endif /* A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
+    unsigned int color;
+#endif /* A_SIZE_POINTER */
 
     if (!tmp)
     {
@@ -430,42 +430,42 @@ a_void_t a_rbt_remove(a_rbt_u *const root, a_rbt_s *const node)
         Note that if there is one child it must be red due to 5) and node must be black due to 4).
         We adjust colors locally so as to bypass a_rbt_remove_adjust() later on.
         */
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 1)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
         pc = node->_parent;
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
         color = node->color;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
         parent = a_rbt_parent(node);
         a_rbt_mod_child(root, parent, node, child);
         if (child)
         {
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 1)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
             child->_parent = pc;
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
             child->parent = parent;
             child->color = color;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
             adjust = A_NULL;
         }
         else
         {
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 1)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
             adjust = (pc & 1) == A_RBT_B ? parent : A_NULL;
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
             adjust = color == A_RBT_B ? parent : A_NULL;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
         }
         tmp = parent;
     }
     else if (!child)
     {
         /* Still case 1, but this time the child is node->left */
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 1)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
         tmp->_parent = node->_parent;
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
         tmp->parent = node->parent;
         tmp->color = node->color;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
         parent = a_rbt_parent(node);
         a_rbt_mod_child(root, parent, node, tmp);
         adjust = A_NULL;
@@ -521,11 +521,11 @@ a_void_t a_rbt_remove(a_rbt_u *const root, a_rbt_s *const node)
         successor->left = tmp;
         a_rbt_set_parent(tmp, successor);
 
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 1)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
         pc = node->_parent;
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
         color = node->color;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
         tmp = a_rbt_parent(node);
         a_rbt_mod_child(root, node, successor, tmp);
 
@@ -538,12 +538,12 @@ a_void_t a_rbt_remove(a_rbt_u *const root, a_rbt_s *const node)
         {
             adjust = a_rbt_color(successor) == A_RBT_B ? parent : A_NULL;
         }
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 1)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
         successor->_parent = pc;
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
         successor->parent = tmp;
         successor->color = color;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
         tmp = successor;
     }
 
@@ -553,14 +553,14 @@ a_void_t a_rbt_remove(a_rbt_u *const root, a_rbt_s *const node)
     }
 }
 
-a_rbt_s *a_rbt_insert(a_rbt_u *const root, a_rbt_s *const node, a_int_t (*const cmp)(a_cptr_t, a_cptr_t))
+a_rbt_s *a_rbt_insert(a_rbt_u *const root, a_rbt_s *const node, int (*const cmp)(void const *, void const *))
 {
     a_rbt_s *parent = root->node;
     a_rbt_s **link = &root->node;
     while (*link)
     {
         parent = *link;
-        a_int_t const res = cmp(node, parent);
+        int const res = cmp(node, parent);
         if (res < 0)
         {
             link = &parent->left;
@@ -579,11 +579,11 @@ a_rbt_s *a_rbt_insert(a_rbt_u *const root, a_rbt_s *const node, a_int_t (*const 
     return A_NULL;
 }
 
-a_rbt_s *a_rbt_search(a_rbt_u const *const root, a_cptr_t const ctx, a_int_t (*const cmp)(a_cptr_t, a_cptr_t))
+a_rbt_s *a_rbt_search(a_rbt_u const *const root, void const *const ctx, int (*const cmp)(void const *, void const *))
 {
     for (a_rbt_s *cur = root->node; cur;)
     {
-        a_int_t const res = cmp(ctx, cur);
+        int const res = cmp(ctx, cur);
         if (res < 0)
         {
             cur = cur->left;

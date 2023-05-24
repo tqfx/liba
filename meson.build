@@ -15,7 +15,7 @@ a_have_h.set('A_VERSION', meson.project_version())
 a_have_h.set('A_VERSION_MAJOR', meson.project_version().split('.')[0])
 a_have_h.set('A_VERSION_MINOR', meson.project_version().split('.')[1])
 a_have_h.set('A_VERSION_PATCH', meson.project_version().split('.')[2])
-a_have_h.set('A_SIZE_REAL', get_option('real'))
+a_have_h.set('A_SIZE_FLOAT', get_option('float'))
 if target_machine.endian() == 'little'
     a_have_h.set('A_BYTE_ORDER', 1234)
 elif target_machine.endian() == 'big'
@@ -29,7 +29,7 @@ endif
 if compiler.has_header('complex.h')
     a_have_h.set('A_HAVE_COMPLEX_H', '1')
 endif
-a_have_h.set('A_SIZE_VPTR', compiler.sizeof('void *'))
+a_have_h.set('A_SIZE_POINTER', compiler.sizeof('void *'))
 
 math = ['hypot', 'log1p', 'atan2',
         'csqrt', 'cpow', 'cexp', 'clog',
@@ -39,11 +39,11 @@ math = ['hypot', 'log1p', 'atan2',
         'casinh', 'cacosh', 'catanh']
 
 foreach func: math
-    real = get_option('real').to_int()
+    float = get_option('float').to_int()
     have = 'A_HAVE_@0@'.format(func.to_upper())
-    if  real == 4
+    if  float == 4
         func = func + 'f'
-    elif real > 8
+    elif float > 8
         func = func + 'l'
     endif
     if compiler.has_function(func)
@@ -74,7 +74,6 @@ sources = [
     'include/a/poly.h',
     'include/a/polytrack.h',
     'include/a/rbt.h',
-    'include/a/real.h',
     'include/a/slist.h',
     'include/a/tf.h',
     'include/a/utf.h',
@@ -101,7 +100,6 @@ sources = [
     'src/poly.c',
     'src/polytrack.c',
     'src/rbt.c',
-    'src/real.c',
     'src/tf.c',
     'src/utf.c',
     'src/version.c',

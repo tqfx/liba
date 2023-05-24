@@ -13,7 +13,7 @@
 #undef A_VERSION_PATCH
 
 /* The size of `void *`, as computed by sizeof. */
-#undef A_SIZE_VPTR
+#undef A_SIZE_POINTER
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef A_HAVE_STDINT_H

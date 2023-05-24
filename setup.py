@@ -42,10 +42,10 @@ def check_math(define_macros=[]):
         libm = ctypes.CDLL(path_libm)
     except:
         return text
-    A_SIZE_REAL = 0x08
+    A_SIZE_FLOAT = 0x08
     for define_macro in define_macros:
-        if "A_SIZE_REAL" in define_macro:
-            A_SIZE_REAL = int(define_macro[-1])
+        if "A_SIZE_FLOAT" in define_macro:
+            A_SIZE_FLOAT = int(define_macro[-1])
             break
     for func in (
         "hypot",
@@ -69,9 +69,9 @@ def check_math(define_macros=[]):
         "catanh",
     ):
         name = "A_HAVE_" + func.upper()
-        if A_SIZE_REAL == 0x10:
+        if A_SIZE_FLOAT == 0x10:
             func += "l"
-        if A_SIZE_REAL == 0x04:
+        if A_SIZE_FLOAT == 0x04:
             func += "f"
         try:
             libm[func]
@@ -95,14 +95,14 @@ def configure(config, define_macros=[]):
 #define A_VERSION_MINOR {}
 #define A_VERSION_PATCH {}
 #define A_VERSION_TWEAK A_U64_C({})
+#if !defined A_SIZE_POINTER
+#define A_SIZE_POINTER {}
+#endif /* A_SIZE_POINTER */
 #if !defined A_BYTE_ORDER
 #define A_BYTE_ORDER {}
 #endif /* A_BYTE_ORDER */
-#if !defined A_SIZE_VPTR
-#define A_SIZE_VPTR {}
-#endif /* A_SIZE_VPTR */
 {}""".format(
-        version, major, minor, patch, tweak, order, vsize, check
+        version, major, minor, patch, tweak, vsize, order, check
     )
     with open(config, "wb") as f:
         f.write(text.encode("UTF-8"))

@@ -8,26 +8,26 @@
 
 static int LMODULE(fpid_init_)(lua_State *const L, a_fpid_s *const ctx)
 {
-    a_vptr_t const buf = a_fpid_bufptr(ctx);
-    a_uint_t const num = (a_uint_t)luaL_checkinteger(L, 1);
-    a_real_t const dt = (a_real_t)luaL_checknumber(L, 2);
+    void *const buf = a_fpid_bufptr(ctx);
+    unsigned int const num = (unsigned int)luaL_checkinteger(L, 1);
+    a_float_t const dt = (a_float_t)luaL_checknumber(L, 2);
     luaL_checktype(L, 3, LUA_TTABLE);
     luaL_checktype(L, 4, LUA_TTABLE);
     luaL_checktype(L, 5, LUA_TTABLE);
     luaL_checktype(L, 6, LUA_TTABLE);
     luaL_checktype(L, 7, LUA_TTABLE);
-    a_real_t const min = (a_real_t)luaL_checknumber(L, 8);
-    a_real_t const max = (a_real_t)luaL_checknumber(L, 9);
-    a_uint_t const col = (a_uint_t)lua_rawlen(L, 5);
-    a_real_t const *const me = l_table_num_get(L, 3, ctx->me, 0);
-    a_real_t const *const mec = l_table_num_get(L, 4, ctx->mec, 0);
-    a_real_t const *const mkp = l_table_num_get(L, 5, ctx->mkp, 0);
-    a_real_t const *const mki = l_table_num_get(L, 6, ctx->mki, 0);
-    a_real_t const *const mkd = l_table_num_get(L, 7, ctx->mkd, 0);
+    a_float_t const min = (a_float_t)luaL_checknumber(L, 8);
+    a_float_t const max = (a_float_t)luaL_checknumber(L, 9);
+    unsigned int const col = (unsigned int)lua_rawlen(L, 5);
+    a_float_t const *const me = l_table_num_get(L, 3, ctx->me, 0);
+    a_float_t const *const mec = l_table_num_get(L, 4, ctx->mec, 0);
+    a_float_t const *const mkp = l_table_num_get(L, 5, ctx->mkp, 0);
+    a_float_t const *const mki = l_table_num_get(L, 6, ctx->mki, 0);
+    a_float_t const *const mkd = l_table_num_get(L, 7, ctx->mkd, 0);
     a_fpid_init(ctx, dt, col, me, mec, mkp, mki, mkd, min, max);
     a_fpid_buf1(ctx, l_alloc(L, buf, A_FPID_BUF1(num)), num);
     lua_isnumber(L, 10)
-        ? a_fpid_pos(ctx, (a_real_t)lua_tonumber(L, 10))
+        ? a_fpid_pos(ctx, (a_float_t)lua_tonumber(L, 10))
         : a_fpid_inc(ctx);
     return 1;
 }
@@ -42,12 +42,12 @@ int LMODULE(fpid_die)(lua_State *const L)
     a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, 1);
     if (ctx)
     {
-        ctx->me = A_REAL_P(l_alloc(L, ctx->me, 0));
-        ctx->mec = A_REAL_P(l_alloc(L, ctx->mec, 0));
-        ctx->mkp = A_REAL_P(l_alloc(L, ctx->mkp, 0));
-        ctx->mki = A_REAL_P(l_alloc(L, ctx->mki, 0));
-        ctx->mkd = A_REAL_P(l_alloc(L, ctx->mkd, 0));
-        ctx->idx = a_uint_p(l_alloc(L, a_fpid_bufptr(ctx), 0));
+        ctx->me = (a_float_t const *)l_alloc(L, ctx->me, 0);
+        ctx->mec = (a_float_t const *)l_alloc(L, ctx->mec, 0);
+        ctx->mkp = (a_float_t const *)l_alloc(L, ctx->mkp, 0);
+        ctx->mki = (a_float_t const *)l_alloc(L, ctx->mki, 0);
+        ctx->mkd = (a_float_t const *)l_alloc(L, ctx->mkd, 0);
+        ctx->idx = (unsigned int *)l_alloc(L, a_fpid_bufptr(ctx), 0);
         ctx->val = 0;
     }
     return 0;
@@ -131,8 +131,8 @@ int LMODULE(fpid_iter)(lua_State *const L)
     a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, -3);
     if (ctx)
     {
-        a_real_t const set = (a_real_t)luaL_checknumber(L, -2);
-        a_real_t const fdb = (a_real_t)luaL_checknumber(L, -1);
+        a_float_t const set = (a_float_t)luaL_checknumber(L, -2);
+        a_float_t const fdb = (a_float_t)luaL_checknumber(L, -1);
         lua_pushnumber(L, (lua_Number)a_fpid_outf(ctx, set, fdb));
         lua_pop(L, 2);
         return 1;
@@ -173,12 +173,12 @@ int LMODULE(fpid_base)(lua_State *const L)
     a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, -6);
     if (ctx)
     {
-        a_uint_t const num = (a_uint_t)lua_rawlen(L, -3);
-        a_real_t const *const me = l_table_num_get(L, -5, ctx->me, 0);
-        a_real_t const *const mec = l_table_num_get(L, -4, ctx->mec, 0);
-        a_real_t const *const mkp = l_table_num_get(L, -3, ctx->mkp, 0);
-        a_real_t const *const mki = l_table_num_get(L, -2, ctx->mki, 0);
-        a_real_t const *const mkd = l_table_num_get(L, -1, ctx->mkd, 0);
+        unsigned int const num = (unsigned int)lua_rawlen(L, -3);
+        a_float_t const *const me = l_table_num_get(L, -5, ctx->me, 0);
+        a_float_t const *const mec = l_table_num_get(L, -4, ctx->mec, 0);
+        a_float_t const *const mkp = l_table_num_get(L, -3, ctx->mkp, 0);
+        a_float_t const *const mki = l_table_num_get(L, -2, ctx->mki, 0);
+        a_float_t const *const mkd = l_table_num_get(L, -1, ctx->mkd, 0);
         a_fpid_base(ctx, num, me, mec, mkp, mki, mkd);
         lua_pop(L, 5);
         return 1;
@@ -200,9 +200,9 @@ int LMODULE(fpid_kpid)(lua_State *const L)
     a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, -4);
     if (ctx)
     {
-        a_real_t const kp = (a_real_t)luaL_checknumber(L, -3);
-        a_real_t const ki = (a_real_t)luaL_checknumber(L, -2);
-        a_real_t const kd = (a_real_t)luaL_checknumber(L, -1);
+        a_float_t const kp = (a_float_t)luaL_checknumber(L, -3);
+        a_float_t const ki = (a_float_t)luaL_checknumber(L, -2);
+        a_float_t const kd = (a_float_t)luaL_checknumber(L, -1);
         a_fpid_kpid(ctx, kp, ki, kd);
         lua_pop(L, 3);
         return 1;
@@ -222,7 +222,7 @@ int LMODULE(fpid_pos)(lua_State *const L)
     a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, -2);
     if (ctx)
     {
-        a_fpid_pos(ctx, (a_real_t)luaL_checknumber(L, -1));
+        a_fpid_pos(ctx, (a_float_t)luaL_checknumber(L, -1));
         lua_pop(L, 1);
         return 1;
     }
@@ -271,29 +271,29 @@ static int LMODULE(fpid_set)(lua_State *const L)
     switch (hash)
     {
     case 0x000033A0: // dt
-        a_pid_set_dt(&ctx->pid, (a_real_t)luaL_checknumber(L, 3));
+        a_pid_set_dt(&ctx->pid, (a_float_t)luaL_checknumber(L, 3));
         break;
     case 0x00003731: // kp
-        ctx->kp = (a_real_t)luaL_checknumber(L, 3);
+        ctx->kp = (a_float_t)luaL_checknumber(L, 3);
         break;
     case 0x0000372A: // ki
-        ctx->ki = (a_real_t)luaL_checknumber(L, 3);
+        ctx->ki = (a_float_t)luaL_checknumber(L, 3);
         break;
     case 0x00003725: // kd
-        ctx->kd = (a_real_t)luaL_checknumber(L, 3);
+        ctx->kd = (a_float_t)luaL_checknumber(L, 3);
         break;
     case 0x0019E5B7: // buf
     {
-        a_uint_t max = (a_uint_t)luaL_checkinteger(L, -1);
-        a_vptr_t ptr = l_alloc(L, a_fpid_bufptr(ctx), A_FPID_BUF1(max));
+        unsigned int max = (unsigned int)luaL_checkinteger(L, -1);
+        void *ptr = l_alloc(L, a_fpid_bufptr(ctx), A_FPID_BUF1(max));
         a_fpid_buf1(ctx, ptr, max);
         break;
     }
     case 0x10E9FF9D: // summax
-        ctx->pid.summax = (a_real_t)luaL_checknumber(L, 3);
+        ctx->pid.summax = (a_float_t)luaL_checknumber(L, 3);
         break;
     case 0x0EB84F77: // mode
-        a_pid_set_mode(&ctx->pid, (a_uint_t)luaL_checkinteger(L, 3));
+        a_pid_set_mode(&ctx->pid, (unsigned int)luaL_checkinteger(L, 3));
         break;
     case 0xE8859EEB: // __name
     case 0xA65758B2: // __index

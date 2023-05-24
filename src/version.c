@@ -1,27 +1,27 @@
 #define LIBA_VERSION_C
 #include "a/version.h"
 
-a_cstr_t a_version(void)
+char const *a_version(void)
 {
     return A_VERSION;
 }
 
-a_uint_t a_version_major(void)
+unsigned int a_version_major(void)
 {
     return A_VERSION_MAJOR;
 }
 
-a_uint_t a_version_minor(void)
+unsigned int a_version_minor(void)
 {
     return A_VERSION_MINOR;
 }
 
-a_uint_t a_version_patch(void)
+unsigned int a_version_patch(void)
 {
     return A_VERSION_PATCH;
 }
 
-a_int_t a_version_cmp(a_version_s const *const lhs, a_version_s const *const rhs)
+int a_version_cmp(a_version_s const *const lhs, a_version_s const *const rhs)
 {
     if (lhs->major < rhs->major)
     {
@@ -51,7 +51,7 @@ a_int_t a_version_cmp(a_version_s const *const lhs, a_version_s const *const rhs
 }
 
 #undef a_version_check
-a_int_t a_version_check(a_uint_t const major, a_uint_t const minor, a_uint_t const patch)
+int a_version_check(unsigned int const major, unsigned int const minor, unsigned int const patch)
 {
     a_version_s inner = A_VERSION_C(0, 0, 0);
     a_version_s outer = A_VERSION_C(0, 0, 0);

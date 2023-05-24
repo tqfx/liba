@@ -7,27 +7,27 @@
 
 static int LMODULE(polytrack5_gen_)(lua_State *const L, a_polytrack5_s *const ctx)
 {
-    a_real_t t0 = 0, q0 = 0, v0 = 0, a0 = 0;
-    a_real_t t1 = 0, q1 = 0, v1 = 0, a1 = 0;
+    a_float_t t0 = 0, q0 = 0, v0 = 0, a0 = 0;
+    a_float_t t1 = 0, q1 = 0, v1 = 0, a1 = 0;
     switch (lua_gettop(L) - lua_isuserdata(L, -1))
     {
     case 8:
-        a1 = (a_real_t)luaL_checknumber(L, 8);
+        a1 = (a_float_t)luaL_checknumber(L, 8);
         A_FALLTHROUGH;
     case 7:
-        a0 = (a_real_t)luaL_checknumber(L, 7);
+        a0 = (a_float_t)luaL_checknumber(L, 7);
         A_FALLTHROUGH;
     case 6:
-        v1 = (a_real_t)luaL_checknumber(L, 6);
+        v1 = (a_float_t)luaL_checknumber(L, 6);
         A_FALLTHROUGH;
     case 5:
-        v0 = (a_real_t)luaL_checknumber(L, 5);
+        v0 = (a_float_t)luaL_checknumber(L, 5);
         A_FALLTHROUGH;
     case 4:
-        q1 = (a_real_t)luaL_checknumber(L, 4);
-        q0 = (a_real_t)luaL_checknumber(L, 3);
-        t1 = (a_real_t)luaL_checknumber(L, 2);
-        t0 = (a_real_t)luaL_checknumber(L, 1);
+        q1 = (a_float_t)luaL_checknumber(L, 4);
+        q0 = (a_float_t)luaL_checknumber(L, 3);
+        t1 = (a_float_t)luaL_checknumber(L, 2);
+        t0 = (a_float_t)luaL_checknumber(L, 1);
         A_FALLTHROUGH;
     default:
         break;
@@ -68,8 +68,8 @@ int LMODULE(polytrack5_new)(lua_State *const L)
     }
     if (top > 1 && type == LUA_TTABLE)
     {
-        a_real_t target[4] = {0};
-        a_real_t source[4] = {0};
+        a_float_t target[4] = {0};
+        a_float_t source[4] = {0};
         luaL_checktype(L, -1, LUA_TTABLE);
         luaL_checktype(L, -2, LUA_TTABLE);
         l_array_num_get(L, -1, target, L_COUNT(target));
@@ -121,8 +121,8 @@ int LMODULE(polytrack5_gen)(lua_State *const L)
     }
     if (top > 2 && type == LUA_TTABLE)
     {
-        a_real_t target[4] = {0};
-        a_real_t source[4] = {0};
+        a_float_t target[4] = {0};
+        a_float_t source[4] = {0};
         luaL_checktype(L, -1, LUA_TTABLE);
         luaL_checktype(L, -2, LUA_TTABLE);
         luaL_checktype(L, -3, LUA_TUSERDATA);
@@ -152,8 +152,8 @@ int LMODULE(polytrack5_out)(lua_State *const L)
     a_polytrack5_s const *const ctx = (a_polytrack5_s const *)lua_touserdata(L, -2);
     if (ctx)
     {
-        a_real_t out[3];
-        a_real_t const dt = (a_real_t)luaL_checknumber(L, -1);
+        a_float_t out[3];
+        a_float_t const dt = (a_float_t)luaL_checknumber(L, -1);
         a_polytrack5_out(ctx, dt, out);
         lua_createtable(L, 3, 0);
         l_array_num_set(L, -1, out, 3);
@@ -174,7 +174,7 @@ int LMODULE(polytrack5_pos)(lua_State *const L)
     a_polytrack5_s const *const ctx = (a_polytrack5_s const *)lua_touserdata(L, -2);
     if (ctx)
     {
-        a_real_t const dt = (a_real_t)luaL_checknumber(L, -1);
+        a_float_t const dt = (a_float_t)luaL_checknumber(L, -1);
         lua_pushnumber(L, (lua_Number)a_polytrack5_pos(ctx, dt));
         return 1;
     }
@@ -193,7 +193,7 @@ int LMODULE(polytrack5_vec)(lua_State *const L)
     a_polytrack5_s const *const ctx = (a_polytrack5_s const *)lua_touserdata(L, -2);
     if (ctx)
     {
-        a_real_t const dt = (a_real_t)luaL_checknumber(L, -1);
+        a_float_t const dt = (a_float_t)luaL_checknumber(L, -1);
         lua_pushnumber(L, (lua_Number)a_polytrack5_vec(ctx, dt));
         return 1;
     }
@@ -212,7 +212,7 @@ int LMODULE(polytrack5_acc)(lua_State *const L)
     a_polytrack5_s const *const ctx = (a_polytrack5_s const *)lua_touserdata(L, -2);
     if (ctx)
     {
-        a_real_t const dt = (a_real_t)luaL_checknumber(L, -1);
+        a_float_t const dt = (a_float_t)luaL_checknumber(L, -1);
         lua_pushnumber(L, (lua_Number)a_polytrack5_acc(ctx, dt));
         return 1;
     }
@@ -222,7 +222,6 @@ int LMODULE(polytrack5_acc)(lua_State *const L)
 static int LMODULE(polytrack5_set)(lua_State *const L)
 {
     char const *const field = lua_tostring(L, 2);
-    a_polytrack5_s *ctx = (a_polytrack5_s *)lua_touserdata(L, 1);
     a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
     switch (hash)
     {
@@ -236,8 +235,6 @@ static int LMODULE(polytrack5_set)(lua_State *const L)
         lua_setfield(L, 4, field);
         return 0;
     }
-    (void)ctx;
-    return 0;
 }
 
 static int LMODULE(polytrack5_get)(lua_State *const L)

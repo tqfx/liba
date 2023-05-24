@@ -2,12 +2,12 @@
 #define TEST_NOTEFREQS_H
 #define MAIN_(s, argc, argv) notefreqs##s(argc, argv)
 #include "test.h"
-#define A_NOTEFREQ_T a_real_t
-#define A_NOTEFREQ_C(X) A_REAL_C(X)
+#define A_NOTEFREQ_T a_float_t
+#define A_NOTEFREQ_C(X) A_FLOAT_C(X)
 #define A_NOTEFREQ_FREQ ((180000000 >> 1) / 200)
 #include "a/notefreqs.h"
 
-static a_real_t const song[][2] = {
+static a_float_t const song[][2] = {
     /* clang-format off */
     {A_NOTEFREQ_FREQ_C0,  A_NOTEFREQ_C0},  {A_NOTEFREQ_FREQ_C_0, A_NOTEFREQ_C_0}, // NOLINT(bugprone-integer-division)
     {A_NOTEFREQ_FREQ_D0,  A_NOTEFREQ_D0},  {A_NOTEFREQ_FREQ_D_0, A_NOTEFREQ_D_0}, // NOLINT(bugprone-integer-division)
@@ -70,11 +70,11 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     (void)(argc);
     (void)(argv);
-    a_uint_t song_n = sizeof(song) / sizeof(*song);
-    for (a_uint_t i = 0; i != song_n; ++i)
+    unsigned int song_n = sizeof(song) / sizeof(*song);
+    for (unsigned int i = 0; i != song_n; ++i)
     {
 #if defined(MAIN_ONCE)
-        printf(A_REAL_PRI("", "g\t") A_REAL_PRI("", "g\r\n"), song[i][0], song[i][1]);
+        printf(A_FLOAT_PRI("", "g\t") A_FLOAT_PRI("", "g\r\n"), song[i][0], song[i][1]);
 #endif /* MAIN_ONCE */
     }
     return 0;

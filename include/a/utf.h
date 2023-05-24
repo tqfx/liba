@@ -32,7 +32,7 @@ extern "C" {
  @param[in] val the unicode value to be encoded
  @return offset to the next character
 */
-A_EXTERN a_uint_t a_utf_encode(a_vptr_t str, a_u32_t val);
+A_EXTERN unsigned int a_utf_encode(void *str, a_u32_t val);
 
 /*!
  @brief decode one unicode code point from UTF-8
@@ -41,14 +41,14 @@ A_EXTERN a_uint_t a_utf_encode(a_vptr_t str, a_u32_t val);
  @return offset to the next character
   @retval 0 null character or invalid
 */
-A_EXTERN a_uint_t a_utf_decode(a_cptr_t str, a_u32_t *val);
+A_EXTERN unsigned int a_utf_decode(void const *str, a_u32_t *val);
 
 /*!
  @brief length of a UTF-8 string terminated with a null character
  @param[in] str string terminated with a null character
  @return length of the UTF-8 string
 */
-A_EXTERN a_size_t a_utf_length(a_cptr_t str);
+A_EXTERN a_size_t a_utf_length(void const *str);
 
 #if defined(__cplusplus)
 } /* extern "C" */

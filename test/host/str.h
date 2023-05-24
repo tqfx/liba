@@ -7,7 +7,7 @@
 static void tests(void)
 {
     a_str_s ctx = A_STR_NUL;
-    a_str_t str = a_str_exit(&ctx);
+    char *str = a_str_exit(&ctx);
     printf("0x%" PRIXPTR " ", a_cast_r(a_uptr_t, str));
     a_str_getc(&ctx);
     a_str_getc_(&ctx);
@@ -25,7 +25,7 @@ static void tests(void)
 
 static void testt(void)
 {
-    a_str_t str = A_NULL;
+    char *str = A_NULL;
     a_str_s *ctx = a_str_new();
     a_str_init(ctx, "4321+-/\\", 0);
     a_str_getc(ctx);
@@ -129,7 +129,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     {
         a_str_s *ctx = a_str_new();
         a_str_putn_(ctx, argv[i], strlen(argv[i]));
-        printf("%s %u\n", argv[i], a_uint_c(a_str_utflen(ctx)));
+        printf("%s %u\n", argv[i], a_cast_s(unsigned int, a_str_utflen(ctx)));
         a_str_die(ctx);
     }
     return 0;

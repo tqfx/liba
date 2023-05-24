@@ -34,7 +34,7 @@ static a_complex_s LMODULE(complex_from_lua)(lua_State *const L, int const idx)
         break;
     case LUA_TSTRING:
     case LUA_TNUMBER:
-        a_complex_real(z) = (a_real_t)lua_tonumber(L, idx);
+        a_complex_real(z) = (a_float_t)lua_tonumber(L, idx);
         break;
     default:
         break;
@@ -82,11 +82,11 @@ int LMODULE(complex_new)(lua_State *const L)
     int const top = lua_gettop(L);
     if (top >= 2)
     {
-        a_complex_imag(z) = (a_real_t)lua_tonumber(L, 2);
+        a_complex_imag(z) = (a_float_t)lua_tonumber(L, 2);
     }
     if (top >= 1)
     {
-        a_complex_real(z) = (a_real_t)lua_tonumber(L, 1);
+        a_complex_real(z) = (a_float_t)lua_tonumber(L, 1);
     }
     *LMODULE1(complex_new_, L) = z;
     return 1;
@@ -107,16 +107,16 @@ int LMODULE(complex_polar)(lua_State *const L)
     {
         lua_remove(L, 1);
     }
-    a_real_t theta = A_REAL_C(0.0);
-    a_real_t r = A_REAL_C(0.0);
+    a_float_t theta = A_FLOAT_C(0.0);
+    a_float_t r = A_FLOAT_C(0.0);
     int const top = lua_gettop(L);
     if (top >= 2)
     {
-        theta = (a_real_t)lua_tonumber(L, 2);
+        theta = (a_float_t)lua_tonumber(L, 2);
     }
     if (top >= 1)
     {
-        r = (a_real_t)lua_tonumber(L, 1);
+        r = (a_float_t)lua_tonumber(L, 1);
     }
     *LMODULE1(complex_new_, L) = a_complex_polar(r, theta);
     return 1;
@@ -133,7 +133,7 @@ int LMODULE(complex_polar)(lua_State *const L)
         if (lua_gettop(L) >= 1)                                     \
         {                                                           \
             a_complex_s const z = LMODULE2(complex_from_lua, L, 1); \
-            a_real_t const x = a_complex_##func(z);                 \
+            a_float_t const x = a_complex_##func(z);                \
             lua_pushnumber(L, (lua_Number)x);                       \
             return 1;                                               \
         }                                                           \
@@ -498,10 +498,10 @@ static int LMODULE(complex_set)(lua_State *const L)
     switch (hash)
     {
     case 0x0F6133A2: // real
-        a_complex_real(*ctx) = (a_real_t)luaL_checknumber(L, 3);
+        a_complex_real(*ctx) = (a_float_t)luaL_checknumber(L, 3);
         break;
     case 0x0E2E9172: // imag
-        a_complex_imag(*ctx) = (a_real_t)luaL_checknumber(L, 3);
+        a_complex_imag(*ctx) = (a_float_t)luaL_checknumber(L, 3);
         break;
     case 0x90705068: // __unm
     case 0x906B0E8D: // __add

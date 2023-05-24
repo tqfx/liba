@@ -8,22 +8,22 @@
 
 static int LMODULE(pid_init_)(lua_State *const L, a_pid_s *const ctx)
 {
-    ctx->dt = (a_real_t)luaL_checknumber(L, 1);
+    ctx->dt = (a_float_t)luaL_checknumber(L, 1);
     switch (lua_gettop(L) - lua_isuserdata(L, -1))
     {
     case 7: /* dt, kp, ki, kd, outmin, outmax, summax */
     {
-        ctx->summax = (a_real_t)luaL_checknumber(L, 7);
+        ctx->summax = (a_float_t)luaL_checknumber(L, 7);
         a_pid_set_mode(ctx, A_PID_POS);
         A_FALLTHROUGH;
     }
     case 6: /* dt, kp, ki, kd, outmin, outmax */
     {
-        ctx->outmax = (a_real_t)luaL_checknumber(L, 6);
-        ctx->outmin = (a_real_t)luaL_checknumber(L, 5);
-        a_real_t kd = (a_real_t)luaL_checknumber(L, 4);
-        a_real_t ki = (a_real_t)luaL_checknumber(L, 3);
-        a_real_t kp = (a_real_t)luaL_checknumber(L, 2);
+        ctx->outmax = (a_float_t)luaL_checknumber(L, 6);
+        ctx->outmin = (a_float_t)luaL_checknumber(L, 5);
+        a_float_t kd = (a_float_t)luaL_checknumber(L, 4);
+        a_float_t ki = (a_float_t)luaL_checknumber(L, 3);
+        a_float_t kp = (a_float_t)luaL_checknumber(L, 2);
         a_pid_kpid(ctx, kp, ki, kd);
         if (a_pid_mode(ctx) != A_PID_POS)
         {
@@ -33,14 +33,14 @@ static int LMODULE(pid_init_)(lua_State *const L, a_pid_s *const ctx)
     }
     case 4: /* dt, outmin, outmax, summax */
     {
-        ctx->summax = (a_real_t)luaL_checknumber(L, 4);
+        ctx->summax = (a_float_t)luaL_checknumber(L, 4);
         a_pid_set_mode(ctx, A_PID_POS);
         A_FALLTHROUGH;
     }
     case 3: /* dt, outmin, outmax */
     {
-        ctx->outmax = (a_real_t)luaL_checknumber(L, 3);
-        ctx->outmin = (a_real_t)luaL_checknumber(L, 2);
+        ctx->outmax = (a_float_t)luaL_checknumber(L, 3);
+        ctx->outmin = (a_float_t)luaL_checknumber(L, 2);
         if (a_pid_mode(ctx) != A_PID_POS)
         {
             a_pid_set_mode(ctx, A_PID_INC);
@@ -125,8 +125,8 @@ int LMODULE(pid_iter)(lua_State *const L)
     a_pid_s *const ctx = (a_pid_s *)lua_touserdata(L, -3);
     if (ctx)
     {
-        a_real_t const set = (a_real_t)luaL_checknumber(L, -2);
-        a_real_t const fdb = (a_real_t)luaL_checknumber(L, -1);
+        a_float_t const set = (a_float_t)luaL_checknumber(L, -2);
+        a_float_t const fdb = (a_float_t)luaL_checknumber(L, -1);
         lua_pushnumber(L, (lua_Number)a_pid_outf(ctx, set, fdb));
         lua_pop(L, 2);
         return 1;
@@ -165,9 +165,9 @@ int LMODULE(pid_kpid)(lua_State *const L)
     a_pid_s *const ctx = (a_pid_s *)lua_touserdata(L, -4);
     if (ctx)
     {
-        a_real_t const kp = (a_real_t)luaL_checknumber(L, -3);
-        a_real_t const ki = (a_real_t)luaL_checknumber(L, -2);
-        a_real_t const kd = (a_real_t)luaL_checknumber(L, -1);
+        a_float_t const kp = (a_float_t)luaL_checknumber(L, -3);
+        a_float_t const ki = (a_float_t)luaL_checknumber(L, -2);
+        a_float_t const kd = (a_float_t)luaL_checknumber(L, -1);
         a_pid_kpid(ctx, kp, ki, kd);
         lua_pop(L, 3);
         return 1;
@@ -187,7 +187,7 @@ int LMODULE(pid_pos)(lua_State *const L)
     a_pid_s *const ctx = (a_pid_s *)lua_touserdata(L, -2);
     if (ctx)
     {
-        a_pid_pos(ctx, (a_real_t)luaL_checknumber(L, -1));
+        a_pid_pos(ctx, (a_float_t)luaL_checknumber(L, -1));
         lua_pop(L, 1);
         return 1;
     }
@@ -236,28 +236,28 @@ static int LMODULE(pid_set)(lua_State *const L)
     switch (hash)
     {
     case 0x000033A0: // dt
-        a_pid_set_dt(ctx, (a_real_t)luaL_checknumber(L, 3));
+        a_pid_set_dt(ctx, (a_float_t)luaL_checknumber(L, 3));
         break;
     case 0x00003731: // kp
-        a_pid_set_kp(ctx, (a_real_t)luaL_checknumber(L, 3));
+        a_pid_set_kp(ctx, (a_float_t)luaL_checknumber(L, 3));
         break;
     case 0x0000372A: // ki
-        a_pid_set_ki(ctx, (a_real_t)luaL_checknumber(L, 3));
+        a_pid_set_ki(ctx, (a_float_t)luaL_checknumber(L, 3));
         break;
     case 0x00003725: // kd
-        a_pid_set_kd(ctx, (a_real_t)luaL_checknumber(L, 3));
+        a_pid_set_kd(ctx, (a_float_t)luaL_checknumber(L, 3));
         break;
     case 0x23C8F51C: // outmin
-        ctx->outmin = (a_real_t)luaL_checknumber(L, 3);
+        ctx->outmin = (a_float_t)luaL_checknumber(L, 3);
         break;
     case 0x23C8F10E: // outmax
-        ctx->outmax = (a_real_t)luaL_checknumber(L, 3);
+        ctx->outmax = (a_float_t)luaL_checknumber(L, 3);
         break;
     case 0x10E9FF9D: // summax
-        ctx->summax = (a_real_t)luaL_checknumber(L, 3);
+        ctx->summax = (a_float_t)luaL_checknumber(L, 3);
         break;
     case 0x0EB84F77: // mode
-        a_pid_set_mode(ctx, (a_uint_t)luaL_checkinteger(L, 3));
+        a_pid_set_mode(ctx, (unsigned int)luaL_checkinteger(L, 3));
         break;
     case 0xE8859EEB: // __name
     case 0xA65758B2: // __index

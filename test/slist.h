@@ -33,7 +33,7 @@ static void test(void)
 {
     a_slist_s *list1 = a_new(a_slist_s, A_NULL, 1);
     a_slist_ctor(list1);
-    for (a_int_t i = 0; i != 10; ++i)
+    for (int i = 0; i != 10; ++i)
     {
         a_data_s *node = a_new(a_data_s, A_NULL, 1);
         node->data.i = i;
@@ -41,7 +41,7 @@ static void test(void)
     }
     a_slist_s *list2 = a_new(a_slist_s, A_NULL, 1);
     a_slist_ctor(list2);
-    for (a_int_t i = 14; i != 9; --i)
+    for (int i = 14; i != 9; --i)
     {
         a_data_s *node = a_new(a_data_s, A_NULL, 1);
         node->data.i = i;
@@ -49,7 +49,7 @@ static void test(void)
     }
     a_slist_s *list3 = a_new(a_slist_s, A_NULL, 1);
     a_slist_ctor(list3);
-    for (a_int_t i = 15; i != 20; ++i)
+    for (int i = 15; i != 20; ++i)
     {
         a_data_s *node = a_new(a_data_s, A_NULL, 1);
         node->data.i = i;
@@ -66,7 +66,7 @@ static void test(void)
         printf("%i ", node->data.i);
     }
     printf("%" PRIzu, a_slist_len(list1));
-    for (a_int_t i = 0; i != 10; ++i)
+    for (int i = 0; i != 10; ++i)
     {
         a_data_s *node = a_slist_entry_next(&list1->head, a_data_s, list);
         a_slist_del_head(list1);

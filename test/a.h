@@ -19,19 +19,19 @@ static void test_bkdr(int argc, char *argv[])
 
 static void test_for(int argc, char *argv[])
 {
-    a_uint_t n = 10;
+    unsigned int n = 10;
     if (argc > 1)
     {
-        a_str_t endptr = A_NULL;
-        n = a_uint_c(strtoul(argv[1], &endptr, 0));
+        char *endptr = A_NULL;
+        n = a_cast_s(unsigned int, strtoul(argv[1], &endptr, 0));
     }
 
-    a_int_t *p = a_new(a_int_t, A_NULL, n);
-    a_int_t *d = p + n;
+    int *p = a_new(int, A_NULL, n);
+    int *d = p + n;
 
-    a_forenum(a_uint_t, i, n)
+    a_forenum(unsigned int, i, n)
     {
-        p[i] = a_int_c(i);
+        p[i] = a_cast_s(int, i);
 #if defined(MAIN_ONCE)
         printf("%u ", i);
 #endif /* MAIN_ONCE */
@@ -40,7 +40,7 @@ static void test_for(int argc, char *argv[])
     putchar('\n');
 #endif /* MAIN_ONCE */
 
-    a_foreach(a_int_t, it, p, n)
+    a_foreach(int, it, p, n)
     {
 #if defined(MAIN_ONCE)
         printf("%i ", *it);
@@ -50,7 +50,7 @@ static void test_for(int argc, char *argv[])
     putchar('\n');
 #endif /* MAIN_ONCE */
 
-    a_iterate(a_int_t, it, p, d)
+    a_iterate(int, it, p, d)
     {
 #if defined(MAIN_ONCE)
         printf("%i ", *it);
@@ -60,9 +60,9 @@ static void test_for(int argc, char *argv[])
     putchar('\n');
 #endif /* MAIN_ONCE */
 
-    a_forenum_reverse(a_uint_t, i, n)
+    a_forenum_reverse(unsigned int, i, n)
     {
-        p[i] = a_int_c(i);
+        p[i] = a_cast_s(int, i);
 #if defined(MAIN_ONCE)
         printf("%u ", i);
 #endif /* MAIN_ONCE */
@@ -71,7 +71,7 @@ static void test_for(int argc, char *argv[])
     putchar('\n');
 #endif /* MAIN_ONCE */
 
-    a_foreach_reverse(a_int_t, it, p, n)
+    a_foreach_reverse(int, it, p, n)
     {
 #if defined(MAIN_ONCE)
         printf("%i ", *it);
@@ -81,7 +81,7 @@ static void test_for(int argc, char *argv[])
     putchar('\n');
 #endif /* MAIN_ONCE */
 
-    a_iterate_reverse(a_int_t, it, p, d)
+    a_iterate_reverse(int, it, p, d)
     {
 #if defined(MAIN_ONCE)
         printf("%i ", *it);
@@ -91,7 +91,7 @@ static void test_for(int argc, char *argv[])
     putchar('\n');
 #endif /* MAIN_ONCE */
 
-    p = a_die(a_int_t, p);
+    p = a_die(int, p);
 }
 
 static void test_swap(void)

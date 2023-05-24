@@ -13,64 +13,64 @@ cdef class mf:
     Z     = A_MF_Z
     @staticmethod
     def __call__(e: a_mf_e, x, a):
-        cdef array d = reals(a)
-        cdef a_real_t *v = <a_real_t *>d.data.as_voidptr
+        cdef array d = floats(a)
+        cdef a_float_t *v = <a_float_t *>d.data.as_voidptr
         if iterable(x):
-            y = reals(x)
+            y = floats(x)
             for i, it in enumerate(x):
                 y[i] = a_mf(e, it, v)
             return y
         return a_mf(e, x, v)
     @staticmethod
-    def gauss(x, sigma: a_real_t, c: a_real_t):
+    def gauss(x, sigma: a_float_t, c: a_float_t):
         '''Gaussian membership function'''
         if iterable(x):
-            y = reals(x)
+            y = floats(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_gauss(it, sigma, c)
             return y
         return a_mf_gauss(x, sigma, c)
     @staticmethod
-    def gbell(x, a: a_real_t, b: a_real_t, c: a_real_t):
+    def gbell(x, a: a_float_t, b: a_float_t, c: a_float_t):
         '''Generalized bell-shaped membership function'''
         if iterable(x):
-            y = reals(x)
+            y = floats(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_gbell(it, a, b, c)
             return y
         return a_mf_gbell(x, a, b, c)
     @staticmethod
-    def sig(x, a: a_real_t, c: a_real_t):
+    def sig(x, a: a_float_t, c: a_float_t):
         '''Sigmoidal membership function'''
         if iterable(x):
-            y = reals(x)
+            y = floats(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_sig(it, a, c)
             return y
         return a_mf_sig(x, a, c)
     @staticmethod
-    def trap(x, a: a_real_t, b: a_real_t, c: a_real_t, d: a_real_t):
+    def trap(x, a: a_float_t, b: a_float_t, c: a_float_t, d: a_float_t):
         '''Trapezoidal membership function'''
         if iterable(x):
-            y = reals(x)
+            y = floats(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_trap(it, a, b, c, d)
             return y
         return a_mf_trap(x, a, b, c, d)
     @staticmethod
-    def tri(x, a: a_real_t, b: a_real_t, c: a_real_t):
+    def tri(x, a: a_float_t, b: a_float_t, c: a_float_t):
         '''Triangular membership function'''
         if iterable(x):
-            y = reals(x)
+            y = floats(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_tri(it, a, b, c)
             return y
         return a_mf_tri(x, a, b, c)
     @staticmethod
-    def z(x, a: a_real_t, b: a_real_t):
+    def z(x, a: a_float_t, b: a_float_t):
         '''Z-shaped membership function'''
         if iterable(x):
-            y = reals(x)
+            y = floats(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_z(it, a, b)
             return y

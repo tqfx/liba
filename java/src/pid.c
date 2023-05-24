@@ -27,8 +27,8 @@ jobject j_pid_get(j_pid_s const *const jctx, a_pid_s *const ctx)
 {
     JNIEnv *jenv = jctx->jenv;
     jobject jobj = jctx->jobj;
-    ctx->num = (a_uint_t)(*jenv)->GetIntField(jenv, jobj, jctx->num);
-    ctx->reg = (a_uint_t)(*jenv)->GetIntField(jenv, jobj, jctx->reg);
+    ctx->num = (unsigned int)(*jenv)->GetIntField(jenv, jobj, jctx->num);
+    ctx->reg = (unsigned int)(*jenv)->GetIntField(jenv, jobj, jctx->reg);
     ctx->dt = (*jenv)->GetDoubleField(jenv, jobj, jctx->dt);
     ctx->kp = (*jenv)->GetDoubleField(jenv, jobj, jctx->kp);
     ctx->ki = (*jenv)->GetDoubleField(jenv, jobj, jctx->ki);
@@ -97,7 +97,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(pid_mode)(JNIEnv *jenv, jobject jobj, jint jm
     a_pid_s ctx;
     j_pid_s jctx;
     j_pid_get(j_pid_new(jenv, jobj, &jctx), &ctx);
-    a_pid_set_mode(&ctx, (a_uint_t)jmode);
+    a_pid_set_mode(&ctx, (unsigned int)jmode);
     return j_pid_set(&jctx, &ctx);
 }
 

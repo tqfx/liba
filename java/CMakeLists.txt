@@ -20,7 +20,7 @@ if(WIN32)
   set(CMAKE_SHARED_LIBRARY_PREFIX)
 endif()
 
-if(LIBA_REAL EQUAL 8)
+if(LIBA_FLOAT EQUAL 8)
   set(OBJECTS $<TARGET_OBJECTS:a>)
 else()
   get_property(OBJECTS TARGET a PROPERTY SOURCES)
@@ -38,8 +38,8 @@ target_link_libraries(ajni PRIVATE jar-native-a)
 add_library_properties(ajni PRIVATE alib)
 set_library_options(ajni)
 
-if(NOT LIBA_REAL EQUAL 8)
-  target_compile_definitions(ajni PRIVATE A_SIZE_REAL=8)
+if(NOT LIBA_FLOAT EQUAL 8)
+  target_compile_definitions(ajni PRIVATE A_SIZE_FLOAT=8)
 endif()
 
 install(TARGETS ajni

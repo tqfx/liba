@@ -50,7 +50,7 @@ static int a_que_node_die(a_que_s *const ctx, a_que_node_s *const obj)
     if (ctx->_mem <= ctx->_cur)
     {
         a_size_t const mem = ctx->_mem + (ctx->_mem >> 1) + 1;
-        a_que_node_s **const ptr = (a_que_node_s **)a_alloc(ctx->_ptr, sizeof(a_vptr_t) * mem);
+        a_que_node_s **const ptr = (a_que_node_s **)a_alloc(ctx->_ptr, sizeof(void *) * mem);
         if (a_unlikely(ptr == A_NULL))
         {
             return A_FAILURE;
@@ -63,7 +63,7 @@ static int a_que_node_die(a_que_s *const ctx, a_que_node_s *const obj)
     return A_SUCCESS;
 }
 
-static a_void_t a_que_drop_(a_que_s *const ctx)
+static void a_que_drop_(a_que_s *const ctx)
 {
     while (a_list_used(&ctx->_head))
     {
@@ -77,7 +77,7 @@ static a_void_t a_que_drop_(a_que_s *const ctx)
     }
 }
 
-static A_INLINE a_void_t a_que_dtor_nop(a_vptr_t const vptr) { (void)(vptr); }
+static A_INLINE void a_que_dtor_nop(void *const ptr) { (void)(ptr); }
 
 a_que_s *a_que_new(a_size_t const size)
 {
@@ -89,7 +89,7 @@ a_que_s *a_que_new(a_size_t const size)
     return ctx;
 }
 
-a_void_t a_que_die(a_que_s *const ctx, a_void_t (*const dtor)(a_vptr_t))
+void a_que_die(a_que_s *const ctx, void (*const dtor)(void *))
 {
     if (ctx)
     {
@@ -98,7 +98,7 @@ a_void_t a_que_die(a_que_s *const ctx, a_void_t (*const dtor)(a_vptr_t))
     }
 }
 
-a_void_t a_que_ctor(a_que_s *const ctx, a_size_t const size)
+void a_que_ctor(a_que_s *const ctx, a_size_t const size)
 {
     a_list_ctor(&ctx->_head);
     ctx->_size = size ? size : sizeof(a_cast_u);
@@ -108,7 +108,7 @@ a_void_t a_que_ctor(a_que_s *const ctx, a_size_t const size)
     ctx->_mem = 0;
 }
 
-a_void_t a_que_dtor(a_que_s *const ctx, a_void_t (*dtor)(a_vptr_t))
+void a_que_dtor(a_que_s *const ctx, void (*dtor)(void *))
 {
     a_que_drop_(ctx);
     dtor = dtor ? dtor : a_que_dtor_nop;
@@ -132,17 +132,17 @@ a_que_s *a_que_move(a_que_s *const ctx, a_que_s *const obj)
     return ctx;
 }
 
-a_vptr_t a_que_at(a_que_s const *const ctx, a_imax_t const idx)
+void *a_que_at(a_que_s const *const ctx, a_imax_t const idx)
 {
     a_imax_t cur = 0;
-    a_vptr_t vptr = A_NULL;
+    void *ptr = A_NULL;
     if (idx < 0)
     {
         a_list_foreach_prev(it, &ctx->_head)
         {
             if (--cur == idx)
             {
-                vptr = a_que_from(it)->_data;
+                ptr = a_que_from(it)->_data;
                 break;
             }
         }
@@ -153,22 +153,22 @@ a_vptr_t a_que_at(a_que_s const *const ctx, a_imax_t const idx)
         {
             if (cur++ == idx)
             {
-                vptr = a_que_from(it)->_data;
+                ptr = a_que_from(it)->_data;
                 break;
             }
         }
     }
-    return vptr;
+    return ptr;
 }
 
-a_void_t a_que_set(a_que_s *const ctx, a_size_t size, a_void_t (*const dtor)(a_vptr_t))
+void a_que_set(a_que_s *const ctx, a_size_t size, void (*const dtor)(void *))
 {
     size = size ? size : sizeof(a_cast_u);
     a_que_drop(ctx, dtor);
     ctx->_size = size;
 }
 
-a_void_t a_que_drop(a_que_s *const ctx, a_void_t (*dtor)(a_vptr_t))
+void a_que_drop(a_que_s *const ctx, void (*dtor)(void *))
 {
     a_que_drop_(ctx);
     dtor = dtor ? dtor : a_que_dtor_nop;
@@ -179,7 +179,7 @@ a_void_t a_que_drop(a_que_s *const ctx, a_void_t (*dtor)(a_vptr_t))
     }
 }
 
-a_int_t a_que_swap_(a_que_s const *const ctx, a_vptr_t const lhs, a_vptr_t const rhs)
+int a_que_swap_(a_que_s const *const ctx, void *const lhs, void *const rhs)
 {
     if (lhs == rhs)
     {
@@ -209,7 +209,7 @@ a_int_t a_que_swap_(a_que_s const *const ctx, a_vptr_t const lhs, a_vptr_t const
     return ok;
 }
 
-a_void_t a_que_swap(a_que_s const *const ctx, a_size_t lhs, a_size_t rhs)
+void a_que_swap(a_que_s const *const ctx, a_size_t lhs, a_size_t rhs)
 {
     a_size_t cur = 0;
     a_size_t const num = ctx->_num - 1;
@@ -243,7 +243,7 @@ a_void_t a_que_swap(a_que_s const *const ctx, a_size_t lhs, a_size_t rhs)
     }
 }
 
-a_void_t a_que_sort_fore(a_que_s const *const ctx, a_int_t (*const cmp)(a_cptr_t, a_cptr_t))
+void a_que_sort_fore(a_que_s const *const ctx, int (*const cmp)(void const *, void const *))
 {
     if (ctx->_num > 1)
     {
@@ -251,8 +251,8 @@ a_void_t a_que_sort_fore(a_que_s const *const ctx, a_int_t (*const cmp)(a_cptr_t
         a_list_s *const it = ctx->_head.next;
         for (a_list_s *at = it->next; at != &ctx->_head; at = at->next)
         {
-            a_vptr_t const lhs = a_que_from(it)->_data;
-            a_vptr_t const rhs = a_que_from(at)->_data;
+            void *const lhs = a_que_from(it)->_data;
+            void *const rhs = a_que_from(at)->_data;
             if (cmp(lhs, rhs) > 0)
             {
                 pt = at;
@@ -270,7 +270,7 @@ a_void_t a_que_sort_fore(a_que_s const *const ctx, a_int_t (*const cmp)(a_cptr_t
     }
 }
 
-a_void_t a_que_sort_back(a_que_s const *const ctx, a_int_t (*const cmp)(a_cptr_t, a_cptr_t))
+void a_que_sort_back(a_que_s const *const ctx, int (*const cmp)(void const *, void const *))
 {
     if (ctx->_num > 1)
     {
@@ -278,8 +278,8 @@ a_void_t a_que_sort_back(a_que_s const *const ctx, a_int_t (*const cmp)(a_cptr_t
         a_list_s *const it = ctx->_head.prev;
         for (a_list_s *at = it->prev; at != &ctx->_head; at = at->prev)
         {
-            a_vptr_t const lhs = a_que_from(at)->_data;
-            a_vptr_t const rhs = a_que_from(it)->_data;
+            void *const lhs = a_que_from(at)->_data;
+            void *const rhs = a_que_from(it)->_data;
             if (cmp(lhs, rhs) > 0)
             {
                 pt = at;
@@ -297,7 +297,7 @@ a_void_t a_que_sort_back(a_que_s const *const ctx, a_int_t (*const cmp)(a_cptr_t
     }
 }
 
-a_vptr_t a_que_push_fore(a_que_s *const ctx)
+void *a_que_push_fore(a_que_s *const ctx)
 {
     a_que_node_s *const node = a_que_node_new(ctx);
     if (a_unlikely(node == A_NULL))
@@ -308,7 +308,7 @@ a_vptr_t a_que_push_fore(a_que_s *const ctx)
     return node->_data;
 }
 
-a_vptr_t a_que_push_back(a_que_s *const ctx)
+void *a_que_push_back(a_que_s *const ctx)
 {
     a_que_node_s *const node = a_que_node_new(ctx);
     if (a_unlikely(node == A_NULL))
@@ -319,9 +319,9 @@ a_vptr_t a_que_push_back(a_que_s *const ctx)
     return node->_data;
 }
 
-a_vptr_t a_que_pull_fore(a_que_s *const ctx)
+void *a_que_pull_fore(a_que_s *const ctx)
 {
-    a_vptr_t data = A_NULL;
+    void *data = A_NULL;
     if (a_list_used(&ctx->_head))
     {
         a_que_node_s *const node = a_que_from(ctx->_head.next);
@@ -336,9 +336,9 @@ a_vptr_t a_que_pull_fore(a_que_s *const ctx)
     return data;
 }
 
-a_vptr_t a_que_pull_back(a_que_s *const ctx)
+void *a_que_pull_back(a_que_s *const ctx)
 {
-    a_vptr_t data = A_NULL;
+    void *data = A_NULL;
     if (a_list_used(&ctx->_head))
     {
         a_que_node_s *const node = a_que_from(ctx->_head.prev);
@@ -353,7 +353,7 @@ a_vptr_t a_que_pull_back(a_que_s *const ctx)
     return data;
 }
 
-a_vptr_t a_que_insert(a_que_s *const ctx, a_size_t const idx)
+void *a_que_insert(a_que_s *const ctx, a_size_t const idx)
 {
     if (idx < ctx->_num)
     {
@@ -376,7 +376,7 @@ a_vptr_t a_que_insert(a_que_s *const ctx, a_size_t const idx)
     return a_que_push_back(ctx);
 }
 
-a_vptr_t a_que_remove(a_que_s *const ctx, a_size_t const idx)
+void *a_que_remove(a_que_s *const ctx, a_size_t const idx)
 {
     if (idx < ctx->_num)
     {

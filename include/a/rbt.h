@@ -34,12 +34,12 @@ typedef struct a_rbt_s
      The rest of the bits are the pointer to the parent node. It must be 2-byte aligned,
      and it will be NULL if this is the root node and therefore has no parent.
     */
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 1)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
     a_uptr_t _parent;
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
     struct a_rbt_s *parent;
-    a_uint_t color;
-#endif /* A_SIZE_VPTR */
+    unsigned int color;
+#endif /* A_SIZE_POINTER */
 } a_rbt_s;
 
 /*!
@@ -50,11 +50,11 @@ typedef struct a_rbt_s
 */
 A_INTERN a_rbt_s *a_rbt_parent(a_rbt_s const *const node)
 {
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 1)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
     return a_cast_r(a_rbt_s *, node->_parent & ~a_uptr_c(1));
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
     return node->parent;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
 }
 
 /*!
@@ -65,12 +65,12 @@ A_INTERN a_rbt_s *a_rbt_parent(a_rbt_s const *const node)
 */
 A_INTERN a_rbt_s *a_rbt_init(a_rbt_s *const node, a_rbt_s *const parent)
 {
-#if defined(A_SIZE_VPTR) && (A_SIZE_VPTR + 0 > 1)
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
     node->_parent = a_cast_r(a_uptr_t, parent);
-#else /* !A_SIZE_VPTR */
+#else /* !A_SIZE_POINTER */
     node->parent = parent;
     node->color = A_RBT_R;
-#endif /* A_SIZE_VPTR */
+#endif /* A_SIZE_POINTER */
     node->right = A_NULL;
     node->left = A_NULL;
     return node;
@@ -88,7 +88,7 @@ typedef union a_rbt_u
  @brief initialize function for red–black binary search tree root
  @param[in,out] root red–black binary search tree root
 */
-A_INTERN a_void_t a_rbt_root(a_rbt_u *const root) { root->node = A_NULL; }
+A_INTERN void a_rbt_root(a_rbt_u *const root) { root->node = A_NULL; }
 
 #if defined(__cplusplus)
 extern "C" {
@@ -183,7 +183,7 @@ A_EXTERN a_rbt_s *a_rbt_tear(a_rbt_u *root, a_rbt_s **next);
   @arg cmp(lhs,rhs)>0 *lhs goes after *rhs
  @return specified node or NULL
 */
-A_EXTERN a_rbt_s *a_rbt_search(a_rbt_u const *root, a_cptr_t ctx, a_int_t (*cmp)(a_cptr_t, a_cptr_t));
+A_EXTERN a_rbt_s *a_rbt_search(a_rbt_u const *root, void const *ctx, int (*cmp)(void const *, void const *));
 
 /*!
  @brief insert specified node into red–black binary search tree
@@ -195,21 +195,21 @@ A_EXTERN a_rbt_s *a_rbt_search(a_rbt_u const *root, a_cptr_t ctx, a_int_t (*cmp)
   @arg cmp(lhs,rhs)>0 *lhs goes after *rhs
  @return NULL or duplicate node
 */
-A_EXTERN a_rbt_s *a_rbt_insert(a_rbt_u *root, a_rbt_s *node, a_int_t (*cmp)(a_cptr_t, a_cptr_t));
+A_EXTERN a_rbt_s *a_rbt_insert(a_rbt_u *root, a_rbt_s *node, int (*cmp)(void const *, void const *));
 
 /*!
  @brief rebalance the tree after insertion of the specified node
  @param[in] root red–black binary search tree root
  @param[in] node insert tree node
 */
-A_EXTERN a_void_t a_rbt_insert_adjust(a_rbt_u *root, a_rbt_s *node);
+A_EXTERN void a_rbt_insert_adjust(a_rbt_u *root, a_rbt_s *node);
 
 /*!
  @brief remove specified node from red–black binary search tree
  @param[in] root red–black binary search tree root
  @param[in] node specified tree node
 */
-A_EXTERN a_void_t a_rbt_remove(a_rbt_u *root, a_rbt_s *node);
+A_EXTERN void a_rbt_remove(a_rbt_u *root, a_rbt_s *node);
 
 #if defined(__cplusplus)
 } /* extern "C" */

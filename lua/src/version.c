@@ -23,13 +23,13 @@ static int LMODULE(version_init_)(lua_State *const L, a_version_s *const ctx)
     switch (top & 0x3)
     {
     case 3:
-        ctx->patch = (a_uint_t)luaL_checkinteger(L, 3);
+        ctx->patch = (unsigned int)luaL_checkinteger(L, 3);
         A_FALLTHROUGH;
     case 2:
-        ctx->minor = (a_uint_t)luaL_checkinteger(L, 2);
+        ctx->minor = (unsigned int)luaL_checkinteger(L, 2);
         A_FALLTHROUGH;
     case 1:
-        ctx->major = (a_uint_t)luaL_checkinteger(L, 1);
+        ctx->major = (unsigned int)luaL_checkinteger(L, 1);
         A_FALLTHROUGH;
     default:
         break;
@@ -176,13 +176,13 @@ static int LMODULE(version_set)(lua_State *const L)
     switch (hash)
     {
     case 0x86720331: // major
-        ctx->major = (a_uint_t)luaL_checkinteger(L, 3);
+        ctx->major = (unsigned int)luaL_checkinteger(L, 3);
         break;
     case 0x87857C2D: // minor
-        ctx->minor = (a_uint_t)luaL_checkinteger(L, 3);
+        ctx->minor = (unsigned int)luaL_checkinteger(L, 3);
         break;
     case 0xBB1DBE50: // patch
-        ctx->patch = (a_uint_t)luaL_checkinteger(L, 3);
+        ctx->patch = (unsigned int)luaL_checkinteger(L, 3);
         break;
     case 0x0CD3E494: // __lt
     case 0x0CD3E485: // __le

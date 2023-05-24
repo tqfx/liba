@@ -17,19 +17,19 @@ liba = "0.1"
 use std::os::raw::c_char;
 /// Equivalent to C’s unsigned int type.
 pub type uint = std::os::raw::c_uint;
-/// real number stored using `f64`
+/// floating-point number stored using `f64`
 #[cfg(not(feature = "float"))]
-pub type real = f64;
-/// real number stored using `f32`
+pub type float = f64;
+/// floating-point number stored using `f32`
 #[cfg(feature = "float")]
-pub type real = f32;
-/// real number union
+pub type float = f32;
+/// floating-point number union
 #[repr(C)]
-pub union Real {
-    /// as a real number
-    pub f: real,
-    /// as a real array
-    pub p: *mut real,
+pub union Float {
+    /// as a floating-point number
+    pub f: float,
+    /// as a floating-point array
+    pub p: *mut float,
 }
 
 pub mod mf;

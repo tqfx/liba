@@ -45,22 +45,22 @@ static int LMODULE(rsqrt)(lua_State *const L)
     for (int i = 0; i++ != n;)
     {
         lua_Number x = luaL_checknumber(L, i);
-#if A_REAL_TYPE == A_REAL_SINGLE
+#if A_FLOAT_TYPE == A_FLOAT_SINGLE
         x = (lua_Number)a_f32_rsqrt((a_f32_t)x);
-#elif A_REAL_TYPE == A_REAL_DOUBLE
+#elif A_FLOAT_TYPE == A_FLOAT_DOUBLE
         x = (lua_Number)a_f64_rsqrt((a_f64_t)x);
-#else /* !A_REAL_TYPE */
+#else /* !A_FLOAT_TYPE */
         x = (lua_Number)(1 / sqrt((double)x));
-#endif /* A_REAL_TYPE */
+#endif /* A_FLOAT_TYPE */
         lua_pushnumber(L, x);
     }
     return n;
 }
 
 static lua_State *LMODULE(L) = A_NULL;
-static a_vptr_t LMODULE(alloc)(a_vptr_t const vptr, a_size_t const size)
+static void *LMODULE(alloc)(void *const addr, a_size_t const size)
 {
-    return l_alloc(LMODULE(L), vptr, size);
+    return l_alloc(LMODULE(L), addr, size);
 }
 
 int LMODULE0(lua_State *const L)

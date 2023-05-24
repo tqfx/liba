@@ -5,13 +5,13 @@
 #include "a/host/vector.h"
 #include <string.h>
 
-static void dtor(a_vptr_t ptr)
+static void dtor(void *ptr)
 {
     a_u32_t *obj = a_u32_p(ptr);
     printf("%" PRIu32 " ", *obj);
 }
 
-static a_int_t u32dup(a_vptr_t dst, a_cptr_t src)
+static int u32dup(void *dst, void const *src)
 {
     *a_u32_p(dst) = *A_U32_P(src);
     printf("%" PRIu32 " ", *A_U32_P(src));
@@ -46,8 +46,8 @@ static void test(void)
     }
 
     {
-        a_byte_t *end = a_vector_end(a_byte_t, ctx);
-        a_byte_t *top = a_vector_top(a_byte_t, ctx);
+        a_u8_t *end = a_vector_end(a_u8_t, ctx);
+        a_u8_t *top = a_vector_top(a_u8_t, ctx);
         TEST_BUG(a_vector_get(ctx) == a_size_c(end - top));
     }
 
@@ -189,46 +189,46 @@ static void test(void)
 #include "a/host/str.h"
 #include <time.h>
 
-static a_int_t cmp(a_cptr_t lhs, a_cptr_t rhs)
+static int cmp(void const *lhs, void const *rhs)
 {
     return *A_INT_P(lhs) - *A_INT_P(rhs);
 }
 
-static a_int_t cmpr(a_cptr_t lhs, a_cptr_t rhs)
+static int cmpr(void const *lhs, void const *rhs)
 {
     return *A_INT_P(rhs) - *A_INT_P(lhs);
 }
 
 static void test_sort(void)
 {
-    a_uint_t t = a_uint_c(time(A_NULL));
-    a_vector_s *ctx = a_vector_new(sizeof(a_int_t), A_NULL, A_NULL);
+    unsigned int t = a_cast_s(unsigned int, time(A_NULL));
+    a_vector_s *ctx = a_vector_new(sizeof(int), A_NULL, A_NULL);
 
     a_vector_make(ctx, 10);
 
     srand(t);
-    a_vector_foreach(a_int_t, it, ctx)
+    a_vector_foreach(int, it, ctx)
     {
         *it = rand() % 10;
         printf("%i ", *it);
     }
     printf("-> ");
     a_vector_sort(ctx, cmpr);
-    a_vector_foreach(a_int_t, it, ctx)
+    a_vector_foreach(int, it, ctx)
     {
         printf("%i ", *it);
     }
     putchar('\n');
 
     srand(t);
-    a_vector_foreach(a_int_t, it, ctx)
+    a_vector_foreach(int, it, ctx)
     {
         *it = rand() % 10;
         printf("%i ", *it);
     }
     printf("-> ");
     a_vector_sort(ctx, cmp);
-    a_vector_foreach(a_int_t, it, ctx)
+    a_vector_foreach(int, it, ctx)
     {
         printf("%i ", *it);
     }
@@ -236,9 +236,9 @@ static void test_sort(void)
 
     srand(t);
     a_vector_drop(ctx);
-    for (a_int_t i = 0; i != 10; ++i)
+    for (int i = 0; i != 10; ++i)
     {
-        a_int_t *obj = a_vector_push_fore(a_int_t, ctx);
+        int *obj = a_vector_push_fore(int, ctx);
         if (obj)
         {
             *obj = rand() % 10;
@@ -247,7 +247,7 @@ static void test_sort(void)
         }
     }
     printf("-> ");
-    a_vector_foreach(a_int_t, it, ctx)
+    a_vector_foreach(int, it, ctx)
     {
         printf("%i ", *it);
     }
@@ -255,9 +255,9 @@ static void test_sort(void)
 
     srand(t);
     a_vector_drop(ctx);
-    for (a_int_t i = 0; i != 10; ++i)
+    for (int i = 0; i != 10; ++i)
     {
-        a_int_t *obj = a_vector_push_back(a_int_t, ctx);
+        int *obj = a_vector_push_back(int, ctx);
         if (obj)
         {
             *obj = rand() % 10;
@@ -266,7 +266,7 @@ static void test_sort(void)
         }
     }
     printf("-> ");
-    a_vector_foreach(a_int_t, it, ctx)
+    a_vector_foreach(int, it, ctx)
     {
         printf("%i ", *it);
     }
@@ -277,9 +277,9 @@ static void test_sort(void)
         a_str_s *no = a_str_new();
         a_str_puts(ok, "finding ");
         a_str_puts(no, "missing ");
-        for (a_int_t i = 0; i != 10; ++i)
+        for (int i = 0; i != 10; ++i)
         {
-            a_int_t *obj = a_vector_search(a_int_t, ctx, &i, cmp);
+            int *obj = a_vector_search(int, ctx, &i, cmp);
             if (obj)
             {
                 a_str_printf(ok, "%i ", *obj);

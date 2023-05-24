@@ -62,7 +62,7 @@ jobject j_fpid_get(j_fpid_s const *const jctx, a_fpid_s *const ctx)
     ctx->idx = NULL;
     if (jctx->jidx)
     {
-        ctx->idx = (a_uint_t *)(*jenv)->GetIntArrayElements(jenv, jctx->jidx, NULL);
+        ctx->idx = (unsigned int *)(*jenv)->GetIntArrayElements(jenv, jctx->jidx, NULL);
     }
     ctx->val = NULL;
     if (jctx->jval)
@@ -70,7 +70,7 @@ jobject j_fpid_get(j_fpid_s const *const jctx, a_fpid_s *const ctx)
         ctx->val = (*jenv)->GetDoubleArrayElements(jenv, jctx->jval, NULL);
     }
     jlong op = (*jenv)->GetLongField(jenv, jobj, jctx->op);
-    ctx->op = (a_real_t(*)(a_real_t, a_real_t))(intptr_t)op; // NOLINT(performance-no-int-to-ptr)
+    ctx->op = (a_float_t(*)(a_float_t, a_float_t))(intptr_t)op; // NOLINT(performance-no-int-to-ptr)
     ctx->kp = (*jenv)->GetDoubleField(jenv, jobj, jctx->kp);
     ctx->ki = (*jenv)->GetDoubleField(jenv, jobj, jctx->ki);
     ctx->kd = (*jenv)->GetDoubleField(jenv, jobj, jctx->kd);
@@ -159,7 +159,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(fpid_mode)(JNIEnv *jenv, jobject jobj, jint j
     a_fpid_s ctx;
     j_fpid_s jctx;
     j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
-    a_pid_set_mode(&ctx.pid, (a_uint_t)jmode);
+    a_pid_set_mode(&ctx.pid, (unsigned int)jmode);
     return j_fpid_set(&jctx, &ctx);
 }
 
@@ -227,7 +227,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(fpid_base)(JNIEnv *jenv, jobject jobj, jobjec
     (*jenv)->SetObjectField(jenv, jobj, jctx.mkp, concat(&jctx, jmkp));
     (*jenv)->SetObjectField(jenv, jobj, jctx.mki, concat(&jctx, jmki));
     (*jenv)->SetObjectField(jenv, jobj, jctx.mkd, concat(&jctx, jmkd));
-    a_fpid_set_col(&ctx, (a_uint_t)(*jenv)->GetArrayLength(jenv, jmkp));
+    a_fpid_set_col(&ctx, (unsigned int)(*jenv)->GetArrayLength(jenv, jmkp));
     j_pid_set(&jctx.pid, &ctx.pid);
     return jobj;
 }
@@ -237,7 +237,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(fpid_init)(JNIEnv *jenv, jobject jobj, jdoubl
 {
     a_fpid_s ctx;
     j_fpid_s jctx;
-    a_uint_t col = (a_uint_t)(*jenv)->GetArrayLength(jenv, jmkp);
+    unsigned int col = (unsigned int)(*jenv)->GetArrayLength(jenv, jmkp);
     j_fpid_new(jenv, jobj, &jctx);
     (*jenv)->SetObjectField(jenv, jobj, jctx.me, concat(&jctx, jme));
     (*jenv)->SetObjectField(jenv, jobj, jctx.mec, concat(&jctx, jmec));

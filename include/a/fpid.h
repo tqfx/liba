@@ -44,19 +44,19 @@ typedef struct a_fpid_s
 {
     a_pid_s pid; //!< instance structure for PID controller
 
-    a_real_t const *me; //!< points to membership function parameter table, terminated by @ref A_MF_NUL
-    a_real_t const *mec; //!< points to membership function parameter table, terminated by @ref A_MF_NUL
-    a_real_t const *mkp; //!< points to Kp's rule base table, the rule base must be square matrix
-    a_real_t const *mki; //!< points to Ki's rule base table, the rule base must be square matrix
-    a_real_t const *mkd; //!< points to Kd's rule base table, the rule base must be square matrix
+    a_float_t const *me; //!< points to membership function parameter table, terminated by @ref A_MF_NUL
+    a_float_t const *mec; //!< points to membership function parameter table, terminated by @ref A_MF_NUL
+    a_float_t const *mkp; //!< points to Kp's rule base table, the rule base must be square matrix
+    a_float_t const *mki; //!< points to Ki's rule base table, the rule base must be square matrix
+    a_float_t const *mkd; //!< points to Kd's rule base table, the rule base must be square matrix
 
-    a_uint_t *idx; //!< the memory cache for membership index, >= 2N
-    a_real_t *val; //!< the memory cache for membership value and membership outer product of e and ec, >= (2+N)N
-    a_real_t (*op)(a_real_t, a_real_t); //!< fuzzy relational operator
+    unsigned int *idx; //!< the memory cache for membership index, >= 2N
+    a_float_t *val; //!< the memory cache for membership value and membership outer product of e and ec, >= (2+N)N
+    a_float_t (*op)(a_float_t, a_float_t); //!< fuzzy relational operator
 
-    a_real_t kp; //!< base proportional constant
-    a_real_t ki; //!< base integral constant
-    a_real_t kd; //!< base derivative constant
+    a_float_t kp; //!< base proportional constant
+    a_float_t ki; //!< base integral constant
+    a_float_t kd; //!< base derivative constant
 } a_fpid_s;
 
 #if defined(__cplusplus)
@@ -68,21 +68,21 @@ extern "C" {
 #endif /* LIBA_FPID_C */
 
 #if !defined A_HAVE_INLINE || defined(LIBA_FPID_C)
-A_EXTERN a_size_t A_FPID_BUF1(a_uint_t max);
+A_EXTERN a_size_t A_FPID_BUF1(unsigned int max);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
-A_INTERN a_size_t A_FPID_BUF1(a_uint_t const max)
+A_INTERN a_size_t A_FPID_BUF1(unsigned int const max)
 {
-    return sizeof(a_uint_t) * 2 * max + sizeof(a_real_t) * (2 + max) * max;
+    return sizeof(unsigned int) * 2 * max + sizeof(a_float_t) * (2 + max) * max;
 }
 #endif /* A_HAVE_INLINE */
-#define A_FPID_BUF1(N) (sizeof(a_uint_t) * 2 * (N) + sizeof(a_real_t) * (2 + (N)) * (N))
+#define A_FPID_BUF1(N) (sizeof(unsigned int) * 2 * (N) + sizeof(a_float_t) * (2 + (N)) * (N))
 
 #if !defined A_HAVE_INLINE || defined(LIBA_FPID_C)
-A_EXTERN a_vptr_t a_fpid_bufptr(a_fpid_s const *ctx);
+A_EXTERN void *a_fpid_bufptr(a_fpid_s const *ctx);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
-A_INTERN a_vptr_t a_fpid_bufptr(a_fpid_s const *const ctx)
+A_INTERN void *a_fpid_bufptr(a_fpid_s const *const ctx)
 {
     return ctx->idx;
 }
@@ -90,56 +90,56 @@ A_INTERN a_vptr_t a_fpid_bufptr(a_fpid_s const *const ctx)
 #define a_fpid_bufptr(ctx) (ctx)->idx
 
 #if !defined A_HAVE_INLINE || defined(LIBA_FPID_C)
-A_EXTERN a_uint_t a_fpid_bufnum(a_fpid_s const *ctx);
+A_EXTERN unsigned int a_fpid_bufnum(a_fpid_s const *ctx);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
-A_INTERN a_uint_t a_fpid_bufnum(a_fpid_s const *const ctx)
+A_INTERN unsigned int a_fpid_bufnum(a_fpid_s const *const ctx)
 {
     return ctx->pid.num >> A_PID_NUM_BITH;
 }
 #endif /* A_HAVE_INLINE */
 
 #if !defined A_HAVE_INLINE || defined(LIBA_FPID_C)
-A_EXTERN a_void_t a_fpid_set_bufmax(a_fpid_s *ctx, a_uint_t max);
+A_EXTERN void a_fpid_set_bufmax(a_fpid_s *ctx, unsigned int max);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
-A_INTERN a_void_t a_fpid_set_bufmax(a_fpid_s *const ctx, a_uint_t const max)
+A_INTERN void a_fpid_set_bufmax(a_fpid_s *const ctx, unsigned int const max)
 {
     ctx->pid.num = (ctx->pid.num & A_PID_NUM_MSK) | (max << A_PID_NUM_BITH);
 }
 #endif /* A_HAVE_INLINE */
 
 #if !defined A_HAVE_INLINE || defined(LIBA_FPID_C)
-A_EXTERN a_uint_t a_fpid_col(a_fpid_s const *ctx);
+A_EXTERN unsigned int a_fpid_col(a_fpid_s const *ctx);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
-A_INTERN a_uint_t a_fpid_col(a_fpid_s const *const ctx)
+A_INTERN unsigned int a_fpid_col(a_fpid_s const *const ctx)
 {
     return ctx->pid.reg >> A_PID_REG_BITH;
 }
 #endif /* A_HAVE_INLINE */
 
 #if !defined A_HAVE_INLINE || defined(LIBA_FPID_C)
-A_EXTERN a_void_t a_fpid_set_col(a_fpid_s *ctx, a_uint_t col);
+A_EXTERN void a_fpid_set_col(a_fpid_s *ctx, unsigned int col);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
-A_INTERN a_void_t a_fpid_set_col(a_fpid_s *const ctx, a_uint_t const col)
+A_INTERN void a_fpid_set_col(a_fpid_s *const ctx, unsigned int const col)
 {
     ctx->pid.reg = (ctx->pid.reg & A_PID_REG_MSK) | (col << A_PID_REG_BITH);
 }
 #endif /* A_HAVE_INLINE */
 
 #if !defined A_HAVE_INLINE || defined(LIBA_FPID_C)
-A_EXTERN a_uint_t a_fpid_op(a_fpid_s const *ctx);
+A_EXTERN unsigned int a_fpid_op(a_fpid_s const *ctx);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FPID_C)
-A_INTERN a_uint_t a_fpid_op(a_fpid_s const *const ctx)
+A_INTERN unsigned int a_fpid_op(a_fpid_s const *const ctx)
 {
     return ctx->pid.reg & A_FPID_FUZZY_MSK;
 }
 #endif /* A_HAVE_INLINE */
 
-A_EXTERN a_void_t a_fpid_set_op(a_fpid_s *ctx, a_uint_t op);
+A_EXTERN void a_fpid_set_op(a_fpid_s *ctx, unsigned int op);
 
 /*!
  @brief turn off fuzzy PID controller
@@ -158,7 +158,7 @@ A_EXTERN a_fpid_s *a_fpid_inc(a_fpid_s *ctx);
  @param[in,out] ctx points to an instance of fuzzy PID controller
  @param[in] max maximum intergral output
 */
-A_EXTERN a_fpid_s *a_fpid_pos(a_fpid_s *ctx, a_real_t max);
+A_EXTERN a_fpid_s *a_fpid_pos(a_fpid_s *ctx, a_float_t max);
 
 /*!
  @brief set proportional integral derivative constant for fuzzy PID controller
@@ -167,7 +167,7 @@ A_EXTERN a_fpid_s *a_fpid_pos(a_fpid_s *ctx, a_real_t max);
  @param[in] ki integral constant
  @param[in] kd derivative constant
 */
-A_EXTERN a_fpid_s *a_fpid_kpid(a_fpid_s *ctx, a_real_t kp, a_real_t ki, a_real_t kd);
+A_EXTERN a_fpid_s *a_fpid_kpid(a_fpid_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd);
 
 /*!
  @brief set one cache buffer for fuzzy PID controller
@@ -175,7 +175,7 @@ A_EXTERN a_fpid_s *a_fpid_kpid(a_fpid_s *ctx, a_real_t kp, a_real_t ki, a_real_t
  @param[in] ptr points to a buffer at least A_FPID_BUF1(max)
  @param[in] max the maximum number triggered by the rule
 */
-A_EXTERN a_fpid_s *a_fpid_buf1(a_fpid_s *ctx, a_vptr_t ptr, a_size_t max);
+A_EXTERN a_fpid_s *a_fpid_buf1(a_fpid_s *ctx, void *ptr, a_size_t max);
 
 /*!
  @brief set buffer for fuzzy PID controller
@@ -183,9 +183,9 @@ A_EXTERN a_fpid_s *a_fpid_buf1(a_fpid_s *ctx, a_vptr_t ptr, a_size_t max);
  @param[in] idx the memory cache for membership index, >= 2N
  @param[in] val the memory cache for membership value and membership outer product of e and ec, >= (2+N)N
 */
-A_EXTERN a_fpid_s *a_fpid_buff(a_fpid_s *ctx, a_uint_t *idx, a_real_t *val);
-#define A_FPID_VAL1(N) (sizeof(a_real_t) * (2 + (N)) * (N))
-#define A_FPID_IDX1(N) (sizeof(a_uint_t) * 2 * (N))
+A_EXTERN a_fpid_s *a_fpid_buff(a_fpid_s *ctx, unsigned int *idx, a_float_t *val);
+#define A_FPID_VAL1(N) (sizeof(a_float_t) * (2 + (N)) * (N))
+#define A_FPID_IDX1(N) (sizeof(unsigned int) * 2 * (N))
 #define A_FPID_VAL(N) ((2 + (N)) * (N))
 #define A_FPID_IDX(N) (2 * (N))
 
@@ -199,8 +199,8 @@ A_EXTERN a_fpid_s *a_fpid_buff(a_fpid_s *ctx, a_uint_t *idx, a_real_t *val);
  @param[in] ec points to error change buffer
  @param[in] e points to error input buffer
 */
-A_EXTERN a_fpid_s *a_fpid_chan(a_fpid_s *ctx, a_uint_t num, a_real_t *out, a_real_t *fdb,
-                               a_real_t *sum, a_real_t *ec, a_real_t *e);
+A_EXTERN a_fpid_s *a_fpid_chan(a_fpid_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb,
+                               a_float_t *sum, a_float_t *ec, a_float_t *e);
 
 /*!
  @brief set rule base for fuzzy PID controller
@@ -212,8 +212,8 @@ A_EXTERN a_fpid_s *a_fpid_chan(a_fpid_s *ctx, a_uint_t num, a_real_t *out, a_rea
  @param[in] mki points to Ki's rule base table, the rule base must be square
  @param[in] mkd points to Kd's rule base table, the rule base must be square
 */
-A_EXTERN a_fpid_s *a_fpid_base(a_fpid_s *ctx, a_uint_t col, a_real_t const *me, a_real_t const *const mec,
-                               a_real_t const *mkp, a_real_t const *mki, a_real_t const *mkd);
+A_EXTERN a_fpid_s *a_fpid_base(a_fpid_s *ctx, unsigned int col, a_float_t const *me, a_float_t const *const mec,
+                               a_float_t const *mkp, a_float_t const *mki, a_float_t const *mkd);
 
 /*!
  @brief initialize function for fuzzy PID controller, default setting is off
@@ -228,8 +228,8 @@ A_EXTERN a_fpid_s *a_fpid_base(a_fpid_s *ctx, a_uint_t col, a_real_t const *me, 
  @param[in] min mininum output
  @param[in] max maxinum output
 */
-A_EXTERN a_fpid_s *a_fpid_init(a_fpid_s *ctx, a_real_t dt, a_uint_t col, a_real_t const *me, a_real_t const *mec,
-                               a_real_t const *mkp, a_real_t const *mki, a_real_t const *mkd, a_real_t min, a_real_t max);
+A_EXTERN a_fpid_s *a_fpid_init(a_fpid_s *ctx, a_float_t dt, unsigned int col, a_float_t const *me, a_float_t const *mec,
+                               a_float_t const *mkp, a_float_t const *mki, a_float_t const *mkd, a_float_t min, a_float_t max);
 
 /*!
  @brief calculate function for fuzzy PID controller
@@ -239,7 +239,7 @@ A_EXTERN a_fpid_s *a_fpid_init(a_fpid_s *ctx, a_real_t dt, a_uint_t col, a_real_
  @return output value
   @retval set when fuzzy PID controller is off
 */
-A_EXTERN a_real_t a_fpid_outf(a_fpid_s *ctx, a_real_t set, a_real_t fdb);
+A_EXTERN a_float_t a_fpid_outf(a_fpid_s *ctx, a_float_t set, a_float_t fdb);
 
 /*!
  @brief calculate function for multichannel fuzzy PID controller
@@ -249,7 +249,7 @@ A_EXTERN a_real_t a_fpid_outf(a_fpid_s *ctx, a_real_t set, a_real_t fdb);
  @return points to output
   @retval set when fuzzy PID controller is off
 */
-A_EXTERN a_real_t const *a_fpid_outp(a_fpid_s *ctx, a_real_t const *set, a_real_t const *fdb);
+A_EXTERN a_float_t const *a_fpid_outp(a_fpid_s *ctx, a_float_t const *set, a_float_t const *fdb);
 
 /*!
  @brief terminate function for fuzzy PID controller

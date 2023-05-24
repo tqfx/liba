@@ -12,15 +12,15 @@
 #include <mimalloc-override.h>
 #endif /* A_HAVE_MIMALLOC_H */
 
-typedef a_vptr_t (*a_alloc_f)(a_vptr_t, a_size_t);
+typedef void *(*a_alloc_f)(void *, a_size_t);
 
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
 
 A_EXTERN a_alloc_f a_alloc_reg(a_alloc_f alloc);
-A_EXTERN a_vptr_t a_alloc(a_vptr_t vptr, a_size_t size);
-A_EXTERN a_vptr_t a_alloc_(a_vptr_t vptr, a_size_t size);
+A_EXTERN void *a_alloc(void *addr, a_size_t size);
+A_EXTERN void *a_alloc_(void *addr, a_size_t size);
 
 #if defined(__cplusplus)
 } /* extern "C" */

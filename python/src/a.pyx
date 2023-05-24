@@ -5,10 +5,10 @@ cdef bint iterable(object o):
     return PyObject_HasAttrString(o, "__contains__")
 
 from cpython.array cimport array
-cdef array reals(object o = ()):
-    IF A_SIZE_REAL == 8:
+cdef array floats(object o = ()):
+    IF A_SIZE_FLOAT == 8:
         return array('d', o)
-    IF A_SIZE_REAL == 4:
+    IF A_SIZE_FLOAT == 4:
         return array('f', o)
 
 cimport cython

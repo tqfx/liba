@@ -6,21 +6,21 @@
 
 static void test_sq(void)
 {
-    a_int_t x = 2;
+    int x = 2;
     TEST_BUG(A_SQ(x) == 4);
 }
 
 static void test_abs(void)
 {
-    a_extend_t x = A_EXTEND_C(-1.0);
+    long double x = -1.0L;
     TEST_BUG(A_ABS(x) > 0);
 }
 
 static void test_sgn(void)
 {
-    a_double_t pos = A_DOUBLE_C(+10.0);
-    a_double_t neg = A_DOUBLE_C(-10.0);
-    a_double_t zero = A_DOUBLE_C(0.0);
+    double pos = +10.0;
+    double neg = -10.0;
+    double zero = +0.0;
     TEST_BUG(A_SGN(pos) == 1);
     TEST_BUG(A_SGN(neg) == -1);
     TEST_BUG(A_SGN(zero) == 0);
@@ -28,8 +28,8 @@ static void test_sgn(void)
 
 static void test_sat(void)
 {
-    a_double_t max = A_DOUBLE_C(+10.0);
-    a_double_t min = A_DOUBLE_C(-10.0);
+    double max = +10.0;
+    double min = -10.0;
     TEST_BUG(A_SAT(0, min, max) >= 0);
     TEST_BUG(A_SAT(+100, min, max) <= max);
     TEST_BUG(A_SAT(-100, min, max) >= min);
@@ -67,12 +67,12 @@ static void test_f32_rsqrt(void)
         A_F32_C(4.0),
         A_F32_C(2.5) * A_F32_C(2.5),
     };
-    for (a_uint_t i = 0; i != sizeof(data) / sizeof(a_f32_t); ++i)
+    for (unsigned int i = 0; i != sizeof(data) / sizeof(a_f32_t); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf("1/sqrt(%g):\t%-10g%-10g\n", a_double_c(data[i]),
-               1 / a_double_c(A_F32_F1(sqrt, data[i])),
-               a_double_c(a_f32_rsqrt(data[i])));
+        printf("1/sqrt(%g):\t%-10g%-10g\n", a_cast_s(double, data[i]),
+               1 / a_cast_s(double, A_F32_F1(sqrt, data[i])),
+               a_cast_s(double, a_f32_rsqrt(data[i])));
 #endif /* MAIN_ONCE */
     }
 }
@@ -87,12 +87,12 @@ static void test_f64_rsqrt(void)
         A_F64_C(4.0),
         A_F64_C(2.5) * A_F64_C(2.5),
     };
-    for (a_uint_t i = 0; i != sizeof(data) / sizeof(a_f64_t); ++i)
+    for (unsigned int i = 0; i != sizeof(data) / sizeof(a_f64_t); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf("1/sqrt(%g):\t%-10g%-10g\n", a_double_c(data[i]),
-               1 / a_double_c(A_F64_F1(sqrt, data[i])),
-               a_double_c(a_f64_rsqrt(data[i])));
+        printf("1/sqrt(%g):\t%-10g%-10g\n", a_cast_s(double, data[i]),
+               1 / a_cast_s(double, A_F64_F1(sqrt, data[i])),
+               a_cast_s(double, a_f64_rsqrt(data[i])));
 #endif /* MAIN_ONCE */
     }
 }
@@ -103,7 +103,7 @@ static void test_f32_hypot(void)
     a_f32_t y = A_F32_C(1e38);
     a_f32_t z = a_f32_hypot(x, y);
 #if defined(MAIN_ONCE)
-    printf("hypot(%g,%g)=%g\n", a_f64_c(x), a_f64_c(y), a_f64_c(z));
+    printf("hypot(%g,%g)=%g\n", a_cast_s(double, x), a_cast_s(double, y), a_cast_s(double, z));
 #else /* !MAIN_ONCE */
     (void)(x);
     (void)(y);
@@ -139,6 +139,51 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     test_f64_rsqrt();
     test_f32_hypot();
     test_f64_hypot();
+    {
+        a_f64_t min = A_F64_MIN;
+        a_f64_t max = A_F64_MAX;
+        a_f64_t inf = A_F64_INF;
+        a_f64_t nan = A_F64_NAN;
+#if defined(MAIN_ONCE)
+        printf("64 min = %-12g max = %g\n", min, max);
+        printf("64 inf = %-12g nan = %g\n", inf, nan);
+#else /* !MAIN_ONCE */
+        (void)(min);
+        (void)(max);
+        (void)(inf);
+        (void)(nan);
+#endif /* MAIN_ONCE */
+    }
+    {
+        a_f32_t min = A_F32_MIN;
+        a_f32_t max = A_F32_MAX;
+        a_f32_t inf = A_F32_INF;
+        a_f32_t nan = A_F32_NAN;
+#if defined(MAIN_ONCE)
+        printf("32 min = %-12g max = %g\n", a_cast_s(double, min), a_cast_s(double, max));
+        printf("32 inf = %-12g nan = %g\n", a_cast_s(double, inf), a_cast_s(double, nan));
+#else /* !MAIN_ONCE */
+        (void)(min);
+        (void)(max);
+        (void)(inf);
+        (void)(nan);
+#endif /* MAIN_ONCE */
+    }
+    {
+        a_float_t min = A_FLOAT_MIN;
+        a_float_t max = A_FLOAT_MAX;
+        a_float_t inf = A_FLOAT_INF;
+        a_float_t nan = A_FLOAT_NAN;
+#if defined(MAIN_ONCE)
+        printf("min = " A_FLOAT_PRI("-12", "g ") "max = " A_FLOAT_PRI("", "g\n"), min, max);
+        printf("inf = " A_FLOAT_PRI("-12", "g ") "nan = " A_FLOAT_PRI("", "g\n"), inf, nan);
+#else /* !MAIN_ONCE */
+        (void)(min);
+        (void)(max);
+        (void)(inf);
+        (void)(nan);
+#endif /* MAIN_ONCE */
+    }
     return 0;
 }
 
