@@ -54,7 +54,7 @@ typedef struct a_avl_s
 A_INTERN a_avl_s *a_avl_parent(a_avl_s const *const node)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
-    return a_cast_r(a_avl_s *, node->_parent & ~a_uptr_c(3));
+    return a_cast_r(a_avl_s *, node->_parent & ~a_uptr_c(, 3));
 #else /* !A_SIZE_POINTER */
     return node->parent;
 #endif /* A_SIZE_POINTER */

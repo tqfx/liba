@@ -70,7 +70,7 @@ static void check_tree(a_avl_s *node) // NOLINT
 
 static int intcmp(void const *lhs, void const *rhs)
 {
-    return *A_INT_P(lhs) - *A_INT_P(rhs);
+    return *a_int_c(const *, lhs) - *a_int_c(const *, rhs);
 }
 
 static int test(int argc, char *argv[])

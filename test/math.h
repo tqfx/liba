@@ -4,6 +4,10 @@
 #include "test.h"
 #include "a/math.h"
 
+#if A_PREREQ_GNUC(4, 6) || __has_warning("-Wdouble-promotion")
+#pragma GCC diagnostic ignored "-Wdouble-promotion"
+#endif /* -Wdouble-promotion */
+
 static void test_sq(void)
 {
     int x = 2;
@@ -70,9 +74,7 @@ static void test_f32_rsqrt(void)
     for (unsigned int i = 0; i != sizeof(data) / sizeof(a_f32_t); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf("1/sqrt(%g):\t%-10g%-10g\n", a_cast_s(double, data[i]),
-               1 / a_cast_s(double, A_F32_F1(sqrt, data[i])),
-               a_cast_s(double, a_f32_rsqrt(data[i])));
+        printf("1/sqrt(%g):\t%-10g%-10g\n", data[i], 1 / a_f32_sqrt(data[i]), a_f32_rsqrt(data[i]));
 #endif /* MAIN_ONCE */
     }
 }
@@ -90,9 +92,7 @@ static void test_f64_rsqrt(void)
     for (unsigned int i = 0; i != sizeof(data) / sizeof(a_f64_t); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf("1/sqrt(%g):\t%-10g%-10g\n", a_cast_s(double, data[i]),
-               1 / a_cast_s(double, A_F64_F1(sqrt, data[i])),
-               a_cast_s(double, a_f64_rsqrt(data[i])));
+        printf("1/sqrt(%g):\t%-10g%-10g\n", data[i], 1 / a_f64_sqrt(data[i]), a_f64_rsqrt(data[i]));
 #endif /* MAIN_ONCE */
     }
 }
@@ -103,7 +103,7 @@ static void test_f32_hypot(void)
     a_f32_t y = A_F32_C(1e38);
     a_f32_t z = a_f32_hypot(x, y);
 #if defined(MAIN_ONCE)
-    printf("hypot(%g,%g)=%g\n", a_cast_s(double, x), a_cast_s(double, y), a_cast_s(double, z));
+    printf("hypot(%g,%g)=%g\n", x, y, z);
 #else /* !MAIN_ONCE */
     (void)(x);
     (void)(y);
@@ -160,8 +160,8 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         a_f32_t inf = A_F32_INF;
         a_f32_t nan = A_F32_NAN;
 #if defined(MAIN_ONCE)
-        printf("32 min = %-12g max = %g\n", a_cast_s(double, min), a_cast_s(double, max));
-        printf("32 inf = %-12g nan = %g\n", a_cast_s(double, inf), a_cast_s(double, nan));
+        printf("32 min = %-12g max = %g\n", min, max);
+        printf("32 inf = %-12g nan = %g\n", inf, nan);
 #else /* !MAIN_ONCE */
         (void)(min);
         (void)(max);

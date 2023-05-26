@@ -47,11 +47,11 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     if (argc > 1)
     {
         char *endptr = A_NULL;
-#if A_FLOAT_TYPE == A_FLOAT_SINGLE
+#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
         (void)strtof(argv[1], &endptr);
-#elif A_FLOAT_TYPE == A_FLOAT_DOUBLE
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
         (void)strtod(argv[1], &endptr);
-#elif A_FLOAT_TYPE == A_FLOAT_EXTEND
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
         (void)strtold(argv[1], &endptr);
 #endif /* A_FLOAT_TYPE */
         if (argv[1] == endptr)
@@ -66,11 +66,11 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_float_t arg[10] = {0};
     for (int i = start; i < argc; ++i)
     {
-#if A_FLOAT_TYPE == A_FLOAT_SINGLE
+#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
         arg[i - start] = strtof(argv[i], A_NULL);
-#elif A_FLOAT_TYPE == A_FLOAT_DOUBLE
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
         arg[i - start] = strtod(argv[i], A_NULL);
-#elif A_FLOAT_TYPE == A_FLOAT_EXTEND
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
         arg[i - start] = strtold(argv[i], A_NULL);
 #endif /* A_FLOAT_TYPE */
     }

@@ -45,9 +45,9 @@ static int LMODULE(rsqrt)(lua_State *const L)
     for (int i = 0; i++ != n;)
     {
         lua_Number x = luaL_checknumber(L, i);
-#if A_FLOAT_TYPE == A_FLOAT_SINGLE
+#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
         x = (lua_Number)a_f32_rsqrt((a_f32_t)x);
-#elif A_FLOAT_TYPE == A_FLOAT_DOUBLE
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
         x = (lua_Number)a_f64_rsqrt((a_f64_t)x);
 #else /* !A_FLOAT_TYPE */
         x = (lua_Number)(1 / sqrt((double)x));

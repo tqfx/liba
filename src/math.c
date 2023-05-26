@@ -286,11 +286,11 @@ a_float_t a_float_log1p(a_float_t const x)
 #undef a_float_hypot
 a_float_t a_float_hypot(a_float_t const x, a_float_t const y)
 {
-#if A_FLOAT_TYPE == A_FLOAT_SINGLE
+#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
     return a_f32_hypot(x, y);
-#elif A_FLOAT_TYPE == A_FLOAT_DOUBLE
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
     return a_f64_hypot(x, y);
-#elif A_FLOAT_TYPE == A_FLOAT_EXTEND
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
     return A_FLOAT_F1(sqrt, x * x + y * y);
 #endif /* A_FLOAT_TYPE */
 }

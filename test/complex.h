@@ -13,7 +13,7 @@
 static void test(a_complex_s a, a_complex_s b)
 {
     a_float_t x = 0;
-    a_complex_s c = a_complex_polar(A_FLOAT_C(1.0), a_float_c(A_PI_2));
+    a_complex_s c = a_complex_polar(A_FLOAT_C(1.0), a_float_c(, A_PI_2));
 
     x = a_complex_logabs(a);
 #if defined(MAIN_ONCE)
@@ -418,11 +418,11 @@ static void test_atrih(a_complex_s x)
     (void)(z);
 }
 
-#if A_FLOAT_TYPE == A_FLOAT_SINGLE
+#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
 #define strtoreal(str, endptr) strtof(str, endptr)
-#elif A_FLOAT_TYPE == A_FLOAT_DOUBLE
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
 #define strtoreal(str, endptr) strtod(str, endptr)
-#elif A_FLOAT_TYPE == A_FLOAT_EXTEND
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
 #define strtoreal(str, endptr) strtold(str, endptr)
 #endif /* A_FLOAT_TYPE */
 

@@ -81,7 +81,7 @@ A_INTERN char a_str_at(a_str_s const *const ctx, a_size_t const idx)
 */
 A_INTERN char a_str_idx(a_str_s const *const ctx, a_diff_t const idx)
 {
-    a_size_t const num = idx < 0 ? a_size_c(idx) + ctx->_num : a_size_c(idx);
+    a_size_t const num = idx < 0 ? a_size_c(, idx) + ctx->_num : a_size_c(, idx);
     return a_likely(num < ctx->_num) ? ctx->_ptr[num] : 0;
 }
 

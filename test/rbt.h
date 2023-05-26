@@ -24,7 +24,7 @@ static int int_cmp(void const *lhs, void const *rhs)
 
 static int intcmp(void const *lhs, void const *rhs)
 {
-    return *A_INT_P(lhs) - *A_INT_P(rhs);
+    return *a_int_c(const *, lhs) - *a_int_c(const *, rhs);
 }
 
 static int test(int argc, char *argv[])

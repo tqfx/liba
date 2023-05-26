@@ -8,11 +8,11 @@
 #define A_COMPLEX_T _Complex A_FLOAT_T
 #elif A_PREREQ_MSVC(18, 0)
 #include <complex.h> // 12.0
-#if A_FLOAT_TYPE == A_FLOAT_SINGLE
+#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
 #define A_COMPLEX_T _Fcomplex
-#elif A_FLOAT_TYPE == A_FLOAT_DOUBLE
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
 #define A_COMPLEX_T _Dcomplex
-#elif A_FLOAT_TYPE == A_FLOAT_EXTEND
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
 #define A_COMPLEX_T _Lcomplex
 #endif /* A_FLOAT_TYPE */
 #endif /* A_COMPLEX_T */
