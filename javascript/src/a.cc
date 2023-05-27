@@ -108,10 +108,10 @@ public:
         delete[] this->mkd;
         free(this->buf);
     }
-    void buff(unsigned int jmax)
+    void buff(unsigned int jnum)
     {
-        this->buf = realloc(this->buf, A_PID_FUZZY_BUF1(jmax));
-        a_pid_fuzzy_buf1(&this->ctx, this->buf, jmax);
+        this->buf = realloc(this->buf, A_PID_FUZZY_BUF1(jnum));
+        a_pid_fuzzy_buf1(&this->ctx, this->buf, jnum);
     }
     void base(emscripten::val jme, emscripten::val jmec, emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd)
     {

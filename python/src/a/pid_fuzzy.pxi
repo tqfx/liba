@@ -131,9 +131,9 @@ cdef class pid_fuzzy:
     def buf(self) -> int:
         return a_pid_fuzzy_bufnum(&self.ctx)
     @buf.setter
-    def buf(self, max: int):
-        self.ptr = PyMem_Realloc(self.ptr, A_PID_FUZZY_BUF1(max))
-        a_pid_fuzzy_buf1(&self.ctx, self.ptr, max)
+    def buf(self, num: int):
+        self.ptr = PyMem_Realloc(self.ptr, A_PID_FUZZY_BUF1(num))
+        a_pid_fuzzy_buf1(&self.ctx, self.ptr, num)
 
     @property
     def col(self) -> int:

@@ -284,9 +284,9 @@ static int LMODULE(pid_fuzzy_set)(lua_State *const L)
         break;
     case 0x0019E5B7: // buf
     {
-        unsigned int max = (unsigned int)luaL_checkinteger(L, -1);
-        void *ptr = l_alloc(L, a_pid_fuzzy_bufptr(ctx), A_PID_FUZZY_BUF1(max));
-        a_pid_fuzzy_buf1(ctx, ptr, max);
+        unsigned int num = (unsigned int)luaL_checkinteger(L, -1);
+        void *ptr = l_alloc(L, a_pid_fuzzy_bufptr(ctx), A_PID_FUZZY_BUF1(num));
+        a_pid_fuzzy_buf1(ctx, ptr, num);
         break;
     }
     case 0x10E9FF9D: // summax

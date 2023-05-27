@@ -6,11 +6,11 @@ cdef extern from "a/pid_fuzzy.h":
         a_float_t kp
         a_float_t ki
         a_float_t kd
-    a_size_t A_PID_FUZZY_BUF1(unsigned int max)
+    a_size_t A_PID_FUZZY_BUF1(unsigned int num)
     a_pid_fuzzy_s *a_pid_fuzzy_off(a_pid_fuzzy_s *ctx)
     a_pid_fuzzy_s *a_pid_fuzzy_inc(a_pid_fuzzy_s *ctx)
     a_pid_fuzzy_s *a_pid_fuzzy_pos(a_pid_fuzzy_s *ctx, a_float_t max)
-    a_pid_fuzzy_s *a_pid_fuzzy_buf1(a_pid_fuzzy_s *ctx, void *ptr, a_size_t max)
+    a_pid_fuzzy_s *a_pid_fuzzy_buf1(a_pid_fuzzy_s *ctx, void *ptr, a_size_t num)
     a_pid_fuzzy_s *a_pid_fuzzy_kpid(a_pid_fuzzy_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd)
     a_pid_fuzzy_s *a_pid_fuzzy_buff(a_pid_fuzzy_s *ctx, unsigned int *idx, a_float_t *mms, a_float_t *mat)
     a_pid_fuzzy_s *a_pid_fuzzy_setv(a_pid_fuzzy_s *ctx, a_float_t *out, a_float_t *fdb, a_float_t *sum, a_float_t *ec, a_float_t *e)

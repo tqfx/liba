@@ -111,11 +111,11 @@ a_pid_fuzzy_s *a_pid_fuzzy_kpid(a_pid_fuzzy_s *const ctx, a_float_t const kp, a_
     return ctx;
 }
 
-a_pid_fuzzy_s *a_pid_fuzzy_buf1(a_pid_fuzzy_s *const ctx, void *ptr, a_size_t max)
+a_pid_fuzzy_s *a_pid_fuzzy_buf1(a_pid_fuzzy_s *const ctx, void *ptr, a_size_t num)
 {
-    a_pid_fuzzy_set_bufmax(ctx, (unsigned int)max);
+    a_pid_fuzzy_set_bufnum(ctx, (unsigned int)num);
     ctx->idx = (unsigned int *)ptr;
-    ptr = (a_byte_t *)ptr + sizeof(unsigned int) * 2 * max;
+    ptr = (a_byte_t *)ptr + sizeof(unsigned int) * 2 * num;
     ctx->val = (a_float_t *)ptr;
     return ctx;
 }

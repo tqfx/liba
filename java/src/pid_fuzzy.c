@@ -189,7 +189,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(pid_1fuzzy_buff)(JNIEnv *jenv, jobject jobj, 
     j_pid_get(&jctx.pid, &ctx.pid);
     (*jenv)->SetObjectField(jenv, jobj, jctx.idx, (*jenv)->NewIntArray(jenv, A_PID_FUZZY_IDX(jnum)));
     (*jenv)->SetObjectField(jenv, jobj, jctx.val, (*jenv)->NewDoubleArray(jenv, A_PID_FUZZY_VAL(jnum)));
-    a_pid_fuzzy_set_bufmax(&ctx, (unsigned int)jnum);
+    a_pid_fuzzy_set_bufnum(&ctx, (unsigned int)jnum);
     j_pid_set(&jctx.pid, &ctx.pid);
     return jobj;
 }

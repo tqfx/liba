@@ -68,12 +68,12 @@ extern "C" {
 #endif /* LIBA_PID_FUZZY_C */
 
 #if !defined A_HAVE_INLINE || defined(LIBA_PID_FUZZY_C)
-A_EXTERN a_size_t A_PID_FUZZY_BUF1(unsigned int max);
+A_EXTERN a_size_t A_PID_FUZZY_BUF1(unsigned int num);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_PID_FUZZY_C)
-A_INTERN a_size_t A_PID_FUZZY_BUF1(unsigned int const max)
+A_INTERN a_size_t A_PID_FUZZY_BUF1(unsigned int const num)
 {
-    return sizeof(unsigned int) * 2 * max + sizeof(a_float_t) * (2 + max) * max;
+    return sizeof(unsigned int) * 2 * num + sizeof(a_float_t) * (2 + num) * num;
 }
 #endif /* A_HAVE_INLINE */
 #define A_PID_FUZZY_BUF1(N) (sizeof(unsigned int) * 2 * (N) + sizeof(a_float_t) * (2 + (N)) * (N))
@@ -95,17 +95,17 @@ A_EXTERN unsigned int a_pid_fuzzy_bufnum(a_pid_fuzzy_s const *ctx);
 #if defined(A_HAVE_INLINE) || defined(LIBA_PID_FUZZY_C)
 A_INTERN unsigned int a_pid_fuzzy_bufnum(a_pid_fuzzy_s const *const ctx)
 {
-    return ctx->pid.num >> A_PID_NUM_BITH;
+    return ctx->pid.reg >> A_PID_REG_BITH;
 }
 #endif /* A_HAVE_INLINE */
 
 #if !defined A_HAVE_INLINE || defined(LIBA_PID_FUZZY_C)
-A_EXTERN void a_pid_fuzzy_set_bufmax(a_pid_fuzzy_s *ctx, unsigned int max);
+A_EXTERN void a_pid_fuzzy_set_bufnum(a_pid_fuzzy_s *ctx, unsigned int num);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_PID_FUZZY_C)
-A_INTERN void a_pid_fuzzy_set_bufmax(a_pid_fuzzy_s *const ctx, unsigned int const max)
+A_INTERN void a_pid_fuzzy_set_bufnum(a_pid_fuzzy_s *const ctx, unsigned int const num)
 {
-    ctx->pid.num = (ctx->pid.num & A_PID_NUM_MSK) | (max << A_PID_NUM_BITH);
+    ctx->pid.reg = (ctx->pid.reg & A_PID_REG_MSK) | (num << A_PID_REG_BITH);
 }
 #endif /* A_HAVE_INLINE */
 
@@ -115,7 +115,7 @@ A_EXTERN unsigned int a_pid_fuzzy_col(a_pid_fuzzy_s const *ctx);
 #if defined(A_HAVE_INLINE) || defined(LIBA_PID_FUZZY_C)
 A_INTERN unsigned int a_pid_fuzzy_col(a_pid_fuzzy_s const *const ctx)
 {
-    return ctx->pid.reg >> A_PID_REG_BITH;
+    return ctx->pid.num >> A_PID_NUM_BITH;
 }
 #endif /* A_HAVE_INLINE */
 
@@ -125,7 +125,7 @@ A_EXTERN void a_pid_fuzzy_set_col(a_pid_fuzzy_s *ctx, unsigned int col);
 #if defined(A_HAVE_INLINE) || defined(LIBA_PID_FUZZY_C)
 A_INTERN void a_pid_fuzzy_set_col(a_pid_fuzzy_s *const ctx, unsigned int const col)
 {
-    ctx->pid.reg = (ctx->pid.reg & A_PID_REG_MSK) | (col << A_PID_REG_BITH);
+    ctx->pid.num = (ctx->pid.num & A_PID_NUM_MSK) | (col << A_PID_NUM_BITH);
 }
 #endif /* A_HAVE_INLINE */
 
@@ -172,10 +172,10 @@ A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_kpid(a_pid_fuzzy_s *ctx, a_float_t kp, a_flo
 /*!
  @brief set one cache buffer for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
- @param[in] ptr points to a buffer at least A_PID_FUZZY_BUF1(max)
- @param[in] max the maximum number triggered by the rule
+ @param[in] ptr points to a buffer at least A_PID_FUZZY_BUF1(num)
+ @param[in] num the maximum number triggered by the rule
 */
-A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_buf1(a_pid_fuzzy_s *ctx, void *ptr, a_size_t max);
+A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_buf1(a_pid_fuzzy_s *ctx, void *ptr, a_size_t num);
 
 /*!
  @brief set buffer for fuzzy PID controller
