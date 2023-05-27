@@ -33,10 +33,6 @@ target("test/crc")
     building({"crc.c", "crc.cpp"})
 target_end()
 
-target("test/fpid")
-    building({"fpid.c", "fpid.cpp"})
-target_end()
-
 target("test/list")
     building({"list.c", "list.cpp"})
 target_end()
@@ -59,6 +55,10 @@ target_end()
 
 target("test/pid")
     building({"pid.c", "pid.cpp"})
+target_end()
+
+target("test/pid_fuzzy")
+    building({"pid_fuzzy.c", "pid_fuzzy.cpp"})
 target_end()
 
 target("test/poly")

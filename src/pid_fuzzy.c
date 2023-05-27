@@ -1,45 +1,45 @@
-#define LIBA_FPID_C
-#include "fpid.h"
+#define LIBA_PID_FUZZY_C
+#include "pid_fuzzy.h"
 
-a_float_t a_fpid_op_or(a_float_t const l, a_float_t const r) { return l + r - l * r; }
+a_float_t a_pid_fuzzy_op_or(a_float_t const l, a_float_t const r) { return l + r - l * r; }
 
-a_float_t a_fpid_op_and(a_float_t const l, a_float_t const r) { return l * r; }
+a_float_t a_pid_fuzzy_op_and(a_float_t const l, a_float_t const r) { return l * r; }
 
-a_float_t a_fpid_op_equ(a_float_t const l, a_float_t const r)
+a_float_t a_pid_fuzzy_op_equ(a_float_t const l, a_float_t const r)
 {
     return a_float_sqrt(l * r) * a_float_sqrt(1 - (1 - l) * (1 - r));
 }
 
-void a_fpid_set_op(a_fpid_s *const ctx, unsigned int op)
+void a_pid_fuzzy_set_op(a_pid_fuzzy_s *const ctx, unsigned int op)
 {
-    op &= A_FPID_FUZZY_MSK;
-    ctx->pid.reg = (~A_FPID_FUZZY_MSK & ctx->pid.reg) | op;
+    op &= A_PID_FUZZY_MSK;
+    ctx->pid.reg = (~A_PID_FUZZY_MSK & ctx->pid.reg) | op;
     switch (op)
     {
-    case A_FPID_OR_ALGEBRA:
-        ctx->op = a_fpid_op_or;
+    case A_PID_FUZZY_OR_ALGEBRA:
+        ctx->op = a_pid_fuzzy_op_or;
         break;
-    case A_FPID_OR_BOUNDED:
-    case A_FPID_AND_DEFAULT:
+    case A_PID_FUZZY_OR_BOUNDED:
+    case A_PID_FUZZY_AND_DEFAULT:
         ctx->op = a_float_min;
         break;
-    case A_FPID_AND_ALGEBRA:
-        ctx->op = a_fpid_op_and;
+    case A_PID_FUZZY_AND_ALGEBRA:
+        ctx->op = a_pid_fuzzy_op_and;
         break;
-    case A_FPID_AND_BOUNDED:
-    case A_FPID_OR_DEFAULT:
+    case A_PID_FUZZY_AND_BOUNDED:
+    case A_PID_FUZZY_OR_DEFAULT:
         ctx->op = a_float_max;
         break;
-    case A_FPID_EQU:
+    case A_PID_FUZZY_EQU:
     default:
-        ctx->op = a_fpid_op_equ;
+        ctx->op = a_pid_fuzzy_op_equ;
     }
 }
 
-unsigned int a_fpid_mf(a_float_t const *a, a_float_t const x, unsigned int *idx, a_float_t *val)
+unsigned int a_pid_fuzzy_mf(a_float_t const *a, a_float_t const x, unsigned int *idx, a_float_t *val)
 {
-    unsigned int num = 0;
     int e = A_MF_NUL;
+    unsigned int num = 0;
     for (unsigned int i = 0; (void)(e = (int)*a++), e != A_MF_NUL; ++i)
     {
         a_float_t y = 0;
@@ -84,25 +84,25 @@ out:
     return num;
 }
 
-a_fpid_s *a_fpid_off(a_fpid_s *const ctx)
+a_pid_fuzzy_s *a_pid_fuzzy_off(a_pid_fuzzy_s *const ctx)
 {
     a_pid_off(&ctx->pid);
     return ctx;
 }
 
-a_fpid_s *a_fpid_inc(a_fpid_s *const ctx)
+a_pid_fuzzy_s *a_pid_fuzzy_inc(a_pid_fuzzy_s *const ctx)
 {
     a_pid_inc(&ctx->pid);
     return ctx;
 }
 
-a_fpid_s *a_fpid_pos(a_fpid_s *const ctx, a_float_t const max)
+a_pid_fuzzy_s *a_pid_fuzzy_pos(a_pid_fuzzy_s *const ctx, a_float_t const max)
 {
     a_pid_pos(&ctx->pid, max);
     return ctx;
 }
 
-a_fpid_s *a_fpid_kpid(a_fpid_s *const ctx, a_float_t const kp, a_float_t const ki, a_float_t const kd)
+a_pid_fuzzy_s *a_pid_fuzzy_kpid(a_pid_fuzzy_s *const ctx, a_float_t const kp, a_float_t const ki, a_float_t const kd)
 {
     a_pid_kpid(&ctx->pid, kp, ki, kd);
     ctx->kp = kp;
@@ -111,33 +111,33 @@ a_fpid_s *a_fpid_kpid(a_fpid_s *const ctx, a_float_t const kp, a_float_t const k
     return ctx;
 }
 
-a_fpid_s *a_fpid_buf1(a_fpid_s *const ctx, void *ptr, a_size_t max)
+a_pid_fuzzy_s *a_pid_fuzzy_buf1(a_pid_fuzzy_s *const ctx, void *ptr, a_size_t max)
 {
-    a_fpid_set_bufmax(ctx, (unsigned int)max);
+    a_pid_fuzzy_set_bufmax(ctx, (unsigned int)max);
     ctx->idx = (unsigned int *)ptr;
     ptr = (a_byte_t *)ptr + sizeof(unsigned int) * 2 * max;
     ctx->val = (a_float_t *)ptr;
     return ctx;
 }
 
-a_fpid_s *a_fpid_buff(a_fpid_s *const ctx, unsigned int *const idx, a_float_t *const val)
+a_pid_fuzzy_s *a_pid_fuzzy_buff(a_pid_fuzzy_s *const ctx, unsigned int *const idx, a_float_t *const val)
 {
     ctx->idx = idx;
     ctx->val = val;
     return ctx;
 }
 
-a_fpid_s *a_fpid_chan(a_fpid_s *const ctx, unsigned int const num, a_float_t *const out, a_float_t *const fdb,
-                      a_float_t *const sum, a_float_t *const ec, a_float_t *const e)
+a_pid_fuzzy_s *a_pid_fuzzy_chan(a_pid_fuzzy_s *const ctx, unsigned int const num, a_float_t *const out, a_float_t *const fdb,
+                                a_float_t *const sum, a_float_t *const ec, a_float_t *const e)
 {
     a_pid_chan(&ctx->pid, num, out, fdb, sum, ec, e);
     return ctx;
 }
 
-a_fpid_s *a_fpid_base(a_fpid_s *const ctx, unsigned int const col, a_float_t const *const me, a_float_t const *const mec,
-                      a_float_t const *const mkp, a_float_t const *const mki, a_float_t const *const mkd)
+a_pid_fuzzy_s *a_pid_fuzzy_base(a_pid_fuzzy_s *const ctx, unsigned int const col, a_float_t const *const me, a_float_t const *const mec,
+                                a_float_t const *const mkp, a_float_t const *const mki, a_float_t const *const mkd)
 {
-    a_fpid_set_col(ctx, col);
+    a_pid_fuzzy_set_col(ctx, col);
     ctx->me = me;
     ctx->mec = mec;
     ctx->mkp = mkp;
@@ -146,12 +146,12 @@ a_fpid_s *a_fpid_base(a_fpid_s *const ctx, unsigned int const col, a_float_t con
     return ctx;
 }
 
-a_fpid_s *a_fpid_init(a_fpid_s *const ctx, a_float_t const dt, unsigned int const col, a_float_t const *const me, a_float_t const *const mec,
-                      a_float_t const *const mkp, a_float_t const *const mki, a_float_t const *const mkd, a_float_t const min, a_float_t const max)
+a_pid_fuzzy_s *a_pid_fuzzy_init(a_pid_fuzzy_s *const ctx, a_float_t const dt, unsigned int const col, a_float_t const *const me, a_float_t const *const mec,
+                                a_float_t const *const mkp, a_float_t const *const mki, a_float_t const *const mkd, a_float_t const min, a_float_t const max)
 {
     a_pid_init(&ctx->pid, dt, min, max);
-    a_fpid_base(ctx, col, me, mec, mkp, mki, mkd);
-    ctx->op = a_fpid_op_equ;
+    a_pid_fuzzy_base(ctx, col, me, mec, mkp, mki, mkd);
+    ctx->op = a_pid_fuzzy_op_equ;
     ctx->idx = A_NULL;
     ctx->val = A_NULL;
     ctx->kp = 0;
@@ -160,24 +160,26 @@ a_fpid_s *a_fpid_init(a_fpid_s *const ctx, a_float_t const dt, unsigned int cons
     return ctx;
 }
 
-a_fpid_s *a_fpid_exit(a_fpid_s *const ctx) { return a_fpid_zero(ctx); }
+a_pid_fuzzy_s *a_pid_fuzzy_exit(a_pid_fuzzy_s *const ctx) { return a_pid_fuzzy_zero(ctx); }
 
-a_fpid_s *a_fpid_zero(a_fpid_s *const ctx)
+a_pid_fuzzy_s *a_pid_fuzzy_zero(a_pid_fuzzy_s *const ctx)
 {
     a_pid_zero(&ctx->pid);
     return ctx;
 }
 
-static void a_fpid_iter_(a_fpid_s *const ctx, unsigned int const col, a_float_t ec, a_float_t e)
+static void a_pid_fuzzy_iter_(a_pid_fuzzy_s *const ctx, unsigned int const col, a_float_t ec, a_float_t e)
 {
-    a_float_t kv[3] = {0, 0, 0};
+    a_float_t kp = 0;
+    a_float_t ki = 0;
+    a_float_t kd = 0;
     /* calculate membership */
-    unsigned int const ne = a_fpid_mf(ctx->me, e, ctx->idx, ctx->val);
+    unsigned int const ne = a_pid_fuzzy_mf(ctx->me, e, ctx->idx, ctx->val);
     if (!ne)
     {
         goto pid;
     }
-    unsigned int const nec = a_fpid_mf(ctx->mec, ec, ctx->idx + ne, ctx->val + ne);
+    unsigned int const nec = a_pid_fuzzy_mf(ctx->mec, ec, ctx->idx + ne, ctx->val + ne);
     if (!nec)
     {
         goto pid;
@@ -205,10 +207,10 @@ static void a_fpid_iter_(a_fpid_s *const ctx, unsigned int const col, a_float_t 
             unsigned int const idx = col * ctx->idx[i];
             for (unsigned int j = 0; j != nec; ++j) /* mat(i,j) * kp(e[i],ec[j]) */
             {
-                kv[0] += mat[row + j] * ctx->mkp[idx + ctx->idx[ne + j]];
+                kp += mat[row + j] * ctx->mkp[idx + ctx->idx[ne + j]];
             }
         }
-        kv[0] *= inv;
+        kp *= inv;
     }
     if (ctx->mki)
     {
@@ -218,10 +220,10 @@ static void a_fpid_iter_(a_fpid_s *const ctx, unsigned int const col, a_float_t 
             unsigned int const idx = col * ctx->idx[i];
             for (unsigned int j = 0; j != nec; ++j) /* mat(i,j) * ki(e[i],ec[j]) */
             {
-                kv[1] += mat[row + j] * ctx->mki[idx + ctx->idx[ne + j]];
+                ki += mat[row + j] * ctx->mki[idx + ctx->idx[ne + j]];
             }
         }
-        kv[1] *= inv;
+        ki *= inv;
     }
     if (ctx->mkd)
     {
@@ -231,33 +233,33 @@ static void a_fpid_iter_(a_fpid_s *const ctx, unsigned int const col, a_float_t 
             unsigned int const idx = col * ctx->idx[i];
             for (unsigned int j = 0; j != nec; ++j) /* mat(i,j) * kd(e[i],ec[j]) */
             {
-                kv[2] += mat[row + j] * ctx->mkd[idx + ctx->idx[ne + j]];
+                kd += mat[row + j] * ctx->mkd[idx + ctx->idx[ne + j]];
             }
         }
-        kv[2] *= inv;
+        kd *= inv;
     }
 pid:
-    a_pid_kpid(&ctx->pid, ctx->kp + kv[0], ctx->ki + kv[1], ctx->kd + kv[2]);
+    a_pid_kpid(&ctx->pid, ctx->kp + kp, ctx->ki + ki, ctx->kd + kd);
 }
 
-a_float_t a_fpid_outf(a_fpid_s *const ctx, a_float_t const set, a_float_t const fdb)
+a_float_t a_pid_fuzzy_outf(a_pid_fuzzy_s *const ctx, a_float_t const set, a_float_t const fdb)
 {
     a_float_t const e = set - fdb;
     a_float_t const ec = e - ctx->pid.e.f;
-    a_fpid_iter_(ctx, a_fpid_col(ctx), ec, e);
+    a_pid_fuzzy_iter_(ctx, a_pid_fuzzy_col(ctx), ec, e);
     return a_pid_outf_(&ctx->pid, a_pid_mode(&ctx->pid), set, fdb, ec, e);
 }
 
-a_float_t const *a_fpid_outp(a_fpid_s *const ctx, a_float_t const *const set, a_float_t const *const fdb)
+a_float_t const *a_pid_fuzzy_outp(a_pid_fuzzy_s *const ctx, a_float_t const *const set, a_float_t const *const fdb)
 {
-    unsigned int const col = a_fpid_col(ctx);
+    unsigned int const col = a_pid_fuzzy_col(ctx);
     unsigned int const num = a_pid_num(&ctx->pid);
     unsigned int const mode = a_pid_mode(&ctx->pid);
     for (unsigned int i = 0; i != num; ++i)
     {
         a_float_t const e = set[i] - fdb[i];
         a_float_t const ec = e - ctx->pid.e.p[i];
-        a_fpid_iter_(ctx, col, ec, e);
+        a_pid_fuzzy_iter_(ctx, col, ec, e);
         a_pid_outp_(&ctx->pid, mode, set[i], fdb[i], ec, e, i);
     }
     return ctx->pid.out.p;

@@ -20,11 +20,11 @@ unittest(a a a.log)
 
 unittest(complex complex)
 
-unittest(fpid fpid)
-
 unittest(mf mf)
 
 unittest(pid pid)
+
+unittest(pid_fuzzy pid_fuzzy)
 
 unittest(polytrack polytrack)
 

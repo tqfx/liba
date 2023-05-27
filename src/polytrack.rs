@@ -34,7 +34,15 @@ impl polytrack3 {
     }
 
     /// generation function for cubic polynomial trajectory
-    pub fn gen(&mut self, t0: float, t1: float, q0: float, q1: float, v0: float, v1: float) -> &mut Self {
+    pub fn gen(
+        &mut self,
+        t0: float,
+        t1: float,
+        q0: float,
+        q1: float,
+        v0: float,
+        v1: float,
+    ) -> &mut Self {
         unsafe { a_polytrack3_gen(self, t0, t1, q0, q1, v0, v1) };
         self
     }

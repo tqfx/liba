@@ -29,14 +29,14 @@ endfunction()
 building(_a a)
 unittest(_a a a.log)
 
-building(_fpid fpid)
-unittest(_fpid fpid)
-
 building(_mf mf)
 unittest(_mf mf)
 
 building(_pid pid)
 unittest(_pid pid)
+
+building(_pid_fuzzy pid_fuzzy)
+unittest(_pid_fuzzy pid_fuzzy)
 
 building(_polytrack3 polytrack3)
 unittest(_polytrack3 polytrack3)

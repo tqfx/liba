@@ -1,9 +1,9 @@
-#include "fpid.h"
-#include "liba_fpid.h"
+#include "pid_fuzzy.h"
+#include "liba_pid_fuzzy.h"
 
-j_fpid_s *j_fpid_new(JNIEnv *const jenv, jobject const jobj, j_fpid_s *const jctx)
+j_pid_fuzzy_s *j_pid_fuzzy_new(JNIEnv *const jenv, jobject const jobj, j_pid_fuzzy_s *const jctx)
 {
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "fpid");
+    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "pid_fuzzy");
     jfieldID pid = (*jenv)->GetFieldID(jenv, jcls, "pid", "L" CLASSPATH "pid;");
     j_pid_new(jenv, (*jenv)->GetObjectField(jenv, jobj, pid), &jctx->pid);
     jctx->me = (*jenv)->GetFieldID(jenv, jcls, "me", "[D");
@@ -29,7 +29,7 @@ j_fpid_s *j_fpid_new(JNIEnv *const jenv, jobject const jobj, j_fpid_s *const jct
     return jctx;
 }
 
-jobject j_fpid_get(j_fpid_s const *const jctx, a_fpid_s *const ctx)
+jobject j_pid_fuzzy_get(j_pid_fuzzy_s const *const jctx, a_pid_fuzzy_s *const ctx)
 {
     JNIEnv *jenv = jctx->jenv;
     jobject jobj = jctx->jobj;
@@ -77,7 +77,7 @@ jobject j_fpid_get(j_fpid_s const *const jctx, a_fpid_s *const ctx)
     return jctx->jobj;
 }
 
-jobject j_fpid_set(j_fpid_s const *const jctx, a_fpid_s const *const ctx)
+jobject j_pid_fuzzy_set(j_pid_fuzzy_s const *const jctx, a_pid_fuzzy_s const *const ctx)
 {
     JNIEnv *jenv = jctx->jenv;
     jobject jobj = jctx->jobj;
@@ -127,74 +127,74 @@ jobject j_fpid_set(j_fpid_s const *const jctx, a_fpid_s const *const ctx)
     return jctx->jobj;
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(fpid_inc)(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jobject JNICALL JPACKAGE(pid_1fuzzy_inc)(JNIEnv *jenv, jobject jobj)
 {
-    a_fpid_s ctx;
-    j_fpid_s jctx;
-    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
-    a_fpid_inc(&ctx);
-    return j_fpid_set(&jctx, &ctx);
+    a_pid_fuzzy_s ctx;
+    j_pid_fuzzy_s jctx;
+    j_pid_fuzzy_get(j_pid_fuzzy_new(jenv, jobj, &jctx), &ctx);
+    a_pid_fuzzy_inc(&ctx);
+    return j_pid_fuzzy_set(&jctx, &ctx);
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(fpid_off)(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jobject JNICALL JPACKAGE(pid_1fuzzy_off)(JNIEnv *jenv, jobject jobj)
 {
-    a_fpid_s ctx;
-    j_fpid_s jctx;
-    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
-    a_fpid_off(&ctx);
-    return j_fpid_set(&jctx, &ctx);
+    a_pid_fuzzy_s ctx;
+    j_pid_fuzzy_s jctx;
+    j_pid_fuzzy_get(j_pid_fuzzy_new(jenv, jobj, &jctx), &ctx);
+    a_pid_fuzzy_off(&ctx);
+    return j_pid_fuzzy_set(&jctx, &ctx);
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(fpid_pos)(JNIEnv *jenv, jobject jobj, jdouble jmax)
+JNIEXPORT jobject JNICALL JPACKAGE(pid_1fuzzy_pos)(JNIEnv *jenv, jobject jobj, jdouble jmax)
 {
-    a_fpid_s ctx;
-    j_fpid_s jctx;
-    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
-    a_fpid_pos(&ctx, jmax);
-    return j_fpid_set(&jctx, &ctx);
+    a_pid_fuzzy_s ctx;
+    j_pid_fuzzy_s jctx;
+    j_pid_fuzzy_get(j_pid_fuzzy_new(jenv, jobj, &jctx), &ctx);
+    a_pid_fuzzy_pos(&ctx, jmax);
+    return j_pid_fuzzy_set(&jctx, &ctx);
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(fpid_mode)(JNIEnv *jenv, jobject jobj, jint jmode)
+JNIEXPORT jobject JNICALL JPACKAGE(pid_1fuzzy_mode)(JNIEnv *jenv, jobject jobj, jint jmode)
 {
-    a_fpid_s ctx;
-    j_fpid_s jctx;
-    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
+    a_pid_fuzzy_s ctx;
+    j_pid_fuzzy_s jctx;
+    j_pid_fuzzy_get(j_pid_fuzzy_new(jenv, jobj, &jctx), &ctx);
     a_pid_set_mode(&ctx.pid, (unsigned int)jmode);
-    return j_fpid_set(&jctx, &ctx);
+    return j_pid_fuzzy_set(&jctx, &ctx);
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(fpid_time)(JNIEnv *jenv, jobject jobj, jdouble jdt)
+JNIEXPORT jobject JNICALL JPACKAGE(pid_1fuzzy_time)(JNIEnv *jenv, jobject jobj, jdouble jdt)
 {
-    a_fpid_s ctx;
-    j_fpid_s jctx;
-    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
+    a_pid_fuzzy_s ctx;
+    j_pid_fuzzy_s jctx;
+    j_pid_fuzzy_get(j_pid_fuzzy_new(jenv, jobj, &jctx), &ctx);
     a_pid_set_dt(&ctx.pid, jdt);
-    return j_fpid_set(&jctx, &ctx);
+    return j_pid_fuzzy_set(&jctx, &ctx);
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(fpid_kpid)(JNIEnv *jenv, jobject jobj, jdouble jkp, jdouble jki, jdouble jkd)
+JNIEXPORT jobject JNICALL JPACKAGE(pid_1fuzzy_kpid)(JNIEnv *jenv, jobject jobj, jdouble jkp, jdouble jki, jdouble jkd)
 {
-    a_fpid_s ctx;
-    j_fpid_s jctx;
-    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
-    a_fpid_kpid(&ctx, jkp, jki, jkd);
-    return j_fpid_set(&jctx, &ctx);
+    a_pid_fuzzy_s ctx;
+    j_pid_fuzzy_s jctx;
+    j_pid_fuzzy_get(j_pid_fuzzy_new(jenv, jobj, &jctx), &ctx);
+    a_pid_fuzzy_kpid(&ctx, jkp, jki, jkd);
+    return j_pid_fuzzy_set(&jctx, &ctx);
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(fpid_buff)(JNIEnv *jenv, jobject jobj, jint jnum)
+JNIEXPORT jobject JNICALL JPACKAGE(pid_1fuzzy_buff)(JNIEnv *jenv, jobject jobj, jint jnum)
 {
-    a_fpid_s ctx;
-    j_fpid_s jctx;
-    j_fpid_new(jenv, jobj, &jctx);
+    a_pid_fuzzy_s ctx;
+    j_pid_fuzzy_s jctx;
+    j_pid_fuzzy_new(jenv, jobj, &jctx);
     j_pid_get(&jctx.pid, &ctx.pid);
-    (*jenv)->SetObjectField(jenv, jobj, jctx.idx, (*jenv)->NewIntArray(jenv, A_FPID_IDX(jnum)));
-    (*jenv)->SetObjectField(jenv, jobj, jctx.val, (*jenv)->NewDoubleArray(jenv, A_FPID_VAL(jnum)));
-    a_fpid_set_bufmax(&ctx, (unsigned int)jnum);
+    (*jenv)->SetObjectField(jenv, jobj, jctx.idx, (*jenv)->NewIntArray(jenv, A_PID_FUZZY_IDX(jnum)));
+    (*jenv)->SetObjectField(jenv, jobj, jctx.val, (*jenv)->NewDoubleArray(jenv, A_PID_FUZZY_VAL(jnum)));
+    a_pid_fuzzy_set_bufmax(&ctx, (unsigned int)jnum);
     j_pid_set(&jctx.pid, &ctx.pid);
     return jobj;
 }
 
-static jobject concat(j_fpid_s const *jctx, jobjectArray jval)
+static jobject concat(j_pid_fuzzy_s const *jctx, jobjectArray jval)
 {
     jsize length = 0;
     JNIEnv *jenv = jctx->jenv;
@@ -215,54 +215,54 @@ static jobject concat(j_fpid_s const *jctx, jobjectArray jval)
     return obj;
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(fpid_base)(JNIEnv *jenv, jobject jobj, jobjectArray jme, jobjectArray jmec,
-                                              jobjectArray jmkp, jobjectArray jmki, jobjectArray jmkd)
+JNIEXPORT jobject JNICALL JPACKAGE(pid_1fuzzy_base)(JNIEnv *jenv, jobject jobj, jobjectArray jme, jobjectArray jmec,
+                                                    jobjectArray jmkp, jobjectArray jmki, jobjectArray jmkd)
 {
-    a_fpid_s ctx;
-    j_fpid_s jctx;
-    j_fpid_new(jenv, jobj, &jctx);
+    a_pid_fuzzy_s ctx;
+    j_pid_fuzzy_s jctx;
+    j_pid_fuzzy_new(jenv, jobj, &jctx);
     j_pid_get(&jctx.pid, &ctx.pid);
     (*jenv)->SetObjectField(jenv, jobj, jctx.me, concat(&jctx, jme));
     (*jenv)->SetObjectField(jenv, jobj, jctx.mec, concat(&jctx, jmec));
     (*jenv)->SetObjectField(jenv, jobj, jctx.mkp, concat(&jctx, jmkp));
     (*jenv)->SetObjectField(jenv, jobj, jctx.mki, concat(&jctx, jmki));
     (*jenv)->SetObjectField(jenv, jobj, jctx.mkd, concat(&jctx, jmkd));
-    a_fpid_set_col(&ctx, (unsigned int)(*jenv)->GetArrayLength(jenv, jmkp));
+    a_pid_fuzzy_set_col(&ctx, (unsigned int)(*jenv)->GetArrayLength(jenv, jmkp));
     j_pid_set(&jctx.pid, &ctx.pid);
     return jobj;
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(fpid_init)(JNIEnv *jenv, jobject jobj, jdouble jdt, jobjectArray jme, jobjectArray jmec,
-                                              jobjectArray jmkp, jobjectArray jmki, jobjectArray jmkd, jdouble jmin, jdouble jmax)
+JNIEXPORT jobject JNICALL JPACKAGE(pid_1fuzzy_init)(JNIEnv *jenv, jobject jobj, jdouble jdt, jobjectArray jme, jobjectArray jmec,
+                                                    jobjectArray jmkp, jobjectArray jmki, jobjectArray jmkd, jdouble jmin, jdouble jmax)
 {
-    a_fpid_s ctx;
-    j_fpid_s jctx;
+    a_pid_fuzzy_s ctx;
+    j_pid_fuzzy_s jctx;
     unsigned int col = (unsigned int)(*jenv)->GetArrayLength(jenv, jmkp);
-    j_fpid_new(jenv, jobj, &jctx);
+    j_pid_fuzzy_new(jenv, jobj, &jctx);
     (*jenv)->SetObjectField(jenv, jobj, jctx.me, concat(&jctx, jme));
     (*jenv)->SetObjectField(jenv, jobj, jctx.mec, concat(&jctx, jmec));
     (*jenv)->SetObjectField(jenv, jobj, jctx.mkp, concat(&jctx, jmkp));
     (*jenv)->SetObjectField(jenv, jobj, jctx.mki, concat(&jctx, jmki));
     (*jenv)->SetObjectField(jenv, jobj, jctx.mkd, concat(&jctx, jmkd));
-    a_fpid_init(&ctx, jdt, col, 0, 0, 0, 0, 0, jmin, jmax);
-    return j_fpid_set(&jctx, &ctx);
+    a_pid_fuzzy_init(&ctx, jdt, col, 0, 0, 0, 0, 0, jmin, jmax);
+    return j_pid_fuzzy_set(&jctx, &ctx);
 }
 
-JNIEXPORT jdouble JNICALL JPACKAGE(fpid_iter)(JNIEnv *jenv, jobject jobj, jdouble jset, jdouble jfdb)
+JNIEXPORT jdouble JNICALL JPACKAGE(pid_1fuzzy_iter)(JNIEnv *jenv, jobject jobj, jdouble jset, jdouble jfdb)
 {
-    a_fpid_s ctx;
-    j_fpid_s jctx;
-    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
-    jdouble jres = a_fpid_outf(&ctx, jset, jfdb);
-    j_fpid_set(&jctx, &ctx);
+    a_pid_fuzzy_s ctx;
+    j_pid_fuzzy_s jctx;
+    j_pid_fuzzy_get(j_pid_fuzzy_new(jenv, jobj, &jctx), &ctx);
+    jdouble jres = a_pid_fuzzy_outf(&ctx, jset, jfdb);
+    j_pid_fuzzy_set(&jctx, &ctx);
     return jres;
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(fpid_zero)(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jobject JNICALL JPACKAGE(pid_1fuzzy_zero)(JNIEnv *jenv, jobject jobj)
 {
-    a_fpid_s ctx;
-    j_fpid_s jctx;
-    j_fpid_get(j_fpid_new(jenv, jobj, &jctx), &ctx);
-    a_fpid_zero(&ctx);
-    return j_fpid_set(&jctx, &ctx);
+    a_pid_fuzzy_s ctx;
+    j_pid_fuzzy_s jctx;
+    j_pid_fuzzy_get(j_pid_fuzzy_new(jenv, jobj, &jctx), &ctx);
+    a_pid_fuzzy_zero(&ctx);
+    return j_pid_fuzzy_set(&jctx, &ctx);
 }

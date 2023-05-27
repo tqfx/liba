@@ -52,11 +52,11 @@ public:
     void off() { a_pid_off(&this->ctx); }
 };
 
-#include "a/fpid.h"
+#include "a/pid_fuzzy.h"
 
-class fpid
+class pid_fuzzy
 {
-    a_fpid_s ctx;
+    a_pid_fuzzy_s ctx;
     a_float_t *me;
     a_float_t *mec;
     a_float_t *mkp;
@@ -77,8 +77,8 @@ class fpid
     }
 
 public:
-    fpid(unsigned int jnum, a_float_t jdt, emscripten::val jme, emscripten::val jmec,
-         emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd, a_float_t jmin, a_float_t jmax)
+    pid_fuzzy(unsigned int jnum, a_float_t jdt, emscripten::val jme, emscripten::val jmec,
+              emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd, a_float_t jmin, a_float_t jmax)
     {
         this->me = from(jme);
         this->mec = from(jmec);
@@ -86,21 +86,21 @@ public:
         this->mki = from(jmki);
         this->mkd = from(jmkd);
         unsigned int col = jmkp["length"].as<unsigned int>();
-        a_fpid_init(&this->ctx, jdt, col, this->me, this->mec,
-                    this->mkp, this->mki, this->mkd, jmin, jmax);
-        this->buf = malloc(A_FPID_BUF1(jnum));
-        a_fpid_buf1(&this->ctx, this->buf, jnum);
-        a_fpid_inc(&this->ctx);
+        a_pid_fuzzy_init(&this->ctx, jdt, col, this->me, this->mec,
+                         this->mkp, this->mki, this->mkd, jmin, jmax);
+        this->buf = malloc(A_PID_FUZZY_BUF1(jnum));
+        a_pid_fuzzy_buf1(&this->ctx, this->buf, jnum);
+        a_pid_fuzzy_inc(&this->ctx);
     }
-    fpid(unsigned int jnum, a_float_t jdt, emscripten::val jme, emscripten::val jmec,
-         emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd, a_float_t jmin, a_float_t jmax, a_float_t jsum)
+    pid_fuzzy(unsigned int jnum, a_float_t jdt, emscripten::val jme, emscripten::val jmec,
+              emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd, a_float_t jmin, a_float_t jmax, a_float_t jsum)
     {
-        fpid(jnum, jdt, jme, jmec, jmkp, jmki, jmkd, jmin, jmax);
-        a_fpid_pos(&this->ctx, jsum);
+        pid_fuzzy(jnum, jdt, jme, jmec, jmkp, jmki, jmkd, jmin, jmax);
+        a_pid_fuzzy_pos(&this->ctx, jsum);
     }
-    ~fpid()
+    ~pid_fuzzy()
     {
-        a_fpid_exit(&this->ctx);
+        a_pid_fuzzy_exit(&this->ctx);
         delete[] this->me;
         delete[] this->mec;
         delete[] this->mkp;
@@ -110,8 +110,8 @@ public:
     }
     void buff(unsigned int jmax)
     {
-        this->buf = realloc(this->buf, A_FPID_BUF1(jmax));
-        a_fpid_buf1(&this->ctx, this->buf, jmax);
+        this->buf = realloc(this->buf, A_PID_FUZZY_BUF1(jmax));
+        a_pid_fuzzy_buf1(&this->ctx, this->buf, jmax);
     }
     void base(emscripten::val jme, emscripten::val jmec, emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd)
     {
@@ -121,21 +121,21 @@ public:
         this->mki = from(jmki);
         this->mkd = from(jmkd);
         unsigned int col = jmkp["length"].as<unsigned int>();
-        a_fpid_base(&this->ctx, col, this->me, this->mec, this->mkp, this->mki, this->mkd);
+        a_pid_fuzzy_base(&this->ctx, col, this->me, this->mec, this->mkp, this->mki, this->mkd);
     }
     a_float_t iter(a_float_t jset, a_float_t jfdb)
     {
-        return a_fpid_outf(&this->ctx, jset, jfdb);
+        return a_pid_fuzzy_outf(&this->ctx, jset, jfdb);
     }
-    void zero() { a_fpid_zero(&this->ctx); }
+    void zero() { a_pid_fuzzy_zero(&this->ctx); }
     void kpid(a_float_t jkp, a_float_t jki, a_float_t jkd)
     {
-        a_fpid_kpid(&this->ctx, jkp, jki, jkd);
+        a_pid_fuzzy_kpid(&this->ctx, jkp, jki, jkd);
     }
     void time(a_float_t jdt) { a_pid_set_dt(&this->ctx.pid, jdt); }
-    void pos(a_float_t jmax) { a_fpid_pos(&this->ctx, jmax); }
-    void inc() { a_fpid_inc(&this->ctx); }
-    void off() { a_fpid_off(&this->ctx); }
+    void pos(a_float_t jmax) { a_pid_fuzzy_pos(&this->ctx, jmax); }
+    void inc() { a_pid_fuzzy_inc(&this->ctx); }
+    void off() { a_pid_fuzzy_off(&this->ctx); }
 };
 
 #include "a/polytrack.h"
@@ -263,20 +263,20 @@ EMSCRIPTEN_BINDINGS(module)
         .function("pos", &pid::pos)
         .function("inc", &pid::inc)
         .function("off", &pid::off);
-    emscripten::class_<fpid>("fpid")
+    emscripten::class_<pid_fuzzy>("pid_fuzzy")
         .constructor<unsigned int, a_float_t, emscripten::val, emscripten::val,
                      emscripten::val, emscripten::val, emscripten::val, a_float_t, a_float_t>()
         .constructor<unsigned int, a_float_t, emscripten::val, emscripten::val,
                      emscripten::val, emscripten::val, emscripten::val, a_float_t, a_float_t, a_float_t>()
-        .function("iter", &fpid::iter)
-        .function("zero", &fpid::zero)
-        .function("buff", &fpid::buff)
-        .function("base", &fpid::base)
-        .function("kpid", &fpid::kpid)
-        .function("time", &fpid::time)
-        .function("pos", &fpid::pos)
-        .function("inc", &fpid::inc)
-        .function("off", &fpid::off);
+        .function("iter", &pid_fuzzy::iter)
+        .function("zero", &pid_fuzzy::zero)
+        .function("buff", &pid_fuzzy::buff)
+        .function("base", &pid_fuzzy::base)
+        .function("kpid", &pid_fuzzy::kpid)
+        .function("time", &pid_fuzzy::time)
+        .function("pos", &pid_fuzzy::pos)
+        .function("inc", &pid_fuzzy::inc)
+        .function("off", &pid_fuzzy::off);
     emscripten::class_<polytrack3>("polytrack3")
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()

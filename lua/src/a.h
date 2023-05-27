@@ -19,7 +19,7 @@ A_PUBLIC int LMODULE0(lua_State *L);
 A_PUBLIC int LMODULE_(mf, lua_State *L);
 A_PUBLIC int LMODULE_(tf, lua_State *L);
 A_PUBLIC int LMODULE_(pid, lua_State *L);
-A_PUBLIC int LMODULE_(fpid, lua_State *L);
+A_PUBLIC int LMODULE_(pid_fuzzy, lua_State *L);
 A_PUBLIC int LMODULE_(complex, lua_State *L);
 A_PUBLIC int LMODULE_(polytrack3, lua_State *L);
 A_PUBLIC int LMODULE_(polytrack5, lua_State *L);

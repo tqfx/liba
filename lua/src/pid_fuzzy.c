@@ -1,14 +1,14 @@
 /***
  fuzzy proportional integral derivative controller
- @module liba.fpid
+ @module liba.pid_fuzzy
 */
 
-#include "fpid.h"
+#include "pid_fuzzy.h"
 #include <string.h>
 
-static int LMODULE(fpid_init_)(lua_State *const L, a_fpid_s *const ctx)
+static int LMODULE(pid_fuzzy_init_)(lua_State *const L, a_pid_fuzzy_s *const ctx)
 {
-    void *const buf = a_fpid_bufptr(ctx);
+    void *const buf = a_pid_fuzzy_bufptr(ctx);
     unsigned int const num = (unsigned int)luaL_checkinteger(L, 1);
     a_float_t const dt = (a_float_t)luaL_checknumber(L, 2);
     luaL_checktype(L, 3, LUA_TTABLE);
@@ -24,11 +24,11 @@ static int LMODULE(fpid_init_)(lua_State *const L, a_fpid_s *const ctx)
     a_float_t const *const mkp = l_table_num_get(L, 5, ctx->mkp, 0);
     a_float_t const *const mki = l_table_num_get(L, 6, ctx->mki, 0);
     a_float_t const *const mkd = l_table_num_get(L, 7, ctx->mkd, 0);
-    a_fpid_init(ctx, dt, col, me, mec, mkp, mki, mkd, min, max);
-    a_fpid_buf1(ctx, l_alloc(L, buf, A_FPID_BUF1(num)), num);
+    a_pid_fuzzy_init(ctx, dt, col, me, mec, mkp, mki, mkd, min, max);
+    a_pid_fuzzy_buf1(ctx, l_alloc(L, buf, A_PID_FUZZY_BUF1(num)), num);
     lua_isnumber(L, 10)
-        ? a_fpid_pos(ctx, (a_float_t)lua_tonumber(L, 10))
-        : a_fpid_inc(ctx);
+        ? a_pid_fuzzy_pos(ctx, (a_float_t)lua_tonumber(L, 10))
+        : a_pid_fuzzy_inc(ctx);
     return 1;
 }
 
@@ -37,9 +37,9 @@ static int LMODULE(fpid_init_)(lua_State *const L, a_fpid_s *const ctx)
  @param ctx fuzzy PID controller userdata
  @function die
 */
-int LMODULE(fpid_die)(lua_State *const L)
+int LMODULE(pid_fuzzy_die)(lua_State *const L)
 {
-    a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, 1);
+    a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, 1);
     if (ctx)
     {
         ctx->me = (a_float_t const *)l_alloc(L, ctx->me, 0);
@@ -47,7 +47,7 @@ int LMODULE(fpid_die)(lua_State *const L)
         ctx->mkp = (a_float_t const *)l_alloc(L, ctx->mkp, 0);
         ctx->mki = (a_float_t const *)l_alloc(L, ctx->mki, 0);
         ctx->mkd = (a_float_t const *)l_alloc(L, ctx->mkd, 0);
-        ctx->idx = (unsigned int *)l_alloc(L, a_fpid_bufptr(ctx), 0);
+        ctx->idx = (unsigned int *)l_alloc(L, a_pid_fuzzy_bufptr(ctx), 0);
         ctx->val = 0;
     }
     return 0;
@@ -65,10 +65,10 @@ int LMODULE(fpid_die)(lua_State *const L)
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
- @treturn fpid fuzzy PID controller userdata
+ @treturn pid_fuzzy fuzzy PID controller userdata
  @function new
 */
-int LMODULE(fpid_new)(lua_State *const L)
+int LMODULE(pid_fuzzy_new)(lua_State *const L)
 {
     if (lua_gettop(L) > 8)
     {
@@ -76,11 +76,11 @@ int LMODULE(fpid_new)(lua_State *const L)
         {
             lua_remove(L, 1);
         }
-        a_fpid_s *const ctx = (a_fpid_s *)lua_newuserdata(L, sizeof(a_fpid_s));
-        a_zero(ctx, sizeof(a_fpid_s));
-        LMODULE2(fpid_meta_, L, 1);
+        a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_newuserdata(L, sizeof(a_pid_fuzzy_s));
+        a_zero(ctx, sizeof(a_pid_fuzzy_s));
+        LMODULE2(pid_fuzzy_meta_, L, 1);
         lua_setmetatable(L, -2);
-        return LMODULE2(fpid_init_, L, ctx);
+        return LMODULE2(pid_fuzzy_init_, L, ctx);
     }
     return 0;
 }
@@ -98,10 +98,10 @@ int LMODULE(fpid_new)(lua_State *const L)
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
- @treturn fpid fuzzy PID controller userdata
+ @treturn pid_fuzzy fuzzy PID controller userdata
  @function init
 */
-int LMODULE(fpid_init)(lua_State *const L)
+int LMODULE(pid_fuzzy_init)(lua_State *const L)
 {
     if (lua_gettop(L) > 9)
     {
@@ -110,10 +110,10 @@ int LMODULE(fpid_init)(lua_State *const L)
             lua_remove(L, 1);
         }
         luaL_checktype(L, 1, LUA_TUSERDATA);
-        a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, 1);
+        a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, 1);
         lua_pushvalue(L, 1);
         lua_remove(L, 1);
-        return LMODULE2(fpid_init_, L, ctx);
+        return LMODULE2(pid_fuzzy_init_, L, ctx);
     }
     return 0;
 }
@@ -126,14 +126,14 @@ int LMODULE(fpid_init)(lua_State *const L)
  @treturn number output
  @function iter
 */
-int LMODULE(fpid_iter)(lua_State *const L)
+int LMODULE(pid_fuzzy_iter)(lua_State *const L)
 {
-    a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, -3);
+    a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, -3);
     if (ctx)
     {
         a_float_t const set = (a_float_t)luaL_checknumber(L, -2);
         a_float_t const fdb = (a_float_t)luaL_checknumber(L, -1);
-        lua_pushnumber(L, (lua_Number)a_fpid_outf(ctx, set, fdb));
+        lua_pushnumber(L, (lua_Number)a_pid_fuzzy_outf(ctx, set, fdb));
         lua_pop(L, 2);
         return 1;
     }
@@ -143,15 +143,15 @@ int LMODULE(fpid_iter)(lua_State *const L)
 /***
  zero function for fuzzy PID controller
  @param ctx fuzzy PID controller userdata
- @treturn fpid fuzzy PID controller userdata
+ @treturn pid_fuzzy fuzzy PID controller userdata
  @function zero
 */
-int LMODULE(fpid_zero)(lua_State *const L)
+int LMODULE(pid_fuzzy_zero)(lua_State *const L)
 {
-    a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, -1);
+    a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, -1);
     if (ctx)
     {
-        a_fpid_zero(ctx);
+        a_pid_fuzzy_zero(ctx);
         return 1;
     }
     return 0;
@@ -165,12 +165,12 @@ int LMODULE(fpid_zero)(lua_State *const L)
  @tparam table mkp points to Kp's rule base table, the rule base must be square
  @tparam table mki points to Ki's rule base table, the rule base must be square
  @tparam table mkd points to Kd's rule base table, the rule base must be square
- @treturn fpid fuzzy PID controller userdata
+ @treturn pid_fuzzy fuzzy PID controller userdata
  @function buff
 */
-int LMODULE(fpid_base)(lua_State *const L)
+int LMODULE(pid_fuzzy_base)(lua_State *const L)
 {
-    a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, -6);
+    a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, -6);
     if (ctx)
     {
         unsigned int const num = (unsigned int)lua_rawlen(L, -3);
@@ -179,7 +179,7 @@ int LMODULE(fpid_base)(lua_State *const L)
         a_float_t const *const mkp = l_table_num_get(L, -3, ctx->mkp, 0);
         a_float_t const *const mki = l_table_num_get(L, -2, ctx->mki, 0);
         a_float_t const *const mkd = l_table_num_get(L, -1, ctx->mkd, 0);
-        a_fpid_base(ctx, num, me, mec, mkp, mki, mkd);
+        a_pid_fuzzy_base(ctx, num, me, mec, mkp, mki, mkd);
         lua_pop(L, 5);
         return 1;
     }
@@ -192,18 +192,18 @@ int LMODULE(fpid_base)(lua_State *const L)
  @tparam number kp proportional constant
  @tparam number ki integral constant
  @tparam number kd derivative constant
- @treturn fpid fuzzy PID controller userdata
+ @treturn pid_fuzzy fuzzy PID controller userdata
  @function kpid
 */
-int LMODULE(fpid_kpid)(lua_State *const L)
+int LMODULE(pid_fuzzy_kpid)(lua_State *const L)
 {
-    a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, -4);
+    a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, -4);
     if (ctx)
     {
         a_float_t const kp = (a_float_t)luaL_checknumber(L, -3);
         a_float_t const ki = (a_float_t)luaL_checknumber(L, -2);
         a_float_t const kd = (a_float_t)luaL_checknumber(L, -1);
-        a_fpid_kpid(ctx, kp, ki, kd);
+        a_pid_fuzzy_kpid(ctx, kp, ki, kd);
         lua_pop(L, 3);
         return 1;
     }
@@ -214,15 +214,15 @@ int LMODULE(fpid_kpid)(lua_State *const L)
  positional fuzzy PID controller
  @param ctx fuzzy PID controller userdata
  @tparam number max maximum intergral output
- @treturn fpid fuzzy PID controller userdata
+ @treturn pid_fuzzy fuzzy PID controller userdata
  @function pos
 */
-int LMODULE(fpid_pos)(lua_State *const L)
+int LMODULE(pid_fuzzy_pos)(lua_State *const L)
 {
-    a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, -2);
+    a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, -2);
     if (ctx)
     {
-        a_fpid_pos(ctx, (a_float_t)luaL_checknumber(L, -1));
+        a_pid_fuzzy_pos(ctx, (a_float_t)luaL_checknumber(L, -1));
         lua_pop(L, 1);
         return 1;
     }
@@ -232,15 +232,15 @@ int LMODULE(fpid_pos)(lua_State *const L)
 /***
  incremental fuzzy PID controller
  @param ctx fuzzy PID controller userdata
- @treturn fpid fuzzy PID controller userdata
+ @treturn pid_fuzzy fuzzy PID controller userdata
  @function inc
 */
-int LMODULE(fpid_inc)(lua_State *const L)
+int LMODULE(pid_fuzzy_inc)(lua_State *const L)
 {
-    a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, -1);
+    a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, -1);
     if (ctx)
     {
-        a_fpid_inc(ctx);
+        a_pid_fuzzy_inc(ctx);
         return 1;
     }
     return 0;
@@ -249,24 +249,24 @@ int LMODULE(fpid_inc)(lua_State *const L)
 /***
  turn off fuzzy PID controller
  @param ctx fuzzy PID controller userdata
- @treturn fpid fuzzy PID controller userdata
+ @treturn pid_fuzzy fuzzy PID controller userdata
  @function off
 */
-int LMODULE(fpid_off)(lua_State *const L)
+int LMODULE(pid_fuzzy_off)(lua_State *const L)
 {
-    a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, -1);
+    a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, -1);
     if (ctx)
     {
-        a_fpid_off(ctx);
+        a_pid_fuzzy_off(ctx);
         return 1;
     }
     return 0;
 }
 
-static int LMODULE(fpid_set)(lua_State *const L)
+static int LMODULE(pid_fuzzy_set)(lua_State *const L)
 {
     char const *const field = lua_tostring(L, 2);
-    a_fpid_s *const ctx = (a_fpid_s *)lua_touserdata(L, 1);
+    a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, 1);
     a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
     switch (hash)
     {
@@ -285,8 +285,8 @@ static int LMODULE(fpid_set)(lua_State *const L)
     case 0x0019E5B7: // buf
     {
         unsigned int max = (unsigned int)luaL_checkinteger(L, -1);
-        void *ptr = l_alloc(L, a_fpid_bufptr(ctx), A_FPID_BUF1(max));
-        a_fpid_buf1(ctx, ptr, max);
+        void *ptr = l_alloc(L, a_pid_fuzzy_bufptr(ctx), A_PID_FUZZY_BUF1(max));
+        a_pid_fuzzy_buf1(ctx, ptr, max);
         break;
     }
     case 0x10E9FF9D: // summax
@@ -307,10 +307,10 @@ static int LMODULE(fpid_set)(lua_State *const L)
     return 0;
 }
 
-static int LMODULE(fpid_get)(lua_State *const L)
+static int LMODULE(pid_fuzzy_get)(lua_State *const L)
 {
     char const *const field = lua_tostring(L, 2);
-    a_fpid_s const *const ctx = (a_fpid_s const *)lua_touserdata(L, 1);
+    a_pid_fuzzy_s const *const ctx = (a_pid_fuzzy_s const *)lua_touserdata(L, 1);
     a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
     switch (hash)
     {
@@ -348,46 +348,46 @@ static int LMODULE(fpid_get)(lua_State *const L)
         lua_pushnumber(L, (lua_Number)ctx->pid.e.f);
         break;
     case 0x001A25B4: // col
-        lua_pushinteger(L, (lua_Integer)a_fpid_col(ctx));
+        lua_pushinteger(L, (lua_Integer)a_pid_fuzzy_col(ctx));
         break;
     case 0x0019E5B7: // buf
-        lua_pushinteger(L, (lua_Integer)a_fpid_bufnum(ctx));
+        lua_pushinteger(L, (lua_Integer)a_pid_fuzzy_bufnum(ctx));
         break;
     case 0x0EB84F77: // mode
         lua_pushinteger(L, (lua_Integer)a_pid_mode(&ctx->pid));
         break;
     case 0x001D0204: // new
-        lua_pushcfunction(L, LMODULE(fpid_new));
+        lua_pushcfunction(L, LMODULE(pid_fuzzy_new));
         break;
     case 0x0E2ED8A0: // init
-        lua_pushcfunction(L, LMODULE(fpid_init));
+        lua_pushcfunction(L, LMODULE(pid_fuzzy_init));
         break;
     case 0x0E3068C8: // iter
-        lua_pushcfunction(L, LMODULE(fpid_iter));
+        lua_pushcfunction(L, LMODULE(pid_fuzzy_iter));
         break;
     case 0x1073A930: // zero
-        lua_pushcfunction(L, LMODULE(fpid_zero));
+        lua_pushcfunction(L, LMODULE(pid_fuzzy_zero));
         break;
     case 0x0D3B56FD: // base
-        lua_pushcfunction(L, LMODULE(fpid_base));
+        lua_pushcfunction(L, LMODULE(pid_fuzzy_base));
         break;
     case 0x0E73F9D8: // kpid
-        lua_pushcfunction(L, LMODULE(fpid_kpid));
+        lua_pushcfunction(L, LMODULE(pid_fuzzy_kpid));
         break;
     case 0x001D8D30: // pos
-        lua_pushcfunction(L, LMODULE(fpid_pos));
+        lua_pushcfunction(L, LMODULE(pid_fuzzy_pos));
         break;
     case 0x001BB75E: // inc
-        lua_pushcfunction(L, LMODULE(fpid_inc));
+        lua_pushcfunction(L, LMODULE(pid_fuzzy_inc));
         break;
     case 0x001D457F: // off
-        lua_pushcfunction(L, LMODULE(fpid_off));
+        lua_pushcfunction(L, LMODULE(pid_fuzzy_off));
         break;
     case 0xA65758B2: // __index
     {
         l_int_s const enums[] = {
-            {"col", (lua_Integer)a_fpid_col(ctx)},
-            {"buf", (lua_Integer)a_fpid_bufnum(ctx)},
+            {"col", (lua_Integer)a_pid_fuzzy_col(ctx)},
+            {"buf", (lua_Integer)a_pid_fuzzy_bufnum(ctx)},
             {"mode", (lua_Integer)a_pid_mode(&ctx->pid)},
             {NULL, 0},
         };
@@ -406,15 +406,15 @@ static int LMODULE(fpid_get)(lua_State *const L)
             {NULL, 0},
         };
         l_func_s const funcs[] = {
-            {"init", LMODULE(fpid_init)},
-            {"iter", LMODULE(fpid_iter)},
-            {"zero", LMODULE(fpid_zero)},
-            {"base", LMODULE(fpid_base)},
-            {"kpid", LMODULE(fpid_kpid)},
-            {"pos", LMODULE(fpid_pos)},
-            {"inc", LMODULE(fpid_inc)},
-            {"off", LMODULE(fpid_off)},
-            {"new", LMODULE(fpid_new)},
+            {"init", LMODULE(pid_fuzzy_init)},
+            {"iter", LMODULE(pid_fuzzy_iter)},
+            {"zero", LMODULE(pid_fuzzy_zero)},
+            {"base", LMODULE(pid_fuzzy_base)},
+            {"kpid", LMODULE(pid_fuzzy_kpid)},
+            {"pos", LMODULE(pid_fuzzy_pos)},
+            {"inc", LMODULE(pid_fuzzy_inc)},
+            {"off", LMODULE(pid_fuzzy_off)},
+            {"new", LMODULE(pid_fuzzy_new)},
             {NULL, NULL},
         };
         lua_createtable(L, 0, L_COUNT(enums) + L_COUNT(datas) + L_COUNT(funcs) - 3);
@@ -435,9 +435,9 @@ static int LMODULE(fpid_get)(lua_State *const L)
  @field OFF turn off fuzzy PID controller
  @field POS positional fuzzy PID controller
  @field INC incremental fuzzy PID controller
- @table fpid
+ @table pid_fuzzy
 */
-int LMODULE_(fpid, lua_State *const L)
+int LMODULE_(pid_fuzzy, lua_State *const L)
 {
     l_int_s const enums[] = {
         {"OFF", A_PID_OFF},
@@ -446,15 +446,15 @@ int LMODULE_(fpid, lua_State *const L)
         {NULL, 0},
     };
     l_func_s const funcs[] = {
-        {"init", LMODULE(fpid_init)},
-        {"iter", LMODULE(fpid_iter)},
-        {"zero", LMODULE(fpid_zero)},
-        {"base", LMODULE(fpid_base)},
-        {"kpid", LMODULE(fpid_kpid)},
-        {"pos", LMODULE(fpid_pos)},
-        {"inc", LMODULE(fpid_inc)},
-        {"off", LMODULE(fpid_off)},
-        {"new", LMODULE(fpid_new)},
+        {"init", LMODULE(pid_fuzzy_init)},
+        {"iter", LMODULE(pid_fuzzy_iter)},
+        {"zero", LMODULE(pid_fuzzy_zero)},
+        {"base", LMODULE(pid_fuzzy_base)},
+        {"kpid", LMODULE(pid_fuzzy_kpid)},
+        {"pos", LMODULE(pid_fuzzy_pos)},
+        {"inc", LMODULE(pid_fuzzy_inc)},
+        {"off", LMODULE(pid_fuzzy_off)},
+        {"new", LMODULE(pid_fuzzy_new)},
         {NULL, NULL},
     };
     lua_createtable(L, 0, L_COUNT(enums) + L_COUNT(funcs) - 2);
@@ -462,30 +462,30 @@ int LMODULE_(fpid, lua_State *const L)
     l_func_reg(L, -1, funcs);
     lua_createtable(L, 0, 2);
     l_func_set(L, -1, L_SET, LMODULE(setter));
-    l_func_set(L, -1, L_NEW, LMODULE(fpid_new));
+    l_func_set(L, -1, L_NEW, LMODULE(pid_fuzzy_new));
     lua_setmetatable(L, -2);
 
     l_func_s const metas[] = {
-        {L_NEW, LMODULE(fpid_iter)},
-        {L_DIE, LMODULE(fpid_die)},
-        {L_SET, LMODULE(fpid_set)},
-        {L_GET, LMODULE(fpid_get)},
+        {L_NEW, LMODULE(pid_fuzzy_iter)},
+        {L_DIE, LMODULE(pid_fuzzy_die)},
+        {L_SET, LMODULE(pid_fuzzy_set)},
+        {L_GET, LMODULE(pid_fuzzy_get)},
         {NULL, NULL},
     };
     lua_createtable(L, 0, L_COUNT(metas));
-    l_str_set(L, -1, L_NAME, "fpid");
+    l_str_set(L, -1, L_NAME, "pid_fuzzy");
     l_func_reg(L, -1, metas);
 
-    LMODULE2(fpid_meta_, L, 0);
-    LMODULE2(fpid_func_, L, 0);
+    LMODULE2(pid_fuzzy_meta_, L, 0);
+    LMODULE2(pid_fuzzy_func_, L, 0);
 
-    return LMODULE2(fpid_func_, L, 1);
+    return LMODULE2(pid_fuzzy_func_, L, 1);
 }
 
-int LMODULE(fpid_func_)(lua_State *const L, int const ret)
+int LMODULE(pid_fuzzy_func_)(lua_State *const L, int const ret)
 {
     // NOLINTNEXTLINE(performance-no-int-to-ptr)
-    void *const p = (void *)(intptr_t)LMODULE(fpid_func_);
+    void *const p = (void *)(intptr_t)LMODULE(pid_fuzzy_func_);
     if (ret)
     {
         lua_rawgetp(L, LUA_REGISTRYINDEX, p);
@@ -495,10 +495,10 @@ int LMODULE(fpid_func_)(lua_State *const L, int const ret)
     return 0;
 }
 
-int LMODULE(fpid_meta_)(lua_State *const L, int const ret)
+int LMODULE(pid_fuzzy_meta_)(lua_State *const L, int const ret)
 {
     // NOLINTNEXTLINE(performance-no-int-to-ptr)
-    void *const p = (void *)(intptr_t)LMODULE(fpid_meta_);
+    void *const p = (void *)(intptr_t)LMODULE(pid_fuzzy_meta_);
     if (ret)
     {
         lua_rawgetp(L, LUA_REGISTRYINDEX, p);

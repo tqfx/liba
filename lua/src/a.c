@@ -90,8 +90,8 @@ int LMODULE0(lua_State *const L)
     LMODULE_(pid, L);
     lua_rawset(L, -3);
 
-    lua_pushstring(L, "fpid");
-    LMODULE_(fpid, L);
+    lua_pushstring(L, "pid_fuzzy");
+    LMODULE_(pid_fuzzy, L);
     lua_rawset(L, -3);
 
     lua_pushstring(L, "complex");

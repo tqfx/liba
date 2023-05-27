@@ -1,11 +1,11 @@
 from a cimport *
-from a.fpid cimport *
+from a.pid_fuzzy cimport *
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-cdef class fpid:
+cdef class pid_fuzzy:
     '''fuzzy proportional integral derivative controller'''
-    cdef a_fpid_s ctx
+    cdef a_pid_fuzzy_s ctx
     cdef void *ptr
     cdef array me
     cdef array mec
@@ -23,22 +23,22 @@ cdef class fpid:
         cdef a_float_t *kp = <a_float_t *>self.mkp.data.as_voidptr
         cdef a_float_t *ki = <a_float_t *>self.mki.data.as_voidptr
         cdef a_float_t *kd = <a_float_t *>self.mkd.data.as_voidptr
-        a_fpid_init(&self.ctx, dt, <unsigned int>len(mkp), e, ec, kp, ki, kd, min, max)
+        a_pid_fuzzy_init(&self.ctx, dt, <unsigned int>len(mkp), e, ec, kp, ki, kd, min, max)
         if sum:
-            a_fpid_pos(&self.ctx, sum)
+            a_pid_fuzzy_pos(&self.ctx, sum)
         else:
-            a_fpid_inc(&self.ctx)
+            a_pid_fuzzy_inc(&self.ctx)
         self.buf = num
     def __call__(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
         '''calculate function for fuzzy PID controller'''
-        return a_fpid_outf(&self.ctx, set, fdb)
+        return a_pid_fuzzy_outf(&self.ctx, set, fdb)
     def __dealloc__(self):
         '''terminate function for fuzzy PID controller'''
-        a_fpid_exit(&self.ctx)
+        a_pid_fuzzy_exit(&self.ctx)
         PyMem_Free(self.ptr)
     def zero(self):
         '''zero function for fuzzy PID controller'''
-        a_fpid_zero(&self.ctx)
+        a_pid_fuzzy_zero(&self.ctx)
         return self
     def base(self, me, mec, mkp, mki, mkd):
         '''set rule base for fuzzy PID controller'''
@@ -52,23 +52,23 @@ cdef class fpid:
         cdef a_float_t *kp = <a_float_t *>self.mkp.data.as_voidptr
         cdef a_float_t *ki = <a_float_t *>self.mki.data.as_voidptr
         cdef a_float_t *kd = <a_float_t *>self.mkd.data.as_voidptr
-        a_fpid_base(&self.ctx, <unsigned int>len(mkp), e, ec, kp, ki, kd)
+        a_pid_fuzzy_base(&self.ctx, <unsigned int>len(mkp), e, ec, kp, ki, kd)
         return self
     def kpid(self, kp: a_float_t, ki: a_float_t, kd: a_float_t):
         '''set proportional integral derivative constant for fuzzy PID controller'''
-        a_fpid_kpid(&self.ctx, kp, ki, kd)
+        a_pid_fuzzy_kpid(&self.ctx, kp, ki, kd)
         return self
     def pos(self, max: a_float_t):
         '''positional fuzzy PID controller'''
-        a_fpid_pos(&self.ctx, max)
+        a_pid_fuzzy_pos(&self.ctx, max)
         return self
     def inc(self):
         '''incremental fuzzy PID controller'''
-        a_fpid_inc(&self.ctx)
+        a_pid_fuzzy_inc(&self.ctx)
         return self
     def off(self):
         '''turn off fuzzy PID controller'''
-        a_fpid_off(&self.ctx)
+        a_pid_fuzzy_off(&self.ctx)
         return self
 
     @property
@@ -129,15 +129,15 @@ cdef class fpid:
 
     @property
     def buf(self) -> int:
-        return a_fpid_bufnum(&self.ctx)
+        return a_pid_fuzzy_bufnum(&self.ctx)
     @buf.setter
     def buf(self, max: int):
-        self.ptr = PyMem_Realloc(self.ptr, A_FPID_BUF1(max))
-        a_fpid_buf1(&self.ctx, self.ptr, max)
+        self.ptr = PyMem_Realloc(self.ptr, A_PID_FUZZY_BUF1(max))
+        a_pid_fuzzy_buf1(&self.ctx, self.ptr, max)
 
     @property
     def col(self) -> int:
-        return a_fpid_col(&self.ctx)
+        return a_pid_fuzzy_col(&self.ctx)
     @property
     def out(self) -> a_float_t:
         return self.ctx.pid.out.f

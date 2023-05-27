@@ -1,8 +1,8 @@
-#ifndef J_FPID_H
-#define J_FPID_H
+#ifndef J_PID_FUZZY_H
+#define J_PID_FUZZY_H
 
 #include "pid.h"
-#include "a/fpid.h"
+#include "a/pid_fuzzy.h"
 
 typedef struct
 {
@@ -27,18 +27,18 @@ typedef struct
     jfieldID kp;
     jfieldID ki;
     jfieldID kd;
-} j_fpid_s;
+} j_pid_fuzzy_s;
 
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
 
-j_fpid_s *j_fpid_new(JNIEnv *jenv, jobject jobj, j_fpid_s *jctx);
-jobject j_fpid_set(j_fpid_s const *jctx, a_fpid_s const *ctx);
-jobject j_fpid_get(j_fpid_s const *jctx, a_fpid_s *ctx);
+j_pid_fuzzy_s *j_pid_fuzzy_new(JNIEnv *jenv, jobject jobj, j_pid_fuzzy_s *jctx);
+jobject j_pid_fuzzy_set(j_pid_fuzzy_s const *jctx, a_pid_fuzzy_s const *ctx);
+jobject j_pid_fuzzy_get(j_pid_fuzzy_s const *jctx, a_pid_fuzzy_s *ctx);
 
 #if defined(__cplusplus)
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* fpid.h */
+#endif /* pid_fuzzy.h */

@@ -122,7 +122,14 @@ impl PID {
     }
 
     /// initialize function for incremental PID controller
-    pub fn new_inc(dt: float, kp: float, ki: float, kd: float, outmin: float, outmax: float) -> Self {
+    pub fn new_inc(
+        dt: float,
+        kp: float,
+        ki: float,
+        kd: float,
+        outmin: float,
+        outmax: float,
+    ) -> Self {
         Self {
             dt,
             kp,

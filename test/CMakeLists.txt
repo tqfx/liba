@@ -160,13 +160,6 @@ unittest(complex ARGS -4,3 -2,1)
 building(crc crc.c crc.cpp)
 unittest(crc ARGS crc.c)
 
-building(fpid fpid.c fpid.cpp)
-unittest(fpid)
-
-if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(fpid pid.gp fpid.log)
-endif()
-
 building(list list.c list.cpp)
 unittest(list)
 
@@ -187,6 +180,13 @@ unittest(pid)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(pid pid.gp pid.log)
+endif()
+
+building(pid_fuzzy pid_fuzzy.c pid_fuzzy.cpp)
+unittest(pid_fuzzy)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(pid_fuzzy pid.gp pid_fuzzy.log)
 endif()
 
 building(poly poly.c poly.cpp)

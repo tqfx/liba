@@ -9,9 +9,9 @@ endfunction()
 
 unittest(a a)
 
-unittest(fpid fpid)
-
 unittest(pid pid)
+
+unittest(pid_fuzzy pid_fuzzy)
 
 unittest(polytrack polytrack)
 

@@ -152,7 +152,6 @@ def fuzzy(e: float, c: float):
             kd += joint[i][j] * mkd[idxe[i]][idxec[j]]
     kd *= inv
 
-    print(kp, ki, kd)
     return kp, ki, kd
 
 
@@ -181,7 +180,7 @@ except Exception as e:
 MIN = -10
 MAX = +10
 tf = a.tf(num, den[1:])
-fpid = a.fpid(2, Ts, me, mec, mkp, mki, mkd, MIN, MAX)
+pid_fuzzy = a.pid_fuzzy(2, Ts, me, mec, mkp, mki, mkd, MIN, MAX)
 
 r = 1.0
 setpoint = [r] * len(data)
@@ -192,9 +191,9 @@ y = 0.0
 tf.zero()
 error1 = []
 feedback1 = []
-fpid.kpid(kp, ki, kd)
+pid_fuzzy.kpid(kp, ki, kd)
 for i in data:
-    u = fpid(r, y)
+    u = pid_fuzzy(r, y)
     y = tf(u)
     feedback1.append(y)
     error1.append(r - y)
@@ -234,4 +233,4 @@ plt.plot(data, error1, "b-", data, error2, "g-")
 plt.ylabel("error")
 plt.xlabel("time(s)")
 plt.grid(True)
-plt.savefig(os.path.join(prefix, "fpid.png"))
+plt.savefig(os.path.join(prefix, "pid_fuzzy.png"))

@@ -1,8 +1,8 @@
 import liba.mf;
 import liba.pid;
-import liba.fpid;
+import liba.pid_fuzzy;
 
-class _fpid {
+class _pid_fuzzy {
     public static void main(String[] args) {
         int NB = -3;
         int NM = -2;
@@ -79,7 +79,7 @@ class _fpid {
                 { NB, NS, NS, NS, NS, NS, NB },
                 { NB, NM, NM, NM, NS, NS, NB },
         };
-        fpid obj = new fpid(7, 1, me, mec, mkp, mki, mkd, -10, +10);
+        pid_fuzzy obj = new pid_fuzzy(7, 1, me, mec, mkp, mki, mkd, -10, +10);
         System.out.print(obj.iter(1, 0) + " ");
         obj.off().inc().pos(10).buff(2);
         obj.kpid(10, 0.1, 1);

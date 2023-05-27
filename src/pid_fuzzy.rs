@@ -1,8 +1,8 @@
 //! fuzzy proportional integral derivative controller
 
-use crate::pid::PID;
 use crate::float;
 use crate::uint;
+use crate::PID;
 
 /// enumeration for fuzzy PID controller operator
 #[repr(C)]
@@ -25,7 +25,7 @@ pub enum op {
 
 /// fuzzy proportional integral derivative controller
 #[repr(C)]
-pub struct FPID {
+pub struct PID_fuzzy {
     /// proportional integral derivative controller
     pub pid: PID,
     me: *const float,
@@ -46,31 +46,31 @@ pub struct FPID {
 }
 
 extern "C" {
-    fn a_fpid_off(ctx: *mut FPID) -> *mut FPID;
-    fn a_fpid_inc(ctx: *mut FPID) -> *mut FPID;
-    fn a_fpid_pos(ctx: *mut FPID, max: float) -> *mut FPID;
-    fn a_fpid_kpid(ctx: *mut FPID, kp: float, ki: float, kd: float) -> *mut FPID;
-    fn a_fpid_buff(ctx: *mut FPID, idx: *mut uint, val: *mut float) -> *mut FPID;
-    fn a_fpid_chan(
-        ctx: *mut FPID,
+    fn a_pid_fuzzy_off(ctx: *mut PID_fuzzy) -> *mut PID_fuzzy;
+    fn a_pid_fuzzy_inc(ctx: *mut PID_fuzzy) -> *mut PID_fuzzy;
+    fn a_pid_fuzzy_pos(ctx: *mut PID_fuzzy, max: float) -> *mut PID_fuzzy;
+    fn a_pid_fuzzy_kpid(ctx: *mut PID_fuzzy, kp: float, ki: float, kd: float) -> *mut PID_fuzzy;
+    fn a_pid_fuzzy_buff(ctx: *mut PID_fuzzy, idx: *mut uint, val: *mut float) -> *mut PID_fuzzy;
+    fn a_pid_fuzzy_chan(
+        ctx: *mut PID_fuzzy,
         num: uint,
         out: *mut float,
         fdb: *mut float,
         sum: *mut float,
         ec: *mut float,
         e: *mut float,
-    ) -> *mut FPID;
-    fn a_fpid_base(
-        ctx: *mut FPID,
+    ) -> *mut PID_fuzzy;
+    fn a_pid_fuzzy_base(
+        ctx: *mut PID_fuzzy,
         num: uint,
         me: *const float,
         mec: *const float,
         mkp: *const float,
         mki: *const float,
         mkd: *const float,
-    ) -> *mut FPID;
-    fn a_fpid_init(
-        ctx: *mut FPID,
+    ) -> *mut PID_fuzzy;
+    fn a_pid_fuzzy_init(
+        ctx: *mut PID_fuzzy,
         dt: float,
         col: uint,
         me: *const float,
@@ -80,15 +80,15 @@ extern "C" {
         mkd: *const float,
         min: float,
         max: float,
-    ) -> *mut FPID;
-    fn a_fpid_outf(ctx: *mut FPID, set: float, fdb: float) -> float;
-    fn a_fpid_outp(ctx: *mut FPID, set: *const float, fdb: *const float) -> *const float;
-    fn a_fpid_zero(ctx: *mut FPID) -> *mut FPID;
-    fn a_fpid_set_op(ctx: *mut FPID, op: uint);
+    ) -> *mut PID_fuzzy;
+    fn a_pid_fuzzy_outf(ctx: *mut PID_fuzzy, set: float, fdb: float) -> float;
+    fn a_pid_fuzzy_outp(ctx: *mut PID_fuzzy, set: *const float, fdb: *const float) -> *const float;
+    fn a_pid_fuzzy_zero(ctx: *mut PID_fuzzy) -> *mut PID_fuzzy;
+    fn a_pid_fuzzy_set_op(ctx: *mut PID_fuzzy, op: uint);
     fn a_pid_num(ctx: *const PID) -> uint;
 }
 
-impl FPID {
+impl PID_fuzzy {
     /// initialize function for fuzzy PID controller, default is turn off
     pub fn new(
         dt: float,
@@ -116,7 +116,7 @@ impl FPID {
             op: None,
         };
         unsafe {
-            a_fpid_init(
+            a_pid_fuzzy_init(
                 &mut ctx,
                 dt,
                 col as uint,
@@ -134,28 +134,32 @@ impl FPID {
 
     /// turn off fuzzy PID controller
     pub fn off(&mut self) -> &mut Self {
-        unsafe { a_fpid_off(self).as_mut().unwrap_unchecked() }
+        unsafe { a_pid_fuzzy_off(self).as_mut().unwrap_unchecked() }
     }
 
     /// incremental fuzzy PID controller
     pub fn inc(&mut self) -> &mut Self {
-        unsafe { a_fpid_inc(self).as_mut().unwrap_unchecked() }
+        unsafe { a_pid_fuzzy_inc(self).as_mut().unwrap_unchecked() }
     }
 
     /// positional fuzzy PID controller
     pub fn pos(&mut self, max: float) -> &mut Self {
-        unsafe { a_fpid_pos(self, max).as_mut().unwrap_unchecked() }
+        unsafe { a_pid_fuzzy_pos(self, max).as_mut().unwrap_unchecked() }
     }
 
     /// set proportional integral derivative constant for fuzzy PID controller
     pub fn kpid(&mut self, kp: float, ki: float, kd: float) -> &mut Self {
-        unsafe { a_fpid_kpid(self, kp, ki, kd).as_mut().unwrap_unchecked() }
+        unsafe {
+            a_pid_fuzzy_kpid(self, kp, ki, kd)
+                .as_mut()
+                .unwrap_unchecked()
+        }
     }
 
     /// set buffer for fuzzy PID controller
     pub fn buff(&mut self, idx: &mut [u32], val: &mut [float]) -> &mut Self {
         unsafe {
-            a_fpid_buff(self, idx.as_mut_ptr(), val.as_mut_ptr())
+            a_pid_fuzzy_buff(self, idx.as_mut_ptr(), val.as_mut_ptr())
                 .as_mut()
                 .unwrap_unchecked()
         }
@@ -171,7 +175,7 @@ impl FPID {
         e: &mut [float],
     ) -> &mut Self {
         unsafe {
-            a_fpid_chan(
+            a_pid_fuzzy_chan(
                 self,
                 out.len() as uint,
                 out.as_mut_ptr(),
@@ -196,7 +200,7 @@ impl FPID {
         mkd: &[float],
     ) -> &mut Self {
         unsafe {
-            a_fpid_base(
+            a_pid_fuzzy_base(
                 self,
                 col as uint,
                 me.as_ptr(),
@@ -212,13 +216,13 @@ impl FPID {
 
     /// calculate function for fuzzy PID controller
     pub fn outf(&mut self, set: float, fdb: float) -> float {
-        unsafe { a_fpid_outf(self, set, fdb) }
+        unsafe { a_pid_fuzzy_outf(self, set, fdb) }
     }
     /// calculate function for multichannel fuzzy PID controller
     pub fn outp(&mut self, set: &[float], fdb: &[float]) -> &[float] {
         unsafe {
             std::slice::from_raw_parts(
-                a_fpid_outp(self, set.as_ptr(), fdb.as_ptr()),
+                a_pid_fuzzy_outp(self, set.as_ptr(), fdb.as_ptr()),
                 a_pid_num(&self.pid) as usize,
             )
         }
@@ -226,12 +230,12 @@ impl FPID {
 
     /// zero function for fuzzy PID controller
     pub fn zero(&mut self) -> &mut Self {
-        unsafe { a_fpid_zero(self).as_mut().unwrap_unchecked() }
+        unsafe { a_pid_fuzzy_zero(self).as_mut().unwrap_unchecked() }
     }
 
     /// set fuzzy relational operator for fuzzy PID controller
     pub fn set_op(&mut self, op: op) -> &mut Self {
-        unsafe { a_fpid_set_op(self, op as uint) };
+        unsafe { a_pid_fuzzy_set_op(self, op as uint) };
         self
     }
 
@@ -258,7 +262,7 @@ impl FPID {
 
 #[test]
 #[allow(non_snake_case)]
-fn fpid() {
+fn pid_fuzzy() {
     let NB: float = -3.0;
     let NM: float = -2.0;
     let NS: float = -1.0;
@@ -376,7 +380,7 @@ fn fpid() {
         [NB, NS, NS, NS, NS, NS, NB],
         [NB, NM, NM, NM, NS, NS, NB],
     ];
-    let mut a = crate::FPID::new(
+    let mut a = crate::PID_fuzzy::new(
         1.0,
         mkp.len(),
         &me,

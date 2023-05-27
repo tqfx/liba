@@ -76,12 +76,12 @@ var mkd = [
     [NB, NM, NM, NM, NS, NS, NB],
 ]
 
-var ctx = new Module.fpid(2, 1, me, mec, mkp, mki, mkd, -10, 10)
+var ctx = new Module.pid_fuzzy(2, 1, me, mec, mkp, mki, mkd, -10, 10)
 ctx.kpid(10, 0.1, 1)
 console.log(ctx.iter(10, 0))
 ctx.delete()
 
-var ctx = new Module.fpid(2, 1, me, mec, mkp, mki, mkd, -10, 10, 10)
+var ctx = new Module.pid_fuzzy(2, 1, me, mec, mkp, mki, mkd, -10, 10, 10)
 ctx.kpid(10, 0.1, 1)
 console.log(ctx.iter(10, 0))
 ctx.delete()
