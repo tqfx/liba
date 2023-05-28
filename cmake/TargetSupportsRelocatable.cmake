@@ -10,11 +10,11 @@ function(TARGET_SUPPORTS_RELOCATABLE)
   if(NOT CMAKE_COMPILER)
     return()
   endif()
-  file(WRITE ${CMAKETMP}/object.c "")
-  execute_process(COMMAND ${CMAKE_COMPILER} -nostdlib -o object.o -r object.c
+  file(WRITE ${CMAKETMP}/source.c "")
+  execute_process(COMMAND ${CMAKE_COMPILER} -nostdlib -o source.o -r source.c
     WORKING_DIRECTORY ${CMAKETMP} ERROR_QUIET OUTPUT_QUIET RESULT_VARIABLE result
   )
-  file(REMOVE_RECURSE ${CMAKETMP}/object.o ${CMAKETMP}/object.c)
+  file(REMOVE_RECURSE ${CMAKETMP}/source.o ${CMAKETMP}/source.c)
   if(${result} EQUAL 0)
     set(TARGET_SUPPORTS_RELOCATABLE 1 CACHE INTERNAL "")
   else()
