@@ -41,11 +41,11 @@ uninstall-hook:
 echo "libtoolize
 aclocal -Wall
 autoreconf -Wall
-automake -Wall --add-missing" > autogen.sh
-chmod +x autogen.sh
-./autogen.sh
+automake -Wall --add-missing
 if [ -f config.h.in~ ] && [ -f config.h.in ]; then
     mv config.h.in~ config.h.in
-fi
+fi" > autogen.sh
+chmod +x autogen.sh
+./autogen.sh
 ./configure
 make distcheck dist-xz
