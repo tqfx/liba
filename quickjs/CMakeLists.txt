@@ -10,11 +10,16 @@ else()
   file_scaner(SOURCES RECURSE src EXT c h)
 endif()
 
+include(../cmake/QuickJSPIC.cmake)
 add_library(aqjs SHARED $<TARGET_OBJECTS:a> ${SOURCES})
 set_target_properties(aqjs PROPERTIES DEFINE_SYMBOL A_EXPORTS OUTPUT_NAME a)
-target_link_libraries(aqjs PRIVATE quickjs)
+target_include_directories(aqjs PRIVATE ${QUICKJS_INCLUDE_DIR})
 add_library_properties(aqjs PRIVATE alib)
 set_library_options(aqjs)
+
+if(QUICKJS_PIC)
+  target_link_libraries(aqjs PRIVATE ${QUICKJS_LIBRARIES})
+endif()
 
 if(QJS_EXECUTABLE)
   add_subdirectory(test)
