@@ -34,6 +34,7 @@
 - [vcpkg](https://vcpkg.io)
 - [meson](https://mesonbuild.com)
 - [python](https://www.python.org)
+- [quickjs](https://github.com/bellard/quickjs)
 
 ## build
 
@@ -157,6 +158,13 @@ fn main() {
 ```py
 import liba
 print("version", liba.version())
+```
+
+### QuickJS
+
+```js
+import * as liba from "liba.so";
+console.log("version", liba.VERSION)
 ```
 
 ## Copyright {#copyright}

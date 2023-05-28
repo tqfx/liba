@@ -1,7 +1,7 @@
+set(CMAKE_SHARED_LIBRARY_SUFFIX .so)
+
 if(WIN32)
   set(CMAKE_SHARED_LIBRARY_PREFIX lib)
-else()
-  set(CMAKE_SHARED_LIBRARY_SUFFIX .so)
 endif()
 
 if(LIBA_CXX)
@@ -12,7 +12,7 @@ endif()
 
 add_library(aqjs SHARED $<TARGET_OBJECTS:a> ${SOURCES})
 set_target_properties(aqjs PROPERTIES DEFINE_SYMBOL A_EXPORTS OUTPUT_NAME a)
-target_include_directories(aqjs PRIVATE ${QUICKJS_INCLUDE_DIR})
+target_link_libraries(aqjs PRIVATE quickjs)
 add_library_properties(aqjs PRIVATE alib)
 set_library_options(aqjs)
 
