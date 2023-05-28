@@ -5,3 +5,11 @@ function(unittest source name)
 endfunction()
 
 unittest(a a)
+
+unittest(mf mf)
+
+unittest(polytrack3 polytrack3)
+
+unittest(polytrack5 polytrack5)
+
+unittest(polytrack7 polytrack7)
