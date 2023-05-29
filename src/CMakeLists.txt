@@ -1,7 +1,7 @@
 get_cmake_property(ENABLED_LANGUAGES ENABLED_LANGUAGES)
 
 foreach(lang ${ENABLED_LANGUAGES})
-  set(CMAKE_${lang}_CREATE_STATIC_LIBRARY "<CMAKE_${lang}_COMPILER> <LANGUAGE_COMPILE_FLAGS> -nostdlib -o <TARGET> -r <OBJECTS>")
+  set(CMAKE_${lang}_CREATE_STATIC_LIBRARY "<CMAKE_${lang}_COMPILER> -nostdlib -o <TARGET> -r <OBJECTS>")
 endforeach()
 
 set(CMAKE_STATIC_LIBRARY_SUFFIX .o)
