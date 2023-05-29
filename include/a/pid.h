@@ -38,7 +38,7 @@
 */
 
 #define A_PID_NUM_BITL 0x00
-#if defined(A_UINT_MAX) && (A_UINT_MAX > 0xFFFF)
+#if defined(A_UINT_MAX) && (A_UINT_MAX + 0 > 0xFFFF)
 #define A_PID_NUM_BIT 0x10 // 00000000 00000000 11111111 11111111
 #else /* !A_UINT_MAX */
 #define A_PID_NUM_BIT 0x08 // 00000000 11111111
@@ -48,7 +48,7 @@
 #define A_PID_NUM_MAX (~(~0U << A_PID_NUM_BIT))
 
 #define A_PID_REG_BITL 0x00
-#if defined(A_UINT_MAX) && (A_UINT_MAX > 0xFFFF)
+#if defined(A_UINT_MAX) && (A_UINT_MAX + 0 > 0xFFFF)
 #define A_PID_REG_BIT 0x10 // 00000000 00000000 11111111 11111111
 #else /* !A_UINT_MAX */
 #define A_PID_REG_BIT 0x08 // 00000000 11111111
