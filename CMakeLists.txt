@@ -119,13 +119,13 @@ if(LIBA_IWYU)
   find_package(IWYU)
 endif()
 
-option(LIBA_LTO "Enable/Disable interprocedural optimization" 0)
+option(LIBA_IPO "Enable/Disable interprocedural optimization" 0)
 
 # https://cmake.org/cmake/help/latest/module/CheckIPOSupported.html
-if(NOT CMAKE_VERSION VERSION_LESS 3.9 AND LIBA_LTO)
+if(NOT CMAKE_VERSION VERSION_LESS 3.9 AND LIBA_IPO)
   cmake_policy(SET CMP0069 NEW)
   include(CheckIPOSupported)
-  check_ipo_supported(RESULT LIBA_LTO)
+  check_ipo_supported(RESULT LIBA_IPO)
 endif()
 
 if(DEFINED ENV{ANDROID_ROOT} AND EXISTS $ENV{ANDROID_ROOT})
@@ -158,7 +158,7 @@ function(set_library_options)
     set_property(TARGET ${ARGN} PROPERTY IMPORT_SUFFIX .def)
   endif()
 
-  set_target_properties(${ARGN} PROPERTIES INTERPROCEDURAL_OPTIMIZATION ${LIBA_LTO}
+  set_target_properties(${ARGN} PROPERTIES INTERPROCEDURAL_OPTIMIZATION ${LIBA_IPO}
     C_VISIBILITY_PRESET hidden CXX_VISIBILITY_PRESET hidden
   )
 

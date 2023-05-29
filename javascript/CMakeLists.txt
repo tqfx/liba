@@ -33,7 +33,7 @@ else()
 endif()
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ${LIBA_PIE})
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${LIBA_LTO})
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${LIBA_IPO})
 file_scaner(SOURCES RECURSE src EXT c h cc hh cpp hpp)
 
 # https://emscripten.org/docs/tools_reference/emcc.html

@@ -11,7 +11,7 @@
     "symlink": {
       "description": "Enable create symbolic link"
     },
-    "lto": {
+    "ipo": {
       "description": "Enable interprocedural optimization"
     }
   }

@@ -49,7 +49,7 @@ jobs:
         run: |
           set -x
           cp -r build/${{ matrix.cc }}/vcpkg/* $VCPKG_INSTALLATION_ROOT
-          vcpkg install liba[lto,pkgconfig]
+          vcpkg install liba[ipo,pkgconfig]
       - name: Run ctest
         env:
           CTEST_OUTPUT_ON_FAILURE: 1

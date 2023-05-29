@@ -35,11 +35,11 @@ if(LUA_STATIC)
   list(INSERT CMAKE_FIND_LIBRARY_SUFFIXES 0 "${CMAKE_STATIC_LIBRARY_SUFFIX}")
 endif()
 
-option(LUA_LTO "Enable/Disable interprocedural optimization" 0)
-if(NOT CMAKE_VERSION VERSION_LESS 3.9 AND LUA_LTO)
+option(LUA_IPO "Enable/Disable interprocedural optimization" 0)
+if(NOT CMAKE_VERSION VERSION_LESS 3.9 AND LUA_IPO)
   cmake_policy(SET CMP0069 NEW)
   include(CheckIPOSupported)
-  check_ipo_supported(RESULT LUA_LTO)
+  check_ipo_supported(RESULT LUA_IPO)
 endif()
 
 if(DEFINED ENV{ANDROID_ROOT} AND EXISTS $ENV{ANDROID_ROOT})
@@ -228,7 +228,7 @@ function(lua_library target)
     set_target_properties(${target} PROPERTIES IMPORT_SUFFIX .def)
   endif()
   set_target_properties(${target} PROPERTIES POSITION_INDEPENDENT_CODE 1
-    INTERPROCEDURAL_OPTIMIZATION ${LUA_LTO}
+    INTERPROCEDURAL_OPTIMIZATION ${LUA_IPO}
   )
 endfunction()
 
@@ -270,7 +270,7 @@ else()
   set_target_properties(luac lua PROPERTIES SUFFIX ${suffix})
 endif()
 set_property(TARGET lualib liblua PROPERTY OUTPUT_NAME lua${suffix})
-set_property(TARGET luac lua PROPERTY INTERPROCEDURAL_OPTIMIZATION ${LUA_LTO})
+set_property(TARGET luac lua PROPERTY INTERPROCEDURAL_OPTIMIZATION ${LUA_IPO})
 set_property(TARGET luaobj luac lua APPEND PROPERTY COMPILE_DEFINITIONS ${LUA_PRIVATE})
 if(WIN32)
   set_property(TARGET lualib APPEND PROPERTY INTERFACE_COMPILE_DEFINITIONS LUA_BUILD_AS_DLL)
