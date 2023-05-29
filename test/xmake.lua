@@ -1,4 +1,4 @@
-remove_files = remove_files or del_files
+del_files = remove_files or del_files
 
 function building(sources)
     set_group("test")
@@ -8,7 +8,7 @@ function building(sources)
     if has_config("liba-cxx") then
         add_defines("HAS_CXX")
     else
-        remove_files("*.cpp")
+        del_files("*.cpp")
     end
     add_deps("a")
 end
