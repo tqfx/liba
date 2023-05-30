@@ -121,6 +121,22 @@ target("a")
         add_syslinks("m", {public = true})
         add_cxflags("-fPIC")
     end
+    after_build(function(target)
+        import("core.tool.linker")
+        local object = target:objectfiles()
+        local output = path.join(target:targetdir(), "liba.o")
+        local program = linker.linkargv("binary", "cc", object, output, {target = target})
+        try{function()
+            os.runv(program, table.join("-nostdlib", "-o", output, "-r", object))
+        end}
+    end)
+    after_install(function(target)
+        local output = path.join(target:installdir(), "lib", "liba.o")
+        os.trycp(path.join(target:targetdir(), "liba.o"), output)
+    end)
+    after_clean(function(target)
+        os.tryrm(path.join(target:targetdir(), "liba.o"))
+    end)
 target_end()
 
 target("alib")
@@ -133,7 +149,7 @@ target("alib")
     end
     add_headerfiles("include/(**.h)")
     add_headerfiles("$(buildir)/a.xmake.h", {prefixdir = "a"})
-    after_install(function (target)
+    after_install(function(target)
         if target:installdir() then
             local old = "#if defined(A_HAVE_H)"
             local new = "#include \"a.xmake.h\"\n"..old

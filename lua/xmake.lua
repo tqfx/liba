@@ -18,7 +18,7 @@ if has_config("liba-lua") then
             set_extension(".dll")
         end
         add_defines("A_EXPORTS")
-        on_load(function (target)
+        on_load(function(target)
             local subdir = get_config("liba-lua")
             local libdir = path.join("lib", subdir)
             target:set("targetdir", path.join(target:targetdir(), subdir))
