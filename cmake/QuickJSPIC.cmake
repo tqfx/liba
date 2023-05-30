@@ -2,7 +2,7 @@ function(QUICKJS_PIC)
   set(CMAKETMP ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp)
   file(WRITE ${CMAKETMP}/module.c "#include \"quickjs.h\"
 JSModuleDef *js_init_module(JSContext *const ctx, char const *const module_name)
-{\n    return JS_NewCModule(ctx, module_name, 0);\n}
+{\n\treturn JS_NewCModule(ctx, module_name, 0);\n}
 ")
   file(WRITE ${CMAKETMP}/CMakeLists.txt "cmake_minimum_required(VERSION ${CMAKE_VERSION})
 project(CMAKE_TRY_COMPILE C)\nadd_library(module SHARED module.c)
