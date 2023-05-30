@@ -65,18 +65,18 @@ pub fn version() -> &'static str {
 }
 
 /// algorithm library version major
-pub fn version_major() -> u32 {
-    unsafe { a_version_major() as u32 }
+pub fn version_major() -> uint {
+    unsafe { a_version_major() }
 }
 
 /// algorithm library version minor
-pub fn version_minor() -> u32 {
-    unsafe { a_version_minor() as u32 }
+pub fn version_minor() -> uint {
+    unsafe { a_version_minor() }
 }
 
 /// algorithm library version patch
-pub fn version_patch() -> u32 {
-    unsafe { a_version_patch() as u32 }
+pub fn version_patch() -> uint {
+    unsafe { a_version_patch() }
 }
 
 extern "C" {

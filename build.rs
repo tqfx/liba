@@ -14,5 +14,5 @@ fn main() {
     let lib = out.join("lib");
 
     println!("cargo:rustc-link-search=native={}", lib.display());
-    println!("cargo:rustc-link-lib=static={}", "a");
+    println!("cargo:rustc-link-lib=static=a");
 }

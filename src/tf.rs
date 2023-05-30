@@ -72,8 +72,8 @@ impl TF {
     }
 
     /// get input for transfer function
-    pub fn u(&self) -> &mut [float] {
-        unsafe { std::slice::from_raw_parts_mut(self.u, self.m as usize) }
+    pub fn u(&self) -> &[float] {
+        unsafe { std::slice::from_raw_parts(self.u, self.m as usize) }
     }
 
     /// get numerator for transfer function
@@ -88,8 +88,8 @@ impl TF {
     }
 
     /// get output for transfer function
-    pub fn v(&self) -> &mut [float] {
-        unsafe { std::slice::from_raw_parts_mut(self.v, self.n as usize) }
+    pub fn v(&self) -> &[float] {
+        unsafe { std::slice::from_raw_parts(self.v, self.n as usize) }
     }
 
     /// get denominator for transfer function

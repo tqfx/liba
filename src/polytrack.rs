@@ -107,6 +107,7 @@ extern "C" {
 
 impl polytrack5 {
     /// initialize function for quintic polynomial trajectory
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         t0: float,
         t1: float,
@@ -123,6 +124,7 @@ impl polytrack5 {
     }
 
     /// generation function for quintic polynomial trajectory
+    #[allow(clippy::too_many_arguments)]
     pub fn gen(
         &mut self,
         t0: float,
@@ -201,6 +203,7 @@ extern "C" {
 
 impl polytrack7 {
     /// initialize function for hepta polynomial trajectory
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         t0: float,
         t1: float,
@@ -219,6 +222,7 @@ impl polytrack7 {
     }
 
     /// generation function for hepta polynomial trajectory
+    #[allow(clippy::too_many_arguments)]
     pub fn gen(
         &mut self,
         t0: float,
