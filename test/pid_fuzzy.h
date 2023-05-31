@@ -65,8 +65,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         A_MF_TRI, NS, ZO, PS,
         A_MF_TRI, ZO, PS, PM,
         A_MF_TRI, PS, PM, PB,
-        A_MF_TRI, PM, PB, PB,
-        A_MF_NUL};
+        A_MF_TRI, PM, PB, PB};
 #undef S
 #define S 2
     static a_float_t const mec[] = {
@@ -76,8 +75,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         A_MF_TRI, NS, ZO, PS,
         A_MF_TRI, ZO, PS, PM,
         A_MF_TRI, PS, PM, PB,
-        A_MF_TRI, PM, PB, PB,
-        A_MF_NUL};
+        A_MF_TRI, PM, PB, PB};
 #undef S
 #define S 5
     static a_float_t const mkp[] = {

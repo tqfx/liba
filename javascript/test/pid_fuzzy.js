@@ -15,7 +15,6 @@ var me = [
     [Module.MF_TRI, ZO, PS, PM],
     [Module.MF_TRI, PS, PM, PB],
     [Module.MF_TRI, PM, PB, PB],
-    [Module.MF_NUL, ZO, ZO, ZO],
 ]
 var NB = -6
 var NM = -4
@@ -32,7 +31,6 @@ var mec = [
     [Module.MF_TRI, ZO, PS, PM],
     [Module.MF_TRI, PS, PM, PB],
     [Module.MF_TRI, PM, PB, PB],
-    [Module.MF_NUL, ZO, ZO, ZO],
 ]
 var NB = -15
 var NM = -10

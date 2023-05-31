@@ -30,7 +30,6 @@ me = [
     [a.mf.TRI, ZO, PS, PM],
     [a.mf.TRI, PS, PM, PB],
     [a.mf.TRI, PM, PB, PB],
-    [a.mf.NUL, ZO, ZO, ZO],
 ]
 NB = -6 * S
 NM = -4 * S
@@ -47,7 +46,6 @@ mec = [
     [a.mf.TRI, ZO, PS, PM],
     [a.mf.TRI, PS, PM, PB],
     [a.mf.TRI, PM, PB, PB],
-    [a.mf.NUL, ZO, ZO, ZO],
 ]
 S = 10 / 3
 NB = -3 * S

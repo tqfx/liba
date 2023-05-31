@@ -19,7 +19,6 @@ local me = {
   { a.mf.TRI, ZO, PS, PM },
   { a.mf.TRI, PS, PM, PB },
   { a.mf.TRI, PM, PB, PB },
-  { a.mf.NUL },
   -- LuaFormatter on
 }
 local NB = -6
@@ -38,7 +37,6 @@ local mec = {
   { a.mf.TRI, ZO, PS, PM },
   { a.mf.TRI, PS, PM, PB },
   { a.mf.TRI, PM, PB, PB },
-  { a.mf.NUL },
   -- LuaFormatter on
 }
 local NB = -15

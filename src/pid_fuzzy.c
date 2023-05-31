@@ -36,14 +36,13 @@ void a_pid_fuzzy_set_op(a_pid_fuzzy_s *const ctx, unsigned int op)
     }
 }
 
-unsigned int a_pid_fuzzy_mf(a_float_t const *a, a_float_t const x, unsigned int *idx, a_float_t *val)
+unsigned int a_pid_fuzzy_mf(a_float_t const x, unsigned int const n, a_float_t const *a, unsigned int *idx, a_float_t *val)
 {
-    int e = A_MF_NUL;
-    unsigned int num = 0;
-    for (unsigned int i = 0; (void)(e = (int)*a++), e != A_MF_NUL; ++i)
+    unsigned int counter = 0;
+    for (unsigned int i = 0; i != n; ++i)
     {
         a_float_t y = 0;
-        switch (e)
+        switch ((unsigned int)*a++)
         {
         case A_MF_GAUSS:
             y = a_mf_gauss(x, a[0], a[1]);
@@ -75,13 +74,13 @@ unsigned int a_pid_fuzzy_mf(a_float_t const *a, a_float_t const x, unsigned int 
         }
         if (y > A_FLOAT_EPSILON)
         {
-            ++num;
             *idx++ = i;
             *val++ = y;
+            ++counter;
         }
     }
 out:
-    return num;
+    return counter;
 }
 
 a_pid_fuzzy_s *a_pid_fuzzy_off(a_pid_fuzzy_s *const ctx)
@@ -168,18 +167,18 @@ a_pid_fuzzy_s *a_pid_fuzzy_zero(a_pid_fuzzy_s *const ctx)
     return ctx;
 }
 
-static void a_pid_fuzzy_iter_(a_pid_fuzzy_s *const ctx, unsigned int const col, a_float_t ec, a_float_t e)
+static void a_pid_fuzzy_out_(a_pid_fuzzy_s *const ctx, unsigned int const col, a_float_t ec, a_float_t e)
 {
     a_float_t kp = 0;
     a_float_t ki = 0;
     a_float_t kd = 0;
     /* calculate membership */
-    unsigned int const ne = a_pid_fuzzy_mf(ctx->me, e, ctx->idx, ctx->val);
+    unsigned int const ne = a_pid_fuzzy_mf(e, col, ctx->me, ctx->idx, ctx->val);
     if (!ne)
     {
         goto pid;
     }
-    unsigned int const nec = a_pid_fuzzy_mf(ctx->mec, ec, ctx->idx + ne, ctx->val + ne);
+    unsigned int const nec = a_pid_fuzzy_mf(ec, col, ctx->mec, ctx->idx + ne, ctx->val + ne);
     if (!nec)
     {
         goto pid;
@@ -246,7 +245,7 @@ a_float_t a_pid_fuzzy_outf(a_pid_fuzzy_s *const ctx, a_float_t const set, a_floa
 {
     a_float_t const e = set - fdb;
     a_float_t const ec = e - ctx->pid.e.f;
-    a_pid_fuzzy_iter_(ctx, a_pid_fuzzy_col(ctx), ec, e);
+    a_pid_fuzzy_out_(ctx, a_pid_fuzzy_col(ctx), ec, e);
     return a_pid_outf_(&ctx->pid, a_pid_mode(&ctx->pid), set, fdb, ec, e);
 }
 
@@ -259,7 +258,7 @@ a_float_t const *a_pid_fuzzy_outp(a_pid_fuzzy_s *const ctx, a_float_t const *con
     {
         a_float_t const e = set[i] - fdb[i];
         a_float_t const ec = e - ctx->pid.e.p[i];
-        a_pid_fuzzy_iter_(ctx, col, ec, e);
+        a_pid_fuzzy_out_(ctx, col, ec, e);
         a_pid_outp_(&ctx->pid, mode, set[i], fdb[i], ec, e, i);
     }
     return ctx->pid.out.p;

@@ -11,7 +11,7 @@ extern "C" {
 A_HIDDEN a_float_t a_pid_fuzzy_op_or(a_float_t l, a_float_t r);
 A_HIDDEN a_float_t a_pid_fuzzy_op_and(a_float_t l, a_float_t r);
 A_HIDDEN a_float_t a_pid_fuzzy_op_equ(a_float_t l, a_float_t r);
-A_HIDDEN unsigned int a_pid_fuzzy_mf(a_float_t const *a, a_float_t x, unsigned int *idx, a_float_t *val);
+A_HIDDEN unsigned int a_pid_fuzzy_mf(a_float_t x, unsigned int n, a_float_t const *a, unsigned int *idx, a_float_t *val);
 
 #if defined(__cplusplus)
 } /* extern "C" */

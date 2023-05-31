@@ -19,7 +19,6 @@ class _pid_fuzzy {
                 { mf.TRI, ZO, PS, PM },
                 { mf.TRI, PS, PM, PB },
                 { mf.TRI, PM, PB, PB },
-                { mf.NUL },
         };
         NB = -6;
         NM = -4;
@@ -36,7 +35,6 @@ class _pid_fuzzy {
                 { mf.TRI, ZO, PS, PM },
                 { mf.TRI, PS, PM, PB },
                 { mf.TRI, PM, PB, PB },
-                { mf.NUL },
         };
         NB = -15;
         NM = -10;

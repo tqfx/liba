@@ -44,8 +44,8 @@ typedef struct a_pid_fuzzy_s
 {
     a_pid_s pid; //!< instance structure for PID controller
 
-    a_float_t const *me; //!< points to membership function parameter table, terminated by @ref A_MF_NUL
-    a_float_t const *mec; //!< points to membership function parameter table, terminated by @ref A_MF_NUL
+    a_float_t const *me; //!< points to e's membership function parameter table
+    a_float_t const *mec; //!< points to ec's membership function parameter table
     a_float_t const *mkp; //!< points to Kp's rule base table, the rule base must be square matrix
     a_float_t const *mki; //!< points to Ki's rule base table, the rule base must be square matrix
     a_float_t const *mkd; //!< points to Kd's rule base table, the rule base must be square matrix
@@ -206,8 +206,8 @@ A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_chan(a_pid_fuzzy_s *ctx, unsigned int num, a
  @brief set rule base for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
  @param[in] col number of columns in the rule base
- @param[in] me points to membership function parameter table, terminated by @ref A_MF_NUL
- @param[in] mec points to membership function parameter table, terminated by @ref A_MF_NUL
+ @param[in] me points to e's membership function parameter table
+ @param[in] mec points to ec's membership function parameter table
  @param[in] mkp points to Kp's rule base table, the rule base must be square
  @param[in] mki points to Ki's rule base table, the rule base must be square
  @param[in] mkd points to Kd's rule base table, the rule base must be square
@@ -220,8 +220,8 @@ A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_base(a_pid_fuzzy_s *ctx, unsigned int col, a
  @param[in,out] ctx points to an instance of fuzzy PID controller
  @param[in] dt sampling time unit(s)
  @param[in] col number of columns in the rule base
- @param[in] me points to membership function parameter table, terminated by @ref A_MF_NUL
- @param[in] mec points to membership function parameter table, terminated by @ref A_MF_NUL
+ @param[in] me points to e's membership function parameter table
+ @param[in] mec points to ec's membership function parameter table
  @param[in] mkp points to Kp's rule base table, the rule base must be square
  @param[in] mki points to Ki's rule base table, the rule base must be square
  @param[in] mkd points to Kd's rule base table, the rule base must be square
