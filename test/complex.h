@@ -14,38 +14,45 @@ static void test(a_complex_s a, a_complex_s b)
 {
     a_float_t x = 0;
     a_complex_s c = a_complex_polar(A_FLOAT_C(1.0), a_float_c(, A_PI_2));
+    (void)(c);
 
     x = a_complex_logabs(a);
 #if defined(MAIN_ONCE)
     printf("logabs" A_COMPLEX_PRI("", "g", "", "g") "=" A_FLOAT_PRI("", "g\n"), a_complex_real(a), a_complex_imag(a), x);
 #endif /* MAIN_ONCE */
+    (void)(x);
 
     x = a_complex_abs2(a);
 #if defined(MAIN_ONCE)
     printf("abs2" A_COMPLEX_PRI("", "g", "", "g") "=" A_FLOAT_PRI("", "g\n"), a_complex_real(a), a_complex_imag(a), x);
 #endif /* MAIN_ONCE */
+    (void)(x);
 
     x = a_complex_abs(a);
 #if defined(MAIN_ONCE)
     printf("abs" A_COMPLEX_PRI("", "g", "", "g") "=" A_FLOAT_PRI("", "g\n"), a_complex_real(a), a_complex_imag(a), x);
 #endif /* MAIN_ONCE */
+    (void)(x);
 
     x = a_complex_arg(a);
 #if defined(MAIN_ONCE)
     printf("arg" A_COMPLEX_PRI("", "g", "", "g") "=" A_FLOAT_PRI("", "g\n"), a_complex_real(a), a_complex_imag(a), x);
 #endif /* MAIN_ONCE */
+    (void)(x);
 
     c = a_complex_conj(a);
 #if defined(MAIN_ONCE)
     printf(A_COMPLEX_PRI("", "g", "", "g") "*=" A_COMPLEX_PRI("", "g", "", "g") "\n",
            a_complex_real(a), a_complex_imag(a), a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_neg(a);
 #if defined(MAIN_ONCE)
     printf("-" A_COMPLEX_PRI("", "g", "", "g") "=" A_COMPLEX_PRI("", "g", "", "g") "\n",
            a_complex_real(a), a_complex_imag(a), a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_add(a, b);
 #if defined(MAIN_ONCE)
@@ -53,6 +60,7 @@ static void test(a_complex_s a, a_complex_s b)
            a_complex_real(a), a_complex_imag(a), a_complex_real(b), a_complex_imag(b),
            a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_sub(a, b);
 #if defined(MAIN_ONCE)
@@ -60,6 +68,7 @@ static void test(a_complex_s a, a_complex_s b)
            a_complex_real(a), a_complex_imag(a), a_complex_real(b), a_complex_imag(b),
            a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_mul(a, b);
 #if defined(MAIN_ONCE)
@@ -67,6 +76,7 @@ static void test(a_complex_s a, a_complex_s b)
            a_complex_real(a), a_complex_imag(a), a_complex_real(b), a_complex_imag(b),
            a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_div(a, b);
 #if defined(MAIN_ONCE)
@@ -74,6 +84,7 @@ static void test(a_complex_s a, a_complex_s b)
            a_complex_real(a), a_complex_imag(a), a_complex_real(b), a_complex_imag(b),
            a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_add_real(a, a_complex_real(b));
 #if defined(MAIN_ONCE)
@@ -81,6 +92,7 @@ static void test(a_complex_s a, a_complex_s b)
            a_complex_real(a), a_complex_imag(a), a_complex_real(b), A_FLOAT_C(0.0),
            a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_sub_real(a, a_complex_real(b));
 #if defined(MAIN_ONCE)
@@ -88,6 +100,7 @@ static void test(a_complex_s a, a_complex_s b)
            a_complex_real(a), a_complex_imag(a), a_complex_real(b), A_FLOAT_C(0.0),
            a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_mul_real(a, a_complex_real(b));
 #if defined(MAIN_ONCE)
@@ -95,6 +108,7 @@ static void test(a_complex_s a, a_complex_s b)
            a_complex_real(a), a_complex_imag(a), a_complex_real(b), A_FLOAT_C(0.0),
            a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_div_real(a, a_complex_real(b));
 #if defined(MAIN_ONCE)
@@ -102,6 +116,7 @@ static void test(a_complex_s a, a_complex_s b)
            a_complex_real(a), a_complex_imag(a), a_complex_real(b), A_FLOAT_C(0.0),
            a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_add_imag(a, a_complex_real(b));
 #if defined(MAIN_ONCE)
@@ -109,6 +124,7 @@ static void test(a_complex_s a, a_complex_s b)
            a_complex_real(a), a_complex_imag(a), A_FLOAT_C(0.0), a_complex_real(b),
            a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_sub_imag(a, a_complex_real(b));
 #if defined(MAIN_ONCE)
@@ -116,6 +132,7 @@ static void test(a_complex_s a, a_complex_s b)
            a_complex_real(a), a_complex_imag(a), A_FLOAT_C(0.0), a_complex_real(b),
            a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_mul_imag(a, a_complex_real(b));
 #if defined(MAIN_ONCE)
@@ -123,6 +140,7 @@ static void test(a_complex_s a, a_complex_s b)
            a_complex_real(a), a_complex_imag(a), A_FLOAT_C(0.0), a_complex_real(b),
            a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_div_imag(a, a_complex_real(b));
 #if defined(MAIN_ONCE)
@@ -130,24 +148,28 @@ static void test(a_complex_s a, a_complex_s b)
            a_complex_real(a), a_complex_imag(a), A_FLOAT_C(0.0), a_complex_real(b),
            a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_inv(a);
 #if defined(MAIN_ONCE)
     printf("1/" A_COMPLEX_PRI("", "g", "", "g") "=" A_COMPLEX_PRI("", "g", "", "g") "\n",
            a_complex_real(a), a_complex_imag(a), a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_sqrt(a);
 #if defined(MAIN_ONCE)
     printf("sqrt" A_COMPLEX_PRI("", "g", "", "g") "=" A_COMPLEX_PRI("", "g", "", "g") "\n",
            a_complex_real(a), a_complex_imag(a), a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_sqrt_real(a_complex_real(a));
 #if defined(MAIN_ONCE)
     printf("sqrt(" A_FLOAT_PRI("", "g") ")=" A_COMPLEX_PRI("", "g", "", "g") "\n",
            a_complex_real(a), a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_pow(a, b);
 #if defined(MAIN_ONCE)
@@ -155,6 +177,7 @@ static void test(a_complex_s a, a_complex_s b)
            a_complex_real(a), a_complex_imag(a), a_complex_real(b), a_complex_imag(b),
            a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_pow_real(a, a_complex_real(b));
 #if defined(MAIN_ONCE)
@@ -162,30 +185,35 @@ static void test(a_complex_s a, a_complex_s b)
            a_complex_real(a), a_complex_imag(a), a_complex_real(b),
            a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_exp(a);
 #if defined(MAIN_ONCE)
     printf("exp" A_COMPLEX_PRI("", "g", "", "g") "=" A_COMPLEX_PRI("", "g", "", "g") "\n",
            a_complex_real(a), a_complex_imag(a), a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_log(a);
 #if defined(MAIN_ONCE)
     printf("log" A_COMPLEX_PRI("", "g", "", "g") "=" A_COMPLEX_PRI("", "g", "", "g") "\n",
            a_complex_real(a), a_complex_imag(a), a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_log2(a);
 #if defined(MAIN_ONCE)
     printf("log2" A_COMPLEX_PRI("", "g", "", "g") "=" A_COMPLEX_PRI("", "g", "", "g") "\n",
            a_complex_real(a), a_complex_imag(a), a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_log10(a);
 #if defined(MAIN_ONCE)
     printf("log10" A_COMPLEX_PRI("", "g", "", "g") "=" A_COMPLEX_PRI("", "g", "", "g") "\n",
            a_complex_real(a), a_complex_imag(a), a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
+    (void)(c);
 
     c = a_complex_logb(a, b);
 #if defined(MAIN_ONCE)
@@ -193,9 +221,7 @@ static void test(a_complex_s a, a_complex_s b)
            a_complex_real(a), a_complex_imag(a), a_complex_real(b), a_complex_imag(b),
            a_complex_real(c), a_complex_imag(c));
 #endif /* MAIN_ONCE */
-
     (void)(c);
-    (void)(x);
 }
 
 static void test_tri(a_complex_s x)
@@ -209,6 +235,7 @@ static void test_tri(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("cos" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -217,6 +244,7 @@ static void test_tri(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("tan" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -225,6 +253,7 @@ static void test_tri(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("sec" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -233,6 +262,7 @@ static void test_tri(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("csc" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -241,6 +271,7 @@ static void test_tri(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("cot" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -249,7 +280,6 @@ static void test_tri(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
-
     (void)(z);
 }
 
@@ -264,6 +294,7 @@ static void test_trih(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("cosh" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -272,6 +303,7 @@ static void test_trih(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("tanh" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -280,6 +312,7 @@ static void test_trih(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("sech" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -288,6 +321,7 @@ static void test_trih(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("csch" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -296,6 +330,7 @@ static void test_trih(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("coth" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -304,7 +339,6 @@ static void test_trih(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
-
     (void)(z);
 }
 
@@ -319,6 +353,7 @@ static void test_atri(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("acos" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -327,6 +362,7 @@ static void test_atri(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("atan" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -335,6 +371,7 @@ static void test_atri(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("asec" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -343,6 +380,7 @@ static void test_atri(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("acsc" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -351,6 +389,7 @@ static void test_atri(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("acot" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -359,7 +398,6 @@ static void test_atri(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
-
     (void)(z);
 }
 
@@ -374,6 +412,7 @@ static void test_atrih(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("acosh" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -382,6 +421,7 @@ static void test_atrih(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("atanh" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -390,6 +430,7 @@ static void test_atrih(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("asech" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -398,6 +439,7 @@ static void test_atrih(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("acsch" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -406,6 +448,7 @@ static void test_atrih(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
+    (void)(z);
 
 #if defined(MAIN_ONCE)
     printf("acoth" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
@@ -414,7 +457,6 @@ static void test_atrih(a_complex_s x)
 #if defined(MAIN_ONCE)
     printf("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 #endif /* MAIN_ONCE */
-
     (void)(z);
 }
 

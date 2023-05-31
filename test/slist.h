@@ -70,13 +70,13 @@ static void test(void)
     {
         a_data_s *node = a_slist_entry_next(&list1->head, a_data_s, list);
         a_slist_del_head(list1);
-        node = a_die(a_data_s, node);
+        a_die(a_data_s, node);
     }
     a_slist_forsafe(it, at, list1)
     {
         a_data_s *node = a_slist_entry(it, a_data_s, list);
         a_slist_del(list1, at);
-        node = a_die(a_data_s, node);
+        a_die(a_data_s, node);
         it = A_NULL;
     }
     if (a_slist_none(list1) && a_slist_none(list2) && a_slist_none(list3))
@@ -84,9 +84,9 @@ static void test(void)
         printf(" ok");
     }
     putchar('\n');
-    list3 = a_die(a_slist_s, list3);
-    list2 = a_die(a_slist_s, list2);
-    list1 = a_die(a_slist_s, list1);
+    a_die(a_slist_s, list3);
+    a_die(a_slist_s, list2);
+    a_die(a_slist_s, list1);
 }
 
 static void null(void)

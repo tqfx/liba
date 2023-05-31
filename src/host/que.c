@@ -191,15 +191,18 @@ int a_que_swap_(a_que_s const *const ctx, void *const lhs, void *const rhs)
     a_list_foreach_next(it, &ctx->_head)
     {
         a_que_node_s *const node = a_que_from(it);
-        if (node->_data == lhs)
+        if (node->_data == lhs || node->_data == rhs)
         {
-            l = node;
+            if (!l)
+            {
+                l = node;
+            }
+            else
+            {
+                r = node;
+            }
         }
-        else if (node->_data == rhs)
-        {
-            r = node;
-        }
-        if (l && r)
+        if (r)
         {
             a_list_swap_node(&l->_node, &r->_node);
             ok = A_SUCCESS;
@@ -221,19 +224,24 @@ void a_que_swap(a_que_s const *const ctx, a_size_t lhs, a_size_t rhs)
         a_que_node_s *r = A_NULL;
         a_list_foreach_next(it, &ctx->_head)
         {
-            if (cur == lhs)
+            if (cur == lhs || cur == rhs)
             {
                 // because lhs less than num
                 // it's never a null pointer
-                l = a_que_from(it);
+                if (!l)
+                {
+                    l = a_que_from(it);
+                }
+                else
+                {
+                    r = a_que_from(it);
+                }
+                if (!it)
+                {
+                    break;
+                }
             }
-            else if (cur == rhs)
-            {
-                // because rhs less than num
-                // it's never a null pointer
-                r = a_que_from(it);
-            }
-            if (l && r)
+            if (r)
             {
                 a_list_swap_node(&l->_node, &r->_node);
                 break;

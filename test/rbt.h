@@ -180,8 +180,8 @@ static int test(int argc, char *argv[])
         TEST_BUG(vec[i].reached);
     }
 
-    sorted = a_die(int, sorted);
-    vec = a_die(int_node, vec);
+    a_die(int_node, vec);
+    a_die(int, sorted);
     return 0;
 }
 
