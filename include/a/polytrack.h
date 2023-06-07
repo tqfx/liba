@@ -47,7 +47,7 @@ extern "C" {
 
 /*!
  @brief generation function for cubic polynomial trajectory
- @f{aligned}{
+ \f{aligned}{
   \left\{\begin{array}{l}
   t=t_{1}-t_{0}\\
   q=q_{1}-q_{0}\\
@@ -56,7 +56,7 @@ extern "C" {
   k_{2}=\cfrac{\left(-2\,v_{0}-v_{1}\right)\,t+3\,q}{t^2}\\
   k_{3}=\cfrac{\left(v_{0}+v_{1}\right)\,t-2\,q}{t^3}
   \end{array}\right.
- @f}
+ \f}
  @param[in,out] ctx points to an instance of cubic polynomial trajectory
  @param[in] t0 time for source
  @param[in] t1 time for target
@@ -72,13 +72,13 @@ A_EXTERN void a_polytrack3_gen(a_polytrack3_s *ctx,
 
 /*!
  @brief calculate function for cubic polynomial trajectory
- @f{aligned}{
+ \f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3} \\
   \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2} \\
   \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)
   \end{array}
- @f}
+ \f}
  @param[in] ctx points to an instance of cubic polynomial trajectory
  @param[in] dt difference between current time and initial time
  @param[out] out buffer for result
@@ -90,11 +90,11 @@ A_EXTERN void a_polytrack3_out(a_polytrack3_s const *ctx, a_float_t dt, a_float_
 
 /*!
  @brief calculate function for cubic polynomial trajectory position
- @f{aligned}{
+ \f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3} \\
   \end{array}
- @f}
+ \f}
  @param[in] ctx points to an instance of cubic polynomial trajectory
  @param[in] dt difference between current time and initial time
  @return position output
@@ -103,11 +103,11 @@ A_EXTERN a_float_t a_polytrack3_pos(a_polytrack3_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for cubic polynomial trajectory velocity
- @f{aligned}{
+ \f{aligned}{
   \begin{array}{l}
   \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2} \\
   \end{array}
- @f}
+ \f}
  @param[in] ctx points to an instance of cubic polynomial trajectory
  @param[in] dt difference between current time and initial time
  @return velocity output
@@ -116,11 +116,11 @@ A_EXTERN a_float_t a_polytrack3_vec(a_polytrack3_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for cubic polynomial trajectory acceleration
- @f{aligned}{
+ \f{aligned}{
   \begin{array}{l}
   \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)
   \end{array}
- @f}
+ \f}
  @param[in] ctx points to an instance of cubic polynomial trajectory
  @param[in] dt difference between current time and initial time
  @return acceleration output
@@ -131,7 +131,7 @@ A_EXTERN a_float_t a_polytrack3_acc(a_polytrack3_s const *ctx, a_float_t dt);
 
 /*!
  @brief generation function for quintic polynomial trajectory
- @f{aligned}{
+ \f{aligned}{
   \left\{\begin{array}{l}
   t=t_{1}-t_{0}\\
   q=q_{1}-q_{0}\\
@@ -142,7 +142,7 @@ A_EXTERN a_float_t a_polytrack3_acc(a_polytrack3_s const *ctx, a_float_t dt);
   k_{4}=\cfrac{\left(3\,a_{0}-2\,a_{1}\right)\,t^2+\left(16\,v_{0}+14\,v_{1}\right)\,t-30\,q}{2\,t^4}\\
   k_{5}=\cfrac{\left(a_{1}-a_{0}\right)\,t^2+\left(-6\,v_{0}-6\,v_{1}\right)\,t+12\,q}{2\,t^5}
   \end{array}\right.
- @f}
+ \f}
  @param[in,out] ctx points to an instance of quintic polynomial trajectory
  @param[in] t0 time for source
  @param[in] t1 time for target
@@ -161,13 +161,13 @@ A_EXTERN void a_polytrack5_gen(a_polytrack5_s *ctx,
 
 /*!
  @brief calculate function for quintic polynomial trajectory
- @f{aligned}{
+ \f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3}+k_{4}\left(t-t_{0}\right)^{4}+k_{5}\left(t-t_{0}\right)^{5}\\
   \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2}+4 k_{4}\left(t-t_{0}\right)^{3}+5 k_{5}\left(t-t_{0}\right)^{4}\\
   \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)+12 k_{4}\left(t-t_{0}\right)^{2}+20 k_{5}\left(t-t_{0}\right)^{3}
   \end{array}
- @f}
+ \f}
  @param[in] ctx points to an instance of quintic polynomial trajectory
  @param[in] dt difference between current time and initial time
  @param[out] out buffer for result
@@ -179,11 +179,11 @@ A_EXTERN void a_polytrack5_out(a_polytrack5_s const *ctx, a_float_t dt, a_float_
 
 /*!
  @brief calculate function for quintic polynomial trajectory position
- @f{aligned}{
+ \f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3}+k_{4}\left(t-t_{0}\right)^{4}+k_{5}\left(t-t_{0}\right)^{5}\\
   \end{array}
- @f}
+ \f}
  @param[in] ctx points to an instance of quintic polynomial trajectory
  @param[in] dt difference between current time and initial time
  @return position output
@@ -192,11 +192,11 @@ A_EXTERN a_float_t a_polytrack5_pos(a_polytrack5_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for quintic polynomial trajectory velocity
- @f{aligned}{
+ \f{aligned}{
   \begin{array}{l}
   \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2}+4 k_{4}\left(t-t_{0}\right)^{3}+5 k_{5}\left(t-t_{0}\right)^{4}\\
   \end{array}
- @f}
+ \f}
  @param[in] ctx points to an instance of quintic polynomial trajectory
  @param[in] dt difference between current time and initial time
  @return velocity output
@@ -205,11 +205,11 @@ A_EXTERN a_float_t a_polytrack5_vec(a_polytrack5_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for quintic polynomial trajectory acceleration
- @f{aligned}{
+ \f{aligned}{
   \begin{array}{l}
   \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)+12 k_{4}\left(t-t_{0}\right)^{2}+20 k_{5}\left(t-t_{0}\right)^{3}
   \end{array}
- @f}
+ \f}
  @param[in] ctx points to an instance of quintic polynomial trajectory
  @param[in] dt difference between current time and initial time
  @return acceleration output
@@ -220,7 +220,7 @@ A_EXTERN a_float_t a_polytrack5_acc(a_polytrack5_s const *ctx, a_float_t dt);
 
 /*!
  @brief generation function for hepta polynomial trajectory
- @f{aligned}{
+ \f{aligned}{
   \left\{\begin{array}{l}
   t=t_{1}-t_{0}\\
   q=q_{1}-q_{0}\\
@@ -233,7 +233,7 @@ A_EXTERN a_float_t a_polytrack5_acc(a_polytrack5_s const *ctx, a_float_t dt);
   k_{6}=\cfrac{\left(-4\,j_{0}-3\,j_{1}\right)\,t^3+\left(39\,a_{1}-45\,a_{0}\right)\,t^2+\left(-216\,v_{0}-204\,v_{1}\right)\,t+420\,q}{6\,t^6}\\
   k_{7}=\cfrac{\left(j_{0}+j_{1}\right)\,t^3+\left(12\,a_{0}-12\,a_{1}\right)\,t^2+\left(60\,v_{0}+60\,v_{1}\right)\,t-120\,q}{6\,t^7}
   \end{array}\right.
- @f}
+ \f}
  @param[in,out] ctx points to an instance of hepta polynomial trajectory
  @param[in] t0 time for source
  @param[in] t1 time for target
@@ -255,14 +255,14 @@ A_EXTERN void a_polytrack7_gen(a_polytrack7_s *ctx,
 
 /*!
  @brief calculate function for hepta polynomial trajectory
- @f{aligned}{
+ \f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3}+k_{4}\left(t-t_{0}\right)^{4}+k_{5}\left(t-t_{0}\right)^{5}+k_{6}\left(t-t_{0}\right)^{6}+k_{7}\left(t-t_{0}\right)^{7}\\
   \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2}+4 k_{4}\left(t-t_{0}\right)^{3}+5 k_{5}\left(t-t_{0}\right)^{4}+6 k_{6}\left(t-t_{0}\right)^{5}+7 k_{7}\left(t-t_{0}\right)^{6}\\
   \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)+12 k_{4}\left(t-t_{0}\right)^{2}+20 k_{5}\left(t-t_{0}\right)^{3}+30 k_{6}\left(t-t_{0}\right)^{4}+42 k_{7}\left(t-t_{0}\right)^{5}\\
   q^{(3)}(t)=6 k_{3}+24 k_{4}\left(t-t_{0}\right)+60 k_{5}\left(t-t_{0}\right)^{2}+120 k_{6}\left(t-t_{0}\right)^{3}+210 k_{7}\left(t-t_{0}\right)^{4}
   \end{array}
- @f}
+ \f}
  @param[in] ctx points to an instance of hepta polynomial trajectory
  @param[in] dt difference between current time and initial time
  @param[out] out buffer for result
@@ -275,11 +275,11 @@ A_EXTERN void a_polytrack7_out(a_polytrack7_s const *ctx, a_float_t dt, a_float_
 
 /*!
  @brief calculate function for hepta polynomial trajectory position
- @f{aligned}{
+ \f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3}+k_{4}\left(t-t_{0}\right)^{4}+k_{5}\left(t-t_{0}\right)^{5}+k_{6}\left(t-t_{0}\right)^{6}+k_{7}\left(t-t_{0}\right)^{7}\\
   \end{array}
- @f}
+ \f}
  @param[in] ctx points to an instance of hepta polynomial trajectory
  @param[in] dt difference between current time and initial time
  @return position output
@@ -288,11 +288,11 @@ A_EXTERN a_float_t a_polytrack7_pos(a_polytrack7_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for hepta polynomial trajectory velocity
- @f{aligned}{
+ \f{aligned}{
   \begin{array}{l}
   \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2}+4 k_{4}\left(t-t_{0}\right)^{3}+5 k_{5}\left(t-t_{0}\right)^{4}+6 k_{6}\left(t-t_{0}\right)^{5}+7 k_{7}\left(t-t_{0}\right)^{6}\\
   \end{array}
- @f}
+ \f}
  @param[in] ctx points to an instance of hepta polynomial trajectory
  @param[in] dt difference between current time and initial time
  @return velocity output
@@ -301,11 +301,11 @@ A_EXTERN a_float_t a_polytrack7_vec(a_polytrack7_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for hepta polynomial trajectory acceleration
- @f{aligned}{
+ \f{aligned}{
   \begin{array}{l}
   \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)+12 k_{4}\left(t-t_{0}\right)^{2}+20 k_{5}\left(t-t_{0}\right)^{3}+30 k_{6}\left(t-t_{0}\right)^{4}+42 k_{7}\left(t-t_{0}\right)^{5}\\
   \end{array}
- @f}
+ \f}
  @param[in] ctx points to an instance of hepta polynomial trajectory
  @param[in] dt difference between current time and initial time
  @return acceleration output
@@ -314,11 +314,11 @@ A_EXTERN a_float_t a_polytrack7_acc(a_polytrack7_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for hepta polynomial trajectory jerk
- @f{aligned}{
+ \f{aligned}{
   \begin{array}{l}
   q^{(3)}(t)=6 k_{3}+24 k_{4}\left(t-t_{0}\right)+60 k_{5}\left(t-t_{0}\right)^{2}+120 k_{6}\left(t-t_{0}\right)^{3}+210 k_{7}\left(t-t_{0}\right)^{4}
   \end{array}
- @f}
+ \f}
  @param[in] ctx points to an instance of hepta polynomial trajectory
  @param[in] dt difference between current time and initial time
  @return jerk output
