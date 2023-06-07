@@ -31,7 +31,7 @@ function(set_executable_options)
   endif()
 endfunction()
 
-set(TARGET_PREFIX test-)
+set(TARGET_PREFIX test_)
 
 function(building target)
   set(TARGET "${TARGET_PREFIX}${target}")

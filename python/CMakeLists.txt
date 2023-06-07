@@ -11,7 +11,7 @@ function(unittest source name)
     endif()
   endforeach()
 
-  add_test(NAME py-${name} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+  add_test(NAME py_${name} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/test/${source}.py ${ARGS}
   )
 endfunction()

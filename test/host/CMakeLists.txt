@@ -1,4 +1,4 @@
-set(TARGET_PREFIX test-host-)
+set(TARGET_PREFIX ${TARGET_PREFIX}host_)
 
 building(que que.c que.cpp)
 unittest(que)

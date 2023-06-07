@@ -2,7 +2,7 @@
 include(UseJava)
 
 file(GLOB_RECURSE SOURCES src/*.java)
-add_jar(ajar GENERATE_NATIVE_HEADERS jar-native-a
+add_jar(ajar GENERATE_NATIVE_HEADERS ajar_native
   ENTRY_POINT a OUTPUT_NAME a SOURCES ${SOURCES}
 )
 install_jar(ajar ${CMAKE_INSTALL_LIBDIR}/java)
@@ -34,7 +34,7 @@ endif()
 
 add_library(ajni SHARED ${OBJECTS} ${SOURCES})
 set_target_properties(ajni PROPERTIES DEFINE_SYMBOL A_EXPORTS OUTPUT_NAME a)
-target_link_libraries(ajni PRIVATE jar-native-a)
+target_link_libraries(ajni PRIVATE ajar_native)
 add_library_properties(ajni PRIVATE alib)
 set_library_options(ajni)
 

@@ -1,5 +1,5 @@
 function(building source target)
-  add_jar(jar-${target} INCLUDE_JARS ajar
+  add_jar(jar_${target} INCLUDE_JARS ajar
     SOURCES ${SOURCES} ${source}.java
     ENTRY_POINT ${source}
     OUTPUT_NAME ${source}
@@ -21,7 +21,7 @@ function(unittest source name)
     endif()
   endforeach()
 
-  add_test(NAME jar-${name} WORKING_DIRECTORY $<TARGET_FILE_DIR:ajni>
+  add_test(NAME jar_${name} WORKING_DIRECTORY $<TARGET_FILE_DIR:ajni>
     COMMAND ${JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_BINARY_DIR}/${source}.jar ${ARGS}
   )
 endfunction()
