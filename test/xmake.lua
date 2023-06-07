@@ -33,6 +33,10 @@ target("test/crc")
     building({"crc.c", "crc.cpp"})
 target_end()
 
+target("test/hpf")
+    building({"hpf.c", "hpf.cpp"})
+target_end()
+
 target("test/list")
     building({"list.c", "list.cpp"})
 target_end()

@@ -160,6 +160,13 @@ unittest(complex ARGS -4,3 -2,1)
 building(crc crc.c crc.cpp)
 unittest(crc ARGS crc.c)
 
+building(hpf hpf.c hpf.cpp)
+unittest(hpf)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(hpf lpf.gp hpf.log)
+endif()
+
 building(list list.c list.cpp)
 unittest(list)
 
