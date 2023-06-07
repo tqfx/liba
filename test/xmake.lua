@@ -37,6 +37,10 @@ target("test/list")
     building({"list.c", "list.cpp"})
 target_end()
 
+target("test/lpf")
+    building({"lpf.c", "lpf.cpp"})
+target_end()
+
 target("test/main")
     building({"main.c", "main.cpp"})
 target_end()

@@ -163,6 +163,13 @@ unittest(crc ARGS crc.c)
 building(list list.c list.cpp)
 unittest(list)
 
+building(lpf lpf.c lpf.cpp)
+unittest(lpf)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(lpf lpf.gp lpf.log)
+endif()
+
 building(main main.c main.cpp)
 unittest(main)
 

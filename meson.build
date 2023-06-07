@@ -64,6 +64,7 @@ sources = [
     'include/a/host/vec.h',
     'include/a/host/vector.h',
     'include/a/list.h',
+    'include/a/lpf.h',
     'include/a/math.h',
     'include/a/mf.h',
     'include/a/notefreqs.h',
