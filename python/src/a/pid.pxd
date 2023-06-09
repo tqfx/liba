@@ -11,13 +11,12 @@ cdef extern from "a/pid.h":
         a_float_t summax
         a_float_u out
         a_float_u fdb
-        a_float_u ec
-        a_float_u e
+        a_float_u err
     a_pid_s *a_pid_off(a_pid_s *ctx)
     a_pid_s *a_pid_inc(a_pid_s *ctx)
     a_pid_s *a_pid_pos(a_pid_s *ctx, a_float_t max)
     a_pid_s *a_pid_kpid(a_pid_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd)
-    a_pid_s *a_pid_chan(a_pid_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb, a_float_t *sum, a_float_t *ec, a_float_t *e)
+    a_pid_s *a_pid_chan(a_pid_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err)
     a_pid_s *a_pid_init(a_pid_s *ctx, a_float_t dt, a_float_t min, a_float_t max)
     a_float_t a_pid_outf(a_pid_s *ctx, a_float_t set, a_float_t fdb)
     const a_float_t *a_pid_outp(a_pid_s *ctx, const a_float_t *set, const a_float_t *fdb)

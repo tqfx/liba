@@ -26,8 +26,9 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     {
         a_float_t x1 = a_float_sin(i);
         a_float_t x2 = a_lpf_iter(&ctx, x1);
+
 #if defined(MAIN_ONCE)
-        printf("%g %g %g\n", i, x1, x2);
+        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), i, x1, x2);
 #else /* !MAIN_ONCE */
         (void)(x2);
 #endif /* MAIN_ONCE */

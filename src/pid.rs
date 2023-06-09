@@ -24,14 +24,12 @@ pub struct PID {
     kd: float,
     /// controller output
     pub out: Float,
-    /// (integral) output item sum
-    pub sum: Float,
     /// cache feedback
     pub fdb: Float,
-    /// error change
-    pub ec: Float,
-    /// error input
-    pub e: Float,
+    /// cache variable
+    tmp: Float,
+    /// cache error
+    pub err: Float,
     /// minimum output
     pub outmin: float,
     /// maximum output
@@ -52,9 +50,8 @@ extern "C" {
         num: uint,
         out: *mut float,
         fdb: *mut float,
-        sum: *mut float,
-        ec: *mut float,
-        e: *mut float,
+        tmp: *mut float,
+        err: *mut float,
     ) -> *mut PID;
     fn a_pid_outf(ctx: *mut PID, set: float, fdb: float) -> float;
     fn a_pid_outp(ctx: *mut PID, set: *const float, fdb: *const float) -> *const float;
@@ -81,10 +78,9 @@ impl PID {
             ki: 0.0,
             kd: 0.0,
             out: Float { f: 0.0 },
-            sum: Float { f: 0.0 },
             fdb: Float { f: 0.0 },
-            ec: Float { f: 0.0 },
-            e: Float { f: 0.0 },
+            tmp: Float { f: 0.0 },
+            err: Float { f: 0.0 },
             outmin,
             outmax,
             summax: 0.0,
@@ -109,10 +105,9 @@ impl PID {
             ki: ki * dt,
             kd: kd / dt,
             out: Float { f: 0.0 },
-            sum: Float { f: 0.0 },
             fdb: Float { f: 0.0 },
-            ec: Float { f: 0.0 },
-            e: Float { f: 0.0 },
+            tmp: Float { f: 0.0 },
+            err: Float { f: 0.0 },
             outmin,
             outmax,
             summax,
@@ -136,10 +131,9 @@ impl PID {
             ki: ki * dt,
             kd: kd / dt,
             out: Float { f: 0.0 },
-            sum: Float { f: 0.0 },
             fdb: Float { f: 0.0 },
-            ec: Float { f: 0.0 },
-            e: Float { f: 0.0 },
+            tmp: Float { f: 0.0 },
+            err: Float { f: 0.0 },
             outmin,
             outmax,
             summax: 0.0,
@@ -173,9 +167,8 @@ impl PID {
         &mut self,
         out: &mut [float],
         fdb: &mut [float],
-        sum: &mut [float],
-        ec: &mut [float],
-        e: &mut [float],
+        tmp: &mut [float],
+        err: &mut [float],
     ) -> &mut Self {
         unsafe {
             a_pid_chan(
@@ -183,9 +176,8 @@ impl PID {
                 out.len() as uint,
                 out.as_mut_ptr(),
                 fdb.as_mut_ptr(),
-                sum.as_mut_ptr(),
-                ec.as_mut_ptr(),
-                e.as_mut_ptr(),
+                tmp.as_mut_ptr(),
+                err.as_mut_ptr(),
             )
             .as_mut()
             .unwrap_unchecked()
@@ -280,10 +272,9 @@ fn pid() {
     {
         let mut out: [float; 4] = [0.0, 0.0, 0.0, 0.0];
         let mut fdb: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut sum: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut ec: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut e: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        a.chan(&mut out, &mut fdb, &mut sum, &mut ec, &mut e);
+        let mut tmp: [float; 4] = [0.0, 0.0, 0.0, 0.0];
+        let mut err: [float; 4] = [0.0, 0.0, 0.0, 0.0];
+        a.chan(&mut out, &mut fdb, &mut tmp, &mut err);
         a.outp(&[0.1, 0.2, 0.3, 0.4], &[0.0, 0.0, 0.0, 0.0]);
         println!("{:?}", out);
     }

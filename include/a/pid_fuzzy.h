@@ -195,12 +195,10 @@ A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_buff(a_pid_fuzzy_s *ctx, unsigned int *idx, 
  @param[in] num number of controllers output
  @param[in] out points to controllers output
  @param[in] fdb points to cache feedback buffer
- @param[in] sum points to (integral) output buffer
- @param[in] ec points to error change buffer
- @param[in] e points to error input buffer
+ @param[in] tmp points to cache variable buffer
+ @param[in] err points to cache error buffer
 */
-A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_chan(a_pid_fuzzy_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb,
-                                         a_float_t *sum, a_float_t *ec, a_float_t *e);
+A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_chan(a_pid_fuzzy_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err);
 
 /*!
  @brief set rule base for fuzzy PID controller

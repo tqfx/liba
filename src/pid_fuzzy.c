@@ -126,10 +126,9 @@ a_pid_fuzzy_s *a_pid_fuzzy_buff(a_pid_fuzzy_s *const ctx, unsigned int *const id
     return ctx;
 }
 
-a_pid_fuzzy_s *a_pid_fuzzy_chan(a_pid_fuzzy_s *const ctx, unsigned int const num, a_float_t *const out, a_float_t *const fdb,
-                                a_float_t *const sum, a_float_t *const ec, a_float_t *const e)
+a_pid_fuzzy_s *a_pid_fuzzy_chan(a_pid_fuzzy_s *const ctx, unsigned int const num, a_float_t *const out, a_float_t *const fdb, a_float_t *const tmp, a_float_t *const err)
 {
-    a_pid_chan(&ctx->pid, num, out, fdb, sum, ec, e);
+    a_pid_chan(&ctx->pid, num, out, fdb, tmp, err);
     return ctx;
 }
 
@@ -244,7 +243,7 @@ pid:
 a_float_t a_pid_fuzzy_outf(a_pid_fuzzy_s *const ctx, a_float_t const set, a_float_t const fdb)
 {
     a_float_t const e = set - fdb;
-    a_float_t const ec = e - ctx->pid.e.f;
+    a_float_t const ec = e - ctx->pid.err.f;
     a_pid_fuzzy_out_(ctx, a_pid_fuzzy_col(ctx), ec, e);
     return a_pid_outf_(&ctx->pid, a_pid_mode(&ctx->pid), set, fdb, ec, e);
 }
@@ -257,7 +256,7 @@ a_float_t const *a_pid_fuzzy_outp(a_pid_fuzzy_s *const ctx, a_float_t const *con
     for (unsigned int i = 0; i != num; ++i)
     {
         a_float_t const e = set[i] - fdb[i];
-        a_float_t const ec = e - ctx->pid.e.p[i];
+        a_float_t const ec = e - ctx->pid.err.p[i];
         a_pid_fuzzy_out_(ctx, col, ec, e);
         a_pid_outp_(&ctx->pid, mode, set[i], fdb[i], ec, e, i);
     }

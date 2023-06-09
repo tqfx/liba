@@ -81,10 +81,9 @@ typedef struct a_pid_s
     a_float_t ki; //!< integral constant
     a_float_t kd; //!< derivative constant
     a_float_u out; //!< controller output
-    a_float_u sum; //!< (integral) output item sum
     a_float_u fdb; //!< cache feedback
-    a_float_u ec; //!< error change
-    a_float_u e; //!< error input
+    a_float_u tmp; //!< cache variable
+    a_float_u err; //!< cache error
     a_float_t outmin; //!< minimum final output
     a_float_t outmax; //!< maximum final output
     a_float_t summax; //!< maximum integral output
@@ -266,11 +265,10 @@ A_EXTERN a_pid_s *a_pid_kpid(a_pid_s *ctx, a_float_t kp, a_float_t ki, a_float_t
  @param[in] num number of controllers output
  @param[in] out points to controllers output
  @param[in] fdb points to cache feedback buffer
- @param[in] sum points to (integral) output buffer
- @param[in] ec points to error change buffer
- @param[in] e points to error input buffer
+ @param[in] tmp points to cache variable buffer
+ @param[in] err points to cache error buffer
 */
-A_EXTERN a_pid_s *a_pid_chan(a_pid_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb, a_float_t *sum, a_float_t *ec, a_float_t *e);
+A_EXTERN a_pid_s *a_pid_chan(a_pid_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err);
 
 /*!
  @brief initialize function for PID controller, default is turn off

@@ -341,11 +341,8 @@ static int LMODULE(pid_fuzzy_get)(lua_State *const L)
     case 0x001AE924: // fdb
         lua_pushnumber(L, (lua_Number)ctx->pid.fdb.f);
         break;
-    case 0x00003412: // ec
-        lua_pushnumber(L, (lua_Number)ctx->pid.ec.f);
-        break;
-    case 0x00000065: // e
-        lua_pushnumber(L, (lua_Number)ctx->pid.e.f);
+    case 0x001AAD55: // err
+        lua_pushnumber(L, (lua_Number)ctx->pid.err.f);
         break;
     case 0x001A25B4: // col
         lua_pushinteger(L, (lua_Integer)a_pid_fuzzy_col(ctx));
@@ -401,8 +398,7 @@ static int LMODULE(pid_fuzzy_get)(lua_State *const L)
             {"summax", ctx->pid.summax},
             {"out", ctx->pid.out.f},
             {"fdb", ctx->pid.fdb.f},
-            {"ec", ctx->pid.ec.f},
-            {"e", ctx->pid.e.f},
+            {"err", ctx->pid.err.f},
             {NULL, 0},
         };
         l_func_s const funcs[] = {

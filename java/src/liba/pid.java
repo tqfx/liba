@@ -22,16 +22,14 @@ public class pid {
     public double outmax;
     /** maximum integral output */
     public double summax;
-    /** (integral) output item sum */
-    public double sum;
     /** controller output */
     public double out;
     /** cache feedback */
     public double fdb;
-    /** error change */
-    public double ec;
-    /** error input */
-    public double e;
+    /** cache variable */
+    double tmp;
+    /** cache error */
+    public double err;
     int num;
     int reg;
     static {

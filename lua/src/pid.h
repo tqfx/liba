@@ -15,8 +15,7 @@
  @field summax maximum integral output
  @field out controller output
  @field fdb cache feedback
- @field ec error change
- @field e error input
+ @field err cache error
  @table pid
 */
 

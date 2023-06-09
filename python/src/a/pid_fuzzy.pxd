@@ -13,7 +13,7 @@ cdef extern from "a/pid_fuzzy.h":
     a_pid_fuzzy_s *a_pid_fuzzy_buf1(a_pid_fuzzy_s *ctx, void *ptr, a_size_t num)
     a_pid_fuzzy_s *a_pid_fuzzy_kpid(a_pid_fuzzy_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd)
     a_pid_fuzzy_s *a_pid_fuzzy_buff(a_pid_fuzzy_s *ctx, unsigned int *idx, a_float_t *mms, a_float_t *mat)
-    a_pid_fuzzy_s *a_pid_fuzzy_setv(a_pid_fuzzy_s *ctx, a_float_t *out, a_float_t *fdb, a_float_t *sum, a_float_t *ec, a_float_t *e)
+    a_pid_fuzzy_s *a_pid_fuzzy_chan(a_pid_fuzzy_s *ctx, a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err)
     a_pid_fuzzy_s *a_pid_fuzzy_base(a_pid_fuzzy_s *ctx, unsigned int col, const a_float_t *mec, const a_float_t *mec,
                           const a_float_t *mkp, const a_float_t *mki, const a_float_t *mkd)
     a_pid_fuzzy_s *a_pid_fuzzy_init(a_pid_fuzzy_s *ctx, a_float_t dt, unsigned int col, const a_float_t *mec, const a_float_t *mec,

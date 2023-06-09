@@ -117,8 +117,7 @@ assert(type(ctx.col) == "number")
 assert(type(ctx.buf) == "number")
 assert(type(ctx.out) == "number")
 assert(type(ctx.fdb) == "number")
-assert(type(ctx.ec) == "number")
-assert(type(ctx.e) == "number")
+assert(type(ctx.err) == "number")
 assert(ctx.mode == a.pid.POS)
 ctx.mode = a.pid.OFF
 ctx.buf = ctx.col

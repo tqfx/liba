@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-import sys
-import os
+import os, sys
 
 sys.path.insert(0, os.getcwd())
 prefix = os.path.join(sys.path[0], "build")

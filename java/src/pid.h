@@ -12,14 +12,13 @@ typedef struct
     jfieldID kp;
     jfieldID ki;
     jfieldID kd;
+    jfieldID out;
+    jfieldID fdb;
+    jfieldID tmp;
+    jfieldID err;
     jfieldID outmin;
     jfieldID outmax;
     jfieldID summax;
-    jfieldID sum;
-    jfieldID out;
-    jfieldID fdb;
-    jfieldID ec;
-    jfieldID e;
     jfieldID num;
     jfieldID reg;
 } j_pid_s;

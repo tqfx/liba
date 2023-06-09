@@ -308,11 +308,8 @@ static int LMODULE(pid_get)(lua_State *const L)
     case 0x001AE924: // fdb
         lua_pushnumber(L, (lua_Number)ctx->fdb.f);
         break;
-    case 0x00003412: // ec
-        lua_pushnumber(L, (lua_Number)ctx->ec.f);
-        break;
-    case 0x00000065: // e
-        lua_pushnumber(L, (lua_Number)ctx->e.f);
+    case 0x001AAD55: // err
+        lua_pushnumber(L, (lua_Number)ctx->err.f);
         break;
     case 0x001D0204: // new
         lua_pushcfunction(L, LMODULE(pid_new));
@@ -354,8 +351,7 @@ static int LMODULE(pid_get)(lua_State *const L)
             {"summax", ctx->summax},
             {"out", ctx->out.f},
             {"fdb", ctx->fdb.f},
-            {"ec", ctx->ec.f},
-            {"e", ctx->e.f},
+            {"err", ctx->err.f},
             {NULL, 0},
         };
         l_func_s const funcs[] = {

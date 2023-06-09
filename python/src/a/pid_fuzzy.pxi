@@ -145,8 +145,5 @@ cdef class pid_fuzzy:
     def fdb(self) -> a_float_t:
         return self.ctx.pid.fdb.f
     @property
-    def ec(self) -> a_float_t:
-        return self.ctx.pid.ec.f
-    @property
-    def e(self) -> a_float_t:
-        return self.ctx.pid.e.f
+    def err(self) -> a_float_t:
+        return self.ctx.pid.err.f

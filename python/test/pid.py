@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-import sys
-import os
+import os, sys
 
 sys.path.insert(0, os.getcwd())
 prefix = os.path.join(sys.path[0], "build")
@@ -51,7 +50,7 @@ y = 0.0
 tf.zero()
 error1 = []
 feedback1 = []
-pid.pos(MAX)
+pid.zero().pos(MAX)
 for i in data:
     u = pid(r, y)
     y = tf(u)
@@ -98,14 +97,14 @@ y = 0.0
 tf.zero()
 error1 = []
 feedback1 = []
-pid.inc()
+pid.zero().inc()
 for i in data:
     u = pid(r, y)
     y = tf(u)
     feedback1.append(y)
     error1.append(r - y)
 
-s = 0.0
+u = 0.0
 y = 0.0
 tf.zero()
 error2 = []
@@ -118,13 +117,13 @@ for i in data:
     x[0] = e[0] - e[1]
     x[1] = e[0] * Ts
     x[2] = (e[0] + e[2] - e[1] * 2) / Ts
-    s += kp * x[0] + ki * x[1] + kd * x[2]
-    u = s
-    if u < MIN:
-        u = MIN
-    elif u > MAX:
-        u = MAX
-    y = tf(u)
+    u += kp * x[0] + ki * x[1] + kd * x[2]
+    y = u
+    if y < MIN:
+        y = MIN
+    elif y > MAX:
+        y = MAX
+    y = tf(y)
     feedback2.append(y)
     error2.append(r - y)
 

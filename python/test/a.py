@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import os, sys
-from typing import Any
 
 sys.path.insert(0, os.getcwd())
 if len(sys.argv) > 1:

@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-import sys
-import os
+import os, sys
 
 sys.path.insert(0, os.getcwd())
 prefix = os.path.join(sys.path[0], "build")
@@ -64,7 +63,7 @@ mkp = [
     [NS, ZO, PS, PM, PM, PM, PB],
     [ZO, ZO, PM, PM, PM, PB, PB],
 ]
-S = 10 / 3
+S = 0.01 / 3
 NB = -3 * S
 NM = -2 * S
 NS = -1 * S
@@ -81,7 +80,7 @@ mki = [
     [ZO, ZO, NS, NS, NM, NB, NB],
     [ZO, ZO, NS, NM, NM, NB, NB],
 ]
-S = 10 / 3
+S = 0.1 / 3
 NB = -3 * S
 NM = -2 * S
 NS = -1 * S
@@ -153,9 +152,9 @@ def fuzzy(e: float, c: float):
     return kp, ki, kd
 
 
-kp = 400
-ki = 200
-kd = 0.005
+kp = 9
+ki = 0.01
+kd = 0.1
 Ts = 0.001
 data = np.arange(0, 0.2, Ts)
 
@@ -191,12 +190,12 @@ error1 = []
 feedback1 = []
 pid_fuzzy.kpid(kp, ki, kd)
 for i in data:
-    u = pid_fuzzy(r, y)
-    y = tf(u)
+    y = pid_fuzzy(r, y)
+    y = tf(y)
     feedback1.append(y)
     error1.append(r - y)
 
-s = 0.0
+u = 0.0
 y = 0.0
 tf.zero()
 e = [0.0, 0.0, 0.0]
@@ -210,13 +209,13 @@ for i in data:
     x[1] = e[0] * Ts
     x[2] = (e[0] + e[2] - e[1] * 2) / Ts
     dkp, dki, dkd = fuzzy(e[0], e[0] - e[1])
-    s += (kp + dkp) * x[0] + (ki + dki) * x[1] + (kd + dkd) * x[2]
-    u = s
-    if u < MIN:
-        u = MIN
-    elif u > MAX:
-        u = MAX
-    y = tf(u)
+    u += (kp + dkp) * x[0] + (ki + dki) * x[1] + (kd + dkd) * x[2]
+    y = u
+    if y < MIN:
+        y = MIN
+    elif y > MAX:
+        y = MAX
+    y = tf(y)
     feedback2.append(y)
     error2.append(r - y)
 

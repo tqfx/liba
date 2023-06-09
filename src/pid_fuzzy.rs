@@ -56,9 +56,8 @@ extern "C" {
         num: uint,
         out: *mut float,
         fdb: *mut float,
-        sum: *mut float,
-        ec: *mut float,
-        e: *mut float,
+        tmp: *mut float,
+        err: *mut float,
     ) -> *mut PID_fuzzy;
     fn a_pid_fuzzy_base(
         ctx: *mut PID_fuzzy,
@@ -171,9 +170,8 @@ impl PID_fuzzy {
         &mut self,
         out: &mut [float],
         fdb: &mut [float],
-        sum: &mut [float],
-        ec: &mut [float],
-        e: &mut [float],
+        tmp: &mut [float],
+        err: &mut [float],
     ) -> &mut Self {
         unsafe {
             a_pid_fuzzy_chan(
@@ -181,9 +179,8 @@ impl PID_fuzzy {
                 out.len() as uint,
                 out.as_mut_ptr(),
                 fdb.as_mut_ptr(),
-                sum.as_mut_ptr(),
-                ec.as_mut_ptr(),
-                e.as_mut_ptr(),
+                tmp.as_mut_ptr(),
+                err.as_mut_ptr(),
             )
             .as_mut()
             .unwrap_unchecked()
@@ -367,10 +364,9 @@ fn pid_fuzzy() {
     {
         let mut out: [float; 4] = [0.0, 0.0, 0.0, 0.0];
         let mut fdb: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut sum: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut ec: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut e: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        a.chan(&mut out, &mut fdb, &mut sum, &mut ec, &mut e);
+        let mut tmp: [float; 4] = [0.0, 0.0, 0.0, 0.0];
+        let mut err: [float; 4] = [0.0, 0.0, 0.0, 0.0];
+        a.chan(&mut out, &mut fdb, &mut tmp, &mut err);
         a.outp(&[0.1, 0.2, 0.3, 0.4], &[0.0, 0.0, 0.0, 0.0]);
         println!("{:?}", out);
     }

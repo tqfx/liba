@@ -17,3 +17,5 @@ function(unittest source name)
 endfunction()
 
 unittest(a a a.log)
+
+unittest(poly poly)

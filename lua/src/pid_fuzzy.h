@@ -17,8 +17,7 @@
  @field buf maximum number triggered by the rule
  @field out controller output
  @field fdb cache feedback
- @field ec error change
- @field e error input
+ @field err cache error
  @table pid_fuzzy
 */
 

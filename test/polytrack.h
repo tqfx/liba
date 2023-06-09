@@ -89,10 +89,10 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         a_float_t out7[4];
         a_polytrack7_out(&pt7, dt, out7);
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("", "g "), dt);
-        printf(A_FLOAT_PRI("", "g ") A_FLOAT_PRI("", "g ") A_FLOAT_PRI("", "g "), out3[0], out3[1], out3[2]);
-        printf(A_FLOAT_PRI("", "g ") A_FLOAT_PRI("", "g ") A_FLOAT_PRI("", "g "), out5[0], out5[1], out5[2]);
-        printf(A_FLOAT_PRI("", "g ") A_FLOAT_PRI("", "g ") A_FLOAT_PRI("", "g ") A_FLOAT_PRI("", "g\n"), out7[0], out7[1], out7[2], out7[3]);
+        printf(A_FLOAT_PRI("+", "f "), dt);
+        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f "), out3[0], out3[1], out3[2]);
+        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f "), out5[0], out5[1], out5[2]);
+        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), out7[0], out7[1], out7[2], out7[3]);
 #endif /* MAIN_ONCE */
     }
 

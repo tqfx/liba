@@ -104,8 +104,5 @@ cdef class pid:
     def fdb(self) -> a_float_t:
         return self.ctx.fdb.f
     @property
-    def ec(self) -> a_float_t:
-        return self.ctx.ec.f
-    @property
-    def e(self) -> a_float_t:
-        return self.ctx.e.f
+    def err(self) -> a_float_t:
+        return self.ctx.err.f
