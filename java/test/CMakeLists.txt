@@ -27,7 +27,7 @@ function(unittest source name)
 endfunction()
 
 building(_a a)
-unittest(_a a a.log)
+unittest(_a a _a.log)
 
 building(_mf mf)
 unittest(_mf mf)
