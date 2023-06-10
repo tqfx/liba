@@ -153,9 +153,9 @@ public:
     {
         return a_polytrack3_pos(&this->ctx, jdt);
     }
-    a_float_t vec(a_float_t jdt)
+    a_float_t vel(a_float_t jdt)
     {
-        return a_polytrack3_vec(&this->ctx, jdt);
+        return a_polytrack3_vel(&this->ctx, jdt);
     }
     a_float_t acc(a_float_t jdt)
     {
@@ -182,9 +182,9 @@ public:
     {
         return a_polytrack5_pos(&this->ctx, jdt);
     }
-    a_float_t vec(a_float_t jdt)
+    a_float_t vel(a_float_t jdt)
     {
-        return a_polytrack5_vec(&this->ctx, jdt);
+        return a_polytrack5_vel(&this->ctx, jdt);
     }
     a_float_t acc(a_float_t jdt)
     {
@@ -211,9 +211,9 @@ public:
     {
         return a_polytrack7_pos(&this->ctx, jdt);
     }
-    a_float_t vec(a_float_t jdt)
+    a_float_t vel(a_float_t jdt)
     {
-        return a_polytrack7_vec(&this->ctx, jdt);
+        return a_polytrack7_vel(&this->ctx, jdt);
     }
     a_float_t acc(a_float_t jdt)
     {
@@ -281,7 +281,7 @@ EMSCRIPTEN_BINDINGS(module)
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
         .function("pos", &polytrack3::pos)
-        .function("vec", &polytrack3::vec)
+        .function("vel", &polytrack3::vel)
         .function("acc", &polytrack3::acc)
         .function("out", &polytrack3::out);
     emscripten::class_<polytrack5>("polytrack5")
@@ -289,7 +289,7 @@ EMSCRIPTEN_BINDINGS(module)
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
         .function("pos", &polytrack5::pos)
-        .function("vec", &polytrack5::vec)
+        .function("vel", &polytrack5::vel)
         .function("acc", &polytrack5::acc)
         .function("out", &polytrack5::out);
     emscripten::class_<polytrack7>("polytrack7")
@@ -298,7 +298,7 @@ EMSCRIPTEN_BINDINGS(module)
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
         .function("pos", &polytrack7::pos)
-        .function("vec", &polytrack7::vec)
+        .function("vel", &polytrack7::vel)
         .function("acc", &polytrack7::acc)
         .function("jer", &polytrack7::jer)
         .function("out", &polytrack7::out);

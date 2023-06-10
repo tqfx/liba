@@ -174,15 +174,15 @@ int LMODULE(polytrack3_pos)(lua_State *const L)
  @param ctx cubic polynomial trajectory userdata
  @tparam number dt difference between current time and initial time
  @treturn number velocity output
- @function vec
+ @function vel
 */
-int LMODULE(polytrack3_vec)(lua_State *const L)
+int LMODULE(polytrack3_vel)(lua_State *const L)
 {
     a_polytrack3_s const *const ctx = (a_polytrack3_s const *)lua_touserdata(L, -2);
     if (ctx)
     {
         a_float_t const dt = (a_float_t)luaL_checknumber(L, -1);
-        lua_pushnumber(L, (lua_Number)a_polytrack3_vec(ctx, dt));
+        lua_pushnumber(L, (lua_Number)a_polytrack3_vel(ctx, dt));
         return 1;
     }
     return 0;
@@ -248,8 +248,8 @@ static int LMODULE(polytrack3_get)(lua_State *const L)
     case 0x001D8D30: // pos
         lua_pushcfunction(L, LMODULE(polytrack3_pos));
         break;
-    case 0x001F1A38: // vec
-        lua_pushcfunction(L, LMODULE(polytrack3_vec));
+    case 0x001F1A41: // vel
+        lua_pushcfunction(L, LMODULE(polytrack3_vel));
         break;
     case 0x00199975: // acc
         lua_pushcfunction(L, LMODULE(polytrack3_acc));
@@ -261,7 +261,7 @@ static int LMODULE(polytrack3_get)(lua_State *const L)
             {"gen", LMODULE(polytrack3_gen)},
             {"out", LMODULE(polytrack3_out)},
             {"pos", LMODULE(polytrack3_pos)},
-            {"vec", LMODULE(polytrack3_vec)},
+            {"vel", LMODULE(polytrack3_vel)},
             {"acc", LMODULE(polytrack3_acc)},
             {NULL, NULL},
         };
@@ -286,7 +286,7 @@ int LMODULE_(polytrack3, lua_State *const L)
         {"gen", LMODULE(polytrack3_gen)},
         {"out", LMODULE(polytrack3_out)},
         {"pos", LMODULE(polytrack3_pos)},
-        {"vec", LMODULE(polytrack3_vec)},
+        {"vel", LMODULE(polytrack3_vel)},
         {"acc", LMODULE(polytrack3_acc)},
         {NULL, NULL},
     };

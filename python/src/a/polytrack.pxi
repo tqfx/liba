@@ -33,14 +33,14 @@ cdef class polytrack3:
                 out[i] = a_polytrack3_pos(&self.ctx, it)
             return out
         return a_polytrack3_pos(&self.ctx, dt)
-    def vec(self, dt):
+    def vel(self, dt):
         '''calculate velocity'''
         if iterable(dt):
             out = floats(dt)
             for i, it in enumerate(dt):
-                out[i] = a_polytrack3_vec(&self.ctx, it)
+                out[i] = a_polytrack3_vel(&self.ctx, it)
             return out
-        return a_polytrack3_vec(&self.ctx, dt)
+        return a_polytrack3_vel(&self.ctx, dt)
     def acc(self, dt):
         '''calculate acceleration'''
         if iterable(dt):
@@ -87,14 +87,14 @@ cdef class polytrack5:
                 out[i] = a_polytrack5_pos(&self.ctx, it)
             return out
         return a_polytrack5_pos(&self.ctx, dt)
-    def vec(self, dt):
+    def vel(self, dt):
         '''calculate velocity'''
         if iterable(dt):
             out = floats(dt)
             for i, it in enumerate(dt):
-                out[i] = a_polytrack5_vec(&self.ctx, it)
+                out[i] = a_polytrack5_vel(&self.ctx, it)
             return out
-        return a_polytrack5_vec(&self.ctx, dt)
+        return a_polytrack5_vel(&self.ctx, dt)
     def acc(self, dt):
         '''calculate acceleration'''
         if iterable(dt):
@@ -143,14 +143,14 @@ cdef class polytrack7:
                 out[i] = a_polytrack7_pos(&self.ctx, it)
             return out
         return a_polytrack7_pos(&self.ctx, dt)
-    def vec(self, dt):
+    def vel(self, dt):
         '''calculate velocity'''
         if iterable(dt):
             out = floats(dt)
             for i, it in enumerate(dt):
-                out[i] = a_polytrack7_vec(&self.ctx, it)
+                out[i] = a_polytrack7_vel(&self.ctx, it)
             return out
-        return a_polytrack7_vec(&self.ctx, dt)
+        return a_polytrack7_vel(&self.ctx, dt)
     def acc(self, dt):
         '''calculate acceleration'''
         if iterable(dt):

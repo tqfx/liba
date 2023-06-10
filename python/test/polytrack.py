@@ -166,7 +166,7 @@ plt.legend()
 
 plt.subplot(312)
 plt.ylabel("Velocity")
-plt.plot(data, track.vec(data), "b-", label=label[1])
+plt.plot(data, track.vel(data), "b-", label=label[1])
 plt.legend()
 
 plt.subplot(313)
@@ -177,7 +177,7 @@ plt.legend()
 plt.xlabel("t")
 plt.savefig(os.path.join(prefix, "trajectory_polynomial_3.png"))
 
-(pos, vec, acc) = track(data)
+(pos, vel, acc) = track(data)
 plt.figure("all 3 polynomial trajectory")
 
 plt.subplot(311)
@@ -188,7 +188,7 @@ plt.legend()
 
 plt.subplot(312)
 plt.ylabel("Velocity")
-plt.plot(data, vec, "b-", label=label[1])
+plt.plot(data, vel, "b-", label=label[1])
 plt.legend()
 
 plt.subplot(313)
@@ -211,7 +211,7 @@ plt.legend()
 
 plt.subplot(312)
 plt.ylabel("Velocity")
-plt.plot(data, track.vec(data), "b-", label=label[1])
+plt.plot(data, track.vel(data), "b-", label=label[1])
 plt.legend()
 
 plt.subplot(313)
@@ -222,7 +222,7 @@ plt.legend()
 plt.xlabel("t")
 plt.savefig(os.path.join(prefix, "trajectory_polynomial_5.png"))
 
-(pos, vec, acc) = track(data)
+(pos, vel, acc) = track(data)
 plt.figure("all 5 polynomial trajectory")
 
 plt.subplot(311)
@@ -233,7 +233,7 @@ plt.legend()
 
 plt.subplot(312)
 plt.ylabel("Velocity")
-plt.plot(data, vec, "b-", label=label[1])
+plt.plot(data, vel, "b-", label=label[1])
 plt.legend()
 
 plt.subplot(313)
@@ -256,7 +256,7 @@ plt.legend()
 
 plt.subplot(412)
 plt.ylabel("Velocity")
-plt.plot(data, track.vec(data), "b-", label=label[1])
+plt.plot(data, track.vel(data), "b-", label=label[1])
 plt.legend()
 
 plt.subplot(413)
@@ -272,7 +272,7 @@ plt.legend()
 plt.xlabel("t")
 plt.savefig(os.path.join(prefix, "trajectory_polynomial_7.png"))
 
-(pos, vec, acc, jer) = track(data)
+(pos, vel, acc, jer) = track(data)
 plt.figure("all 7 polynomial trajectory")
 
 plt.subplot(411)
@@ -283,7 +283,7 @@ plt.legend()
 
 plt.subplot(412)
 plt.ylabel("Velocity")
-plt.plot(data, vec, "b-", label=label[1])
+plt.plot(data, vel, "b-", label=label[1])
 plt.legend()
 
 plt.subplot(413)

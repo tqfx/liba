@@ -54,12 +54,12 @@ JNIEXPORT jdouble JNICALL JPACKAGE(polytrack7_pos)(JNIEnv *jenv, jobject jobj, j
     return a_polytrack7_pos(&ctx, jdt);
 }
 
-JNIEXPORT jdouble JNICALL JPACKAGE(polytrack7_vec)(JNIEnv *jenv, jobject jobj, jdouble jdt)
+JNIEXPORT jdouble JNICALL JPACKAGE(polytrack7_vel)(JNIEnv *jenv, jobject jobj, jdouble jdt)
 {
     a_polytrack7_s ctx;
     j_polytrack7_s jctx;
     j_polytrack7_get(j_polytrack7_new(jenv, jobj, &jctx), &ctx);
-    return a_polytrack7_vec(&ctx, jdt);
+    return a_polytrack7_vel(&ctx, jdt);
 }
 
 JNIEXPORT jdouble JNICALL JPACKAGE(polytrack7_acc)(JNIEnv *jenv, jobject jobj, jdouble jdt)

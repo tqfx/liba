@@ -80,9 +80,9 @@ A_PUBLIC int LMODULE(polytrack7_pos)(lua_State *L);
  calculate function for hepta polynomial trajectory velocity
  @tparam number dt difference between current time and initial time
  @treturn number velocity output
- @function vec
+ @function vel
 */
-A_PUBLIC int LMODULE(polytrack7_vec)(lua_State *L);
+A_PUBLIC int LMODULE(polytrack7_vel)(lua_State *L);
 
 /***
  calculate function for hepta polynomial trajectory acceleration

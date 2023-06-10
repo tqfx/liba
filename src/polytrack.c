@@ -47,7 +47,7 @@ a_float_t a_polytrack3_pos(a_polytrack3_s const *const ctx, a_float_t const dt)
     return a_poly_evar(a, 4, dt);
 }
 
-a_float_t a_polytrack3_vec(a_polytrack3_s const *const ctx, a_float_t const dt)
+a_float_t a_polytrack3_vel(a_polytrack3_s const *const ctx, a_float_t const dt)
 {
     a_float_t a[3];
     a[0] = ctx->k[3] * 3;
@@ -129,7 +129,7 @@ a_float_t a_polytrack5_pos(a_polytrack5_s const *const ctx, a_float_t const dt)
     return a_poly_evar(a, 6, dt);
 }
 
-a_float_t a_polytrack5_vec(a_polytrack5_s const *const ctx, a_float_t const dt)
+a_float_t a_polytrack5_vel(a_polytrack5_s const *const ctx, a_float_t const dt)
 {
     a_float_t a[5];
     a[0] = ctx->k[5] * 5;
@@ -240,7 +240,7 @@ a_float_t a_polytrack7_pos(a_polytrack7_s const *const ctx, a_float_t const dt)
     return a_poly_evar(a, 8, dt);
 }
 
-a_float_t a_polytrack7_vec(a_polytrack7_s const *const ctx, a_float_t const dt)
+a_float_t a_polytrack7_vel(a_polytrack7_s const *const ctx, a_float_t const dt)
 {
     a_float_t a[7];
     a[0] = ctx->k[7] * 7;

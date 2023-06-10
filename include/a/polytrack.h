@@ -112,7 +112,7 @@ A_EXTERN a_float_t a_polytrack3_pos(a_polytrack3_s const *ctx, a_float_t dt);
  @param[in] dt difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_float_t a_polytrack3_vec(a_polytrack3_s const *ctx, a_float_t dt);
+A_EXTERN a_float_t a_polytrack3_vel(a_polytrack3_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for cubic polynomial trajectory acceleration
@@ -201,7 +201,7 @@ A_EXTERN a_float_t a_polytrack5_pos(a_polytrack5_s const *ctx, a_float_t dt);
  @param[in] dt difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_float_t a_polytrack5_vec(a_polytrack5_s const *ctx, a_float_t dt);
+A_EXTERN a_float_t a_polytrack5_vel(a_polytrack5_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for quintic polynomial trajectory acceleration
@@ -297,7 +297,7 @@ A_EXTERN a_float_t a_polytrack7_pos(a_polytrack7_s const *ctx, a_float_t dt);
  @param[in] dt difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_float_t a_polytrack7_vec(a_polytrack7_s const *ctx, a_float_t dt);
+A_EXTERN a_float_t a_polytrack7_vel(a_polytrack7_s const *ctx, a_float_t dt);
 
 /*!
  @brief calculate function for hepta polynomial trajectory acceleration

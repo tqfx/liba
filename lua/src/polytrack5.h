@@ -76,9 +76,9 @@ A_PUBLIC int LMODULE(polytrack5_pos)(lua_State *L);
  calculate function for quintic polynomial trajectory velocity
  @tparam number dt difference between current time and initial time
  @treturn number velocity output
- @function vec
+ @function vel
 */
-A_PUBLIC int LMODULE(polytrack5_vec)(lua_State *L);
+A_PUBLIC int LMODULE(polytrack5_vel)(lua_State *L);
 
 /***
  calculate function for quintic polynomial trajectory acceleration

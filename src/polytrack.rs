@@ -20,7 +20,7 @@ extern "C" {
         v1: float,
     );
     fn a_polytrack3_pos(ctx: *const polytrack3, dt: float) -> float;
-    fn a_polytrack3_vec(ctx: *const polytrack3, dt: float) -> float;
+    fn a_polytrack3_vel(ctx: *const polytrack3, dt: float) -> float;
     fn a_polytrack3_acc(ctx: *const polytrack3, dt: float) -> float;
     fn a_polytrack3_out(ctx: *const polytrack3, dt: float, out: *mut [float; 3]);
 }
@@ -60,8 +60,8 @@ impl polytrack3 {
     }
 
     /// calculate function for cubic polynomial trajectory velocity
-    pub fn vec(&mut self, dt: float) -> float {
-        unsafe { a_polytrack3_vec(self, dt) }
+    pub fn vel(&mut self, dt: float) -> float {
+        unsafe { a_polytrack3_vel(self, dt) }
     }
 
     /// calculate function for cubic polynomial trajectory acceleration
@@ -75,7 +75,7 @@ fn polytrack3() {
     let dt = 0.5;
     {
         let mut a = crate::polytrack3::new(0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
-        println!("[{}, {}, {}]", a.pos(dt), a.vec(dt), a.acc(dt));
+        println!("[{}, {}, {}]", a.pos(dt), a.vel(dt), a.acc(dt));
         println!("{:?}", a.out(dt));
     }
 }
@@ -100,7 +100,7 @@ extern "C" {
         a1: float,
     );
     fn a_polytrack5_pos(ctx: *const polytrack5, dt: float) -> float;
-    fn a_polytrack5_vec(ctx: *const polytrack5, dt: float) -> float;
+    fn a_polytrack5_vel(ctx: *const polytrack5, dt: float) -> float;
     fn a_polytrack5_acc(ctx: *const polytrack5, dt: float) -> float;
     fn a_polytrack5_out(ctx: *const polytrack5, dt: float, out: *mut [float; 3]);
 }
@@ -153,8 +153,8 @@ impl polytrack5 {
     }
 
     /// calculate function for quintic polynomial trajectory velocity
-    pub fn vec(&mut self, dt: float) -> float {
-        unsafe { a_polytrack5_vec(self, dt) }
+    pub fn vel(&mut self, dt: float) -> float {
+        unsafe { a_polytrack5_vel(self, dt) }
     }
 
     /// calculate function for quintic polynomial trajectory acceleration
@@ -168,7 +168,7 @@ fn polytrack5() {
     let dt = 0.5;
     {
         let mut a = crate::polytrack5::new(0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
-        println!("[{}, {}, {}]", a.pos(dt), a.vec(dt), a.acc(dt));
+        println!("[{}, {}, {}]", a.pos(dt), a.vel(dt), a.acc(dt));
         println!("{:?}", a.out(dt));
     }
 }
@@ -195,7 +195,7 @@ extern "C" {
         j1: float,
     );
     fn a_polytrack7_pos(ctx: *const polytrack7, dt: float) -> float;
-    fn a_polytrack7_vec(ctx: *const polytrack7, dt: float) -> float;
+    fn a_polytrack7_vel(ctx: *const polytrack7, dt: float) -> float;
     fn a_polytrack7_acc(ctx: *const polytrack7, dt: float) -> float;
     fn a_polytrack7_jer(ctx: *const polytrack7, dt: float) -> float;
     fn a_polytrack7_out(ctx: *const polytrack7, dt: float, out: *mut [float; 4]);
@@ -253,8 +253,8 @@ impl polytrack7 {
     }
 
     /// calculate function for hepta polynomial trajectory velocity
-    pub fn vec(&mut self, dt: float) -> float {
-        unsafe { a_polytrack7_vec(self, dt) }
+    pub fn vel(&mut self, dt: float) -> float {
+        unsafe { a_polytrack7_vel(self, dt) }
     }
 
     /// calculate function for hepta polynomial trajectory acceleration
@@ -277,7 +277,7 @@ fn polytrack7() {
         println!(
             "[{}, {}, {}, {}]",
             a.pos(dt),
-            a.vec(dt),
+            a.vel(dt),
             a.acc(dt),
             a.jer(dt)
         );

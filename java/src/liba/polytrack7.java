@@ -67,7 +67,7 @@ public class polytrack7 {
      * @param dt difference between current time and initial time
      * @return velocity output
      */
-    public final native double vec(double dt);
+    public final native double vel(double dt);
 
     /**
      * calculate function for hepta polynomial trajectory acceleration

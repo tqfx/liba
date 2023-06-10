@@ -72,9 +72,9 @@ A_PUBLIC int LMODULE(polytrack3_pos)(lua_State *L);
  calculate function for cubic polynomial trajectory velocity
  @tparam number dt difference between current time and initial time
  @treturn number velocity output
- @function vec
+ @function vel
 */
-A_PUBLIC int LMODULE(polytrack3_vec)(lua_State *L);
+A_PUBLIC int LMODULE(polytrack3_vel)(lua_State *L);
 
 /***
  calculate function for cubic polynomial trajectory acceleration

@@ -266,7 +266,7 @@ static JSValue js_polytrack3_pos(JSContext *const ctx, JSValueConst const this_v
     return JS_NewFloat64(ctx, (double)pos);
 }
 
-static JSValue js_polytrack3_vec(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_polytrack3_vel(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
     a_polytrack3_s *const polytrack3 = (a_polytrack3_s *)JS_GetOpaque2(ctx, this_val, js_polytrack3_class_id);
@@ -279,8 +279,8 @@ static JSValue js_polytrack3_vec(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t vec = a_polytrack3_vec(polytrack3, (a_float_t)dt);
-    return JS_NewFloat64(ctx, (double)vec);
+    a_float_t vel = a_polytrack3_vel(polytrack3, (a_float_t)dt);
+    return JS_NewFloat64(ctx, (double)vel);
 }
 
 static JSValue js_polytrack3_acc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
@@ -303,7 +303,7 @@ static JSValue js_polytrack3_acc(JSContext *const ctx, JSValueConst const this_v
 static JSCFunctionListEntry const js_polytrack3_proto_funcs[] = {
     JS_CFUNC_DEF("gen", 6, js_polytrack3_gen),
     JS_CFUNC_DEF("pos", 1, js_polytrack3_pos),
-    JS_CFUNC_DEF("vec", 1, js_polytrack3_vec),
+    JS_CFUNC_DEF("vel", 1, js_polytrack3_vel),
     JS_CFUNC_DEF("acc", 1, js_polytrack3_acc),
 };
 
@@ -421,7 +421,7 @@ static JSValue js_polytrack5_pos(JSContext *const ctx, JSValueConst const this_v
     return JS_NewFloat64(ctx, (double)pos);
 }
 
-static JSValue js_polytrack5_vec(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_polytrack5_vel(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
     a_polytrack5_s *const polytrack5 = (a_polytrack5_s *)JS_GetOpaque2(ctx, this_val, js_polytrack5_class_id);
@@ -434,8 +434,8 @@ static JSValue js_polytrack5_vec(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t vec = a_polytrack5_vec(polytrack5, (a_float_t)dt);
-    return JS_NewFloat64(ctx, (double)vec);
+    a_float_t vel = a_polytrack5_vel(polytrack5, (a_float_t)dt);
+    return JS_NewFloat64(ctx, (double)vel);
 }
 
 static JSValue js_polytrack5_acc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
@@ -458,7 +458,7 @@ static JSValue js_polytrack5_acc(JSContext *const ctx, JSValueConst const this_v
 static JSCFunctionListEntry const js_polytrack5_proto_funcs[] = {
     JS_CFUNC_DEF("gen", 8, js_polytrack5_gen),
     JS_CFUNC_DEF("pos", 1, js_polytrack5_pos),
-    JS_CFUNC_DEF("vec", 1, js_polytrack5_vec),
+    JS_CFUNC_DEF("vel", 1, js_polytrack5_vel),
     JS_CFUNC_DEF("acc", 1, js_polytrack5_acc),
 };
 
@@ -578,7 +578,7 @@ static JSValue js_polytrack7_pos(JSContext *const ctx, JSValueConst const this_v
     return JS_NewFloat64(ctx, (double)pos);
 }
 
-static JSValue js_polytrack7_vec(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_polytrack7_vel(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
     a_polytrack7_s *const polytrack7 = (a_polytrack7_s *)JS_GetOpaque2(ctx, this_val, js_polytrack7_class_id);
@@ -591,8 +591,8 @@ static JSValue js_polytrack7_vec(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t vec = a_polytrack7_vec(polytrack7, (a_float_t)dt);
-    return JS_NewFloat64(ctx, (double)vec);
+    a_float_t vel = a_polytrack7_vel(polytrack7, (a_float_t)dt);
+    return JS_NewFloat64(ctx, (double)vel);
 }
 
 static JSValue js_polytrack7_acc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
@@ -632,7 +632,7 @@ static JSValue js_polytrack7_jer(JSContext *const ctx, JSValueConst const this_v
 static JSCFunctionListEntry const js_polytrack7_proto_funcs[] = {
     JS_CFUNC_DEF("gen", 10, js_polytrack7_gen),
     JS_CFUNC_DEF("pos", 1, js_polytrack7_pos),
-    JS_CFUNC_DEF("vec", 1, js_polytrack7_vec),
+    JS_CFUNC_DEF("vel", 1, js_polytrack7_vel),
     JS_CFUNC_DEF("acc", 1, js_polytrack7_acc),
     JS_CFUNC_DEF("jer", 1, js_polytrack7_jer),
 };

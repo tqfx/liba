@@ -15,7 +15,7 @@ static void test(void)
         a_polytrack3_s ctx;
         a_polytrack3_gen(&ctx, 0, 10, 0, 10, 0, 10);
         a_polytrack3_pos(&ctx, 0);
-        a_polytrack3_vec(&ctx, 0);
+        a_polytrack3_vel(&ctx, 0);
         a_polytrack3_acc(&ctx, 0);
         a_polytrack3_out(&ctx, 0, out);
     }
@@ -23,7 +23,7 @@ static void test(void)
         a_polytrack5_s ctx;
         a_polytrack5_gen(&ctx, 0, 10, 0, 10, 0, 10, 0, 10);
         a_polytrack5_pos(&ctx, 0);
-        a_polytrack5_vec(&ctx, 0);
+        a_polytrack5_vel(&ctx, 0);
         a_polytrack5_acc(&ctx, 0);
         a_polytrack5_out(&ctx, 0, out);
     }
@@ -31,7 +31,7 @@ static void test(void)
         a_polytrack7_s ctx;
         a_polytrack7_gen(&ctx, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10);
         a_polytrack7_pos(&ctx, 0);
-        a_polytrack7_vec(&ctx, 0);
+        a_polytrack7_vel(&ctx, 0);
         a_polytrack7_acc(&ctx, 0);
         a_polytrack7_jer(&ctx, 0);
         a_polytrack7_out(&ctx, 0, out);
