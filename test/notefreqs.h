@@ -1,10 +1,13 @@
 #ifndef TEST_NOTEFREQS_H
 #define TEST_NOTEFREQS_H
+#if defined(_MSC_VER)
+#define _CRT_SECURE_NO_WARNINGS
+#endif /* _MSC_VER */
 #define MAIN_(s, argc, argv) notefreqs##s(argc, argv)
 #include "test.h"
 #define A_NOTEFREQ_T a_float_t
 #define A_NOTEFREQ_C(X) A_FLOAT_C(X)
-#define A_NOTEFREQ_FREQ ((180000000 >> 1) / 200)
+#define A_NOTEFREQ_FREQ ((8000000 >> 1) / 100)
 #include "a/notefreqs.h"
 
 static a_float_t const song[][2] = {
@@ -68,15 +71,34 @@ static a_float_t const song[][2] = {
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
+#if defined(MAIN_ONCE)
+    FILE *log = A_NULL;
+    if (argc > 1)
+    {
+        log = freopen(argv[1], "wb", stdout);
+    }
+#else /* !MAIN_ONCE */
     (void)(argc);
     (void)(argv);
-    unsigned int song_n = sizeof(song) / sizeof(*song);
-    for (unsigned int i = 0; i != song_n; ++i)
+#endif /* MAIN_ONCE */
+
+    for (unsigned int i = 0; i != a_count_of(song); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("", "g\t") A_FLOAT_PRI("", "g\r\n"), song[i][0], song[i][1]);
+        printf(A_FLOAT_PRI("", "g\t") A_FLOAT_PRI("", "g\t") A_FLOAT_PRI("", "g\n"), song[i][0], song[i][1], 1 / song[i][1]);
 #endif /* MAIN_ONCE */
     }
+
+#if defined(MAIN_ONCE)
+    if (log)
+    {
+        if (fclose(log))
+        {
+            perror(A_FUNC);
+        }
+    }
+#endif /* MAIN_ONCE */
+
     return 0;
 }
 

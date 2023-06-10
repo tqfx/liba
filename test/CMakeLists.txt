@@ -186,6 +186,10 @@ unittest(math)
 building(notefreqs notefreqs.c notefreqs.cpp)
 unittest(notefreqs)
 
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(notefreqs notefreqs.gp notefreqs.log)
+endif()
+
 building(operator operator.c operator.cpp)
 unittest(operator)
 
