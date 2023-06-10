@@ -23,5 +23,5 @@ cdef extern from "a/pid_fuzzy.h":
     a_pid_fuzzy_s *a_pid_fuzzy_exit(a_pid_fuzzy_s *ctx)
     a_pid_fuzzy_s *a_pid_fuzzy_zero(a_pid_fuzzy_s *ctx)
     unsigned int a_pid_fuzzy_bufnum(const a_pid_fuzzy_s *ctx)
-    void * a_pid_fuzzy_bufptr(const a_pid_fuzzy_s *ctx)
+    void *a_pid_fuzzy_bufptr(const a_pid_fuzzy_s *ctx)
     unsigned int a_pid_fuzzy_col(const a_pid_fuzzy_s *ctx)
