@@ -536,11 +536,15 @@ endif()
 
 if(PYTHON_FOUND AND CYTHON_FOUND)
   set(OPTIONS)
-  file_scaner(SOURCES RECURSE python/src EXT c h cc hh cpp hpp)
-  file(GLOB PRODUCTS ${PROJECT_NAME}*.so ${PROJECT_NAME}*.pyd)
 
   if(NOT CMAKE_VERSION VERSION_LESS 3.2)
-    list(APPEND OPTIONS BYPRODUCTS ${PRODUCTS} ${SOURCES})
+    file_scaner(SOURCES RECURSE python/src EXT c h cc hh cpp hpp)
+    list(APPEND OPTIONS BYPRODUCTS ${SOURCES})
+    file(GLOB PRODUCTS ${PROJECT_NAME}*.so ${PROJECT_NAME}*.pyd)
+    list(APPEND OPTIONS ${PRODUCTS})
+    file(GLOB_RECURSE PRODUCTS build/lib.*/*.* build/temp.*/*.*)
+    list(APPEND OPTIONS ${PRODUCTS})
+    set(PRODUCTS)
   endif()
 
   add_custom_target(apy ALL # https://cython.readthedocs.io/en/stable
