@@ -119,9 +119,6 @@ suffix_c, suffix_cc = (".c",), (".cc", ".cpp", ".cxx")
 suffix_h, suffix_hh = (".h",), (".hh", ".hpp", ".hxx")
 config_h = os.path.relpath(os.path.join(base, config_h), "include")
 define_macros = [("A_HAVE_H", '"' + config_h + '"'), ("A_EXPORTS", None)]
-if os.path.exists("python/src/a/__init__.pxi"):
-    with open("python/src/a/__init__.pxi", "r") as f:
-        define_macros += findall(r"DEF (\w+) = (\d+)", f.read())
 if USE_CYTHON and os.path.exists("python/src/a.pyx"):
     source_c = ["python/src/a.pyx"]
 elif os.path.exists("python/src/a.c"):

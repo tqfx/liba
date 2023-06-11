@@ -1,22 +1,21 @@
-include "a/__init__.pxi"
-
+from a cimport *
 from cpython cimport *
 cdef bint iterable(object o):
     return PyObject_HasAttrString(o, "__contains__")
 
 from cpython.array cimport array
 cdef array floats(object o = ()):
-    IF A_SIZE_FLOAT == 8:
+    if A_FLOAT_TYPE == A_FLOAT_DOUBLE:
         return array('d', o)
-    IF A_SIZE_FLOAT == 4:
+    if A_FLOAT_TYPE == A_FLOAT_SINGLE:
         return array('f', o)
 
 cimport cython
-include "a/version.pxi"
 include "a/math.pxi"
 include "a/mf.pxi"
-include "a/tf.pxi"
 include "a/pid.pxi"
 include "a/pid_fuzzy.pxi"
 include "a/poly.pxi"
 include "a/polytrack.pxi"
+include "a/tf.pxi"
+include "a/version.pxi"

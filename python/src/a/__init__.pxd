@@ -1,8 +1,10 @@
-include "__init__.pxi"
 from libc.stddef cimport *
 from libc.stdint cimport *
 
 cdef extern from "a/a.h":
+    const int A_FLOAT_TYPE
+    const int A_FLOAT_SINGLE
+    const int A_FLOAT_DOUBLE
 
     ctypedef  int8_t a_i8_t
     ctypedef uint8_t a_u8_t
@@ -21,10 +23,7 @@ cdef extern from "a/a.h":
 
     ctypedef  float a_f32_t
     ctypedef double a_f64_t
-    IF A_SIZE_FLOAT == 8:
-        ctypedef double a_float_t
-    IF A_SIZE_FLOAT == 4:
-        ctypedef float a_float_t
+    ctypedef float a_float_t
     ctypedef union a_float_u:
         a_float_t f
         a_float_t *p

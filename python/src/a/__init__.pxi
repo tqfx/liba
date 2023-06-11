@@ -1,1 +1,0 @@
-DEF A_SIZE_FLOAT = 8

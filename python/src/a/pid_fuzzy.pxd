@@ -15,9 +15,9 @@ cdef extern from "a/pid_fuzzy.h":
     a_pid_fuzzy_s *a_pid_fuzzy_buff(a_pid_fuzzy_s *ctx, unsigned int *idx, a_float_t *mms, a_float_t *mat)
     a_pid_fuzzy_s *a_pid_fuzzy_chan(a_pid_fuzzy_s *ctx, a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err)
     a_pid_fuzzy_s *a_pid_fuzzy_base(a_pid_fuzzy_s *ctx, unsigned int col, const a_float_t *mec, const a_float_t *mec,
-                          const a_float_t *mkp, const a_float_t *mki, const a_float_t *mkd)
+                                    const a_float_t *mkp, const a_float_t *mki, const a_float_t *mkd)
     a_pid_fuzzy_s *a_pid_fuzzy_init(a_pid_fuzzy_s *ctx, a_float_t dt, unsigned int col, const a_float_t *mec, const a_float_t *mec,
-                          const a_float_t *mkp, const a_float_t *mki, const a_float_t *mkd, a_float_t min, a_float_t max)
+                                    const a_float_t *mkp, const a_float_t *mki, const a_float_t *mkd, a_float_t min, a_float_t max)
     a_float_t a_pid_fuzzy_outf(a_pid_fuzzy_s *ctx, a_float_t set, a_float_t fdb)
     const a_float_t *a_pid_fuzzy_outp(a_pid_fuzzy_s *ctx, const a_float_t *set, const a_float_t *fdb)
     a_pid_fuzzy_s *a_pid_fuzzy_exit(a_pid_fuzzy_s *ctx)

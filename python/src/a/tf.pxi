@@ -6,8 +6,8 @@ cdef class tf:
     '''transfer function'''
     cdef a_tf_s ctx
     cdef array _num
-    cdef array _den
     cdef array _u
+    cdef array _den
     cdef array _v
     def __cinit__(self, num, den):
         self.num = num
@@ -22,7 +22,6 @@ cdef class tf:
         '''zero function for transfer function'''
         a_tf_zero(&self.ctx)
         return self
-
     @property
     def num(self):
         return self._num
@@ -32,7 +31,6 @@ cdef class tf:
         self._num = floats(num)
         self._u = floats(num)
         a_tf_set_num(&self.ctx, m, <a_float_t *>self._num.data.as_voidptr, <a_float_t *>self._u.data.as_voidptr)
-
     @property
     def den(self):
         return self._den

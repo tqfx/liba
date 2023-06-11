@@ -40,63 +40,54 @@ cdef class pid:
         '''turn off PID controller'''
         a_pid_off(&self.ctx)
         return self
-
     @property
     def outmin(self) -> a_float_t:
         return self.ctx.outmin
     @outmin.setter
     def outmin(self, outmin: a_float_t):
         self.ctx.outmin = outmin
-
     @property
     def outmax(self) -> a_float_t:
         return self.ctx.outmax
     @outmax.setter
     def outmax(self, outmax: a_float_t):
         self.ctx.outmax = outmax
-
     @property
     def summax(self) -> a_float_t:
         return self.ctx.summax
     @summax.setter
     def summax(self, summax: a_float_t):
         self.ctx.summax = summax
-
     @property
     def mode(self) -> int:
         return a_pid_mode(&self.ctx)
     @mode.setter
     def mode(self, mode: int):
         a_pid_set_mode(&self.ctx, mode)
-
     @property
     def dt(self) -> a_float_t:
         return a_pid_dt(&self.ctx)
     @dt.setter
     def dt(self, dt: a_float_t):
         a_pid_set_dt(&self.ctx, dt)
-
     @property
     def kp(self) -> a_float_t:
         return a_pid_kp(&self.ctx)
     @kp.setter
     def kp(self, kp: a_float_t):
         a_pid_set_kp(&self.ctx, kp)
-
     @property
     def ki(self) -> a_float_t:
         return a_pid_ki(&self.ctx)
     @ki.setter
     def ki(self, ki: a_float_t):
         a_pid_set_ki(&self.ctx, ki)
-
     @property
     def kd(self) -> a_float_t:
         return a_pid_kd(&self.ctx)
     @kd.setter
     def kd(self, kd: a_float_t):
         a_pid_set_kd(&self.ctx, kd)
-
     @property
     def out(self) -> a_float_t:
         return self.ctx.out.f

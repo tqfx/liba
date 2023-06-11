@@ -49,7 +49,6 @@ cdef class polytrack3:
                 out[i] = a_polytrack3_acc(&self.ctx, it)
             return out
         return a_polytrack3_acc(&self.ctx, dt)
-
     @property
     def k(self):
         return self.ctx.k
@@ -103,7 +102,6 @@ cdef class polytrack5:
                 out[i] = a_polytrack5_acc(&self.ctx, it)
             return out
         return a_polytrack5_acc(&self.ctx, dt)
-
     @property
     def k(self):
         return self.ctx.k
@@ -167,7 +165,6 @@ cdef class polytrack7:
                 out[i] = a_polytrack7_jer(&self.ctx, it)
             return out
         return a_polytrack7_jer(&self.ctx, dt)
-
     @property
     def k(self):
         return self.ctx.k
