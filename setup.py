@@ -108,6 +108,7 @@ def configure(config, define_macros=[]):
 
 parser = ArgumentParser(add_help=False)
 parser.add_argument("-b", "--build-base", default="build")
+parser.add_argument("-O", "--link-objects")
 args = parser.parse_known_args(argv[1:])
 base = args[0].build_base
 
@@ -124,6 +125,8 @@ if not os.path.exists(base):
 configure(config, define_macros)
 
 for dirpath, dirnames, filenames in os.walk("src"):
+    if args[0].link_objects:
+        break
     for filename in filenames:
         source = os.path.join(dirpath, filename)
         if os.path.splitext(source)[-1] == ".c":
