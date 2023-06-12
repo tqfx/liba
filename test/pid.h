@@ -13,8 +13,8 @@ static void test_f(void)
 {
     a_float_t num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
     a_float_t den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
-    a_float_t u[a_count_of(num)] = {0};
-    a_float_t v[a_count_of(den)] = {0};
+    a_float_t u[a_count_of(num)];
+    a_float_t v[a_count_of(den)];
     a_tf_s tf;
     a_tf_init(&tf, a_count_of(num), num, u, a_count_of(den), den, v);
     a_pid_s ctx;
@@ -46,12 +46,12 @@ static void test_p(void)
     a_float_t den1[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
     a_float_t num2[] = {A_FLOAT_C(7.59492796e-05), A_FLOAT_C(7.54019884e-05)};
     a_float_t den2[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
-    a_float_t u0[a_count_of(num0)] = {0};
-    a_float_t v0[a_count_of(den0)] = {0};
-    a_float_t u1[a_count_of(num1)] = {0};
-    a_float_t v1[a_count_of(den1)] = {0};
-    a_float_t u2[a_count_of(num2)] = {0};
-    a_float_t v2[a_count_of(den2)] = {0};
+    a_float_t u0[a_count_of(num0)];
+    a_float_t v0[a_count_of(den0)];
+    a_float_t u1[a_count_of(num1)];
+    a_float_t v1[a_count_of(den1)];
+    a_float_t u2[a_count_of(num2)];
+    a_float_t v2[a_count_of(den2)];
     a_tf_s tf[3];
     a_tf_init(tf + 0, a_count_of(num0), num0, u0, a_count_of(den0), den0, v0);
     a_tf_init(tf + 1, a_count_of(num1), num1, u1, a_count_of(den1), den1, v1);
@@ -140,12 +140,12 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_float_t den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
 
     a_tf_s pos_tf;
-    a_float_t pos_u[a_count_of(num)] = {0};
-    a_float_t pos_v[a_count_of(den)] = {0};
+    a_float_t pos_u[a_count_of(num)];
+    a_float_t pos_v[a_count_of(den)];
     a_tf_init(&pos_tf, a_count_of(num), num, pos_u, a_count_of(den), den, pos_v);
     a_tf_s inc_tf;
-    a_float_t inc_u[a_count_of(num)] = {0};
-    a_float_t inc_v[a_count_of(den)] = {0};
+    a_float_t inc_u[a_count_of(num)];
+    a_float_t inc_v[a_count_of(den)];
     a_tf_init(&inc_tf, a_count_of(num), num, inc_u, a_count_of(den), den, inc_v);
 
     a_pid_s pos_pid;
