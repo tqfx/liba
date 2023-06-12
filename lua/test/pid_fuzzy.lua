@@ -3,87 +3,87 @@
 package.path = arg[0]:sub(0, -arg[0]:match("([^/\\]*)$"):len() - 1) .. "?.lua;" .. package.path
 local test = require("test")
 local a = require("liba")
-local NB = -3
+local NL = -3
 local NM = -2
 local NS = -1
 local ZO = 0
 local PS = 1
 local PM = 2
-local PB = 3
+local PL = 3
 local me = {
   -- LuaFormatter off
-  { a.mf.TRI, NB, NB, NM },
-  { a.mf.TRI, NB, NM, NS },
+  { a.mf.TRI, NL, NL, NM },
+  { a.mf.TRI, NL, NM, NS },
   { a.mf.TRI, NM, NS, ZO },
   { a.mf.TRI, NS, ZO, PS },
   { a.mf.TRI, ZO, PS, PM },
-  { a.mf.TRI, PS, PM, PB },
-  { a.mf.TRI, PM, PB, PB },
+  { a.mf.TRI, PS, PM, PL },
+  { a.mf.TRI, PM, PL, PL },
   -- LuaFormatter on
 }
-local NB = -6
+local NL = -6
 local NM = -4
 local NS = -3
 local ZO = 0
 local PS = 2
 local PM = 4
-local PB = 6
+local PL = 6
 local mec = {
   -- LuaFormatter off
-  { a.mf.TRI, NB, NB, NM },
-  { a.mf.TRI, NB, NM, NS },
+  { a.mf.TRI, NL, NL, NM },
+  { a.mf.TRI, NL, NM, NS },
   { a.mf.TRI, NM, NS, ZO },
   { a.mf.TRI, NS, ZO, PS },
   { a.mf.TRI, ZO, PS, PM },
-  { a.mf.TRI, PS, PM, PB },
-  { a.mf.TRI, PM, PB, PB },
+  { a.mf.TRI, PS, PM, PL },
+  { a.mf.TRI, PM, PL, PL },
   -- LuaFormatter on
 }
-local NB = -15
+local NL = -15
 local NM = -10
 local NS = -5
 local ZO = 0
 local PS = 5
 local PM = 10
-local PB = 15
+local PL = 15
 local mkp = {
   -- LuaFormatter off
-  { NB, NB, NM, NM, NS, ZO, ZO },
-  { NB, NB, NM, NS, NS, ZO, PS },
+  { NL, NL, NM, NM, NS, ZO, ZO },
+  { NL, NL, NM, NS, NS, ZO, PS },
   { NM, NM, NM, NS, ZO, PS, PS },
   { NM, NM, NS, ZO, PS, PM, PM },
   { NS, NS, ZO, PS, PS, PM, PM },
-  { NS, ZO, PS, PM, PM, PM, PB },
-  { ZO, ZO, PM, PM, PM, PB, PB },
+  { NS, ZO, PS, PM, PM, PM, PL },
+  { ZO, ZO, PM, PM, PM, PL, PL },
   -- LuaFormatter on
 }
-local NB = -3
+local NL = -3
 local NM = -2
 local NS = -1
 local ZO = 0
 local PS = 1
 local PM = 2
-local PB = 3
+local PL = 3
 local mki = {
   -- LuaFormatter off
-  { PB, PB, PM, PM, PS, ZO, ZO },
-  { PB, PB, PM, PS, PS, ZO, ZO },
-  { PB, PM, PS, PS, ZO, NS, NS },
+  { PL, PL, PM, PM, PS, ZO, ZO },
+  { PL, PL, PM, PS, PS, ZO, ZO },
+  { PL, PM, PS, PS, ZO, NS, NS },
   { PM, PM, PS, ZO, NS, NM, NM },
-  { PM, PS, ZO, NS, NS, NM, NB },
-  { ZO, ZO, NS, NS, NM, NB, NB },
-  { ZO, ZO, NS, NM, NM, NB, NB },
+  { PM, PS, ZO, NS, NS, NM, NL },
+  { ZO, ZO, NS, NS, NM, NL, NL },
+  { ZO, ZO, NS, NM, NM, NL, NL },
   -- LuaFormatter on
 }
 local mkd = {
   -- LuaFormatter off
-  { NS, PS, PB, PB, PB, PM, NS },
-  { NS, PS, PB, PM, PM, PS, ZO },
+  { NS, PS, PL, PL, PL, PM, NS },
+  { NS, PS, PL, PM, PM, PS, ZO },
   { ZO, PS, PM, PM, PS, PS, ZO },
   { ZO, PS, PS, PS, PS, PS, ZO },
   { ZO, ZO, ZO, ZO, ZO, ZO, ZO },
-  { NB, NS, NS, NS, NS, NS, NB },
-  { NB, NM, NM, NM, NS, NS, NB },
+  { NL, NS, NS, NS, NS, NS, NL },
+  { NL, NM, NM, NM, NS, NS, NL },
   -- LuaFormatter on
 }
 test:r(getmetatable(a.pid_fuzzy))

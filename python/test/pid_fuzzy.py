@@ -13,89 +13,89 @@ except Exception as e:
     print(e)
     exit()
 
-S = 1
-NB = -3 * S
-NM = -2 * S
-NS = -1 * S
-ZO = +0 * S
-PS = +1 * S
-PM = +2 * S
-PB = +3 * S
+X = 1
+NL = -3 * X
+NM = -2 * X
+NS = -1 * X
+ZO = +0 * X
+PS = +1 * X
+PM = +2 * X
+PL = +3 * X
 me = [
-    [a.mf.TRI, NB, NB, NM],
-    [a.mf.TRI, NB, NM, NS],
+    [a.mf.TRI, NL, NL, NM],
+    [a.mf.TRI, NL, NM, NS],
     [a.mf.TRI, NM, NS, ZO],
     [a.mf.TRI, NS, ZO, PS],
     [a.mf.TRI, ZO, PS, PM],
-    [a.mf.TRI, PS, PM, PB],
-    [a.mf.TRI, PM, PB, PB],
+    [a.mf.TRI, PS, PM, PL],
+    [a.mf.TRI, PM, PL, PL],
 ]
-NB = -6 * S
-NM = -4 * S
-NS = -2 * S
-ZO = +0 * S
-PS = +2 * S
-PM = +4 * S
-PB = +6 * S
+NL = -6 * X
+NM = -4 * X
+NS = -2 * X
+ZO = +0 * X
+PS = +2 * X
+PM = +4 * X
+PL = +6 * X
 mec = [
-    [a.mf.TRI, NB, NB, NM],
-    [a.mf.TRI, NB, NM, NS],
+    [a.mf.TRI, NL, NL, NM],
+    [a.mf.TRI, NL, NM, NS],
     [a.mf.TRI, NM, NS, ZO],
     [a.mf.TRI, NS, ZO, PS],
     [a.mf.TRI, ZO, PS, PM],
-    [a.mf.TRI, PS, PM, PB],
-    [a.mf.TRI, PM, PB, PB],
+    [a.mf.TRI, PS, PM, PL],
+    [a.mf.TRI, PM, PL, PL],
 ]
-S = 10 / 3
-NB = -3 * S
-NM = -2 * S
-NS = -1 * S
-ZO = +0 * S
-PS = +1 * S
-PM = +2 * S
-PB = +3 * S
+X = 10 / 3
+NL = -3 * X
+NM = -2 * X
+NS = -1 * X
+ZO = +0 * X
+PS = +1 * X
+PM = +2 * X
+PL = +3 * X
 mkp = [
-    [NB, NB, NM, NM, NS, ZO, ZO],
-    [NB, NB, NM, NS, NS, ZO, PS],
+    [NL, NL, NM, NM, NS, ZO, ZO],
+    [NL, NL, NM, NS, NS, ZO, PS],
     [NM, NM, NM, NS, ZO, PS, PS],
     [NM, NM, NS, ZO, PS, PM, PM],
     [NS, NS, ZO, PS, PS, PM, PM],
-    [NS, ZO, PS, PM, PM, PM, PB],
-    [ZO, ZO, PM, PM, PM, PB, PB],
+    [NS, ZO, PS, PM, PM, PM, PL],
+    [ZO, ZO, PM, PM, PM, PL, PL],
 ]
-S = 0.01 / 3
-NB = -3 * S
-NM = -2 * S
-NS = -1 * S
-ZO = +0 * S
-PS = +1 * S
-PM = +2 * S
-PB = +3 * S
+X = 0.01 / 3
+NL = -3 * X
+NM = -2 * X
+NS = -1 * X
+ZO = +0 * X
+PS = +1 * X
+PM = +2 * X
+PL = +3 * X
 mki = [
-    [PB, PB, PM, PM, PS, ZO, ZO],
-    [PB, PB, PM, PS, PS, ZO, ZO],
-    [PB, PM, PS, PS, ZO, NS, NS],
+    [PL, PL, PM, PM, PS, ZO, ZO],
+    [PL, PL, PM, PS, PS, ZO, ZO],
+    [PL, PM, PS, PS, ZO, NS, NS],
     [PM, PM, PS, ZO, NS, NM, NM],
-    [PM, PS, ZO, NS, NS, NM, NB],
-    [ZO, ZO, NS, NS, NM, NB, NB],
-    [ZO, ZO, NS, NM, NM, NB, NB],
+    [PM, PS, ZO, NS, NS, NM, NL],
+    [ZO, ZO, NS, NS, NM, NL, NL],
+    [ZO, ZO, NS, NM, NM, NL, NL],
 ]
-S = 0.1 / 3
-NB = -3 * S
-NM = -2 * S
-NS = -1 * S
-ZO = +0 * S
-PS = +1 * S
-PM = +2 * S
-PB = +3 * S
+X = 0.1 / 3
+NL = -3 * X
+NM = -2 * X
+NS = -1 * X
+ZO = +0 * X
+PS = +1 * X
+PM = +2 * X
+PL = +3 * X
 mkd = [
-    [NS, PS, PB, PB, PB, PM, NS],
-    [NS, PS, PB, PM, PM, PS, ZO],
+    [NS, PS, PL, PL, PL, PM, NS],
+    [NS, PS, PL, PM, PM, PS, ZO],
     [ZO, PS, PM, PM, PS, PS, ZO],
     [ZO, PS, PS, PS, PS, PS, ZO],
     [ZO, ZO, ZO, ZO, ZO, ZO, ZO],
-    [NB, NS, NS, NS, NS, NS, NB],
-    [NB, NM, NM, NM, NS, NS, NB],
+    [NL, NS, NS, NS, NS, NS, NL],
+    [NL, NM, NM, NM, NS, NS, NL],
 ]
 
 

@@ -8,71 +8,71 @@
 #include "a/tf.h"
 #include "a/pid_fuzzy.h"
 
-#undef NB
+#undef NL
 #undef NM
 #undef NS
 #undef ZO
 #undef PS
 #undef PM
-#undef PB
-#define NB -3 * S
-#define NM -2 * S
-#define NS -1 * S
-#define ZO +0 * S
-#define PS +1 * S
-#define PM +2 * S
-#define PB +3 * S
-#undef S
-#define S 1
+#undef PL
+#define NL -3 * X
+#define NM -2 * X
+#define NS -1 * X
+#define ZO +0 * X
+#define PS +1 * X
+#define PM +2 * X
+#define PL +3 * X
+#undef X
+#define X 1
 static a_float_t const m7e[] = {
-    A_MF_TRI, NB, NB, NM,
-    A_MF_TRI, NB, NM, NS,
+    A_MF_TRI, NL, NL, NM,
+    A_MF_TRI, NL, NM, NS,
     A_MF_TRI, NM, NS, ZO,
     A_MF_TRI, NS, ZO, PS,
     A_MF_TRI, ZO, PS, PM,
-    A_MF_TRI, PS, PM, PB,
-    A_MF_TRI, PM, PB, PB};
-#undef S
-#define S 2
+    A_MF_TRI, PS, PM, PL,
+    A_MF_TRI, PM, PL, PL};
+#undef X
+#define X 2
 static a_float_t const m7ec[] = {
-    A_MF_TRI, NB, NB, NM,
-    A_MF_TRI, NB, NM, NS,
+    A_MF_TRI, NL, NL, NM,
+    A_MF_TRI, NL, NM, NS,
     A_MF_TRI, NM, NS, ZO,
     A_MF_TRI, NS, ZO, PS,
     A_MF_TRI, ZO, PS, PM,
-    A_MF_TRI, PS, PM, PB,
-    A_MF_TRI, PM, PB, PB};
-#undef S
-#define S A_FLOAT_C(10.0) / 3
+    A_MF_TRI, PS, PM, PL,
+    A_MF_TRI, PM, PL, PL};
+#undef X
+#define X A_FLOAT_C(10.0) / 3
 static a_float_t const m7kp[] = {
-    NB, NB, NM, NM, NS, ZO, ZO,
-    NB, NB, NM, NS, NS, ZO, PS,
+    NL, NL, NM, NM, NS, ZO, ZO,
+    NL, NL, NM, NS, NS, ZO, PS,
     NM, NM, NM, NS, ZO, PS, PS,
     NM, NM, NS, ZO, PS, PM, PM,
     NS, NS, ZO, PS, PS, PM, PM,
-    NS, ZO, PS, PM, PM, PM, PB,
-    ZO, ZO, PM, PM, PM, PB, PB};
-#undef S
-#define S A_FLOAT_C(0.01) / 3
+    NS, ZO, PS, PM, PM, PM, PL,
+    ZO, ZO, PM, PM, PM, PL, PL};
+#undef X
+#define X A_FLOAT_C(0.01) / 3
 static a_float_t const m7ki[] = {
-    PB, PB, PM, PM, PS, ZO, ZO,
-    PB, PB, PM, PS, PS, ZO, ZO,
-    PB, PM, PS, PS, ZO, NS, NS,
+    PL, PL, PM, PM, PS, ZO, ZO,
+    PL, PL, PM, PS, PS, ZO, ZO,
+    PL, PM, PS, PS, ZO, NS, NS,
     PM, PM, PS, ZO, NS, NM, NM,
-    PM, PS, ZO, NS, NS, NM, NB,
-    ZO, ZO, NS, NS, NM, NB, NB,
-    ZO, ZO, NS, NM, NM, NB, NB};
-#undef S
-#define S A_FLOAT_C(0.1) / 3
+    PM, PS, ZO, NS, NS, NM, NL,
+    ZO, ZO, NS, NS, NM, NL, NL,
+    ZO, ZO, NS, NM, NM, NL, NL};
+#undef X
+#define X A_FLOAT_C(0.1) / 3
 static a_float_t const m7kd[] = {
-    NS, PS, PB, PB, PB, PM, NS,
-    NS, PS, PB, PM, PM, PS, ZO,
+    NS, PS, PL, PL, PL, PM, NS,
+    NS, PS, PL, PM, PM, PS, ZO,
     ZO, PS, PM, PM, PS, PS, ZO,
     ZO, PS, PS, PS, PS, PS, ZO,
     ZO, ZO, ZO, ZO, ZO, ZO, ZO,
-    NB, NS, NS, NS, NS, NS, NB,
-    NB, NM, NM, NM, NS, NS, NB};
-#undef S
+    NL, NS, NS, NS, NS, NS, NL,
+    NL, NM, NM, NM, NS, NS, NL};
+#undef X
 
 static void test_f(void)
 {

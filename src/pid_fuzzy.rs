@@ -261,78 +261,78 @@ impl PID_fuzzy {
 #[test]
 #[allow(non_snake_case)]
 fn pid_fuzzy() {
-    let NB: float = -3.0;
+    let NL: float = -3.0;
     let NM: float = -2.0;
     let NS: float = -1.0;
     let ZO: float = 0.0;
     let PS: float = 1.0;
     let PM: float = 2.0;
-    let PB: float = 3.0;
+    let PL: float = 3.0;
     let me = [
-        [crate::mf::TRI, NB, NB, NM],
-        [crate::mf::TRI, NB, NM, NS],
+        [crate::mf::TRI, NL, NL, NM],
+        [crate::mf::TRI, NL, NM, NS],
         [crate::mf::TRI, NM, NS, ZO],
         [crate::mf::TRI, NS, ZO, PS],
         [crate::mf::TRI, ZO, PS, PM],
-        [crate::mf::TRI, PS, PM, PB],
-        [crate::mf::TRI, PM, PB, PB],
+        [crate::mf::TRI, PS, PM, PL],
+        [crate::mf::TRI, PM, PL, PL],
     ];
-    let NB: float = -3.0;
+    let NL: float = -3.0;
     let NM: float = -2.0;
     let NS: float = -1.0;
     let ZO: float = 0.0;
     let PS: float = 1.0;
     let PM: float = 2.0;
-    let PB: float = 3.0;
+    let PL: float = 3.0;
     let mec = [
-        [crate::mf::TRI, NB, NB, NM],
-        [crate::mf::TRI, NB, NM, NS],
+        [crate::mf::TRI, NL, NL, NM],
+        [crate::mf::TRI, NL, NM, NS],
         [crate::mf::TRI, NM, NS, ZO],
         [crate::mf::TRI, NS, ZO, PS],
         [crate::mf::TRI, ZO, PS, PM],
-        [crate::mf::TRI, PS, PM, PB],
-        [crate::mf::TRI, PM, PB, PB],
+        [crate::mf::TRI, PS, PM, PL],
+        [crate::mf::TRI, PM, PL, PL],
     ];
-    let NB: float = -15.0;
+    let NL: float = -15.0;
     let NM: float = -10.0;
     let NS: float = -5.0;
     let ZO: float = 0.0;
     let PS: float = 5.0;
     let PM: float = 10.0;
-    let PB: float = 15.0;
+    let PL: float = 15.0;
     let mkp = [
-        [NB, NB, NM, NM, NS, ZO, ZO],
-        [NB, NB, NM, NS, NS, ZO, PS],
+        [NL, NL, NM, NM, NS, ZO, ZO],
+        [NL, NL, NM, NS, NS, ZO, PS],
         [NM, NM, NM, NS, ZO, PS, PS],
         [NM, NM, NS, ZO, PS, PM, PM],
         [NS, NS, ZO, PS, PS, PM, PM],
-        [NS, ZO, PS, PM, PM, PM, PB],
-        [ZO, ZO, PM, PM, PM, PB, PB],
+        [NS, ZO, PS, PM, PM, PM, PL],
+        [ZO, ZO, PM, PM, PM, PL, PL],
     ];
-    let NB: float = -3.0;
+    let NL: float = -3.0;
     let NM: float = -2.0;
     let NS: float = -1.0;
     let ZO: float = 0.0;
     let PS: float = 1.0;
     let PM: float = 2.0;
-    let PB: float = 3.0;
+    let PL: float = 3.0;
     let mki = [
-        [PB, PB, PM, PM, PS, ZO, ZO],
-        [PB, PB, PM, PS, PS, ZO, ZO],
-        [PB, PM, PS, PS, ZO, NS, NS],
+        [PL, PL, PM, PM, PS, ZO, ZO],
+        [PL, PL, PM, PS, PS, ZO, ZO],
+        [PL, PM, PS, PS, ZO, NS, NS],
         [PM, PM, PS, ZO, NS, NM, NM],
-        [PM, PS, ZO, NS, NS, NM, NB],
-        [ZO, ZO, NS, NS, NM, NB, NB],
-        [ZO, ZO, NS, NM, NM, NB, NB],
+        [PM, PS, ZO, NS, NS, NM, NL],
+        [ZO, ZO, NS, NS, NM, NL, NL],
+        [ZO, ZO, NS, NM, NM, NL, NL],
     ];
     let mkd = [
-        [NS, PS, PB, PB, PB, PM, NS],
-        [NS, PS, PB, PM, PM, PS, ZO],
+        [NS, PS, PL, PL, PL, PM, NS],
+        [NS, PS, PL, PM, PM, PS, ZO],
         [ZO, PS, PM, PM, PS, PS, ZO],
         [ZO, PS, PS, PS, PS, PS, ZO],
         [ZO, ZO, ZO, ZO, ZO, ZO, ZO],
-        [NB, NS, NS, NS, NS, NS, NB],
-        [NB, NM, NM, NM, NS, NS, NB],
+        [NL, NS, NS, NS, NS, NS, NL],
+        [NL, NM, NM, NM, NS, NS, NL],
     ];
     let mut a = crate::PID_fuzzy::new(
         1.0,
