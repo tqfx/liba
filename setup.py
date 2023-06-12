@@ -1,14 +1,12 @@
 #!/usr/bin/env python
-from sys import argv, executable
-from subprocess import Popen
+from sys import argv
 import os, sys, time
 
-script = os.path.abspath(argv[0])
-os.chdir(os.path.dirname(script))
+os.chdir(os.path.dirname(os.path.abspath(argv[0])))
 if len(argv) < 2 and sys.version.find("MSC") > 0:
-    exit(Popen([executable, script, "--quiet", "build_ext", "--inplace"]).wait())
+    sys.argv += ["--quiet", "build_ext", "--inplace"]
 elif len(argv) < 2:
-    exit(Popen([executable, script, "build_ext", "--inplace"]).wait())
+    sys.argv += ["build_ext", "--inplace"]
 try:
     from setuptools.command.build_ext import build_ext
     from setuptools import setup, Extension
@@ -108,48 +106,34 @@ def configure(config, define_macros=[]):
         f.write(text.encode("UTF-8"))
 
 
-config_h = "a.setup.h"
 parser = ArgumentParser(add_help=False)
 parser.add_argument("-b", "--build-base", default="build")
 args = parser.parse_known_args(argv[1:])
 base = args[0].build_base
-source_c, source_cc = [], []
-header_h, header_hh = [], []
-suffix_c, suffix_cc = (".c",), (".cc", ".cpp", ".cxx")
-suffix_h, suffix_hh = (".h",), (".hh", ".hpp", ".hxx")
-config_h = os.path.relpath(os.path.join(base, config_h), "include")
+
+sources, objects = [], []
+config_h = os.path.relpath(os.path.join(base, "a.setup.h"), "include")
 define_macros = [("A_HAVE_H", '"' + config_h + '"'), ("A_EXPORTS", None)]
 if USE_CYTHON and os.path.exists("python/src/a.pyx"):
-    source_c = ["python/src/a.pyx"]
+    sources += ["python/src/a.pyx"]
 elif os.path.exists("python/src/a.c"):
-    source_c = ["python/src/a.c"]
+    sources += ["python/src/a.c"]
 config = os.path.join(base, config_h)
 if not os.path.exists(base):
     os.makedirs(base)
 configure(config, define_macros)
 
-for dirpath, dirnames, filenames in os.walk("include"):
-    for filename in filenames:
-        header = os.path.join(dirpath, filename)
-        prefix, suffix = os.path.splitext(header)
-        if suffix in suffix_hh:
-            header_hh.append(header)
-        elif suffix in suffix_h:
-            header_h.append(header)
 for dirpath, dirnames, filenames in os.walk("src"):
     for filename in filenames:
         source = os.path.join(dirpath, filename)
-        prefix, suffix = os.path.splitext(source)
-        if suffix in suffix_cc:
-            source_cc.append(source)
-        elif suffix in suffix_c:
-            source_c.append(source)
+        if os.path.splitext(source)[-1] == ".c":
+            sources.append(source)
 
 ext_modules = [
     Extension(
         name="liba",
         language="c",
-        sources=source_c,
+        sources=sources,
         include_dirs=["include"],
         define_macros=define_macros,
     )
