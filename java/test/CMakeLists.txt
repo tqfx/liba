@@ -21,7 +21,7 @@ function(unittest source name)
     endif()
   endforeach()
 
-  add_test(NAME jar_${name} WORKING_DIRECTORY $<TARGET_FILE_DIR:ajni>
+  add_test(NAME jar_${name} WORKING_DIRECTORY ${WORKING_DIRECTORY}
     COMMAND ${JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_BINARY_DIR}/${source}.jar ${ARGS}
   )
 endfunction()

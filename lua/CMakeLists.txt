@@ -81,5 +81,15 @@ format = 'markdown'
 endif()
 
 if(LUA_EXECUTABLE)
+  get_property(IS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+
+  if(NOT CMAKE_VERSION VERSION_LESS 3.0)
+    set(WORKING_DIRECTORY $<TARGET_FILE_DIR:alua>)
+  elseif(IS_MULTI_CONFIG)
+    set(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>)
+  else()
+    set(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+  endif()
+
   add_subdirectory(test)
 endif()

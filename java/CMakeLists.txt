@@ -9,11 +9,19 @@ add_jar(ajar GENERATE_NATIVE_HEADERS ajar_native
 install_jar(ajar ${CMAKE_INSTALL_LIBDIR}/java)
 
 if(CMAKE_VERSION VERSION_LESS 3.11)
+  if(WIN32)
+    set(sep ";")
+  else()
+    set(sep ":")
+  endif()
+
   add_custom_command(TARGET ajar POST_BUILD
-    COMMAND ${Java_JAVAC_EXECUTABLE} -h ${CMAKE_CURRENT_BINARY_DIR}/include
+    COMMAND ${Java_JAVAC_EXECUTABLE} -classpath ${sep}${CMAKE_CURRENT_SOURCE_DIR}${sep}${CMAKE_CURRENT_BINARY_DIR}
+    -d ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/ajar.dir -h ${CMAKE_CURRENT_BINARY_DIR}/include
     @${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/ajar.dir/java_sources
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   )
+  set(sep)
 endif()
 
 option(LIBA_JAVADOC "Enable/Disable ffi javadoc" 0)
@@ -76,6 +84,16 @@ else()
 endif()
 
 if(CMAKE_SIZEOF_VOID_P EQUAL JAVA_SIZEOF_VOID_P AND BUILD_TESTING)
+  get_property(IS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+
+  if(NOT CMAKE_VERSION VERSION_LESS 3.0)
+    set(WORKING_DIRECTORY $<TARGET_FILE_DIR:ajni>)
+  elseif(IS_MULTI_CONFIG)
+    set(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>)
+  else()
+    set(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+  endif()
+
   file(GLOB_RECURSE SOURCES src/*.java)
   add_subdirectory(test)
 endif()

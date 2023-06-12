@@ -11,7 +11,7 @@ function(unittest source name)
     endif()
   endforeach()
 
-  add_test(NAME lua_${name} WORKING_DIRECTORY $<TARGET_FILE_DIR:alua>
+  add_test(NAME lua_${name} WORKING_DIRECTORY ${WORKING_DIRECTORY}
     COMMAND ${LUA_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/${source}.lua ${ARGS}
   )
 endfunction()
