@@ -2,9 +2,9 @@ from libc.stddef cimport *
 from libc.stdint cimport *
 
 cdef extern from "a/a.h":
-    const int A_FLOAT_TYPE
-    const int A_FLOAT_SINGLE
-    const int A_FLOAT_DOUBLE
+    int A_FLOAT_TYPE
+    int A_FLOAT_SINGLE
+    int A_FLOAT_DOUBLE
 
     ctypedef  int8_t a_i8_t
     ctypedef uint8_t a_u8_t
