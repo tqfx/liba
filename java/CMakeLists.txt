@@ -3,9 +3,18 @@ include(UseJava)
 
 file(GLOB_RECURSE SOURCES src/*.java)
 add_jar(ajar GENERATE_NATIVE_HEADERS ajar_native
-  ENTRY_POINT a OUTPUT_NAME a SOURCES ${SOURCES}
+  DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include
+  SOURCES ${SOURCES} ENTRY_POINT a OUTPUT_NAME a
 )
 install_jar(ajar ${CMAKE_INSTALL_LIBDIR}/java)
+
+if(CMAKE_VERSION VERSION_LESS 3.11)
+  add_custom_command(TARGET ajar POST_BUILD
+    COMMAND ${Java_JAVAC_EXECUTABLE} -h ${CMAKE_CURRENT_BINARY_DIR}/include
+    @${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/ajar.dir/java_sources
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  )
+endif()
 
 option(LIBA_JAVADOC "Enable/Disable ffi javadoc" 0)
 
@@ -34,9 +43,16 @@ endif()
 
 add_library(ajni SHARED ${OBJECTS} ${SOURCES})
 set_target_properties(ajni PROPERTIES DEFINE_SYMBOL A_EXPORTS OUTPUT_NAME a)
-target_link_libraries(ajni PRIVATE ajar_native)
 add_library_properties(ajni PRIVATE alib)
 set_library_options(ajni)
+
+if(CMAKE_VERSION VERSION_LESS 3.11)
+  target_include_directories(ajni PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}/include ${JNI_INCLUDE_DIRS}
+  )
+else()
+  target_link_libraries(ajni PRIVATE ajar_native)
+endif()
 
 if(NOT LIBA_FLOAT EQUAL 8)
   target_compile_definitions(ajni PRIVATE A_SIZE_FLOAT=8)

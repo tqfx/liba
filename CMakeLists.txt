@@ -405,7 +405,7 @@ if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/java/CMakeLists.txt)
     find_package(JNI)
   endif()
 
-  if(LIBA_JAVA AND Java_FOUND)
+  if(LIBA_JAVA AND Java_JAVAC_EXECUTABLE)
     add_subdirectory(java)
   endif()
 endif()
