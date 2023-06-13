@@ -3,10 +3,8 @@ from sys import argv
 import os, sys, time
 
 os.chdir(os.path.dirname(os.path.abspath(argv[0])))
-if len(argv) < 2 and sys.version.find("MSC") > 0:
+if len(argv) < 2:
     sys.argv += ["--quiet", "build_ext", "--inplace"]
-elif len(argv) < 2:
-    sys.argv += ["build_ext", "--inplace"]
 try:
     from setuptools.command.build_ext import build_ext
     from setuptools import setup, Extension
