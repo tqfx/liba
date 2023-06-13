@@ -1,10 +1,12 @@
 from libc.stddef cimport *
+from libc.limits cimport *
 from libc.stdint cimport *
+from libc.float cimport *
 
 cdef extern from "a/a.h":
-    int A_FLOAT_TYPE
-    int A_FLOAT_SINGLE
-    int A_FLOAT_DOUBLE
+    const int A_FLOAT_TYPE
+    const int A_FLOAT_SINGLE
+    const int A_FLOAT_DOUBLE
 
     ctypedef  int8_t a_i8_t
     ctypedef uint8_t a_u8_t
