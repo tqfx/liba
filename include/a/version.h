@@ -14,10 +14,8 @@
  @{
 */
 
-/*! algorithm library version string */
-#ifndef A_VERSION
-#define A_VERSION "0.0.0"
-#endif /* A_VERSION */
+#define A_VERSION_TOSTR(x) A_VERSION_tostr(x)
+#define A_VERSION_tostr(x) #x
 
 /*! algorithm library version major */
 #ifndef A_VERSION_MAJOR
@@ -41,6 +39,11 @@
 #ifndef A_VERSION_TWEAK
 #define A_VERSION_TWEAK A_U64_C(0)
 #endif /* A_VERSION_TWEAK */
+
+/*! algorithm library version string */
+#ifndef A_VERSION
+#define A_VERSION A_VERSION_TOSTR(A_VERSION_MAJOR) "." A_VERSION_TOSTR(A_VERSION_MINOR) "." A_VERSION_TOSTR(A_VERSION_PATCH)
+#endif /* A_VERSION */
 
 #if defined(__cplusplus)
 #define A_VERSION_C(maj, min, pat) a::version(maj, min, pat)

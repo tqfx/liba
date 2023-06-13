@@ -11,5 +11,4 @@ print("version", liba.version())
 print("major:", liba.version_major())
 print("minor:", liba.version_minor())
 print("patch:", liba.version_patch())
-
-print(liba.f64_rsqrt(4), liba.f32_rsqrt(4))
+print(liba.hash_bkdr(b"0", 0), liba.f64_rsqrt(4), liba.f32_rsqrt(4))
