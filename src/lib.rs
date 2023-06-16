@@ -35,6 +35,11 @@ pub union Float {
 pub mod mf;
 pub mod tf;
 pub use crate::tf::TF;
+pub mod crc;
+pub use crate::crc::crc16;
+pub use crate::crc::crc32;
+pub use crate::crc::crc64;
+pub use crate::crc::crc8;
 pub mod pid;
 pub use crate::pid::PID;
 pub mod pid_fuzzy;

@@ -6,6 +6,12 @@ from cpython.array cimport array
 cdef bint iterable(object o):
     return PyObject_HasAttrString(o, "__contains__")
 
+cdef array u8s(object o = ()):
+    return array('B', o)
+
+cdef array u16s(object o = ()):
+    return array('H', o)
+
 cdef array u32s(object o = ()):
     if UINT32_MAX == UINT_MAX:
         return array('I', o)
@@ -29,6 +35,7 @@ cdef array floats(object o = ()):
 def hash_bkdr(str: bytes, val: a_umax_t) -> a_umax_t:
     return a_hash_bkdr(str, val)
 
+include "a/crc.pxi"
 include "a/math.pxi"
 include "a/mf.pxi"
 include "a/pid.pxi"
