@@ -4,7 +4,6 @@
 */
 
 #include "pid.h"
-#include <string.h>
 
 static int LMODULE(pid_init_)(lua_State *const L, a_pid_s *const ctx)
 {

@@ -4,7 +4,6 @@
 */
 
 #include "pid_fuzzy.h"
-#include <string.h>
 
 static int LMODULE(pid_fuzzy_init_)(lua_State *const L, a_pid_fuzzy_s *const ctx)
 {

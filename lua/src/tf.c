@@ -4,7 +4,6 @@
 */
 
 #include "tf.h"
-#include <stdlib.h>
 
 /***
  destructor for transfer function
