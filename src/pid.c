@@ -173,8 +173,7 @@ a_float_t a_pid_outp_(a_pid_s *const ctx, unsigned int const mode, a_float_t con
 a_float_t a_pid_outf(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb)
 {
     a_float_t const e = set - fdb;
-    a_float_t const ec = e - ctx->err.f;
-    return a_pid_outf_(ctx, a_pid_mode(ctx), set, fdb, ec, e);
+    return a_pid_outf_(ctx, a_pid_mode(ctx), set, fdb, e - ctx->err.f, e);
 }
 
 a_float_t const *a_pid_outp(a_pid_s *const ctx, a_float_t const *const set, a_float_t const *const fdb)
@@ -184,8 +183,7 @@ a_float_t const *a_pid_outp(a_pid_s *const ctx, a_float_t const *const set, a_fl
     for (unsigned int i = 0; i != num; ++i)
     {
         a_float_t const e = set[i] - fdb[i];
-        a_float_t const ec = e - ctx->err.p[i];
-        a_pid_outp_(ctx, mode, set[i], fdb[i], ec, e, i);
+        a_pid_outp_(ctx, mode, set[i], fdb[i], e - ctx->err.p[i], e, i);
     }
     return ctx->out.p;
 }
