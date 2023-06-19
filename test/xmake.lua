@@ -65,6 +65,10 @@ target("test/pid")
     building({"pid.c", "pid.cpp"})
 target_end()
 
+target("test/pid_expert")
+    building({"pid_expert.c", "pid_expert.cpp"})
+target_end()
+
 target("test/pid_fuzzy")
     building({"pid_fuzzy.c", "pid_fuzzy.cpp"})
 target_end()

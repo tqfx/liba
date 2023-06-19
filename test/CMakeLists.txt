@@ -200,6 +200,13 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(pid pid.gp pid.log)
 endif()
 
+building(pid_expert pid_expert.c pid_expert.cpp)
+unittest(pid_expert)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(pid_expert pid.gp pid_expert.log)
+endif()
+
 building(pid_fuzzy pid_fuzzy.c pid_fuzzy.cpp)
 unittest(pid_fuzzy)
 
