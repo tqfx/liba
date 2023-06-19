@@ -86,7 +86,7 @@ A_PUBLIC int LMODULE(pid_fuzzy_init)(lua_State *L);
 A_PUBLIC int LMODULE(pid_fuzzy_iter)(lua_State *L);
 
 /***
- zero function for fuzzy PID controller
+ zero clear function for fuzzy PID controller
  @treturn pid_fuzzy fuzzy PID controller userdata
  @function zero
 */

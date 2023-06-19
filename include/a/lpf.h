@@ -81,7 +81,7 @@ A_INTERN a_float_t a_lpf_iter(a_lpf_s *const ctx, a_float_t const x)
 }
 
 /*!
- @brief zero function for Low Pass Filter
+ @brief zero clear function for Low Pass Filter
  @param[in,out] ctx points to an instance of Low Pass Filter
 */
 A_INTERN void a_lpf_zero(a_lpf_s *const ctx) { ctx->y = 0; }

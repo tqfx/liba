@@ -66,7 +66,7 @@ impl TF {
         unsafe { a_tf_iter(self, x) }
     }
 
-    /// zero function for transfer function
+    /// zero clear function for transfer function
     pub fn zero(&mut self) -> &mut Self {
         unsafe { a_tf_zero(self).as_mut().unwrap_unchecked() }
     }

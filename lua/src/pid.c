@@ -134,7 +134,7 @@ int LMODULE(pid_iter)(lua_State *const L)
 }
 
 /***
- zero function for PID controller
+ zero clear function for PID controller
  @param ctx PID controller userdata
  @treturn pid PID controller userdata
  @function zero

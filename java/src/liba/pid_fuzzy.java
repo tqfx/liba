@@ -163,7 +163,7 @@ public class pid_fuzzy {
     public final native double iter(double set, double fdb);
 
     /**
-     * zero function for fuzzy PID controller
+     * zero clear function for fuzzy PID controller
      *
      * @return {@link pid_fuzzy}
      */

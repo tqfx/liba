@@ -56,7 +56,7 @@ A_PUBLIC int LMODULE(tf_init)(lua_State *L);
 A_PUBLIC int LMODULE(tf_iter)(lua_State *L);
 
 /***
- zero function for transfer function
+ zero clear function for transfer function
  @treturn tf transfer function userdata
  @function zero
 */

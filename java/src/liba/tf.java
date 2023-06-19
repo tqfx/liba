@@ -40,7 +40,7 @@ public class tf {
     public final native double iter(double x);
 
     /**
-     * zero function for transfer function
+     * zero clear function for transfer function
      *
      * @return {@link tf}
      */

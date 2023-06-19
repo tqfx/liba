@@ -140,7 +140,7 @@ int LMODULE(pid_fuzzy_iter)(lua_State *const L)
 }
 
 /***
- zero function for fuzzy PID controller
+ zero clear function for fuzzy PID controller
  @param ctx fuzzy PID controller userdata
  @treturn pid_fuzzy fuzzy PID controller userdata
  @function zero

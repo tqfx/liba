@@ -156,7 +156,7 @@ public class pid {
     public final native double iter(double set, double fdb);
 
     /**
-     * zero function for PID controller
+     * zero clear function for PID controller
      *
      * @return {@link pid}
      */

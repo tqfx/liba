@@ -198,7 +198,7 @@ impl PID {
         }
     }
 
-    /// zero function for PID controller
+    /// zero clear function for PID controller
     pub fn zero(&mut self) -> &mut Self {
         unsafe { a_pid_zero(self).as_mut().unwrap_unchecked() }
     }

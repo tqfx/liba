@@ -102,7 +102,7 @@ int LMODULE(tf_iter)(lua_State *const L)
 }
 
 /***
- zero function for transfer function
+ zero clear function for transfer function
  @param ctx transfer function userdata
  @treturn tf transfer function userdata
  @function zero

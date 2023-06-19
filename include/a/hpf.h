@@ -82,7 +82,7 @@ A_INTERN a_float_t a_hpf_iter(a_hpf_s *const ctx, a_float_t const x)
 }
 
 /*!
- @brief zero function for High Pass Filter
+ @brief zero clear function for High Pass Filter
  @param[in,out] ctx points to an instance of High Pass Filter
 */
 A_INTERN void a_hpf_zero(a_hpf_s *const ctx) { ctx->y = ctx->x = 0; }

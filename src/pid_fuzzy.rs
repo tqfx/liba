@@ -226,7 +226,7 @@ impl PID_fuzzy {
         }
     }
 
-    /// zero function for fuzzy PID controller
+    /// zero clear function for fuzzy PID controller
     pub fn zero(&mut self) -> &mut Self {
         unsafe { a_pid_fuzzy_zero(self).as_mut().unwrap_unchecked() }
     }
