@@ -67,6 +67,7 @@ void a_pid_expert_outf_(a_pid_expert_s *const ctx, a_float_t const fdb, a_float_
 {
     a_float_t out = 0;
     a_float_t abs = A_ABS(e);
+    a_float_t tmp = ctx->pid.fdb.f - fdb;
 
     if (-ctx->max1 > e)
     {
@@ -79,13 +80,11 @@ void a_pid_expert_outf_(a_pid_expert_s *const ctx, a_float_t const fdb, a_float_
 
     if (e * ec > 0 || ec == 0)
     {
-        a_float_t tmp = ctx->pid.fdb.f - fdb;
         out = ctx->pid.kp * ec + ctx->pid.ki * e + ctx->pid.kd * (tmp - ctx->pid.tmp.f);
         if (abs > ctx->max2)
         {
             out *= ctx->gain;
         }
-        ctx->pid.tmp.f = tmp;
     }
     else if (ec * ctx->ec.f < 0 && e != 0)
     {
@@ -108,6 +107,7 @@ void a_pid_expert_outf_(a_pid_expert_s *const ctx, a_float_t const fdb, a_float_
     ctx->pid.out.f += out;
     ctx->pid.out.f = A_SAT(ctx->pid.out.f, ctx->pid.outmin, ctx->pid.outmax);
     ctx->pid.fdb.f = fdb;
+    ctx->pid.tmp.f = tmp;
     ctx->pid.err.f = e;
     ctx->ec.f = ec;
 }
@@ -116,6 +116,7 @@ void a_pid_expert_outp_(a_pid_expert_s *const ctx, a_float_t const fdb, a_float_
 {
     a_float_t out = 0;
     a_float_t abs = A_ABS(e);
+    a_float_t tmp = ctx->pid.fdb.p[i] - fdb;
 
     if (-ctx->max1 > e)
     {
@@ -128,13 +129,11 @@ void a_pid_expert_outp_(a_pid_expert_s *const ctx, a_float_t const fdb, a_float_
 
     if (e * ec > 0 || ec == 0)
     {
-        a_float_t tmp = ctx->pid.fdb.p[i] - fdb;
         out = ctx->pid.kp * ec + ctx->pid.ki * e + ctx->pid.kd * (tmp - ctx->pid.tmp.p[i]);
         if (abs > ctx->max2)
         {
             out *= ctx->gain;
         }
-        ctx->pid.tmp.p[i] = tmp;
     }
     else if (ec * ctx->ec.p[i] < 0 && e != 0)
     {
@@ -157,6 +156,7 @@ void a_pid_expert_outp_(a_pid_expert_s *const ctx, a_float_t const fdb, a_float_
     ctx->pid.out.p[i] += out;
     ctx->pid.out.p[i] = A_SAT(ctx->pid.out.p[i], ctx->pid.outmin, ctx->pid.outmax);
     ctx->pid.fdb.p[i] = fdb;
+    ctx->pid.tmp.p[i] = tmp;
     ctx->pid.err.p[i] = e;
     ctx->ec.p[i] = ec;
 }
