@@ -72,13 +72,7 @@ A_EXTERN a_tf_s *a_tf_init(a_tf_s *ctx,
 A_EXTERN a_float_t a_tf_iter(a_tf_s *ctx, a_float_t x);
 
 /*!
- @brief terminate function for transfer function
- @param[in,out] ctx points to an instance of transfer function
-*/
-A_EXTERN a_tf_s *a_tf_exit(a_tf_s *ctx);
-
-/*!
- @brief zero function for transfer function
+ @brief zero clear function for transfer function
  @param[in,out] ctx points to an instance of transfer function
 */
 A_EXTERN a_tf_s *a_tf_zero(a_tf_s *ctx);

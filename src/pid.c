@@ -23,7 +23,7 @@ a_pid_s *a_pid_inc(a_pid_s *const ctx)
 
 a_pid_s *a_pid_pos(a_pid_s *const ctx, a_float_t const max)
 {
-    ctx->summax = (max > 0) ? max : -max;
+    ctx->summax = A_ABS(max);
     if (ctx->outmax < ctx->summax)
     {
         ctx->summax = ctx->outmax;
@@ -40,21 +40,27 @@ a_pid_s *a_pid_kpid(a_pid_s *const ctx, a_float_t const kp, a_float_t const ki, 
     return ctx;
 }
 
+void a_pid_chan_(a_pid_s *const ctx, a_float_t *const out, a_float_t *const fdb, a_float_t *const tmp, a_float_t *const err)
+{
+    ctx->out.p = out;
+    ctx->fdb.p = fdb;
+    ctx->tmp.p = tmp;
+    ctx->err.p = err;
+}
+
 a_pid_s *a_pid_chan(a_pid_s *const ctx, unsigned int const num, a_float_t *const out, a_float_t *const fdb, a_float_t *const tmp, a_float_t *const err)
 {
     if (num > 1)
     {
         a_pid_set_num(ctx, num);
-        ctx->out.p = out;
-        ctx->fdb.p = fdb;
-        ctx->tmp.p = tmp;
-        ctx->err.p = err;
+        a_pid_chan_(ctx, out, fdb, tmp, err);
     }
     else
     {
         a_pid_set_num(ctx, 0);
     }
-    return a_pid_zero(ctx);
+    a_pid_zero_(ctx, num);
+    return ctx;
 }
 
 a_pid_s *a_pid_init(a_pid_s *const ctx, a_float_t const dt, a_float_t const min, a_float_t const max)
@@ -68,35 +74,48 @@ a_pid_s *a_pid_init(a_pid_s *const ctx, a_float_t const dt, a_float_t const min,
     ctx->kp = 0;
     ctx->ki = 0;
     ctx->kd = 0;
-    return a_pid_zero(ctx);
+    a_pid_zerof(ctx);
+    return ctx;
 }
 
-a_pid_s *a_pid_exit(a_pid_s *const ctx) { return a_pid_zero(ctx); }
-
-a_pid_s *a_pid_zero(a_pid_s *const ctx)
+void a_pid_zerof(a_pid_s *const ctx)
 {
-    unsigned int const num = a_pid_num(ctx);
+    ctx->out.f = 0;
+    ctx->fdb.f = 0;
+    ctx->tmp.f = 0;
+    ctx->err.f = 0;
+}
+
+void a_pid_zerop(a_pid_s *const ctx, unsigned int const i)
+{
+    ctx->out.p[i] = 0;
+    ctx->fdb.p[i] = 0;
+    ctx->tmp.p[i] = 0;
+    ctx->err.p[i] = 0;
+}
+
+void a_pid_zero_(a_pid_s *const ctx, unsigned int const num)
+{
     if (num > 1)
     {
         for (unsigned int i = 0; i != num; ++i)
         {
-            ctx->out.p[i] = 0;
-            ctx->fdb.p[i] = 0;
-            ctx->tmp.p[i] = 0;
-            ctx->err.p[i] = 0;
+            a_pid_zerop(ctx, i);
         }
     }
     else
     {
-        ctx->out.f = 0;
-        ctx->fdb.f = 0;
-        ctx->tmp.f = 0;
-        ctx->err.f = 0;
+        a_pid_zerof(ctx);
     }
+}
+
+a_pid_s *a_pid_zero(a_pid_s *const ctx)
+{
+    a_pid_zero_(ctx, a_pid_num(ctx));
     return ctx;
 }
 
-a_float_t a_pid_outf_(a_pid_s *const ctx, unsigned int const mode, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e)
+void a_pid_outf_(a_pid_s *const ctx, unsigned int const mode, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e)
 {
     /* calculation */
     switch (mode)
@@ -130,10 +149,9 @@ a_float_t a_pid_outf_(a_pid_s *const ctx, unsigned int const mode, a_float_t con
     ctx->out.f = A_SAT(ctx->out.f, ctx->outmin, ctx->outmax);
     ctx->fdb.f = fdb;
     ctx->err.f = e;
-    return ctx->out.f;
 }
 
-a_float_t a_pid_outp_(a_pid_s *const ctx, unsigned int const mode, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e, unsigned int const i)
+void a_pid_outp_(a_pid_s *const ctx, unsigned int const mode, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e, unsigned int const i)
 {
     /* calculation */
     switch (mode)
@@ -167,13 +185,13 @@ a_float_t a_pid_outp_(a_pid_s *const ctx, unsigned int const mode, a_float_t con
     ctx->out.p[i] = A_SAT(ctx->out.p[i], ctx->outmin, ctx->outmax);
     ctx->fdb.p[i] = fdb;
     ctx->err.p[i] = e;
-    return ctx->out.p[i];
 }
 
 a_float_t a_pid_outf(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb)
 {
     a_float_t const e = set - fdb;
-    return a_pid_outf_(ctx, a_pid_mode(ctx), set, fdb, e - ctx->err.f, e);
+    a_pid_outf_(ctx, a_pid_mode(ctx), set, fdb, e - ctx->err.f, e);
+    return ctx->out.f;
 }
 
 a_float_t const *a_pid_outp(a_pid_s *const ctx, a_float_t const *const set, a_float_t const *const fdb)

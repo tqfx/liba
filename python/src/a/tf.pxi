@@ -15,11 +15,8 @@ cdef class tf:
     def __call__(self, x: a_float_t) -> a_float_t:
         '''calculate function for transfer function'''
         return a_tf_iter(&self.ctx, x)
-    def __dealloc__(self):
-        '''terminate function for transfer function'''
-        a_tf_exit(&self.ctx)
     def zero(self):
-        '''zero function for transfer function'''
+        '''zero clear function for transfer function'''
         a_tf_zero(&self.ctx)
         return self
     @property

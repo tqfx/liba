@@ -50,8 +50,6 @@ a_float_t a_tf_iter(a_tf_s *const ctx, a_float_t const x)
     return y;
 }
 
-a_tf_s *a_tf_exit(a_tf_s *const ctx) { return a_tf_zero(ctx); }
-
 a_tf_s *a_tf_zero(a_tf_s *const ctx)
 {
     a_zero(ctx->u, sizeof(a_float_t) * ctx->m);

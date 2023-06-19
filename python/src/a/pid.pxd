@@ -20,7 +20,6 @@ cdef extern from "a/pid.h":
     a_pid_s *a_pid_init(a_pid_s *ctx, a_float_t dt, a_float_t min, a_float_t max)
     a_float_t a_pid_outf(a_pid_s *ctx, a_float_t set, a_float_t fdb)
     const a_float_t *a_pid_outp(a_pid_s *ctx, const a_float_t *set, const a_float_t *fdb)
-    a_pid_s *a_pid_exit(a_pid_s *ctx)
     a_pid_s *a_pid_zero(a_pid_s *ctx)
     a_float_t a_pid_dt(const a_pid_s *ctx)
     void a_pid_set_dt(a_pid_s *ctx, a_float_t dt)

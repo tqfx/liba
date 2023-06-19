@@ -250,13 +250,7 @@ A_EXTERN a_float_t a_pid_fuzzy_outf(a_pid_fuzzy_s *ctx, a_float_t set, a_float_t
 A_EXTERN a_float_t const *a_pid_fuzzy_outp(a_pid_fuzzy_s *ctx, a_float_t const *set, a_float_t const *fdb);
 
 /*!
- @brief terminate function for fuzzy PID controller
- @param[in,out] ctx points to an instance of fuzzy PID controller
-*/
-A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_exit(a_pid_fuzzy_s *ctx);
-
-/*!
- @brief zero function for fuzzy PID controller
+ @brief zero clear function for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
 */
 A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_zero(a_pid_fuzzy_s *ctx);

@@ -20,7 +20,6 @@ cdef extern from "a/pid_fuzzy.h":
                                     const a_float_t *mkp, const a_float_t *mki, const a_float_t *mkd, a_float_t min, a_float_t max)
     a_float_t a_pid_fuzzy_outf(a_pid_fuzzy_s *ctx, a_float_t set, a_float_t fdb)
     const a_float_t *a_pid_fuzzy_outp(a_pid_fuzzy_s *ctx, const a_float_t *set, const a_float_t *fdb)
-    a_pid_fuzzy_s *a_pid_fuzzy_exit(a_pid_fuzzy_s *ctx)
     a_pid_fuzzy_s *a_pid_fuzzy_zero(a_pid_fuzzy_s *ctx)
     unsigned int a_pid_fuzzy_bufnum(const a_pid_fuzzy_s *ctx)
     void *a_pid_fuzzy_bufptr(const a_pid_fuzzy_s *ctx)

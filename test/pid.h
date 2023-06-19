@@ -35,7 +35,6 @@ static void test_f(void)
     {
         a_tf_iter(&tf, a_pid_outf(&ctx, 1, *tf.v));
     }
-    a_pid_exit(&ctx);
 }
 
 static void test_p(void)
@@ -109,7 +108,6 @@ static void test_p(void)
             a_tf_iter(tf + i, ptr[i]);
         }
     }
-    a_pid_exit(&ctx);
 }
 
 static A_INLINE a_float_t input(a_float_t const x)
@@ -163,8 +161,6 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), t, in, *pos_tf.v, *inc_tf.v);
 #endif /* MAIN_ONCE */
     }
-    a_pid_exit(&pos_pid);
-    a_pid_exit(&inc_pid);
 
 #if defined(MAIN_ONCE)
     if (log)

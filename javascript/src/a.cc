@@ -36,7 +36,6 @@ public:
         a_pid_kpid(&this->ctx, jkp, jki, jkd);
         a_pid_pos(&this->ctx, jsum);
     }
-    ~pid() { a_pid_exit(&this->ctx); }
     a_float_t iter(a_float_t jset, a_float_t jfdb)
     {
         return a_pid_outf(&this->ctx, jset, jfdb);
@@ -100,7 +99,6 @@ public:
     }
     ~pid_fuzzy()
     {
-        a_pid_fuzzy_exit(&this->ctx);
         delete[] this->me;
         delete[] this->mec;
         delete[] this->mkp;

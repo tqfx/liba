@@ -17,11 +17,8 @@ cdef class pid:
     def __call__(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
         '''calculate function for PID controller'''
         return a_pid_outf(&self.ctx, set, fdb)
-    def __dealloc__(self):
-        '''terminate function for PID controller'''
-        a_pid_exit(&self.ctx)
     def zero(self):
-        '''zero function for PID controller'''
+        '''zero clear function for PID controller'''
         a_pid_zero(&self.ctx)
         return self
     def kpid(self, kp: a_float_t, ki: a_float_t, kd: a_float_t):

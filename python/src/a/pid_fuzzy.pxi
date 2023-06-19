@@ -34,10 +34,9 @@ cdef class pid_fuzzy:
         return a_pid_fuzzy_outf(&self.ctx, set, fdb)
     def __dealloc__(self):
         '''terminate function for fuzzy PID controller'''
-        a_pid_fuzzy_exit(&self.ctx)
         PyMem_Free(self.ptr)
     def zero(self):
-        '''zero function for fuzzy PID controller'''
+        '''zero clear function for fuzzy PID controller'''
         a_pid_fuzzy_zero(&self.ctx)
         return self
     def base(self, me, mec, mkp, mki, mkd):
