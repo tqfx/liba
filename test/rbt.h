@@ -14,7 +14,7 @@ typedef struct
 
 static A_INLINE int_node *int_entry(void const *node)
 {
-    return a_rbt_entry(node, int_node, node); // NOLINT
+    return a_cast_r(int_node *, a_cast_r(a_uptr_t, node) - a_offsetof(int_node, node)); // NOLINT
 }
 
 static int int_cmp(void const *lhs, void const *rhs)
