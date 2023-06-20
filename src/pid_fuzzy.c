@@ -85,17 +85,20 @@ out:
 
 a_pid_fuzzy_s *a_pid_fuzzy_off(a_pid_fuzzy_s *const ctx)
 {
-    return a_container_of(a_pid_off(&ctx->pid), a_pid_fuzzy_s, pid);
+    a_pid_off(&ctx->pid);
+    return ctx;
 }
 
 a_pid_fuzzy_s *a_pid_fuzzy_inc(a_pid_fuzzy_s *const ctx)
 {
-    return a_container_of(a_pid_inc(&ctx->pid), a_pid_fuzzy_s, pid);
+    a_pid_inc(&ctx->pid);
+    return ctx;
 }
 
 a_pid_fuzzy_s *a_pid_fuzzy_pos(a_pid_fuzzy_s *const ctx, a_float_t const max)
 {
-    return a_container_of(a_pid_pos(&ctx->pid, max), a_pid_fuzzy_s, pid);
+    a_pid_pos(&ctx->pid, max);
+    return ctx;
 }
 
 a_pid_fuzzy_s *a_pid_fuzzy_kpid(a_pid_fuzzy_s *const ctx, a_float_t const kp, a_float_t const ki, a_float_t const kd)
@@ -103,7 +106,8 @@ a_pid_fuzzy_s *a_pid_fuzzy_kpid(a_pid_fuzzy_s *const ctx, a_float_t const kp, a_
     ctx->kp = kp;
     ctx->ki = ki;
     ctx->kd = kd;
-    return a_container_of(a_pid_kpid(&ctx->pid, kp, ki, kd), a_pid_fuzzy_s, pid);
+    a_pid_kpid(&ctx->pid, kp, ki, kd);
+    return ctx;
 }
 
 a_pid_fuzzy_s *a_pid_fuzzy_buf1(a_pid_fuzzy_s *const ctx, void *ptr, a_size_t num)
@@ -124,7 +128,8 @@ a_pid_fuzzy_s *a_pid_fuzzy_buff(a_pid_fuzzy_s *const ctx, unsigned int *const id
 
 a_pid_fuzzy_s *a_pid_fuzzy_chan(a_pid_fuzzy_s *const ctx, unsigned int const num, a_float_t *const out, a_float_t *const fdb, a_float_t *const tmp, a_float_t *const err)
 {
-    return a_container_of(a_pid_chan(&ctx->pid, num, out, fdb, tmp, err), a_pid_fuzzy_s, pid);
+    a_pid_chan(&ctx->pid, num, out, fdb, tmp, err);
+    return ctx;
 }
 
 a_pid_fuzzy_s *a_pid_fuzzy_base(a_pid_fuzzy_s *const ctx, unsigned int const col, a_float_t const *const me, a_float_t const *const mec,
@@ -154,7 +159,8 @@ a_pid_fuzzy_s *a_pid_fuzzy_init(a_pid_fuzzy_s *const ctx, a_float_t const dt, un
 
 a_pid_fuzzy_s *a_pid_fuzzy_zero(a_pid_fuzzy_s *const ctx)
 {
-    return a_container_of(a_pid_zero(&ctx->pid), a_pid_fuzzy_s, pid);
+    a_pid_zero(&ctx->pid);
+    return ctx;
 }
 
 static void a_pid_fuzzy_out_(a_pid_fuzzy_s *const ctx, unsigned int const col, a_float_t ec, a_float_t e)

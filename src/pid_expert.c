@@ -6,7 +6,8 @@
 
 a_pid_expert_s *a_pid_expert_kpid(a_pid_expert_s *const ctx, a_float_t const kp, a_float_t const ki, a_float_t const kd)
 {
-    return a_container_of(a_pid_kpid(&ctx->pid, kp, ki, kd), a_pid_expert_s, pid);
+    a_pid_kpid(&ctx->pid, kp, ki, kd);
+    return ctx;
 }
 
 a_pid_expert_s *a_pid_expert_chan(a_pid_expert_s *const ctx, unsigned int const num, a_float_t *const out, a_float_t *const fdb,
@@ -63,102 +64,61 @@ a_pid_expert_s *a_pid_expert_zero(a_pid_expert_s *const ctx)
     return ctx;
 }
 
+#define A_PID_EXPERT_OUT_(_)                                                             \
+    a_float_t out = 0;                                                                   \
+    a_float_t abs = A_ABS(e);                                                            \
+    a_float_t tmp = ctx->pid.fdb _ - fdb;                                                \
+                                                                                         \
+    if (-ctx->max1 > e)                                                                  \
+    {                                                                                    \
+        out = ctx->pid.outmin;                                                           \
+    }                                                                                    \
+    else if (e > ctx->max1)                                                              \
+    {                                                                                    \
+        out = ctx->pid.outmax;                                                           \
+    }                                                                                    \
+                                                                                         \
+    if (e * ec > 0 || ec == 0)                                                           \
+    {                                                                                    \
+        out = ctx->pid.kp * ec + ctx->pid.ki * e + ctx->pid.kd * (tmp - ctx->pid.tmp _); \
+        if (abs > ctx->max2)                                                             \
+        {                                                                                \
+            out *= ctx->gain;                                                            \
+        }                                                                                \
+    }                                                                                    \
+    else if (ec * ctx->ec _ < 0 && e != 0)                                               \
+    {                                                                                    \
+        out = ctx->pid.kp * ctx->pid.err _;                                              \
+        if (abs > ctx->max2)                                                             \
+        {                                                                                \
+            out *= ctx->gain;                                                            \
+        }                                                                                \
+        else                                                                             \
+        {                                                                                \
+            out *= ctx->loss;                                                            \
+        }                                                                                \
+    }                                                                                    \
+                                                                                         \
+    if (abs < ctx->epsilon)                                                              \
+    {                                                                                    \
+        out = ctx->pid.kp * ec + ctx->pid.ki * e;                                        \
+    }                                                                                    \
+                                                                                         \
+    ctx->pid.out _ += out;                                                               \
+    ctx->pid.out _ = A_SAT(ctx->pid.out _, ctx->pid.outmin, ctx->pid.outmax);            \
+    ctx->pid.fdb _ = fdb;                                                                \
+    ctx->pid.tmp _ = tmp;                                                                \
+    ctx->pid.err _ = e;                                                                  \
+    ctx->ec _ = ec
+
 void a_pid_expert_outf_(a_pid_expert_s *const ctx, a_float_t const fdb, a_float_t const ec, a_float_t const e)
 {
-    a_float_t out = 0;
-    a_float_t abs = A_ABS(e);
-    a_float_t tmp = ctx->pid.fdb.f - fdb;
-
-    if (-ctx->max1 > e)
-    {
-        out = ctx->pid.outmin;
-    }
-    else if (e > ctx->max1)
-    {
-        out = ctx->pid.outmax;
-    }
-
-    if (e * ec > 0 || ec == 0)
-    {
-        out = ctx->pid.kp * ec + ctx->pid.ki * e + ctx->pid.kd * (tmp - ctx->pid.tmp.f);
-        if (abs > ctx->max2)
-        {
-            out *= ctx->gain;
-        }
-    }
-    else if (ec * ctx->ec.f < 0 && e != 0)
-    {
-        out = ctx->pid.kp * ctx->pid.err.f;
-        if (abs > ctx->max2)
-        {
-            out *= ctx->gain;
-        }
-        else
-        {
-            out *= ctx->loss;
-        }
-    }
-
-    if (abs < ctx->epsilon)
-    {
-        out = ctx->pid.kp * ec + ctx->pid.ki * e;
-    }
-
-    ctx->pid.out.f += out;
-    ctx->pid.out.f = A_SAT(ctx->pid.out.f, ctx->pid.outmin, ctx->pid.outmax);
-    ctx->pid.fdb.f = fdb;
-    ctx->pid.tmp.f = tmp;
-    ctx->pid.err.f = e;
-    ctx->ec.f = ec;
+    A_PID_EXPERT_OUT_(.f);
 }
 
 void a_pid_expert_outp_(a_pid_expert_s *const ctx, a_float_t const fdb, a_float_t const ec, a_float_t const e, unsigned int const i)
 {
-    a_float_t out = 0;
-    a_float_t abs = A_ABS(e);
-    a_float_t tmp = ctx->pid.fdb.p[i] - fdb;
-
-    if (-ctx->max1 > e)
-    {
-        out = ctx->pid.outmin;
-    }
-    else if (e > ctx->max1)
-    {
-        out = ctx->pid.outmax;
-    }
-
-    if (e * ec > 0 || ec == 0)
-    {
-        out = ctx->pid.kp * ec + ctx->pid.ki * e + ctx->pid.kd * (tmp - ctx->pid.tmp.p[i]);
-        if (abs > ctx->max2)
-        {
-            out *= ctx->gain;
-        }
-    }
-    else if (ec * ctx->ec.p[i] < 0 && e != 0)
-    {
-        out = ctx->pid.kp * ctx->pid.err.p[i];
-        if (abs > ctx->max2)
-        {
-            out *= ctx->gain;
-        }
-        else
-        {
-            out *= ctx->loss;
-        }
-    }
-
-    if (abs < ctx->epsilon)
-    {
-        out = ctx->pid.kp * ec + ctx->pid.ki * e;
-    }
-
-    ctx->pid.out.p[i] += out;
-    ctx->pid.out.p[i] = A_SAT(ctx->pid.out.p[i], ctx->pid.outmin, ctx->pid.outmax);
-    ctx->pid.fdb.p[i] = fdb;
-    ctx->pid.tmp.p[i] = tmp;
-    ctx->pid.err.p[i] = e;
-    ctx->ec.p[i] = ec;
+    A_PID_EXPERT_OUT_(.p[i]);
 }
 
 a_float_t a_pid_expert_outf(a_pid_expert_s *const ctx, a_float_t const set, a_float_t const fdb)

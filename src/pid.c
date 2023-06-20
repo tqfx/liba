@@ -24,7 +24,7 @@ a_pid_s *a_pid_inc(a_pid_s *const ctx)
 a_pid_s *a_pid_pos(a_pid_s *const ctx, a_float_t const max)
 {
     ctx->summax = A_ABS(max);
-    if (ctx->outmax < ctx->summax)
+    if (ctx->summax > ctx->outmax)
     {
         ctx->summax = ctx->outmax;
     }
@@ -78,20 +78,20 @@ a_pid_s *a_pid_init(a_pid_s *const ctx, a_float_t const dt, a_float_t const min,
     return ctx;
 }
 
+#define A_PID_ZERO(_) \
+    ctx->out _ = 0;   \
+    ctx->fdb _ = 0;   \
+    ctx->tmp _ = 0;   \
+    ctx->err _ = 0
+
 void a_pid_zerof(a_pid_s *const ctx)
 {
-    ctx->out.f = 0;
-    ctx->fdb.f = 0;
-    ctx->tmp.f = 0;
-    ctx->err.f = 0;
+    A_PID_ZERO(.f);
 }
 
 void a_pid_zerop(a_pid_s *const ctx, unsigned int const i)
 {
-    ctx->out.p[i] = 0;
-    ctx->fdb.p[i] = 0;
-    ctx->tmp.p[i] = 0;
-    ctx->err.p[i] = 0;
+    A_PID_ZERO(.p[i]);
 }
 
 void a_pid_zero_(a_pid_s *const ctx, unsigned int const num)
@@ -115,76 +115,48 @@ a_pid_s *a_pid_zero(a_pid_s *const ctx)
     return ctx;
 }
 
+#define A_PID_OUT_(_)                                                                        \
+    /* calculation */                                                                        \
+    switch (mode)                                                                            \
+    {                                                                                        \
+    case A_PID_INC:                                                                          \
+    {                                                                                        \
+        a_float_t tmp = ctx->fdb _ - fdb;                                                    \
+        ctx->out _ += ctx->kp * ec + ctx->ki * e + ctx->kd * (tmp - ctx->tmp _);             \
+        ctx->tmp _ = tmp;                                                                    \
+        break;                                                                               \
+    }                                                                                        \
+    case A_PID_POS:                                                                          \
+    {                                                                                        \
+        a_float_t const sum = ctx->ki * e;                                                   \
+        /* when the limit of integration is exceeded or */                                   \
+        /* the direction of integration is the same, the integration stops. */               \
+        if ((-ctx->summax < ctx->tmp _ && ctx->tmp _ < ctx->summax) || ctx->tmp _ * sum < 0) \
+        {                                                                                    \
+            ctx->tmp _ += sum; /* sum = K_i[\sum^k_{i=0}e(i)] */                             \
+        }                                                                                    \
+        /* avoid derivative kick, fdb[k-1]-fdb[k] */                                         \
+        /* out = K_p[e(k)]+sum+K_d[fdb(k-1)-fdb(k)] */                                       \
+        ctx->out _ = ctx->kp * e + ctx->tmp _ + ctx->kd * (ctx->fdb _ - fdb);                \
+        break;                                                                               \
+    }                                                                                        \
+    case A_PID_OFF:                                                                          \
+    default:                                                                                 \
+        ctx->out _ = set;                                                                    \
+        ctx->tmp _ = 0;                                                                      \
+    }                                                                                        \
+    ctx->out _ = A_SAT(ctx->out _, ctx->outmin, ctx->outmax);                                \
+    ctx->fdb _ = fdb;                                                                        \
+    ctx->err _ = e
+
 void a_pid_outf_(a_pid_s *const ctx, unsigned int const mode, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e)
 {
-    /* calculation */
-    switch (mode)
-    {
-    case A_PID_INC:
-    {
-        a_float_t tmp = ctx->fdb.f - fdb;
-        ctx->out.f += ctx->kp * ec + ctx->ki * e + ctx->kd * (tmp - ctx->tmp.f);
-        ctx->tmp.f = tmp;
-        break;
-    }
-    case A_PID_POS:
-    {
-        a_float_t const sum = ctx->ki * e;
-        /* when the limit of integration is exceeded or */
-        /* the direction of integration is the same, the integration stops. */
-        if ((-ctx->summax < ctx->tmp.f && ctx->tmp.f < ctx->summax) || ctx->tmp.f * sum < 0)
-        {
-            ctx->tmp.f += sum; /* sum = K_i[\sum^k_{i=0}e(i)] */
-        }
-        /* avoid derivative kick, fdb[k-1]-fdb[k] */
-        /* out = K_p[e(k)]+sum+K_d[fdb(k-1)-fdb(k)] */
-        ctx->out.f = ctx->kp * e + ctx->tmp.f + ctx->kd * (ctx->fdb.f - fdb);
-        break;
-    }
-    case A_PID_OFF:
-    default:
-        ctx->out.f = set;
-        ctx->tmp.f = 0;
-    }
-    ctx->out.f = A_SAT(ctx->out.f, ctx->outmin, ctx->outmax);
-    ctx->fdb.f = fdb;
-    ctx->err.f = e;
+    A_PID_OUT_(.f);
 }
 
 void a_pid_outp_(a_pid_s *const ctx, unsigned int const mode, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e, unsigned int const i)
 {
-    /* calculation */
-    switch (mode)
-    {
-    case A_PID_INC:
-    {
-        a_float_t tmp = ctx->fdb.p[i] - fdb;
-        ctx->out.p[i] += ctx->kp * ec + ctx->ki * e + ctx->kd * (tmp - ctx->tmp.p[i]);
-        ctx->tmp.p[i] = tmp;
-        break;
-    }
-    case A_PID_POS:
-    {
-        a_float_t const sum = ctx->ki * e;
-        /* when the limit of integration is exceeded or */
-        /* the direction of integration is the same, the integration stops. */
-        if ((-ctx->summax < ctx->tmp.p[i] && ctx->tmp.p[i] < ctx->summax) || ctx->tmp.p[i] * sum < 0)
-        {
-            ctx->tmp.p[i] += sum; /* sum = K_i[\sum^k_{i=0}e(i)] */
-        }
-        /* avoid derivative kick, fdb[k-1]-fdb[k] */
-        /* out = K_p[e(k)]+sum+K_d[fdb(k-1)-fdb(k)] */
-        ctx->out.p[i] = ctx->kp * e + ctx->tmp.p[i] + ctx->kd * (ctx->fdb.p[i] - fdb);
-        break;
-    }
-    case A_PID_OFF:
-    default:
-        ctx->out.p[i] = set;
-        ctx->tmp.p[i] = 0;
-    }
-    ctx->out.p[i] = A_SAT(ctx->out.p[i], ctx->outmin, ctx->outmax);
-    ctx->fdb.p[i] = fdb;
-    ctx->err.p[i] = e;
+    A_PID_OUT_(.p[i]);
 }
 
 a_float_t a_pid_outf(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb)
