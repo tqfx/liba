@@ -1,6 +1,6 @@
 #ifndef TEST_BUF_H
 #define TEST_BUF_H
-#define MAIN_(s, argc, argv) buf##s(argc, argv)
+#define MAIN_(s, argc, argv) A_CASE_2(buf, s)(argc, argv)
 #include "test.h"
 #include "a/buf.h"
 #include <stdlib.h>

@@ -1,6 +1,6 @@
 #ifndef TEST_COMPLEX_H
 #define TEST_COMPLEX_H
-#define MAIN_(s, argc, argv) complex##s(argc, argv)
+#define MAIN_(s, argc, argv) A_CASE_2(complex, s)(argc, argv)
 #include "test.h"
 #if A_PREREQ_GNUC(2, 95) || __has_warning("-Waggregate-return")
 #pragma GCC diagnostic ignored "-Waggregate-return"

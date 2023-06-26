@@ -3,7 +3,7 @@
 #if defined(_MSC_VER)
 #define _CRT_SECURE_NO_WARNINGS
 #endif /* _MSC_VER */
-#define MAIN_(s, argc, argv) hpf##s(argc, argv)
+#define MAIN_(s, argc, argv) A_CASE_2(hpf, s)(argc, argv)
 #include "test.h"
 #include "a/hpf.h"
 

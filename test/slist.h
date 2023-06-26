@@ -1,6 +1,6 @@
 #ifndef TEST_SLIST_H
 #define TEST_SLIST_H
-#define MAIN_(s, argc, argv) slist##s(argc, argv)
+#define MAIN_(s, argc, argv) A_CASE_2(slist, s)(argc, argv)
 #include "test.h"
 #include "a/slist.h"
 #include <stdlib.h>

@@ -208,31 +208,31 @@ A_EXTERN a_u64_t a_u64_sqrt(a_u64_t x, a_u64_t *o);
 */
 
 /*! \f$ e \f$ */
-#define A_FLOAT_E A_FLOAT_C(2.71828182845904523536)
+#define A_FLOAT_E A_FLOAT_C(A_E)
 /*! \f$ \log_{2}{e}=\frac{1}{\ln{2}} \f$ */
-#define A_FLOAT_LOG2E A_FLOAT_C(1.44269504088896340736)
+#define A_FLOAT_LOG2E A_FLOAT_C(A_LOG2E)
 /*! \f$ \lg{e}=\frac{1}{\ln{2}+\ln{5}} \f$ */
-#define A_FLOAT_LOG10E A_FLOAT_C(0.434294481903251827651)
+#define A_FLOAT_LOG10E A_FLOAT_C(A_LOG10E)
 /*! \f$ \ln{2} \f$ */
-#define A_FLOAT_LN2 A_FLOAT_C(0.693147180559945309417)
+#define A_FLOAT_LN2 A_FLOAT_C(A_LN2)
 /*! \f$ \ln{10} \f$ */
-#define A_FLOAT_LN10 A_FLOAT_C(2.30258509299404568402)
+#define A_FLOAT_LN10 A_FLOAT_C(A_LN10)
 /*! \f$ \pi \f$ */
-#define A_FLOAT_PI A_FLOAT_C(3.14159265358979323846)
+#define A_FLOAT_PI A_FLOAT_C(A_PI)
 /*! \f$ \frac{\pi}{2} \f$ */
-#define A_FLOAT_PI_2 A_FLOAT_C(1.57079632679489661923)
+#define A_FLOAT_PI_2 A_FLOAT_C(A_PI_2)
 /*! \f$ \frac{\pi}{4} \f$ */
-#define A_FLOAT_PI_4 A_FLOAT_C(0.785398163397448309616)
+#define A_FLOAT_PI_4 A_FLOAT_C(A_PI_4)
 /*! \f$ \frac{1}{\pi} \f$ */
-#define A_FLOAT_1_PI A_FLOAT_C(0.318309886183790671538)
+#define A_FLOAT_1_PI A_FLOAT_C(A_1_PI)
 /*! \f$ \frac{2}{\pi} \f$ */
-#define A_FLOAT_2_PI A_FLOAT_C(0.636619772367581343076)
+#define A_FLOAT_2_PI A_FLOAT_C(A_2_PI)
 /*! \f$ \frac{2}{\sqrt{\pi}} \f$ */
-#define A_FLOAT_2_SQRTPI A_FLOAT_C(1.12837916709551257390)
+#define A_FLOAT_2_SQRTPI A_FLOAT_C(A_2_SQRTPI)
 /*! \f$ \sqrt{2} \f$ */
-#define A_FLOAT_SQRT2 A_FLOAT_C(1.41421356237309504880)
+#define A_FLOAT_SQRT2 A_FLOAT_C(A_SQRT2)
 /*! \f$ \frac{1}{\sqrt{2}}=\frac{\sqrt{2}}{2} \f$ */
-#define A_FLOAT_SQRT1_2 A_FLOAT_C(0.707106781186547524401)
+#define A_FLOAT_SQRT1_2 A_FLOAT_C(A_SQRT1_2)
 
 #if defined(__cplusplus)
 extern "C" {

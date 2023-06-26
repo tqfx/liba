@@ -1,6 +1,6 @@
 #ifndef TEST_HOST_QUE_H
 #define TEST_HOST_QUE_H
-#define MAIN_(s, argc, argv) que##s(argc, argv)
+#define MAIN_(s, argc, argv) A_CASE_2(que, s)(argc, argv)
 #include "../test.h"
 #include "a/host/que.h"
 #include <string.h>

@@ -1,6 +1,6 @@
 #ifndef TEST_POLY_H
 #define TEST_POLY_H
-#define MAIN_(s, argc, argv) poly##s(argc, argv)
+#define MAIN_(s, argc, argv) A_CASE_2(poly, s)(argc, argv)
 #include "test.h"
 #include "a/poly.h"
 

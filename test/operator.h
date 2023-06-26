@@ -1,6 +1,6 @@
 #ifndef TEST_OPERATOR_H
 #define TEST_OPERATOR_H
-#define MAIN_(s, argc, argv) operator##s(argc, argv)
+#define MAIN_(s, argc, argv) A_CASE_2(operator, s)(argc, argv)
 #include "test.h"
 #include "a/operator.h"
 

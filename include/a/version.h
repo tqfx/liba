@@ -14,9 +14,6 @@
  @{
 */
 
-#define A_VERSION_TOSTR(x) A_VERSION_tostr(x)
-#define A_VERSION_tostr(x) #x
-
 /*! algorithm library version major */
 #ifndef A_VERSION_MAJOR
 #define A_VERSION_MAJOR 0
@@ -40,6 +37,7 @@
 #define A_VERSION_TWEAK A_U64_C(0)
 #endif /* A_VERSION_TWEAK */
 
+#define A_VERSION_TOSTR(X) A_CASE_1(X)
 /*! algorithm library version string */
 #ifndef A_VERSION
 #define A_VERSION A_VERSION_TOSTR(A_VERSION_MAJOR) "." A_VERSION_TOSTR(A_VERSION_MINOR) "." A_VERSION_TOSTR(A_VERSION_PATCH)

@@ -1,6 +1,6 @@
 #ifndef TEST_AVL_H
 #define TEST_AVL_H
-#define MAIN_(s, argc, argv) avl##s(argc, argv)
+#define MAIN_(s, argc, argv) A_CASE_2(avl, s)(argc, argv)
 #include "test.h"
 #include "a/avl.h"
 #include "a/host/str.h"
