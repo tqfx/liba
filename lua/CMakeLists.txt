@@ -1,9 +1,9 @@
 set(OBJECTS $<TARGET_OBJECTS:a>)
 
 if(WIN32)
-  set(CMAKE_SHARED_LIBRARY_PREFIX lib)
+  set(CMAKE_SHARED_MODULE_PREFIX lib)
 else()
-  set(CMAKE_SHARED_LIBRARY_SUFFIX .so)
+  set(CMAKE_SHARED_MODULE_SUFFIX .so)
 endif()
 
 if(LIBA_WITH_LUA)
@@ -26,7 +26,7 @@ else()
   file_scaner(SOURCES RECURSE src EXT c h)
 endif()
 
-add_library(alua SHARED ${OBJECTS} ${SOURCES})
+add_library(alua MODULE ${OBJECTS} ${SOURCES})
 set_target_properties(alua PROPERTIES DEFINE_SYMBOL A_EXPORTS OUTPUT_NAME a)
 target_link_libraries(alua PRIVATE ${LUA_LIBRARIES})
 add_library_properties(alua PRIVATE alib)

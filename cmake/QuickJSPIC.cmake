@@ -5,7 +5,7 @@ JSModuleDef *js_init_module(JSContext *const ctx, char const *const module_name)
 {\n\treturn JS_NewCModule(ctx, module_name, 0);\n}
 ")
   file(WRITE ${CMAKETMP}/CMakeLists.txt "cmake_minimum_required(VERSION ${CMAKE_VERSION})
-project(CMAKE_TRY_COMPILE C)\nadd_library(module SHARED module.c)
+project(CMAKE_TRY_COMPILE C)\nadd_library(module MODULE module.c)
 target_include_directories(module PRIVATE ${QUICKJS_INCLUDE_DIR})
 target_link_libraries(module PRIVATE ${QUICKJS_LIBRARIES})
 ")
