@@ -37,14 +37,17 @@ set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${LIBA_IPO})
 file_scaner(SOURCES RECURSE src EXT c h cc hh cpp hpp)
 
 # https://emscripten.org/docs/tools_reference/emcc.html
-string_append(LDFLAGS -sSINGLE_FILE=1 -sWASM=0)
-string_append(LDFLAGS -sWASM_ASYNC_COMPILATION=0)
-string_append(LDFLAGS -sEXPORTED_RUNTIME_METHODS=ccall,cwrap)
+set(LIBA_EMCC_FLAGS "" CACHE STRING "Flags used by the emcc")
+string_append(CMAKE_C_FLAGS ${LIBA_EMCC_FLAGS})
+set(LIBA_EMXX_FLAGS "" CACHE STRING "Flags used by the em++")
+string_append(CMAKE_CXX_FLAGS ${LIBA_EMXX_FLAGS})
+set(LIBA_WASM_FLAGS "" CACHE STRING "Flags used by the linker")
+string_append(CMAKE_EXE_LINKER_FLAGS -sWASM_ASYNC_COMPILATION=0 ${LIBA_WASM_FLAGS})
 
 add_executable(ajs ${OBJECTS} ${SOURCES})
 target_compile_definitions(ajs PRIVATE $<TARGET_PROPERTY:a,COMPILE_DEFINITIONS>)
 target_include_directories(ajs PRIVATE $<TARGET_PROPERTY:a,INCLUDE_DIRECTORIES>)
-set_target_properties(ajs PROPERTIES LINK_FLAGS ${LDFLAGS} OUTPUT_NAME liba)
+set_target_properties(ajs PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
 target_link_libraries(ajs PRIVATE embind)
 
 if(NOT CMAKE_VERSION VERSION_LESS 3.3 AND LIBA_WARNINGS)
