@@ -53,6 +53,21 @@ public:
 
 #include "a/pid_fuzzy.h"
 
+static emscripten::val concat(emscripten::val x)
+{
+    return emscripten::val::array()["concat"].call<emscripten::val>("apply", emscripten::val::array(), x);
+}
+
+static a_float_t *floats(emscripten::val const &x, a_size_t n, a_float_t *p)
+{
+    p = a_float_c(*, realloc(p, sizeof(a_float_t) * n));
+    for (a_size_t i = 0; i < n; ++i)
+    {
+        p[i] = x[i].as<a_float_t>();
+    }
+    return p;
+}
+
 class pid_fuzzy
 {
     a_pid_fuzzy_s ctx;
@@ -63,28 +78,16 @@ class pid_fuzzy
     a_float_t *mkd;
     void *buf;
 
-    a_float_t *from(emscripten::val x)
-    {
-        x = emscripten::val::array()["concat"].call<emscripten::val>("apply", emscripten::val::array(), x);
-        unsigned int num = x["length"].as<unsigned int>();
-        a_float_t *ptr = new a_float_t[num];
-        for (unsigned int i = 0; i < num; ++i)
-        {
-            ptr[i] = x[i].as<a_float_t>();
-        }
-        return ptr;
-    }
-
 public:
     pid_fuzzy(unsigned int jnum, a_float_t jdt, emscripten::val const &jme, emscripten::val const &jmec,
               emscripten::val const &jmkp, emscripten::val const &jmki, emscripten::val const &jmkd,
               a_float_t jmin, a_float_t jmax)
     {
-        this->me = from(jme);
-        this->mec = from(jmec);
-        this->mkp = from(jmkp);
-        this->mki = from(jmki);
-        this->mkd = from(jmkd);
+        this->me = floats(concat(jme), jme["length"].as<a_size_t>(), nullptr);
+        this->mec = floats(concat(jmec), jmec["length"].as<a_size_t>(), nullptr);
+        this->mkp = floats(concat(jmkp), jmkp["length"].as<a_size_t>(), nullptr);
+        this->mki = floats(concat(jmki), jmki["length"].as<a_size_t>(), nullptr);
+        this->mkd = floats(concat(jmkd), jmkd["length"].as<a_size_t>(), nullptr);
         unsigned int col = jmkp["length"].as<unsigned int>();
         a_pid_fuzzy_init(&this->ctx, jdt, col, this->me, this->mec,
                          this->mkp, this->mki, this->mkd, jmin, jmax);
@@ -96,16 +99,25 @@ public:
               emscripten::val const &jmkp, emscripten::val const &jmki, emscripten::val const &jmkd,
               a_float_t jmin, a_float_t jmax, a_float_t jsum)
     {
-        pid_fuzzy(jnum, jdt, jme, jmec, jmkp, jmki, jmkd, jmin, jmax);
+        this->me = floats(concat(jme), jme["length"].as<a_size_t>(), nullptr);
+        this->mec = floats(concat(jmec), jmec["length"].as<a_size_t>(), nullptr);
+        this->mkp = floats(concat(jmkp), jmkp["length"].as<a_size_t>(), nullptr);
+        this->mki = floats(concat(jmki), jmki["length"].as<a_size_t>(), nullptr);
+        this->mkd = floats(concat(jmkd), jmkd["length"].as<a_size_t>(), nullptr);
+        unsigned int col = jmkp["length"].as<unsigned int>();
+        a_pid_fuzzy_init(&this->ctx, jdt, col, this->me, this->mec,
+                         this->mkp, this->mki, this->mkd, jmin, jmax);
+        this->buf = malloc(A_PID_FUZZY_BUF1(jnum));
+        a_pid_fuzzy_buf1(&this->ctx, this->buf, jnum);
         a_pid_fuzzy_pos(&this->ctx, jsum);
     }
     ~pid_fuzzy()
     {
-        delete[] this->me;
-        delete[] this->mec;
-        delete[] this->mkp;
-        delete[] this->mki;
-        delete[] this->mkd;
+        free(this->me);
+        free(this->mec);
+        free(this->mkp);
+        free(this->mki);
+        free(this->mkd);
         free(this->buf);
     }
     void buff(unsigned int jnum)
@@ -116,11 +128,11 @@ public:
     void base(emscripten::val const &jme, emscripten::val const &jmec,
               emscripten::val const &jmkp, emscripten::val const &jmki, emscripten::val const &jmkd)
     {
-        this->me = from(jme);
-        this->mec = from(jmec);
-        this->mkp = from(jmkp);
-        this->mki = from(jmki);
-        this->mkd = from(jmkd);
+        this->me = floats(concat(jme), jme["length"].as<a_size_t>(), this->me);
+        this->mec = floats(concat(jmec), jmec["length"].as<a_size_t>(), this->mec);
+        this->mkp = floats(concat(jmkp), jmkp["length"].as<a_size_t>(), this->mkp);
+        this->mki = floats(concat(jmki), jmki["length"].as<a_size_t>(), this->mki);
+        this->mkd = floats(concat(jmkd), jmkd["length"].as<a_size_t>(), this->mkd);
         unsigned int col = jmkp["length"].as<unsigned int>();
         a_pid_fuzzy_base(&this->ctx, col, this->me, this->mec, this->mkp, this->mki, this->mkd);
     }
@@ -243,19 +255,32 @@ public:
 class tf
 {
     a_tf_s ctx;
+    a_float_t *num_p;
+    a_float_t *den_p;
+
+    void set_num_(const emscripten::val &jnum, a_float_t *input)
+    {
+        a_size_t num_n = jnum["length"].as<a_size_t>();
+        this->num_p = floats(jnum, num_n * 2, input);
+        a_tf_set_num(&this->ctx, num_n, this->num_p, this->num_p + num_n);
+    }
+    void set_den_(const emscripten::val &jden, a_float_t *output)
+    {
+        a_size_t den_n = jden["length"].as<a_size_t>();
+        this->den_p = floats(jden, den_n * 2, output);
+        a_tf_set_den(&this->ctx, den_n, this->den_p, this->den_p + den_n);
+    }
 
 public:
     tf(emscripten::val const &jnum, emscripten::val const &jden)
     {
-        this->ctx.input = A_NULL;
-        this->ctx.output = A_NULL;
-        this->set_num(jnum);
-        this->set_den(jden);
+        this->set_num_(jnum, nullptr);
+        this->set_den_(jden, nullptr);
     }
     ~tf()
     {
-        free(this->ctx.input - this->ctx.num_n);
-        free(this->ctx.output - this->ctx.den_n);
+        free(this->num_p);
+        free(this->den_p);
     }
     emscripten::val num()
     {
@@ -263,13 +288,7 @@ public:
     }
     void set_num(const emscripten::val &jnum)
     {
-        unsigned int num_n = jnum["length"].as<unsigned int>();
-        a_float_t *const num_p = a_float_c(*, realloc(ctx.input, sizeof(a_float_t) * num_n * 2));
-        for (unsigned int i = 0; i < num_n; ++i)
-        {
-            num_p[i] = jnum[i].as<a_float_t>();
-        }
-        a_tf_set_num(&this->ctx, num_n, num_p, num_p + num_n);
+        this->set_num_(jnum, this->ctx.input);
     }
     emscripten::val den()
     {
@@ -277,13 +296,7 @@ public:
     }
     void set_den(const emscripten::val &jden)
     {
-        unsigned int den_n = jden["length"].as<unsigned int>();
-        a_float_t *const den_p = a_float_c(*, realloc(ctx.output, sizeof(a_float_t) * den_n * 2));
-        for (unsigned int i = 0; i < den_n; ++i)
-        {
-            den_p[i] = jden[i].as<a_float_t>();
-        }
-        a_tf_set_den(&this->ctx, den_n, den_p, den_p + den_n);
+        this->set_den_(jden, this->ctx.output);
     }
     a_float_t iter(a_float_t jx)
     {
