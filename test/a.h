@@ -102,7 +102,7 @@ static void test_swap(void)
 #if defined(MAIN_ONCE)
         printf("%+" PRIi8 " %+" PRIi8 " -> ", lhs, rhs);
 #endif /* MAIN_ONCE */
-        a_swap1(&lhs, &rhs);
+        a_swap(&lhs, &rhs, 1);
 #if defined(MAIN_ONCE)
         printf("%+" PRIi8 " %+" PRIi8 "  \n", lhs, rhs);
 #endif /* MAIN_ONCE */
@@ -113,7 +113,7 @@ static void test_swap(void)
 #if defined(MAIN_ONCE)
         printf("%+" PRIi16 " %+" PRIi16 " -> ", lhs, rhs);
 #endif /* MAIN_ONCE */
-        a_swap2(&lhs, &rhs);
+        a_swap(&lhs, &rhs, 2);
 #if defined(MAIN_ONCE)
         printf("%+" PRIi16 " %+" PRIi16 "  \n", lhs, rhs);
 #endif /* MAIN_ONCE */
@@ -124,7 +124,7 @@ static void test_swap(void)
 #if defined(MAIN_ONCE)
         printf("%+" PRIi32 " %+" PRIi32 " -> ", lhs, rhs);
 #endif /* MAIN_ONCE */
-        a_swap4(&lhs, &rhs);
+        a_swap(&lhs, &rhs, 4);
 #if defined(MAIN_ONCE)
         printf("%+" PRIi32 " %+" PRIi32 "  \n", lhs, rhs);
 #endif /* MAIN_ONCE */
@@ -135,7 +135,7 @@ static void test_swap(void)
 #if defined(MAIN_ONCE)
         printf("%+" PRIi64 " %+" PRIi64 " -> ", lhs, rhs);
 #endif /* MAIN_ONCE */
-        a_swap8(&lhs, &rhs);
+        a_swap(&lhs, &rhs, 8);
 #if defined(MAIN_ONCE)
         printf("%+" PRIi64 " %+" PRIi64 "  \n", lhs, rhs);
 #endif /* MAIN_ONCE */
@@ -146,7 +146,7 @@ static void test_swap(void)
 #if defined(MAIN_ONCE)
         printf("%" PRIzu " %" PRIzu " -> ", lhs, rhs);
 #endif /* MAIN_ONCE */
-        a_swapz(&lhs, &rhs);
+        a_swap(&lhs, &rhs, sizeof(a_size_t));
 #if defined(MAIN_ONCE)
         printf("%" PRIzu " %" PRIzu "  \n", lhs, rhs);
 #endif /* MAIN_ONCE */

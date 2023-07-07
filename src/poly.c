@@ -2,9 +2,11 @@
 
 a_float_t *a_poly_inv(a_float_t *const a, a_size_t const n)
 {
-    for (a_float_t *l = a, *r = a + n - 1, *m = a + (n >> 1); l < m; ++l, --r)
+    for (a_float_t _l, *l = a, *r = a + n - 1, *m = a + (n >> 1); l < m; ++l, --r)
     {
-        a_swap(l, r, sizeof(a_float_t));
+        _l = *l;
+        *l = *r;
+        *r = _l;
     }
     return a;
 }

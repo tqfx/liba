@@ -1019,9 +1019,39 @@ A_INTERN a_u64_t a_f64_into(a_f64_t const x)
 }
 #endif /* A_HAVE_INLINE */
 
+/*!
+ @brief copy one buffer to another
+ @param[in] dst pointer to the object to copy to
+ @param[in] src pointer to the object to copy from
+ @param[in] siz number of bytes to copy
+ @return a copy of dest
+*/
 A_EXTERN void *a_copy(void *A_RESTRICT dst, void const *A_RESTRICT src, a_size_t siz);
+
+/*!
+ @brief move one buffer to another
+ @param[in] dst pointer to the object to copy to
+ @param[in] src pointer to the object to copy from
+ @param[in] siz number of bytes to copy
+ @return a copy of dest
+*/
 A_EXTERN void *a_move(void *dst, void const *src, a_size_t siz);
+
+/*!
+ @brief fill a buffer with a character
+ @param[in] ptr pointer to the object to fill
+ @param[in] siz number of bytes to fill
+ @param[in] val fill byte
+ @return a copy of dest
+*/
 A_EXTERN void *a_fill(void *ptr, a_size_t siz, int val);
+
+/*!
+ @brief fill a buffer with zero
+ @param[in] ptr pointer to the object to fill
+ @param[in] siz number of bytes to fill
+ @return a copy of dest
+*/
 A_EXTERN void *a_zero(void *ptr, a_size_t siz);
 
 /*!
@@ -1032,62 +1062,6 @@ A_EXTERN void *a_zero(void *ptr, a_size_t siz);
 */
 A_EXTERN void a_swap(void *lhs, void *rhs, a_size_t siz);
 
-#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
-A_EXTERN void a_swap1(void *lhs, void *rhs);
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
-A_INTERN void a_swap1(void *const lhs, void *const rhs)
-{
-    *a_u8_c(*, lhs) ^= *a_u8_c(const *, rhs);
-    *a_u8_c(*, rhs) ^= *a_u8_c(const *, lhs);
-    *a_u8_c(*, lhs) ^= *a_u8_c(const *, rhs);
-}
-#endif /* A_HAVE_INLINE */
-#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
-A_EXTERN void a_swap2(void *lhs, void *rhs);
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
-A_INTERN void a_swap2(void *const lhs, void *const rhs)
-{
-    *a_u16_c(*, lhs) ^= *a_u16_c(const *, rhs);
-    *a_u16_c(*, rhs) ^= *a_u16_c(const *, lhs);
-    *a_u16_c(*, lhs) ^= *a_u16_c(const *, rhs);
-}
-#endif /* A_HAVE_INLINE */
-#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
-A_EXTERN void a_swap4(void *lhs, void *rhs);
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
-A_INTERN void a_swap4(void *const lhs, void *const rhs)
-{
-    *a_u32_c(*, lhs) ^= *a_u32_c(const *, rhs);
-    *a_u32_c(*, rhs) ^= *a_u32_c(const *, lhs);
-    *a_u32_c(*, lhs) ^= *a_u32_c(const *, rhs);
-}
-#endif /* A_HAVE_INLINE */
-#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
-A_EXTERN void a_swap8(void *lhs, void *rhs);
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
-A_INTERN void a_swap8(void *const lhs, void *const rhs)
-{
-    *a_u64_c(*, lhs) ^= *a_u64_c(const *, rhs);
-    *a_u64_c(*, rhs) ^= *a_u64_c(const *, lhs);
-    *a_u64_c(*, lhs) ^= *a_u64_c(const *, rhs);
-}
-#endif /* A_HAVE_INLINE */
-#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
-A_EXTERN void a_swapz(void *lhs, void *rhs);
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
-A_INTERN void a_swapz(void *const lhs, void *const rhs)
-{
-    *a_size_c(*, lhs) ^= *a_size_c(const *, rhs);
-    *a_size_c(*, rhs) ^= *a_size_c(const *, lhs);
-    *a_size_c(*, lhs) ^= *a_size_c(const *, rhs);
-}
-#endif /* A_HAVE_INLINE */
-
 /*!
  @brief Brian Kernighan and Dennis Ritchie
  @param[in] str string to be processed
@@ -1095,6 +1069,14 @@ A_INTERN void a_swapz(void *const lhs, void *const rhs)
  @return hash value
 */
 A_EXTERN a_umax_t a_hash_bkdr(void const *str, a_umax_t val);
+
+/*!
+ @brief Brian Kernighan and Dennis Ritchie
+ @param[in] ptr points to string to be processed
+ @param[in] siz length of string to be processed
+ @param[in] val initial value
+ @return hash value
+*/
 A_EXTERN a_umax_t a_hash_bkdrn(void const *ptr, a_size_t siz, a_umax_t val);
 
 #if defined(LIBA_A_C)
