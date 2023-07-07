@@ -2,11 +2,11 @@ package liba;
 
 /** quintic polynomial trajectory */
 public class polytrack5 {
-    /** quantity */
-    public double[] k = new double[6];
     static {
         System.loadLibrary("a");
     }
+    /** quantity */
+    public double[] k = new double[6];
 
     /**
      * construct a new {@link polytrack5} object

@@ -2,11 +2,11 @@ package liba;
 
 /** cubic polynomial trajectory */
 public class polytrack3 {
-    /** quantity */
-    public double[] k = new double[4];
     static {
         System.loadLibrary("a");
     }
+    /** quantity */
+    public double[] k = new double[4];
 
     /**
      * construct a new {@link polytrack3} object

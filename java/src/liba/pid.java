@@ -2,6 +2,9 @@ package liba;
 
 /** proportional integral derivative controller */
 public class pid {
+    static {
+        System.loadLibrary("a");
+    }
     /** turn off PID controller */
     public static final int OFF = 0;
     /** positional PID controller */
@@ -32,9 +35,6 @@ public class pid {
     public double err;
     int num;
     int reg;
-    static {
-        System.loadLibrary("a");
-    }
 
     /**
      * construct a new {@link pid} object

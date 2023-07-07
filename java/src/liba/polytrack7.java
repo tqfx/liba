@@ -2,11 +2,11 @@ package liba;
 
 /** hepta polynomial trajectory */
 public class polytrack7 {
-    /** quantity */
-    public double[] k = new double[8];
     static {
         System.loadLibrary("a");
     }
+    /** quantity */
+    public double[] k = new double[8];
 
     /**
      * construct a new {@link polytrack7} object

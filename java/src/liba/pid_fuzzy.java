@@ -2,6 +2,9 @@ package liba;
 
 /** fuzzy proportional integral derivative controller */
 public class pid_fuzzy {
+    static {
+        System.loadLibrary("a");
+    }
     /** proportional integral derivative controller */
     public pid pid;
     double[] me;
@@ -18,9 +21,6 @@ public class pid_fuzzy {
     /** base derivative constant */
     public double kd;
     long op;
-    static {
-        System.loadLibrary("a");
-    }
 
     /**
      * construct a new {@link pid_fuzzy} object

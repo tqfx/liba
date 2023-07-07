@@ -2,15 +2,15 @@ package liba;
 
 /** transfer function */
 public class tf {
+    static {
+        System.loadLibrary("a");
+    }
     /** numerator */
     public double num[];
     /** denominator */
     public double den[];
     double input[];
     double output[];
-    static {
-        System.loadLibrary("a");
-    }
 
     /**
      * construct a new {@link tf} object
