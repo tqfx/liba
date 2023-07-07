@@ -13,17 +13,17 @@ static void test_f(void)
 {
     a_float_t num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
     a_float_t den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
-    a_float_t u[a_count_of(num)];
-    a_float_t v[a_count_of(den)];
+    a_float_t input[a_count_of(num)];
+    a_float_t output[a_count_of(den)];
     a_tf_s tf;
-    a_tf_init(&tf, a_count_of(num), num, u, a_count_of(den), den, v);
+    a_tf_init(&tf, a_count_of(num), num, input, a_count_of(den), den, output);
     a_pid_expert_s ctx;
     a_pid_expert_init(&ctx, A_FLOAT_C(0.01), -10, +10, A_FLOAT_C(0.01), A_FLOAT_C(0.6), A_FLOAT_C(2.0), A_FLOAT_C(0.1), A_FLOAT_C(0.5));
     a_pid_expert_kpid(&ctx, 400, 200, A_FLOAT_C(0.005));
     a_pid_set_dt(&ctx.pid, A_FLOAT_C(0.001));
     for (a_float_t t = 0; t < A_FLOAT_C(0.2); t += A_FLOAT_C(0.001))
     {
-        a_tf_iter(&tf, a_pid_expert_outf(&ctx, 1, v[0]));
+        a_tf_iter(&tf, a_pid_expert_outf(&ctx, 1, output[0]));
     }
     a_tf_zero(&tf);
     a_pid_expert_zero(&ctx);
@@ -37,16 +37,16 @@ static void test_p(void)
     a_float_t den1[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
     a_float_t num2[] = {A_FLOAT_C(7.59492796e-05), A_FLOAT_C(7.54019884e-05)};
     a_float_t den2[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
-    a_float_t u0[a_count_of(num0)];
-    a_float_t v0[a_count_of(den0)];
-    a_float_t u1[a_count_of(num1)];
-    a_float_t v1[a_count_of(den1)];
-    a_float_t u2[a_count_of(num2)];
-    a_float_t v2[a_count_of(den2)];
+    a_float_t input0[a_count_of(num0)];
+    a_float_t output0[a_count_of(den0)];
+    a_float_t input1[a_count_of(num1)];
+    a_float_t output1[a_count_of(den1)];
+    a_float_t input2[a_count_of(num2)];
+    a_float_t output2[a_count_of(den2)];
     a_tf_s tf[3];
-    a_tf_init(tf + 0, a_count_of(num0), num0, u0, a_count_of(den0), den0, v0);
-    a_tf_init(tf + 1, a_count_of(num1), num1, u1, a_count_of(den1), den1, v1);
-    a_tf_init(tf + 2, a_count_of(num2), num2, u2, a_count_of(den2), den2, v2);
+    a_tf_init(tf + 0, a_count_of(num0), num0, input0, a_count_of(den0), den0, output0);
+    a_tf_init(tf + 1, a_count_of(num1), num1, input1, a_count_of(den1), den1, output1);
+    a_tf_init(tf + 2, a_count_of(num2), num2, input2, a_count_of(den2), den2, output2);
     a_pid_expert_s ctx;
     a_pid_expert_init(&ctx, A_FLOAT_C(0.01), -10, +10, A_FLOAT_C(0.01), A_FLOAT_C(0.6), A_FLOAT_C(2.0), A_FLOAT_C(0.1), A_FLOAT_C(0.5));
     a_pid_expert_kpid(&ctx, 10, A_FLOAT_C(0.01), A_FLOAT_C(0.1));
@@ -65,7 +65,7 @@ static void test_p(void)
         a_float_t fdb[3];
         for (unsigned int i = 0; i != 3; ++i)
         {
-            fdb[i] = *tf[i].v;
+            fdb[i] = *tf[i].output;
         }
         a_float_t const *const out = a_pid_expert_outp(&ctx, set, fdb);
         for (unsigned int i = 0; i != 3; ++i)
@@ -103,9 +103,9 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_float_t den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
 
     a_tf_s tf;
-    a_float_t pos_u[a_count_of(num)];
-    a_float_t pos_v[a_count_of(den)];
-    a_tf_init(&tf, a_count_of(num), num, pos_u, a_count_of(den), den, pos_v);
+    a_float_t pos_input[a_count_of(num)];
+    a_float_t pos_output[a_count_of(den)];
+    a_tf_init(&tf, a_count_of(num), num, pos_input, a_count_of(den), den, pos_output);
 
     a_pid_expert_s ctx;
     a_pid_expert_init(&ctx, A_FLOAT_C(0.001), -10, +10, A_FLOAT_C(0.4), A_FLOAT_C(2.0), A_FLOAT_C(0.2), A_FLOAT_C(0.5), A_FLOAT_C(0.01));
@@ -113,9 +113,9 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     for (a_float_t t = 0; t < A_FLOAT_C(0.5); t += A_FLOAT_C(0.001))
     {
         a_float_t in = input(t);
-        a_tf_iter(&tf, a_pid_expert_outf(&ctx, in, *tf.v));
+        a_tf_iter(&tf, a_pid_expert_outf(&ctx, in, *tf.output));
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), t, in, *tf.v, ctx.pid.err.f);
+        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), t, in, *tf.output, ctx.pid.err.f);
 #endif /* MAIN_ONCE */
     }
 

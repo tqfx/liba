@@ -12,10 +12,10 @@ typedef struct
     jobject jnum;
     jfieldID den;
     jobject jden;
-    jfieldID u;
-    jobject ju;
-    jfieldID v;
-    jobject jv;
+    jfieldID input;
+    jobject jinput;
+    jfieldID output;
+    jobject joutput;
 } j_tf_s;
 
 #if defined(__cplusplus)

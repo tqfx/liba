@@ -18,13 +18,13 @@ class TF:
         self.num = num
         self.den = den
 
-    def __call__(self, u: float) -> float:
-        self._u = np.roll(self._u, 1)
-        self._u[0] = u  # type: ignore
-        v = self._num @ self._u - self._den @ self._v  # type: ignore
-        self._v = np.roll(self._v, 1)
-        self._v[0] = v  # type: ignore
-        return v
+    def __call__(self, input: float) -> float:
+        self._input = np.roll(self._input, 1)
+        self._input[0] = input  # type: ignore
+        output = self._num @ self._input - self._den @ self._output  # type: ignore
+        self._output = np.roll(self._output, 1)
+        self._output[0] = output  # type: ignore
+        return output
 
     @property
     def num(self):
@@ -33,7 +33,7 @@ class TF:
     @num.setter
     def num(self, num):
         self._num = np.array(num, dtype=float)
-        self._u = np.array(len(self._num) * [0.0], dtype=float)
+        self._input = np.array(len(self._num) * [0.0], dtype=float)
 
     @property
     def den(self):
@@ -42,7 +42,7 @@ class TF:
     @den.setter
     def den(self, den):
         self._den = np.array(den, dtype=float)
-        self._v = np.array(len(self._den) * [0.0], dtype=float)
+        self._output = np.array(len(self._den) * [0.0], dtype=float)
 
 
 Ts = 0.001

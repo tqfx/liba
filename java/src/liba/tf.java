@@ -6,8 +6,8 @@ public class tf {
     public double num[];
     /** denominator */
     public double den[];
-    double u[];
-    double v[];
+    double input[];
+    double output[];
     static {
         System.loadLibrary("a");
     }

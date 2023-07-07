@@ -13,27 +13,27 @@ static void test_f(void)
 {
     a_float_t num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
     a_float_t den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
-    a_float_t u[a_count_of(num)];
-    a_float_t v[a_count_of(den)];
+    a_float_t input[a_count_of(num)];
+    a_float_t output[a_count_of(den)];
     a_tf_s tf;
-    a_tf_init(&tf, a_count_of(num), num, u, a_count_of(den), den, v);
+    a_tf_init(&tf, a_count_of(num), num, input, a_count_of(den), den, output);
     a_pid_s ctx;
     a_pid_init(&ctx, A_FLOAT_C(0.01), -10, +10);
     a_pid_kpid(&ctx, 10, A_FLOAT_C(0.01), A_FLOAT_C(0.1));
     a_pid_set_dt(a_pid_off(a_pid_inc(a_pid_pos(&ctx, 10))), A_FLOAT_C(0.001));
     for (a_float_t t = 0; t < A_FLOAT_C(0.4); t += A_FLOAT_C(0.001))
     {
-        a_tf_iter(&tf, a_pid_outf(&ctx, 1, *tf.v));
+        a_tf_iter(&tf, a_pid_outf(&ctx, 1, *tf.output));
     }
     a_pid_set_reg(&ctx, A_PID_POS);
     for (a_float_t t = 0; t < A_FLOAT_C(0.4); t += A_FLOAT_C(0.001))
     {
-        a_tf_iter(&tf, a_pid_outf(&ctx, 1, *tf.v));
+        a_tf_iter(&tf, a_pid_outf(&ctx, 1, *tf.output));
     }
     a_pid_set_reg(&ctx, A_PID_INC);
     for (a_float_t t = 0; t < A_FLOAT_C(0.4); t += A_FLOAT_C(0.001))
     {
-        a_tf_iter(&tf, a_pid_outf(&ctx, 1, *tf.v));
+        a_tf_iter(&tf, a_pid_outf(&ctx, 1, *tf.output));
     }
 }
 
@@ -45,16 +45,16 @@ static void test_p(void)
     a_float_t den1[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
     a_float_t num2[] = {A_FLOAT_C(7.59492796e-05), A_FLOAT_C(7.54019884e-05)};
     a_float_t den2[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
-    a_float_t u0[a_count_of(num0)];
-    a_float_t v0[a_count_of(den0)];
-    a_float_t u1[a_count_of(num1)];
-    a_float_t v1[a_count_of(den1)];
-    a_float_t u2[a_count_of(num2)];
-    a_float_t v2[a_count_of(den2)];
+    a_float_t input0[a_count_of(num0)];
+    a_float_t output0[a_count_of(den0)];
+    a_float_t input1[a_count_of(num1)];
+    a_float_t output1[a_count_of(den1)];
+    a_float_t input2[a_count_of(num2)];
+    a_float_t output2[a_count_of(den2)];
     a_tf_s tf[3];
-    a_tf_init(tf + 0, a_count_of(num0), num0, u0, a_count_of(den0), den0, v0);
-    a_tf_init(tf + 1, a_count_of(num1), num1, u1, a_count_of(den1), den1, v1);
-    a_tf_init(tf + 2, a_count_of(num2), num2, u2, a_count_of(den2), den2, v2);
+    a_tf_init(tf + 0, a_count_of(num0), num0, input0, a_count_of(den0), den0, output0);
+    a_tf_init(tf + 1, a_count_of(num1), num1, input1, a_count_of(den1), den1, output1);
+    a_tf_init(tf + 2, a_count_of(num2), num2, input2, a_count_of(den2), den2, output2);
     a_pid_s ctx;
     a_pid_init(&ctx, A_FLOAT_C(0.01), -10, +10);
     a_pid_kpid(&ctx, 10, A_FLOAT_C(0.01), A_FLOAT_C(0.1));
@@ -72,7 +72,7 @@ static void test_p(void)
         a_float_t fdb[3];
         for (unsigned int i = 0; i != 3; ++i)
         {
-            fdb[i] = *tf[i].v;
+            fdb[i] = *tf[i].output;
         }
         a_float_t const *const out = a_pid_outp(&ctx, set, fdb);
         for (unsigned int i = 0; i != 3; ++i)
@@ -86,7 +86,7 @@ static void test_p(void)
         a_float_t buf[3];
         for (unsigned int i = 0; i != 3; ++i)
         {
-            buf[i] = *tf[i].v;
+            buf[i] = *tf[i].output;
         }
         a_float_t const *const ptr = a_pid_outp(&ctx, set, buf);
         for (unsigned int i = 0; i != 3; ++i)
@@ -100,7 +100,7 @@ static void test_p(void)
         a_float_t buf[3];
         for (unsigned int i = 0; i != 3; ++i)
         {
-            buf[i] = *tf[i].v;
+            buf[i] = *tf[i].output;
         }
         a_float_t const *const ptr = a_pid_outp(&ctx, set, buf);
         for (unsigned int i = 0; i != 3; ++i)
@@ -138,13 +138,13 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_float_t den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
 
     a_tf_s pos_tf;
-    a_float_t pos_u[a_count_of(num)];
-    a_float_t pos_v[a_count_of(den)];
-    a_tf_init(&pos_tf, a_count_of(num), num, pos_u, a_count_of(den), den, pos_v);
+    a_float_t pos_input[a_count_of(num)];
+    a_float_t pos_output[a_count_of(den)];
+    a_tf_init(&pos_tf, a_count_of(num), num, pos_input, a_count_of(den), den, pos_output);
     a_tf_s inc_tf;
-    a_float_t inc_u[a_count_of(num)];
-    a_float_t inc_v[a_count_of(den)];
-    a_tf_init(&inc_tf, a_count_of(num), num, inc_u, a_count_of(den), den, inc_v);
+    a_float_t inc_input[a_count_of(num)];
+    a_float_t inc_output[a_count_of(den)];
+    a_tf_init(&inc_tf, a_count_of(num), num, inc_input, a_count_of(den), den, inc_output);
 
     a_pid_s pos_pid;
     a_pid_s inc_pid;
@@ -155,10 +155,10 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     for (a_float_t t = 0; t < A_FLOAT_C(0.5); t += A_FLOAT_C(0.001))
     {
         a_float_t in = input(t);
-        a_tf_iter(&pos_tf, a_pid_outf(&pos_pid, in, *pos_tf.v));
-        a_tf_iter(&inc_tf, a_pid_outf(&inc_pid, in, *inc_tf.v));
+        a_tf_iter(&pos_tf, a_pid_outf(&pos_pid, in, *pos_tf.output));
+        a_tf_iter(&inc_tf, a_pid_outf(&inc_pid, in, *inc_tf.output));
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), t, in, *pos_tf.v, *inc_tf.v);
+        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), t, in, *pos_tf.output, *inc_tf.output);
 #endif /* MAIN_ONCE */
     }
 
