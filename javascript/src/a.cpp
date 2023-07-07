@@ -76,8 +76,9 @@ class pid_fuzzy
     }
 
 public:
-    pid_fuzzy(unsigned int jnum, a_float_t jdt, emscripten::val jme, emscripten::val jmec,
-              emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd, a_float_t jmin, a_float_t jmax)
+    pid_fuzzy(unsigned int jnum, a_float_t jdt, emscripten::val const &jme, emscripten::val const &jmec,
+              emscripten::val const &jmkp, emscripten::val const &jmki, emscripten::val const &jmkd,
+              a_float_t jmin, a_float_t jmax)
     {
         this->me = from(jme);
         this->mec = from(jmec);
@@ -91,8 +92,9 @@ public:
         a_pid_fuzzy_buf1(&this->ctx, this->buf, jnum);
         a_pid_fuzzy_inc(&this->ctx);
     }
-    pid_fuzzy(unsigned int jnum, a_float_t jdt, emscripten::val jme, emscripten::val jmec,
-              emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd, a_float_t jmin, a_float_t jmax, a_float_t jsum)
+    pid_fuzzy(unsigned int jnum, a_float_t jdt, emscripten::val const &jme, emscripten::val const &jmec,
+              emscripten::val const &jmkp, emscripten::val const &jmki, emscripten::val const &jmkd,
+              a_float_t jmin, a_float_t jmax, a_float_t jsum)
     {
         pid_fuzzy(jnum, jdt, jme, jmec, jmkp, jmki, jmkd, jmin, jmax);
         a_pid_fuzzy_pos(&this->ctx, jsum);
@@ -111,7 +113,8 @@ public:
         this->buf = realloc(this->buf, A_PID_FUZZY_BUF1(jnum));
         a_pid_fuzzy_buf1(&this->ctx, this->buf, jnum);
     }
-    void base(emscripten::val jme, emscripten::val jmec, emscripten::val jmkp, emscripten::val jmki, emscripten::val jmkd)
+    void base(emscripten::val const &jme, emscripten::val const &jmec,
+              emscripten::val const &jmkp, emscripten::val const &jmki, emscripten::val const &jmkd)
     {
         this->me = from(jme);
         this->mec = from(jmec);
@@ -143,7 +146,8 @@ class polytrack3
     a_polytrack3_s ctx;
 
 public:
-    polytrack3(a_float_t jt0, a_float_t jt1, a_float_t jq0, a_float_t jq1, a_float_t jv0 = 0, a_float_t jv1 = 0)
+    polytrack3(a_float_t jt0, a_float_t jt1, a_float_t jq0, a_float_t jq1,
+               a_float_t jv0 = 0, a_float_t jv1 = 0)
     {
         a_polytrack3_gen(&this->ctx, jt0, jt1, jq0, jq1, jv0, jv1);
     }
@@ -172,7 +176,9 @@ class polytrack5
     a_polytrack5_s ctx;
 
 public:
-    polytrack5(a_float_t jt0, a_float_t jt1, a_float_t jq0, a_float_t jq1, a_float_t jv0 = 0, a_float_t jv1 = 0, a_float_t ja0 = 0, a_float_t ja1 = 0)
+    polytrack5(a_float_t jt0, a_float_t jt1, a_float_t jq0, a_float_t jq1,
+               a_float_t jv0 = 0, a_float_t jv1 = 0,
+               a_float_t ja0 = 0, a_float_t ja1 = 0)
     {
         a_polytrack5_gen(&this->ctx, jt0, jt1, jq0, jq1, jv0, jv1, ja0, ja1);
     }
@@ -201,7 +207,10 @@ class polytrack7
     a_polytrack7_s ctx;
 
 public:
-    polytrack7(a_float_t jt0, a_float_t jt1, a_float_t jq0, a_float_t jq1, a_float_t jv0 = 0, a_float_t jv1 = 0, a_float_t ja0 = 0, a_float_t ja1 = 0, a_float_t jj0 = 0, a_float_t jj1 = 0)
+    polytrack7(a_float_t jt0, a_float_t jt1, a_float_t jq0, a_float_t jq1,
+               a_float_t jv0 = 0, a_float_t jv1 = 0,
+               a_float_t ja0 = 0, a_float_t ja1 = 0,
+               a_float_t jj0 = 0, a_float_t jj1 = 0)
     {
         a_polytrack7_gen(&this->ctx, jt0, jt1, jq0, jq1, jv0, jv1, ja0, ja1, jj0, jj1);
     }
@@ -227,6 +236,60 @@ public:
         a_polytrack7_out(&this->ctx, jdt, out);
         return emscripten::val(emscripten::typed_memory_view(4, out));
     }
+};
+
+#include "a/tf.h"
+
+class tf
+{
+    a_tf_s ctx;
+
+public:
+    tf(emscripten::val const &jnum, emscripten::val const &jden)
+    {
+        this->ctx.input = A_NULL;
+        this->ctx.output = A_NULL;
+        this->set_num(jnum);
+        this->set_den(jden);
+    }
+    ~tf()
+    {
+        free(this->ctx.input - this->ctx.num_n);
+        free(this->ctx.output - this->ctx.den_n);
+    }
+    emscripten::val num()
+    {
+        return emscripten::val(emscripten::typed_memory_view(this->ctx.num_n, this->ctx.num_p));
+    }
+    void set_num(const emscripten::val &jnum)
+    {
+        unsigned int num_n = jnum["length"].as<unsigned int>();
+        a_float_t *const num_p = a_float_c(*, realloc(ctx.input, sizeof(a_float_t) * num_n * 2));
+        for (unsigned int i = 0; i < num_n; ++i)
+        {
+            num_p[i] = jnum[i].as<a_float_t>();
+        }
+        a_tf_set_num(&this->ctx, num_n, num_p, num_p + num_n);
+    }
+    emscripten::val den()
+    {
+        return emscripten::val(emscripten::typed_memory_view(this->ctx.den_n, this->ctx.den_p));
+    }
+    void set_den(const emscripten::val &jden)
+    {
+        unsigned int den_n = jden["length"].as<unsigned int>();
+        a_float_t *const den_p = a_float_c(*, realloc(ctx.output, sizeof(a_float_t) * den_n * 2));
+        for (unsigned int i = 0; i < den_n; ++i)
+        {
+            den_p[i] = jden[i].as<a_float_t>();
+        }
+        a_tf_set_den(&this->ctx, den_n, den_p, den_p + den_n);
+    }
+    a_float_t iter(a_float_t jx)
+    {
+        return a_tf_iter(&this->ctx, jx);
+    }
+    void zero() { a_tf_zero(&this->ctx); }
 };
 
 EMSCRIPTEN_BINDINGS(module)
@@ -300,6 +363,14 @@ EMSCRIPTEN_BINDINGS(module)
         .function("acc", &polytrack7::acc)
         .function("jer", &polytrack7::jer)
         .function("out", &polytrack7::out);
+    emscripten::class_<tf>("tf")
+        .constructor<emscripten::val, emscripten::val>()
+        .function("num", &tf::num)
+        .function("set_num", &tf::set_num)
+        .function("den", &tf::den)
+        .function("set_den", &tf::set_den)
+        .function("iter", &tf::iter)
+        .function("zero", &tf::zero);
     emscripten::constant("VERSION_MAJOR", A_VERSION_MAJOR);
     emscripten::constant("VERSION_MINOR", A_VERSION_MINOR);
     emscripten::constant("VERSION_PATCH", A_VERSION_PATCH);

@@ -4,15 +4,21 @@
 #if !defined __EMSCRIPTEN__
 #define __EMSCRIPTEN__
 #endif /* __EMSCRIPTEN__ */
-#pragma clang diagnostic ignored "-Wpadded"
+#if A_PREREQ_GNUC(2, 95) || __has_warning("-Wpadded")
+#pragma GCC diagnostic ignored "-Wpadded"
+#endif /* -Wpadded */
 #if !defined EM_PORT_API
 #if defined(__EMSCRIPTEN__)
 #include <emscripten.h>
-#pragma clang diagnostic ignored "-Wmissing-prototypes"
+#if A_PREREQ_GNUC(2, 95) || __has_warning("-Wmissing-prototypes")
+#pragma GCC diagnostic ignored "-Wmissing-prototypes"
+#endif /* -Wmissing-prototypes */
 #if defined(__cplusplus)
 #include <emscripten/val.h>
 #include <emscripten/bind.h>
-#pragma clang diagnostic ignored "-Wglobal-constructors"
+#if __has_warning("-Wglobal-constructors")
+#pragma GCC diagnostic ignored "-Wglobal-constructors"
+#endif /* -Wglobal-constructors */
 #define EM_PORT_API(T) extern "C" T EMSCRIPTEN_KEEPALIVE
 #else /* !__cplusplus */
 #define EM_PORT_API(T) T EMSCRIPTEN_KEEPALIVE
