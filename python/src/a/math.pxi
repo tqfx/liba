@@ -5,7 +5,7 @@ from a.math cimport *
 def f32_rsqrt(x):
     '''fast inverse square-root'''
     if iterable(x):
-        y = floats(x)
+        y = array('f', x)
         for i, it in enumerate(x):
             y[i] = a_f32_rsqrt(it)
         return y
@@ -16,7 +16,7 @@ def f32_rsqrt(x):
 def f64_rsqrt(x):
     '''fast inverse square-root'''
     if iterable(x):
-        y = floats(x)
+        y = array('d', x)
         for i, it in enumerate(x):
             y[i] = a_f64_rsqrt(it)
         return y

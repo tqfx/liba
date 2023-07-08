@@ -6,12 +6,12 @@ from a.pid_fuzzy cimport *
 cdef class pid_fuzzy:
     '''fuzzy proportional integral derivative controller'''
     cdef a_pid_fuzzy_s ctx
-    cdef void *ptr
     cdef array me
     cdef array mec
     cdef array mkp
     cdef array mki
     cdef array mkd
+    cdef void *ptr
     def __cinit__(self, unsigned int num, a_float_t dt, me, mec, mkp, mki, mkd, a_float_t min, a_float_t max, a_float_t sum = 0):
         self.me = floats((col for row in me for col in row))
         self.mec = floats((col for row in mec for col in row))
