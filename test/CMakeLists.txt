@@ -164,7 +164,7 @@ building(hpf hpf.c hpf.cpp)
 unittest(hpf)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(hpf lpf.gp hpf.log)
+  unitplot(hpf 2.gp hpf.log)
 endif()
 
 building(list list.c list.cpp)
@@ -174,7 +174,7 @@ building(lpf lpf.c lpf.cpp)
 unittest(lpf)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(lpf lpf.gp lpf.log)
+  unitplot(lpf 2.gp lpf.log)
 endif()
 
 building(main main.c main.cpp)
@@ -197,21 +197,28 @@ building(pid pid.c pid.cpp)
 unittest(pid)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(pid pid.gp pid.log)
+  unitplot(pid 3.gp pid.log)
 endif()
 
 building(pid_expert pid_expert.c pid_expert.cpp)
 unittest(pid_expert)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(pid_expert pid.gp pid_expert.log)
+  unitplot(pid_expert 3.gp pid_expert.log)
 endif()
 
 building(pid_fuzzy pid_fuzzy.c pid_fuzzy.cpp)
 unittest(pid_fuzzy)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(pid_fuzzy pid.gp pid_fuzzy.log)
+  unitplot(pid_fuzzy 3.gp pid_fuzzy.log)
+endif()
+
+building(pid_neuron pid_neuron.c pid_neuron.cpp)
+unittest(pid_neuron)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(pid_neuron 3.gp pid_neuron.log)
 endif()
 
 building(poly poly.c poly.cpp)
@@ -229,6 +236,13 @@ unittest(rbt)
 
 building(slist slist.c slist.cpp)
 unittest(slist)
+
+building(tf tf.c tf.cpp)
+unittest(tf)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(tf 2.gp tf.log)
+endif()
 
 building(utf utf.c utf.cpp)
 unittest(utf)

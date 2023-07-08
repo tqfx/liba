@@ -73,6 +73,10 @@ target("test/pid_fuzzy")
     building({"pid_fuzzy.c", "pid_fuzzy.cpp"})
 target_end()
 
+target("test/pid_neuron")
+    building({"pid_neuron.c", "pid_neuron.cpp"})
+target_end()
+
 target("test/poly")
     building({"poly.c", "poly.cpp"})
 target_end()
@@ -83,6 +87,10 @@ target_end()
 
 target("test/rbt")
     building({"rbt.c", "rbt.cpp"})
+target_end()
+
+target("test/tf")
+    building({"tf.c", "tf.cpp"})
 target_end()
 
 target("test/slist")
