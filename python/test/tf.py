@@ -70,5 +70,5 @@ for t in data:
     t = t * 1000
     tf_(t)
     tf(t)
-print(tf_.num, tf_.den)
-print(tf.num, tf.den)
+print(tf_.num, tf_.den, tf_._input, tf_._output)
+print(tf.num, tf.den, tf.input, tf.output)

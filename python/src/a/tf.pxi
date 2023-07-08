@@ -29,6 +29,9 @@ cdef class tf:
         cdef unsigned int n = <unsigned int>len(num)
         a_tf_set_num(&self.ctx, n, <a_float_t *>self._num.data.as_voidptr, <a_float_t *>self._input.data.as_voidptr)
     @property
+    def input(self):
+        return self._input
+    @property
     def den(self):
         return self._den
     @den.setter
@@ -37,3 +40,6 @@ cdef class tf:
         self._output = floats(den)
         cdef unsigned int n = <unsigned int>len(den)
         a_tf_set_den(&self.ctx, n, <a_float_t *>self._den.data.as_voidptr, <a_float_t *>self._output.data.as_voidptr)
+    @property
+    def output(self):
+        return self._output
