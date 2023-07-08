@@ -84,3 +84,36 @@ a_umax_t a_hash_bkdrn(void const *const _ptr, a_size_t siz, a_umax_t val)
     }
     return val;
 }
+
+void a_float_save(a_float_t *const array_p, a_size_t const array_n,
+                  a_float_t const *const cache_p, a_size_t const cache_n)
+{
+    a_size_t const n = cache_n < array_n ? cache_n : array_n;
+    for (a_size_t i = array_n, j = array_n - n; j;)
+    {
+        array_p[--i] = array_p[--j];
+    }
+    for (a_size_t i = 0; i != n; ++i)
+    {
+        array_p[i] = cache_p[i];
+    }
+}
+
+void a_float_roll(a_float_t *const array_p, a_size_t const array_n,
+                  a_float_t *const shift_p, a_size_t const shift_n)
+{
+    a_size_t const shift = shift_n % array_n;
+    a_size_t const start = array_n - shift;
+    for (a_size_t i = 0, j = start; i != shift; ++i, ++j)
+    {
+        shift_p[i] = array_p[j];
+    }
+    for (a_size_t i = array_n, j = start; j;)
+    {
+        array_p[--i] = array_p[--j];
+    }
+    for (a_size_t i = 0; i != shift; ++i)
+    {
+        array_p[i] = shift_p[i];
+    }
+}

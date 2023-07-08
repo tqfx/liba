@@ -1079,6 +1079,26 @@ A_EXTERN a_umax_t a_hash_bkdr(void const *str, a_umax_t val);
 */
 A_EXTERN a_umax_t a_hash_bkdrn(void const *ptr, a_size_t siz, a_umax_t val);
 
+/*!
+ @brief roll back the elements of a float array and save the cache array
+ @param[in] array_p points to a float array
+ @param[in] array_n number of a float array
+ @param[in] cache_p points to a cache array
+ @param[in] cache_n number of a cache array
+*/
+A_EXTERN void a_float_save(a_float_t *array_p, a_size_t array_n,
+                           a_float_t const *cache_p, a_size_t cache_n);
+
+/*!
+ @brief roll back the elements of a float array circularly, array>>shift
+ @param[in] array_p points to a float array
+ @param[in] array_n number of a float array
+ @param[in] shift_p points to a shift array
+ @param[in] shift_n number of a shift array
+*/
+A_EXTERN void a_float_roll(a_float_t *array_p, a_size_t array_n,
+                           a_float_t *shift_p, a_size_t shift_n);
+
 #if defined(LIBA_A_C)
 #undef A_INTERN
 #define A_INTERN static A_INLINE

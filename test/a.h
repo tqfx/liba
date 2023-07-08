@@ -96,59 +96,142 @@ static void test_for(int argc, char *argv[])
 
 static void test_swap(void)
 {
-    {
-        a_i8_t lhs = A_I8_MIN;
-        a_i8_t rhs = A_I8_MAX;
+    a_u64_t lhs = 0;
+    a_u64_t rhs = A_U64_MAX;
 #if defined(MAIN_ONCE)
-        printf("%+" PRIi8 " %+" PRIi8 " -> ", lhs, rhs);
+    printf("0x%016" PRIX64 " 0x%016" PRIX64 " -> ", lhs, rhs);
 #endif /* MAIN_ONCE */
-        a_swap(&lhs, &rhs, 1);
+    a_swap(&lhs, &rhs, 1);
 #if defined(MAIN_ONCE)
-        printf("%+" PRIi8 " %+" PRIi8 "  \n", lhs, rhs);
+    printf("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
+#endif /* MAIN_ONCE */
+#if defined(MAIN_ONCE)
+    printf("0x%016" PRIX64 " 0x%016" PRIX64 " -> ", lhs, rhs);
+#endif /* MAIN_ONCE */
+    a_swap(&lhs, &rhs, 2);
+#if defined(MAIN_ONCE)
+    printf("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
+#endif /* MAIN_ONCE */
+#if defined(MAIN_ONCE)
+    printf("0x%016" PRIX64 " 0x%016" PRIX64 " -> ", lhs, rhs);
+#endif /* MAIN_ONCE */
+    a_swap(&lhs, &rhs, 4);
+#if defined(MAIN_ONCE)
+    printf("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
+#endif /* MAIN_ONCE */
+#if defined(MAIN_ONCE)
+    printf("0x%016" PRIX64 " 0x%016" PRIX64 " -> ", lhs, rhs);
+#endif /* MAIN_ONCE */
+    a_swap(&lhs, &rhs, 8);
+#if defined(MAIN_ONCE)
+    printf("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
+#endif /* MAIN_ONCE */
+}
+
+static void test_save(void)
+{
+    a_float_t array[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    {
+#if defined(MAIN_ONCE)
+        printf("%+g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     {
-        a_i16_t lhs = A_I16_MIN;
-        a_i16_t rhs = A_I16_MAX;
+        a_float_t cache[] = {-1};
+        a_float_save(array, a_count_of(array), cache, a_count_of(cache));
+    }
+    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    {
 #if defined(MAIN_ONCE)
-        printf("%+" PRIi16 " %+" PRIi16 " -> ", lhs, rhs);
-#endif /* MAIN_ONCE */
-        a_swap(&lhs, &rhs, 2);
-#if defined(MAIN_ONCE)
-        printf("%+" PRIi16 " %+" PRIi16 "  \n", lhs, rhs);
+        printf("%+g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     {
-        a_i32_t lhs = A_I32_MIN;
-        a_i32_t rhs = A_I32_MAX;
+        a_float_t cache[] = {-1, -2};
+        a_float_save(array, a_count_of(array), cache, a_count_of(cache));
+    }
+    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    {
 #if defined(MAIN_ONCE)
-        printf("%+" PRIi32 " %+" PRIi32 " -> ", lhs, rhs);
-#endif /* MAIN_ONCE */
-        a_swap(&lhs, &rhs, 4);
-#if defined(MAIN_ONCE)
-        printf("%+" PRIi32 " %+" PRIi32 "  \n", lhs, rhs);
+        printf("%+g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     {
-        a_i64_t lhs = A_I64_MIN;
-        a_i64_t rhs = A_I64_MAX;
+        a_float_t cache[] = {-1, -2, -3, -4};
+        a_float_save(array, a_count_of(array), cache, a_count_of(cache));
+    }
+    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    {
 #if defined(MAIN_ONCE)
-        printf("%+" PRIi64 " %+" PRIi64 " -> ", lhs, rhs);
-#endif /* MAIN_ONCE */
-        a_swap(&lhs, &rhs, 8);
-#if defined(MAIN_ONCE)
-        printf("%+" PRIi64 " %+" PRIi64 "  \n", lhs, rhs);
+        printf("%+g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     {
-        a_size_t lhs = 0;
-        a_size_t rhs = A_SIZE_MAX;
+        a_float_t cache[] = {-1, -2, -3, -4, -5, -6, -7, -8};
+        a_float_save(array, a_count_of(array), cache, a_count_of(cache));
+    }
+    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    {
 #if defined(MAIN_ONCE)
-        printf("%" PRIzu " %" PRIzu " -> ", lhs, rhs);
+        printf("%+g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
-        a_swap(&lhs, &rhs, sizeof(a_size_t));
+    }
+    {
+        a_float_t cache[] = {-0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10};
+        a_float_save(array, a_count_of(array), cache, a_count_of(cache));
+    }
+    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    {
 #if defined(MAIN_ONCE)
-        printf("%" PRIzu " %" PRIzu "  \n", lhs, rhs);
+        printf("%+g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+#endif /* MAIN_ONCE */
+    }
+}
+
+static void test_roll(void)
+{
+    a_float_t array[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    a_float_t shift[16];
+    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    {
+#if defined(MAIN_ONCE)
+        printf("%g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+#endif /* MAIN_ONCE */
+    }
+    a_float_roll(array, a_count_of(array), shift, 1);
+    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    {
+#if defined(MAIN_ONCE)
+        printf("%g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+#endif /* MAIN_ONCE */
+    }
+    a_float_roll(array, a_count_of(array), shift, 2);
+    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    {
+#if defined(MAIN_ONCE)
+        printf("%g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+#endif /* MAIN_ONCE */
+    }
+    a_float_roll(array, a_count_of(array), shift, 4);
+    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    {
+#if defined(MAIN_ONCE)
+        printf("%g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+#endif /* MAIN_ONCE */
+    }
+    a_float_roll(array, a_count_of(array), shift, 8);
+    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    {
+#if defined(MAIN_ONCE)
+        printf("%g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+#endif /* MAIN_ONCE */
+    }
+    a_float_roll(array, a_count_of(array), shift, 15);
+    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    {
+#if defined(MAIN_ONCE)
+        printf("%g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
 }
@@ -158,6 +241,8 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     if (argc < 2)
     {
         test_swap();
+        test_save();
+        test_roll();
         return 0;
     }
     a_u32_t bkdr = a_u32_c(, a_hash_bkdr(argv[1], 0));

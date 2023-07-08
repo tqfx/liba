@@ -1,14 +1,5 @@
 #include "a/tf.h"
 
-static void a_tf_roll(a_float_t *const p, unsigned int n, a_float_t const x)
-{
-    for (unsigned int i = --n; i; n = i)
-    {
-        p[n] = p[--i];
-    }
-    *p = x;
-}
-
 void a_tf_set_num(a_tf_s *const ctx, unsigned int const num_n, a_float_t const *const num_p, a_float_t *const input)
 {
     a_zero(input, sizeof(a_float_t) * num_n);
@@ -37,7 +28,7 @@ a_tf_s *a_tf_init(a_tf_s *const ctx,
 a_float_t a_tf_iter(a_tf_s *const ctx, a_float_t const x)
 {
     a_float_t y = 0;
-    a_tf_roll(ctx->input, ctx->num_n, x);
+    a_float_save(ctx->input, ctx->num_n, &x, 1);
     for (unsigned int i = 0; i != ctx->num_n; ++i)
     {
         y += ctx->num_p[i] * ctx->input[i];
@@ -46,7 +37,7 @@ a_float_t a_tf_iter(a_tf_s *const ctx, a_float_t const x)
     {
         y -= ctx->den_p[i] * ctx->output[i];
     }
-    a_tf_roll(ctx->output, ctx->den_n, y);
+    a_float_save(ctx->output, ctx->den_n, &y, 1);
     return y;
 }
 
