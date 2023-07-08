@@ -66,8 +66,8 @@ a_pid_expert_s *a_pid_expert_zero(a_pid_expert_s *const ctx)
 
 #define A_PID_EXPERT_OUT_(_)                                                             \
     a_float_t out = 0;                                                                   \
-    a_float_t abs = A_ABS(e);                                                            \
-    a_float_t tmp = ctx->pid.fdb _ - fdb;                                                \
+    a_float_t const abs = A_ABS(e);                                                      \
+    a_float_t const tmp = ctx->pid.fdb _ - fdb;                                          \
                                                                                          \
     if (-ctx->max1 > e)                                                                  \
     {                                                                                    \

@@ -25,8 +25,8 @@ static void test_f(void)
     {
         a_tf_iter(&tf, a_pid_expert_outf(&ctx, 1, output[0]));
     }
-    a_tf_zero(&tf);
     a_pid_expert_zero(&ctx);
+    a_tf_zero(&tf);
 }
 
 static void test_p(void)

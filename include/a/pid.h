@@ -271,7 +271,7 @@ A_EXTERN a_pid_s *a_pid_kpid(a_pid_s *ctx, a_float_t kp, a_float_t ki, a_float_t
 A_EXTERN a_pid_s *a_pid_chan(a_pid_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err);
 
 /*!
- @brief initialize function for PID controller, default is turn off
+ @brief initialize function for PID controller, default is incremental
  @param[in,out] ctx points to an instance of PID controller
  @param[in] dt sampling time unit(s)
  @param[in] min minimum output

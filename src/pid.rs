@@ -70,7 +70,7 @@ extern "C" {
 }
 
 impl PID {
-    /// initialize function for PID controller, default is turn off
+    /// initialize function for PID controller, default is incremental
     pub fn new(dt: float, outmin: float, outmax: float) -> Self {
         Self {
             dt,

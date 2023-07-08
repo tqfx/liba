@@ -214,7 +214,7 @@ A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_base(a_pid_fuzzy_s *ctx, unsigned int col, a
                                          a_float_t const *mkp, a_float_t const *mki, a_float_t const *mkd);
 
 /*!
- @brief initialize function for fuzzy PID controller, default setting is off
+ @brief initialize function for fuzzy PID controller, default is incremental
  @param[in,out] ctx points to an instance of fuzzy PID controller
  @param[in] dt sampling time unit(s)
  @param[in] col number of columns in the rule base

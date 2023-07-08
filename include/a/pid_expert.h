@@ -20,7 +20,7 @@
 typedef struct a_pid_expert_s
 {
     a_pid_s pid; //!< instance structure for PID controller
-    a_float_u ec; //!< cache error
+    a_float_u ec; //!< error change
     a_float_t epsilon; //!< precision
     a_float_t max1; //!< first error bound
     a_float_t gain; //!< gain coefficient
@@ -53,13 +53,13 @@ A_EXTERN a_pid_expert_s *a_pid_expert_kpid(a_pid_expert_s *ctx, a_float_t kp, a_
  @param[in] fdb points to cache feedback buffer
  @param[in] tmp points to cache variable buffer
  @param[in] err points to cache error buffer
- @param[in] ec points to cache change buffer
+ @param[in] ec points to error change buffer
 */
 A_EXTERN a_pid_expert_s *a_pid_expert_chan(a_pid_expert_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb,
                                            a_float_t *tmp, a_float_t *err, a_float_t *ec);
 
 /*!
- @brief initialize function for expert PID controller, default setting is off
+ @brief initialize function for expert PID controller, default is incremental
  @param[in,out] ctx points to an instance of expert PID controller
  @param[in] dt sampling time unit(s)
  @param[in] min mininum output

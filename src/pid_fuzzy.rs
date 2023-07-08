@@ -88,7 +88,7 @@ extern "C" {
 }
 
 impl PID_fuzzy {
-    /// initialize function for fuzzy PID controller, default is turn off
+    /// initialize function for fuzzy PID controller, default is incremental
     #[allow(clippy::too_many_arguments)]
     pub fn new(
         dt: float,
