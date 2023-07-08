@@ -60,8 +60,9 @@ static emscripten::val concat(emscripten::val x)
 
 static a_float_t *floats(emscripten::val const &x, a_size_t n, a_float_t *p)
 {
-    p = a_float_c(*, realloc(p, sizeof(a_float_t) * n));
-    for (a_size_t i = 0; i < n; ++i)
+    p = a_float_c(*, a_alloc(p, sizeof(a_float_t) * n));
+    a_size_t length = x["length"].as<a_size_t>();
+    for (a_size_t i = 0; i < length; ++i)
     {
         p[i] = x[i].as<a_float_t>();
     }
@@ -113,16 +114,16 @@ public:
     }
     ~pid_fuzzy()
     {
-        free(this->me);
-        free(this->mec);
-        free(this->mkp);
-        free(this->mki);
-        free(this->mkd);
-        free(this->buf);
+        a_alloc(this->me, 0);
+        a_alloc(this->mec, 0);
+        a_alloc(this->mkp, 0);
+        a_alloc(this->mki, 0);
+        a_alloc(this->mkd, 0);
+        a_alloc(this->buf, 0);
     }
     void buff(unsigned int jnum)
     {
-        this->buf = realloc(this->buf, A_PID_FUZZY_BUF1(jnum));
+        this->buf = a_alloc(this->buf, A_PID_FUZZY_BUF1(jnum));
         a_pid_fuzzy_buf1(&this->ctx, this->buf, jnum);
     }
     void base(emscripten::val const &jme, emscripten::val const &jmec,
@@ -255,19 +256,19 @@ public:
 class tf
 {
     a_tf_s ctx;
-    a_float_t *num_p;
-    a_float_t *den_p;
 
-    void set_num_(const emscripten::val &jnum, a_float_t *input)
+    a_float_t *num_p;
+    void set_num_(emscripten::val const &jnum, a_float_t *num)
     {
         a_size_t num_n = jnum["length"].as<a_size_t>();
-        this->num_p = floats(jnum, num_n * 2, input);
+        this->num_p = floats(jnum, num_n * 2, num);
         a_tf_set_num(&this->ctx, num_n, this->num_p, this->num_p + num_n);
     }
-    void set_den_(const emscripten::val &jden, a_float_t *output)
+    a_float_t *den_p;
+    void set_den_(emscripten::val const &jden, a_float_t *den)
     {
         a_size_t den_n = jden["length"].as<a_size_t>();
-        this->den_p = floats(jden, den_n * 2, output);
+        this->den_p = floats(jden, den_n * 2, den);
         a_tf_set_den(&this->ctx, den_n, this->den_p, this->den_p + den_n);
     }
 
@@ -279,24 +280,32 @@ public:
     }
     ~tf()
     {
-        free(this->num_p);
-        free(this->den_p);
+        a_alloc(this->num_p, 0);
+        a_alloc(this->den_p, 0);
+    }
+    emscripten::val input()
+    {
+        return emscripten::val(emscripten::typed_memory_view(this->ctx.num_n, this->ctx.input));
     }
     emscripten::val num()
     {
         return emscripten::val(emscripten::typed_memory_view(this->ctx.num_n, this->ctx.num_p));
     }
-    void set_num(const emscripten::val &jnum)
+    void set_num(emscripten::val const &jnum)
     {
-        this->set_num_(jnum, this->ctx.input);
+        this->set_num_(jnum, this->num_p);
+    }
+    emscripten::val output()
+    {
+        return emscripten::val(emscripten::typed_memory_view(this->ctx.den_n, this->ctx.output));
     }
     emscripten::val den()
     {
         return emscripten::val(emscripten::typed_memory_view(this->ctx.den_n, this->ctx.den_p));
     }
-    void set_den(const emscripten::val &jden)
+    void set_den(emscripten::val const &jden)
     {
-        this->set_den_(jden, this->ctx.output);
+        this->set_den_(jden, this->den_p);
     }
     a_float_t iter(a_float_t jx)
     {
@@ -378,8 +387,10 @@ EMSCRIPTEN_BINDINGS(module)
         .function("out", &polytrack7::out);
     emscripten::class_<tf>("tf")
         .constructor<emscripten::val, emscripten::val>()
+        .function("input", &tf::input)
         .function("num", &tf::num)
         .function("set_num", &tf::set_num)
+        .function("output", &tf::output)
         .function("den", &tf::den)
         .function("set_den", &tf::set_den)
         .function("iter", &tf::iter)

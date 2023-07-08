@@ -1,6 +1,6 @@
 #ifndef JS_A_H
 #define JS_A_H
-#include "a/a.h"
+#include "a/host/a.h"
 #if !defined __EMSCRIPTEN__
 #define __EMSCRIPTEN__
 #endif /* __EMSCRIPTEN__ */
