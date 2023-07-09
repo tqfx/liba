@@ -1,8 +1,5 @@
 #ifndef TEST_PID_EXPERT_H
 #define TEST_PID_EXPERT_H
-#if defined(_MSC_VER)
-#define _CRT_SECURE_NO_WARNINGS
-#endif /* _MSC_VER */
 #define MAIN_(s, argc, argv) A_CASE_2(pid_expert, s)(argc, argv)
 #include "test.h"
 #include "a/tf.h"
@@ -103,9 +100,9 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_float_t den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
 
     a_tf_s tf;
-    a_float_t pos_input[a_count_of(num)];
-    a_float_t pos_output[a_count_of(den)];
-    a_tf_init(&tf, a_count_of(num), num, pos_input, a_count_of(den), den, pos_output);
+    a_float_t tf_input[a_count_of(num)];
+    a_float_t tf_output[a_count_of(den)];
+    a_tf_init(&tf, a_count_of(num), num, tf_input, a_count_of(den), den, tf_output);
 
     a_pid_expert_s ctx;
     a_pid_expert_init(&ctx, A_FLOAT_C(0.001), -10, +10, A_FLOAT_C(0.4), A_FLOAT_C(2.0), A_FLOAT_C(0.2), A_FLOAT_C(0.5), A_FLOAT_C(0.01));

@@ -75,6 +75,8 @@ a_pid_neuron_s *a_pid_neuron_zero(a_pid_neuron_s *const ctx)
     return ctx;
 }
 
+void a_pid_neuron_outf_(a_pid_neuron_s *const ctx, a_float_t const fdb, a_float_t const ec, a_float_t const e)
+{
 #define A_PID_NEURON_OUT_(_)                                                                  \
     a_float_t out = e * ctx->pid.out _ * (ctx->pid.err _ + ctx->ec _);                        \
     a_float_t const tmp = ec - ctx->ec _;                                                     \
@@ -88,9 +90,6 @@ a_pid_neuron_s *a_pid_neuron_zero(a_pid_neuron_s *const ctx)
     ctx->pid.tmp _ = tmp;                                                                     \
     ctx->pid.err _ = e;                                                                       \
     ctx->ec _ = ec
-
-void a_pid_neuron_outf_(a_pid_neuron_s *const ctx, a_float_t const fdb, a_float_t const ec, a_float_t const e)
-{
     A_PID_NEURON_OUT_(.f);
 }
 

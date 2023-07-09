@@ -1,8 +1,5 @@
 #ifndef TEST_PID_FUZZY_H
 #define TEST_PID_FUZZY_H
-#if defined(_MSC_VER)
-#define _CRT_SECURE_NO_WARNINGS
-#endif /* _MSC_VER */
 #define MAIN_(s, argc, argv) A_CASE_2(pid_fuzzy, s)(argc, argv)
 #include "test.h"
 #include "a/tf.h"

@@ -78,14 +78,13 @@ a_pid_s *a_pid_init(a_pid_s *const ctx, a_float_t const dt, a_float_t const min,
     return ctx;
 }
 
+void a_pid_zerof(a_pid_s *const ctx)
+{
 #define A_PID_ZERO(_) \
     ctx->out _ = 0;   \
     ctx->fdb _ = 0;   \
     ctx->tmp _ = 0;   \
     ctx->err _ = 0
-
-void a_pid_zerof(a_pid_s *const ctx)
-{
     A_PID_ZERO(.f);
 }
 
@@ -115,6 +114,8 @@ a_pid_s *a_pid_zero(a_pid_s *const ctx)
     return ctx;
 }
 
+void a_pid_outf_(a_pid_s *const ctx, unsigned int const mode, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e)
+{
 #define A_PID_OUT_(_)                                                                        \
     /* calculation */                                                                        \
     switch (mode)                                                                            \
@@ -148,9 +149,6 @@ a_pid_s *a_pid_zero(a_pid_s *const ctx)
     ctx->out _ = A_SAT(ctx->out _, ctx->outmin, ctx->outmax);                                \
     ctx->fdb _ = fdb;                                                                        \
     ctx->err _ = e
-
-void a_pid_outf_(a_pid_s *const ctx, unsigned int const mode, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e)
-{
     A_PID_OUT_(.f);
 }
 

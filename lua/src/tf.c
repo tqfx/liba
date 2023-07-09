@@ -85,8 +85,8 @@ int LMODULE(tf_init)(lua_State *const L)
 /***
  calculate function for transfer function
  @param ctx transfer function userdata
- @tparam number x controller output
- @treturn number feedback
+ @tparam number x input
+ @treturn number output
  @function iter
 */
 int LMODULE(tf_iter)(lua_State *const L)
@@ -170,6 +170,14 @@ static int LMODULE(tf_get)(lua_State *const L)
         lua_createtable(L, (int)ctx->den_n, 0);
         l_array_num_set(L, -1, ctx->den_p, ctx->den_n);
         break;
+    case 0x41FAB016: // input
+        lua_createtable(L, (int)ctx->num_n, 0);
+        l_array_num_set(L, -1, ctx->input, ctx->num_n);
+        break;
+    case 0x23C9C461: // output
+        lua_createtable(L, (int)ctx->den_n, 0);
+        l_array_num_set(L, -1, ctx->output, ctx->den_n);
+        break;
     case 0x001D0204: // new
         lua_pushcfunction(L, LMODULE(tf_new));
         break;
@@ -203,6 +211,12 @@ static int LMODULE(tf_get)(lua_State *const L)
         lua_createtable(L, (int)ctx->den_n, 0);
         l_array_num_set(L, -1, ctx->den_p, ctx->den_n);
         lua_setfield(L, -2, "den");
+        lua_createtable(L, (int)ctx->num_n, 0);
+        l_array_num_set(L, -1, ctx->input, ctx->num_n);
+        lua_setfield(L, -2, "input");
+        lua_createtable(L, (int)ctx->den_n, 0);
+        l_array_num_set(L, -1, ctx->output, ctx->den_n);
+        lua_setfield(L, -2, "output");
         break;
     }
     default:

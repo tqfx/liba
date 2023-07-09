@@ -826,6 +826,8 @@ a_avl_s *a_avl_pre_prev(a_avl_s *node)
     return node;
 }
 
+a_avl_s *a_avl_post_head(a_avl_u const *const root)
+{
 #define A_AVL_POST_NEXT(node)       \
     do                              \
     {                               \
@@ -841,10 +843,7 @@ a_avl_s *a_avl_pre_prev(a_avl_s *node)
         {                           \
             break;                  \
         }                           \
-    } while (A_TRUE)
-
-a_avl_s *a_avl_post_head(a_avl_u const *const root)
-{
+    } while (!0)
     a_avl_s *node = root->node;
     if (node)
     {
@@ -853,6 +852,8 @@ a_avl_s *a_avl_post_head(a_avl_u const *const root)
     return node;
 }
 
+a_avl_s *a_avl_post_tail(a_avl_u const *const root)
+{
 #define A_AVL_POST_PREV(node)       \
     do                              \
     {                               \
@@ -868,10 +869,7 @@ a_avl_s *a_avl_post_head(a_avl_u const *const root)
         {                           \
             break;                  \
         }                           \
-    } while (A_TRUE)
-
-a_avl_s *a_avl_post_tail(a_avl_u const *const root)
-{
+    } while (!0)
     a_avl_s *node = root->node;
     if (node)
     {

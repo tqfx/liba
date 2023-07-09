@@ -66,8 +66,8 @@ A_EXTERN a_tf_s *a_tf_init(a_tf_s *ctx,
 /*!
  @brief calculate function for transfer function
  @param[in,out] ctx points to an instance of transfer function
- @param[in] x controller output
- @return feedback
+ @param[in] x transfer function input
+ @return transfer function output
 */
 A_EXTERN a_float_t a_tf_iter(a_tf_s *ctx, a_float_t x);
 

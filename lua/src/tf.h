@@ -7,6 +7,8 @@
  transfer function
  @field num numerator table
  @field den denominator table
+ @field input input table
+ @field output output table
  @table tf
 */
 
@@ -49,8 +51,8 @@ A_PUBLIC int LMODULE(tf_init)(lua_State *L);
 
 /***
  calculate function for transfer function
- @tparam number x controller output
- @treturn number feedback
+ @tparam number x input
+ @treturn number output
  @function iter
 */
 A_PUBLIC int LMODULE(tf_iter)(lua_State *L);

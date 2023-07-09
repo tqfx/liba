@@ -21,6 +21,8 @@ assert(type(ctx:iter(1)) == "number")
 assert(type(ctx:zero()) == "userdata")
 test:r(ctx.num)
 test:r(ctx.den)
+test:r(ctx.input)
+test:r(ctx.output)
 ctx.num = { 1, 2 }
 assert(type(ctx.num) == "table")
 ctx.den = { 3, 4 }

@@ -64,6 +64,8 @@ a_pid_expert_s *a_pid_expert_zero(a_pid_expert_s *const ctx)
     return ctx;
 }
 
+void a_pid_expert_outf_(a_pid_expert_s *const ctx, a_float_t const fdb, a_float_t const ec, a_float_t const e)
+{
 #define A_PID_EXPERT_OUT_(_)                                                             \
     a_float_t out = 0;                                                                   \
     a_float_t const abs = A_ABS(e);                                                      \
@@ -110,9 +112,6 @@ a_pid_expert_s *a_pid_expert_zero(a_pid_expert_s *const ctx)
     ctx->pid.tmp _ = tmp;                                                                \
     ctx->pid.err _ = e;                                                                  \
     ctx->ec _ = ec
-
-void a_pid_expert_outf_(a_pid_expert_s *const ctx, a_float_t const fdb, a_float_t const ec, a_float_t const e)
-{
     A_PID_EXPERT_OUT_(.f);
 }
 

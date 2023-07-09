@@ -13,7 +13,6 @@ void a_polytrack3_gen(a_polytrack3_s *const ctx,
     a_float_t const inv_t1 = 1 / t;
     a_float_t const inv_t2 = inv_t1 * inv_t1;
     a_float_t const inv_t3 = inv_t1 * inv_t2;
-
     ctx->k[0] = q0;
     ctx->k[1] = v0;
     ctx->k[2] = inv_t1 * (-2 * v0 - v1) +

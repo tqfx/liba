@@ -742,6 +742,8 @@ a_rbt_s *a_rbt_pre_prev(a_rbt_s *node)
     return node;
 }
 
+a_rbt_s *a_rbt_post_head(a_rbt_u const *const root)
+{
 #define A_RBT_POST_NEXT(node)       \
     do                              \
     {                               \
@@ -757,10 +759,7 @@ a_rbt_s *a_rbt_pre_prev(a_rbt_s *node)
         {                           \
             break;                  \
         }                           \
-    } while (A_TRUE)
-
-a_rbt_s *a_rbt_post_head(a_rbt_u const *const root)
-{
+    } while (!0)
     a_rbt_s *node = root->node;
     if (node)
     {
@@ -769,6 +768,8 @@ a_rbt_s *a_rbt_post_head(a_rbt_u const *const root)
     return node;
 }
 
+a_rbt_s *a_rbt_post_tail(a_rbt_u const *const root)
+{
 #define A_RBT_POST_PREV(node)       \
     do                              \
     {                               \
@@ -784,10 +785,7 @@ a_rbt_s *a_rbt_post_head(a_rbt_u const *const root)
         {                           \
             break;                  \
         }                           \
-    } while (A_TRUE)
-
-a_rbt_s *a_rbt_post_tail(a_rbt_u const *const root)
-{
+    } while (!0)
     a_rbt_s *node = root->node;
     if (node)
     {
