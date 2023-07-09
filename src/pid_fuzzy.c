@@ -132,7 +132,7 @@ a_pid_fuzzy_s *a_pid_fuzzy_chan(a_pid_fuzzy_s *const ctx, unsigned int const num
     return ctx;
 }
 
-a_pid_fuzzy_s *a_pid_fuzzy_base(a_pid_fuzzy_s *const ctx, unsigned int const col, a_float_t const *const me, a_float_t const *const mec,
+a_pid_fuzzy_s *a_pid_fuzzy_rule(a_pid_fuzzy_s *const ctx, unsigned int const col, a_float_t const *const me, a_float_t const *const mec,
                                 a_float_t const *const mkp, a_float_t const *const mki, a_float_t const *const mkd)
 {
     a_pid_fuzzy_set_col(ctx, col);
@@ -154,7 +154,7 @@ a_pid_fuzzy_s *a_pid_fuzzy_init(a_pid_fuzzy_s *const ctx, a_float_t const dt, un
     ctx->kp = 0;
     ctx->ki = 0;
     ctx->kd = 0;
-    return a_pid_fuzzy_base(ctx, col, me, mec, mkp, mki, mkd);
+    return a_pid_fuzzy_rule(ctx, col, me, mec, mkp, mki, mkd);
 }
 
 a_pid_fuzzy_s *a_pid_fuzzy_zero(a_pid_fuzzy_s *const ctx)

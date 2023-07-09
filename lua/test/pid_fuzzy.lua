@@ -88,8 +88,8 @@ local mkd = {
 }
 test:r(getmetatable(a.pid_fuzzy))
 ctx = a.pid_fuzzy.new(2, 1, me, mec, mkp, mki, mkd, -10, 10)
-assert(type(a.pid_fuzzy.base(ctx, me, mec, mkp, mki, mkd)) == "userdata")
-assert(type(a.pid_fuzzy:base(ctx, me, mec, mkp, mki, mkd)) == "userdata")
+assert(type(a.pid_fuzzy.rule(ctx, me, mec, mkp, mki, mkd)) == "userdata")
+assert(type(a.pid_fuzzy:rule(ctx, me, mec, mkp, mki, mkd)) == "userdata")
 assert(type(a.pid_fuzzy.kpid(ctx, 3, 2, 1)) == "userdata")
 assert(type(a.pid_fuzzy:kpid(ctx, 3, 2, 1)) == "userdata")
 assert(type(a.pid_fuzzy.iter(ctx, 1, 0)) == "number")

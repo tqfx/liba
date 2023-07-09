@@ -165,9 +165,9 @@ int LMODULE(pid_fuzzy_zero)(lua_State *const L)
  @tparam table mki points to Ki's rule base table, the rule base must be square
  @tparam table mkd points to Kd's rule base table, the rule base must be square
  @treturn pid_fuzzy fuzzy PID controller userdata
- @function buff
+ @function rule
 */
-int LMODULE(pid_fuzzy_base)(lua_State *const L)
+int LMODULE(pid_fuzzy_rule)(lua_State *const L)
 {
     a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, -6);
     if (ctx)
@@ -178,7 +178,7 @@ int LMODULE(pid_fuzzy_base)(lua_State *const L)
         a_float_t const *const mkp = l_table_num_get(L, -3, ctx->mkp, 0);
         a_float_t const *const mki = l_table_num_get(L, -2, ctx->mki, 0);
         a_float_t const *const mkd = l_table_num_get(L, -1, ctx->mkd, 0);
-        a_pid_fuzzy_base(ctx, num, me, mec, mkp, mki, mkd);
+        a_pid_fuzzy_rule(ctx, num, me, mec, mkp, mki, mkd);
         lua_pop(L, 5);
         return 1;
     }
@@ -364,8 +364,8 @@ static int LMODULE(pid_fuzzy_get)(lua_State *const L)
     case 0x1073A930: // zero
         lua_pushcfunction(L, LMODULE(pid_fuzzy_zero));
         break;
-    case 0x0D3B56FD: // base
-        lua_pushcfunction(L, LMODULE(pid_fuzzy_base));
+    case 0x0F6569CC: // rule
+        lua_pushcfunction(L, LMODULE(pid_fuzzy_rule));
         break;
     case 0x0E73F9D8: // kpid
         lua_pushcfunction(L, LMODULE(pid_fuzzy_kpid));
@@ -404,7 +404,7 @@ static int LMODULE(pid_fuzzy_get)(lua_State *const L)
             {"init", LMODULE(pid_fuzzy_init)},
             {"iter", LMODULE(pid_fuzzy_iter)},
             {"zero", LMODULE(pid_fuzzy_zero)},
-            {"base", LMODULE(pid_fuzzy_base)},
+            {"rule", LMODULE(pid_fuzzy_rule)},
             {"kpid", LMODULE(pid_fuzzy_kpid)},
             {"pos", LMODULE(pid_fuzzy_pos)},
             {"inc", LMODULE(pid_fuzzy_inc)},
@@ -444,7 +444,7 @@ int LMODULE_(pid_fuzzy, lua_State *const L)
         {"init", LMODULE(pid_fuzzy_init)},
         {"iter", LMODULE(pid_fuzzy_iter)},
         {"zero", LMODULE(pid_fuzzy_zero)},
-        {"base", LMODULE(pid_fuzzy_base)},
+        {"rule", LMODULE(pid_fuzzy_rule)},
         {"kpid", LMODULE(pid_fuzzy_kpid)},
         {"pos", LMODULE(pid_fuzzy_pos)},
         {"inc", LMODULE(pid_fuzzy_inc)},

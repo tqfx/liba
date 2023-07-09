@@ -100,9 +100,9 @@ A_PUBLIC int LMODULE(pid_fuzzy_zero)(lua_State *L);
  @tparam table mki points to Ki's rule base table, the rule base must be square
  @tparam table mkd points to Kd's rule base table, the rule base must be square
  @treturn pid_fuzzy fuzzy PID controller userdata
- @function buff
+ @function rule
 */
-A_PUBLIC int LMODULE(pid_fuzzy_base)(lua_State *L);
+A_PUBLIC int LMODULE(pid_fuzzy_rule)(lua_State *L);
 
 /***
  set proportional integral derivative constant for fuzzy PID controller

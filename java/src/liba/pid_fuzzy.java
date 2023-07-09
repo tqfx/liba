@@ -133,7 +133,7 @@ public class pid_fuzzy {
      * @param mkd points to Kd's rule base table, the rule base must be square
      * @return {@link pid_fuzzy}
      */
-    public final native pid_fuzzy base(double[][] me, double[][] mec, double[][] mkp, double[][] mki, double[][] mkd);
+    public final native pid_fuzzy rule(double[][] me, double[][] mec, double[][] mkp, double[][] mki, double[][] mkd);
 
     /**
      * initialize function for fuzzy PID controller

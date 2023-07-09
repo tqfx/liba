@@ -215,7 +215,7 @@ static jobject concat(j_pid_fuzzy_s const *jctx, jobjectArray jval)
     return obj;
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(pid_1fuzzy_base)(JNIEnv *jenv, jobject jobj, jobjectArray jme, jobjectArray jmec,
+JNIEXPORT jobject JNICALL JPACKAGE(pid_1fuzzy_rule)(JNIEnv *jenv, jobject jobj, jobjectArray jme, jobjectArray jmec,
                                                     jobjectArray jmkp, jobjectArray jmki, jobjectArray jmkd)
 {
     a_pid_fuzzy_s ctx;

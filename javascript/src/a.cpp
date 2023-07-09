@@ -135,7 +135,7 @@ public:
         this->mki = floats(concat(jmki), jmki["length"].as<a_size_t>(), this->mki);
         this->mkd = floats(concat(jmkd), jmkd["length"].as<a_size_t>(), this->mkd);
         unsigned int col = jmkp["length"].as<unsigned int>();
-        a_pid_fuzzy_base(&this->ctx, col, this->me, this->mec, this->mkp, this->mki, this->mkd);
+        a_pid_fuzzy_rule(&this->ctx, col, this->me, this->mec, this->mkp, this->mki, this->mkd);
     }
     a_float_t iter(a_float_t jset, a_float_t jfdb)
     {

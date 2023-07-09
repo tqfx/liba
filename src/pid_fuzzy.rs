@@ -59,7 +59,7 @@ extern "C" {
         tmp: *mut float,
         err: *mut float,
     ) -> *mut PID_fuzzy;
-    fn a_pid_fuzzy_base(
+    fn a_pid_fuzzy_rule(
         ctx: *mut PID_fuzzy,
         num: uint,
         me: *const float,
@@ -188,7 +188,7 @@ impl PID_fuzzy {
     }
 
     /// set rule base for fuzzy PID controller
-    pub fn base(
+    pub fn rule(
         &mut self,
         col: usize,
         me: &[float],
@@ -198,7 +198,7 @@ impl PID_fuzzy {
         mkd: &[float],
     ) -> &mut Self {
         unsafe {
-            a_pid_fuzzy_base(
+            a_pid_fuzzy_rule(
                 self,
                 col as uint,
                 me.as_ptr(),
@@ -345,7 +345,7 @@ fn pid_fuzzy() {
         -10.0,
         10.0,
     );
-    a.base(
+    a.rule(
         me.len(),
         &me.concat(),
         &mec.concat(),

@@ -210,7 +210,7 @@ A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_chan(a_pid_fuzzy_s *ctx, unsigned int num, a
  @param[in] mki points to Ki's rule base table, the rule base must be square
  @param[in] mkd points to Kd's rule base table, the rule base must be square
 */
-A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_base(a_pid_fuzzy_s *ctx, unsigned int col, a_float_t const *me, a_float_t const *const mec,
+A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_rule(a_pid_fuzzy_s *ctx, unsigned int col, a_float_t const *me, a_float_t const *const mec,
                                          a_float_t const *mkp, a_float_t const *mki, a_float_t const *mkd);
 
 /*!

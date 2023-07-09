@@ -39,7 +39,7 @@ cdef class pid_fuzzy:
         '''zero clear function for fuzzy PID controller'''
         a_pid_fuzzy_zero(&self.ctx)
         return self
-    def base(self, me, mec, mkp, mki, mkd):
+    def rule(self, me, mec, mkp, mki, mkd):
         '''set rule base for fuzzy PID controller'''
         self.me = floats((col for row in me for col in row))
         self.mec = floats((col for row in mec for col in row))
@@ -51,7 +51,7 @@ cdef class pid_fuzzy:
         cdef a_float_t *kp = <a_float_t *>self.mkp.data.as_voidptr
         cdef a_float_t *ki = <a_float_t *>self.mki.data.as_voidptr
         cdef a_float_t *kd = <a_float_t *>self.mkd.data.as_voidptr
-        a_pid_fuzzy_base(&self.ctx, <unsigned int>len(mkp), e, ec, kp, ki, kd)
+        a_pid_fuzzy_rule(&self.ctx, <unsigned int>len(mkp), e, ec, kp, ki, kd)
         return self
     def kpid(self, kp: a_float_t, ki: a_float_t, kd: a_float_t):
         '''set proportional integral derivative constant for fuzzy PID controller'''
