@@ -192,8 +192,8 @@ A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_buff(a_pid_fuzzy_s *ctx, unsigned int *idx, 
 /*!
  @brief set buffer for multichannel fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
- @param[in] num number of controllers output
- @param[in] out points to controllers output
+ @param[in] num number of controller output
+ @param[in] out points to controller output
  @param[in] fdb points to cache feedback buffer
  @param[in] tmp points to cache variable buffer
  @param[in] err points to cache error buffer

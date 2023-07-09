@@ -262,8 +262,8 @@ A_EXTERN a_pid_s *a_pid_kpid(a_pid_s *ctx, a_float_t kp, a_float_t ki, a_float_t
 /*!
  @brief set buffer for multichannel PID controller
  @param[in,out] ctx points to an instance of PID controller
- @param[in] num number of controllers output
- @param[in] out points to controllers output
+ @param[in] num number of controller output
+ @param[in] out points to controller output
  @param[in] fdb points to cache feedback buffer
  @param[in] tmp points to cache variable buffer
  @param[in] err points to cache error buffer

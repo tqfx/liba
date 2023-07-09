@@ -46,8 +46,8 @@ A_EXTERN a_pid_neuron_s *a_pid_neuron_kpid(a_pid_neuron_s *ctx, a_float_t kp, a_
 /*!
  @brief set buffer for multichannel neuron PID controller
  @param[in,out] ctx points to an instance of neuron PID controller
- @param[in] num number of controllers output
- @param[in] out points to controllers output
+ @param[in] num number of controller output
+ @param[in] out points to controller output
  @param[in] fdb points to cache feedback buffer
  @param[in] tmp points to cache variable buffer
  @param[in] err points to cache error buffer
