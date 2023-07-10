@@ -20,10 +20,10 @@
 typedef struct a_pid_neuron_s
 {
     a_pid_s pid; //!< instance structure for PID controller
+    a_float_u ec; //!< error change
     a_float_u wp; //!< proportional constant weight
     a_float_u wi; //!< integral constant weight
     a_float_u wd; //!< derivative constant weight
-    a_float_u ec; //!< error change
     a_float_t ko; //!< output ratio
 } a_pid_neuron_s;
 
@@ -51,10 +51,9 @@ A_EXTERN a_pid_neuron_s *a_pid_neuron_init(a_pid_neuron_s *ctx, unsigned int num
  @param[in] wi points to ki's weight buffer
  @param[in] wd points to kd's weight buffer
 */
-A_EXTERN a_pid_neuron_s *a_pid_neuron_chan(a_pid_neuron_s *ctx,
-                                           unsigned int num, a_float_t *out, a_float_t *fdb,
-                                           a_float_t *tmp, a_float_t *err, a_float_t *ec,
-                                           a_float_t *wp, a_float_t *wi, a_float_t *wd);
+A_EXTERN a_pid_neuron_s *a_pid_neuron_chan(a_pid_neuron_s *ctx, unsigned int num,
+                                           a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err,
+                                           a_float_t *ec, a_float_t *wp, a_float_t *wi, a_float_t *wd);
 
 /*!
  @brief set proportional integral derivative constant for neuron PID controller

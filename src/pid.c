@@ -31,33 +31,18 @@ a_pid_s *a_pid_kpid(a_pid_s *const ctx, a_float_t const kp, a_float_t const ki, 
     return ctx;
 }
 
-void a_pid_zerof(a_pid_s *const ctx)
-{
-#define A_PID_ZERO(_) \
-    ctx->out _ = 0;   \
-    ctx->fdb _ = 0;   \
-    ctx->tmp _ = 0;   \
-    ctx->err _ = 0
-    A_PID_ZERO(.f);
-}
-
-void a_pid_zerop(a_pid_s *const ctx, unsigned int const i)
-{
-    A_PID_ZERO(.p[i]);
-}
-
 a_pid_s *a_pid_zero(a_pid_s *const ctx)
 {
     if (ctx->chan > 1)
     {
         for (unsigned int i = 0; i != ctx->chan; ++i)
         {
-            a_pid_zerop(ctx, i);
+            A_PID_ZERO(ctx, .p[i]);
         }
     }
     else
     {
-        a_pid_zerof(ctx);
+        A_PID_ZERO(ctx, .f);
     }
     return ctx;
 }

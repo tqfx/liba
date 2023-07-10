@@ -44,13 +44,13 @@ a_pid_expert_s *a_pid_expert_zero(a_pid_expert_s *const ctx)
     {
         for (unsigned int i = 0; i != ctx->pid.chan; ++i)
         {
-            a_pid_zerop(&ctx->pid, i);
+            A_PID_ZERO(&ctx->pid, .p[i]);
             ctx->ec.p[i] = 0;
         }
     }
     else
     {
-        a_pid_zerof(&ctx->pid);
+        A_PID_ZERO(&ctx->pid, .f);
         ctx->ec.f = 0;
     }
     return ctx;
