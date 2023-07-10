@@ -11,20 +11,18 @@ public class pid {
     public static final int POS = 1;
     /** incremental PID controller */
     public static final int INC = 2;
-    /** sampling time unit(s) */
-    public double dt;
     /** proportional constant */
     public double kp;
     /** integral constant */
     public double ki;
     /** derivative constant */
     public double kd;
-    /** minimum final output */
-    public double outmin;
-    /** maximum integral output */
-    public double outmax;
     /** maximum integral output */
     public double summax;
+    /** maximum final output */
+    public double outmax;
+    /** minimum final output */
+    public double outmin;
     /** controller output */
     public double out;
     /** cache feedback */
@@ -33,50 +31,47 @@ public class pid {
     double tmp;
     /** cache error */
     public double err;
-    int num;
-    int reg;
+    int chan;
+    /** controller mode */
+    public int mode;
 
     /**
      * construct a new {@link pid} object
      *
-     * @param dt  sampling time unit(s)
      * @param min minimum output
      * @param max maximum output
      */
-    public pid(double dt, double min, double max) {
-        this.init(dt, min, max).inc();
+    public pid(double min, double max) {
+        this.init(min, max, 0);
     }
 
     /**
      * construct a new {@link pid} object
      *
-     * @param dt  sampling time unit(s)
      * @param min minimum output
      * @param max maximum output
      * @param sum maximum intergral output
      */
-    public pid(double dt, double min, double max, double sum) {
-        this.init(dt, min, max).pos(sum);
+    public pid(double min, double max, double sum) {
+        this.init(min, max, sum);
     }
 
     /**
      * construct a new {@link pid} object
      *
-     * @param dt  sampling time unit(s)
      * @param kp  proportional constant
      * @param ki  integral constant
      * @param kd  derivative constant
      * @param min minimum output
      * @param max maximum output
      */
-    public pid(double dt, double kp, double ki, double kd, double min, double max) {
-        this.init(dt, min, max).kpid(kp, ki, kd).inc();
+    public pid(double kp, double ki, double kd, double min, double max) {
+        this.init(min, max, 0).kpid(kp, ki, kd);
     }
 
     /**
      * construct a new {@link pid} object
      *
-     * @param dt  sampling time unit(s)
      * @param kp  proportional constant
      * @param ki  integral constant
      * @param kd  derivative constant
@@ -84,47 +79,19 @@ public class pid {
      * @param max maximum output
      * @param sum maximum intergral output
      */
-    public pid(double dt, double kp, double ki, double kd, double min, double max, double sum) {
-        this.init(dt, min, max).kpid(kp, ki, kd).pos(sum);
+    public pid(double kp, double ki, double kd, double min, double max, double sum) {
+        this.init(min, max, sum).kpid(kp, ki, kd);
     }
 
     /**
-     * turn off PID controller
+     * initialize function for PID controller
      *
+     * @param min minimum output
+     * @param max maximum output
+     * @param sum maximum intergral output
      * @return {@link pid}
      */
-    public final native pid off();
-
-    /**
-     * incremental PID controller
-     *
-     * @return {@link pid}
-     */
-    public final native pid inc();
-
-    /**
-     * positional PID controller
-     *
-     * @param max maximum intergral output
-     * @return {@link pid}
-     */
-    public final native pid pos(double max);
-
-    /**
-     * set register for PID controller directly
-     *
-     * @param mode enumeration for PID controller register
-     * @return {@link pid}
-     */
-    public final native pid mode(int mode);
-
-    /**
-     * set sampling period for PID controller
-     *
-     * @param dt sampling time unit(s)
-     * @return {@link pid}
-     */
-    public final native pid time(double dt);
+    public final native pid init(double min, double max, double sum);
 
     /**
      * set proportional integral derivative constant for PID controller
@@ -135,16 +102,6 @@ public class pid {
      * @return {@link pid}
      */
     public final native pid kpid(double kp, double ki, double kd);
-
-    /**
-     * initialize function for PID controller
-     *
-     * @param dt  sampling time unit(s)
-     * @param min minimum output
-     * @param max maximum output
-     * @return {@link pid}
-     */
-    public final native pid init(double dt, double min, double max);
 
     /**
      * calculate function for PID controller

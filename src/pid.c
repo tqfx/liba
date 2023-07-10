@@ -1,80 +1,33 @@
-#define LIBA_PID_C
 #include "pid.h"
 
-void a_pid_set_dt(a_pid_s *const ctx, a_float_t const dt)
+a_pid_s *a_pid_init(a_pid_s *const ctx, unsigned int const num)
 {
-    a_float_t const t = dt / ctx->dt;
-    ctx->ki *= t;
-    ctx->kd /= t;
-    ctx->dt = dt;
-}
-
-a_pid_s *a_pid_off(a_pid_s *const ctx)
-{
-    a_pid_set_mode(ctx, A_PID_OFF);
-    return ctx;
-}
-
-a_pid_s *a_pid_inc(a_pid_s *const ctx)
-{
-    a_pid_set_mode(ctx, A_PID_INC);
-    return ctx;
-}
-
-a_pid_s *a_pid_pos(a_pid_s *const ctx, a_float_t const max)
-{
-    ctx->summax = A_ABS(max);
-    if (ctx->summax > ctx->outmax)
-    {
-        ctx->summax = ctx->outmax;
-    }
-    a_pid_set_mode(ctx, A_PID_POS);
-    return ctx;
-}
-
-a_pid_s *a_pid_kpid(a_pid_s *const ctx, a_float_t const kp, a_float_t const ki, a_float_t const kd)
-{
-    ctx->kp = kp;
-    ctx->ki = ki * ctx->dt;
-    ctx->kd = kd / ctx->dt;
-    return ctx;
-}
-
-void a_pid_chan_(a_pid_s *const ctx, a_float_t *const out, a_float_t *const fdb, a_float_t *const tmp, a_float_t *const err)
-{
-    ctx->out.p = out;
-    ctx->fdb.p = fdb;
-    ctx->tmp.p = tmp;
-    ctx->err.p = err;
+    ctx->chan = num;
+    return a_pid_zero(ctx);
 }
 
 a_pid_s *a_pid_chan(a_pid_s *const ctx, unsigned int const num, a_float_t *const out, a_float_t *const fdb, a_float_t *const tmp, a_float_t *const err)
 {
     if (num > 1)
     {
-        a_pid_set_num(ctx, num);
-        a_pid_chan_(ctx, out, fdb, tmp, err);
+        ctx->chan = num;
+        ctx->out.p = out;
+        ctx->fdb.p = fdb;
+        ctx->tmp.p = tmp;
+        ctx->err.p = err;
     }
     else
     {
-        a_pid_set_num(ctx, 0);
+        ctx->chan = 0;
     }
-    a_pid_zero_(ctx, num);
-    return ctx;
+    return a_pid_zero(ctx);
 }
 
-a_pid_s *a_pid_init(a_pid_s *const ctx, a_float_t const dt, a_float_t const min, a_float_t const max)
+a_pid_s *a_pid_kpid(a_pid_s *const ctx, a_float_t const kp, a_float_t const ki, a_float_t const kd)
 {
-    ctx->reg = A_PID_INC;
-    ctx->outmin = min;
-    ctx->outmax = max;
-    ctx->summax = 0;
-    ctx->num = 0;
-    ctx->dt = dt;
-    ctx->kp = 0;
-    ctx->ki = 0;
-    ctx->kd = 0;
-    a_pid_zerof(ctx);
+    ctx->kp = kp;
+    ctx->ki = ki;
+    ctx->kd = kd;
     return ctx;
 }
 
@@ -93,11 +46,11 @@ void a_pid_zerop(a_pid_s *const ctx, unsigned int const i)
     A_PID_ZERO(.p[i]);
 }
 
-void a_pid_zero_(a_pid_s *const ctx, unsigned int const num)
+a_pid_s *a_pid_zero(a_pid_s *const ctx)
 {
-    if (num > 1)
+    if (ctx->chan > 1)
     {
-        for (unsigned int i = 0; i != num; ++i)
+        for (unsigned int i = 0; i != ctx->chan; ++i)
         {
             a_pid_zerop(ctx, i);
         }
@@ -106,19 +59,14 @@ void a_pid_zero_(a_pid_s *const ctx, unsigned int const num)
     {
         a_pid_zerof(ctx);
     }
-}
-
-a_pid_s *a_pid_zero(a_pid_s *const ctx)
-{
-    a_pid_zero_(ctx, a_pid_num(ctx));
     return ctx;
 }
 
-void a_pid_outf_(a_pid_s *const ctx, unsigned int const mode, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e)
+void a_pid_outf_(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e)
 {
 #define A_PID_OUT_(_)                                                                        \
     /* calculation */                                                                        \
-    switch (mode)                                                                            \
+    switch (ctx->mode)                                                                       \
     {                                                                                        \
     case A_PID_INC:                                                                          \
     {                                                                                        \
@@ -152,7 +100,7 @@ void a_pid_outf_(a_pid_s *const ctx, unsigned int const mode, a_float_t const se
     A_PID_OUT_(.f);
 }
 
-void a_pid_outp_(a_pid_s *const ctx, unsigned int const mode, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e, unsigned int const i)
+void a_pid_outp_(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e, unsigned int const i)
 {
     A_PID_OUT_(.p[i]);
 }
@@ -160,18 +108,16 @@ void a_pid_outp_(a_pid_s *const ctx, unsigned int const mode, a_float_t const se
 a_float_t a_pid_outf(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb)
 {
     a_float_t const e = set - fdb;
-    a_pid_outf_(ctx, a_pid_mode(ctx), set, fdb, e - ctx->err.f, e);
+    a_pid_outf_(ctx, set, fdb, e - ctx->err.f, e);
     return ctx->out.f;
 }
 
 a_float_t const *a_pid_outp(a_pid_s *const ctx, a_float_t const *const set, a_float_t const *const fdb)
 {
-    unsigned int const num = a_pid_num(ctx);
-    unsigned int const mode = a_pid_mode(ctx);
-    for (unsigned int i = 0; i != num; ++i)
+    for (unsigned int i = 0; i != ctx->chan; ++i)
     {
         a_float_t const e = set[i] - fdb[i];
-        a_pid_outp_(ctx, mode, set[i], fdb[i], e - ctx->err.p[i], e, i);
+        a_pid_outp_(ctx, set[i], fdb[i], e - ctx->err.p[i], e, i);
     }
     return ctx->out.p;
 }

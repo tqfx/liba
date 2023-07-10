@@ -27,6 +27,8 @@ typedef struct
     jfieldID kp;
     jfieldID ki;
     jfieldID kd;
+    jfieldID col;
+    jfieldID buf;
 } j_pid_fuzzy_s;
 
 #if defined(__cplusplus)

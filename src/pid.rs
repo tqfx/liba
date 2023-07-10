@@ -14,37 +14,33 @@ pub const INC: uint = 2;
 /// proportional integral derivative controller
 #[repr(C)]
 pub struct PID {
-    /// sampling time unit(s)
-    dt: float,
     /// proportional constant
-    kp: float,
+    pub kp: float,
     /// integral constant
-    ki: float,
+    pub ki: float,
     /// derivative constant
-    kd: float,
+    pub kd: float,
+    /// maximum integral output
+    pub summax: float,
+    /// maximum output
+    pub outmax: float,
+    /// minimum output
+    pub outmin: float,
     /// controller output
     pub out: Float,
     /// cache feedback
     pub fdb: Float,
     /// cache variable
-    tmp: Float,
+    pub(crate) tmp: Float,
     /// cache error
     pub err: Float,
-    /// minimum output
-    pub outmin: float,
-    /// maximum output
-    pub outmax: float,
-    /// maximum integral output
-    pub summax: float,
-    num: uint,
-    reg: uint,
+    /// channel
+    pub chan: uint,
+    /// mode
+    pub mode: uint,
 }
 
 extern "C" {
-    fn a_pid_off(ctx: *mut PID) -> *mut PID;
-    fn a_pid_inc(ctx: *mut PID) -> *mut PID;
-    fn a_pid_pos(ctx: *mut PID, max: float) -> *mut PID;
-    fn a_pid_kpid(ctx: *mut PID, kp: float, ki: float, kd: float) -> *mut PID;
     fn a_pid_chan(
         ctx: *mut PID,
         num: uint,
@@ -53,113 +49,29 @@ extern "C" {
         tmp: *mut float,
         err: *mut float,
     ) -> *mut PID;
+    fn a_pid_kpid(ctx: *mut PID, kp: float, ki: float, kd: float) -> *mut PID;
     fn a_pid_outf(ctx: *mut PID, set: float, fdb: float) -> float;
     fn a_pid_outp(ctx: *mut PID, set: *const float, fdb: *const float) -> *const float;
     fn a_pid_zero(ctx: *mut PID) -> *mut PID;
-    fn a_pid_num(ctx: *const PID) -> uint;
-    fn a_pid_dt(ctx: *const PID) -> float;
-    fn a_pid_set_dt(ctx: *mut PID, dt: float);
-    fn a_pid_kp(ctx: *const PID) -> float;
-    fn a_pid_set_kp(ctx: *mut PID, kp: float);
-    fn a_pid_ki(ctx: *const PID) -> float;
-    fn a_pid_set_ki(ctx: *mut PID, ki: float);
-    fn a_pid_kd(ctx: *const PID) -> float;
-    fn a_pid_set_kd(ctx: *mut PID, kd: float);
-    fn a_pid_mode(ctx: *const PID) -> uint;
-    fn a_pid_set_mode(ctx: *mut PID, mode: uint);
 }
 
 impl PID {
-    /// initialize function for PID controller, default is incremental
-    pub fn new(dt: float, outmin: float, outmax: float) -> Self {
+    /// initialize function for PID controller
+    pub fn new(min: float, max: float, sum: float) -> Self {
         Self {
-            dt,
             kp: 0.0,
             ki: 0.0,
             kd: 0.0,
+            summax: sum,
+            outmax: max,
+            outmin: min,
             out: Float { f: 0.0 },
             fdb: Float { f: 0.0 },
             tmp: Float { f: 0.0 },
             err: Float { f: 0.0 },
-            outmin,
-            outmax,
-            summax: 0.0,
-            reg: OFF,
-            num: 0,
+            chan: 0,
+            mode: if sum != 0.0 { POS } else { INC },
         }
-    }
-
-    /// initialize function for positional PID controller
-    pub fn new_pos(
-        dt: float,
-        kp: float,
-        ki: float,
-        kd: float,
-        outmin: float,
-        outmax: float,
-        summax: float,
-    ) -> Self {
-        Self {
-            dt,
-            kp,
-            ki: ki * dt,
-            kd: kd / dt,
-            out: Float { f: 0.0 },
-            fdb: Float { f: 0.0 },
-            tmp: Float { f: 0.0 },
-            err: Float { f: 0.0 },
-            outmin,
-            outmax,
-            summax,
-            reg: POS,
-            num: 0,
-        }
-    }
-
-    /// initialize function for incremental PID controller
-    pub fn new_inc(
-        dt: float,
-        kp: float,
-        ki: float,
-        kd: float,
-        outmin: float,
-        outmax: float,
-    ) -> Self {
-        Self {
-            dt,
-            kp,
-            ki: ki * dt,
-            kd: kd / dt,
-            out: Float { f: 0.0 },
-            fdb: Float { f: 0.0 },
-            tmp: Float { f: 0.0 },
-            err: Float { f: 0.0 },
-            outmin,
-            outmax,
-            summax: 0.0,
-            reg: INC,
-            num: 0,
-        }
-    }
-
-    /// turn off PID controller
-    pub fn off(&mut self) -> &mut Self {
-        unsafe { a_pid_off(self).as_mut().unwrap_unchecked() }
-    }
-
-    /// incremental PID controller
-    pub fn inc(&mut self) -> &mut Self {
-        unsafe { a_pid_inc(self).as_mut().unwrap_unchecked() }
-    }
-
-    /// positional PID controller
-    pub fn pos(&mut self, max: float) -> &mut Self {
-        unsafe { a_pid_pos(self, max).as_mut().unwrap_unchecked() }
-    }
-
-    /// set proportional integral derivative constant for PID controller
-    pub fn kpid(&mut self, kp: float, ki: float, kd: float) -> &mut Self {
-        unsafe { a_pid_kpid(self, kp, ki, kd).as_mut().unwrap_unchecked() }
     }
 
     /// set buffer for multichannel PID controller
@@ -179,9 +91,14 @@ impl PID {
                 tmp.as_mut_ptr(),
                 err.as_mut_ptr(),
             )
-            .as_mut()
-            .unwrap_unchecked()
-        }
+        };
+        self
+    }
+
+    /// set proportional integral derivative constant for PID controller
+    pub fn kpid(&mut self, kp: float, ki: float, kd: float) -> &mut Self {
+        unsafe { a_pid_kpid(self, kp, ki, kd) };
+        self
     }
 
     /// calculate function for PID controller
@@ -193,63 +110,14 @@ impl PID {
         unsafe {
             std::slice::from_raw_parts(
                 a_pid_outp(self, set.as_ptr(), fdb.as_ptr()),
-                a_pid_num(self) as usize,
+                self.chan as usize,
             )
         }
     }
 
     /// zero clear function for PID controller
     pub fn zero(&mut self) -> &mut Self {
-        unsafe { a_pid_zero(self).as_mut().unwrap_unchecked() }
-    }
-
-    /// get sampling time unit(s) for PID controller
-    pub fn dt(&self) -> float {
-        unsafe { a_pid_dt(self) }
-    }
-    /// set sampling time unit(s) for PID controller
-    pub fn set_dt(&mut self, dt: float) -> &mut Self {
-        unsafe { a_pid_set_dt(self, dt) };
-        self
-    }
-
-    /// get proportional constant for PID controller
-    pub fn kp(&self) -> float {
-        unsafe { a_pid_kp(self) }
-    }
-    /// set proportional constant for PID controller
-    pub fn set_kp(&mut self, kp: float) -> &mut Self {
-        unsafe { a_pid_set_kp(self, kp) };
-        self
-    }
-
-    /// get integral constant for PID controller
-    pub fn ki(&self) -> float {
-        unsafe { a_pid_ki(self) }
-    }
-    /// set integral constant for PID controller
-    pub fn set_ki(&mut self, ki: float) -> &mut Self {
-        unsafe { a_pid_set_ki(self, ki) };
-        self
-    }
-
-    /// get derivative constant for PID controller
-    pub fn kd(&self) -> float {
-        unsafe { a_pid_kd(self) }
-    }
-    /// set derivative constant for PID controller
-    pub fn set_kd(&mut self, kd: float) -> &mut Self {
-        unsafe { a_pid_set_kd(self, kd) };
-        self
-    }
-
-    /// get mode for PID controller
-    pub fn mode(&self) -> uint {
-        unsafe { a_pid_mode(self) }
-    }
-    /// set mode for PID controller
-    pub fn set_mode(&mut self, mode: uint) -> &mut Self {
-        unsafe { a_pid_set_mode(self, mode) };
+        unsafe { a_pid_zero(self) };
         self
     }
 }
@@ -257,17 +125,17 @@ impl PID {
 #[test]
 fn pid() {
     {
-        let mut a = crate::PID::new_pos(0.1, 10.0, 0.1, 1.0, -10.0, 10.0, 10.0);
-        println!("{}", a.outf(1.0, 0.0));
+        let mut a = crate::PID::new(-10.0, 10.0, 10.0);
+        println!("{}", a.kpid(10.0, 0.1, 1.0).outf(1.0, 0.0));
+        assert!(a.mode == crate::pid::POS);
     }
     {
-        let mut a = crate::PID::new_inc(0.1, 10.0, 0.1, 1.0, -10.0, 10.0);
-        println!("{}", a.outf(1.0, 0.0));
+        let mut a = crate::PID::new(-10.0, 10.0, 0.0);
+        println!("{}", a.kpid(10.0, 0.1, 1.0).outf(1.0, 0.0));
+        assert!(a.mode == crate::pid::INC);
     }
-    let mut a = crate::PID::new(1.0, -10.0, 10.0);
-    a.kpid(10.0, 0.1, 1.0).pos(10.0).off().inc().set_dt(0.1);
-    assert!(a.mode() == crate::pid::INC);
-    println!("{}", a.outf(1.0, 0.0));
+    let mut a = crate::PID::new(-10.0, 10.0, 0.0);
+    a.kpid(10.0, 0.1, 1.0).outf(1.0, 0.0);
     a.zero();
     {
         let mut out: [float; 4] = [0.0, 0.0, 0.0, 0.0];

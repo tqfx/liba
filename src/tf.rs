@@ -68,7 +68,8 @@ impl TF {
 
     /// zero clear function for transfer function
     pub fn zero(&mut self) -> &mut Self {
-        unsafe { a_tf_zero(self).as_mut().unwrap_unchecked() }
+        unsafe { a_tf_zero(self) };
+        self
     }
 
     /// get input for transfer function

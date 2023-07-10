@@ -35,22 +35,23 @@ MIN = -10
 MAX = +10
 
 kp = 10.0
-ki = 0.01
-kd = 0.24
+ki = 0.01 * Ts
+kd = 0.24 / Ts
 
 tf = a.tf(num, den[1:])
-pid = a.pid(Ts, MIN, MAX).kpid(kp, ki, kd)
+pid = a.pid(MIN, MAX, MAX).kpid(kp, ki, kd)
 
 r = 1.0
 setpoint = [r] * len(data)
 
 title = "Proportional Integral Derivative Position"
+pid.mode = a.pid.POS
 
 y = 0.0
 tf.zero()
 error1 = []
 feedback1 = []
-pid.zero().pos(MAX)
+pid.zero()
 for i in data:
     u = pid(r, y)
     y = tf(u)
@@ -67,8 +68,8 @@ for i in data:
     e = np.roll(e, 1)
     e[0] = r - y
     x[0] = e[0]
-    x[1] += e[0] * ki * Ts
-    x[2] = (e[0] - e[1]) / Ts
+    x[1] += ki * e[0]
+    x[2] = e[0] - e[1]
     u = kp * x[0] + x[1] + kd * x[2]
     if u < MIN:
         u = MIN
@@ -92,12 +93,13 @@ plt.grid(True)
 plt.savefig(os.path.join(prefix, "pid_pos.png"))
 
 title = "Proportional Integral Derivative Increment"
+pid.mode = a.pid.INC
 
 y = 0.0
 tf.zero()
 error1 = []
 feedback1 = []
-pid.zero().inc()
+pid.zero()
 for i in data:
     u = pid(r, y)
     y = tf(u)
@@ -115,8 +117,8 @@ for i in data:
     e = np.roll(e, 1)
     e[0] = r - y
     x[0] = e[0] - e[1]
-    x[1] = e[0] * Ts
-    x[2] = (e[0] + e[2] - e[1] * 2) / Ts
+    x[1] = e[0]
+    x[2] = e[0] - e[1] * 2 + e[2]
     u += kp * x[0] + ki * x[1] + kd * x[2]
     y = u
     if y < MIN:

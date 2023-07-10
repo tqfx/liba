@@ -10,10 +10,8 @@ extern "C" {
 
 A_HIDDEN void a_pid_zerof(a_pid_s *ctx);
 A_HIDDEN void a_pid_zerop(a_pid_s *ctx, unsigned int i);
-A_HIDDEN void a_pid_zero_(a_pid_s *ctx, unsigned int num);
-A_HIDDEN void a_pid_chan_(a_pid_s *ctx, a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err);
-A_HIDDEN void a_pid_outf_(a_pid_s *ctx, unsigned int mode, a_float_t set, a_float_t fdb, a_float_t ec, a_float_t e);
-A_HIDDEN void a_pid_outp_(a_pid_s *ctx, unsigned int mode, a_float_t set, a_float_t fdb, a_float_t ec, a_float_t e, unsigned int i);
+A_HIDDEN void a_pid_outf_(a_pid_s *ctx, a_float_t set, a_float_t fdb, a_float_t ec, a_float_t e);
+A_HIDDEN void a_pid_outp_(a_pid_s *ctx, a_float_t set, a_float_t fdb, a_float_t ec, a_float_t e, unsigned int i);
 
 #if defined(__cplusplus)
 } /* extern "C" */

@@ -18,8 +18,6 @@ cdef class crc8:
     def __call__(self, data: bytes, init: a_u8_t = A_CRC8_INIT) -> a_u8_t:
         return a_crc8(<a_u8_t *>self.table.data.as_voidptr, <const void *>data, len(data), init)
 
-ctypedef a_u16_t (*a_crc16_f)(const a_u16_t *, const void *, a_size_t, a_u16_t)
-
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef class crc16:
@@ -29,7 +27,7 @@ cdef class crc16:
     @property
     def table(self):
         return self.table
-    cdef a_crc16_f f
+    cdef a_u16_t (*f)(const a_u16_t *, const void *, a_size_t, a_u16_t)
     def __cinit__(self, poly: a_u16_t = A_CRC16_POLY, high = False):
         self.table = u16s([0] * A_CRC_SIZ)
         if high:
@@ -41,8 +39,6 @@ cdef class crc16:
     def __call__(self, data: bytes, init: a_u16_t = A_CRC16_INIT) -> a_u16_t:
         return self.f(<a_u16_t *>self.table.data.as_voidptr, <const void *>data, len(data), init)
 
-ctypedef a_u32_t (*a_crc32_f)(const a_u32_t *, const void *, a_size_t, a_u32_t)
-
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef class crc32:
@@ -52,7 +48,7 @@ cdef class crc32:
     @property
     def table(self):
         return self.table
-    cdef a_crc32_f f
+    cdef a_u32_t (*f)(const a_u32_t *, const void *, a_size_t, a_u32_t)
     def __cinit__(self, poly: a_u32_t = A_CRC32_POLY, high = False):
         self.table = u32s([0] * A_CRC_SIZ)
         if high:
@@ -64,8 +60,6 @@ cdef class crc32:
     def __call__(self, data: bytes, init: a_u32_t = A_CRC32_INIT) -> a_u32_t:
         return self.f(<a_u32_t *>self.table.data.as_voidptr, <const void *>data, len(data), init)
 
-ctypedef a_u64_t (*a_crc64_f)(const a_u64_t *, const void *, a_size_t, a_u64_t)
-
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef class crc64:
@@ -75,7 +69,7 @@ cdef class crc64:
     @property
     def table(self):
         return self.table
-    cdef a_crc64_f f
+    cdef a_u64_t (*f)(const a_u64_t *, const void *, a_size_t, a_u64_t)
     def __cinit__(self, poly: a_u64_t = A_CRC64_POLY, high = False):
         self.table = u64s([0] * A_CRC_SIZ)
         if high:

@@ -24,24 +24,19 @@ typedef struct a_pid_neuron_s
     a_float_u wi; //!< integral constant weight
     a_float_u wd; //!< derivative constant weight
     a_float_u ec; //!< error change
+    a_float_t ko; //!< output ratio
 } a_pid_neuron_s;
 
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
-#if defined(LIBA_PID_NEURON_C)
-#undef A_INTERN
-#define A_INTERN A_INLINE
-#endif /* LIBA_PID_NEURON_C */
 
 /*!
- @brief set proportional integral derivative constant for neuron PID controller
+ @brief initialize function for neuron PID controller
  @param[in,out] ctx points to an instance of neuron PID controller
- @param[in] kp proportional learning constant
- @param[in] ki integral learning constant
- @param[in] kd derivative learning constant
+ @param[in] num number of controller channel
 */
-A_EXTERN a_pid_neuron_s *a_pid_neuron_kpid(a_pid_neuron_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd);
+A_EXTERN a_pid_neuron_s *a_pid_neuron_init(a_pid_neuron_s *ctx, unsigned int num);
 
 /*!
  @brief set buffer for multichannel neuron PID controller
@@ -56,27 +51,19 @@ A_EXTERN a_pid_neuron_s *a_pid_neuron_kpid(a_pid_neuron_s *ctx, a_float_t kp, a_
  @param[in] wi points to ki's weight buffer
  @param[in] wd points to kd's weight buffer
 */
-A_EXTERN a_pid_neuron_s *a_pid_neuron_chan(a_pid_neuron_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb,
+A_EXTERN a_pid_neuron_s *a_pid_neuron_chan(a_pid_neuron_s *ctx,
+                                           unsigned int num, a_float_t *out, a_float_t *fdb,
                                            a_float_t *tmp, a_float_t *err, a_float_t *ec,
                                            a_float_t *wp, a_float_t *wi, a_float_t *wd);
 
 /*!
- @brief initialize function for neuron PID controller, default is incremental
+ @brief set proportional integral derivative constant for neuron PID controller
  @param[in,out] ctx points to an instance of neuron PID controller
- @param[in] min mininum output
- @param[in] max maxinum output
- @param[in] ko neuron output ratio
  @param[in] kp proportional learning constant
  @param[in] ki integral learning constant
  @param[in] kd derivative learning constant
- @param[in] wp proportional constant weight
- @param[in] wi integral constant weight
- @param[in] wd derivative constant weight
 */
-A_EXTERN a_pid_neuron_s *a_pid_neuron_init(a_pid_neuron_s *ctx,
-                                           a_float_t min, a_float_t max, a_float_t ko,
-                                           a_float_t kp, a_float_t ki, a_float_t kd,
-                                           a_float_t wp, a_float_t wi, a_float_t wd);
+A_EXTERN a_pid_neuron_s *a_pid_neuron_kpid(a_pid_neuron_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd);
 
 /*!
  @brief calculate function for neuron PID controller
@@ -102,10 +89,6 @@ A_EXTERN a_float_t const *a_pid_neuron_outp(a_pid_neuron_s *ctx, a_float_t const
 */
 A_EXTERN a_pid_neuron_s *a_pid_neuron_zero(a_pid_neuron_s *ctx);
 
-#if defined(LIBA_PID_NEURON_C)
-#undef A_INTERN
-#define A_INTERN static A_INLINE
-#endif /* LIBA_PID_NEURON_C */
 #if defined(__cplusplus)
 } /* extern "C" */
 #endif /* __cplusplus */

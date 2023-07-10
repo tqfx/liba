@@ -15,20 +15,25 @@ static void test_f(void)
     a_tf_s tf;
     a_tf_init(&tf, a_count_of(num), num, input, a_count_of(den), den, output);
     a_pid_s ctx;
-    a_pid_init(&ctx, A_FLOAT_C(0.01), -10, +10);
-    a_pid_kpid(&ctx, 10, A_FLOAT_C(0.01), A_FLOAT_C(0.1));
-    a_pid_set_dt(a_pid_off(a_pid_inc(a_pid_pos(&ctx, 10))), A_FLOAT_C(0.001));
-    for (a_float_t t = 0; t < A_FLOAT_C(0.4); t += A_FLOAT_C(0.001))
+    ctx.kp = A_FLOAT_C(10.0);
+    ctx.ki = A_FLOAT_C(0.01);
+    ctx.kd = A_FLOAT_C(0.1);
+    ctx.summax = +10;
+    ctx.outmax = +10;
+    ctx.outmin = -10;
+    ctx.mode = A_PID_OFF;
+    a_pid_init(&ctx, 1);
+    for (unsigned int i = 0; i < 1000; ++i)
     {
         a_tf_iter(&tf, a_pid_outf(&ctx, 1, *tf.output));
     }
-    a_pid_set_reg(&ctx, A_PID_POS);
-    for (a_float_t t = 0; t < A_FLOAT_C(0.4); t += A_FLOAT_C(0.001))
+    ctx.mode = A_PID_POS;
+    for (unsigned int i = 0; i < 1000; ++i)
     {
         a_tf_iter(&tf, a_pid_outf(&ctx, 1, *tf.output));
     }
-    a_pid_set_reg(&ctx, A_PID_INC);
-    for (a_float_t t = 0; t < A_FLOAT_C(0.4); t += A_FLOAT_C(0.001))
+    ctx.mode = A_PID_INC;
+    for (unsigned int i = 0; i < 1000; ++i)
     {
         a_tf_iter(&tf, a_pid_outf(&ctx, 1, *tf.output));
     }
@@ -53,9 +58,13 @@ static void test_p(void)
     a_tf_init(tf + 1, a_count_of(num1), num1, input1, a_count_of(den1), den1, output1);
     a_tf_init(tf + 2, a_count_of(num2), num2, input2, a_count_of(den2), den2, output2);
     a_pid_s ctx;
-    a_pid_init(&ctx, A_FLOAT_C(0.01), -10, +10);
-    a_pid_kpid(&ctx, 10, A_FLOAT_C(0.01), A_FLOAT_C(0.1));
-    a_pid_set_dt(a_pid_off(a_pid_inc(a_pid_pos(&ctx, 10))), A_FLOAT_C(0.001));
+    ctx.kp = A_FLOAT_C(10.0);
+    ctx.ki = A_FLOAT_C(0.01);
+    ctx.kd = A_FLOAT_C(0.1);
+    ctx.summax = +10;
+    ctx.outmax = +10;
+    ctx.outmin = -10;
+    ctx.mode = A_PID_OFF;
     {
         static a_float_t out[3];
         static a_float_t fdb[3];
@@ -64,7 +73,7 @@ static void test_p(void)
         a_pid_chan(&ctx, 3, out, fdb, tmp, err);
     }
     a_float_t set[3] = {1, 1, 1};
-    for (a_float_t t = 0; t < A_FLOAT_C(0.4); t += A_FLOAT_C(0.001))
+    for (unsigned int n = 0; n < 1000; ++n)
     {
         a_float_t fdb[3];
         for (unsigned int i = 0; i != 3; ++i)
@@ -77,8 +86,8 @@ static void test_p(void)
             a_tf_iter(tf + i, out[i]);
         }
     }
-    a_pid_set_reg(&ctx, A_PID_POS);
-    for (a_float_t t = 0; t < A_FLOAT_C(0.4); t += A_FLOAT_C(0.001))
+    ctx.mode = A_PID_POS;
+    for (unsigned int n = 0; n < 1000; ++n)
     {
         a_float_t buf[3];
         for (unsigned int i = 0; i != 3; ++i)
@@ -91,8 +100,8 @@ static void test_p(void)
             a_tf_iter(tf + i, ptr[i]);
         }
     }
-    a_pid_set_reg(&ctx, A_PID_INC);
-    for (a_float_t t = 0; t < A_FLOAT_C(0.4); t += A_FLOAT_C(0.001))
+    ctx.mode = A_PID_INC;
+    for (unsigned int n = 0; n < 1000; ++n)
     {
         a_float_t buf[3];
         for (unsigned int i = 0; i != 3; ++i)
@@ -144,18 +153,30 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_tf_init(&inc_tf, a_count_of(num), num, inc_input, a_count_of(den), den, inc_output);
 
     a_pid_s pos_pid;
+    pos_pid.kp = A_FLOAT_C(100.0);
+    pos_pid.ki = A_FLOAT_C(0.01);
+    pos_pid.kd = A_FLOAT_C(1200.0);
+    pos_pid.summax = +A_FLOAT_MAX;
+    pos_pid.outmax = +A_FLOAT_MAX;
+    pos_pid.outmin = -A_FLOAT_MAX;
+    pos_pid.mode = A_PID_POS;
+    a_pid_init(&pos_pid, 1);
     a_pid_s inc_pid;
-    a_pid_pos(a_pid_init(&pos_pid, A_FLOAT_C(0.001), -A_FLOAT_MAX, +A_FLOAT_MAX), A_FLOAT_MAX);
-    a_pid_inc(a_pid_init(&inc_pid, A_FLOAT_C(0.001), -A_FLOAT_MAX, +A_FLOAT_MAX));
-    a_pid_kpid(&pos_pid, 100, A_FLOAT_C(0.01), A_FLOAT_C(1.0));
-    a_pid_kpid(&inc_pid, 100, A_FLOAT_C(0.01), A_FLOAT_C(1.0));
-    for (a_float_t t = 0; t < A_FLOAT_C(0.2); t += A_FLOAT_C(0.001))
+    inc_pid.kp = A_FLOAT_C(100.0);
+    inc_pid.ki = A_FLOAT_C(0.01);
+    inc_pid.kd = A_FLOAT_C(1200.0);
+    inc_pid.outmax = +A_FLOAT_MAX;
+    inc_pid.outmin = -A_FLOAT_MAX;
+    inc_pid.mode = A_PID_INC;
+    a_pid_init(&pos_pid, 1);
+    for (unsigned int i = 0; i < 100; ++i)
     {
-        a_float_t in = input(t);
+        a_float_t const in = input(A_FLOAT_C(0.001) * i);
         a_tf_iter(&pos_tf, a_pid_outf(&pos_pid, in, *pos_tf.output));
         a_tf_iter(&inc_tf, a_pid_outf(&inc_pid, in, *inc_tf.output));
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), t, in, *pos_tf.output, *inc_tf.output);
+        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
+               A_FLOAT_C(0.001) * i, in, *pos_tf.output, *inc_tf.output);
 #endif /* MAIN_ONCE */
     }
 

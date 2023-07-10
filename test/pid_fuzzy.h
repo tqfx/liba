@@ -76,7 +76,7 @@ static a_float_t const m7ec[] = {
     A_MF_TRI, PS, PM, PL,
     A_MF_TRI, PM, PL, PL};
 #undef X
-#define X A_FLOAT_C(10.0) / 6
+#define X A_FLOAT_C(500.0) / 6
 static a_float_t const m7kp[] = {
     NL, NL, NM, NM, NS, ZO, ZO,
     NL, NL, NM, NS, NS, ZO, PS,
@@ -86,7 +86,7 @@ static a_float_t const m7kp[] = {
     NS, ZO, PS, PM, PM, PM, PL,
     ZO, ZO, PM, PM, PM, PL, PL};
 #undef X
-#define X A_FLOAT_C(0.01) / 3
+#define X A_FLOAT_C(10.0) / 3
 static a_float_t const m7ki[] = {
     PL, PL, PM, PM, PS, ZO, ZO,
     PL, PL, PM, PS, PS, ZO, ZO,
@@ -96,7 +96,7 @@ static a_float_t const m7ki[] = {
     ZO, ZO, NS, NS, NM, NL, NL,
     ZO, ZO, NS, NM, NM, NL, NL};
 #undef X
-#define X A_FLOAT_C(0.1) / 3
+#define X A_FLOAT_C(5000.0) / 3
 static a_float_t const m7kd[] = {
     NS, PS, PL, PL, PL, PM, NS,
     NS, PS, PL, PM, PM, PS, ZO,
@@ -116,16 +116,25 @@ static void test_f(void)
     a_tf_s tf;
     a_tf_init(&tf, a_count_of(num), num, input, a_count_of(den), den, output);
     a_pid_fuzzy_s ctx;
-    a_pid_fuzzy_init(&ctx, A_FLOAT_C(0.01), 7, m7e, m7ec, m7kp, m7ki, m7kd, -10, +10);
+    ctx.pid.summax = +10;
+    ctx.pid.outmax = +10;
+    ctx.pid.outmin = -10;
+    ctx.pid.mode = A_PID_POS;
+    ctx.col = 7;
+    ctx.me = m7e;
+    ctx.mec = m7ec;
+    ctx.mkp = m7kp;
+    ctx.mki = m7ki;
+    ctx.mkd = m7kd;
+    ctx.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
+    a_pid_fuzzy_init(&ctx, 1);
     {
         static unsigned int idx[A_PID_FUZZY_IDX(2)];
         static a_float_t val[A_PID_FUZZY_VAL(2)];
         a_pid_fuzzy_buff(&ctx, idx, val);
-        a_pid_fuzzy_pos(&ctx, 10);
     }
-    a_pid_set_dt(&ctx.pid, A_FLOAT_C(0.001));
     a_pid_fuzzy_kpid(&ctx, 10, A_FLOAT_C(0.01), A_FLOAT_C(0.1));
-    for (a_float_t t = 0; t < A_FLOAT_C(0.2); t += A_FLOAT_C(0.001))
+    for (unsigned int i = 0; i < 1000; ++i)
     {
         a_tf_iter(&tf, a_pid_fuzzy_outf(&ctx, 1, output[0]));
     }
@@ -133,24 +142,11 @@ static void test_f(void)
     a_pid_fuzzy_zero(&ctx);
     char buff[A_PID_FUZZY_BUF1(2)];
     a_pid_fuzzy_buf1(&ctx, buff, 2);
-    for (a_float_t t = 0; t < A_FLOAT_C(0.2); t += A_FLOAT_C(0.001))
+    for (unsigned int i = 0; i < 1000; ++i)
     {
         input[0] = a_pid_fuzzy_outf(&ctx, 1, output[0]);
         output[0] = a_tf_iter(&tf, input[0]);
     }
-    TEST_BUG(a_pid_fuzzy_op(&ctx) == A_PID_FUZZY_EQU);
-    a_pid_fuzzy_set_op(&ctx, A_PID_FUZZY_OR_DEFAULT);
-    TEST_BUG(a_pid_fuzzy_op(&ctx) == A_PID_FUZZY_OR_DEFAULT);
-    a_pid_fuzzy_set_op(&ctx, A_PID_FUZZY_OR_ALGEBRA);
-    TEST_BUG(a_pid_fuzzy_op(&ctx) == A_PID_FUZZY_OR_ALGEBRA);
-    a_pid_fuzzy_set_op(&ctx, A_PID_FUZZY_OR_BOUNDED);
-    TEST_BUG(a_pid_fuzzy_op(&ctx) == A_PID_FUZZY_OR_BOUNDED);
-    a_pid_fuzzy_set_op(&ctx, A_PID_FUZZY_AND_DEFAULT);
-    TEST_BUG(a_pid_fuzzy_op(&ctx) == A_PID_FUZZY_AND_DEFAULT);
-    a_pid_fuzzy_set_op(&ctx, A_PID_FUZZY_AND_ALGEBRA);
-    TEST_BUG(a_pid_fuzzy_op(&ctx) == A_PID_FUZZY_AND_ALGEBRA);
-    a_pid_fuzzy_set_op(&ctx, A_PID_FUZZY_AND_BOUNDED);
-    TEST_BUG(a_pid_fuzzy_op(&ctx) == A_PID_FUZZY_AND_BOUNDED);
 }
 
 static void test_p(void)
@@ -172,14 +168,22 @@ static void test_p(void)
     a_tf_init(tf + 1, a_count_of(num1), num1, input1, a_count_of(den1), den1, output1);
     a_tf_init(tf + 2, a_count_of(num2), num2, input2, a_count_of(den2), den2, output2);
     a_pid_fuzzy_s ctx;
-    a_pid_fuzzy_init(&ctx, A_FLOAT_C(0.01), 7, m7e, m7ec, m7kp, m7ki, m7kd, -10, +10);
+    ctx.pid.summax = +10;
+    ctx.pid.outmax = +10;
+    ctx.pid.outmin = -10;
+    ctx.pid.mode = A_PID_POS;
+    ctx.col = 7;
+    ctx.me = m7e;
+    ctx.mec = m7ec;
+    ctx.mkp = m7kp;
+    ctx.mki = m7ki;
+    ctx.mkd = m7kd;
+    ctx.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
     {
         static unsigned int idx[A_PID_FUZZY_IDX(2)];
         static a_float_t val[A_PID_FUZZY_VAL(2)];
         a_pid_fuzzy_buff(&ctx, idx, val);
-        a_pid_fuzzy_pos(&ctx, 10);
     }
-    a_pid_set_dt(&ctx.pid, A_FLOAT_C(0.001));
     a_pid_fuzzy_kpid(&ctx, 10, A_FLOAT_C(0.01), A_FLOAT_C(0.1));
     {
         static a_float_t out[3];
@@ -189,7 +193,7 @@ static void test_p(void)
         a_pid_fuzzy_chan(&ctx, 3, out, fdb, tmp, err);
     }
     a_float_t set[3] = {1, 1, 1};
-    for (a_float_t t = 0; t < A_FLOAT_C(0.4); t += A_FLOAT_C(0.001))
+    for (unsigned int n = 0; n < 1000; ++n)
     {
         a_float_t fdb[3];
         for (unsigned int i = 0; i != 3; ++i)
@@ -241,34 +245,68 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_tf_init(&inc_tf, a_count_of(num), num, inc_input, a_count_of(den), den, inc_output);
 
     a_pid_fuzzy_s pos_pid;
-    a_pid_fuzzy_s inc_pid;
-    a_pid_fuzzy_init(&pos_pid, A_FLOAT_C(0.001), 3, m3e, m3ec, m3kp, m3ki, m3kd, -10, +10);
-    a_pid_fuzzy_init(&pos_pid, A_FLOAT_C(0.001), 7, m7e, m7ec, m7kp, m7ki, m7kd, -10, +10);
+    pos_pid.pid.summax = +10;
+    pos_pid.pid.outmax = +10;
+    pos_pid.pid.outmin = -10;
+    pos_pid.pid.mode = A_PID_POS;
+    pos_pid.col = 3;
+    pos_pid.me = m3e;
+    pos_pid.mec = m3ec;
+    pos_pid.mkp = m3kp;
+    pos_pid.mki = m3ki;
+    pos_pid.mkd = m3kd;
+    pos_pid.col = 7;
+    pos_pid.me = m7e;
+    pos_pid.mec = m7ec;
+    pos_pid.mkp = m7kp;
+    pos_pid.mki = m7ki;
+    pos_pid.mkd = m7kd;
+    pos_pid.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
+    a_pid_fuzzy_init(&pos_pid, 1);
     {
         static unsigned int idx[A_PID_FUZZY_IDX(2)];
         static a_float_t val[A_PID_FUZZY_VAL(2)];
         a_pid_fuzzy_buff(&pos_pid, idx, val);
-        a_pid_fuzzy_pos(&pos_pid, 10);
     }
-    a_pid_fuzzy_init(&inc_pid, A_FLOAT_C(0.001), 3, m3e, m3ec, m3kp, m3ki, m3kd, -10, +10);
-    a_pid_fuzzy_init(&inc_pid, A_FLOAT_C(0.001), 7, m7e, m7ec, m7kp, m7ki, m7kd, -10, +10);
+    a_pid_fuzzy_s inc_pid;
+    inc_pid.pid.outmax = +10;
+    inc_pid.pid.outmin = -10;
+    inc_pid.pid.mode = A_PID_INC;
+    inc_pid.col = 3;
+    inc_pid.me = m3e;
+    inc_pid.mec = m3ec;
+    inc_pid.mkp = m3kp;
+    inc_pid.mki = m3ki;
+    inc_pid.mkd = m3kd;
+    inc_pid.col = 7;
+    inc_pid.me = m7e;
+    inc_pid.mec = m7ec;
+    inc_pid.mkp = m7kp;
+    inc_pid.mki = m7ki;
+    inc_pid.mkd = m7kd;
+    inc_pid.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
+    a_pid_fuzzy_init(&inc_pid, 1);
     {
         static unsigned int idx[A_PID_FUZZY_IDX(2)];
         static a_float_t val[A_PID_FUZZY_VAL(2)];
         a_pid_fuzzy_buff(&inc_pid, idx, val);
-        a_pid_fuzzy_inc(&inc_pid);
     }
-    a_pid_fuzzy_kpid(&pos_pid, 10, A_FLOAT_C(0.01), A_FLOAT_C(0.1));
-    a_pid_fuzzy_kpid(&inc_pid, 10, A_FLOAT_C(0.01), A_FLOAT_C(0.1));
-    for (a_float_t t = 0; t < A_FLOAT_C(0.5); t += A_FLOAT_C(0.001))
+    a_pid_fuzzy_kpid(&pos_pid, 600, A_FLOAT_C(20.0), A_FLOAT_C(6000.0));
+    a_pid_fuzzy_kpid(&inc_pid, 600, A_FLOAT_C(20.0), A_FLOAT_C(6000.0));
+    for (unsigned int i = 0; i < 200; ++i)
     {
-        a_float_t in = input(t);
+        a_float_t in = input(A_FLOAT_C(0.001) * i);
         a_tf_iter(&pos_tf, a_pid_fuzzy_outf(&pos_pid, in, *pos_tf.output));
         a_tf_iter(&inc_tf, a_pid_fuzzy_outf(&inc_pid, in, *inc_tf.output));
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), t, in, *pos_tf.output, *inc_tf.output);
+        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
+               A_FLOAT_C(0.001) * i, in, *pos_tf.output, *inc_tf.output);
 #endif /* MAIN_ONCE */
     }
+    a_pid_fuzzy_zero(&pos_pid);
+    a_pid_fuzzy_zero(&inc_pid);
+    a_tf_zero(&pos_tf);
+    a_tf_zero(&inc_tf);
 
 #if defined(MAIN_ONCE)
     if (log)

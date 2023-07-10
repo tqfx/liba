@@ -15,9 +15,18 @@ static void test_f(void)
     a_tf_s tf;
     a_tf_init(&tf, a_count_of(num), num, input, a_count_of(den), den, output);
     a_pid_neuron_s ctx;
-    a_pid_neuron_init(&ctx, -10, +10, A_FLOAT_C(0.1), A_FLOAT_C(0.1), A_FLOAT_C(0.1), A_FLOAT_C(0.1), A_FLOAT_C(0.1), A_FLOAT_C(0.1), A_FLOAT_C(0.1));
-    a_pid_neuron_kpid(&ctx, A_FLOAT_C(0.1), A_FLOAT_C(0.1), A_FLOAT_C(0.1));
-    for (a_float_t t = 0; t < A_FLOAT_C(0.2); t += A_FLOAT_C(0.001))
+    ctx.pid.kp = A_FLOAT_C(0.1);
+    ctx.pid.ki = A_FLOAT_C(0.1);
+    ctx.pid.kd = A_FLOAT_C(0.1);
+    ctx.pid.outmax = +10;
+    ctx.pid.outmin = -10;
+    ctx.pid.mode = A_PID_INC;
+    ctx.ko = A_FLOAT_C(10.0);
+    ctx.wp.f = A_FLOAT_C(0.1);
+    ctx.wi.f = A_FLOAT_C(0.1);
+    ctx.wd.f = A_FLOAT_C(0.1);
+    a_pid_neuron_init(&ctx, 1);
+    for (unsigned int i = 0; i < 1000; ++i)
     {
         a_tf_iter(&tf, a_pid_neuron_outf(&ctx, 1, output[0]));
     }
@@ -44,21 +53,26 @@ static void test_p(void)
     a_tf_init(tf + 1, a_count_of(num1), num1, input1, a_count_of(den1), den1, output1);
     a_tf_init(tf + 2, a_count_of(num2), num2, input2, a_count_of(den2), den2, output2);
     a_pid_neuron_s ctx;
-    a_pid_neuron_init(&ctx, -10, +10, A_FLOAT_C(0.1), A_FLOAT_C(0.1), A_FLOAT_C(0.1), A_FLOAT_C(0.1), A_FLOAT_C(0.1), A_FLOAT_C(0.1), A_FLOAT_C(0.1));
-    a_pid_neuron_kpid(&ctx, A_FLOAT_C(0.1), A_FLOAT_C(0.1), A_FLOAT_C(0.1));
+    ctx.pid.kp = A_FLOAT_C(0.1);
+    ctx.pid.ki = A_FLOAT_C(0.1);
+    ctx.pid.kd = A_FLOAT_C(0.1);
+    ctx.pid.outmax = +10;
+    ctx.pid.outmin = -10;
+    ctx.pid.mode = A_PID_INC;
+    ctx.ko = A_FLOAT_C(10.0);
     {
         static a_float_t out[3];
         static a_float_t fdb[3];
         static a_float_t tmp[3];
         static a_float_t err[3];
         static a_float_t ec[3];
-        static a_float_t wp[3];
-        static a_float_t wi[3];
-        static a_float_t wd[3];
+        static a_float_t wp[3] = {A_FLOAT_C(0.1), A_FLOAT_C(0.1), A_FLOAT_C(0.1)};
+        static a_float_t wi[3] = {A_FLOAT_C(0.1), A_FLOAT_C(0.1), A_FLOAT_C(0.1)};
+        static a_float_t wd[3] = {A_FLOAT_C(0.1), A_FLOAT_C(0.1), A_FLOAT_C(0.1)};
         a_pid_neuron_chan(&ctx, 3, out, fdb, tmp, err, ec, wp, wi, wd);
     }
     a_float_t set[3] = {1, 1, 1};
-    for (a_float_t t = 0; t < A_FLOAT_C(0.4); t += A_FLOAT_C(0.001))
+    for (unsigned int n = 0; n < 1000; ++n)
     {
         a_float_t fdb[3];
         for (unsigned int i = 0; i != 3; ++i)
@@ -106,15 +120,28 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_tf_init(&tf, a_count_of(num), num, tf_input, a_count_of(den), den, tf_output);
 
     a_pid_neuron_s ctx;
-    a_pid_neuron_init(&ctx, -A_FLOAT_MAX, +A_FLOAT_MAX, A_FLOAT_C(5000.0), A_FLOAT_C(4.0), A_FLOAT_C(0.1), A_FLOAT_C(1.0), A_FLOAT_C(0.1), A_FLOAT_C(0.1), A_FLOAT_C(0.1));
-    for (a_float_t t = 0; t < A_FLOAT_C(0.2); t += A_FLOAT_C(0.001))
+    ctx.pid.kp = A_FLOAT_C(4.0);
+    ctx.pid.ki = A_FLOAT_C(0.05);
+    ctx.pid.kd = A_FLOAT_C(1.0);
+    ctx.pid.outmax = +A_FLOAT_MAX;
+    ctx.pid.outmin = -A_FLOAT_MAX;
+    ctx.pid.mode = A_PID_INC;
+    ctx.ko = A_FLOAT_C(4000.0);
+    ctx.wp.f = A_FLOAT_C(0.1);
+    ctx.wi.f = A_FLOAT_C(0.1);
+    ctx.wd.f = A_FLOAT_C(0.1);
+    a_pid_neuron_init(&ctx, 1);
+    for (unsigned int i = 0; i < 100; ++i)
     {
-        a_float_t in = input(t);
+        a_float_t const in = input(A_FLOAT_C(0.001) * i);
         a_tf_iter(&tf, a_pid_neuron_outf(&ctx, in, *tf.output));
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), t, in, *tf.output, ctx.pid.err.f);
+        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
+               A_FLOAT_C(0.001) * i, in, *tf.output, ctx.pid.err.f);
 #endif /* MAIN_ONCE */
     }
+    a_pid_neuron_zero(&ctx);
+    a_tf_zero(&tf);
 
 #if defined(MAIN_ONCE)
     if (log)

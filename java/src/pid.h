@@ -8,19 +8,18 @@ typedef struct
 {
     JNIEnv *jenv;
     jobject jobj;
-    jfieldID dt;
     jfieldID kp;
     jfieldID ki;
     jfieldID kd;
+    jfieldID summax;
+    jfieldID outmax;
+    jfieldID outmin;
     jfieldID out;
     jfieldID fdb;
     jfieldID tmp;
     jfieldID err;
-    jfieldID outmin;
-    jfieldID outmax;
-    jfieldID summax;
-    jfieldID num;
-    jfieldID reg;
+    jfieldID chan;
+    jfieldID mode;
 } j_pid_s;
 
 #if defined(__cplusplus)

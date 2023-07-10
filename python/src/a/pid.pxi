@@ -8,12 +8,19 @@ cdef class pid:
     POS = A_PID_POS
     INC = A_PID_INC
     cdef a_pid_s ctx
-    def __cinit__(self, a_float_t dt, a_float_t min, a_float_t max, a_float_t sum = 0):
-        a_pid_init(&self.ctx, dt, min, max)
+    def __cinit__(self, a_float_t min, a_float_t max, a_float_t sum = 0):
+        self.ctx.summax = sum
+        self.ctx.outmax = max
+        self.ctx.outmin = min
+        a_pid_init(&self.ctx, 0)
         if sum:
-            a_pid_pos(&self.ctx, sum)
+            self.ctx.mode = A_PID_POS
         else:
-            a_pid_inc(&self.ctx)
+            self.ctx.mode = A_PID_INC
+    def kpid(self, kp: a_float_t, ki: a_float_t, kd: a_float_t):
+        '''set proportional integral derivative constant for PID controller'''
+        a_pid_kpid(&self.ctx, kp, ki, kd)
+        return self
     def __call__(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
         '''calculate function for PID controller'''
         return a_pid_outf(&self.ctx, set, fdb)
@@ -21,34 +28,24 @@ cdef class pid:
         '''zero clear function for PID controller'''
         a_pid_zero(&self.ctx)
         return self
-    def kpid(self, kp: a_float_t, ki: a_float_t, kd: a_float_t):
-        '''set proportional integral derivative constant for PID controller'''
-        a_pid_kpid(&self.ctx, kp, ki, kd)
-        return self
-    def pos(self, max: a_float_t):
-        '''positional PID controller'''
-        a_pid_pos(&self.ctx, max)
-        return self
-    def inc(self):
-        '''incremental PID controller'''
-        a_pid_inc(&self.ctx)
-        return self
-    def off(self):
-        '''turn off PID controller'''
-        a_pid_off(&self.ctx)
-        return self
     @property
-    def outmin(self) -> a_float_t:
-        return self.ctx.outmin
-    @outmin.setter
-    def outmin(self, outmin: a_float_t):
-        self.ctx.outmin = outmin
+    def kp(self) -> a_float_t:
+        return self.ctx.kp
+    @kp.setter
+    def kp(self, kp: a_float_t):
+        self.ctx.kp = kp
     @property
-    def outmax(self) -> a_float_t:
-        return self.ctx.outmax
-    @outmax.setter
-    def outmax(self, outmax: a_float_t):
-        self.ctx.outmax = outmax
+    def ki(self) -> a_float_t:
+        return self.ctx.ki
+    @ki.setter
+    def ki(self, ki: a_float_t):
+        self.ctx.ki = ki
+    @property
+    def kd(self) -> a_float_t:
+        return self.ctx.kd
+    @kd.setter
+    def kd(self, kd: a_float_t):
+        self.ctx.kd = kd
     @property
     def summax(self) -> a_float_t:
         return self.ctx.summax
@@ -56,35 +53,17 @@ cdef class pid:
     def summax(self, summax: a_float_t):
         self.ctx.summax = summax
     @property
-    def mode(self) -> int:
-        return a_pid_mode(&self.ctx)
-    @mode.setter
-    def mode(self, mode: int):
-        a_pid_set_mode(&self.ctx, mode)
+    def outmax(self) -> a_float_t:
+        return self.ctx.outmax
+    @outmax.setter
+    def outmax(self, outmax: a_float_t):
+        self.ctx.outmax = outmax
     @property
-    def dt(self) -> a_float_t:
-        return a_pid_dt(&self.ctx)
-    @dt.setter
-    def dt(self, dt: a_float_t):
-        a_pid_set_dt(&self.ctx, dt)
-    @property
-    def kp(self) -> a_float_t:
-        return a_pid_kp(&self.ctx)
-    @kp.setter
-    def kp(self, kp: a_float_t):
-        a_pid_set_kp(&self.ctx, kp)
-    @property
-    def ki(self) -> a_float_t:
-        return a_pid_ki(&self.ctx)
-    @ki.setter
-    def ki(self, ki: a_float_t):
-        a_pid_set_ki(&self.ctx, ki)
-    @property
-    def kd(self) -> a_float_t:
-        return a_pid_kd(&self.ctx)
-    @kd.setter
-    def kd(self, kd: a_float_t):
-        a_pid_set_kd(&self.ctx, kd)
+    def outmin(self) -> a_float_t:
+        return self.ctx.outmin
+    @outmin.setter
+    def outmin(self, outmin: a_float_t):
+        self.ctx.outmin = outmin
     @property
     def out(self) -> a_float_t:
         return self.ctx.out.f
@@ -94,3 +73,9 @@ cdef class pid:
     @property
     def err(self) -> a_float_t:
         return self.ctx.err.f
+    @property
+    def mode(self) -> int:
+        return self.ctx.mode
+    @mode.setter
+    def mode(self, mode: int):
+        self.ctx.mode = mode

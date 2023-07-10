@@ -14,94 +14,59 @@ public class pid_fuzzy {
     double[] mkd;
     int[] idx;
     double[] val;
+    long op;
     /** base proportional constant */
     public double kp;
     /** base integral constant */
     public double ki;
     /** base derivative constant */
     public double kd;
-    long op;
+    int col;
+    int buf;
 
     /**
      * construct a new {@link pid_fuzzy} object
      *
-     * @param num maximum number triggered by the rule
-     * @param dt  sampling time unit(s)
-     * @param me  points to membership function parameter table, terminated by
-     *            {@link mf}
-     * @param mec points to membership function parameter table, terminated by
-     *            {@link mf}
-     * @param mkp points to Kp's rule base table, the rule base must be square
-     * @param mki points to Ki's rule base table, the rule base must be square
-     * @param mkd points to Kd's rule base table, the rule base must be square
      * @param min mininum output
      * @param max maxinum output
      */
-    public pid_fuzzy(int num, double dt, double[][] me, double[][] mec,
-            double[][] mkp, double[][] mki, double[][] mkd, double min, double max) {
-        this.pid = new pid(dt, min, max);
-        this.init(dt, me, mec, mkp, mki, mkd, min, max).buff(num);
+    public pid_fuzzy(double min, double max) {
+        this.pid = new pid(min, max);
+        this.init();
     }
 
     /**
      * construct a new {@link pid_fuzzy} object
      *
-     * @param num maximum number triggered by the rule
-     * @param dt  sampling time unit(s)
-     * @param me  points to membership function parameter table, terminated by
-     *            {@link mf}
-     * @param mec points to membership function parameter table, terminated by
-     *            {@link mf}
-     * @param mkp points to Kp's rule base table, the rule base must be square
-     * @param mki points to Ki's rule base table, the rule base must be square
-     * @param mkd points to Kd's rule base table, the rule base must be square
      * @param min mininum output
      * @param max maxinum output
      * @param sum maximum intergral output
      */
-    public pid_fuzzy(int num, double dt, double[][] me, double[][] mec,
-            double[][] mkp, double[][] mki, double[][] mkd, double min, double max, double sum) {
-        this.pid = new pid(dt, min, max, sum);
-        this.init(dt, me, mec, mkp, mki, mkd, min, max).buff(num);
+    public pid_fuzzy(double min, double max, double sum) {
+        this.pid = new pid(min, max, sum);
+        this.init();
     }
 
     /**
-     * turn off fuzzy PID controller
+     * initialize function for fuzzy PID controller
      *
      * @return {@link pid_fuzzy}
      */
-    public final native pid_fuzzy off();
+    public final native pid_fuzzy init();
 
     /**
-     * incremental fuzzy PID controller
+     * set rule base for fuzzy PID controller
      *
+     * @param me  points to membership function parameter table, terminated by
+     *            {@link mf}
+     * @param mec points to membership function parameter table, terminated by
+     *            {@link mf}
+     * @param mkp points to Kp's rule base table, the rule base must be square
+     * @param mki points to Ki's rule base table, the rule base must be square
+     * @param mkd points to Kd's rule base table, the rule base must be square
      * @return {@link pid_fuzzy}
      */
-    public final native pid_fuzzy inc();
-
-    /**
-     * positional fuzzy PID controller
-     *
-     * @param max maximum intergral output
-     * @return {@link pid_fuzzy}
-     */
-    public final native pid_fuzzy pos(double max);
-
-    /**
-     * set register for fuzzy PID controller directly
-     *
-     * @param mode enumeration for fuzzy PID controller register
-     * @return {@link pid_fuzzy}
-     */
-    public final native pid_fuzzy mode(int mode);
-
-    /**
-     * set sampling period for fuzzy PID controller
-     *
-     * @param dt sampling time unit(s)
-     * @return {@link pid_fuzzy}
-     */
-    public final native pid_fuzzy time(double dt);
+    public final native pid_fuzzy rule(double[][] me, double[][] mec, double[][] mkp, double[][] mki, double[][] mkd);
 
     /**
      * set proportional integral derivative constant for fuzzy PID controller
@@ -122,36 +87,12 @@ public class pid_fuzzy {
     public final native pid_fuzzy buff(int num);
 
     /**
-     * set rule base for fuzzy PID controller
+     * set fuzzy relational operator for fuzzy PID controller
      *
-     * @param me  points to membership function parameter table, terminated by
-     *            {@link mf}
-     * @param mec points to membership function parameter table, terminated by
-     *            {@link mf}
-     * @param mkp points to Kp's rule base table, the rule base must be square
-     * @param mki points to Ki's rule base table, the rule base must be square
-     * @param mkd points to Kd's rule base table, the rule base must be square
+     * @param op enumeration for fuzzy PID controller operator
      * @return {@link pid_fuzzy}
      */
-    public final native pid_fuzzy rule(double[][] me, double[][] mec, double[][] mkp, double[][] mki, double[][] mkd);
-
-    /**
-     * initialize function for fuzzy PID controller
-     *
-     * @param dt  sampling time unit(s)
-     * @param me  points to membership function parameter table, terminated by
-     *            {@link mf}
-     * @param mec points to membership function parameter table, terminated by
-     *            {@link mf}
-     * @param mkp points to Kp's rule base table, the rule base must be square
-     * @param mki points to Ki's rule base table, the rule base must be square
-     * @param mkd points to Kd's rule base table, the rule base must be square
-     * @param min mininum output
-     * @param max maxinum output
-     * @return {@link pid_fuzzy}
-     */
-    public final native pid_fuzzy init(double dt, double[][] me, double[][] mec,
-            double[][] mkp, double[][] mki, double[][] mkd, double min, double max);
+    public final native pid_fuzzy op(int op);
 
     /**
      * calculate function for fuzzy PID controller

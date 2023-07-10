@@ -5,19 +5,18 @@
 
 /***
  fuzzy proportional integral derivative controller
- @field dt sampling time unit(s)
  @field kp proportional constant
  @field ki integral constant
  @field kd derivative constant
- @field mode controller mode
- @field outmin minimum final output
- @field outmax maximum final output
  @field summax maximum integral output
- @field col number of columns in the rule base
- @field buf maximum number triggered by the rule
+ @field outmax maximum final output
+ @field outmin minimum final output
  @field out controller output
  @field fdb cache feedback
  @field err cache error
+ @field mode controller mode
+ @field col number of columns in the rule base
+ @field buf maximum number triggered by the rule
  @table pid_fuzzy
 */
 
@@ -42,15 +41,9 @@ A_PUBLIC int LMODULE(pid_fuzzy_die)(lua_State *L);
 
 /***
  constructor for fuzzy PID controller
- @tparam int num maximum number triggered by the rule
- @tparam number dt sampling time unit(s)
- @tparam table me points to membership function parameter table, terminated by 0
- @tparam table mec points to membership function parameter table, terminated by 0
- @tparam table mkp points to Kp's rule base table, the rule base must be square
- @tparam table mki points to Ki's rule base table, the rule base must be square
- @tparam table mkd points to Kd's rule base table, the rule base must be square
- @tparam number imin minimum input
- @tparam number imax maximum input
+ @tparam[opt] number kp proportional constant
+ @tparam[opt] number ki integral constant
+ @tparam[opt] number kd derivative constant
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
@@ -61,13 +54,9 @@ A_PUBLIC int LMODULE(pid_fuzzy_new)(lua_State *L);
 
 /***
  initialize function for fuzzy PID controller
- @tparam int num maximum number triggered by the rule
- @tparam number dt sampling time unit(s)
- @tparam table me points to membership function parameter table, terminated by 0
- @tparam table mec points to membership function parameter table, terminated by 0
- @tparam table mkp points to Kp's rule base table, the rule base must be square
- @tparam table mki points to Ki's rule base table, the rule base must be square
- @tparam table mkd points to Kd's rule base table, the rule base must be square
+ @tparam[opt] number kp proportional constant
+ @tparam[opt] number ki integral constant
+ @tparam[opt] number kd derivative constant
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
@@ -75,22 +64,6 @@ A_PUBLIC int LMODULE(pid_fuzzy_new)(lua_State *L);
  @function init
 */
 A_PUBLIC int LMODULE(pid_fuzzy_init)(lua_State *L);
-
-/***
- calculate function for fuzzy PID controller
- @tparam number set setpoint
- @tparam number fdb feedback
- @treturn number output
- @function iter
-*/
-A_PUBLIC int LMODULE(pid_fuzzy_iter)(lua_State *L);
-
-/***
- zero clear function for fuzzy PID controller
- @treturn pid_fuzzy fuzzy PID controller userdata
- @function zero
-*/
-A_PUBLIC int LMODULE(pid_fuzzy_zero)(lua_State *L);
 
 /***
  set rule base for fuzzy PID controller
@@ -115,26 +88,37 @@ A_PUBLIC int LMODULE(pid_fuzzy_rule)(lua_State *L);
 A_PUBLIC int LMODULE(pid_fuzzy_kpid)(lua_State *L);
 
 /***
- positional fuzzy PID controller
- @tparam number max maximum intergral output
+ set buffer for fuzzy PID controller
+ @tparam int num maximum number triggered by the rule
  @treturn pid_fuzzy fuzzy PID controller userdata
- @function pos
+ @function buff
 */
-A_PUBLIC int LMODULE(pid_fuzzy_pos)(lua_State *L);
+A_PUBLIC int LMODULE(pid_fuzzy_buff)(lua_State *L);
 
 /***
- incremental fuzzy PID controller
+ set fuzzy relational operator for fuzzy PID controller
+ @param ctx fuzzy PID controller userdata
+ @tparam int op enumeration for fuzzy PID controller operator
  @treturn pid_fuzzy fuzzy PID controller userdata
- @function inc
+ @function op
 */
-A_PUBLIC int LMODULE(pid_fuzzy_inc)(lua_State *L);
+A_PUBLIC int LMODULE(pid_fuzzy_op)(lua_State *L);
 
 /***
- turn off fuzzy PID controller
- @treturn pid_fuzzy fuzzy PID controller userdata
- @function off
+ calculate function for fuzzy PID controller
+ @tparam number set setpoint
+ @tparam number fdb feedback
+ @treturn number output
+ @function iter
 */
-A_PUBLIC int LMODULE(pid_fuzzy_off)(lua_State *L);
+A_PUBLIC int LMODULE(pid_fuzzy_iter)(lua_State *L);
+
+/***
+ zero clear function for fuzzy PID controller
+ @treturn pid_fuzzy fuzzy PID controller userdata
+ @function zero
+*/
+A_PUBLIC int LMODULE(pid_fuzzy_zero)(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

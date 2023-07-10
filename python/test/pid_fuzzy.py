@@ -152,10 +152,10 @@ def fuzzy(e: float, c: float):
     return kp, ki, kd
 
 
-kp = 9
-ki = 0.01
-kd = 0.1
 Ts = 0.001
+kp = 9
+ki = 0.01 * Ts
+kd = 0.1 / Ts
 data = np.arange(0, 0.2, Ts)
 
 try:
@@ -177,7 +177,7 @@ except Exception as e:
 MIN = -10
 MAX = +10
 tf = a.tf(num, den[1:])
-pid_fuzzy = a.pid_fuzzy(2, Ts, me, mec, mkp, mki, mkd, MIN, MAX)
+pid_fuzzy = a.pid_fuzzy(MIN, MAX).rule(me, mec, mkp, mki, mkd).buff(2).op(a.pid_fuzzy.AND_ALGEBRA)
 
 r = 1.0
 setpoint = [r] * len(data)
@@ -206,8 +206,8 @@ for i in data:
     e = np.roll(e, 1)
     e[0] = r - y
     x[0] = e[0] - e[1]
-    x[1] = e[0] * Ts
-    x[2] = (e[0] + e[2] - e[1] * 2) / Ts
+    x[1] = e[0]
+    x[2] = e[0] - e[1] * 2 + e[2]
     dkp, dki, dkd = fuzzy(e[0], e[0] - e[1])
     u += (kp + dkp) * x[0] + (ki + dki) * x[1] + (kd + dkd) * x[2]
     y = u

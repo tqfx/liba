@@ -1,5 +1,4 @@
 import liba.mf;
-import liba.pid;
 import liba.pid_fuzzy;
 
 class _pid_fuzzy {
@@ -77,12 +76,10 @@ class _pid_fuzzy {
                 { NL, NS, NS, NS, NS, NS, NL },
                 { NL, NM, NM, NM, NS, NS, NL },
         };
-        pid_fuzzy obj = new pid_fuzzy(7, 1, me, mec, mkp, mki, mkd, -10, +10);
+        pid_fuzzy obj = new pid_fuzzy(-10, +10);
+        obj.rule(me, mec, mkp, mki, mkd).buff(2);
         System.out.print(obj.iter(1, 0) + " ");
-        obj.off().inc().pos(10).buff(2);
-        obj.kpid(10, 0.1, 1);
-        obj.mode(pid.INC);
-        obj.time(0.1).zero();
+        obj.kpid(10, 0.1, 1).zero();
         System.out.println(obj.iter(1, 0));
     }
 }

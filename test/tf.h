@@ -27,12 +27,11 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_float_t output[a_count_of(den)];
     a_tf_init(&tf, a_count_of(num), num, input, a_count_of(den), den, output);
 
-    a_uint_t i = 0;
-    for (a_float_t t = 0; t < A_FLOAT_C(0.2); t += A_FLOAT_C(0.001))
+    for (unsigned int i = 0; i < 200; ++i)
     {
         a_float_t out = a_tf_iter(&tf, u[i++]);
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), t, A_FLOAT_C(1.0), out);
+        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), A_FLOAT_C(0.001) * i, A_FLOAT_C(1.0), out);
 #else /* !MAIN_ONCE */
         (void)out;
 #endif /* MAIN_ONCE */
