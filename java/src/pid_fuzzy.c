@@ -4,6 +4,9 @@
 j_pid_fuzzy_s *j_pid_fuzzy_new(JNIEnv *const jenv, jobject const jobj, j_pid_fuzzy_s *const jctx)
 {
     jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "pid_fuzzy");
+    jctx->jenv = jenv;
+    jctx->jobj = jobj;
+    jctx->jcls = jcls;
     jfieldID pid = (*jenv)->GetFieldID(jenv, jcls, "pid", "L" CLASSPATH "pid;");
     j_pid_new(jenv, (*jenv)->GetObjectField(jenv, jobj, pid), &jctx->pid);
     jctx->me = (*jenv)->GetFieldID(jenv, jcls, "me", "[D");
@@ -26,8 +29,6 @@ j_pid_fuzzy_s *j_pid_fuzzy_new(JNIEnv *const jenv, jobject const jobj, j_pid_fuz
     jctx->kd = (*jenv)->GetFieldID(jenv, jcls, "kd", "D");
     jctx->col = (*jenv)->GetFieldID(jenv, jcls, "col", "I");
     jctx->buf = (*jenv)->GetFieldID(jenv, jcls, "buf", "I");
-    jctx->jenv = jenv;
-    jctx->jobj = jobj;
     return jctx;
 }
 
@@ -154,11 +155,13 @@ static jobject concat(j_pid_fuzzy_s const *jctx, jobjectArray jval)
     return obj;
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(pid_1fuzzy_init)(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jobject JNICALL JPACKAGE(pid_1fuzzy_init)(JNIEnv *jenv, jobject jobj, jdouble jmin, jdouble jmax, jdouble jsum)
 {
     a_pid_fuzzy_s ctx;
     j_pid_fuzzy_s jctx;
     j_pid_fuzzy_new(jenv, jobj, &jctx);
+    jmethodID init = (*jenv)->GetMethodID(jenv, jctx.pid.jcls, "init", "(DDD)L" CLASSPATH "pid;");
+    (*jenv)->CallObjectMethod(jenv, jctx.pid.jobj, init, jmin, jmax, jsum);
     ctx.me = A_NULL;
     ctx.mec = A_NULL;
     ctx.mkp = A_NULL;

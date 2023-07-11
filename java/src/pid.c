@@ -7,6 +7,9 @@
 j_pid_s *j_pid_new(JNIEnv *const jenv, jobject const jobj, j_pid_s *const jctx)
 {
     jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "pid");
+    jctx->jenv = jenv;
+    jctx->jobj = jobj;
+    jctx->jcls = jcls;
     jctx->kp = (*jenv)->GetFieldID(jenv, jcls, "kp", "D");
     jctx->ki = (*jenv)->GetFieldID(jenv, jcls, "ki", "D");
     jctx->kd = (*jenv)->GetFieldID(jenv, jcls, "kd", "D");
@@ -19,8 +22,6 @@ j_pid_s *j_pid_new(JNIEnv *const jenv, jobject const jobj, j_pid_s *const jctx)
     jctx->err = (*jenv)->GetFieldID(jenv, jcls, "err", "D");
     jctx->chan = (*jenv)->GetFieldID(jenv, jcls, "chan", "I");
     jctx->mode = (*jenv)->GetFieldID(jenv, jcls, "mode", "I");
-    jctx->jenv = jenv;
-    jctx->jobj = jobj;
     return jctx;
 }
 

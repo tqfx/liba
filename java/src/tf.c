@@ -4,6 +4,9 @@
 j_tf_s *j_tf_new(JNIEnv *const jenv, jobject const jobj, j_tf_s *const jctx)
 {
     jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "tf");
+    jctx->jenv = jenv;
+    jctx->jobj = jobj;
+    jctx->jcls = jcls;
     jctx->num = (*jenv)->GetFieldID(jenv, jcls, "num", "[D");
     jctx->jnum = (*jenv)->GetObjectField(jenv, jobj, jctx->num);
     jctx->den = (*jenv)->GetFieldID(jenv, jcls, "den", "[D");
@@ -12,8 +15,6 @@ j_tf_s *j_tf_new(JNIEnv *const jenv, jobject const jobj, j_tf_s *const jctx)
     jctx->jinput = (*jenv)->GetObjectField(jenv, jobj, jctx->input);
     jctx->output = (*jenv)->GetFieldID(jenv, jcls, "output", "[D");
     jctx->joutput = (*jenv)->GetObjectField(jenv, jobj, jctx->output);
-    jctx->jenv = jenv;
-    jctx->jobj = jobj;
     return jctx;
 }
 
@@ -47,14 +48,12 @@ jobject j_tf_set(j_tf_s const *const jctx, a_tf_s const *const ctx)
     if (ctx->num_p)
     {
         // NOLINTNEXTLINE(performance-no-int-to-ptr)
-        jdouble *num = (jdouble *)(intptr_t)ctx->num_p;
-        (*jenv)->ReleaseDoubleArrayElements(jenv, jctx->jnum, num, 0);
+        (*jenv)->ReleaseDoubleArrayElements(jenv, jctx->jnum, (jdouble *)(intptr_t)ctx->num_p, 0);
     }
     if (ctx->den_p)
     {
         // NOLINTNEXTLINE(performance-no-int-to-ptr)
-        jdouble *den = (jdouble *)(intptr_t)ctx->den_p;
-        (*jenv)->ReleaseDoubleArrayElements(jenv, jctx->jden, den, 0);
+        (*jenv)->ReleaseDoubleArrayElements(jenv, jctx->jden, (jdouble *)(intptr_t)ctx->den_p, 0);
     }
     if (ctx->input)
     {
@@ -71,12 +70,10 @@ JNIEXPORT jobject JNICALL JPACKAGE(tf_init)(JNIEnv *jenv, jobject jobj, jdoubleA
 {
     j_tf_s jctx;
     j_tf_new(jenv, jobj, &jctx);
-    jobject jinput = (*jenv)->NewDoubleArray(jenv, (*jenv)->GetArrayLength(jenv, jnum));
-    jobject joutput = (*jenv)->NewDoubleArray(jenv, (*jenv)->GetArrayLength(jenv, jden));
-    (*jenv)->SetObjectField(jenv, jobj, jctx.input, jinput);
-    (*jenv)->SetObjectField(jenv, jobj, jctx.output, joutput);
     (*jenv)->SetObjectField(jenv, jobj, jctx.num, jnum);
     (*jenv)->SetObjectField(jenv, jobj, jctx.den, jden);
+    (*jenv)->SetObjectField(jenv, jobj, jctx.input, (*jenv)->NewDoubleArray(jenv, (*jenv)->GetArrayLength(jenv, jnum)));
+    (*jenv)->SetObjectField(jenv, jobj, jctx.output, (*jenv)->NewDoubleArray(jenv, (*jenv)->GetArrayLength(jenv, jnum)));
     return jobj;
 }
 

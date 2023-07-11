@@ -4,10 +4,11 @@
 j_polytrack3_s *j_polytrack3_new(JNIEnv *const jenv, jobject const jobj, j_polytrack3_s *const jctx)
 {
     jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "polytrack3");
-    jctx->k = (*jenv)->GetFieldID(jenv, jcls, "k", "[D");
-    jctx->jk = (*jenv)->GetObjectField(jenv, jobj, jctx->k);
     jctx->jenv = jenv;
     jctx->jobj = jobj;
+    jctx->jcls = jcls;
+    jctx->k = (*jenv)->GetFieldID(jenv, jcls, "k", "[D");
+    jctx->jk = (*jenv)->GetObjectField(jenv, jobj, jctx->k);
     return jctx;
 }
 

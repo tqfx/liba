@@ -9,6 +9,7 @@ typedef struct
     j_pid_s pid;
     JNIEnv *jenv;
     jobject jobj;
+    jclass jcls;
     jfieldID me;
     jobject jme;
     jfieldID mec;

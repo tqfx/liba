@@ -16,13 +16,13 @@ public class pid_fuzzy {
     double[] val;
     long op;
     /** base proportional constant */
-    public double kp;
+    public double kp = 0;
     /** base integral constant */
-    public double ki;
+    public double ki = 0;
     /** base derivative constant */
-    public double kd;
-    int col;
-    int buf;
+    public double kd = 0;
+    int col = 0;
+    int buf = 0;
 
     /**
      * construct a new {@link pid_fuzzy} object
@@ -31,8 +31,8 @@ public class pid_fuzzy {
      * @param max maxinum output
      */
     public pid_fuzzy(double min, double max) {
-        this.pid = new pid(min, max);
-        this.init();
+        this.pid = new pid();
+        this.init(min, max, 0);
     }
 
     /**
@@ -43,16 +43,19 @@ public class pid_fuzzy {
      * @param sum maximum intergral output
      */
     public pid_fuzzy(double min, double max, double sum) {
-        this.pid = new pid(min, max, sum);
-        this.init();
+        this.pid = new pid();
+        this.init(min, max, sum);
     }
 
     /**
      * initialize function for fuzzy PID controller
      *
+     * @param min minimum output
+     * @param max maximum output
+     * @param sum maximum intergral output
      * @return {@link pid_fuzzy}
      */
-    public final native pid_fuzzy init();
+    public final native pid_fuzzy init(double min, double max, double sum);
 
     /**
      * set rule base for fuzzy PID controller

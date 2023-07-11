@@ -8,6 +8,7 @@ typedef struct
 {
     JNIEnv *jenv;
     jobject jobj;
+    jclass jcls;
     jfieldID kp;
     jfieldID ki;
     jfieldID kd;

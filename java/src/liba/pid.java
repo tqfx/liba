@@ -12,28 +12,34 @@ public class pid {
     /** incremental PID controller */
     public static final int INC = 2;
     /** proportional constant */
-    public double kp;
+    public double kp = 0;
     /** integral constant */
-    public double ki;
+    public double ki = 0;
     /** derivative constant */
-    public double kd;
+    public double kd = 0;
     /** maximum integral output */
-    public double summax;
+    public double summax = 0;
     /** maximum final output */
-    public double outmax;
+    public double outmax = 0;
     /** minimum final output */
-    public double outmin;
+    public double outmin = 0;
     /** controller output */
-    public double out;
+    public double out = 0;
     /** cache feedback */
-    public double fdb;
+    public double fdb = 0;
     /** cache variable */
-    double tmp;
+    double tmp = 0;
     /** cache error */
-    public double err;
-    int chan;
+    public double err = 0;
+    int chan = 0;
     /** controller mode */
-    public int mode;
+    public int mode = OFF;
+
+    /**
+     * construct a new {@link pid} object
+     */
+    public pid() {
+    }
 
     /**
      * construct a new {@link pid} object

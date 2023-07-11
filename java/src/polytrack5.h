@@ -8,6 +8,7 @@ typedef struct
 {
     JNIEnv *jenv;
     jobject jobj;
+    jclass jcls;
     jfieldID k;
     jobject jk;
 } j_polytrack5_s;
