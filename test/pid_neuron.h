@@ -21,7 +21,7 @@ static void test_f(void)
     ctx.pid.outmax = +10;
     ctx.pid.outmin = -10;
     ctx.pid.mode = A_PID_INC;
-    ctx.ko = A_FLOAT_C(10.0);
+    ctx.k = A_FLOAT_C(10.0);
     ctx.wp.f = A_FLOAT_C(0.1);
     ctx.wi.f = A_FLOAT_C(0.1);
     ctx.wd.f = A_FLOAT_C(0.1);
@@ -59,7 +59,7 @@ static void test_p(void)
     ctx.pid.outmax = +10;
     ctx.pid.outmin = -10;
     ctx.pid.mode = A_PID_INC;
-    ctx.ko = A_FLOAT_C(10.0);
+    ctx.k = A_FLOAT_C(10.0);
     {
         static a_float_t out[3];
         static a_float_t fdb[3];
@@ -126,7 +126,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     ctx.pid.outmax = +A_FLOAT_MAX;
     ctx.pid.outmin = -A_FLOAT_MAX;
     ctx.pid.mode = A_PID_INC;
-    ctx.ko = A_FLOAT_C(4000.0);
+    ctx.k = A_FLOAT_C(4000.0);
     ctx.wp.f = A_FLOAT_C(0.1);
     ctx.wi.f = A_FLOAT_C(0.1);
     ctx.wd.f = A_FLOAT_C(0.1);

@@ -64,7 +64,7 @@ void a_pid_neuron_outf_(a_pid_neuron_s *const ctx, a_float_t const fdb, a_float_
     ctx->wi _ += ctx->pid.ki * out * ctx->pid.err _;                              \
     ctx->wd _ += ctx->pid.kd * out * ctx->pid.tmp _;                              \
     a_float_t const abs = A_ABS(ctx->wp _) + A_ABS(ctx->wi _) + A_ABS(ctx->wd _); \
-    out = ctx->ko * (ctx->wp _ * ec + ctx->wi _ * e + ctx->wd _ * tmp) / abs;     \
+    out = ctx->k * (ctx->wp _ * ec + ctx->wi _ * e + ctx->wd _ * tmp) / abs;      \
     ctx->pid.out _ = A_SAT(out, ctx->pid.outmin, ctx->pid.outmax);                \
     ctx->pid.fdb _ = fdb;                                                         \
     ctx->pid.tmp _ = tmp;                                                         \

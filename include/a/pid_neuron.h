@@ -24,7 +24,7 @@ typedef struct a_pid_neuron_s
     a_float_u wp; //!< proportional constant weight
     a_float_u wi; //!< integral constant weight
     a_float_u wd; //!< derivative constant weight
-    a_float_t ko; //!< output ratio
+    a_float_t k; //!< proportional coefficient
 } a_pid_neuron_s;
 
 #if defined(__cplusplus)
