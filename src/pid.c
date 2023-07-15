@@ -8,17 +8,13 @@ a_pid_s *a_pid_init(a_pid_s *const ctx, unsigned int const num)
 
 a_pid_s *a_pid_chan(a_pid_s *const ctx, unsigned int const num, a_float_t *const out, a_float_t *const fdb, a_float_t *const tmp, a_float_t *const err)
 {
-    if (num > 1)
+    ctx->chan = num;
+    if (ctx->chan)
     {
-        ctx->chan = num;
         ctx->out.p = out;
         ctx->fdb.p = fdb;
         ctx->tmp.p = tmp;
         ctx->err.p = err;
-    }
-    else
-    {
-        ctx->chan = 0;
     }
     return a_pid_zero(ctx);
 }
@@ -33,7 +29,7 @@ a_pid_s *a_pid_kpid(a_pid_s *const ctx, a_float_t const kp, a_float_t const ki, 
 
 a_pid_s *a_pid_zero(a_pid_s *const ctx)
 {
-    if (ctx->chan > 1)
+    if (ctx->chan)
     {
         for (unsigned int i = 0; i != ctx->chan; ++i)
         {

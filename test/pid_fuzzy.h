@@ -127,7 +127,7 @@ static void test_f(void)
     ctx.mki = m7ki;
     ctx.mkd = m7kd;
     ctx.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
-    a_pid_fuzzy_init(&ctx, 1);
+    a_pid_fuzzy_init(&ctx, 0);
     {
         static unsigned int idx[A_PID_FUZZY_IDX(2)];
         static a_float_t val[A_PID_FUZZY_VAL(2)];
@@ -262,7 +262,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     pos_pid.mki = m7ki;
     pos_pid.mkd = m7kd;
     pos_pid.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
-    a_pid_fuzzy_init(&pos_pid, 1);
+    a_pid_fuzzy_init(&pos_pid, 0);
     {
         static unsigned int idx[A_PID_FUZZY_IDX(2)];
         static a_float_t val[A_PID_FUZZY_VAL(2)];
@@ -285,7 +285,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     inc_pid.mki = m7ki;
     inc_pid.mkd = m7kd;
     inc_pid.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
-    a_pid_fuzzy_init(&inc_pid, 1);
+    a_pid_fuzzy_init(&inc_pid, 0);
     {
         static unsigned int idx[A_PID_FUZZY_IDX(2)];
         static a_float_t val[A_PID_FUZZY_VAL(2)];

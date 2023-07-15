@@ -16,18 +16,14 @@ a_pid_expert_s *a_pid_expert_init(a_pid_expert_s *const ctx, unsigned int const 
 a_pid_expert_s *a_pid_expert_chan(a_pid_expert_s *const ctx, unsigned int const num, a_float_t *const out, a_float_t *const fdb,
                                   a_float_t *const tmp, a_float_t *const err, a_float_t *const ec)
 {
-    if (num > 1)
+    ctx->pid.chan = num;
+    if (ctx->pid.chan)
     {
-        ctx->pid.chan = num;
         ctx->pid.out.p = out;
         ctx->pid.fdb.p = fdb;
         ctx->pid.tmp.p = tmp;
         ctx->pid.err.p = err;
         ctx->ec.p = ec;
-    }
-    else
-    {
-        ctx->pid.chan = 0;
     }
     return a_pid_expert_zero(ctx);
 }
@@ -40,7 +36,7 @@ a_pid_expert_s *a_pid_expert_kpid(a_pid_expert_s *const ctx, a_float_t const kp,
 
 a_pid_expert_s *a_pid_expert_zero(a_pid_expert_s *const ctx)
 {
-    if (ctx->pid.chan > 1)
+    if (ctx->pid.chan)
     {
         for (unsigned int i = 0; i != ctx->pid.chan; ++i)
         {

@@ -22,7 +22,7 @@ static void test_f(void)
     ctx.outmax = +10;
     ctx.outmin = -10;
     ctx.mode = A_PID_OFF;
-    a_pid_init(&ctx, 1);
+    a_pid_init(&ctx, 0);
     for (unsigned int i = 0; i < 1000; ++i)
     {
         a_tf_iter(&tf, a_pid_outf(&ctx, 1, *tf.output));
@@ -160,7 +160,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     pos_pid.outmax = +A_FLOAT_MAX;
     pos_pid.outmin = -A_FLOAT_MAX;
     pos_pid.mode = A_PID_POS;
-    a_pid_init(&pos_pid, 1);
+    a_pid_init(&pos_pid, 0);
     a_pid_s inc_pid;
     inc_pid.kp = A_FLOAT_C(100.0);
     inc_pid.ki = A_FLOAT_C(0.01);
@@ -168,7 +168,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     inc_pid.outmax = +A_FLOAT_MAX;
     inc_pid.outmin = -A_FLOAT_MAX;
     inc_pid.mode = A_PID_INC;
-    a_pid_init(&pos_pid, 1);
+    a_pid_init(&pos_pid, 0);
     for (unsigned int i = 0; i < 100; ++i)
     {
         a_float_t const in = input(A_FLOAT_C(0.001) * i);

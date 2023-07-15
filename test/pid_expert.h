@@ -122,7 +122,7 @@ static void test_f(void)
     ctx.loss = A_FLOAT_C(0.5);
     ctx.outmax = A_FLOAT_C(10.0);
     ctx.epsilon = A_FLOAT_C(0.01);
-    a_pid_expert_init(&ctx, 1);
+    a_pid_expert_init(&ctx, 0);
     for (unsigned int i = 0; i < 1000; ++i)
     {
         a_tf_iter(&tf, a_pid_expert_outf(&ctx, 1, output[0]));
@@ -231,7 +231,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     ctx.loss = A_FLOAT_C(0.5);
     ctx.outmax = A_FLOAT_C(10.0);
     ctx.epsilon = A_FLOAT_C(0.01);
-    a_pid_expert_init(&ctx, 1);
+    a_pid_expert_init(&ctx, 0);
     for (unsigned int i = 0; i < 500; ++i)
     {
         a_float_t in = input(A_FLOAT_C(0.001) * i);

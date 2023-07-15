@@ -25,7 +25,7 @@ static void test_f(void)
     ctx.wp.f = A_FLOAT_C(0.1);
     ctx.wi.f = A_FLOAT_C(0.1);
     ctx.wd.f = A_FLOAT_C(0.1);
-    a_pid_neuron_init(&ctx, 1);
+    a_pid_neuron_init(&ctx, 0);
     for (unsigned int i = 0; i < 1000; ++i)
     {
         a_tf_iter(&tf, a_pid_neuron_outf(&ctx, 1, output[0]));
@@ -130,7 +130,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     ctx.wp.f = A_FLOAT_C(0.1);
     ctx.wi.f = A_FLOAT_C(0.1);
     ctx.wd.f = A_FLOAT_C(0.1);
-    a_pid_neuron_init(&ctx, 1);
+    a_pid_neuron_init(&ctx, 0);
     for (unsigned int i = 0; i < 100; ++i)
     {
         a_float_t const in = input(A_FLOAT_C(0.001) * i);

@@ -10,9 +10,9 @@ a_pid_neuron_s *a_pid_neuron_chan(a_pid_neuron_s *const ctx, unsigned int const 
                                   a_float_t *const out, a_float_t *const fdb, a_float_t *const tmp, a_float_t *const err,
                                   a_float_t *const ec, a_float_t *const wp, a_float_t *const wi, a_float_t *const wd)
 {
-    if (num > 1)
+    ctx->pid.chan = num;
+    if (ctx->pid.chan)
     {
-        ctx->pid.chan = num;
         ctx->pid.out.p = out;
         ctx->pid.fdb.p = fdb;
         ctx->pid.tmp.p = tmp;
@@ -21,10 +21,6 @@ a_pid_neuron_s *a_pid_neuron_chan(a_pid_neuron_s *const ctx, unsigned int const 
         ctx->wp.p = wp;
         ctx->wi.p = wi;
         ctx->wd.p = wd;
-    }
-    else
-    {
-        ctx->pid.chan = 0;
     }
     return a_pid_neuron_zero(ctx);
 }
@@ -39,7 +35,7 @@ a_pid_neuron_s *a_pid_neuron_kpid(a_pid_neuron_s *const ctx, a_float_t const kp,
 
 a_pid_neuron_s *a_pid_neuron_zero(a_pid_neuron_s *const ctx)
 {
-    if (ctx->pid.chan > 1)
+    if (ctx->pid.chan)
     {
         for (unsigned int i = 0; i != ctx->pid.chan; ++i)
         {
