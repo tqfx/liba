@@ -1,6 +1,21 @@
 /*!
  @file pid_neuron.h
- @brief neuron proportional integral derivative controller
+ @brief single neuron proportional integral derivative controller
+ @details
+ \f{cases}{
+  x_i=e(k)\\
+  x_p=e(k)-e(k-1)\\
+  x_d=e(k)-2e(k-1)+e(k-2)
+ \f}
+ \f{cases}{
+  \omega_{p}(k)=\omega_{p}(k-1)+\eta_{p}e(k)u(k)x_{p}(k)\\
+  \omega_{i}(k)=\omega_{i}(k-1)+\eta_{i}e(k)u(k)x_{i}(k)\\
+  \omega_{d}(k)=\omega_{d}(k-1)+\eta_{d}e(k)u(k)x_{d}(k)
+ \f}
+ \f[
+  u(k)=u(k-1)+K\frac{w_{p}(k)x_{p}(k)+w_{i}(k)x_{i}(k)+w_{d}(k)x_{d}(k)}
+                    {|\omega_{p}(k)|+|\omega_{i}(k)|+|\omega_{d}(k)|}
+ \f]
 */
 
 #ifndef LIBA_PID_NEURON_H
@@ -10,12 +25,12 @@
 
 /*!
  @ingroup A
- @addtogroup A_PID_NEURON neuron proportional integral derivative controller
+ @addtogroup A_PID_NEURON single neuron proportional integral derivative controller
  @{
 */
 
 /*!
- @brief instance structure for neuron PID controller
+ @brief instance structure for single neuron PID controller
 */
 typedef struct a_pid_neuron_s
 {
@@ -32,15 +47,15 @@ extern "C" {
 #endif /* __cplusplus */
 
 /*!
- @brief initialize function for neuron PID controller
- @param[in,out] ctx points to an instance of neuron PID controller
+ @brief initialize function for single neuron PID controller
+ @param[in,out] ctx points to an instance of single neuron PID controller
  @param[in] num number of controller channel
 */
 A_EXTERN a_pid_neuron_s *a_pid_neuron_init(a_pid_neuron_s *ctx, unsigned int num);
 
 /*!
- @brief set buffer for multichannel neuron PID controller
- @param[in,out] ctx points to an instance of neuron PID controller
+ @brief set buffer for multichannel single neuron PID controller
+ @param[in,out] ctx points to an instance of single neuron PID controller
  @param[in] num number of controller output
  @param[in] out points to controller output
  @param[in] fdb points to cache feedback buffer
@@ -56,8 +71,8 @@ A_EXTERN a_pid_neuron_s *a_pid_neuron_chan(a_pid_neuron_s *ctx, unsigned int num
                                            a_float_t *ec, a_float_t *wp, a_float_t *wi, a_float_t *wd);
 
 /*!
- @brief set proportional integral derivative constant for neuron PID controller
- @param[in,out] ctx points to an instance of neuron PID controller
+ @brief set proportional integral derivative constant for single neuron PID controller
+ @param[in,out] ctx points to an instance of single neuron PID controller
  @param[in] kp proportional learning constant
  @param[in] ki integral learning constant
  @param[in] kd derivative learning constant
@@ -65,8 +80,8 @@ A_EXTERN a_pid_neuron_s *a_pid_neuron_chan(a_pid_neuron_s *ctx, unsigned int num
 A_EXTERN a_pid_neuron_s *a_pid_neuron_kpid(a_pid_neuron_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd);
 
 /*!
- @brief calculate function for neuron PID controller
- @param[in,out] ctx points to an instance of neuron PID controller
+ @brief calculate function for single neuron PID controller
+ @param[in,out] ctx points to an instance of single neuron PID controller
  @param[in] set setpoint
  @param[in] fdb feedback
  @return output value
@@ -75,7 +90,7 @@ A_EXTERN a_float_t a_pid_neuron_outf(a_pid_neuron_s *ctx, a_float_t set, a_float
 
 /*!
  @brief calculate function for multichannel neuron PID controller
- @param[in,out] ctx points to an instance of neuron PID controller
+ @param[in,out] ctx points to an instance of single neuron PID controller
  @param[in] set points to setpoint
  @param[in] fdb points to feedback
  @return points to output
@@ -83,8 +98,8 @@ A_EXTERN a_float_t a_pid_neuron_outf(a_pid_neuron_s *ctx, a_float_t set, a_float
 A_EXTERN a_float_t const *a_pid_neuron_outp(a_pid_neuron_s *ctx, a_float_t const *set, a_float_t const *fdb);
 
 /*!
- @brief zero clear function for neuron PID controller
- @param[in,out] ctx points to an instance of neuron PID controller
+ @brief zero clear function for single neuron PID controller
+ @param[in,out] ctx points to an instance of single neuron PID controller
 */
 A_EXTERN a_pid_neuron_s *a_pid_neuron_zero(a_pid_neuron_s *ctx);
 

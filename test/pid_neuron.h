@@ -121,7 +121,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 
     a_pid_neuron_s ctx;
     ctx.pid.kp = A_FLOAT_C(4.0);
-    ctx.pid.ki = A_FLOAT_C(0.05);
+    ctx.pid.ki = A_FLOAT_C(0.04);
     ctx.pid.kd = A_FLOAT_C(1.0);
     ctx.pid.outmax = +A_FLOAT_MAX;
     ctx.pid.outmin = -A_FLOAT_MAX;
