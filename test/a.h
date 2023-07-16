@@ -134,7 +134,7 @@ static void test_save(void)
     for (a_size_t i = 0; i < a_count_of(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf("%+g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     {
@@ -144,7 +144,7 @@ static void test_save(void)
     for (a_size_t i = 0; i < a_count_of(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf("%+g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     {
@@ -154,7 +154,7 @@ static void test_save(void)
     for (a_size_t i = 0; i < a_count_of(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf("%+g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     {
@@ -164,7 +164,7 @@ static void test_save(void)
     for (a_size_t i = 0; i < a_count_of(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf("%+g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     {
@@ -174,7 +174,7 @@ static void test_save(void)
     for (a_size_t i = 0; i < a_count_of(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf("%+g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     {
@@ -184,7 +184,7 @@ static void test_save(void)
     for (a_size_t i = 0; i < a_count_of(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf("%+g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
 }
@@ -196,42 +196,42 @@ static void test_roll(void)
     for (a_size_t i = 0; i < a_count_of(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf("%g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     a_float_roll(array, a_count_of(array), shift, 1);
     for (a_size_t i = 0; i < a_count_of(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf("%g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     a_float_roll(array, a_count_of(array), shift, 2);
     for (a_size_t i = 0; i < a_count_of(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf("%g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     a_float_roll(array, a_count_of(array), shift, 4);
     for (a_size_t i = 0; i < a_count_of(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf("%g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     a_float_roll(array, a_count_of(array), shift, 8);
     for (a_size_t i = 0; i < a_count_of(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf("%g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     a_float_roll(array, a_count_of(array), shift, 15);
     for (a_size_t i = 0; i < a_count_of(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf("%g%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
 }

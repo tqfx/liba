@@ -171,12 +171,12 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_pid_init(&pos_pid, 0);
     for (unsigned int i = 0; i < 100; ++i)
     {
-        a_float_t const in = input(A_FLOAT_C(0.001) * i);
+        a_float_t const in = input(A_FLOAT_C(0.001) * a_float_c(, i));
         a_tf_iter(&pos_tf, a_pid_outf(&pos_pid, in, *pos_tf.output));
         a_tf_iter(&inc_tf, a_pid_outf(&inc_pid, in, *inc_tf.output));
 #if defined(MAIN_ONCE)
         printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
-               A_FLOAT_C(0.001) * i, in, *pos_tf.output, *inc_tf.output);
+               A_FLOAT_C(0.001) * a_float_c(, i), in, *pos_tf.output, *inc_tf.output);
 #endif /* MAIN_ONCE */
     }
 

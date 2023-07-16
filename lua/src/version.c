@@ -244,9 +244,9 @@ static int LMODULE(version_get)(lua_State *const L)
     case 0xA65758B2: // __index
     {
         l_int_s const enums[] = {
-            {"major", ctx->major},
-            {"minor", ctx->minor},
-            {"patch", ctx->patch},
+            {"major", (lua_Integer)ctx->major},
+            {"minor", (lua_Integer)ctx->minor},
+            {"patch", (lua_Integer)ctx->patch},
             {NULL, 0},
         };
         l_func_s const funcs[] = {
