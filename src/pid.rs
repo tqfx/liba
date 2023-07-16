@@ -48,11 +48,11 @@ extern "C" {
         fdb: *mut float,
         tmp: *mut float,
         err: *mut float,
-    ) -> *mut PID;
-    fn a_pid_kpid(ctx: *mut PID, kp: float, ki: float, kd: float) -> *mut PID;
+    );
+    fn a_pid_kpid(ctx: *mut PID, kp: float, ki: float, kd: float);
     fn a_pid_outf(ctx: *mut PID, set: float, fdb: float) -> float;
-    fn a_pid_outp(ctx: *mut PID, set: *const float, fdb: *const float) -> *const float;
-    fn a_pid_zero(ctx: *mut PID) -> *mut PID;
+    fn a_pid_outp(ctx: *const PID, set: *const float, fdb: *const float) -> *const float;
+    fn a_pid_zero(ctx: *mut PID);
 }
 
 impl PID {
@@ -106,7 +106,7 @@ impl PID {
         unsafe { a_pid_outf(self, set, fdb) }
     }
     /// calculate function for multichannel PID controller
-    pub fn outp(&mut self, set: &[float], fdb: &[float]) -> &[float] {
+    pub fn outp(&self, set: &[float], fdb: &[float]) -> &[float] {
         unsafe {
             std::slice::from_raw_parts(
                 a_pid_outp(self, set.as_ptr(), fdb.as_ptr()),

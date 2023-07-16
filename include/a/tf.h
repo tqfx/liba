@@ -59,23 +59,23 @@ A_EXTERN void a_tf_set_den(a_tf_s *ctx, unsigned int den_n, a_float_t const *den
  @param[in] den_p denominator
  @param[in] output output
 */
-A_EXTERN a_tf_s *a_tf_init(a_tf_s *ctx,
-                           unsigned int num_n, a_float_t const *num_p, a_float_t *input,
-                           unsigned int den_n, a_float_t const *den_p, a_float_t *output);
+A_EXTERN void a_tf_init(a_tf_s *ctx,
+                        unsigned int num_n, a_float_t const *num_p, a_float_t *input,
+                        unsigned int den_n, a_float_t const *den_p, a_float_t *output);
 
 /*!
  @brief calculate function for transfer function
- @param[in,out] ctx points to an instance of transfer function
+ @param[in] ctx points to an instance of transfer function
  @param[in] x transfer function input
  @return transfer function output
 */
-A_EXTERN a_float_t a_tf_iter(a_tf_s *ctx, a_float_t x);
+A_EXTERN a_float_t a_tf_iter(a_tf_s const *ctx, a_float_t x);
 
 /*!
  @brief zero clear function for transfer function
- @param[in,out] ctx points to an instance of transfer function
+ @param[in] ctx points to an instance of transfer function
 */
-A_EXTERN a_tf_s *a_tf_zero(a_tf_s *ctx);
+A_EXTERN void a_tf_zero(a_tf_s const *ctx);
 
 #if defined(__cplusplus)
 } /* extern "C" */

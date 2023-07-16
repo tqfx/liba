@@ -95,7 +95,7 @@ A_EXTERN void a_pid_fuzzy_set_op(a_pid_fuzzy_s *ctx, unsigned int op);
  @param[in,out] ctx points to an instance of fuzzy PID controller
  @param[in] num number of controller channel
 */
-A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_init(a_pid_fuzzy_s *ctx, unsigned int num);
+A_EXTERN void a_pid_fuzzy_init(a_pid_fuzzy_s *ctx, unsigned int num);
 
 /*!
  @brief set buffer for multichannel fuzzy PID controller
@@ -106,7 +106,7 @@ A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_init(a_pid_fuzzy_s *ctx, unsigned int num);
  @param[in] tmp points to cache variable buffer
  @param[in] err points to cache error buffer
 */
-A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_chan(a_pid_fuzzy_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err);
+A_EXTERN void a_pid_fuzzy_chan(a_pid_fuzzy_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err);
 
 /*!
  @brief set rule base for fuzzy PID controller
@@ -118,8 +118,8 @@ A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_chan(a_pid_fuzzy_s *ctx, unsigned int num, a
  @param[in] mki points to Ki's rule base table, the rule base must be square
  @param[in] mkd points to Kd's rule base table, the rule base must be square
 */
-A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_rule(a_pid_fuzzy_s *ctx, unsigned int col, a_float_t const *me, a_float_t const *const mec,
-                                         a_float_t const *mkp, a_float_t const *mki, a_float_t const *mkd);
+A_EXTERN void a_pid_fuzzy_rule(a_pid_fuzzy_s *ctx, unsigned int col, a_float_t const *me, a_float_t const *const mec,
+                               a_float_t const *mkp, a_float_t const *mki, a_float_t const *mkd);
 
 /*!
  @brief set proportional integral derivative constant for fuzzy PID controller
@@ -128,7 +128,7 @@ A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_rule(a_pid_fuzzy_s *ctx, unsigned int col, a
  @param[in] ki integral constant
  @param[in] kd derivative constant
 */
-A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_kpid(a_pid_fuzzy_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd);
+A_EXTERN void a_pid_fuzzy_kpid(a_pid_fuzzy_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd);
 
 /*!
  @brief set one cache buffer for fuzzy PID controller
@@ -136,7 +136,7 @@ A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_kpid(a_pid_fuzzy_s *ctx, a_float_t kp, a_flo
  @param[in] ptr points to a buffer at least A_PID_FUZZY_BUF1(num)
  @param[in] num the maximum number triggered by the rule
 */
-A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_buf1(a_pid_fuzzy_s *ctx, void *ptr, a_size_t num);
+A_EXTERN void a_pid_fuzzy_buf1(a_pid_fuzzy_s *ctx, void *ptr, a_size_t num);
 
 /*!
  @brief set buffer for fuzzy PID controller
@@ -144,7 +144,7 @@ A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_buf1(a_pid_fuzzy_s *ctx, void *ptr, a_size_t
  @param[in] idx the memory cache for membership index, >= 2N
  @param[in] val the memory cache for membership value and membership outer product of e and ec, >= (2+N)N
 */
-A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_buff(a_pid_fuzzy_s *ctx, unsigned int *idx, a_float_t *val);
+A_EXTERN void a_pid_fuzzy_buff(a_pid_fuzzy_s *ctx, unsigned int *idx, a_float_t *val);
 #define A_PID_FUZZY_VAL1(N) (sizeof(a_float_t) * (2 + (N)) * (N))
 #define A_PID_FUZZY_IDX1(N) (sizeof(unsigned int) * 2 * (N))
 #define A_PID_FUZZY_VAL(N) ((2 + (N)) * (N))
@@ -174,7 +174,7 @@ A_EXTERN a_float_t const *a_pid_fuzzy_outp(a_pid_fuzzy_s *ctx, a_float_t const *
  @brief zero clear function for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
 */
-A_EXTERN a_pid_fuzzy_s *a_pid_fuzzy_zero(a_pid_fuzzy_s *ctx);
+A_EXTERN void a_pid_fuzzy_zero(a_pid_fuzzy_s *ctx);
 
 #if defined(LIBA_PID_FUZZY_C)
 #undef A_INTERN

@@ -4,17 +4,14 @@
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
 
-A_HIDDEN void a_pid_expert_outf_(a_pid_expert_s *ctx, a_float_t fdb, a_float_t ec, a_float_t e);
-A_HIDDEN void a_pid_expert_outp_(a_pid_expert_s *ctx, a_float_t fdb, a_float_t ec, a_float_t e, unsigned int i);
-
-a_pid_expert_s *a_pid_expert_init(a_pid_expert_s *const ctx, unsigned int const num)
+void a_pid_expert_init(a_pid_expert_s *const ctx, unsigned int const num)
 {
     ctx->pid.chan = num;
-    return a_pid_expert_zero(ctx);
+    a_pid_expert_zero(ctx);
 }
 
-a_pid_expert_s *a_pid_expert_chan(a_pid_expert_s *const ctx, unsigned int const num, a_float_t *const out, a_float_t *const fdb,
-                                  a_float_t *const tmp, a_float_t *const err, a_float_t *const ec)
+void a_pid_expert_chan(a_pid_expert_s *const ctx, unsigned int const num, a_float_t *const out, a_float_t *const fdb,
+                       a_float_t *const tmp, a_float_t *const err, a_float_t *const ec)
 {
     ctx->pid.chan = num;
     if (ctx->pid.chan)
@@ -25,16 +22,15 @@ a_pid_expert_s *a_pid_expert_chan(a_pid_expert_s *const ctx, unsigned int const 
         ctx->pid.err.p = err;
         ctx->ec.p = ec;
     }
-    return a_pid_expert_zero(ctx);
+    a_pid_expert_zero(ctx);
 }
 
-a_pid_expert_s *a_pid_expert_kpid(a_pid_expert_s *const ctx, a_float_t const kp, a_float_t const ki, a_float_t const kd)
+void a_pid_expert_kpid(a_pid_expert_s *const ctx, a_float_t const kp, a_float_t const ki, a_float_t const kd)
 {
     a_pid_kpid(&ctx->pid, kp, ki, kd);
-    return ctx;
 }
 
-a_pid_expert_s *a_pid_expert_zero(a_pid_expert_s *const ctx)
+void a_pid_expert_zero(a_pid_expert_s *const ctx)
 {
     if (ctx->pid.chan)
     {
@@ -49,9 +45,9 @@ a_pid_expert_s *a_pid_expert_zero(a_pid_expert_s *const ctx)
         A_PID_ZERO(&ctx->pid, .f);
         ctx->ec.f = 0;
     }
-    return ctx;
 }
 
+A_HIDDEN void a_pid_expert_outf_(a_pid_expert_s *ctx, a_float_t fdb, a_float_t ec, a_float_t e);
 void a_pid_expert_outf_(a_pid_expert_s *const ctx, a_float_t const fdb, a_float_t const ec, a_float_t const e)
 {
 #define A_PID_EXPERT_OUT_(_)                                                             \
@@ -105,6 +101,7 @@ void a_pid_expert_outf_(a_pid_expert_s *const ctx, a_float_t const fdb, a_float_
     A_PID_EXPERT_OUT_(.f);
 }
 
+A_HIDDEN void a_pid_expert_outp_(a_pid_expert_s *ctx, a_float_t fdb, a_float_t ec, a_float_t e, unsigned int i);
 void a_pid_expert_outp_(a_pid_expert_s *const ctx, a_float_t const fdb, a_float_t const ec, a_float_t const e, unsigned int const i)
 {
     A_PID_EXPERT_OUT_(.p[i]);

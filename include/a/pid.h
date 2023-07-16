@@ -75,7 +75,7 @@ extern "C" {
  @param[in,out] ctx points to an instance of PID controller
  @param[in] num number of controller channel
 */
-A_EXTERN a_pid_s *a_pid_init(a_pid_s *ctx, unsigned int num);
+A_EXTERN void a_pid_init(a_pid_s *ctx, unsigned int num);
 
 /*!
  @brief set buffer for multichannel PID controller
@@ -86,7 +86,7 @@ A_EXTERN a_pid_s *a_pid_init(a_pid_s *ctx, unsigned int num);
  @param[in] tmp points to cache variable buffer
  @param[in] err points to cache error buffer
 */
-A_EXTERN a_pid_s *a_pid_chan(a_pid_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err);
+A_EXTERN void a_pid_chan(a_pid_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err);
 
 /*!
  @brief set proportional integral derivative constant for PID controller
@@ -95,7 +95,7 @@ A_EXTERN a_pid_s *a_pid_chan(a_pid_s *ctx, unsigned int num, a_float_t *out, a_f
  @param[in] ki integral constant
  @param[in] kd derivative constant
 */
-A_EXTERN a_pid_s *a_pid_kpid(a_pid_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd);
+A_EXTERN void a_pid_kpid(a_pid_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd);
 
 /*!
  @brief calculate function for PID controller
@@ -109,19 +109,19 @@ A_EXTERN a_float_t a_pid_outf(a_pid_s *ctx, a_float_t set, a_float_t fdb);
 
 /*!
  @brief calculate function for multichannel PID controller
- @param[in,out] ctx points to an instance of PID controller
+ @param[in] ctx points to an instance of PID controller
  @param[in] set points to setpoint
  @param[in] fdb points to feedback
  @return points to output
   @retval set when PID controller is off
 */
-A_EXTERN a_float_t const *a_pid_outp(a_pid_s *ctx, a_float_t const *set, a_float_t const *fdb);
+A_EXTERN a_float_t const *a_pid_outp(a_pid_s const *ctx, a_float_t const *set, a_float_t const *fdb);
 
 /*!
  @brief zero clear function for PID controller
  @param[in,out] ctx points to an instance of PID controller
 */
-A_EXTERN a_pid_s *a_pid_zero(a_pid_s *ctx);
+A_EXTERN void a_pid_zero(a_pid_s *ctx);
 
 #if defined(__cplusplus)
 } /* extern "C" */

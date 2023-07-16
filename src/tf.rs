@@ -31,9 +31,9 @@ extern "C" {
         den_n: uint,
         den_p: *const float,
         output: *mut float,
-    ) -> *mut TF;
-    fn a_tf_iter(ctx: *mut TF, x: float) -> float;
-    fn a_tf_zero(ctx: *mut TF) -> *mut TF;
+    );
+    fn a_tf_iter(ctx: *const TF, x: float) -> float;
+    fn a_tf_zero(ctx: *const TF);
 }
 
 impl TF {

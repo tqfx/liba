@@ -59,7 +59,7 @@ extern "C" {
         fdb: *mut float,
         tmp: *mut float,
         err: *mut float,
-    ) -> *mut PID_fuzzy;
+    );
     fn a_pid_fuzzy_rule(
         ctx: *mut PID_fuzzy,
         num: uint,
@@ -68,12 +68,12 @@ extern "C" {
         mkp: *const float,
         mki: *const float,
         mkd: *const float,
-    ) -> *mut PID_fuzzy;
-    fn a_pid_fuzzy_kpid(ctx: *mut PID_fuzzy, kp: float, ki: float, kd: float) -> *mut PID_fuzzy;
-    fn a_pid_fuzzy_buff(ctx: *mut PID_fuzzy, idx: *mut uint, val: *mut float) -> *mut PID_fuzzy;
+    );
+    fn a_pid_fuzzy_kpid(ctx: *mut PID_fuzzy, kp: float, ki: float, kd: float);
+    fn a_pid_fuzzy_buff(ctx: *mut PID_fuzzy, idx: *mut uint, val: *mut float);
     fn a_pid_fuzzy_outf(ctx: *mut PID_fuzzy, set: float, fdb: float) -> float;
     fn a_pid_fuzzy_outp(ctx: *mut PID_fuzzy, set: *const float, fdb: *const float) -> *const float;
-    fn a_pid_fuzzy_zero(ctx: *mut PID_fuzzy) -> *mut PID_fuzzy;
+    fn a_pid_fuzzy_zero(ctx: *mut PID_fuzzy);
 }
 
 impl PID_fuzzy {

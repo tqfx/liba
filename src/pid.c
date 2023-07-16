@@ -1,12 +1,12 @@
 #include "pid.h"
 
-a_pid_s *a_pid_init(a_pid_s *const ctx, unsigned int const num)
+void a_pid_init(a_pid_s *const ctx, unsigned int const num)
 {
     ctx->chan = num;
-    return a_pid_zero(ctx);
+    a_pid_zero(ctx);
 }
 
-a_pid_s *a_pid_chan(a_pid_s *const ctx, unsigned int const num, a_float_t *const out, a_float_t *const fdb, a_float_t *const tmp, a_float_t *const err)
+void a_pid_chan(a_pid_s *const ctx, unsigned int const num, a_float_t *const out, a_float_t *const fdb, a_float_t *const tmp, a_float_t *const err)
 {
     ctx->chan = num;
     if (ctx->chan)
@@ -16,18 +16,17 @@ a_pid_s *a_pid_chan(a_pid_s *const ctx, unsigned int const num, a_float_t *const
         ctx->tmp.p = tmp;
         ctx->err.p = err;
     }
-    return a_pid_zero(ctx);
+    a_pid_zero(ctx);
 }
 
-a_pid_s *a_pid_kpid(a_pid_s *const ctx, a_float_t const kp, a_float_t const ki, a_float_t const kd)
+void a_pid_kpid(a_pid_s *const ctx, a_float_t const kp, a_float_t const ki, a_float_t const kd)
 {
     ctx->kp = kp;
     ctx->ki = ki;
     ctx->kd = kd;
-    return ctx;
 }
 
-a_pid_s *a_pid_zero(a_pid_s *const ctx)
+void a_pid_zero(a_pid_s *const ctx)
 {
     if (ctx->chan)
     {
@@ -40,7 +39,6 @@ a_pid_s *a_pid_zero(a_pid_s *const ctx)
     {
         A_PID_ZERO(ctx, .f);
     }
-    return ctx;
 }
 
 void a_pid_outf_(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e)
@@ -81,7 +79,7 @@ void a_pid_outf_(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb, a
     A_PID_OUT_(.f);
 }
 
-void a_pid_outp_(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e, unsigned int const i)
+void a_pid_outp_(a_pid_s const *const ctx, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e, unsigned int const i)
 {
     A_PID_OUT_(.p[i]);
 }
@@ -93,7 +91,7 @@ a_float_t a_pid_outf(a_pid_s *const ctx, a_float_t const set, a_float_t const fd
     return ctx->out.f;
 }
 
-a_float_t const *a_pid_outp(a_pid_s *const ctx, a_float_t const *const set, a_float_t const *const fdb)
+a_float_t const *a_pid_outp(a_pid_s const *const ctx, a_float_t const *const set, a_float_t const *const fdb)
 {
     for (unsigned int i = 0; i != ctx->chan; ++i)
     {

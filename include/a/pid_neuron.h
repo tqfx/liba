@@ -51,7 +51,7 @@ extern "C" {
  @param[in,out] ctx points to an instance of single neuron PID controller
  @param[in] num number of controller channel
 */
-A_EXTERN a_pid_neuron_s *a_pid_neuron_init(a_pid_neuron_s *ctx, unsigned int num);
+A_EXTERN void a_pid_neuron_init(a_pid_neuron_s *ctx, unsigned int num);
 
 /*!
  @brief set buffer for multichannel single neuron PID controller
@@ -66,9 +66,9 @@ A_EXTERN a_pid_neuron_s *a_pid_neuron_init(a_pid_neuron_s *ctx, unsigned int num
  @param[in] wi points to ki's weight buffer
  @param[in] wd points to kd's weight buffer
 */
-A_EXTERN a_pid_neuron_s *a_pid_neuron_chan(a_pid_neuron_s *ctx, unsigned int num,
-                                           a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err,
-                                           a_float_t *ec, a_float_t *wp, a_float_t *wi, a_float_t *wd);
+A_EXTERN void a_pid_neuron_chan(a_pid_neuron_s *ctx, unsigned int num,
+                                a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err,
+                                a_float_t *ec, a_float_t *wp, a_float_t *wi, a_float_t *wd);
 
 /*!
  @brief set proportional integral derivative constant for single neuron PID controller
@@ -77,7 +77,7 @@ A_EXTERN a_pid_neuron_s *a_pid_neuron_chan(a_pid_neuron_s *ctx, unsigned int num
  @param[in] ki integral learning constant
  @param[in] kd derivative learning constant
 */
-A_EXTERN a_pid_neuron_s *a_pid_neuron_kpid(a_pid_neuron_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd);
+A_EXTERN void a_pid_neuron_kpid(a_pid_neuron_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd);
 
 /*!
  @brief calculate function for single neuron PID controller
@@ -90,18 +90,18 @@ A_EXTERN a_float_t a_pid_neuron_outf(a_pid_neuron_s *ctx, a_float_t set, a_float
 
 /*!
  @brief calculate function for multichannel neuron PID controller
- @param[in,out] ctx points to an instance of single neuron PID controller
+ @param[in] ctx points to an instance of single neuron PID controller
  @param[in] set points to setpoint
  @param[in] fdb points to feedback
  @return points to output
 */
-A_EXTERN a_float_t const *a_pid_neuron_outp(a_pid_neuron_s *ctx, a_float_t const *set, a_float_t const *fdb);
+A_EXTERN a_float_t const *a_pid_neuron_outp(a_pid_neuron_s const *ctx, a_float_t const *set, a_float_t const *fdb);
 
 /*!
  @brief zero clear function for single neuron PID controller
  @param[in,out] ctx points to an instance of single neuron PID controller
 */
-A_EXTERN a_pid_neuron_s *a_pid_neuron_zero(a_pid_neuron_s *ctx);
+A_EXTERN void a_pid_neuron_zero(a_pid_neuron_s *ctx);
 
 #if defined(__cplusplus)
 } /* extern "C" */

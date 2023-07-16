@@ -45,7 +45,7 @@ extern "C" {
  @param[in,out] ctx points to an instance of expert PID controller
  @param[in] num number of controller channel
 */
-A_EXTERN a_pid_expert_s *a_pid_expert_init(a_pid_expert_s *ctx, unsigned int num);
+A_EXTERN void a_pid_expert_init(a_pid_expert_s *ctx, unsigned int num);
 
 /*!
  @brief set buffer for multichannel expert PID controller
@@ -57,8 +57,8 @@ A_EXTERN a_pid_expert_s *a_pid_expert_init(a_pid_expert_s *ctx, unsigned int num
  @param[in] err points to cache error buffer
  @param[in] ec points to error change buffer
 */
-A_EXTERN a_pid_expert_s *a_pid_expert_chan(a_pid_expert_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb,
-                                           a_float_t *tmp, a_float_t *err, a_float_t *ec);
+A_EXTERN void a_pid_expert_chan(a_pid_expert_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb,
+                                a_float_t *tmp, a_float_t *err, a_float_t *ec);
 
 /*!
  @brief set proportional integral derivative constant for expert PID controller
@@ -67,7 +67,7 @@ A_EXTERN a_pid_expert_s *a_pid_expert_chan(a_pid_expert_s *ctx, unsigned int num
  @param[in] ki integral constant
  @param[in] kd derivative constant
 */
-A_EXTERN a_pid_expert_s *a_pid_expert_kpid(a_pid_expert_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd);
+A_EXTERN void a_pid_expert_kpid(a_pid_expert_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd);
 
 /*!
  @brief calculate function for expert PID controller
@@ -91,7 +91,7 @@ A_EXTERN a_float_t const *a_pid_expert_outp(a_pid_expert_s *ctx, a_float_t const
  @brief zero clear function for expert PID controller
  @param[in,out] ctx points to an instance of expert PID controller
 */
-A_EXTERN a_pid_expert_s *a_pid_expert_zero(a_pid_expert_s *ctx);
+A_EXTERN void a_pid_expert_zero(a_pid_expert_s *ctx);
 
 #if defined(__cplusplus)
 } /* extern "C" */
