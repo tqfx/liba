@@ -231,6 +231,13 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(polytrack polytrack.gp polytrack.log 0 10 0 10)
 endif()
 
+building(rbf rbf.c rbf.cpp)
+unittest(rbf)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(rbf 3.gp rbf.log)
+endif()
+
 building(rbt rbt.c rbt.cpp)
 unittest(rbt)
 

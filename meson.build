@@ -105,6 +105,7 @@ sources = [
     'src/pid_neuron.h',
     'src/poly.c',
     'src/polytrack.c',
+    'src/rbf.c',
     'src/rbt.c',
     'src/tf.c',
     'src/utf.c',

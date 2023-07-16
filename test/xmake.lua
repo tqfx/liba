@@ -85,6 +85,10 @@ target("test/polytrack")
     building({"polytrack.c", "polytrack.cpp"})
 target_end()
 
+target("test/rbf")
+    building({"rbf.c", "rbf.cpp"})
+target_end()
+
 target("test/rbt")
     building({"rbt.c", "rbt.cpp"})
 target_end()
