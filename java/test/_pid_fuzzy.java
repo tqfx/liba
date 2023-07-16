@@ -76,10 +76,26 @@ class _pid_fuzzy {
                 { NL, NS, NS, NS, NS, NS, NL },
                 { NL, NM, NM, NM, NS, NS, NL },
         };
-        pid_fuzzy obj = new pid_fuzzy(-10, +10);
-        obj.rule(me, mec, mkp, mki, mkd).buff(2);
-        System.out.print(obj.iter(1, 0) + " ");
-        obj.kpid(10, 0.1, 1).zero();
-        System.out.println(obj.iter(1, 0));
+        {
+            pid_fuzzy obj = new pid_fuzzy();
+            obj.rule(me, mec, mkp, mki, mkd).buff(2);
+            System.out.print(obj.iter(1, 0) + " ");
+            obj.kpid(10, 0.1, 1).zero();
+            System.out.println(obj.iter(1, 0));
+        }
+        {
+            pid_fuzzy obj = new pid_fuzzy(-10, +10);
+            obj.rule(me, mec, mkp, mki, mkd).buff(2);
+            System.out.print(obj.iter(1, 0) + " ");
+            obj.kpid(10, 0.1, 1).zero();
+            System.out.println(obj.iter(1, 0));
+        }
+        {
+            pid_fuzzy obj = new pid_fuzzy(-10, +10, +10);
+            obj.rule(me, mec, mkp, mki, mkd).buff(2);
+            System.out.print(obj.iter(1, 0) + " ");
+            obj.kpid(10, 0.1, 1).zero();
+            System.out.println(obj.iter(1, 0));
+        }
     }
 }

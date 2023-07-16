@@ -46,6 +46,9 @@ static int LMODULE(pid_fuzzy_init_)(lua_State *const L, a_pid_fuzzy_s *const ctx
         break;
     }
     default:
+        ctx->pid.outmax = +A_FLOAT_INF;
+        ctx->pid.outmin = -A_FLOAT_INF;
+        ctx->pid.mode = A_PID_INC;
         break;
     }
     a_pid_fuzzy_init(ctx, 0);
@@ -86,7 +89,6 @@ int LMODULE(pid_fuzzy_die)(lua_State *const L)
 */
 int LMODULE(pid_fuzzy_new)(lua_State *const L)
 {
-    if (lua_gettop(L) > 1)
     {
         while (lua_type(L, 1) == LUA_TTABLE)
         {
@@ -98,9 +100,7 @@ int LMODULE(pid_fuzzy_new)(lua_State *const L)
         lua_setmetatable(L, -2);
         return LMODULE2(pid_fuzzy_init_, L, ctx);
     }
-    return 0;
 }
-
 /***
  initialize function for fuzzy PID controller
  @param ctx fuzzy PID controller userdata
@@ -115,7 +115,7 @@ int LMODULE(pid_fuzzy_new)(lua_State *const L)
 */
 int LMODULE(pid_fuzzy_init)(lua_State *const L)
 {
-    if (lua_gettop(L) > 2)
+    if (lua_gettop(L))
     {
         while (lua_type(L, 1) == LUA_TTABLE)
         {

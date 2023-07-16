@@ -4,6 +4,7 @@ package.path = arg[0]:sub(0, -arg[0]:match("([^/\\]*)$"):len() - 1) .. "?.lua;" 
 local test = require("test")
 local a = require("liba")
 test:r(getmetatable(a.pid))
+assert(a.pid.new())
 assert(a.pid.new(-10, 10))
 assert(a.pid.new(-10, 10, 10))
 assert(a.pid.new(10, 0.1, 1, -10, 10))

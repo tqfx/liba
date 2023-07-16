@@ -36,10 +36,10 @@ typedef struct a_pid_neuron_s
 {
     a_pid_s pid; //!< instance structure for PID controller
     a_float_u ec; //!< error change
-    a_float_u wp; //!< proportional constant weight
-    a_float_u wi; //!< integral constant weight
-    a_float_u wd; //!< derivative constant weight
-    a_float_t k; //!< proportional coefficient
+    a_float_u wp; //!< proportional weight
+    a_float_u wi; //!< integral weight
+    a_float_u wd; //!< derivative weight
+    a_float_t k; //!< proportional output coefficient
 } a_pid_neuron_s;
 
 #if defined(__cplusplus)
@@ -73,11 +73,21 @@ A_EXTERN void a_pid_neuron_chan(a_pid_neuron_s *ctx, unsigned int num,
 /*!
  @brief set proportional integral derivative constant for single neuron PID controller
  @param[in,out] ctx points to an instance of single neuron PID controller
+ @param[in] k proportional output coefficient
  @param[in] kp proportional learning constant
  @param[in] ki integral learning constant
  @param[in] kd derivative learning constant
 */
-A_EXTERN void a_pid_neuron_kpid(a_pid_neuron_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd);
+A_EXTERN void a_pid_neuron_kpid(a_pid_neuron_s *ctx, a_float_t k, a_float_t kp, a_float_t ki, a_float_t kd);
+
+/*!
+ @brief set proportional integral derivative weight for single neuron PID controller
+ @param[in,out] ctx points to an instance of single neuron PID controller
+ @param[in] wp proportional weight
+ @param[in] wi integral weight
+ @param[in] wd derivative lweight
+*/
+A_EXTERN void a_pid_neuron_wpid(a_pid_neuron_s *ctx, a_float_t wp, a_float_t wi, a_float_t wd);
 
 /*!
  @brief calculate function for single neuron PID controller

@@ -8,7 +8,7 @@ cdef class pid:
     POS = A_PID_POS
     INC = A_PID_INC
     cdef a_pid_s ctx
-    def __cinit__(self, a_float_t min, a_float_t max, a_float_t sum = 0):
+    def __cinit__(self, a_float_t min = -A_FLOAT_INF, a_float_t max = +A_FLOAT_INF, a_float_t sum = 0):
         self.ctx.summax = sum
         self.ctx.outmax = max
         self.ctx.outmin = min

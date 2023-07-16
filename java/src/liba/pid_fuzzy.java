@@ -5,6 +5,20 @@ public class pid_fuzzy {
     static {
         System.loadLibrary("a");
     }
+    /** sqrt(l,r)*sqrt(1-(1-r)*(1-r)) */
+    public static final int EQU = 0;
+    /** min(l,r) */
+    public static final int AND = 1;
+    /** l*r */
+    public static final int AND_ALGEBRA = 2;
+    /** max(l,r) */
+    public static final int AND_BOUNDED = 3;
+    /** max(l,r) */
+    public static final int OR = 4;
+    /** l+r-l*r */
+    public static final int OR_ALGEBRA = 5;
+    /** min(l,r) */
+    public static final int OR_BOUNDED = 6;
     /** proportional integral derivative controller */
     public pid pid;
     double[] me;
@@ -14,7 +28,7 @@ public class pid_fuzzy {
     double[] mkd;
     int[] idx;
     double[] val;
-    long op;
+    long op = 0;
     /** base proportional constant */
     public double kp = 0;
     /** base integral constant */
@@ -23,6 +37,15 @@ public class pid_fuzzy {
     public double kd = 0;
     int col = 0;
     int buf = 0;
+
+    /**
+     * construct a new {@link pid_fuzzy} object
+     *
+     */
+    public pid_fuzzy() {
+        this.pid = new pid();
+        this.op(EQU);
+    }
 
     /**
      * construct a new {@link pid_fuzzy} object

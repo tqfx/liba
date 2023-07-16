@@ -22,6 +22,14 @@ class pid
     }
 
 public:
+    pid()
+    {
+        this->ctx.summax = 0;
+        this->ctx.outmax = -A_FLOAT_INF;
+        this->ctx.outmin = +A_FLOAT_INF;
+        this->ctx.mode = A_PID_INC;
+        this->init();
+    }
     pid(a_float_t jmin, a_float_t jmax)
     {
         this->ctx.summax = 0;
@@ -37,28 +45,6 @@ public:
         this->ctx.outmin = jmin;
         this->ctx.mode = A_PID_POS;
         this->init();
-    }
-    pid(a_float_t jkp, a_float_t jki, a_float_t jkd, a_float_t jmin, a_float_t jmax)
-    {
-        this->ctx.kp = jkp;
-        this->ctx.ki = jki;
-        this->ctx.kd = jkd;
-        this->ctx.summax = 0;
-        this->ctx.outmax = jmax;
-        this->ctx.outmin = jmin;
-        this->ctx.mode = A_PID_INC;
-        a_pid_init(&this->ctx, 0);
-    }
-    pid(a_float_t jkp, a_float_t jki, a_float_t jkd, a_float_t jmin, a_float_t jmax, a_float_t jsum)
-    {
-        this->ctx.kp = jkp;
-        this->ctx.ki = jki;
-        this->ctx.kd = jkd;
-        this->ctx.summax = jsum;
-        this->ctx.outmax = jmax;
-        this->ctx.outmin = jmin;
-        this->ctx.mode = A_PID_POS;
-        a_pid_init(&this->ctx, 0);
     }
     void kpid(a_float_t jkp, a_float_t jki, a_float_t jkd)
     {
@@ -120,6 +106,14 @@ class pid_fuzzy
     }
 
 public:
+    pid_fuzzy()
+    {
+        this->ctx.pid.summax = 0;
+        this->ctx.pid.outmax = -A_FLOAT_INF;
+        this->ctx.pid.outmin = +A_FLOAT_INF;
+        this->ctx.pid.mode = A_PID_INC;
+        this->init();
+    }
     pid_fuzzy(a_float_t jmin, a_float_t jmax)
     {
         this->ctx.pid.summax = 0;
@@ -173,6 +167,56 @@ public:
         return a_pid_fuzzy_outf(&this->ctx, jset, jfdb);
     }
     void zero() { a_pid_fuzzy_zero(&this->ctx); }
+};
+
+#include "a/pid_neuron.h"
+
+class pid_neuron
+{
+    a_pid_neuron_s ctx;
+
+    void init()
+    {
+        this->ctx.pid.kp = 0;
+        this->ctx.pid.ki = 0;
+        this->ctx.pid.kd = 0;
+        this->ctx.wp.f = 1;
+        this->ctx.wi.f = 0;
+        this->ctx.wd.f = 0;
+        this->ctx.k = 1;
+        a_pid_neuron_init(&this->ctx, 0);
+    }
+
+public:
+    pid_neuron()
+    {
+        this->ctx.pid.summax = 0;
+        this->ctx.pid.outmax = -A_FLOAT_INF;
+        this->ctx.pid.outmin = +A_FLOAT_INF;
+        this->ctx.pid.mode = A_PID_INC;
+        this->init();
+    }
+    pid_neuron(a_float_t jmin, a_float_t jmax)
+    {
+        this->ctx.pid.summax = 0;
+        this->ctx.pid.outmax = jmax;
+        this->ctx.pid.outmin = jmin;
+        this->ctx.pid.mode = A_PID_INC;
+        this->init();
+    }
+    void kpid(a_float_t jk, a_float_t jkp, a_float_t jki, a_float_t jkd)
+    {
+        a_pid_neuron_kpid(&this->ctx, jk, jkp, jki, jkd);
+    }
+    void wpid(a_float_t jwp, a_float_t jwi, a_float_t jwd)
+    {
+        a_pid_neuron_wpid(&this->ctx, jwp, jwi, jwd);
+    }
+    a_float_t iter(a_float_t jset, a_float_t jfdb)
+    {
+        return a_pid_neuron_outf(&this->ctx, jset, jfdb);
+    }
+    void zero() { a_pid_neuron_zero(&this->ctx); }
 };
 
 #include "a/polytrack.h"
@@ -358,14 +402,14 @@ EMSCRIPTEN_BINDINGS(module) // NOLINT
     emscripten::constant("PID_POS", 1);
     emscripten::constant("PID_INC", 2);
     emscripten::class_<pid>("pid")
+        .constructor<>()
         .constructor<a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t>()
-        .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
-        .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
         .function("kpid", &pid::kpid)
         .function("iter", &pid::iter)
         .function("zero", &pid::zero);
     emscripten::class_<pid_fuzzy>("pid_fuzzy")
+        .constructor<>()
         .constructor<a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t>()
         .function("rule", &pid_fuzzy::rule)
@@ -374,6 +418,13 @@ EMSCRIPTEN_BINDINGS(module) // NOLINT
         .function("op", &pid_fuzzy::op)
         .function("iter", &pid_fuzzy::iter)
         .function("zero", &pid_fuzzy::zero);
+    emscripten::class_<pid_neuron>("pid_neuron")
+        .constructor<>()
+        .constructor<a_float_t, a_float_t>()
+        .function("kpid", &pid_neuron::kpid)
+        .function("wpid", &pid_neuron::wpid)
+        .function("iter", &pid_neuron::iter)
+        .function("zero", &pid_neuron::zero);
     emscripten::class_<polytrack3>("polytrack3")
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()

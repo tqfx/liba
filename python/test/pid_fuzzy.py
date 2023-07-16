@@ -99,7 +99,7 @@ mkd = [
 ]
 
 
-def fuzzy(e: float, c: float):
+def fuzzy(e: float, ec: float):
     mf = a.mf()
 
     idxe = []
@@ -115,7 +115,7 @@ def fuzzy(e: float, c: float):
     idxec = []
     valec = []
     for idx, param in enumerate(me[:-1]):
-        ms = mf(param[0], c, param[1:])
+        ms = mf(param[0], ec, param[1:])
         if ms > 0:
             idxec.append(idx)
             valec.append(ms)
@@ -126,8 +126,8 @@ def fuzzy(e: float, c: float):
     joint = []
     for e in vale:
         row = []
-        for c in valec:
-            y = pow(e * c, 0.5) * pow(1 - (1 - e) * (1 - c), 0.5)
+        for ec in valec:
+            y = pow(e * ec, 0.5) * pow(1 - (1 - e) * (1 - ec), 0.5)
             row.append(y)
             inv += y
         joint.append(row)

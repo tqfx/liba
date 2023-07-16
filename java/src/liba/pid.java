@@ -20,9 +20,9 @@ public class pid {
     /** maximum integral output */
     public double summax = 0;
     /** maximum final output */
-    public double outmax = 0;
+    public double outmax = 1.0 / 0.0;
     /** minimum final output */
-    public double outmin = 0;
+    public double outmin = -1.0 / 0.0;
     /** controller output */
     public double out = 0;
     /** cache feedback */

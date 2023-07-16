@@ -25,9 +25,29 @@ void a_pid_neuron_chan(a_pid_neuron_s *const ctx, unsigned int const num,
     a_pid_neuron_zero(ctx);
 }
 
-void a_pid_neuron_kpid(a_pid_neuron_s *const ctx, a_float_t const kp, a_float_t const ki, a_float_t const kd)
+void a_pid_neuron_kpid(a_pid_neuron_s *const ctx, a_float_t const k, a_float_t const kp, a_float_t const ki, a_float_t const kd)
 {
     a_pid_kpid(&ctx->pid, kp, ki, kd);
+    ctx->k = k;
+}
+
+void a_pid_neuron_wpid(a_pid_neuron_s *const ctx, a_float_t const wp, a_float_t const wi, a_float_t const wd)
+{
+    if (ctx->pid.chan)
+    {
+        for (unsigned int i = 0; i != ctx->pid.chan; ++i)
+        {
+            ctx->wp.p[i] = wp;
+            ctx->wi.p[i] = wi;
+            ctx->wd.p[i] = wd;
+        }
+    }
+    else
+    {
+        ctx->wp.f = wp;
+        ctx->wi.f = wi;
+        ctx->wd.f = wd;
+    }
 }
 
 void a_pid_neuron_zero(a_pid_neuron_s *const ctx)

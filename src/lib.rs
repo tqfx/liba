@@ -44,6 +44,8 @@ pub mod pid;
 pub use crate::pid::PID;
 pub mod pid_fuzzy;
 pub use crate::pid_fuzzy::PID_fuzzy;
+pub mod pid_neuron;
+pub use crate::pid_neuron::PID_neuron;
 pub mod polytrack;
 pub use crate::polytrack::polytrack3;
 pub use crate::polytrack::polytrack5;

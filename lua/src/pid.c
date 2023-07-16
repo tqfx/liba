@@ -45,6 +45,9 @@ static int LMODULE(pid_init_)(lua_State *const L, a_pid_s *const ctx)
         break;
     }
     default:
+        ctx->outmax = +A_FLOAT_INF;
+        ctx->outmin = -A_FLOAT_INF;
+        ctx->mode = A_PID_INC;
         break;
     }
     a_pid_init(ctx, 0);
@@ -64,19 +67,15 @@ static int LMODULE(pid_init_)(lua_State *const L, a_pid_s *const ctx)
 */
 int LMODULE(pid_new)(lua_State *const L)
 {
-    if (lua_gettop(L) > 1)
+    while (lua_type(L, 1) == LUA_TTABLE)
     {
-        while (lua_type(L, 1) == LUA_TTABLE)
-        {
-            lua_remove(L, 1);
-        }
-        a_pid_s *const ctx = (a_pid_s *)lua_newuserdata(L, sizeof(a_pid_s));
-        a_zero(ctx, sizeof(a_pid_s));
-        LMODULE2(pid_meta_, L, 1);
-        lua_setmetatable(L, -2);
-        return LMODULE2(pid_init_, L, ctx);
+        lua_remove(L, 1);
     }
-    return 0;
+    a_pid_s *const ctx = (a_pid_s *)lua_newuserdata(L, sizeof(a_pid_s));
+    a_zero(ctx, sizeof(a_pid_s));
+    LMODULE2(pid_meta_, L, 1);
+    lua_setmetatable(L, -2);
+    return LMODULE2(pid_init_, L, ctx);
 }
 
 /***
@@ -93,7 +92,7 @@ int LMODULE(pid_new)(lua_State *const L)
 */
 int LMODULE(pid_init)(lua_State *const L)
 {
-    if (lua_gettop(L) > 2)
+    if (lua_gettop(L))
     {
         while (lua_type(L, 1) == LUA_TTABLE)
         {

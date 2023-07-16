@@ -38,6 +38,9 @@ unittest(_pid pid)
 building(_pid_fuzzy pid_fuzzy)
 unittest(_pid_fuzzy pid_fuzzy)
 
+building(_pid_neuron pid_neuron)
+unittest(_pid_neuron pid_neuron)
+
 building(_polytrack3 polytrack3)
 unittest(_polytrack3 polytrack3)
 

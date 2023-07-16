@@ -87,6 +87,11 @@ local mkd = {
   -- LuaFormatter on
 }
 test:r(getmetatable(a.pid_fuzzy))
+assert(a.pid_fuzzy.new())
+assert(a.pid_fuzzy.new(-10, 10))
+assert(a.pid_fuzzy.new(-10, 10, 10))
+assert(a.pid_fuzzy.new(10, 0.1, 1, -10, 10))
+assert(a.pid_fuzzy.new(10, 0.1, 1, -10, 10, 10))
 ctx = a.pid_fuzzy.new(-10, 10)
 assert(type(a.pid_fuzzy.rule(ctx, me, mec, mkp, mki, mkd)) == "userdata")
 assert(type(a.pid_fuzzy:rule(ctx, me, mec, mkp, mki, mkd)) == "userdata")

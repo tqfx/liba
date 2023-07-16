@@ -21,7 +21,7 @@ cdef class pid_fuzzy:
     cdef array mki
     cdef array mkd
     cdef void *ptr
-    def __cinit__(self, a_float_t min, a_float_t max, a_float_t sum = 0):
+    def __cinit__(self, a_float_t min = -A_FLOAT_INF, a_float_t max = +A_FLOAT_INF, a_float_t sum = 0):
         self.ctx.pid.summax = sum
         self.ctx.pid.outmax = max
         self.ctx.pid.outmin = min

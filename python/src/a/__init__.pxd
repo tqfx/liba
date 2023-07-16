@@ -29,5 +29,7 @@ cdef extern from "a/a.h":
     ctypedef union a_float_u:
         a_float_t f
         a_float_t *p
+    const a_float_t A_FLOAT_INF
+    const a_float_t A_FLOAT_NAN
 
     a_umax_t a_hash_bkdr(const char *str, a_umax_t val);
