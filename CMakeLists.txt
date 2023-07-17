@@ -279,10 +279,10 @@ endforeach()
 set(CMAKE_EXECUTABLE_SUFFIX)
 set(CMAKE_STATIC_LIBRARY_SUFFIX .o)
 set(CMAKE_STATIC_LIBRARY_PREFIX lib)
-add_executable(aexe \$<TARGET_OBJECTS:a>)
+add_executable(aelf \$<TARGET_OBJECTS:a>)
 add_library(aobj STATIC \$<TARGET_OBJECTS:a>)
 add_library_properties(aobj INTERFACE alib INTERFACE_)
-set_target_properties(aexe PROPERTIES OUTPUT_NAME liba
+set_target_properties(aelf PROPERTIES OUTPUT_NAME liba
 \tINTERPROCEDURAL_OPTIMIZATION \${LIBA_IPO}
 )
 set_target_properties(aobj PROPERTIES OUTPUT_NAME a
@@ -295,7 +295,7 @@ include(GNUInstallDirs)
 install(TARGETS aobj EXPORT \${PROJECT_NAME}-targets
 \tARCHIVE DESTINATION \${CMAKE_INSTALL_LIBDIR}
 \tLIBRARY DESTINATION \${CMAKE_INSTALL_LIBDIR}
-)\nadd_dependencies(aobj aexe)")
+)\nadd_dependencies(aobj aelf)")
   add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/lib lib)
 endif()
 
