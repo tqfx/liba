@@ -2,8 +2,6 @@ set(OBJECTS $<TARGET_OBJECTS:a>)
 
 if(WIN32)
   set(CMAKE_SHARED_MODULE_PREFIX lib)
-else()
-  set(CMAKE_SHARED_MODULE_SUFFIX .so)
 endif()
 
 if(LIBA_WITH_LUA)

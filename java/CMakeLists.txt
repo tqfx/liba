@@ -34,7 +34,7 @@ if(LIBA_JAVADOC)
 endif()
 
 if(WIN32)
-  set(CMAKE_SHARED_MODULE_PREFIX)
+  set(CMAKE_SHARED_LIBRARY_PREFIX)
 endif()
 
 if(LIBA_FLOAT EQUAL 8)
@@ -49,7 +49,7 @@ else()
   file_scaner(SOURCES RECURSE src EXT c h)
 endif()
 
-add_library(ajni MODULE ${OBJECTS} ${SOURCES})
+add_library(ajni SHARED ${OBJECTS} ${SOURCES})
 set_target_properties(ajni PROPERTIES DEFINE_SYMBOL A_EXPORTS OUTPUT_NAME a)
 add_library_properties(ajni PRIVATE alib)
 set_library_options(ajni)
