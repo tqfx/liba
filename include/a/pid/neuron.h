@@ -99,13 +99,23 @@ A_EXTERN void a_pid_neuron_wpid(a_pid_neuron_s *ctx, a_float_t wp, a_float_t wi,
 A_EXTERN a_float_t a_pid_neuron_outf(a_pid_neuron_s *ctx, a_float_t set, a_float_t fdb);
 
 /*!
- @brief calculate function for multichannel neuron PID controller
+ @brief calculate function for multichannel single neuron PID controller
  @param[in] ctx points to an instance of single neuron PID controller
  @param[in] set points to setpoint
  @param[in] fdb points to feedback
  @return points to output
 */
 A_EXTERN a_float_t const *a_pid_neuron_outp(a_pid_neuron_s const *ctx, a_float_t const *set, a_float_t const *fdb);
+
+/*!
+ @brief calculate function for single neuron PID controller
+ @param[in,out] ctx points to an instance of single neuron PID controller
+ @param[in] set setpoint
+ @param[in] fdb feedback
+ @return output value
+  @retval set when PID controller is off
+*/
+A_EXTERN a_float_t const *a_pid_neuron_iter(a_pid_neuron_s *ctx, a_float_t const *set, a_float_t const *fdb);
 
 /*!
  @brief zero clear function for single neuron PID controller

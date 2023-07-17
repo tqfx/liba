@@ -134,7 +134,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     for (unsigned int i = 0; i < 100; ++i)
     {
         a_float_t const in = input(A_FLOAT_C(0.001) * a_float_c(, i));
-        a_tf_iter(&tf, a_pid_neuron_outf(&ctx, in, *tf.output));
+        a_tf_iter(&tf, *a_pid_neuron_iter(&ctx, &in, tf.output));
 #if defined(MAIN_ONCE)
         printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
                A_FLOAT_C(0.001) * a_float_c(, i), in, *tf.output, ctx.pid.err.f);

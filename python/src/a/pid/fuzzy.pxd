@@ -30,4 +30,5 @@ cdef extern from "a/pid/fuzzy.h":
     void a_pid_fuzzy_buff(a_pid_fuzzy_s *ctx, unsigned int *idx, a_float_t *mms, a_float_t *mat)
     a_float_t a_pid_fuzzy_outf(a_pid_fuzzy_s *ctx, a_float_t set, a_float_t fdb)
     const a_float_t *a_pid_fuzzy_outp(a_pid_fuzzy_s *ctx, const a_float_t *set, const a_float_t *fdb)
+    const a_float_t *a_pid_fuzzy_iter(a_pid_fuzzy_s *ctx, const a_float_t *set, const a_float_t *fdb)
     void a_pid_fuzzy_zero(a_pid_fuzzy_s *ctx)

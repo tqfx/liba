@@ -224,3 +224,13 @@ a_float_t const *a_pid_fuzzy_outp(a_pid_fuzzy_s *const ctx, a_float_t const *con
     }
     return ctx->pid.out.p;
 }
+
+a_float_t const *a_pid_fuzzy_iter(a_pid_fuzzy_s *const ctx, a_float_t const *const set, a_float_t const *const fdb)
+{
+    if (ctx->pid.chan)
+    {
+        return a_pid_fuzzy_outp(ctx, set, fdb);
+    }
+    a_pid_fuzzy_outf(ctx, *set, *fdb);
+    return &ctx->pid.out.f;
+}

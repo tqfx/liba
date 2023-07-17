@@ -22,4 +22,5 @@ cdef extern from "a/pid.h":
     void a_pid_kpid(a_pid_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd)
     a_float_t a_pid_outf(a_pid_s *ctx, a_float_t set, a_float_t fdb)
     const a_float_t *a_pid_outp(const a_pid_s *ctx, const a_float_t *set, const a_float_t *fdb)
+    const a_float_t *a_pid_iter(a_pid_s *ctx, const a_float_t *set, const a_float_t *fdb)
     void a_pid_zero(a_pid_s *ctx)

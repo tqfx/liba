@@ -14,4 +14,5 @@ cdef extern from "a/pid/neuron.h":
     void a_pid_neuron_wpid(a_pid_neuron_s *ctx, a_float_t wp, a_float_t wi, a_float_t wd)
     a_float_t a_pid_neuron_outf(a_pid_neuron_s *ctx, a_float_t set, a_float_t fdb)
     const a_float_t *a_pid_neuron_outp(const a_pid_neuron_s *ctx, const a_float_t *set, const a_float_t *fdb)
+    const a_float_t *a_pid_neuron_iter(a_pid_neuron_s *ctx, const a_float_t *set, const a_float_t *fdb)
     void a_pid_neuron_zero(a_pid_neuron_s *ctx)

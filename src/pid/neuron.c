@@ -100,3 +100,13 @@ a_float_t const *a_pid_neuron_outp(a_pid_neuron_s const *const ctx, a_float_t co
     }
     return ctx->pid.out.p;
 }
+
+a_float_t const *a_pid_neuron_iter(a_pid_neuron_s *const ctx, a_float_t const *const set, a_float_t const *const fdb)
+{
+    if (ctx->pid.chan)
+    {
+        return a_pid_neuron_outp(ctx, set, fdb);
+    }
+    a_pid_neuron_outf(ctx, *set, *fdb);
+    return &ctx->pid.out.f;
+}

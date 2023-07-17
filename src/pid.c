@@ -97,3 +97,13 @@ a_float_t const *a_pid_outp(a_pid_s const *const ctx, a_float_t const *const set
     }
     return ctx->out.p;
 }
+
+a_float_t const *a_pid_iter(a_pid_s *const ctx, a_float_t const *const set, a_float_t const *const fdb)
+{
+    if (ctx->chan)
+    {
+        return a_pid_outp(ctx, set, fdb);
+    }
+    a_pid_outf(ctx, *set, *fdb);
+    return &ctx->out.f;
+}

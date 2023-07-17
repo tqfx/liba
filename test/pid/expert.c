@@ -130,3 +130,13 @@ a_float_t const *a_pid_expert_outp(a_pid_expert_s *const ctx, a_float_t const *c
     }
     return ctx->pid.out.p;
 }
+
+a_float_t const *a_pid_expert_iter(a_pid_expert_s *const ctx, a_float_t const *const set, a_float_t const *const fdb)
+{
+    if (ctx->pid.chan)
+    {
+        return a_pid_expert_outp(ctx, set, fdb);
+    }
+    a_pid_expert_outf(ctx, *set, *fdb);
+    return &ctx->pid.out.f;
+}
