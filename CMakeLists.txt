@@ -265,22 +265,32 @@ endif()
 if(TARGET_SUPPORTS_RELOCATABLE)
   file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/lib/CMakeLists.txt "get_cmake_property(ENABLED_LANGUAGES ENABLED_LANGUAGES)
 foreach(LANG \${ENABLED_LANGUAGES})
-\tset(CMAKE_\${LANG}_CREATE_STATIC_LIBRARY \"<CMAKE_\${LANG}_COMPILER> \${CMAKE_\${LANG}_FLAGS} -nostdlib -o <TARGET> -r <OBJECTS>\")
+\tset(CMAKE_\${LANG}_LINK_EXECUTABLE
+\t\t\"<CMAKE_\${LANG}_COMPILER> <FLAGS> -nostdlib -o <TARGET> -r <OBJECTS>\"
+\t\t\"\${CMAKE_COMMAND} -E copy <TARGET> <TARGET>.o\"
+)
+\tset(CMAKE_\${LANG}_CREATE_STATIC_LIBRARY \"\")
 endforeach()
+set(CMAKE_EXECUTABLE_SUFFIX)
 set(CMAKE_STATIC_LIBRARY_SUFFIX .o)
+set(CMAKE_STATIC_LIBRARY_PREFIX lib)
+add_executable(aexe \$<TARGET_OBJECTS:a>)
 add_library(aobj STATIC \$<TARGET_OBJECTS:a>)
 add_library_properties(aobj INTERFACE alib INTERFACE_)
+set_target_properties(aexe PROPERTIES OUTPUT_NAME liba
+\tINTERPROCEDURAL_OPTIMIZATION \${LIBA_IPO}
+)
 set_target_properties(aobj PROPERTIES OUTPUT_NAME a
 \tINTERPROCEDURAL_OPTIMIZATION \${LIBA_IPO}
 )
 if(A_HAVE_MIMALLOC_H)
-\ttarget_link_libraries(aobj PUBLIC mimalloc-static)
+\ttarget_link_libraries(aobj INTERFACE mimalloc-static)
 endif()
 include(GNUInstallDirs)
 install(TARGETS aobj EXPORT \${PROJECT_NAME}-targets
 \tARCHIVE DESTINATION \${CMAKE_INSTALL_LIBDIR}
 \tLIBRARY DESTINATION \${CMAKE_INSTALL_LIBDIR}
-)")
+)\nadd_dependencies(aobj aexe)")
   add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/lib lib)
 endif()
 
