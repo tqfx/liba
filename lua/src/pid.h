@@ -1,6 +1,6 @@
 /***
  proportional integral derivative controller
- @classmod pid
+ @classmod liba.pid
 */
 
 /***
@@ -15,7 +15,7 @@
  @field fdb cache feedback
  @field err cache error
  @field mode controller mode
- @table pid
+ @table liba.pid
 */
 
 #ifndef L_PID_H

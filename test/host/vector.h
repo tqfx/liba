@@ -307,4 +307,4 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     return 0;
 }
 
-#endif /* host/vector.h */
+#endif /* test/host/vector.h */

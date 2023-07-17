@@ -47,7 +47,7 @@ function(building target)
     add_executable(${TARGET} ${ARGN})
   endif()
 
-  set_property(TARGET ${TARGET} PROPERTY OUTPUT_NAME ${target})
+  set_property(TARGET ${TARGET} PROPERTY OUTPUT_NAME _${target})
 
   if(TARGET_SUPPORTS_SHARED_LIBS AND LIBA_SANITIZE)
     target_link_libraries(${TARGET} PRIVATE libasan)
@@ -96,7 +96,7 @@ function(unittest target)
     return()
   endif()
 
-  add_test(NAME ${TEST_NAME} WORKING_DIRECTORY ${WORKING_DIRECTORY}
+  add_test(NAME _${TEST_NAME} WORKING_DIRECTORY ${WORKING_DIRECTORY}
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${TARGET}> ${ARGS}
   )
 endfunction()
@@ -144,8 +144,8 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
 endif()
 
 building(a a.c a.cpp)
-unittest(a NAME bkdr ARGS bkdr bkdr)
-unittest(a NAME for ARGS for 10)
+unittest(a NAME a_bkdr ARGS bkdr bkdr)
+unittest(a NAME a_for ARGS for 10)
 unittest(a)
 
 building(avl avl.c avl.cpp)
@@ -200,25 +200,8 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(pid 3.gp pid.log)
 endif()
 
-building(pid_expert pid_expert.c pid_expert.cpp)
-unittest(pid_expert)
-
-if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(pid_expert 3.gp pid_expert.log)
-endif()
-
-building(pid_fuzzy pid_fuzzy.c pid_fuzzy.cpp)
-unittest(pid_fuzzy)
-
-if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(pid_fuzzy 3.gp pid_fuzzy.log)
-endif()
-
-building(pid_neuron pid_neuron.c pid_neuron.cpp)
-unittest(pid_neuron)
-
-if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(pid_neuron 3.gp pid_neuron.log)
+if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/pid/CMakeLists.txt)
+  add_subdirectory(pid)
 endif()
 
 building(poly poly.c poly.cpp)

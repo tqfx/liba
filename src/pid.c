@@ -11,10 +11,7 @@ void a_pid_chan(a_pid_s *const ctx, unsigned int const num, a_float_t *const out
     ctx->chan = num;
     if (ctx->chan)
     {
-        ctx->out.p = out;
-        ctx->fdb.p = fdb;
-        ctx->tmp.p = tmp;
-        ctx->err.p = err;
+        A_PID_CHAN(ctx);
     }
     a_pid_zero(ctx);
 }

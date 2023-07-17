@@ -45,4 +45,4 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     return 0;
 }
 
-#endif /* lpf.h */
+#endif /* test/lpf.h */

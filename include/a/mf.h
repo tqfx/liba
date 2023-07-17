@@ -143,4 +143,4 @@ A_EXTERN a_float_t a_mf(unsigned int e, a_float_t x, a_float_t const *a);
 
 /*! @} A_MF */
 
-#endif /* mf.h */
+#endif /* a/mf.h */

@@ -177,4 +177,4 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     return 0;
 }
 
-#endif /* crc.h */
+#endif /* test/crc.h */

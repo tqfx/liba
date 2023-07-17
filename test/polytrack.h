@@ -108,4 +108,4 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     return 0;
 }
 
-#endif /* polytrack.h */
+#endif /* test/polytrack.h */

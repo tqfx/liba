@@ -1,12 +1,12 @@
 /***
  cubic polynomial trajectory
- @classmod polytrack3
+ @classmod liba.polytrack3
 */
 
 /***
  cubic polynomial trajectory
  @field k quantity table
- @table polytrack3
+ @table liba.polytrack3
 */
 
 #ifndef L_POLYTRACK3_H

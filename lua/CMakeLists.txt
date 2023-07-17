@@ -80,7 +80,7 @@ format = 'markdown'
   add_dependencies(adoc aldoc)
 endif()
 
-if(LUA_EXECUTABLE)
+if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt AND LUA_EXECUTABLE)
   get_property(IS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 
   if(NOT CMAKE_VERSION VERSION_LESS 3.0)

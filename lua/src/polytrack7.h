@@ -1,12 +1,12 @@
 /***
  hepta polynomial trajectory
- @classmod polytrack7
+ @classmod liba.polytrack7
 */
 
 /***
  hepta polynomial trajectory
  @field k quantity table
- @table polytrack7
+ @table liba.polytrack7
 */
 
 #ifndef L_POLYTRACK7_H

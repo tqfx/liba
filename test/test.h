@@ -167,4 +167,4 @@ int main(int argc, char *argv[])
 #endif /* __cplusplus */
 #endif /* MAIN_ */
 
-#endif /* test.h */
+#endif /* test/test.h */

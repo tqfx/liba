@@ -88,4 +88,4 @@ A_INTERN void a_lpf_zero(a_lpf_s *const ctx) { ctx->y = 0; }
 
 /*! @} A_LPF */
 
-#endif /* lpf.h */
+#endif /* a/lpf.h */

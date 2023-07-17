@@ -89,4 +89,4 @@ A_INTERN void a_hpf_zero(a_hpf_s *const ctx) { ctx->y = ctx->x = 0; }
 
 /*! @} A_HPF */
 
-#endif /* hpf.h */
+#endif /* a/hpf.h */

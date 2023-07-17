@@ -1,6 +1,6 @@
 /***
  algorithm library version
- @classmod version
+ @classmod liba.version
 */
 
 /***
@@ -8,7 +8,7 @@
  @field major version major number
  @field minor version minor number
  @field patch version patch number
- @table version
+ @table liba.version
 */
 
 #ifndef L_VERSION_H

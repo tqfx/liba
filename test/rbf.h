@@ -78,4 +78,4 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     return 0;
 }
 
-#endif /* rbf.h */
+#endif /* test/rbf.h */

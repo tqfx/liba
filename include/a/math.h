@@ -306,4 +306,4 @@ A_EXTERN a_float_t a_float_atan2(a_float_t x, a_float_t y);
 
 /*! @} A_FLOAT */
 
-#endif /* math.h */
+#endif /* a/math.h */

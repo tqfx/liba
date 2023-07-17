@@ -55,4 +55,4 @@ A_EXTERN a_float_t *a_poly_evarn(a_float_t const *a, a_size_t n, a_float_t const
 
 /*! @} A_POLY */
 
-#endif /* poly.h */
+#endif /* a/poly.h */

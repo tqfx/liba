@@ -24,9 +24,9 @@ unittest(mf mf)
 
 unittest(pid pid)
 
-unittest(pid_fuzzy pid_fuzzy)
-
-unittest(pid_neuron pid_neuron)
+if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/pid/CMakeLists.txt)
+  add_subdirectory(pid)
+endif()
 
 unittest(polytrack polytrack)
 

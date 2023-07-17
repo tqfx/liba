@@ -318,4 +318,4 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     return 0;
 }
 
-#endif /* list.h */
+#endif /* test/list.h */

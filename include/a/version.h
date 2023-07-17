@@ -290,4 +290,4 @@ A_INTERN a_bool_t a_version_ne(a_version_s const *const lhs, a_version_s const *
 
 /*! @} A_VERSION */
 
-#endif /* version.h */
+#endif /* a/version.h */

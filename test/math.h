@@ -187,4 +187,4 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     return 0;
 }
 
-#endif /* math.h */
+#endif /* test/math.h */

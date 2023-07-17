@@ -206,4 +206,4 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     return 0;
 }
 
-#endif /* buf.h */
+#endif /* test/buf.h */

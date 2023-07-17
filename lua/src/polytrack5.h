@@ -1,12 +1,12 @@
 /***
  quintic polynomial trajectory
- @classmod polytrack5
+ @classmod liba.polytrack5
 */
 
 /***
  quintic polynomial trajectory
  @field k quantity table
- @table polytrack5
+ @table liba.polytrack5
 */
 
 #ifndef L_POLYTRACK5_H

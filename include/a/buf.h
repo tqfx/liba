@@ -370,4 +370,4 @@ A_INTERN void *a_buf_pull(a_buf_s *ctx) { return a_buf_pull_back(ctx); }
 
 /*! @} A_BUF */
 
-#endif /* buf.h */
+#endif /* a/buf.h */

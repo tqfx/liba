@@ -21,4 +21,4 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     return 0;
 }
 
-#endif /* main.h */
+#endif /* test/main.h */

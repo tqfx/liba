@@ -1109,4 +1109,4 @@ A_EXTERN void a_float_roll(a_float_t *array_p, a_size_t array_n,
 
 /*! @} A */
 
-#endif /* a.h */
+#endif /* a/a.h */

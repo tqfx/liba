@@ -99,4 +99,4 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     return 0;
 }
 
-#endif /* notefreqs.h */
+#endif /* test/notefreqs.h */

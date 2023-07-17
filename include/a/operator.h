@@ -64,4 +64,4 @@
 
 /*! @} A_OPERATOR */
 
-#endif /* operator.h */
+#endif /* a/operator.h */

@@ -86,17 +86,20 @@ int LMODULE0(lua_State *const L)
     LMODULE_(tf, L);
     lua_rawset(L, -3);
 
-    lua_pushstring(L, "pid");
     LMODULE_(pid, L);
-    lua_rawset(L, -3);
+    lua_pushstring(L, "pid");
+    lua_pushvalue(L, -2);
+    lua_rawset(L, -4);
+    {
+        lua_pushstring(L, "fuzzy");
+        LMODULE_(pid_fuzzy, L);
+        lua_rawset(L, -3);
 
-    lua_pushstring(L, "pid_fuzzy");
-    LMODULE_(pid_fuzzy, L);
-    lua_rawset(L, -3);
-
-    lua_pushstring(L, "pid_neuron");
-    LMODULE_(pid_neuron, L);
-    lua_rawset(L, -3);
+        lua_pushstring(L, "neuron");
+        LMODULE_(pid_neuron, L);
+        lua_rawset(L, -3);
+    }
+    lua_pop(L, 1);
 
     lua_pushstring(L, "complex");
     LMODULE_(complex, L);

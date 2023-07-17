@@ -1484,4 +1484,4 @@
 
 /*! @} A_NOTEFREQ */
 
-#endif /* notefreqs.h */
+#endif /* a/notefreqs.h */

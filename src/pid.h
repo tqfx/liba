@@ -4,6 +4,15 @@
 #include "a/pid.h"
 #include "a/math.h"
 
+#define A_PID_CHAN(ctx)     \
+    do                      \
+    {                       \
+        (ctx)->out.p = out; \
+        (ctx)->fdb.p = fdb; \
+        (ctx)->tmp.p = tmp; \
+        (ctx)->err.p = err; \
+    } while (0)
+
 #define A_PID_ZERO(ctx, _) \
     do                     \
     {                      \

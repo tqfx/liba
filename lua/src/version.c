@@ -318,7 +318,7 @@ int LMODULE_(version, lua_State *const L)
         {NULL, NULL},
     };
     lua_createtable(L, 0, L_COUNT(metas));
-    l_str_set(L, -1, L_NAME, "version");
+    l_str_set(L, -1, L_NAME, "liba.version");
     l_func_reg(L, -1, metas);
 
     LMODULE2(version_meta_, L, 0);

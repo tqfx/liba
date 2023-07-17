@@ -79,3 +79,6 @@ cdef class pid:
     @mode.setter
     def mode(self, mode: int):
         self.ctx.mode = mode
+
+include "pid/fuzzy.pxi"
+include "pid/neuron.pxi"

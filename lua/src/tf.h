@@ -1,6 +1,6 @@
 /***
  transfer function
- @classmod tf
+ @classmod liba.tf
 */
 
 /***
@@ -9,7 +9,7 @@
  @field den denominator table
  @field input input table
  @field output output table
- @table tf
+ @table liba.tf
 */
 
 #ifndef L_TF_H

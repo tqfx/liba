@@ -51,13 +51,14 @@ void *a_zero(void *const ptr, a_size_t const siz)
 
 void a_swap(void *const _lhs, void *const _rhs, a_size_t siz)
 {
+    a_byte_t tmp[1];
     for (a_byte_t *lhs = (a_byte_t *)_lhs,
                   *rhs = (a_byte_t *)_rhs;
          siz--; ++lhs, ++rhs)
     {
-        *lhs ^= *rhs;
-        *rhs ^= *lhs;
-        *lhs ^= *rhs;
+        *tmp = *lhs;
+        *lhs = *rhs;
+        *rhs = *tmp;
     }
 }
 

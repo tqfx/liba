@@ -339,7 +339,7 @@ int LMODULE_(pid, lua_State *const L)
         {NULL, NULL},
     };
     lua_createtable(L, 0, L_COUNT(metas));
-    l_str_set(L, -1, L_NAME, "pid");
+    l_str_set(L, -1, L_NAME, "liba.pid");
     l_func_reg(L, -1, metas);
 
     LMODULE2(pid_meta_, L, 0);

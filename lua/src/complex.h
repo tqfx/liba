@@ -1,13 +1,13 @@
 /***
  complex number
- @classmod complex
+ @classmod liba.complex
 */
 
 /***
  complex number
  @field real real part of complex number
  @field imag imaginary part of complex number
- @table complex
+ @table liba.complex
 */
 
 #ifndef L_COMPLEX_H

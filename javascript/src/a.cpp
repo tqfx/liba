@@ -57,7 +57,7 @@ public:
     void zero() { a_pid_zero(&this->ctx); }
 };
 
-#include "a/pid_fuzzy.h"
+#include "a/pid/fuzzy.h"
 
 static emscripten::val concat(emscripten::val x)
 {
@@ -169,7 +169,7 @@ public:
     void zero() { a_pid_fuzzy_zero(&this->ctx); }
 };
 
-#include "a/pid_neuron.h"
+#include "a/pid/neuron.h"
 
 class pid_neuron
 {

@@ -65,4 +65,4 @@ A_EXTERN void a_rbf_zero(a_rbf_s const *ctx);
 
 /*! @} A_RBF */
 
-#endif /* rbf.h */
+#endif /* a/rbf.h */

@@ -50,4 +50,4 @@ A_EXTERN a_u64_t a_crc64h(a_u64_t const table[A_CRC_SIZ], void const *pdata, a_s
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* crc.h */
+#endif /* a/crc.h */

@@ -129,4 +129,4 @@ A_EXTERN void a_pid_zero(a_pid_s *ctx);
 
 /*! @} A_PID */
 
-#endif /* pid.h */
+#endif /* a/pid.h */

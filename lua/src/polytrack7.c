@@ -352,7 +352,7 @@ int LMODULE_(polytrack7, lua_State *const L)
         {NULL, NULL},
     };
     lua_createtable(L, 0, L_COUNT(metas));
-    l_str_set(L, -1, L_NAME, "polytrack7");
+    l_str_set(L, -1, L_NAME, "liba.polytrack7");
     l_func_reg(L, -1, metas);
 
     LMODULE2(polytrack7_meta_, L, 0);

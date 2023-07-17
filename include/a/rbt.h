@@ -338,4 +338,4 @@ A_EXTERN void a_rbt_remove(a_rbt_u *root, a_rbt_s *node);
 
 /*! @} A_RBT */
 
-#endif /* rbt.h */
+#endif /* a/rbt.h */
