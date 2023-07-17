@@ -5,7 +5,7 @@ use crate::uint;
 
 /// transfer function
 #[repr(C)]
-pub struct TF {
+pub struct tf {
     /// input
     input: *mut float,
     /// output
@@ -21,10 +21,10 @@ pub struct TF {
 }
 
 extern "C" {
-    fn a_tf_set_num(ctx: *mut TF, num_n: uint, num_p: *const float, input: *mut float);
-    fn a_tf_set_den(ctx: *mut TF, den_n: uint, den_p: *const float, output: *mut float);
+    fn a_tf_set_num(ctx: *mut tf, num_n: uint, num_p: *const float, input: *mut float);
+    fn a_tf_set_den(ctx: *mut tf, den_n: uint, den_p: *const float, output: *mut float);
     fn a_tf_init(
-        ctx: *mut TF,
+        ctx: *mut tf,
         num_n: uint,
         num_p: *const float,
         input: *mut float,
@@ -32,18 +32,18 @@ extern "C" {
         den_p: *const float,
         output: *mut float,
     );
-    fn a_tf_iter(ctx: *const TF, x: float) -> float;
-    fn a_tf_zero(ctx: *const TF);
+    fn a_tf_iter(ctx: *const tf, x: float) -> float;
+    fn a_tf_zero(ctx: *const tf);
 }
 
-impl TF {
+impl tf {
     /// initialize function for transfer function
     pub fn new(num: &[float], input: &mut [float], den: &[float], output: &mut [float]) -> Self {
         let mut ctx: Self = Self {
-            input: std::ptr::null_mut(),
-            output: std::ptr::null_mut(),
-            num_p: std::ptr::null(),
-            den_p: std::ptr::null(),
+            input: core::ptr::null_mut(),
+            output: core::ptr::null_mut(),
+            num_p: core::ptr::null(),
+            den_p: core::ptr::null(),
             num_n: 0,
             den_n: 0,
         };
@@ -74,12 +74,12 @@ impl TF {
 
     /// get input for transfer function
     pub fn input(&self) -> &[float] {
-        unsafe { std::slice::from_raw_parts(self.input, self.num_n as usize) }
+        unsafe { core::slice::from_raw_parts(self.input, self.num_n as usize) }
     }
 
     /// get numerator for transfer function
     pub fn num(&self) -> &[float] {
-        unsafe { std::slice::from_raw_parts(self.num_p, self.num_n as usize) }
+        unsafe { core::slice::from_raw_parts(self.num_p, self.num_n as usize) }
     }
 
     /// set numerator for transfer function
@@ -90,12 +90,12 @@ impl TF {
 
     /// get output for transfer function
     pub fn output(&self) -> &[float] {
-        unsafe { std::slice::from_raw_parts(self.output, self.den_n as usize) }
+        unsafe { core::slice::from_raw_parts(self.output, self.den_n as usize) }
     }
 
     /// get denominator for transfer function
     pub fn den(&self) -> &[float] {
-        unsafe { std::slice::from_raw_parts(self.den_p, self.den_n as usize) }
+        unsafe { core::slice::from_raw_parts(self.den_p, self.den_n as usize) }
     }
 
     /// set denominator for transfer function
@@ -107,14 +107,15 @@ impl TF {
 
 #[test]
 fn tf() {
+    extern crate std;
     let num = [6.59492796e-05, 6.54019884e-05];
     let den = [-1.97530991, 0.97530991];
     let mut input = [0.0; 2];
     let mut output = [0.0; 2];
-    let mut a = crate::TF::new(&num, &mut input, &den, &mut output);
+    let mut a = crate::tf::tf::new(&num, &mut input, &den, &mut output);
     a.set_num(&num, &mut input).set_den(&den, &mut output);
-    println!("{} {}", a.iter(10.0), a.iter(10.0));
-    println!("{:?} {:?}", a.num(), a.input());
-    println!("{:?} {:?}", a.den(), a.output());
+    std::println!("{} {}", a.iter(10.0), a.iter(10.0));
+    std::println!("{:?} {:?}", a.num(), a.input());
+    std::println!("{:?} {:?}", a.den(), a.output());
     a.zero();
 }

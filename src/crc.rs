@@ -46,11 +46,11 @@ impl crc8 {
 #[test]
 fn crc8() {
     {
-        let ctx = crate::crc8::new_low(POLY8);
+        let ctx = crate::crc::crc8::new_low(POLY8);
         ctx.low(b"", INIT8);
     }
     {
-        let ctx = crate::crc8::new_high(POLY8);
+        let ctx = crate::crc::crc8::new_high(POLY8);
         ctx.high(b"", INIT8);
     }
 }
@@ -102,11 +102,11 @@ impl crc16 {
 #[test]
 fn crc16() {
     {
-        let ctx = crate::crc16::new_low(POLY16);
+        let ctx = crate::crc::crc16::new_low(POLY16);
         ctx.low(b"", INIT16);
     }
     {
-        let ctx = crate::crc16::new_high(POLY16);
+        let ctx = crate::crc::crc16::new_high(POLY16);
         ctx.high(b"", INIT16);
     }
 }
@@ -158,11 +158,11 @@ impl crc32 {
 #[test]
 fn crc32() {
     {
-        let ctx = crate::crc32::new_low(POLY32);
+        let ctx = crate::crc::crc32::new_low(POLY32);
         ctx.low(b"", INIT32);
     }
     {
-        let ctx = crate::crc32::new_high(POLY32);
+        let ctx = crate::crc::crc32::new_high(POLY32);
         ctx.high(b"", INIT32);
     }
 }
@@ -214,11 +214,11 @@ impl crc64 {
 #[test]
 fn crc64() {
     {
-        let ctx = crate::crc64::new_low(POLY64);
+        let ctx = crate::crc::crc64::new_low(POLY64);
         ctx.low(b"", INIT64);
     }
     {
-        let ctx = crate::crc64::new_high(POLY64);
+        let ctx = crate::crc::crc64::new_high(POLY64);
         ctx.high(b"", INIT64);
     }
 }

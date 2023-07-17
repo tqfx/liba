@@ -13,10 +13,11 @@ liba = "0.1"
 
 #![warn(missing_docs)]
 #![allow(non_camel_case_types)]
+#![cfg_attr(not(features = "std"), no_std)]
 
-use std::os::raw::c_char;
+use core::ffi::c_char;
 /// Equivalent to C’s unsigned int type.
-pub type uint = std::os::raw::c_uint;
+pub type uint = core::ffi::c_uint;
 /// floating-point number stored using `f64`
 #[cfg(not(feature = "float"))]
 pub type float = f64;
@@ -32,24 +33,11 @@ pub union Float {
     pub p: *mut float,
 }
 
-pub mod mf;
-pub mod tf;
-pub use crate::tf::TF;
 pub mod crc;
-pub use crate::crc::crc16;
-pub use crate::crc::crc32;
-pub use crate::crc::crc64;
-pub use crate::crc::crc8;
+pub mod mf;
 pub mod pid;
-pub use crate::pid::PID;
-pub mod pid_fuzzy;
-pub use crate::pid_fuzzy::PID_fuzzy;
-pub mod pid_neuron;
-pub use crate::pid_neuron::PID_neuron;
 pub mod polytrack;
-pub use crate::polytrack::polytrack3;
-pub use crate::polytrack::polytrack5;
-pub use crate::polytrack::polytrack7;
+pub mod tf;
 
 extern "C" {
     fn a_version() -> *const c_char;
@@ -68,7 +56,11 @@ println!("version {}", liba::version());
 ```
 */
 pub fn version() -> &'static str {
-    unsafe { std::ffi::CStr::from_ptr(a_version()).to_str().unwrap() }
+    unsafe {
+        core::ffi::CStr::from_ptr(a_version())
+            .to_str()
+            .unwrap_unchecked()
+    }
 }
 
 /// algorithm library version major
@@ -103,16 +95,17 @@ pub fn f64_rsqrt(x: f64) -> f64 {
 
 #[cfg(test)]
 mod test {
+    extern crate std;
     #[test]
     fn version() {
-        println!("version {}", crate::version());
-        println!("major {}", crate::version_major());
-        println!("minor {}", crate::version_minor());
-        println!("patch {}", crate::version_patch());
+        std::println!("version {}", crate::version());
+        std::println!("major {}", crate::version_major());
+        std::println!("minor {}", crate::version_minor());
+        std::println!("patch {}", crate::version_patch());
     }
     #[test]
     fn rsqrt() {
-        println!("1/sqrt({})={}", 4, crate::f32_rsqrt(4.0));
-        println!("1/sqrt({})={}", 4, crate::f64_rsqrt(4.0));
+        std::println!("1/sqrt({})={}", 4, crate::f32_rsqrt(4.0));
+        std::println!("1/sqrt({})={}", 4, crate::f64_rsqrt(4.0));
     }
 }

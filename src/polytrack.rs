@@ -72,11 +72,16 @@ impl polytrack3 {
 
 #[test]
 fn polytrack3() {
+    extern crate std;
     let dt = 0.5;
     {
-        let mut a = crate::polytrack3::new(0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
-        println!("[{}, {}, {}]", a.pos(dt), a.vel(dt), a.acc(dt));
-        println!("{:?}", a.out(dt));
+        let mut a = crate::polytrack::polytrack3::new(0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
+        let pos = a.pos(dt);
+        let vel = a.vel(dt);
+        let acc = a.acc(dt);
+        let out = a.out(dt);
+        std::println!("[{}, {}, {}]", pos, vel, acc);
+        std::println!("{:?}", out);
     }
 }
 
@@ -165,11 +170,16 @@ impl polytrack5 {
 
 #[test]
 fn polytrack5() {
+    extern crate std;
     let dt = 0.5;
     {
-        let mut a = crate::polytrack5::new(0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
-        println!("[{}, {}, {}]", a.pos(dt), a.vel(dt), a.acc(dt));
-        println!("{:?}", a.out(dt));
+        let mut a = crate::polytrack::polytrack5::new(0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
+        let pos = a.pos(dt);
+        let vel = a.vel(dt);
+        let acc = a.acc(dt);
+        let out = a.out(dt);
+        std::println!("[{}, {}, {}]", pos, vel, acc);
+        std::println!("{:?}", out);
     }
 }
 
@@ -270,16 +280,17 @@ impl polytrack7 {
 
 #[test]
 fn polytrack7() {
+    extern crate std;
     let dt = 0.5;
     {
-        let mut a = crate::polytrack7::new(0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
-        println!("{:?}", a.out(dt));
-        println!(
-            "[{}, {}, {}, {}]",
-            a.pos(dt),
-            a.vel(dt),
-            a.acc(dt),
-            a.jer(dt)
-        );
+        let mut a =
+            crate::polytrack::polytrack7::new(0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
+        let pos = a.pos(dt);
+        let vel = a.vel(dt);
+        let acc = a.acc(dt);
+        let jer = a.jer(dt);
+        let out = a.out(dt);
+        std::println!("[{}, {}, {}, {}]", pos, vel, acc, jer);
+        std::println!("{:?}", out);
     }
 }

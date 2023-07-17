@@ -58,28 +58,29 @@ pub fn z(x: float, a: float, b: float) -> float {
 
 #[cfg(test)]
 mod test {
+    extern crate std;
     #[test]
     fn gauss() {
-        println!("{}", crate::mf::gauss(0.0, 1.0, 0.0));
+        std::println!("{}", crate::mf::gauss(0.0, 1.0, 0.0));
     }
     #[test]
     fn gbell() {
-        println!("{}", crate::mf::gbell(0.0, 2.0, 1.0, 0.0));
+        std::println!("{}", crate::mf::gbell(0.0, 2.0, 1.0, 0.0));
     }
     #[test]
     fn sig() {
-        println!("{}", crate::mf::sig(0.0, 2.0, 0.0));
+        std::println!("{}", crate::mf::sig(0.0, 2.0, 0.0));
     }
     #[test]
     fn trap() {
-        println!("{}", crate::mf::trap(0.0, -2.0, -1.0, 1.0, 2.0));
+        std::println!("{}", crate::mf::trap(0.0, -2.0, -1.0, 1.0, 2.0));
     }
     #[test]
     fn tri() {
-        println!("{}", crate::mf::tri(0.0, -1.0, 0.0, 1.0));
+        std::println!("{}", crate::mf::tri(0.0, -1.0, 0.0, 1.0));
     }
     #[test]
     fn z() {
-        println!("{}", crate::mf::z(0.0, -1.0, 1.0));
+        std::println!("{}", crate::mf::z(0.0, -1.0, 1.0));
     }
 }
