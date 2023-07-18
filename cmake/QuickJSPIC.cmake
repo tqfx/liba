@@ -1,13 +1,14 @@
 function(QUICKJS_PIC)
-  set(CMAKETMP ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp)
-  file(WRITE ${CMAKETMP}/module.c "#include \"quickjs.h\"
+  string(RANDOM RANDOM)
+  set(CMAKETMP ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${RANDOM})
+  file(WRITE ${CMAKETMP}/${RANDOM}.c "#include \"quickjs.h\"
 JSModuleDef *js_init_module(JSContext *const ctx, char const *const module_name)
 {\n\treturn JS_NewCModule(ctx, module_name, 0);\n}
 ")
   file(WRITE ${CMAKETMP}/CMakeLists.txt "cmake_minimum_required(VERSION ${CMAKE_VERSION})
-project(CMAKE_TRY_COMPILE C)\nadd_library(module MODULE module.c)
-target_include_directories(module PRIVATE ${QUICKJS_INCLUDE_DIR})
-target_link_libraries(module PRIVATE ${QUICKJS_LIBRARIES})
+project(CMAKE_TRY_COMPILE C)\nadd_library(${RANDOM} MODULE ${RANDOM}.c)
+target_include_directories(${RANDOM} PRIVATE ${QUICKJS_INCLUDE_DIR})
+target_link_libraries(${RANDOM} PRIVATE ${QUICKJS_LIBRARIES})
 ")
   try_compile(QUICKJS_PIC ${CMAKETMP} ${CMAKETMP} CMAKE_TRY_COMPILE)
   if(QUICKJS_PIC)
