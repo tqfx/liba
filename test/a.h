@@ -94,7 +94,7 @@ static void test_for(int argc, char *argv[])
     a_die(int, p);
 }
 
-static void test_swap(void)
+static void test_swap(int argc, char *argv[])
 {
     a_u64_t lhs = 0;
     a_u64_t rhs = A_U64_MAX;
@@ -126,9 +126,11 @@ static void test_swap(void)
 #if defined(MAIN_ONCE)
     printf("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
 #endif /* MAIN_ONCE */
+    (void)argc;
+    (void)argv;
 }
 
-static void test_save(void)
+static void test_save(int argc, char *argv[])
 {
     a_float_t array[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     for (a_size_t i = 0; i < a_count_of(array); ++i)
@@ -187,9 +189,11 @@ static void test_save(void)
         printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
+    (void)argc;
+    (void)argv;
 }
 
-static void test_roll(void)
+static void test_roll(int argc, char *argv[])
 {
     a_float_t array[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     a_float_t shift[16];
@@ -234,30 +238,46 @@ static void test_roll(void)
         printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
+    (void)argc;
+    (void)argv;
 }
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     if (argc < 2)
     {
-        test_swap();
-        test_save();
-        test_roll();
+        test_for(argc, argv);
+        test_bkdr(argc, argv);
+        test_swap(argc, argv);
+        test_save(argc, argv);
+        test_roll(argc, argv);
         return 0;
     }
     a_u32_t bkdr = a_u32_c(, a_hash_bkdr(argv[1], 0));
     switch (bkdr)
     {
-    case 0x0D3DEDB7: // bkdr
-        test_bkdr(argc - 1, argv + 1);
-        break;
     case 0x001AEED5: // for
         test_for(argc - 1, argv + 1);
         break;
+    case 0x0D3DEDB7: // bkdr
+        test_bkdr(argc - 1, argv + 1);
+        break;
+    case 0x0F8837E3: // swap
+        test_swap(argc - 1, argv + 1);
+        break;
+    case 0x0F827FD1: // save
+        test_save(argc - 1, argv + 1);
+        break;
+    case 0x0F63D79D: // roll
+        test_roll(argc - 1, argv + 1);
+        break;
     default:;
 #if defined(MAIN_ONCE)
-        puts("bkdr");
         puts("for");
+        puts("bkdr");
+        puts("swap");
+        puts("save");
+        puts("roll");
 #endif /* MAIN_ONCE */
     }
     return 0;
