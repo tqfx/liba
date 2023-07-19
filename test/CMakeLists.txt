@@ -58,7 +58,7 @@ function(building target)
   elseif(NOT CMAKE_VERSION VERSION_LESS 3.12 AND LIBA_SANITIZE)
     target_link_libraries(${TARGET} PRIVATE asan)
   else()
-    target_link_libraries(${TARGET} PRIVATE alib)
+    target_link_libraries(${TARGET} PRIVATE adev)
   endif()
 
   set_executable_options(${TARGET})

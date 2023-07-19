@@ -262,45 +262,8 @@ elseif(A_HAVE_MIMALLOC_H)
   target_link_libraries(a PUBLIC mimalloc-static)
 endif()
 
-if(TARGET_SUPPORTS_RELOCATABLE)
-  file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/lib/CMakeLists.txt "get_cmake_property(ENABLED_LANGUAGES ENABLED_LANGUAGES)
-foreach(LANG \${ENABLED_LANGUAGES})
-\tset(CMAKE_\${LANG}_LINK_EXECUTABLE
-\t\t\"<CMAKE_\${LANG}_COMPILER> <FLAGS> -nostdlib -o <TARGET>\${CMAKE_EXECUTABLE_SUFFIX} -r <OBJECTS>\"
-\t\t\"\${CMAKE_COMMAND} -E copy <TARGET>\${CMAKE_EXECUTABLE_SUFFIX} <TARGET>.o\"
-\t)
-\tif(CMAKE_EXECUTABLE_SUFFIX)
-\t\tset(RM rm)\n\t\tif(CMAKE_VERSION VERSION_LESS 3.17)\n\t\t\tset(RM remove)\n\t\tendif()
-\t\tlist(APPEND CMAKE_\${LANG}_LINK_EXECUTABLE \"\${CMAKE_COMMAND} -E \${RM} -f <TARGET>\"
-\t\t\t\"\${CMAKE_COMMAND} -E rename <TARGET>\${CMAKE_EXECUTABLE_SUFFIX} <TARGET>\"
-\t\t)\n\t\tset(RM)
-\tendif()
-\tset(CMAKE_\${LANG}_CREATE_STATIC_LIBRARY \"\")
-endforeach()
-set(CMAKE_EXECUTABLE_SUFFIX \"\")
-set(CMAKE_STATIC_LIBRARY_SUFFIX .o)
-set(CMAKE_STATIC_LIBRARY_PREFIX lib)
-add_executable(aelf \$<TARGET_OBJECTS:a>)
-add_library(aobj STATIC \$<TARGET_OBJECTS:a>)
-add_library_properties(aobj INTERFACE alib INTERFACE_)
-set_target_properties(aelf PROPERTIES OUTPUT_NAME liba
-\tINTERPROCEDURAL_OPTIMIZATION \${LIBA_IPO}
-)
-set_target_properties(aobj PROPERTIES OUTPUT_NAME a
-\tINTERPROCEDURAL_OPTIMIZATION \${LIBA_IPO}
-)
-if(A_HAVE_MIMALLOC_H)
-\ttarget_link_libraries(aobj INTERFACE mimalloc-static)
-endif()
-include(GNUInstallDirs)
-install(TARGETS aobj EXPORT \${PROJECT_NAME}-targets
-\tARCHIVE DESTINATION \${CMAKE_INSTALL_LIBDIR}
-\tLIBRARY DESTINATION \${CMAKE_INSTALL_LIBDIR}
-)\nadd_dependencies(aobj aelf)")
-  add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/lib lib)
-endif()
-
 set(INSTALL_TARGETS alib)
+
 add_library(alib $<TARGET_OBJECTS:a>)
 set_library_compile(alib)
 
@@ -309,6 +272,8 @@ if(A_HAVE_MIMALLOC_H)
 endif()
 
 if(TARGET_SUPPORTS_SHARED_LIBS)
+  list(APPEND INSTALL_TARGETS liba)
+
   if(BUILD_SHARED_LIBS)
     set(module STATIC)
     set(shared alib)
@@ -317,7 +282,6 @@ if(TARGET_SUPPORTS_SHARED_LIBS)
     set(shared liba)
   endif()
 
-  list(APPEND INSTALL_TARGETS liba)
   add_library(liba ${module} $<TARGET_OBJECTS:a>)
   set_library_compile(liba)
 
@@ -363,6 +327,46 @@ if(LIBA_SANITIZE)
       target_link_static(libasan)
     endif()
   endif()
+endif()
+
+if(TARGET_SUPPORTS_RELOCATABLE)
+  file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/lib/CMakeLists.txt "get_cmake_property(ENABLED_LANGUAGES ENABLED_LANGUAGES)
+foreach(LANG \${ENABLED_LANGUAGES})
+\tset(CMAKE_\${LANG}_LINK_EXECUTABLE
+\t\t\"<CMAKE_\${LANG}_COMPILER> <FLAGS> -nostdlib -o <TARGET>\${CMAKE_EXECUTABLE_SUFFIX} -r <OBJECTS>\"
+\t\t\"\${CMAKE_COMMAND} -E copy <TARGET>\${CMAKE_EXECUTABLE_SUFFIX} <TARGET>.o\"
+\t)
+\tif(CMAKE_EXECUTABLE_SUFFIX)
+\t\tset(RM rm)\n\t\tif(CMAKE_VERSION VERSION_LESS 3.17)\n\t\t\tset(RM remove)\n\t\tendif()
+\t\tlist(APPEND CMAKE_\${LANG}_LINK_EXECUTABLE \"\${CMAKE_COMMAND} -E \${RM} -f <TARGET>\"
+\t\t\t\"\${CMAKE_COMMAND} -E rename <TARGET>\${CMAKE_EXECUTABLE_SUFFIX} <TARGET>\"
+\t\t)\n\t\tset(RM)
+\tendif()
+\tset(CMAKE_\${LANG}_CREATE_STATIC_LIBRARY \"\")
+endforeach()
+set(CMAKE_EXECUTABLE_SUFFIX \"\")
+set(CMAKE_STATIC_LIBRARY_SUFFIX .o)
+set(CMAKE_STATIC_LIBRARY_PREFIX lib)
+add_executable(aelf \$<TARGET_OBJECTS:a>)
+add_library(adev STATIC \$<TARGET_OBJECTS:a>)
+add_library_properties(adev INTERFACE alib INTERFACE_)
+set_target_properties(aelf PROPERTIES OUTPUT_NAME liba
+\tINTERPROCEDURAL_OPTIMIZATION \${LIBA_IPO}
+)
+set_target_properties(adev PROPERTIES OUTPUT_NAME a
+\tINTERPROCEDURAL_OPTIMIZATION \${LIBA_IPO}
+)
+if(A_HAVE_MIMALLOC_H)
+\ttarget_link_libraries(adev INTERFACE mimalloc-static)
+endif()
+include(GNUInstallDirs)
+install(TARGETS adev EXPORT \${PROJECT_NAME}-targets
+\tARCHIVE DESTINATION \${CMAKE_INSTALL_LIBDIR}
+\tLIBRARY DESTINATION \${CMAKE_INSTALL_LIBDIR}
+)\nadd_dependencies(adev aelf)")
+  add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/lib lib)
+else()
+  add_library(adev ALIAS alib)
 endif()
 
 include(cmake/InstallTargets.cmake)
