@@ -1,15 +1,15 @@
-target("test/host/_que")
+target("test/host/que")
     building({"que.c", "que.cpp"})
 target_end()
 
-target("test/host/_str")
+target("test/host/str")
     building({"str.c", "str.cpp"})
 target_end()
 
-target("test/host/_vec")
+target("test/host/vec")
     building({"vec.c", "vec.cpp"})
 target_end()
 
-target("test/host/_vector")
+target("test/host/vector")
     building({"vector.c", "vector.cpp"})
 target_end()

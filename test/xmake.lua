@@ -5,6 +5,9 @@ function building(sources)
     set_default(false)
     set_kind("binary")
     add_files(sources)
+    if not is_plat("windows", "mingw") then
+        set_extension(".bin")
+    end
     if has_config("liba-cxx") then
         add_defines("HAS_CXX")
     else
@@ -13,87 +16,87 @@ function building(sources)
     add_deps("a")
 end
 
-target("test/_a")
+target("test/a")
     building({"a.c", "a.cpp"})
 target_end()
 
-target("test/_avl")
+target("test/avl")
     building({"avl.c", "avl.cpp"})
 target_end()
 
-target("test/_buf")
+target("test/buf")
     building({"buf.c", "buf.cpp"})
 target_end()
 
-target("test/_complex")
+target("test/complex")
     building({"complex.c", "complex.cpp"})
 target_end()
 
-target("test/_crc")
+target("test/crc")
     building({"crc.c", "crc.cpp"})
 target_end()
 
-target("test/_hpf")
+target("test/hpf")
     building({"hpf.c", "hpf.cpp"})
 target_end()
 
-target("test/_list")
+target("test/list")
     building({"list.c", "list.cpp"})
 target_end()
 
-target("test/_lpf")
+target("test/lpf")
     building({"lpf.c", "lpf.cpp"})
 target_end()
 
-target("test/_main")
+target("test/main")
     building({"main.c", "main.cpp"})
 target_end()
 
-target("test/_math")
+target("test/math")
     building({"math.c", "math.cpp"})
 target_end()
 
-target("test/_notefreqs")
+target("test/notefreqs")
     building({"notefreqs.c", "notefreqs.cpp"})
 target_end()
 
-target("test/_operator")
+target("test/operator")
     building({"operator.c", "operator.cpp"})
 target_end()
 
-target("test/_pid")
+target("test/pid")
     building({"pid.c", "pid.cpp"})
 target_end()
 
-target("test/_poly")
+target("test/poly")
     building({"poly.c", "poly.cpp"})
 target_end()
 
-target("test/_polytrack")
+target("test/polytrack")
     building({"polytrack.c", "polytrack.cpp"})
 target_end()
 
-target("test/_rbf")
+target("test/rbf")
     building({"rbf.c", "rbf.cpp"})
 target_end()
 
-target("test/_rbt")
+target("test/rbt")
     building({"rbt.c", "rbt.cpp"})
 target_end()
 
-target("test/_tf")
+target("test/tf")
     building({"tf.c", "tf.cpp"})
 target_end()
 
-target("test/_slist")
+target("test/slist")
     building({"slist.c", "slist.cpp"})
 target_end()
 
-target("test/_utf")
+target("test/utf")
     building({"utf.c", "utf.cpp"})
 target_end()
 
-target("test/_version")
+target("test/version")
     building({"version.c", "version.cpp"})
 target_end()
 

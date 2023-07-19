@@ -1,14 +1,14 @@
-function(building source target)
+set(JAVA_EXECUTABLE ${Java_JAVA_EXECUTABLE} -Djava.library.path=.)
+
+function(building target)
   add_jar(jar_${target} INCLUDE_JARS ajar
-    SOURCES ${SOURCES} ${source}.java
-    ENTRY_POINT ${source}
-    OUTPUT_NAME ${source}
+    SOURCES ${SOURCES} _${target}.java
+    ENTRY_POINT _${target}
+    OUTPUT_NAME ${target}
   )
 endfunction()
 
-set(JAVA_EXECUTABLE ${Java_JAVA_EXECUTABLE} -Djava.library.path=.)
-
-function(unittest source name)
+function(unittest target)
   set(ARGS)
 
   foreach(arg ${ARGN})
@@ -21,34 +21,34 @@ function(unittest source name)
     endif()
   endforeach()
 
-  add_test(NAME jar_${name} WORKING_DIRECTORY ${WORKING_DIRECTORY}
-    COMMAND ${JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_BINARY_DIR}/${source}.jar ${ARGS}
+  add_test(NAME jar_${target} WORKING_DIRECTORY ${WORKING_DIRECTORY}
+    COMMAND ${JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_BINARY_DIR}/${target}.jar ${ARGS}
   )
 endfunction()
 
-building(_a a)
-unittest(_a a _a.log)
+building(a)
+unittest(a a.log)
 
-building(_mf mf)
-unittest(_mf mf)
+building(mf)
+unittest(mf)
 
-building(_pid pid)
-unittest(_pid pid)
+building(pid)
+unittest(pid)
 
-building(_pid_fuzzy pid_fuzzy)
-unittest(_pid_fuzzy pid_fuzzy)
+building(pid_fuzzy)
+unittest(pid_fuzzy)
 
-building(_pid_neuron pid_neuron)
-unittest(_pid_neuron pid_neuron)
+building(pid_neuron)
+unittest(pid_neuron)
 
-building(_polytrack3 polytrack3)
-unittest(_polytrack3 polytrack3)
+building(polytrack3)
+unittest(polytrack3)
 
-building(_polytrack5 polytrack5)
-unittest(_polytrack5 polytrack5)
+building(polytrack5)
+unittest(polytrack5)
 
-building(_polytrack7 polytrack7)
-unittest(_polytrack7 polytrack7)
+building(polytrack7)
+unittest(polytrack7)
 
-building(_tf tf)
-unittest(_tf tf)
+building(tf)
+unittest(tf)

@@ -33,6 +33,10 @@ endfunction()
 
 set(TARGET_PREFIX test_)
 
+if(NOT CMAKE_EXECUTABLE_SUFFIX)
+  set(CMAKE_EXECUTABLE_SUFFIX .bin)
+endif()
+
 function(building target)
   set(TARGET "${TARGET_PREFIX}${target}")
   list(FIND ENABLED_LANGUAGES CXX HAS_CXX)
@@ -47,7 +51,7 @@ function(building target)
     add_executable(${TARGET} ${ARGN})
   endif()
 
-  set_property(TARGET ${TARGET} PROPERTY OUTPUT_NAME _${target})
+  set_property(TARGET ${TARGET} PROPERTY OUTPUT_NAME ${target})
 
   if(TARGET_SUPPORTS_SHARED_LIBS AND LIBA_SANITIZE)
     target_link_libraries(${TARGET} PRIVATE libasan)
@@ -95,7 +99,7 @@ function(unittest target)
     return()
   endif()
 
-  add_test(NAME _${TEST_NAME} WORKING_DIRECTORY ${WORKING_DIRECTORY}
+  add_test(NAME ${TEST_NAME} WORKING_DIRECTORY ${WORKING_DIRECTORY}
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${TARGET}> ${ARGS}
   )
 endfunction()

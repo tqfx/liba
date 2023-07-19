@@ -1,11 +1,11 @@
-target("test/pid/_expert")
+target("test/pid/expert")
     building({"expert.c", "expert.cpp"})
 target_end()
 
-target("test/pid/_fuzzy")
+target("test/pid/fuzzy")
     building({"fuzzy.c", "fuzzy.cpp"})
 target_end()
 
-target("test/pid/_neuron")
+target("test/pid/neuron")
     building({"neuron.c", "neuron.cpp"})
 target_end()
