@@ -19,9 +19,9 @@ extern "C" {
 #endif /* __cplusplus */
 
 /*!
- @brief convert between \f$ \sum_{i=0}^{n}a_{i}x^{i} \f$ and \f$ \sum_{i=0}^{n}a_{i}x^{n-i} \f$
+ @brief swap between \f$ \sum_{i=0}^{n}a_{i}x^{i} \f$ and \f$ \sum_{i=0}^{n}a_{i}x^{n-i} \f$
 */
-A_EXTERN a_float_t *a_poly_inv(a_float_t *a, a_size_t n);
+A_EXTERN a_float_t *a_poly_swap(a_float_t *a, a_size_t n);
 
 /*!
  @brief horner function for polynomial \f$ \sum_{i=0}^{n}a_{i}x^{i} \f$
