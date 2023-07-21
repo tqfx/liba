@@ -14,9 +14,9 @@ cdef class polytrack3:
         '''calculate all'''
         cdef a_float_t out[3]
         if iterable(dt):
-            p = floats(dt)
-            v = floats(dt)
-            a = floats(dt)
+            p = float.array(dt)
+            v = float.array(dt)
+            a = float.array(dt)
             for i, it in enumerate(dt):
                 a_polytrack3_out(&self.ctx, it, out)
                 p[i] = out[0]
@@ -28,7 +28,7 @@ cdef class polytrack3:
     def pos(self, dt):
         '''calculate position'''
         if iterable(dt):
-            out = floats(dt)
+            out = float.array(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytrack3_pos(&self.ctx, it)
             return out
@@ -36,7 +36,7 @@ cdef class polytrack3:
     def vel(self, dt):
         '''calculate velocity'''
         if iterable(dt):
-            out = floats(dt)
+            out = float.array(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytrack3_vel(&self.ctx, it)
             return out
@@ -44,7 +44,7 @@ cdef class polytrack3:
     def acc(self, dt):
         '''calculate acceleration'''
         if iterable(dt):
-            out = floats(dt)
+            out = float.array(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytrack3_acc(&self.ctx, it)
             return out
@@ -67,9 +67,9 @@ cdef class polytrack5:
         '''calculate all'''
         cdef a_float_t out[3]
         if iterable(dt):
-            p = floats(dt)
-            v = floats(dt)
-            a = floats(dt)
+            p = float.array(dt)
+            v = float.array(dt)
+            a = float.array(dt)
             for i, it in enumerate(dt):
                 a_polytrack5_out(&self.ctx, it, out)
                 p[i] = out[0]
@@ -81,7 +81,7 @@ cdef class polytrack5:
     def pos(self, dt):
         '''calculate position'''
         if iterable(dt):
-            out = floats(dt)
+            out = float.array(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytrack5_pos(&self.ctx, it)
             return out
@@ -89,7 +89,7 @@ cdef class polytrack5:
     def vel(self, dt):
         '''calculate velocity'''
         if iterable(dt):
-            out = floats(dt)
+            out = float.array(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytrack5_vel(&self.ctx, it)
             return out
@@ -97,7 +97,7 @@ cdef class polytrack5:
     def acc(self, dt):
         '''calculate acceleration'''
         if iterable(dt):
-            out = floats(dt)
+            out = float.array(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytrack5_acc(&self.ctx, it)
             return out
@@ -120,10 +120,10 @@ cdef class polytrack7:
         '''calculate all'''
         cdef a_float_t out[4]
         if iterable(dt):
-            p = floats(dt)
-            v = floats(dt)
-            a = floats(dt)
-            j = floats(dt)
+            p = float.array(dt)
+            v = float.array(dt)
+            a = float.array(dt)
+            j = float.array(dt)
             for i, it in enumerate(dt):
                 a_polytrack7_out(&self.ctx, it, out)
                 p[i] = out[0]
@@ -136,7 +136,7 @@ cdef class polytrack7:
     def pos(self, dt):
         '''calculate position'''
         if iterable(dt):
-            out = floats(dt)
+            out = float.array(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytrack7_pos(&self.ctx, it)
             return out
@@ -144,7 +144,7 @@ cdef class polytrack7:
     def vel(self, dt):
         '''calculate velocity'''
         if iterable(dt):
-            out = floats(dt)
+            out = float.array(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytrack7_vel(&self.ctx, it)
             return out
@@ -152,7 +152,7 @@ cdef class polytrack7:
     def acc(self, dt):
         '''calculate acceleration'''
         if iterable(dt):
-            out = floats(dt)
+            out = float.array(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytrack7_acc(&self.ctx, it)
             return out
@@ -160,7 +160,7 @@ cdef class polytrack7:
     def jer(self, dt):
         '''calculate jerk'''
         if iterable(dt):
-            out = floats(dt)
+            out = float.array(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytrack7_jer(&self.ctx, it)
             return out

@@ -22,8 +22,8 @@ cdef class tf:
         return self._num
     @num.setter
     def num(self, num):
-        self._num = floats(num)
-        self.input = floats(num)
+        self._num = float.array(num)
+        self.input = float.array(num)
         a_tf_set_num(&self.ctx, <unsigned int>len(num), <a_float_t *>self._num.data.as_voidptr, <a_float_t *>self.input.data.as_voidptr)
     cdef array output
     @property
@@ -35,8 +35,8 @@ cdef class tf:
         return self._den
     @den.setter
     def den(self, den):
-        self._den = floats(den)
-        self.output = floats(den)
+        self._den = float.array(den)
+        self.output = float.array(den)
         a_tf_set_den(&self.ctx, <unsigned int>len(den), <a_float_t *>self._den.data.as_voidptr, <a_float_t *>self.output.data.as_voidptr)
     def __cinit__(self, num, den):
         self.num = num
