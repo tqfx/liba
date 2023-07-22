@@ -42,26 +42,6 @@
 /*! \f$ \frac{1}{\sqrt{2}}=\frac{\sqrt{2}}{2} \f$ */
 #define A_SQRT1_2 0.707106781186547524401
 
-/*!
- @brief square of x, \f$ x^2 \f$
-*/
-#define A_SQ(x) ((x) * (x))
-
-/*!
- @brief absolute value of x, \f$ |x| \f$
-*/
-#define A_ABS(x) ((x) < 0 ? -(x) : (x))
-
-/*!
- @brief signum function, \f$ \texttt{sgn}{x}=\begin{cases}+1&x>0\\0&0\\-1&x<0\end{cases} \f$
-*/
-#define A_SGN(x) ((0 < (x)) - ((x) < 0))
-
-/*!
- @brief saturation value of x, \f$ \texttt{sat}(x,min,max)=\begin{cases}min&min>x\\max&x>max\\x&else\end{cases} \f$
-*/
-#define A_SAT(x, min, max) ((min) < (x) ? (x) < (max) ? (x) : (max) : (min))
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */

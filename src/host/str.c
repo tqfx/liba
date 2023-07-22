@@ -90,8 +90,7 @@ int a_str_cmp(a_str_s const *const lhs, a_str_s const *const rhs)
     int ok = 0;
     if (lhs->_ptr && rhs->_ptr)
     {
-        a_size_t const num = lhs->_num < rhs->_num ? lhs->_num : rhs->_num;
-        ok = memcmp(lhs->_ptr, rhs->_ptr, num);
+        ok = memcmp(lhs->_ptr, rhs->_ptr, A_MIN(lhs->_num, rhs->_num));
     }
     if (ok)
     {

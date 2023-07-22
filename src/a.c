@@ -89,7 +89,7 @@ a_umax_t a_hash_bkdrn(void const *const _ptr, a_size_t siz, a_umax_t val)
 void a_float_save(a_float_t *const array_p, a_size_t const array_n,
                   a_float_t const *const cache_p, a_size_t const cache_n)
 {
-    a_size_t const n = cache_n < array_n ? cache_n : array_n;
+    a_size_t const n = A_MIN(cache_n, array_n);
     for (a_size_t i = array_n, j = array_n - n; j;)
     {
         array_p[--i] = array_p[--j];

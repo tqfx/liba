@@ -847,11 +847,34 @@ typedef union a_cast_u
 } a_cast_u;
 
 /*!
- @brief size of memory that alignment is specified by alignment
- @param base specifies the alignment that is a power of two
- @param size number of bytes to allocate
+ @brief square of x, \f$ x^2 \f$
 */
-#define a_align(base, size) ((a_cast_s(a_size_t, size) + (base)-1) & ~((base)-1))
+#define A_SQ(x) ((x) * (x))
+
+/*!
+ @brief minimum value between x and y
+*/
+#define A_MIN(x, y) (((x) < (y)) ? (x) : (y))
+
+/*!
+ @brief maximum value between x and y
+*/
+#define A_MAX(x, y) (((x) > (y)) ? (x) : (y))
+
+/*!
+ @brief absolute value of x, \f$ |x| \f$
+*/
+#define A_ABS(x) ((x) < 0 ? -(x) : (x))
+
+/*!
+ @brief signum function, \f$ \texttt{sgn}{x}=\begin{cases}+1&x>0\\0&0\\-1&x<0\end{cases} \f$
+*/
+#define A_SGN(x) ((0 < (x)) - ((x) < 0))
+
+/*!
+ @brief saturation value of x, \f$ \texttt{sat}(x,min,max)=\begin{cases}min&min>x\\max&x>max\\x&else\end{cases} \f$
+*/
+#define A_SAT(x, min, max) ((min) < (x) ? (x) < (max) ? (x) : (max) : (min))
 
 /*!
  @brief count of an array buffer

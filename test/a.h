@@ -4,6 +4,49 @@
 #include "test.h"
 #include <stdlib.h>
 
+static void test_sq(void)
+{
+    int x = 2;
+    TEST_BUG(A_SQ(x) == 4);
+}
+
+static void test_min(void)
+{
+    TEST_BUG(A_MIN(1, 2) == 1);
+    TEST_BUG(A_MIN(2, 1) == 1);
+}
+
+static void test_max(void)
+{
+    TEST_BUG(A_MIN(1, 2) == 2);
+    TEST_BUG(A_MIN(2, 1) == 2);
+}
+
+static void test_abs(void)
+{
+    long double x = -1.0L;
+    TEST_BUG(A_ABS(x) > 0);
+}
+
+static void test_sgn(void)
+{
+    int pos = +10;
+    int neg = -10;
+    int zero = +0;
+    TEST_BUG(A_SGN(pos) == 1);
+    TEST_BUG(A_SGN(neg) == -1);
+    TEST_BUG(A_SGN(zero) == 0);
+}
+
+static void test_sat(void)
+{
+    double max = +10.0;
+    double min = -10.0;
+    TEST_BUG(A_SAT(0, min, max) >= 0);
+    TEST_BUG(A_SAT(+100, min, max) <= max);
+    TEST_BUG(A_SAT(-100, min, max) >= min);
+}
+
 static void test_bkdr(int argc, char *argv[])
 {
     for (int idx = 1; idx < argc; ++idx)
@@ -244,6 +287,12 @@ static void test_roll(int argc, char *argv[])
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
+    test_sq();
+    test_min();
+    test_max();
+    test_abs();
+    test_sgn();
+    test_sat();
     if (argc < 2)
     {
         test_for(argc, argv);

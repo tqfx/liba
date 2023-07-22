@@ -8,37 +8,6 @@
 #pragma GCC diagnostic ignored "-Wdouble-promotion"
 #endif /* -Wdouble-promotion */
 
-static void test_sq(void)
-{
-    int x = 2;
-    TEST_BUG(A_SQ(x) == 4);
-}
-
-static void test_abs(void)
-{
-    long double x = -1.0L;
-    TEST_BUG(A_ABS(x) > 0);
-}
-
-static void test_sgn(void)
-{
-    double pos = +10.0;
-    double neg = -10.0;
-    double zero = +0.0;
-    TEST_BUG(A_SGN(pos) == 1);
-    TEST_BUG(A_SGN(neg) == -1);
-    TEST_BUG(A_SGN(zero) == 0);
-}
-
-static void test_sat(void)
-{
-    double max = +10.0;
-    double min = -10.0;
-    TEST_BUG(A_SAT(0, min, max) >= 0);
-    TEST_BUG(A_SAT(+100, min, max) <= max);
-    TEST_BUG(A_SAT(-100, min, max) >= min);
-}
-
 static void test_u32_sqrt(void)
 {
     a_u32_t x;
@@ -129,10 +98,6 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     (void)(argc);
     (void)(argv);
-    test_sq();
-    test_abs();
-    test_sgn();
-    test_sat();
     test_u32_sqrt();
     test_u64_sqrt();
     test_f32_rsqrt();

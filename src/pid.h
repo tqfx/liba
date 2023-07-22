@@ -2,7 +2,6 @@
 #define PID_H
 
 #include "a/pid.h"
-#include "a/math.h"
 
 #define A_PID_CHAN(ctx)     \
     do                      \

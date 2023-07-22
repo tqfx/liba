@@ -1,5 +1,6 @@
 #define LIBA_PID_FUZZY_C
 #include "fuzzy.h"
+#include "a/math.h"
 
 a_float_t a_pid_fuzzy_op_or(a_float_t const l, a_float_t const r) { return l + r - l * r; }
 
