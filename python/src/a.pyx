@@ -8,13 +8,12 @@ from cpython.array cimport array
 @cython.boundscheck(False)
 cdef class i8:
     cdef a_i8_t value
-    @property
-    def value(self):
-        return self.value
-    @value.setter
-    def value(self, value: a_i8_t):
-        self.value = value
-    def __cinit__(self, value: a_i8_t = 0):
+    property value:
+        def __get__(self) -> a_i8_t:
+            return self.value
+        def __set__(self, value: a_i8_t):
+            self.value = value
+    def __init__(self, value: a_i8_t = 0):
         self.value = value
     def __repr__(self):
         return str(self.value)
@@ -26,13 +25,12 @@ cdef class i8:
 @cython.boundscheck(False)
 cdef class u8:
     cdef a_u8_t value
-    @property
-    def value(self):
-        return self.value
-    @value.setter
-    def value(self, value: a_u8_t):
-        self.value = value
-    def __cinit__(self, value: a_u8_t = 0):
+    property value:
+        def __get__(self) -> a_u8_t:
+            return self.value
+        def __set__(self, value: a_u8_t):
+            self.value = value
+    def __init__(self, value: a_u8_t = 0):
         self.value = value
     def __repr__(self):
         return str(self.value)
@@ -44,13 +42,12 @@ cdef class u8:
 @cython.boundscheck(False)
 cdef class i16:
     cdef a_i16_t value
-    @property
-    def value(self):
-        return self.value
-    @value.setter
-    def value(self, value: a_i16_t):
-        self.value = value
-    def __cinit__(self, value: a_i16_t = 0):
+    property value:
+        def __get__(self) -> a_i16_t:
+            return self.value
+        def __set__(self, value: a_i16_t):
+            self.value = value
+    def __init__(self, value: a_i16_t = 0):
         self.value = value
     def __repr__(self):
         return str(self.value)
@@ -62,13 +59,12 @@ cdef class i16:
 @cython.boundscheck(False)
 cdef class u16:
     cdef a_u16_t value
-    @property
-    def value(self):
-        return self.value
-    @value.setter
-    def value(self, value: a_u16_t):
-        self.value = value
-    def __cinit__(self, value: a_u16_t = 0):
+    property value:
+        def __get__(self) -> a_u16_t:
+            return self.value
+        def __set__(self, value: a_u16_t):
+            self.value = value
+    def __init__(self, value: a_u16_t = 0):
         self.value = value
     def __repr__(self):
         return str(self.value)
@@ -80,13 +76,12 @@ cdef class u16:
 @cython.boundscheck(False)
 cdef class i32:
     cdef a_i32_t value
-    @property
-    def value(self):
-        return self.value
-    @value.setter
-    def value(self, value: a_i32_t):
-        self.value = value
-    def __cinit__(self, value: a_i32_t = 0):
+    property value:
+        def __get__(self) -> a_i32_t:
+            return self.value
+        def __set__(self, value: a_i32_t):
+            self.value = value
+    def __init__(self, value: a_i32_t = 0):
         self.value = value
     def __repr__(self):
         return str(self.value)
@@ -101,13 +96,12 @@ cdef class i32:
 @cython.boundscheck(False)
 cdef class u32:
     cdef a_u32_t value
-    @property
-    def value(self):
-        return self.value
-    @value.setter
-    def value(self, value: a_u32_t):
-        self.value = value
-    def __cinit__(self, value: a_u32_t = 0):
+    property value:
+        def __get__(self) -> a_u32_t:
+            return self.value
+        def __set__(self, value: a_u32_t):
+            self.value = value
+    def __init__(self, value: a_u32_t = 0):
         self.value = value
     def __repr__(self):
         return str(self.value)
@@ -132,13 +126,12 @@ cdef class u32:
 @cython.boundscheck(False)
 cdef class i64:
     cdef a_i64_t value
-    @property
-    def value(self):
-        return self.value
-    @value.setter
-    def value(self, value: a_i64_t):
-        self.value = value
-    def __cinit__(self, value: a_i64_t = 0):
+    property value:
+        def __get__(self) -> a_i64_t:
+            return self.value
+        def __set__(self, value: a_i64_t):
+            self.value = value
+    def __init__(self, value: a_i64_t = 0):
         self.value = value
     def __repr__(self):
         return str(self.value)
@@ -153,13 +146,12 @@ cdef class i64:
 @cython.boundscheck(False)
 cdef class u64:
     cdef a_u64_t value
-    @property
-    def value(self):
-        return self.value
-    @value.setter
-    def value(self, value: a_u64_t):
-        self.value = value
-    def __cinit__(self, value: a_u64_t = 0):
+    property value:
+        def __get__(self) -> a_u64_t:
+            return self.value
+        def __set__(self, value: a_u64_t):
+            self.value = value
+    def __init__(self, value: a_u64_t = 0):
         self.value = value
     def __repr__(self):
         return str(self.value)
@@ -184,13 +176,12 @@ cdef class u64:
 @cython.boundscheck(False)
 cdef class f32:
     cdef a_f32_t value
-    @property
-    def value(self):
-        return self.value
-    @value.setter
-    def value(self, value: a_f32_t):
-        self.value = value
-    def __cinit__(self, value: a_f32_t = 0):
+    property value:
+        def __get__(self) -> a_f32_t:
+            return self.value
+        def __set__(self, value: a_f32_t):
+            self.value = value
+    def __init__(self, value: a_f32_t = 0):
         self.value = value
     def __repr__(self):
         return str(self.value)
@@ -211,13 +202,12 @@ cdef class f32:
 @cython.boundscheck(False)
 cdef class f64:
     cdef a_f64_t value
-    @property
-    def value(self):
-        return self.value
-    @value.setter
-    def value(self, value: a_f64_t):
-        self.value = value
-    def __cinit__(self, value: a_f64_t = 0):
+    property value:
+        def __get__(self) -> a_f64_t:
+            return self.value
+        def __set__(self, value: a_f64_t):
+            self.value = value
+    def __init__(self, value: a_f64_t = 0):
         self.value = value
     def __repr__(self):
         return str(self.value)
@@ -238,13 +228,12 @@ cdef class f64:
 @cython.boundscheck(False)
 cdef class float:
     cdef a_float_t value
-    @property
-    def value(self):
-        return self.value
-    @value.setter
-    def value(self, value: a_float_t):
-        self.value = value
-    def __cinit__(self, value: a_float_t = 0):
+    property value:
+        def __get__(self) -> a_float_t:
+            return self.value
+        def __set__(self, value: a_float_t):
+            self.value = value
+    def __init__(self, value: a_float_t = 0):
         self.value = value
     def __repr__(self):
         return str(self.value)

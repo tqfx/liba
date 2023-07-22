@@ -6,7 +6,7 @@ from neuron cimport *
 cdef class pid_neuron:
     '''single neuron proportional integral derivative controller'''
     cdef a_pid_neuron_s ctx
-    def __cinit__(self, a_float_t min = -A_FLOAT_INF, a_float_t max = +A_FLOAT_INF, a_float_t sum = 0):
+    def __init__(self, a_float_t min = -A_FLOAT_INF, a_float_t max = +A_FLOAT_INF, a_float_t sum = 0):
         self.ctx.pid.summax = sum
         self.ctx.pid.outmax = max
         self.ctx.pid.outmin = min
@@ -30,81 +30,70 @@ cdef class pid_neuron:
         '''zero clear function for single neuron PID controller'''
         a_pid_neuron_zero(&self.ctx)
         return self
-    @property
-    def kp(self) -> a_float_t:
-        return self.ctx.pid.kp
-    @kp.setter
-    def kp(self, kp: a_float_t):
-        self.ctx.pid.kp = kp
-    @property
-    def ki(self) -> a_float_t:
-        return self.ctx.pid.ki
-    @ki.setter
-    def ki(self, ki: a_float_t):
-        self.ctx.pid.ki = ki
-    @property
-    def kd(self) -> a_float_t:
-        return self.ctx.pid.kd
-    @kd.setter
-    def kd(self, kd: a_float_t):
-        self.ctx.pid.kd = kd
-    @property
-    def summax(self) -> a_float_t:
-        return self.ctx.pid.summax
-    @summax.setter
-    def summax(self, summax: a_float_t):
-        self.ctx.pid.summax = summax
-    @property
-    def outmax(self) -> a_float_t:
-        return self.ctx.pid.outmax
-    @outmax.setter
-    def outmax(self, outmax: a_float_t):
-        self.ctx.pid.outmax = outmax
-    @property
-    def outmin(self) -> a_float_t:
-        return self.ctx.pid.outmin
-    @outmin.setter
-    def outmin(self, outmin: a_float_t):
-        self.ctx.pid.outmin = outmin
-    @property
-    def out(self) -> a_float_t:
-        return self.ctx.pid.out.f
-    @property
-    def fdb(self) -> a_float_t:
-        return self.ctx.pid.fdb.f
-    @property
-    def err(self) -> a_float_t:
-        return self.ctx.pid.err.f
-    @property
-    def mode(self) -> int:
-        return self.ctx.pid.mode
-    @mode.setter
-    def mode(self, mode: int):
-        self.ctx.pid.mode = mode
-    @property
-    def ec(self) -> a_float_t:
-        return self.ctx.ec.f
-    @property
-    def wp(self) -> a_float_t:
-        return self.ctx.wp.f
-    @wp.setter
-    def wp(self, wp: a_float_t):
-        self.ctx.wp.f = wp
-    @property
-    def wi(self) -> a_float_t:
-        return self.ctx.wi.f
-    @wi.setter
-    def wi(self, wi: a_float_t):
-        self.ctx.wi.f = wi
-    @property
-    def wd(self) -> a_float_t:
-        return self.ctx.wd.f
-    @wd.setter
-    def wd(self, wd: a_float_t):
-        self.ctx.wd.f = wd
-    @property
-    def k(self) -> a_float_t:
-        return self.ctx.k
-    @k.setter
-    def k(self, k: a_float_t):
-        self.ctx.k = k
+    property kp:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.kp
+        def __set__(self, kp: a_float_t):
+            self.ctx.pid.kp = kp
+    property ki:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.ki
+        def __set__(self, ki: a_float_t):
+            self.ctx.pid.ki = ki
+    property kd:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.kd
+        def __set__(self, kd: a_float_t):
+            self.ctx.pid.kd = kd
+    property summax:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.summax
+        def __set__(self, summax: a_float_t):
+            self.ctx.pid.summax = summax
+    property outmax:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.outmax
+        def __set__(self, outmax: a_float_t):
+            self.ctx.pid.outmax = outmax
+    property outmin:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.outmin
+        def __set__(self, outmin: a_float_t):
+            self.ctx.pid.outmin = outmin
+    property out:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.out.f
+    property fdb:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.fdb.f
+    property err:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.err.f
+    property mode:
+        def __get__(self) -> int:
+            return self.ctx.pid.mode
+        def __set__(self, mode: int):
+            self.ctx.pid.mode = mode
+    property ec:
+        def __get__(self) -> a_float_t:
+            return self.ctx.ec.f
+    property wp:
+        def __get__(self) -> a_float_t:
+            return self.ctx.wp.f
+        def __set__(self, wp: a_float_t):
+            self.ctx.wp.f = wp
+    property wi:
+        def __get__(self) -> a_float_t:
+            return self.ctx.wi.f
+        def __set__(self, wi: a_float_t):
+            self.ctx.wi.f = wi
+    property wd:
+        def __get__(self) -> a_float_t:
+            return self.ctx.wd.f
+        def __set__(self, wd: a_float_t):
+            self.ctx.wd.f = wd
+    property k:
+        def __get__(self) -> a_float_t:
+            return self.ctx.k
+        def __set__(self, k: a_float_t):
+            self.ctx.k = k

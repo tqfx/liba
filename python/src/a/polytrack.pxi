@@ -5,7 +5,7 @@ from a.polytrack cimport *
 cdef class polytrack3:
     '''cubic polynomial trajectory'''
     cdef a_polytrack3_s ctx
-    def __cinit__(self, a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1, a_float_t v0 = 0, a_float_t v1 = 0):
+    def __init__(self, a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1, a_float_t v0 = 0, a_float_t v1 = 0):
         a_polytrack3_gen(&self.ctx, t0, t1, q0, q1, v0, v1)
     def gen(self, a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1, a_float_t v0 = 0, a_float_t v1 = 0):
         '''generation function'''
@@ -49,16 +49,16 @@ cdef class polytrack3:
                 out[i] = a_polytrack3_acc(&self.ctx, it)
             return out
         return a_polytrack3_acc(&self.ctx, dt)
-    @property
-    def k(self):
-        return self.ctx.k
+    property k:
+        def __get__(self):
+            return self.ctx.k
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef class polytrack5:
     '''quintic polynomial trajectory'''
     cdef a_polytrack5_s ctx
-    def __cinit__(self, a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1, a_float_t v0 = 0, a_float_t v1 = 0, a_float_t a0 = 0, a_float_t a1 = 0):
+    def __init__(self, a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1, a_float_t v0 = 0, a_float_t v1 = 0, a_float_t a0 = 0, a_float_t a1 = 0):
         a_polytrack5_gen(&self.ctx, t0, t1, q0, q1, v0, v1, a0, a1)
     def gen(self, a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1, a_float_t v0 = 0, a_float_t v1 = 0, a_float_t a0 = 0, a_float_t a1 = 0):
         '''generation function'''
@@ -102,16 +102,16 @@ cdef class polytrack5:
                 out[i] = a_polytrack5_acc(&self.ctx, it)
             return out
         return a_polytrack5_acc(&self.ctx, dt)
-    @property
-    def k(self):
-        return self.ctx.k
+    property k:
+        def __get__(self):
+            return self.ctx.k
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef class polytrack7:
     '''hepta polynomial trajectory'''
     cdef a_polytrack7_s ctx
-    def __cinit__(self, a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1, a_float_t v0 = 0, a_float_t v1 = 0, a_float_t a0 = 0, a_float_t a1 = 0, a_float_t j0 = 0, a_float_t j1 = 0):
+    def __init__(self, a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1, a_float_t v0 = 0, a_float_t v1 = 0, a_float_t a0 = 0, a_float_t a1 = 0, a_float_t j0 = 0, a_float_t j1 = 0):
         a_polytrack7_gen(&self.ctx, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1)
     def gen(self, a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1, a_float_t v0 = 0, a_float_t v1 = 0, a_float_t a0 = 0, a_float_t a1 = 0, a_float_t j0 = 0, a_float_t j1 = 0):
         '''generation function'''
@@ -165,6 +165,6 @@ cdef class polytrack7:
                 out[i] = a_polytrack7_jer(&self.ctx, it)
             return out
         return a_polytrack7_jer(&self.ctx, dt)
-    @property
-    def k(self):
-        return self.ctx.k
+    property k:
+        def __get__(self):
+            return self.ctx.k

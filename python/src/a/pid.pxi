@@ -8,7 +8,7 @@ cdef class pid:
     POS = A_PID_POS
     INC = A_PID_INC
     cdef a_pid_s ctx
-    def __cinit__(self, a_float_t min = -A_FLOAT_INF, a_float_t max = +A_FLOAT_INF, a_float_t sum = 0):
+    def __init__(self, a_float_t min = -A_FLOAT_INF, a_float_t max = +A_FLOAT_INF, a_float_t sum = 0):
         self.ctx.summax = sum
         self.ctx.outmax = max
         self.ctx.outmin = min
@@ -28,57 +28,50 @@ cdef class pid:
         '''zero clear function for PID controller'''
         a_pid_zero(&self.ctx)
         return self
-    @property
-    def kp(self) -> a_float_t:
-        return self.ctx.kp
-    @kp.setter
-    def kp(self, kp: a_float_t):
-        self.ctx.kp = kp
-    @property
-    def ki(self) -> a_float_t:
-        return self.ctx.ki
-    @ki.setter
-    def ki(self, ki: a_float_t):
-        self.ctx.ki = ki
-    @property
-    def kd(self) -> a_float_t:
-        return self.ctx.kd
-    @kd.setter
-    def kd(self, kd: a_float_t):
-        self.ctx.kd = kd
-    @property
-    def summax(self) -> a_float_t:
-        return self.ctx.summax
-    @summax.setter
-    def summax(self, summax: a_float_t):
-        self.ctx.summax = summax
-    @property
-    def outmax(self) -> a_float_t:
-        return self.ctx.outmax
-    @outmax.setter
-    def outmax(self, outmax: a_float_t):
-        self.ctx.outmax = outmax
-    @property
-    def outmin(self) -> a_float_t:
-        return self.ctx.outmin
-    @outmin.setter
-    def outmin(self, outmin: a_float_t):
-        self.ctx.outmin = outmin
-    @property
-    def out(self) -> a_float_t:
-        return self.ctx.out.f
-    @property
-    def fdb(self) -> a_float_t:
-        return self.ctx.fdb.f
-    @property
-    def err(self) -> a_float_t:
-        return self.ctx.err.f
-    @property
-    def mode(self) -> int:
-        return self.ctx.mode
-    @mode.setter
-    def mode(self, mode: int):
-        self.ctx.mode = mode
+    property kp:
+        def __get__(self) -> a_float_t:
+            return self.ctx.kp
+        def __set__(self, kp: a_float_t):
+            self.ctx.kp = kp
+    property ki:
+        def __get__(self) -> a_float_t:
+            return self.ctx.ki
+        def __set__(self, ki: a_float_t):
+            self.ctx.ki = ki
+    property kd:
+        def __get__(self) -> a_float_t:
+            return self.ctx.kd
+        def __set__(self, kd: a_float_t):
+            self.ctx.kd = kd
+    property summax:
+        def __get__(self) -> a_float_t:
+            return self.ctx.summax
+        def __set__(self, summax: a_float_t):
+            self.ctx.summax = summax
+    property outmax:
+        def __get__(self) -> a_float_t:
+            return self.ctx.outmax
+        def __set__(self, outmax: a_float_t):
+            self.ctx.outmax = outmax
+    property outmin:
+        def __get__(self) -> a_float_t:
+            return self.ctx.outmin
+        def __set__(self, outmin: a_float_t):
+            self.ctx.outmin = outmin
+    property out:
+        def __get__(self) -> a_float_t:
+            return self.ctx.out.f
+    property fdb:
+        def __get__(self) -> a_float_t:
+            return self.ctx.fdb.f
+    property err:
+        def __get__(self) -> a_float_t:
+            return self.ctx.err.f
+    property mode:
+        def __get__(self) -> int:
+            return self.ctx.mode
+        def __set__(self, mode: int):
+            self.ctx.mode = mode
 
 include "pid/fuzzy.pxi"
 include "pid/neuron.pxi"

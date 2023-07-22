@@ -68,63 +68,56 @@ cdef class pid_fuzzy:
         '''zero clear function for fuzzy PID controller'''
         a_pid_fuzzy_zero(&self.ctx)
         return self
-    @property
-    def kp(self) -> a_float_t:
-        return self.ctx.kp
-    @kp.setter
-    def kp(self, kp: a_float_t):
-        self.ctx.pid.kp = kp
-        self.ctx.kp = kp
-    @property
-    def ki(self) -> a_float_t:
-        return self.ctx.ki
-    @ki.setter
-    def ki(self, ki: a_float_t):
-        self.ctx.pid.ki = ki
-        self.ctx.ki = ki
-    @property
-    def kd(self) -> a_float_t:
-        return self.ctx.kd
-    @kd.setter
-    def kd(self, kd: a_float_t):
-        self.ctx.pid.kd = kd
-        self.ctx.kd = kd
-    @property
-    def summax(self) -> a_float_t:
-        return self.ctx.pid.summax
-    @summax.setter
-    def summax(self, summax: a_float_t):
-        self.ctx.pid.summax = summax
-    @property
-    def outmax(self) -> a_float_t:
-        return self.ctx.pid.outmax
-    @outmax.setter
-    def outmax(self, outmax: a_float_t):
-        self.ctx.pid.outmax = outmax
-    @property
-    def outmin(self) -> a_float_t:
-        return self.ctx.pid.outmin
-    @outmin.setter
-    def outmin(self, outmin: a_float_t):
-        self.ctx.pid.outmin = outmin
-    @property
-    def out(self) -> a_float_t:
-        return self.ctx.pid.out.f
-    @property
-    def fdb(self) -> a_float_t:
-        return self.ctx.pid.fdb.f
-    @property
-    def err(self) -> a_float_t:
-        return self.ctx.pid.err.f
-    @property
-    def mode(self) -> int:
-        return self.ctx.pid.mode
-    @mode.setter
-    def mode(self, mode: int):
-        self.ctx.pid.mode = mode
-    @property
-    def col(self) -> int:
-        return self.ctx.col
-    @property
-    def buf(self) -> int:
-        return self.ctx.buf
+    property kp:
+        def __get__(self) -> a_float_t:
+            return self.ctx.kp
+        def __set__(self, kp: a_float_t):
+            self.ctx.pid.kp = kp
+            self.ctx.kp = kp
+    property ki:
+        def __get__(self) -> a_float_t:
+            return self.ctx.ki
+        def __set__(self, ki: a_float_t):
+            self.ctx.pid.ki = ki
+            self.ctx.ki = ki
+    property kd:
+        def __get__(self) -> a_float_t:
+            return self.ctx.kd
+        def __set__(self, kd: a_float_t):
+            self.ctx.pid.kd = kd
+            self.ctx.kd = kd
+    property summax:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.summax
+        def __set__(self, summax: a_float_t):
+            self.ctx.pid.summax = summax
+    property outmax:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.outmax
+        def __set__(self, outmax: a_float_t):
+            self.ctx.pid.outmax = outmax
+    property outmin:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.outmin
+        def __set__(self, outmin: a_float_t):
+            self.ctx.pid.outmin = outmin
+    property out:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.out.f
+    property fdb:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.fdb.f
+    property err:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.err.f
+    property mode:
+        def __get__(self) -> int:
+            return self.ctx.pid.mode
+        def __set__(self, mode: int):
+            self.ctx.pid.mode = mode
+    property col:
+        def __get__(self) -> int:
+            return self.ctx.col
+    property buf:
+        def __get__(self) -> int:
+            return self.ctx.buf

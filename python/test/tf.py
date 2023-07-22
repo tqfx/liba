@@ -14,35 +14,35 @@ except Exception as e:
 
 
 class TF:
-    def __init__(self, num, den) -> None:
+    def num_get(self):
+        return self._num
+
+    def num_set(self, num):
+        self._num = np.array(num, dtype=float)
+        self.input = np.array(len(num) * [0.0], dtype=float)
+
+    num = property(num_get, num_set, None, None)
+
+    def den_get(self):
+        return den
+
+    def den_set(self, den):
+        self._den = np.array(den, dtype=float)
+        self.output = np.array(len(den) * [0.0], dtype=float)
+
+    den = property(den_get, den_set, None, None)
+
+    def __init__(self, num, den):
         self.num = num
         self.den = den
 
     def __call__(self, input: float) -> float:
-        self._input = np.roll(self._input, 1)
-        self._input[0] = input  # type: ignore
-        output = self._num @ self._input - self._den @ self._output  # type: ignore
-        self._output = np.roll(self._output, 1)
-        self._output[0] = output  # type: ignore
+        self.input = np.roll(self.input, 1)
+        self.input[0] = input  # type: ignore
+        output = self._num @ self.input - self._den @ self.output  # type: ignore
+        self.output = np.roll(self.output, 1)
+        self.output[0] = output  # type: ignore
         return output
-
-    @property
-    def num(self):
-        return self._num
-
-    @num.setter
-    def num(self, num):
-        self._num = np.array(num, dtype=float)
-        self._input = np.array(len(self._num) * [0.0], dtype=float)
-
-    @property
-    def den(self):
-        return self._den
-
-    @den.setter
-    def den(self, den):
-        self._den = np.array(den, dtype=float)
-        self._output = np.array(len(self._den) * [0.0], dtype=float)
 
 
 Ts = 0.001
@@ -70,5 +70,5 @@ for t in data:
     t = t * 1000
     tf_(t)
     tf(t)
-print(tf_.num, tf_.den, tf_._input, tf_._output)
+print(tf_.num, tf_.den, tf_.input, tf_.output)
 print(tf.num, tf.den, tf.input, tf.output)
