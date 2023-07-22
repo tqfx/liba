@@ -49,7 +49,7 @@ static int a_vec_alloc(a_vec_s *const ctx, a_size_t const num)
         {
             mem += (mem >> 1) + 1;
         } while (mem < num);
-        a_size_t const siz = a_align(sizeof(void *), ctx->_siz * mem);
+        a_size_t const siz = a_size_up(sizeof(void *), ctx->_siz * mem);
         void *ptr = a_alloc(ctx->_ptr, siz);
         if (a_unlikely(ptr == A_NULL))
         {

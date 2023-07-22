@@ -46,7 +46,7 @@ int a_str_init(a_str_s *const ctx, void const *const pdata, a_size_t const nbyte
 {
     ctx->_num = nbyte;
     ctx->_mem = nbyte + 1;
-    ctx->_mem = a_align(sizeof(void *), ctx->_mem);
+    ctx->_mem = a_size_up(sizeof(void *), ctx->_mem);
     ctx->_ptr = (char *)a_alloc(A_NULL, ctx->_mem);
     if (a_unlikely(ctx->_ptr == A_NULL))
     {
@@ -107,7 +107,7 @@ int a_str_cmp(a_str_s const *const lhs, a_str_s const *const rhs)
 int a_str_alloc_(a_str_s *const ctx, a_size_t mem)
 {
     char *str;
-    mem = a_align(sizeof(void *), mem);
+    mem = a_size_up(sizeof(void *), mem);
     str = (char *)a_alloc(ctx->_ptr, mem);
     if (a_unlikely(!str && mem))
     {

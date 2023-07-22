@@ -54,7 +54,7 @@ static int a_vector_alloc(a_vector_s *const ctx, a_size_t const num)
         } while (mem < num);
         a_size_t const mem_ = mem * ctx->_siz;
         a_size_t const num_ = ctx->_num * ctx->_siz;
-        a_size_t const size = a_align(sizeof(void *), mem_);
+        a_size_t const size = a_size_up(sizeof(void *), mem_);
         void *const head = a_alloc(ctx->_head, size);
         if (a_unlikely(head == A_NULL))
         {

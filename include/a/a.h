@@ -879,6 +879,26 @@ typedef union a_cast_u
 #define a_container_of(ptr, type, member) a_cast_r(type *, a_cast_r(a_uptr_t, ptr) - a_offsetof(type, member))
 
 /*!
+ @brief round down size "n" to be a multiple of "a"
+*/
+#define a_size_down(a, n) (a_cast_s(a_size_t, n) & ~a_cast_s(a_size_t, (a)-1))
+
+/*!
+ @brief round up size "n" to be a multiple of "a"
+*/
+#define a_size_up(a, n) ((a_cast_s(a_size_t, n) + (a)-1) & ~a_cast_s(a_size_t, (a)-1))
+
+/*!
+ @brief round pointer "p" down to the closest "a"-aligned address <= "p"
+*/
+#define a_align_down(a, p) a_cast_r(void *, a_cast_r(a_uptr_t, p) & ~a_cast_s(a_uptr_t, (a)-1))
+
+/*!
+ @brief round pointer "p" up to the closest "a"-aligned address >= "p"
+*/
+#define a_align_up(a, p) a_cast_r(void *, (a_cast_r(a_uptr_t, p) + (a)-1) & ~a_cast_s(a_uptr_t, (a)-1))
+
+/*!
  @brief iterate from 0 to n and not include n
  @param I index type of the iteration
  @param i index variable of the iteration
