@@ -286,9 +286,9 @@
 #define a_cast_s(T, x) ((T)(x))
 #define a_cast_c(T, x) ((T)(x))
 #endif /* __cplusplus */
-#define A_CASE_3(a, b, c) a##b##c
-#define A_CASE_2(a, b) a##b
-#define A_CASE_1(a) #a
+#define A_CAST_3(a, b, c) a##b##c
+#define A_CAST_2(a, b) a##b
+#define A_CAST_1(a) #a
 
 #if defined(__cplusplus) && defined(A_HAVE_NULLPTR)
 #define A_NULL nullptr
@@ -604,13 +604,13 @@
 #define A_F16_PINF A_U16_C(0x7C00)
 
 #define A_F32_T float
-#define A_F32_C(X) A_CASE_2(X, F)
-#define A_F32_F(F) A_CASE_2(F, f)
-#define A_F32_F1(F, a) A_CASE_2(F, f)(a)
-#define A_F32_F2(F, a, b) A_CASE_2(F, f)(a, b)
-#define A_F32_F3(F, a, b, c) A_CASE_2(F, f)(a, b, c)
+#define A_F32_C(X) A_CAST_2(X, F)
+#define A_F32_F(F) A_CAST_2(F, f)
+#define A_F32_F1(F, a) A_CAST_2(F, f)(a)
+#define A_F32_F2(F, a, b) A_CAST_2(F, f)(a, b)
+#define A_F32_F3(F, a, b, c) A_CAST_2(F, f)(a, b, c)
 #if defined(A_HAVE_VARIADIC_MACROS)
-#define A_F32_FN(F, ...) A_CASE_2(F, f)(__VA_ARGS__)
+#define A_F32_FN(F, ...) A_CAST_2(F, f)(__VA_ARGS__)
 #endif /* A_HAVE_VARIADIC_MACROS */
 #define A_F32_DIG FLT_DIG
 #define A_F32_EPSILON FLT_EPSILON
@@ -703,16 +703,16 @@
 /*!
  expands to a floating-point constant expression having the value specified by its argument and the type \ref a_float_t
 */
-#define A_FLOAT_C(X) A_CASE_2(X, F)
+#define A_FLOAT_C(X) A_CAST_2(X, F)
 /*!
  expands to a floating-point function expression having the value specified by its argument and the type \ref a_float_t
 */
-#define A_FLOAT_F(F) A_CASE_2(F, f)
-#define A_FLOAT_F1(F, a) A_CASE_2(F, f)(a)
-#define A_FLOAT_F2(F, a, b) A_CASE_2(F, f)(a, b)
-#define A_FLOAT_F3(F, a, b, c) A_CASE_2(F, f)(a, b, c)
+#define A_FLOAT_F(F) A_CAST_2(F, f)
+#define A_FLOAT_F1(F, a) A_CAST_2(F, f)(a)
+#define A_FLOAT_F2(F, a, b) A_CAST_2(F, f)(a, b)
+#define A_FLOAT_F3(F, a, b, c) A_CAST_2(F, f)(a, b, c)
 #if defined(A_HAVE_VARIADIC_MACROS)
-#define A_FLOAT_FN(F, ...) A_CASE_2(F, f)(__VA_ARGS__)
+#define A_FLOAT_FN(F, ...) A_CAST_2(F, f)(__VA_ARGS__)
 #endif /* A_HAVE_VARIADIC_MACROS */
 
 /*! format constants for the fprintf family of functions */
@@ -771,16 +771,16 @@
 /*!
  expands to a floating-point constant expression having the value specified by its argument and the type \ref a_float_t
 */
-#define A_FLOAT_C(X) A_CASE_2(X, L)
+#define A_FLOAT_C(X) A_CAST_2(X, L)
 /*!
  expands to a floating-point function expression having the value specified by its argument and the type \ref a_float_t
 */
-#define A_FLOAT_F(F) A_CASE_2(F, l)
-#define A_FLOAT_F1(F, a) A_CASE_2(F, l)(a)
-#define A_FLOAT_F2(F, a, b) A_CASE_2(F, l)(a, b)
-#define A_FLOAT_F3(F, a, b, c) A_CASE_2(F, l)(a, b, c)
+#define A_FLOAT_F(F) A_CAST_2(F, l)
+#define A_FLOAT_F1(F, a) A_CAST_2(F, l)(a)
+#define A_FLOAT_F2(F, a, b) A_CAST_2(F, l)(a, b)
+#define A_FLOAT_F3(F, a, b, c) A_CAST_2(F, l)(a, b, c)
 #if defined(A_HAVE_VARIADIC_MACROS)
-#define A_FLOAT_FN(F, ...) A_CASE_2(F, l)(__VA_ARGS__)
+#define A_FLOAT_FN(F, ...) A_CAST_2(F, l)(__VA_ARGS__)
 #endif /* A_HAVE_VARIADIC_MACROS */
 
 /*! format constants for the fprintf family of functions */

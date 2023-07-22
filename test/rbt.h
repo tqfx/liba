@@ -1,6 +1,6 @@
 #ifndef TEST_RBT_H
 #define TEST_RBT_H
-#define MAIN_(s, argc, argv) A_CASE_2(rbt, s)(argc, argv)
+#define MAIN_(s, argc, argv) A_CAST_2(rbt, s)(argc, argv)
 #include "test.h"
 #include "a/rbt.h"
 #include "a/host/str.h"

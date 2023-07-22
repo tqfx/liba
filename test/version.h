@@ -1,6 +1,6 @@
 #ifndef TEST_VERSION_H
 #define TEST_VERSION_H
-#define MAIN_(s, argc, argv) A_CASE_2(version, s)(argc, argv)
+#define MAIN_(s, argc, argv) A_CAST_2(version, s)(argc, argv)
 #include "test.h"
 #include "a/version.h"
 

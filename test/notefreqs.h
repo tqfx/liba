@@ -1,6 +1,6 @@
 #ifndef TEST_NOTEFREQS_H
 #define TEST_NOTEFREQS_H
-#define MAIN_(s, argc, argv) A_CASE_2(notefreqs, s)(argc, argv)
+#define MAIN_(s, argc, argv) A_CAST_2(notefreqs, s)(argc, argv)
 #include "test.h"
 #define A_NOTEFREQ_T a_float_t
 #define A_NOTEFREQ_C(X) A_FLOAT_C(X)

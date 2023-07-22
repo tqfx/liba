@@ -1,6 +1,6 @@
 #ifndef TEST_TF_H
 #define TEST_TF_H
-#define MAIN_(s, argc, argv) A_CASE_2(tf, s)(argc, argv)
+#define MAIN_(s, argc, argv) A_CAST_2(tf, s)(argc, argv)
 #include "test.h"
 #include "a/tf.h"
 

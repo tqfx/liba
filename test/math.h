@@ -1,6 +1,6 @@
 #ifndef TEST_MATH_H
 #define TEST_MATH_H
-#define MAIN_(s, argc, argv) A_CASE_2(math, s)(argc, argv)
+#define MAIN_(s, argc, argv) A_CAST_2(math, s)(argc, argv)
 #include "test.h"
 #include "a/math.h"
 

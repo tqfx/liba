@@ -37,7 +37,7 @@
 #define A_VERSION_TWEAK A_U64_C(0)
 #endif /* A_VERSION_TWEAK */
 
-#define A_VERSION_TOSTR(X) A_CASE_1(X)
+#define A_VERSION_TOSTR(X) A_CAST_1(X)
 /*! algorithm library version string */
 #ifndef A_VERSION
 #define A_VERSION A_VERSION_TOSTR(A_VERSION_MAJOR) "." A_VERSION_TOSTR(A_VERSION_MINOR) "." A_VERSION_TOSTR(A_VERSION_PATCH)

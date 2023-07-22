@@ -1,6 +1,6 @@
 #ifndef TEST_MAIN_H
 #define TEST_MAIN_H
-#define MAIN_(s, argc, argv) A_CASE_2(main, s)(argc, argv)
+#define MAIN_(s, argc, argv) A_CAST_2(main, s)(argc, argv)
 #include "test.h"
 
 static int test(int argc, char *argv[])

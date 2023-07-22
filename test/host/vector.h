@@ -1,6 +1,6 @@
 #ifndef TEST_HOST_VECTOR_H
 #define TEST_HOST_VECTOR_H
-#define MAIN_(s, argc, argv) A_CASE_2(vector, s)(argc, argv)
+#define MAIN_(s, argc, argv) A_CAST_2(vector, s)(argc, argv)
 #include "../test.h"
 #include "a/host/vector.h"
 #include <string.h>

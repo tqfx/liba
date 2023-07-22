@@ -1,6 +1,6 @@
 #ifndef TEST_RBF_H
 #define TEST_RBF_H
-#define MAIN_(s, argc, argv) A_CASE_2(rbf, s)(argc, argv)
+#define MAIN_(s, argc, argv) A_CAST_2(rbf, s)(argc, argv)
 #include "test.h"
 #include "a/tf.h"
 #include "a/rbf.h"
