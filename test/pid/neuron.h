@@ -10,10 +10,10 @@ static void test_f(void)
 {
     a_float_t num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
     a_float_t den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
-    a_float_t input[a_count_of(num)];
-    a_float_t output[a_count_of(den)];
+    a_float_t input[a_array_n(num)];
+    a_float_t output[a_array_n(den)];
     a_tf_s tf;
-    a_tf_init(&tf, a_count_of(num), num, input, a_count_of(den), den, output);
+    a_tf_init(&tf, a_array_n(num), num, input, a_array_n(den), den, output);
     a_pid_neuron_s ctx;
     ctx.pid.kp = A_FLOAT_C(0.1);
     ctx.pid.ki = A_FLOAT_C(0.1);
@@ -42,16 +42,16 @@ static void test_p(void)
     a_float_t den1[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
     a_float_t num2[] = {A_FLOAT_C(7.59492796e-05), A_FLOAT_C(7.54019884e-05)};
     a_float_t den2[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
-    a_float_t input0[a_count_of(num0)];
-    a_float_t output0[a_count_of(den0)];
-    a_float_t input1[a_count_of(num1)];
-    a_float_t output1[a_count_of(den1)];
-    a_float_t input2[a_count_of(num2)];
-    a_float_t output2[a_count_of(den2)];
+    a_float_t input0[a_array_n(num0)];
+    a_float_t output0[a_array_n(den0)];
+    a_float_t input1[a_array_n(num1)];
+    a_float_t output1[a_array_n(den1)];
+    a_float_t input2[a_array_n(num2)];
+    a_float_t output2[a_array_n(den2)];
     a_tf_s tf[3];
-    a_tf_init(tf + 0, a_count_of(num0), num0, input0, a_count_of(den0), den0, output0);
-    a_tf_init(tf + 1, a_count_of(num1), num1, input1, a_count_of(den1), den1, output1);
-    a_tf_init(tf + 2, a_count_of(num2), num2, input2, a_count_of(den2), den2, output2);
+    a_tf_init(tf + 0, a_array_n(num0), num0, input0, a_array_n(den0), den0, output0);
+    a_tf_init(tf + 1, a_array_n(num1), num1, input1, a_array_n(den1), den1, output1);
+    a_tf_init(tf + 2, a_array_n(num2), num2, input2, a_array_n(den2), den2, output2);
     a_pid_neuron_s ctx;
     ctx.pid.kp = A_FLOAT_C(0.1);
     ctx.pid.ki = A_FLOAT_C(0.1);
@@ -115,9 +115,9 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_float_t den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
 
     a_tf_s tf;
-    a_float_t tf_input[a_count_of(num)];
-    a_float_t tf_output[a_count_of(den)];
-    a_tf_init(&tf, a_count_of(num), num, tf_input, a_count_of(den), den, tf_output);
+    a_float_t tf_input[a_array_n(num)];
+    a_float_t tf_output[a_array_n(den)];
+    a_tf_init(&tf, a_array_n(num), num, tf_input, a_array_n(den), den, tf_output);
 
     a_pid_neuron_s ctx;
     ctx.pid.kp = A_FLOAT_C(4.0);

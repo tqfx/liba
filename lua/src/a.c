@@ -74,7 +74,7 @@ int LMODULE0(lua_State *const L)
         {"rsqrt", LMODULE(rsqrt)},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, L_COUNT(funcs));
+    lua_createtable(L, 0, a_array_n(funcs));
     l_str_set(L, -1, "VERSION", A_VERSION);
     l_func_reg(L, -1, funcs);
 

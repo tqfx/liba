@@ -877,10 +877,10 @@ typedef union a_cast_u
 #define A_SAT(x, min, max) ((min) < (x) ? (x) < (max) ? (x) : (max) : (min))
 
 /*!
- @brief count of an array buffer
- @param array must be an array variable
+ @brief number of elements in a visible array
+ @param array must be a visible array
 */
-#define a_count_of(array) (sizeof(array) / sizeof(*(array)))
+#define a_array_n(array) (sizeof(array) / sizeof(*(array)))
 
 /*!
  @brief offset of a structure member

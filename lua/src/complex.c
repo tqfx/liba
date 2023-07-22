@@ -727,7 +727,7 @@ static int LMODULE(complex_get)(lua_State *const L)
             {"acoth", LMODULE(complex_acoth)},
             {NULL, NULL},
         };
-        lua_createtable(L, 0, L_COUNT(datas) + L_COUNT(funcs) - 2);
+        lua_createtable(L, 0, a_array_n(datas) + a_array_n(funcs) - 2);
         l_num_reg(L, -1, datas);
         l_func_reg(L, -1, funcs);
         break;
@@ -788,7 +788,7 @@ int LMODULE_(complex, lua_State *const L)
         {"acoth", LMODULE(complex_acoth)},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, L_COUNT(funcs) - 1);
+    lua_createtable(L, 0, a_array_n(funcs) - 1);
     l_func_reg(L, -1, funcs);
     lua_createtable(L, 0, 2);
     l_func_set(L, -1, L_SET, LMODULE(setter));
@@ -809,8 +809,8 @@ int LMODULE_(complex, lua_State *const L)
         {L_LEN, LMODULE(complex_abs)},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, L_COUNT(metas));
-    l_str_set(L, -1, L_NAME, "liba.complex");
+    lua_createtable(L, 0, a_array_n(metas));
+    l_str_set(L, -1, L_NAME, LMODULES("complex"));
     l_func_reg(L, -1, metas);
 
     LMODULE2(complex_meta_, L, 0);

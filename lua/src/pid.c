@@ -288,7 +288,7 @@ static int LMODULE(pid_get)(lua_State *const L)
             {"new", LMODULE(pid_new)},
             {NULL, NULL},
         };
-        lua_createtable(L, 0, L_COUNT(enums) + L_COUNT(datas) + L_COUNT(funcs) - 3);
+        lua_createtable(L, 0, a_array_n(enums) + a_array_n(datas) + a_array_n(funcs) - 3);
         l_int_reg(L, -1, enums);
         l_num_reg(L, -1, datas);
         l_func_reg(L, -1, funcs);
@@ -324,7 +324,7 @@ int LMODULE_(pid, lua_State *const L)
         {"new", LMODULE(pid_new)},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, L_COUNT(enums) + L_COUNT(funcs) - 2);
+    lua_createtable(L, 0, a_array_n(enums) + a_array_n(funcs) - 2);
     l_int_reg(L, -1, enums);
     l_func_reg(L, -1, funcs);
     lua_createtable(L, 0, 2);
@@ -338,8 +338,8 @@ int LMODULE_(pid, lua_State *const L)
         {L_GET, LMODULE(pid_get)},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, L_COUNT(metas));
-    l_str_set(L, -1, L_NAME, "liba.pid");
+    lua_createtable(L, 0, a_array_n(metas));
+    l_str_set(L, -1, L_NAME, LMODULES("pid"));
     l_func_reg(L, -1, metas);
 
     LMODULE2(pid_meta_, L, 0);

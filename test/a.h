@@ -176,60 +176,60 @@ static void test_swap(int argc, char *argv[])
 static void test_save(int argc, char *argv[])
 {
     a_float_t array[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    for (a_size_t i = 0; i < a_array_n(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_array_n(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     {
         a_float_t cache[] = {-1};
-        a_float_save(array, a_count_of(array), cache, a_count_of(cache));
+        a_float_save(array, a_array_n(array), cache, a_array_n(cache));
     }
-    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    for (a_size_t i = 0; i < a_array_n(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_array_n(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     {
         a_float_t cache[] = {-1, -2};
-        a_float_save(array, a_count_of(array), cache, a_count_of(cache));
+        a_float_save(array, a_array_n(array), cache, a_array_n(cache));
     }
-    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    for (a_size_t i = 0; i < a_array_n(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_array_n(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     {
         a_float_t cache[] = {-1, -2, -3, -4};
-        a_float_save(array, a_count_of(array), cache, a_count_of(cache));
+        a_float_save(array, a_array_n(array), cache, a_array_n(cache));
     }
-    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    for (a_size_t i = 0; i < a_array_n(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_array_n(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     {
         a_float_t cache[] = {-1, -2, -3, -4, -5, -6, -7, -8};
-        a_float_save(array, a_count_of(array), cache, a_count_of(cache));
+        a_float_save(array, a_array_n(array), cache, a_array_n(cache));
     }
-    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    for (a_size_t i = 0; i < a_array_n(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_array_n(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     {
         a_float_t cache[] = {-0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10};
-        a_float_save(array, a_count_of(array), cache, a_count_of(cache));
+        a_float_save(array, a_array_n(array), cache, a_array_n(cache));
     }
-    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    for (a_size_t i = 0; i < a_array_n(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < a_array_n(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     (void)argc;
@@ -240,45 +240,45 @@ static void test_roll(int argc, char *argv[])
 {
     a_float_t array[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     a_float_t shift[16];
-    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    for (a_size_t i = 0; i < a_array_n(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_array_n(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
-    a_float_roll(array, a_count_of(array), shift, 1);
-    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    a_float_roll(array, a_array_n(array), shift, 1);
+    for (a_size_t i = 0; i < a_array_n(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_array_n(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
-    a_float_roll(array, a_count_of(array), shift, 2);
-    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    a_float_roll(array, a_array_n(array), shift, 2);
+    for (a_size_t i = 0; i < a_array_n(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_array_n(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
-    a_float_roll(array, a_count_of(array), shift, 4);
-    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    a_float_roll(array, a_array_n(array), shift, 4);
+    for (a_size_t i = 0; i < a_array_n(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_array_n(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
-    a_float_roll(array, a_count_of(array), shift, 8);
-    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    a_float_roll(array, a_array_n(array), shift, 8);
+    for (a_size_t i = 0; i < a_array_n(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_array_n(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
-    a_float_roll(array, a_count_of(array), shift, 15);
-    for (a_size_t i = 0; i < a_count_of(array); ++i)
+    a_float_roll(array, a_array_n(array), shift, 15);
+    for (a_size_t i = 0; i < a_array_n(array); ++i)
     {
 #if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_count_of(array) ? ' ' : '\n');
+        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < a_array_n(array) ? ' ' : '\n');
 #endif /* MAIN_ONCE */
     }
     (void)argc;

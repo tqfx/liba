@@ -127,7 +127,6 @@ L_API void l_stack_show(lua_State *L, int line);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#define L_COUNT(A) (sizeof(A) / sizeof(*(A)))
 #define L_STACK(L) l_stack_show(L, __LINE__)
 #define L_NAME "__name"
 #define L_NEW "__call"

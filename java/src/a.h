@@ -28,9 +28,8 @@
 #pragma GCC diagnostic pop
 #endif /* diagnostic */
 
-#define JCOUNTOF(A) (sizeof(A) / sizeof(*(A)))
-#define JPACKAGE(F) Java_liba_##F
 #define CLASSPATH "liba/"
+#define JPACKAGE(F) Java_liba_##F
 
 A_INTERN jsize GetArrayLengthN(JNIEnv *jenv, jarray jobj, jsize jmax)
 {
