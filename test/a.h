@@ -6,45 +6,39 @@
 
 static void test_sq(void)
 {
-    int x = 2;
-    TEST_BUG(A_SQ(x) == 4);
+    A_ASSERT_BUILD(A_SQ(+2) == 4);
+    A_ASSERT_BUILD(A_SQ(-2) == 4);
 }
 
 static void test_min(void)
 {
-    TEST_BUG(A_MIN(1, 2) == 1);
-    TEST_BUG(A_MIN(2, 1) == 1);
+    A_ASSERT_BUILD(A_MIN(0, 1) == 0);
+    A_ASSERT_BUILD(A_MIN(1, 0) == 0);
 }
 
 static void test_max(void)
 {
-    TEST_BUG(A_MIN(1, 2) == 2);
-    TEST_BUG(A_MIN(2, 1) == 2);
+    A_ASSERT_BUILD(A_MAX(0, 1) == 1);
+    A_ASSERT_BUILD(A_MAX(1, 0) == 1);
 }
 
 static void test_abs(void)
 {
-    long double x = -1.0L;
-    TEST_BUG(A_ABS(x) > 0);
+    A_ASSERT_BUILD(A_ABS(~0) > 0);
 }
 
 static void test_sgn(void)
 {
-    int pos = +10;
-    int neg = -10;
-    int zero = +0;
-    TEST_BUG(A_SGN(pos) == 1);
-    TEST_BUG(A_SGN(neg) == -1);
-    TEST_BUG(A_SGN(zero) == 0);
+    A_ASSERT_BUILD(A_SGN(0) == 0);
+    A_ASSERT_BUILD(A_SGN(+10) == +1);
+    A_ASSERT_BUILD(A_SGN(-10) == -1);
 }
 
 static void test_sat(void)
 {
-    double max = +10.0;
-    double min = -10.0;
-    TEST_BUG(A_SAT(0, min, max) >= 0);
-    TEST_BUG(A_SAT(+100, min, max) <= max);
-    TEST_BUG(A_SAT(-100, min, max) >= min);
+    A_ASSERT_BUILD(A_SAT(0, -10, +10) == 0);
+    A_ASSERT_BUILD(A_SAT(+100, -10, +10) <= +10);
+    A_ASSERT_BUILD(A_SAT(-100, -10, +10) >= -10);
 }
 
 static void test_bkdr(int argc, char *argv[])

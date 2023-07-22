@@ -275,6 +275,9 @@
  @{
 */
 
+/*! assert a build-time dependency, as an expression */
+#define A_ASSERT_BUILD(x) (sizeof(char[1 - 2 * !(x)]) - 1)
+
 #if defined(__cplusplus)
 #define a_cast_r(T, x) reinterpret_cast<T>(x)
 #define a_cast_d(T, x) dynamic_cast<T>(x)
