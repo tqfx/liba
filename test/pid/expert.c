@@ -1,5 +1,5 @@
 #include "expert.h"
-#include "../src/pid.h"
+#include "../../src/pid.h"
 #if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
