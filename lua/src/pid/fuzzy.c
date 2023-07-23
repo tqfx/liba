@@ -415,29 +415,25 @@ static int LMODULE(pid_fuzzy_get)(lua_State *const L)
 
 /***
  instance for fuzzy PID controller
- @field AND_DEFAULT min(l,r)
- @field AND_ALGEBRA l*r
- @field AND_BOUNDED max(l,r)
- @field OR_DEFAULT max(l,r)
- @field OR_ALGEBRA l+r-l*r
- @field OR_BOUNDED min(l,r)
- @field EQU sqrt(l,r)*sqrt(1-(1-r)*(1-r))
- @field AND min(l,r)
- @field OR max(l,r)
+ @field CAP         min(a,b)
+ @field CAP_ALGEBRA a*b
+ @field CAP_BOUNDED max(a+b-1,0)
+ @field CUP         max(a,b)
+ @field CUP_ALGEBRA a+b-a*b
+ @field CUP_BOUNDED min(a+b,1)
+ @field EQU         sqrt(a,b)*sqrt(1-(1-a)*(1-b))
  @table pid_fuzzy
 */
 int LMODULE_(pid_fuzzy, lua_State *const L)
 {
     l_int_s const enums[] = {
-        {"AND_DEFAULT", A_PID_FUZZY_AND_DEFAULT},
-        {"AND_ALGEBRA", A_PID_FUZZY_AND_ALGEBRA},
-        {"AND_BOUNDED", A_PID_FUZZY_AND_BOUNDED},
-        {"OR_DEFAULT", A_PID_FUZZY_OR_DEFAULT},
-        {"OR_ALGEBRA", A_PID_FUZZY_OR_ALGEBRA},
-        {"OR_BOUNDED", A_PID_FUZZY_OR_BOUNDED},
         {"EQU", A_PID_FUZZY_EQU},
-        {"AND", A_PID_FUZZY_AND},
-        {"OR", A_PID_FUZZY_OR},
+        {"CAP", A_PID_FUZZY_CAP},
+        {"CAP_ALGEBRA", A_PID_FUZZY_CAP_ALGEBRA},
+        {"CAP_BOUNDED", A_PID_FUZZY_CAP_BOUNDED},
+        {"CUP", A_PID_FUZZY_CUP},
+        {"CUP_ALGEBRA", A_PID_FUZZY_CUP_ALGEBRA},
+        {"CUP_BOUNDED", A_PID_FUZZY_CUP_BOUNDED},
         {NULL, 0},
     };
     l_func_s const funcs[] = {

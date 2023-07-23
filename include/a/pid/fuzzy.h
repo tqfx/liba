@@ -21,15 +21,13 @@
 */
 typedef enum a_pid_fuzzy_e
 {
-    A_PID_FUZZY_EQU, //!< sqrt(l,r)*sqrt(1-(1-r)*(1-r))
-    A_PID_FUZZY_AND_DEFAULT, //!< min(l,r)
-    A_PID_FUZZY_AND_ALGEBRA, //!< l*r
-    A_PID_FUZZY_AND_BOUNDED, //!< max(l,r)
-    A_PID_FUZZY_OR_DEFAULT, //!< max(l,r)
-    A_PID_FUZZY_OR_ALGEBRA, //!< l+r-l*r
-    A_PID_FUZZY_OR_BOUNDED, //!< min(l,r)
-    A_PID_FUZZY_AND = A_PID_FUZZY_AND_DEFAULT,
-    A_PID_FUZZY_OR = A_PID_FUZZY_OR_DEFAULT
+    A_PID_FUZZY_EQU, //!< sqrt(a,b)*sqrt(1-(1-a)*(1-b))
+    A_PID_FUZZY_CAP, //!< min(a,b)
+    A_PID_FUZZY_CAP_ALGEBRA, //!< a*b
+    A_PID_FUZZY_CAP_BOUNDED, //!< max(a+b-1,0)
+    A_PID_FUZZY_CUP, //!< max(a,b)
+    A_PID_FUZZY_CUP_ALGEBRA, //!< a+b-a*b
+    A_PID_FUZZY_CUP_BOUNDED, //!< min(a+b,1)
 } a_pid_fuzzy_e;
 
 /*!

@@ -5,15 +5,13 @@ from fuzzy cimport *
 @cython.boundscheck(False)
 cdef class pid_fuzzy:
     '''fuzzy proportional integral derivative controller'''
-    AND_DEFAULT = A_PID_FUZZY_AND_DEFAULT
-    AND_ALGEBRA = A_PID_FUZZY_AND_ALGEBRA
-    AND_BOUNDED = A_PID_FUZZY_AND_BOUNDED
-    OR_DEFAULT = A_PID_FUZZY_OR_DEFAULT
-    OR_ALGEBRA = A_PID_FUZZY_OR_ALGEBRA
-    OR_BOUNDED = A_PID_FUZZY_OR_BOUNDED
+    CAP = A_PID_FUZZY_CAP
+    CAP_ALGEBRA = A_PID_FUZZY_CAP_ALGEBRA
+    CAP_BOUNDED = A_PID_FUZZY_CAP_BOUNDED
+    CUP = A_PID_FUZZY_CUP
+    CUP_ALGEBRA = A_PID_FUZZY_CUP_ALGEBRA
+    CUP_BOUNDED = A_PID_FUZZY_CUP_BOUNDED
     EQU = A_PID_FUZZY_EQU
-    AND = A_PID_FUZZY_AND
-    OR = A_PID_FUZZY_OR
     cdef a_pid_fuzzy_s ctx
     cdef array me
     cdef array mec

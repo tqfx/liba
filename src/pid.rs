@@ -151,20 +151,20 @@ fn pid() {
 /// fuzzy PID controller operator
 pub mod fuzzy {
     use crate::uint;
-    /// sqrt(l,r)*sqrt(1-(1-r)*(1-r))
+    /// sqrt(a,b)*sqrt(1-(1-a)*(1-b))
     pub const EQU: uint = 0;
-    /// min(l,r)
-    pub const AND: uint = 1;
-    /// l*r
-    pub const AND_ALGEBRA: uint = 2;
-    /// max(l,r)
-    pub const AND_BOUNDED: uint = 3;
-    /// max(l,r)
-    pub const OR: uint = 4;
-    /// l+r-l*r
-    pub const OR_ALGEBRA: uint = 5;
-    /// min(l,r)
-    pub const OR_BOUNDED: uint = 6;
+    /// min(a,b)
+    pub const CAP: uint = 1;
+    /// a*b
+    pub const CAP_ALGEBRA: uint = 2;
+    /// max(a+b-1,0)
+    pub const CAP_BOUNDED: uint = 3;
+    /// max(a,b)
+    pub const CUP: uint = 4;
+    /// a+b-a*b
+    pub const CUP_ALGEBRA: uint = 5;
+    /// min(a+b,1)
+    pub const CUP_BOUNDED: uint = 6;
 }
 
 /// fuzzy proportional integral derivative controller

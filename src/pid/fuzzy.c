@@ -2,32 +2,30 @@
 #include "fuzzy.h"
 #include "a/math.h"
 
-a_float_t a_pid_fuzzy_op_or(a_float_t const l, a_float_t const r) { return l + r - l * r; }
-
-a_float_t a_pid_fuzzy_op_and(a_float_t const l, a_float_t const r) { return l * r; }
-
-a_float_t a_pid_fuzzy_op_equ(a_float_t const l, a_float_t const r)
+a_float_t a_pid_fuzzy_equ(a_float_t const a, a_float_t const b)
 {
-    return a_float_sqrt(l * r) * a_float_sqrt(1 - (1 - l) * (1 - r));
+    return a_float_sqrt(a * b) * a_float_sqrt(1 - (1 - a) * (1 - b));
 }
 
 a_float_t (*a_pid_fuzzy_op(unsigned int const op))(a_float_t, a_float_t)
 {
     switch (op)
     {
-    case A_PID_FUZZY_OR_ALGEBRA:
-        return a_pid_fuzzy_op_or;
-    case A_PID_FUZZY_OR_BOUNDED:
-    case A_PID_FUZZY_AND_DEFAULT:
-        return a_float_min;
-    case A_PID_FUZZY_AND_ALGEBRA:
-        return a_pid_fuzzy_op_and;
-    case A_PID_FUZZY_AND_BOUNDED:
-    case A_PID_FUZZY_OR_DEFAULT:
-        return a_float_max;
+    case A_PID_FUZZY_CUP_BOUNDED:
+        return a_fuzzy_cup_bounded;
+    case A_PID_FUZZY_CUP_ALGEBRA:
+        return a_fuzzy_cup_algebra;
+    case A_PID_FUZZY_CUP:
+        return a_fuzzy_cup;
+    case A_PID_FUZZY_CAP_BOUNDED:
+        return a_fuzzy_cap_bounded;
+    case A_PID_FUZZY_CAP_ALGEBRA:
+        return a_fuzzy_cap_algebra;
+    case A_PID_FUZZY_CAP:
+        return a_fuzzy_cap;
     case A_PID_FUZZY_EQU:
     default:
-        return a_pid_fuzzy_op_equ;
+        return a_pid_fuzzy_equ;
     }
 }
 

@@ -14,53 +14,141 @@
  @{
 */
 
-/*!
- @brief instance enumeration for fuzzy operator
-*/
-typedef enum a_fuzzy_e
-{
-    A_FUZZY_DEFAULT /*!< default operator */,
-    A_FUZZY_ALGEBRA /*!< algebra operator */,
-    A_FUZZY_BOUNDED /*!< bounded operator */
-} a_fuzzy_e;
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
+#if defined(LIBA_FUZZY_C)
+#undef A_INTERN
+#define A_INTERN A_INLINE
+#endif /* LIBA_FUZZY_C */
 
 /*!
- @brief union operator
- @param[in] e enumeration of operator
-  @arg 0 fuzzy union
-  @arg 1 algebraic sum
-  @arg 2 bounded sum
- @param[in] l left-hand operand
- @param[in] r right-hand operand
- @return result of operation
+ @brief complementary operator
+ @param[in] x membership
+ @return = \f$ 1-x \f$
 */
-A_EXTERN a_float_t a_fuzzy_or(unsigned int e, a_float_t l, a_float_t r);
+#if !defined A_HAVE_INLINE || defined(LIBA_FUZZY_C)
+A_EXTERN a_float_t a_fuzzy_not(a_float_t x);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
+A_INTERN a_float_t a_fuzzy_not(a_float_t const x)
+{
+    return 1 - x;
+}
+#endif /* A_HAVE_INLINE */
 
 /*!
- @brief Intersection operator
- @param[in] e enumeration of operator
-  @arg 0 fuzzy intersection
-  @arg 1 algebraic product
-  @arg 2 bounded product
- @param[in] l left-hand operand
- @param[in] r right-hand operand
- @return result of operation
+ @brief fuzzy intersection operator
+ @param[in] a left-hand operand
+ @param[in] b right-hand operand
+ @return = \f$ \min(a,b) \f$
 */
-A_EXTERN a_float_t a_fuzzy_and(unsigned int e, a_float_t l, a_float_t r);
+#if !defined A_HAVE_INLINE || defined(LIBA_FUZZY_C)
+A_EXTERN a_float_t a_fuzzy_cap(a_float_t a, a_float_t b);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
+A_INTERN a_float_t a_fuzzy_cap(a_float_t const a, a_float_t const b)
+{
+    return A_MIN(a, b);
+}
+
+#endif /* A_HAVE_INLINE */
 
 /*!
- @brief Equilibrium operator
+ @brief algebraic product operator
+ @param[in] a left-hand operand
+ @param[in] b right-hand operand
+ @return = \f$ ab \f$
+*/
+#if !defined A_HAVE_INLINE || defined(LIBA_FUZZY_C)
+A_EXTERN a_float_t a_fuzzy_cap_algebra(a_float_t a, a_float_t b);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
+A_INTERN a_float_t a_fuzzy_cap_algebra(a_float_t const a, a_float_t const b)
+{
+    return a * b;
+}
+#endif /* A_HAVE_INLINE */
+
+/*!
+ @brief bounded product operator
+ @param[in] a left-hand operand
+ @param[in] b right-hand operand
+ @return = \f$ \max(a+b-1,0) \f$
+*/
+#if !defined A_HAVE_INLINE || defined(LIBA_FUZZY_C)
+A_EXTERN a_float_t a_fuzzy_cap_bounded(a_float_t a, a_float_t b);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
+A_INTERN a_float_t a_fuzzy_cap_bounded(a_float_t const a, a_float_t const b)
+{
+    a_float_t const c = a + b - 1;
+    return A_MAX(c, 0);
+}
+#endif /* A_HAVE_INLINE */
+
+/*!
+ @brief fuzzy union operator
+ @param[in] a left-hand operand
+ @param[in] b right-hand operand
+ @return = \f$ \max(a,b) \f$
+*/
+#if !defined A_HAVE_INLINE || defined(LIBA_FUZZY_C)
+A_EXTERN a_float_t a_fuzzy_cup(a_float_t a, a_float_t b);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
+A_INTERN a_float_t a_fuzzy_cup(a_float_t const a, a_float_t const b)
+{
+    return A_MAX(a, b);
+}
+#endif /* A_HAVE_INLINE */
+
+/*!
+ @brief algebraic sum operator
+ @param[in] a left-hand operand
+ @param[in] b right-hand operand
+ @return = \f$ a+b-ab \f$
+*/
+#if !defined A_HAVE_INLINE || defined(LIBA_FUZZY_C)
+A_EXTERN a_float_t a_fuzzy_cup_algebra(a_float_t a, a_float_t b);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
+A_INTERN a_float_t a_fuzzy_cup_algebra(a_float_t const a, a_float_t const b)
+{
+    return a + b - a * b;
+}
+#endif /* A_HAVE_INLINE */
+
+/*!
+ @brief bounded sum operator
+ @param[in] a left-hand operand
+ @param[in] b right-hand operand
+ @return = \f$ \min(a+b,1) \f$
+*/
+#if !defined A_HAVE_INLINE || defined(LIBA_FUZZY_C)
+A_EXTERN a_float_t a_fuzzy_cup_bounded(a_float_t a, a_float_t b);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
+A_INTERN a_float_t a_fuzzy_cup_bounded(a_float_t const a, a_float_t const b)
+{
+    a_float_t const c = a + b;
+    return A_MIN(c, 1);
+}
+#endif /* A_HAVE_INLINE */
+
+/*!
+ @brief equilibrium operator
  @param[in] gamma gamma operator
- @param[in] l left-hand operand
- @param[in] r right-hand operand
- @return result of operation
+ @param[in] a left-hand operand
+ @param[in] b right-hand operand
+ @return = \f$ (ab)^{1-\gamma}(1-(1-a)(1-b))^{\gamma} \f$
 */
-A_EXTERN a_float_t a_fuzzy_equ(a_float_t gamma, a_float_t l, a_float_t r);
+A_EXTERN a_float_t a_fuzzy_equ(a_float_t gamma, a_float_t a, a_float_t b);
 
+#if defined(LIBA_FUZZY_C)
+#undef A_INTERN
+#define A_INTERN static A_INLINE
+#endif /* LIBA_FUZZY_C */
 #if defined(__cplusplus)
 } /* extern "C" */
 #endif /* __cplusplus */

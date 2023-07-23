@@ -5,20 +5,20 @@ public class pid_fuzzy {
     static {
         System.loadLibrary("a");
     }
-    /** sqrt(l,r)*sqrt(1-(1-r)*(1-r)) */
+    /** sqrt(a,b)*sqrt(1-(1-a)*(1-b)) */
     public static final int EQU = 0;
-    /** min(l,r) */
-    public static final int AND = 1;
-    /** l*r */
-    public static final int AND_ALGEBRA = 2;
-    /** max(l,r) */
-    public static final int AND_BOUNDED = 3;
-    /** max(l,r) */
-    public static final int OR = 4;
-    /** l+r-l*r */
-    public static final int OR_ALGEBRA = 5;
-    /** min(l,r) */
-    public static final int OR_BOUNDED = 6;
+    /** min(a,b) */
+    public static final int CAP = 1;
+    /** a*b */
+    public static final int CAP_ALGEBRA = 2;
+    /** max(a+b-1,0) */
+    public static final int CAP_BOUNDED = 3;
+    /** max(a,b) */
+    public static final int CUP = 4;
+    /** a+b-a*b */
+    public static final int CUP_ALGEBRA = 5;
+    /** min(a+b,1) */
+    public static final int CUP_BOUNDED = 6;
     /** proportional integral derivative controller */
     public pid pid;
     double[] me;

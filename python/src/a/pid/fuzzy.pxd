@@ -2,15 +2,13 @@ from a.pid cimport *
 
 cdef extern from "a/pid/fuzzy.h":
     ctypedef enum a_pid_fuzzy_e:
-        A_PID_FUZZY_AND_DEFAULT
-        A_PID_FUZZY_AND_ALGEBRA
-        A_PID_FUZZY_AND_BOUNDED
-        A_PID_FUZZY_OR_DEFAULT
-        A_PID_FUZZY_OR_ALGEBRA
-        A_PID_FUZZY_OR_BOUNDED
+        A_PID_FUZZY_CAP
+        A_PID_FUZZY_CAP_ALGEBRA
+        A_PID_FUZZY_CAP_BOUNDED
+        A_PID_FUZZY_CUP
+        A_PID_FUZZY_CUP_ALGEBRA
+        A_PID_FUZZY_CUP_BOUNDED
         A_PID_FUZZY_EQU
-        A_PID_FUZZY_AND
-        A_PID_FUZZY_OR
     ctypedef struct a_pid_fuzzy_s:
         a_pid_s pid
         a_float_t kp

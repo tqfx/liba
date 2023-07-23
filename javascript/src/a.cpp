@@ -385,22 +385,29 @@ EMSCRIPTEN_BINDINGS(module) // NOLINT
 {
     emscripten::function("f32_rsqrt", a_f32_rsqrt);
     emscripten::function("f64_rsqrt", a_f64_rsqrt);
-    emscripten::constant("MF_NUL", 0);
+    emscripten::constant("MF_NUL", A_MF_NUL);
     emscripten::function("mf_gauss", a_mf_gauss);
-    emscripten::constant("MF_GAUSS", 1);
+    emscripten::constant("MF_GAUSS", A_MF_GAUSS);
     emscripten::function("mf_gbell", a_mf_gbell);
-    emscripten::constant("MF_GBELL", 2);
+    emscripten::constant("MF_GBELL", A_MF_GBELL);
     emscripten::function("mf_sig", a_mf_sig);
-    emscripten::constant("MF_SIG", 3);
+    emscripten::constant("MF_SIG", A_MF_SIG);
     emscripten::function("mf_trap", a_mf_trap);
-    emscripten::constant("MF_TRAP", 4);
+    emscripten::constant("MF_TRAP", A_MF_TRAP);
     emscripten::function("mf_tri", a_mf_tri);
-    emscripten::constant("MF_TRI", 5);
+    emscripten::constant("MF_TRI", A_MF_TRI);
     emscripten::function("mf_z", a_mf_z);
-    emscripten::constant("MF_Z", 6);
-    emscripten::constant("PID_OFF", 0);
-    emscripten::constant("PID_POS", 1);
-    emscripten::constant("PID_INC", 2);
+    emscripten::constant("MF_Z", A_MF_Z);
+    emscripten::constant("PID_OFF", A_PID_OFF);
+    emscripten::constant("PID_POS", A_PID_POS);
+    emscripten::constant("PID_INC", A_PID_INC);
+    emscripten::constant("PID_FUZZY_EQU", A_PID_FUZZY_EQU);
+    emscripten::constant("PID_FUZZY_CAP", A_PID_FUZZY_CAP);
+    emscripten::constant("PID_FUZZY_CAP_ALGEBRA", A_PID_FUZZY_CAP_ALGEBRA);
+    emscripten::constant("PID_FUZZY_CAP_BOUNDED", A_PID_FUZZY_CAP_BOUNDED);
+    emscripten::constant("PID_FUZZY_CUP", A_PID_FUZZY_CUP);
+    emscripten::constant("PID_FUZZY_CUP_ALGEBRA", A_PID_FUZZY_CUP_ALGEBRA);
+    emscripten::constant("PID_FUZZY_CUP_BOUNDED", A_PID_FUZZY_CUP_BOUNDED);
     emscripten::class_<pid>("pid")
         .constructor<>()
         .constructor<a_float_t, a_float_t>()
