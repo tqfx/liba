@@ -4,12 +4,10 @@
 #if defined(_MSC_VER)
 #define _CRT_SECURE_NO_WARNINGS
 #endif /* _MSC_VER */
-
-#include "a/a.h"
+#include "a/host/a.h"
 #include <stdio.h>
 #include <assert.h>
 #include <inttypes.h>
-#include "a/host/a.h"
 #if defined(_MSC_VER)
 #pragma warning(disable : 4127)
 #pragma warning(disable : 4820)
