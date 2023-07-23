@@ -1,16 +1,14 @@
 #ifndef QJS_A_H
 #define QJS_A_H
 
-#include "a/a.h"
 #if defined(__GNUC__) || defined(__clang__)
 #pragma GCC system_header
 #endif /* __GNUC__ */
+#include "a/a.h"
 #if A_PREREQ_GNUC(2, 95) || __has_warning("-Waggregate-return")
 #pragma GCC diagnostic ignored "-Waggregate-return"
 #endif /* -Waggregate-return */
 #include "quickjs.h"
-
-#define countof(x) (sizeof(x) / sizeof(*(x)))
 
 #if defined(__cplusplus)
 extern "C" {

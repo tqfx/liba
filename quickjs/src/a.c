@@ -33,9 +33,9 @@ static JSValue js_mf_gauss(JSContext *const ctx, JSValueConst const this_val, in
 {
     (void)(this_val);
     double args[] = {0, 0, 0};
-    if (argc > (int)countof(args))
+    if (argc > (int)a_array_n(args))
     {
-        argc = (int)countof(args);
+        argc = (int)a_array_n(args);
     }
     for (int i = 0; i < argc; ++i)
     {
@@ -52,9 +52,9 @@ static JSValue js_mf_gbell(JSContext *const ctx, JSValueConst const this_val, in
 {
     (void)(this_val);
     double args[] = {0, 0, 0, 0};
-    if (argc > (int)countof(args))
+    if (argc > (int)a_array_n(args))
     {
-        argc = (int)countof(args);
+        argc = (int)a_array_n(args);
     }
     for (int i = 0; i < argc; ++i)
     {
@@ -71,9 +71,9 @@ static JSValue js_mf_sig(JSContext *const ctx, JSValueConst const this_val, int 
 {
     (void)(this_val);
     double args[] = {0, 0, 0};
-    if (argc > (int)countof(args))
+    if (argc > (int)a_array_n(args))
     {
-        argc = (int)countof(args);
+        argc = (int)a_array_n(args);
     }
     for (int i = 0; i < argc; ++i)
     {
@@ -90,9 +90,9 @@ static JSValue js_mf_trap(JSContext *const ctx, JSValueConst const this_val, int
 {
     (void)(this_val);
     double args[] = {0, 0, 0, 0, 0};
-    if (argc > (int)countof(args))
+    if (argc > (int)a_array_n(args))
     {
-        argc = (int)countof(args);
+        argc = (int)a_array_n(args);
     }
     for (int i = 0; i < argc; ++i)
     {
@@ -109,9 +109,9 @@ static JSValue js_mf_tri(JSContext *const ctx, JSValueConst const this_val, int 
 {
     (void)(this_val);
     double args[] = {0, 0, 0};
-    if (argc > (int)countof(args))
+    if (argc > (int)a_array_n(args))
     {
-        argc = (int)countof(args);
+        argc = (int)a_array_n(args);
     }
     for (int i = 0; i < argc; ++i)
     {
@@ -128,9 +128,9 @@ static JSValue js_mf_z(JSContext *const ctx, JSValueConst const this_val, int ar
 {
     (void)(this_val);
     double args[] = {0, 0, 0};
-    if (argc > (int)countof(args))
+    if (argc > (int)a_array_n(args))
     {
-        argc = (int)countof(args);
+        argc = (int)a_array_n(args);
     }
     for (int i = 0; i < argc; ++i)
     {
@@ -162,7 +162,7 @@ static JSCFunctionListEntry const js_liba_mf_funcs[] = {
 #include "a/version.h"
 
 static JSCFunctionListEntry const js_liba_funcs[] = {
-    JS_OBJECT_DEF("mf", js_liba_mf_funcs, countof(js_liba_mf_funcs), 0),
+    JS_OBJECT_DEF("mf", js_liba_mf_funcs, a_array_n(js_liba_mf_funcs), 0),
     JS_PROP_STRING_DEF("VERSION", A_VERSION, 0),
     JS_CFUNC_DEF("hash_bkdr", 1, js_hash_bkdr),
     JS_CFUNC_DEF("rsqrt", 1, js_rsqrt),
@@ -189,9 +189,9 @@ static JSValue js_polytrack3_ctor(JSContext *const ctx, JSValueConst const new_t
         return JS_EXCEPTION;
     }
     double args[] = {0, 0, 0, 0, 0, 0};
-    if (argc > (int)countof(args))
+    if (argc > (int)a_array_n(args))
     {
-        argc = (int)countof(args);
+        argc = (int)a_array_n(args);
     }
     for (int i = 0; i < argc; ++i)
     {
@@ -231,9 +231,9 @@ static JSValue js_polytrack3_gen(JSContext *const ctx, JSValueConst const this_v
         return JS_EXCEPTION;
     }
     double args[] = {0, 0, 0, 0, 0, 0};
-    if (argc > (int)countof(args))
+    if (argc > (int)a_array_n(args))
     {
-        argc = (int)countof(args);
+        argc = (int)a_array_n(args);
     }
     for (int i = 0; i < argc; ++i)
     {
@@ -313,7 +313,7 @@ static A_INLINE int js_liba_polytrack3_init(JSContext *const ctx, JSModuleDef *c
     JS_NewClass(JS_GetRuntime(ctx), js_polytrack3_class_id, &js_polytrack3_class);
 
     JSValue const polytrack3_proto = JS_NewObject(ctx);
-    JS_SetPropertyFunctionList(ctx, polytrack3_proto, js_polytrack3_proto_funcs, countof(js_polytrack3_proto_funcs));
+    JS_SetPropertyFunctionList(ctx, polytrack3_proto, js_polytrack3_proto_funcs, a_array_n(js_polytrack3_proto_funcs));
 
     JSValue const polytrack3_class = JS_NewCFunction2(ctx, js_polytrack3_ctor, "polytrack3", 6, JS_CFUNC_constructor, 0);
     JS_SetConstructor(ctx, polytrack3_class, polytrack3_proto);
@@ -342,9 +342,9 @@ static JSValue js_polytrack5_ctor(JSContext *const ctx, JSValueConst const new_t
         return JS_EXCEPTION;
     }
     double args[] = {0, 0, 0, 0, 0, 0, 0, 0};
-    if (argc > (int)countof(args))
+    if (argc > (int)a_array_n(args))
     {
-        argc = (int)countof(args);
+        argc = (int)a_array_n(args);
     }
     for (int i = 0; i < argc; ++i)
     {
@@ -385,9 +385,9 @@ static JSValue js_polytrack5_gen(JSContext *const ctx, JSValueConst const this_v
         return JS_EXCEPTION;
     }
     double args[] = {0, 0, 0, 0, 0, 0, 0, 0};
-    if (argc > (int)countof(args))
+    if (argc > (int)a_array_n(args))
     {
-        argc = (int)countof(args);
+        argc = (int)a_array_n(args);
     }
     for (int i = 0; i < argc; ++i)
     {
@@ -468,7 +468,7 @@ static A_INLINE int js_liba_polytrack5_init(JSContext *const ctx, JSModuleDef *c
     JS_NewClass(JS_GetRuntime(ctx), js_polytrack5_class_id, &js_polytrack5_class);
 
     JSValue const polytrack5_proto = JS_NewObject(ctx);
-    JS_SetPropertyFunctionList(ctx, polytrack5_proto, js_polytrack5_proto_funcs, countof(js_polytrack5_proto_funcs));
+    JS_SetPropertyFunctionList(ctx, polytrack5_proto, js_polytrack5_proto_funcs, a_array_n(js_polytrack5_proto_funcs));
 
     JSValue const polytrack5_class = JS_NewCFunction2(ctx, js_polytrack5_ctor, "polytrack5", 8, JS_CFUNC_constructor, 0);
     JS_SetConstructor(ctx, polytrack5_class, polytrack5_proto);
@@ -497,9 +497,9 @@ static JSValue js_polytrack7_ctor(JSContext *const ctx, JSValueConst const new_t
         return JS_EXCEPTION;
     }
     double args[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    if (argc > (int)countof(args))
+    if (argc > (int)a_array_n(args))
     {
-        argc = (int)countof(args);
+        argc = (int)a_array_n(args);
     }
     for (int i = 0; i < argc; ++i)
     {
@@ -541,9 +541,9 @@ static JSValue js_polytrack7_gen(JSContext *const ctx, JSValueConst const this_v
         return JS_EXCEPTION;
     }
     double args[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    if (argc > (int)countof(args))
+    if (argc > (int)a_array_n(args))
     {
-        argc = (int)countof(args);
+        argc = (int)a_array_n(args);
     }
     for (int i = 0; i < argc; ++i)
     {
@@ -643,7 +643,7 @@ static A_INLINE int js_liba_polytrack7_init(JSContext *const ctx, JSModuleDef *c
     JS_NewClass(JS_GetRuntime(ctx), js_polytrack7_class_id, &js_polytrack7_class);
 
     JSValue const polytrack7_proto = JS_NewObject(ctx);
-    JS_SetPropertyFunctionList(ctx, polytrack7_proto, js_polytrack7_proto_funcs, countof(js_polytrack7_proto_funcs));
+    JS_SetPropertyFunctionList(ctx, polytrack7_proto, js_polytrack7_proto_funcs, a_array_n(js_polytrack7_proto_funcs));
 
     JSValue const polytrack7_class = JS_NewCFunction2(ctx, js_polytrack7_ctor, "polytrack7", 10, JS_CFUNC_constructor, 0);
     JS_SetConstructor(ctx, polytrack7_class, polytrack7_proto);
@@ -658,7 +658,7 @@ static int js_liba_init(JSContext *const ctx, JSModuleDef *const m)
     js_liba_polytrack3_init(ctx, m);
     js_liba_polytrack5_init(ctx, m);
     js_liba_polytrack7_init(ctx, m);
-    return JS_SetModuleExportList(ctx, m, js_liba_funcs, countof(js_liba_funcs));
+    return JS_SetModuleExportList(ctx, m, js_liba_funcs, a_array_n(js_liba_funcs));
 }
 
 JSModuleDef *js_init_module(JSContext *const ctx, char const *const module_name)
@@ -669,7 +669,7 @@ JSModuleDef *js_init_module(JSContext *const ctx, char const *const module_name)
         JS_AddModuleExport(ctx, m, "polytrack3");
         JS_AddModuleExport(ctx, m, "polytrack5");
         JS_AddModuleExport(ctx, m, "polytrack7");
-        JS_AddModuleExportList(ctx, m, js_liba_funcs, countof(js_liba_funcs));
+        JS_AddModuleExportList(ctx, m, js_liba_funcs, a_array_n(js_liba_funcs));
     }
     return m;
 }
