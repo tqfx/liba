@@ -1,8 +1,9 @@
-#include "a.h"
-#include "a/math.h"
+#include "a/host/a.h"
+#include <emscripten/bind.h>
+
 #include "a/version.h"
 
-emscripten::val version()
+static emscripten::val version()
 {
     return emscripten::val(a_version());
 }
@@ -64,7 +65,7 @@ static emscripten::val concat(emscripten::val x)
     return emscripten::val::array()["concat"].call<emscripten::val>("apply", emscripten::val::array(), x);
 }
 
-static a_float_t *floats(emscripten::val const &x, a_size_t n, a_float_t *p)
+static a_float_t *float_array(emscripten::val const &x, a_size_t n, a_float_t *p)
 {
     p = a_float_c(*, a_alloc(p, sizeof(a_float_t) * n));
     a_size_t length = x["length"].as<a_size_t>();
@@ -142,11 +143,11 @@ public:
     void rule(emscripten::val const &jme, emscripten::val const &jmec,
               emscripten::val const &jmkp, emscripten::val const &jmki, emscripten::val const &jmkd)
     {
-        this->me = floats(concat(jme), jme["length"].as<a_size_t>(), this->me);
-        this->mec = floats(concat(jmec), jmec["length"].as<a_size_t>(), this->mec);
-        this->mkp = floats(concat(jmkp), jmkp["length"].as<a_size_t>(), this->mkp);
-        this->mki = floats(concat(jmki), jmki["length"].as<a_size_t>(), this->mki);
-        this->mkd = floats(concat(jmkd), jmkd["length"].as<a_size_t>(), this->mkd);
+        this->me = float_array(concat(jme), jme["length"].as<a_size_t>(), this->me);
+        this->mec = float_array(concat(jmec), jmec["length"].as<a_size_t>(), this->mec);
+        this->mkp = float_array(concat(jmkp), jmkp["length"].as<a_size_t>(), this->mkp);
+        this->mki = float_array(concat(jmki), jmki["length"].as<a_size_t>(), this->mki);
+        this->mkd = float_array(concat(jmkd), jmkd["length"].as<a_size_t>(), this->mkd);
         a_pid_fuzzy_rule(&this->ctx, jme["length"].as<unsigned int>(), this->me, this->mec, this->mkp, this->mki, this->mkd);
     }
     void kpid(a_float_t jkp, a_float_t jki, a_float_t jkd)
@@ -328,14 +329,14 @@ class tf
     void set_num_(emscripten::val const &jnum, a_float_t *num)
     {
         a_size_t num_n = jnum["length"].as<a_size_t>();
-        this->num_p = floats(jnum, num_n * 2, num);
+        this->num_p = float_array(jnum, num_n * 2, num);
         a_tf_set_num(&this->ctx, num_n, this->num_p, this->num_p + num_n);
     }
     a_float_t *den_p;
     void set_den_(emscripten::val const &jden, a_float_t *den)
     {
         a_size_t den_n = jden["length"].as<a_size_t>();
-        this->den_p = floats(jden, den_n * 2, den);
+        this->den_p = float_array(jden, den_n * 2, den);
         a_tf_set_den(&this->ctx, den_n, this->den_p, this->den_p + den_n);
     }
 
@@ -381,6 +382,10 @@ public:
     void zero() { a_tf_zero(&this->ctx); }
 };
 
+#include "a/math.h"
+#if __has_warning("-Wglobal-constructors")
+#pragma GCC diagnostic ignored "-Wglobal-constructors"
+#endif /* -Wglobal-constructors */
 EMSCRIPTEN_BINDINGS(module) // NOLINT
 {
     emscripten::function("f32_rsqrt", a_f32_rsqrt);
