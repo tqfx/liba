@@ -1,12 +1,27 @@
 #define LIBA_COMPLEX_C
-#include "a/math.h"
+#include "a/a.h"
 #if A_PREREQ_GNUC(2, 95) || __has_warning("-Waggregate-return")
 #pragma GCC diagnostic ignored "-Waggregate-return"
 #endif /* -Waggregate-return */
 #if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
-#include "complex.h"
+#include "a/complex.h"
+/* compiler built-in complex number type */
+#if defined(__GNUC__)
+#include <complex.h>
+#define A_COMPLEX_T _Complex A_FLOAT_T
+#elif A_PREREQ_MSVC(18, 0)
+#include <complex.h> // 12.0
+#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
+#define A_COMPLEX_T _Fcomplex
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
+#define A_COMPLEX_T _Dcomplex
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
+#define A_COMPLEX_T _Lcomplex
+#endif /* A_FLOAT_TYPE */
+#endif /* A_COMPLEX_T */
+#include "a/math.h"
 
 a_complex_s a_complex_polar(a_float_t const r, a_float_t const theta)
 {
@@ -164,7 +179,7 @@ a_complex_s a_complex_inv(a_complex_s z)
 #undef A_HAVE_CSQRT
 #endif /* A_HAVE_CSQRT */
 #if defined(A_HAVE_CSQRT) && !defined A_COMPLEX_T
-a_complex_t A_FLOAT_F1(csqrt, a_complex_t);
+a_complex_s A_FLOAT_F1(csqrt, a_complex_s);
 #endif /* A_HAVE_CSQRT */
 a_complex_s a_complex_sqrt(a_complex_s z)
 {
@@ -229,7 +244,7 @@ a_complex_s a_complex_sqrt_real(a_float_t const x)
 #undef A_HAVE_CPOW
 #endif /* A_HAVE_CPOW */
 #if defined(A_HAVE_CPOW) && !defined A_COMPLEX_T
-a_complex_t A_FLOAT_F2(cpow, a_complex_t, a_complex_t);
+a_complex_s A_FLOAT_F2(cpow, a_complex_t, a_complex_s);
 #endif /* A_HAVE_CPOW */
 a_complex_s a_complex_pow(a_complex_s z, a_complex_s const a)
 {
@@ -283,7 +298,7 @@ a_complex_s a_complex_pow_real(a_complex_s z, a_float_t const a)
 #undef A_HAVE_CEXP
 #endif /* A_HAVE_CEXP */
 #if defined(A_HAVE_CEXP) && !defined A_COMPLEX_T
-a_complex_t A_FLOAT_F1(cexp, a_complex_t);
+a_complex_s A_FLOAT_F1(cexp, a_complex_s);
 #endif /* A_HAVE_CEXP */
 a_complex_s a_complex_exp(a_complex_s z)
 {
@@ -308,7 +323,7 @@ a_complex_s a_complex_exp(a_complex_s z)
 #undef A_HAVE_CLOG
 #endif /* A_HAVE_CLOG */
 #if defined(A_HAVE_CLOG) && !defined A_COMPLEX_T
-a_complex_t A_FLOAT_F1(clog, a_complex_t);
+a_complex_s A_FLOAT_F1(clog, a_complex_s);
 #endif /* A_HAVE_CLOG */
 a_complex_s a_complex_log(a_complex_s z)
 {
@@ -351,7 +366,7 @@ a_complex_s a_complex_logb(a_complex_s const z, a_complex_s const b)
 #undef A_HAVE_CSIN
 #endif /* A_HAVE_CSIN */
 #if defined(A_HAVE_CSIN) && !defined A_COMPLEX_T
-a_complex_t A_FLOAT_F1(csin, a_complex_t);
+a_complex_s A_FLOAT_F1(csin, a_complex_s);
 #endif /* A_HAVE_CSIN */
 a_complex_s a_complex_sin(a_complex_s z)
 {
@@ -382,7 +397,7 @@ a_complex_s a_complex_sin(a_complex_s z)
 #undef A_HAVE_CCOS
 #endif /* A_HAVE_CCOS */
 #if defined(A_HAVE_CCOS) && !defined A_COMPLEX_T
-a_complex_t A_FLOAT_F1(ccos, a_complex_t);
+a_complex_s A_FLOAT_F1(ccos, a_complex_s);
 #endif /* A_HAVE_CCOS */
 a_complex_s a_complex_cos(a_complex_s z)
 {
@@ -413,7 +428,7 @@ a_complex_s a_complex_cos(a_complex_s z)
 #undef A_HAVE_CTAN
 #endif /* A_HAVE_CTAN */
 #if defined(A_HAVE_CTAN) && !defined A_COMPLEX_T
-a_complex_t A_FLOAT_F1(ctan, a_complex_t);
+a_complex_s A_FLOAT_F1(ctan, a_complex_s);
 #endif /* A_HAVE_CTAN */
 a_complex_s a_complex_tan(a_complex_s z)
 {
@@ -463,7 +478,7 @@ a_complex_s a_complex_cot(a_complex_s const z)
 #undef A_HAVE_CASIN
 #endif /* A_HAVE_CASIN */
 #if defined(A_HAVE_CASIN) && !defined A_COMPLEX_T
-a_complex_t A_FLOAT_F1(casin, a_complex_t);
+a_complex_s A_FLOAT_F1(casin, a_complex_s);
 #endif /* A_HAVE_CASIN */
 a_complex_s a_complex_asin(a_complex_s z)
 {
@@ -561,7 +576,7 @@ a_complex_s a_complex_asin_real(a_float_t const x)
 #undef A_HAVE_CACOS
 #endif /* A_HAVE_CACOS */
 #if defined(A_HAVE_CACOS) && !defined A_COMPLEX_T
-a_complex_t A_FLOAT_F1(cacos, a_complex_t);
+a_complex_s A_FLOAT_F1(cacos, a_complex_s);
 #endif /* A_HAVE_CACOS */
 a_complex_s a_complex_acos(a_complex_s z)
 {
@@ -658,7 +673,7 @@ a_complex_s a_complex_acos_real(a_float_t const x)
 #undef A_HAVE_CATAN
 #endif /* A_HAVE_CATAN */
 #if defined(A_HAVE_CATAN) && !defined A_COMPLEX_T
-a_complex_t A_FLOAT_F1(catan, a_complex_t);
+a_complex_s A_FLOAT_F1(catan, a_complex_s);
 #endif /* A_HAVE_CATAN */
 a_complex_s a_complex_atan(a_complex_s z)
 {
@@ -770,7 +785,7 @@ a_complex_s a_complex_acot(a_complex_s z)
 #undef A_HAVE_CSINH
 #endif /* A_HAVE_CSINH */
 #if defined(A_HAVE_CSINH) && !defined A_COMPLEX_T
-a_complex_t A_FLOAT_F1(csinh, a_complex_t);
+a_complex_s A_FLOAT_F1(csinh, a_complex_s);
 #endif /* A_HAVE_CSINH */
 a_complex_s a_complex_sinh(a_complex_s z)
 {
@@ -798,7 +813,7 @@ a_complex_s a_complex_sinh(a_complex_s z)
 #undef A_HAVE_CCOSH
 #endif /* A_HAVE_CCOSH */
 #if defined(A_HAVE_CCOSH) && !defined A_COMPLEX_T
-a_complex_t A_FLOAT_F1(ccosh, a_complex_t);
+a_complex_s A_FLOAT_F1(ccosh, a_complex_s);
 #endif /* A_HAVE_CCOSH */
 a_complex_s a_complex_cosh(a_complex_s z)
 {
@@ -826,7 +841,7 @@ a_complex_s a_complex_cosh(a_complex_s z)
 #undef A_HAVE_CTANH
 #endif /* A_HAVE_CTANH */
 #if defined(A_HAVE_CTANH) && !defined A_COMPLEX_T
-a_complex_t A_FLOAT_F1(ctanh, a_complex_t);
+a_complex_s A_FLOAT_F1(ctanh, a_complex_s);
 #endif /* A_HAVE_CTANH */
 a_complex_s a_complex_tanh(a_complex_s z)
 {
@@ -876,7 +891,7 @@ a_complex_s a_complex_coth(a_complex_s const z)
 #undef A_HAVE_CASINH
 #endif /* A_HAVE_CASINH */
 #if defined(A_HAVE_CASINH) && !defined A_COMPLEX_T
-a_complex_t A_FLOAT_F1(casinh, a_complex_t);
+a_complex_s A_FLOAT_F1(casinh, a_complex_s);
 #endif /* A_HAVE_CASINH */
 a_complex_s a_complex_asinh(a_complex_s z)
 {
@@ -902,7 +917,7 @@ a_complex_s a_complex_asinh(a_complex_s z)
 #undef A_HAVE_CACOSH
 #endif /* A_HAVE_CACOSH */
 #if defined(A_HAVE_CACOSH) && !defined A_COMPLEX_T
-a_complex_t A_FLOAT_F1(cacosh, a_complex_t);
+a_complex_s A_FLOAT_F1(cacosh, a_complex_s);
 #endif /* A_HAVE_CACOSH */
 a_complex_s a_complex_acosh(a_complex_s z)
 {
@@ -945,7 +960,7 @@ a_complex_s a_complex_acosh_real(a_float_t const x)
 #undef A_HAVE_CATANH
 #endif /* A_HAVE_CATANH */
 #if defined(A_HAVE_CATANH) && !defined A_COMPLEX_T
-a_complex_t A_FLOAT_F1(catanh, a_complex_t);
+a_complex_s A_FLOAT_F1(catanh, a_complex_s);
 #endif /* A_HAVE_CATANH */
 a_complex_s a_complex_atanh(a_complex_s z)
 {

@@ -1,4 +1,4 @@
-#include "neuron.h"
+#include "a/pid/neuron.h"
 
 void a_pid_neuron_init(a_pid_neuron_s *const ctx, unsigned int const num)
 {
@@ -13,8 +13,14 @@ void a_pid_neuron_chan(a_pid_neuron_s *const ctx, unsigned int const num,
     ctx->pid.chan = num;
     if (ctx->pid.chan)
     {
-        A_PID_CHAN(&ctx->pid);
-        A_PID_NEURON_CHAN(ctx);
+        ctx->pid.out.p = out;
+        ctx->pid.fdb.p = fdb;
+        ctx->pid.tmp.p = tmp;
+        ctx->pid.err.p = err;
+        ctx->ec.p = ec;
+        ctx->wp.p = wp;
+        ctx->wi.p = wi;
+        ctx->wd.p = wd;
     }
     a_pid_neuron_zero(ctx);
 }
@@ -50,17 +56,24 @@ void a_pid_neuron_zero(a_pid_neuron_s *const ctx)
     {
         for (unsigned int i = 0; i != ctx->pid.chan; ++i)
         {
-            A_PID_ZERO(&ctx->pid, .p[i]);
-            A_PID_NEURON_ZERO(ctx, .p[i]);
+            ctx->pid.out.p[i] = 0;
+            ctx->pid.fdb.p[i] = 0;
+            ctx->pid.tmp.p[i] = 0;
+            ctx->pid.err.p[i] = 0;
+            ctx->ec.p[i] = 0;
         }
     }
     else
     {
-        A_PID_ZERO(&ctx->pid, .f);
-        A_PID_NEURON_ZERO(ctx, .f);
+        ctx->pid.out.f = 0;
+        ctx->pid.fdb.f = 0;
+        ctx->pid.tmp.f = 0;
+        ctx->pid.err.f = 0;
+        ctx->ec.f = 0;
     }
 }
 
+A_HIDDEN void a_pid_neuron_outf_(a_pid_neuron_s *ctx, a_float_t fdb, a_float_t ec, a_float_t e);
 void a_pid_neuron_outf_(a_pid_neuron_s *const ctx, a_float_t const fdb, a_float_t const ec, a_float_t const e)
 {
 #define A_PID_NEURON_OUT_(_)                                                      \
@@ -79,6 +92,7 @@ void a_pid_neuron_outf_(a_pid_neuron_s *const ctx, a_float_t const fdb, a_float_
     A_PID_NEURON_OUT_(.f);
 }
 
+A_HIDDEN void a_pid_neuron_outp_(a_pid_neuron_s const *ctx, a_float_t fdb, a_float_t ec, a_float_t e, unsigned int i);
 void a_pid_neuron_outp_(a_pid_neuron_s const *const ctx, a_float_t const fdb, a_float_t const ec, a_float_t const e, unsigned int const i)
 {
     A_PID_NEURON_OUT_(.p[i]);

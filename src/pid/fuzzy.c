@@ -1,7 +1,8 @@
 #define LIBA_PID_FUZZY_C
-#include "fuzzy.h"
+#include "a/pid/fuzzy.h"
 #include "a/math.h"
 
+A_HIDDEN a_float_t a_pid_fuzzy_equ(a_float_t a, a_float_t b);
 a_float_t a_pid_fuzzy_equ(a_float_t const a, a_float_t const b)
 {
     return a_float_sqrt(a * b) * a_float_sqrt(1 - (1 - a) * (1 - b));
@@ -34,6 +35,7 @@ void a_pid_fuzzy_set_op(a_pid_fuzzy_s *const ctx, unsigned int const op)
     ctx->op = a_pid_fuzzy_op(op);
 }
 
+A_HIDDEN unsigned int a_pid_fuzzy_mf(a_float_t x, unsigned int n, a_float_t const *a, unsigned int *idx, a_float_t *val);
 unsigned int a_pid_fuzzy_mf(a_float_t const x, unsigned int const n, a_float_t const *a, unsigned int *idx, a_float_t *val)
 {
     unsigned int counter = 0;
@@ -129,6 +131,7 @@ void a_pid_fuzzy_zero(a_pid_fuzzy_s *const ctx)
     a_pid_zero(&ctx->pid);
 }
 
+A_HIDDEN void a_pid_fuzzy_out_(a_pid_fuzzy_s *const ctx, a_float_t ec, a_float_t e);
 void a_pid_fuzzy_out_(a_pid_fuzzy_s *const ctx, a_float_t const ec, a_float_t const e)
 {
     a_float_t kp = 0;
@@ -207,6 +210,7 @@ pid:
     a_pid_kpid(&ctx->pid, ctx->kp + kp, ctx->ki + ki, ctx->kd + kd);
 }
 
+A_HIDDEN void a_pid_outf_(a_pid_s *ctx, a_float_t set, a_float_t fdb, a_float_t ec, a_float_t e);
 a_float_t a_pid_fuzzy_outf(a_pid_fuzzy_s *const ctx, a_float_t const set, a_float_t const fdb)
 {
     a_float_t const e = set - fdb;
@@ -216,6 +220,7 @@ a_float_t a_pid_fuzzy_outf(a_pid_fuzzy_s *const ctx, a_float_t const set, a_floa
     return ctx->pid.out.f;
 }
 
+A_HIDDEN void a_pid_outp_(a_pid_s const *ctx, a_float_t set, a_float_t fdb, a_float_t ec, a_float_t e, unsigned int i);
 a_float_t const *a_pid_fuzzy_outp(a_pid_fuzzy_s *const ctx, a_float_t const *const set, a_float_t const *const fdb)
 {
     for (unsigned int i = 0; i != ctx->pid.chan; ++i)

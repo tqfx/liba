@@ -1,4 +1,4 @@
-#include "pid.h"
+#include "a/pid.h"
 
 void a_pid_init(a_pid_s *const ctx, unsigned int const num)
 {
@@ -11,7 +11,10 @@ void a_pid_chan(a_pid_s *const ctx, unsigned int const num, a_float_t *const out
     ctx->chan = num;
     if (ctx->chan)
     {
-        A_PID_CHAN(ctx);
+        ctx->out.p = out;
+        ctx->fdb.p = fdb;
+        ctx->tmp.p = tmp;
+        ctx->err.p = err;
     }
     a_pid_zero(ctx);
 }
@@ -29,15 +32,22 @@ void a_pid_zero(a_pid_s *const ctx)
     {
         for (unsigned int i = 0; i != ctx->chan; ++i)
         {
-            A_PID_ZERO(ctx, .p[i]);
+            ctx->out.p[i] = 0;
+            ctx->fdb.p[i] = 0;
+            ctx->tmp.p[i] = 0;
+            ctx->err.p[i] = 0;
         }
     }
     else
     {
-        A_PID_ZERO(ctx, .f);
+        ctx->out.f = 0;
+        ctx->fdb.f = 0;
+        ctx->tmp.f = 0;
+        ctx->err.f = 0;
     }
 }
 
+A_HIDDEN void a_pid_outf_(a_pid_s *ctx, a_float_t set, a_float_t fdb, a_float_t ec, a_float_t e);
 void a_pid_outf_(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e)
 {
 #define A_PID_OUT_(_)                                                                        \
@@ -76,6 +86,7 @@ void a_pid_outf_(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb, a
     A_PID_OUT_(.f);
 }
 
+A_HIDDEN void a_pid_outp_(a_pid_s const *ctx, a_float_t set, a_float_t fdb, a_float_t ec, a_float_t e, unsigned int i);
 void a_pid_outp_(a_pid_s const *const ctx, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e, unsigned int const i)
 {
     A_PID_OUT_(.p[i]);

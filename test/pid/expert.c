@@ -1,5 +1,4 @@
 #include "expert.h"
-#include "../../src/pid.h"
 #if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
@@ -13,16 +12,14 @@ void a_pid_expert_init(a_pid_expert_s *const ctx, unsigned int const num)
 void a_pid_expert_chan(a_pid_expert_s *const ctx, unsigned int const num, a_float_t *const out, a_float_t *const fdb,
                        a_float_t *const tmp, a_float_t *const err, a_float_t *const ec)
 {
-#define A_PID_EXPERT_CHAN(ctx) \
-    do                         \
-    {                          \
-        (ctx)->ec.p = ec;      \
-    } while (0)
     ctx->pid.chan = num;
     if (ctx->pid.chan)
     {
-        A_PID_CHAN(&ctx->pid);
-        A_PID_EXPERT_CHAN(ctx);
+        ctx->pid.out.p = out;
+        ctx->pid.fdb.p = fdb;
+        ctx->pid.tmp.p = tmp;
+        ctx->pid.err.p = err;
+        ctx->ec.p = ec;
     }
     a_pid_expert_zero(ctx);
 }
@@ -34,23 +31,24 @@ void a_pid_expert_kpid(a_pid_expert_s *const ctx, a_float_t const kp, a_float_t 
 
 void a_pid_expert_zero(a_pid_expert_s *const ctx)
 {
-#define A_PID_EXPERT_ZERO(ctx, _) \
-    do                            \
-    {                             \
-        (ctx)->ec _ = 0;          \
-    } while (0)
     if (ctx->pid.chan)
     {
         for (unsigned int i = 0; i != ctx->pid.chan; ++i)
         {
-            A_PID_ZERO(&ctx->pid, .p[i]);
-            A_PID_EXPERT_ZERO(ctx, .p[i]);
+            ctx->pid.out.p[i] = 0;
+            ctx->pid.fdb.p[i] = 0;
+            ctx->pid.tmp.p[i] = 0;
+            ctx->pid.err.p[i] = 0;
+            ctx->ec.p[i] = 0;
         }
     }
     else
     {
-        A_PID_ZERO(&ctx->pid, .f);
-        A_PID_EXPERT_ZERO(ctx, .f);
+        ctx->pid.out.f = 0;
+        ctx->pid.fdb.f = 0;
+        ctx->pid.tmp.f = 0;
+        ctx->pid.err.f = 0;
+        ctx->ec.f = 0;
     }
 }
 
@@ -98,8 +96,8 @@ void a_pid_expert_outf_(a_pid_expert_s *const ctx, a_float_t const fdb, a_float_
     {                                                                                    \
         out = ctx->pid.kp * ec + ctx->pid.ki * e;                                        \
     }                                                                                    \
-    out:                                                                                 \
                                                                                          \
+    out:                                                                                 \
     ctx->pid.out _ = A_SAT(out, ctx->pid.outmin, ctx->pid.outmax);                       \
     ctx->pid.fdb _ = fdb;                                                                \
     ctx->pid.tmp _ = tmp;                                                                \

@@ -1,5 +1,6 @@
-#include "math.h"
+#include "a/math.h"
 
+A_HIDDEN a_f64_t a_f64_sq(a_f64_t x, a_f64_t *o);
 a_f64_t a_f64_sq(a_f64_t x, a_f64_t *const o)
 {
 #undef U
