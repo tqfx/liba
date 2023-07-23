@@ -6,9 +6,9 @@
 #include "a/math.h"
 #include "a/pid/fuzzy.h"
 
-#define N -1 * X
-#define Z +0 * X
-#define P +1 * X
+#define N (-1 * X)
+#define Z (+0 * X)
+#define P (+1 * X)
 #undef X
 #define X 1
 static a_float_t const m3e[] = {
@@ -48,13 +48,13 @@ static a_float_t const m3kd[] = {
 #undef PS
 #undef PM
 #undef PL
-#define NL -3 * X
-#define NM -2 * X
-#define NS -1 * X
-#define ZO +0 * X
-#define PS +1 * X
-#define PM +2 * X
-#define PL +3 * X
+#define NL (-3 * X)
+#define NM (-2 * X)
+#define NS (-1 * X)
+#define ZO (+0 * X)
+#define PS (+1 * X)
+#define PM (+2 * X)
+#define PL (+3 * X)
 #undef X
 #define X A_FLOAT_C(1.0) / 2
 static a_float_t const m7e[] = {

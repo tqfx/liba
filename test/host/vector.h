@@ -209,7 +209,7 @@ static void test_sort(void)
     srand(t);
     a_vector_foreach(int, it, ctx)
     {
-        *it = rand() % 10;
+        *it = rand() % 10; // NOLINT
         printf("%i ", *it);
     }
     printf("-> ");
@@ -223,7 +223,7 @@ static void test_sort(void)
     srand(t);
     a_vector_foreach(int, it, ctx)
     {
-        *it = rand() % 10;
+        *it = rand() % 10; // NOLINT
         printf("%i ", *it);
     }
     printf("-> ");
@@ -241,7 +241,7 @@ static void test_sort(void)
         int *obj = a_vector_push_fore(int, ctx);
         if (obj)
         {
-            *obj = rand() % 10;
+            *obj = rand() % 10; // NOLINT
             printf("%i ", *obj);
             a_vector_sort_fore(ctx, cmp);
         }
@@ -260,7 +260,7 @@ static void test_sort(void)
         int *obj = a_vector_push_back(int, ctx);
         if (obj)
         {
-            *obj = rand() % 10;
+            *obj = rand() % 10; // NOLINT
             printf("%i ", *obj);
             a_vector_sort_back(ctx, cmp);
         }

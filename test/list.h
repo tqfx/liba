@@ -64,7 +64,7 @@ static void test_next(void)
         a_list_add_prev(list2, &node->list);
     }
     {
-        a_data_s *node = a_list_entry_prev(list2, a_data_s, list);
+        a_data_s *node = a_list_entry_prev(list2, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         a_list_del_prev(list2);
         a_die(a_data_s, node);
     }
@@ -72,13 +72,13 @@ static void test_next(void)
     a_list_init(list2);
     a_list_foreach_next(it, list1)
     {
-        a_data_s *node = a_list_entry(it, a_data_s, list);
+        a_data_s *node = a_list_entry(it, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         printf("%i ", node->data.i);
     }
     printf("%" PRIzu, a_list_len(list1));
     a_list_forsafe_next(it, pre, list1)
     {
-        a_data_s *node = a_list_entry(it, a_data_s, list);
+        a_data_s *node = a_list_entry(it, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         a_list_del_node(&node->list);
         a_die(a_data_s, node);
     }
@@ -111,7 +111,7 @@ static void test_prev(void)
         a_list_add_next(list2, &node->list);
     }
     {
-        a_data_s *node = a_list_entry_next(list2, a_data_s, list);
+        a_data_s *node = a_list_entry_next(list2, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         a_list_del_next(list2);
         a_die(a_data_s, node);
     }
@@ -119,13 +119,13 @@ static void test_prev(void)
     a_list_init(list2);
     a_list_foreach_prev(it, list1)
     {
-        a_data_s *node = a_list_entry(it, a_data_s, list);
+        a_data_s *node = a_list_entry(it, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         printf("%i ", node->data.i);
     }
     printf("%" PRIzu, a_list_len(list1));
     a_list_forsafe_prev(it, pre, list1)
     {
-        a_data_s *node = a_list_entry(it, a_data_s, list);
+        a_data_s *node = a_list_entry(it, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         a_list_del_node(&node->list);
         a_die(a_data_s, node);
     }
@@ -161,29 +161,29 @@ static void test_func(void)
     {
         a_list_s *ptr = list2->prev;
         a_list_shift_node(list2->prev, &ctx->list);
-        ctx = a_list_entry(ptr, a_data_s, list);
+        ctx = a_list_entry(ptr, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
     }
     a_list_swap_node(list2->prev, list2->next);
     a_list_foreach_next(it, list1)
     {
-        a_data_s *node = a_list_entry(it, a_data_s, list);
+        a_data_s *node = a_list_entry(it, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         printf("%i ", node->data.i);
     }
     a_list_foreach_next(it, list2)
     {
-        a_data_s *node = a_list_entry(it, a_data_s, list);
+        a_data_s *node = a_list_entry(it, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         printf("%i ", node->data.i);
     }
     printf("%" PRIzu, a_list_len(list1) + a_list_len(list2));
     a_list_forsafe_next(it, at, list1)
     {
-        a_data_s *node = a_list_entry(it, a_data_s, list);
+        a_data_s *node = a_list_entry(it, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         a_list_del_node(&node->list);
         a_die(a_data_s, node);
     }
     a_list_forsafe_next(it, at, list2)
     {
-        a_data_s *node = a_list_entry(it, a_data_s, list);
+        a_data_s *node = a_list_entry(it, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         a_list_del_node(&node->list);
         a_die(a_data_s, node);
     }

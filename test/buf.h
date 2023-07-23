@@ -94,7 +94,7 @@ static int cmpr(void const *lhs, void const *rhs)
 
 static int rand10(void)
 {
-    return a_cast_s(int, rand() / a_cast_s(double, RAND_MAX) * 10);
+    return a_cast_s(int, rand() / a_cast_s(double, RAND_MAX) * 10); // NOLINT
 }
 
 static void test_sort(void)

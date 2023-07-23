@@ -77,7 +77,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_polytrack5_gen(&pt5, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7]);
     a_polytrack7_s pt7;
     a_polytrack7_gen(&pt7, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7], arg[8], arg[9]);
-    for (a_float_t dt = arg[0], delta = (arg[1] - arg[0]) / 1000; dt < arg[1]; dt += delta)
+    for (a_float_t dt = arg[0], delta = (arg[1] - arg[0]) / 1000; dt < arg[1]; dt += delta) // NOLINT
     {
         a_float_t out3[3];
         a_polytrack3_out(&pt3, dt, out3);

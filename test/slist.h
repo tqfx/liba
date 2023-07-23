@@ -62,19 +62,19 @@ static void test(void)
     a_slist_dtor(list3);
     a_slist_foreach(it, list1)
     {
-        a_data_s *node = a_slist_entry(it, a_data_s, list);
+        a_data_s *node = a_slist_entry(it, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         printf("%i ", node->data.i);
     }
     printf("%" PRIzu, a_slist_len(list1));
     for (int i = 0; i != 10; ++i)
     {
-        a_data_s *node = a_slist_entry_next(&list1->head, a_data_s, list);
+        a_data_s *node = a_slist_entry_next(&list1->head, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         a_slist_del_head(list1);
         a_die(a_data_s, node);
     }
     a_slist_forsafe(it, at, list1)
     {
-        a_data_s *node = a_slist_entry(it, a_data_s, list);
+        a_data_s *node = a_slist_entry(it, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         a_slist_del(list1, at);
         a_die(a_data_s, node);
         it = A_NULL;
