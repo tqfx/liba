@@ -16,7 +16,7 @@ void *a_move(void *const _dst, void const *const _src, a_size_t siz)
 {
     a_byte_t const *src = (a_byte_t const *)_src;
     a_byte_t *dst = (a_byte_t *)_dst;
-    if (dst < src)
+    if (dst <= src)
     {
         while (siz--)
         {
