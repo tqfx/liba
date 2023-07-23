@@ -286,4 +286,4 @@ A_INTERN void a_str_dtor_(void *ctx) { a_str_dtor(a_cast_s(a_str_s *, ctx)); }
 
 /*! @} A_STR */
 
-#endif /* host/str.h */
+#endif /* a/host/str.h */

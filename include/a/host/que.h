@@ -331,4 +331,4 @@ A_EXTERN void *a_que_remove(a_que_s *ctx, a_size_t idx);
 
 /*! @} A_QUE */
 
-#endif /* host/que.h */
+#endif /* a/host/que.h */

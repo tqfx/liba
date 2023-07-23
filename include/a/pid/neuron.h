@@ -129,4 +129,4 @@ A_EXTERN void a_pid_neuron_zero(a_pid_neuron_s *ctx);
 
 /*! @} A_PID_NEURON */
 
-#endif /* pid/neuron.h */
+#endif /* a/pid/neuron.h */

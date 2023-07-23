@@ -419,4 +419,4 @@ A_INTERN void *a_vector_pull(a_vector_s *ctx) { return a_vector_pull_back(ctx); 
 
 /*! @} A_VECTOR */
 
-#endif /* host/vector.h */
+#endif /* a/host/vector.h */

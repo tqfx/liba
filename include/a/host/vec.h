@@ -424,4 +424,4 @@ A_INTERN void *a_vec_pull(a_vec_s *ctx) { return a_vec_pull_back(ctx); }
 
 /*! @} A_VEC */
 
-#endif /* host/vec.h */
+#endif /* a/host/vec.h */
