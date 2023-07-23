@@ -142,61 +142,65 @@ void a_pid_fuzzy_out_(a_pid_fuzzy_s *const ctx, a_float_t const ec, a_float_t co
     {
         goto pid;
     }
-    unsigned int const nec = a_pid_fuzzy_mf(ec, ctx->col, ctx->mec, ctx->idx + ne, ctx->val + ne);
+    unsigned int *const idx = ctx->idx + ne;
+    a_float_t *const val = ctx->val + ne;
+    unsigned int const nec = a_pid_fuzzy_mf(ec, ctx->col, ctx->mec, idx, val);
     if (!nec)
     {
         goto pid;
     }
-    a_float_t *const mat = ctx->val + ne + nec;
+    a_float_t *const mat = val + nec;
     /* joint membership */
     a_float_t inv = 0;
-    for (unsigned int i = 0; i != ne; ++i)
     {
-        unsigned int const row = nec * i;
-        for (unsigned int j = 0; j != nec; ++j)
+        a_float_t *it = mat;
+        for (unsigned int i = 0; i != ne; ++i)
         {
-            unsigned int const idx = row + j; /* mat(i,j)=f(e[i],ec[j]) */
-            mat[idx] = ctx->op(ctx->val[i], ctx->val[ne + j]);
-            inv += mat[idx];
+            for (unsigned int j = 0; j != nec; ++j)
+            {
+                *it = ctx->op(ctx->val[i], val[j]); /* mat(i,j)=f(e[i],ec[j]) */
+                inv += *it++;
+            }
+            ctx->idx[i] *= ctx->col;
         }
     }
     inv = 1 / inv;
     /* mean of centers defuzzifier */
     if (ctx->mkp)
     {
+        a_float_t const *it = mat;
         for (unsigned int i = 0; i != ne; ++i)
         {
-            unsigned int const row = nec * i;
-            unsigned int const idx = ctx->col * ctx->idx[i];
-            for (unsigned int j = 0; j != nec; ++j) /* mat(i,j) * kp(e[i],ec[j]) */
+            a_float_t const *const mkp = ctx->mkp + ctx->idx[i];
+            for (unsigned int j = 0; j != nec; ++j)
             {
-                kp += mat[row + j] * ctx->mkp[idx + ctx->idx[ne + j]];
+                kp += *it++ * mkp[idx[j]]; /* += mat(i,j) * mkp(e[i],ec[j]) */
             }
         }
         kp *= inv;
     }
     if (ctx->mki)
     {
+        a_float_t const *it = mat;
         for (unsigned int i = 0; i != ne; ++i)
         {
-            unsigned int const row = nec * i;
-            unsigned int const idx = ctx->col * ctx->idx[i];
-            for (unsigned int j = 0; j != nec; ++j) /* mat(i,j) * ki(e[i],ec[j]) */
+            a_float_t const *const mki = ctx->mki + ctx->idx[i];
+            for (unsigned int j = 0; j != nec; ++j)
             {
-                ki += mat[row + j] * ctx->mki[idx + ctx->idx[ne + j]];
+                ki += *it++ * mki[idx[j]]; /* += mat(i,j) * mki(e[i],ec[j]) */
             }
         }
         ki *= inv;
     }
     if (ctx->mkd)
     {
+        a_float_t const *it = mat;
         for (unsigned int i = 0; i != ne; ++i)
         {
-            unsigned int const row = nec * i;
-            unsigned int const idx = ctx->col * ctx->idx[i];
-            for (unsigned int j = 0; j != nec; ++j) /* mat(i,j) * kd(e[i],ec[j]) */
+            a_float_t const *const mkd = ctx->mkd + ctx->idx[i];
+            for (unsigned int j = 0; j != nec; ++j)
             {
-                kd += mat[row + j] * ctx->mkd[idx + ctx->idx[ne + j]];
+                kd += *it++ * mkd[idx[j]]; /* += mat(i,j) * mkd(e[i],ec[j]) */
             }
         }
         kd *= inv;
