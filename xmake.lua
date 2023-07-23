@@ -97,7 +97,7 @@ target("a")
     }
     check_math(funcs, {includes = "complex.h"})
     -- set the auto-generated a.xmake.h
-    a_have_h = path.relative(os.projectdir().."/$(buildir)/a.xmake.h", "include")
+    a_have_h = path.relative(os.projectdir().."/$(buildir)/a.xmake.h", "include/a")
     add_defines("A_HAVE_H=\""..a_have_h.."\"", {public = true})
     set_configvar("XMAKE_VERSION", tostring(xmake.version()))
     set_configvar("A_SIZE_FLOAT", float, {quote = false})

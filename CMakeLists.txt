@@ -219,7 +219,7 @@ endif()
 
 function(set_library_compile target)
   if(EXISTS "${A_HAVE_H}")
-    file(RELATIVE_PATH a_have_h ${CMAKE_CURRENT_LIST_DIR}/include ${A_HAVE_H})
+    file(RELATIVE_PATH a_have_h ${CMAKE_CURRENT_LIST_DIR}/include/a ${A_HAVE_H})
     target_compile_definitions(${target} PUBLIC $<BUILD_INTERFACE:A_HAVE_H="${a_have_h}">)
     set(a_have_h)
   endif()

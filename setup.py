@@ -111,16 +111,16 @@ args = parser.parse_known_args(argv[1:])
 base = args[0].build_base
 
 sources, objects = [], []
-config_h = os.path.relpath(os.path.join(base, "a.setup.h"), "include")
-define_macros = [("A_HAVE_H", '"' + config_h + '"'), ("A_EXPORTS", None)]
+config_h = os.path.join(base, "a.setup.h")
+a_have_h = os.path.relpath(config_h, "include/a")
+define_macros = [("A_HAVE_H", '"' + a_have_h + '"'), ("A_EXPORTS", None)]
 if USE_CYTHON and os.path.exists("python/src/a.pyx"):
     sources += ["python/src/a.pyx"]
 elif os.path.exists("python/src/a.c"):
     sources += ["python/src/a.c"]
-config = os.path.join(base, config_h)
 if not os.path.exists(base):
     os.makedirs(base)
-configure(config, define_macros)
+configure(config_h, define_macros)
 
 for dirpath, dirnames, filenames in os.walk("src"):
     if args[0].link_objects:
