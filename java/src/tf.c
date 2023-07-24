@@ -21,20 +21,26 @@ j_tf_s *j_tf_new(JNIEnv *const jenv, jobject const jobj, j_tf_s *const jctx)
 jobject j_tf_get(j_tf_s const *const jctx, a_tf_s *const ctx)
 {
     JNIEnv *jenv = jctx->jenv;
+    ctx->num_p = NULL;
+    ctx->num_n = 0;
     if (jctx->jnum)
     {
         ctx->num_p = (*jenv)->GetDoubleArrayElements(jenv, jctx->jnum, NULL);
         ctx->num_n = (unsigned int)(*jenv)->GetArrayLength(jenv, jctx->jnum);
     }
+    ctx->den_p = NULL;
+    ctx->den_n = 0;
     if (jctx->jden)
     {
         ctx->den_p = (*jenv)->GetDoubleArrayElements(jenv, jctx->jden, NULL);
         ctx->den_n = (unsigned int)(*jenv)->GetArrayLength(jenv, jctx->jden);
     }
+    ctx->input = NULL;
     if (jctx->jinput)
     {
         ctx->input = (*jenv)->GetDoubleArrayElements(jenv, jctx->jinput, NULL);
     }
+    ctx->output = NULL;
     if (jctx->joutput)
     {
         ctx->output = (*jenv)->GetDoubleArrayElements(jenv, jctx->joutput, NULL);
