@@ -66,7 +66,7 @@ static void test_next(void)
     {
         a_data_s *node = a_list_entry_prev(list2, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         a_list_del_prev(list2);
-        a_die(a_data_s, node);
+        a_die(node);
     }
     a_list_mov_prev(list1, list2);
     a_list_init(list2);
@@ -80,15 +80,15 @@ static void test_next(void)
     {
         a_data_s *node = a_list_entry(it, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         a_list_del_node(&node->list);
-        a_die(a_data_s, node);
+        a_die(node);
     }
     if (a_list_null(list1) && a_list_null(list2))
     {
         printf(" ok");
     }
     putchar('\n');
-    a_die(a_list_s, list1);
-    a_die(a_list_s, list2);
+    a_die(list1);
+    a_die(list2);
 }
 
 static void test_prev(void)
@@ -113,7 +113,7 @@ static void test_prev(void)
     {
         a_data_s *node = a_list_entry_next(list2, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         a_list_del_next(list2);
-        a_die(a_data_s, node);
+        a_die(node);
     }
     a_list_mov_next(list1, list2);
     a_list_init(list2);
@@ -127,15 +127,15 @@ static void test_prev(void)
     {
         a_data_s *node = a_list_entry(it, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         a_list_del_node(&node->list);
-        a_die(a_data_s, node);
+        a_die(node);
     }
     if (a_list_null(list1) && a_list_null(list2))
     {
         printf(" ok");
     }
     putchar('\n');
-    a_die(a_list_s, list1);
-    a_die(a_list_s, list2);
+    a_die(list1);
+    a_die(list2);
 }
 
 static void test_func(void)
@@ -179,22 +179,22 @@ static void test_func(void)
     {
         a_data_s *node = a_list_entry(it, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         a_list_del_node(&node->list);
-        a_die(a_data_s, node);
+        a_die(node);
     }
     a_list_forsafe_next(it, at, list2)
     {
         a_data_s *node = a_list_entry(it, a_data_s, list); // NOLINT(performance-no-int-to-ptr)
         a_list_del_node(&node->list);
-        a_die(a_data_s, node);
+        a_die(node);
     }
     if (a_list_null(list1) && a_list_null(list2))
     {
         printf(" ok");
     }
     putchar('\n');
-    a_die(a_list_s, list1);
-    a_die(a_list_s, list2);
-    a_die(a_data_s, ctx);
+    a_die(list1);
+    a_die(list2);
+    a_die(ctx);
 }
 
 static void test_null(void)

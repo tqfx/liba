@@ -128,7 +128,7 @@ static void test_for(int argc, char *argv[])
     putchar('\n');
 #endif /* MAIN_ONCE */
 
-    a_die(int, p);
+    a_die(p);
 }
 
 static void test_swap(int argc, char *argv[])

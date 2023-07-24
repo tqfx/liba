@@ -27,6 +27,6 @@ A_EXTERN void *a_alloc_(void *addr, a_size_t size);
 #endif /* __cplusplus */
 
 #define a_new(T, ptr, num) a_cast_s(T *, a_alloc(ptr, sizeof(T) * (num)))
-#define a_die(T, ptr) a_cast_s(T *, a_alloc(ptr, 0))
+#define a_die(ptr) a_alloc(ptr, 0)
 
 #endif /* a/host/a.h */

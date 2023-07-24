@@ -230,8 +230,8 @@ static int test(int argc, char *argv[])
         TEST_BUG(vec[i].reached);
     }
 
-    a_die(int_node, vec);
-    a_die(int, sorted);
+    a_die(vec);
+    a_die(sorted);
     return 0;
 }
 
