@@ -69,7 +69,7 @@ target("a")
     -- detect c code functions
     float = get_config("liba-float")
     includes("check_csnippets.lua")
-    local source = 'printf("%u", (unsigned int)sizeof(size_t));'
+    local source = 'printf("%u", (unsigned int)sizeof(void *));'
     configvar_check_csnippets("A_SIZE_POINTER", source, {output = true, number = true})
     local source = 'int x = 1; puts(*(char *)&x ? "1234" : "4321");'
     configvar_check_csnippets("A_BYTE_ORDER", source, {output = true, number = true})
