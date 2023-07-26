@@ -238,16 +238,19 @@
 
 /*! @endcond */
 
+/* byte order of little endian architecture */
 #if defined(__ORDER_LITTLE_ENDIAN__)
 #define A_ORDER_LITTLE __ORDER_LITTLE_ENDIAN__
 #else /* !__ORDER_LITTLE_ENDIAN__ */
 #define A_ORDER_LITTLE 1234
 #endif /* __ORDER_LITTLE_ENDIAN__ */
+/* byte order of big endian architecture */
 #if defined(__ORDER_BIG_ENDIAN__)
 #define A_ORDER_BIG __ORDER_BIG_ENDIAN__
 #else /* !__ORDER_BIG_ENDIAN__ */
 #define A_ORDER_BIG 4321
 #endif /* __ORDER_BIG_ENDIAN__ */
+/* byte order of architecture */
 #if !defined A_BYTE_ORDER
 #if defined(__BYTE_ORDER__)
 #define A_BYTE_ORDER __BYTE_ORDER__
