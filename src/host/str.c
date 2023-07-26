@@ -208,7 +208,7 @@ int a_str_cat(a_str_s *const ctx, a_str_s const *const obj)
     return a_str_putn(ctx, obj->_ptr, obj->_num);
 }
 
-int a_str_vprintf(a_str_s *const ctx, char const *const fmt, va_list va)
+int a_str_print_(a_str_s *const ctx, char const *const fmt, va_list va)
 {
     a_size_t siz;
     a_size_t mem;
@@ -241,7 +241,7 @@ int a_str_printf(a_str_s *const ctx, char const *const fmt, ...)
 {
     va_list va;
     va_start(va, fmt);
-    int num = a_str_vprintf(ctx, fmt, va);
+    int num = a_str_print_(ctx, fmt, va);
     va_end(va);
     return num;
 }

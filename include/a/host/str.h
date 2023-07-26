@@ -256,7 +256,7 @@ A_EXTERN int a_str_cat(a_str_s *ctx, a_str_s const *obj);
  @return number of printed characters
   @retval EOF failure
 */
-A_EXTERN int a_str_vprintf(a_str_s *ctx, char const *fmt, va_list va) A_FORMAT(printf, 2, 0);
+A_EXTERN int a_str_print_(a_str_s *ctx, char const *fmt, va_list va) A_FORMAT(printf, 2, 0);
 
 /*!
  @brief print string to a pointer to string structure
