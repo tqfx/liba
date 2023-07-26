@@ -4,6 +4,8 @@
 #include "../test.h"
 #include "a/tf.h"
 #include "a/math.h"
+#undef A_EXTERN
+#define A_EXTERN A_EXPORT extern
 
 /*!
  @file expert.h
