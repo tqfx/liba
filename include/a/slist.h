@@ -243,10 +243,6 @@ A_INTERN void a_slist_rot(a_slist_s *const ctx)
     ctx->tail = node;
 }
 
-/* inline function for generic */
-A_INTERN void a_slist_ctor_(void *const ctx) { a_slist_ctor(a_cast_s(a_slist_s *, ctx)); }
-A_INTERN void a_slist_dtor_(void *const ctx) { a_slist_dtor(a_cast_s(a_slist_s *, ctx)); }
-
 /*! @} A_SLIST */
 
 #endif /* a/slist.h */

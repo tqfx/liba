@@ -278,12 +278,6 @@ A_EXTERN a_size_t a_str_utflen(a_str_s const *ctx);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-/* inline function for generic */
-A_INTERN void *a_str_new_(void) { return a_str_new(); }
-A_INTERN void a_str_die_(void *ctx) { a_str_die(a_cast_s(a_str_s *, ctx)); }
-A_INTERN void a_str_ctor_(void *ctx) { a_str_ctor(a_cast_s(a_str_s *, ctx)); }
-A_INTERN void a_str_dtor_(void *ctx) { a_str_dtor(a_cast_s(a_str_s *, ctx)); }
-
 /*! @} A_STR */
 
 #endif /* a/host/str.h */

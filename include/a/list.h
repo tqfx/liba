@@ -501,10 +501,6 @@ A_INTERN void a_list_swap_node(a_list_s *const lhs, a_list_s *const rhs)
     a_list_swap_(lhs, lhs, rhs, rhs);
 }
 
-/* inline function for generic */
-A_INTERN void a_list_ctor_(void *const ctx) { a_list_ctor(a_cast_s(a_list_s *, ctx)); }
-A_INTERN void a_list_dtor_(void *const ctx) { a_list_dtor(a_cast_s(a_list_s *, ctx)); }
-
 /*! @} A_LIST */
 
 #endif /* a/list.h */
