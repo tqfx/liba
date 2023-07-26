@@ -225,7 +225,7 @@
 #define A_EXTERN_C_LEAVE }
 #endif /* __cplusplus */
 #if !defined A_EXTERN
-#define A_EXTERN extern A_PUBLIC
+#define A_EXTERN A_PUBLIC extern
 #endif /* A_EXTERN */
 
 #if defined(__cplusplus)
