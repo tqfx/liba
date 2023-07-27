@@ -36,7 +36,7 @@ void a_str_dtor(a_str_s *const ctx)
     if (ctx->_ptr)
     {
         a_alloc(ctx->_ptr, 0);
-        ctx->_ptr = NULL;
+        ctx->_ptr = A_NULL;
     }
     ctx->_num = 0;
     ctx->_mem = 0;
