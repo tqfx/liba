@@ -2,11 +2,11 @@
 
 a_float_t *a_poly_swap(a_float_t *const a, a_size_t const n)
 {
-    for (a_float_t t[1], *l = a, *r = a + n - 1, *m = a + (n >> 1); l < m; ++l, --r)
+    for (a_float_t m[1], *l = a, *r = a + n; l < --r; ++l)
     {
-        *t = *l;
+        *m = *l;
         *l = *r;
-        *r = *t;
+        *r = *m;
     }
     return a;
 }
