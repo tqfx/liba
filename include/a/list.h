@@ -27,6 +27,13 @@ typedef struct a_list_s
 } a_list_s;
 
 /*!
+ @brief cast a list pointer from another type pointer
+ @param[in] x points to circular doubly linked list
+ @return a pointer to circular doubly linked list
+*/
+#define a_list_c(_, x) a_cast_s(a_list_s _, a_cast_s(void _, x))
+
+/*!
  @brief access the struct for this entry
  @param ptr the &a_list_s pointer
  @param type the type of the struct this is embedded in
@@ -80,13 +87,6 @@ A_INTERN a_bool_t a_list_null(a_list_s const *const ctx) { return ctx->next == c
   @retval 1 used
 */
 A_INTERN a_bool_t a_list_used(a_list_s const *const ctx) { return ctx->next != ctx && ctx->next->prev == ctx; }
-
-/*!
- @brief cast a list pointer from another type pointer
- @param[in] obj points to circular doubly linked list
- @return a pointer to circular doubly linked list
-*/
-A_INTERN a_list_s *a_list_from(void *const obj) { return a_cast_s(a_list_s *, obj); }
 
 /*!
  @brief constructor for circular doubly linked list

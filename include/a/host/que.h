@@ -26,10 +26,10 @@ typedef struct a_que_node_s
 
 /*!
  @brief cast a list pointer from another type pointer
- @param[in] obj points to basic queue node
+ @param[in] x points to basic queue node
  @return a pointer to basic queue node
 */
-A_INTERN a_que_node_s *a_que_from(void *const obj) { return a_cast_s(a_que_node_s *, obj); }
+#define a_que_node_c(_, x) a_cast_s(a_que_node_s _, a_cast_s(void _, x))
 
 /*!
  @brief instance structure for basic queue
@@ -64,7 +64,7 @@ A_INTERN a_size_t a_que_num(a_que_s const *const ctx) { return ctx->_num; }
 */
 A_INTERN void *a_que_fore_(a_que_s const *const ctx)
 {
-    return a_que_from(ctx->_head.next)->_data;
+    return a_que_node_c(*, ctx->_head.next)->_data;
 }
 
 /*!
@@ -75,7 +75,7 @@ A_INTERN void *a_que_fore_(a_que_s const *const ctx)
 */
 A_INTERN void *a_que_back_(a_que_s const *const ctx)
 {
-    return a_que_from(ctx->_head.prev)->_data;
+    return a_que_node_c(*, ctx->_head.prev)->_data;
 }
 
 /*!
@@ -289,13 +289,13 @@ A_EXTERN void *a_que_remove(a_que_s *ctx, a_size_t idx);
  @param it the &a_que_s to use as a loop counter
  @param ctx points to an instance of queue structure
 */
-#define a_que_foreach(T, it, ctx)                                     \
-    for (T *it = a_cast_r(T *, (ctx)->_head.next),                    \
-           *it##_ = a_cast_r(T *, a_list_from(it)->next);             \
-         a_list_from(it) != &(ctx)->_head                             \
-             ? ((void)(it = a_cast_s(T *, a_que_from(it)->_data)), 1) \
-             : (0);                                                   \
-         it = it##_, it##_ = a_cast_r(T *, a_list_from(it)->next))
+#define a_que_foreach(T, it, ctx)                                          \
+    for (T *it = a_cast_r(T *, (ctx)->_head.next),                         \
+           *it##_ = a_cast_r(T *, a_list_c(*, it)->next);                  \
+         a_list_c(*, it) != &(ctx)->_head                                  \
+             ? ((void)(it = a_cast_s(T *, a_que_node_c(*, it)->_data)), 1) \
+             : (0);                                                        \
+         it = it##_, it##_ = a_cast_r(T *, a_list_c(*, it)->next))
 
 /*!
  @brief iterate over a queue in reverse
@@ -309,13 +309,13 @@ A_EXTERN void *a_que_remove(a_que_s *ctx, a_size_t idx);
  @param it the &a_que_s to use as a loop counter
  @param ctx points to an instance of queue structure
 */
-#define a_que_foreach_reverse(T, it, ctx)                             \
-    for (T *it = a_cast_r(T *, (ctx)->_head.prev),                    \
-           *it##_ = a_cast_r(T *, a_list_from(it)->prev);             \
-         a_list_from(it) != &(ctx)->_head                             \
-             ? ((void)(it = a_cast_s(T *, a_que_from(it)->_data)), 1) \
-             : (0);                                                   \
-         it = it##_, it##_ = a_cast_r(T *, a_list_from(it)->prev))
+#define a_que_foreach_reverse(T, it, ctx)                                  \
+    for (T *it = a_cast_r(T *, (ctx)->_head.prev),                         \
+           *it##_ = a_cast_r(T *, a_list_c(*, it)->prev);                  \
+         a_list_c(*, it) != &(ctx)->_head                                  \
+             ? ((void)(it = a_cast_s(T *, a_que_node_c(*, it)->_data)), 1) \
+             : (0);                                                        \
+         it = it##_, it##_ = a_cast_r(T *, a_list_c(*, it)->prev))
 
 #define a_que_fore(T, ctx) a_cast_s(T *, a_que_fore(ctx))
 #define a_que_back(T, ctx) a_cast_s(T *, a_que_back(ctx))

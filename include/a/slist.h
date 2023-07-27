@@ -29,10 +29,10 @@ typedef union a_slist_u
 
 /*!
  @brief cast a list pointer from another type pointer
- @param[in] obj points to circular singly linked list node
+ @param[in] x points to circular singly linked list node
  @return a pointer to circular singly linked list node
 */
-A_INTERN a_slist_u *a_slist_from(void *const obj) { return a_cast_s(a_slist_u *, obj); }
+#define a_slist_c(_, x) a_cast_s(a_slist_u _, a_cast_s(void _, x))
 
 /*!
  @brief test whether a list node is null
