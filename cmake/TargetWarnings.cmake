@@ -159,8 +159,7 @@ elseif(CMAKE_C_COMPILER_ID MATCHES "MSVC" OR CMAKE_CXX_COMPILER_ID MATCHES "MSVC
   endif()
 elseif(CMAKE_C_COMPILER_ID MATCHES "TinyCC")
   # https://bellard.org/tcc/tcc-doc.html
-  warnings_flag_cc(-Wall -Wunsupported)
-  warnings_flag_cc(-Wwrite-strings)
+  warnings_flag_cc(-Wall -Wwrite-strings)
 endif()
 
 function(target_compile_warnings)
