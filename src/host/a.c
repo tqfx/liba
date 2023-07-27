@@ -1,6 +1,6 @@
 #include "a/host/a.h"
 
-a_alloc_f a_alloc = a_alloc_;
+void *(*a_alloc)(void *, a_size_t) = a_alloc_;
 
 void *a_alloc_(void *const addr, a_size_t const size)
 {
