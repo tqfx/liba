@@ -350,26 +350,22 @@ int LMODULE_(pid, lua_State *const L)
 
 int LMODULE(pid_func_)(lua_State *const L, int const ret)
 {
-    // NOLINTNEXTLINE(performance-no-int-to-ptr)
-    void *const p = (void *)(intptr_t)LMODULE(pid_func_);
     if (ret)
     {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, p);
+        lua_rawgetp(L, LUA_REGISTRYINDEX, LFUNC2P(pid_func_));
         return 1;
     }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, p);
+    lua_rawsetp(L, LUA_REGISTRYINDEX, LFUNC2P(pid_func_));
     return 0;
 }
 
 int LMODULE(pid_meta_)(lua_State *const L, int const ret)
 {
-    // NOLINTNEXTLINE(performance-no-int-to-ptr)
-    void *const p = (void *)(intptr_t)LMODULE(pid_meta_);
     if (ret)
     {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, p);
+        lua_rawgetp(L, LUA_REGISTRYINDEX, LFUNC2P(pid_meta_));
         return 1;
     }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, p);
+    lua_rawsetp(L, LUA_REGISTRYINDEX, LFUNC2P(pid_meta_));
     return 0;
 }

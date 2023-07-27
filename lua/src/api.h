@@ -32,6 +32,12 @@
 #endif /* -Wpadded */
 #include <lua.h>
 
+#if defined(__GNUC__)
+#define L_FUNC2P(F) __extension__ a_cast_s(void *, F)
+#else /* !__GNUC__ */
+#define L_FUNC2P(F) a_cast_s(void *, F)
+#endif /* __GNUC__ */
+
 typedef struct
 {
     char const *name;

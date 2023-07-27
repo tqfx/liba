@@ -10,6 +10,7 @@
 #define LMODULE2(F, a, b) L_MODULE(, _##F)(a, b)
 #define LMODULE_(F, L) L_MODULE(luaopen_, _##F)(L)
 #define LMODULE0(L) L_MODULE(luaopen_, )(L)
+#define LFUNC2P(F) L_FUNC2P(LMODULE(F))
 
 #if defined(__cplusplus)
 extern "C" {

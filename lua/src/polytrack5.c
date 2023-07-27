@@ -327,26 +327,22 @@ int LMODULE_(polytrack5, lua_State *const L)
 
 int LMODULE(polytrack5_func_)(lua_State *const L, int const ret)
 {
-    // NOLINTNEXTLINE(performance-no-int-to-ptr)
-    void *const p = (void *)(intptr_t)LMODULE(polytrack5_func_);
     if (ret)
     {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, p);
+        lua_rawgetp(L, LUA_REGISTRYINDEX, LFUNC2P(polytrack5_func_));
         return 1;
     }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, p);
+    lua_rawsetp(L, LUA_REGISTRYINDEX, LFUNC2P(polytrack5_func_));
     return 0;
 }
 
 int LMODULE(polytrack5_meta_)(lua_State *const L, int const ret)
 {
-    // NOLINTNEXTLINE(performance-no-int-to-ptr)
-    void *const p = (void *)(intptr_t)LMODULE(polytrack5_meta_);
     if (ret)
     {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, p);
+        lua_rawgetp(L, LUA_REGISTRYINDEX, LFUNC2P(polytrack5_meta_));
         return 1;
     }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, p);
+    lua_rawsetp(L, LUA_REGISTRYINDEX, LFUNC2P(polytrack5_meta_));
     return 0;
 }

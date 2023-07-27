@@ -321,8 +321,7 @@ void l_stack_show(lua_State *const L, int line)
             break;
         case LUA_TFUNCTION:
         {
-            lua_CFunction const func = lua_tocfunction(L, i);
-            printf("func:%p", (void *)(intptr_t)func); // NOLINT(performance-no-int-to-ptr)
+            printf("func:%p", L_FUNC2P(lua_tocfunction(L, i)));
             break;
         }
         case LUA_TUSERDATA:
