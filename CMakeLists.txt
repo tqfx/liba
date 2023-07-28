@@ -219,7 +219,7 @@ endif()
 
 function(set_library_compile target)
   if(EXISTS "${A_HAVE_H}")
-    file(RELATIVE_PATH a_have_h ${CMAKE_CURRENT_LIST_DIR}/include/a ${A_HAVE_H})
+    file(RELATIVE_PATH a_have_h ${PROJECT_SOURCE_DIR}/include/a ${A_HAVE_H})
     target_compile_definitions(${target} PUBLIC $<BUILD_INTERFACE:A_HAVE_H="${a_have_h}">)
     set(a_have_h)
   endif()
@@ -235,7 +235,7 @@ function(set_library_compile target)
   )
   target_compile_definitions(${target} PRIVATE A_EXPORTS)
   target_include_directories(${target} BEFORE PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
   )
   get_property(TYPE TARGET ${target} PROPERTY TYPE)
@@ -349,21 +349,20 @@ set(CMAKE_STATIC_LIBRARY_SUFFIX .o)
 set(CMAKE_STATIC_LIBRARY_PREFIX lib)
 add_executable(aelf \$<TARGET_OBJECTS:a>)
 add_library(adev STATIC \$<TARGET_OBJECTS:a>)
-add_library_properties(adev INTERFACE alib INTERFACE_)
+set_library_compile(adev)\nadd_dependencies(adev aelf)
 set_target_properties(aelf PROPERTIES OUTPUT_NAME liba
 \tINTERPROCEDURAL_OPTIMIZATION \${LIBA_IPO}
 )
-set_target_properties(adev PROPERTIES OUTPUT_NAME a
-\tINTERPROCEDURAL_OPTIMIZATION \${LIBA_IPO}
-)
-if(A_HAVE_MIMALLOC_H)
-\ttarget_link_libraries(adev INTERFACE mimalloc-static)
+if(A_HAVE_MIMALLOC_H AND CMAKE_VERSION VERSION_LESS 3.12)
+\tadd_library_properties(adev PUBLIC mimalloc-static INTERFACE_)
+elseif(A_HAVE_MIMALLOC_H)
+\ttarget_link_libraries(adev PUBLIC mimalloc-static)
 endif()
 include(GNUInstallDirs)
 install(TARGETS adev EXPORT \${PROJECT_NAME}-targets
 \tARCHIVE DESTINATION \${CMAKE_INSTALL_LIBDIR}
 \tLIBRARY DESTINATION \${CMAKE_INSTALL_LIBDIR}
-)\nadd_dependencies(adev aelf)")
+)")
   add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/lib lib)
 else()
   add_library(adev ALIAS alib)
