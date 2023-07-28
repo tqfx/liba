@@ -35,24 +35,6 @@ typedef union a_slist_u
 #define a_slist_c(_, x) a_cast_s(a_slist_u _, a_cast_s(void _, x))
 
 /*!
- @brief test whether a list node is null
- @param[in] ctx points to circular singly linked list node
- @return int bool
-  @retval 0 non-null
-  @retval 1 null
-*/
-A_INTERN a_bool_t a_slist_null(a_slist_u const *const ctx) { return ctx->next == ctx; }
-
-/*!
- @brief test whether a list node is used
- @param[in] ctx points to circular singly linked list node
- @return int bool
-  @retval 0 unused
-  @retval 1 used
-*/
-A_INTERN a_bool_t a_slist_used(a_slist_u const *const ctx) { return ctx->next != ctx; }
-
-/*!
  @brief initialize for circular singly linked list node
  @param[in,out] ctx points to circular singly linked list node
 */
@@ -95,25 +77,6 @@ typedef struct a_slist_s
          at = (it && it == at->next) ? it : at, it = at->next)
 
 /*!
- @brief test whether a list head is none
- @param[in] ctx points to circular singly linked list head
- @return int bool
-  @retval 0 exist
-  @retval 1 none
-*/
-A_INTERN a_bool_t a_slist_none(a_slist_s const *const ctx) { return &ctx->head == ctx->head.next; }
-
-/*!
- @brief test whether a list node is a tail node
- @param[in] ctx points to circular singly linked list head
- @param[in] node a list node
- @return int bool
-  @retval 0 it's not a tail node
-  @retval 1 it is a tail node
-*/
-A_INTERN a_bool_t a_slist_tail(a_slist_s const *const ctx, a_slist_u const *const node) { return &ctx->head == node->next; }
-
-/*!
  @brief constructor for circular singly linked list head
  @param[in,out] ctx points to circular singly linked list head
 */
@@ -146,7 +109,7 @@ A_INTERN void a_slist_link(a_slist_u *const head, a_slist_u *const tail) { head-
 */
 A_INTERN void a_slist_add(a_slist_s *const ctx, a_slist_u *const prev, a_slist_u *const node)
 {
-    if (a_slist_tail(ctx, prev))
+    if (prev->next == &ctx->head)
     {
         ctx->tail = node;
     }
@@ -161,7 +124,7 @@ A_INTERN void a_slist_add(a_slist_s *const ctx, a_slist_u *const prev, a_slist_u
 */
 A_INTERN void a_slist_add_head(a_slist_s *const ctx, a_slist_u *const node)
 {
-    if (a_slist_none(ctx))
+    if (ctx->head.next == &ctx->head)
     {
         ctx->tail = node;
     }
@@ -190,7 +153,7 @@ A_INTERN void a_slist_del(a_slist_s *const ctx, a_slist_u *const prev)
 {
     a_slist_u *const node = prev->next;
     a_slist_link(prev, node->next);
-    if (a_slist_tail(ctx, node))
+    if (node->next == &ctx->head)
     {
         ctx->tail = prev;
     }
@@ -204,7 +167,7 @@ A_INTERN void a_slist_del_head(a_slist_s *const ctx)
 {
     a_slist_u *const node = ctx->head.next;
     a_slist_link(&ctx->head, node->next);
-    if (a_slist_tail(ctx, node))
+    if (node->next == &ctx->head)
     {
         ctx->tail = &ctx->head;
     }
@@ -218,11 +181,11 @@ A_INTERN void a_slist_del_head(a_slist_s *const ctx)
 */
 A_INTERN void a_slist_mov(a_slist_s *const ctx, a_slist_u *const at, a_slist_s *const src)
 {
-    if (a_slist_none(src))
+    if (src->head.next == &src->head)
     {
         return;
     }
-    if (a_slist_tail(ctx, at))
+    if (at->next == &ctx->head)
     {
         ctx->tail = src->tail;
     }

@@ -14,11 +14,11 @@ typedef struct
 static a_size_t a_slist_len(a_slist_s const *const ctx)
 {
     a_size_t count = 0;
-    if (ctx && a_slist_used(&ctx->head))
+    if (ctx && ctx->head.next != &ctx->head)
     {
         a_slist_foreach(it, ctx)
         {
-            if (a_slist_null(it))
+            if (it->next == it)
             {
                 printf("\nwarning endless loop!\n");
                 break;
@@ -79,7 +79,9 @@ static void test(void)
         a_die(node);
         it = A_NULL;
     }
-    if (a_slist_none(list1) && a_slist_none(list2) && a_slist_none(list3))
+    if (list1->head.next == &list1->head &&
+        list2->head.next == &list2->head &&
+        list3->head.next == &list3->head)
     {
         printf(" ok");
     }

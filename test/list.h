@@ -82,7 +82,7 @@ static void test_next(void)
         a_list_del_node(&node->list);
         a_die(node);
     }
-    if (a_list_null(list1) && a_list_null(list2))
+    if (list1->next == list1 && list2->next == list2)
     {
         printf(" ok");
     }
@@ -129,7 +129,7 @@ static void test_prev(void)
         a_list_del_node(&node->list);
         a_die(node);
     }
-    if (a_list_null(list1) && a_list_null(list2))
+    if (list1->prev == list1 && list2->prev == list2)
     {
         printf(" ok");
     }
@@ -187,7 +187,7 @@ static void test_func(void)
         a_list_del_node(&node->list);
         a_die(node);
     }
-    if (a_list_null(list1) && a_list_null(list2))
+    if (list1->next == list1 && list2->next == list2)
     {
         printf(" ok");
     }
