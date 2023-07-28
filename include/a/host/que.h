@@ -136,7 +136,7 @@ A_EXTERN void a_que_dtor(a_que_s *ctx, void (*dtor)(void *));
  @param[in] ctx points to an instance of queue structure
  @param[in] obj input source pointing to an instance
 */
-A_EXTERN a_que_s *a_que_move(a_que_s *ctx, a_que_s *obj);
+A_EXTERN void a_que_move(a_que_s *ctx, a_que_s *obj);
 
 /*!
  @brief access specified element for a pointer to queue structure

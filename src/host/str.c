@@ -1,6 +1,6 @@
 #if defined(_MSC_VER)
 #if !defined _CRT_SECURE_NO_WARNINGS
-#define _CRT_SECURE_NO_WARNINGS // NOLINT
+#define _CRT_SECURE_NO_WARNINGS /* NOLINT */
 #endif /* _CRT_SECURE_NO_WARNINGS */
 #endif /* _MSC_VER */
 #include "a/host/str.h"
@@ -65,24 +65,23 @@ int a_str_copy(a_str_s *const ctx, a_str_s const *const obj)
     return a_str_init(ctx, obj->_ptr, obj->_num);
 }
 
-a_str_s *a_str_move(a_str_s *const ctx, a_str_s *const obj)
+void a_str_move(a_str_s *const ctx, a_str_s *const obj)
 {
     a_copy(ctx, obj, sizeof(*obj));
     a_zero(obj, sizeof(*obj));
-    return ctx;
 }
 
 char *a_str_exit(a_str_s *const ctx)
 {
-    char *const str = ctx->_ptr;
+    char *const ptr = ctx->_ptr;
     if (ctx->_ptr)
     {
         ctx->_ptr[ctx->_num] = 0;
         ctx->_ptr = A_NULL;
     }
-    ctx->_mem = 0;
     ctx->_num = 0;
-    return str;
+    ctx->_mem = 0;
+    return ptr;
 }
 
 int a_str_cmp(a_str_s const *const lhs, a_str_s const *const rhs)
@@ -91,10 +90,10 @@ int a_str_cmp(a_str_s const *const lhs, a_str_s const *const rhs)
     if (lhs->_ptr && rhs->_ptr)
     {
         ok = memcmp(lhs->_ptr, rhs->_ptr, A_MIN(lhs->_num, rhs->_num));
-    }
-    if (ok)
-    {
-        return ok;
+        if (ok)
+        {
+            return ok;
+        }
     }
     if (lhs->_num == rhs->_num)
     {
@@ -105,14 +104,14 @@ int a_str_cmp(a_str_s const *const lhs, a_str_s const *const rhs)
 
 int a_str_alloc_(a_str_s *const ctx, a_size_t mem)
 {
-    char *str;
+    char *ptr;
     mem = a_size_up(sizeof(void *), mem);
-    str = (char *)a_alloc(ctx->_ptr, mem);
-    if (a_unlikely(!str && mem))
+    ptr = (char *)a_alloc(ctx->_ptr, mem);
+    if (a_unlikely(!ptr && mem))
     {
         return A_FAILURE;
     }
-    ctx->_ptr = str;
+    ctx->_ptr = ptr;
     ctx->_mem = mem;
     return A_SUCCESS;
 }
@@ -212,13 +211,13 @@ int a_str_print_(a_str_s *const ctx, char const *const fmt, va_list va)
 {
     a_size_t siz;
     a_size_t mem;
-    char *str;
+    char *ptr;
     int num;
     va_list ap;
     va_copy(ap, va);
     mem = ctx->_mem - ctx->_num;
-    str = ctx->_ptr ? ctx->_ptr + ctx->_num : A_NULL;
-    num = vsnprintf(str, mem, fmt, ap);
+    ptr = ctx->_ptr ? ctx->_ptr + ctx->_num : A_NULL;
+    num = vsnprintf(ptr, mem, fmt, ap);
     va_end(ap);
     siz = (a_size_t)num + 1;
     if (siz > mem)
@@ -229,8 +228,8 @@ int a_str_print_(a_str_s *const ctx, char const *const fmt, va_list va)
         }
         va_copy(ap, va);
         mem = ctx->_mem - ctx->_num;
-        str = ctx->_ptr + ctx->_num;
-        num = vsnprintf(str, mem, fmt, ap);
+        ptr = ctx->_ptr + ctx->_num;
+        num = vsnprintf(ptr, mem, fmt, ap);
         va_end(ap);
     }
     ctx->_num += (a_size_t)num;

@@ -59,11 +59,10 @@ void a_buf_dtor(a_buf_s *const ctx, void (*const dtor)(void *))
     ctx->_siz = 0;
 }
 
-a_buf_s *a_buf_move(a_buf_s *const ctx, a_buf_s *const obj)
+void a_buf_move(a_buf_s *const ctx, a_buf_s *const obj)
 {
     a_copy(ctx, obj, sizeof(*obj));
     a_zero(obj, sizeof(*obj));
-    return ctx;
 }
 
 void a_buf_drop(a_buf_s *const ctx, void (*const dtor)(void *))
@@ -78,9 +77,9 @@ void a_buf_swap(a_buf_s const *const ctx, a_size_t lhs, a_size_t rhs)
     rhs = rhs < ctx->_num ? rhs : num;
     if (lhs != rhs)
     {
-        void *const lobj = (a_byte_t *)ctx->_ptr + lhs * ctx->_siz;
-        void *const robj = (a_byte_t *)ctx->_ptr + rhs * ctx->_siz;
-        a_swap(lobj, robj, ctx->_siz);
+        a_swap((a_byte_t *)ctx->_ptr + lhs * ctx->_siz,
+               (a_byte_t *)ctx->_ptr + rhs * ctx->_siz,
+               ctx->_siz);
     }
 }
 

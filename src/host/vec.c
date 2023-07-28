@@ -55,8 +55,8 @@ static int a_vec_alloc(a_vec_s *const ctx, a_size_t const num)
         {
             return A_FAILURE;
         }
-        ctx->_mem = mem;
         ctx->_ptr = ptr;
+        ctx->_mem = mem;
     }
     return A_SUCCESS;
 }
@@ -84,8 +84,8 @@ void a_vec_ctor(a_vec_s *const ctx, a_size_t const size)
 {
     ctx->_siz = size ? size : sizeof(a_cast_u);
     ctx->_ptr = A_NULL;
-    ctx->_mem = 0;
     ctx->_num = 0;
+    ctx->_mem = 0;
 }
 
 void a_vec_dtor(a_vec_s *const ctx, void (*const dtor)(void *))
@@ -106,9 +106,9 @@ int a_vec_copy(a_vec_s *const ctx, a_vec_s const *const obj, int (*const dup)(vo
     {
         return A_FAILURE;
     }
-    ctx->_siz = obj->_siz;
     ctx->_num = obj->_num;
     ctx->_mem = obj->_mem;
+    ctx->_siz = obj->_siz;
     if (dup)
     {
         a_byte_t *dst = (a_byte_t *)ctx->_ptr;
@@ -127,11 +127,10 @@ int a_vec_copy(a_vec_s *const ctx, a_vec_s const *const obj, int (*const dup)(vo
     return A_SUCCESS;
 }
 
-a_vec_s *a_vec_move(a_vec_s *const ctx, a_vec_s *const obj)
+void a_vec_move(a_vec_s *const ctx, a_vec_s *const obj)
 {
     a_copy(ctx, obj, sizeof(*obj));
     a_zero(obj, sizeof(*obj));
-    return ctx;
 }
 
 void a_vec_edit(a_vec_s *const ctx, a_size_t size, void (*const dtor)(void *))
@@ -164,9 +163,9 @@ void a_vec_swap(a_vec_s const *const ctx, a_size_t lhs, a_size_t rhs)
     rhs = rhs < ctx->_num ? rhs : num;
     if (lhs != rhs)
     {
-        void *const lobj = (a_byte_t *)ctx->_ptr + lhs * ctx->_siz;
-        void *const robj = (a_byte_t *)ctx->_ptr + rhs * ctx->_siz;
-        a_swap(lobj, robj, ctx->_siz);
+        a_swap((a_byte_t *)ctx->_ptr + lhs * ctx->_siz,
+               (a_byte_t *)ctx->_ptr + rhs * ctx->_siz,
+               ctx->_siz);
     }
 }
 

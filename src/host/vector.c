@@ -150,11 +150,10 @@ int a_vector_copy(a_vector_s *const ctx, a_vector_s const *const obj, int (*cons
     return A_SUCCESS;
 }
 
-a_vector_s *a_vector_move(a_vector_s *const ctx, a_vector_s *const obj)
+void a_vector_move(a_vector_s *const ctx, a_vector_s *const obj)
 {
     a_copy(ctx, obj, sizeof(*obj));
     a_zero(obj, sizeof(*obj));
-    return ctx;
 }
 
 void a_vector_edit(a_vector_s *const ctx, a_size_t size,
@@ -191,9 +190,9 @@ void a_vector_swap(a_vector_s const *const ctx, a_size_t lhs, a_size_t rhs)
     rhs = rhs < ctx->_num ? rhs : num;
     if (lhs != rhs)
     {
-        void *const lobj = (a_byte_t *)ctx->_head + lhs * ctx->_siz;
-        void *const robj = (a_byte_t *)ctx->_head + rhs * ctx->_siz;
-        a_swap(lobj, robj, ctx->_siz);
+        a_swap((a_byte_t *)ctx->_head + lhs * ctx->_siz,
+               (a_byte_t *)ctx->_head + rhs * ctx->_siz,
+               ctx->_siz);
     }
 }
 

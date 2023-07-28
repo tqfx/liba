@@ -165,7 +165,7 @@ A_EXTERN int a_str_copy(a_str_s *ctx, a_str_s const *obj);
  @param[in] ctx points to an instance of string structure
  @param[in] obj input source pointing to an instance
 */
-A_EXTERN a_str_s *a_str_move(a_str_s *ctx, a_str_s *obj);
+A_EXTERN void a_str_move(a_str_s *ctx, a_str_s *obj);
 
 /*!
  @brief terminate a pointer to string structure

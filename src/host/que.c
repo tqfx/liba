@@ -133,11 +133,10 @@ void a_que_dtor(a_que_s *const ctx, void (*const dtor)(void *))
     ctx->_mem = 0;
 }
 
-a_que_s *a_que_move(a_que_s *const ctx, a_que_s *const obj)
+void a_que_move(a_que_s *const ctx, a_que_s *const obj)
 {
     a_copy(ctx, obj, sizeof(*obj));
     a_zero(obj, sizeof(*obj));
-    return ctx;
 }
 
 void *a_que_at(a_que_s const *const ctx, a_imax_t const idx)

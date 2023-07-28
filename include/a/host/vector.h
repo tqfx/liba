@@ -172,7 +172,7 @@ A_EXTERN int a_vector_copy(a_vector_s *ctx, a_vector_s const *obj, int (*dup)(vo
  @param[in] ctx points to an instance of vector structure
  @param[in] obj input source pointing to an instance
 */
-A_EXTERN a_vector_s *a_vector_move(a_vector_s *ctx, a_vector_s *obj);
+A_EXTERN void a_vector_move(a_vector_s *ctx, a_vector_s *obj);
 
 /*!
  @brief edit size of a element for a pointer to vector structure

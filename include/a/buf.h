@@ -47,7 +47,7 @@ A_INTERN a_size_t a_buf_mem(a_buf_s const *const ctx) { return ctx->_mem; }
  @brief access size of a element for a pointer to buffer structure
  @param[in] ctx points to an instance of buffer structure
 */
-A_INTERN a_size_t a_buf_get(a_buf_s const *const ctx) { return ctx->_siz; }
+A_INTERN a_size_t a_buf_siz(a_buf_s const *const ctx) { return ctx->_siz; }
 
 /*!
  @brief access specified element for a pointer to buffer structure
@@ -143,7 +143,7 @@ A_EXTERN void a_buf_dtor(a_buf_s *ctx, void (*dtor)(void *));
  @param[in] ctx points to an instance of buffer structure
  @param[in] obj input source pointing to an instance
 */
-A_EXTERN a_buf_s *a_buf_move(a_buf_s *ctx, a_buf_s *obj);
+A_EXTERN void a_buf_move(a_buf_s *ctx, a_buf_s *obj);
 
 /*!
  @brief drop all the elements for a pointer to buffer structure
@@ -301,7 +301,7 @@ A_INTERN void *a_buf_pull(a_buf_s *ctx) { return a_buf_pull_back(ctx); }
  a_buf_forenum(i, ctx)
  {
      T *it = (T *)a_buf_at(ctx, i);
-     assert(a_buf_get(ctx) == sizeof(*it));
+     assert(a_buf_siz(ctx) == sizeof(*it));
  }
  @endcode
  @param i index of elements in the buffer
@@ -315,7 +315,7 @@ A_INTERN void *a_buf_pull(a_buf_s *ctx) { return a_buf_pull_back(ctx); }
  a_buf_forenum_reverse(i, ctx)
  {
      T *it = (T *)a_buf_at(ctx, i);
-     assert(a_buf_get(ctx) == sizeof(*it));
+     assert(a_buf_siz(ctx) == sizeof(*it));
  }
  @endcode
  @param i index of elements in the buffer
@@ -328,7 +328,7 @@ A_INTERN void *a_buf_pull(a_buf_s *ctx) { return a_buf_pull_back(ctx); }
  @code{.c}
  a_buf_foreach(T, it, ctx)
  {
-     assert(a_buf_get(ctx) == sizeof(*it));
+     assert(a_buf_siz(ctx) == sizeof(*it));
  }
  @endcode
  @param T type of elements in the buffer
@@ -342,7 +342,7 @@ A_INTERN void *a_buf_pull(a_buf_s *ctx) { return a_buf_pull_back(ctx); }
  @code{.c}
  a_buf_foreach_reverse(T, it, ctx)
  {
-     assert(a_buf_get(ctx) == sizeof(*it));
+     assert(a_buf_siz(ctx) == sizeof(*it));
  }
  @endcode
  @param T type of elements in the buffer
