@@ -157,9 +157,9 @@ a_vector_s *a_vector_move(a_vector_s *const ctx, a_vector_s *const obj)
     return ctx;
 }
 
-void a_vector_set(a_vector_s *const ctx, a_size_t size,
-                  void (*const ctor)(void *),
-                  void (*const dtor)(void *))
+void a_vector_edit(a_vector_s *const ctx, a_size_t size,
+                   void (*const ctor)(void *),
+                   void (*const dtor)(void *))
 {
     size = size ? size : sizeof(a_cast_u);
     a_vector_drop_(ctx, 0);

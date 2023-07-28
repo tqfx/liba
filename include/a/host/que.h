@@ -38,7 +38,7 @@ typedef struct a_que_s
 {
     a_que_node_s **_ptr; /*!< mempool block */
     a_list_s _head; /*!< element head */
-    a_size_t _size; /*!< element sizeof */
+    a_size_t _siz; /*!< element sizeof */
     a_size_t _num; /*!< element number */
     a_size_t _cur; /*!< mempool cursor */
     a_size_t _mem; /*!< mempool memory */
@@ -48,7 +48,7 @@ typedef struct a_que_s
  @brief access size of a element for a pointer to queue structure
  @param[in] ctx points to an instance of queue structure
 */
-A_INTERN a_size_t a_que_get(a_que_s const *const ctx) { return ctx->_size; }
+A_INTERN a_size_t a_que_siz(a_que_s const *const ctx) { return ctx->_siz; }
 
 /*!
  @brief access number of element for a pointer to queue structure
@@ -86,7 +86,7 @@ A_INTERN void *a_que_back_(a_que_s const *const ctx)
 */
 A_INTERN void *a_que_fore(a_que_s const *const ctx)
 {
-    return a_likely(a_list_used(&ctx->_head)) ? a_que_fore_(ctx) : A_NULL;
+    return a_likely(ctx->_head.next != &ctx->_head) ? a_que_fore_(ctx) : A_NULL;
 }
 
 /*!
@@ -97,7 +97,7 @@ A_INTERN void *a_que_fore(a_que_s const *const ctx)
 */
 A_INTERN void *a_que_back(a_que_s const *const ctx)
 {
-    return a_likely(a_list_used(&ctx->_head)) ? a_que_back_(ctx) : A_NULL;
+    return a_likely(ctx->_head.prev != &ctx->_head) ? a_que_back_(ctx) : A_NULL;
 }
 
 #if defined(__cplusplus)
@@ -148,19 +148,19 @@ A_EXTERN a_que_s *a_que_move(a_que_s *ctx, a_que_s *obj);
 A_EXTERN void *a_que_at(a_que_s const *ctx, a_imax_t idx);
 
 /*!
- @brief modify size of a element for a pointer to queue structure
- @param[in] ctx points to an instance of queue structure
- @param[in] size the size of the new element
- @param[in] dtor previous element destructor
-*/
-A_EXTERN void a_que_set(a_que_s *ctx, a_size_t size, void (*dtor)(void *));
-
-/*!
  @brief drop all the elements for a pointer to queue structure
  @param[in] ctx points to an instance of queue structure
  @param[in] dtor current element destructor
 */
 A_EXTERN void a_que_drop(a_que_s *ctx, void (*dtor)(void *));
+
+/*!
+ @brief edit size of a element for a pointer to queue structure
+ @param[in] ctx points to an instance of queue structure
+ @param[in] size the size of the new element
+ @param[in] dtor previous element destructor
+*/
+A_EXTERN void a_que_edit(a_que_s *ctx, a_size_t size, void (*dtor)(void *));
 
 /*!
  @brief swap elements lhs and rhs for a pointer to queue structure
@@ -282,7 +282,7 @@ A_EXTERN void *a_que_remove(a_que_s *ctx, a_size_t idx);
  @code{.c}
  a_que_foreach(T, it, ctx)
  {
-     assert(a_que_get(ctx) == sizeof(*it));
+     assert(a_que_siz(ctx) == sizeof(*it));
  }
  @endcode
  @param T type of elements in the queue
@@ -302,7 +302,7 @@ A_EXTERN void *a_que_remove(a_que_s *ctx, a_size_t idx);
  @code{.c}
  a_que_foreach_reverse(T, it, ctx)
  {
-     assert(a_que_get(ctx) == sizeof(*it));
+     assert(a_que_siz(ctx) == sizeof(*it));
  }
  @endcode
  @param T type of elements in the queue

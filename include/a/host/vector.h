@@ -45,7 +45,7 @@ A_INTERN void *a_vector_end(a_vector_s const *const ctx) { return ctx->_tail; }
  @brief access size of a element for a pointer to vector structure
  @param[in] ctx points to an instance of vector structure
 */
-A_INTERN a_size_t a_vector_get(a_vector_s const *const ctx) { return ctx->_siz; }
+A_INTERN a_size_t a_vector_siz(a_vector_s const *const ctx) { return ctx->_siz; }
 
 /*!
  @brief access number of element for a pointer to vector structure
@@ -175,15 +175,15 @@ A_EXTERN int a_vector_copy(a_vector_s *ctx, a_vector_s const *obj, int (*dup)(vo
 A_EXTERN a_vector_s *a_vector_move(a_vector_s *ctx, a_vector_s *obj);
 
 /*!
- @brief modify size of a element for a pointer to vector structure
+ @brief edit size of a element for a pointer to vector structure
  @param[in] ctx points to an instance of vector structure
  @param[in] size the size of the new element
  @param[in] ctor current element constructor
  @param[in] dtor current element destructor
 */
-A_EXTERN void a_vector_set(a_vector_s *ctx, a_size_t size,
-                           void (*ctor)(void *),
-                           void (*dtor)(void *));
+A_EXTERN void a_vector_edit(a_vector_s *ctx, a_size_t size,
+                            void (*ctor)(void *),
+                            void (*dtor)(void *));
 
 /*!
  @brief modify element number for a pointer to string structure
@@ -350,7 +350,7 @@ A_INTERN void *a_vector_pull(a_vector_s *ctx) { return a_vector_pull_back(ctx); 
  a_vector_forenum(i, ctx)
  {
      T *it = (T *)a_vector_at(ctx, i);
-     assert(a_vector_get(ctx) == sizeof(*it));
+     assert(a_vector_siz(ctx) == sizeof(*it));
  }
  @endcode
  @param i index of elements in the vector
@@ -364,7 +364,7 @@ A_INTERN void *a_vector_pull(a_vector_s *ctx) { return a_vector_pull_back(ctx); 
  a_vector_forenum_reverse(i, ctx)
  {
      T *it = (T *)a_vector_at(ctx, i);
-     assert(a_vector_get(ctx) == sizeof(*it));
+     assert(a_vector_siz(ctx) == sizeof(*it));
  }
  @endcode
  @param i index of elements in the vector
@@ -377,7 +377,7 @@ A_INTERN void *a_vector_pull(a_vector_s *ctx) { return a_vector_pull_back(ctx); 
  @code{.c}
  a_vector_foreach(T, it, ctx)
  {
-     assert(a_vector_get(ctx) == sizeof(*it));
+     assert(a_vector_siz(ctx) == sizeof(*it));
  }
  @endcode
  @param T type of elements in the vector
@@ -391,7 +391,7 @@ A_INTERN void *a_vector_pull(a_vector_s *ctx) { return a_vector_pull_back(ctx); 
  @code{.c}
  a_vector_foreach_reverse(T, it, ctx)
  {
-     assert(a_vector_get(ctx) == sizeof(*it));
+     assert(a_vector_siz(ctx) == sizeof(*it));
  }
  @endcode
  @param T type of elements in the vector

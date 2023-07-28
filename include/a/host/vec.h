@@ -47,7 +47,7 @@ A_INTERN a_size_t a_vec_mem(a_vec_s const *const ctx) { return ctx->_mem; }
  @brief access size of a element for a pointer to vector structure
  @param[in] ctx points to an instance of vector structure
 */
-A_INTERN a_size_t a_vec_get(a_vec_s const *const ctx) { return ctx->_siz; }
+A_INTERN a_size_t a_vec_siz(a_vec_s const *const ctx) { return ctx->_siz; }
 
 /*!
  @brief access specified element for a pointer to vector structure
@@ -180,12 +180,12 @@ A_EXTERN int a_vec_copy(a_vec_s *ctx, a_vec_s const *obj, int (*dup)(void *, voi
 A_EXTERN a_vec_s *a_vec_move(a_vec_s *ctx, a_vec_s *obj);
 
 /*!
- @brief modify size of a element for a pointer to vector structure
+ @brief edit size of a element for a pointer to vector structure
  @param[in] ctx points to an instance of vector structure
  @param[in] size the size of the new element
  @param[in] dtor previous element destructor
 */
-A_EXTERN void a_vec_set(a_vec_s *ctx, a_size_t size, void (*dtor)(void *));
+A_EXTERN void a_vec_edit(a_vec_s *ctx, a_size_t size, void (*dtor)(void *));
 
 /*!
  @brief modify element number for a pointer to string structure
@@ -354,7 +354,7 @@ A_INTERN void *a_vec_pull(a_vec_s *ctx) { return a_vec_pull_back(ctx); }
  a_vec_forenum(i, ctx)
  {
      T *it = (T *)a_vec_at(ctx, i);
-     assert(a_vec_get(ctx) == sizeof(*it));
+     assert(a_vec_siz(ctx) == sizeof(*it));
  }
  @endcode
  @param i index of elements in the vector
@@ -368,7 +368,7 @@ A_INTERN void *a_vec_pull(a_vec_s *ctx) { return a_vec_pull_back(ctx); }
  a_vec_forenum_reverse(i, ctx)
  {
      T *it = (T *)a_vec_at(ctx, i);
-     assert(a_vec_get(ctx) == sizeof(*it));
+     assert(a_vec_siz(ctx) == sizeof(*it));
  }
  @endcode
  @param i index of elements in the vector
@@ -381,7 +381,7 @@ A_INTERN void *a_vec_pull(a_vec_s *ctx) { return a_vec_pull_back(ctx); }
  @code{.c}
  a_vec_foreach(T, it, ctx)
  {
-     assert(a_vec_get(ctx) == sizeof(*it));
+     assert(a_vec_siz(ctx) == sizeof(*it));
  }
  @endcode
  @param T type of elements in the vector
@@ -395,7 +395,7 @@ A_INTERN void *a_vec_pull(a_vec_s *ctx) { return a_vec_pull_back(ctx); }
  @code{.c}
  a_vec_foreach_reverse(T, it, ctx)
  {
-     assert(a_vec_get(ctx) == sizeof(*it));
+     assert(a_vec_siz(ctx) == sizeof(*it));
  }
  @endcode
  @param T type of elements in the vector

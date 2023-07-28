@@ -30,7 +30,7 @@ static a_que_node_s *a_que_node_new(a_que_s *const ctx)
     }
     if (node->_data == A_NULL)
     {
-        node->_data = a_alloc(A_NULL, ctx->_size);
+        node->_data = a_alloc(A_NULL, ctx->_siz);
         if (a_unlikely(node->_data == A_NULL))
         {
             a_alloc(node, 0);
@@ -65,9 +65,9 @@ static int a_que_node_die(a_que_s *const ctx, a_que_node_s *const obj)
 
 static void a_que_drop_(a_que_s *const ctx)
 {
-    while (a_list_used(&ctx->_head))
+    while (ctx->_head.next != &ctx->_head)
     {
-        a_que_node_s *const node = (a_que_node_s *)ctx->_head.prev;
+        a_que_node_s *const node = (a_que_node_s *)ctx->_head.next;
         if (a_unlikely(a_que_node_die(ctx, node)))
         {
             break;
@@ -99,7 +99,7 @@ void a_que_die(a_que_s *const ctx, void (*const dtor)(void *))
 void a_que_ctor(a_que_s *const ctx, a_size_t const size)
 {
     a_list_ctor(&ctx->_head);
-    ctx->_size = size ? size : sizeof(a_cast_u);
+    ctx->_siz = size ? size : sizeof(a_cast_u);
     ctx->_ptr = A_NULL;
     ctx->_num = 0;
     ctx->_cur = 0;
@@ -109,28 +109,27 @@ void a_que_ctor(a_que_s *const ctx, a_size_t const size)
 void a_que_dtor(a_que_s *const ctx, void (*const dtor)(void *))
 {
     a_que_drop_(ctx);
+    a_que_node_s **node = ctx->_ptr;
     if (dtor)
     {
-        while (ctx->_cur)
+        for (; ctx->_cur; ++node, --ctx->_cur)
         {
-            --ctx->_cur;
-            dtor(ctx->_ptr[ctx->_cur]->_data); // deep
-            a_alloc(ctx->_ptr[ctx->_cur]->_data, 0); // data
-            a_alloc(ctx->_ptr[ctx->_cur], 0); // node
+            dtor((**node)._data);
+            a_alloc((**node)._data, 0);
+            a_alloc(*node, 0);
         }
     }
     else
     {
-        while (ctx->_cur)
+        for (; ctx->_cur; ++node, --ctx->_cur)
         {
-            --ctx->_cur;
-            a_alloc(ctx->_ptr[ctx->_cur]->_data, 0);
-            a_alloc(ctx->_ptr[ctx->_cur], 0);
+            a_alloc((**node)._data, 0);
+            a_alloc(*node, 0);
         }
     }
     a_alloc(ctx->_ptr, 0);
     ctx->_ptr = A_NULL;
-    ctx->_size = 0;
+    ctx->_siz = 0;
     ctx->_mem = 0;
 }
 
@@ -170,33 +169,34 @@ void *a_que_at(a_que_s const *const ctx, a_imax_t const idx)
     return ptr;
 }
 
-void a_que_set(a_que_s *const ctx, a_size_t size, void (*const dtor)(void *))
-{
-    size = size ? size : sizeof(a_cast_u);
-    a_que_drop(ctx, dtor);
-    ctx->_size = size;
-}
-
-void a_que_drop(a_que_s *const ctx, void (*dtor)(void *))
+void a_que_drop(a_que_s *const ctx, void (*const dtor)(void *))
 {
     a_que_drop_(ctx);
+    a_que_node_s **node = ctx->_ptr;
     if (dtor)
     {
-        for (a_size_t cur = ctx->_cur; cur--;)
+        for (a_size_t cur = ctx->_cur; cur; ++node, --cur)
         {
-            dtor(ctx->_ptr[cur]->_data); // deep
-            a_alloc(ctx->_ptr[cur]->_data, 0); // data
-            ctx->_ptr[cur]->_data = A_NULL;
+            dtor((**node)._data);
+            a_alloc((**node)._data, 0);
+            (**node)._data = A_NULL;
         }
     }
     else
     {
-        for (a_size_t cur = ctx->_cur; cur--;)
+        for (a_size_t cur = ctx->_cur; cur; ++node, --cur)
         {
-            a_alloc(ctx->_ptr[cur]->_data, 0);
-            ctx->_ptr[cur]->_data = A_NULL;
+            a_alloc((**node)._data, 0);
+            (**node)._data = A_NULL;
         }
     }
+}
+
+void a_que_edit(a_que_s *const ctx, a_size_t size, void (*const dtor)(void *))
+{
+    size = size ? size : sizeof(a_cast_u);
+    a_que_drop(ctx, dtor);
+    ctx->_siz = size;
 }
 
 int a_que_swap_(a_que_s const *const ctx, void *const lhs, void *const rhs)
@@ -356,7 +356,7 @@ void *a_que_push_back(a_que_s *const ctx)
 void *a_que_pull_fore(a_que_s *const ctx)
 {
     void *data = A_NULL;
-    if (a_list_used(&ctx->_head))
+    while (ctx->_head.next != &ctx->_head)
     {
         a_que_node_s *const node = (a_que_node_s *)ctx->_head.next;
         if (a_unlikely(a_que_node_die(ctx, node)))
@@ -373,7 +373,7 @@ void *a_que_pull_fore(a_que_s *const ctx)
 void *a_que_pull_back(a_que_s *const ctx)
 {
     void *data = A_NULL;
-    if (a_list_used(&ctx->_head))
+    while (ctx->_head.prev != &ctx->_head)
     {
         a_que_node_s *const node = (a_que_node_s *)ctx->_head.prev;
         if (a_unlikely(a_que_node_die(ctx, node)))

@@ -109,12 +109,11 @@ int a_vec_copy(a_vec_s *const ctx, a_vec_s const *const obj, int (*const dup)(vo
     ctx->_siz = obj->_siz;
     ctx->_num = obj->_num;
     ctx->_mem = obj->_mem;
-    a_size_t const size = obj->_num * obj->_siz;
     if (dup)
     {
         a_byte_t *dst = (a_byte_t *)ctx->_ptr;
         a_byte_t *src = (a_byte_t *)obj->_ptr;
-        for (a_byte_t *const end = src + size; src != end;)
+        for (a_size_t num = obj->_num; num; --num)
         {
             dup(dst, src);
             dst += ctx->_siz;
@@ -123,7 +122,7 @@ int a_vec_copy(a_vec_s *const ctx, a_vec_s const *const obj, int (*const dup)(vo
     }
     else
     {
-        a_copy(ctx->_ptr, obj->_ptr, size);
+        a_copy(ctx->_ptr, obj->_ptr, obj->_num * obj->_siz);
     }
     return A_SUCCESS;
 }
@@ -135,7 +134,7 @@ a_vec_s *a_vec_move(a_vec_s *const ctx, a_vec_s *const obj)
     return ctx;
 }
 
-void a_vec_set(a_vec_s *const ctx, a_size_t size, void (*const dtor)(void *))
+void a_vec_edit(a_vec_s *const ctx, a_size_t size, void (*const dtor)(void *))
 {
     size = size ? size : sizeof(a_cast_u);
     a_vec_drop_(ctx, 0, dtor);
