@@ -5,7 +5,7 @@ void *a_copy(void *const A_RESTRICT _dst, void const *const A_RESTRICT _src, a_s
 {
     a_byte_t const *src = (a_byte_t const *)_src;
     a_byte_t *dst = (a_byte_t *)_dst;
-    while (siz--)
+    for (; siz; --siz)
     {
         *dst++ = *src++;
     }
@@ -18,7 +18,7 @@ void *a_move(void *const _dst, void const *const _src, a_size_t siz)
     a_byte_t *dst = (a_byte_t *)_dst;
     if (dst <= src)
     {
-        while (siz--)
+        for (; siz; --siz)
         {
             *dst++ = *src++;
         }
@@ -27,7 +27,7 @@ void *a_move(void *const _dst, void const *const _src, a_size_t siz)
     {
         src += siz;
         dst += siz;
-        while (siz--)
+        for (; siz; --siz)
         {
             *--dst = *--src;
         }
@@ -37,7 +37,7 @@ void *a_move(void *const _dst, void const *const _src, a_size_t siz)
 
 void *a_fill(void *const _ptr, a_size_t siz, int const val)
 {
-    for (a_byte_t *ptr = (a_byte_t *)_ptr; siz--; ++ptr)
+    for (a_byte_t *ptr = (a_byte_t *)_ptr; siz; ++ptr, --siz)
     {
         *ptr = (a_byte_t)val;
     }
@@ -54,7 +54,7 @@ void a_swap(void *const _lhs, void *const _rhs, a_size_t siz)
     a_byte_t tmp[1];
     for (a_byte_t *lhs = (a_byte_t *)_lhs,
                   *rhs = (a_byte_t *)_rhs;
-         siz--; ++lhs, ++rhs)
+         siz; ++lhs, ++rhs, --siz)
     {
         *tmp = *lhs;
         *lhs = *rhs;
@@ -78,7 +78,7 @@ a_umax_t a_hash_bkdrn(void const *const _ptr, a_size_t siz, a_umax_t val)
 {
     if (_ptr && siz)
     {
-        for (a_byte_t const *ptr = (a_byte_t const *)_ptr; siz--; ++ptr)
+        for (a_byte_t const *ptr = (a_byte_t const *)_ptr; siz; ++ptr, --siz)
         {
             val = val * 131 + *ptr;
         }
