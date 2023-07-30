@@ -25,15 +25,13 @@ import ctypes.util
 import ctypes
 
 
-def check_math(define_macros=[]):
+def check_math(define_macros=[], text=""):
     if sys.platform == "win32":
         path_libm = ctypes.util.find_library("ucrtbase")
         if not path_libm:
             path_libm = ctypes.util.find_msvcrt()
     else:
         path_libm = ctypes.util.find_library("m")
-    text = "#define A_HAVE_COMPLEX_H 1\n"
-    text += "#define A_HAVE_STDINT_H 1\n"
     try:
         libm = ctypes.CDLL(path_libm)
     except:

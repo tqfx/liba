@@ -74,8 +74,6 @@ target("a")
     local source = 'int x = 1; puts(*(char *)&x ? "1234" : "4321");'
     configvar_check_csnippets("A_BYTE_ORDER", source, {output = true, number = true})
     includes("check_cincludes.lua")
-    configvar_check_cincludes("A_HAVE_COMPLEX_H", "complex.h")
-    configvar_check_cincludes("A_HAVE_STDINT_H", "stdint.h")
     function check_math(funcs, opt)
         includes("check_cfuncs.lua")
         for i, func in pairs(funcs) do

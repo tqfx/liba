@@ -35,14 +35,6 @@ if res[0]:
     conf.Define('A_BYTE_ORDER', res[1], 'The byte order of compiler target architecture.')
 A_SIZE_FLOAT = int(env.GetOption('float'))
 conf.Define('A_SIZE_FLOAT', A_SIZE_FLOAT, "The size of `a_float_t', as computed by sizeof.")
-A_HAVE_COMPLEX_H = conf.CheckHeader('complex.h')
-Undefine(conf)
-if A_HAVE_COMPLEX_H:
-    conf.Define('A_HAVE_COMPLEX_H', 1)
-A_HAVE_STDINT_H = conf.CheckHeader('stdint.h')
-Undefine(conf)
-if A_HAVE_STDINT_H:
-    conf.Define('A_HAVE_STDINT_H', 1)
 conf.CheckLib('m')
 Undefine(conf)
 for func in (

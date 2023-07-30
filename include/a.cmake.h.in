@@ -16,8 +16,6 @@
 #define A_SIZE_FLOAT @LIBA_FLOAT@
 #endif /* A_SIZE_FLOAT */
 
-#cmakedefine A_HAVE_COMPLEX_H @A_HAVE_COMPLEX_H@
-#cmakedefine A_HAVE_STDINT_H @A_HAVE_STDINT_H@
 #cmakedefine A_HAVE_HYPOT @A_HAVE_HYPOT@
 #cmakedefine A_HAVE_LOG1P @A_HAVE_LOG1P@
 #cmakedefine A_HAVE_ATAN2 @A_HAVE_ATAN2@

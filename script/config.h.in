@@ -15,12 +15,6 @@
 /* The size of `void *`, as computed by sizeof. */
 #undef A_SIZE_POINTER
 
-/* Define to 1 if you have the <stdint.h> header file. */
-#undef A_HAVE_STDINT_H
-
-/* Define to 1 if you have the <complex.h> header file. */
-#undef A_HAVE_COMPLEX_H
-
 /* Define to 1 if you have `atan2`, as a function or macro. */
 #undef A_HAVE_ATAN2
 

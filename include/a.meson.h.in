@@ -6,17 +6,15 @@
 #define A_VERSION_PATCH @A_VERSION_PATCH@
 
 #if !defined A_SIZE_POINTER
-#define A_SIZE_POINTER @A_SIZE_POINTER@
+#mesondefine A_SIZE_POINTER
 #endif /* A_SIZE_POINTER */
 #if !defined A_BYTE_ORDER
-#define A_BYTE_ORDER @A_BYTE_ORDER@
+#mesondefine A_BYTE_ORDER
 #endif /* A_BYTE_ORDER */
 #if !defined A_SIZE_FLOAT
-#define A_SIZE_FLOAT @A_SIZE_FLOAT@
+#mesondefine A_SIZE_FLOAT
 #endif /* A_SIZE_FLOAT */
 
-#mesondefine A_HAVE_COMPLEX_H
-#mesondefine A_HAVE_STDINT_H
 #mesondefine A_HAVE_HYPOT
 #mesondefine A_HAVE_LOG1P
 #mesondefine A_HAVE_ATAN2

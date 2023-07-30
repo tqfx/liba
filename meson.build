@@ -23,12 +23,6 @@ elif target_machine.endian() == 'big'
 endif
 
 compiler = meson.get_compiler('c')
-if compiler.has_header('stdint.h')
-    a_have_h.set('A_HAVE_STDINT_H', '1')
-endif
-if compiler.has_header('complex.h')
-    a_have_h.set('A_HAVE_COMPLEX_H', '1')
-endif
 a_have_h.set('A_SIZE_POINTER', compiler.sizeof('void *'))
 
 math = ['hypot', 'log1p', 'atan2',
