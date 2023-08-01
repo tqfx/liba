@@ -46,7 +46,7 @@ a_float_t a_complex_logabs(a_complex_s const z)
         max = yabs;
         u = xabs / yabs;
     }
-    return a_float_log(max) + a_float_log1p(u * u) * A_FLOAT_C(0.5);
+    return a_float_log(max) + A_FLOAT_C(0.5) * a_float_log1p(u * u);
 }
 
 a_float_t a_complex_abs2(a_complex_s const z)
@@ -61,11 +61,11 @@ a_float_t a_complex_abs(a_complex_s const z)
 
 a_float_t a_complex_arg(a_complex_s const z)
 {
-    if (z.real == 0 && z.imag == 0)
+    if (z.real != 0 || z.imag != 0)
     {
-        return 0;
+        return a_float_atan2(z.imag, z.real);
     }
-    return a_float_atan2(z.imag, z.real);
+    return 0;
 }
 
 a_complex_s a_complex_add(a_complex_s x, a_complex_s const y)
@@ -125,7 +125,7 @@ a_complex_s a_complex_mul_imag(a_complex_s x, a_float_t const y)
 {
     a_complex_s z;
     z.real = -x.imag * y;
-    z.imag = x.real * y;
+    z.imag = +x.real * y;
     return z;
 }
 
@@ -133,10 +133,12 @@ a_complex_s a_complex_div(a_complex_s x, a_complex_s y)
 {
     a_complex_s z;
     a_float_t const inv = 1 / a_complex_abs(y);
+    x.real *= inv;
+    x.imag *= inv;
     y.real *= inv;
     y.imag *= inv;
-    z.real = (x.real * y.real + x.imag * y.imag) * inv;
-    z.imag = (x.imag * y.real - x.real * y.imag) * inv;
+    z.real = x.real * y.real + x.imag * y.imag;
+    z.imag = x.imag * y.real - x.real * y.imag;
     return z;
 }
 
@@ -150,7 +152,7 @@ a_complex_s a_complex_div_real(a_complex_s x, a_float_t const y)
 a_complex_s a_complex_div_imag(a_complex_s x, a_float_t const y)
 {
     a_complex_s z;
-    z.real = x.imag / y;
+    z.real = +x.imag / y;
     z.imag = -x.real / y;
     return z;
 }
@@ -158,10 +160,10 @@ a_complex_s a_complex_div_imag(a_complex_s x, a_float_t const y)
 a_complex_s a_complex_inv(a_complex_s z)
 {
     a_float_t const inv = 1 / a_complex_abs(z);
+    z.real *= +inv;
+    z.imag *= -inv;
     z.real *= inv;
     z.imag *= inv;
-    z.real *= inv;
-    z.imag *= -inv;
     return z;
 }
 
@@ -205,24 +207,24 @@ a_complex_s a_complex_sqrt(a_complex_s z)
     if (x >= y)
     {
         a_float_t t = y / x;
-        w = a_float_sqrt(x) * a_float_sqrt((a_float_sqrt(t * t + 1) + 1) * A_FLOAT_C(0.5));
+        w = A_FLOAT_SQRT1_2 * a_float_sqrt(x) * a_float_sqrt(a_float_sqrt(t * t + 1) + 1);
     }
     else
     {
         a_float_t t = x / y;
-        w = a_float_sqrt(y) * a_float_sqrt((a_float_sqrt(t * t + 1) + t) * A_FLOAT_C(0.5));
+        w = A_FLOAT_SQRT1_2 * a_float_sqrt(y) * a_float_sqrt(a_float_sqrt(t * t + 1) + t);
     }
     if (z.real >= 0)
     {
         z.real = w;
-        z.imag = z.imag / (w * 2);
+        z.imag = z.imag / (2 * w);
         return z;
     }
     if (z.imag < 0)
     {
         w = -w;
     }
-    z.real = z.imag / (w * 2);
+    z.real = z.imag / (2 * w);
     z.imag = w;
     return z;
 #endif /* A_HAVE_CSQRT */
@@ -265,7 +267,7 @@ a_complex_s a_complex_pow(a_complex_s z, a_complex_s const a)
     {
         if (a.real == 0 && a.imag == 0)
         {
-            z.real = A_FLOAT_C(1.0);
+            z.real = 1;
         }
         return z;
     }
@@ -283,7 +285,7 @@ a_complex_s a_complex_pow_real(a_complex_s z, a_float_t const a)
     {
         if (a == 0)
         {
-            z.real = A_FLOAT_C(1.0);
+            z.real = 1;
         }
         return z;
     }
@@ -447,10 +449,10 @@ a_complex_s a_complex_tan(a_complex_s z)
     a_float_t const cr = a_float_cos(z.real);
     a_float_t const si = a_float_sinh(z.imag);
     a_float_t const inv = A_FLOAT_C(0.5) / (cr * cr + si * si);
-    z.real = a_float_sin(z.real * 2) * inv;
+    z.real = a_float_sin(2 * z.real) * inv;
     if (a_float_abs(z.imag) < 1)
     {
-        z.imag = a_float_sinh(z.imag * 2) * inv;
+        z.imag = a_float_sinh(2 * z.imag) * inv;
         return z;
     }
     a_float_t const den = a_float_pow(cr / si, 2) + 1;
@@ -558,17 +560,17 @@ a_complex_s a_complex_asin_real(a_float_t const x)
     a_complex_s z = A_COMPLEX_C(0.0, 0.0);
     if (a_float_abs(x) <= 1)
     {
-        z.real = a_float_asin(0);
+        z.real = a_float_asin(x);
         return z;
     }
     if (x < 0)
     {
-        z.imag = a_float_acosh(-x);
         z.real = -A_FLOAT_PI_2;
+        z.imag = a_float_acosh(-x);
         return z;
     }
-    z.imag = -a_float_acosh(x);
     z.real = A_FLOAT_PI_2;
+    z.imag = -a_float_acosh(x);
     return z;
 }
 
@@ -656,13 +658,13 @@ a_complex_s a_complex_acos_real(a_float_t const x)
     a_complex_s z = A_COMPLEX_C(0.0, 0.0);
     if (a_float_abs(x) <= 1)
     {
-        z.real = a_float_acos(0);
+        z.real = a_float_acos(x);
         return z;
     }
     if (x < 0)
     {
-        z.imag = -a_float_acosh(-x);
         z.real = A_FLOAT_PI;
+        z.imag = -a_float_acosh(-x);
         return z;
     }
     z.imag = a_float_acosh(x);
@@ -719,7 +721,7 @@ a_complex_s a_complex_atan(a_complex_s z)
         }
         return z;
     }
-    z.real = A_FLOAT_C(0.5) * a_float_atan2(z.real * 2, (1 + r) * (1 - r));
+    z.real = A_FLOAT_C(0.5) * a_float_atan2(2 * z.real, (1 + r) * (1 - r));
     return z;
 #endif /* A_HAVE_CATAN */
 }
@@ -742,8 +744,8 @@ a_complex_s a_complex_asec_real(a_float_t const x)
         z.imag = a_float_acosh(1 / x);
         return z;
     }
-    z.imag = -a_float_acosh(-1 / x);
     z.real = A_FLOAT_PI;
+    z.imag = -a_float_acosh(-1 / x);
     return z;
 }
 
@@ -762,12 +764,12 @@ a_complex_s a_complex_acsc_real(a_float_t const x)
     }
     if (x >= 0)
     {
-        z.imag = -a_float_acosh(1 / x);
         z.real = A_FLOAT_PI_2;
+        z.imag = -a_float_acosh(1 / x);
         return z;
     }
-    z.imag = a_float_acosh(-1 / x);
     z.real = -A_FLOAT_PI_2;
+    z.imag = a_float_acosh(-1 / x);
     return z;
 }
 
@@ -860,7 +862,7 @@ a_complex_s a_complex_tanh(a_complex_s z)
     a_float_t const ci = a_float_cos(z.imag);
     a_float_t const sr = a_float_sinh(z.real);
     a_float_t const inv = 1 / (ci * ci + sr * sr);
-    z.imag = a_float_sin(z.imag * 2) * inv * A_FLOAT_C(0.5);
+    z.imag = A_FLOAT_C(0.5) * a_float_sin(2 * z.imag) * inv;
     if (a_float_abs(z.real) < 1)
     {
         z.real = a_float_sinh(z.real) * a_float_cosh(z.real) * inv;
