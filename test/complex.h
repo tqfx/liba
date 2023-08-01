@@ -489,7 +489,7 @@ static a_complex_s strtocomplex(char const *A_RESTRICT str, char **A_RESTRICT en
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     a_complex_s x = A_COMPLEX_C(0.0, 0.0);
-    a_complex_s y = A_COMPLEX_C(0.0, 0.0);
+    a_complex_s y = a_complex_c(0.0, 0.0);
     char *endptr = A_NULL;
     if (argc > 1)
     {

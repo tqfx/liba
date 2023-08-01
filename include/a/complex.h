@@ -19,15 +19,15 @@
 
 /*! constructs a complex number constant from real and imaginary parts */
 #if !defined __cplusplus
-#define a_complex_c(r, i)          \
-    (a_complex_s)                  \
-    {                              \
-        a_float_c(r), a_float_c(i) \
+#define a_complex_c(r, i)              \
+    (a_complex_s)                      \
+    {                                  \
+        a_float_c(, r), a_float_c(, i) \
     }
 #else /* !__cplusplus */
-#define a_complex_c(r, i)          \
-    {                              \
-        a_float_c(r), a_float_c(i) \
+#define a_complex_c(r, i)              \
+    {                                  \
+        a_float_c(, r), a_float_c(, i) \
     }
 #endif /* __cplusplus */
 
