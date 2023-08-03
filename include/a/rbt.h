@@ -26,13 +26,13 @@
 */
 typedef struct a_rbt_s
 {
-    /*!< pointer to left child or NULL */
+    /*!< pointer to left child or null */
     struct a_rbt_s *left;
-    /*!< pointer to right child or NULL */
+    /*!< pointer to right child or null */
     struct a_rbt_s *right;
     /*!< pointer to parent combined with the color. The mapping is: 0 => red, 1 => black.
      The rest of the bits are the pointer to the parent node. It must be 2-byte aligned,
-     and it will be NULL if this is the root node and therefore has no parent.
+     and it will be null if this is the root node and therefore has no parent.
     */
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
     a_uptr_t _parent;
@@ -46,7 +46,7 @@ typedef struct a_rbt_s
  @brief access parent of red–black binary search tree node
  @param[in] node points to red–black binary search tree node
  @return a pointer to the parent of the specified red–black tree node,
- or NULL if it is already the root of the tree.
+ or null if it is already the root of the tree.
 */
 A_INTERN a_rbt_s *a_rbt_parent(a_rbt_s const *const node)
 {
@@ -97,70 +97,70 @@ extern "C" {
 /*!
  @brief access head node of red–black binary search tree in-order
  @param[in] root red–black binary search tree root
- @return head node or NULL
+ @return head node or null
 */
 A_EXTERN a_rbt_s *a_rbt_head(a_rbt_u const *root);
 
 /*!
  @brief access tail node of red–black binary search tree in-order
  @param[in] root red–black binary search tree root
- @return tail node or NULL
+ @return tail node or null
 */
 A_EXTERN a_rbt_s *a_rbt_tail(a_rbt_u const *root);
 
 /*!
  @brief access next node of red–black binary search tree node in-order
  @param[in] node red–black binary search tree node
- @return next node or NULL
+ @return next node or null
 */
 A_EXTERN a_rbt_s *a_rbt_next(a_rbt_s *node);
 
 /*!
  @brief access prev node of red–black binary search tree node in-order
  @param[in] node red–black binary search tree node
- @return prev node or NULL
+ @return prev node or null
 */
 A_EXTERN a_rbt_s *a_rbt_prev(a_rbt_s *node);
 
 /*!
  @brief access next node of red–black binary search tree node preorder
  @param[in] node red–black binary search tree node
- @return next node or NULL
+ @return next node or null
 */
 A_EXTERN a_rbt_s *a_rbt_pre_next(a_rbt_s *node);
 
 /*!
  @brief access prev node of red–black binary search tree node preorder
  @param[in] node red–black binary search tree node
- @return prev node or NULL
+ @return prev node or null
 */
 A_EXTERN a_rbt_s *a_rbt_pre_prev(a_rbt_s *node);
 
 /*!
  @brief access head node of red–black binary search tree postorder
  @param[in] root red–black binary search tree root
- @return head node or NULL
+ @return head node or null
 */
 A_EXTERN a_rbt_s *a_rbt_post_head(a_rbt_u const *root);
 
 /*!
  @brief access tail node of red–black binary search tree postorder
  @param[in] root red–black binary search tree root
- @return tail node or NULL
+ @return tail node or null
 */
 A_EXTERN a_rbt_s *a_rbt_post_tail(a_rbt_u const *root);
 
 /*!
  @brief access next node of red–black binary search tree node postorder
  @param[in] node red–black binary search tree node
- @return next node or NULL
+ @return next node or null
 */
 A_EXTERN a_rbt_s *a_rbt_post_next(a_rbt_s *node);
 
 /*!
  @brief access prev node of red–black binary search tree node postorder
  @param[in] node red–black binary search tree node
- @return prev node or NULL
+ @return prev node or null
 */
 A_EXTERN a_rbt_s *a_rbt_post_prev(a_rbt_s *node);
 
@@ -168,8 +168,8 @@ A_EXTERN a_rbt_s *a_rbt_post_prev(a_rbt_s *node);
  @brief tear a node from red–black binary search tree
  @param[in] root red–black binary search tree root
  @param[in,out] next input starting node or,
- if NULL, root node. output next node or NULL.
- @return teared node or NULL
+ if null, root node. output next node or null.
+ @return teared node or null
 */
 A_EXTERN a_rbt_s *a_rbt_tear(a_rbt_u *root, a_rbt_s **next);
 
@@ -181,7 +181,7 @@ A_EXTERN a_rbt_s *a_rbt_tear(a_rbt_u *root, a_rbt_s **next);
   @arg cmp(lhs,rhs)==0 *lhs is equivalent to *rhs
   @arg cmp(lhs,rhs)<0 *lhs goes before *rhs
   @arg cmp(lhs,rhs)>0 *lhs goes after *rhs
- @return specified node or NULL
+ @return specified node or null
 */
 A_EXTERN a_rbt_s *a_rbt_search(a_rbt_u const *root, void const *ctx, int (*cmp)(void const *, void const *));
 
@@ -193,7 +193,7 @@ A_EXTERN a_rbt_s *a_rbt_search(a_rbt_u const *root, void const *ctx, int (*cmp)(
   @arg cmp(lhs,rhs)==0 *lhs is equivalent to *rhs
   @arg cmp(lhs,rhs)<0 *lhs goes before *rhs
   @arg cmp(lhs,rhs)>0 *lhs goes after *rhs
- @return NULL or duplicate node
+ @return null or duplicate node
 */
 A_EXTERN a_rbt_s *a_rbt_insert(a_rbt_u *root, a_rbt_s *node, int (*cmp)(void const *, void const *));
 

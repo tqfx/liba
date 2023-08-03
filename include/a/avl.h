@@ -23,9 +23,9 @@
 */
 typedef struct a_avl_s
 {
-    /*!< pointer to left child or NULL */
+    /*!< pointer to left child or null */
     struct a_avl_s *left;
-    /*!< pointer to right child or NULL */
+    /*!< pointer to right child or null */
     struct a_avl_s *right;
     /*!< pointer to parent combined with the balance factor
      Low 2 bits: One greater than the balance factor of this subtree,
@@ -35,7 +35,7 @@ typedef struct a_avl_s
         10 => +1
         11 => undefined
      The rest of the bits are the pointer to the parent node. It must be 4-byte aligned,
-     and it will be NULL if this is the root node and therefore has no parent.
+     and it will be null if this is the root node and therefore has no parent.
     */
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
     a_uptr_t _parent;
@@ -49,7 +49,7 @@ typedef struct a_avl_s
  @brief access parent of AVL binary search tree node
  @param[in] node points to AVL binary search tree node
  @return a pointer to the parent of the specified AVL tree node,
- or NULL if it is already the root of the tree.
+ or null if it is already the root of the tree.
 */
 A_INTERN a_avl_s *a_avl_parent(a_avl_s const *const node)
 {
@@ -100,70 +100,70 @@ extern "C" {
 /*!
  @brief access head node of AVL binary search tree in-order
  @param[in] root AVL binary search tree root
- @return head node or NULL
+ @return head node or null
 */
 A_EXTERN a_avl_s *a_avl_head(a_avl_u const *root);
 
 /*!
  @brief access tail node of AVL binary search tree in-order
  @param[in] root AVL binary search tree root
- @return tail node or NULL
+ @return tail node or null
 */
 A_EXTERN a_avl_s *a_avl_tail(a_avl_u const *root);
 
 /*!
  @brief access next node of AVL binary search tree node in-order
  @param[in] node AVL binary search tree node
- @return next node or NULL
+ @return next node or null
 */
 A_EXTERN a_avl_s *a_avl_next(a_avl_s *node);
 
 /*!
  @brief access prev node of AVL binary search tree node in-order
  @param[in] node AVL binary search tree node
- @return prev node or NULL
+ @return prev node or null
 */
 A_EXTERN a_avl_s *a_avl_prev(a_avl_s *node);
 
 /*!
  @brief access next node of AVL binary search tree node preorder
  @param[in] node AVL binary search tree node
- @return next node or NULL
+ @return next node or null
 */
 A_EXTERN a_avl_s *a_avl_pre_next(a_avl_s *node);
 
 /*!
  @brief access prev node of AVL binary search tree node preorder
  @param[in] node AVL binary search tree node
- @return prev node or NULL
+ @return prev node or null
 */
 A_EXTERN a_avl_s *a_avl_pre_prev(a_avl_s *node);
 
 /*!
  @brief access head node of AVL binary search tree postorder
  @param[in] root AVL binary search tree root
- @return head node or NULL
+ @return head node or null
 */
 A_EXTERN a_avl_s *a_avl_post_head(a_avl_u const *root);
 
 /*!
  @brief access tail node of AVL binary search tree postorder
  @param[in] root AVL binary search tree root
- @return tail node or NULL
+ @return tail node or null
 */
 A_EXTERN a_avl_s *a_avl_post_tail(a_avl_u const *root);
 
 /*!
  @brief access next node of AVL binary search tree node postorder
  @param[in] node AVL binary search tree node
- @return next node or NULL
+ @return next node or null
 */
 A_EXTERN a_avl_s *a_avl_post_next(a_avl_s *node);
 
 /*!
  @brief access prev node of AVL binary search tree node postorder
  @param[in] node AVL binary search tree node
- @return prev node or NULL
+ @return prev node or null
 */
 A_EXTERN a_avl_s *a_avl_post_prev(a_avl_s *node);
 
@@ -171,8 +171,8 @@ A_EXTERN a_avl_s *a_avl_post_prev(a_avl_s *node);
  @brief tear a node from AVL binary search tree
  @param[in] root AVL binary search tree root
  @param[in,out] next input starting node or,
- if NULL, root node. output next node or NULL.
- @return teared node or NULL
+ if null, root node. output next node or null.
+ @return teared node or null
 */
 A_EXTERN a_avl_s *a_avl_tear(a_avl_u *root, a_avl_s **next);
 
@@ -184,7 +184,7 @@ A_EXTERN a_avl_s *a_avl_tear(a_avl_u *root, a_avl_s **next);
   @arg cmp(lhs,rhs)==0 *lhs is equivalent to *rhs
   @arg cmp(lhs,rhs)<0 *lhs goes before *rhs
   @arg cmp(lhs,rhs)>0 *lhs goes after *rhs
- @return specified node or NULL
+ @return specified node or null
 */
 A_EXTERN a_avl_s *a_avl_search(a_avl_u const *root, void const *ctx, int (*cmp)(void const *, void const *));
 
@@ -196,7 +196,7 @@ A_EXTERN a_avl_s *a_avl_search(a_avl_u const *root, void const *ctx, int (*cmp)(
   @arg cmp(lhs,rhs)==0 *lhs is equivalent to *rhs
   @arg cmp(lhs,rhs)<0 *lhs goes before *rhs
   @arg cmp(lhs,rhs)>0 *lhs goes after *rhs
- @return NULL or duplicate node
+ @return null or duplicate node
 */
 A_EXTERN a_avl_s *a_avl_insert(a_avl_u *root, a_avl_s *node, int (*cmp)(void const *, void const *));
 

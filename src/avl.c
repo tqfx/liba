@@ -35,7 +35,7 @@ static A_INLINE int a_avl_factor(a_avl_s const *const node)
 }
 
 /*
-Adds %amount to the balance factor of the specified AVL tree node.
+Adds $amount to the balance factor of the specified AVL tree node.
 The caller must ensure this still results in a valid balance factor (-1, 0, or 1).
 */
 static A_INLINE void a_avl_set_factor(a_avl_s *const node, int const amount)
@@ -206,18 +206,18 @@ node
     A subtree that has increased in height by 1 due to an insertion.
 
 parent
-    Parent of node; must not be NULL.
+    Parent of node; must not be null.
 
 sign
     -1 if node is the left child of parent;
     +1 if node is the right child of parent.
 
 This function will adjust parent's balance factor, then do a (single or double) rotation if necessary.
-The return value will be %true if the full AVL tree is now adequately balanced,
-or %false if the subtree rooted at parent is now adequately balanced but has increased in height by 1,
+The return value will be $true if the full AVL tree is now adequately balanced,
+or $false if the subtree rooted at parent is now adequately balanced but has increased in height by 1,
 so the caller should continue up the tree.
 
-Note that if %false is returned, no rotation will have been done.
+Note that if $false is returned, no rotation will have been done.
 Indeed, a single node insertion cannot require that more than one (single or double) rotation be done.
 */
 static a_bool_t a_avl_handle_growth(a_avl_u *const root, a_avl_s *const parent, a_avl_s *const node, int const sign)
@@ -225,7 +225,7 @@ static a_bool_t a_avl_handle_growth(a_avl_u *const root, a_avl_s *const parent, 
     int const old_factor = a_avl_factor(parent);
     if (old_factor == 0)
     {
-        /* %parent is still sufficiently balanced (-1 or +1 balance factor), but must have increased in height. Continue up the tree. */
+        /* $parent is still sufficiently balanced (-1 or +1 balance factor), but must have increased in height. Continue up the tree. */
         a_avl_set_factor(parent, sign);
         return A_FALSE;
     }
@@ -233,24 +233,24 @@ static a_bool_t a_avl_handle_growth(a_avl_u *const root, a_avl_s *const parent, 
     int const new_factor = old_factor + sign;
     if (new_factor == 0)
     {
-        /* %parent is now perfectly balanced (0 balance factor). It cannot have increased in height, so there is nothing more to do. */
+        /* $parent is now perfectly balanced (0 balance factor). It cannot have increased in height, so there is nothing more to do. */
         a_avl_set_factor(parent, sign);
         return A_TRUE;
     }
 
-    /* %parent is too left-heavy (new_balance_factor == -2) or too right-heavy (new_balance_factor == +2). */
+    /* $parent is too left-heavy (new_balance_factor == -2) or too right-heavy (new_balance_factor == +2). */
 
     /*
-    Test whether %node is left-heavy (-1 balance factor) or right-heavy (+1 balance factor).
+    Test whether $node is left-heavy (-1 balance factor) or right-heavy (+1 balance factor).
     Note that it cannot be perfectly balanced (0 balance factor) because here we are under the invariant that
-    %node has increased in height due to the insertion.
+    $node has increased in height due to the insertion.
     */
     if (sign * a_avl_factor(node) > 0)
     {
         /*
-        %node (B below) is heavy in the same direction %parent (A below) is heavy.
+        $node (B below) is heavy in the same direction $parent (A below) is heavy.
         The comment, diagram, and equations below assume sign < 0. The other case is symmetric!
-        Do a clockwise rotation rooted at %parent (A below):
+        Do a clockwise rotation rooted at $parent (A below):
 
                   A              B
                  / \           /   \
@@ -279,18 +279,18 @@ static a_bool_t a_avl_handle_growth(a_avl_u *const root, a_avl_s *const parent, 
         */
         a_avl_rotate(root, parent, -sign);
 
-        /* Equivalent to setting %parent's balance factor to 0. */
+        /* Equivalent to setting $parent's balance factor to 0. */
         a_avl_set_factor(parent, -sign); // A
 
-        /* Equivalent to setting %node's balance factor to 0. */
+        /* Equivalent to setting $node's balance factor to 0. */
         a_avl_set_factor(node, -sign); // B
     }
     else
     {
         /*
-        %node (B below) is heavy in the direction opposite from the direction %parent (A below) is heavy.
+        $node (B below) is heavy in the direction opposite from the direction $parent (A below) is heavy.
         The comment, diagram, and equations below assume sign < 0. The other case is symmetric!
-        Do a counterblockwise rotation rooted at %node (B below), then a clockwise rotation rooted at %parent (A below):
+        Do a counterblockwise rotation rooted at $node (B below), then a clockwise rotation rooted at $parent (A below):
 
                 A             A           E
                / \           / \        /   \
@@ -348,7 +348,7 @@ void a_avl_insert_adjust(a_avl_u *const root, a_avl_s *node)
 
     if (a_avl_factor(parent) == 0)
     {
-        /* %parent did not change in height. Nothing more to do. */
+        /* $parent did not change in height. Nothing more to do. */
         return;
     }
 
@@ -382,20 +382,20 @@ root
 
 parent
     A node in the tree, exactly one of whose subtrees has decreased in height by 1 due to a deletion.
-    (This includes the case where one of the child pointers has become NULL,
-    since we can consider the "NULL" subtree to have a height of 0.)
+    (This includes the case where one of the child pointers has become null,
+    since we can consider the "null" subtree to have a height of 0.)
 
 sign
     +1 if the left subtree of parent has decreased in height by 1;
     -1 if the right subtree of parent has decreased in height by 1.
 
 left
-    If the return value is not NULL, this will be set to
-    %true if the left subtree of the returned node has decreased in height by 1,
-    %false if the right subtree of the returned node has decreased in height by 1.
+    If the return value is not null, this will be set to
+    $true if the left subtree of the returned node has decreased in height by 1,
+    $false if the right subtree of the returned node has decreased in height by 1.
 
 This function will adjust parent's balance factor, then do a (single or double) rotation if necessary.
-The return value will be NULL if the full AVL tree is now adequately balanced,
+The return value will be null if the full AVL tree is now adequately balanced,
 or a pointer to the parent of parent if parent is now adequately balanced but has decreased in height by 1.
 Also in the latter case, *left will be set.
 */
@@ -405,7 +405,7 @@ static a_avl_s *a_avl_handle_shrink(a_avl_u *const root, a_avl_s *parent, int co
     if (old_factor == 0)
     {
         /*
-        Prior to the deletion, the subtree rooted at %parent was perfectly balanced.
+        Prior to the deletion, the subtree rooted at $parent was perfectly balanced.
         It's now unbalanced by 1, but that's okay and its height hasn't changed. Nothing more to do.
         */
         a_avl_set_factor(parent, sign);
@@ -417,7 +417,7 @@ static a_avl_s *a_avl_handle_shrink(a_avl_u *const root, a_avl_s *parent, int co
     if (new_factor == 0)
     {
         /*
-        The subtree rooted at %parent is now perfectly balanced, whereas before the deletion it was unbalanced by 1.
+        The subtree rooted at $parent is now perfectly balanced, whereas before the deletion it was unbalanced by 1.
         Its height must have decreased by 1. No rotation is needed at this location, but continue up the tree.
         */
         a_avl_set_factor(parent, sign);
@@ -425,12 +425,12 @@ static a_avl_s *a_avl_handle_shrink(a_avl_u *const root, a_avl_s *parent, int co
     }
     else
     {
-        /* %parent is too left-heavy (new_factor == -2) or too right-heavy (new_factor == +2). */
+        /* $parent is too left-heavy (new_factor == -2) or too right-heavy (new_factor == +2). */
         node = a_avl_child(parent, sign);
 
         /*
         The rotations below are similar to those done during insertion, so full comments are not provided.
-        The only new case is the one where %node has a balance factor of 0, and that is commented.
+        The only new case is the one where $node has a balance factor of 0, and that is commented.
         */
         if (sign * a_avl_factor(node) >= 0)
         {
@@ -438,9 +438,9 @@ static a_avl_s *a_avl_handle_shrink(a_avl_u *const root, a_avl_s *parent, int co
             if (a_avl_factor(node) == 0)
             {
                 /*
-                %node (B below) is perfectly balanced.
+                $node (B below) is perfectly balanced.
                 The comment, diagram, and equations below assume sign < 0. The other case is symmetric!
-                Do a clockwise rotation rooted at %parent (A below):
+                Do a clockwise rotation rooted at $parent (A below):
 
                           A              B
                          / \           /   \
@@ -576,24 +576,24 @@ void a_avl_remove(a_avl_u *const root, a_avl_s *const node)
     if (node->left && node->right)
     {
         /*
-        %node is fully internal, with two children. Swap it with its in-order successor
-        (which must exist in the right subtree of %node and can have, at most, a right child),
-        then unlink %node.
+        $node is fully internal, with two children. Swap it with its in-order successor
+        (which must exist in the right subtree of $node and can have, at most, a right child),
+        then unlink $node.
         */
         parent = a_avl_handle_remove(root, node, &left);
         /*
-        %parent is now the parent of what was %node's in-order successor.
-        It cannot be NULL, since %node itself was an ancestor of its in-order successor.
-        %left has been set to %true if %node's in-order successor was the left child of %parent, otherwise %false.
+        $parent is now the parent of what was $node's in-order successor.
+        It cannot be null, since $node itself was an ancestor of its in-order successor.
+        $left has been set to $true if $node's in-order successor was the left child of $parent, otherwise $false.
         */
     }
     else
     {
         a_avl_s *const child = node->left ? node->left : node->right;
         /*
-        %node is missing at least one child. Unlink it. Set %parent to %node's parent,
-        and set %left to reflect which child of %parent %node was.
-        Or, if %node was the root node, simply update the root node and return.
+        $node is missing at least one child. Unlink it. Set $parent to $node's parent,
+        and set $left to reflect which child of $parent $node was.
+        Or, if $node was the root node, simply update the root node and return.
         */
         parent = a_avl_parent(node);
         if (parent)
