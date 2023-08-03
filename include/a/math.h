@@ -71,6 +71,13 @@ A_EXTERN a_u64_t a_u64_sqrt(a_u64_t x, a_u64_t *o);
 } /* extern "C" */
 #endif /* __cplusplus */
 
+#define a_f32_modf A_F32_F(modf)
+#define a_f32_frexp A_F32_F(frexp)
+#define a_f32_ldexp A_F32_F(ldexp)
+#define a_f32_scalbn A_F32_F(scalbn)
+#define a_f32_scalbln A_F32_F(scalbln)
+#define a_f32_nextafter A_F32_F(nextafter)
+#define a_f32_nexttoward A_F32_F(nexttoward)
 #define a_f32_fpclassify A_F32_F(fpclassify)
 #define a_f32_copysign A_F32_F(copysign)
 #define a_f32_isfinite A_F32_F(isfinite)
@@ -102,6 +109,7 @@ A_EXTERN a_u64_t a_u64_sqrt(a_u64_t x, a_u64_t *o);
 #define a_f32_log2 A_F32_F(log2)
 #define a_f32_log10 A_F32_F(log10)
 #define a_f32_log1p A_F32_F(log1p)
+#define a_f32_ilogb A_F32_F(ilogb)
 
 #define a_f32_pow A_F32_F(pow)
 #define a_f32_sqrt A_F32_F(sqrt)
@@ -125,6 +133,29 @@ A_EXTERN a_u64_t a_u64_sqrt(a_u64_t x, a_u64_t *o);
 #define a_f32_acosh A_F32_F(acosh)
 #define a_f32_atanh A_F32_F(atanh)
 
+#define a_f32_erf A_F32_F(erf)
+#define a_f32_erfc A_F32_F(erfc)
+#define a_f32_tgamma A_F32_F(tgamma)
+#define a_f32_lgamma A_F32_F(lgamma)
+
+#define a_f32_ceil A_F32_F(ceil)
+#define a_f32_floor A_F32_F(floor)
+#define a_f32_trunc A_F32_F(trunc)
+#define a_f32_round A_F32_F(round)
+#define a_f32_lround A_F32_F(lround)
+#define a_f32_llround A_F32_F(llround)
+#define a_f32_nearbyint A_F32_F(nearbyint)
+#define a_f32_rint A_F32_F(rint)
+#define a_f32_lrintt A_F32_F(lrint)
+#define a_f32_llrintt A_F32_F(llrint)
+
+#define a_f64_modf A_F64_F(modf)
+#define a_f64_frexp A_F64_F(frexp)
+#define a_f64_ldexp A_F64_F(ldexp)
+#define a_f64_scalbn A_F64_F(scalbn)
+#define a_f64_scalbln A_F64_F(scalbln)
+#define a_f64_nextafter A_F64_F(nextafter)
+#define a_f64_nexttoward A_F64_F(nexttoward)
 #define a_f64_fpclassify A_F64_F(fpclassify)
 #define a_f64_copysign A_F64_F(copysign)
 #define a_f64_isfinite A_F64_F(isfinite)
@@ -156,6 +187,7 @@ A_EXTERN a_u64_t a_u64_sqrt(a_u64_t x, a_u64_t *o);
 #define a_f64_log2 A_F64_F(log2)
 #define a_f64_log10 A_F64_F(log10)
 #define a_f64_log1p A_F64_F(log1p)
+#define a_f64_ilogb A_F64_F(ilogb)
 
 #define a_f64_pow A_F64_F(pow)
 #define a_f64_sqrt A_F64_F(sqrt)
@@ -178,6 +210,22 @@ A_EXTERN a_u64_t a_u64_sqrt(a_u64_t x, a_u64_t *o);
 #define a_f64_asinh A_F64_F(asinh)
 #define a_f64_acosh A_F64_F(acosh)
 #define a_f64_atanh A_F64_F(atanh)
+
+#define a_f64_erf A_F64_F(erf)
+#define a_f64_erfc A_F64_F(erfc)
+#define a_f64_tgamma A_F64_F(tgamma)
+#define a_f64_lgamma A_F64_F(lgamma)
+
+#define a_f64_ceil A_F64_F(ceil)
+#define a_f64_floor A_F64_F(floor)
+#define a_f64_trunc A_F64_F(trunc)
+#define a_f64_round A_F64_F(round)
+#define a_f64_lround A_F64_F(lround)
+#define a_f64_llround A_F64_F(llround)
+#define a_f64_nearbyint A_F64_F(nearbyint)
+#define a_f64_rint A_F64_F(rint)
+#define a_f64_lrintt A_F64_F(lrint)
+#define a_f64_llrintt A_F64_F(llrint)
 
 /*! @} A_MATH */
 
@@ -226,6 +274,11 @@ A_EXTERN a_float_t a_float_atan2(a_float_t x, a_float_t y);
 } /* extern "C" */
 #endif /* __cplusplus */
 
+#define a_float_modf A_FLOAT_F(modf)
+#define a_float_frexp A_FLOAT_F(frexp)
+#define a_float_ldexp A_FLOAT_F(ldexp)
+#define a_float_scalbn A_FLOAT_F(scalbn)
+#define a_float_scalbln A_FLOAT_F(scalbln)
 #define a_float_fpclassify A_FLOAT_F(fpclassify)
 #define a_float_copysign A_FLOAT_F(copysign)
 #define a_float_isfinite A_FLOAT_F(isfinite)
@@ -259,6 +312,7 @@ A_EXTERN a_float_t a_float_atan2(a_float_t x, a_float_t y);
 #if defined(A_HAVE_LOG1P) && (A_HAVE_LOG1P + 0 > 0)
 #define a_float_log1p A_FLOAT_F(log1p)
 #endif /* A_HAVE_LOG1P */
+#define a_float_ilogb A_FLOAT_F(ilogb)
 
 #define a_float_pow A_FLOAT_F(pow)
 #define a_float_sqrt A_FLOAT_F(sqrt)
@@ -283,6 +337,22 @@ A_EXTERN a_float_t a_float_atan2(a_float_t x, a_float_t y);
 #define a_float_asinh A_FLOAT_F(asinh)
 #define a_float_acosh A_FLOAT_F(acosh)
 #define a_float_atanh A_FLOAT_F(atanh)
+
+#define a_float_erf A_FLOAT_F(erf)
+#define a_float_erfc A_FLOAT_F(erfc)
+#define a_float_tgamma A_FLOAT_F(tgamma)
+#define a_float_lgamma A_FLOAT_F(lgamma)
+
+#define a_float_ceil A_FLOAT_F(ceil)
+#define a_float_floor A_FLOAT_F(floor)
+#define a_float_trunc A_FLOAT_F(trunc)
+#define a_float_round A_FLOAT_F(round)
+#define a_float_lround A_FLOAT_F(lround)
+#define a_float_llround A_FLOAT_F(llround)
+#define a_float_nearbyint A_FLOAT_F(nearbyint)
+#define a_float_rint A_FLOAT_F(rint)
+#define a_float_lrintt A_FLOAT_F(lrint)
+#define a_float_llrintt A_FLOAT_F(llrint)
 
 /*! @} A_FLOAT */
 
