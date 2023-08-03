@@ -1,52 +1,25 @@
 #define LIBA_A_C
 #include "a/a.h"
+#include <string.h>
 
-void *a_copy(void *const A_RESTRICT _dst, void const *const A_RESTRICT _src, a_size_t siz)
+void *a_copy(void *const A_RESTRICT dst, void const *const A_RESTRICT src, a_size_t const siz)
 {
-    a_byte_t const *src = (a_byte_t const *)_src;
-    a_byte_t *dst = (a_byte_t *)_dst;
-    for (; siz; --siz)
-    {
-        *dst++ = *src++;
-    }
-    return _dst;
+    return memcpy(dst, src, siz);
 }
 
-void *a_move(void *const _dst, void const *const _src, a_size_t siz)
+void *a_move(void *const dst, void const *const src, a_size_t const siz)
 {
-    a_byte_t const *src = (a_byte_t const *)_src;
-    a_byte_t *dst = (a_byte_t *)_dst;
-    if (dst <= src)
-    {
-        for (; siz; --siz)
-        {
-            *dst++ = *src++;
-        }
-    }
-    else
-    {
-        src += siz;
-        dst += siz;
-        for (; siz; --siz)
-        {
-            *--dst = *--src;
-        }
-    }
-    return _dst;
+    return memmove(dst, src, siz);
 }
 
-void *a_fill(void *const _ptr, a_size_t siz, int const val)
+void *a_fill(void *const ptr, a_size_t siz, int const val)
 {
-    for (a_byte_t *ptr = (a_byte_t *)_ptr; siz; ++ptr, --siz)
-    {
-        *ptr = (a_byte_t)val;
-    }
-    return _ptr;
+    return memset(ptr, val, siz);
 }
 
 void *a_zero(void *const ptr, a_size_t const siz)
 {
-    return a_fill(ptr, siz, 0);
+    return memset(ptr, 0, siz);
 }
 
 void a_swap(void *const _lhs, void *const _rhs, a_size_t siz)
