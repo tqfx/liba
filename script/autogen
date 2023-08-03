@@ -38,7 +38,7 @@ install-data-hook:
 uninstall-hook:
 	\$(RM) \$(DESTDIR)\$(includedir)/a/config.h" > Makefile.am
 
-echo "libtoolize
+echo "libtoolize -Wall -ci
 aclocal -Wall
 autoreconf -Wall
 automake -Wall --add-missing
