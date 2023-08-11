@@ -35,7 +35,7 @@ static void testt(void)
     a_str_putn(ctx, "12", 1);
     a_str_putn_(ctx, "23", 1);
     a_str_puts(ctx, "3");
-    a_str_printf(ctx, "%u", 4);
+    a_str_putf(ctx, "%u", 4);
     TEST_BUG(a_str_at(ctx, 0) == '-');
     TEST_BUG(a_str_idx(ctx, -1) == '4');
     str = a_str_exit(ctx);

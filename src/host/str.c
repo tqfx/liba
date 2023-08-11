@@ -197,9 +197,19 @@ int a_str_putn(a_str_s *const ctx, void const *const pdata, a_size_t const nbyte
     return A_SUCCESS;
 }
 
+int a_str_puts_(a_str_s *const ctx, void const *const str)
+{
+    return a_str_putn_(ctx, str, strlen((char const *)str));
+}
+
 int a_str_puts(a_str_s *const ctx, void const *const str)
 {
     return a_str_putn(ctx, str, strlen((char const *)str));
+}
+
+int a_str_cat_(a_str_s *const ctx, a_str_s const *const obj)
+{
+    return a_str_putn_(ctx, obj->_ptr, obj->_num);
 }
 
 int a_str_cat(a_str_s *const ctx, a_str_s const *const obj)
@@ -207,7 +217,7 @@ int a_str_cat(a_str_s *const ctx, a_str_s const *const obj)
     return a_str_putn(ctx, obj->_ptr, obj->_num);
 }
 
-int a_str_print_(a_str_s *const ctx, char const *const fmt, va_list va)
+int a_str_putf_(a_str_s *const ctx, char const *const fmt, va_list va)
 {
     a_size_t siz;
     a_size_t mem;
@@ -236,11 +246,11 @@ int a_str_print_(a_str_s *const ctx, char const *const fmt, va_list va)
     return num;
 }
 
-int a_str_printf(a_str_s *const ctx, char const *const fmt, ...)
+int a_str_putf(a_str_s *const ctx, char const *const fmt, ...)
 {
     va_list va;
     va_start(va, fmt);
-    int num = a_str_print_(ctx, fmt, va);
+    int num = a_str_putf_(ctx, fmt, va);
     va_end(va);
     return num;
 }

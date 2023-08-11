@@ -86,7 +86,7 @@ static int test(int argc, char *argv[])
     int *sorted = a_new(int, A_NULL, n);
     for (unsigned int i = 0; i < n; ++i)
     {
-        a_str_printf(&str, "%u", i);
+        a_str_putf(&str, "%u", i);
         vec[i].data = a_cast_s(int, a_hash_bkdr(a_str_ptr(&str), 0));
         a_str_drop(&str);
         sorted[i] = vec[i].data;

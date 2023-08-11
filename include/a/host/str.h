@@ -237,6 +237,7 @@ A_EXTERN int a_str_putn_(a_str_s *ctx, void const *pdata, a_size_t nbyte);
   @retval 1 failure
 */
 A_EXTERN int a_str_puts(a_str_s *ctx, void const *str);
+A_EXTERN int a_str_puts_(a_str_s *ctx, void const *str);
 
 /*!
  @brief concat the string structure obj to the string structure ctx
@@ -247,6 +248,7 @@ A_EXTERN int a_str_puts(a_str_s *ctx, void const *str);
   @retval 1 failure
 */
 A_EXTERN int a_str_cat(a_str_s *ctx, a_str_s const *obj);
+A_EXTERN int a_str_cat_(a_str_s *ctx, a_str_s const *obj);
 
 /*!
  @brief print string to a pointer to string structure
@@ -256,7 +258,7 @@ A_EXTERN int a_str_cat(a_str_s *ctx, a_str_s const *obj);
  @return number of printed characters
   @retval EOF failure
 */
-A_EXTERN int a_str_print_(a_str_s *ctx, char const *fmt, va_list va) A_FORMAT(printf, 2, 0);
+A_EXTERN int a_str_putf_(a_str_s *ctx, char const *fmt, va_list va) A_FORMAT(printf, 2, 0);
 
 /*!
  @brief print string to a pointer to string structure
@@ -265,7 +267,7 @@ A_EXTERN int a_str_print_(a_str_s *ctx, char const *fmt, va_list va) A_FORMAT(pr
  @return number of printed characters
   @retval EOF failure
 */
-A_EXTERN int a_str_printf(a_str_s *ctx, char const *fmt, ...) A_FORMAT(printf, 2, 3);
+A_EXTERN int a_str_putf(a_str_s *ctx, char const *fmt, ...) A_FORMAT(printf, 2, 3);
 
 /*!
  @brief length for a pointer to string structure using UTF-8

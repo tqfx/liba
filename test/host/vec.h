@@ -281,11 +281,11 @@ static void test_sort(void)
             int *obj = a_vec_search(int, ctx, &i, cmp);
             if (obj)
             {
-                a_str_printf(ok, "%i ", *obj);
+                a_str_putf(ok, "%i ", *obj);
             }
             else
             {
-                a_str_printf(no, "%i ", i);
+                a_str_putf(no, "%i ", i);
             }
         }
         printf("%s\n%s\n", a_str_ptr(ok), a_str_ptr(no));
