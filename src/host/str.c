@@ -45,7 +45,7 @@ void a_str_dtor(a_str_s *const ctx)
 int a_str_init(a_str_s *const ctx, void const *const pdata, a_size_t const nbyte)
 {
     ctx->_num = nbyte;
-    ctx->_mem = nbyte + 1;
+    ctx->_mem = ctx->_num + 1;
     ctx->_mem = a_size_up(sizeof(void *), ctx->_mem);
     ctx->_ptr = (char *)a_alloc(A_NULL, ctx->_mem);
     if (a_unlikely(ctx->_ptr == A_NULL))
@@ -165,6 +165,35 @@ int a_str_putc(a_str_s *const ctx, int const c)
     return c;
 }
 
+int a_str_getn_(a_str_s *const ctx, void *const pdata, a_size_t nbyte)
+{
+    if (nbyte > ctx->_num)
+    {
+        nbyte = ctx->_num;
+    }
+    if (pdata && nbyte)
+    {
+        ctx->_num -= nbyte;
+        a_copy(pdata, ctx->_ptr + ctx->_num, nbyte);
+    }
+    return (int)nbyte;
+}
+
+int a_str_getn(a_str_s *const ctx, void *const pdata, a_size_t nbyte)
+{
+    if (nbyte > ctx->_num)
+    {
+        nbyte = ctx->_num;
+    }
+    if (pdata && nbyte)
+    {
+        ctx->_num -= nbyte;
+        a_copy(pdata, ctx->_ptr + ctx->_num, nbyte);
+        ctx->_ptr[ctx->_num] = 0;
+    }
+    return (int)nbyte;
+}
+
 int a_str_putn_(a_str_s *const ctx, void const *const pdata, a_size_t const nbyte)
 {
     if (pdata && nbyte)
@@ -181,17 +210,14 @@ int a_str_putn_(a_str_s *const ctx, void const *const pdata, a_size_t const nbyt
 
 int a_str_putn(a_str_s *const ctx, void const *const pdata, a_size_t const nbyte)
 {
-    if (pdata)
+    if (pdata && nbyte)
     {
         if (a_unlikely(a_str_alloc(ctx, ctx->_num + nbyte + 1)))
         {
             return A_FAILURE;
         }
-        if (nbyte)
-        {
-            a_copy(ctx->_ptr + ctx->_num, pdata, nbyte);
-            ctx->_num += nbyte;
-        }
+        a_copy(ctx->_ptr + ctx->_num, pdata, nbyte);
+        ctx->_num += nbyte;
         ctx->_ptr[ctx->_num] = 0;
     }
     return A_SUCCESS;

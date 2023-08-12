@@ -200,7 +200,7 @@ A_EXTERN int a_str_alloc_(a_str_s *ctx, a_size_t mem);
 /*!
  @brief get character for a pointer to string structure
  @param[in] ctx points to an instance of string structure
- @return deleted character
+ @return parsed character
   @retval EOF failure
 */
 A_EXTERN int a_str_getc(a_str_s *ctx);
@@ -209,12 +209,22 @@ A_EXTERN int a_str_getc_(a_str_s *ctx);
 /*!
  @brief put character to a pointer to string structure
  @param[in] ctx points to an instance of string structure
- @param[in] c character to be printed
- @return printed character
+ @param[in] c character to be parsed
+ @return parsed character
   @retval EOF failure
 */
 A_EXTERN int a_str_putc(a_str_s *ctx, int c);
 A_EXTERN int a_str_putc_(a_str_s *ctx, int c);
+
+/*!
+ @brief get memory block to a pointer to string structure
+ @param[in] ctx points to an instance of string structure
+ @param[in] pdata points to memory block to get
+ @param[in] nbyte length of memory block to get
+ @return number of parsed characters
+*/
+A_EXTERN int a_str_getn(a_str_s *ctx, void *pdata, a_size_t nbyte);
+A_EXTERN int a_str_getn_(a_str_s *ctx, void *pdata, a_size_t nbyte);
 
 /*!
  @brief put memory block to a pointer to string structure
@@ -251,20 +261,20 @@ A_EXTERN int a_str_cat(a_str_s *ctx, a_str_s const *obj);
 A_EXTERN int a_str_cat_(a_str_s *ctx, a_str_s const *obj);
 
 /*!
- @brief print string to a pointer to string structure
+ @brief format string to a pointer to string structure
  @param[in] ctx points to an instance of string structure
- @param[in] fmt format of string to be printed
+ @param[in] fmt format of string to be parsed
  @param[in] va instance of variable argument
- @return number of printed characters
+ @return number of parsed characters
   @retval EOF failure
 */
 A_EXTERN int a_str_putf_(a_str_s *ctx, char const *fmt, va_list va) A_FORMAT(printf, 2, 0);
 
 /*!
- @brief print string to a pointer to string structure
+ @brief format string to a pointer to string structure
  @param[in] ctx points to an instance of string structure
- @param[in] fmt format of string to be printed
- @return number of printed characters
+ @param[in] fmt format of string to be parsed
+ @return number of parsed characters
   @retval EOF failure
 */
 A_EXTERN int a_str_putf(a_str_s *ctx, char const *fmt, ...) A_FORMAT(printf, 2, 3);
