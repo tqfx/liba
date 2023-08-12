@@ -214,7 +214,7 @@ static int test(int argc, char *argv[])
 #endif /* MAIN_ONCE */
     }
 
-    TEST_BUG(a_avl_search(&root, &vec->node, int_cmp) == A_NULL);
+    TEST_BUG(!a_avl_search(&root, &vec->node, int_cmp));
 
     for (unsigned int i = 0; i < n; ++i)
     {

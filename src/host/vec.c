@@ -51,7 +51,7 @@ static int a_vec_alloc(a_vec_s *const ctx, a_size_t const num)
         } while (mem < num);
         a_size_t const siz = a_size_up(sizeof(void *), ctx->_siz * mem);
         void *ptr = a_alloc(ctx->_ptr, siz);
-        if (a_unlikely(ptr == A_NULL))
+        if (a_unlikely(!ptr))
         {
             return A_FAILURE;
         }
@@ -102,7 +102,7 @@ void a_vec_dtor(a_vec_s *const ctx, void (*const dtor)(void *))
 int a_vec_copy(a_vec_s *const ctx, a_vec_s const *const obj, int (*const dup)(void *, void const *))
 {
     ctx->_ptr = a_alloc(A_NULL, obj->_mem * obj->_siz);
-    if (a_unlikely(ctx->_ptr == A_NULL))
+    if (a_unlikely(!ctx->_ptr))
     {
         return A_FAILURE;
     }

@@ -48,7 +48,7 @@ int a_str_init(a_str_s *const ctx, void const *const pdata, a_size_t const nbyte
     ctx->_mem = ctx->_num + 1;
     ctx->_mem = a_size_up(sizeof(void *), ctx->_mem);
     ctx->_ptr = (char *)a_alloc(A_NULL, ctx->_mem);
-    if (a_unlikely(ctx->_ptr == A_NULL))
+    if (a_unlikely(!ctx->_ptr))
     {
         return A_FAILURE;
     }
@@ -73,7 +73,7 @@ void a_str_move(a_str_s *const ctx, a_str_s *const obj)
 
 char *a_str_exit(a_str_s *const ctx)
 {
-    char *const ptr = ctx->_ptr;
+    char *const str = ctx->_ptr;
     if (ctx->_ptr)
     {
         ctx->_ptr[ctx->_num] = 0;
@@ -81,7 +81,7 @@ char *a_str_exit(a_str_s *const ctx)
     }
     ctx->_num = 0;
     ctx->_mem = 0;
-    return ptr;
+    return str;
 }
 
 int a_str_cmp(a_str_s const *const lhs, a_str_s const *const rhs)

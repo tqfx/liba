@@ -22,16 +22,16 @@ static a_que_node_s *a_que_node_new(a_que_s *const ctx)
     else
     {
         node = (a_que_node_s *)a_alloc(A_NULL, sizeof(a_que_node_s));
-        if (a_unlikely(node == A_NULL))
+        if (a_unlikely(!node))
         {
             return node;
         }
         node->_data = A_NULL;
     }
-    if (node->_data == A_NULL)
+    if (!node->_data)
     {
         node->_data = a_alloc(A_NULL, ctx->_siz);
-        if (a_unlikely(node->_data == A_NULL))
+        if (a_unlikely(!node->_data))
         {
             a_alloc(node, 0);
             return A_NULL;
@@ -43,7 +43,7 @@ static a_que_node_s *a_que_node_new(a_que_s *const ctx)
 
 static int a_que_node_die(a_que_s *const ctx, a_que_node_s *const obj)
 {
-    if (obj == A_NULL)
+    if (!obj)
     {
         return A_INVALID;
     }
@@ -51,7 +51,7 @@ static int a_que_node_die(a_que_s *const ctx, a_que_node_s *const obj)
     {
         a_size_t const mem = ctx->_mem + (ctx->_mem >> 1) + 1;
         a_que_node_s **const ptr = (a_que_node_s **)a_alloc(ctx->_ptr, sizeof(void *) * mem);
-        if (a_unlikely(ptr == A_NULL))
+        if (a_unlikely(!ptr))
         {
             return A_FAILURE;
         }
@@ -333,7 +333,7 @@ void a_que_sort_back(a_que_s const *const ctx, int (*const cmp)(void const *, vo
 void *a_que_push_fore(a_que_s *const ctx)
 {
     a_que_node_s *const node = a_que_node_new(ctx);
-    if (a_unlikely(node == A_NULL))
+    if (a_unlikely(!node))
     {
         return node;
     }
@@ -344,7 +344,7 @@ void *a_que_push_fore(a_que_s *const ctx)
 void *a_que_push_back(a_que_s *const ctx)
 {
     a_que_node_s *const node = a_que_node_new(ctx);
-    if (a_unlikely(node == A_NULL))
+    if (a_unlikely(!node))
     {
         return node;
     }
@@ -392,7 +392,7 @@ void *a_que_insert(a_que_s *const ctx, a_size_t const idx)
     {
         a_size_t cur = 0;
         a_que_node_s *const node = a_que_node_new(ctx);
-        if (a_unlikely(node == A_NULL))
+        if (a_unlikely(!node))
         {
             return node;
         }

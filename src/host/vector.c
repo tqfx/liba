@@ -56,7 +56,7 @@ static int a_vector_alloc(a_vector_s *const ctx, a_size_t const num)
         a_size_t const num_ = ctx->_num * ctx->_siz;
         a_size_t const size = a_size_up(sizeof(void *), mem_);
         void *const head = a_alloc(ctx->_head, size);
-        if (a_unlikely(head == A_NULL))
+        if (a_unlikely(!head))
         {
             return A_FAILURE;
         }
@@ -121,7 +121,7 @@ int a_vector_copy(a_vector_s *const ctx, a_vector_s const *const obj, int (*cons
     a_size_t const num_ = obj->_num * obj->_siz;
     a_size_t const mem_ = obj->_mem * obj->_siz;
     ctx->_head = a_alloc(A_NULL, mem_);
-    if (a_unlikely(ctx->_head == A_NULL))
+    if (a_unlikely(!ctx->_head))
     {
         return A_FAILURE;
     }
