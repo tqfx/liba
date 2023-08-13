@@ -110,22 +110,22 @@ static void test_str_getc(void)
 {
     {
         a_str_s ctx = A_STR_NUL;
-        TEST_BUG(a_str_getc_(&ctx) == EOF);
+        TEST_BUG(a_str_getc_(&ctx) == ~0);
     }
     {
         a_str_s ctx = A_STR_NUL;
-        TEST_BUG(a_str_getc(&ctx) == EOF);
+        TEST_BUG(a_str_getc(&ctx) == ~0);
     }
     {
         a_str_s ctx = A_STR_NUL;
         TEST_BUG(a_str_init(&ctx, A_NULL, 0) == A_SUCCESS);
-        TEST_BUG(a_str_getc_(&ctx) == EOF);
+        TEST_BUG(a_str_getc_(&ctx) == ~0);
         a_alloc(a_str_exit(&ctx), 0);
     }
     {
         a_str_s ctx = A_STR_NUL;
         TEST_BUG(a_str_init(&ctx, A_NULL, 0) == A_SUCCESS);
-        TEST_BUG(a_str_getc(&ctx) == EOF);
+        TEST_BUG(a_str_getc(&ctx) == ~0);
         a_alloc(a_str_exit(&ctx), 0);
     }
 }

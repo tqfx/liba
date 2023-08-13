@@ -201,7 +201,7 @@ A_EXTERN int a_str_alloc_(a_str_s *ctx, a_size_t mem);
  @brief get character for a pointer to string structure
  @param[in] ctx points to an instance of string structure
  @return parsed character
-  @retval EOF failure
+  @retval ~0 failure
 */
 A_EXTERN int a_str_getc(a_str_s *ctx);
 A_EXTERN int a_str_getc_(a_str_s *ctx);
@@ -211,7 +211,7 @@ A_EXTERN int a_str_getc_(a_str_s *ctx);
  @param[in] ctx points to an instance of string structure
  @param[in] c character to be parsed
  @return parsed character
-  @retval EOF failure
+  @retval ~0 failure
 */
 A_EXTERN int a_str_putc(a_str_s *ctx, int c);
 A_EXTERN int a_str_putc_(a_str_s *ctx, int c);
@@ -223,8 +223,8 @@ A_EXTERN int a_str_putc_(a_str_s *ctx, int c);
  @param[in] nbyte length of memory block to get
  @return number of parsed characters
 */
-A_EXTERN int a_str_getn(a_str_s *ctx, void *pdata, a_size_t nbyte);
-A_EXTERN int a_str_getn_(a_str_s *ctx, void *pdata, a_size_t nbyte);
+A_EXTERN a_size_t a_str_getn(a_str_s *ctx, void *pdata, a_size_t nbyte);
+A_EXTERN a_size_t a_str_getn_(a_str_s *ctx, void *pdata, a_size_t nbyte);
 
 /*!
  @brief put memory block to a pointer to string structure
@@ -266,18 +266,16 @@ A_EXTERN int a_str_cat_(a_str_s *ctx, a_str_s const *obj);
  @param[in] fmt format of string to be parsed
  @param[in] va instance of variable argument
  @return number of parsed characters
-  @retval EOF failure
 */
-A_EXTERN int a_str_putf_(a_str_s *ctx, char const *fmt, va_list va) A_FORMAT(printf, 2, 0);
+A_EXTERN a_size_t a_str_putf_(a_str_s *ctx, char const *fmt, va_list va) A_FORMAT(printf, 2, 0);
 
 /*!
  @brief format string to a pointer to string structure
  @param[in] ctx points to an instance of string structure
  @param[in] fmt format of string to be parsed
  @return number of parsed characters
-  @retval EOF failure
 */
-A_EXTERN int a_str_putf(a_str_s *ctx, char const *fmt, ...) A_FORMAT(printf, 2, 3);
+A_EXTERN a_size_t a_str_putf(a_str_s *ctx, char const *fmt, ...) A_FORMAT(printf, 2, 3);
 
 /*!
  @brief length for a pointer to string structure using UTF-8
