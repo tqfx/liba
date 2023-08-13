@@ -301,6 +301,13 @@
 #else /* !__cplusplus */
 #define A_NULL NULL
 #endif /* __cplusplus */
+#if !defined A_VOID_T
+#define A_VOID_T void
+#endif /* A_VOID_T */
+/*! static cast to \ref a_void_t . */
+#define a_void_c(_, x) a_cast_s(A_VOID_T _, x)
+/*! incomplete type or no parameter or no return value */
+#define a_void_t A_VOID_T
 
 #if defined(__cplusplus)
 #define A_TRUE true
