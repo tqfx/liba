@@ -2,25 +2,13 @@
 #include "a/a.h"
 #include <string.h>
 
-void *a_copy(void *const A_RESTRICT dst, void const *const A_RESTRICT src, a_size_t const siz)
-{
-    return memcpy(dst, src, siz);
-}
+void *a_copy(void *const A_RESTRICT dst, void const *const A_RESTRICT src, a_size_t const siz) { return memcpy(dst, src, siz); }
 
-void *a_move(void *const dst, void const *const src, a_size_t const siz)
-{
-    return memmove(dst, src, siz);
-}
+void *a_move(void *const dst, void const *const src, a_size_t const siz) { return memmove(dst, src, siz); }
 
-void *a_fill(void *const ptr, a_size_t siz, int const val)
-{
-    return memset(ptr, val, siz);
-}
+void *a_fill(void *const ptr, a_size_t siz, int const val) { return memset(ptr, val, siz); }
 
-void *a_zero(void *const ptr, a_size_t const siz)
-{
-    return memset(ptr, 0, siz);
-}
+void *a_zero(void *const ptr, a_size_t const siz) { return memset(ptr, 0, siz); }
 
 void a_swap(void *const _lhs, void *const _rhs, a_size_t siz)
 {
