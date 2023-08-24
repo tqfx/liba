@@ -34,7 +34,7 @@ endfunction()
 set(TARGET_PREFIX test_)
 
 if(NOT CMAKE_EXECUTABLE_SUFFIX)
-  set(CMAKE_EXECUTABLE_SUFFIX .bin)
+  set(CMAKE_EXECUTABLE_SUFFIX .elf)
 endif()
 
 function(building target)

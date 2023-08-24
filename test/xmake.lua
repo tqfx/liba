@@ -6,7 +6,7 @@ function building(sources)
     set_kind("binary")
     add_files(sources)
     if not is_plat("windows", "mingw") then
-        set_extension(".bin")
+        set_extension(".elf")
     end
     if has_config("liba-cxx") then
         add_defines("HAS_CXX")
