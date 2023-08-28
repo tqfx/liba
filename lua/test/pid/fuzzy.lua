@@ -11,15 +11,15 @@ local PS = 1
 local PM = 2
 local PL = 3
 local me = {
-  -- LuaFormatter off
-  { a.mf.TRI, NL, NL, NM },
-  { a.mf.TRI, NL, NM, NS },
-  { a.mf.TRI, NM, NS, ZO },
-  { a.mf.TRI, NS, ZO, PS },
-  { a.mf.TRI, ZO, PS, PM },
-  { a.mf.TRI, PS, PM, PL },
-  { a.mf.TRI, PM, PL, PL },
-  -- LuaFormatter on
+    -- LuaFormatter off
+    { a.mf.TRI, NL, NL, NM },
+    { a.mf.TRI, NL, NM, NS },
+    { a.mf.TRI, NM, NS, ZO },
+    { a.mf.TRI, NS, ZO, PS },
+    { a.mf.TRI, ZO, PS, PM },
+    { a.mf.TRI, PS, PM, PL },
+    { a.mf.TRI, PM, PL, PL },
+    -- LuaFormatter on
 }
 local NL = -6
 local NM = -4
@@ -29,15 +29,15 @@ local PS = 2
 local PM = 4
 local PL = 6
 local mec = {
-  -- LuaFormatter off
-  { a.mf.TRI, NL, NL, NM },
-  { a.mf.TRI, NL, NM, NS },
-  { a.mf.TRI, NM, NS, ZO },
-  { a.mf.TRI, NS, ZO, PS },
-  { a.mf.TRI, ZO, PS, PM },
-  { a.mf.TRI, PS, PM, PL },
-  { a.mf.TRI, PM, PL, PL },
-  -- LuaFormatter on
+    -- LuaFormatter off
+    { a.mf.TRI, NL, NL, NM },
+    { a.mf.TRI, NL, NM, NS },
+    { a.mf.TRI, NM, NS, ZO },
+    { a.mf.TRI, NS, ZO, PS },
+    { a.mf.TRI, ZO, PS, PM },
+    { a.mf.TRI, PS, PM, PL },
+    { a.mf.TRI, PM, PL, PL },
+    -- LuaFormatter on
 }
 local NL = -15
 local NM = -10
@@ -47,15 +47,15 @@ local PS = 5
 local PM = 10
 local PL = 15
 local mkp = {
-  -- LuaFormatter off
-  { NL, NL, NM, NM, NS, ZO, ZO },
-  { NL, NL, NM, NS, NS, ZO, PS },
-  { NM, NM, NM, NS, ZO, PS, PS },
-  { NM, NM, NS, ZO, PS, PM, PM },
-  { NS, NS, ZO, PS, PS, PM, PM },
-  { NS, ZO, PS, PM, PM, PM, PL },
-  { ZO, ZO, PM, PM, PM, PL, PL },
-  -- LuaFormatter on
+    -- LuaFormatter off
+    { NL, NL, NM, NM, NS, ZO, ZO },
+    { NL, NL, NM, NS, NS, ZO, PS },
+    { NM, NM, NM, NS, ZO, PS, PS },
+    { NM, NM, NS, ZO, PS, PM, PM },
+    { NS, NS, ZO, PS, PS, PM, PM },
+    { NS, ZO, PS, PM, PM, PM, PL },
+    { ZO, ZO, PM, PM, PM, PL, PL },
+    -- LuaFormatter on
 }
 local NL = -3
 local NM = -2
@@ -65,26 +65,26 @@ local PS = 1
 local PM = 2
 local PL = 3
 local mki = {
-  -- LuaFormatter off
-  { PL, PL, PM, PM, PS, ZO, ZO },
-  { PL, PL, PM, PS, PS, ZO, ZO },
-  { PL, PM, PS, PS, ZO, NS, NS },
-  { PM, PM, PS, ZO, NS, NM, NM },
-  { PM, PS, ZO, NS, NS, NM, NL },
-  { ZO, ZO, NS, NS, NM, NL, NL },
-  { ZO, ZO, NS, NM, NM, NL, NL },
-  -- LuaFormatter on
+    -- LuaFormatter off
+    { PL, PL, PM, PM, PS, ZO, ZO },
+    { PL, PL, PM, PS, PS, ZO, ZO },
+    { PL, PM, PS, PS, ZO, NS, NS },
+    { PM, PM, PS, ZO, NS, NM, NM },
+    { PM, PS, ZO, NS, NS, NM, NL },
+    { ZO, ZO, NS, NS, NM, NL, NL },
+    { ZO, ZO, NS, NM, NM, NL, NL },
+    -- LuaFormatter on
 }
 local mkd = {
-  -- LuaFormatter off
-  { NS, PS, PL, PL, PL, PM, NS },
-  { NS, PS, PL, PM, PM, PS, ZO },
-  { ZO, PS, PM, PM, PS, PS, ZO },
-  { ZO, PS, PS, PS, PS, PS, ZO },
-  { ZO, ZO, ZO, ZO, ZO, ZO, ZO },
-  { NL, NS, NS, NS, NS, NS, NL },
-  { NL, NM, NM, NM, NS, NS, NL },
-  -- LuaFormatter on
+    -- LuaFormatter off
+    { NS, PS, PL, PL, PL, PM, NS },
+    { NS, PS, PL, PM, PM, PS, ZO },
+    { ZO, PS, PM, PM, PS, PS, ZO },
+    { ZO, PS, PS, PS, PS, PS, ZO },
+    { ZO, ZO, ZO, ZO, ZO, ZO, ZO },
+    { NL, NS, NS, NS, NS, NS, NL },
+    { NL, NM, NM, NM, NS, NS, NL },
+    -- LuaFormatter on
 }
 test:r(getmetatable(a.pid.fuzzy))
 assert(a.pid.fuzzy.new())
