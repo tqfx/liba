@@ -29,11 +29,20 @@ include(${CMAKE_ROOT}/Modules/FindPackageHandleStandardArgs.cmake)
 find_program(LUA_FORMAT_EXECUTABLE NAMES lua-format)
 mark_as_advanced(LUA_FORMAT_EXECUTABLE)
 
+if(EXISTS "${LUA_FORMAT_EXECUTABLE}")
+  execute_process(COMMAND ${LUA_FORMAT_EXECUTABLE} --version
+    OUTPUT_VARIABLE LUA_FORMAT_VERSION ERROR_VARIABLE LUA_FORMAT_VERSION
+  )
+  string(REGEX REPLACE "[^0-9]+([^\n ]*).*" "\\1" LUA_FORMAT_VERSION "${LUA_FORMAT_VERSION}")
+endif()
+
 find_package_handle_standard_args(LuaFormat
   FOUND_VAR
     LuaFormat_FOUND
   REQUIRED_VARS
     LUA_FORMAT_EXECUTABLE
+  VERSION_VAR
+    LUA_FORMAT_VERSION
 )
 
 if(LuaFormat_FOUND)
