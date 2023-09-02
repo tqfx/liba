@@ -156,7 +156,7 @@ function(set_library_options)
   endif()
 
   set_target_properties(${ARGN} PROPERTIES INTERPROCEDURAL_OPTIMIZATION ${LIBA_IPO}
-    C_VISIBILITY_PRESET hidden CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN ON
+    C_VISIBILITY_PRESET hidden CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN 1
   )
 
   if(LIBA_WARNINGS)
@@ -228,7 +228,7 @@ function(set_library_compile target)
   endif()
 
   set_target_properties(${target} PROPERTIES OUTPUT_NAME a
-    POSITION_INDEPENDENT_CODE ON DEFINE_SYMBOL A_EXPORTS
+    POSITION_INDEPENDENT_CODE 1 DEFINE_SYMBOL A_EXPORTS
   )
   target_compile_definitions(${target} PRIVATE A_EXPORTS)
   target_include_directories(${target} BEFORE PUBLIC

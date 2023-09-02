@@ -1,4 +1,4 @@
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "Enable/Disable output of compile commands during generation.")
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1 CACHE BOOL "Enable/Disable output of compile commands during generation.")
 mark_as_advanced(CMAKE_EXPORT_COMPILE_COMMANDS)
 if(NOT DEFINED CACHE{LIBA_CXX})
   file(GLOB_RECURSE has_cxx *.cc *.hh *.cpp *.hpp *.cxx *.hxx *.ixx *.ipp *.txx *.tpp *.mpp *.cppm)
