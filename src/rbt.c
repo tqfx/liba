@@ -1,5 +1,44 @@
 #include "a/rbt.h"
 
+/*
+red-black trees properties: https://en.wikipedia.org/wiki/Rbtree
+
+ 1) A node is either red or black
+ 2) The root is black
+ 3) All leaves (null) are black
+ 4) Both children of every red node are black
+ 5) Every simple path from root to leaves contains the same number of black nodes.
+
+ 4 and 5 give the O(log n) guarantee, since 4 implies you cannot have two
+ consecutive red nodes in a path and every red node is therefore followed by
+ a black. So if B is the number of black nodes on every simple path (as per
+ 5), then the longest possible path due to 4 is 2B.
+
+ We shall indicate color with case, where black nodes are uppercase and red
+ nodes will be lowercase. Unknown color nodes shall be drawn as red within
+ parentheses and have some accompanying text comment.
+*/
+
+/* Replaces the child of the specified red–black tree node. */
+static A_INLINE void a_rbt_new_child(a_rbt_u *const root, a_rbt_s *const parent, a_rbt_s *const oldnode, a_rbt_s *const newnode)
+{
+    if (parent)
+    {
+        if (parent->left == oldnode)
+        {
+            parent->left = newnode;
+        }
+        else
+        {
+            parent->right = newnode;
+        }
+    }
+    else
+    {
+        root->node = newnode;
+    }
+}
+
 /* Sets the parent and color of the specified red–black tree node. */
 static A_INLINE void a_rbt_set_parent_color(a_rbt_s *const node, a_rbt_s *const parent, unsigned int const color)
 {
@@ -41,44 +80,6 @@ static A_INLINE void a_rbt_set_black(a_rbt_s *const node)
 #endif /* A_SIZE_POINTER */
 }
 
-static A_INLINE void a_rbt_set_child(a_rbt_u *const root, a_rbt_s *const parent, a_rbt_s *const oldnode, a_rbt_s *const newnode)
-{
-    if (parent)
-    {
-        if (parent->left == oldnode)
-        {
-            parent->left = newnode;
-        }
-        else
-        {
-            parent->right = newnode;
-        }
-    }
-    else
-    {
-        root->node = newnode;
-    }
-}
-
-/*
-red-black trees properties: https://en.wikipedia.org/wiki/Rbtree
-
- 1) A node is either red or black
- 2) The root is black
- 3) All leaves (null) are black
- 4) Both children of every red node are black
- 5) Every simple path from root to leaves contains the same number of black nodes.
-
- 4 and 5 give the O(log n) guarantee, since 4 implies you cannot have two
- consecutive red nodes in a path and every red node is therefore followed by
- a black. So if B is the number of black nodes on every simple path (as per
- 5), then the longest possible path due to 4 is 2B.
-
- We shall indicate color with case, where black nodes are uppercase and red
- nodes will be lowercase. Unknown color nodes shall be drawn as red within
- parentheses and have some accompanying text comment.
-*/
-
 /*
 Helper function for rotations:
  - old's parent and color get assigned to new
@@ -94,7 +95,7 @@ static A_INLINE void a_rbt_set_parents(a_rbt_u *const root, a_rbt_s *const oldno
     newnode->color = oldnode->color;
 #endif /* A_SIZE_POINTER */
     a_rbt_set_parent_color(oldnode, newnode, color);
-    a_rbt_set_child(root, parent, oldnode, newnode);
+    a_rbt_new_child(root, parent, oldnode, newnode);
 }
 
 void a_rbt_insert_adjust(a_rbt_u *const root, a_rbt_s *node)
@@ -439,7 +440,7 @@ void a_rbt_remove(a_rbt_u *const root, a_rbt_s *const node)
         color = node->color;
 #endif /* A_SIZE_POINTER */
         parent = a_rbt_parent(node);
-        a_rbt_set_child(root, parent, node, child);
+        a_rbt_new_child(root, parent, node, child);
         if (child)
         {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
@@ -469,7 +470,7 @@ void a_rbt_remove(a_rbt_u *const root, a_rbt_s *const node)
         tmp->color = node->color;
 #endif /* A_SIZE_POINTER */
         parent = a_rbt_parent(node);
-        a_rbt_set_child(root, parent, node, tmp);
+        a_rbt_new_child(root, parent, node, tmp);
         adjust = A_NULL;
     }
     else
@@ -528,7 +529,7 @@ void a_rbt_remove(a_rbt_u *const root, a_rbt_s *const node)
         color = node->color;
 #endif /* A_SIZE_POINTER */
         tmp = a_rbt_parent(node);
-        a_rbt_set_child(root, node, successor, tmp);
+        a_rbt_new_child(root, node, successor, tmp);
 
         if (child2)
         {
@@ -845,22 +846,7 @@ a_rbt_s *a_rbt_tear(a_rbt_u *const root, a_rbt_s **const next)
         }
     }
     A_RBT_POST_NEXT(node);
-    a_rbt_s *const parent = a_rbt_parent(node);
-    if (parent)
-    {
-        if (parent->left == node)
-        {
-            parent->left = A_NULL;
-        }
-        else
-        {
-            parent->right = A_NULL;
-        }
-    }
-    else
-    {
-        root->node = A_NULL;
-    }
-    *next = parent;
+    *next = a_rbt_parent(node);
+    a_rbt_new_child(root, *next, node, A_NULL);
     return node;
 }

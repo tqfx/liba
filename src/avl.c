@@ -1,5 +1,48 @@
 #include "a/avl.h"
 
+/* Replaces the child of the specified AVL tree node. */
+static A_INLINE void a_avl_new_child(a_avl_u *const root, a_avl_s *const parent, a_avl_s *const oldnode, a_avl_s *const newnode)
+{
+    if (parent)
+    {
+        if (parent->left == oldnode)
+        {
+            parent->left = newnode;
+        }
+        else
+        {
+            parent->right = newnode;
+        }
+    }
+    else
+    {
+        root->node = newnode;
+    }
+}
+
+/* Returns the child of the specified AVL tree node. */
+static A_INLINE a_avl_s *a_avl_child(a_avl_s const *const node, int const sign)
+{
+    if (sign < 0)
+    {
+        return node->left;
+    }
+    return node->right;
+}
+
+/* Sets the child of the specified AVL tree node. */
+static A_INLINE void a_avl_set_child(a_avl_s *const node, a_avl_s *const child, int const sign)
+{
+    if (sign < 0)
+    {
+        node->left = child;
+    }
+    else
+    {
+        node->right = child;
+    }
+}
+
 /* Sets the parent and balance factor of the specified AVL tree node. */
 static A_INLINE void a_avl_set_parent_factor(a_avl_s *const node, a_avl_s *const parent, int const factor)
 {
@@ -47,46 +90,6 @@ static A_INLINE void a_avl_set_factor(a_avl_s *const node, int const amount)
 #endif /* A_SIZE_POINTER */
 }
 
-static A_INLINE a_avl_s *a_avl_child(a_avl_s const *const node, int const sign)
-{
-    if (sign < 0)
-    {
-        return node->left;
-    }
-    return node->right;
-}
-
-static A_INLINE void a_avl_set_child(a_avl_s *const node, a_avl_s *const child, int const sign)
-{
-    if (sign < 0)
-    {
-        node->left = child;
-    }
-    else
-    {
-        node->right = child;
-    }
-}
-
-static A_INLINE void a_avl_mod_child(a_avl_u *const root, a_avl_s *const parent, a_avl_s *const oldnode, a_avl_s *const newnode)
-{
-    if (parent)
-    {
-        if (parent->left == oldnode)
-        {
-            parent->left = newnode;
-        }
-        else
-        {
-            parent->right = newnode;
-        }
-    }
-    else
-    {
-        root->node = newnode;
-    }
-}
-
 /*
 Template for performing a single rotation (nodes marked with ? may not exist)
 
@@ -128,8 +131,7 @@ static void a_avl_rotate(a_avl_u *const root, a_avl_s *const A, int const sign)
     {
         a_avl_set_parent(E, A);
     }
-
-    a_avl_mod_child(root, P, A, B);
+    a_avl_new_child(root, P, A, B);
 }
 
 /*
@@ -190,8 +192,7 @@ static a_avl_s *a_avl_rotate2(a_avl_u *const root, a_avl_s *const B, a_avl_s *co
     {
         a_avl_set_parent(G, A);
     }
-
-    a_avl_mod_child(root, P, A, E);
+    a_avl_new_child(root, P, A, E);
 
     return E;
 }
@@ -564,7 +565,7 @@ static A_INLINE a_avl_s *a_avl_handle_remove(a_avl_u *const root, a_avl_s *const
     Y->parent = X->parent;
     Y->factor = X->factor;
 #endif /* A_SIZE_POINTER */
-    a_avl_mod_child(root, a_avl_parent(X), X, Y);
+    a_avl_new_child(root, a_avl_parent(X), X, Y);
 
     return node;
 }
@@ -929,22 +930,7 @@ a_avl_s *a_avl_tear(a_avl_u *const root, a_avl_s **const next)
         }
     }
     A_AVL_POST_NEXT(node);
-    a_avl_s *const parent = a_avl_parent(node);
-    if (parent)
-    {
-        if (parent->left == node)
-        {
-            parent->left = A_NULL;
-        }
-        else
-        {
-            parent->right = A_NULL;
-        }
-    }
-    else
-    {
-        root->node = A_NULL;
-    }
-    *next = parent;
+    *next = a_avl_parent(node);
+    a_avl_new_child(root, *next, node, A_NULL);
     return node;
 }
