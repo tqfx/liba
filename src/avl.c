@@ -115,7 +115,7 @@ sign < 0: Rotate counterclockwise (left) rooted at A:
 
 This updates pointers but not balance factors!
 */
-static void a_avl_rotate(a_avl_u *const root, a_avl_s *const A, int const sign)
+static A_INLINE void a_avl_rotate(a_avl_u *const root, a_avl_s *const A, int const sign)
 {
     a_avl_s *const P = a_avl_parent(A);
     a_avl_s *const B = a_avl_child(A, -sign);
@@ -166,7 +166,7 @@ Returns a pointer to E and updates balance factors. Except for those two things,
     a_avl_rotate(root, B, -sign);
     a_avl_rotate(root, A, +sign);
 */
-static a_avl_s *a_avl_rotate2(a_avl_u *const root, a_avl_s *const B, a_avl_s *const A, int const sign)
+static A_INLINE a_avl_s *a_avl_rotate2(a_avl_u *const root, a_avl_s *const B, a_avl_s *const A, int const sign)
 {
     a_avl_s *const P = a_avl_parent(A);
     a_avl_s *const E = a_avl_child(B, +sign);
@@ -221,7 +221,7 @@ so the caller should continue up the tree.
 Note that if $false is returned, no rotation will have been done.
 Indeed, a single node insertion cannot require that more than one (single or double) rotation be done.
 */
-static a_bool_t a_avl_handle_growth(a_avl_u *const root, a_avl_s *const parent, a_avl_s *const node, int const sign)
+static A_INLINE a_bool_t a_avl_handle_growth(a_avl_u *const root, a_avl_s *const parent, a_avl_s *const node, int const sign)
 {
     int const old_factor = a_avl_factor(parent);
     if (old_factor == 0)
@@ -400,7 +400,7 @@ The return value will be null if the full AVL tree is now adequately balanced,
 or a pointer to the parent of parent if parent is now adequately balanced but has decreased in height by 1.
 Also in the latter case, *left will be set.
 */
-static a_avl_s *a_avl_handle_shrink(a_avl_u *const root, a_avl_s *parent, int const sign, a_bool_t *const left)
+static A_INLINE a_avl_s *a_avl_handle_shrink(a_avl_u *const root, a_avl_s *parent, int const sign, a_bool_t *const left)
 {
     int const old_factor = a_avl_factor(parent);
     if (old_factor == 0)
