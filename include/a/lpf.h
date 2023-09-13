@@ -58,7 +58,7 @@ A_INTERN a_float_t a_lpf_gen(a_float_t const fc, a_float_t const dt)
  @param[in,out] ctx points to an instance of Low Pass Filter
  @param[in] alpha filter coefficient [0,1]
 */
-A_INLINE void a_lpf_init(a_lpf_s *const ctx, a_float_t const alpha)
+A_INTERN void a_lpf_init(a_lpf_s *const ctx, a_float_t const alpha)
 {
     ctx->alpha = alpha;
     ctx->y = 0;

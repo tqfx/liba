@@ -91,7 +91,7 @@ A_INTERN char a_str_idx(a_str_s const *const ctx, a_diff_t const idx)
  @param[in] len new length for a pointer to string structure
  @note length must less than memory
 */
-A_INLINE void a_str_set_len_(a_str_s *const ctx, a_size_t const len) { ctx->_num = len; }
+A_INTERN void a_str_set_len_(a_str_s *const ctx, a_size_t const len) { ctx->_num = len; }
 
 /*!
  @brief set length for a pointer to string structure
@@ -101,7 +101,7 @@ A_INLINE void a_str_set_len_(a_str_s *const ctx, a_size_t const len) { ctx->_num
   @retval 0 success
   @retval 1 failure
 */
-A_INLINE int a_str_set_len(a_str_s *const ctx, a_size_t const len)
+A_INTERN int a_str_set_len(a_str_s *const ctx, a_size_t const len)
 {
     return a_likely(len < ctx->_mem) ? ((void)(ctx->_num = len), A_SUCCESS) : A_FAILURE;
 }

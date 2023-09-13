@@ -59,7 +59,7 @@ A_INTERN a_float_t a_hpf_gen(a_float_t const fc, a_float_t const dt)
  @param[in,out] ctx points to an instance of High Pass Filter
  @param[in] alpha filter coefficient [0,1]
 */
-A_INLINE void a_hpf_init(a_hpf_s *const ctx, a_float_t const alpha)
+A_INTERN void a_hpf_init(a_hpf_s *const ctx, a_float_t const alpha)
 {
     ctx->alpha = alpha;
     ctx->y = 0;
