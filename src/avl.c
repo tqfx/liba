@@ -827,54 +827,39 @@ a_avl_s *a_avl_pre_prev(a_avl_s *node)
     return node;
 }
 
+#define A_AVL_POST(head, tail) \
+    do                         \
+    {                          \
+        if (node->head)        \
+        {                      \
+            node = node->head; \
+        }                      \
+        else if (node->tail)   \
+        {                      \
+            node = node->tail; \
+        }                      \
+        else                   \
+        {                      \
+            break;             \
+        }                      \
+    } while (!0)
+
 a_avl_s *a_avl_post_head(a_avl_u const *const root)
 {
-#define A_AVL_POST_NEXT(node)       \
-    do                              \
-    {                               \
-        if ((node)->left)           \
-        {                           \
-            (node) = (node)->left;  \
-        }                           \
-        else if ((node)->right)     \
-        {                           \
-            (node) = (node)->right; \
-        }                           \
-        else                        \
-        {                           \
-            break;                  \
-        }                           \
-    } while (!0)
     a_avl_s *node = root->node;
     if (node)
     {
-        A_AVL_POST_NEXT(node);
+        A_AVL_POST(left, right);
     }
     return node;
 }
 
 a_avl_s *a_avl_post_tail(a_avl_u const *const root)
 {
-#define A_AVL_POST_PREV(node)       \
-    do                              \
-    {                               \
-        if ((node)->right)          \
-        {                           \
-            (node) = (node)->right; \
-        }                           \
-        else if ((node)->left)      \
-        {                           \
-            (node) = (node)->left;  \
-        }                           \
-        else                        \
-        {                           \
-            break;                  \
-        }                           \
-    } while (!0)
     a_avl_s *node = root->node;
     if (node)
     {
-        A_AVL_POST_PREV(node);
+        A_AVL_POST(right, left);
     }
     return node;
 }
@@ -897,7 +882,7 @@ a_avl_s *a_avl_post_next(a_avl_s *node)
     if (node && node->right && node->right != last)
     {
         node = node->right; /* B -> D -> F -> E */
-        A_AVL_POST_NEXT(node); /* A -> B -> C */
+        A_AVL_POST(left, right); /* A -> B -> C */
     } /* C -> B */
     return node;
 }
@@ -913,7 +898,7 @@ a_avl_s *a_avl_post_prev(a_avl_s *node)
     if (node && node->left && node->left != last)
     {
         node = node->left;
-        A_AVL_POST_PREV(node);
+        A_AVL_POST(right, left);
     }
     return node;
 }
@@ -929,7 +914,7 @@ a_avl_s *a_avl_tear(a_avl_u *const root, a_avl_s **const next)
             return node;
         }
     }
-    A_AVL_POST_NEXT(node);
+    A_AVL_POST(left, right);
     *next = a_avl_parent(node);
     a_avl_new_child(root, *next, node, A_NULL);
     return node;
