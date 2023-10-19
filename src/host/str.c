@@ -249,11 +249,7 @@ a_size_t a_str_putf_(a_str_s *const ctx, char const *const fmt, va_list va)
     a_size_t num;
     a_size_t mem;
     a_size_t siz;
-    char *ptr = A_NULL;
-    if (ctx->_ptr)
-    {
-        ptr = ctx->_ptr + ctx->_num;
-    }
+    char *ptr = ctx->_ptr ? ctx->_ptr + ctx->_num : ctx->_ptr;
     mem = ctx->_mem - ctx->_num;
     va_copy(ap, va);
     num = (a_size_t)vsnprintf(ptr, mem, fmt, ap);
