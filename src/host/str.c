@@ -243,41 +243,44 @@ int a_str_cat(a_str_s *const ctx, a_str_s const *const obj)
 
 #include <stdio.h>
 
-a_size_t a_str_putf_(a_str_s *const ctx, char const *const fmt, va_list va)
+int a_str_putf_(a_str_s *const ctx, char const *const fmt, va_list va)
 {
+    int res;
     va_list ap;
-    a_size_t num;
     a_size_t mem;
-    a_size_t siz;
     char *ptr = ctx->_ptr ? ctx->_ptr + ctx->_num : ctx->_ptr;
-    mem = ctx->_mem - ctx->_num;
     va_copy(ap, va);
-    num = (a_size_t)vsnprintf(ptr, mem, fmt, ap);
+    mem = ctx->_mem - ctx->_num;
+    res = vsnprintf(ptr, mem, fmt, ap);
+    mem = ctx->_num + (size_t)(res + 1);
     va_end(ap);
-    siz = num + 1;
-    if (siz > mem)
+    if (mem > ctx->_mem)
     {
-        if (a_unlikely(a_str_alloc_(ctx, ctx->_num + siz)))
+        if (a_unlikely(a_str_alloc_(ctx, mem)))
         {
             return 0;
         }
+        va_copy(ap, va);
         ptr = ctx->_ptr + ctx->_num;
         mem = ctx->_mem - ctx->_num;
-        va_copy(ap, va);
-        num = (a_size_t)vsnprintf(ptr, mem, fmt, ap);
+        res = vsnprintf(ptr, mem, fmt, ap);
         va_end(ap);
     }
-    ctx->_num += num;
-    return num;
+    if (res > 0)
+    {
+        ctx->_num += (size_t)res;
+    }
+    return res;
 }
 
-a_size_t a_str_putf(a_str_s *const ctx, char const *const fmt, ...)
+int a_str_putf(a_str_s *const ctx, char const *const fmt, ...)
 {
+    int res;
     va_list va;
     va_start(va, fmt);
-    a_size_t num = a_str_putf_(ctx, fmt, va);
+    res = a_str_putf_(ctx, fmt, va);
     va_end(va);
-    return num;
+    return res;
 }
 
 #include "a/utf.h"

@@ -267,7 +267,7 @@ A_EXTERN int a_str_cat_(a_str_s *ctx, a_str_s const *obj);
  @param[in] va instance of variable argument
  @return number of parsed characters
 */
-A_EXTERN a_size_t a_str_putf_(a_str_s *ctx, char const *fmt, va_list va) A_FORMAT(printf, 2, 0);
+A_EXTERN int a_str_putf_(a_str_s *ctx, char const *fmt, va_list va) A_FORMAT(printf, 2, 0);
 
 /*!
  @brief format string to a pointer to string structure
@@ -275,7 +275,7 @@ A_EXTERN a_size_t a_str_putf_(a_str_s *ctx, char const *fmt, va_list va) A_FORMA
  @param[in] fmt format of string to be parsed
  @return number of parsed characters
 */
-A_EXTERN a_size_t a_str_putf(a_str_s *ctx, char const *fmt, ...) A_FORMAT(printf, 2, 3);
+A_EXTERN int a_str_putf(a_str_s *ctx, char const *fmt, ...) A_FORMAT(printf, 2, 3);
 
 /*!
  @brief length for a pointer to string structure using UTF-8
