@@ -14,17 +14,9 @@ typedef struct
 static a_size_t a_slist_len(a_slist_s const *const ctx)
 {
     a_size_t count = 0;
-    if (ctx && ctx->head.next != &ctx->head)
+    a_slist_foreach(it, ctx)
     {
-        a_slist_foreach(it, ctx)
-        {
-            if (it->next == it)
-            {
-                printf("\nwarning endless loop!\n");
-                break;
-            }
-            ++count;
-        }
+        ++count;
     }
     return count;
 }
@@ -56,9 +48,9 @@ static void test(void)
         a_slist_add(list3, list3->tail, &node->list);
     }
     a_slist_rot(list1);
-    a_slist_mov(list3, &list3->head, list2);
+    a_slist_mov(list2, list3, &list3->head);
     a_slist_dtor(list2);
-    a_slist_mov(list1, list1->tail, list3);
+    a_slist_mov(list3, list1, list1->tail);
     a_slist_dtor(list3);
     a_slist_foreach(it, list1)
     {
@@ -100,8 +92,8 @@ static void null(void)
 
     a_slist_rot(&list1);
     a_slist_rot(&list1);
-    a_slist_mov(&list1, &list1.head, &list2);
-    a_slist_mov(&list1, list1.tail, &list2);
+    a_slist_mov(&list2, &list1, &list1.head);
+    a_slist_mov(&list2, &list1, list1.tail);
     a_slist_del(&list1, &list1.head);
     a_slist_del(&list1, list1.tail);
     a_slist_del_head(&list2);
@@ -116,8 +108,8 @@ static void null(void)
     a_slist_add(&list1, &node1, &node1);
     a_slist_add_head(&list1, &node1);
     a_slist_add_tail(&list2, &node2);
-    a_slist_mov(&list1, &list1.head, &list2);
-    a_slist_mov(&list1, list1.tail, &list2);
+    a_slist_mov(&list2, &list1, &list1.head);
+    a_slist_mov(&list2, &list1, list1.tail);
 }
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
