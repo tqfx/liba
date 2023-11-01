@@ -68,7 +68,7 @@ static void test_next(void)
         a_list_del_prev(list2);
         a_die(node);
     }
-    a_list_mov_prev(list1, list2);
+    a_list_mov_prev(list2, list1);
     a_list_init(list2);
     a_list_foreach_next(it, list1)
     {
@@ -115,7 +115,7 @@ static void test_prev(void)
         a_list_del_next(list2);
         a_die(node);
     }
-    a_list_mov_next(list1, list2);
+    a_list_mov_next(list2, list1);
     a_list_init(list2);
     a_list_foreach_prev(it, list1)
     {
