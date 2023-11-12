@@ -124,11 +124,11 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_float_t den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
 
     a_tf_s ctx;
-    a_float_t input[a_array_n(num)];
-    a_float_t output[a_array_n(den)];
-    a_tf_init(&ctx, a_array_n(num), num, input, a_array_n(den), den, output);
+    a_float_t input[A_LEN(num)];
+    a_float_t output[A_LEN(den)];
+    a_tf_init(&ctx, A_LEN(num), num, input, A_LEN(den), den, output);
 
-    for (unsigned int i = 0; i < a_array_n(u); ++i)
+    for (unsigned int i = 0; i < A_LEN(u); ++i)
     {
         a_tf_iter(&ctx, u[i]);
 #if defined(MAIN_ONCE)

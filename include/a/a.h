@@ -865,6 +865,11 @@ typedef union a_cast_u
 #define A_SQ(x) ((x) * (x))
 
 /*!
+ @brief absolute value of x, \f$ |x| \f$
+*/
+#define A_ABS(x) ((x) < 0 ? -(x) : (x))
+
+/*!
  @brief minimum value between x and y
 */
 #define A_MIN(x, y) (((x) < (y)) ? (x) : (y))
@@ -873,11 +878,6 @@ typedef union a_cast_u
  @brief maximum value between x and y
 */
 #define A_MAX(x, y) (((x) > (y)) ? (x) : (y))
-
-/*!
- @brief absolute value of x, \f$ |x| \f$
-*/
-#define A_ABS(x) ((x) < 0 ? -(x) : (x))
 
 /*!
  @brief signum function, \f$ \texttt{sgn}{x}=\begin{cases}+1&x>0\\0&0\\-1&x<0\end{cases} \f$
@@ -891,9 +891,9 @@ typedef union a_cast_u
 
 /*!
  @brief number of elements in a visible array
- @param array must be a visible array
+ @param a must be a visible array
 */
-#define a_array_n(array) (sizeof(array) / sizeof(*(array)))
+#define A_LEN(a) (sizeof(a) / sizeof(*(a)))
 
 /*!
  @brief offset of a structure member

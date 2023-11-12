@@ -79,7 +79,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     (void)(argv);
 #endif /* MAIN_ONCE */
 
-    for (unsigned int i = 0; i != a_array_n(song); ++i)
+    for (unsigned int i = 0; i != A_LEN(song); ++i)
     {
 #if defined(MAIN_ONCE)
         printf(A_FLOAT_PRI("", "g\t") A_FLOAT_PRI("", "g\t") A_FLOAT_PRI("", "g\n"), song[i][0], song[i][1], 1 / song[i][1]);

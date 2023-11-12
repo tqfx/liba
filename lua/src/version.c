@@ -260,7 +260,7 @@ static int LMODULE(version_get)(lua_State *const L)
             {"ne", LMODULE(version_ne)},
             {NULL, NULL},
         };
-        lua_createtable(L, 0, a_array_n(enums) + a_array_n(funcs) - 2);
+        lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
         l_int_reg(L, -1, enums);
         l_func_reg(L, -1, funcs);
         break;
@@ -299,7 +299,7 @@ int LMODULE_(version, lua_State *const L)
         {"ne", LMODULE(version_ne)},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, a_array_n(enums) + a_array_n(funcs) - 2);
+    lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
     l_int_reg(L, -1, enums);
     l_func_reg(L, -1, funcs);
     lua_createtable(L, 0, 2);
@@ -317,7 +317,7 @@ int LMODULE_(version, lua_State *const L)
         {L_LE, LMODULE(version_le)},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, a_array_n(metas));
+    lua_createtable(L, 0, A_LEN(metas));
     l_str_set(L, -1, L_NAME, LMODULES("version"));
     l_func_reg(L, -1, metas);
 

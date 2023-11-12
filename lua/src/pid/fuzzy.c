@@ -400,7 +400,7 @@ static int LMODULE(pid_fuzzy_get)(lua_State *const L)
             {"new", LMODULE(pid_fuzzy_new)},
             {NULL, NULL},
         };
-        lua_createtable(L, 0, a_array_n(enums) + a_array_n(datas) + a_array_n(funcs) - 3);
+        lua_createtable(L, 0, A_LEN(enums) + A_LEN(datas) + A_LEN(funcs) - 3);
         l_int_reg(L, -1, enums);
         l_num_reg(L, -1, datas);
         l_func_reg(L, -1, funcs);
@@ -447,7 +447,7 @@ int LMODULE_(pid_fuzzy, lua_State *const L)
         {"new", LMODULE(pid_fuzzy_new)},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, a_array_n(enums) + a_array_n(funcs) - 2);
+    lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
     l_int_reg(L, -1, enums);
     l_func_reg(L, -1, funcs);
     lua_createtable(L, 0, 2);
@@ -462,7 +462,7 @@ int LMODULE_(pid_fuzzy, lua_State *const L)
         {L_GET, LMODULE(pid_fuzzy_get)},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, a_array_n(metas));
+    lua_createtable(L, 0, A_LEN(metas));
     l_str_set(L, -1, L_NAME, LMODULES("pid.fuzzy"));
     l_func_reg(L, -1, metas);
 

@@ -212,10 +212,10 @@ int LMODULE_(mf, lua_State *const L)
         {"__call", LMODULE(mf)},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, a_array_n(enums) + a_array_n(funcs) - 2);
+    lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
     l_int_reg(L, -1, enums);
     l_func_reg(L, -1, funcs);
-    lua_createtable(L, 0, a_array_n(metas) - 1);
+    lua_createtable(L, 0, A_LEN(metas) - 1);
     l_func_reg(L, -1, metas);
     lua_setmetatable(L, -2);
     return 1;

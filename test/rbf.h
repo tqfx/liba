@@ -23,9 +23,9 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     {
         static a_float_t num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
         static a_float_t den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
-        static a_float_t input[a_array_n(num)];
-        static a_float_t output[a_array_n(den)];
-        a_tf_init(&tf, a_array_n(num), num, input, a_array_n(den), den, output);
+        static a_float_t input[A_LEN(num)];
+        static a_float_t output[A_LEN(den)];
+        a_tf_init(&tf, A_LEN(num), num, input, A_LEN(den), den, output);
     }
     a_rbf_s ctx;
     {

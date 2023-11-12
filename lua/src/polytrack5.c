@@ -72,8 +72,8 @@ int LMODULE(polytrack5_new)(lua_State *const L)
         a_float_t source[4] = {0};
         luaL_checktype(L, -1, LUA_TTABLE);
         luaL_checktype(L, -2, LUA_TTABLE);
-        l_array_num_get(L, -1, target, a_array_n(target));
-        l_array_num_get(L, -2, source, a_array_n(source));
+        l_array_num_get(L, -1, target, A_LEN(target));
+        l_array_num_get(L, -2, source, A_LEN(source));
         a_polytrack5_s *const ctx = (a_polytrack5_s *)lua_newuserdata(L, sizeof(a_polytrack5_s));
         LMODULE2(polytrack5_meta_, L, 1);
         lua_setmetatable(L, -2);
@@ -127,8 +127,8 @@ int LMODULE(polytrack5_gen)(lua_State *const L)
         luaL_checktype(L, -2, LUA_TTABLE);
         luaL_checktype(L, -3, LUA_TUSERDATA);
         a_polytrack5_s *const ctx = (a_polytrack5_s *)lua_touserdata(L, -3);
-        l_array_num_get(L, -1, target, a_array_n(target));
-        l_array_num_get(L, -2, source, a_array_n(source));
+        l_array_num_get(L, -1, target, A_LEN(target));
+        l_array_num_get(L, -2, source, A_LEN(source));
         a_polytrack5_gen(ctx,
                          source[0], target[0],
                          source[1], target[1],
@@ -245,8 +245,8 @@ static int LMODULE(polytrack5_get)(lua_State *const L)
     switch (hash)
     {
     case 0x0000006B: // k
-        lua_createtable(L, a_array_n(ctx->k), 0);
-        l_array_num_set(L, -1, ctx->k, a_array_n(ctx->k));
+        lua_createtable(L, A_LEN(ctx->k), 0);
+        l_array_num_set(L, -1, ctx->k, A_LEN(ctx->k));
         break;
     case 0x001D0204: // new
         lua_pushcfunction(L, LMODULE(polytrack5_new));
@@ -277,10 +277,10 @@ static int LMODULE(polytrack5_get)(lua_State *const L)
             {"acc", LMODULE(polytrack5_acc)},
             {NULL, NULL},
         };
-        lua_createtable(L, 0, a_array_n(funcs));
+        lua_createtable(L, 0, A_LEN(funcs));
         l_func_reg(L, -1, funcs);
-        lua_createtable(L, a_array_n(ctx->k), 0);
-        l_array_num_set(L, -1, ctx->k, a_array_n(ctx->k));
+        lua_createtable(L, A_LEN(ctx->k), 0);
+        l_array_num_set(L, -1, ctx->k, A_LEN(ctx->k));
         lua_setfield(L, -2, "k");
         break;
     }
@@ -302,7 +302,7 @@ int LMODULE_(polytrack5, lua_State *const L)
         {"acc", LMODULE(polytrack5_acc)},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, a_array_n(funcs) - 1);
+    lua_createtable(L, 0, A_LEN(funcs) - 1);
     l_func_reg(L, -1, funcs);
     lua_createtable(L, 0, 2);
     l_func_set(L, -1, L_SET, LMODULE(setter));
@@ -315,7 +315,7 @@ int LMODULE_(polytrack5, lua_State *const L)
         {L_GET, LMODULE(polytrack5_get)},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, a_array_n(metas));
+    lua_createtable(L, 0, A_LEN(metas));
     l_str_set(L, -1, L_NAME, LMODULES("polytrack5"));
     l_func_reg(L, -1, metas);
 

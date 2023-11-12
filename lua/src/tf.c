@@ -203,7 +203,7 @@ static int LMODULE(tf_get)(lua_State *const L)
             {"die", LMODULE(tf_die)},
             {NULL, NULL},
         };
-        lua_createtable(L, 0, a_array_n(funcs) + 1);
+        lua_createtable(L, 0, A_LEN(funcs) + 1);
         l_func_reg(L, -1, funcs);
         lua_createtable(L, (int)ctx->num_n, 0);
         l_array_num_set(L, -1, ctx->num_p, ctx->num_n);
@@ -236,7 +236,7 @@ int LMODULE_(tf, lua_State *const L)
         {"die", LMODULE(tf_die)},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, a_array_n(funcs) - 1);
+    lua_createtable(L, 0, A_LEN(funcs) - 1);
     l_func_reg(L, -1, funcs);
     lua_createtable(L, 0, 2);
     l_func_set(L, -1, L_SET, LMODULE(setter));
@@ -250,7 +250,7 @@ int LMODULE_(tf, lua_State *const L)
         {L_GET, LMODULE(tf_get)},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, a_array_n(metas));
+    lua_createtable(L, 0, A_LEN(metas));
     l_str_set(L, -1, L_NAME, LMODULES("tf"));
     l_func_reg(L, -1, metas);
 
