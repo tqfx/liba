@@ -1,7 +1,7 @@
 [package]
 name = "liba"
 version = "0.1.1"
-authors = ["tqfx <tqfx@foxmail.com>"]
+authors = ["tqfx <tqfx@tqfx.org>"]
 edition = "2018"
 description = """
 An algorithm library based on C/C++ language

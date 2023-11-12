@@ -1,6 +1,6 @@
 set(PROJECT_VERSION 0.1.1)
 set(PROJECT_LICENSE MPL-2.0)
-set(PROJECT_CONTACT tqfx@foxmail.com)
+set(PROJECT_CONTACT tqfx@tqfx.org)
 set(PROJECT_DESCRIPTION "An algorithm library based on C/C++ language")
 set(PROJECT_HOMEPAGE_URL "https://github.com/tqfx/liba.git")
 string(REGEX MATCH "[^.]+\\.[^.]+\\.[^.]+\\.[^.]+" PROJECT_VERSION_TWEAK "${PROJECT_VERSION}")
