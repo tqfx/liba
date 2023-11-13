@@ -1,0 +1,19 @@
+{
+    "name": "@tqfx/liba",
+    "version": "0.0.0-2",
+    "description": "An algorithm library based on C/C++ language.",
+    "main": "liba.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tqfx/liba.git"
+    },
+    "keywords": [
+        "algorithms"
+    ],
+    "author": "tqfx",
+    "license": "MPL-2.0",
+    "bugs": {
+        "url": "https://github.com/tqfx/liba/issues"
+    },
+    "homepage": "https://github.com/tqfx/liba#readme"
+}

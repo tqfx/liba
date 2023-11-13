@@ -153,6 +153,17 @@ fn main() {
 }
 ```
 
+### NodeJS
+
+```bash
+npm i @tqfx/liba
+```
+
+```js
+import liba from "@tqfx/liba";
+console.log(liba.version())
+```
+
 ### Python
 
 ```py
