@@ -1,6 +1,7 @@
 #include "a/host/a.h"
 
-void *a_alloc_(void *const addr, a_size_t const size)
+A_ALLOC((*a_alloc), , ) = a_alloc_;
+A_ALLOC(a_alloc_, const addr, const size)
 {
     if (size)
     {
@@ -13,5 +14,3 @@ void *a_alloc_(void *const addr, a_size_t const size)
     free(addr);
     return A_NULL;
 }
-
-void *(*a_alloc)(void *, a_size_t) = a_alloc_;

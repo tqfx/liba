@@ -10,6 +10,11 @@ static void test_sq(void)
     A_ASSERT_BUILD(A_SQ(-2) == 4);
 }
 
+static void test_abs(void)
+{
+    A_ASSERT_BUILD(A_ABS(~0) > 0);
+}
+
 static void test_min(void)
 {
     A_ASSERT_BUILD(A_MIN(0, 1) == 0);
@@ -20,11 +25,6 @@ static void test_max(void)
 {
     A_ASSERT_BUILD(A_MAX(0, 1) == 1);
     A_ASSERT_BUILD(A_MAX(1, 0) == 1);
-}
-
-static void test_abs(void)
-{
-    A_ASSERT_BUILD(A_ABS(~0) > 0);
 }
 
 static void test_sgn(void)

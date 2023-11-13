@@ -12,6 +12,12 @@
 #include <mimalloc-override.h>
 #endif /* A_HAVE_MIMALLOC_H */
 
+/*!
+ @brief declare allocation function
+*/
+#define A_ALLOC(alloc, addr, size) \
+    void *alloc(void *addr, a_size_t size)
+
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
