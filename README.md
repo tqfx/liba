@@ -122,7 +122,7 @@ liba/[~0.1]
 
 ```lua
 local liba = require("liba")
-print("version", liba.version())
+print("version", liba.VERSION)
 ```
 
 ### Java
@@ -161,14 +161,14 @@ npm i @tqfx/liba
 
 ```js
 import liba from "@tqfx/liba";
-console.log(liba.version())
+console.log(liba.VERSION)
 ```
 
 ### Python
 
 ```py
 import liba
-print("version", liba.version())
+print("version", liba.VERSION)
 ```
 
 ### QuickJS
