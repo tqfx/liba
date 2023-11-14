@@ -32,7 +32,6 @@ function test:r(...)
     end
 end
 function test:w(...)
-    io.write(...)
-    io.write('\n')
+    print(...)
 end
 return test
