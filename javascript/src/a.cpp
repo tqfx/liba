@@ -481,6 +481,11 @@ EMSCRIPTEN_BINDINGS(module) // NOLINT
         .property("major", &a::version::major)
         .property("minor", &a::version::minor)
         .property("patch", &a::version::patch)
+        .function("parse", emscripten::optional_override([](a::version *ctx, std::string const &ver) {
+                      a_version_parse(ctx, ver.c_str());
+                      return ctx;
+                  }),
+                  emscripten::allow_raw_pointers())
         .function("str", emscripten::optional_override([](a::version const *ctx) {
                       return std::to_string(ctx->major) + "." + std::to_string(ctx->minor) + "." + std::to_string(ctx->patch);
                   }),

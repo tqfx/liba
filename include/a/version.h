@@ -138,6 +138,14 @@ A_EXTERN unsigned int a_version_minor(void);
 A_EXTERN unsigned int a_version_patch(void);
 
 /*!
+ @brief algorithm library version parse
+ @param[in,out] ctx points to an instance structure for version
+ @param[in] ver version string to be parsed
+ @return number of characters parsed
+*/
+A_EXTERN unsigned int a_version_parse(a_version_s *ctx, char const *ver);
+
+/*!
  @brief compare the version lhs with the version rhs
  @param[in] lhs version structure to be compared
  @param[in] rhs version structure to be compared

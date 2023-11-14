@@ -50,6 +50,46 @@ int a_version_cmp(a_version_s const *const lhs, a_version_s const *const rhs)
     return 0;
 }
 
+#include <string.h>
+#include <stdlib.h>
+
+unsigned int a_version_parse(a_version_s *const ctx, char const *const ver)
+{
+    union
+    {
+        char const *p;
+        char *s;
+    } u = {ver};
+    ctx->major = 0;
+    ctx->minor = 0;
+    ctx->patch = 0;
+    if (ver)
+    {
+        ctx->major = (unsigned int)strtoul(u.p, &u.s, 0);
+        if (u.p[0] == '.' && u.p[1] >= '0' && u.p[1] <= '9')
+        {
+            ++u.p;
+        }
+        else
+        {
+            goto done;
+        }
+        ctx->minor = (unsigned int)strtoul(u.p, &u.s, 0);
+        if (u.p[0] == '.' && u.p[1] >= '0' && u.p[1] <= '9')
+        {
+            ++u.p;
+        }
+        else
+        {
+            goto done;
+        }
+        ctx->patch = (unsigned int)strtoul(u.p, &u.s, 0);
+    done:
+        return (unsigned int)(u.p - ver);
+    }
+    return 0;
+}
+
 #undef a_version_check
 int a_version_check(unsigned int const major, unsigned int const minor, unsigned int const patch)
 {

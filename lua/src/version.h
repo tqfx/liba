@@ -45,6 +45,14 @@ A_PUBLIC int LMODULE(version_new)(lua_State *L);
 A_PUBLIC int LMODULE(version_init)(lua_State *L);
 
 /***
+ algorithm library version parse
+ @tparam string version string to be parsed
+ @treturn algorithm library version userdata
+ @function parse
+*/
+A_PUBLIC int LMODULE(version_parse)(lua_State *L);
+
+/***
  compare the version lhs with the version rhs
  @tparam lhs version structure to be compared
  @tparam rhs version structure to be compared

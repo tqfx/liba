@@ -52,3 +52,6 @@ cdef class version:
         return a_version_eq(&self.ctx, &other.ctx)
     def __ne__(self, other: version):
         return a_version_ne(&self.ctx, &other.ctx)
+    def parse(self, ver: bytes):
+        a_version_parse(&self.ctx, ver)
+        return self

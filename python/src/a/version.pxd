@@ -10,6 +10,7 @@ cdef extern from "a/version.h":
         unsigned int major
         unsigned int minor
         unsigned int patch
+    unsigned int a_version_parse(a_version_s *ctx, const char *ver)
     int a_version_check(unsigned int major, unsigned int minor, unsigned int patch)
     bint a_version_lt(const a_version_s *lhs, const a_version_s *rhs)
     bint a_version_gt(const a_version_s *lhs, const a_version_s *rhs)

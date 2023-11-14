@@ -29,6 +29,11 @@ static int LMODULE(version_init_)(lua_State *const L, a_version_s *const ctx)
         ctx->minor = (unsigned int)luaL_checkinteger(L, 2);
         A_FALLTHROUGH;
     case 1:
+        if (lua_type(L, 1) == LUA_TSTRING)
+        {
+            a_version_parse(ctx, lua_tostring(L, 1));
+            break;
+        }
         ctx->major = (unsigned int)luaL_checkinteger(L, 1);
         A_FALLTHROUGH;
     default:
@@ -78,6 +83,25 @@ int LMODULE(version_init)(lua_State *const L)
     lua_pushvalue(L, 1);
     lua_remove(L, 1);
     return LMODULE2(version_init_, L, ctx);
+}
+
+/***
+ algorithm library version parse
+ @param ctx algorithm library version userdata
+ @tparam string version string to be parsed
+ @treturn algorithm library version userdata
+ @function parse
+*/
+int LMODULE(version_parse)(lua_State *const L)
+{
+    a_version_s *const ctx = (a_version_s *)lua_touserdata(L, -2);
+    if (ctx)
+    {
+        a_version_parse(ctx, lua_tostring(L, -1));
+        lua_pop(L, 1);
+        return 1;
+    }
+    return 0;
 }
 
 /***
@@ -217,6 +241,9 @@ static int LMODULE(version_get)(lua_State *const L)
     case 0xBB1DBE50: // patch
         lua_pushinteger(L, (lua_Integer)ctx->patch);
         break;
+    case 0xBB1D406B: // parse
+        lua_pushcfunction(L, LMODULE(version_parse));
+        break;
     case 0x0E2ED8A0: // init
         lua_pushcfunction(L, LMODULE(version_init));
         break;
@@ -250,6 +277,7 @@ static int LMODULE(version_get)(lua_State *const L)
             {NULL, 0},
         };
         l_func_s const funcs[] = {
+            {"parse", LMODULE(version_parse)},
             {"init", LMODULE(version_init)},
             {"cmp", LMODULE(version_cmp)},
             {"lt", LMODULE(version_lt)},
@@ -288,6 +316,7 @@ int LMODULE_(version, lua_State *const L)
         {NULL, 0},
     };
     l_func_s const funcs[] = {
+        {"parse", LMODULE(version_parse)},
         {"init", LMODULE(version_init)},
         {"new", LMODULE(version_new)},
         {"cmp", LMODULE(version_cmp)},
