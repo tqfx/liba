@@ -9,5 +9,5 @@ for i, v in pairs(arg) do
         break
     end
 end
-test:p(a:rsqrt(1, 2, 4))
+test:w(a:rsqrt(1, 2, 4))
 test:r(a)

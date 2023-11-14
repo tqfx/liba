@@ -31,7 +31,8 @@ function test:r(...)
         io_write("  ", ...)
     end
 end
-function test:p(...)
-    io.write(tostring(...) .. "\n")
+function test:w(...)
+    io.write(...)
+    io.write('\n')
 end
 return test
