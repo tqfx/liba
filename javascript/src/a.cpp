@@ -1,13 +1,6 @@
 #include "a/host/a.h"
 #include <emscripten/bind.h>
 
-#include "a/version.h"
-
-static emscripten::val version()
-{
-    return emscripten::val(a_version());
-}
-
 #include "a/pid.h"
 
 class pid
@@ -16,46 +9,46 @@ class pid
 
     void init()
     {
-        this->ctx.kp = 0;
-        this->ctx.ki = 0;
-        this->ctx.kd = 0;
-        a_pid_init(&this->ctx, 0);
+        ctx.kp = 0;
+        ctx.ki = 0;
+        ctx.kd = 0;
+        a_pid_init(&ctx, 0);
     }
 
 public:
     pid()
     {
-        this->ctx.summax = 0;
-        this->ctx.outmax = -A_FLOAT_INF;
-        this->ctx.outmin = +A_FLOAT_INF;
-        this->ctx.mode = A_PID_INC;
-        this->init();
+        ctx.summax = 0;
+        ctx.outmax = -A_FLOAT_INF;
+        ctx.outmin = +A_FLOAT_INF;
+        ctx.mode = A_PID_INC;
+        init();
     }
-    pid(a_float_t jmin, a_float_t jmax)
+    pid(a_float_t min, a_float_t max)
     {
-        this->ctx.summax = 0;
-        this->ctx.outmax = jmax;
-        this->ctx.outmin = jmin;
-        this->ctx.mode = A_PID_INC;
-        this->init();
+        ctx.summax = 0;
+        ctx.outmax = max;
+        ctx.outmin = min;
+        ctx.mode = A_PID_INC;
+        init();
     }
-    pid(a_float_t jmin, a_float_t jmax, a_float_t jsum)
+    pid(a_float_t min, a_float_t max, a_float_t sum)
     {
-        this->ctx.summax = jsum;
-        this->ctx.outmax = jmax;
-        this->ctx.outmin = jmin;
-        this->ctx.mode = A_PID_POS;
-        this->init();
+        ctx.summax = sum;
+        ctx.outmax = max;
+        ctx.outmin = min;
+        ctx.mode = A_PID_POS;
+        init();
     }
-    void kpid(a_float_t jkp, a_float_t jki, a_float_t jkd)
+    void kpid(a_float_t kp, a_float_t ki, a_float_t kd)
     {
-        a_pid_kpid(&this->ctx, jkp, jki, jkd);
+        a_pid_kpid(&ctx, kp, ki, kd);
     }
-    a_float_t iter(a_float_t jset, a_float_t jfdb)
+    a_float_t iter(a_float_t set, a_float_t fdb)
     {
-        return a_pid_outf(&this->ctx, jset, jfdb);
+        return a_pid_outf(&ctx, set, fdb);
     }
-    void zero() { a_pid_zero(&this->ctx); }
+    void zero() { a_pid_zero(&ctx); }
 };
 
 #include "a/pid/fuzzy.h"
@@ -88,86 +81,86 @@ class pid_fuzzy
 
     void init()
     {
-        this->ctx.pid.kp = 0;
-        this->ctx.pid.ki = 0;
-        this->ctx.pid.kd = 0;
-        this->ctx.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
-        this->ctx.kp = 0;
-        this->ctx.ki = 0;
-        this->ctx.kd = 0;
-        this->ctx.col = 0;
-        this->ctx.buf = 0;
-        this->me = nullptr;
-        this->mec = nullptr;
-        this->mkp = nullptr;
-        this->mki = nullptr;
-        this->mkd = nullptr;
-        this->buf = nullptr;
-        a_pid_fuzzy_init(&this->ctx, 0);
+        ctx.pid.kp = 0;
+        ctx.pid.ki = 0;
+        ctx.pid.kd = 0;
+        ctx.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
+        ctx.kp = 0;
+        ctx.ki = 0;
+        ctx.kd = 0;
+        ctx.col = 0;
+        ctx.buf = 0;
+        me = nullptr;
+        mec = nullptr;
+        mkp = nullptr;
+        mki = nullptr;
+        mkd = nullptr;
+        buf = nullptr;
+        a_pid_fuzzy_init(&ctx, 0);
     }
 
 public:
     pid_fuzzy()
     {
-        this->ctx.pid.summax = 0;
-        this->ctx.pid.outmax = -A_FLOAT_INF;
-        this->ctx.pid.outmin = +A_FLOAT_INF;
-        this->ctx.pid.mode = A_PID_INC;
-        this->init();
+        ctx.pid.summax = 0;
+        ctx.pid.outmax = -A_FLOAT_INF;
+        ctx.pid.outmin = +A_FLOAT_INF;
+        ctx.pid.mode = A_PID_INC;
+        init();
     }
-    pid_fuzzy(a_float_t jmin, a_float_t jmax)
+    pid_fuzzy(a_float_t min, a_float_t max)
     {
-        this->ctx.pid.summax = 0;
-        this->ctx.pid.outmax = jmax;
-        this->ctx.pid.outmin = jmin;
-        this->ctx.pid.mode = A_PID_INC;
-        this->init();
+        ctx.pid.summax = 0;
+        ctx.pid.outmax = max;
+        ctx.pid.outmin = min;
+        ctx.pid.mode = A_PID_INC;
+        init();
     }
-    pid_fuzzy(a_float_t jmin, a_float_t jmax, a_float_t jsum)
+    pid_fuzzy(a_float_t min, a_float_t max, a_float_t sum)
     {
-        this->ctx.pid.summax = jsum;
-        this->ctx.pid.outmax = jmax;
-        this->ctx.pid.outmin = jmin;
-        this->ctx.pid.mode = A_PID_POS;
-        this->init();
+        ctx.pid.summax = sum;
+        ctx.pid.outmax = max;
+        ctx.pid.outmin = min;
+        ctx.pid.mode = A_PID_POS;
+        init();
     }
     ~pid_fuzzy()
     {
-        a_alloc(this->me, 0);
-        a_alloc(this->mec, 0);
-        a_alloc(this->mkp, 0);
-        a_alloc(this->mki, 0);
-        a_alloc(this->mkd, 0);
-        a_alloc(this->buf, 0);
+        a_alloc(me, 0);
+        a_alloc(mec, 0);
+        a_alloc(mkp, 0);
+        a_alloc(mki, 0);
+        a_alloc(mkd, 0);
+        a_alloc(buf, 0);
     }
-    void rule(emscripten::val const &jme, emscripten::val const &jmec,
-              emscripten::val const &jmkp, emscripten::val const &jmki, emscripten::val const &jmkd)
+    void rule(emscripten::val const &_me, emscripten::val const &_mec,
+              emscripten::val const &_mkp, emscripten::val const &_mki, emscripten::val const &_mkd)
     {
-        this->me = float_array(concat(jme), jme["length"].as<a_size_t>(), this->me);
-        this->mec = float_array(concat(jmec), jmec["length"].as<a_size_t>(), this->mec);
-        this->mkp = float_array(concat(jmkp), jmkp["length"].as<a_size_t>(), this->mkp);
-        this->mki = float_array(concat(jmki), jmki["length"].as<a_size_t>(), this->mki);
-        this->mkd = float_array(concat(jmkd), jmkd["length"].as<a_size_t>(), this->mkd);
-        a_pid_fuzzy_rule(&this->ctx, jme["length"].as<unsigned int>(), this->me, this->mec, this->mkp, this->mki, this->mkd);
+        me = float_array(concat(_me), _me["length"].as<a_size_t>(), me);
+        mec = float_array(concat(_mec), _mec["length"].as<a_size_t>(), mec);
+        mkp = float_array(concat(_mkp), _mkp["length"].as<a_size_t>(), mkp);
+        mki = float_array(concat(_mki), _mki["length"].as<a_size_t>(), mki);
+        mkd = float_array(concat(_mkd), _mkd["length"].as<a_size_t>(), mkd);
+        a_pid_fuzzy_rule(&ctx, _me["length"].as<unsigned int>(), me, mec, mkp, mki, mkd);
     }
-    void kpid(a_float_t jkp, a_float_t jki, a_float_t jkd)
+    void kpid(a_float_t kp, a_float_t ki, a_float_t kd)
     {
-        a_pid_fuzzy_kpid(&this->ctx, jkp, jki, jkd);
+        a_pid_fuzzy_kpid(&ctx, kp, ki, kd);
     }
-    void buff(unsigned int jnum)
+    void buff(unsigned int num)
     {
-        this->buf = a_alloc(this->buf, A_PID_FUZZY_BUF1(jnum));
-        a_pid_fuzzy_buf1(&this->ctx, this->buf, jnum);
+        buf = a_alloc(buf, A_PID_FUZZY_BUF1(num));
+        a_pid_fuzzy_buf1(&ctx, buf, num);
     }
-    void op(unsigned int jop)
+    void op(unsigned int op)
     {
-        a_pid_fuzzy_set_op(&this->ctx, jop);
+        a_pid_fuzzy_set_op(&ctx, op);
     }
-    a_float_t iter(a_float_t jset, a_float_t jfdb)
+    a_float_t iter(a_float_t set, a_float_t fdb)
     {
-        return a_pid_fuzzy_outf(&this->ctx, jset, jfdb);
+        return a_pid_fuzzy_outf(&ctx, set, fdb);
     }
-    void zero() { a_pid_fuzzy_zero(&this->ctx); }
+    void zero() { a_pid_fuzzy_zero(&ctx); }
 };
 
 #include "a/pid/neuron.h"
@@ -178,46 +171,46 @@ class pid_neuron
 
     void init()
     {
-        this->ctx.pid.kp = 0;
-        this->ctx.pid.ki = 0;
-        this->ctx.pid.kd = 0;
-        this->ctx.wp.f = 1;
-        this->ctx.wi.f = 0;
-        this->ctx.wd.f = 0;
-        this->ctx.k = 1;
-        a_pid_neuron_init(&this->ctx, 0);
+        ctx.pid.kp = 0;
+        ctx.pid.ki = 0;
+        ctx.pid.kd = 0;
+        ctx.wp.f = 1;
+        ctx.wi.f = 0;
+        ctx.wd.f = 0;
+        ctx.k = 1;
+        a_pid_neuron_init(&ctx, 0);
     }
 
 public:
     pid_neuron()
     {
-        this->ctx.pid.summax = 0;
-        this->ctx.pid.outmax = -A_FLOAT_INF;
-        this->ctx.pid.outmin = +A_FLOAT_INF;
-        this->ctx.pid.mode = A_PID_INC;
-        this->init();
+        ctx.pid.summax = 0;
+        ctx.pid.outmax = -A_FLOAT_INF;
+        ctx.pid.outmin = +A_FLOAT_INF;
+        ctx.pid.mode = A_PID_INC;
+        init();
     }
-    pid_neuron(a_float_t jmin, a_float_t jmax)
+    pid_neuron(a_float_t min, a_float_t max)
     {
-        this->ctx.pid.summax = 0;
-        this->ctx.pid.outmax = jmax;
-        this->ctx.pid.outmin = jmin;
-        this->ctx.pid.mode = A_PID_INC;
-        this->init();
+        ctx.pid.summax = 0;
+        ctx.pid.outmax = max;
+        ctx.pid.outmin = min;
+        ctx.pid.mode = A_PID_INC;
+        init();
     }
-    void kpid(a_float_t jk, a_float_t jkp, a_float_t jki, a_float_t jkd)
+    void kpid(a_float_t k, a_float_t kp, a_float_t ki, a_float_t kd)
     {
-        a_pid_neuron_kpid(&this->ctx, jk, jkp, jki, jkd);
+        a_pid_neuron_kpid(&ctx, k, kp, ki, kd);
     }
-    void wpid(a_float_t jwp, a_float_t jwi, a_float_t jwd)
+    void wpid(a_float_t wp, a_float_t wi, a_float_t wd)
     {
-        a_pid_neuron_wpid(&this->ctx, jwp, jwi, jwd);
+        a_pid_neuron_wpid(&ctx, wp, wi, wd);
     }
-    a_float_t iter(a_float_t jset, a_float_t jfdb)
+    a_float_t iter(a_float_t set, a_float_t fdb)
     {
-        return a_pid_neuron_outf(&this->ctx, jset, jfdb);
+        return a_pid_neuron_outf(&ctx, set, fdb);
     }
-    void zero() { a_pid_neuron_zero(&this->ctx); }
+    void zero() { a_pid_neuron_zero(&ctx); }
 };
 
 #include "a/polytrack.h"
@@ -227,27 +220,27 @@ class polytrack3
     a_polytrack3_s ctx;
 
 public:
-    polytrack3(a_float_t jt0, a_float_t jt1, a_float_t jq0, a_float_t jq1,
-               a_float_t jv0 = 0, a_float_t jv1 = 0)
+    polytrack3(a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1,
+               a_float_t v0 = 0, a_float_t v1 = 0)
     {
-        a_polytrack3_gen(&this->ctx, jt0, jt1, jq0, jq1, jv0, jv1);
+        a_polytrack3_gen(&ctx, t0, t1, q0, q1, v0, v1);
     }
-    a_float_t pos(a_float_t jdt)
+    a_float_t pos(a_float_t dt)
     {
-        return a_polytrack3_pos(&this->ctx, jdt);
+        return a_polytrack3_pos(&ctx, dt);
     }
-    a_float_t vel(a_float_t jdt)
+    a_float_t vel(a_float_t dt)
     {
-        return a_polytrack3_vel(&this->ctx, jdt);
+        return a_polytrack3_vel(&ctx, dt);
     }
-    a_float_t acc(a_float_t jdt)
+    a_float_t acc(a_float_t dt)
     {
-        return a_polytrack3_acc(&this->ctx, jdt);
+        return a_polytrack3_acc(&ctx, dt);
     }
-    emscripten::val out(a_float_t jdt)
+    emscripten::val out(a_float_t dt)
     {
         a_float_t out[3];
-        a_polytrack3_out(&this->ctx, jdt, out);
+        a_polytrack3_out(&ctx, dt, out);
         return emscripten::val(emscripten::typed_memory_view(3, out));
     }
 };
@@ -257,28 +250,28 @@ class polytrack5
     a_polytrack5_s ctx;
 
 public:
-    polytrack5(a_float_t jt0, a_float_t jt1, a_float_t jq0, a_float_t jq1,
-               a_float_t jv0 = 0, a_float_t jv1 = 0,
-               a_float_t ja0 = 0, a_float_t ja1 = 0)
+    polytrack5(a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1,
+               a_float_t v0 = 0, a_float_t v1 = 0,
+               a_float_t a0 = 0, a_float_t a1 = 0)
     {
-        a_polytrack5_gen(&this->ctx, jt0, jt1, jq0, jq1, jv0, jv1, ja0, ja1);
+        a_polytrack5_gen(&ctx, t0, t1, q0, q1, v0, v1, a0, a1);
     }
-    a_float_t pos(a_float_t jdt)
+    a_float_t pos(a_float_t dt)
     {
-        return a_polytrack5_pos(&this->ctx, jdt);
+        return a_polytrack5_pos(&ctx, dt);
     }
-    a_float_t vel(a_float_t jdt)
+    a_float_t vel(a_float_t dt)
     {
-        return a_polytrack5_vel(&this->ctx, jdt);
+        return a_polytrack5_vel(&ctx, dt);
     }
-    a_float_t acc(a_float_t jdt)
+    a_float_t acc(a_float_t dt)
     {
-        return a_polytrack5_acc(&this->ctx, jdt);
+        return a_polytrack5_acc(&ctx, dt);
     }
-    emscripten::val out(a_float_t jdt)
+    emscripten::val out(a_float_t dt)
     {
         a_float_t out[3];
-        a_polytrack5_out(&this->ctx, jdt, out);
+        a_polytrack5_out(&ctx, dt, out);
         return emscripten::val(emscripten::typed_memory_view(3, out));
     }
 };
@@ -288,33 +281,33 @@ class polytrack7
     a_polytrack7_s ctx;
 
 public:
-    polytrack7(a_float_t jt0, a_float_t jt1, a_float_t jq0, a_float_t jq1,
-               a_float_t jv0 = 0, a_float_t jv1 = 0,
-               a_float_t ja0 = 0, a_float_t ja1 = 0,
-               a_float_t jj0 = 0, a_float_t jj1 = 0)
+    polytrack7(a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1,
+               a_float_t v0 = 0, a_float_t v1 = 0,
+               a_float_t a0 = 0, a_float_t a1 = 0,
+               a_float_t j0 = 0, a_float_t j1 = 0)
     {
-        a_polytrack7_gen(&this->ctx, jt0, jt1, jq0, jq1, jv0, jv1, ja0, ja1, jj0, jj1);
+        a_polytrack7_gen(&ctx, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1);
     }
-    a_float_t pos(a_float_t jdt)
+    a_float_t pos(a_float_t dt)
     {
-        return a_polytrack7_pos(&this->ctx, jdt);
+        return a_polytrack7_pos(&ctx, dt);
     }
-    a_float_t vel(a_float_t jdt)
+    a_float_t vel(a_float_t dt)
     {
-        return a_polytrack7_vel(&this->ctx, jdt);
+        return a_polytrack7_vel(&ctx, dt);
     }
-    a_float_t acc(a_float_t jdt)
+    a_float_t acc(a_float_t dt)
     {
-        return a_polytrack7_acc(&this->ctx, jdt);
+        return a_polytrack7_acc(&ctx, dt);
     }
-    a_float_t jer(a_float_t jdt)
+    a_float_t jer(a_float_t dt)
     {
-        return a_polytrack7_jer(&this->ctx, jdt);
+        return a_polytrack7_jer(&ctx, dt);
     }
-    emscripten::val out(a_float_t jdt)
+    emscripten::val out(a_float_t dt)
     {
         a_float_t out[4];
-        a_polytrack7_out(&this->ctx, jdt, out);
+        a_polytrack7_out(&ctx, dt, out);
         return emscripten::val(emscripten::typed_memory_view(4, out));
     }
 };
@@ -326,63 +319,64 @@ class tf
     a_tf_s ctx;
 
     a_float_t *num_p;
-    void set_num_(emscripten::val const &jnum, a_float_t *num)
+    void set_num_(emscripten::val const &_num, a_float_t *num)
     {
-        a_size_t num_n = jnum["length"].as<a_size_t>();
-        this->num_p = float_array(jnum, num_n * 2, num);
-        a_tf_set_num(&this->ctx, num_n, this->num_p, this->num_p + num_n);
+        a_uint_t num_n = _num["length"].as<a_uint_t>();
+        num_p = float_array(_num, a_size_c(, num_n) * 2, num);
+        a_tf_set_num(&ctx, num_n, num_p, num_p + num_n);
     }
     a_float_t *den_p;
-    void set_den_(emscripten::val const &jden, a_float_t *den)
+    void set_den_(emscripten::val const &_den, a_float_t *den)
     {
-        a_size_t den_n = jden["length"].as<a_size_t>();
-        this->den_p = float_array(jden, den_n * 2, den);
-        a_tf_set_den(&this->ctx, den_n, this->den_p, this->den_p + den_n);
+        a_uint_t den_n = _den["length"].as<a_uint_t>();
+        den_p = float_array(_den, a_size_c(, den_n) * 2, den);
+        a_tf_set_den(&ctx, den_n, den_p, den_p + den_n);
     }
 
 public:
-    tf(emscripten::val const &jnum, emscripten::val const &jden)
+    tf(emscripten::val const &num, emscripten::val const &den)
     {
-        this->set_num_(jnum, nullptr);
-        this->set_den_(jden, nullptr);
+        set_num_(num, nullptr);
+        set_den_(den, nullptr);
     }
     ~tf()
     {
-        a_alloc(this->num_p, 0);
-        a_alloc(this->den_p, 0);
+        a_alloc(num_p, 0);
+        a_alloc(den_p, 0);
     }
     emscripten::val input()
     {
-        return emscripten::val(emscripten::typed_memory_view(this->ctx.num_n, this->ctx.input));
+        return emscripten::val(emscripten::typed_memory_view(ctx.num_n, ctx.input));
     }
     emscripten::val num()
     {
-        return emscripten::val(emscripten::typed_memory_view(this->ctx.num_n, this->ctx.num_p));
+        return emscripten::val(emscripten::typed_memory_view(ctx.num_n, ctx.num_p));
     }
-    void set_num(emscripten::val const &jnum)
+    void set_num(emscripten::val const &num)
     {
-        this->set_num_(jnum, this->num_p);
+        set_num_(num, num_p);
     }
     emscripten::val output()
     {
-        return emscripten::val(emscripten::typed_memory_view(this->ctx.den_n, this->ctx.output));
+        return emscripten::val(emscripten::typed_memory_view(ctx.den_n, ctx.output));
     }
     emscripten::val den()
     {
-        return emscripten::val(emscripten::typed_memory_view(this->ctx.den_n, this->ctx.den_p));
+        return emscripten::val(emscripten::typed_memory_view(ctx.den_n, ctx.den_p));
     }
-    void set_den(emscripten::val const &jden)
+    void set_den(emscripten::val const &den)
     {
-        this->set_den_(jden, this->den_p);
+        set_den_(den, den_p);
     }
-    a_float_t iter(a_float_t jx)
+    a_float_t iter(a_float_t x)
     {
-        return a_tf_iter(&this->ctx, jx);
+        return a_tf_iter(&ctx, x);
     }
-    void zero() { a_tf_zero(&this->ctx); }
+    void zero() { a_tf_zero(&ctx); }
 };
 
 #include "a/math.h"
+#include "a/version.h"
 #if __has_warning("-Wglobal-constructors")
 #pragma GCC diagnostic ignored "-Wglobal-constructors"
 #endif /* -Wglobal-constructors */
@@ -472,8 +466,29 @@ EMSCRIPTEN_BINDINGS(module) // NOLINT
         .function("set_den", &tf::set_den)
         .function("iter", &tf::iter)
         .function("zero", &tf::zero);
+    emscripten::class_<a::version>("version")
+        .constructor<>()
+        .constructor<a_uint_t>()
+        .constructor<a_uint_t, a_uint_t>()
+        .constructor<a_uint_t, a_uint_t, a_uint_t>()
+        .property("major", &a::version::major)
+        .property("minor", &a::version::minor)
+        .property("patch", &a::version::patch)
+        .function("str", emscripten::optional_override([](a::version const &v) {
+                      return std::to_string(v.major) + "." + std::to_string(v.minor) + "." + std::to_string(v.patch);
+                  }))
+        .function("lt", &a::version::operator<)
+        .function("gt", &a::version::operator>)
+        .function("le", &a::version::operator<=)
+        .function("ge", &a::version::operator>=)
+        .function("eq", &a::version::operator==)
+        .function("ne", &a::version::operator!=)
+        .function("cmp", emscripten::optional_override([](a::version const &lhs, a::version const &rhs) {
+                      return a_version_cmp(&lhs, &rhs);
+                  }));
+    emscripten::function("version_check", &a_version_check);
+    emscripten::constant("VERSION", std::string{A_VERSION});
     emscripten::constant("VERSION_MAJOR", A_VERSION_MAJOR);
     emscripten::constant("VERSION_MINOR", A_VERSION_MINOR);
     emscripten::constant("VERSION_PATCH", A_VERSION_PATCH);
-    emscripten::function("version", version);
 }

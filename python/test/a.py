@@ -7,10 +7,6 @@ if len(sys.argv) > 1:
 
 import liba
 
-print("version", liba.version())
-print("major:", liba.version_major())
-print("minor:", liba.version_minor())
-print("patch:", liba.version_patch())
 print(liba.f64.rsqrt(4), liba.f32.rsqrt(4))
 print(liba.f64.rsqrt([4, 8]), liba.f32.rsqrt([4, 8]))
 print(liba.hash.bkdr(b"0", 0), liba.u32.sqrt(3), liba.u64.sqrt(7))

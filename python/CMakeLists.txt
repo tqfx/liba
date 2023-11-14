@@ -18,4 +18,8 @@ endfunction()
 
 unittest(a a a.log)
 
+unittest(crc crc)
+
 unittest(poly poly)
+
+unittest(version version)
