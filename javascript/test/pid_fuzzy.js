@@ -74,23 +74,20 @@ var mkd = [
     [NL, NM, NM, NM, NS, NS, NL],
 ]
 
-var ctx = new Module.pid_fuzzy()
+var ctx = new Module.pid_fuzzy().zero()
 ctx.rule(me, mec, mkp, mki, mkd)
-ctx.kpid(10, 0.1, 1)
-ctx.buff(2)
+ctx.kpid(10, 0.1, 1).buff(2)
 console.log(ctx.iter(10, 0))
 ctx.delete()
 
-var ctx = new Module.pid_fuzzy(-10, 10)
+var ctx = new Module.pid_fuzzy(-10, 10).zero()
 ctx.rule(me, mec, mkp, mki, mkd)
-ctx.kpid(10, 0.1, 1)
-ctx.buff(2)
+ctx.kpid(10, 0.1, 1).buff(2)
 console.log(ctx.iter(10, 0))
 ctx.delete()
 
-var ctx = new Module.pid_fuzzy(-10, 10, 10)
+var ctx = new Module.pid_fuzzy(-10, 10, 10).zero()
 ctx.rule(me, mec, mkp, mki, mkd)
-ctx.kpid(10, 0.1, 1)
-ctx.buff(2)
+ctx.kpid(10, 0.1, 1).buff(2)
 console.log(ctx.iter(10, 0))
 ctx.delete()
