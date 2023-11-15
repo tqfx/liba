@@ -139,6 +139,11 @@ A_EXTERN unsigned int a_version_minor(void);
 A_EXTERN unsigned int a_version_patch(void);
 
 /*!
+ @brief algorithm library version tweak
+*/
+A_EXTERN a_u64_t a_version_tweak(void);
+
+/*!
  @brief algorithm library version parse
  @param[in,out] ctx points to an instance structure for version
  @param[in] ver version string to be parsed

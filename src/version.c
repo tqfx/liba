@@ -21,6 +21,11 @@ unsigned int a_version_patch(void)
     return A_VERSION_PATCH;
 }
 
+a_u64_t a_version_tweak(void)
+{
+    return A_VERSION_TWEAK;
+}
+
 int a_version_cmp(a_version_s const *const lhs, a_version_s const *const rhs)
 {
     if (lhs->major < rhs->major)

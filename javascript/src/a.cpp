@@ -1,5 +1,4 @@
 #include "a/host/a.h"
-#include <emscripten.h>
 #include <emscripten/bind.h>
 
 #include "a/pid.h"
@@ -497,9 +496,10 @@ EMSCRIPTEN_BINDINGS(module) // NOLINT
         .function("eq", &a::version::operator==)
         .function("ne", &a::version::operator!=)
         .function("cmp", &a_version_cmp, emscripten::allow_raw_pointers());
-    emscripten::function("version_check", &a_version_check);
-    emscripten::constant("VERSION", std::string{A_VERSION});
-    emscripten::constant("VERSION_MAJOR", A_VERSION_MAJOR);
-    emscripten::constant("VERSION_MINOR", A_VERSION_MINOR);
+    emscripten::constant("VERSION_TWEAK", std::to_string(A_VERSION_TWEAK));
     emscripten::constant("VERSION_PATCH", A_VERSION_PATCH);
+    emscripten::constant("VERSION_MINOR", A_VERSION_MINOR);
+    emscripten::constant("VERSION_MAJOR", A_VERSION_MAJOR);
+    emscripten::constant("VERSION", std::string{A_VERSION});
+    emscripten::function("version_check", &a_version_check);
 }

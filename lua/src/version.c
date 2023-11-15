@@ -313,6 +313,7 @@ int LMODULE_(version, lua_State *const L)
         {"major", A_VERSION_MAJOR},
         {"minor", A_VERSION_MINOR},
         {"patch", A_VERSION_PATCH},
+        {"tweak", (L_INT)A_VERSION_TWEAK},
         {NULL, 0},
     };
     l_func_s const funcs[] = {

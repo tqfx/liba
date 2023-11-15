@@ -2,10 +2,11 @@ from a cimport *
 
 cdef extern from "a/version.h":
     """#undef a_version_check"""
+    const unsigned int A_VERSION_MAJOR
+    const unsigned int A_VERSION_MINOR
+    const unsigned int A_VERSION_PATCH
+    const a_u64_t A_VERSION_TWEAK
     const char *A_VERSION
-    unsigned int A_VERSION_MAJOR
-    unsigned int A_VERSION_MINOR
-    unsigned int A_VERSION_PATCH
     ctypedef struct a_version_s:
         unsigned int major
         unsigned int minor

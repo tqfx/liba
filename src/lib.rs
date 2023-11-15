@@ -44,6 +44,7 @@ extern "C" {
     fn a_version_major() -> uint;
     fn a_version_minor() -> uint;
     fn a_version_patch() -> uint;
+    fn a_version_tweak() -> u64;
 }
 
 /**
@@ -78,6 +79,11 @@ pub fn version_patch() -> uint {
     unsafe { a_version_patch() }
 }
 
+/// algorithm library version tweak
+pub fn version_tweak() -> u64 {
+    unsafe { a_version_tweak() }
+}
+
 extern "C" {
     fn a_f32_rsqrt(x: f32) -> f32;
     fn a_f64_rsqrt(x: f64) -> f64;
@@ -102,6 +108,7 @@ mod test {
         std::println!("major {}", crate::version_major());
         std::println!("minor {}", crate::version_minor());
         std::println!("patch {}", crate::version_patch());
+        std::println!("tweak {}", crate::version_tweak());
     }
     #[test]
     fn rsqrt() {

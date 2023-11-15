@@ -8,6 +8,8 @@ VERSION_MAJOR = A_VERSION_MAJOR
 VERSION_MINOR = A_VERSION_MINOR
 '''algorithm library version patch'''
 VERSION_PATCH = A_VERSION_PATCH
+'''algorithm library version tweak'''
+VERSION_TWEAK = A_VERSION_TWEAK
 
 @cython.wraparound(False)
 @cython.boundscheck(False)

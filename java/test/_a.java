@@ -9,5 +9,6 @@ class _a {
         System.out.println("major " + liba.version_major());
         System.out.println("minor " + liba.version_minor());
         System.out.println("patch " + liba.version_patch());
+        System.out.println("tweak " + liba.version_tweak());
     }
 }

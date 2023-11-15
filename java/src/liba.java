@@ -35,6 +35,13 @@ public class liba {
     public static final native int version_patch();
 
     /**
+     * algorithm library version tweak
+     *
+     * @return tweak number
+     */
+    public static final native long version_tweak();
+
+    /**
      * fast inverse square-root
      *
      * @param x independent variable
