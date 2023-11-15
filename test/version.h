@@ -40,9 +40,11 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     TEST_BUG(!(v000 < v000));
     TEST_BUG(v010 > v000);
     TEST_BUG(!(v000 > v000));
+    TEST_BUG(v010 <= v010);
     TEST_BUG(v000 <= v010);
     TEST_BUG(!(v010 <= v000));
     TEST_BUG(v010 >= v010);
+    TEST_BUG(v010 >= v000);
     TEST_BUG(!(v000 >= v010));
 #else /* !__cplusplus */
     a_version_s v000 = A_VERSION_C(0, 0, 0);
@@ -55,8 +57,10 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     TEST_BUG(!a_version_lt(&v000, &v000));
     TEST_BUG(a_version_gt(&v010, &v000));
     TEST_BUG(!a_version_gt(&v000, &v000));
+    TEST_BUG(a_version_le(&v010, &v010));
     TEST_BUG(a_version_le(&v000, &v010));
     TEST_BUG(!a_version_le(&v010, &v000));
+    TEST_BUG(a_version_ge(&v010, &v010));
     TEST_BUG(a_version_ge(&v010, &v000));
     TEST_BUG(!a_version_ge(&v000, &v010));
     TEST_BUG(a_version_cmp(&v000, &v100) < 0);
