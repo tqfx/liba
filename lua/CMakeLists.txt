@@ -57,7 +57,7 @@ if(PROJECT_IS_TOP_LEVEL)
     endif()
   endfunction()
 
-  find_format(${SOURCES})
+  find_format(WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} ${SOURCES})
 endif()
 
 option(LIBA_LDOC "Enable/Disable ffi ldoc" 0)
