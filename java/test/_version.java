@@ -6,9 +6,11 @@ class _version {
         version v100 = new version(1);
         version v010 = new version(0, 1);
         version v001 = new version(0, 0, 1);
+        System.out.println(v000);
+        System.out.println(v100);
+        System.out.println(v010);
+        System.out.println(v001);
         if (!v000.lt(v001)) {
-            System.out.println(v000);
-            System.out.println(v001);
             throw new RuntimeException("v000.lt(v001)");
         }
         if (!v001.gt(v000)) {

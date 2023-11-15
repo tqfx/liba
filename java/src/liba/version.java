@@ -5,17 +5,19 @@ public class version {
     static {
         System.loadLibrary("a");
     }
-    /** major number */
-    public int major = 0;
-    /** minor number */
-    public int minor = 0;
-    /** patch number */
-    public int patch = 0;
+    byte ctx[];
+
+    final native void ctor(int major, int minor, int patch);
+
+    public String toString() {
+        return major() + "." + minor() + "." + patch();
+    }
 
     /**
      * construct a new {@link version} object
      */
     public version() {
+        ctor(0, 0, 0);
     }
 
     /**
@@ -24,7 +26,7 @@ public class version {
      * @param maj major number
      */
     public version(int maj) {
-        major = maj;
+        ctor(maj, 0, 0);
     }
 
     /**
@@ -34,8 +36,7 @@ public class version {
      * @param min minor number
      */
     public version(int maj, int min) {
-        major = maj;
-        minor = min;
+        ctor(maj, min, 0);
     }
 
     /**
@@ -46,14 +47,53 @@ public class version {
      * @param pat patch number
      */
     public version(int maj, int min, int pat) {
-        major = maj;
-        minor = min;
-        patch = pat;
+        ctor(maj, min, pat);
     }
 
-    public String toString() {
-        return major + "." + minor + "." + patch;
-    }
+    /***
+     * getter for major number
+     *
+     * @return major number
+     */
+    public final native int major();
+
+    /***
+     * setter for major number
+     *
+     * @param maj major number
+     * @return {@link version}
+     */
+    public final native version set_major(int maj);
+
+    /***
+     * getter for minor number
+     *
+     * @return minor number
+     */
+    public final native int minor();
+
+    /***
+     * setter for minor number
+     *
+     * @param min minor number
+     * @return {@link version}
+     */
+    public final native version set_minor(int min);
+
+    /***
+     * getter for patch number
+     *
+     * @return patch number
+     */
+    public final native int patch();
+
+    /***
+     * setter for patch number
+     *
+     * @param pat patch number
+     * @return {@link version}
+     */
+    public final native version set_patch(int pat);
 
     /**
      * parse function for {@link version} object
