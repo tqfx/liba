@@ -2,44 +2,27 @@
  * algorithm library
  */
 public class liba {
+    /** algorithm library version string */
+    public static final String VERSION;
+    /** algorithm library version major */
+    public static final int VERSION_MAJOR;
+    /** algorithm library version minor */
+    public static final int VERSION_MINOR;
+    /** algorithm library version patch */
+    public static final int VERSION_PATCH;
+    /** algorithm library version tweak */
+    public static final long VERSION_TWEAK;
     static {
         System.loadLibrary("a");
+        VERSION_TWEAK = 0;
+        VERSION_PATCH = 0;
+        VERSION_MINOR = 0;
+        VERSION_MAJOR = 0;
+        VERSION = "";
+        INIT();
     }
 
-    /**
-     * algorithm library version string
-     *
-     * @return version string
-     */
-    public static final native String version();
-
-    /**
-     * algorithm library version major
-     *
-     * @return major number
-     */
-    public static final native int version_major();
-
-    /**
-     * algorithm library version minor
-     *
-     * @return minor number
-     */
-    public static final native int version_minor();
-
-    /**
-     * algorithm library version patch
-     *
-     * @return patch number
-     */
-    public static final native int version_patch();
-
-    /**
-     * algorithm library version tweak
-     *
-     * @return tweak number
-     */
-    public static final native long version_tweak();
+    static final native void INIT();
 
     /**
      * algorithm library version check

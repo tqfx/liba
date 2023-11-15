@@ -2,49 +2,50 @@ package liba;
 
 /** fuzzy proportional integral derivative controller */
 public class pid_fuzzy {
-    static {
-        System.loadLibrary("a");
-    }
     /** sqrt(a,b)*sqrt(1-(1-a)*(1-b)) */
-    public static final int EQU = 0;
+    public static final int EQU;
     /** min(a,b) */
-    public static final int CAP = 1;
+    public static final int CAP;
     /** a*b */
-    public static final int CAP_ALGEBRA = 2;
+    public static final int CAP_ALGEBRA;
     /** max(a+b-1,0) */
-    public static final int CAP_BOUNDED = 3;
+    public static final int CAP_BOUNDED;
     /** max(a,b) */
-    public static final int CUP = 4;
+    public static final int CUP;
     /** a+b-a*b */
-    public static final int CUP_ALGEBRA = 5;
+    public static final int CUP_ALGEBRA;
     /** min(a+b,1) */
-    public static final int CUP_BOUNDED = 6;
-    /** proportional integral derivative controller */
-    public pid pid;
+    public static final int CUP_BOUNDED;
+    byte[] ctx;
     double[] me;
     double[] mec;
     double[] mkp;
     double[] mki;
     double[] mkd;
-    int[] idx;
     double[] val;
-    long op = 0;
-    /** base proportional constant */
-    public double kp = 0;
-    /** base integral constant */
-    public double ki = 0;
-    /** base derivative constant */
-    public double kd = 0;
-    int col = 0;
-    int buf = 0;
+    byte[] idx;
+    static {
+        System.loadLibrary("a");
+        EQU = 0;
+        CAP = 1;
+        CAP_ALGEBRA = 2;
+        CAP_BOUNDED = 3;
+        CUP = 4;
+        CUP_ALGEBRA = 5;
+        CUP_BOUNDED = 6;
+        INIT();
+    }
+
+    static final native void INIT();
+
+    final native void init(double min, double max, double sum);
 
     /**
      * construct a new {@link pid_fuzzy} object
      *
      */
     public pid_fuzzy() {
-        this.pid = new pid();
-        this.op(EQU);
+        init(-1.0 / 0.0, 1.0 / 0.0, 0);
     }
 
     /**
@@ -54,8 +55,7 @@ public class pid_fuzzy {
      * @param max maxinum output
      */
     public pid_fuzzy(double min, double max) {
-        this.pid = new pid();
-        this.init(min, max, 0);
+        init(min, max, 0);
     }
 
     /**
@@ -66,19 +66,8 @@ public class pid_fuzzy {
      * @param sum maximum intergral output
      */
     public pid_fuzzy(double min, double max, double sum) {
-        this.pid = new pid();
-        this.init(min, max, sum);
+        init(min, max, sum);
     }
-
-    /**
-     * initialize function for fuzzy PID controller
-     *
-     * @param min minimum output
-     * @param max maximum output
-     * @param sum maximum intergral output
-     * @return {@link pid_fuzzy}
-     */
-    public final native pid_fuzzy init(double min, double max, double sum);
 
     /**
      * set rule base for fuzzy PID controller

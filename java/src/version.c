@@ -2,24 +2,34 @@
 #include "a/version.h"
 #include "liba_version.h"
 
-JNIEXPORT void JNICALL JPACKAGE(version_ctor)(JNIEnv *jenv, jobject jobj, jint major, jint minor, jint patch)
+#undef L
+#define L JPACKAGE(version)
+static struct
+{
+    jfieldID ctx;
+} L = {NULL};
+
+JNIEXPORT void JNICALL JPACKAGE(version_INIT)(JNIEnv *jenv, jclass jcls)
+{
+    L.ctx = (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B");
+}
+
+JNIEXPORT void JNICALL JPACKAGE(version_init)(JNIEnv *jenv, jobject jobj, jint major, jint minor, jint patch)
 {
     a_version_s ctx;
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "version");
     jbyteArray jctx = (*jenv)->NewByteArray(jenv, sizeof(a_version_s));
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
     ctx.major = (unsigned int)major;
     ctx.minor = (unsigned int)minor;
     ctx.patch = (unsigned int)patch;
     (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
-    (*jenv)->SetObjectField(jenv, jobj, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"), jctx);
+    (*jenv)->SetObjectField(jenv, jobj, L.ctx, jctx);
 }
 
 JNIEXPORT jint JNICALL JPACKAGE(version_major)(JNIEnv *jenv, jobject jobj)
 {
     a_version_s ctx;
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "version");
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
     return (jint)ctx.major;
 }
@@ -27,8 +37,7 @@ JNIEXPORT jint JNICALL JPACKAGE(version_major)(JNIEnv *jenv, jobject jobj)
 JNIEXPORT jobject JNICALL JPACKAGE(version_set_1major)(JNIEnv *jenv, jobject jobj, jint major)
 {
     a_version_s ctx;
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "version");
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
     ctx.major = (unsigned int)major;
     (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
@@ -38,8 +47,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(version_set_1major)(JNIEnv *jenv, jobject job
 JNIEXPORT jint JNICALL JPACKAGE(version_minor)(JNIEnv *jenv, jobject jobj)
 {
     a_version_s ctx;
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "version");
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
     return (jint)ctx.minor;
 }
@@ -47,8 +55,7 @@ JNIEXPORT jint JNICALL JPACKAGE(version_minor)(JNIEnv *jenv, jobject jobj)
 JNIEXPORT jobject JNICALL JPACKAGE(version_set_1minor)(JNIEnv *jenv, jobject jobj, jint minor)
 {
     a_version_s ctx;
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "version");
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
     ctx.minor = (unsigned int)minor;
     (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
@@ -58,8 +65,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(version_set_1minor)(JNIEnv *jenv, jobject job
 JNIEXPORT jint JNICALL JPACKAGE(version_patch)(JNIEnv *jenv, jobject jobj)
 {
     a_version_s ctx;
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "version");
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
     return (jint)ctx.patch;
 }
@@ -67,8 +73,7 @@ JNIEXPORT jint JNICALL JPACKAGE(version_patch)(JNIEnv *jenv, jobject jobj)
 JNIEXPORT jobject JNICALL JPACKAGE(version_set_1patch)(JNIEnv *jenv, jobject jobj, jint patch)
 {
     a_version_s ctx;
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "version");
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
     ctx.patch = (unsigned int)patch;
     (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
@@ -78,8 +83,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(version_set_1patch)(JNIEnv *jenv, jobject job
 JNIEXPORT jobject JNICALL JPACKAGE(version_parse)(JNIEnv *jenv, jobject jobj, jstring jver)
 {
     a_version_s ctx;
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "version");
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     char const *ver = (*jenv)->GetStringUTFChars(jenv, jver, NULL);
     a_version_parse(&ctx, ver);
     (*jenv)->ReleaseStringUTFChars(jenv, jver, ver);
@@ -91,9 +95,8 @@ JNIEXPORT jboolean JNICALL JPACKAGE(version_lt)(JNIEnv *jenv, jobject jobj, jobj
 {
     a_version_s ctx;
     a_version_s other;
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "version");
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
-    jbyteArray jother = (*jenv)->GetObjectField(jenv, jver, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    jbyteArray jother = (*jenv)->GetObjectField(jenv, jver, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
     (*jenv)->GetByteArrayRegion(jenv, jother, 0, sizeof(a_version_s), (jbyte *)&other);
     return a_version_lt(&ctx, &other);
@@ -103,9 +106,8 @@ JNIEXPORT jboolean JNICALL JPACKAGE(version_gt)(JNIEnv *jenv, jobject jobj, jobj
 {
     a_version_s ctx;
     a_version_s other;
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "version");
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
-    jbyteArray jother = (*jenv)->GetObjectField(jenv, jver, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    jbyteArray jother = (*jenv)->GetObjectField(jenv, jver, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
     (*jenv)->GetByteArrayRegion(jenv, jother, 0, sizeof(a_version_s), (jbyte *)&other);
     return a_version_gt(&ctx, &other);
@@ -115,9 +117,8 @@ JNIEXPORT jboolean JNICALL JPACKAGE(version_le)(JNIEnv *jenv, jobject jobj, jobj
 {
     a_version_s ctx;
     a_version_s other;
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "version");
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
-    jbyteArray jother = (*jenv)->GetObjectField(jenv, jver, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    jbyteArray jother = (*jenv)->GetObjectField(jenv, jver, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
     (*jenv)->GetByteArrayRegion(jenv, jother, 0, sizeof(a_version_s), (jbyte *)&other);
     return a_version_le(&ctx, &other);
@@ -127,9 +128,8 @@ JNIEXPORT jboolean JNICALL JPACKAGE(version_ge)(JNIEnv *jenv, jobject jobj, jobj
 {
     a_version_s ctx;
     a_version_s other;
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "version");
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
-    jbyteArray jother = (*jenv)->GetObjectField(jenv, jver, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    jbyteArray jother = (*jenv)->GetObjectField(jenv, jver, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
     (*jenv)->GetByteArrayRegion(jenv, jother, 0, sizeof(a_version_s), (jbyte *)&other);
     return a_version_ge(&ctx, &other);
@@ -139,9 +139,8 @@ JNIEXPORT jboolean JNICALL JPACKAGE(version_eq)(JNIEnv *jenv, jobject jobj, jobj
 {
     a_version_s ctx;
     a_version_s other;
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "version");
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
-    jbyteArray jother = (*jenv)->GetObjectField(jenv, jver, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    jbyteArray jother = (*jenv)->GetObjectField(jenv, jver, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
     (*jenv)->GetByteArrayRegion(jenv, jother, 0, sizeof(a_version_s), (jbyte *)&other);
     return a_version_eq(&ctx, &other);
@@ -151,9 +150,8 @@ JNIEXPORT jboolean JNICALL JPACKAGE(version_ne)(JNIEnv *jenv, jobject jobj, jobj
 {
     a_version_s ctx;
     a_version_s other;
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "version");
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
-    jbyteArray jother = (*jenv)->GetObjectField(jenv, jver, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    jbyteArray jother = (*jenv)->GetObjectField(jenv, jver, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
     (*jenv)->GetByteArrayRegion(jenv, jother, 0, sizeof(a_version_s), (jbyte *)&other);
     return a_version_ne(&ctx, &other);
@@ -163,9 +161,8 @@ JNIEXPORT jint JNICALL JPACKAGE(version_cmp)(JNIEnv *jenv, jobject jobj, jobject
 {
     a_version_s ctx;
     a_version_s other;
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "version");
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
-    jbyteArray jother = (*jenv)->GetObjectField(jenv, jver, (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B"));
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    jbyteArray jother = (*jenv)->GetObjectField(jenv, jver, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
     (*jenv)->GetByteArrayRegion(jenv, jother, 0, sizeof(a_version_s), (jbyte *)&other);
     return a_version_cmp(&ctx, &other);

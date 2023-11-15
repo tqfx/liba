@@ -2,11 +2,14 @@ package liba;
 
 /** cubic polynomial trajectory */
 public class polytrack3 {
-    static {
-        System.loadLibrary("a");
-    }
     /** quantity */
     public double[] k = new double[4];
+    static {
+        System.loadLibrary("a");
+        INIT();
+    }
+
+    static final native void INIT();
 
     /**
      * construct a new {@link polytrack3} object
@@ -19,7 +22,7 @@ public class polytrack3 {
      * @param v1 velocity for target
      */
     public polytrack3(double t0, double t1, double q0, double q1, double v0, double v1) {
-        this.gen(t0, t1, q0, q1, v0, v1);
+        gen(t0, t1, q0, q1, v0, v1);
     }
 
     /**

@@ -2,11 +2,14 @@ package liba;
 
 /** quintic polynomial trajectory */
 public class polytrack5 {
-    static {
-        System.loadLibrary("a");
-    }
     /** quantity */
     public double[] k = new double[6];
+    static {
+        System.loadLibrary("a");
+        INIT();
+    }
+
+    static final native void INIT();
 
     /**
      * construct a new {@link polytrack5} object
@@ -22,7 +25,7 @@ public class polytrack5 {
      */
     public polytrack5(double t0, double t1, double q0, double q1, double v0, double v1,
             double a0, double a1) {
-        this.gen(t0, t1, q0, q1, v0, v1, a0, a1);
+        gen(t0, t1, q0, q1, v0, v1, a0, a1);
     }
 
     /**

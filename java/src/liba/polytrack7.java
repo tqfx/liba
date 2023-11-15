@@ -2,11 +2,14 @@ package liba;
 
 /** hepta polynomial trajectory */
 public class polytrack7 {
-    static {
-        System.loadLibrary("a");
-    }
     /** quantity */
     public double[] k = new double[8];
+    static {
+        System.loadLibrary("a");
+        INIT();
+    }
+
+    static final native void INIT();
 
     /**
      * construct a new {@link polytrack7} object
@@ -24,7 +27,7 @@ public class polytrack7 {
      */
     public polytrack7(double t0, double t1, double q0, double q1, double v0, double v1,
             double a0, double a1, double j0, double j1) {
-        this.gen(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1);
+        gen(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1);
     }
 
     /**

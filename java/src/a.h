@@ -13,13 +13,6 @@
 #endif /* -Wreserved-identifier */
 #include <jni.h>
 
-#define CLASSPATH "liba/"
 #define JPACKAGE(F) Java_liba_##F
-
-A_INTERN jsize GetArrayLengthN(JNIEnv *jenv, jarray jobj, jsize jmax)
-{
-    jsize length = (*jenv)->GetArrayLength(jenv, jobj);
-    return length < jmax ? length : jmax;
-}
 
 #endif /* a.h */

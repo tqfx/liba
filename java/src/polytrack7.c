@@ -1,80 +1,69 @@
-#include "polytrack7.h"
+#include "a.h"
+#include "a/polytrack.h"
 #include "liba_polytrack7.h"
 
-j_polytrack7_s *j_polytrack7_new(JNIEnv *const jenv, jobject const jobj, j_polytrack7_s *const jctx)
+#undef L
+#define L JPACKAGE(polytrack7)
+static struct
 {
-    jclass jcls = (*jenv)->FindClass(jenv, CLASSPATH "polytrack7");
-    jctx->jenv = jenv;
-    jctx->jobj = jobj;
-    jctx->jcls = jcls;
-    jctx->k = (*jenv)->GetFieldID(jenv, jcls, "k", "[D");
-    jctx->jk = (*jenv)->GetObjectField(jenv, jobj, jctx->k);
-    return jctx;
+    jfieldID k;
+} L = {NULL};
+
+JNIEXPORT void JNICALL JPACKAGE(polytrack7_INIT)(JNIEnv *jenv, jclass jcls)
+{
+    L.k = (*jenv)->GetFieldID(jenv, jcls, "k", "[D");
 }
 
-jobject j_polytrack7_get(j_polytrack7_s const *const jctx, a_polytrack7_s *const ctx)
-{
-    JNIEnv *jenv = jctx->jenv;
-    (*jenv)->GetDoubleArrayRegion(jenv, jctx->jk, 0, A_LEN(ctx->k), ctx->k);
-    return jctx->jobj;
-}
-
-jobject j_polytrack7_set(j_polytrack7_s const *const jctx, a_polytrack7_s const *const ctx)
-{
-    JNIEnv *jenv = jctx->jenv;
-    (*jenv)->SetDoubleArrayRegion(jenv, jctx->jk, 0, A_LEN(ctx->k), ctx->k);
-    return jctx->jobj;
-}
-
-JNIEXPORT jobject JNICALL JPACKAGE(polytrack7_gen)(JNIEnv *jenv, jobject jobj, jdouble jt0, jdouble jt1, jdouble jq0, jdouble jq1, jdouble jv0, jdouble jv1, jdouble ja0, jdouble ja1, jdouble jj0, jdouble jj1)
+JNIEXPORT jobject JNICALL JPACKAGE(polytrack7_gen)(JNIEnv *jenv, jobject jobj, jdouble t0, jdouble t1, jdouble q0, jdouble q1, jdouble v0, jdouble v1, jdouble a0, jdouble a1, jdouble j0, jdouble j1)
 {
     a_polytrack7_s ctx;
-    j_polytrack7_s jctx;
-    j_polytrack7_new(jenv, jobj, &jctx);
-    a_polytrack7_gen(&ctx, jt0, jt1, jq0, jq1, jv0, jv1, ja0, ja1, jj0, jj1);
-    return j_polytrack7_set(&jctx, &ctx);
+    jdoubleArray jk = (*jenv)->GetObjectField(jenv, jobj, L.k);
+    (*jenv)->GetDoubleArrayRegion(jenv, jk, 0, A_LEN(ctx.k), ctx.k);
+    a_polytrack7_gen(&ctx, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1);
+    (*jenv)->SetDoubleArrayRegion(jenv, jk, 0, A_LEN(ctx.k), ctx.k);
+    return jobj;
 }
 
-JNIEXPORT jdoubleArray JNICALL JPACKAGE(polytrack7_out)(JNIEnv *jenv, jobject jobj, jdouble jdt)
+JNIEXPORT jdoubleArray JNICALL JPACKAGE(polytrack7_out)(JNIEnv *jenv, jobject jobj, jdouble dt)
 {
     jdouble out[4] = {0};
     a_polytrack7_s ctx;
-    j_polytrack7_s jctx;
-    j_polytrack7_get(j_polytrack7_new(jenv, jobj, &jctx), &ctx);
-    a_polytrack7_out(&ctx, jdt, out);
+    jdoubleArray jk = (*jenv)->GetObjectField(jenv, jobj, L.k);
+    (*jenv)->GetDoubleArrayRegion(jenv, jk, 0, A_LEN(ctx.k), ctx.k);
+    a_polytrack7_out(&ctx, dt, out);
     jdoubleArray jres = (*jenv)->NewDoubleArray(jenv, A_LEN(out));
     (*jenv)->SetDoubleArrayRegion(jenv, jres, 0, A_LEN(out), out);
     return jres;
 }
 
-JNIEXPORT jdouble JNICALL JPACKAGE(polytrack7_pos)(JNIEnv *jenv, jobject jobj, jdouble jdt)
+JNIEXPORT jdouble JNICALL JPACKAGE(polytrack7_pos)(JNIEnv *jenv, jobject jobj, jdouble dt)
 {
     a_polytrack7_s ctx;
-    j_polytrack7_s jctx;
-    j_polytrack7_get(j_polytrack7_new(jenv, jobj, &jctx), &ctx);
-    return a_polytrack7_pos(&ctx, jdt);
+    jdoubleArray jk = (*jenv)->GetObjectField(jenv, jobj, L.k);
+    (*jenv)->GetDoubleArrayRegion(jenv, jk, 0, A_LEN(ctx.k), ctx.k);
+    return a_polytrack7_pos(&ctx, dt);
 }
 
-JNIEXPORT jdouble JNICALL JPACKAGE(polytrack7_vel)(JNIEnv *jenv, jobject jobj, jdouble jdt)
+JNIEXPORT jdouble JNICALL JPACKAGE(polytrack7_vel)(JNIEnv *jenv, jobject jobj, jdouble dt)
 {
     a_polytrack7_s ctx;
-    j_polytrack7_s jctx;
-    j_polytrack7_get(j_polytrack7_new(jenv, jobj, &jctx), &ctx);
-    return a_polytrack7_vel(&ctx, jdt);
+    jdoubleArray jk = (*jenv)->GetObjectField(jenv, jobj, L.k);
+    (*jenv)->GetDoubleArrayRegion(jenv, jk, 0, A_LEN(ctx.k), ctx.k);
+    return a_polytrack7_vel(&ctx, dt);
 }
 
-JNIEXPORT jdouble JNICALL JPACKAGE(polytrack7_acc)(JNIEnv *jenv, jobject jobj, jdouble jdt)
+JNIEXPORT jdouble JNICALL JPACKAGE(polytrack7_acc)(JNIEnv *jenv, jobject jobj, jdouble dt)
 {
     a_polytrack7_s ctx;
-    j_polytrack7_s jctx;
-    j_polytrack7_get(j_polytrack7_new(jenv, jobj, &jctx), &ctx);
-    return a_polytrack7_acc(&ctx, jdt);
+    jdoubleArray jk = (*jenv)->GetObjectField(jenv, jobj, L.k);
+    (*jenv)->GetDoubleArrayRegion(jenv, jk, 0, A_LEN(ctx.k), ctx.k);
+    return a_polytrack7_acc(&ctx, dt);
 }
 
-JNIEXPORT jdouble JNICALL JPACKAGE(polytrack7_jer)(JNIEnv *jenv, jobject jobj, jdouble jdt)
+JNIEXPORT jdouble JNICALL JPACKAGE(polytrack7_jer)(JNIEnv *jenv, jobject jobj, jdouble dt)
 {
     a_polytrack7_s ctx;
-    j_polytrack7_s jctx;
-    j_polytrack7_get(j_polytrack7_new(jenv, jobj, &jctx), &ctx);
-    return a_polytrack7_jer(&ctx, jdt);
+    jdoubleArray jk = (*jenv)->GetObjectField(jenv, jobj, L.k);
+    (*jenv)->GetDoubleArrayRegion(jenv, jk, 0, A_LEN(ctx.k), ctx.k);
+    return a_polytrack7_jer(&ctx, dt);
 }

@@ -3,29 +3,13 @@
 #include "a/version.h"
 #include "liba.h"
 
-JNIEXPORT jstring JNICALL JPACKAGE(version)(JNIEnv *jenv, jclass jcls)
+JNIEXPORT void JNICALL JPACKAGE(INIT)(JNIEnv *jenv, jclass jcls)
 {
-    return (void)(jcls), (*jenv)->NewStringUTF(jenv, a_version());
-}
-
-JNIEXPORT jint JNICALL JPACKAGE(version_1major)(JNIEnv *jenv, jclass jcls)
-{
-    return (void)(jenv), (void)(jcls), (jint)a_version_major();
-}
-
-JNIEXPORT jint JNICALL JPACKAGE(version_1minor)(JNIEnv *jenv, jclass jcls)
-{
-    return (void)(jenv), (void)(jcls), (jint)a_version_minor();
-}
-
-JNIEXPORT jint JNICALL JPACKAGE(version_1patch)(JNIEnv *jenv, jclass jcls)
-{
-    return (void)(jenv), (void)(jcls), (jint)a_version_patch();
-}
-
-JNIEXPORT jlong JNICALL JPACKAGE(version_1tweak)(JNIEnv *jenv, jclass jcls)
-{
-    return (void)(jenv), (void)(jcls), (jlong)a_version_tweak();
+    (*jenv)->SetStaticLongField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "VERSION_TWEAK", "J"), (jlong)A_VERSION_TWEAK);
+    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "VERSION_PATCH", "I"), A_VERSION_PATCH);
+    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "VERSION_MINOR", "I"), A_VERSION_MINOR);
+    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "VERSION_MAJOR", "I"), A_VERSION_MAJOR);
+    (*jenv)->SetStaticObjectField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "VERSION", "Ljava/lang/String;"), (*jenv)->NewStringUTF(jenv, A_VERSION));
 }
 
 JNIEXPORT jint JNICALL JPACKAGE(version_1check)(JNIEnv *jenv, jclass jcls, jint major, jint minor, jint patch)

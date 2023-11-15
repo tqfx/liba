@@ -2,43 +2,30 @@ package liba;
 
 /** proportional integral derivative controller */
 public class pid {
+    /** turn off PID controller */
+    public static final int OFF;
+    /** positional PID controller */
+    public static final int POS;
+    /** incremental PID controller */
+    public static final int INC;
+    byte[] ctx;
     static {
         System.loadLibrary("a");
+        OFF = 0;
+        POS = 1;
+        INC = 3;
+        INIT();
     }
-    /** turn off PID controller */
-    public static final int OFF = 0;
-    /** positional PID controller */
-    public static final int POS = 1;
-    /** incremental PID controller */
-    public static final int INC = 2;
-    /** proportional constant */
-    public double kp = 0;
-    /** integral constant */
-    public double ki = 0;
-    /** derivative constant */
-    public double kd = 0;
-    /** maximum integral output */
-    public double summax = 0;
-    /** maximum final output */
-    public double outmax = 1.0 / 0.0;
-    /** minimum final output */
-    public double outmin = -1.0 / 0.0;
-    /** controller output */
-    public double out = 0;
-    /** cache feedback */
-    public double fdb = 0;
-    /** cache variable */
-    double tmp = 0;
-    /** cache error */
-    public double err = 0;
-    int chan = 0;
-    /** controller mode */
-    public int mode = OFF;
+
+    static final native void INIT();
+
+    final native void init(double kp, double ki, double kd, double min, double max, double sum);
 
     /**
      * construct a new {@link pid} object
      */
     public pid() {
+        init(0, 0, 0, -1.0 / 0.0, 1.0 / 0.0, 0);
     }
 
     /**
@@ -48,7 +35,7 @@ public class pid {
      * @param max maximum output
      */
     public pid(double min, double max) {
-        this.init(min, max, 0);
+        init(0, 0, 0, min, max, 0);
     }
 
     /**
@@ -59,7 +46,7 @@ public class pid {
      * @param sum maximum intergral output
      */
     public pid(double min, double max, double sum) {
-        this.init(min, max, sum);
+        init(0, 0, 0, min, max, sum);
     }
 
     /**
@@ -72,7 +59,7 @@ public class pid {
      * @param max maximum output
      */
     public pid(double kp, double ki, double kd, double min, double max) {
-        this.init(min, max, 0).kpid(kp, ki, kd);
+        init(kp, ki, kd, min, max, 0);
     }
 
     /**
@@ -86,18 +73,8 @@ public class pid {
      * @param sum maximum intergral output
      */
     public pid(double kp, double ki, double kd, double min, double max, double sum) {
-        this.init(min, max, sum).kpid(kp, ki, kd);
+        init(kp, ki, kd, min, max, sum);
     }
-
-    /**
-     * initialize function for PID controller
-     *
-     * @param min minimum output
-     * @param max maximum output
-     * @param sum maximum intergral output
-     * @return {@link pid}
-     */
-    public final native pid init(double min, double max, double sum);
 
     /**
      * set proportional integral derivative constant for PID controller

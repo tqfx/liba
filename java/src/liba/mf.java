@@ -2,23 +2,33 @@ package liba;
 
 /** membership function */
 public class mf {
+    /** none */
+    public static final int NUL;
+    /** gaussian membership function */
+    public static final int GAUSS;
+    /** generalized bell-shaped membership function */
+    public static final int GBELL;
+    /** sigmoidal membership function */
+    public static final int SIG;
+    /** trapezoidal membership function */
+    public static final int TRAP;
+    /** triangular membership function */
+    public static final int TRI;
+    /** z-shaped membership function */
+    public static final int Z;
     static {
         System.loadLibrary("a");
+        NUL = 0;
+        GAUSS = 1;
+        GBELL = 2;
+        SIG = 3;
+        TRAP = 4;
+        TRI = 5;
+        Z = 6;
+        INIT();
     }
-    /** none */
-    public static final int NUL = 0;
-    /** gaussian membership function */
-    public static final int GAUSS = 1;
-    /** generalized bell-shaped membership function */
-    public static final int GBELL = 2;
-    /** sigmoidal membership function */
-    public static final int SIG = 3;
-    /** trapezoidal membership function */
-    public static final int TRAP = 4;
-    /** triangular membership function */
-    public static final int TRI = 5;
-    /** z-shaped membership function */
-    public static final int Z = 6;
+
+    static final native void INIT();
 
     /**
      * gaussian membership function

@@ -2,12 +2,15 @@ package liba;
 
 /** version */
 public class version {
+    byte[] ctx;
     static {
         System.loadLibrary("a");
+        INIT();
     }
-    byte ctx[];
 
-    final native void ctor(int major, int minor, int patch);
+    static final native void INIT();
+
+    final native void init(int major, int minor, int patch);
 
     public String toString() {
         return major() + "." + minor() + "." + patch();
@@ -17,7 +20,7 @@ public class version {
      * construct a new {@link version} object
      */
     public version() {
-        ctor(0, 0, 0);
+        init(0, 0, 0);
     }
 
     /**
@@ -26,7 +29,7 @@ public class version {
      * @param maj major number
      */
     public version(int maj) {
-        ctor(maj, 0, 0);
+        init(maj, 0, 0);
     }
 
     /**
@@ -36,7 +39,7 @@ public class version {
      * @param min minor number
      */
     public version(int maj, int min) {
-        ctor(maj, min, 0);
+        init(maj, min, 0);
     }
 
     /**
@@ -47,7 +50,7 @@ public class version {
      * @param pat patch number
      */
     public version(int maj, int min, int pat) {
-        ctor(maj, min, pat);
+        init(maj, min, pat);
     }
 
     /***
@@ -158,5 +161,4 @@ public class version {
      * @return relationship between the versions
      */
     public final native int cmp(version ver);
-
 }

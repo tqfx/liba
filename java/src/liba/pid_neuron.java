@@ -2,28 +2,22 @@ package liba;
 
 /** single neuron proportional integral derivative controller */
 public class pid_neuron {
+    byte[] ctx;
     static {
         System.loadLibrary("a");
+        INIT();
     }
-    /** proportional integral derivative controller */
-    public pid pid;
-    /** error change */
-    double ec = 0;
-    /** proportional weight */
-    double wp = 0;
-    /** integral weight */
-    double wi = 0;
-    /** derivative weight */
-    double wd = 0;
-    /** proportional output coefficient */
-    double k = 0;
+
+    static final native void INIT();
+
+    final native void init(double min, double max, double sum);
 
     /**
      * construct a new {@link pid_neuron} object
      *
      */
     public pid_neuron() {
-        this.pid = new pid();
+        init(-1.0 / 0.0, 1.0 / 0.0, 0);
     }
 
     /**
@@ -33,8 +27,7 @@ public class pid_neuron {
      * @param max maxinum output
      */
     public pid_neuron(double min, double max) {
-        this.pid = new pid();
-        this.init(min, max, 0);
+        init(min, max, 0);
     }
 
     /**
@@ -45,19 +38,8 @@ public class pid_neuron {
      * @param sum maximum intergral output
      */
     public pid_neuron(double min, double max, double sum) {
-        this.pid = new pid();
-        this.init(min, max, sum);
+        init(min, max, sum);
     }
-
-    /**
-     * initialize function for single neuron PID controller
-     *
-     * @param min minimum output
-     * @param max maximum output
-     * @param sum maximum intergral output
-     * @return {@link pid_neuron}
-     */
-    public final native pid_neuron init(double min, double max, double sum);
 
     /**
      * set proportional integral derivative constant for single neuron PID

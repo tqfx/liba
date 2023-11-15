@@ -2,6 +2,17 @@
 #include "a/mf.h"
 #include "liba_mf.h"
 
+JNIEXPORT void JNICALL JPACKAGE(mf_INIT)(JNIEnv *jenv, jclass jcls)
+{
+    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "NUL", "I"), A_MF_NUL);
+    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "GAUSS", "I"), A_MF_GAUSS);
+    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "GBELL", "I"), A_MF_GBELL);
+    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "SIG", "I"), A_MF_SIG);
+    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "TRAP", "I"), A_MF_TRAP);
+    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "TRI", "I"), A_MF_TRI);
+    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "Z", "I"), A_MF_Z);
+}
+
 JNIEXPORT jdouble JNICALL JPACKAGE(mf_gauss)(JNIEnv *jenv, jclass jcls, jdouble jx, jdouble jsigma, jdouble jc)
 {
     return (void)(jenv), (void)(jcls), a_mf_gauss(jx, jsigma, jc);
