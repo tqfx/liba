@@ -50,7 +50,6 @@ int a_version_cmp(a_version_s const *const lhs, a_version_s const *const rhs)
     return 0;
 }
 
-#include <string.h>
 #include <stdlib.h>
 
 unsigned int a_version_parse(a_version_s *const ctx, char const *const ver)
