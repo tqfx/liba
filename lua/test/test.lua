@@ -1,37 +1,51 @@
 local test = {}
-function test:r(...)
+function test:dir(...)
     local io_write_cache = {}
-    local function io_write(indent, ...)
-        if io_write_cache[tostring(...)] then
-            io.write(indent .. "*" .. tostring(...) .. "\n")
+    local function io_write(indent, x)
+        local str = tostring(x)
+        if io_write_cache[str] then
+            io.write(indent .. "*" .. str .. "\n")
         else
-            io_write_cache[tostring(...)] = true
-            if type(...) == "table" then
-                for pos, val in pairs(...) do
+            io_write_cache[str] = true
+            if type(x) == "table" then
+                for idx, val in pairs(x) do
                     if type(val) == "table" then
-                        io.write(indent .. "[" .. pos .. "] => " .. tostring(...) .. " {\n")
-                        io_write(indent .. string.rep(" ", string.len(pos) + 8), val)
-                        io.write(indent .. string.rep(" ", string.len(pos) + 6) .. "}\n")
+                        io.write(indent .. "[" .. idx .. "] => " .. str .. "\n")
+                        io.write(indent .. "{\n")
+                        io_write(indent .. indent, val)
+                        io.write(indent .. "}\n")
                     elseif type(val) == "string" then
-                        io.write(indent .. "[" .. pos .. '] => "' .. val .. '"\n')
+                        io.write(indent .. "[" .. idx .. '] => "' .. val .. '"\n')
                     else
-                        io.write(indent .. "[" .. pos .. "] => " .. tostring(val) .. "\n")
+                        io.write(indent .. "[" .. idx .. "] => " .. tostring(val) .. "\n")
                     end
                 end
             else
-                io.write(indent .. tostring(...) .. "\n")
+                io.write(indent .. str .. "\n")
             end
         end
     end
-    if type(...) == "table" then
-        io.write(tostring(...) .. " {\n")
-        io_write("  ", ...)
-        io.write("}\n")
-    else
-        io_write("  ", ...)
+    for _, x in ipairs({ ... }) do
+        if type(x) == "table" then
+            io.write(tostring(x) .. "\n")
+            io.write("{\n")
+            io_write("    ", x)
+            io.write("}\n")
+        else
+            io_write("", x)
+        end
     end
 end
-function test:w(...)
-    print(...)
+function test:log(...)
+    for i, v in ipairs({ ... }) do
+        if i > 1 then
+            io.write(" ")
+        end
+        io.write(tostring(v))
+    end
+    io.write("\n")
+end
+function test:fmt(...)
+    io.write(string.format(...) .. "\n")
 end
 return test

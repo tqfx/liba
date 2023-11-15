@@ -3,7 +3,7 @@
 package.path = arg[0]:sub(0, -arg[0]:match("([^/\\]*)$"):len() - 1) .. "?.lua;" .. package.path
 local test = require("test")
 local a = require("liba")
-test:r(getmetatable(a.mf))
+test:dir(getmetatable(a.mf))
 
 a.mf.gauss(0, 0, 0)
 a.mf.gbell(0, 0, 0, 0)
