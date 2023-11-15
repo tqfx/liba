@@ -3,6 +3,14 @@
 namespace a
 {
 
+version::version(char const *ver)
+    : major(0)
+    , minor(0)
+    , patch(0)
+{
+    a_version_parse(this, ver);
+}
+
 bool version::operator<(version const &ver) const
 {
     return a_version_lt(this, &ver);

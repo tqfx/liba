@@ -33,7 +33,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 #endif /* __cplusplus */
 #if defined(__cplusplus)
     a::version v000 = a::version(0, 0);
-    a::version v010 = a::version(0, 1);
+    a::version v010 = a::version(".1");
     TEST_BUG(v000 == v000);
     TEST_BUG(v000 != v010);
     TEST_BUG(v000 < v010);

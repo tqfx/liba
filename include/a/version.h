@@ -86,6 +86,7 @@ struct version
         , patch(pat)
     {
     }
+    A_PUBLIC version(char const *ver);
 #else /* !__cplusplus */
 typedef struct a_version_s
 {
