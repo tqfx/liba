@@ -5,6 +5,7 @@ class _a {
         if (args.length > 0) {
             System.setOut(new PrintStream(new FileOutputStream(args[0])));
         }
+        System.out.println(liba.version_check(0, 0, 0));
         System.out.println("version " + liba.version());
         System.out.println("major " + liba.version_major());
         System.out.println("minor " + liba.version_minor());

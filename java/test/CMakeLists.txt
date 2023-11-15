@@ -52,3 +52,6 @@ unittest(polytrack7)
 
 building(tf)
 unittest(tf)
+
+building(version)
+unittest(version)

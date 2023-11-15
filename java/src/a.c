@@ -28,6 +28,12 @@ JNIEXPORT jlong JNICALL JPACKAGE(version_1tweak)(JNIEnv *jenv, jclass jcls)
     return (void)(jenv), (void)(jcls), (jlong)a_version_tweak();
 }
 
+JNIEXPORT jint JNICALL JPACKAGE(version_1check)(JNIEnv *jenv, jclass jcls, jint major, jint minor, jint patch)
+{
+#undef a_version_check
+    return (void)(jenv), (void)(jcls), a_version_check((unsigned int)major, (unsigned int)minor, (unsigned int)patch);
+}
+
 JNIEXPORT jfloat JNICALL JPACKAGE(f32_1rsqrt)(JNIEnv *jenv, jclass jcls, jfloat jx)
 {
     return (void)(jenv), (void)(jcls), a_f32_rsqrt(jx);
