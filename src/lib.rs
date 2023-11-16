@@ -40,6 +40,7 @@ pub mod mf;
 pub mod pid;
 pub mod polytrack;
 pub mod tf;
+pub mod version;
 
 extern "C" {
     fn a_version() -> *const c_char;
