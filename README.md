@@ -128,7 +128,7 @@ print("version", liba.VERSION)
 ### Java
 
 ```java
-public class test {
+public class Main {
     public static void main(String[] args) {
         System.out.println("version " + liba.VERSION);
     }
@@ -153,7 +153,14 @@ fn main() {
 }
 ```
 
-### NodeJS
+### Python
+
+```py
+import liba
+print("version", liba.VERSION)
+```
+
+### JavaScript
 
 ```bash
 npm i @tqfx/liba
@@ -162,13 +169,6 @@ npm i @tqfx/liba
 ```js
 import liba from "@tqfx/liba";
 console.log(liba.VERSION)
-```
-
-### Python
-
-```py
-import liba
-print("version", liba.VERSION)
 ```
 
 ### QuickJS
