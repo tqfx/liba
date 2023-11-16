@@ -2,8 +2,7 @@ package liba;
 
 /** hepta polynomial trajectory */
 public class polytrack7 {
-    /** quantity */
-    public double[] k = new double[8];
+    double[] k = new double[8];
     static {
         System.loadLibrary("a");
         INIT();
@@ -28,6 +27,15 @@ public class polytrack7 {
     public polytrack7(double t0, double t1, double q0, double q1, double v0, double v1,
             double a0, double a1, double j0, double j1) {
         gen(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1);
+    }
+
+    /**
+     * getter for hepta polynomial trajectory quantity
+     *
+     * @return hepta polynomial trajectory quantity
+     */
+    public final double[] k() {
+        return k;
     }
 
     /**

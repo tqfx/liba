@@ -27,6 +27,58 @@ public class tf {
     }
 
     /**
+     * get numerator for transfer function
+     *
+     * @return numerator
+     */
+    public final double[] num() {
+        return num;
+    }
+
+    /**
+     * set numerator for transfer function
+     *
+     * @param den numerator
+     * @return {@link tf}
+     */
+    public final native tf num(double[] num);
+
+    /**
+     * get denominator for transfer function
+     *
+     * @return denominator
+     */
+    public final double[] den() {
+        return den;
+    }
+
+    /**
+     * set denominator for transfer function
+     *
+     * @param den denominator
+     * @return {@link tf}
+     */
+    public final native tf den(double[] den);
+
+    /**
+     * get input for transfer function
+     *
+     * @return input
+     */
+    public final double[] input() {
+        return input;
+    }
+
+    /**
+     * get output for transfer function
+     *
+     * @return output
+     */
+    public final double[] output() {
+        return output;
+    }
+
+    /**
      * calculate function for transfer function
      *
      * @param x controller output

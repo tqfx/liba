@@ -54,49 +54,49 @@ public class version {
     }
 
     /***
-     * getter for major number
+     * get major number for version
      *
      * @return major number
      */
     public final native int major();
 
     /***
-     * setter for major number
+     * set major number for version
      *
      * @param maj major number
      * @return {@link version}
      */
-    public final native version set_major(int maj);
+    public final native version major(int maj);
 
     /***
-     * getter for minor number
+     * get minor number for version
      *
      * @return minor number
      */
     public final native int minor();
 
     /***
-     * setter for minor number
+     * set minor number for version
      *
      * @param min minor number
      * @return {@link version}
      */
-    public final native version set_minor(int min);
+    public final native version minor(int min);
 
     /***
-     * getter for patch number
+     * get patch number for version
      *
      * @return patch number
      */
     public final native int patch();
 
     /***
-     * setter for patch number
+     * set patch number for version
      *
      * @param pat patch number
      * @return {@link version}
      */
-    public final native version set_patch(int pat);
+    public final native version patch(int pat);
 
     /**
      * parse function for {@link version} object

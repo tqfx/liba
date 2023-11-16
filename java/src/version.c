@@ -26,7 +26,7 @@ JNIEXPORT void JNICALL JPACKAGE(version_init)(JNIEnv *jenv, jobject jobj, jint m
     (*jenv)->SetObjectField(jenv, jobj, L.ctx, jctx);
 }
 
-JNIEXPORT jint JNICALL JPACKAGE(version_major)(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jint JNICALL JPACKAGE(version_major__)(JNIEnv *jenv, jobject jobj)
 {
     a_version_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -34,7 +34,7 @@ JNIEXPORT jint JNICALL JPACKAGE(version_major)(JNIEnv *jenv, jobject jobj)
     return (jint)ctx.major;
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(version_set_1major)(JNIEnv *jenv, jobject jobj, jint major)
+JNIEXPORT jobject JNICALL JPACKAGE(version_major__I)(JNIEnv *jenv, jobject jobj, jint major)
 {
     a_version_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -44,7 +44,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(version_set_1major)(JNIEnv *jenv, jobject job
     return jobj;
 }
 
-JNIEXPORT jint JNICALL JPACKAGE(version_minor)(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jint JNICALL JPACKAGE(version_minor__)(JNIEnv *jenv, jobject jobj)
 {
     a_version_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -52,7 +52,7 @@ JNIEXPORT jint JNICALL JPACKAGE(version_minor)(JNIEnv *jenv, jobject jobj)
     return (jint)ctx.minor;
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(version_set_1minor)(JNIEnv *jenv, jobject jobj, jint minor)
+JNIEXPORT jobject JNICALL JPACKAGE(version_minor__I)(JNIEnv *jenv, jobject jobj, jint minor)
 {
     a_version_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -62,7 +62,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(version_set_1minor)(JNIEnv *jenv, jobject job
     return jobj;
 }
 
-JNIEXPORT jint JNICALL JPACKAGE(version_patch)(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jint JNICALL JPACKAGE(version_patch__)(JNIEnv *jenv, jobject jobj)
 {
     a_version_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -70,7 +70,7 @@ JNIEXPORT jint JNICALL JPACKAGE(version_patch)(JNIEnv *jenv, jobject jobj)
     return (jint)ctx.patch;
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(version_set_1patch)(JNIEnv *jenv, jobject jobj, jint patch)
+JNIEXPORT jobject JNICALL JPACKAGE(version_patch__I)(JNIEnv *jenv, jobject jobj, jint patch)
 {
     a_version_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);

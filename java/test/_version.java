@@ -31,5 +31,15 @@ class _version {
         if (v100.cmp(v001.parse("0.0.1")) != 3) {
             throw new RuntimeException("v100.cmp(v001) == 3");
         }
+        v000.major(1).minor(2).patch(3);
+        if (v000.major() != 1) {
+            throw new RuntimeException("v000.major() != 1");
+        }
+        if (v000.minor() != 2) {
+            throw new RuntimeException("v000.minor() != 2");
+        }
+        if (v000.patch() != 3) {
+            throw new RuntimeException("v000.patch() != 3");
+        }
     }
 }

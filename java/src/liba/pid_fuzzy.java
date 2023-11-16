@@ -70,6 +70,139 @@ public class pid_fuzzy {
     }
 
     /**
+     * get mode for fuzzy PID controller
+     *
+     * @return mode
+     */
+    public final native int mode();
+
+    /**
+     * set mode for fuzzy PID controller
+     *
+     * @param mode mode
+     * @return {@link pid}
+     */
+    public final native pid mode(int mode);
+
+    /**
+     * get proportional constant for fuzzy PID controller
+     *
+     * @return proportional constant
+     */
+    public final native double kp();
+
+    /**
+     * set proportional constant for fuzzy PID controller
+     *
+     * @param kp proportional constant
+     * @return {@link pid}
+     */
+    public final native pid kp(double kp);
+
+    /**
+     * get integral constant for fuzzy PID controller
+     *
+     * @return integral constant
+     */
+    public final native double ki();
+
+    /**
+     * set integral constant for fuzzy PID controller
+     *
+     * @param ki integral constant
+     * @return {@link pid}
+     */
+    public final native pid ki(double ki);
+
+    /**
+     * get derivative constant for fuzzy PID controller
+     *
+     * @return derivative constant
+     */
+    public final native double kd();
+
+    /**
+     * set derivative constant for fuzzy PID controller
+     *
+     * @param kd derivative constant
+     * @return {@link pid}
+     */
+    public final native pid kd(double kd);
+
+    /**
+     * get maximum integral output for fuzzy PID controller
+     *
+     * @return maximum integral output
+     */
+    public final native double summax();
+
+    /**
+     * set maximum integral output for fuzzy PID controller
+     *
+     * @param max maximum integral output
+     * @return {@link pid}
+     */
+    public final native pid summax(double max);
+
+    /**
+     * get maximum final output for fuzzy PID controller
+     *
+     * @return maximum final output
+     */
+    public final native double outmax();
+
+    /**
+     * set maximum final output for fuzzy PID controller
+     *
+     * @param max maximum final output
+     * @return {@link pid}
+     */
+    public final native pid outmax(double max);
+
+    /**
+     * get minimum final output for fuzzy PID controller
+     *
+     * @return minimum final output
+     */
+    public final native double outmin();
+
+    /**
+     * set minimum final output for fuzzy PID controller
+     *
+     * @param min minimum final output
+     * @return {@link pid}
+     */
+    public final native pid outmin(double min);
+
+    /**
+     * get output cached for fuzzy PID controller
+     *
+     * @return output cached
+     */
+    public final native double out();
+
+    /**
+     * get feedback cached for fuzzy PID controller
+     *
+     * @return feedback cached
+     */
+    public final native double fdb();
+
+    /**
+     * get error cached for fuzzy PID controller
+     *
+     * @return error cached
+     */
+    public final native double err();
+
+    /**
+     * get number of columns in the rule base for fuzzy PID controller
+     *
+     * @return number of columns in the rule base
+     */
+    public final native int col();
+
+    /**
      * set rule base for fuzzy PID controller
      *
      * @param me  points to membership function parameter table, terminated by
@@ -94,7 +227,14 @@ public class pid_fuzzy {
     public final native pid_fuzzy kpid(double kp, double ki, double kd);
 
     /**
-     * set buffer for fuzzy PID controller
+     * get maximum number triggered by the rule for fuzzy PID controller
+     *
+     * @return maximum number triggered by the rule
+     */
+    public final native int buff();
+
+    /**
+     * set maximum number triggered by the rule for fuzzy PID controller
      *
      * @param num maximum number triggered by the rule
      * @return {@link pid_fuzzy}

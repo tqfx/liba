@@ -97,5 +97,18 @@ class _pid_fuzzy {
             obj.kpid(10, 0.1, 1).zero();
             System.out.println(obj.iter(1, 0));
         }
+        pid_fuzzy obj = new pid_fuzzy();
+        obj.mode(obj.mode());
+        obj.buff(obj.buff());
+        obj.kp(obj.kp());
+        obj.ki(obj.ki());
+        obj.kd(obj.kd());
+        obj.summax(obj.summax());
+        obj.outmax(obj.outmax());
+        obj.outmin(obj.outmin());
+        obj.out();
+        obj.fdb();
+        obj.err();
+        obj.col();
     }
 }

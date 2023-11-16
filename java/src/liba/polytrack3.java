@@ -2,8 +2,7 @@ package liba;
 
 /** cubic polynomial trajectory */
 public class polytrack3 {
-    /** quantity */
-    public double[] k = new double[4];
+    double[] k = new double[4];
     static {
         System.loadLibrary("a");
         INIT();
@@ -23,6 +22,15 @@ public class polytrack3 {
      */
     public polytrack3(double t0, double t1, double q0, double q1, double v0, double v1) {
         gen(t0, t1, q0, q1, v0, v1);
+    }
+
+    /**
+     * getter for cubic polynomial trajectory quantity
+     *
+     * @return cubic polynomial trajectory quantity
+     */
+    public final double[] k() {
+        return k;
     }
 
     /**

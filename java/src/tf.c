@@ -37,6 +37,38 @@ JNIEXPORT void JNICALL JPACKAGE(tf_init)(JNIEnv *jenv, jobject jobj, jdoubleArra
     (*jenv)->SetObjectField(jenv, jobj, L.output, (*jenv)->NewDoubleArray(jenv, (jsize)ctx.den_n));
 }
 
+JNIEXPORT jobject JNICALL JPACKAGE(tf_num)(JNIEnv *jenv, jobject jobj, jdoubleArray num)
+{
+    a_tf_s ctx;
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_tf_s), (jbyte *)&ctx);
+    (*jenv)->SetObjectField(jenv, jobj, L.num, num);
+    jsize num_n = (*jenv)->GetArrayLength(jenv, num);
+    if (ctx.num_n != (unsigned int)num_n)
+    {
+        ctx.num_n = (unsigned int)num_n;
+        (*jenv)->SetObjectField(jenv, jobj, L.input, (*jenv)->NewDoubleArray(jenv, num_n));
+    }
+    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_tf_s), (jbyte *)&ctx);
+    return jobj;
+}
+
+JNIEXPORT jobject JNICALL JPACKAGE(tf_den)(JNIEnv *jenv, jobject jobj, jdoubleArray den)
+{
+    a_tf_s ctx;
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_tf_s), (jbyte *)&ctx);
+    (*jenv)->SetObjectField(jenv, jobj, L.den, den);
+    jsize den_n = (*jenv)->GetArrayLength(jenv, den);
+    if (ctx.den_n != (unsigned int)den_n)
+    {
+        ctx.den_n = (unsigned int)den_n;
+        (*jenv)->SetObjectField(jenv, jobj, L.output, (*jenv)->NewDoubleArray(jenv, den_n));
+    }
+    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_tf_s), (jbyte *)&ctx);
+    return jobj;
+}
+
 JNIEXPORT jdouble JNICALL JPACKAGE(tf_iter)(JNIEnv *jenv, jobject jobj, jdouble x)
 {
     union
@@ -70,8 +102,14 @@ JNIEXPORT jobject JNICALL JPACKAGE(tf_zero)(JNIEnv *jenv, jobject jobj)
 {
     a_tf_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    jbyteArray jinput = (*jenv)->GetObjectField(jenv, jobj, L.input);
+    jbyteArray joutput = (*jenv)->GetObjectField(jenv, jobj, L.output);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_tf_s), (jbyte *)&ctx);
+    ctx.input = (*jenv)->GetDoubleArrayElements(jenv, jinput, NULL);
+    ctx.output = (*jenv)->GetDoubleArrayElements(jenv, joutput, NULL);
     a_tf_zero(&ctx);
     (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_tf_s), (jbyte *)&ctx);
+    (*jenv)->ReleaseDoubleArrayElements(jenv, jinput, ctx.input, 0);
+    (*jenv)->ReleaseDoubleArrayElements(jenv, joutput, ctx.output, 0);
     return jobj;
 }
