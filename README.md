@@ -130,7 +130,7 @@ print("version", liba.VERSION)
 ```java
 public class test {
     public static void main(String[] args) {
-        System.out.println("version " + liba.version());
+        System.out.println("version " + liba.VERSION);
     }
 }
 ```
