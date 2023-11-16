@@ -127,6 +127,39 @@ int LMODULE(version_cmp)(lua_State *const L)
     return 1;
 }
 
+/***
+ algorithm library version check
+ @param major required major number
+ @param minor required minor number
+ @param patch required patch number
+ @treturn integer `<0` library version is higher than required version
+ @treturn integer `>0` library version is lower than required version
+ @treturn integer 0 library version is equal required version
+ @function check
+*/
+int LMODULE(version_check)(lua_State *const L)
+{
+    a_version_s v = A_VERSION_C(0, 0, 0);
+    while (lua_type(L, 1) == LUA_TTABLE)
+    {
+        lua_remove(L, 1);
+    }
+    switch (lua_gettop(L) & 0x3)
+    {
+    case 3:
+        v.patch = (unsigned int)luaL_checkinteger(L, 3);
+    case 2:
+        v.minor = (unsigned int)luaL_checkinteger(L, 2);
+    case 1:
+        v.major = (unsigned int)luaL_checkinteger(L, 1);
+    default:
+        break;
+    }
+#undef a_version_check
+    lua_pushinteger(L, a_version_check(v.major, v.minor, v.patch));
+    return 1;
+}
+
 #undef FUNC
 #define FUNC(func)                                              \
     int LMODULE(version_##func)(lua_State *const L)             \
@@ -317,6 +350,7 @@ int LMODULE_(version, lua_State *const L)
         {NULL, 0},
     };
     l_func_s const funcs[] = {
+        {"check", LMODULE(version_check)},
         {"parse", LMODULE(version_parse)},
         {"init", LMODULE(version_init)},
         {"new", LMODULE(version_new)},

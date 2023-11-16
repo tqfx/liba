@@ -164,6 +164,13 @@ A_EXTERN int a_version_cmp(a_version_s const *lhs, a_version_s const *rhs);
 
 /*!
  @brief algorithm library version check
+ @param[in] major required major number
+ @param[in] minor required minor number
+ @param[in] patch required patch number
+ @return result of comparison
+  @retval <0 library version is higher than required version
+  @retval >0 library version is lower than required version
+  @retval 0 library version is equal required version
 */
 A_EXTERN int a_version_check(unsigned int major, unsigned int minor, unsigned int patch);
 #define a_version_check() a_version_check(A_VERSION_MAJOR, A_VERSION_MINOR, A_VERSION_PATCH)
