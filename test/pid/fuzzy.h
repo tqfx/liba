@@ -3,6 +3,7 @@
 #define MAIN_(s, argc, argv) A_CAST_2(pid_fuzzy, s)(argc, argv)
 #include "../test.h"
 #include "a/tf.h"
+#include "a/mf.h"
 #include "a/math.h"
 #include "a/pid/fuzzy.h"
 
@@ -120,7 +121,7 @@ static void test_f(void)
     ctx.pid.outmax = +10;
     ctx.pid.outmin = -10;
     ctx.pid.mode = A_PID_POS;
-    ctx.col = 7;
+    ctx.order = 7;
     ctx.me = m7e;
     ctx.mec = m7ec;
     ctx.mkp = m7kp;
@@ -128,11 +129,8 @@ static void test_f(void)
     ctx.mkd = m7kd;
     ctx.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
     a_pid_fuzzy_init(&ctx, 0);
-    {
-        static unsigned int idx[A_PID_FUZZY_IDX(2)];
-        static a_float_t val[A_PID_FUZZY_VAL(2)];
-        a_pid_fuzzy_buff(&ctx, idx, val);
-    }
+    a_byte_t joint[A_PID_FUZZY_JOINT(2)];
+    a_pid_fuzzy_joint(&ctx, joint, 2);
     a_pid_fuzzy_kpid(&ctx, 10, A_FLOAT_C(0.01), A_FLOAT_C(0.1));
     for (unsigned int i = 0; i < 1000; ++i)
     {
@@ -140,8 +138,6 @@ static void test_f(void)
     }
     a_tf_zero(&tf);
     a_pid_fuzzy_zero(&ctx);
-    char buff[A_PID_FUZZY_BUF1(2)];
-    a_pid_fuzzy_buf1(&ctx, buff, 2);
     for (unsigned int i = 0; i < 1000; ++i)
     {
         input[0] = a_pid_fuzzy_outf(&ctx, 1, output[0]);
@@ -172,18 +168,15 @@ static void test_p(void)
     ctx.pid.outmax = +10;
     ctx.pid.outmin = -10;
     ctx.pid.mode = A_PID_POS;
-    ctx.col = 7;
+    ctx.order = 7;
     ctx.me = m7e;
     ctx.mec = m7ec;
     ctx.mkp = m7kp;
     ctx.mki = m7ki;
     ctx.mkd = m7kd;
     ctx.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
-    {
-        static unsigned int idx[A_PID_FUZZY_IDX(2)];
-        static a_float_t val[A_PID_FUZZY_VAL(2)];
-        a_pid_fuzzy_buff(&ctx, idx, val);
-    }
+    a_byte_t joint[A_PID_FUZZY_JOINT(2)];
+    a_pid_fuzzy_joint(&ctx, joint, 2);
     a_pid_fuzzy_kpid(&ctx, 10, A_FLOAT_C(0.01), A_FLOAT_C(0.1));
     {
         static a_float_t out[3];
@@ -249,13 +242,13 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     pos_pid.pid.outmax = +10;
     pos_pid.pid.outmin = -10;
     pos_pid.pid.mode = A_PID_POS;
-    pos_pid.col = 3;
+    pos_pid.order = 3;
     pos_pid.me = m3e;
     pos_pid.mec = m3ec;
     pos_pid.mkp = m3kp;
     pos_pid.mki = m3ki;
     pos_pid.mkd = m3kd;
-    pos_pid.col = 7;
+    pos_pid.order = 7;
     pos_pid.me = m7e;
     pos_pid.mec = m7ec;
     pos_pid.mkp = m7kp;
@@ -263,22 +256,19 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     pos_pid.mkd = m7kd;
     pos_pid.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
     a_pid_fuzzy_init(&pos_pid, 0);
-    {
-        static unsigned int idx[A_PID_FUZZY_IDX(2)];
-        static a_float_t val[A_PID_FUZZY_VAL(2)];
-        a_pid_fuzzy_buff(&pos_pid, idx, val);
-    }
+    a_byte_t pos_joint[A_PID_FUZZY_JOINT(2)];
+    a_pid_fuzzy_joint(&pos_pid, pos_joint, 2);
     a_pid_fuzzy_s inc_pid;
     inc_pid.pid.outmax = +10;
     inc_pid.pid.outmin = -10;
     inc_pid.pid.mode = A_PID_INC;
-    inc_pid.col = 3;
+    inc_pid.order = 3;
     inc_pid.me = m3e;
     inc_pid.mec = m3ec;
     inc_pid.mkp = m3kp;
     inc_pid.mki = m3ki;
     inc_pid.mkd = m3kd;
-    inc_pid.col = 7;
+    inc_pid.order = 7;
     inc_pid.me = m7e;
     inc_pid.mec = m7ec;
     inc_pid.mkp = m7kp;
@@ -286,11 +276,8 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     inc_pid.mkd = m7kd;
     inc_pid.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
     a_pid_fuzzy_init(&inc_pid, 0);
-    {
-        static unsigned int idx[A_PID_FUZZY_IDX(2)];
-        static a_float_t val[A_PID_FUZZY_VAL(2)];
-        a_pid_fuzzy_buff(&inc_pid, idx, val);
-    }
+    a_byte_t inc_joint[A_PID_FUZZY_JOINT(2)];
+    a_pid_fuzzy_joint(&inc_pid, inc_joint, 2);
     a_pid_fuzzy_kpid(&pos_pid, 600, A_FLOAT_C(20.0), A_FLOAT_C(6000.0));
     a_pid_fuzzy_kpid(&inc_pid, 600, A_FLOAT_C(20.0), A_FLOAT_C(6000.0));
     for (unsigned int i = 0; i < 200; ++i)

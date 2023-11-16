@@ -1,6 +1,7 @@
-#define LIBA_PID_FUZZY_C
 #include "a/pid/fuzzy.h"
+#include "a/fuzzy.h"
 #include "a/math.h"
+#include "a/mf.h"
 
 A_HIDDEN a_float_t a_pid_fuzzy_equ(a_float_t a, a_float_t b);
 a_float_t a_pid_fuzzy_equ(a_float_t const a, a_float_t const b)
@@ -101,7 +102,15 @@ void a_pid_fuzzy_rule(a_pid_fuzzy_s *const ctx, unsigned int const col, a_float_
     ctx->mkp = mkp;
     ctx->mki = mki;
     ctx->mkd = mkd;
-    ctx->col = col;
+    ctx->order = col;
+}
+
+void a_pid_fuzzy_joint(a_pid_fuzzy_s *const ctx, void *ptr, a_size_t const num)
+{
+    ctx->joint = (unsigned int)num;
+    ctx->idx = (unsigned int *)ptr;
+    ptr = (a_byte_t *)ptr + sizeof(unsigned int) * 2 * num;
+    ctx->val = (a_float_t *)ptr;
 }
 
 void a_pid_fuzzy_kpid(a_pid_fuzzy_s *const ctx, a_float_t const kp, a_float_t const ki, a_float_t const kd)
@@ -110,20 +119,6 @@ void a_pid_fuzzy_kpid(a_pid_fuzzy_s *const ctx, a_float_t const kp, a_float_t co
     ctx->kp = kp;
     ctx->ki = ki;
     ctx->kd = kd;
-}
-
-void a_pid_fuzzy_buf1(a_pid_fuzzy_s *const ctx, void *ptr, a_size_t const num)
-{
-    ctx->buf = (unsigned int)num;
-    ctx->idx = (unsigned int *)ptr;
-    ptr = (a_byte_t *)ptr + sizeof(unsigned int) * 2 * num;
-    ctx->val = (a_float_t *)ptr;
-}
-
-void a_pid_fuzzy_buff(a_pid_fuzzy_s *const ctx, unsigned int *const idx, a_float_t *const val)
-{
-    ctx->idx = idx;
-    ctx->val = val;
 }
 
 void a_pid_fuzzy_zero(a_pid_fuzzy_s *const ctx)
@@ -138,14 +133,14 @@ void a_pid_fuzzy_out_(a_pid_fuzzy_s *const ctx, a_float_t const ec, a_float_t co
     a_float_t ki = 0;
     a_float_t kd = 0;
     /* calculate membership */
-    unsigned int const ne = a_pid_fuzzy_mf(e, ctx->col, ctx->me, ctx->idx, ctx->val);
+    unsigned int const ne = a_pid_fuzzy_mf(e, ctx->order, ctx->me, ctx->idx, ctx->val);
     if (!ne)
     {
         goto pid;
     }
     unsigned int *const idx = ctx->idx + ne;
     a_float_t *const val = ctx->val + ne;
-    unsigned int const nec = a_pid_fuzzy_mf(ec, ctx->col, ctx->mec, idx, val);
+    unsigned int const nec = a_pid_fuzzy_mf(ec, ctx->order, ctx->mec, idx, val);
     if (!nec)
     {
         goto pid;
@@ -162,7 +157,7 @@ void a_pid_fuzzy_out_(a_pid_fuzzy_s *const ctx, a_float_t const ec, a_float_t co
                 *it = ctx->op(ctx->val[i], val[j]); /* mat(i,j)=f(e[i],ec[j]) */
                 inv += *it++;
             }
-            ctx->idx[i] *= ctx->col;
+            ctx->idx[i] *= ctx->order;
         }
     }
     inv = 1 / inv;

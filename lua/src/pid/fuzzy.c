@@ -131,13 +131,32 @@ int LMODULE(pid_fuzzy_init)(lua_State *const L)
 }
 
 /***
+ set fuzzy relational operator for fuzzy PID controller
+ @param ctx fuzzy PID controller userdata
+ @tparam int op enumeration for fuzzy PID controller operator
+ @treturn pid_fuzzy fuzzy PID controller userdata
+ @function op
+*/
+int LMODULE(pid_fuzzy_op)(lua_State *const L)
+{
+    a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, -2);
+    if (ctx)
+    {
+        a_pid_fuzzy_set_op(ctx, (unsigned int)luaL_checkinteger(L, -1));
+        lua_pop(L, 1);
+        return 1;
+    }
+    return 0;
+}
+
+/***
  set rule base for fuzzy PID controller
  @param ctx fuzzy PID controller userdata
  @tparam table me points to membership function parameter table, terminated by 0
  @tparam table mec points to membership function parameter table, terminated by 0
- @tparam table mkp points to Kp's rule base table, the rule base must be square
- @tparam table mki points to Ki's rule base table, the rule base must be square
- @tparam table mkd points to Kd's rule base table, the rule base must be square
+ @tparam table mkp points to Kp's rule base table which must be a square matrix
+ @tparam table mki points to Ki's rule base table which must be a square matrix
+ @tparam table mkd points to Kd's rule base table which must be a square matrix
  @treturn pid_fuzzy fuzzy PID controller userdata
  @function rule
 */
@@ -154,6 +173,27 @@ int LMODULE(pid_fuzzy_rule)(lua_State *const L)
         a_float_t const *const mkd = l_table_num_get(L, -1, ctx->mkd, 0);
         a_pid_fuzzy_rule(ctx, num, me, mec, mkp, mki, mkd);
         lua_pop(L, 5);
+        return 1;
+    }
+    return 0;
+}
+
+/***
+ set joint buffer for fuzzy PID controller
+ @param ctx fuzzy PID controller userdata
+ @tparam int num maximum number triggered by the rule
+ @treturn pid_fuzzy fuzzy PID controller userdata
+ @function joint
+*/
+int LMODULE(pid_fuzzy_joint)(lua_State *const L)
+{
+    a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, -2);
+    if (ctx)
+    {
+        unsigned int num = (unsigned int)luaL_checkinteger(L, -1);
+        void *ptr = l_alloc(L, ctx->idx, A_PID_FUZZY_JOINT(num));
+        a_pid_fuzzy_joint(ctx, ptr, num);
+        lua_pop(L, 1);
         return 1;
     }
     return 0;
@@ -178,46 +218,6 @@ int LMODULE(pid_fuzzy_kpid)(lua_State *const L)
         a_float_t const kd = (a_float_t)luaL_checknumber(L, -1);
         a_pid_fuzzy_kpid(ctx, kp, ki, kd);
         lua_pop(L, 3);
-        return 1;
-    }
-    return 0;
-}
-
-/***
- set buffer for fuzzy PID controller
- @param ctx fuzzy PID controller userdata
- @tparam int num maximum number triggered by the rule
- @treturn pid_fuzzy fuzzy PID controller userdata
- @function buff
-*/
-int LMODULE(pid_fuzzy_buff)(lua_State *const L)
-{
-    a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, -2);
-    if (ctx)
-    {
-        unsigned int num = (unsigned int)luaL_checkinteger(L, -1);
-        void *ptr = l_alloc(L, ctx->idx, A_PID_FUZZY_BUF1(num));
-        a_pid_fuzzy_buf1(ctx, ptr, num);
-        lua_pop(L, 1);
-        return 1;
-    }
-    return 0;
-}
-
-/***
- set fuzzy relational operator for fuzzy PID controller
- @param ctx fuzzy PID controller userdata
- @tparam int op enumeration for fuzzy PID controller operator
- @treturn pid_fuzzy fuzzy PID controller userdata
- @function op
-*/
-int LMODULE(pid_fuzzy_op)(lua_State *const L)
-{
-    a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, -2);
-    if (ctx)
-    {
-        a_pid_fuzzy_set_op(ctx, (unsigned int)luaL_checkinteger(L, -1));
-        lua_pop(L, 1);
         return 1;
     }
     return 0;
@@ -339,11 +339,8 @@ static int LMODULE(pid_fuzzy_get)(lua_State *const L)
     case 0x0EB84F77: // mode
         lua_pushinteger(L, (lua_Integer)ctx->pid.mode);
         break;
-    case 0x001A25B4: // col
-        lua_pushinteger(L, (lua_Integer)ctx->col);
-        break;
-    case 0x0019E5B7: // buf
-        lua_pushinteger(L, (lua_Integer)ctx->buf);
+    case 0xABD2FFCA: // order
+        lua_pushinteger(L, (lua_Integer)ctx->order);
         break;
     case 0x001D0204: // new
         lua_pushcfunction(L, LMODULE(pid_fuzzy_new));
@@ -351,17 +348,17 @@ static int LMODULE(pid_fuzzy_get)(lua_State *const L)
     case 0x0E2ED8A0: // init
         lua_pushcfunction(L, LMODULE(pid_fuzzy_init));
         break;
+    case 0x0000393D: // op
+        lua_pushcfunction(L, LMODULE(pid_fuzzy_op));
+        break;
     case 0x0F6569CC: // rule
         lua_pushcfunction(L, LMODULE(pid_fuzzy_rule));
         break;
+    case 0x53A8DB2E: // joint
+        lua_pushcfunction(L, LMODULE(pid_fuzzy_joint));
+        break;
     case 0x0E73F9D8: // kpid
         lua_pushcfunction(L, LMODULE(pid_fuzzy_kpid));
-        break;
-    case 0x0D408D0B: // buff
-        lua_pushcfunction(L, LMODULE(pid_fuzzy_buff));
-        break;
-    case 0x0000393D: // op
-        lua_pushcfunction(L, LMODULE(pid_fuzzy_op));
         break;
     case 0x0E3068C8: // iter
         lua_pushcfunction(L, LMODULE(pid_fuzzy_iter));
@@ -372,9 +369,8 @@ static int LMODULE(pid_fuzzy_get)(lua_State *const L)
     case 0xA65758B2: // __index
     {
         l_int_s const enums[] = {
-            {"col", (lua_Integer)ctx->col},
-            {"buf", (lua_Integer)ctx->buf},
             {"mode", (lua_Integer)ctx->pid.mode},
+            {"order", (lua_Integer)ctx->order},
             {NULL, 0},
         };
         l_num_s const datas[] = {
@@ -391,10 +387,10 @@ static int LMODULE(pid_fuzzy_get)(lua_State *const L)
         };
         l_func_s const funcs[] = {
             {"init", LMODULE(pid_fuzzy_init)},
-            {"rule", LMODULE(pid_fuzzy_rule)},
-            {"kpid", LMODULE(pid_fuzzy_kpid)},
-            {"buff", LMODULE(pid_fuzzy_buff)},
             {"op", LMODULE(pid_fuzzy_op)},
+            {"rule", LMODULE(pid_fuzzy_rule)},
+            {"joint", LMODULE(pid_fuzzy_joint)},
+            {"kpid", LMODULE(pid_fuzzy_kpid)},
             {"iter", LMODULE(pid_fuzzy_iter)},
             {"zero", LMODULE(pid_fuzzy_zero)},
             {"new", LMODULE(pid_fuzzy_new)},
@@ -427,21 +423,21 @@ static int LMODULE(pid_fuzzy_get)(lua_State *const L)
 int LMODULE_(pid_fuzzy, lua_State *const L)
 {
     l_int_s const enums[] = {
-        {"EQU", A_PID_FUZZY_EQU},
         {"CAP", A_PID_FUZZY_CAP},
         {"CAP_ALGEBRA", A_PID_FUZZY_CAP_ALGEBRA},
         {"CAP_BOUNDED", A_PID_FUZZY_CAP_BOUNDED},
         {"CUP", A_PID_FUZZY_CUP},
         {"CUP_ALGEBRA", A_PID_FUZZY_CUP_ALGEBRA},
         {"CUP_BOUNDED", A_PID_FUZZY_CUP_BOUNDED},
+        {"EQU", A_PID_FUZZY_EQU},
         {NULL, 0},
     };
     l_func_s const funcs[] = {
         {"init", LMODULE(pid_fuzzy_init)},
-        {"rule", LMODULE(pid_fuzzy_rule)},
-        {"kpid", LMODULE(pid_fuzzy_kpid)},
-        {"buff", LMODULE(pid_fuzzy_buff)},
         {"op", LMODULE(pid_fuzzy_op)},
+        {"rule", LMODULE(pid_fuzzy_rule)},
+        {"joint", LMODULE(pid_fuzzy_joint)},
+        {"kpid", LMODULE(pid_fuzzy_kpid)},
         {"iter", LMODULE(pid_fuzzy_iter)},
         {"zero", LMODULE(pid_fuzzy_zero)},
         {"new", LMODULE(pid_fuzzy_new)},

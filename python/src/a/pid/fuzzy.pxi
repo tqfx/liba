@@ -29,6 +29,10 @@ cdef class pid_fuzzy:
         else:
             self.ctx.pid.mode = A_PID_INC
         a_pid_fuzzy_set_op(&self.ctx, A_PID_FUZZY_EQU)
+    def op(self, op: int):
+        '''set fuzzy relational operator for fuzzy PID controller'''
+        a_pid_fuzzy_set_op(&self.ctx, op)
+        return self
     def rule(self, me, mec, mkp, mki, mkd):
         '''set rule base for fuzzy PID controller'''
         self.me = float.array((col for row in me for col in row))
@@ -43,18 +47,14 @@ cdef class pid_fuzzy:
                          <a_float_t *>self.mki.data.as_voidptr,
                          <a_float_t *>self.mkd.data.as_voidptr)
         return self
+    def joint(self, num: int):
+        '''set joint buffer for fuzzy PID controller'''
+        self.ptr = PyMem_Realloc(self.ptr, A_PID_FUZZY_JOINT(num))
+        a_pid_fuzzy_joint(&self.ctx, self.ptr, num)
+        return self
     def kpid(self, kp: a_float_t, ki: a_float_t, kd: a_float_t):
         '''set proportional integral derivative constant for fuzzy PID controller'''
         a_pid_fuzzy_kpid(&self.ctx, kp, ki, kd)
-        return self
-    def buff(self, num: int):
-        '''set buffer for fuzzy PID controller'''
-        self.ptr = PyMem_Realloc(self.ptr, A_PID_FUZZY_BUF1(num))
-        a_pid_fuzzy_buf1(&self.ctx, self.ptr, num)
-        return self
-    def op(self, op: int):
-        '''set fuzzy relational operator for fuzzy PID controller'''
-        a_pid_fuzzy_set_op(&self.ctx, op)
         return self
     def __call__(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
         '''calculate function for fuzzy PID controller'''
@@ -113,9 +113,6 @@ cdef class pid_fuzzy:
             return self.ctx.pid.mode
         def __set__(self, mode: int):
             self.ctx.pid.mode = mode
-    property col:
+    property order:
         def __get__(self) -> int:
-            return self.ctx.col
-    property buf:
-        def __get__(self) -> int:
-            return self.ctx.buf
+            return self.ctx.order

@@ -151,8 +151,6 @@ fn pid() {
 /// fuzzy PID controller operator
 pub mod fuzzy {
     use crate::uint;
-    /// sqrt(a,b)*sqrt(1-(1-a)*(1-b))
-    pub const EQU: uint = 0;
     /// min(a,b)
     pub const CAP: uint = 1;
     /// a*b
@@ -165,6 +163,16 @@ pub mod fuzzy {
     pub const CUP_ALGEBRA: uint = 5;
     /// min(a+b,1)
     pub const CUP_BOUNDED: uint = 6;
+    /// sqrt(a,b)*sqrt(1-(1-a)*(1-b))
+    pub const EQU: uint = 0;
+}
+
+#[macro_export]
+/// compute size of joint buffer for fuzzy PID controller
+macro_rules! PID_FUZZY_JOINT {
+    ($n:expr) => {{
+        core::mem::size_of::<uint>() * $n * 2 + core::mem::size_of::<float>() * $n * (2 + $n)
+    }};
 }
 
 /// fuzzy proportional integral derivative controller
@@ -187,10 +195,10 @@ pub struct pid_fuzzy {
     pub ki: float,
     /// base derivative constant
     pub kd: float,
-    /// number of columns in the rule base
-    pub(crate) col: uint,
+    /// number of order in the square matrix
+    pub(crate) order: uint,
     /// maximum number triggered by the rule
-    pub(crate) buf: uint,
+    pub(crate) joint: uint,
 }
 
 extern "C" {
@@ -213,8 +221,8 @@ extern "C" {
         mki: *const float,
         mkd: *const float,
     );
+    fn a_pid_fuzzy_joint(ctx: *mut pid_fuzzy, ptr: *mut u8, num: usize);
     fn a_pid_fuzzy_kpid(ctx: *mut pid_fuzzy, kp: float, ki: float, kd: float);
-    fn a_pid_fuzzy_buff(ctx: *mut pid_fuzzy, idx: *mut uint, val: *mut float);
     fn a_pid_fuzzy_outf(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
     fn a_pid_fuzzy_outp(ctx: *mut pid_fuzzy, set: *const float, fdb: *const float) -> *const float;
     fn a_pid_fuzzy_zero(ctx: *mut pid_fuzzy);
@@ -232,12 +240,12 @@ impl pid_fuzzy {
             mkd: core::ptr::null(),
             idx: core::ptr::null_mut(),
             val: core::ptr::null_mut(),
-            op: unsafe { a_pid_fuzzy_op(fuzzy::EQU as uint) },
+            op: unsafe { a_pid_fuzzy_op(fuzzy::EQU) },
             kp: 0.0,
             ki: 0.0,
             kd: 0.0,
-            col: 0,
-            buf: 0,
+            order: 0,
+            joint: 0,
         }
     }
 
@@ -292,9 +300,9 @@ impl pid_fuzzy {
         self
     }
 
-    /// set buffer for fuzzy PID controller
-    pub fn buff(&mut self, idx: &mut [u32], val: &mut [float]) -> &mut Self {
-        unsafe { a_pid_fuzzy_buff(self, idx.as_mut_ptr(), val.as_mut_ptr()) };
+    /// set joint buffer for fuzzy PID controller
+    pub fn joint(&mut self, ptr: &mut [u8], num: usize) -> &mut Self {
+        unsafe { a_pid_fuzzy_joint(self, ptr.as_mut_ptr(), num) };
         self
     }
 
@@ -402,10 +410,9 @@ fn pid_fuzzy() {
         [NL, NS, NS, NS, NS, NS, NL],
         [NL, NM, NM, NM, NS, NS, NL],
     ];
+    let mut joint = [0u8; crate::PID_FUZZY_JOINT!(2)];
     let mut a = pid_fuzzy::new(-10.0, 10.0, 0.0);
     assert!(a.pid.mode == crate::pid::INC);
-    let mut idx = [0u32; 4];
-    let mut val = [0.0; 8];
     a.rule(
         me.len(),
         &me.concat(),
@@ -414,7 +421,7 @@ fn pid_fuzzy() {
         &mki.concat(),
         &mkd.concat(),
     )
-    .buff(&mut idx, &mut val)
+    .joint(&mut joint, 2)
     .kpid(10.0, 0.1, 1.0);
     std::println!("{}", a.outf(1.0, 0.0));
     a.op(crate::pid::fuzzy::EQU).zero();

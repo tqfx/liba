@@ -177,7 +177,7 @@ except Exception as e:
 MIN = -10
 MAX = +10
 tf = a.tf(num, den[1:])
-pid_fuzzy = a.pid_fuzzy(MIN, MAX).rule(me, mec, mkp, mki, mkd).buff(2).op(a.pid_fuzzy.CAP_ALGEBRA)
+pid_fuzzy = a.pid_fuzzy(MIN, MAX).rule(me, mec, mkp, mki, mkd).joint(2).op(a.pid_fuzzy.CAP_ALGEBRA)
 
 r = 1.0
 setpoint = [r] * len(data)

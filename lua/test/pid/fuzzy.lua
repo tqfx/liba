@@ -97,8 +97,8 @@ assert(type(a.pid.fuzzy.rule(ctx, me, mec, mkp, mki, mkd)) == "userdata")
 assert(type(a.pid.fuzzy:rule(ctx, me, mec, mkp, mki, mkd)) == "userdata")
 assert(type(a.pid.fuzzy.kpid(ctx, 3, 2, 1)) == "userdata")
 assert(type(a.pid.fuzzy:kpid(ctx, 3, 2, 1)) == "userdata")
-assert(type(a.pid.fuzzy.buff(ctx, 2)) == "userdata")
-assert(type(a.pid.fuzzy:buff(ctx, 2)) == "userdata")
+assert(type(a.pid.fuzzy.joint(ctx, 2)) == "userdata")
+assert(type(a.pid.fuzzy:joint(ctx, 2)) == "userdata")
 assert(type(a.pid.fuzzy.iter(ctx, 1, 0)) == "number")
 assert(type(a.pid.fuzzy:iter(ctx, 1, 0)) == "number")
 assert(type(a.pid.fuzzy.zero(ctx)) == "userdata")
@@ -106,7 +106,7 @@ assert(type(a.pid.fuzzy:zero(ctx)) == "userdata")
 test:dir(getmetatable(ctx))
 ctx = a.pid:fuzzy(-10, 10, 10)
 ctx:rule(me, mec, mkp, mki, mkd)
-ctx:kpid(3, 2, 1):buff(2)
+ctx:kpid(3, 2, 1):joint(2)
 assert(type(ctx(1, 0)) == "number")
 assert(type(ctx.kp) == "number")
 assert(type(ctx.ki) == "number")
@@ -117,13 +117,12 @@ assert(type(ctx.outmin) == "number")
 assert(type(ctx.out) == "number")
 assert(type(ctx.fdb) == "number")
 assert(type(ctx.err) == "number")
-assert(type(ctx.col) == "number")
-assert(type(ctx.buf) == "number")
+assert(type(ctx.order) == "number")
 assert(ctx.mode == a.pid.POS)
 ctx.mode = a.pid.OFF
-ctx.buf = ctx.col
+ctx.outmin = -10
+ctx.outmax = 10
 ctx.summax = 5
-ctx.dt = 0.1
 ctx.kp = 3
 ctx.ki = 2
 ctx.kd = 1

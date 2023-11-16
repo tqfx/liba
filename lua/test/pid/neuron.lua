@@ -36,8 +36,9 @@ assert(type(ctx.wd) == "number")
 assert(type(ctx.k) == "number")
 assert(ctx.mode == a.pid.INC)
 ctx.mode = a.pid.OFF
+ctx.outmin = -10
+ctx.outmax = 10
 ctx.summax = 5
-ctx.dt = 0.1
 ctx.kp = 3
 ctx.ki = 2
 ctx.kd = 1

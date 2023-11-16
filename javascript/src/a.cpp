@@ -70,8 +70,8 @@ class pid_fuzzy: public a_pid_fuzzy_s
         kp = 0;
         ki = 0;
         kd = 0;
-        col = 0;
-        buf = 0;
+        order = 0;
+        joint = 0;
         me = nullptr;
         mec = nullptr;
         mkp = nullptr;
@@ -234,6 +234,7 @@ public:
     }
 };
 
+#include "a/mf.h"
 #include "a/math.h"
 #include "a/version.h"
 #if __has_warning("-Wglobal-constructors")
@@ -259,13 +260,13 @@ EMSCRIPTEN_BINDINGS(module) // NOLINT
     emscripten::constant("PID_OFF", a_uint_c(, A_PID_OFF));
     emscripten::constant("PID_POS", a_uint_c(, A_PID_POS));
     emscripten::constant("PID_INC", a_uint_c(, A_PID_INC));
-    emscripten::constant("PID_FUZZY_EQU", a_uint_c(, A_PID_FUZZY_EQU));
     emscripten::constant("PID_FUZZY_CAP", a_uint_c(, A_PID_FUZZY_CAP));
     emscripten::constant("PID_FUZZY_CAP_ALGEBRA", a_uint_c(, A_PID_FUZZY_CAP_ALGEBRA));
     emscripten::constant("PID_FUZZY_CAP_BOUNDED", a_uint_c(, A_PID_FUZZY_CAP_BOUNDED));
     emscripten::constant("PID_FUZZY_CUP", a_uint_c(, A_PID_FUZZY_CUP));
     emscripten::constant("PID_FUZZY_CUP_ALGEBRA", a_uint_c(, A_PID_FUZZY_CUP_ALGEBRA));
     emscripten::constant("PID_FUZZY_CUP_BOUNDED", a_uint_c(, A_PID_FUZZY_CUP_BOUNDED));
+    emscripten::constant("PID_FUZZY_EQU", a_uint_c(, A_PID_FUZZY_EQU));
     emscripten::class_<pid>("pid")
         .constructor<>()
         .constructor<a_float_t, a_float_t>()
@@ -288,13 +289,18 @@ EMSCRIPTEN_BINDINGS(module) // NOLINT
         .constructor<>()
         .constructor<a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t>()
+        .function("op", emscripten::optional_override([](pid_fuzzy *ctx, unsigned int op) {
+                      a_pid_fuzzy_set_op(reinterpret_cast<a_pid_fuzzy_s *>(ctx), op);
+                      return ctx;
+                  }),
+                  emscripten::allow_raw_pointers())
         .function("rule", emscripten::optional_override([](pid_fuzzy *ctx, emscripten::val const &me, emscripten::val const &mec, emscripten::val const &mkp, emscripten::val const &mki, emscripten::val const &mkd) {
                       union
                       {
                           a_float_t const *p;
                           a_float_t *o;
                       } u;
-                      ctx->col = me["length"].as<unsigned int>();
+                      ctx->order = me["length"].as<unsigned int>();
                       u.p = ctx->me;
                       ctx->me = float_array(concat(me), me["length"].as<a_size_t>(), u.o);
                       u.p = ctx->mec;
@@ -308,19 +314,13 @@ EMSCRIPTEN_BINDINGS(module) // NOLINT
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
+        .function("joint", emscripten::optional_override([](pid_fuzzy *ctx, unsigned int num) {
+                      a_pid_fuzzy_joint(reinterpret_cast<a_pid_fuzzy_s *>(ctx), a_alloc(ctx->idx, A_PID_FUZZY_JOINT(num)), num);
+                      return ctx;
+                  }),
+                  emscripten::allow_raw_pointers())
         .function("kpid", emscripten::optional_override([](pid_fuzzy *ctx, a_float_t kp, a_float_t ki, a_float_t kd) {
                       a_pid_fuzzy_kpid(reinterpret_cast<a_pid_fuzzy_s *>(ctx), kp, ki, kd);
-                      return ctx;
-                  }),
-                  emscripten::allow_raw_pointers())
-        .function("buff", emscripten::optional_override([](pid_fuzzy *ctx, unsigned int num) {
-                      void *ptr = a_alloc(ctx->idx, A_PID_FUZZY_BUF1(num));
-                      a_pid_fuzzy_buf1(reinterpret_cast<a_pid_fuzzy_s *>(ctx), ptr, num);
-                      return ctx;
-                  }),
-                  emscripten::allow_raw_pointers())
-        .function("op", emscripten::optional_override([](pid_fuzzy *ctx, unsigned int op) {
-                      a_pid_fuzzy_set_op(reinterpret_cast<a_pid_fuzzy_s *>(ctx), op);
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())

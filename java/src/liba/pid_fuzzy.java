@@ -2,8 +2,6 @@ package liba;
 
 /** fuzzy proportional integral derivative controller */
 public class pid_fuzzy {
-    /** sqrt(a,b)*sqrt(1-(1-a)*(1-b)) */
-    public static final int EQU;
     /** min(a,b) */
     public static final int CAP;
     /** a*b */
@@ -16,23 +14,24 @@ public class pid_fuzzy {
     public static final int CUP_ALGEBRA;
     /** min(a+b,1) */
     public static final int CUP_BOUNDED;
+    /** sqrt(a,b)*sqrt(1-(1-a)*(1-b)) */
+    public static final int EQU;
     byte[] ctx;
     double[] me;
     double[] mec;
     double[] mkp;
     double[] mki;
     double[] mkd;
-    double[] val;
-    byte[] idx;
+    byte[] joint;
     static {
         System.loadLibrary("a");
-        EQU = 0;
         CAP = 1;
         CAP_ALGEBRA = 2;
         CAP_BOUNDED = 3;
         CUP = 4;
         CUP_ALGEBRA = 5;
         CUP_BOUNDED = 6;
+        EQU = 0;
         INIT();
     }
 
@@ -196,11 +195,19 @@ public class pid_fuzzy {
     public final native double err();
 
     /**
-     * get number of columns in the rule base for fuzzy PID controller
+     * get number of order in the square matrix for fuzzy PID controller
      *
-     * @return number of columns in the rule base
+     * @return number of order in the square matrix
      */
-    public final native int col();
+    public final native int order();
+
+    /**
+     * set fuzzy relational operator for fuzzy PID controller
+     *
+     * @param op enumeration for fuzzy PID controller operator
+     * @return {@link pid_fuzzy}
+     */
+    public final native pid_fuzzy op(int op);
 
     /**
      * set rule base for fuzzy PID controller
@@ -209,12 +216,27 @@ public class pid_fuzzy {
      *            {@link mf}
      * @param mec points to membership function parameter table, terminated by
      *            {@link mf}
-     * @param mkp points to Kp's rule base table, the rule base must be square
-     * @param mki points to Ki's rule base table, the rule base must be square
-     * @param mkd points to Kd's rule base table, the rule base must be square
+     * @param mkp points to Kp's rule base table which must be a square matrix
+     * @param mki points to Ki's rule base table which must be a square matrix
+     * @param mkd points to Kd's rule base table which must be a square matrix
      * @return {@link pid_fuzzy}
      */
     public final native pid_fuzzy rule(double[][] me, double[][] mec, double[][] mkp, double[][] mki, double[][] mkd);
+
+    /**
+     * get maximum number triggered by the rule for fuzzy PID controller
+     *
+     * @return maximum number triggered by the rule
+     */
+    public final native int joint();
+
+    /**
+     * set maximum number triggered by the rule for fuzzy PID controller
+     *
+     * @param num maximum number triggered by the rule
+     * @return {@link pid_fuzzy}
+     */
+    public final native pid_fuzzy joint(int num);
 
     /**
      * set proportional integral derivative constant for fuzzy PID controller
@@ -225,29 +247,6 @@ public class pid_fuzzy {
      * @return {@link pid_fuzzy}
      */
     public final native pid_fuzzy kpid(double kp, double ki, double kd);
-
-    /**
-     * get maximum number triggered by the rule for fuzzy PID controller
-     *
-     * @return maximum number triggered by the rule
-     */
-    public final native int buff();
-
-    /**
-     * set maximum number triggered by the rule for fuzzy PID controller
-     *
-     * @param num maximum number triggered by the rule
-     * @return {@link pid_fuzzy}
-     */
-    public final native pid_fuzzy buff(int num);
-
-    /**
-     * set fuzzy relational operator for fuzzy PID controller
-     *
-     * @param op enumeration for fuzzy PID controller operator
-     * @return {@link pid_fuzzy}
-     */
-    public final native pid_fuzzy op(int op);
 
     /**
      * calculate function for fuzzy PID controller
