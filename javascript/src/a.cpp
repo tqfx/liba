@@ -260,13 +260,6 @@ EMSCRIPTEN_BINDINGS(module) // NOLINT
     emscripten::constant("PID_OFF", a_uint_c(, A_PID_OFF));
     emscripten::constant("PID_POS", a_uint_c(, A_PID_POS));
     emscripten::constant("PID_INC", a_uint_c(, A_PID_INC));
-    emscripten::constant("PID_FUZZY_CAP", a_uint_c(, A_PID_FUZZY_CAP));
-    emscripten::constant("PID_FUZZY_CAP_ALGEBRA", a_uint_c(, A_PID_FUZZY_CAP_ALGEBRA));
-    emscripten::constant("PID_FUZZY_CAP_BOUNDED", a_uint_c(, A_PID_FUZZY_CAP_BOUNDED));
-    emscripten::constant("PID_FUZZY_CUP", a_uint_c(, A_PID_FUZZY_CUP));
-    emscripten::constant("PID_FUZZY_CUP_ALGEBRA", a_uint_c(, A_PID_FUZZY_CUP_ALGEBRA));
-    emscripten::constant("PID_FUZZY_CUP_BOUNDED", a_uint_c(, A_PID_FUZZY_CUP_BOUNDED));
-    emscripten::constant("PID_FUZZY_EQU", a_uint_c(, A_PID_FUZZY_EQU));
     emscripten::class_<pid>("pid")
         .constructor<>()
         .constructor<a_float_t, a_float_t>()
@@ -285,6 +278,13 @@ EMSCRIPTEN_BINDINGS(module) // NOLINT
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers());
+    emscripten::constant("PID_FUZZY_CAP", a_uint_c(, A_PID_FUZZY_CAP));
+    emscripten::constant("PID_FUZZY_CAP_ALGEBRA", a_uint_c(, A_PID_FUZZY_CAP_ALGEBRA));
+    emscripten::constant("PID_FUZZY_CAP_BOUNDED", a_uint_c(, A_PID_FUZZY_CAP_BOUNDED));
+    emscripten::constant("PID_FUZZY_CUP", a_uint_c(, A_PID_FUZZY_CUP));
+    emscripten::constant("PID_FUZZY_CUP_ALGEBRA", a_uint_c(, A_PID_FUZZY_CUP_ALGEBRA));
+    emscripten::constant("PID_FUZZY_CUP_BOUNDED", a_uint_c(, A_PID_FUZZY_CUP_BOUNDED));
+    emscripten::constant("PID_FUZZY_EQU", a_uint_c(, A_PID_FUZZY_EQU));
     emscripten::class_<pid_fuzzy>("pid_fuzzy")
         .constructor<>()
         .constructor<a_float_t, a_float_t>()
@@ -480,13 +480,13 @@ EMSCRIPTEN_BINDINGS(module) // NOLINT
         .property("major", &a::version::major)
         .property("minor", &a::version::minor)
         .property("patch", &a::version::patch)
+        .function("toString", emscripten::optional_override([](a::version const *ctx) {
+                      return std::to_string(ctx->major) + "." + std::to_string(ctx->minor) + "." + std::to_string(ctx->patch);
+                  }),
+                  emscripten::allow_raw_pointers())
         .function("parse", emscripten::optional_override([](a::version *ctx, std::string const &ver) {
                       a_version_parse(ctx, ver.c_str());
                       return ctx;
-                  }),
-                  emscripten::allow_raw_pointers())
-        .function("str", emscripten::optional_override([](a::version const *ctx) {
-                      return std::to_string(ctx->major) + "." + std::to_string(ctx->minor) + "." + std::to_string(ctx->patch);
                   }),
                   emscripten::allow_raw_pointers())
         .function("lt", &a::version::operator<)
