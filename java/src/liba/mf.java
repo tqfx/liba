@@ -33,7 +33,7 @@ public class mf {
     /**
      * gaussian membership function
      *
-     * @param x     any element
+     * @param x     independent variable
      * @param sigma sigma
      * @param c     c
      * @return membership
@@ -43,7 +43,7 @@ public class mf {
     /**
      * generalized bell-shaped membership function
      *
-     * @param x any element
+     * @param x independent variable
      * @param a a
      * @param b b
      * @param c c
@@ -54,7 +54,7 @@ public class mf {
     /**
      * sigmoidal membership function
      *
-     * @param x any element
+     * @param x independent variable
      * @param a a
      * @param c c
      * @return membership
@@ -64,7 +64,7 @@ public class mf {
     /**
      * trapezoidal membership function
      *
-     * @param x any element
+     * @param x independent variable
      * @param a a
      * @param b b
      * @param c c
@@ -76,7 +76,7 @@ public class mf {
     /**
      * triangular membership function
      *
-     * @param x any element
+     * @param x independent variable
      * @param a a
      * @param b b
      * @param c c
@@ -87,7 +87,7 @@ public class mf {
     /**
      * z-shaped membership function
      *
-     * @param x any element
+     * @param x independent variable
      * @param a a
      * @param b b
      * @return membership

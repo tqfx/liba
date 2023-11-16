@@ -8,7 +8,7 @@
 
 /***
  gaussian membership function
- @tparam number x any element
+ @tparam number x independent variable
  @tparam number sigma sigma
  @tparam number c c
  @treturn number membership
@@ -29,7 +29,7 @@ static int LMODULE(mf_gauss)(lua_State *const L)
 
 /***
  generalized bell-shaped membership function
- @tparam number x any element
+ @tparam number x independent variable
  @tparam number a a
  @tparam number b b
  @tparam number c c
@@ -52,7 +52,7 @@ static int LMODULE(mf_gbell)(lua_State *const L)
 
 /***
  sigmoidal membership function
- @tparam number x any element
+ @tparam number x independent variable
  @tparam number a a
  @tparam number c c
  @treturn number membership
@@ -73,7 +73,7 @@ static int LMODULE(mf_sig)(lua_State *const L)
 
 /***
  trapezoidal membership function
- @tparam number x any element
+ @tparam number x independent variable
  @tparam number a a
  @tparam number b b
  @tparam number c c
@@ -98,7 +98,7 @@ static int LMODULE(mf_trap)(lua_State *const L)
 
 /***
  triangular membership function
- @tparam number x any element
+ @tparam number x independent variable
  @tparam number a a
  @tparam number b b
  @tparam number c c
@@ -121,7 +121,7 @@ static int LMODULE(mf_tri)(lua_State *const L)
 
 /***
  z-shaped membership function
- @tparam number x any element
+ @tparam number x independent variable
  @tparam number a a
  @tparam number b b
  @treturn number membership
@@ -143,7 +143,7 @@ static int LMODULE(mf_z)(lua_State *const L)
 /***
  membership function
  @tparam int e type for membership function
- @tparam number x any element
+ @tparam number x independent variable
  @tparam number ... paramarrays
  @treturn number membership
  @function mf

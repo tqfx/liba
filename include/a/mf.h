@@ -37,7 +37,7 @@ extern "C" {
  \f[
   f(x,\sigma,c)=e^{-\frac{(x-c)^2}{2\sigma^2}}
  \f]
- @param[in] x any element
+ @param[in] x independent variable
  @param[in] sigma sigma
  @param[in] c c
 */
@@ -48,7 +48,7 @@ A_EXTERN a_float_t a_mf_gauss(a_float_t x, a_float_t sigma, a_float_t c);
  \f[
   f(x,a,b,c)=\frac{1}{1+\left|\frac{x-c}{a}\right|^{2b}}
  \f]
- @param[in] x any element
+ @param[in] x independent variable
  @param[in] a a
  @param[in] b b
  @param[in] c c
@@ -60,7 +60,7 @@ A_EXTERN a_float_t a_mf_gbell(a_float_t x, a_float_t a, a_float_t b, a_float_t c
  \f[
   f(x,a,c)=\frac{1}{1+e^{-a(x-c)}}
  \f]
- @param[in] x any element
+ @param[in] x independent variable
  @param[in] a a
  @param[in] c c
 */
@@ -77,7 +77,7 @@ A_EXTERN a_float_t a_mf_sig(a_float_t x, a_float_t a, a_float_t c);
   0 & x \ge d \\
   \end{cases}
  \f]
- @param[in] x any element
+ @param[in] x independent variable
  @param[in] a a
  @param[in] b b
  @param[in] c c
@@ -95,7 +95,7 @@ A_EXTERN a_float_t a_mf_trap(a_float_t x, a_float_t a, a_float_t b, a_float_t c,
   0 & x \ge c \\
   \end{cases}
  \f]
- @param[in] x any element
+ @param[in] x independent variable
  @param[in] a a
  @param[in] b b
  @param[in] c c
@@ -112,7 +112,7 @@ A_EXTERN a_float_t a_mf_tri(a_float_t x, a_float_t a, a_float_t b, a_float_t c);
   0 & x \ge c \\
   \end{cases}
  \f]
- @param[in] x any element
+ @param[in] x independent variable
  @param[in] a a
  @param[in] b b
 */
@@ -129,7 +129,7 @@ A_EXTERN a_float_t a_mf_z(a_float_t x, a_float_t a, a_float_t b);
  | \ref A_MF_TRAP    | a_mf_trap(x, a, b, c, d) |
  | \ref A_MF_TRI     | a_mf_tri(x, a, b, c)     |
  | \ref A_MF_Z       | a_mf_z(x, a, b)          |
- @param[in] x any element
+ @param[in] x independent variable
  @param[in] a paramarrays
   @arg \b a[2] \ref a_mf_gauss \ref a_mf_sig \ref a_mf_z
   @arg \b a[3] \ref a_mf_gbell \ref a_mf_tri
