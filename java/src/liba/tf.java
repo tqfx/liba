@@ -38,7 +38,7 @@ public class tf {
     /**
      * set numerator for transfer function
      *
-     * @param den numerator
+     * @param num numerator
      * @return {@link tf}
      */
     public final native tf num(double[] num);
