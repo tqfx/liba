@@ -16,6 +16,8 @@ liba = "0.1"
 #![cfg_attr(not(features = "std"), no_std)]
 
 use core::ffi::c_char;
+/// Equivalent to C’s int type.
+pub type int = core::ffi::c_int;
 /// Equivalent to C’s unsigned int type.
 pub type uint = core::ffi::c_uint;
 /// floating-point number stored using `f64`
@@ -45,6 +47,7 @@ extern "C" {
     fn a_version_minor() -> uint;
     fn a_version_patch() -> uint;
     fn a_version_tweak() -> u64;
+    fn a_version_check(major: uint, minor: uint, patch: uint) -> int;
 }
 
 /**
@@ -84,6 +87,11 @@ pub fn version_tweak() -> u64 {
     unsafe { a_version_tweak() }
 }
 
+/// algorithm library version check
+pub fn version_check(major: uint, minor: uint, patch: uint) -> int {
+    unsafe { a_version_check(major, minor, patch) }
+}
+
 extern "C" {
     fn a_f32_rsqrt(x: f32) -> f32;
     fn a_f64_rsqrt(x: f64) -> f64;
@@ -109,6 +117,7 @@ mod test {
         std::println!("minor {}", crate::version_minor());
         std::println!("patch {}", crate::version_patch());
         std::println!("tweak {}", crate::version_tweak());
+        std::println!("{}", crate::version_check(0, 0, 0));
     }
     #[test]
     fn rsqrt() {
