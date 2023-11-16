@@ -10,8 +10,11 @@ public class version {
 
     static final native void INIT();
 
-    final native void init(int major, int minor, int patch);
+    final native void init(int maj, int min, int pat);
 
+    /**
+     * return string representation of version
+     */
     public String toString() {
         return major() + "." + minor() + "." + patch();
     }
@@ -107,7 +110,7 @@ public class version {
     public final native version parse(String ver);
 
     /**
-     * this version not equal other version
+     * this version is less than other version
      *
      * @param ver other version to be compared
      * @return result of comparison
@@ -115,7 +118,7 @@ public class version {
     public final native boolean lt(version ver);
 
     /**
-     * this version not equal other version
+     * this version is greater than other version
      *
      * @param ver other version to be compared
      * @return result of comparison
@@ -123,7 +126,7 @@ public class version {
     public final native boolean gt(version ver);
 
     /**
-     * this version not equal other version
+     * this version is less than or equal to other version
      *
      * @param ver other version to be compared
      * @return result of comparison
@@ -131,7 +134,7 @@ public class version {
     public final native boolean le(version ver);
 
     /**
-     * this version not equal other version
+     * this version is greater than or equal to other version
      *
      * @param ver other version to be compared
      * @return result of comparison
@@ -139,7 +142,7 @@ public class version {
     public final native boolean ge(version ver);
 
     /**
-     * this version not equal other version
+     * this version is equal to other version
      *
      * @param ver other version to be compared
      * @return result of comparison
@@ -147,7 +150,7 @@ public class version {
     public final native boolean eq(version ver);
 
     /**
-     * this version not equal other version
+     * this version is not equal to other version
      *
      * @param ver other version to be compared
      * @return result of comparison

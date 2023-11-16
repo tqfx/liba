@@ -170,7 +170,7 @@ A_EXTERN int a_version_cmp(a_version_s const *lhs, a_version_s const *rhs);
  @return result of comparison
   @retval <0 library version is higher than required version
   @retval >0 library version is lower than required version
-  @retval 0 library version is equal required version
+  @retval 0 library version is equal to required version
 */
 A_EXTERN int a_version_check(unsigned int major, unsigned int minor, unsigned int patch);
 #define a_version_check() a_version_check(A_VERSION_MAJOR, A_VERSION_MINOR, A_VERSION_PATCH)
@@ -181,7 +181,7 @@ A_EXTERN int a_version_check(unsigned int major, unsigned int minor, unsigned in
 #endif /* LIBA_VERSION_C */
 
 /*!
- @brief version lhs less than version rhs
+ @brief version lhs is less than version rhs
  @param[in] lhs operand on the left
  @param[in] rhs operand on the right
  @return result of comparison
@@ -209,7 +209,7 @@ A_INTERN a_bool_t a_version_lt(a_version_s const *const lhs, a_version_s const *
 #endif /* A_HAVE_INLINE */
 
 /*!
- @brief version lhs greater than version rhs
+ @brief version lhs is greater than version rhs
  @param[in] lhs operand on the left
  @param[in] rhs operand on the right
  @return result of comparison
@@ -237,7 +237,7 @@ A_INTERN a_bool_t a_version_gt(a_version_s const *const lhs, a_version_s const *
 #endif /* A_HAVE_INLINE */
 
 /*!
- @brief version lhs less than or equal version rhs
+ @brief version lhs is less than or equal to version rhs
  @param[in] lhs operand on the left
  @param[in] rhs operand on the right
  @return result of comparison
@@ -253,7 +253,7 @@ A_INTERN a_bool_t a_version_le(a_version_s const *const lhs, a_version_s const *
 #endif /* A_HAVE_INLINE */
 
 /*!
- @brief version lhs greater than or equal version rhs
+ @brief version lhs is greater than or equal to version rhs
  @param[in] lhs operand on the left
  @param[in] rhs operand on the right
  @return result of comparison
@@ -269,7 +269,7 @@ A_INTERN a_bool_t a_version_ge(a_version_s const *const lhs, a_version_s const *
 #endif /* A_HAVE_INLINE */
 
 /*!
- @brief version lhs equal version rhs
+ @brief version lhs is equal to version rhs
  @param[in] lhs operand on the left
  @param[in] rhs operand on the right
  @return result of comparison
@@ -285,7 +285,7 @@ A_INTERN a_bool_t a_version_eq(a_version_s const *const lhs, a_version_s const *
 #endif /* A_HAVE_INLINE */
 
 /*!
- @brief version lhs not equal version rhs
+ @brief version lhs is not equal to version rhs
  @param[in] lhs operand on the left
  @param[in] rhs operand on the right
  @return result of comparison

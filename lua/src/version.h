@@ -64,7 +64,7 @@ A_PUBLIC int LMODULE(version_parse)(lua_State *L);
 A_PUBLIC int LMODULE(version_cmp)(lua_State *L);
 
 /***
- version lhs less than version rhs
+ version lhs is less than version rhs
  @param lhs operand on the left
  @param rhs operand on the right
  @return result of comparison
@@ -73,7 +73,7 @@ A_PUBLIC int LMODULE(version_cmp)(lua_State *L);
 A_PUBLIC int LMODULE(version_lt)(lua_State *L);
 
 /***
- version lhs greater than version rhs
+ version lhs is greater than version rhs
  @param lhs operand on the left
  @param rhs operand on the right
  @return result of comparison
@@ -82,7 +82,7 @@ A_PUBLIC int LMODULE(version_lt)(lua_State *L);
 A_PUBLIC int LMODULE(version_gt)(lua_State *L);
 
 /***
- version lhs less than or equal version rhs
+ version lhs is less than or equal to version rhs
  @param lhs operand on the left
  @param rhs operand on the right
  @return result of comparison
@@ -91,7 +91,7 @@ A_PUBLIC int LMODULE(version_gt)(lua_State *L);
 A_PUBLIC int LMODULE(version_le)(lua_State *L);
 
 /***
- version lhs greater than or equal version rhs
+ version lhs is greater than or equal to version rhs
  @param lhs operand on the left
  @param rhs operand on the right
  @return result of comparison
@@ -100,7 +100,7 @@ A_PUBLIC int LMODULE(version_le)(lua_State *L);
 A_PUBLIC int LMODULE(version_ge)(lua_State *L);
 
 /***
- version lhs equal version rhs
+ version lhs is equal to version rhs
  @param lhs operand on the left
  @param rhs operand on the right
  @return result of comparison
@@ -109,7 +109,7 @@ A_PUBLIC int LMODULE(version_ge)(lua_State *L);
 A_PUBLIC int LMODULE(version_eq)(lua_State *L);
 
 /***
- version lhs not equal version rhs
+ version lhs is not equal to version rhs
  @param lhs operand on the left
  @param rhs operand on the right
  @return result of comparison

@@ -134,7 +134,7 @@ int LMODULE(version_cmp)(lua_State *const L)
  @param patch required patch number
  @treturn integer `<0` library version is higher than required version
  @treturn integer `>0` library version is lower than required version
- @treturn integer 0 library version is equal required version
+ @treturn integer 0 library version is equal to required version
  @function check
 */
 int LMODULE(version_check)(lua_State *const L)
@@ -176,7 +176,7 @@ int LMODULE(version_check)(lua_State *const L)
         return 1;                                               \
     }
 /***
- version lhs less than version rhs
+ version lhs is less than version rhs
  @param lhs operand on the left
  @param rhs operand on the right
  @return result of comparison
@@ -184,7 +184,7 @@ int LMODULE(version_check)(lua_State *const L)
 */
 FUNC(lt)
 /***
- version lhs greater than version rhs
+ version lhs is greater than version rhs
  @param lhs operand on the left
  @param rhs operand on the right
  @return result of comparison
@@ -192,7 +192,7 @@ FUNC(lt)
 */
 FUNC(gt)
 /***
- version lhs less than or equal version rhs
+ version lhs is less than or equal to version rhs
  @param lhs operand on the left
  @param rhs operand on the right
  @return result of comparison
@@ -200,7 +200,7 @@ FUNC(gt)
 */
 FUNC(le)
 /***
- version lhs greater than or equal version rhs
+ version lhs is greater than or equal to version rhs
  @param lhs operand on the left
  @param rhs operand on the right
  @return result of comparison
@@ -208,7 +208,7 @@ FUNC(le)
 */
 FUNC(ge)
 /***
- version lhs equal version rhs
+ version lhs is equal to version rhs
  @param lhs operand on the left
  @param rhs operand on the right
  @return result of comparison
@@ -216,7 +216,7 @@ FUNC(ge)
 */
 FUNC(eq)
 /***
- version lhs not equal version rhs
+ version lhs is not equal to version rhs
  @param lhs operand on the left
  @param rhs operand on the right
  @return result of comparison

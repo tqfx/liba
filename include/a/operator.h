@@ -33,12 +33,12 @@
 #define a_lshift(a, b) ((a) << (b)) //!< bitwise left shift
 #define a_rshift(a, b) ((a) >> (b)) //!< bitwise right shift
 
-#define a_eq(a, b) ((a) == (b)) //!< equal
-#define a_ne(a, b) ((a) != (b)) //!< not equal
+#define a_eq(a, b) ((a) == (b)) //!< equal to
+#define a_ne(a, b) ((a) != (b)) //!< not equal to
 #define a_lt(a, b) ((a) < (b))  //!< less than
 #define a_gt(a, b) ((a) > (b))  //!< greater than
-#define a_le(a, b) ((a) <= (b)) //!< less than or equal
-#define a_ge(a, b) ((a) >= (b)) //!< greater than or equal
+#define a_le(a, b) ((a) <= (b)) //!< less than or equal to
+#define a_ge(a, b) ((a) >= (b)) //!< greater than or equal to
 
 #define a_bitand(a, b) ((a) & (b)) //!< bitwise AND
 #define a_bitxor(a, b) ((a) ^ (b)) //!< bitwise XOR (exclusive or)
