@@ -212,13 +212,11 @@ public class pid_fuzzy {
     /**
      * set rule base for fuzzy PID controller
      *
-     * @param me  points to membership function parameter table, terminated by
-     *            {@link mf}
-     * @param mec points to membership function parameter table, terminated by
-     *            {@link mf}
-     * @param mkp points to Kp's rule base table which must be a square matrix
-     * @param mki points to Ki's rule base table which must be a square matrix
-     * @param mkd points to Kd's rule base table which must be a square matrix
+     * @param me  membership function parameter table, terminated by {@link mf}
+     * @param mec membership function parameter table, terminated by {@link mf}
+     * @param mkp Kp's rule base table which must be a square matrix
+     * @param mki Ki's rule base table which must be a square matrix
+     * @param mkd Kd's rule base table which must be a square matrix
      * @return {@link pid_fuzzy}
      */
     public final native pid_fuzzy rule(double[][] me, double[][] mec, double[][] mkp, double[][] mki, double[][] mkd);
