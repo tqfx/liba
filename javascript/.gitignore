@@ -1,4 +1,2 @@
-liba.js
-liba.mjs
-liba.html
-liba.wasm
+liba.*
+!liba.d.ts
