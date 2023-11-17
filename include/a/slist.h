@@ -29,6 +29,7 @@ typedef union a_slist_u
 
 /*!
  @brief cast a list pointer from another type pointer
+ @param[in] _ additional attributes of specified type
  @param[in] x points to singly linked list node
  @return a pointer to singly linked list node
 */

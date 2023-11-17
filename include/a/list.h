@@ -28,6 +28,7 @@ typedef struct a_list_s
 
 /*!
  @brief cast a list pointer from another type pointer
+ @param[in] _ additional attributes of specified type
  @param[in] x points to circular doubly linked list
  @return a pointer to circular doubly linked list
 */
