@@ -25,9 +25,10 @@ public class polytrack3 {
     }
 
     /**
-     * getter for cubic polynomial trajectory quantity
+     * get coefficients for cubic polynomial trajectory,
+     * q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3
      *
-     * @return cubic polynomial trajectory quantity
+     * @return coefficients
      */
     public final double[] k() {
         return k;

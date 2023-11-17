@@ -5,7 +5,7 @@ use crate::float;
 /// cubic polynomial trajectory
 #[repr(C)]
 pub struct polytrack3 {
-    /// quantity
+    /// coefficients, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3
     k: [float; 4],
 }
 
@@ -88,7 +88,7 @@ fn polytrack3() {
 /// quintic polynomial trajectory
 #[repr(C)]
 pub struct polytrack5 {
-    /// quantity
+    /// coefficients, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5
     k: [float; 6],
 }
 
@@ -186,7 +186,7 @@ fn polytrack5() {
 /// hepta polynomial trajectory
 #[repr(C)]
 pub struct polytrack7 {
-    /// quantity
+    /// coefficients, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5+k_6(t-t_0)^6+k_7(t-t_0)^7
     k: [float; 8],
 }
 

@@ -20,7 +20,15 @@
 */
 typedef struct a_polytrack3_s
 {
-    a_float_t k[4]; //!< quantity
+    /*!
+     \f[
+      q(t)=k_{0}
+          +k_{1}\left(t-t_{0}\right)
+          +k_{2}\left(t-t_{0}\right)^{2}
+          +k_{3}\left(t-t_{0}\right)^{3}
+     \f]
+    */
+    a_float_t k[4]; //!< coefficients
 } a_polytrack3_s;
 
 /*!
@@ -28,7 +36,17 @@ typedef struct a_polytrack3_s
 */
 typedef struct a_polytrack5_s
 {
-    a_float_t k[6]; //!< quantity
+    /*!
+     \f[
+      q(t)=k_{0}
+          +k_{1}\left(t-t_{0}\right)
+          +k_{2}\left(t-t_{0}\right)^{2}
+          +k_{3}\left(t-t_{0}\right)^{3}
+          +k_{4}\left(t-t_{0}\right)^{4}
+          +k_{5}\left(t-t_{0}\right)^{5}
+     \f]
+    */
+    a_float_t k[6]; //!< coefficients
 } a_polytrack5_s;
 
 /*!
@@ -36,7 +54,19 @@ typedef struct a_polytrack5_s
 */
 typedef struct a_polytrack7_s
 {
-    a_float_t k[8]; //!< quantity
+    /*!
+     \f[
+      q(t)=k_{0}
+          +k_{1}\left(t-t_{0}\right)
+          +k_{2}\left(t-t_{0}\right)^{2}
+          +k_{3}\left(t-t_{0}\right)^{3}
+          +k_{4}\left(t-t_{0}\right)^{4}
+          +k_{5}\left(t-t_{0}\right)^{5}
+          +k_{6}\left(t-t_{0}\right)^{6}
+          +k_{7}\left(t-t_{0}\right)^{7}
+     \f]
+    */
+    a_float_t k[8]; //!< coefficients
 } a_polytrack7_s;
 
 #if defined(__cplusplus)

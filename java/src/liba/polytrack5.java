@@ -28,9 +28,10 @@ public class polytrack5 {
     }
 
     /**
-     * getter for quintic polynomial trajectory quantity
+     * get coefficients for quintic polynomial trajectory,
+     * q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5
      *
-     * @return quintic polynomial trajectory quantity
+     * @return coefficients
      */
     public final double[] k() {
         return k;

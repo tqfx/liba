@@ -5,7 +5,7 @@
 
 /***
  cubic polynomial trajectory
- @field k quantity table
+ @field k coefficient table, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3
  @table liba.polytrack3
 */
 
