@@ -95,8 +95,10 @@ declare namespace liba {
         iter(set: number, fdb: number): number;
         /** zero clear function for PID controller */
         zero(): pid;
+        delete(): void;
     }
-    interface pid_constructor {
+    /** constructor for proportional integral derivative controller */
+    var pid: {
         new(): pid;
         /**
          * @param min minimum final output
@@ -106,8 +108,6 @@ declare namespace liba {
         new(min: number, max: number, sum?: number): pid;
         readonly prototype: pid;
     }
-    /** constructor for proportional integral derivative controller */
-    var pid: pid_constructor;
 
     /** min(a,b) */
     const PID_FUZZY_CAP: number;
@@ -125,7 +125,6 @@ declare namespace liba {
     const PID_FUZZY_EQU: number;
 
     interface pid_fuzzy {
-        delete(): void;
         /**
          * set fuzzy relational operator for fuzzy PID controller
          * @param op enumeration for fuzzy PID controller operator
@@ -160,8 +159,10 @@ declare namespace liba {
         iter(set: number, fdb: number): number;
         /** zero clear function for fuzzy PID controller */
         zero(): pid_fuzzy;
+        delete(): void;
     }
-    interface pid_fuzzy_constructor {
+    /** constructor for fuzzy PID controller */
+    var pid_fuzzy: {
         new(): pid_fuzzy;
         /**
          * @param min minimum final output
@@ -171,8 +172,6 @@ declare namespace liba {
         new(min: number, max: number, sum?: number): pid_fuzzy;
         readonly prototype: pid_fuzzy;
     }
-    /** constructor for fuzzy PID controller */
-    var pid_fuzzy: pid_fuzzy_constructor;
 
     interface pid_neuron {
         /**
@@ -198,8 +197,10 @@ declare namespace liba {
         iter(set: number, fdb: number): number;
         /** zero clear function for single neuron PID controller */
         zero(): pid_neuron;
+        delete(): void;
     }
-    interface pid_neuron_constructor {
+    /** constructor for single neuron PID controller */
+    var pid_neuron: {
         new(): pid_neuron;
         /**
          * @param min minimum final output
@@ -208,10 +209,10 @@ declare namespace liba {
         new(min: number, max: number): pid_neuron;
         readonly prototype: pid_neuron;
     }
-    /** constructor for single neuron PID controller */
-    var pid_neuron: pid_neuron_constructor;
 
     interface polytrack3 {
+        /** coefficients, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3 */
+        readonly k: Float64Array | Float32Array;
         /**
          * calculate function for cubic polynomial trajectory position
          * @param dt difference between current time and initial time
@@ -231,9 +232,11 @@ declare namespace liba {
          * calculate function for cubic polynomial trajectory
          * @param dt difference between current time and initial time
          */
-        out(dt: number): number[];
+        out(dt: number): Float64Array | Float32Array;
+        delete(): void;
     }
-    interface polytrack3_constructor {
+    /** constructor for cubic polynomial trajectory */
+    var polytrack3: {
         /**
          * @param t0 time for source
          * @param t1 time for target
@@ -252,10 +255,10 @@ declare namespace liba {
         new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number): polytrack3;
         readonly prototype: polytrack3;
     }
-    /** constructor for cubic polynomial trajectory */
-    var polytrack3: polytrack3_constructor;
 
     interface polytrack5 {
+        /** coefficients, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5 */
+        readonly k: Float64Array | Float32Array;
         /**
          * calculate function for quintic polynomial trajectory position
          * @param dt difference between current time and initial time
@@ -275,9 +278,11 @@ declare namespace liba {
          * calculate function for quintic polynomial trajectory
          * @param dt difference between current time and initial time
          */
-        out(dt: number): number[];
+        out(dt: number): Float64Array | Float32Array;
+        delete(): void;
     }
-    interface polytrack5_constructor {
+    /** constructor for quintic polynomial trajectory */
+    var polytrack5: {
         /**
          * @param t0 time for source
          * @param t1 time for target
@@ -307,10 +312,10 @@ declare namespace liba {
         new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): polytrack5;
         readonly prototype: polytrack5;
     }
-    /** constructor for quintic polynomial trajectory */
-    var polytrack5: polytrack5_constructor;
 
     interface polytrack7 {
+        /** coefficients, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5+k_6(t-t_0)^6+k_7(t-t_0)^7 */
+        readonly k: Float64Array | Float32Array;
         /**
          * calculate function for hepta polynomial trajectory position
          * @param dt difference between current time and initial time
@@ -335,9 +340,11 @@ declare namespace liba {
          * calculate function for hepta polynomial trajectory
          * @param dt difference between current time and initial time
          */
-        out(dt: number): number[];
+        out(dt: number): Float64Array | Float32Array;
+        delete(): void;
     }
-    interface polytrack7_constructor {
+    /** constructor for hepta polynomial trajectory */
+    var polytrack7: {
         /**
          * @param t0 time for source
          * @param t1 time for target
@@ -380,24 +387,21 @@ declare namespace liba {
         new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number, j0: number, j1: number): polytrack7;
         readonly prototype: polytrack7;
     }
-    /** constructor for hepta polynomial trajectory */
-    var polytrack7: polytrack7_constructor;
 
     interface tf {
-        delete(): void;
         /** get input for transfer function */
-        input(): number[];
+        input(): Float64Array | Float32Array;
         /** get output for transfer function */
-        output(): number[];
+        output(): Float64Array | Float32Array;
         /** get numerator for transfer function */
-        num(): number[];
+        num(): Float64Array | Float32Array;
         /**
          * set numerator for transfer function
          * @param num numerator
          */
         set_num(num: number[]): tf;
         /** get denominator for transfer function */
-        den(): number[];
+        den(): Float64Array | Float32Array;
         /**
          * set denominator for transfer function
          * @param den denominator
@@ -410,8 +414,10 @@ declare namespace liba {
         iter(x: number): number;
         /** zero clear function for transfer function */
         zero(): tf;
+        delete(): void;
     }
-    interface tf_constructor {
+    /** constructor for transfer function */
+    var tf: {
         /**
          * @param num numerator
          * @param den denominator
@@ -419,8 +425,6 @@ declare namespace liba {
         new(num: number[], den: number[]): tf;
         readonly prototype: tf;
     }
-    /** constructor for transfer function */
-    var tf: tf_constructor;
 
     interface version {
         /** major number */
@@ -471,8 +475,10 @@ declare namespace liba {
          * @param ver other version to be compared
          */
         ne(ver: version): boolean;
+        delete(): void;
     }
-    interface version_constructor {
+    /** constructor for version */
+    var version: {
         new(): version;
         /**
          * @param major major number
@@ -482,8 +488,6 @@ declare namespace liba {
         new(major?: number, minor?: number, patch?: number): version;
         readonly prototype: version;
     }
-    /** constructor for version */
-    var version: version_constructor;
 
     /** algorithm library version string */
     const VERSION: string;

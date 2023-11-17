@@ -173,6 +173,10 @@ public:
     {
         a_polytrack3_gen(this, t0, t1, q0, q1, v0, v1);
     }
+    emscripten::val get_k() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(A_LEN(k), k));
+    }
 };
 
 class polytrack5: public a_polytrack5_s
@@ -183,6 +187,10 @@ public:
                a_float_t a0 = 0, a_float_t a1 = 0)
     {
         a_polytrack5_gen(this, t0, t1, q0, q1, v0, v1, a0, a1);
+    }
+    emscripten::val get_k() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(A_LEN(k), k));
     }
 };
 
@@ -195,6 +203,10 @@ public:
                a_float_t j0 = 0, a_float_t j1 = 0)
     {
         a_polytrack7_gen(this, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1);
+    }
+    emscripten::val get_k() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(A_LEN(k), k));
     }
 };
 
@@ -373,9 +385,10 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .function("out", emscripten::optional_override([](polytrack3 *ctx, a_float_t dt) {
                       a_float_t out[3];
                       a_polytrack3_out(reinterpret_cast<polytrack3 *>(ctx), dt, out);
-                      return emscripten::val(emscripten::typed_memory_view(3, out));
+                      return emscripten::val(emscripten::typed_memory_view(A_LEN(out), out));
                   }),
-                  emscripten::allow_raw_pointers());
+                  emscripten::allow_raw_pointers())
+        .property("k", &polytrack3::get_k);
     emscripten::class_<polytrack5>("polytrack5")
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
@@ -395,9 +408,10 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .function("out", emscripten::optional_override([](polytrack5 *ctx, a_float_t dt) {
                       a_float_t out[3];
                       a_polytrack5_out(reinterpret_cast<polytrack5 *>(ctx), dt, out);
-                      return emscripten::val(emscripten::typed_memory_view(5, out));
+                      return emscripten::val(emscripten::typed_memory_view(A_LEN(out), out));
                   }),
-                  emscripten::allow_raw_pointers());
+                  emscripten::allow_raw_pointers())
+        .property("k", &polytrack5::get_k);
     emscripten::class_<polytrack7>("polytrack7")
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
@@ -422,9 +436,10 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .function("out", emscripten::optional_override([](polytrack7 *ctx, a_float_t dt) {
                       a_float_t out[4];
                       a_polytrack7_out(reinterpret_cast<polytrack7 *>(ctx), dt, out);
-                      return emscripten::val(emscripten::typed_memory_view(7, out));
+                      return emscripten::val(emscripten::typed_memory_view(A_LEN(out), out));
                   }),
-                  emscripten::allow_raw_pointers());
+                  emscripten::allow_raw_pointers())
+        .property("k", &polytrack7::get_k);
     emscripten::class_<tf>("tf")
         .constructor<emscripten::val, emscripten::val>()
         .function("input", emscripten::optional_override([](tf *ctx) {
