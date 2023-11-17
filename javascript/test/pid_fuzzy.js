@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-var Module = require("../liba.js")
+var liba = require("../liba")
 var NL = -3
 var NM = -2
 var NS = -1
@@ -8,13 +8,13 @@ var PS = +1
 var PM = +2
 var PL = +3
 var me = [
-    [Module.MF_TRI, NL, NL, NM],
-    [Module.MF_TRI, NL, NM, NS],
-    [Module.MF_TRI, NM, NS, ZO],
-    [Module.MF_TRI, NS, ZO, PS],
-    [Module.MF_TRI, ZO, PS, PM],
-    [Module.MF_TRI, PS, PM, PL],
-    [Module.MF_TRI, PM, PL, PL],
+    [liba.MF_TRI, NL, NL, NM],
+    [liba.MF_TRI, NL, NM, NS],
+    [liba.MF_TRI, NM, NS, ZO],
+    [liba.MF_TRI, NS, ZO, PS],
+    [liba.MF_TRI, ZO, PS, PM],
+    [liba.MF_TRI, PS, PM, PL],
+    [liba.MF_TRI, PM, PL, PL],
 ]
 var NL = -6
 var NM = -4
@@ -24,13 +24,13 @@ var PS = +2
 var PM = +4
 var PL = +6
 var mec = [
-    [Module.MF_TRI, NL, NL, NM],
-    [Module.MF_TRI, NL, NM, NS],
-    [Module.MF_TRI, NM, NS, ZO],
-    [Module.MF_TRI, NS, ZO, PS],
-    [Module.MF_TRI, ZO, PS, PM],
-    [Module.MF_TRI, PS, PM, PL],
-    [Module.MF_TRI, PM, PL, PL],
+    [liba.MF_TRI, NL, NL, NM],
+    [liba.MF_TRI, NL, NM, NS],
+    [liba.MF_TRI, NM, NS, ZO],
+    [liba.MF_TRI, NS, ZO, PS],
+    [liba.MF_TRI, ZO, PS, PM],
+    [liba.MF_TRI, PS, PM, PL],
+    [liba.MF_TRI, PM, PL, PL],
 ]
 var NL = -15
 var NM = -10
@@ -74,20 +74,20 @@ var mkd = [
     [NL, NM, NM, NM, NS, NS, NL],
 ]
 
-var ctx = new Module.pid_fuzzy().zero()
+var ctx = new liba.pid_fuzzy().zero()
 ctx.rule(me, mec, mkp, mki, mkd).joint(2)
-ctx.kpid(10, 0.1, 1).op(Module.PID_FUZZY_EQU)
+ctx.kpid(10, 0.1, 1).op(liba.PID_FUZZY_EQU)
 console.log(ctx.iter(10, 0))
 ctx.delete()
 
-var ctx = new Module.pid_fuzzy(-10, 10).zero()
+var ctx = new liba.pid_fuzzy(-10, 10).zero()
 ctx.rule(me, mec, mkp, mki, mkd).joint(2)
-ctx.kpid(10, 0.1, 1).op(Module.PID_FUZZY_EQU)
+ctx.kpid(10, 0.1, 1).op(liba.PID_FUZZY_EQU)
 console.log(ctx.iter(10, 0))
 ctx.delete()
 
-var ctx = new Module.pid_fuzzy(-10, 10, 10).zero()
+var ctx = new liba.pid_fuzzy(-10, 10, 10).zero()
 ctx.rule(me, mec, mkp, mki, mkd).joint(2)
-ctx.kpid(10, 0.1, 1).op(Module.PID_FUZZY_EQU)
+ctx.kpid(10, 0.1, 1).op(liba.PID_FUZZY_EQU)
 console.log(ctx.iter(10, 0))
 ctx.delete()

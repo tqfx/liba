@@ -17,8 +17,8 @@ public:
     pid()
     {
         summax = 0;
-        outmax = -A_FLOAT_INF;
-        outmin = +A_FLOAT_INF;
+        outmax = +A_FLOAT_INF;
+        outmin = -A_FLOAT_INF;
         mode = A_PID_INC;
         init();
     }
@@ -86,8 +86,8 @@ public:
     pid_fuzzy()
     {
         pid.summax = 0;
-        pid.outmax = -A_FLOAT_INF;
-        pid.outmin = +A_FLOAT_INF;
+        pid.outmax = +A_FLOAT_INF;
+        pid.outmin = -A_FLOAT_INF;
         pid.mode = A_PID_INC;
         init();
     }
@@ -148,8 +148,8 @@ public:
     pid_neuron()
     {
         pid.summax = 0;
-        pid.outmax = -A_FLOAT_INF;
-        pid.outmin = +A_FLOAT_INF;
+        pid.outmax = +A_FLOAT_INF;
+        pid.outmin = -A_FLOAT_INF;
         pid.mode = A_PID_INC;
         init();
     }
@@ -240,7 +240,7 @@ public:
 #if __has_warning("-Wglobal-constructors")
 #pragma GCC diagnostic ignored "-Wglobal-constructors"
 #endif /* -Wglobal-constructors */
-EMSCRIPTEN_BINDINGS(module) // NOLINT
+EMSCRIPTEN_BINDINGS(liba) // NOLINT
 {
     emscripten::function("f32_rsqrt", a_f32_rsqrt);
     emscripten::function("f64_rsqrt", a_f64_rsqrt);
