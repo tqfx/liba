@@ -97,12 +97,14 @@ declare namespace liba {
         zero(): pid;
     }
     interface pid_constructor {
+        new(): pid;
         /**
          * @param min minimum final output
          * @param max maximum final output
          * @param sum maximum integral output
          */
         new(min: number, max: number, sum?: number): pid;
+        readonly prototype: pid;
     }
     /** constructor for proportional integral derivative controller */
     var pid: pid_constructor;
@@ -123,7 +125,7 @@ declare namespace liba {
     const PID_FUZZY_EQU: number;
 
     interface pid_fuzzy {
-        delete(): undefined;
+        delete(): void;
         /**
          * set fuzzy relational operator for fuzzy PID controller
          * @param op enumeration for fuzzy PID controller operator
@@ -160,12 +162,14 @@ declare namespace liba {
         zero(): pid_fuzzy;
     }
     interface pid_fuzzy_constructor {
+        new(): pid_fuzzy;
         /**
          * @param min minimum final output
          * @param max maximum final output
          * @param sum maximum integral output
          */
         new(min: number, max: number, sum?: number): pid_fuzzy;
+        readonly prototype: pid_fuzzy;
     }
     /** constructor for fuzzy PID controller */
     var pid_fuzzy: pid_fuzzy_constructor;
@@ -196,11 +200,13 @@ declare namespace liba {
         zero(): pid_neuron;
     }
     interface pid_neuron_constructor {
+        new(): pid_neuron;
         /**
          * @param min minimum final output
          * @param max maximum final output
          */
         new(min: number, max: number): pid_neuron;
+        readonly prototype: pid_neuron;
     }
     /** constructor for single neuron PID controller */
     var pid_neuron: pid_neuron_constructor;
@@ -233,10 +239,18 @@ declare namespace liba {
          * @param t1 time for target
          * @param q0 position for source
          * @param q1 position for target
+         */
+        new(t0: number, t1: number, q0: number, q1: number): polytrack3;
+        /**
+         * @param t0 time for source
+         * @param t1 time for target
+         * @param q0 position for source
+         * @param q1 position for target
          * @param v0 velocity for source
          * @param v1 velocity for target
          */
-        new(t0: number, t1: number, q0: number, q1: number, v0?: number, v1?: number): polytrack3;
+        new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number): polytrack3;
+        readonly prototype: polytrack3;
     }
     /** constructor for cubic polynomial trajectory */
     var polytrack3: polytrack3_constructor;
@@ -269,12 +283,29 @@ declare namespace liba {
          * @param t1 time for target
          * @param q0 position for source
          * @param q1 position for target
+         */
+        new(t0: number, t1: number, q0: number, q1: number): polytrack5;
+        /**
+         * @param t0 time for source
+         * @param t1 time for target
+         * @param q0 position for source
+         * @param q1 position for target
+         * @param v0 velocity for source
+         * @param v1 velocity for target
+         */
+        new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number): polytrack5;
+        /**
+         * @param t0 time for source
+         * @param t1 time for target
+         * @param q0 position for source
+         * @param q1 position for target
          * @param v0 velocity for source
          * @param v1 velocity for target
          * @param a0 acceleration for source
          * @param a1 acceleration for target
          */
-        new(t0: number, t1: number, q0: number, q1: number, v0?: number, v1?: number, a0?: number, a1?: number): polytrack5;
+        new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): polytrack5;
+        readonly prototype: polytrack5;
     }
     /** constructor for quintic polynomial trajectory */
     var polytrack5: polytrack5_constructor;
@@ -312,6 +343,33 @@ declare namespace liba {
          * @param t1 time for target
          * @param q0 position for source
          * @param q1 position for target
+         */
+        new(t0: number, t1: number, q0: number, q1: number): polytrack7;
+        /**
+         * @param t0 time for source
+         * @param t1 time for target
+         * @param q0 position for source
+         * @param q1 position for target
+         * @param v0 velocity for source
+         * @param v1 velocity for target
+         */
+        new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number): polytrack7;
+        /**
+         * @param t0 time for source
+         * @param t1 time for target
+         * @param q0 position for source
+         * @param q1 position for target
+         * @param v0 velocity for source
+         * @param v1 velocity for target
+         * @param a0 acceleration for source
+         * @param a1 acceleration for target
+         */
+        new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): polytrack7;
+        /**
+         * @param t0 time for source
+         * @param t1 time for target
+         * @param q0 position for source
+         * @param q1 position for target
          * @param v0 velocity for source
          * @param v1 velocity for target
          * @param a0 acceleration for source
@@ -319,13 +377,14 @@ declare namespace liba {
          * @param j0 jerk for source
          * @param j1 jerk for target
          */
-        new(t0: number, t1: number, q0: number, q1: number, v0?: number, v1?: number, a0?: number, a1?: number, j0?: number, j1?: number): polytrack7;
+        new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number, j0: number, j1: number): polytrack7;
+        readonly prototype: polytrack7;
     }
     /** constructor for hepta polynomial trajectory */
     var polytrack7: polytrack7_constructor;
 
     interface tf {
-        delete(): undefined;
+        delete(): void;
         /** get input for transfer function */
         input(): number[];
         /** get output for transfer function */
@@ -358,6 +417,7 @@ declare namespace liba {
          * @param den denominator
          */
         new(num: number[], den: number[]): tf;
+        readonly prototype: tf;
     }
     /** constructor for transfer function */
     var tf: tf_constructor;
@@ -413,12 +473,14 @@ declare namespace liba {
         ne(ver: version): boolean;
     }
     interface version_constructor {
+        new(): version;
         /**
          * @param major major number
          * @param minor minor number
          * @param patch patch number
          */
         new(major?: number, minor?: number, patch?: number): version;
+        readonly prototype: version;
     }
     /** constructor for version */
     var version: version_constructor;
