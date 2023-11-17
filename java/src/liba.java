@@ -46,7 +46,7 @@ public class liba {
      * @param major major number
      * @param minor minor number
      * @param patch patch number
-     * @return -3(<major),-2(<minor),-1(<patch),0,+1(>patch),+2(>minor),+3(>major)
+     * @return -3(&lt;major),-2(&lt;minor),-1(&lt;patch),0,+1(&gt;patch),+2(&gt;minor),+3(&gt;major)
      */
     public static final native int version_check(int major, int minor, int patch);
 }
