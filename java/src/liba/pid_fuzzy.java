@@ -44,7 +44,7 @@ public class pid_fuzzy {
      *
      */
     public pid_fuzzy() {
-        init(-1.0 / 0.0, 1.0 / 0.0, 0);
+        init(-1.0 / 0.0, 1.0 / 0.0, 1.0 / 0.0);
     }
 
     /**
@@ -54,7 +54,7 @@ public class pid_fuzzy {
      * @param max maxinum output
      */
     public pid_fuzzy(double min, double max) {
-        init(min, max, 0);
+        init(min, max, 1.0 / 0.0);
     }
 
     /**

@@ -17,7 +17,7 @@ public class pid_neuron {
      *
      */
     public pid_neuron() {
-        init(-1.0 / 0.0, 1.0 / 0.0, 0);
+        init(-1.0 / 0.0, 1.0 / 0.0, 1.0 / 0.0);
     }
 
     /**
@@ -27,18 +27,7 @@ public class pid_neuron {
      * @param max maxinum output
      */
     public pid_neuron(double min, double max) {
-        init(min, max, 0);
-    }
-
-    /**
-     * construct a new {@link pid_neuron} object
-     *
-     * @param min mininum output
-     * @param max maxinum output
-     * @param sum maximum intergral output
-     */
-    public pid_neuron(double min, double max, double sum) {
-        init(min, max, sum);
+        init(min, max, 1.0 / 0.0);
     }
 
     /**

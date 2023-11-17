@@ -25,7 +25,7 @@ public class pid {
      * construct a new {@link pid} object
      */
     public pid() {
-        init(0, 0, 0, -1.0 / 0.0, 1.0 / 0.0, 0);
+        init(0, 0, 0, -1.0 / 0.0, 1.0 / 0.0, 1.0 / 0.0);
     }
 
     /**
@@ -35,7 +35,7 @@ public class pid {
      * @param max maximum output
      */
     public pid(double min, double max) {
-        init(0, 0, 0, min, max, 0);
+        init(0, 0, 0, min, max, 1.0 / 0.0);
     }
 
     /**

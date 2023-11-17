@@ -16,7 +16,7 @@ class pid: public a_pid_s
 public:
     pid()
     {
-        summax = 0;
+        summax = +A_FLOAT_INF;
         outmax = +A_FLOAT_INF;
         outmin = -A_FLOAT_INF;
         mode = A_PID_INC;
@@ -24,7 +24,7 @@ public:
     }
     pid(a_float_t min, a_float_t max)
     {
-        summax = 0;
+        summax = +A_FLOAT_INF;
         outmax = max;
         outmin = min;
         mode = A_PID_INC;
@@ -85,7 +85,7 @@ class pid_fuzzy: public a_pid_fuzzy_s
 public:
     pid_fuzzy()
     {
-        pid.summax = 0;
+        pid.summax = +A_FLOAT_INF;
         pid.outmax = +A_FLOAT_INF;
         pid.outmin = -A_FLOAT_INF;
         pid.mode = A_PID_INC;
@@ -93,7 +93,7 @@ public:
     }
     pid_fuzzy(a_float_t min, a_float_t max)
     {
-        pid.summax = 0;
+        pid.summax = +A_FLOAT_INF;
         pid.outmax = max;
         pid.outmin = min;
         pid.mode = A_PID_INC;
@@ -147,7 +147,7 @@ class pid_neuron: public a_pid_neuron_s
 public:
     pid_neuron()
     {
-        pid.summax = 0;
+        pid.summax = +A_FLOAT_INF;
         pid.outmax = +A_FLOAT_INF;
         pid.outmin = -A_FLOAT_INF;
         pid.mode = A_PID_INC;
@@ -155,7 +155,7 @@ public:
     }
     pid_neuron(a_float_t min, a_float_t max)
     {
-        pid.summax = 0;
+        pid.summax = +A_FLOAT_INF;
         pid.outmax = max;
         pid.outmin = min;
         pid.mode = A_PID_INC;

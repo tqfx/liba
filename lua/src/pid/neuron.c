@@ -58,6 +58,7 @@ int LMODULE(pid_neuron_new)(lua_State *const L)
     }
     a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_newuserdata(L, sizeof(a_pid_neuron_s));
     a_zero(ctx, sizeof(a_pid_neuron_s));
+    ctx->pid.summax = +A_FLOAT_INF;
     LMODULE2(pid_neuron_meta_, L, 1);
     lua_setmetatable(L, -2);
     return LMODULE2(pid_neuron_init_, L, ctx);
