@@ -118,7 +118,7 @@ declare namespace liba {
         delete(): void;
     }
     /** constructor for proportional integral derivative controller */
-    var pid: {
+    let pid: {
         new(): pid;
         /**
          * @param min minimum final output
@@ -204,7 +204,7 @@ declare namespace liba {
         delete(): void;
     }
     /** constructor for fuzzy PID controller */
-    var pid_fuzzy: {
+    let pid_fuzzy: {
         new(): pid_fuzzy;
         /**
          * @param min minimum final output
@@ -270,7 +270,7 @@ declare namespace liba {
         delete(): void;
     }
     /** constructor for single neuron PID controller */
-    var pid_neuron: {
+    let pid_neuron: {
         new(): pid_neuron;
         /**
          * @param min minimum final output
@@ -306,7 +306,7 @@ declare namespace liba {
         delete(): void;
     }
     /** constructor for cubic polynomial trajectory */
-    var polytrack3: {
+    let polytrack3: {
         /**
          * @param t0 time for source
          * @param t1 time for target
@@ -352,7 +352,7 @@ declare namespace liba {
         delete(): void;
     }
     /** constructor for quintic polynomial trajectory */
-    var polytrack5: {
+    let polytrack5: {
         /**
          * @param t0 time for source
          * @param t1 time for target
@@ -414,7 +414,7 @@ declare namespace liba {
         delete(): void;
     }
     /** constructor for hepta polynomial trajectory */
-    var polytrack7: {
+    let polytrack7: {
         /**
          * @param t0 time for source
          * @param t1 time for target
@@ -487,7 +487,7 @@ declare namespace liba {
         delete(): void;
     }
     /** constructor for transfer function */
-    var tf: {
+    let tf: {
         /**
          * @param num numerator
          * @param den denominator
@@ -548,8 +548,7 @@ declare namespace liba {
         delete(): void;
     }
     /** constructor for version */
-    var version: {
-        new(): version;
+    let version: {
         /**
          * @param major major number
          * @param minor minor number
