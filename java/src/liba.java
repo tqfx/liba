@@ -25,16 +25,6 @@ public class liba {
     static final native void INIT();
 
     /**
-     * algorithm library version check
-     *
-     * @param major major number
-     * @param minor minor number
-     * @param patch patch number
-     * @return -3,-2,-1,0,+1,+2,+3
-     */
-    public static final native int version_check(int major, int minor, int patch);
-
-    /**
      * fast inverse square-root
      *
      * @param x independent variable
@@ -49,4 +39,14 @@ public class liba {
      * @return calculated result
      */
     public static final native double f64_rsqrt(double x);
+
+    /**
+     * algorithm library version check
+     *
+     * @param major major number
+     * @param minor minor number
+     * @param patch patch number
+     * @return -3(<major),-2(<minor),-1(<patch),0,+1(>patch),+2(>minor),+3(>major)
+     */
+    public static final native int version_check(int major, int minor, int patch);
 }

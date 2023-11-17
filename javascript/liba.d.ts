@@ -1,25 +1,4 @@
 declare namespace liba {
-
-    /** algorithm library version string */
-    const VERSION: string;
-    /** algorithm library version major */
-    const VERSION_MAJOR: number;
-    /** algorithm library version minor */
-    const VERSION_MINOR: number;
-    /** algorithm library version patch */
-    const VERSION_PATCH: number;
-    /** algorithm library version tweak */
-    const VERSION_TWEAK: string;
-
-    /**
-     * algorithm library version check
-     * @param major required major number
-     * @param minor required minor number
-     * @param patch required patch number
-     * @returns -3,-2,-1,0,1,2,3
-     */
-    function version_check(major: number, minor: number, patch: number): number;
-
     /**
      * fast inverse square-root
      * @param x independent variable
@@ -444,5 +423,24 @@ declare namespace liba {
     /** constructor for version */
     var version: version_constructor;
 
+    /** algorithm library version string */
+    const VERSION: string;
+    /** algorithm library version major */
+    const VERSION_MAJOR: number;
+    /** algorithm library version minor */
+    const VERSION_MINOR: number;
+    /** algorithm library version patch */
+    const VERSION_PATCH: number;
+    /** algorithm library version tweak */
+    const VERSION_TWEAK: string;
+
+    /**
+     * algorithm library version check
+     * @param major required major number
+     * @param minor required minor number
+     * @param patch required patch number
+     * @returns -3(<major),-2(<minor),-1(<patch),0,+1(>patch),+2(>minor),+3(>major)
+     */
+    function version_check(major: number, minor: number, patch: number): number;
 }
 export = liba;
