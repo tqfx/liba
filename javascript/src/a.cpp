@@ -38,6 +38,9 @@ public:
         mode = A_PID_POS;
         init();
     }
+    a_float_t get_out() const { return out.f; }
+    a_float_t get_fdb() const { return fdb.f; }
+    a_float_t get_err() const { return err.f; }
 };
 
 #include "a/pid/fuzzy.h"
@@ -126,6 +129,15 @@ public:
         u.p = mkd;
         a_alloc(u.o, 0);
     }
+    a_float_t get_summax() const { return pid.summax; }
+    void set_summax(a_float_t summax) { pid.summax = summax; }
+    a_float_t get_outmax() const { return pid.outmax; }
+    void set_outmax(a_float_t outmax) { pid.outmax = outmax; }
+    a_float_t get_outmin() const { return pid.outmin; }
+    void set_outmin(a_float_t outmin) { pid.outmin = outmin; }
+    a_float_t get_out() const { return pid.out.f; }
+    a_float_t get_fdb() const { return pid.fdb.f; }
+    a_float_t get_err() const { return pid.err.f; }
 };
 
 #include "a/pid/neuron.h"
@@ -161,6 +173,28 @@ public:
         pid.mode = A_PID_INC;
         init();
     }
+    a_float_t get_kp() const { return pid.kp; }
+    void set_kp(a_float_t kp) { pid.kp = kp; }
+    a_float_t get_ki() const { return pid.ki; }
+    void set_ki(a_float_t ki) { pid.ki = ki; }
+    a_float_t get_kd() const { return pid.kd; }
+    void set_kd(a_float_t kd) { pid.kd = kd; }
+    a_float_t get_wp() const { return wp.f; }
+    void set_wp(a_float_t _wp) { wp.f = _wp; }
+    a_float_t get_wi() const { return wi.f; }
+    void set_wi(a_float_t _wi) { wi.f = _wi; }
+    a_float_t get_wd() const { return wd.f; }
+    void set_wd(a_float_t _wd) { wd.f = _wd; }
+    a_float_t get_summax() const { return pid.summax; }
+    void set_summax(a_float_t summax) { pid.summax = summax; }
+    a_float_t get_outmax() const { return pid.outmax; }
+    void set_outmax(a_float_t outmax) { pid.outmax = outmax; }
+    a_float_t get_outmin() const { return pid.outmin; }
+    void set_outmin(a_float_t outmin) { pid.outmin = outmin; }
+    a_float_t get_out() const { return pid.out.f; }
+    a_float_t get_fdb() const { return pid.fdb.f; }
+    a_float_t get_err() const { return pid.err.f; }
+    a_float_t get_ec() const { return ec.f; }
 };
 
 #include "a/polytrack.h"
@@ -214,7 +248,6 @@ public:
 
 class tf: public a_tf_s
 {
-public:
     void set_num_(emscripten::val const &_num, a_float_t *num)
     {
         a_uint_t num_n = _num["length"].as<a_uint_t>();
@@ -227,6 +260,8 @@ public:
         a_float_t *p = float_array(_den, a_size_c(, den_n) * 2, den);
         a_tf_set_den(this, den_n, p, p + den_n);
     }
+
+public:
     tf(emscripten::val const &num, emscripten::val const &den)
     {
         set_num_(num, nullptr);
@@ -243,6 +278,42 @@ public:
         a_alloc(u.o, 0);
         u.p = den_p;
         a_alloc(u.o, 0);
+    }
+    emscripten::val get_input() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(num_n, input));
+    }
+    emscripten::val get_output() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(den_n, output));
+    }
+    emscripten::val get_num() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(num_n, num_p));
+    }
+    tf *set_num(emscripten::val const &num)
+    {
+        union
+        {
+            a_float_t const *p;
+            a_float_t *o;
+        } u = {num_p};
+        set_num_(num, u.o);
+        return this;
+    }
+    emscripten::val get_den() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(den_n, den_p));
+    }
+    tf *set_den(emscripten::val const &den)
+    {
+        union
+        {
+            a_float_t const *p;
+            a_float_t *o;
+        } u = {den_p};
+        set_den_(den, u.o);
+        return this;
     }
 };
 
@@ -289,7 +360,17 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       a_pid_zero(reinterpret_cast<a_pid_s *>(ctx));
                       return ctx;
                   }),
-                  emscripten::allow_raw_pointers());
+                  emscripten::allow_raw_pointers())
+        .property<a_float_t, void>("kp", &pid::kp)
+        .property<a_float_t, void>("ki", &pid::ki)
+        .property<a_float_t, void>("kd", &pid::kd)
+        .property<a_float_t, void>("summax", &pid::summax)
+        .property<a_float_t, void>("outmax", &pid::outmax)
+        .property<a_float_t, void>("outmin", &pid::outmin)
+        .property("out", &pid::get_out)
+        .property("fdb", &pid::get_fdb)
+        .property("err", &pid::get_err)
+        .property<unsigned int, void>("mode", &pid::mode);
     emscripten::constant("PID_FUZZY_CAP", a_uint_c(, A_PID_FUZZY_CAP));
     emscripten::constant("PID_FUZZY_CAP_ALGEBRA", a_uint_c(, A_PID_FUZZY_CAP_ALGEBRA));
     emscripten::constant("PID_FUZZY_CAP_BOUNDED", a_uint_c(, A_PID_FUZZY_CAP_BOUNDED));
@@ -344,7 +425,17 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       a_pid_fuzzy_zero(reinterpret_cast<a_pid_fuzzy_s *>(ctx));
                       return ctx;
                   }),
-                  emscripten::allow_raw_pointers());
+                  emscripten::allow_raw_pointers())
+        .property<a_float_t, void>("kp", &pid_fuzzy::kp)
+        .property<a_float_t, void>("ki", &pid_fuzzy::ki)
+        .property<a_float_t, void>("kd", &pid_fuzzy::kd)
+        .property("summax", &pid_fuzzy::get_summax, &pid_fuzzy::set_summax)
+        .property("outmax", &pid_fuzzy::get_outmax, &pid_fuzzy::set_outmax)
+        .property("outmin", &pid_fuzzy::get_outmin, &pid_fuzzy::set_outmin)
+        .property("out", &pid_fuzzy::get_out)
+        .property("fdb", &pid_fuzzy::get_fdb)
+        .property("err", &pid_fuzzy::get_err)
+        .property<unsigned int const, void>("order", &pid_fuzzy::order);
     emscripten::class_<pid_neuron>("pid_neuron")
         .constructor<>()
         .constructor<a_float_t, a_float_t>()
@@ -366,7 +457,21 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       a_pid_neuron_zero(reinterpret_cast<a_pid_neuron_s *>(ctx));
                       return ctx;
                   }),
-                  emscripten::allow_raw_pointers());
+                  emscripten::allow_raw_pointers())
+        .property<a_float_t, void>("k", &pid_neuron::k)
+        .property("kp", &pid_neuron::get_kp, &pid_neuron::set_kp)
+        .property("ki", &pid_neuron::get_ki, &pid_neuron::set_ki)
+        .property("kd", &pid_neuron::get_kd, &pid_neuron::set_kd)
+        .property("wp", &pid_neuron::get_wp, &pid_neuron::set_wp)
+        .property("wi", &pid_neuron::get_wi, &pid_neuron::set_wi)
+        .property("wd", &pid_neuron::get_wd, &pid_neuron::set_wd)
+        .property("summax", &pid_neuron::get_summax, &pid_neuron::set_summax)
+        .property("outmax", &pid_neuron::get_outmax, &pid_neuron::set_outmax)
+        .property("outmin", &pid_neuron::get_outmin, &pid_neuron::set_outmin)
+        .property("out", &pid_neuron::get_out)
+        .property("fdb", &pid_neuron::get_fdb)
+        .property("err", &pid_neuron::get_err)
+        .property("ec", &pid_neuron::get_ec);
     emscripten::class_<polytrack3>("polytrack3")
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
@@ -442,42 +547,6 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("k", &polytrack7::get_k);
     emscripten::class_<tf>("tf")
         .constructor<emscripten::val, emscripten::val>()
-        .function("input", emscripten::optional_override([](tf *ctx) {
-                      return emscripten::val(emscripten::typed_memory_view(ctx->num_n, ctx->input));
-                  }),
-                  emscripten::allow_raw_pointers())
-        .function("num", emscripten::optional_override([](tf *ctx) {
-                      return emscripten::val(emscripten::typed_memory_view(ctx->num_n, ctx->num_p));
-                  }),
-                  emscripten::allow_raw_pointers())
-        .function("set_num", emscripten::optional_override([](tf *ctx, emscripten::val const &num) {
-                      union
-                      {
-                          a_float_t const *p;
-                          a_float_t *o;
-                      } u = {ctx->num_p};
-                      ctx->set_num_(num, u.o);
-                      return ctx;
-                  }),
-                  emscripten::allow_raw_pointers())
-        .function("output", emscripten::optional_override([](tf *ctx) {
-                      return emscripten::val(emscripten::typed_memory_view(ctx->den_n, ctx->output));
-                  }),
-                  emscripten::allow_raw_pointers())
-        .function("den", emscripten::optional_override([](tf *ctx) {
-                      return emscripten::val(emscripten::typed_memory_view(ctx->den_n, ctx->den_p));
-                  }),
-                  emscripten::allow_raw_pointers())
-        .function("set_den", emscripten::optional_override([](tf *ctx, emscripten::val const &den) {
-                      union
-                      {
-                          a_float_t const *p;
-                          a_float_t *o;
-                      } u = {ctx->den_p};
-                      ctx->set_den_(den, u.o);
-                      return ctx;
-                  }),
-                  emscripten::allow_raw_pointers())
         .function("iter", emscripten::optional_override([](tf *ctx, a_float_t x) {
                       return a_tf_iter(reinterpret_cast<a_tf_s *>(ctx), x);
                   }),
@@ -486,15 +555,21 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       a_tf_zero(reinterpret_cast<a_tf_s *>(ctx));
                       return ctx;
                   }),
-                  emscripten::allow_raw_pointers());
+                  emscripten::allow_raw_pointers())
+        .function("set_num", &tf::set_num, emscripten::allow_raw_pointers())
+        .function("set_den", &tf::set_den, emscripten::allow_raw_pointers())
+        .property("input", &tf::get_input)
+        .property("output", &tf::get_output)
+        .property("num", &tf::get_num, &tf::set_num)
+        .property("den", &tf::get_den, &tf::set_den);
     emscripten::class_<a::version>("version")
         .constructor<>()
         .constructor<a_uint_t>()
         .constructor<a_uint_t, a_uint_t>()
         .constructor<a_uint_t, a_uint_t, a_uint_t>()
-        .property("major", &a::version::major)
-        .property("minor", &a::version::minor)
-        .property("patch", &a::version::patch)
+        .property<unsigned int, void>("major", &a::version::major)
+        .property<unsigned int, void>("minor", &a::version::minor)
+        .property<unsigned int, void>("patch", &a::version::patch)
         .function("toString", emscripten::optional_override([](a::version const *ctx) {
                       return std::to_string(ctx->major) + "." + std::to_string(ctx->minor) + "." + std::to_string(ctx->patch);
                   }),

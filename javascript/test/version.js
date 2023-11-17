@@ -12,6 +12,8 @@ console.log(v.toString())
 var v = new liba.version(1, 2)
 console.log(v.toString())
 var v = new liba.version(1, 2, 3)
+console.log(v.major, v.minor, v.patch)
 console.log(v.parse("3.2.1").toString())
 console.log(liba.version_check(0, 0, 0))
 console.log(v.cmp(new liba.version(1, 2, 0)))
+v.major = v.minor = v.patch = 0

@@ -80,6 +80,26 @@ declare namespace liba {
     const PID_INC: number;
 
     interface pid {
+        /** PID_OFF PID_POS PID_INC */
+        mode: number;
+        /** proportional constant */
+        kp: number;
+        /** integral constant */
+        ki: number;
+        /** derivative constant */
+        kd: number;
+        /** maximum integral output */
+        summax: number;
+        /** maximum final output */
+        outmax: number;
+        /** minimum final output */
+        outmin: number;
+        /** controller output */
+        readonly out: number;
+        /** cache feedback */
+        readonly fdb: number;
+        /** cache error */
+        readonly err: number;
         /**
          * set proportional integral derivative constant for PID controller
          * @param kp proportional constant
@@ -125,6 +145,28 @@ declare namespace liba {
     const PID_FUZZY_EQU: number;
 
     interface pid_fuzzy {
+        /** PID_OFF PID_POS PID_INC */
+        mode: number;
+        /** proportional constant */
+        kp: number;
+        /** integral constant */
+        ki: number;
+        /** derivative constant */
+        kd: number;
+        /** maximum integral output */
+        summax: number;
+        /** maximum final output */
+        outmax: number;
+        /** minimum final output */
+        outmin: number;
+        /** controller output */
+        readonly out: number;
+        /** cache feedback */
+        readonly fdb: number;
+        /** cache error */
+        readonly err: number;
+        /** number of order in the square matrix */
+        readonly order: number;
         /**
          * set fuzzy relational operator for fuzzy PID controller
          * @param op enumeration for fuzzy PID controller operator
@@ -174,6 +216,34 @@ declare namespace liba {
     }
 
     interface pid_neuron {
+        /** proportional output coefficient */
+        k: number;
+        /** proportional learning constant */
+        kp: number;
+        /** integral learning constant */
+        ki: number;
+        /** derivative learning constant */
+        kd: number;
+        /** proportional weight */
+        wp: number;
+        /** integral weight */
+        wi: number;
+        /** derivative weight */
+        wd: number;
+        /** maximum integral output */
+        summax: number;
+        /** maximum final output */
+        outmax: number;
+        /** minimum final output */
+        outmin: number;
+        /** controller output */
+        readonly out: number;
+        /** cache feedback */
+        readonly fdb: number;
+        /** cache error */
+        readonly err: number;
+        /** error change */
+        readonly ec: number;
         /**
          * set proportional integral derivative constant for single neuron PID controller
          * @param k proportional output coefficient
@@ -389,19 +459,19 @@ declare namespace liba {
     }
 
     interface tf {
-        /** get input for transfer function */
-        input(): Float64Array | Float32Array;
-        /** get output for transfer function */
-        output(): Float64Array | Float32Array;
-        /** get numerator for transfer function */
-        num(): Float64Array | Float32Array;
+        /** input for transfer function */
+        readonly input: Float64Array | Float32Array;
+        /** output for transfer function */
+        readonly output: Float64Array | Float32Array;
+        /** numerator for transfer function */
+        num: Float64Array | Float32Array;
+        /** denominator for transfer function */
+        den: Float64Array | Float32Array;
         /**
          * set numerator for transfer function
          * @param num numerator
          */
         set_num(num: number[]): tf;
-        /** get denominator for transfer function */
-        den(): Float64Array | Float32Array;
         /**
          * set denominator for transfer function
          * @param den denominator
