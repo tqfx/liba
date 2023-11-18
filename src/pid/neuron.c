@@ -73,27 +73,38 @@ void a_pid_neuron_zero(a_pid_neuron_s *const ctx)
     }
 }
 
-A_HIDDEN void a_pid_neuron_outf_(a_pid_neuron_s *ctx, a_float_t fdb, a_float_t ec, a_float_t e);
-void a_pid_neuron_outf_(a_pid_neuron_s *const ctx, a_float_t const fdb, a_float_t const ec, a_float_t const e)
+A_HIDDEN void a_pid_neuron_outf_(a_pid_neuron_s *ctx, a_float_t set, a_float_t fdb, a_float_t ec, a_float_t e);
+void a_pid_neuron_outf_(a_pid_neuron_s *const ctx, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e)
 {
-#define A_PID_NEURON_OUT_(_)                                                      \
-    a_float_t out = e * ctx->pid.out _;                                           \
-    a_float_t const tmp = ec - ctx->ec _;                                         \
-    ctx->wp _ += ctx->pid.kp * out * ctx->ec _;                                   \
-    ctx->wi _ += ctx->pid.ki * out * ctx->pid.err _;                              \
-    ctx->wd _ += ctx->pid.kd * out * ctx->pid.tmp _;                              \
-    a_float_t const abs = A_ABS(ctx->wp _) + A_ABS(ctx->wi _) + A_ABS(ctx->wd _); \
-    out = ctx->k * (ctx->wp _ * ec + ctx->wi _ * e + ctx->wd _ * tmp) / abs;      \
-    ctx->pid.out _ = A_SAT(out, ctx->pid.outmin, ctx->pid.outmax);                \
-    ctx->pid.fdb _ = fdb;                                                         \
-    ctx->pid.tmp _ = tmp;                                                         \
-    ctx->pid.err _ = e;                                                           \
+#define A_PID_NEURON_OUT_(_)                                                          \
+    a_float_t out = e * ctx->pid.out _;                                               \
+    a_float_t const tmp = ec - ctx->ec _;                                             \
+    switch (ctx->pid.mode)                                                            \
+    {                                                                                 \
+    case A_PID_INC:                                                                   \
+    case A_PID_POS:                                                                   \
+    {                                                                                 \
+        ctx->wp _ += ctx->pid.kp * out * ctx->ec _;                                   \
+        ctx->wi _ += ctx->pid.ki * out * ctx->pid.err _;                              \
+        ctx->wd _ += ctx->pid.kd * out * ctx->pid.tmp _;                              \
+        a_float_t const abs = A_ABS(ctx->wp _) + A_ABS(ctx->wi _) + A_ABS(ctx->wd _); \
+        out = ctx->k * (ctx->wp _ * ec + ctx->wi _ * e + ctx->wd _ * tmp) / abs;      \
+        break;                                                                        \
+    }                                                                                 \
+    case A_PID_OFF:                                                                   \
+    default:                                                                          \
+        out = set;                                                                    \
+    }                                                                                 \
+    ctx->pid.out _ = A_SAT(out, ctx->pid.outmin, ctx->pid.outmax);                    \
+    ctx->pid.fdb _ = fdb;                                                             \
+    ctx->pid.tmp _ = tmp;                                                             \
+    ctx->pid.err _ = e;                                                               \
     ctx->ec _ = ec
     A_PID_NEURON_OUT_(.f);
 }
 
-A_HIDDEN void a_pid_neuron_outp_(a_pid_neuron_s const *ctx, a_float_t fdb, a_float_t ec, a_float_t e, unsigned int i);
-void a_pid_neuron_outp_(a_pid_neuron_s const *const ctx, a_float_t const fdb, a_float_t const ec, a_float_t const e, unsigned int const i)
+A_HIDDEN void a_pid_neuron_outp_(a_pid_neuron_s const *ctx, a_float_t set, a_float_t fdb, a_float_t ec, a_float_t e, unsigned int i);
+void a_pid_neuron_outp_(a_pid_neuron_s const *const ctx, a_float_t const set, a_float_t const fdb, a_float_t const ec, a_float_t const e, unsigned int const i)
 {
     A_PID_NEURON_OUT_(.p[i]);
 }
@@ -101,7 +112,7 @@ void a_pid_neuron_outp_(a_pid_neuron_s const *const ctx, a_float_t const fdb, a_
 a_float_t a_pid_neuron_outf(a_pid_neuron_s *const ctx, a_float_t const set, a_float_t const fdb)
 {
     a_float_t const e = set - fdb;
-    a_pid_neuron_outf_(ctx, fdb, e - ctx->pid.err.f, e);
+    a_pid_neuron_outf_(ctx, set, fdb, e - ctx->pid.err.f, e);
     return ctx->pid.out.f;
 }
 
@@ -110,7 +121,7 @@ a_float_t const *a_pid_neuron_outp(a_pid_neuron_s const *const ctx, a_float_t co
     for (unsigned int i = 0; i != ctx->pid.chan; ++i)
     {
         a_float_t const e = set[i] - fdb[i];
-        a_pid_neuron_outp_(ctx, fdb[i], e - ctx->pid.err.p[i], e, i);
+        a_pid_neuron_outp_(ctx, set[i], fdb[i], e - ctx->pid.err.p[i], e, i);
     }
     return ctx->pid.out.p;
 }

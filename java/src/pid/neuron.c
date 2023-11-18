@@ -40,6 +40,24 @@ JNIEXPORT void JNICALL JPACKAGE(pid_1neuron_init)(JNIEnv *jenv, jobject jobj, jd
     (*jenv)->SetObjectField(jenv, jobj, L.ctx, jctx);
 }
 
+JNIEXPORT jint JNICALL JPACKAGE(pid_1neuron_mode__)(JNIEnv *jenv, jobject jobj)
+{
+    a_pid_neuron_s ctx;
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
+    return (jint)ctx.pid.mode;
+}
+
+JNIEXPORT jobject JNICALL JPACKAGE(pid_1neuron_mode__I)(JNIEnv *jenv, jobject jobj, jint mode)
+{
+    a_pid_neuron_s ctx;
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
+    ctx.pid.mode = (unsigned int)mode;
+    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
+    return jobj;
+}
+
 JNIEXPORT jdouble JNICALL JPACKAGE(pid_1neuron_k__)(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuron_s ctx;

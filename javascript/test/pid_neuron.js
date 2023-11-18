@@ -12,6 +12,7 @@ console.log(ctx.iter(10, 0))
 ctx.delete()
 
 var ctx = new liba.pid_neuron()
+ctx.mode = ctx.mode
 ctx.k = ctx.k
 ctx.kp = ctx.kp
 ctx.ki = ctx.ki

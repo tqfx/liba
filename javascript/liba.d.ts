@@ -216,6 +216,8 @@ declare namespace liba {
     }
 
     interface pid_neuron {
+        /** PID_OFF PID_POS PID_INC */
+        mode: number;
         /** proportional output coefficient */
         k: number;
         /** proportional learning constant */

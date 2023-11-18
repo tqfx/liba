@@ -15,6 +15,7 @@ class _pid_neuron {
             System.out.println(obj.iter(1, 0));
         }
         pid_neuron obj = new pid_neuron();
+        obj.mode(obj.mode());
         obj.k(obj.k());
         obj.kp(obj.kp());
         obj.ki(obj.ki());

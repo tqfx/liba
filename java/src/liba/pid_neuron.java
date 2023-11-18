@@ -31,6 +31,21 @@ public class pid_neuron {
     }
 
     /**
+     * get mode for single neuron PID controller
+     *
+     * @return mode
+     */
+    public final native int mode();
+
+    /**
+     * set mode for single neuron PID controller
+     *
+     * @param mode mode
+     * @return {@link pid}
+     */
+    public final native pid mode(int mode);
+
+    /**
      * get proportional output coefficient for single neuron PID controller
      *
      * @return proportional output coefficient

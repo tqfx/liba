@@ -138,6 +138,8 @@ public:
     a_float_t get_out() const { return pid.out.f; }
     a_float_t get_fdb() const { return pid.fdb.f; }
     a_float_t get_err() const { return pid.err.f; }
+    unsigned int get_mode() const { return pid.mode; }
+    void set_mode(unsigned int mode) { pid.mode = mode; }
 };
 
 #include "a/pid/neuron.h"
@@ -195,6 +197,8 @@ public:
     a_float_t get_fdb() const { return pid.fdb.f; }
     a_float_t get_err() const { return pid.err.f; }
     a_float_t get_ec() const { return ec.f; }
+    unsigned int get_mode() const { return pid.mode; }
+    void set_mode(unsigned int mode) { pid.mode = mode; }
 };
 
 #include "a/polytrack.h"
@@ -426,6 +430,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
+        .property("mode", &pid_fuzzy::get_mode, &pid_fuzzy::set_mode)
         .property<a_float_t, void>("kp", &pid_fuzzy::kp)
         .property<a_float_t, void>("ki", &pid_fuzzy::ki)
         .property<a_float_t, void>("kd", &pid_fuzzy::kd)
@@ -458,6 +463,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
+        .property("mode", &pid_neuron::get_mode, &pid_neuron::set_mode)
         .property<a_float_t, void>("k", &pid_neuron::k)
         .property("kp", &pid_neuron::get_kp, &pid_neuron::set_kp)
         .property("ki", &pid_neuron::get_ki, &pid_neuron::set_ki)
