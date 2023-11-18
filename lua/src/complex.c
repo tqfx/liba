@@ -67,7 +67,7 @@ static int LMODULE(complex_tostring)(lua_State *const L)
  constructor for complex number from rectangular Cartesian components
  @tparam number real real part of complex number
  @tparam number imag imaginary part of complex number
- @treturn complex complex number userdata
+ @treturn a.complex complex number userdata
  @function new
 */
 int LMODULE(complex_new)(lua_State *const L)
@@ -96,7 +96,7 @@ int LMODULE(complex_new)(lua_State *const L)
  constructor for complex number from polar form
  @tparam number r a distance from a reference point
  @tparam number theta an angle from a reference direction
- @treturn complex complex number userdata
+ @treturn a.complex complex number userdata
  @function polar
 */
 int LMODULE(complex_polar)(lua_State *const L)
@@ -141,29 +141,29 @@ int LMODULE(complex_polar)(lua_State *const L)
     }
 /***
  computes the natural logarithm of magnitude of a complex number
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn number log|z|
  @function logabs
 */
 FUNC(logabs)
 /***
  computes the squared magnitude of a complex number
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn number a^2+b^2
  @function abs2
 */
 FUNC(abs2)
 /***
  computes the magnitude of a complex number
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn number sqrt{a^2+b^2}
  @function abs
 */
 FUNC(abs)
 /***
  computes the phase angle of a complex number
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn number arctan(b/a)
  @function arg
 */
 FUNC(arg)
@@ -185,22 +185,22 @@ FUNC(arg)
     }
 /***
  computes the complex conjugate
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function conj
 */
 FUNC(conj)
 /***
  computes the complex negative
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function unm
 */
 FUNC(neg)
 /***
  inverse of a complex number
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function inv
 */
 FUNC(inv)
@@ -223,49 +223,49 @@ FUNC(inv)
     }
 /***
  addition of complex numbers
- @tparam complex x complex number userdata
- @tparam complex y complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex x complex number userdata
+ @tparam a.complex y complex number userdata
+ @treturn a.complex complex number userdata
  @function add
 */
 FUNC(add)
 /***
  subtraction of complex numbers
- @tparam complex x complex number userdata
- @tparam complex y complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex x complex number userdata
+ @tparam a.complex y complex number userdata
+ @treturn a.complex complex number userdata
  @function sub
 */
 FUNC(sub)
 /***
  multiplication of complex numbers
- @tparam complex x complex number userdata
- @tparam complex y complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex x complex number userdata
+ @tparam a.complex y complex number userdata
+ @treturn a.complex complex number userdata
  @function mul
 */
 FUNC(mul)
 /***
  division of complex numbers
- @tparam complex x complex number userdata
- @tparam complex y complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex x complex number userdata
+ @tparam a.complex y complex number userdata
+ @treturn a.complex complex number userdata
  @function div
 */
 FUNC(div)
 /***
  complex number z raised to complex power a
- @tparam complex z complex number userdata
- @tparam complex a complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @tparam a.complex a complex number userdata
+ @treturn a.complex complex number userdata
  @function pow
 */
 FUNC(pow)
 /***
  computes the complex base-b logarithm
- @tparam complex z complex number userdata
- @tparam complex b complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @tparam a.complex b complex number userdata
+ @treturn a.complex complex number userdata
  @function logb
 */
 FUNC(logb)
@@ -287,204 +287,204 @@ FUNC(logb)
     }
 /***
  computes the complex base-e exponential
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function exp
 */
 FUNC(exp)
 /***
  computes the complex natural logarithm
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function log
 */
 FUNC(log)
 /***
  computes the complex square root
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function sqrt
 */
 FUNC(sqrt)
 /***
  computes the complex base-2 logarithm
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function log2
 */
 FUNC(log2)
 /***
  computes the complex base-10 logarithm
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function log10
 */
 FUNC(log10)
 /***
  computes the complex sine
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function sin
 */
 FUNC(sin)
 /***
  computes the complex cosine
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function cos
 */
 FUNC(cos)
 /***
  computes the complex tangent
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function tan
 */
 FUNC(tan)
 /***
  computes the complex secant
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function sec
 */
 FUNC(sec)
 /***
  computes the complex cosecant
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function csc
 */
 FUNC(csc)
 /***
  computes the complex cotangent
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function cot
 */
 FUNC(cot)
 /***
  computes the complex arc sine
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function asin
 */
 FUNC(asin)
 /***
  computes the complex arc cosine
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function acos
 */
 FUNC(acos)
 /***
  computes the complex arc tangent
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function atan
 */
 FUNC(atan)
 /***
  computes the complex arc secant
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function asec
 */
 FUNC(asec)
 /***
  computes the complex arc cosecant
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function acsc
 */
 FUNC(acsc)
 /***
  computes the complex arc cotangent
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function acot
 */
 FUNC(acot)
 /***
  computes the complex hyperbolic sine
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function sinh
 */
 FUNC(sinh)
 /***
  computes the complex hyperbolic cosine
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function cosh
 */
 FUNC(cosh)
 /***
  computes the complex hyperbolic tangent
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function tanh
 */
 FUNC(tanh)
 /***
  computes the complex hyperbolic secant
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function sech
 */
 FUNC(sech)
 /***
  computes the complex hyperbolic cosecant
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function csch
 */
 FUNC(csch)
 /***
  computes the complex hyperbolic cotangent
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function coth
 */
 FUNC(coth)
 /***
  computes the complex arc hyperbolic sine
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function asinh
 */
 FUNC(asinh)
 /***
  computes the complex arc hyperbolic cosine
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function acosh
 */
 FUNC(acosh)
 /***
  computes the complex arc hyperbolic tangent
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function atanh
 */
 FUNC(atanh)
 /***
  computes the complex arc hyperbolic secant
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function asech
 */
 FUNC(asech)
 /***
  computes the complex arc hyperbolic cosecant
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function acsch
 */
 FUNC(acsch)
 /***
  computes the complex arc hyperbolic cotangent
- @tparam complex z complex number userdata
- @treturn complex complex number userdata
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
  @function acoth
 */
 FUNC(acoth)

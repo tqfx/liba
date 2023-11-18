@@ -47,7 +47,7 @@ static int LMODULE(version_init_)(lua_State *const L, a_version_s *const ctx)
  @tparam[opt] integer major version major number
  @tparam[opt] integer minor version minor number
  @tparam[opt] integer patch version patch number
- @treturn algorithm library version userdata
+ @treturn a.version algorithm library version userdata
  @function new
 */
 int LMODULE(version_new)(lua_State *const L)
@@ -65,11 +65,11 @@ int LMODULE(version_new)(lua_State *const L)
 
 /***
  initialize function for algorithm library version
- @param ctx algorithm library version userdata
+ @tparam a.version ctx algorithm library version userdata
  @tparam[opt] integer major version major number
  @tparam[opt] integer minor version minor number
  @tparam[opt] integer patch version patch number
- @treturn algorithm library version userdata
+ @treturn a.version algorithm library version userdata
  @function init
 */
 int LMODULE(version_init)(lua_State *const L)
@@ -87,9 +87,9 @@ int LMODULE(version_init)(lua_State *const L)
 
 /***
  algorithm library version parse
- @param ctx algorithm library version userdata
+ @tparam a.version ctx algorithm library version userdata
  @tparam string version string to be parsed
- @treturn algorithm library version userdata
+ @treturn a.version algorithm library version userdata
  @function parse
 */
 int LMODULE(version_parse)(lua_State *const L)
@@ -106,10 +106,10 @@ int LMODULE(version_parse)(lua_State *const L)
 
 /***
  compare the version lhs with the version rhs
- @tparam lhs version structure to be compared
- @tparam rhs version structure to be compared
- @treturn integer `<0` version lhs < version rhs
- @treturn integer `>0` version lhs > version rhs
+ @tparam a.version lhs version userdata on the left
+ @tparam a.version rhs version userdata on the right
+ @treturn integer <0 version lhs < version rhs
+ @treturn integer >0 version lhs > version rhs
  @treturn integer 0 version lhs == version rhs
  @function cmp
 */
@@ -129,15 +129,15 @@ int LMODULE(version_cmp)(lua_State *const L)
 
 /***
  algorithm library version check
- @param major required major number
- @param minor required minor number
- @param patch required patch number
- @treturn integer `<0` library version is higher than required version
- @treturn integer `>0` library version is lower than required version
+ @tparam integer major required major number
+ @tparam integer minor required minor number
+ @tparam integer patch required patch number
+ @treturn integer <0 library version is higher than required version
+ @treturn integer >0 library version is lower than required version
  @treturn integer 0 library version is equal to required version
  @function check
 */
-int LMODULE(version_check)(lua_State *const L)
+static int LMODULE(version_check)(lua_State *const L)
 {
     a_version_s v = A_VERSION_C(0, 0, 0);
     while (lua_type(L, 1) == LUA_TTABLE)
@@ -148,10 +148,13 @@ int LMODULE(version_check)(lua_State *const L)
     {
     case 3:
         v.patch = (unsigned int)luaL_checkinteger(L, 3);
+        A_FALLTHROUGH;
     case 2:
         v.minor = (unsigned int)luaL_checkinteger(L, 2);
+        A_FALLTHROUGH;
     case 1:
         v.major = (unsigned int)luaL_checkinteger(L, 1);
+        A_FALLTHROUGH;
     default:
         break;
     }
@@ -177,49 +180,49 @@ int LMODULE(version_check)(lua_State *const L)
     }
 /***
  version lhs is less than version rhs
- @param lhs operand on the left
- @param rhs operand on the right
- @return result of comparison
+ @tparam a.version lhs version userdata on the left
+ @tparam a.version rhs version userdata on the right
+ @treturn integer result of comparison
  @function lt
 */
 FUNC(lt)
 /***
  version lhs is greater than version rhs
- @param lhs operand on the left
- @param rhs operand on the right
- @return result of comparison
+ @tparam a.version lhs version userdata on the left
+ @tparam a.version rhs version userdata on the right
+ @treturn integer result of comparison
  @function gt
 */
 FUNC(gt)
 /***
  version lhs is less than or equal to version rhs
- @param lhs operand on the left
- @param rhs operand on the right
- @return result of comparison
+ @tparam a.version lhs version userdata on the left
+ @tparam a.version rhs version userdata on the right
+ @treturn integer result of comparison
  @function le
 */
 FUNC(le)
 /***
  version lhs is greater than or equal to version rhs
- @param lhs operand on the left
- @param rhs operand on the right
- @return result of comparison
+ @tparam a.version lhs version userdata on the left
+ @tparam a.version rhs version userdata on the right
+ @treturn integer result of comparison
  @function ge
 */
 FUNC(ge)
 /***
  version lhs is equal to version rhs
- @param lhs operand on the left
- @param rhs operand on the right
- @return result of comparison
+ @tparam a.version lhs version userdata on the left
+ @tparam a.version rhs version userdata on the right
+ @treturn integer result of comparison
  @function eq
 */
 FUNC(eq)
 /***
  version lhs is not equal to version rhs
- @param lhs operand on the left
- @param rhs operand on the right
- @return result of comparison
+ @tparam a.version lhs version userdata on the left
+ @tparam a.version rhs version userdata on the right
+ @treturn integer result of comparison
  @function ne
 */
 FUNC(ne)
@@ -280,6 +283,9 @@ static int LMODULE(version_get)(lua_State *const L)
     case 0x0E2ED8A0: // init
         lua_pushcfunction(L, LMODULE(version_init));
         break;
+    case 0x001D0204: // new
+        lua_pushcfunction(L, LMODULE(version_new));
+        break;
     case 0x001A24B2: // cmp
         lua_pushcfunction(L, LMODULE(version_cmp));
         break;
@@ -312,6 +318,7 @@ static int LMODULE(version_get)(lua_State *const L)
         l_func_s const funcs[] = {
             {"parse", LMODULE(version_parse)},
             {"init", LMODULE(version_init)},
+            {"new", LMODULE(version_new)},
             {"cmp", LMODULE(version_cmp)},
             {"lt", LMODULE(version_lt)},
             {"gt", LMODULE(version_gt)},
@@ -333,15 +340,15 @@ static int LMODULE(version_get)(lua_State *const L)
     return 1;
 }
 
-/***
- algorithm library version string
- @field major algorithm library version major
- @field minor algorithm library version minor
- @field patch algorithm library version patch
- @table version
-*/
 int LMODULE_(version, lua_State *const L)
 {
+    /***
+     algorithm library version number
+     @field major algorithm library version major
+     @field minor algorithm library version minor
+     @field patch algorithm library version patch
+     @table liba.version
+    */
     l_int_s const enums[] = {
         {"major", A_VERSION_MAJOR},
         {"minor", A_VERSION_MINOR},

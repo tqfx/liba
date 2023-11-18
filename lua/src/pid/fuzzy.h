@@ -1,6 +1,6 @@
 /***
  fuzzy proportional integral derivative controller
- @classmod liba.pid.fuzzy
+ @classmod a.pid.fuzzy
 */
 
 /***
@@ -17,7 +17,7 @@
  @field mode controller mode
  @field order number of order in the square matrix
  @field joint maximum number triggered by the rule
- @table liba.pid.fuzzy
+ @table a.pid.fuzzy
 */
 
 #ifndef L_PID_FUZZY_H
@@ -47,7 +47,7 @@ A_PUBLIC int LMODULE(pid_fuzzy_die)(lua_State *L);
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
- @treturn pid_fuzzy fuzzy PID controller userdata
+ @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function new
 */
 A_PUBLIC int LMODULE(pid_fuzzy_new)(lua_State *L);
@@ -60,16 +60,15 @@ A_PUBLIC int LMODULE(pid_fuzzy_new)(lua_State *L);
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
- @treturn pid_fuzzy fuzzy PID controller userdata
+ @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function init
 */
 A_PUBLIC int LMODULE(pid_fuzzy_init)(lua_State *L);
 
 /***
  set fuzzy relational operator for fuzzy PID controller
- @param ctx fuzzy PID controller userdata
  @tparam int op enumeration for fuzzy PID controller operator
- @treturn pid_fuzzy fuzzy PID controller userdata
+ @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function op
 */
 A_PUBLIC int LMODULE(pid_fuzzy_op)(lua_State *L);
@@ -81,7 +80,7 @@ A_PUBLIC int LMODULE(pid_fuzzy_op)(lua_State *L);
  @tparam table mkp points to Kp's rule base table which must be a square matrix
  @tparam table mki points to Ki's rule base table which must be a square matrix
  @tparam table mkd points to Kd's rule base table which must be a square matrix
- @treturn pid_fuzzy fuzzy PID controller userdata
+ @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function rule
 */
 A_PUBLIC int LMODULE(pid_fuzzy_rule)(lua_State *L);
@@ -89,7 +88,7 @@ A_PUBLIC int LMODULE(pid_fuzzy_rule)(lua_State *L);
 /***
  set joint buffer for fuzzy PID controller
  @tparam int num maximum number triggered by the rule
- @treturn pid_fuzzy fuzzy PID controller userdata
+ @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function joint
 */
 A_PUBLIC int LMODULE(pid_fuzzy_joint)(lua_State *L);
@@ -99,7 +98,7 @@ A_PUBLIC int LMODULE(pid_fuzzy_joint)(lua_State *L);
  @tparam number kp proportional constant
  @tparam number ki integral constant
  @tparam number kd derivative constant
- @treturn pid_fuzzy fuzzy PID controller userdata
+ @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function kpid
 */
 A_PUBLIC int LMODULE(pid_fuzzy_kpid)(lua_State *L);
@@ -115,7 +114,7 @@ A_PUBLIC int LMODULE(pid_fuzzy_iter)(lua_State *L);
 
 /***
  zero clear function for fuzzy PID controller
- @treturn pid_fuzzy fuzzy PID controller userdata
+ @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function zero
 */
 A_PUBLIC int LMODULE(pid_fuzzy_zero)(lua_State *L);

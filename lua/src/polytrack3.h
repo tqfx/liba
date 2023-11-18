@@ -1,12 +1,12 @@
 /***
  cubic polynomial trajectory
- @classmod liba.polytrack3
+ @classmod a.polytrack3
 */
 
 /***
  cubic polynomial trajectory
  @field k coefficient table, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3
- @table liba.polytrack3
+ @table a.polytrack3
 */
 
 #ifndef L_POLYTRACK3_H
@@ -32,7 +32,7 @@ A_PUBLIC int LMODULE(polytrack3_meta_)(lua_State *L, int ret);
  @tparam[opt] number v1 velocity for target
  @tparam[opt] table source source for trajectory
  @tparam[opt] table target target for trajectory
- @treturn polytrack3 cubic polynomial trajectory userdata
+ @treturn a.polytrack3 cubic polynomial trajectory userdata
  @function new
 */
 A_PUBLIC int LMODULE(polytrack3_new)(lua_State *L);
@@ -47,7 +47,7 @@ A_PUBLIC int LMODULE(polytrack3_new)(lua_State *L);
  @tparam[opt] number v1 velocity for target
  @tparam[opt] table source source for trajectory
  @tparam[opt] table target target for trajectory
- @treturn polytrack3 cubic polynomial trajectory userdata
+ @treturn a.polytrack3 cubic polynomial trajectory userdata
  @function gen
 */
 A_PUBLIC int LMODULE(polytrack3_gen)(lua_State *L);

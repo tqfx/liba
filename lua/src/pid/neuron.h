@@ -1,6 +1,6 @@
 /***
  single neuron proportional integral derivative controller
- @classmod liba.pid.neuron
+ @classmod a.pid.neuron
 */
 
 /***
@@ -20,7 +20,7 @@
  @field wi integral weight
  @field wd derivative weight
  @field k proportional output coefficient
- @table liba.pid.neuron
+ @table a.pid.neuron
 */
 
 #ifndef L_PID_NEURON_H
@@ -44,7 +44,7 @@ A_PUBLIC int LMODULE(pid_neuron_meta_)(lua_State *L, int ret);
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
- @treturn pid_neuron single neuron PID controller userdata
+ @treturn a.pid.neuron single neuron PID controller userdata
  @function new
 */
 A_PUBLIC int LMODULE(pid_neuron_new)(lua_State *L);
@@ -57,7 +57,7 @@ A_PUBLIC int LMODULE(pid_neuron_new)(lua_State *L);
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
- @treturn pid_neuron single neuron PID controller userdata
+ @treturn a.pid.neuron single neuron PID controller userdata
  @function init
 */
 A_PUBLIC int LMODULE(pid_neuron_init)(lua_State *L);
@@ -68,7 +68,7 @@ A_PUBLIC int LMODULE(pid_neuron_init)(lua_State *L);
  @tparam number kp proportional learning constant
  @tparam number ki integral learning constant
  @tparam number kd derivative learning constant
- @treturn pid_neuron single neuron PID controller userdata
+ @treturn a.pid.neuron single neuron PID controller userdata
  @function kpid
 */
 A_PUBLIC int LMODULE(pid_neuron_kpid)(lua_State *L);
@@ -78,7 +78,7 @@ A_PUBLIC int LMODULE(pid_neuron_kpid)(lua_State *L);
  @tparam number wp proportional weight
  @tparam number wi integral weight
  @tparam number wd derivative weight
- @treturn pid_neuron single neuron PID controller userdata
+ @treturn a.pid.neuron single neuron PID controller userdata
  @function wpid
 */
 A_PUBLIC int LMODULE(pid_neuron_wpid)(lua_State *L);
@@ -94,7 +94,7 @@ A_PUBLIC int LMODULE(pid_neuron_iter)(lua_State *L);
 
 /***
  zero clear function for single neuron PID controller
- @treturn pid_neuron single neuron PID controller userdata
+ @treturn a.pid.neuron single neuron PID controller userdata
  @function zero
 */
 A_PUBLIC int LMODULE(pid_neuron_zero)(lua_State *L);

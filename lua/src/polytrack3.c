@@ -40,7 +40,7 @@ static int LMODULE(polytrack3_gen_)(lua_State *const L, a_polytrack3_s *const ct
  @tparam[opt] number v1 velocity for target
  @tparam[opt] table source source for trajectory
  @tparam[opt] table target target for trajectory
- @treturn polytrack3 cubic polynomial trajectory userdata
+ @treturn a.polytrack3 cubic polynomial trajectory userdata
  @function new
 */
 int LMODULE(polytrack3_new)(lua_State *const L)
@@ -80,7 +80,7 @@ int LMODULE(polytrack3_new)(lua_State *const L)
 
 /***
  generation function for cubic polynomial trajectory
- @param ctx cubic polynomial trajectory userdata
+ @tparam a.polytrack3 ctx cubic polynomial trajectory userdata
  @tparam number t0 time for source
  @tparam number t1 time for target
  @tparam number q0 position for source
@@ -89,7 +89,7 @@ int LMODULE(polytrack3_new)(lua_State *const L)
  @tparam[opt] number v1 velocity for target
  @tparam[opt] table source source for trajectory
  @tparam[opt] table target target for trajectory
- @treturn polytrack3 cubic polynomial trajectory userdata
+ @treturn a.polytrack3 cubic polynomial trajectory userdata
  @function gen
 */
 int LMODULE(polytrack3_gen)(lua_State *const L)
@@ -130,7 +130,7 @@ int LMODULE(polytrack3_gen)(lua_State *const L)
 
 /***
  calculate function for cubic polynomial trajectory
- @param ctx cubic polynomial trajectory userdata
+ @tparam a.polytrack3 ctx cubic polynomial trajectory userdata
  @tparam number dt difference between current time and initial time
  @treturn table {position,velocity,acceleration}
  @function out
@@ -152,7 +152,7 @@ int LMODULE(polytrack3_out)(lua_State *const L)
 
 /***
  calculate function for cubic polynomial trajectory position
- @param ctx cubic polynomial trajectory userdata
+ @tparam a.polytrack3 ctx cubic polynomial trajectory userdata
  @tparam number dt difference between current time and initial time
  @treturn number position output
  @function pos
@@ -171,7 +171,7 @@ int LMODULE(polytrack3_pos)(lua_State *const L)
 
 /***
  calculate function for cubic polynomial trajectory velocity
- @param ctx cubic polynomial trajectory userdata
+ @tparam a.polytrack3 ctx cubic polynomial trajectory userdata
  @tparam number dt difference between current time and initial time
  @treturn number velocity output
  @function vel
@@ -190,7 +190,7 @@ int LMODULE(polytrack3_vel)(lua_State *const L)
 
 /***
  calculate function for cubic polynomial trajectory acceleration
- @param ctx cubic polynomial trajectory userdata
+ @tparam a.polytrack3 ctx cubic polynomial trajectory userdata
  @tparam number dt difference between current time and initial time
  @treturn number acceleration output
  @function acc

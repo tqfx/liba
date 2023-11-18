@@ -3,7 +3,7 @@
 
 #include "api.h"
 
-#define LMODULES(S) "liba." S
+#define LMODULES(S) "a." S
 #define L_MODULE(P, F) P##liba##F
 #define LMODULE(F) L_MODULE(, _##F)
 #define LMODULE1(F, a) L_MODULE(, _##F)(a)

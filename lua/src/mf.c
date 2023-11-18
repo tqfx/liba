@@ -176,19 +176,19 @@ static int LMODULE(mf)(lua_State *const L)
     }
 }
 
-/***
- type for membership function
- @field NUL none
- @field GAUSS gaussian membership function
- @field GBELL generalized bell-shaped membership function
- @field SIG sigmoidal membership function
- @field TRAP trapezoidal membership function
- @field TRI triangular membership function
- @field Z z-shaped membership function
- @table mf
-*/
 int LMODULE_(mf, lua_State *const L)
 {
+    /***
+     enumeration for membership function
+     @field NUL none
+     @field GAUSS gaussian membership function
+     @field GBELL generalized bell-shaped membership function
+     @field SIG sigmoidal membership function
+     @field TRAP trapezoidal membership function
+     @field TRI triangular membership function
+     @field Z z-shaped membership function
+     @table mf
+    */
     l_int_s const enums[] = {
         {"NUL", A_MF_NUL},
         {"GAUSS", A_MF_GAUSS},

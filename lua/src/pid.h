@@ -1,6 +1,6 @@
 /***
  proportional integral derivative controller
- @classmod liba.pid
+ @classmod a.pid
 */
 
 /***
@@ -15,7 +15,7 @@
  @field fdb cache feedback
  @field err cache error
  @field mode controller mode
- @table liba.pid
+ @table a.pid
 */
 
 #ifndef L_PID_H
@@ -39,7 +39,7 @@ A_PUBLIC int LMODULE(pid_meta_)(lua_State *L, int ret);
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
- @treturn pid PID controller userdata
+ @treturn a.pid PID controller userdata
  @function new
 */
 A_PUBLIC int LMODULE(pid_new)(lua_State *L);
@@ -52,7 +52,7 @@ A_PUBLIC int LMODULE(pid_new)(lua_State *L);
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
- @treturn pid PID controller userdata
+ @treturn a.pid PID controller userdata
  @function init
 */
 A_PUBLIC int LMODULE(pid_init)(lua_State *L);
@@ -62,7 +62,7 @@ A_PUBLIC int LMODULE(pid_init)(lua_State *L);
  @tparam number kp proportional constant
  @tparam number ki integral constant
  @tparam number kd derivative constant
- @treturn pid PID controller userdata
+ @treturn a.pid PID controller userdata
  @function kpid
 */
 A_PUBLIC int LMODULE(pid_kpid)(lua_State *L);
@@ -78,7 +78,7 @@ A_PUBLIC int LMODULE(pid_iter)(lua_State *L);
 
 /***
  zero clear function for PID controller
- @treturn pid PID controller userdata
+ @treturn a.pid PID controller userdata
  @function zero
 */
 A_PUBLIC int LMODULE(pid_zero)(lua_State *L);

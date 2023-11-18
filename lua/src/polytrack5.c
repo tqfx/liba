@@ -48,7 +48,7 @@ static int LMODULE(polytrack5_gen_)(lua_State *const L, a_polytrack5_s *const ct
  @tparam[opt] number a1 acceleration for target
  @tparam[opt] table source source for trajectory
  @tparam[opt] table target target for trajectory
- @treturn polytrack5 quintic polynomial trajectory userdata
+ @treturn a.polytrack5 quintic polynomial trajectory userdata
  @function new
 */
 int LMODULE(polytrack5_new)(lua_State *const L)
@@ -89,7 +89,7 @@ int LMODULE(polytrack5_new)(lua_State *const L)
 
 /***
  generation function for quintic polynomial trajectory
- @param ctx quintic polynomial trajectory userdata
+ @tparam a.polytrack5 ctx quintic polynomial trajectory userdata
  @tparam number t0 time for source
  @tparam number t1 time for target
  @tparam number q0 position for source
@@ -100,7 +100,7 @@ int LMODULE(polytrack5_new)(lua_State *const L)
  @tparam[opt] number a1 acceleration for target
  @tparam[opt] table source source for trajectory
  @tparam[opt] table target target for trajectory
- @treturn polytrack5 quintic polynomial trajectory userdata
+ @treturn a.polytrack5 quintic polynomial trajectory userdata
  @function gen
 */
 int LMODULE(polytrack5_gen)(lua_State *const L)
@@ -142,7 +142,7 @@ int LMODULE(polytrack5_gen)(lua_State *const L)
 
 /***
  calculate function for quintic polynomial trajectory
- @param ctx quintic polynomial trajectory userdata
+ @tparam a.polytrack5 ctx quintic polynomial trajectory userdata
  @tparam number dt difference between current time and initial time
  @treturn table {position,velocity,acceleration}
  @function out
@@ -164,7 +164,7 @@ int LMODULE(polytrack5_out)(lua_State *const L)
 
 /***
  calculate function for quintic polynomial trajectory position
- @param ctx quintic polynomial trajectory userdata
+ @tparam a.polytrack5 ctx quintic polynomial trajectory userdata
  @tparam number dt difference between current time and initial time
  @treturn number position output
  @function pos
@@ -183,7 +183,7 @@ int LMODULE(polytrack5_pos)(lua_State *const L)
 
 /***
  calculate function for quintic polynomial trajectory velocity
- @param ctx quintic polynomial trajectory userdata
+ @tparam a.polytrack5 ctx quintic polynomial trajectory userdata
  @tparam number dt difference between current time and initial time
  @treturn number velocity output
  @function vel
@@ -202,7 +202,7 @@ int LMODULE(polytrack5_vel)(lua_State *const L)
 
 /***
  calculate function for quintic polynomial trajectory acceleration
- @param ctx quintic polynomial trajectory userdata
+ @tparam a.polytrack5 ctx quintic polynomial trajectory userdata
  @tparam number dt difference between current time and initial time
  @treturn number acceleration output
  @function acc

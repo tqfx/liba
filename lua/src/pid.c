@@ -62,7 +62,7 @@ static int LMODULE(pid_init_)(lua_State *const L, a_pid_s *const ctx)
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
- @treturn pid PID controller userdata
+ @treturn a.pid PID controller userdata
  @function new
 */
 int LMODULE(pid_new)(lua_State *const L)
@@ -81,14 +81,14 @@ int LMODULE(pid_new)(lua_State *const L)
 
 /***
  calculate function for PID controller
- @param ctx PID controller userdata
+ @tparam a.pid ctx PID controller userdata
  @tparam[opt] number kp proportional constant
  @tparam[opt] number ki integral constant
  @tparam[opt] number kd derivative constant
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
- @treturn pid PID controller userdata
+ @treturn a.pid PID controller userdata
  @function init
 */
 int LMODULE(pid_init)(lua_State *const L)
@@ -110,11 +110,11 @@ int LMODULE(pid_init)(lua_State *const L)
 
 /***
  set proportional integral derivative constant for PID controller
- @param ctx PID controller userdata
+ @tparam a.pid ctx PID controller userdata
  @tparam number kp proportional constant
  @tparam number ki integral constant
  @tparam number kd derivative constant
- @treturn pid PID controller userdata
+ @treturn a.pid PID controller userdata
  @function kpid
 */
 int LMODULE(pid_kpid)(lua_State *const L)
@@ -134,7 +134,7 @@ int LMODULE(pid_kpid)(lua_State *const L)
 
 /***
  calculate function for PID controller
- @param ctx PID controller userdata
+ @tparam a.pid ctx PID controller userdata
  @tparam number set setpoint
  @tparam number fdb feedback
  @treturn number output
@@ -156,8 +156,8 @@ int LMODULE(pid_iter)(lua_State *const L)
 
 /***
  zero clear function for PID controller
- @param ctx PID controller userdata
- @treturn pid PID controller userdata
+ @tparam a.pid ctx PID controller userdata
+ @treturn a.pid PID controller userdata
  @function zero
 */
 int LMODULE(pid_zero)(lua_State *const L)
@@ -302,15 +302,15 @@ static int LMODULE(pid_get)(lua_State *const L)
     return 1;
 }
 
-/***
- instance for PID controller
- @field OFF turn off PID controller
- @field POS positional PID controller
- @field INC incremental PID controller
- @table pid
-*/
 int LMODULE_(pid, lua_State *const L)
 {
+    /***
+     enumeration for PID controller
+     @field OFF turn off PID controller
+     @field POS positional PID controller
+     @field INC incremental PID controller
+     @table mode
+    */
     l_int_s const enums[] = {
         {"OFF", A_PID_OFF},
         {"POS", A_PID_POS},

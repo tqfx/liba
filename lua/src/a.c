@@ -69,6 +69,11 @@ int LMODULE0(lua_State *const L)
     a_alloc = LMODULE(alloc);
     LMODULE(L) = L;
 
+    /***
+     algorithm library
+     @field VERSION algorithm library version string
+     @table liba
+    */
     l_func_s const funcs[] = {
         {"hash_bkdr", LMODULE(hash_bkdr)},
         {"rsqrt", LMODULE(rsqrt)},

@@ -1,12 +1,12 @@
 /***
  quintic polynomial trajectory
- @classmod liba.polytrack5
+ @classmod a.polytrack5
 */
 
 /***
  quintic polynomial trajectory
  @field k coefficient table, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5
- @table liba.polytrack5
+ @table a.polytrack5
 */
 
 #ifndef L_POLYTRACK5_H
@@ -34,7 +34,7 @@ A_PUBLIC int LMODULE(polytrack5_meta_)(lua_State *L, int ret);
  @tparam[opt] number a1 acceleration for target
  @tparam[opt] table source source for trajectory
  @tparam[opt] table target target for trajectory
- @treturn polytrack5 quintic polynomial trajectory userdata
+ @treturn a.polytrack5 quintic polynomial trajectory userdata
  @function new
 */
 A_PUBLIC int LMODULE(polytrack5_new)(lua_State *L);
@@ -51,7 +51,7 @@ A_PUBLIC int LMODULE(polytrack5_new)(lua_State *L);
  @tparam[opt] number a1 acceleration for target
  @tparam[opt] table source source for trajectory
  @tparam[opt] table target target for trajectory
- @treturn polytrack5 quintic polynomial trajectory userdata
+ @treturn a.polytrack5 quintic polynomial trajectory userdata
  @function gen
 */
 A_PUBLIC int LMODULE(polytrack5_gen)(lua_State *L);

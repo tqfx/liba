@@ -1,6 +1,6 @@
 /***
  transfer function
- @classmod liba.tf
+ @classmod a.tf
 */
 
 /***
@@ -9,7 +9,7 @@
  @field den denominator table
  @field input input table
  @field output output table
- @table liba.tf
+ @table a.tf
 */
 
 #ifndef L_TF_H
@@ -35,7 +35,7 @@ A_PUBLIC int LMODULE(tf_die)(lua_State *L);
  constructor for transfer function
  @tparam table num numerator table
  @tparam table den denominator table
- @treturn tf transfer function userdata
+ @treturn a.tf transfer function userdata
  @function new
 */
 A_PUBLIC int LMODULE(tf_new)(lua_State *L);
@@ -44,7 +44,7 @@ A_PUBLIC int LMODULE(tf_new)(lua_State *L);
  initialize function for transfer function
  @tparam table num numerator table
  @tparam table den denominator table
- @treturn tf transfer function userdata
+ @treturn a.tf transfer function userdata
  @function init
 */
 A_PUBLIC int LMODULE(tf_init)(lua_State *L);
@@ -59,7 +59,7 @@ A_PUBLIC int LMODULE(tf_iter)(lua_State *L);
 
 /***
  zero clear function for transfer function
- @treturn tf transfer function userdata
+ @treturn a.tf transfer function userdata
  @function zero
 */
 A_PUBLIC int LMODULE(tf_zero)(lua_State *L);

@@ -1,12 +1,12 @@
 /***
  hepta polynomial trajectory
- @classmod liba.polytrack7
+ @classmod a.polytrack7
 */
 
 /***
  hepta polynomial trajectory
  @field k coefficient table, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5+k_6(t-t_0)^6+k_7(t-t_0)^7
- @table liba.polytrack7
+ @table a.polytrack7
 */
 
 #ifndef L_POLYTRACK7_H
@@ -36,7 +36,7 @@ A_PUBLIC int LMODULE(polytrack7_meta_)(lua_State *L, int ret);
  @tparam[opt] number j1 jerk for target
  @tparam[opt] table source source for trajectory
  @tparam[opt] table target target for trajectory
- @treturn polytrack7 hepta polynomial trajectory userdata
+ @treturn a.polytrack7 hepta polynomial trajectory userdata
  @function new
 */
 A_PUBLIC int LMODULE(polytrack7_new)(lua_State *L);
@@ -55,7 +55,7 @@ A_PUBLIC int LMODULE(polytrack7_new)(lua_State *L);
  @tparam[opt] number j1 jerk for target
  @tparam[opt] table source source for trajectory
  @tparam[opt] table target target for trajectory
- @treturn polytrack7 hepta polynomial trajectory userdata
+ @treturn a.polytrack7 hepta polynomial trajectory userdata
  @function gen
 */
 A_PUBLIC int LMODULE(polytrack7_gen)(lua_State *L);

@@ -7,7 +7,7 @@
 
 /***
  destructor for transfer function
- @param ctx transfer function userdata
+ @tparam a.tf ctx transfer function userdata
  @function die
 */
 int LMODULE(tf_die)(lua_State *const L)
@@ -29,7 +29,7 @@ int LMODULE(tf_die)(lua_State *const L)
  constructor for transfer function
  @tparam table num numerator table
  @tparam table den denominator table
- @treturn tf transfer function userdata
+ @treturn a.tf transfer function userdata
  @function new
 */
 int LMODULE(tf_new)(lua_State *const L)
@@ -55,10 +55,10 @@ int LMODULE(tf_new)(lua_State *const L)
 
 /***
  initialize function for transfer function
- @param ctx transfer function userdata
+ @tparam a.tf ctx transfer function userdata
  @tparam table num numerator table
  @tparam table den denominator table
- @treturn tf transfer function userdata
+ @treturn a.tf transfer function userdata
  @function init
 */
 int LMODULE(tf_init)(lua_State *const L)
@@ -84,7 +84,7 @@ int LMODULE(tf_init)(lua_State *const L)
 
 /***
  calculate function for transfer function
- @param ctx transfer function userdata
+ @tparam a.tf ctx transfer function userdata
  @tparam number x input
  @treturn number output
  @function iter
@@ -103,8 +103,8 @@ int LMODULE(tf_iter)(lua_State *const L)
 
 /***
  zero clear function for transfer function
- @param ctx transfer function userdata
- @treturn tf transfer function userdata
+ @tparam a.tf ctx transfer function userdata
+ @treturn a.tf transfer function userdata
  @function zero
 */
 int LMODULE(tf_zero)(lua_State *const L)

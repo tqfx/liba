@@ -47,7 +47,7 @@ static int LMODULE(pid_neuron_init_)(lua_State *const L, a_pid_neuron_s *const c
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
- @treturn pid_neuron single neuron PID controller userdata
+ @treturn a.pid.neuron single neuron PID controller userdata
  @function new
 */
 int LMODULE(pid_neuron_new)(lua_State *const L)
@@ -66,14 +66,14 @@ int LMODULE(pid_neuron_new)(lua_State *const L)
 
 /***
  initialize function for single neuron PID controller
- @param ctx single neuron PID controller userdata
+ @tparam a.pid.neuron ctx single neuron PID controller userdata
  @tparam[opt] number kp proportional learning constant
  @tparam[opt] number ki integral learning constant
  @tparam[opt] number kd derivative learning constant
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
- @treturn pid_neuron single neuron PID controller userdata
+ @treturn a.pid.neuron single neuron PID controller userdata
  @function init
 */
 int LMODULE(pid_neuron_init)(lua_State *const L)
@@ -95,12 +95,12 @@ int LMODULE(pid_neuron_init)(lua_State *const L)
 
 /***
  set proportional integral derivative constant for single neuron PID controller
- @param ctx single neuron PID controller userdata
+ @tparam a.pid.neuron ctx single neuron PID controller userdata
  @tparam number k proportional output coefficient
  @tparam number kp proportional learning constant
  @tparam number ki integral learning constant
  @tparam number kd derivative learning constant
- @treturn pid_neuron single neuron PID controller userdata
+ @treturn a.pid.neuron single neuron PID controller userdata
  @function kpid
 */
 int LMODULE(pid_neuron_kpid)(lua_State *const L)
@@ -121,11 +121,11 @@ int LMODULE(pid_neuron_kpid)(lua_State *const L)
 
 /***
  set proportional integral derivative weight for single neuron PID controller
- @param ctx single neuron PID controller userdata
+ @tparam a.pid.neuron ctx single neuron PID controller userdata
  @tparam number wp proportional weight
  @tparam number wi integral weight
  @tparam number wd derivative weight
- @treturn pid_neuron single neuron PID controller userdata
+ @treturn a.pid.neuron single neuron PID controller userdata
  @function wpid
 */
 int LMODULE(pid_neuron_wpid)(lua_State *const L)
@@ -145,7 +145,7 @@ int LMODULE(pid_neuron_wpid)(lua_State *const L)
 
 /***
  calculate function for single neuron PID controller
- @param ctx single neuron PID controller userdata
+ @tparam a.pid.neuron ctx single neuron PID controller userdata
  @tparam number set setpoint
  @tparam number fdb feedback
  @treturn number output
@@ -167,8 +167,8 @@ int LMODULE(pid_neuron_iter)(lua_State *const L)
 
 /***
  zero clear function for single neuron PID controller
- @param ctx single neuron PID controller userdata
- @treturn pid_neuron single neuron PID controller userdata
+ @tparam a.pid.neuron ctx single neuron PID controller userdata
+ @treturn a.pid.neuron single neuron PID controller userdata
  @function zero
 */
 int LMODULE(pid_neuron_zero)(lua_State *const L)
@@ -349,10 +349,6 @@ static int LMODULE(pid_neuron_get)(lua_State *const L)
     return 1;
 }
 
-/***
- instance for single neuron PID controller
- @table pid_neuron
-*/
 int LMODULE_(pid_neuron, lua_State *const L)
 {
     l_int_s const enums[] = {

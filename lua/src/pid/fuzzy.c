@@ -57,7 +57,7 @@ static int LMODULE(pid_fuzzy_init_)(lua_State *const L, a_pid_fuzzy_s *const ctx
 
 /***
  destructor for fuzzy PID controller
- @param ctx fuzzy PID controller userdata
+ @tparam a.pid.fuzzy ctx fuzzy PID controller userdata
  @function die
 */
 int LMODULE(pid_fuzzy_die)(lua_State *const L)
@@ -84,7 +84,7 @@ int LMODULE(pid_fuzzy_die)(lua_State *const L)
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
- @treturn pid_fuzzy fuzzy PID controller userdata
+ @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function new
 */
 int LMODULE(pid_fuzzy_new)(lua_State *const L)
@@ -104,14 +104,14 @@ int LMODULE(pid_fuzzy_new)(lua_State *const L)
 }
 /***
  initialize function for fuzzy PID controller
- @param ctx fuzzy PID controller userdata
+ @tparam a.pid.fuzzy ctx fuzzy PID controller userdata
  @tparam[opt] number kp proportional constant
  @tparam[opt] number ki integral constant
  @tparam[opt] number kd derivative constant
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
- @treturn pid_fuzzy fuzzy PID controller userdata
+ @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function init
 */
 int LMODULE(pid_fuzzy_init)(lua_State *const L)
@@ -133,9 +133,9 @@ int LMODULE(pid_fuzzy_init)(lua_State *const L)
 
 /***
  set fuzzy relational operator for fuzzy PID controller
- @param ctx fuzzy PID controller userdata
+ @tparam a.pid.fuzzy ctx fuzzy PID controller userdata
  @tparam int op enumeration for fuzzy PID controller operator
- @treturn pid_fuzzy fuzzy PID controller userdata
+ @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function op
 */
 int LMODULE(pid_fuzzy_op)(lua_State *const L)
@@ -152,13 +152,13 @@ int LMODULE(pid_fuzzy_op)(lua_State *const L)
 
 /***
  set rule base for fuzzy PID controller
- @param ctx fuzzy PID controller userdata
+ @tparam a.pid.fuzzy ctx fuzzy PID controller userdata
  @tparam table me points to membership function parameter table, terminated by 0
  @tparam table mec points to membership function parameter table, terminated by 0
  @tparam table mkp points to Kp's rule base table which must be a square matrix
  @tparam table mki points to Ki's rule base table which must be a square matrix
  @tparam table mkd points to Kd's rule base table which must be a square matrix
- @treturn pid_fuzzy fuzzy PID controller userdata
+ @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function rule
 */
 int LMODULE(pid_fuzzy_rule)(lua_State *const L)
@@ -181,9 +181,9 @@ int LMODULE(pid_fuzzy_rule)(lua_State *const L)
 
 /***
  set joint buffer for fuzzy PID controller
- @param ctx fuzzy PID controller userdata
+ @tparam a.pid.fuzzy ctx fuzzy PID controller userdata
  @tparam int num maximum number triggered by the rule
- @treturn pid_fuzzy fuzzy PID controller userdata
+ @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function joint
 */
 int LMODULE(pid_fuzzy_joint)(lua_State *const L)
@@ -202,11 +202,11 @@ int LMODULE(pid_fuzzy_joint)(lua_State *const L)
 
 /***
  set proportional integral derivative constant for fuzzy PID controller
- @param ctx fuzzy PID controller userdata
+ @tparam a.pid.fuzzy ctx fuzzy PID controller userdata
  @tparam number kp proportional constant
  @tparam number ki integral constant
  @tparam number kd derivative constant
- @treturn pid_fuzzy fuzzy PID controller userdata
+ @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function kpid
 */
 int LMODULE(pid_fuzzy_kpid)(lua_State *const L)
@@ -226,7 +226,7 @@ int LMODULE(pid_fuzzy_kpid)(lua_State *const L)
 
 /***
  calculate function for fuzzy PID controller
- @param ctx fuzzy PID controller userdata
+ @tparam a.pid.fuzzy ctx fuzzy PID controller userdata
  @tparam number set setpoint
  @tparam number fdb feedback
  @treturn number output
@@ -248,8 +248,8 @@ int LMODULE(pid_fuzzy_iter)(lua_State *const L)
 
 /***
  zero clear function for fuzzy PID controller
- @param ctx fuzzy PID controller userdata
- @treturn pid_fuzzy fuzzy PID controller userdata
+ @tparam a.pid.fuzzy ctx fuzzy PID controller userdata
+ @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function zero
 */
 int LMODULE(pid_fuzzy_zero)(lua_State *const L)
@@ -410,19 +410,19 @@ static int LMODULE(pid_fuzzy_get)(lua_State *const L)
     return 1;
 }
 
-/***
- instance for fuzzy PID controller
- @field CAP         min(a,b)
- @field CAP_ALGEBRA a*b
- @field CAP_BOUNDED max(a+b-1,0)
- @field CUP         max(a,b)
- @field CUP_ALGEBRA a+b-a*b
- @field CUP_BOUNDED min(a+b,1)
- @field EQU         sqrt(a,b)*sqrt(1-(1-a)*(1-b))
- @table pid_fuzzy
-*/
 int LMODULE_(pid_fuzzy, lua_State *const L)
 {
+    /***
+     enumeration for fuzzy relational operator
+     @field CAP         min(a,b)
+     @field CAP_ALGEBRA a*b
+     @field CAP_BOUNDED max(a+b-1,0)
+     @field CUP         max(a,b)
+     @field CUP_ALGEBRA a+b-a*b
+     @field CUP_BOUNDED min(a+b,1)
+     @field EQU         sqrt(a,b)*sqrt(1-(1-a)*(1-b))
+     @table op
+    */
     l_int_s const enums[] = {
         {"CAP", A_PID_FUZZY_CAP},
         {"CAP_ALGEBRA", A_PID_FUZZY_CAP_ALGEBRA},
