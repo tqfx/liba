@@ -44,9 +44,9 @@ declare namespace liba {
      * sigmoidal membership function
      * @param x independent variable
      * @param a a
-     * @param b b
+     * @param c c
      */
-    function mf_sig(x: number, a: number, b: number): number;
+    function mf_sig(x: number, a: number, c: number): number;
     /**
      * trapezoidal membership function
      * @param x independent variable
