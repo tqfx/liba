@@ -1,6 +1,6 @@
 /***
  single neuron proportional integral derivative controller
- @module liba.pid_neuron
+ @module liba.pid.neuron
 */
 
 #include "neuron.h"

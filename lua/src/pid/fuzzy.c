@@ -1,6 +1,6 @@
 /***
  fuzzy proportional integral derivative controller
- @module liba.pid_fuzzy
+ @module liba.pid.fuzzy
 */
 
 #include "fuzzy.h"
