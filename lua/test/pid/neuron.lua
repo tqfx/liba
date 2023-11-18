@@ -1,22 +1,25 @@
 #!/usr/bin/env lua
 
+---@diagnostic disable: redefined-local
 package.path = arg[0]:sub(0, -arg[0]:match("([^/\\]*)$"):len() - 1) .. "../?.lua;" .. package.path
 local test = require("test")
 local a = require("liba")
-test:dir(getmetatable(a.pid.neuron))
+test.dir(getmetatable(a.pid.neuron))
 assert(a.pid.neuron.new())
 assert(a.pid.neuron.new(-10, 10))
 assert(a.pid.neuron.new(10, 0.1, 1, -10, 10))
 ctx = a.pid.neuron.new(-10, 10)
 assert(type(a.pid.neuron.kpid(ctx, 4, 3, 2, 1)) == "userdata")
-assert(type(a.pid.neuron:kpid(ctx, 4, 3, 2, 1)) == "userdata")
 assert(type(a.pid.neuron.wpid(ctx, 3, 2, 1)) == "userdata")
-assert(type(a.pid.neuron:wpid(ctx, 3, 2, 1)) == "userdata")
 assert(type(a.pid.neuron.iter(ctx, 1, 0)) == "number")
-assert(type(a.pid.neuron:iter(ctx, 1, 0)) == "number")
 assert(type(a.pid.neuron.zero(ctx)) == "userdata")
+---@diagnostic disable: param-type-mismatch, redundant-parameter
+assert(type(a.pid.neuron:kpid(ctx, 4, 3, 2, 1)) == "userdata")
+assert(type(a.pid.neuron:wpid(ctx, 3, 2, 1)) == "userdata")
+assert(type(a.pid.neuron:iter(ctx, 1, 0)) == "number")
 assert(type(a.pid.neuron:zero(ctx)) == "userdata")
-test:dir(getmetatable(ctx))
+---@diagnostic enable: param-type-mismatch, redundant-parameter
+test.dir(getmetatable(ctx))
 ctx = a.pid:neuron(-10, 10, 10)
 ctx:kpid(4, 3, 2, 1):wpid(3, 2, 1)
 assert(type(ctx(1, 0)) == "number")

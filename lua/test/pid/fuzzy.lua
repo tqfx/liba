@@ -1,5 +1,6 @@
 #!/usr/bin/env lua
 
+---@diagnostic disable: redefined-local
 package.path = arg[0]:sub(0, -arg[0]:match("([^/\\]*)$"):len() - 1) .. "../?.lua;" .. package.path
 local test = require("test")
 local a = require("liba")
@@ -86,27 +87,29 @@ local mkd = {
     { NL, NM, NM, NM, NS, NS, NL },
     -- LuaFormatter on
 }
-test:dir(getmetatable(a.pid.fuzzy))
+test.dir(getmetatable(a.pid.fuzzy))
 assert(a.pid.fuzzy.new())
 assert(a.pid.fuzzy.new(-10, 10))
 assert(a.pid.fuzzy.new(-10, 10, 10))
 assert(a.pid.fuzzy.new(10, 0.1, 1, -10, 10))
 assert(a.pid.fuzzy.new(10, 0.1, 1, -10, 10, 10))
-ctx = a.pid.fuzzy.new(-10, 10)
+local ctx = a.pid.fuzzy.new(-10, 10)
 assert(type(a.pid.fuzzy.rule(ctx, me, mec, mkp, mki, mkd)) == "userdata")
-assert(type(a.pid.fuzzy:rule(ctx, me, mec, mkp, mki, mkd)) == "userdata")
 assert(type(a.pid.fuzzy.kpid(ctx, 3, 2, 1)) == "userdata")
-assert(type(a.pid.fuzzy:kpid(ctx, 3, 2, 1)) == "userdata")
 assert(type(a.pid.fuzzy.joint(ctx, 2)) == "userdata")
-assert(type(a.pid.fuzzy:joint(ctx, 2)) == "userdata")
 assert(type(a.pid.fuzzy.iter(ctx, 1, 0)) == "number")
-assert(type(a.pid.fuzzy:iter(ctx, 1, 0)) == "number")
 assert(type(a.pid.fuzzy.zero(ctx)) == "userdata")
+---@diagnostic disable: param-type-mismatch, redundant-parameter
+assert(type(a.pid.fuzzy:rule(ctx, me, mec, mkp, mki, mkd)) == "userdata")
+assert(type(a.pid.fuzzy:kpid(ctx, 3, 2, 1)) == "userdata")
+assert(type(a.pid.fuzzy:joint(ctx, 2)) == "userdata")
+assert(type(a.pid.fuzzy:iter(ctx, 1, 0)) == "number")
 assert(type(a.pid.fuzzy:zero(ctx)) == "userdata")
-test:dir(getmetatable(ctx))
-ctx = a.pid:fuzzy(-10, 10, 10)
+---@diagnostic enable: param-type-mismatch, redundant-parameter
+test.dir(getmetatable(ctx))
+local ctx = a.pid:fuzzy(-10, 10, 10)
 ctx:rule(me, mec, mkp, mki, mkd)
-ctx:kpid(3, 2, 1):joint(2)
+ctx:kpid(3, 2, 1):joint(2):op(a.pid.fuzzy.EQU)
 assert(type(ctx(1, 0)) == "number")
 assert(type(ctx.kp) == "number")
 assert(type(ctx.ki) == "number")

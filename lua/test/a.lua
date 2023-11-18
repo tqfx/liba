@@ -9,5 +9,7 @@ for i, v in pairs(arg) do
         break
     end
 end
-test:log(a:rsqrt(1, 2, 4))
-test:dir(a)
+test.dir(a)
+test.log(a.rsqrt(1, 2, 4))
+---@diagnostic disable-next-line: param-type-mismatch
+assert(a:rsqrt(1))

@@ -1,5 +1,5 @@
 local test = {}
-function test:dir(...)
+function test.dir(...)
     local io_write_cache = {}
     local function io_write(indent, x)
         local str = tostring(x)
@@ -36,7 +36,7 @@ function test:dir(...)
         end
     end
 end
-function test:log(...)
+function test.log(...)
     for i, v in ipairs({ ... }) do
         if i > 1 then
             io.write(" ")
@@ -45,7 +45,7 @@ function test:log(...)
     end
     io.write("\n")
 end
-function test:fmt(...)
+function test.fmt(...)
     io.write(string.format(...) .. "\n")
 end
 return test
