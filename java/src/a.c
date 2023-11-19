@@ -18,12 +18,12 @@ JNIEXPORT jint JNICALL JPACKAGE(version_1check)(JNIEnv *jenv, jclass jcls, jint 
     return (void)(jenv), (void)(jcls), a_version_check((unsigned int)major, (unsigned int)minor, (unsigned int)patch);
 }
 
-JNIEXPORT jfloat JNICALL JPACKAGE(f32_1rsqrt)(JNIEnv *jenv, jclass jcls, jfloat jx)
+JNIEXPORT jfloat JNICALL JPACKAGE(f32_1rsqrt)(JNIEnv *jenv, jclass jcls, jfloat x)
 {
-    return (void)(jenv), (void)(jcls), a_f32_rsqrt(jx);
+    return (void)(jenv), (void)(jcls), a_f32_rsqrt(x);
 }
 
-JNIEXPORT jdouble JNICALL JPACKAGE(f64_1rsqrt)(JNIEnv *jenv, jclass jcls, jdouble jx)
+JNIEXPORT jdouble JNICALL JPACKAGE(f64_1rsqrt)(JNIEnv *jenv, jclass jcls, jdouble x)
 {
-    return (void)(jenv), (void)(jcls), a_f64_rsqrt(jx);
+    return (void)(jenv), (void)(jcls), a_f64_rsqrt(x);
 }
