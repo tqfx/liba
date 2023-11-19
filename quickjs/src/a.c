@@ -48,6 +48,25 @@ static JSValue js_mf_gauss(JSContext *const ctx, JSValueConst const this_val, in
     return JS_NewFloat64(ctx, (double)x);
 }
 
+static JSValue js_mf_gauss2(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)(this_val);
+    double args[] = {0, 0, 0, 0, 0};
+    if (argc > (int)A_LEN(args))
+    {
+        argc = (int)A_LEN(args);
+    }
+    for (int i = 0; i < argc; ++i)
+    {
+        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    a_float_t x = a_mf_gauss2((a_float_t)args[0], (a_float_t)args[1], (a_float_t)args[2], (a_float_t)args[3], (a_float_t)args[4]);
+    return JS_NewFloat64(ctx, (double)x);
+}
+
 static JSValue js_mf_gbell(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)(this_val);
@@ -86,6 +105,44 @@ static JSValue js_mf_sig(JSContext *const ctx, JSValueConst const this_val, int 
     return JS_NewFloat64(ctx, (double)x);
 }
 
+static JSValue js_mf_dsig(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)(this_val);
+    double args[] = {0, 0, 0, 0, 0};
+    if (argc > (int)A_LEN(args))
+    {
+        argc = (int)A_LEN(args);
+    }
+    for (int i = 0; i < argc; ++i)
+    {
+        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    a_float_t x = a_mf_dsig((a_float_t)args[0], (a_float_t)args[1], (a_float_t)args[2], (a_float_t)args[3], (a_float_t)args[4]);
+    return JS_NewFloat64(ctx, (double)x);
+}
+
+static JSValue js_mf_psig(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)(this_val);
+    double args[] = {0, 0, 0, 0, 0};
+    if (argc > (int)A_LEN(args))
+    {
+        argc = (int)A_LEN(args);
+    }
+    for (int i = 0; i < argc; ++i)
+    {
+        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    a_float_t x = a_mf_psig((a_float_t)args[0], (a_float_t)args[1], (a_float_t)args[2], (a_float_t)args[3], (a_float_t)args[4]);
+    return JS_NewFloat64(ctx, (double)x);
+}
+
 static JSValue js_mf_trap(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)(this_val);
@@ -120,7 +177,64 @@ static JSValue js_mf_tri(JSContext *const ctx, JSValueConst const this_val, int 
             return JS_EXCEPTION;
         }
     }
-    a_float_t x = a_mf_tri((a_float_t)args[0], (a_float_t)args[1], (a_float_t)args[2], (a_float_t)args[2]);
+    a_float_t x = a_mf_tri((a_float_t)args[0], (a_float_t)args[1], (a_float_t)args[2], (a_float_t)args[3]);
+    return JS_NewFloat64(ctx, (double)x);
+}
+
+static JSValue js_mf_lins(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)(this_val);
+    double args[] = {0, 0, 0};
+    if (argc > (int)A_LEN(args))
+    {
+        argc = (int)A_LEN(args);
+    }
+    for (int i = 0; i < argc; ++i)
+    {
+        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    a_float_t x = a_mf_lins((a_float_t)args[0], (a_float_t)args[1], (a_float_t)args[2]);
+    return JS_NewFloat64(ctx, (double)x);
+}
+
+static JSValue js_mf_linz(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)(this_val);
+    double args[] = {0, 0, 0};
+    if (argc > (int)A_LEN(args))
+    {
+        argc = (int)A_LEN(args);
+    }
+    for (int i = 0; i < argc; ++i)
+    {
+        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    a_float_t x = a_mf_linz((a_float_t)args[0], (a_float_t)args[1], (a_float_t)args[2]);
+    return JS_NewFloat64(ctx, (double)x);
+}
+
+static JSValue js_mf_s(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)(this_val);
+    double args[] = {0, 0, 0};
+    if (argc > (int)A_LEN(args))
+    {
+        argc = (int)A_LEN(args);
+    }
+    for (int i = 0; i < argc; ++i)
+    {
+        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    a_float_t x = a_mf_s((a_float_t)args[0], (a_float_t)args[1], (a_float_t)args[2]);
     return JS_NewFloat64(ctx, (double)x);
 }
 
@@ -143,20 +257,53 @@ static JSValue js_mf_z(JSContext *const ctx, JSValueConst const this_val, int ar
     return JS_NewFloat64(ctx, (double)x);
 }
 
+static JSValue js_mf_pi(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)(this_val);
+    double args[] = {0, 0, 0, 0, 0};
+    if (argc > (int)A_LEN(args))
+    {
+        argc = (int)A_LEN(args);
+    }
+    for (int i = 0; i < argc; ++i)
+    {
+        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    a_float_t x = a_mf_pi((a_float_t)args[0], (a_float_t)args[1], (a_float_t)args[2], (a_float_t)args[3], (a_float_t)args[4]);
+    return JS_NewFloat64(ctx, (double)x);
+}
+
 static JSCFunctionListEntry const js_liba_mf_funcs[] = {
     JS_PROP_INT32_DEF("NUL", A_MF_NUL, 0),
     JS_PROP_INT32_DEF("GAUSS", A_MF_GAUSS, 0),
+    JS_PROP_INT32_DEF("GAUSS2", A_MF_GAUSS2, 0),
     JS_PROP_INT32_DEF("GBELL", A_MF_GBELL, 0),
     JS_PROP_INT32_DEF("SIG", A_MF_SIG, 0),
+    JS_PROP_INT32_DEF("DSIG", A_MF_DSIG, 0),
+    JS_PROP_INT32_DEF("PSIG", A_MF_PSIG, 0),
     JS_PROP_INT32_DEF("TRAP", A_MF_TRAP, 0),
     JS_PROP_INT32_DEF("TRI", A_MF_TRI, 0),
+    JS_PROP_INT32_DEF("LINS", A_MF_LINS, 0),
+    JS_PROP_INT32_DEF("LINZ", A_MF_LINZ, 0),
+    JS_PROP_INT32_DEF("S", A_MF_S, 0),
     JS_PROP_INT32_DEF("Z", A_MF_Z, 0),
+    JS_PROP_INT32_DEF("PI", A_MF_PI, 0),
     JS_CFUNC_DEF("gauss", 3, js_mf_gauss),
+    JS_CFUNC_DEF("gauss2", 5, js_mf_gauss2),
     JS_CFUNC_DEF("gbell", 4, js_mf_gbell),
     JS_CFUNC_DEF("sig", 3, js_mf_sig),
+    JS_CFUNC_DEF("dsig", 5, js_mf_dsig),
+    JS_CFUNC_DEF("psig", 5, js_mf_psig),
     JS_CFUNC_DEF("trap", 5, js_mf_trap),
     JS_CFUNC_DEF("tri", 4, js_mf_tri),
+    JS_CFUNC_DEF("lins", 3, js_mf_lins),
+    JS_CFUNC_DEF("linz", 3, js_mf_linz),
+    JS_CFUNC_DEF("s", 3, js_mf_s),
     JS_CFUNC_DEF("z", 3, js_mf_z),
+    JS_CFUNC_DEF("pi", 5, js_mf_pi),
 };
 
 #include "a/version.h"

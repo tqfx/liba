@@ -14,63 +14,147 @@ declare namespace liba {
     const MF_NUL: number;
     /** gaussian membership function */
     const MF_GAUSS: number;
+    /** gaussian combination membership function */
+    const MF_GAUSS2: number;
     /** generalized bell-shaped membership function */
     const MF_GBELL: number;
     /** sigmoidal membership function */
     const MF_SIG: number;
+    /** difference between two sigmoidal membership functions */
+    const MF_DSIG: number;
+    /** product of two sigmoidal membership functions */
+    const MF_PSIG: number;
     /** trapezoidal membership function */
     const MF_TRAP: number;
     /** triangular membership function */
     const MF_TRI: number;
+    /** linear s-shaped saturation membership function */
+    const MF_LINS: number;
+    /** linear z-shaped saturation membership function */
+    const MF_LINZ: number;
+    /** s-shaped membership function */
+    const MF_S: number;
     /** z-shaped membership function */
     const MF_Z: number;
+    /** pi-shaped membership function */
+    const MF_PI: number;
 
     /**
      * gaussian membership function
-     * @param x independent variable
-     * @param sigma sigma
-     * @param c c
+     * @param x input value for which to compute membership value.
+     * @param sigma is the standard deviation.
+     * @param c is the mean.
+     * @return membership value.
      */
     function mf_gauss(x: number, sigma: number, c: number): number;
     /**
+     * gaussian combination membership function
+     * @param x input value for which to compute membership value.
+     * @param sigma1 is the standard deviation of the left gaussian function.
+     * @param c1 is the mean of the left gaussian function.
+     * @param sigma2 is the standard deviation of the right gaussian function.
+     * @param c2 is the mean of the right gaussian function.
+     * @return membership value.
+     */
+    function mf_gauss2(x: number, sigma1: number, c1: number, sigma2: number, c2: number): number;
+    /**
      * generalized bell-shaped membership function
-     * @param x independent variable
-     * @param a a
-     * @param b b
-     * @param c c
+     * @param x input value for which to compute membership value.
+     * @param a defines the width of the membership function, where a larger value creates a wider membership function.
+     * @param b defines the shape of the curve on either side of the central plateau, where a larger value creates a more steep transition.
+     * @param c defines the center of the membership function.
+     * @return membership value.
      */
     function mf_gbell(x: number, a: number, b: number, c: number): number;
     /**
      * sigmoidal membership function
-     * @param x independent variable
-     * @param a a
-     * @param c c
+     * @param x input value for which to compute membership value.
+     * @param a defines the width of the transition area.
+     * @param c defines the center of the transition area.
+     * @return membership value.
      */
     function mf_sig(x: number, a: number, c: number): number;
     /**
+     * difference between two sigmoidal membership functions
+     * @param x input value for which to compute membership value.
+     * @param a1 defines the width of the first transition area.
+     * @param c1 defines the center of the first transition area.
+     * @param a2 defines the width of the second transition area.
+     * @param c2 defines the center of the second transition area.
+     * @return membership value.
+     */
+    function mf_dsig(x: number, a1: number, c1: number, a2: number, c2: number): number;
+    /**
+     * product of two sigmoidal membership functions
+     * @param x input value for which to compute membership value.
+     * @param a1 defines the width of the first transition area.
+     * @param c1 defines the center of the first transition area.
+     * @param a2 defines the width of the second transition area.
+     * @param c2 defines the center of the second transition area.
+     * @return membership value.
+     */
+    function mf_psig(x: number, a1: number, c1: number, a2: number, c2: number): number;
+    /**
      * trapezoidal membership function
-     * @param x independent variable
-     * @param a a
-     * @param b b
-     * @param c c
-     * @param d d
+     * @param x input value for which to compute membership value.
+     * @param a defines its left foot.
+     * @param b defines its left shoulder.
+     * @param c defines its right shoulder.
+     * @param d defines its right foot.
+     * @return membership value.
      */
     function mf_trap(x: number, a: number, b: number, c: number, d: number): number;
     /**
      * triangular membership function
-     * @param x independent variable
-     * @param a a
-     * @param b b
-     * @param c c
+     * @param x input value for which to compute membership value.
+     * @param a defines its left foot.
+     * @param b defines its peak.
+     * @param c defines its right foot.
+     * @return membership value.
      */
     function mf_tri(x: number, a: number, b: number, c: number): number;
     /**
+     * linear s-shaped saturation membership function
+     * @param x input value for which to compute membership value.
+     * @param a defines its foot.
+     * @param b defines its shoulder.
+     * @return membership value.
+     */
+    function mf_lins(x: number, a: number, b: number): number;
+    /**
+     * linear z-shaped saturation membership function
+     * @param x input value for which to compute membership value.
+     * @param a defines its shoulder.
+     * @param b defines its foot.
+     * @return membership value.
+     */
+    function mf_linz(x: number, a: number, b: number): number;
+    /**
+     * s-shaped membership function
+     * @param x input value for which to compute membership value.
+     * @param a defines its foot.
+     * @param b defines its shoulder.
+     * @return membership value.
+     */
+    function mf_s(x: number, a: number, b: number): number;
+    /**
      * z-shaped membership function
-     * @param x independent variable
-     * @param a a
-     * @param b b
+     * @param x input value for which to compute membership value.
+     * @param a defines its shoulder.
+     * @param b defines its foot.
+     * @return membership value.
      */
     function mf_z(x: number, a: number, b: number): number;
+    /**
+     * pi-shaped membership function
+     * @param x input value for which to compute membership value.
+     * @param a defines its left foot.
+     * @param b defines its left shoulder.
+     * @param c defines its right shoulder.
+     * @param d defines its right foot.
+     * @return membership value.
+     */
+    function mf_pi(x: number, a: number, b: number, c: number, d: number): number;
 
     /** turn off PID controller */
     const PID_OFF: number;

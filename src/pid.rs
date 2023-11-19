@@ -345,13 +345,13 @@ fn pid_fuzzy() {
     let PM: float = 2.0;
     let PL: float = 3.0;
     let me = [
-        [crate::mf::TRI, NL, NL, NM],
-        [crate::mf::TRI, NL, NM, NS],
-        [crate::mf::TRI, NM, NS, ZO],
-        [crate::mf::TRI, NS, ZO, PS],
-        [crate::mf::TRI, ZO, PS, PM],
-        [crate::mf::TRI, PS, PM, PL],
-        [crate::mf::TRI, PM, PL, PL],
+        [crate::mf::TRI as float, NL, NL, NM],
+        [crate::mf::TRI as float, NL, NM, NS],
+        [crate::mf::TRI as float, NM, NS, ZO],
+        [crate::mf::TRI as float, NS, ZO, PS],
+        [crate::mf::TRI as float, ZO, PS, PM],
+        [crate::mf::TRI as float, PS, PM, PL],
+        [crate::mf::TRI as float, PM, PL, PL],
     ];
     let NL: float = -3.0;
     let NM: float = -2.0;
@@ -361,13 +361,13 @@ fn pid_fuzzy() {
     let PM: float = 2.0;
     let PL: float = 3.0;
     let mec = [
-        [crate::mf::TRI, NL, NL, NM],
-        [crate::mf::TRI, NL, NM, NS],
-        [crate::mf::TRI, NM, NS, ZO],
-        [crate::mf::TRI, NS, ZO, PS],
-        [crate::mf::TRI, ZO, PS, PM],
-        [crate::mf::TRI, PS, PM, PL],
-        [crate::mf::TRI, PM, PL, PL],
+        [crate::mf::TRI as float, NL, NL, NM],
+        [crate::mf::TRI as float, NL, NM, NS],
+        [crate::mf::TRI as float, NM, NS, ZO],
+        [crate::mf::TRI as float, NS, ZO, PS],
+        [crate::mf::TRI as float, ZO, PS, PM],
+        [crate::mf::TRI as float, PS, PM, PL],
+        [crate::mf::TRI as float, PM, PL, PL],
     ];
     let NL: float = -15.0;
     let NM: float = -10.0;

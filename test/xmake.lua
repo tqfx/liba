@@ -56,6 +56,10 @@ target("test/math")
 building({ "math.c", "math.cpp" })
 target_end()
 
+target("test/mf")
+building({ "mf.c", "mf.cpp" })
+target_end()
+
 target("test/notefreqs")
 building({ "notefreqs.c", "notefreqs.cpp" })
 target_end()

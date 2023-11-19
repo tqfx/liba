@@ -355,7 +355,12 @@ function liba.complex.acoth(z) end
 function complex:acoth() end
 
 liba.mf = {}
+
 liba.mf.NUL = 0
+---@param e integer
+---@param x number
+---@param ... number
+function liba.mf.mf(e, x, ...) end
 
 liba.mf.GAUSS = 1
 ---@param x number
@@ -364,7 +369,16 @@ liba.mf.GAUSS = 1
 ---@return number
 function liba.mf.gauss(x, sigma, c) end
 
-liba.mf.GBELL = 2
+liba.mf.GAUSS2 = 2
+---@param x number
+---@param sigma1 number
+---@param c1 number
+---@param sigma2 number
+---@param c2 number
+---@return number
+function liba.mf.gauss2(x, sigma1, c1, sigma2, c2) end
+
+liba.mf.GBELL = 3
 ---@param x number
 ---@param a number
 ---@param b number
@@ -372,14 +386,32 @@ liba.mf.GBELL = 2
 ---@return number
 function liba.mf.gbell(x, a, b, c) end
 
-liba.mf.SIG = 3
+liba.mf.SIG = 4
 ---@param x number
 ---@param a number
 ---@param c number
 ---@return number
 function liba.mf.sig(x, a, c) end
 
-liba.mf.TRAP = 4
+liba.mf.DSIG = 5
+---@param x number
+---@param a1 number
+---@param c1 number
+---@param a2 number
+---@param c2 number
+---@return number
+function liba.mf.dsig(x, a1, c1, a2, c2) end
+
+liba.mf.PSIG = 6
+---@param x number
+---@param a1 number
+---@param c1 number
+---@param a2 number
+---@param c2 number
+---@return number
+function liba.mf.psig(x, a1, c1, a2, c2) end
+
+liba.mf.TRAP = 7
 ---@param x number
 ---@param a number
 ---@param b number
@@ -388,7 +420,7 @@ liba.mf.TRAP = 4
 ---@return number
 function liba.mf.trap(x, a, b, c, d) end
 
-liba.mf.TRI = 5
+liba.mf.TRI = 8
 ---@param x number
 ---@param a number
 ---@param b number
@@ -396,12 +428,42 @@ liba.mf.TRI = 5
 ---@return number
 function liba.mf.tri(x, a, b, c) end
 
-liba.mf.Z = 6
+liba.mf.LINS = 9
+---@param x number
+---@param a number
+---@param b number
+---@return number
+function liba.mf.lins(x, a, b) end
+
+liba.mf.LINZ = 10
+---@param x number
+---@param a number
+---@param b number
+---@return number
+function liba.mf.linz(x, a, b) end
+
+liba.mf.S = 11
+---@param x number
+---@param a number
+---@param b number
+---@return number
+function liba.mf.s(x, a, b) end
+
+liba.mf.Z = 12
 ---@param x number
 ---@param a number
 ---@param b number
 ---@return number
 function liba.mf.z(x, a, b) end
+
+liba.mf.PI = 13
+---@param x number
+---@param a number
+---@param b number
+---@param c number
+---@param d number
+---@return number
+function liba.mf.pi(x, a, b, c, d) end
 
 ---@class a.pid
 ---@field __name string
