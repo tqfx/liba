@@ -1,6 +1,4 @@
-#ifndef TEST_AVL_H
-#define TEST_AVL_H
-#define MAIN_(s, argc, argv) A_CAST_2(avl, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _avl)
 #include "test.h"
 #include "a/avl.h"
 #include "a/host/str.h"
@@ -93,12 +91,10 @@ static int test(int argc, char *argv[])
         a_avl_insert(&root, &vec[i].node, int_cmp);
         set_height(root.node);
         check_tree(root.node);
-#if defined(MAIN_ONCE)
         if (i % 0x100 == 0)
         {
-            printf("insert 0x%04X/0x%04X\n", i, n);
+            debug("insert 0x%04X/0x%04X\n", i, n);
         }
-#endif /* MAIN_ONCE */
     }
     a_str_dtor(&str);
 
@@ -206,12 +202,10 @@ static int test(int argc, char *argv[])
         a_avl_remove(&root, &vec[i].node);
         set_height(root.node);
         check_tree(root.node);
-#if defined(MAIN_ONCE)
         if (i % 0x100 == 0)
         {
-            printf("remove 0x%04X/0x%04X\n", i, n);
+            debug("remove 0x%04X/0x%04X\n", i, n);
         }
-#endif /* MAIN_ONCE */
     }
 
     TEST_BUG(!a_avl_search(&root, &vec->node, int_cmp));
@@ -241,5 +235,3 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     test(argc, argv);
     return 0;
 }
-
-#endif /* test/avl.h */

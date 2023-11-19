@@ -1,22 +1,15 @@
-#ifndef TEST_VERSION_H
-#define TEST_VERSION_H
-#define MAIN_(s, argc, argv) A_CAST_2(version, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _version)
 #include "test.h"
 #include "a/version.h"
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-#if defined(MAIN_ONCE)
     for (int i = 0; i < argc; ++i)
     {
         a_version_s ctx;
         a_version_parse(&ctx, argv[i]);
-        printf("parse \"%s\" -> %u.%u.%u\n", argv[i], ctx.major, ctx.minor, ctx.patch);
+        debug("parse \"%s\" -> %u.%u.%u\n", argv[i], ctx.major, ctx.minor, ctx.patch);
     }
-#else /* !MAIN_ONCE */
-    (void)(argc);
-    (void)(argv);
-#endif /* MAIN_ONCE */
     printf("%s\n", A_FUNC);
 #if defined(__cplusplus)
     printf("version %s+%" PRIu64 "\n", a::VERSION, a::VERSION_TWEAK);
@@ -74,5 +67,3 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     TEST_BUG(a_version_check() == 0);
     return 0;
 }
-
-#endif /* test/version.h */

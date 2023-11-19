@@ -1,6 +1,4 @@
-#ifndef TEST_RBF_H
-#define TEST_RBF_H
-#define MAIN_(s, argc, argv) A_CAST_2(rbf, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _rbf)
 #include "test.h"
 #include "a/tf.h"
 #include "a/rbf.h"
@@ -8,16 +6,7 @@
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-#if defined(MAIN_ONCE)
-    FILE *log = A_NULL;
-    if (argc > 1)
-    {
-        log = freopen(argv[1], "wb", stdout);
-    }
-#else /* !MAIN_ONCE */
-    (void)(argc);
-    (void)(argv);
-#endif /* MAIN_ONCE */
+    test_init(argc, argv, 1);
 
     a_tf_s tf;
     {
@@ -59,23 +48,9 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         ctx.input_p[1] = *tf.output;
         a_rbf_tune(&ctx, ctx.input_p);
         a_tf_iter(&tf, *a_rbf_iter(&ctx));
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
-               A_FLOAT_C(0.002) * A_FLOAT_PI * a_float_c(, i), *ctx.input_p, *ctx.output_p, *tf.output);
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
+              A_FLOAT_C(0.002) * A_FLOAT_PI * a_float_c(, i), *ctx.input_p, *ctx.output_p, *tf.output);
     }
-
-#if defined(MAIN_ONCE)
-    if (log)
-    {
-        if (fclose(log))
-        {
-            perror(A_FUNC);
-        }
-    }
-#endif /* MAIN_ONCE */
 
     return 0;
 }
-
-#endif /* test/rbf.h */

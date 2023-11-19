@@ -1,6 +1,4 @@
-#ifndef TEST_RBT_H
-#define TEST_RBT_H
-#define MAIN_(s, argc, argv) A_CAST_2(rbt, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _rbt)
 #include "test.h"
 #include "a/rbt.h"
 #include "a/host/str.h"
@@ -45,12 +43,10 @@ static int test(int argc, char *argv[])
         a_str_drop(&str);
         sorted[i] = vec[i].data;
         a_rbt_insert(&root, &vec[i].node, int_cmp);
-#if defined(MAIN_ONCE)
         if (i % 0x100 == 0)
         {
-            printf("insert 0x%04X/0x%04X\n", i, n);
+            debug("insert 0x%04X/0x%04X\n", i, n);
         }
-#endif /* MAIN_ONCE */
     }
     a_str_dtor(&str);
 
@@ -156,12 +152,10 @@ static int test(int argc, char *argv[])
     for (unsigned int i = 0; i < n; ++i)
     {
         a_rbt_remove(&root, &vec[i].node);
-#if defined(MAIN_ONCE)
         if (i % 0x100 == 0)
         {
-            printf("remove 0x%04X/0x%04X\n", i, n);
+            debug("remove 0x%04X/0x%04X\n", i, n);
         }
-#endif /* MAIN_ONCE */
     }
 
     TEST_BUG(!a_rbt_search(&root, &vec->node, int_cmp));
@@ -191,5 +185,3 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     test(argc, argv);
     return 0;
 }
-
-#endif /* test/rbt.h */

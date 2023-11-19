@@ -1,12 +1,8 @@
-#ifndef TEST_CRC_H
-#define TEST_CRC_H
-#define MAIN_(s, argc, argv) A_CAST_2(crc, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _crc)
 #include "test.h"
 #include "a/crc.h"
+#if !defined __cplusplus
 #include <stdlib.h>
-
-#if defined(MAIN_ONCE)
-
 #define WRITE_TABLE(bit, row, fmt)                                                                \
     static void write_table##bit(FILE *out, a_u##bit##_t ctx[A_CRC_SIZ], char const *const label) \
     {                                                                                             \
@@ -33,9 +29,11 @@ WRITE_TABLE(16, 8, 4)
 WRITE_TABLE(32, 8, 8)
 WRITE_TABLE(64, 4, 16)
 #undef WRITE_TABLE
+#endif /* __cplusplus */
 
 static void create_table(char const *const name)
 {
+#if !defined __cplusplus
     FILE *out = stdout;
 
     if (name && *name)
@@ -78,103 +76,70 @@ static void create_table(char const *const name)
     {
         perror(name);
     }
+#else /* !__cplusplus */
+    (void)name;
+#endif /* __cplusplus */
 }
-
-#endif /* MAIN_ONCE */
 
 static void test(void)
 {
-#if defined(MAIN_ONCE)
 #define TEXT "123456789"
 #define SIZE (sizeof(TEXT) - 1)
-#endif /* MAIN_ONCE */
 
     a_u8_t table8[A_CRC_SIZ];
-#if defined(MAIN_ONCE)
-    printf("POLY: 0x%02u\n", A_CRC8_POLY);
-    printf("INIT: 0x%02u\n", A_CRC8_INIT);
-#endif /* MAIN_ONCE */
+    debug("POLY: 0x%02u\n", A_CRC8_POLY);
+    debug("INIT: 0x%02u\n", A_CRC8_INIT);
     a_crc8l_init(table8, A_CRC8_POLY);
-#if defined(MAIN_ONCE)
-    printf("LSB: 0x%02" PRIX8 "\n", a_crc8(table8, TEXT, SIZE, A_CRC8_INIT));
-#endif /* MAIN_ONCE */
+    debug("LSB: 0x%02" PRIX8 "\n", a_crc8(table8, TEXT, SIZE, A_CRC8_INIT));
     a_crc8h_init(table8, A_CRC8_POLY);
-#if defined(MAIN_ONCE)
-    printf("MSB: 0x%02" PRIX8 "\n", a_crc8(table8, TEXT, SIZE, A_CRC8_INIT));
-#endif /* MAIN_ONCE */
+    debug("MSB: 0x%02" PRIX8 "\n", a_crc8(table8, TEXT, SIZE, A_CRC8_INIT));
 
     a_u16_t table16[A_CRC_SIZ];
-#if defined(MAIN_ONCE)
-    printf("POLY: 0x%04u\n", A_CRC16_POLY);
-    printf("INIT: 0x%04u\n", A_CRC16_INIT);
-#endif /* MAIN_ONCE */
+    debug("POLY: 0x%04u\n", A_CRC16_POLY);
+    debug("INIT: 0x%04u\n", A_CRC16_INIT);
     a_crc16l_init(table16, A_CRC16_POLY);
-#if defined(MAIN_ONCE)
-    printf("LSB: 0x%04" PRIX16 "(L) 0x%04" PRIX16 "(H)\n",
-           a_crc16l(table16, TEXT, SIZE, A_CRC16_INIT),
-           a_crc16h(table16, TEXT, SIZE, A_CRC16_INIT));
-#endif /* MAIN_ONCE */
+    debug("LSB: 0x%04" PRIX16 "(L) 0x%04" PRIX16 "(H)\n",
+          a_crc16l(table16, TEXT, SIZE, A_CRC16_INIT),
+          a_crc16h(table16, TEXT, SIZE, A_CRC16_INIT));
     a_crc16h_init(table16, A_CRC16_POLY);
-#if defined(MAIN_ONCE)
-    printf("MSB: 0x%04" PRIX16 "(L) 0x%04" PRIX16 "(H)\n",
-           a_crc16l(table16, TEXT, SIZE, A_CRC16_INIT),
-           a_crc16h(table16, TEXT, SIZE, A_CRC16_INIT));
-#endif /* MAIN_ONCE */
+    debug("MSB: 0x%04" PRIX16 "(L) 0x%04" PRIX16 "(H)\n",
+          a_crc16l(table16, TEXT, SIZE, A_CRC16_INIT),
+          a_crc16h(table16, TEXT, SIZE, A_CRC16_INIT));
 
     a_u32_t table32[A_CRC_SIZ];
-#if defined(MAIN_ONCE)
-    printf("POLY: 0x%08" PRIX32 "\n", A_CRC32_POLY);
-    printf("INIT: 0x%08" PRIX32 "\n", A_CRC32_INIT);
-#endif /* MAIN_ONCE */
+    debug("POLY: 0x%08" PRIX32 "\n", A_CRC32_POLY);
+    debug("INIT: 0x%08" PRIX32 "\n", A_CRC32_INIT);
     a_crc32l_init(table32, A_CRC32_POLY);
-#if defined(MAIN_ONCE)
-    printf("LSB: 0x%08" PRIX32 "(L) 0x%08" PRIX32 "(H)\n",
-           a_crc32l(table32, TEXT, SIZE, A_CRC32_INIT),
-           a_crc32h(table32, TEXT, SIZE, A_CRC32_INIT));
-#endif /* MAIN_ONCE */
+    debug("LSB: 0x%08" PRIX32 "(L) 0x%08" PRIX32 "(H)\n",
+          a_crc32l(table32, TEXT, SIZE, A_CRC32_INIT),
+          a_crc32h(table32, TEXT, SIZE, A_CRC32_INIT));
     a_crc32h_init(table32, A_CRC32_POLY);
-#if defined(MAIN_ONCE)
-    printf("MSB: 0x%08" PRIX32 "(L) 0x%08" PRIX32 "(H)\n",
-           a_crc32l(table32, TEXT, SIZE, A_CRC32_INIT),
-           a_crc32h(table32, TEXT, SIZE, A_CRC32_INIT));
-#endif /* MAIN_ONCE */
+    debug("MSB: 0x%08" PRIX32 "(L) 0x%08" PRIX32 "(H)\n",
+          a_crc32l(table32, TEXT, SIZE, A_CRC32_INIT),
+          a_crc32h(table32, TEXT, SIZE, A_CRC32_INIT));
 
     a_u64_t table64[A_CRC_SIZ];
-#if defined(MAIN_ONCE)
-    printf("POLY: 0x%016" PRIX64 "\n", A_CRC64_POLY);
-    printf("INIT: 0x%016" PRIX64 "\n", A_CRC64_INIT);
-#endif /* MAIN_ONCE */
+    debug("POLY: 0x%016" PRIX64 "\n", A_CRC64_POLY);
+    debug("INIT: 0x%016" PRIX64 "\n", A_CRC64_INIT);
     a_crc64l_init(table64, A_CRC64_POLY);
-#if defined(MAIN_ONCE)
-    printf("LSB: 0x%016" PRIX64 "(L) 0x%016" PRIX64 "(H)\n",
-           a_crc64l(table64, TEXT, SIZE, A_CRC64_INIT),
-           a_crc64h(table64, TEXT, SIZE, A_CRC64_INIT));
-#endif /* MAIN_ONCE */
+    debug("LSB: 0x%016" PRIX64 "(L) 0x%016" PRIX64 "(H)\n",
+          a_crc64l(table64, TEXT, SIZE, A_CRC64_INIT),
+          a_crc64h(table64, TEXT, SIZE, A_CRC64_INIT));
     a_crc64h_init(table64, A_CRC64_POLY);
-#if defined(MAIN_ONCE)
-    printf("MSB: 0x%016" PRIX64 "(L) 0x%016" PRIX64 "(H)\n",
-           a_crc64l(table64, TEXT, SIZE, A_CRC64_INIT),
-           a_crc64h(table64, TEXT, SIZE, A_CRC64_INIT));
-#endif /* MAIN_ONCE */
+    debug("MSB: 0x%016" PRIX64 "(L) 0x%016" PRIX64 "(H)\n",
+          a_crc64l(table64, TEXT, SIZE, A_CRC64_INIT),
+          a_crc64h(table64, TEXT, SIZE, A_CRC64_INIT));
 
-#if defined(MAIN_ONCE)
 #undef TEXT
 #undef SIZE
-#endif /* MAIN_ONCE */
 }
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     if (argc > 1)
     {
-#if defined(MAIN_ONCE)
         create_table(argv[argc - 1]);
-#else /* !MAIN_ONCE */
-        (void)(argv);
-#endif /* MAIN_ONCE */
     }
     test();
     return 0;
 }
-
-#endif /* test/crc.h */

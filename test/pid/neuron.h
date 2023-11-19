@@ -1,9 +1,6 @@
-#ifndef TEST_PID_NEURON_H
-#define TEST_PID_NEURON_H
-#define MAIN_(s, argc, argv) A_CAST_2(pid_neuron, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _pid_neuron)
 #include "../test.h"
 #include "a/tf.h"
-#include "a/math.h"
 #include "a/pid/neuron.h"
 
 static void test_f(void)
@@ -87,6 +84,7 @@ static void test_p(void)
     }
 }
 
+#include "a/math.h"
 static A_INLINE a_float_t input(a_float_t const x)
 {
 #if 0
@@ -98,16 +96,7 @@ static A_INLINE a_float_t input(a_float_t const x)
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-#if defined(MAIN_ONCE)
-    FILE *log = A_NULL;
-    if (argc > 1)
-    {
-        log = freopen(argv[1], "wb", stdout);
-    }
-#else /* !MAIN_ONCE */
-    (void)(argc);
-    (void)(argv);
-#endif /* MAIN_ONCE */
+    test_init(argc, argv, 1);
     test_f();
     test_p();
 
@@ -135,25 +124,11 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     {
         a_float_t const in = input(A_FLOAT_C(0.001) * a_float_c(, i));
         a_tf_iter(&tf, *a_pid_neuron_iter(&ctx, &in, tf.output));
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
-               A_FLOAT_C(0.001) * a_float_c(, i), in, *tf.output, ctx.pid.err.f);
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
+              A_FLOAT_C(0.001) * a_float_c(, i), in, *tf.output, ctx.pid.err.f);
     }
     a_pid_neuron_zero(&ctx);
     a_tf_zero(&tf);
 
-#if defined(MAIN_ONCE)
-    if (log)
-    {
-        if (fclose(log))
-        {
-            perror(A_FUNC);
-        }
-    }
-#endif /* MAIN_ONCE */
-
     return 0;
 }
-
-#endif /* test/pid/neuron.h */

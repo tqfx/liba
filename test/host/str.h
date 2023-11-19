@@ -1,6 +1,4 @@
-#ifndef TEST_HOST_STR_H
-#define TEST_HOST_STR_H
-#define MAIN_(s, argc, argv) A_CAST_2(str, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _str)
 #include "../test.h"
 #include "a/host/str.h"
 
@@ -387,5 +385,3 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     }
     return 0;
 }
-
-#endif /* test/host/str.h */

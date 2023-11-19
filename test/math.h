@@ -1,6 +1,4 @@
-#ifndef TEST_MATH_H
-#define TEST_MATH_H
-#define MAIN_(s, argc, argv) A_CAST_2(math, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _math)
 #include "test.h"
 #include "a/math.h"
 
@@ -42,9 +40,7 @@ static void test_f32_rsqrt(void)
     };
     for (unsigned int i = 0; i != sizeof(data) / sizeof(a_f32_t); ++i)
     {
-#if defined(MAIN_ONCE)
-        printf("1/sqrt(%g):\t%-10g%-10g\n", data[i], 1 / a_f32_sqrt(data[i]), a_f32_rsqrt(data[i]));
-#endif /* MAIN_ONCE */
+        debug("1/sqrt(%g):\t%-10g%-10g\n", data[i], 1 / a_f32_sqrt(data[i]), a_f32_rsqrt(data[i]));
     }
 }
 
@@ -60,9 +56,7 @@ static void test_f64_rsqrt(void)
     };
     for (unsigned int i = 0; i != sizeof(data) / sizeof(a_f64_t); ++i)
     {
-#if defined(MAIN_ONCE)
-        printf("1/sqrt(%g):\t%-10g%-10g\n", data[i], 1 / a_f64_sqrt(data[i]), a_f64_rsqrt(data[i]));
-#endif /* MAIN_ONCE */
+        debug("1/sqrt(%g):\t%-10g%-10g\n", data[i], 1 / a_f64_sqrt(data[i]), a_f64_rsqrt(data[i]));
     }
 }
 
@@ -71,13 +65,7 @@ static void test_f32_hypot(void)
     a_f32_t x = A_F32_C(1e38);
     a_f32_t y = A_F32_C(1e38);
     a_f32_t z = a_f32_hypot(x, y);
-#if defined(MAIN_ONCE)
-    printf("hypot(%g,%g)=%g\n", x, y, z);
-#else /* !MAIN_ONCE */
-    (void)(x);
-    (void)(y);
-    (void)(z);
-#endif /* MAIN_ONCE */
+    debug("hypot(%g,%g)=%g\n", x, y, z);
 }
 
 static void test_f64_hypot(void)
@@ -85,13 +73,7 @@ static void test_f64_hypot(void)
     a_f64_t x = A_F64_C(1e308);
     a_f64_t y = A_F64_C(1e308);
     a_f64_t z = a_f64_hypot(x, y);
-#if defined(MAIN_ONCE)
-    printf("hypot(%g,%g)=%g\n", x, y, z);
-#else /* !MAIN_ONCE */
-    (void)(x);
-    (void)(y);
-    (void)(z);
-#endif /* MAIN_ONCE */
+    debug("hypot(%g,%g)=%g\n", x, y, z);
 }
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
@@ -109,47 +91,24 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         a_f64_t max = A_F64_MAX;
         a_f64_t inf = A_F64_INF;
         a_f64_t nan = A_F64_NAN;
-#if defined(MAIN_ONCE)
-        printf("64 min = %-12g max = %g\n", min, max);
-        printf("64 inf = %-12g nan = %g\n", inf, nan);
-#else /* !MAIN_ONCE */
-        (void)(min);
-        (void)(max);
-        (void)(inf);
-        (void)(nan);
-#endif /* MAIN_ONCE */
+        debug("64 min = %-12g max = %g\n", min, max);
+        debug("64 inf = %-12g nan = %g\n", inf, nan);
     }
     {
         a_f32_t min = A_F32_MIN;
         a_f32_t max = A_F32_MAX;
         a_f32_t inf = A_F32_INF;
         a_f32_t nan = A_F32_NAN;
-#if defined(MAIN_ONCE)
-        printf("32 min = %-12g max = %g\n", min, max);
-        printf("32 inf = %-12g nan = %g\n", inf, nan);
-#else /* !MAIN_ONCE */
-        (void)(min);
-        (void)(max);
-        (void)(inf);
-        (void)(nan);
-#endif /* MAIN_ONCE */
+        debug("32 min = %-12g max = %g\n", min, max);
+        debug("32 inf = %-12g nan = %g\n", inf, nan);
     }
     {
         a_float_t min = A_FLOAT_MIN;
         a_float_t max = A_FLOAT_MAX;
         a_float_t inf = A_FLOAT_INF;
         a_float_t nan = A_FLOAT_NAN;
-#if defined(MAIN_ONCE)
-        printf("min = " A_FLOAT_PRI("-12", "g ") "max = " A_FLOAT_PRI("", "g\n"), min, max);
-        printf("inf = " A_FLOAT_PRI("-12", "g ") "nan = " A_FLOAT_PRI("", "g\n"), inf, nan);
-#else /* !MAIN_ONCE */
-        (void)(min);
-        (void)(max);
-        (void)(inf);
-        (void)(nan);
-#endif /* MAIN_ONCE */
+        debug("min = " A_FLOAT_PRI("-12", "g ") "max = " A_FLOAT_PRI("", "g\n"), min, max);
+        debug("inf = " A_FLOAT_PRI("-12", "g ") "nan = " A_FLOAT_PRI("", "g\n"), inf, nan);
     }
     return 0;
 }
-
-#endif /* test/math.h */

@@ -1,6 +1,4 @@
-#ifndef TEST_OPERATOR_H
-#define TEST_OPERATOR_H
-#define MAIN_(s, argc, argv) A_CAST_2(operator, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _operator)
 #include "test.h"
 #include "a/operator.h"
 
@@ -202,5 +200,3 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     test();
     return 0;
 }
-
-#endif /* test/operator.h */

@@ -1,9 +1,6 @@
-#ifndef TEST_HOST_VECTOR_H
-#define TEST_HOST_VECTOR_H
-#define MAIN_(s, argc, argv) A_CAST_2(vector, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _vector)
 #include "../test.h"
 #include "a/host/vector.h"
-#include <string.h>
 
 static void dtor(void *ptr)
 {
@@ -306,5 +303,3 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     test_sort();
     return 0;
 }
-
-#endif /* test/host/vector.h */

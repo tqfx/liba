@@ -1,10 +1,7 @@
-#ifndef TEST_PID_FUZZY_H
-#define TEST_PID_FUZZY_H
-#define MAIN_(s, argc, argv) A_CAST_2(pid_fuzzy, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _pid_fuzzy)
 #include "../test.h"
 #include "a/tf.h"
 #include "a/mf.h"
-#include "a/math.h"
 #include "a/pid/fuzzy.h"
 
 #define N (-1 * X)
@@ -201,6 +198,7 @@ static void test_p(void)
     }
 }
 
+#include "a/math.h"
 static A_INLINE a_float_t input(a_float_t const x)
 {
 #if 0
@@ -212,16 +210,7 @@ static A_INLINE a_float_t input(a_float_t const x)
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-#if defined(MAIN_ONCE)
-    FILE *log = A_NULL;
-    if (argc > 1)
-    {
-        log = freopen(argv[1], "wb", stdout);
-    }
-#else /* !MAIN_ONCE */
-    (void)(argc);
-    (void)(argv);
-#endif /* MAIN_ONCE */
+    test_init(argc, argv, 1);
     test_f();
     test_p();
 
@@ -285,27 +274,13 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         a_float_t in = input(A_FLOAT_C(0.001) * a_float_c(, i));
         a_tf_iter(&pos_tf, *a_pid_fuzzy_iter(&pos_pid, &in, pos_tf.output));
         a_tf_iter(&inc_tf, *a_pid_fuzzy_iter(&inc_pid, &in, inc_tf.output));
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
-               A_FLOAT_C(0.001) * a_float_c(, i), in, *pos_tf.output, *inc_tf.output);
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
+              A_FLOAT_C(0.001) * a_float_c(, i), in, *pos_tf.output, *inc_tf.output);
     }
     a_pid_fuzzy_zero(&pos_pid);
     a_pid_fuzzy_zero(&inc_pid);
     a_tf_zero(&pos_tf);
     a_tf_zero(&inc_tf);
 
-#if defined(MAIN_ONCE)
-    if (log)
-    {
-        if (fclose(log))
-        {
-            perror(A_FUNC);
-        }
-    }
-#endif /* MAIN_ONCE */
-
     return 0;
 }
-
-#endif /* test/pid/fuzzy.h */

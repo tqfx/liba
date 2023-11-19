@@ -1,6 +1,4 @@
-#ifndef TEST_TF_H
-#define TEST_TF_H
-#define MAIN_(s, argc, argv) A_CAST_2(tf, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _tf)
 #include "test.h"
 #include "a/tf.h"
 
@@ -109,16 +107,7 @@ static a_float_t u[] = {
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-#if defined(MAIN_ONCE)
-    FILE *log = A_NULL;
-    if (argc > 1)
-    {
-        log = freopen(argv[1], "wb", stdout);
-    }
-#else /* !MAIN_ONCE */
-    (void)(argc);
-    (void)(argv);
-#endif /* MAIN_ONCE */
+    test_init(argc, argv, 1);
 
     a_float_t num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
     a_float_t den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
@@ -131,23 +120,9 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     for (unsigned int i = 0; i < A_LEN(u); ++i)
     {
         a_tf_iter(&ctx, u[i]);
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
-               A_FLOAT_C(0.001) * a_float_c(, i), A_FLOAT_C(1.0), *ctx.output);
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
+              A_FLOAT_C(0.001) * a_float_c(, i), A_FLOAT_C(1.0), *ctx.output);
     }
-
-#if defined(MAIN_ONCE)
-    if (log)
-    {
-        if (fclose(log))
-        {
-            perror(A_FUNC);
-        }
-    }
-#endif /* MAIN_ONCE */
 
     return 0;
 }
-
-#endif /* test/tf.h */

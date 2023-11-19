@@ -1,6 +1,4 @@
-#ifndef TEST_NOTEFREQS_H
-#define TEST_NOTEFREQS_H
-#define MAIN_(s, argc, argv) A_CAST_2(notefreqs, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _notefreqs)
 #include "test.h"
 #define A_NOTEFREQ_T a_float_t
 #define A_NOTEFREQ_C(X) A_FLOAT_C(X)
@@ -68,35 +66,10 @@ static a_float_t const song[][2] = {
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-#if defined(MAIN_ONCE)
-    FILE *log = A_NULL;
-    if (argc > 1)
-    {
-        log = freopen(argv[1], "wb", stdout);
-    }
-#else /* !MAIN_ONCE */
-    (void)(argc);
-    (void)(argv);
-#endif /* MAIN_ONCE */
-
+    test_init(argc, argv, 1);
     for (unsigned int i = 0; i != A_LEN(song); ++i)
     {
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("", "g\t") A_FLOAT_PRI("", "g\t") A_FLOAT_PRI("", "g\n"), song[i][0], song[i][1], 1 / song[i][1]);
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI("", "g\t") A_FLOAT_PRI("", "g\t") A_FLOAT_PRI("", "g\n"), song[i][0], song[i][1], 1 / song[i][1]);
     }
-
-#if defined(MAIN_ONCE)
-    if (log)
-    {
-        if (fclose(log))
-        {
-            perror(A_FUNC);
-        }
-    }
-#endif /* MAIN_ONCE */
-
     return 0;
 }
-
-#endif /* test/notefreqs.h */

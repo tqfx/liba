@@ -1,9 +1,6 @@
-#ifndef TEST_SLIST_H
-#define TEST_SLIST_H
-#define MAIN_(s, argc, argv) A_CAST_2(slist, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _slist)
 #include "test.h"
 #include "a/slist.h"
-#include <stdlib.h>
 
 typedef struct
 {
@@ -121,5 +118,3 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     null();
     return 0;
 }
-
-#endif /* test/slist.h */

@@ -137,31 +137,55 @@
 #define TEST_BUG(expression) TEST_IS_TRUE(expression, "bug")
 
 #if defined(MAIN_)
-#define MAIN_C(argc, argv) MAIN_(_c, argc, argv)
-#define MAIN_CPP(argc, argv) MAIN_(_cpp, argc, argv)
-#if defined(__cplusplus) == defined(HAS_CXX)
-#define MAIN_ONCE 1
-#endif /* __cplusplus */
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
-int MAIN_C(int argc, char *argv[]);
-int MAIN_CPP(int argc, char *argv[]);
+int MAIN_(c)(int argc, char *argv[]);
+int MAIN_(cpp)(int argc, char *argv[]);
+int test_init(int argc, char *argv[], int out);
+int debug(char const *fmt, ...) A_FORMAT(printf, 1, 2);
 #if defined(__cplusplus)
 } /* extern "C" */
-#define MAIN(argc, argv) MAIN_CPP(argc, argv)
+#define MAIN(argc, argv) MAIN_(cpp)(argc, argv)
 #else /* !__cplusplus */
-#define MAIN(argc, argv) MAIN_C(argc, argv)
+#define MAIN(argc, argv) MAIN_(c)(argc, argv)
 #endif /* __cplusplus */
 #if !defined __cplusplus
+static void test_exit(void);
+int debug(char const *fmt, ...)
+{
+    return (void)fmt, 0;
+}
+int test_init(int argc, char *argv[], int out)
+{
+    static FILE *log = A_NULL;
+    if (!log && argc > out)
+    {
+        log = freopen(argv[out], "wb", stdout);
+        if (log)
+        {
+            out = atexit(test_exit);
+        }
+    }
+    return out;
+}
 int main(int argc, char *argv[])
 {
 #if defined(HAS_CXX)
-    return MAIN_CPP(argc, argv) + MAIN_C(argc, argv);
+    return MAIN_(cpp)(argc, argv) + MAIN_(c)(argc, argv);
 #else /* !HAS_CXX */
-    return MAIN_C(argc, argv);
+    return MAIN_(c)(argc, argv);
 #endif /* HAS_CXX */
 }
+static void test_exit(void)
+{
+    if (fclose(stdout))
+    {
+    }
+}
+#endif /* __cplusplus */
+#if defined(__cplusplus) == defined(HAS_CXX)
+#define debug printf
 #endif /* __cplusplus */
 #endif /* MAIN_ */
 

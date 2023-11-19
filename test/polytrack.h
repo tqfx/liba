@@ -1,6 +1,4 @@
-#ifndef TEST_POLYTRACK_H
-#define TEST_POLYTRACK_H
-#define MAIN_(s, argc, argv) A_CAST_2(polytrack, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _polytrack)
 #include "test.h"
 #include "a/polytrack.h"
 #include <string.h>
@@ -38,9 +36,6 @@ static void test(void)
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     int start = 1;
-#if defined(MAIN_ONCE)
-    FILE *log = A_NULL;
-#endif /* MAIN_ONCE */
     if (argc > 1)
     {
         char *endptr = A_NULL;
@@ -53,9 +48,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 #endif /* A_FLOAT_TYPE */
         if (argv[1] == endptr)
         {
-#if defined(MAIN_ONCE)
-            log = freopen(argv[1], "wb", stdout);
-#endif /* MAIN_ONCE */
+            test_init(argc, argv, 1);
             ++start;
         }
     }
@@ -85,27 +78,13 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         a_polytrack5_out(&pt5, dt, out5);
         a_float_t out7[4];
         a_polytrack7_out(&pt7, dt, out7);
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "f "), dt);
-        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f "), out3[0], out3[1], out3[2]);
-        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f "), out5[0], out5[1], out5[2]);
-        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), out7[0], out7[1], out7[2], out7[3]);
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI("+", "f "), dt);
+        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f "), out3[0], out3[1], out3[2]);
+        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f "), out5[0], out5[1], out5[2]);
+        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), out7[0], out7[1], out7[2], out7[3]);
     }
 
     test();
 
-#if defined(MAIN_ONCE)
-    if (log)
-    {
-        if (fclose(log))
-        {
-            perror(A_FUNC);
-        }
-    }
-#endif /* MAIN_ONCE */
-
     return 0;
 }
-
-#endif /* test/polytrack.h */

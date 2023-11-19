@@ -1,6 +1,4 @@
-#ifndef TEST_POLY_H
-#define TEST_POLY_H
-#define MAIN_(s, argc, argv) A_CAST_2(poly, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _poly)
 #include "test.h"
 #include "a/poly.h"
 
@@ -47,5 +45,3 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     test();
     return 0;
 }
-
-#endif /* test/poly.h */

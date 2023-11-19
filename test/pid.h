@@ -1,10 +1,7 @@
-#ifndef TEST_PID_H
-#define TEST_PID_H
-#define MAIN_(s, argc, argv) A_CAST_2(pid, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _pid)
 #include "test.h"
 #include "a/tf.h"
 #include "a/pid.h"
-#include "a/math.h"
 
 static void test_f(void)
 {
@@ -116,6 +113,7 @@ static void test_p(void)
     }
 }
 
+#include "a/math.h"
 static A_INLINE a_float_t input(a_float_t const x)
 {
 #if 0
@@ -127,16 +125,7 @@ static A_INLINE a_float_t input(a_float_t const x)
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-#if defined(MAIN_ONCE)
-    FILE *log = A_NULL;
-    if (argc > 1)
-    {
-        log = freopen(argv[1], "wb", stdout);
-    }
-#else /* !MAIN_ONCE */
-    (void)(argc);
-    (void)(argv);
-#endif /* MAIN_ONCE */
+    test_init(argc, argv, 1);
     test_f();
     test_p();
 
@@ -174,23 +163,9 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         a_float_t const in = input(A_FLOAT_C(0.001) * a_float_c(, i));
         a_tf_iter(&pos_tf, *a_pid_iter(&pos_pid, &in, pos_tf.output));
         a_tf_iter(&inc_tf, *a_pid_iter(&inc_pid, &in, inc_tf.output));
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
-               A_FLOAT_C(0.001) * a_float_c(, i), in, *pos_tf.output, *inc_tf.output);
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
+              A_FLOAT_C(0.001) * a_float_c(, i), in, *pos_tf.output, *inc_tf.output);
     }
-
-#if defined(MAIN_ONCE)
-    if (log)
-    {
-        if (fclose(log))
-        {
-            perror(A_FUNC);
-        }
-    }
-#endif /* MAIN_ONCE */
 
     return 0;
 }
-
-#endif /* test/pid.h */

@@ -1,9 +1,6 @@
-#ifndef TEST_HOST_QUE_H
-#define TEST_HOST_QUE_H
-#define MAIN_(s, argc, argv) A_CAST_2(que, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _que)
 #include "../test.h"
 #include "a/host/que.h"
-#include <string.h>
 
 static void dtor(void *ptr)
 {
@@ -179,5 +176,3 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     test_sort();
     return 0;
 }
-
-#endif /* test/host/que.h */

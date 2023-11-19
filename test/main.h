@@ -1,6 +1,4 @@
-#ifndef TEST_MAIN_H
-#define TEST_MAIN_H
-#define MAIN_(s, argc, argv) A_CAST_2(main, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _main)
 #include "test.h"
 
 static int test(int argc, char *argv[])
@@ -13,12 +11,8 @@ static int test(int argc, char *argv[])
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     printf("%s", A_FUNC);
-#if defined(MAIN_ONCE)
-    printf(" ok");
-#endif /* MAIN_ONCE */
+    debug(" ok");
     putchar('\n');
     test(argc, argv);
     return 0;
 }
-
-#endif /* test/main.h */

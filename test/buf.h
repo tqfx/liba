@@ -1,6 +1,4 @@
-#ifndef TEST_BUF_H
-#define TEST_BUF_H
-#define MAIN_(s, argc, argv) A_CAST_2(buf, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _buf)
 #include "test.h"
 #include "a/buf.h"
 #include <stdlib.h>
@@ -205,5 +203,3 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     test_sort();
     return 0;
 }
-
-#endif /* test/buf.h */

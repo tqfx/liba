@@ -1,6 +1,4 @@
-#ifndef TEST_A_H
-#define TEST_A_H
-#define MAIN_(s, argc, argv) A_CAST_2(a, s)(argc, argv)
+#define MAIN_(x) A_CAST_2(x, _a)
 #include "test.h"
 #include <stdlib.h>
 
@@ -46,11 +44,7 @@ static void test_bkdr(int argc, char *argv[])
     for (int idx = 1; idx < argc; ++idx)
     {
         a_u32_t val = a_u32_c(, a_hash_bkdr(argv[idx], 0));
-#if defined(MAIN_ONCE)
-        printf("case 0x%08" PRIX32 ": // %s\n    break;\n", val, argv[idx]);
-#else /* !MAIN_ONCE */
-        (void)(val);
-#endif /* MAIN_ONCE */
+        debug("case 0x%08" PRIX32 ": // %s\n    break;\n", val, argv[idx]);
     }
 }
 
@@ -69,64 +63,40 @@ static void test_for(int argc, char *argv[])
     a_forenum(unsigned int, i, n)
     {
         p[i] = a_cast_s(int, i);
-#if defined(MAIN_ONCE)
-        printf("%u ", i);
-#endif /* MAIN_ONCE */
+        debug("%u ", i);
     }
-#if defined(MAIN_ONCE)
-    putchar('\n');
-#endif /* MAIN_ONCE */
+    debug("\n");
 
     a_foreach(int, it, p, n)
     {
-#if defined(MAIN_ONCE)
-        printf("%i ", *it);
-#endif /* MAIN_ONCE */
+        debug("%i ", *it);
     }
-#if defined(MAIN_ONCE)
-    putchar('\n');
-#endif /* MAIN_ONCE */
+    debug("\n");
 
     a_iterate(int, it, p, d)
     {
-#if defined(MAIN_ONCE)
-        printf("%i ", *it);
-#endif /* MAIN_ONCE */
+        debug("%i ", *it);
     }
-#if defined(MAIN_ONCE)
-    putchar('\n');
-#endif /* MAIN_ONCE */
+    debug("\n");
 
     a_forenum_reverse(unsigned int, i, n)
     {
         p[i] = a_cast_s(int, i);
-#if defined(MAIN_ONCE)
-        printf("%u ", i);
-#endif /* MAIN_ONCE */
+        debug("%u ", i);
     }
-#if defined(MAIN_ONCE)
-    putchar('\n');
-#endif /* MAIN_ONCE */
+    debug("\n");
 
     a_foreach_reverse(int, it, p, n)
     {
-#if defined(MAIN_ONCE)
-        printf("%i ", *it);
-#endif /* MAIN_ONCE */
+        debug("%i ", *it);
     }
-#if defined(MAIN_ONCE)
-    putchar('\n');
-#endif /* MAIN_ONCE */
+    debug("\n");
 
     a_iterate_reverse(int, it, p, d)
     {
-#if defined(MAIN_ONCE)
-        printf("%i ", *it);
-#endif /* MAIN_ONCE */
+        debug("%i ", *it);
     }
-#if defined(MAIN_ONCE)
-    putchar('\n');
-#endif /* MAIN_ONCE */
+    debug("\n");
 
     a_die(p);
 }
@@ -135,34 +105,18 @@ static void test_swap(int argc, char *argv[])
 {
     a_u64_t lhs = 0;
     a_u64_t rhs = A_U64_MAX;
-#if defined(MAIN_ONCE)
-    printf("0x%016" PRIX64 " 0x%016" PRIX64 " -> ", lhs, rhs);
-#endif /* MAIN_ONCE */
+    debug("0x%016" PRIX64 " 0x%016" PRIX64 " -> ", lhs, rhs);
     a_swap(&lhs, &rhs, 1);
-#if defined(MAIN_ONCE)
-    printf("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
-#endif /* MAIN_ONCE */
-#if defined(MAIN_ONCE)
-    printf("0x%016" PRIX64 " 0x%016" PRIX64 " -> ", lhs, rhs);
-#endif /* MAIN_ONCE */
+    debug("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
+    debug("0x%016" PRIX64 " 0x%016" PRIX64 " -> ", lhs, rhs);
     a_swap(&lhs, &rhs, 2);
-#if defined(MAIN_ONCE)
-    printf("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
-#endif /* MAIN_ONCE */
-#if defined(MAIN_ONCE)
-    printf("0x%016" PRIX64 " 0x%016" PRIX64 " -> ", lhs, rhs);
-#endif /* MAIN_ONCE */
+    debug("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
+    debug("0x%016" PRIX64 " 0x%016" PRIX64 " -> ", lhs, rhs);
     a_swap(&lhs, &rhs, 4);
-#if defined(MAIN_ONCE)
-    printf("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
-#endif /* MAIN_ONCE */
-#if defined(MAIN_ONCE)
-    printf("0x%016" PRIX64 " 0x%016" PRIX64 " -> ", lhs, rhs);
-#endif /* MAIN_ONCE */
+    debug("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
+    debug("0x%016" PRIX64 " 0x%016" PRIX64 " -> ", lhs, rhs);
     a_swap(&lhs, &rhs, 8);
-#if defined(MAIN_ONCE)
-    printf("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
-#endif /* MAIN_ONCE */
+    debug("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
     (void)argc;
     (void)argv;
 }
@@ -172,9 +126,7 @@ static void test_save(int argc, char *argv[])
     a_float_t array[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     for (a_size_t i = 0; i < A_LEN(array); ++i)
     {
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     {
         a_float_t cache[] = {-1};
@@ -182,9 +134,7 @@ static void test_save(int argc, char *argv[])
     }
     for (a_size_t i = 0; i < A_LEN(array); ++i)
     {
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     {
         a_float_t cache[] = {-1, -2};
@@ -192,9 +142,7 @@ static void test_save(int argc, char *argv[])
     }
     for (a_size_t i = 0; i < A_LEN(array); ++i)
     {
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     {
         a_float_t cache[] = {-1, -2, -3, -4};
@@ -202,9 +150,7 @@ static void test_save(int argc, char *argv[])
     }
     for (a_size_t i = 0; i < A_LEN(array); ++i)
     {
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     {
         a_float_t cache[] = {-1, -2, -3, -4, -5, -6, -7, -8};
@@ -212,9 +158,7 @@ static void test_save(int argc, char *argv[])
     }
     for (a_size_t i = 0; i < A_LEN(array); ++i)
     {
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     {
         a_float_t cache[] = {-0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10};
@@ -222,9 +166,7 @@ static void test_save(int argc, char *argv[])
     }
     for (a_size_t i = 0; i < A_LEN(array); ++i)
     {
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     (void)argc;
     (void)argv;
@@ -236,44 +178,32 @@ static void test_roll(int argc, char *argv[])
     a_float_t shift[16];
     for (a_size_t i = 0; i < A_LEN(array); ++i)
     {
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     a_float_roll(array, A_LEN(array), shift, 1);
     for (a_size_t i = 0; i < A_LEN(array); ++i)
     {
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     a_float_roll(array, A_LEN(array), shift, 2);
     for (a_size_t i = 0; i < A_LEN(array); ++i)
     {
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     a_float_roll(array, A_LEN(array), shift, 4);
     for (a_size_t i = 0; i < A_LEN(array); ++i)
     {
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     a_float_roll(array, A_LEN(array), shift, 8);
     for (a_size_t i = 0; i < A_LEN(array); ++i)
     {
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     a_float_roll(array, A_LEN(array), shift, 15);
     for (a_size_t i = 0; i < A_LEN(array); ++i)
     {
-#if defined(MAIN_ONCE)
-        printf(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
-#endif /* MAIN_ONCE */
+        debug(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     (void)argc;
     (void)argv;
@@ -314,16 +244,12 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     case 0x0F63D79D: // roll
         test_roll(argc - 1, argv + 1);
         break;
-    default:;
-#if defined(MAIN_ONCE)
-        puts("for");
-        puts("bkdr");
-        puts("swap");
-        puts("save");
-        puts("roll");
-#endif /* MAIN_ONCE */
+    default:
+        debug("for\n");
+        debug("bkdr\n");
+        debug("swap\n");
+        debug("save\n");
+        debug("roll\n");
     }
     return 0;
 }
-
-#endif /* test/a.h */
