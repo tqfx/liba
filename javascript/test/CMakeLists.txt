@@ -6,6 +6,8 @@ endfunction()
 
 unittest(a a)
 
+unittest(mf mf)
+
 unittest(pid pid)
 
 unittest(pid_fuzzy pid_fuzzy)

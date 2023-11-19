@@ -8,7 +8,7 @@ function assert(b, str) {
 }
 assert(a.mf.NUL == 0)
 assert(a.mf.GAUSS == 1)
-assert(a.mf.GAUSS2 == 1)
+assert(a.mf.GAUSS2 == 2)
 assert(a.mf.GBELL == 3)
 assert(a.mf.SIG == 4)
 assert(a.mf.DSIG == 5)
