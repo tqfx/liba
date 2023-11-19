@@ -13,11 +13,6 @@ local ctx = a.tf.new(num, den)
 test.dir(getmetatable(ctx))
 assert(type(a.tf.iter(ctx, 1)) == "number")
 assert(type(a.tf.zero(ctx)) == "userdata")
----@diagnostic disable: param-type-mismatch, redundant-parameter
-assert(type(a.tf:iter(ctx, 1)) == "number")
-assert(type(a.tf:zero(ctx)) == "userdata")
----@diagnostic enable: param-type-mismatch, redundant-parameter
-local ctx = a:tf(num, den)
 assert(type(ctx.iter(ctx, 1)) == "number")
 assert(type(ctx.zero(ctx)) == "userdata")
 assert(type(ctx:iter(1)) == "number")
@@ -30,3 +25,16 @@ ctx.num = { 1, 2 }
 assert(type(ctx.num) == "table")
 ctx.den = { 3, 4 }
 assert(type(ctx.den) == "table")
+ctx.__name = nil
+assert(ctx.__name)
+ctx.__call = nil
+assert(ctx.__call)
+ctx.__index = nil
+assert(ctx.__index)
+ctx.__newindex = nil
+assert(ctx.__newindex)
+---@class a.tf
+---@field __name string
+---@field __call function
+---@field __index table
+---@field __newindex table

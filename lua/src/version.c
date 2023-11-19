@@ -19,8 +19,7 @@ static int LMODULE(version_tostring)(lua_State *const L)
 
 static int LMODULE(version_init_)(lua_State *const L, a_version_s *const ctx)
 {
-    int const top = lua_gettop(L) - lua_isuserdata(L, -1);
-    switch (top & 0x3)
+    switch (lua_gettop(L) - lua_isuserdata(L, -1))
     {
     case 3:
         ctx->patch = (unsigned int)luaL_checkinteger(L, 3);
@@ -52,10 +51,6 @@ static int LMODULE(version_init_)(lua_State *const L, a_version_s *const ctx)
 */
 int LMODULE(version_new)(lua_State *const L)
 {
-    while (lua_type(L, 1) == LUA_TTABLE)
-    {
-        lua_remove(L, 1);
-    }
     a_version_s *const ctx = (a_version_s *)lua_newuserdata(L, sizeof(a_version_s));
     a_zero(ctx, sizeof(a_version_s));
     LMODULE2(version_meta_, L, 1);
@@ -74,14 +69,8 @@ int LMODULE(version_new)(lua_State *const L)
 */
 int LMODULE(version_init)(lua_State *const L)
 {
-    while (lua_type(L, 1) == LUA_TTABLE)
-    {
-        lua_remove(L, 1);
-    }
     luaL_checktype(L, 1, LUA_TUSERDATA);
     a_version_s *const ctx = (a_version_s *)lua_touserdata(L, 1);
-    lua_pushvalue(L, 1);
-    lua_remove(L, 1);
     return LMODULE2(version_init_, L, ctx);
 }
 
@@ -94,10 +83,10 @@ int LMODULE(version_init)(lua_State *const L)
 */
 int LMODULE(version_parse)(lua_State *const L)
 {
-    a_version_s *const ctx = (a_version_s *)lua_touserdata(L, -2);
+    a_version_s *const ctx = (a_version_s *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_version_parse(ctx, lua_tostring(L, -1));
+        a_version_parse(ctx, lua_tostring(L, 2));
         lua_pop(L, 1);
         return 1;
     }
@@ -115,13 +104,9 @@ int LMODULE(version_parse)(lua_State *const L)
 */
 int LMODULE(version_cmp)(lua_State *const L)
 {
-    while (lua_type(L, 1) == LUA_TTABLE)
-    {
-        lua_remove(L, 1);
-    }
     luaL_checktype(L, 1, LUA_TUSERDATA);
-    a_version_s const *const lhs = (a_version_s const *)lua_touserdata(L, 1);
     luaL_checktype(L, 2, LUA_TUSERDATA);
+    a_version_s const *const lhs = (a_version_s const *)lua_touserdata(L, 1);
     a_version_s const *const rhs = (a_version_s const *)lua_touserdata(L, 2);
     lua_pushinteger(L, a_version_cmp(lhs, rhs));
     return 1;
@@ -140,10 +125,6 @@ int LMODULE(version_cmp)(lua_State *const L)
 static int LMODULE(version_check)(lua_State *const L)
 {
     a_version_s v = A_VERSION_C(0, 0, 0);
-    while (lua_type(L, 1) == LUA_TTABLE)
-    {
-        lua_remove(L, 1);
-    }
     switch (lua_gettop(L) & 0x3)
     {
     case 3:
@@ -167,13 +148,9 @@ static int LMODULE(version_check)(lua_State *const L)
 #define FUNC(func)                                              \
     int LMODULE(version_##func)(lua_State *const L)             \
     {                                                           \
-        while (lua_type(L, 1) == LUA_TTABLE)                    \
-        {                                                       \
-            lua_remove(L, 1);                                   \
-        }                                                       \
         luaL_checktype(L, 1, LUA_TUSERDATA);                    \
-        a_version_s *lhs = (a_version_s *)lua_touserdata(L, 1); \
         luaL_checktype(L, 2, LUA_TUSERDATA);                    \
+        a_version_s *lhs = (a_version_s *)lua_touserdata(L, 1); \
         a_version_s *rhs = (a_version_s *)lua_touserdata(L, 2); \
         lua_pushboolean(L, a_version_##func(lhs, rhs));         \
         return 1;                                               \
@@ -373,14 +350,13 @@ int LMODULE_(version, lua_State *const L)
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
     l_int_reg(L, -1, enums);
     l_func_reg(L, -1, funcs);
-    lua_createtable(L, 0, 2);
+    lua_createtable(L, 0, 1);
     l_func_set(L, -1, L_SET, LMODULE(setter));
-    l_func_set(L, -1, L_NEW, LMODULE(version_new));
     lua_setmetatable(L, -2);
 
     l_func_s const metas[] = {
         {L_PRI, LMODULE(version_tostring)},
-        {L_NEW, LMODULE(version_init)},
+        {L_FUN, LMODULE(version_init)},
         {L_GET, LMODULE(version_get)},
         {L_SET, LMODULE(version_set)},
         {L_EQ, LMODULE(version_eq)},

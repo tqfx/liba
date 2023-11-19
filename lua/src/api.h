@@ -133,7 +133,7 @@ L_API void l_stack_show(lua_State *L, int line);
 
 #define L_STACK(L) l_stack_show(L, __LINE__)
 #define L_NAME "__name"
-#define L_NEW "__call"
+#define L_FUN "__call"
 #define L_DIE "__gc"
 #define L_LEN "__len"
 #define L_GET "__index"

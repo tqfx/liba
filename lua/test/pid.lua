@@ -14,13 +14,7 @@ local ctx = a.pid.new(10, 0.1, 1, -10, 10, 10)
 assert(type(a.pid.kpid(ctx, 3, 2, 1)) == "userdata")
 assert(type(a.pid.iter(ctx, 1, 0)) == "number")
 assert(type(a.pid.zero(ctx)) == "userdata")
----@diagnostic disable: param-type-mismatch, redundant-parameter
-assert(type(a.pid:kpid(ctx, 3, 2, 1)) == "userdata")
-assert(type(a.pid:iter(ctx, 1, 0)) == "number")
-assert(type(a.pid:zero(ctx)) == "userdata")
----@diagnostic enable: param-type-mismatch, redundant-parameter
 test.dir(getmetatable(ctx))
-local ctx = a:pid(10, 0.1, 1, -10, 10, 10):kpid(3, 2, 1)
 assert(type(ctx(1, 0)) == "number")
 assert(type(ctx.kp) == "number")
 assert(type(ctx.ki) == "number")
@@ -39,3 +33,16 @@ ctx.summax = 5
 ctx.kp = 3
 ctx.ki = 2
 ctx.kd = 1
+ctx.__name = nil
+assert(ctx.__name)
+ctx.__call = nil
+assert(ctx.__call)
+ctx.__index = nil
+assert(ctx.__index)
+ctx.__newindex = nil
+assert(ctx.__newindex)
+---@class a.pid
+---@field __name string
+---@field __call function
+---@field __index table
+---@field __newindex table

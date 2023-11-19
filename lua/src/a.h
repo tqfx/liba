@@ -8,6 +8,7 @@
 #define LMODULE(F) L_MODULE(, _##F)
 #define LMODULE1(F, a) L_MODULE(, _##F)(a)
 #define LMODULE2(F, a, b) L_MODULE(, _##F)(a, b)
+#define LMODULE3(F, a, b, c) L_MODULE(, _##F)(a, b, c)
 #define LMODULE_(F, L) L_MODULE(luaopen_, _##F)(L)
 #define LMODULE0(L) L_MODULE(luaopen_, )(L)
 #define LFUNC2P(F) L_FUNC2P(LMODULE(F))

@@ -4,10 +4,10 @@ package.path = arg[0]:sub(0, -arg[0]:match("([^/\\]*)$"):len() - 1) .. "?.lua;" 
 local test = require("test")
 local a = require("liba")
 test.dir(a.complex)
-local x = a.complex(1, 2)
+local x = a.complex.new(1, 2)
 local y = a.complex.new(2, 1)
-test.dir(getmetatable(x(0, 0)))
 local z = a.complex.polar(1, math.pi)
+test.dir(getmetatable(z))
 test.log(z, z:conj(), z.r, z.theta)
 z.real, z.imag = math.pi, math.pi
 test.log("- " .. tostring(x) .. " = " .. tostring(-x))
@@ -79,3 +79,34 @@ assert(a.complex.acsch(z))
 assert(z:acsch())
 assert(a.complex.acoth(z))
 assert(z:acoth())
+z.__unm = nil
+assert(z.__unm)
+z.__add = nil
+assert(z.__add)
+z.__sub = nil
+assert(z.__sub)
+z.__mul = nil
+assert(z.__mul)
+z.__div = nil
+assert(z.__div)
+z.__pow = nil
+assert(z.__pow)
+z.__len = nil
+assert(z.__len)
+z.__name = nil
+assert(z.__name)
+z.__index = nil
+assert(z.__index)
+z.__newindex = nil
+assert(z.__newindex)
+---@class a.complex
+---@field __unm function
+---@field __add function
+---@field __sub function
+---@field __mul function
+---@field __div function
+---@field __pow function
+---@field __len function
+---@field __name string
+---@field __index table
+---@field __newindex table

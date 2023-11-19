@@ -12,8 +12,6 @@ function liba.hash_bkdr(str, ...) end
 function liba.rsqrt(x, ...) end
 
 ---@class a.complex
----@field __name string
----@field __index table
 ---@field real number
 ---@field imag number
 ---@field r number
@@ -25,13 +23,8 @@ function liba.rsqrt(x, ...) end
 ---@operator div(a.complex): a.complex
 ---@operator pow(a.complex): a.complex
 ---@operator len(a.complex): number
----@overload fun(real: number, imag: number): a.complex
-local complex = setmetatable({}, {
-    __call = liba.complex.new
-})
-liba.complex = setmetatable({}, {
-    __call = liba.complex.new
-})
+local complex = {}
+liba.complex = {}
 
 ---@param real number
 ---@param imag number
@@ -466,8 +459,6 @@ liba.mf.PI = 13
 function liba.mf.pi(x, a, b, c, d) end
 
 ---@class a.pid
----@field __name string
----@field __index table
 ---@field kp number
 ---@field ki number
 ---@field kd number
@@ -482,9 +473,7 @@ function liba.mf.pi(x, a, b, c, d) end
 local pid = setmetatable({}, {
     __call = liba.pid.iter
 })
-liba.pid = setmetatable({}, {
-    __call = liba.pid.new
-})
+liba.pid = {}
 liba.pid.OFF = 0
 liba.pid.POS = 1
 liba.pid.INC = 2
@@ -566,8 +555,6 @@ function liba.pid.zero(ctx) end
 function pid:zero() end
 
 ---@class a.pid.fuzzy
----@field __name string
----@field __index table
 ---@field kp number
 ---@field ki number
 ---@field kd number
@@ -583,9 +570,7 @@ function pid:zero() end
 pid.fuzzy = setmetatable({}, {
     __call = liba.pid.fuzzy.iter
 })
-liba.pid.fuzzy = setmetatable({}, {
-    __call = liba.pid.fuzzy.new
-})
+liba.pid.fuzzy = {}
 
 ---@param kp number
 ---@param ki number
@@ -706,8 +691,6 @@ function liba.pid.fuzzy.zero(ctx) end
 function pid.fuzzy:zero() end
 
 ---@class a.pid.neuron
----@field __name string
----@field __index table
 ---@field k number
 ---@field kp number
 ---@field ki number
@@ -727,9 +710,7 @@ function pid.fuzzy:zero() end
 pid.neuron = setmetatable({}, {
     __call = liba.pid.neuron.iter
 })
-liba.pid.neuron = setmetatable({}, {
-    __call = liba.pid.neuron.new
-})
+liba.pid.neuron = {}
 
 ---@param kp number
 ---@param ki number
@@ -823,16 +804,12 @@ function liba.pid.neuron.zero(ctx) end
 function pid.neuron:zero() end
 
 ---@class a.polytrack3
----@field __name string
----@field __index table
 ---@field k table
 ---@overload fun(dt: number): table
 local polytrack3 = setmetatable({}, {
     __call = liba.polytrack3.out
 })
-liba.polytrack3 = setmetatable({}, {
-    __call = liba.polytrack3.new
-})
+liba.polytrack3 = {}
 
 ---@param t0 number
 ---@param t1 number
@@ -912,16 +889,12 @@ function liba.polytrack3.acc(ctx, dt) end
 function polytrack3:acc(dt) end
 
 ---@class a.polytrack5
----@field __name string
----@field __index table
 ---@field k table
 ---@overload fun(dt: number): table
 local polytrack5 = setmetatable({}, {
     __call = liba.polytrack5.out
 })
-liba.polytrack5 = setmetatable({}, {
-    __call = liba.polytrack5.new
-})
+liba.polytrack5 = {}
 
 ---@param t0 number
 ---@param t1 number
@@ -1009,16 +982,12 @@ function liba.polytrack5.acc(ctx, dt) end
 function polytrack5:acc(dt) end
 
 ---@class a.polytrack7
----@field __name string
----@field __index table
 ---@field k table
 ---@overload fun(dt: number): table
 local polytrack7 = setmetatable({}, {
     __call = liba.polytrack7.out
 })
-liba.polytrack7 = setmetatable({}, {
-    __call = liba.polytrack7.new
-})
+liba.polytrack7 = {}
 
 ---@param t0 number
 ---@param t1 number
@@ -1123,8 +1092,6 @@ function liba.polytrack7.jer(ctx, dt) end
 function polytrack7:jer(dt) end
 
 ---@class a.tf
----@field __name string
----@field __index table
 ---@field num table
 ---@field den table
 ---@field input table
@@ -1133,9 +1100,7 @@ function polytrack7:jer(dt) end
 local tf = setmetatable({}, {
     __call = liba.tf.iter
 })
-liba.tf = setmetatable({}, {
-    __call = liba.tf.new
-})
+liba.tf = {}
 
 ---@param num table
 ---@param den table
@@ -1180,8 +1145,6 @@ function liba.tf.zero(ctx) end
 function tf:zero() end
 
 ---@class a.version
----@field __name string
----@field __index table
 ---@field major integer
 ---@field patch integer
 ---@field tweak integer
@@ -1190,9 +1153,7 @@ function tf:zero() end
 local version = setmetatable({}, {
     __call = liba.version.init
 })
-liba.version = setmetatable({}, {
-    __call = liba.version.new
-})
+liba.version = {}
 liba.version.major = 0
 liba.version.minor = 0
 liba.version.patch = 0

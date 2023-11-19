@@ -10,6 +10,5 @@ for i, v in pairs(arg) do
     end
 end
 test.dir(a)
+test.log(a.hash_bkdr(arg[0]))
 test.log(a.rsqrt(1, 2, 4))
----@diagnostic disable-next-line: param-type-mismatch
-assert(a:rsqrt(1))

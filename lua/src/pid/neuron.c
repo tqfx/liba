@@ -52,10 +52,6 @@ static int LMODULE(pid_neuron_init_)(lua_State *const L, a_pid_neuron_s *const c
 */
 int LMODULE(pid_neuron_new)(lua_State *const L)
 {
-    while (lua_type(L, 1) == LUA_TTABLE)
-    {
-        lua_remove(L, 1);
-    }
     a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_newuserdata(L, sizeof(a_pid_neuron_s));
     a_zero(ctx, sizeof(a_pid_neuron_s));
     ctx->pid.summax = +A_FLOAT_INF;
@@ -78,19 +74,11 @@ int LMODULE(pid_neuron_new)(lua_State *const L)
 */
 int LMODULE(pid_neuron_init)(lua_State *const L)
 {
-    if (lua_gettop(L))
-    {
-        while (lua_type(L, 1) == LUA_TTABLE)
-        {
-            lua_remove(L, 1);
-        }
-        luaL_checktype(L, 1, LUA_TUSERDATA);
-        a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, 1);
-        lua_pushvalue(L, 1);
-        lua_remove(L, 1);
-        return LMODULE2(pid_neuron_init_, L, ctx);
-    }
-    return 0;
+    luaL_checktype(L, 1, LUA_TUSERDATA);
+    a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, 1);
+    lua_pushvalue(L, 1);
+    lua_remove(L, 1);
+    return LMODULE2(pid_neuron_init_, L, ctx);
 }
 
 /***
@@ -105,13 +93,13 @@ int LMODULE(pid_neuron_init)(lua_State *const L)
 */
 int LMODULE(pid_neuron_kpid)(lua_State *const L)
 {
-    a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, -5);
+    a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float_t const k = (a_float_t)luaL_checknumber(L, -4);
-        a_float_t const kp = (a_float_t)luaL_checknumber(L, -3);
-        a_float_t const ki = (a_float_t)luaL_checknumber(L, -2);
-        a_float_t const kd = (a_float_t)luaL_checknumber(L, -1);
+        a_float_t const k = (a_float_t)luaL_checknumber(L, 2);
+        a_float_t const kp = (a_float_t)luaL_checknumber(L, 3);
+        a_float_t const ki = (a_float_t)luaL_checknumber(L, 4);
+        a_float_t const kd = (a_float_t)luaL_checknumber(L, 5);
         a_pid_neuron_kpid(ctx, k, kp, ki, kd);
         lua_pop(L, 4);
         return 1;
@@ -130,12 +118,12 @@ int LMODULE(pid_neuron_kpid)(lua_State *const L)
 */
 int LMODULE(pid_neuron_wpid)(lua_State *const L)
 {
-    a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, -4);
+    a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float_t const wp = (a_float_t)luaL_checknumber(L, -3);
-        a_float_t const wi = (a_float_t)luaL_checknumber(L, -2);
-        a_float_t const wd = (a_float_t)luaL_checknumber(L, -1);
+        a_float_t const wp = (a_float_t)luaL_checknumber(L, 2);
+        a_float_t const wi = (a_float_t)luaL_checknumber(L, 3);
+        a_float_t const wd = (a_float_t)luaL_checknumber(L, 4);
         a_pid_neuron_wpid(ctx, wp, wi, wd);
         lua_pop(L, 3);
         return 1;
@@ -153,11 +141,11 @@ int LMODULE(pid_neuron_wpid)(lua_State *const L)
 */
 int LMODULE(pid_neuron_iter)(lua_State *const L)
 {
-    a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, -3);
+    a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float_t const set = (a_float_t)luaL_checknumber(L, -2);
-        a_float_t const fdb = (a_float_t)luaL_checknumber(L, -1);
+        a_float_t const set = (a_float_t)luaL_checknumber(L, 2);
+        a_float_t const fdb = (a_float_t)luaL_checknumber(L, 3);
         lua_pushnumber(L, (lua_Number)a_pid_neuron_outf(ctx, set, fdb));
         lua_pop(L, 2);
         return 1;
@@ -173,7 +161,7 @@ int LMODULE(pid_neuron_iter)(lua_State *const L)
 */
 int LMODULE(pid_neuron_zero)(lua_State *const L)
 {
-    a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, -1);
+    a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, 1);
     if (ctx)
     {
         a_pid_neuron_zero(ctx);
@@ -223,6 +211,7 @@ static int LMODULE(pid_neuron_set)(lua_State *const L)
         ctx->k = (a_float_t)luaL_checknumber(L, 3);
         break;
     case 0xE8859EEB: // __name
+    case 0xE70C48C6: // __call
     case 0xA65758B2: // __index
     case 0xAEB551C6: // __newindex
         break;
@@ -366,13 +355,12 @@ int LMODULE_(pid_neuron, lua_State *const L)
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
     l_int_reg(L, -1, enums);
     l_func_reg(L, -1, funcs);
-    lua_createtable(L, 0, 2);
+    lua_createtable(L, 0, 1);
     l_func_set(L, -1, L_SET, LMODULE(setter));
-    l_func_set(L, -1, L_NEW, LMODULE(pid_neuron_new));
     lua_setmetatable(L, -2);
 
     l_func_s const metas[] = {
-        {L_NEW, LMODULE(pid_neuron_iter)},
+        {L_FUN, LMODULE(pid_neuron_iter)},
         {L_SET, LMODULE(pid_neuron_set)},
         {L_GET, LMODULE(pid_neuron_get)},
         {NULL, NULL},

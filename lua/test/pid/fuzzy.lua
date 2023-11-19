@@ -94,22 +94,13 @@ assert(a.pid.fuzzy.new(-10, 10, 10))
 assert(a.pid.fuzzy.new(10, 0.1, 1, -10, 10))
 assert(a.pid.fuzzy.new(10, 0.1, 1, -10, 10, 10))
 local ctx = a.pid.fuzzy.new(-10, 10)
+test.dir(getmetatable(ctx))
 assert(type(a.pid.fuzzy.rule(ctx, me, mec, mkp, mki, mkd)) == "userdata")
 assert(type(a.pid.fuzzy.kpid(ctx, 3, 2, 1)) == "userdata")
 assert(type(a.pid.fuzzy.joint(ctx, 2)) == "userdata")
 assert(type(a.pid.fuzzy.iter(ctx, 1, 0)) == "number")
 assert(type(a.pid.fuzzy.zero(ctx)) == "userdata")
----@diagnostic disable: param-type-mismatch, redundant-parameter
-assert(type(a.pid.fuzzy:rule(ctx, me, mec, mkp, mki, mkd)) == "userdata")
-assert(type(a.pid.fuzzy:kpid(ctx, 3, 2, 1)) == "userdata")
-assert(type(a.pid.fuzzy:joint(ctx, 2)) == "userdata")
-assert(type(a.pid.fuzzy:iter(ctx, 1, 0)) == "number")
-assert(type(a.pid.fuzzy:zero(ctx)) == "userdata")
----@diagnostic enable: param-type-mismatch, redundant-parameter
-test.dir(getmetatable(ctx))
-local ctx = a.pid:fuzzy(-10, 10, 10)
-ctx:rule(me, mec, mkp, mki, mkd)
-ctx:kpid(3, 2, 1):joint(2):op(a.pid.fuzzy.EQU)
+ctx:rule(me, mec, mkp, mki, mkd):kpid(3, 2, 1):joint(2):op(a.pid.fuzzy.EQU)
 assert(type(ctx(1, 0)) == "number")
 assert(type(ctx.kp) == "number")
 assert(type(ctx.ki) == "number")
@@ -121,7 +112,7 @@ assert(type(ctx.out) == "number")
 assert(type(ctx.fdb) == "number")
 assert(type(ctx.err) == "number")
 assert(type(ctx.order) == "number")
-assert(ctx.mode == a.pid.POS)
+assert(ctx.mode == a.pid.INC)
 ctx.mode = a.pid.OFF
 ctx.outmin = -10
 ctx.outmax = 10
@@ -129,3 +120,16 @@ ctx.summax = 5
 ctx.kp = 3
 ctx.ki = 2
 ctx.kd = 1
+ctx.__name = nil
+assert(ctx.__name)
+ctx.__call = nil
+assert(ctx.__call)
+ctx.__index = nil
+assert(ctx.__index)
+ctx.__newindex = nil
+assert(ctx.__newindex)
+---@class a.pid.fuzzy
+---@field __name string
+---@field __call function
+---@field __index table
+---@field __newindex table

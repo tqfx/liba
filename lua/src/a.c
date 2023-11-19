@@ -16,13 +16,10 @@
 static int LMODULE(hash_bkdr)(lua_State *const L)
 {
     a_umax_t val = 0;
-    int const n = lua_gettop(L);
-    for (int i = 0; i++ != n;)
+    int const Ln = lua_gettop(L);
+    for (int Li = 1; Li <= Ln; ++Li)
     {
-        if (lua_type(L, i) == LUA_TSTRING)
-        {
-            val = a_hash_bkdr(lua_tostring(L, i), val);
-        }
+        val = a_hash_bkdr(luaL_checklstring(L, Li, A_NULL), val);
     }
     lua_pushinteger(L, (lua_Integer)val);
     return 1;
@@ -37,14 +34,11 @@ static int LMODULE(hash_bkdr)(lua_State *const L)
 */
 static int LMODULE(rsqrt)(lua_State *const L)
 {
-    if (lua_type(L, 1) == LUA_TTABLE)
+    int Li;
+    int const Ln = lua_gettop(L);
+    for (Li = 1; Li <= Ln; ++Li)
     {
-        lua_remove(L, 1);
-    }
-    int const n = lua_gettop(L);
-    for (int i = 0; i++ != n;)
-    {
-        lua_Number x = luaL_checknumber(L, i);
+        lua_Number x = luaL_checknumber(L, Li);
 #if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
         x = (lua_Number)a_f32_rsqrt((a_f32_t)x);
 #elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
@@ -54,7 +48,7 @@ static int LMODULE(rsqrt)(lua_State *const L)
 #endif /* A_FLOAT_TYPE */
         lua_pushnumber(L, x);
     }
-    return n;
+    return 1 + Ln - Li;
 }
 
 static lua_State *LMODULE(L) = A_NULL;

@@ -72,12 +72,6 @@ static int LMODULE(complex_tostring)(lua_State *const L)
 */
 int LMODULE(complex_new)(lua_State *const L)
 {
-    for (int e = lua_type(L, 1);
-         e == LUA_TTABLE || e == LUA_TUSERDATA;
-         e = lua_type(L, 1))
-    {
-        lua_remove(L, 1);
-    }
     a_complex_s z = A_COMPLEX_C(0.0, 0.0);
     int const top = lua_gettop(L);
     if (top >= 2)
@@ -101,12 +95,6 @@ int LMODULE(complex_new)(lua_State *const L)
 */
 int LMODULE(complex_polar)(lua_State *const L)
 {
-    for (int e = lua_type(L, 1);
-         e == LUA_TTABLE || e == LUA_TUSERDATA;
-         e = lua_type(L, 1))
-    {
-        lua_remove(L, 1);
-    }
     a_float_t theta = A_FLOAT_C(0.0);
     a_float_t r = A_FLOAT_C(0.0);
     int const top = lua_gettop(L);
@@ -126,10 +114,6 @@ int LMODULE(complex_polar)(lua_State *const L)
 #define FUNC(func)                                                  \
     int LMODULE(complex_##func)(lua_State *const L)                 \
     {                                                               \
-        while (lua_type(L, 1) == LUA_TTABLE)                        \
-        {                                                           \
-            lua_remove(L, 1);                                       \
-        }                                                           \
         if (lua_gettop(L) >= 1)                                     \
         {                                                           \
             a_complex_s const z = LMODULE2(complex_from_lua, L, 1); \
@@ -171,10 +155,6 @@ FUNC(arg)
 #define FUNC(func)                                                  \
     int LMODULE(complex_##func)(lua_State *const L)                 \
     {                                                               \
-        while (lua_type(L, 1) == LUA_TTABLE)                        \
-        {                                                           \
-            lua_remove(L, 1);                                       \
-        }                                                           \
         if (lua_gettop(L) >= 1)                                     \
         {                                                           \
             a_complex_s const z = LMODULE2(complex_from_lua, L, 1); \
@@ -208,10 +188,6 @@ FUNC(inv)
 #define FUNC(func)                                                  \
     int LMODULE(complex_##func)(lua_State *const L)                 \
     {                                                               \
-        while (lua_type(L, 1) == LUA_TTABLE)                        \
-        {                                                           \
-            lua_remove(L, 1);                                       \
-        }                                                           \
         if (lua_gettop(L) >= 2)                                     \
         {                                                           \
             a_complex_s const x = LMODULE2(complex_from_lua, L, 1); \
@@ -273,10 +249,6 @@ FUNC(logb)
 #define FUNC(func)                                                  \
     int LMODULE(complex_##func)(lua_State *const L)                 \
     {                                                               \
-        while (lua_type(L, 1) == LUA_TTABLE)                        \
-        {                                                           \
-            lua_remove(L, 1);                                       \
-        }                                                           \
         if (lua_gettop(L) >= 1)                                     \
         {                                                           \
             a_complex_s const z = LMODULE2(complex_from_lua, L, 1); \
@@ -511,7 +483,6 @@ static int LMODULE(complex_set)(lua_State *const L)
     case 0x906F01C8: // __pow
     case 0x906DF07D: // __len
     case 0xE8859EEB: // __name
-    case 0xE70C48C6: // __call
     case 0xA65758B2: // __index
     case 0xAEB551C6: // __newindex
     case 0x5DA21A54: // __tostring
@@ -790,14 +761,12 @@ int LMODULE_(complex, lua_State *const L)
     };
     lua_createtable(L, 0, A_LEN(funcs) - 1);
     l_func_reg(L, -1, funcs);
-    lua_createtable(L, 0, 2);
+    lua_createtable(L, 0, 1);
     l_func_set(L, -1, L_SET, LMODULE(setter));
-    l_func_set(L, -1, L_NEW, LMODULE(complex_new));
     lua_setmetatable(L, -2);
 
     l_func_s const metas[] = {
         {L_PRI, LMODULE(complex_tostring)},
-        {L_NEW, LMODULE(complex_new)},
         {L_GET, LMODULE(complex_get)},
         {L_SET, LMODULE(complex_set)},
         {L_UNM, LMODULE(complex_neg)},

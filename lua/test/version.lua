@@ -4,12 +4,11 @@ package.path = arg[0]:sub(0, -arg[0]:match("([^/\\]*)$"):len() - 1) .. "?.lua;" 
 local test = require("test")
 local a = require("liba")
 test.dir(getmetatable(a.version))
-test.dir(getmetatable(a.version()))
 local v000 = a.version.new()
 local v100 = a.version.new(1)
 local v010 = a.version.new(0, 1)
 local v001 = a.version.new(0, 0, 1)
-local vcur = a.version.new(a.VERSION)
+local vctx = a.version.new(a.VERSION)
 assert(a.version.eq(v000, v000))
 assert(a.version.ne(v000, v010))
 assert(a.version.lt(v000, v010))
@@ -37,12 +36,35 @@ assert(v000 <= v010)
 assert(not (v010 <= v000))
 assert(v010 >= v010)
 assert(not (v000 >= v010))
-test.dir(vcur.__index)
+test.dir(vctx.__index)
+vctx.__lt = nil
+assert(vctx.__lt)
+vctx.__le = nil
+assert(vctx.__le)
+vctx.__eq = nil
+assert(vctx.__eq)
+vctx.__name = nil
+assert(vctx.__name)
+vctx.__call = nil
+assert(vctx.__call)
+vctx.__index = nil
+assert(vctx.__index)
+vctx.__newindex = nil
+assert(vctx.__newindex)
+vctx.__tostring = nil
+assert(vctx.__tostring)
 test.log("version", a.VERSION)
 test.log("major", a.version.major)
 test.log("minor", a.version.minor)
 test.log("patch", a.version.patch)
 test.log("tweak", a.version.tweak)
-test.log(vcur, "0.0.0", a.version.check())
----@diagnostic disable-next-line: param-type-mismatch
-assert(a.version:new())
+test.log(vctx(), "0.0.0", a.version.check())
+---@class a.version
+---@field __lt function
+---@field __le function
+---@field __eq function
+---@field __name string
+---@field __call function
+---@field __index table
+---@field __newindex table
+---@field __tostring function
