@@ -28,7 +28,11 @@
 #     )
 #
 include(${CMAKE_ROOT}/Modules/FindPackageHandleStandardArgs.cmake)
-find_program(LDOC_EXECUTABLE NAMES ldoc)
+if(CMAKE_HOST_WIN32)
+  find_program(LDOC_EXECUTABLE NAMES ldoc ldoc.bat)
+else()
+  find_program(LDOC_EXECUTABLE NAMES ldoc)
+endif()
 mark_as_advanced(LDOC_EXECUTABLE)
 
 if(EXISTS "${LDOC_EXECUTABLE}")
