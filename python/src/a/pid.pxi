@@ -28,6 +28,11 @@ cdef class pid:
         '''zero clear function for PID controller'''
         a_pid_zero(&self.ctx)
         return self
+    property mode:
+        def __get__(self) -> int:
+            return self.ctx.mode
+        def __set__(self, mode: int):
+            self.ctx.mode = mode
     property kp:
         def __get__(self) -> a_float_t:
             return self.ctx.kp
@@ -67,11 +72,6 @@ cdef class pid:
     property err:
         def __get__(self) -> a_float_t:
             return self.ctx.err.f
-    property mode:
-        def __get__(self) -> int:
-            return self.ctx.mode
-        def __set__(self, mode: int):
-            self.ctx.mode = mode
 
 include "pid/fuzzy.pxi"
 include "pid/neuron.pxi"

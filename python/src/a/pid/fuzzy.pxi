@@ -35,11 +35,11 @@ cdef class pid_fuzzy:
         return self
     def rule(self, me, mec, mkp, mki, mkd):
         '''set rule base for fuzzy PID controller'''
-        self.me = float.array((col for row in me for col in row))
-        self.mec = float.array((col for row in mec for col in row))
-        self.mkp = float.array((col for row in mkp for col in row))
-        self.mki = float.array((col for row in mki for col in row))
-        self.mkd = float.array((col for row in mkd for col in row))
+        self.me = float_.array((col for row in me for col in row))
+        self.mec = float_.array((col for row in mec for col in row))
+        self.mkp = float_.array((col for row in mkp for col in row))
+        self.mki = float_.array((col for row in mki for col in row))
+        self.mkd = float_.array((col for row in mkd for col in row))
         a_pid_fuzzy_rule(&self.ctx, <unsigned int>len(me),
                          <a_float_t *>self.me.data.as_voidptr,
                          <a_float_t *>self.mec.data.as_voidptr,
@@ -66,6 +66,11 @@ cdef class pid_fuzzy:
         '''zero clear function for fuzzy PID controller'''
         a_pid_fuzzy_zero(&self.ctx)
         return self
+    property mode:
+        def __get__(self) -> int:
+            return self.ctx.pid.mode
+        def __set__(self, mode: int):
+            self.ctx.pid.mode = mode
     property kp:
         def __get__(self) -> a_float_t:
             return self.ctx.kp
@@ -108,11 +113,6 @@ cdef class pid_fuzzy:
     property err:
         def __get__(self) -> a_float_t:
             return self.ctx.pid.err.f
-    property mode:
-        def __get__(self) -> int:
-            return self.ctx.pid.mode
-        def __set__(self, mode: int):
-            self.ctx.pid.mode = mode
     property order:
         def __get__(self) -> int:
             return self.ctx.order

@@ -23,3 +23,8 @@ print(liba.version(1))
 print(liba.version(1, 2))
 print(liba.version(1, 2, 3))
 print(liba.version_check())
+v = liba.version()
+v.parse(b"1.2.3")
+v.major = v.major
+v.minor = v.minor
+v.patch = v.patch

@@ -125,7 +125,7 @@ cdef class f64:
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-cdef class float:
+cdef class float_:
     @staticmethod
     def array(object o):
         if A_FLOAT_TYPE == A_FLOAT_DOUBLE:

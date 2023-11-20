@@ -30,6 +30,16 @@ cdef class pid_neuron:
         '''zero clear function for single neuron PID controller'''
         a_pid_neuron_zero(&self.ctx)
         return self
+    property mode:
+        def __get__(self) -> int:
+            return self.ctx.pid.mode
+        def __set__(self, mode: int):
+            self.ctx.pid.mode = mode
+    property k:
+        def __get__(self) -> a_float_t:
+            return self.ctx.k
+        def __set__(self, k: a_float_t):
+            self.ctx.k = k
     property kp:
         def __get__(self) -> a_float_t:
             return self.ctx.pid.kp
@@ -45,6 +55,21 @@ cdef class pid_neuron:
             return self.ctx.pid.kd
         def __set__(self, kd: a_float_t):
             self.ctx.pid.kd = kd
+    property wp:
+        def __get__(self) -> a_float_t:
+            return self.ctx.wp.f
+        def __set__(self, wp: a_float_t):
+            self.ctx.wp.f = wp
+    property wi:
+        def __get__(self) -> a_float_t:
+            return self.ctx.wi.f
+        def __set__(self, wi: a_float_t):
+            self.ctx.wi.f = wi
+    property wd:
+        def __get__(self) -> a_float_t:
+            return self.ctx.wd.f
+        def __set__(self, wd: a_float_t):
+            self.ctx.wd.f = wd
     property summax:
         def __get__(self) -> a_float_t:
             return self.ctx.pid.summax
@@ -69,31 +94,6 @@ cdef class pid_neuron:
     property err:
         def __get__(self) -> a_float_t:
             return self.ctx.pid.err.f
-    property mode:
-        def __get__(self) -> int:
-            return self.ctx.pid.mode
-        def __set__(self, mode: int):
-            self.ctx.pid.mode = mode
     property ec:
         def __get__(self) -> a_float_t:
             return self.ctx.ec.f
-    property wp:
-        def __get__(self) -> a_float_t:
-            return self.ctx.wp.f
-        def __set__(self, wp: a_float_t):
-            self.ctx.wp.f = wp
-    property wi:
-        def __get__(self) -> a_float_t:
-            return self.ctx.wi.f
-        def __set__(self, wi: a_float_t):
-            self.ctx.wi.f = wi
-    property wd:
-        def __get__(self) -> a_float_t:
-            return self.ctx.wd.f
-        def __set__(self, wd: a_float_t):
-            self.ctx.wd.f = wd
-    property k:
-        def __get__(self) -> a_float_t:
-            return self.ctx.k
-        def __set__(self, k: a_float_t):
-            self.ctx.k = k
