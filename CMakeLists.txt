@@ -190,12 +190,26 @@ endif()
 
 find_package(Git)
 
+if(GIT_FOUND)
+  function(git_command output)
+    execute_process(ERROR_QUIET
+      COMMAND ${GIT_EXECUTABLE} ${ARGN}
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+      OUTPUT_VARIABLE ${output}
+    )
+    set(${output} ${${output}} PARENT_SCOPE)
+  endfunction()
+
+  git_command(GIT_COMMIT_LONG log -1 --pretty=format:%H)
+  git_command(GIT_COMMIT_DATE log -1 --pretty=format:%cd --date=format:%Y%m%d)
+endif()
+
 if(GIT_COMMIT_DATE)
   set(PROJECT_VERSION_TWEAK ${GIT_COMMIT_DATE})
   set(${PROJECT_NAME}_VERSION_TWEAK ${GIT_COMMIT_DATE})
 else()
-  string(TIMESTAMP PROJECT_VERSION_TWEAK %Y%m%d%H%M)
-  string(TIMESTAMP ${PROJECT_NAME}_VERSION_TWEAK %Y%m%d%H%M)
+  string(TIMESTAMP PROJECT_VERSION_TWEAK %Y%m%d)
+  string(TIMESTAMP ${PROJECT_NAME}_VERSION_TWEAK %Y%m%d)
 endif()
 
 if(NOT EXISTS "${A_HAVE_H}")
