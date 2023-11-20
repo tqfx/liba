@@ -1,6 +1,93 @@
 #include "a/host/a.h"
 #include <emscripten/bind.h>
 
+#include "a/mf.h"
+
+class mf
+{
+public:
+    static unsigned int const NUL;
+    static a_float_t gauss(a_float_t x, a_float_t sigma, a_float_t c)
+    {
+        return a_mf_gauss(x, sigma, c);
+    }
+    static unsigned int const GAUSS;
+    static a_float_t gauss2(a_float_t x, a_float_t sigma1, a_float_t c1, a_float_t sigma2, a_float_t c2)
+    {
+        return a_mf_gauss2(x, sigma1, c1, sigma2, c2);
+    }
+    static unsigned int const GAUSS2;
+    static a_float_t gbell(a_float_t x, a_float_t a, a_float_t b, a_float_t c)
+    {
+        return a_mf_gbell(x, a, b, c);
+    }
+    static unsigned int const GBELL;
+    static a_float_t sig(a_float_t x, a_float_t a, a_float_t c)
+    {
+        return a_mf_sig(x, a, c);
+    }
+    static unsigned int const SIG;
+    static a_float_t dsig(a_float_t x, a_float_t a1, a_float_t c1, a_float_t a2, a_float_t c2)
+    {
+        return a_mf_dsig(x, a1, c1, a2, c2);
+    }
+    static unsigned int const DSIG;
+    static a_float_t psig(a_float_t x, a_float_t a1, a_float_t c1, a_float_t a2, a_float_t c2)
+    {
+        return a_mf_psig(x, a1, c1, a2, c2);
+    }
+    static unsigned int const PSIG;
+    static a_float_t trap(a_float_t x, a_float_t a, a_float_t b, a_float_t c, a_float_t d)
+    {
+        return a_mf_trap(x, a, b, c, d);
+    }
+    static unsigned int const TRAP;
+    static a_float_t tri(a_float_t x, a_float_t a, a_float_t b, a_float_t c)
+    {
+        return a_mf_tri(x, a, b, c);
+    }
+    static unsigned int const TRI;
+    static a_float_t lins(a_float_t x, a_float_t a, a_float_t b)
+    {
+        return a_mf_lins(x, a, b);
+    }
+    static unsigned int const LINS;
+    static a_float_t linz(a_float_t x, a_float_t a, a_float_t b)
+    {
+        return a_mf_linz(x, a, b);
+    }
+    static unsigned int const LINZ;
+    static a_float_t s(a_float_t x, a_float_t a, a_float_t b)
+    {
+        return a_mf_s(x, a, b);
+    }
+    static unsigned int const S;
+    static a_float_t z(a_float_t x, a_float_t a, a_float_t b)
+    {
+        return a_mf_z(x, a, b);
+    }
+    static unsigned int const Z;
+    static a_float_t pi(a_float_t x, a_float_t a, a_float_t b, a_float_t c, a_float_t d)
+    {
+        return a_mf_pi(x, a, b, c, d);
+    }
+    static unsigned int const PI;
+};
+unsigned int const mf::NUL = A_MF_NUL;
+unsigned int const mf::GAUSS = A_MF_GAUSS;
+unsigned int const mf::GAUSS2 = A_MF_GAUSS2;
+unsigned int const mf::GBELL = A_MF_GBELL;
+unsigned int const mf::SIG = A_MF_SIG;
+unsigned int const mf::DSIG = A_MF_DSIG;
+unsigned int const mf::PSIG = A_MF_PSIG;
+unsigned int const mf::TRAP = A_MF_TRAP;
+unsigned int const mf::TRI = A_MF_TRI;
+unsigned int const mf::LINS = A_MF_LINS;
+unsigned int const mf::LINZ = A_MF_LINZ;
+unsigned int const mf::S = A_MF_S;
+unsigned int const mf::Z = A_MF_Z;
+unsigned int const mf::PI = A_MF_PI;
+
 #include "a/pid.h"
 
 class pid: public a_pid_s
@@ -14,6 +101,9 @@ class pid: public a_pid_s
     }
 
 public:
+    static unsigned int const OFF;
+    static unsigned int const POS;
+    static unsigned int const INC;
     pid()
     {
         summax = +A_FLOAT_INF;
@@ -42,6 +132,9 @@ public:
     a_float_t get_fdb() const { return fdb.f; }
     a_float_t get_err() const { return err.f; }
 };
+unsigned int const pid::OFF = A_PID_OFF;
+unsigned int const pid::POS = A_PID_POS;
+unsigned int const pid::INC = A_PID_INC;
 
 #include "a/pid/fuzzy.h"
 
@@ -86,6 +179,13 @@ class pid_fuzzy: public a_pid_fuzzy_s
     }
 
 public:
+    static unsigned int const CAP;
+    static unsigned int const CAP_ALGEBRA;
+    static unsigned int const CAP_BOUNDED;
+    static unsigned int const CUP;
+    static unsigned int const CUP_ALGEBRA;
+    static unsigned int const CUP_BOUNDED;
+    static unsigned int const EQU;
     pid_fuzzy()
     {
         pid.summax = +A_FLOAT_INF;
@@ -129,6 +229,8 @@ public:
         u.p = mkd;
         a_alloc(u.o, 0);
     }
+    unsigned int get_mode() const { return pid.mode; }
+    void set_mode(unsigned int mode) { pid.mode = mode; }
     a_float_t get_summax() const { return pid.summax; }
     void set_summax(a_float_t summax) { pid.summax = summax; }
     a_float_t get_outmax() const { return pid.outmax; }
@@ -138,9 +240,14 @@ public:
     a_float_t get_out() const { return pid.out.f; }
     a_float_t get_fdb() const { return pid.fdb.f; }
     a_float_t get_err() const { return pid.err.f; }
-    unsigned int get_mode() const { return pid.mode; }
-    void set_mode(unsigned int mode) { pid.mode = mode; }
 };
+unsigned int const pid_fuzzy::CAP = A_PID_FUZZY_CAP;
+unsigned int const pid_fuzzy::CAP_ALGEBRA = A_PID_FUZZY_CAP_ALGEBRA;
+unsigned int const pid_fuzzy::CAP_BOUNDED = A_PID_FUZZY_CAP_BOUNDED;
+unsigned int const pid_fuzzy::CUP = A_PID_FUZZY_CUP;
+unsigned int const pid_fuzzy::CUP_ALGEBRA = A_PID_FUZZY_CUP_ALGEBRA;
+unsigned int const pid_fuzzy::CUP_BOUNDED = A_PID_FUZZY_CUP_BOUNDED;
+unsigned int const pid_fuzzy::EQU = A_PID_FUZZY_EQU;
 
 #include "a/pid/neuron.h"
 
@@ -175,6 +282,8 @@ public:
         pid.mode = A_PID_INC;
         init();
     }
+    unsigned int get_mode() const { return pid.mode; }
+    void set_mode(unsigned int mode) { pid.mode = mode; }
     a_float_t get_kp() const { return pid.kp; }
     void set_kp(a_float_t kp) { pid.kp = kp; }
     a_float_t get_ki() const { return pid.ki; }
@@ -197,8 +306,6 @@ public:
     a_float_t get_fdb() const { return pid.fdb.f; }
     a_float_t get_err() const { return pid.err.f; }
     a_float_t get_ec() const { return ec.f; }
-    unsigned int get_mode() const { return pid.mode; }
-    void set_mode(unsigned int mode) { pid.mode = mode; }
 };
 
 #include "a/polytrack.h"
@@ -321,7 +428,6 @@ public:
     }
 };
 
-#include "a/mf.h"
 #include "a/math.h"
 #include "a/version.h"
 #if __has_warning("-Wglobal-constructors")
@@ -331,36 +437,34 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
 {
     emscripten::function("f32_rsqrt", a_f32_rsqrt);
     emscripten::function("f64_rsqrt", a_f64_rsqrt);
-    emscripten::constant("MF_NUL", a_uint_c(, A_MF_NUL));
-    emscripten::function("mf_gauss", a_mf_gauss);
-    emscripten::constant("MF_GAUSS", a_uint_c(, A_MF_GAUSS));
-    emscripten::function("mf_gauss2", a_mf_gauss2);
-    emscripten::constant("MF_GAUSS2", a_uint_c(, A_MF_GAUSS2));
-    emscripten::function("mf_gbell", a_mf_gbell);
-    emscripten::constant("MF_GBELL", a_uint_c(, A_MF_GBELL));
-    emscripten::function("mf_sig", a_mf_sig);
-    emscripten::constant("MF_SIG", a_uint_c(, A_MF_SIG));
-    emscripten::function("mf_dsig", a_mf_dsig);
-    emscripten::constant("MF_DSIG", a_uint_c(, A_MF_DSIG));
-    emscripten::function("mf_psig", a_mf_psig);
-    emscripten::constant("MF_PSIG", a_uint_c(, A_MF_PSIG));
-    emscripten::function("mf_trap", a_mf_trap);
-    emscripten::constant("MF_TRAP", a_uint_c(, A_MF_TRAP));
-    emscripten::function("mf_tri", a_mf_tri);
-    emscripten::constant("MF_TRI", a_uint_c(, A_MF_TRI));
-    emscripten::function("mf_lins", a_mf_lins);
-    emscripten::constant("MF_LINS", a_uint_c(, A_MF_LINS));
-    emscripten::function("mf_linz", a_mf_linz);
-    emscripten::constant("MF_LINZ", a_uint_c(, A_MF_LINZ));
-    emscripten::function("mf_s", a_mf_s);
-    emscripten::constant("MF_S", a_uint_c(, A_MF_S));
-    emscripten::function("mf_z", a_mf_z);
-    emscripten::constant("MF_Z", a_uint_c(, A_MF_Z));
-    emscripten::function("mf_pi", a_mf_pi);
-    emscripten::constant("MF_PI", a_uint_c(, A_MF_PI));
-    emscripten::constant("PID_OFF", a_uint_c(, A_PID_OFF));
-    emscripten::constant("PID_POS", a_uint_c(, A_PID_POS));
-    emscripten::constant("PID_INC", a_uint_c(, A_PID_INC));
+    emscripten::class_<mf>("mf")
+        .class_property("NUL", &mf::NUL)
+        .class_function("gauss", &mf::gauss)
+        .class_property("GAUSS", &mf::GAUSS)
+        .class_function("gauss2", &mf::gauss2)
+        .class_property("GAUSS2", &mf::GAUSS2)
+        .class_function("gbell", &mf::gbell)
+        .class_property("GBELL", &mf::GBELL)
+        .class_function("sig", &mf::sig)
+        .class_property("SIG", &mf::SIG)
+        .class_function("dsig", &mf::dsig)
+        .class_property("DSIG", &mf::DSIG)
+        .class_function("psig", &mf::psig)
+        .class_property("PSIG", &mf::PSIG)
+        .class_function("trap", &mf::trap)
+        .class_property("TRAP", &mf::TRAP)
+        .class_function("tri", &mf::tri)
+        .class_property("TRI", &mf::TRI)
+        .class_function("lins", &mf::lins)
+        .class_property("LINS", &mf::LINS)
+        .class_function("linz", &mf::linz)
+        .class_property("LINZ", &mf::LINZ)
+        .class_function("s", &mf::s)
+        .class_property("S", &mf::S)
+        .class_function("z", &mf::z)
+        .class_property("Z", &mf::Z)
+        .class_function("pi", &mf::pi)
+        .class_property("PI", &mf::PI);
     emscripten::class_<pid>("pid")
         .constructor<>()
         .constructor<a_float_t, a_float_t>()
@@ -379,6 +483,10 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
+        .class_property("OFF", &pid::OFF)
+        .class_property("POS", &pid::POS)
+        .class_property("INC", &pid::INC)
+        .property<unsigned int, void>("mode", &pid::mode)
         .property<a_float_t, void>("kp", &pid::kp)
         .property<a_float_t, void>("ki", &pid::ki)
         .property<a_float_t, void>("kd", &pid::kd)
@@ -387,15 +495,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property<a_float_t, void>("outmin", &pid::outmin)
         .property("out", &pid::get_out)
         .property("fdb", &pid::get_fdb)
-        .property("err", &pid::get_err)
-        .property<unsigned int, void>("mode", &pid::mode);
-    emscripten::constant("PID_FUZZY_CAP", a_uint_c(, A_PID_FUZZY_CAP));
-    emscripten::constant("PID_FUZZY_CAP_ALGEBRA", a_uint_c(, A_PID_FUZZY_CAP_ALGEBRA));
-    emscripten::constant("PID_FUZZY_CAP_BOUNDED", a_uint_c(, A_PID_FUZZY_CAP_BOUNDED));
-    emscripten::constant("PID_FUZZY_CUP", a_uint_c(, A_PID_FUZZY_CUP));
-    emscripten::constant("PID_FUZZY_CUP_ALGEBRA", a_uint_c(, A_PID_FUZZY_CUP_ALGEBRA));
-    emscripten::constant("PID_FUZZY_CUP_BOUNDED", a_uint_c(, A_PID_FUZZY_CUP_BOUNDED));
-    emscripten::constant("PID_FUZZY_EQU", a_uint_c(, A_PID_FUZZY_EQU));
+        .property("err", &pid::get_err);
     emscripten::class_<pid_fuzzy>("pid_fuzzy")
         .constructor<>()
         .constructor<a_float_t, a_float_t>()
@@ -444,6 +544,13 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
+        .class_property("CAP", &pid_fuzzy::CAP)
+        .class_property("CAP_ALGEBRA", &pid_fuzzy::CAP_ALGEBRA)
+        .class_property("CAP_BOUNDED", &pid_fuzzy::CAP_BOUNDED)
+        .class_property("CUP", &pid_fuzzy::CUP)
+        .class_property("CUP_ALGEBRA", &pid_fuzzy::CUP_ALGEBRA)
+        .class_property("CUP_BOUNDED", &pid_fuzzy::CUP_BOUNDED)
+        .class_property("EQU", &pid_fuzzy::EQU)
         .property("mode", &pid_fuzzy::get_mode, &pid_fuzzy::set_mode)
         .property<a_float_t, void>("kp", &pid_fuzzy::kp)
         .property<a_float_t, void>("ki", &pid_fuzzy::ki)
@@ -610,6 +717,6 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
     emscripten::constant("VERSION_PATCH", A_VERSION_PATCH);
     emscripten::constant("VERSION_MINOR", A_VERSION_MINOR);
     emscripten::constant("VERSION_MAJOR", A_VERSION_MAJOR);
-    emscripten::constant("VERSION", std::string{A_VERSION});
+    emscripten::constant("VERSION", std::string(A_VERSION));
     emscripten::function("version_check", &a_version_check);
 }

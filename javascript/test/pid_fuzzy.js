@@ -8,13 +8,13 @@ var PS = +1
 var PM = +2
 var PL = +3
 var me = [
-    [liba.MF_TRI, NL, NL, NM],
-    [liba.MF_TRI, NL, NM, NS],
-    [liba.MF_TRI, NM, NS, ZO],
-    [liba.MF_TRI, NS, ZO, PS],
-    [liba.MF_TRI, ZO, PS, PM],
-    [liba.MF_TRI, PS, PM, PL],
-    [liba.MF_TRI, PM, PL, PL],
+    [liba.mf.TRI, NL, NL, NM],
+    [liba.mf.TRI, NL, NM, NS],
+    [liba.mf.TRI, NM, NS, ZO],
+    [liba.mf.TRI, NS, ZO, PS],
+    [liba.mf.TRI, ZO, PS, PM],
+    [liba.mf.TRI, PS, PM, PL],
+    [liba.mf.TRI, PM, PL, PL],
 ]
 var NL = -6
 var NM = -4
@@ -24,13 +24,13 @@ var PS = +2
 var PM = +4
 var PL = +6
 var mec = [
-    [liba.MF_TRI, NL, NL, NM],
-    [liba.MF_TRI, NL, NM, NS],
-    [liba.MF_TRI, NM, NS, ZO],
-    [liba.MF_TRI, NS, ZO, PS],
-    [liba.MF_TRI, ZO, PS, PM],
-    [liba.MF_TRI, PS, PM, PL],
-    [liba.MF_TRI, PM, PL, PL],
+    [liba.mf.TRI, NL, NL, NM],
+    [liba.mf.TRI, NL, NM, NS],
+    [liba.mf.TRI, NM, NS, ZO],
+    [liba.mf.TRI, NS, ZO, PS],
+    [liba.mf.TRI, ZO, PS, PM],
+    [liba.mf.TRI, PS, PM, PL],
+    [liba.mf.TRI, PM, PL, PL],
 ]
 var NL = -15
 var NM = -10
