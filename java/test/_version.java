@@ -2,6 +2,11 @@ import liba.version;
 
 class _version {
     public static void main(String[] args) {
+        System.out.println(version.check(0, 0, 0));
+        System.out.println("major " + version.MAJOR);
+        System.out.println("minor " + version.MINOR);
+        System.out.println("patch " + version.PATCH);
+        System.out.println("tweak " + version.TWEAK);
         version v000 = new version();
         version v100 = new version(1);
         version v010 = new version(0, 1);

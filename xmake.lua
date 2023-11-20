@@ -5,7 +5,7 @@ set_project("liba")
 set_xmakever("2.5.0")
 
 -- set project version
-set_version("0.1.1", { build = "%Y%m%d%H%M" })
+set_version("0.1.1", { build = "%Y%m%d" })
 
 -- option: liba-cxx
 option("liba-cxx")
@@ -87,6 +87,7 @@ function check_math(funcs, opt)
         configvar_check_cfuncs(have, func, opt)
     end
 end
+
 local funcs = { "hypot", "log1p", "atan2" }
 check_math(funcs, { includes = "math.h" })
 -- stylua: ignore

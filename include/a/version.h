@@ -34,7 +34,7 @@
 
 /*! algorithm library version tweak */
 #ifndef A_VERSION_TWEAK
-#define A_VERSION_TWEAK A_U64_C(0)
+#define A_VERSION_TWEAK 0
 #endif /* A_VERSION_TWEAK */
 
 #define A_VERSION_TOSTR(X) A_CAST_1(X)
@@ -56,14 +56,6 @@ namespace a
 {
 /*! algorithm library version string */
 char const *const VERSION = A_VERSION;
-/*! algorithm library version major */
-unsigned int const VERSION_MAJOR = A_VERSION_MAJOR;
-/*! algorithm library version minor */
-unsigned int const VERSION_MINOR = A_VERSION_MINOR;
-/*! algorithm library version patch */
-unsigned int const VERSION_PATCH = A_VERSION_PATCH;
-/*! algorithm library version tweak */
-a_u64_t const VERSION_TWEAK = A_VERSION_TWEAK;
 #endif /* __cplusplus */
 
 /*!
@@ -86,6 +78,14 @@ struct version
         , patch(pat)
     {
     }
+    /*! algorithm library version major */
+    A_PUBLIC static unsigned int const MAJOR;
+    /*! algorithm library version minor */
+    A_PUBLIC static unsigned int const MINOR;
+    /*! algorithm library version patch */
+    A_PUBLIC static unsigned int const PATCH;
+    /*! algorithm library version tweak */
+    A_PUBLIC static a_u32_t const TWEAK;
     A_PUBLIC version(char const *ver);
 #else /* !__cplusplus */
 typedef struct a_version_s
@@ -101,18 +101,6 @@ typedef struct a_version_s
 #endif /* __cplusplus */
 
 #if defined(__cplusplus)
-/*!
- @brief algorithm library version major
-*/
-A_EXTERN unsigned int version_major(void);
-/*!
- @brief algorithm library version minor
-*/
-A_EXTERN unsigned int version_minor(void);
-/*!
- @brief algorithm library version patch
-*/
-A_EXTERN unsigned int version_patch(void);
 } /* namespace a */
 typedef a::version a_version_s;
 extern "C" {

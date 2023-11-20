@@ -321,16 +321,17 @@ int LMODULE_(version, lua_State *const L)
 {
     /***
      algorithm library version number
-     @field major algorithm library version major
-     @field minor algorithm library version minor
-     @field patch algorithm library version patch
+     @field MAJOR algorithm library version major
+     @field MINOR algorithm library version minor
+     @field PATCH algorithm library version patch
+     @field TWEAK algorithm library version tweak
      @table liba.version
     */
     l_int_s const enums[] = {
-        {"major", A_VERSION_MAJOR},
-        {"minor", A_VERSION_MINOR},
-        {"patch", A_VERSION_PATCH},
-        {"tweak", (L_INT)A_VERSION_TWEAK},
+        {"MAJOR", A_VERSION_MAJOR},
+        {"MINOR", A_VERSION_MINOR},
+        {"PATCH", A_VERSION_PATCH},
+        {"TWEAK", A_VERSION_TWEAK},
         {NULL, 0},
     };
     l_func_s const funcs[] = {

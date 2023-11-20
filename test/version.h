@@ -12,17 +12,17 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     }
     printf("%s\n", A_FUNC);
 #if defined(__cplusplus)
-    printf("version %s+%" PRIu64 "\n", a::VERSION, a::VERSION_TWEAK);
-    printf("major %u\n", a::version_major());
-    printf("minor %u\n", a::version_minor());
-    printf("patch %u\n", a::version_patch());
-    printf("tweak %" PRIu64 "\n", a::VERSION_TWEAK);
+    printf("version %s+%" PRIu32 "\n", a::VERSION, a::version::TWEAK);
+    printf("major %u\n", a::version::MAJOR);
+    printf("minor %u\n", a::version::MINOR);
+    printf("patch %u\n", a::version::PATCH);
+    printf("tweak %" PRIu32 "\n", a::version::TWEAK);
 #else /* !__cplusplus */
-    printf("version %s+%" PRIu64 "\n", a_version(), A_VERSION_TWEAK);
+    printf("version %s+%" PRIu32 "\n", a_version(), A_VERSION_TWEAK);
     printf("major %u\n", a_version_major());
     printf("minor %u\n", a_version_minor());
     printf("patch %u\n", a_version_patch());
-    printf("tweak %" PRIu64 "\n", A_VERSION_TWEAK);
+    printf("tweak %" PRIu32 "\n", A_VERSION_TWEAK);
 #endif /* __cplusplus */
 #if defined(__cplusplus)
     a::version v000 = a::version(0, 0);

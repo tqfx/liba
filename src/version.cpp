@@ -3,6 +3,10 @@
 namespace a
 {
 
+unsigned int const version::MAJOR = A_VERSION_MAJOR;
+unsigned int const version::MINOR = A_VERSION_MINOR;
+unsigned int const version::PATCH = A_VERSION_PATCH;
+a_u32_t const version::TWEAK = A_VERSION_TWEAK;
 version::version(char const *ver)
     : major(0)
     , minor(0)
@@ -39,21 +43,6 @@ bool version::operator==(version const &ver) const
 bool version::operator!=(version const &ver) const
 {
     return a_version_ne(this, &ver);
-}
-
-unsigned int version_major(void)
-{
-    return VERSION_MAJOR;
-}
-
-unsigned int version_minor(void)
-{
-    return VERSION_MINOR;
-}
-
-unsigned int version_patch(void)
-{
-    return VERSION_PATCH;
 }
 
 } /* namespace a */

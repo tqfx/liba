@@ -54,10 +54,10 @@ assert(vctx.__newindex)
 vctx.__tostring = nil
 assert(vctx.__tostring)
 test.log("version", a.VERSION)
-test.log("major", a.version.major)
-test.log("minor", a.version.minor)
-test.log("patch", a.version.patch)
-test.log("tweak", a.version.tweak)
+test.log("major", a.version.MAJOR)
+test.log("minor", a.version.MINOR)
+test.log("patch", a.version.PATCH)
+test.log("tweak", a.version.TWEAK)
 test.log(vctx(), "0.0.0", a.version.check())
 ---@class a.version
 ---@field __lt function

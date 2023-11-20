@@ -21,6 +21,11 @@ extern "C" {
     fn a_version_le(lhs: *const version, rhs: *const version) -> bool;
     fn a_version_ge(lhs: *const version, rhs: *const version) -> bool;
     fn a_version_eq(lhs: *const version, rhs: *const version) -> bool;
+    fn a_version_check(major: uint, minor: uint, patch: uint) -> int;
+    fn a_version_major() -> uint;
+    fn a_version_minor() -> uint;
+    fn a_version_patch() -> uint;
+    fn a_version_tweak() -> u32;
 }
 
 impl PartialOrd for version {
@@ -65,6 +70,31 @@ impl version {
     }
 }
 
+/// algorithm library version check
+pub fn check(major: uint, minor: uint, patch: uint) -> int {
+    unsafe { a_version_check(major, minor, patch) }
+}
+
+/// algorithm library version major
+pub fn major() -> uint {
+    unsafe { a_version_major() }
+}
+
+/// algorithm library version minor
+pub fn minor() -> uint {
+    unsafe { a_version_minor() }
+}
+
+/// algorithm library version patch
+pub fn patch() -> uint {
+    unsafe { a_version_patch() }
+}
+
+/// algorithm library version tweak
+pub fn tweak() -> u32 {
+    unsafe { a_version_tweak() }
+}
+
 #[test]
 fn version() {
     extern crate std;
@@ -78,6 +108,11 @@ fn version() {
                 .finish()
         }
     }
+    std::println!("{}", crate::version::check(0, 0, 0));
+    std::println!("major {}", crate::version::major());
+    std::println!("minor {}", crate::version::minor());
+    std::println!("patch {}", crate::version::patch());
+    std::println!("tweak {}", crate::version::tweak());
     let v000 = version::new(0, 0, 0);
     let v001 = version::new(0, 0, 1);
     std::println!("{:?}", v001);

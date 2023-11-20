@@ -5,7 +5,7 @@ cdef extern from "a/version.h":
     const unsigned int A_VERSION_MAJOR
     const unsigned int A_VERSION_MINOR
     const unsigned int A_VERSION_PATCH
-    const a_u64_t A_VERSION_TWEAK
+    const a_u32_t A_VERSION_TWEAK
     const char *A_VERSION
     ctypedef struct a_version_s:
         unsigned int major

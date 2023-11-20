@@ -430,6 +430,7 @@ public:
 
 #include "a/math.h"
 #include "a/version.h"
+#undef a_version_check
 #if __has_warning("-Wglobal-constructors")
 #pragma GCC diagnostic ignored "-Wglobal-constructors"
 #endif /* -Wglobal-constructors */
@@ -712,11 +713,14 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .function("ge", &a::version::operator>=)
         .function("eq", &a::version::operator==)
         .function("ne", &a::version::operator!=)
-        .function("cmp", &a_version_cmp, emscripten::allow_raw_pointers());
-    emscripten::constant("VERSION_TWEAK", std::to_string(A_VERSION_TWEAK));
-    emscripten::constant("VERSION_PATCH", A_VERSION_PATCH);
-    emscripten::constant("VERSION_MINOR", A_VERSION_MINOR);
-    emscripten::constant("VERSION_MAJOR", A_VERSION_MAJOR);
+        .function("cmp", &a_version_cmp, emscripten::allow_raw_pointers())
+        .class_function("check", emscripten::optional_override([](unsigned int major, unsigned int minor, unsigned int patch) {
+                            return a_version_check(major, minor, patch);
+                        }),
+                        emscripten::allow_raw_pointers())
+        .class_property("MAJOR", &a::version::MAJOR)
+        .class_property("MINOR", &a::version::MINOR)
+        .class_property("PATCH", &a::version::PATCH)
+        .class_property("TWEAK", &a::version::TWEAK);
     emscripten::constant("VERSION", std::string(A_VERSION));
-    emscripten::function("version_check", &a_version_check);
 }

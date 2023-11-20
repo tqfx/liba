@@ -2,15 +2,25 @@ package liba;
 
 /** version */
 public class version {
+    /** algorithm library version major */
+    public static final int MAJOR;
+    /** algorithm library version minor */
+    public static final int MINOR;
+    /** algorithm library version patch */
+    public static final int PATCH;
+    /** algorithm library version tweak */
+    public static final int TWEAK;
     byte[] ctx;
     static {
         System.loadLibrary("a");
+        MAJOR = 0;
+        MINOR = 0;
+        PATCH = 0;
+        TWEAK = 0;
         INIT();
     }
 
     static final native void INIT();
-
-    final native void init(int maj, int min, int pat);
 
     /**
      * return string representation of version
@@ -18,6 +28,8 @@ public class version {
     public String toString() {
         return major() + "." + minor() + "." + patch();
     }
+
+    final native void init(int maj, int min, int pat);
 
     /**
      * construct a new {@link version} object
@@ -164,4 +176,15 @@ public class version {
      * @return relationship between the versions
      */
     public final native int cmp(version ver);
+
+    /**
+     * algorithm library version check
+     *
+     * @param major major number
+     * @param minor minor number
+     * @param patch patch number
+     * @return -3(&lt;major),-2(&lt;minor),-1(&lt;patch),0,+1(&gt;patch),+2(&gt;minor),+3(&gt;major)
+     */
+    public static final native int check(int major, int minor, int patch);
+
 }

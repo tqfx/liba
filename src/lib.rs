@@ -44,11 +44,6 @@ pub mod version;
 
 extern "C" {
     fn a_version() -> *const c_char;
-    fn a_version_major() -> uint;
-    fn a_version_minor() -> uint;
-    fn a_version_patch() -> uint;
-    fn a_version_tweak() -> u64;
-    fn a_version_check(major: uint, minor: uint, patch: uint) -> int;
 }
 
 /**
@@ -66,31 +61,6 @@ pub fn version() -> &'static str {
             .to_str()
             .unwrap_unchecked()
     }
-}
-
-/// algorithm library version major
-pub fn version_major() -> uint {
-    unsafe { a_version_major() }
-}
-
-/// algorithm library version minor
-pub fn version_minor() -> uint {
-    unsafe { a_version_minor() }
-}
-
-/// algorithm library version patch
-pub fn version_patch() -> uint {
-    unsafe { a_version_patch() }
-}
-
-/// algorithm library version tweak
-pub fn version_tweak() -> u64 {
-    unsafe { a_version_tweak() }
-}
-
-/// algorithm library version check
-pub fn version_check(major: uint, minor: uint, patch: uint) -> int {
-    unsafe { a_version_check(major, minor, patch) }
 }
 
 extern "C" {
@@ -114,11 +84,6 @@ mod test {
     #[test]
     fn version() {
         std::println!("version {}", crate::version());
-        std::println!("major {}", crate::version_major());
-        std::println!("minor {}", crate::version_minor());
-        std::println!("patch {}", crate::version_patch());
-        std::println!("tweak {}", crate::version_tweak());
-        std::println!("{}", crate::version_check(0, 0, 0));
     }
     #[test]
     fn rsqrt() {

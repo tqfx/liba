@@ -2,19 +2,6 @@ from a.version cimport *
 
 '''algorithm library version'''
 VERSION = A_VERSION.decode()
-'''algorithm library version major'''
-VERSION_MAJOR = A_VERSION_MAJOR
-'''algorithm library version minor'''
-VERSION_MINOR = A_VERSION_MINOR
-'''algorithm library version patch'''
-VERSION_PATCH = A_VERSION_PATCH
-'''algorithm library version tweak'''
-VERSION_TWEAK = A_VERSION_TWEAK
-
-@cython.wraparound(False)
-@cython.boundscheck(False)
-def version_check(unsigned int major = 0, unsigned int minor = 0,unsigned int  patch = 0):
-    return a_version_check(major, minor, patch)
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
@@ -57,3 +44,14 @@ cdef class version:
     def parse(self, ver: bytes):
         a_version_parse(&self.ctx, ver)
         return self
+    @staticmethod
+    def check(unsigned int major = 0, unsigned int minor = 0,unsigned int  patch = 0):
+        return a_version_check(major, minor, patch)
+    '''algorithm library version major'''
+    MAJOR = A_VERSION_MAJOR
+    '''algorithm library version minor'''
+    MINOR = A_VERSION_MINOR
+    '''algorithm library version patch'''
+    PATCH = A_VERSION_PATCH
+    '''algorithm library version tweak'''
+    TWEAK = A_VERSION_TWEAK

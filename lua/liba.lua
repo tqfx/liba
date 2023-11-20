@@ -1154,10 +1154,10 @@ local version = setmetatable({}, {
     __call = liba.version.init
 })
 liba.version = {}
-liba.version.major = 0
-liba.version.minor = 0
-liba.version.patch = 0
-liba.version.tweak = 0
+liba.version.MAJOR = 0
+liba.version.MINOR = 0
+liba.version.PATCH = 0
+liba.version.TWEAK = 0
 
 ---@param major? integer
 ---@param minor? integer
