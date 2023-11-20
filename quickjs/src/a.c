@@ -17,8 +17,8 @@ static JSValue js_hash_bkdr(JSContext *const ctx, JSValueConst const this_val, i
 
 static JSValue js_rsqrt(JSContext *const ctx, JSValueConst const this_val, int const argc, JSValueConst *const argv)
 {
-    (void)(this_val);
-    (void)(argc);
+    (void)this_val;
+    (void)argc;
     double x;
     if (JS_ToFloat64(ctx, &x, argv[0]))
     {
@@ -31,15 +31,12 @@ static JSValue js_rsqrt(JSContext *const ctx, JSValueConst const this_val, int c
 
 static JSValue js_mf_gauss(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    (void)(this_val);
+    (void)argc;
+    (void)this_val;
     double args[] = {0, 0, 0};
-    if (argc > (int)A_LEN(args))
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        argc = (int)A_LEN(args);
-    }
-    for (int i = 0; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             return JS_EXCEPTION;
         }
@@ -50,15 +47,12 @@ static JSValue js_mf_gauss(JSContext *const ctx, JSValueConst const this_val, in
 
 static JSValue js_mf_gauss2(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    (void)(this_val);
+    (void)argc;
+    (void)this_val;
     double args[] = {0, 0, 0, 0, 0};
-    if (argc > (int)A_LEN(args))
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        argc = (int)A_LEN(args);
-    }
-    for (int i = 0; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             return JS_EXCEPTION;
         }
@@ -69,15 +63,12 @@ static JSValue js_mf_gauss2(JSContext *const ctx, JSValueConst const this_val, i
 
 static JSValue js_mf_gbell(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    (void)(this_val);
+    (void)argc;
+    (void)this_val;
     double args[] = {0, 0, 0, 0};
-    if (argc > (int)A_LEN(args))
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        argc = (int)A_LEN(args);
-    }
-    for (int i = 0; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             return JS_EXCEPTION;
         }
@@ -88,15 +79,12 @@ static JSValue js_mf_gbell(JSContext *const ctx, JSValueConst const this_val, in
 
 static JSValue js_mf_sig(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    (void)(this_val);
+    (void)argc;
+    (void)this_val;
     double args[] = {0, 0, 0};
-    if (argc > (int)A_LEN(args))
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        argc = (int)A_LEN(args);
-    }
-    for (int i = 0; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             return JS_EXCEPTION;
         }
@@ -107,15 +95,12 @@ static JSValue js_mf_sig(JSContext *const ctx, JSValueConst const this_val, int 
 
 static JSValue js_mf_dsig(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    (void)(this_val);
+    (void)argc;
+    (void)this_val;
     double args[] = {0, 0, 0, 0, 0};
-    if (argc > (int)A_LEN(args))
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        argc = (int)A_LEN(args);
-    }
-    for (int i = 0; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             return JS_EXCEPTION;
         }
@@ -126,15 +111,12 @@ static JSValue js_mf_dsig(JSContext *const ctx, JSValueConst const this_val, int
 
 static JSValue js_mf_psig(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    (void)(this_val);
+    (void)argc;
+    (void)this_val;
     double args[] = {0, 0, 0, 0, 0};
-    if (argc > (int)A_LEN(args))
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        argc = (int)A_LEN(args);
-    }
-    for (int i = 0; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             return JS_EXCEPTION;
         }
@@ -145,15 +127,12 @@ static JSValue js_mf_psig(JSContext *const ctx, JSValueConst const this_val, int
 
 static JSValue js_mf_trap(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    (void)(this_val);
+    (void)argc;
+    (void)this_val;
     double args[] = {0, 0, 0, 0, 0};
-    if (argc > (int)A_LEN(args))
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        argc = (int)A_LEN(args);
-    }
-    for (int i = 0; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             return JS_EXCEPTION;
         }
@@ -164,15 +143,12 @@ static JSValue js_mf_trap(JSContext *const ctx, JSValueConst const this_val, int
 
 static JSValue js_mf_tri(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    (void)(this_val);
-    double args[] = {0, 0, 0};
-    if (argc > (int)A_LEN(args))
+    (void)argc;
+    (void)this_val;
+    double args[] = {0, 0, 0, 0};
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        argc = (int)A_LEN(args);
-    }
-    for (int i = 0; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             return JS_EXCEPTION;
         }
@@ -183,15 +159,12 @@ static JSValue js_mf_tri(JSContext *const ctx, JSValueConst const this_val, int 
 
 static JSValue js_mf_lins(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    (void)(this_val);
+    (void)argc;
+    (void)this_val;
     double args[] = {0, 0, 0};
-    if (argc > (int)A_LEN(args))
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        argc = (int)A_LEN(args);
-    }
-    for (int i = 0; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             return JS_EXCEPTION;
         }
@@ -202,15 +175,12 @@ static JSValue js_mf_lins(JSContext *const ctx, JSValueConst const this_val, int
 
 static JSValue js_mf_linz(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    (void)(this_val);
+    (void)argc;
+    (void)this_val;
     double args[] = {0, 0, 0};
-    if (argc > (int)A_LEN(args))
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        argc = (int)A_LEN(args);
-    }
-    for (int i = 0; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             return JS_EXCEPTION;
         }
@@ -221,15 +191,12 @@ static JSValue js_mf_linz(JSContext *const ctx, JSValueConst const this_val, int
 
 static JSValue js_mf_s(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    (void)(this_val);
+    (void)argc;
+    (void)this_val;
     double args[] = {0, 0, 0};
-    if (argc > (int)A_LEN(args))
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        argc = (int)A_LEN(args);
-    }
-    for (int i = 0; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             return JS_EXCEPTION;
         }
@@ -240,15 +207,12 @@ static JSValue js_mf_s(JSContext *const ctx, JSValueConst const this_val, int ar
 
 static JSValue js_mf_z(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    (void)(this_val);
+    (void)argc;
+    (void)this_val;
     double args[] = {0, 0, 0};
-    if (argc > (int)A_LEN(args))
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        argc = (int)A_LEN(args);
-    }
-    for (int i = 0; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             return JS_EXCEPTION;
         }
@@ -259,15 +223,12 @@ static JSValue js_mf_z(JSContext *const ctx, JSValueConst const this_val, int ar
 
 static JSValue js_mf_pi(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    (void)(this_val);
+    (void)argc;
+    (void)this_val;
     double args[] = {0, 0, 0, 0, 0};
-    if (argc > (int)A_LEN(args))
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        argc = (int)A_LEN(args);
-    }
-    for (int i = 0; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             return JS_EXCEPTION;
         }
@@ -306,14 +267,562 @@ static JSCFunctionListEntry const js_liba_mf_funcs[] = {
     JS_CFUNC_DEF("pi", 5, js_mf_pi),
 };
 
-#include "a/version.h"
+#include "a/pid.h"
 
-static JSCFunctionListEntry const js_liba_funcs[] = {
-    JS_OBJECT_DEF("mf", js_liba_mf_funcs, A_LEN(js_liba_mf_funcs), 0),
-    JS_PROP_STRING_DEF("VERSION", A_VERSION, 0),
-    JS_CFUNC_DEF("hash_bkdr", 1, js_hash_bkdr),
-    JS_CFUNC_DEF("rsqrt", 1, js_rsqrt),
+static JSClassID js_pid_class_id;
+
+static void js_pid_finalizer(JSRuntime *const rt, JSValue const val)
+{
+    void *const ctx = JS_GetOpaque(val, js_pid_class_id);
+    js_free_rt(rt, ctx);
+}
+
+static JSClassDef js_pid_class = {"pid", .finalizer = js_pid_finalizer};
+
+static JSValue js_pid_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
+{
+    JSValue obj = JS_UNDEFINED;
+    a_pid_s *const self = (a_pid_s *)js_mallocz(ctx, sizeof(a_pid_s));
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    double args[] = {0, 0, 0, 0, 0, 0};
+    if (argc > (int)A_LEN(args))
+    {
+        argc = (int)A_LEN(args);
+    }
+    for (int i = 0; i < argc; ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            goto fail;
+        }
+    }
+    self->kp = 1;
+    self->outmin = -A_FLOAT_INF;
+    self->outmax = +A_FLOAT_INF;
+    self->summax = +A_FLOAT_INF;
+    self->mode = A_PID_INC;
+    if (argc > 1)
+    {
+        self->outmin = (a_float_t)args[0];
+        self->outmax = (a_float_t)args[1];
+    }
+    if (argc > 2)
+    {
+        self->summax = (a_float_t)args[2];
+        self->mode = A_PID_POS;
+    }
+    a_pid_init(self, 0);
+    JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
+    if (JS_IsException(proto))
+    {
+        goto fail;
+    }
+    obj = JS_NewObjectProtoClass(ctx, proto, js_pid_class_id);
+    JS_FreeValue(ctx, proto);
+    if (JS_IsException(obj))
+    {
+        goto fail;
+    }
+    JS_SetOpaque(obj, self);
+    return obj;
+fail:
+    js_free(ctx, self);
+    JS_FreeValue(ctx, obj);
+    return JS_EXCEPTION;
+}
+
+static JSValue js_pid_get(JSContext *const ctx, JSValueConst const this_val, int magic)
+{
+    double x;
+    a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, js_pid_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    switch (magic)
+    {
+    case 0:
+        return JS_NewUint32(ctx, self->mode);
+    case 1:
+        x = (double)self->kp;
+        break;
+    case 2:
+        x = (double)self->ki;
+        break;
+    case 3:
+        x = (double)self->kd;
+        break;
+    case 4:
+        x = (double)self->summax;
+        break;
+    case 5:
+        x = (double)self->outmax;
+        break;
+    case 6:
+        x = (double)self->outmin;
+        break;
+    case 7:
+        x = (double)self->out.f;
+        break;
+    case 8:
+        x = (double)self->fdb.f;
+        break;
+    case 9:
+        x = (double)self->err.f;
+        break;
+    default:
+        return JS_UNDEFINED;
+    }
+    return JS_NewFloat64(ctx, x);
+}
+
+static JSValue js_pid_set(JSContext *const ctx, JSValueConst const this_val, JSValueConst const val, int magic)
+{
+    union
+    {
+        uint32_t u;
+        double x;
+    } u;
+    a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, js_pid_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    if (magic == 0)
+    {
+        if (JS_ToUint32(ctx, &u.u, val))
+        {
+            return JS_EXCEPTION;
+        }
+        self->mode = (unsigned int)u.u;
+        return JS_UNDEFINED;
+    }
+    if (JS_ToFloat64(ctx, &u.x, val))
+    {
+        return JS_EXCEPTION;
+    }
+    switch (magic)
+    {
+    case 1:
+        self->kp = (a_float_t)u.x;
+        break;
+    case 2:
+        self->ki = (a_float_t)u.x;
+        break;
+    case 3:
+        self->kd = (a_float_t)u.x;
+        break;
+    case 4:
+        self->summax = (a_float_t)u.x;
+        break;
+    case 5:
+        self->outmax = (a_float_t)u.x;
+        break;
+    case 6:
+        self->outmin = (a_float_t)u.x;
+        break;
+    default:
+        break;
+    }
+    return JS_UNDEFINED;
+}
+
+static JSValue js_pid_kpid(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, js_pid_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    double args[] = {0, 0, 0};
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    a_pid_kpid(self, (a_float_t)args[0], (a_float_t)args[1], (a_float_t)args[2]);
+    return JS_UNDEFINED;
+}
+
+static JSValue js_pid_iter(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, js_pid_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    double args[] = {0, 0};
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    return JS_NewFloat64(ctx, (double)a_pid_outf(self, (a_float_t)args[0], (a_float_t)args[1]));
+}
+
+static JSValue js_pid_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    (void)argv;
+    a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, js_pid_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    a_pid_zero(self);
+    return JS_UNDEFINED;
+}
+
+static JSCFunctionListEntry const js_pid_proto_funcs[] = {
+    JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.pid", 0),
+    JS_CGETSET_MAGIC_DEF("mode", js_pid_get, js_pid_set, 0),
+    JS_CGETSET_MAGIC_DEF("kp", js_pid_get, js_pid_set, 1),
+    JS_CGETSET_MAGIC_DEF("ki", js_pid_get, js_pid_set, 2),
+    JS_CGETSET_MAGIC_DEF("kd", js_pid_get, js_pid_set, 3),
+    JS_CGETSET_MAGIC_DEF("summax", js_pid_get, js_pid_set, 4),
+    JS_CGETSET_MAGIC_DEF("outmax", js_pid_get, js_pid_set, 5),
+    JS_CGETSET_MAGIC_DEF("outmin", js_pid_get, js_pid_set, 6),
+    JS_CGETSET_MAGIC_DEF("out", js_pid_get, NULL, 7),
+    JS_CGETSET_MAGIC_DEF("fdb", js_pid_get, NULL, 8),
+    JS_CGETSET_MAGIC_DEF("err", js_pid_get, NULL, 9),
+    JS_CFUNC_DEF("kpid", 3, js_pid_kpid),
+    JS_CFUNC_DEF("iter", 2, js_pid_iter),
+    JS_CFUNC_DEF("zero", 0, js_pid_zero),
 };
+
+static A_INLINE int js_liba_pid_init(JSContext *const ctx, JSModuleDef *const m)
+{
+    JS_NewClassID(&js_pid_class_id);
+    JS_NewClass(JS_GetRuntime(ctx), js_pid_class_id, &js_pid_class);
+
+    JSValue const pid_proto = JS_NewObject(ctx);
+    JS_SetPropertyFunctionList(ctx, pid_proto, js_pid_proto_funcs, A_LEN(js_pid_proto_funcs));
+
+    JSValue const pid_class = JS_NewCFunction2(ctx, js_pid_ctor, "pid", 6, JS_CFUNC_constructor, 0);
+    JS_SetConstructor(ctx, pid_class, pid_proto);
+    JS_SetClassProto(ctx, js_pid_class_id, pid_proto);
+
+    JS_DefinePropertyValueStr(ctx, pid_class, "OFF", JS_NewUint32(ctx, A_PID_OFF), 0);
+    JS_DefinePropertyValueStr(ctx, pid_class, "POS", JS_NewUint32(ctx, A_PID_POS), 0);
+    JS_DefinePropertyValueStr(ctx, pid_class, "INC", JS_NewUint32(ctx, A_PID_INC), 0);
+
+    JS_SetModuleExport(ctx, m, "pid", pid_class);
+    return 0;
+}
+
+#include "a/pid/neuron.h"
+
+static JSClassID js_pid_neuron_class_id;
+
+static void js_pid_neuron_finalizer(JSRuntime *const rt, JSValue const val)
+{
+    void *const ctx = JS_GetOpaque(val, js_pid_neuron_class_id);
+    js_free_rt(rt, ctx);
+}
+
+static JSClassDef js_pid_neuron_class = {"pid_neuron", .finalizer = js_pid_neuron_finalizer};
+
+static JSValue js_pid_neuron_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
+{
+    JSValue obj = JS_UNDEFINED;
+    a_pid_neuron_s *const self = (a_pid_neuron_s *)js_mallocz(ctx, sizeof(a_pid_neuron_s));
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    double args[] = {0, 0, 0, 0, 0, 0};
+    if (argc > (int)A_LEN(args))
+    {
+        argc = (int)A_LEN(args);
+    }
+    for (int i = 0; i < argc; ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            goto fail;
+        }
+    }
+    self->pid.outmin = -A_FLOAT_INF;
+    self->pid.outmax = +A_FLOAT_INF;
+    self->pid.summax = +A_FLOAT_INF;
+    self->pid.mode = A_PID_INC;
+    if (argc > 1)
+    {
+        self->pid.outmin = (a_float_t)args[0];
+        self->pid.outmax = (a_float_t)args[1];
+    }
+    if (argc > 2)
+    {
+        self->pid.summax = (a_float_t)args[2];
+        self->pid.mode = A_PID_POS;
+    }
+    self->k = 1;
+    self->wp.f = A_FLOAT_C(0.1);
+    self->wi.f = A_FLOAT_C(0.1);
+    self->wd.f = A_FLOAT_C(0.1);
+    a_pid_neuron_init(self, 0);
+    JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
+    if (JS_IsException(proto))
+    {
+        goto fail;
+    }
+    obj = JS_NewObjectProtoClass(ctx, proto, js_pid_neuron_class_id);
+    JS_FreeValue(ctx, proto);
+    if (JS_IsException(obj))
+    {
+        goto fail;
+    }
+    JS_SetOpaque(obj, self);
+    return obj;
+fail:
+    js_free(ctx, self);
+    JS_FreeValue(ctx, obj);
+    return JS_EXCEPTION;
+}
+
+static JSValue js_pid_neuron_get(JSContext *const ctx, JSValueConst const this_val, int magic)
+{
+    a_pid_neuron_s *const self = (a_pid_neuron_s *)JS_GetOpaque2(ctx, this_val, js_pid_neuron_class_id);
+    double x;
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    switch (magic)
+    {
+    case 0:
+        return JS_NewUint32(ctx, self->pid.mode);
+    case 1:
+        x = (double)self->k;
+        break;
+    case 2:
+        x = (double)self->pid.kp;
+        break;
+    case 3:
+        x = (double)self->pid.ki;
+        break;
+    case 4:
+        x = (double)self->pid.kd;
+        break;
+    case 5:
+        x = (double)self->wp.f;
+        break;
+    case 6:
+        x = (double)self->wi.f;
+        break;
+    case 7:
+        x = (double)self->wd.f;
+        break;
+    case 8:
+        x = (double)self->pid.summax;
+        break;
+    case 9:
+        x = (double)self->pid.outmax;
+        break;
+    case 10:
+        x = (double)self->pid.outmin;
+        break;
+    case 11:
+        x = (double)self->pid.out.f;
+        break;
+    case 12:
+        x = (double)self->pid.fdb.f;
+        break;
+    case 13:
+        x = (double)self->pid.err.f;
+        break;
+    case 14:
+        x = (double)self->ec.f;
+        break;
+    default:
+        return JS_UNDEFINED;
+    }
+    return JS_NewFloat64(ctx, x);
+}
+
+static JSValue js_pid_neuron_set(JSContext *const ctx, JSValueConst const this_val, JSValueConst const val, int magic)
+{
+    a_pid_neuron_s *const self = (a_pid_neuron_s *)JS_GetOpaque2(ctx, this_val, js_pid_neuron_class_id);
+    union
+    {
+        uint32_t u;
+        double x;
+
+    } u;
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    if (magic == 0)
+    {
+        if (JS_ToUint32(ctx, &u.u, val))
+        {
+            return JS_EXCEPTION;
+        }
+        self->pid.mode = (unsigned int)u.u;
+        return JS_UNDEFINED;
+    }
+    if (JS_ToFloat64(ctx, &u.x, val))
+    {
+        return JS_EXCEPTION;
+    }
+    switch (magic)
+    {
+    case 1:
+        self->k = (a_float_t)u.x;
+        break;
+    case 2:
+        self->pid.kp = (a_float_t)u.x;
+        break;
+    case 3:
+        self->pid.ki = (a_float_t)u.x;
+        break;
+    case 4:
+        self->pid.kd = (a_float_t)u.x;
+        break;
+    case 5:
+        self->wp.f = (a_float_t)u.x;
+        break;
+    case 6:
+        self->wi.f = (a_float_t)u.x;
+        break;
+    case 7:
+        self->wd.f = (a_float_t)u.x;
+        break;
+    case 8:
+        self->pid.summax = (a_float_t)u.x;
+        break;
+    case 9:
+        self->pid.outmax = (a_float_t)u.x;
+        break;
+    case 10:
+        self->pid.outmin = (a_float_t)u.x;
+        break;
+    default:
+        break;
+    }
+    return JS_UNDEFINED;
+}
+
+static JSValue js_pid_neuron_kpid(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    a_pid_neuron_s *const self = (a_pid_neuron_s *)JS_GetOpaque2(ctx, this_val, js_pid_neuron_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    double args[] = {0, 0, 0, 0};
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    a_pid_neuron_kpid(self, (a_float_t)args[0], (a_float_t)args[1], (a_float_t)args[2], (a_float_t)args[3]);
+    return JS_UNDEFINED;
+}
+
+static JSValue js_pid_neuron_wpid(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    a_pid_neuron_s *const self = (a_pid_neuron_s *)JS_GetOpaque2(ctx, this_val, js_pid_neuron_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    double args[] = {0, 0, 0};
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    a_pid_neuron_wpid(self, (a_float_t)args[0], (a_float_t)args[1], (a_float_t)args[2]);
+    return JS_UNDEFINED;
+}
+
+static JSValue js_pid_neuron_iter(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    a_pid_neuron_s *const self = (a_pid_neuron_s *)JS_GetOpaque2(ctx, this_val, js_pid_neuron_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    double args[] = {0, 0};
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    return JS_NewFloat64(ctx, (double)a_pid_neuron_outf(self, (a_float_t)args[0], (a_float_t)args[1]));
+}
+
+static JSValue js_pid_neuron_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    (void)argv;
+    a_pid_neuron_s *const self = (a_pid_neuron_s *)JS_GetOpaque2(ctx, this_val, js_pid_neuron_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    a_pid_neuron_zero(self);
+    return JS_UNDEFINED;
+}
+
+static JSCFunctionListEntry const js_pid_neuron_proto_funcs[] = {
+    JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.pid.neuron", 0),
+    JS_CGETSET_MAGIC_DEF("mode", js_pid_neuron_get, js_pid_neuron_set, 0),
+    JS_CGETSET_MAGIC_DEF("k", js_pid_neuron_get, js_pid_neuron_set, 1),
+    JS_CGETSET_MAGIC_DEF("kp", js_pid_neuron_get, js_pid_neuron_set, 2),
+    JS_CGETSET_MAGIC_DEF("ki", js_pid_neuron_get, js_pid_neuron_set, 3),
+    JS_CGETSET_MAGIC_DEF("kd", js_pid_neuron_get, js_pid_neuron_set, 4),
+    JS_CGETSET_MAGIC_DEF("wp", js_pid_neuron_get, js_pid_neuron_set, 5),
+    JS_CGETSET_MAGIC_DEF("wi", js_pid_neuron_get, js_pid_neuron_set, 6),
+    JS_CGETSET_MAGIC_DEF("wd", js_pid_neuron_get, js_pid_neuron_set, 7),
+    JS_CGETSET_MAGIC_DEF("summax", js_pid_neuron_get, js_pid_neuron_set, 8),
+    JS_CGETSET_MAGIC_DEF("outmax", js_pid_neuron_get, js_pid_neuron_set, 9),
+    JS_CGETSET_MAGIC_DEF("outmin", js_pid_neuron_get, js_pid_neuron_set, 10),
+    JS_CGETSET_MAGIC_DEF("out", js_pid_neuron_get, NULL, 11),
+    JS_CGETSET_MAGIC_DEF("fdb", js_pid_neuron_get, NULL, 12),
+    JS_CGETSET_MAGIC_DEF("err", js_pid_neuron_get, NULL, 13),
+    JS_CGETSET_MAGIC_DEF("ec", js_pid_neuron_get, NULL, 14),
+    JS_CFUNC_DEF("kpid", 4, js_pid_neuron_kpid),
+    JS_CFUNC_DEF("wpid", 3, js_pid_neuron_wpid),
+    JS_CFUNC_DEF("iter", 2, js_pid_neuron_iter),
+    JS_CFUNC_DEF("zero", 0, js_pid_neuron_zero),
+};
+
+static A_INLINE int js_liba_pid_neuron_init(JSContext *const ctx, JSModuleDef *const m)
+{
+    JS_NewClassID(&js_pid_neuron_class_id);
+    JS_NewClass(JS_GetRuntime(ctx), js_pid_neuron_class_id, &js_pid_neuron_class);
+
+    JSValue const pid_neuron_proto = JS_NewObject(ctx);
+    JS_SetPropertyFunctionList(ctx, pid_neuron_proto, js_pid_neuron_proto_funcs, A_LEN(js_pid_neuron_proto_funcs));
+
+    JSValue const pid_neuron_class = JS_NewCFunction2(ctx, js_pid_neuron_ctor, "pid_neuron", 6, JS_CFUNC_constructor, 0);
+    JS_SetConstructor(ctx, pid_neuron_class, pid_neuron_proto);
+    JS_SetClassProto(ctx, js_pid_neuron_class_id, pid_neuron_proto);
+
+    JS_SetModuleExport(ctx, m, "pid_neuron", pid_neuron_class);
+    return 0;
+}
 
 #include "a/polytrack.h"
 
@@ -330,8 +839,8 @@ static JSClassDef js_polytrack3_class = {"polytrack3", .finalizer = js_polytrack
 static JSValue js_polytrack3_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
     JSValue obj = JS_UNDEFINED;
-    a_polytrack3_s *const polytrack3 = (a_polytrack3_s *)js_mallocz(ctx, sizeof(a_polytrack3_s));
-    if (!polytrack3)
+    a_polytrack3_s *const self = (a_polytrack3_s *)js_mallocz(ctx, sizeof(a_polytrack3_s));
+    if (!self)
     {
         return JS_EXCEPTION;
     }
@@ -340,14 +849,21 @@ static JSValue js_polytrack3_ctor(JSContext *const ctx, JSValueConst const new_t
     {
         argc = (int)A_LEN(args);
     }
-    for (int i = 0; i < argc; ++i)
+    for (int i = 0; i < 4; ++i)
     {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             goto fail;
         }
     }
-    a_polytrack3_gen(polytrack3,
+    for (int i = 4; i < argc; ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            goto fail;
+        }
+    }
+    a_polytrack3_gen(self,
                      (a_float_t)args[0], (a_float_t)args[1],
                      (a_float_t)args[2], (a_float_t)args[3],
                      (a_float_t)args[4], (a_float_t)args[5]);
@@ -362,18 +878,18 @@ static JSValue js_polytrack3_ctor(JSContext *const ctx, JSValueConst const new_t
     {
         goto fail;
     }
-    JS_SetOpaque(obj, polytrack3);
+    JS_SetOpaque(obj, self);
     return obj;
 fail:
-    js_free(ctx, polytrack3);
+    js_free(ctx, self);
     JS_FreeValue(ctx, obj);
     return JS_EXCEPTION;
 }
 
 static JSValue js_polytrack3_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    a_polytrack3_s *const polytrack3 = (a_polytrack3_s *)JS_GetOpaque2(ctx, this_val, js_polytrack3_class_id);
-    if (!polytrack3)
+    a_polytrack3_s *const self = (a_polytrack3_s *)JS_GetOpaque2(ctx, this_val, js_polytrack3_class_id);
+    if (!self)
     {
         return JS_EXCEPTION;
     }
@@ -382,14 +898,21 @@ static JSValue js_polytrack3_gen(JSContext *const ctx, JSValueConst const this_v
     {
         argc = (int)A_LEN(args);
     }
-    for (int i = 0; i < argc; ++i)
+    for (int i = 0; i < 4; ++i)
     {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             return JS_EXCEPTION;
         }
     }
-    a_polytrack3_gen(polytrack3,
+    for (int i = 4; i < argc; ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    a_polytrack3_gen(self,
                      (a_float_t)args[0], (a_float_t)args[1],
                      (a_float_t)args[2], (a_float_t)args[3],
                      (a_float_t)args[4], (a_float_t)args[5]);
@@ -399,8 +922,8 @@ static JSValue js_polytrack3_gen(JSContext *const ctx, JSValueConst const this_v
 static JSValue js_polytrack3_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack3_s *const polytrack3 = (a_polytrack3_s *)JS_GetOpaque2(ctx, this_val, js_polytrack3_class_id);
-    if (!polytrack3)
+    a_polytrack3_s *const self = (a_polytrack3_s *)JS_GetOpaque2(ctx, this_val, js_polytrack3_class_id);
+    if (!self)
     {
         return JS_EXCEPTION;
     }
@@ -409,15 +932,15 @@ static JSValue js_polytrack3_pos(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t pos = a_polytrack3_pos(polytrack3, (a_float_t)dt);
+    a_float_t pos = a_polytrack3_pos(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)pos);
 }
 
 static JSValue js_polytrack3_vel(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack3_s *const polytrack3 = (a_polytrack3_s *)JS_GetOpaque2(ctx, this_val, js_polytrack3_class_id);
-    if (!polytrack3)
+    a_polytrack3_s *const self = (a_polytrack3_s *)JS_GetOpaque2(ctx, this_val, js_polytrack3_class_id);
+    if (!self)
     {
         return JS_EXCEPTION;
     }
@@ -426,15 +949,15 @@ static JSValue js_polytrack3_vel(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t vel = a_polytrack3_vel(polytrack3, (a_float_t)dt);
+    a_float_t vel = a_polytrack3_vel(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)vel);
 }
 
 static JSValue js_polytrack3_acc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack3_s *const polytrack3 = (a_polytrack3_s *)JS_GetOpaque2(ctx, this_val, js_polytrack3_class_id);
-    if (!polytrack3)
+    a_polytrack3_s *const self = (a_polytrack3_s *)JS_GetOpaque2(ctx, this_val, js_polytrack3_class_id);
+    if (!self)
     {
         return JS_EXCEPTION;
     }
@@ -443,11 +966,12 @@ static JSValue js_polytrack3_acc(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t acc = a_polytrack3_acc(polytrack3, (a_float_t)dt);
+    a_float_t acc = a_polytrack3_acc(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)acc);
 }
 
 static JSCFunctionListEntry const js_polytrack3_proto_funcs[] = {
+    JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.polytrack3", 0),
     JS_CFUNC_DEF("gen", 6, js_polytrack3_gen),
     JS_CFUNC_DEF("pos", 1, js_polytrack3_pos),
     JS_CFUNC_DEF("vel", 1, js_polytrack3_vel),
@@ -483,8 +1007,8 @@ static JSClassDef js_polytrack5_class = {"polytrack5", .finalizer = js_polytrack
 static JSValue js_polytrack5_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
     JSValue obj = JS_UNDEFINED;
-    a_polytrack5_s *const polytrack5 = (a_polytrack5_s *)js_mallocz(ctx, sizeof(a_polytrack5_s));
-    if (!polytrack5)
+    a_polytrack5_s *const self = (a_polytrack5_s *)js_mallocz(ctx, sizeof(a_polytrack5_s));
+    if (!self)
     {
         return JS_EXCEPTION;
     }
@@ -493,14 +1017,21 @@ static JSValue js_polytrack5_ctor(JSContext *const ctx, JSValueConst const new_t
     {
         argc = (int)A_LEN(args);
     }
-    for (int i = 0; i < argc; ++i)
+    for (int i = 0; i < 4; ++i)
     {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             goto fail;
         }
     }
-    a_polytrack5_gen(polytrack5,
+    for (int i = 4; i < argc; ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            goto fail;
+        }
+    }
+    a_polytrack5_gen(self,
                      (a_float_t)args[0], (a_float_t)args[1],
                      (a_float_t)args[2], (a_float_t)args[3],
                      (a_float_t)args[4], (a_float_t)args[5],
@@ -516,18 +1047,18 @@ static JSValue js_polytrack5_ctor(JSContext *const ctx, JSValueConst const new_t
     {
         goto fail;
     }
-    JS_SetOpaque(obj, polytrack5);
+    JS_SetOpaque(obj, self);
     return obj;
 fail:
-    js_free(ctx, polytrack5);
+    js_free(ctx, self);
     JS_FreeValue(ctx, obj);
     return JS_EXCEPTION;
 }
 
 static JSValue js_polytrack5_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    a_polytrack5_s *const polytrack5 = (a_polytrack5_s *)JS_GetOpaque2(ctx, this_val, js_polytrack5_class_id);
-    if (!polytrack5)
+    a_polytrack5_s *const self = (a_polytrack5_s *)JS_GetOpaque2(ctx, this_val, js_polytrack5_class_id);
+    if (!self)
     {
         return JS_EXCEPTION;
     }
@@ -536,14 +1067,21 @@ static JSValue js_polytrack5_gen(JSContext *const ctx, JSValueConst const this_v
     {
         argc = (int)A_LEN(args);
     }
-    for (int i = 0; i < argc; ++i)
+    for (int i = 0; i < 4; ++i)
     {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             return JS_EXCEPTION;
         }
     }
-    a_polytrack5_gen(polytrack5,
+    for (int i = 4; i < argc; ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    a_polytrack5_gen(self,
                      (a_float_t)args[0], (a_float_t)args[1],
                      (a_float_t)args[2], (a_float_t)args[3],
                      (a_float_t)args[4], (a_float_t)args[5],
@@ -554,8 +1092,8 @@ static JSValue js_polytrack5_gen(JSContext *const ctx, JSValueConst const this_v
 static JSValue js_polytrack5_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack5_s *const polytrack5 = (a_polytrack5_s *)JS_GetOpaque2(ctx, this_val, js_polytrack5_class_id);
-    if (!polytrack5)
+    a_polytrack5_s *const self = (a_polytrack5_s *)JS_GetOpaque2(ctx, this_val, js_polytrack5_class_id);
+    if (!self)
     {
         return JS_EXCEPTION;
     }
@@ -564,15 +1102,15 @@ static JSValue js_polytrack5_pos(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t pos = a_polytrack5_pos(polytrack5, (a_float_t)dt);
+    a_float_t pos = a_polytrack5_pos(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)pos);
 }
 
 static JSValue js_polytrack5_vel(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack5_s *const polytrack5 = (a_polytrack5_s *)JS_GetOpaque2(ctx, this_val, js_polytrack5_class_id);
-    if (!polytrack5)
+    a_polytrack5_s *const self = (a_polytrack5_s *)JS_GetOpaque2(ctx, this_val, js_polytrack5_class_id);
+    if (!self)
     {
         return JS_EXCEPTION;
     }
@@ -581,15 +1119,15 @@ static JSValue js_polytrack5_vel(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t vel = a_polytrack5_vel(polytrack5, (a_float_t)dt);
+    a_float_t vel = a_polytrack5_vel(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)vel);
 }
 
 static JSValue js_polytrack5_acc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack5_s *const polytrack5 = (a_polytrack5_s *)JS_GetOpaque2(ctx, this_val, js_polytrack5_class_id);
-    if (!polytrack5)
+    a_polytrack5_s *const self = (a_polytrack5_s *)JS_GetOpaque2(ctx, this_val, js_polytrack5_class_id);
+    if (!self)
     {
         return JS_EXCEPTION;
     }
@@ -598,11 +1136,12 @@ static JSValue js_polytrack5_acc(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t acc = a_polytrack5_acc(polytrack5, (a_float_t)dt);
+    a_float_t acc = a_polytrack5_acc(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)acc);
 }
 
 static JSCFunctionListEntry const js_polytrack5_proto_funcs[] = {
+    JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.polytrack5", 0),
     JS_CFUNC_DEF("gen", 8, js_polytrack5_gen),
     JS_CFUNC_DEF("pos", 1, js_polytrack5_pos),
     JS_CFUNC_DEF("vel", 1, js_polytrack5_vel),
@@ -638,8 +1177,8 @@ static JSClassDef js_polytrack7_class = {"polytrack7", .finalizer = js_polytrack
 static JSValue js_polytrack7_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
     JSValue obj = JS_UNDEFINED;
-    a_polytrack7_s *const polytrack7 = (a_polytrack7_s *)js_mallocz(ctx, sizeof(a_polytrack7_s));
-    if (!polytrack7)
+    a_polytrack7_s *const self = (a_polytrack7_s *)js_mallocz(ctx, sizeof(a_polytrack7_s));
+    if (!self)
     {
         return JS_EXCEPTION;
     }
@@ -648,14 +1187,21 @@ static JSValue js_polytrack7_ctor(JSContext *const ctx, JSValueConst const new_t
     {
         argc = (int)A_LEN(args);
     }
-    for (int i = 0; i < argc; ++i)
+    for (int i = 0; i < 4; ++i)
     {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             goto fail;
         }
     }
-    a_polytrack7_gen(polytrack7,
+    for (int i = 4; i < argc; ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            goto fail;
+        }
+    }
+    a_polytrack7_gen(self,
                      (a_float_t)args[0], (a_float_t)args[1],
                      (a_float_t)args[2], (a_float_t)args[3],
                      (a_float_t)args[4], (a_float_t)args[5],
@@ -672,18 +1218,18 @@ static JSValue js_polytrack7_ctor(JSContext *const ctx, JSValueConst const new_t
     {
         goto fail;
     }
-    JS_SetOpaque(obj, polytrack7);
+    JS_SetOpaque(obj, self);
     return obj;
 fail:
-    js_free(ctx, polytrack7);
+    js_free(ctx, self);
     JS_FreeValue(ctx, obj);
     return JS_EXCEPTION;
 }
 
 static JSValue js_polytrack7_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    a_polytrack7_s *const polytrack7 = (a_polytrack7_s *)JS_GetOpaque2(ctx, this_val, js_polytrack7_class_id);
-    if (!polytrack7)
+    a_polytrack7_s *const self = (a_polytrack7_s *)JS_GetOpaque2(ctx, this_val, js_polytrack7_class_id);
+    if (!self)
     {
         return JS_EXCEPTION;
     }
@@ -692,14 +1238,21 @@ static JSValue js_polytrack7_gen(JSContext *const ctx, JSValueConst const this_v
     {
         argc = (int)A_LEN(args);
     }
-    for (int i = 0; i < argc; ++i)
+    for (int i = 0; i < 4; ++i)
     {
-        if (JS_ToFloat64(ctx, args + i, argv[i]))
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
         {
             return JS_EXCEPTION;
         }
     }
-    a_polytrack7_gen(polytrack7,
+    for (int i = 4; i < argc; ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    a_polytrack7_gen(self,
                      (a_float_t)args[0], (a_float_t)args[1],
                      (a_float_t)args[2], (a_float_t)args[3],
                      (a_float_t)args[4], (a_float_t)args[5],
@@ -711,72 +1264,73 @@ static JSValue js_polytrack7_gen(JSContext *const ctx, JSValueConst const this_v
 static JSValue js_polytrack7_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack7_s *const polytrack7 = (a_polytrack7_s *)JS_GetOpaque2(ctx, this_val, js_polytrack7_class_id);
-    if (!polytrack7)
+    a_polytrack7_s *const self = (a_polytrack7_s *)JS_GetOpaque2(ctx, this_val, js_polytrack7_class_id);
+    if (!self)
     {
         return JS_EXCEPTION;
     }
-    double dt = 0;
+    double dt;
     if (JS_ToFloat64(ctx, &dt, argv[0]))
     {
         return JS_EXCEPTION;
     }
-    a_float_t pos = a_polytrack7_pos(polytrack7, (a_float_t)dt);
+    a_float_t pos = a_polytrack7_pos(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)pos);
 }
 
 static JSValue js_polytrack7_vel(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack7_s *const polytrack7 = (a_polytrack7_s *)JS_GetOpaque2(ctx, this_val, js_polytrack7_class_id);
-    if (!polytrack7)
+    a_polytrack7_s *const self = (a_polytrack7_s *)JS_GetOpaque2(ctx, this_val, js_polytrack7_class_id);
+    if (!self)
     {
         return JS_EXCEPTION;
     }
-    double dt = 0;
+    double dt;
     if (JS_ToFloat64(ctx, &dt, argv[0]))
     {
         return JS_EXCEPTION;
     }
-    a_float_t vel = a_polytrack7_vel(polytrack7, (a_float_t)dt);
+    a_float_t vel = a_polytrack7_vel(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)vel);
 }
 
 static JSValue js_polytrack7_acc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack7_s *const polytrack7 = (a_polytrack7_s *)JS_GetOpaque2(ctx, this_val, js_polytrack7_class_id);
-    if (!polytrack7)
+    a_polytrack7_s *const self = (a_polytrack7_s *)JS_GetOpaque2(ctx, this_val, js_polytrack7_class_id);
+    if (!self)
     {
         return JS_EXCEPTION;
     }
-    double dt = 0;
+    double dt;
     if (JS_ToFloat64(ctx, &dt, argv[0]))
     {
         return JS_EXCEPTION;
     }
-    a_float_t acc = a_polytrack7_acc(polytrack7, (a_float_t)dt);
+    a_float_t acc = a_polytrack7_acc(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)acc);
 }
 
 static JSValue js_polytrack7_jer(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack7_s *const polytrack7 = (a_polytrack7_s *)JS_GetOpaque2(ctx, this_val, js_polytrack7_class_id);
-    if (!polytrack7)
+    a_polytrack7_s *const self = (a_polytrack7_s *)JS_GetOpaque2(ctx, this_val, js_polytrack7_class_id);
+    if (!self)
     {
         return JS_EXCEPTION;
     }
-    double dt = 0;
+    double dt;
     if (JS_ToFloat64(ctx, &dt, argv[0]))
     {
         return JS_EXCEPTION;
     }
-    a_float_t jer = a_polytrack7_jer(polytrack7, (a_float_t)dt);
+    a_float_t jer = a_polytrack7_jer(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)jer);
 }
 
 static JSCFunctionListEntry const js_polytrack7_proto_funcs[] = {
+    JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.polytrack7", 0),
     JS_CFUNC_DEF("gen", 10, js_polytrack7_gen),
     JS_CFUNC_DEF("pos", 1, js_polytrack7_pos),
     JS_CFUNC_DEF("vel", 1, js_polytrack7_vel),
@@ -800,11 +1354,329 @@ static A_INLINE int js_liba_polytrack7_init(JSContext *const ctx, JSModuleDef *c
     return 0;
 }
 
+#include "a/version.h"
+
+static JSClassID js_version_class_id;
+
+static void js_version_finalizer(JSRuntime *const rt, JSValue const val)
+{
+    void *const ctx = JS_GetOpaque(val, js_version_class_id);
+    js_free_rt(rt, ctx);
+}
+
+static JSClassDef js_version_class = {"version", .finalizer = js_version_finalizer};
+
+static JSValue js_version_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
+{
+    JSValue obj = JS_UNDEFINED;
+    a_version_s *const self = (a_version_s *)js_mallocz(ctx, sizeof(a_version_s));
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    char const *ver = NULL;
+    uint32_t args[] = {0, 0, 0};
+    if (argc > (int)A_LEN(args))
+    {
+        argc = (int)A_LEN(args);
+    }
+    for (int i = 0; i < argc; ++i)
+    {
+        if (JS_ToUint32(ctx, &args[i], argv[i]))
+        {
+            if (!i && ((void)(ver = JS_ToCString(ctx, argv[0])), ver))
+            {
+                break;
+            }
+            goto fail;
+        }
+    }
+    if (ver)
+    {
+        a_version_parse(self, ver);
+        JS_FreeCString(ctx, ver);
+    }
+    else
+    {
+        self->major = (unsigned int)args[0];
+        self->minor = (unsigned int)args[1];
+        self->patch = (unsigned int)args[2];
+    }
+    JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
+    if (JS_IsException(proto))
+    {
+        goto fail;
+    }
+    obj = JS_NewObjectProtoClass(ctx, proto, js_version_class_id);
+    JS_FreeValue(ctx, proto);
+    if (JS_IsException(obj))
+    {
+        goto fail;
+    }
+    JS_SetOpaque(obj, self);
+    return obj;
+fail:
+    js_free(ctx, self);
+    JS_FreeValue(ctx, obj);
+    return JS_EXCEPTION;
+}
+
+static JSValue js_version_get(JSContext *const ctx, JSValueConst const this_val, int magic)
+{
+    a_version_s *const self = (a_version_s *)JS_GetOpaque2(ctx, this_val, js_version_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    uint32_t ver;
+    switch (magic)
+    {
+    case 0:
+        ver = self->major;
+        break;
+    case 1:
+        ver = self->minor;
+        break;
+    case 2:
+        ver = self->patch;
+        break;
+    default:
+        return JS_UNDEFINED;
+    }
+    return JS_NewUint32(ctx, ver);
+}
+
+static JSValue js_version_set(JSContext *const ctx, JSValueConst const this_val, JSValueConst const val, int magic)
+{
+    a_version_s *const self = (a_version_s *)JS_GetOpaque2(ctx, this_val, js_version_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    uint32_t ver;
+    if (JS_ToUint32(ctx, &ver, val))
+    {
+        return JS_EXCEPTION;
+    }
+    switch (magic)
+    {
+    case 0:
+        self->major = (unsigned int)ver;
+        break;
+    case 1:
+        self->minor = (unsigned int)ver;
+        break;
+    case 2:
+        self->patch = (unsigned int)ver;
+        break;
+    default:
+        break;
+    }
+    return JS_UNDEFINED;
+}
+
+static JSValue js_version_check(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)this_val;
+    uint32_t args[] = {0, 0, 0};
+    if (argc > (int)A_LEN(args))
+    {
+        argc = (int)A_LEN(args);
+    }
+    for (int i = 0; i < argc; ++i)
+    {
+        if (JS_ToUint32(ctx, &args[i], argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+#undef a_version_check
+    return JS_NewInt32(ctx, a_version_check((unsigned int)args[0], (unsigned int)args[1], (unsigned int)args[2]));
+}
+
+static JSValue js_version_parse(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    a_version_s *const self = (a_version_s *)JS_GetOpaque2(ctx, this_val, js_version_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    char const *ver = JS_ToCString(ctx, argv[0]);
+    if (!ver)
+    {
+        return JS_EXCEPTION;
+    }
+    a_version_parse(self, ver);
+    JS_FreeCString(ctx, ver);
+    return JS_UNDEFINED;
+}
+
+static JSValue js_version_cmp(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    a_version_s *const self = (a_version_s *)JS_GetOpaque2(ctx, this_val, js_version_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    a_version_s *const other = (a_version_s *)JS_GetOpaque2(ctx, argv[0], js_version_class_id);
+    if (!other)
+    {
+        return JS_EXCEPTION;
+    }
+    return JS_NewInt32(ctx, a_version_cmp(self, other));
+}
+
+static JSValue js_version_lt(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    a_version_s *const self = (a_version_s *)JS_GetOpaque2(ctx, this_val, js_version_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    a_version_s *const other = (a_version_s *)JS_GetOpaque2(ctx, argv[0], js_version_class_id);
+    if (!other)
+    {
+        return JS_EXCEPTION;
+    }
+    return JS_NewBool(ctx, a_version_lt(self, other));
+}
+
+static JSValue js_version_gt(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    a_version_s *const self = (a_version_s *)JS_GetOpaque2(ctx, this_val, js_version_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    a_version_s *const other = (a_version_s *)JS_GetOpaque2(ctx, argv[0], js_version_class_id);
+    if (!other)
+    {
+        return JS_EXCEPTION;
+    }
+    return JS_NewBool(ctx, a_version_gt(self, other));
+}
+
+static JSValue js_version_le(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    a_version_s *const self = (a_version_s *)JS_GetOpaque2(ctx, this_val, js_version_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    a_version_s *const other = (a_version_s *)JS_GetOpaque2(ctx, argv[0], js_version_class_id);
+    if (!other)
+    {
+        return JS_EXCEPTION;
+    }
+    return JS_NewBool(ctx, a_version_le(self, other));
+}
+
+static JSValue js_version_ge(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    a_version_s *const self = (a_version_s *)JS_GetOpaque2(ctx, this_val, js_version_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    a_version_s *const other = (a_version_s *)JS_GetOpaque2(ctx, argv[0], js_version_class_id);
+    if (!other)
+    {
+        return JS_EXCEPTION;
+    }
+    return JS_NewBool(ctx, a_version_ge(self, other));
+}
+
+static JSValue js_version_eq(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    a_version_s *const self = (a_version_s *)JS_GetOpaque2(ctx, this_val, js_version_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    a_version_s *const other = (a_version_s *)JS_GetOpaque2(ctx, argv[0], js_version_class_id);
+    if (!other)
+    {
+        return JS_EXCEPTION;
+    }
+    return JS_NewBool(ctx, a_version_eq(self, other));
+}
+
+static JSValue js_version_ne(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    a_version_s *const self = (a_version_s *)JS_GetOpaque2(ctx, this_val, js_version_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    a_version_s *const other = (a_version_s *)JS_GetOpaque2(ctx, argv[0], js_version_class_id);
+    if (!other)
+    {
+        return JS_EXCEPTION;
+    }
+    return JS_NewBool(ctx, a_version_ne(self, other));
+}
+
+static JSCFunctionListEntry const js_version_proto_funcs[] = {
+    JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.version", 0),
+    JS_CGETSET_MAGIC_DEF("major", js_version_get, js_version_set, 0),
+    JS_CGETSET_MAGIC_DEF("minor", js_version_get, js_version_set, 1),
+    JS_CGETSET_MAGIC_DEF("patch", js_version_get, js_version_set, 2),
+    JS_CFUNC_DEF("parse", 1, js_version_parse),
+    JS_CFUNC_DEF("cmp", 1, js_version_cmp),
+    JS_CFUNC_DEF("lt", 1, js_version_lt),
+    JS_CFUNC_DEF("gt", 1, js_version_gt),
+    JS_CFUNC_DEF("le", 1, js_version_le),
+    JS_CFUNC_DEF("ge", 1, js_version_ge),
+    JS_CFUNC_DEF("eq", 1, js_version_eq),
+    JS_CFUNC_DEF("ne", 1, js_version_ne),
+};
+
+static A_INLINE int js_liba_version_init(JSContext *const ctx, JSModuleDef *const m)
+{
+    JS_NewClassID(&js_version_class_id);
+    JS_NewClass(JS_GetRuntime(ctx), js_version_class_id, &js_version_class);
+
+    JSValue const version_proto = JS_NewObject(ctx);
+    JS_SetPropertyFunctionList(ctx, version_proto, js_version_proto_funcs, A_LEN(js_version_proto_funcs));
+
+    JSValue const version_class = JS_NewCFunction2(ctx, js_version_ctor, "version", 3, JS_CFUNC_constructor, 0);
+    JS_SetConstructor(ctx, version_class, version_proto);
+    JS_SetClassProto(ctx, js_version_class_id, version_proto);
+
+    JS_DefinePropertyValueStr(ctx, version_class, "MAJOR", JS_NewUint32(ctx, A_VERSION_MAJOR), 0);
+    JS_DefinePropertyValueStr(ctx, version_class, "MINOR", JS_NewUint32(ctx, A_VERSION_MINOR), 0);
+    JS_DefinePropertyValueStr(ctx, version_class, "PATCH", JS_NewUint32(ctx, A_VERSION_PATCH), 0);
+    JS_DefinePropertyValueStr(ctx, version_class, "TWEAK", JS_NewUint32(ctx, A_VERSION_TWEAK), 0);
+    JSValue const version_check = JS_NewCFunction2(ctx, js_version_check, "check", 3, JS_CFUNC_generic, 0);
+    JS_DefinePropertyValueStr(ctx, version_class, "check", version_check, 0);
+
+    JS_SetModuleExport(ctx, m, "version", version_class);
+    return 0;
+}
+
+static JSCFunctionListEntry const js_liba_funcs[] = {
+    JS_OBJECT_DEF("mf", js_liba_mf_funcs, A_LEN(js_liba_mf_funcs), 0),
+    JS_PROP_STRING_DEF("VERSION", A_VERSION, 0),
+    JS_CFUNC_DEF("hash_bkdr", 1, js_hash_bkdr),
+    JS_CFUNC_DEF("rsqrt", 1, js_rsqrt),
+};
+
 static int js_liba_init(JSContext *const ctx, JSModuleDef *const m)
 {
+    js_liba_pid_init(ctx, m);
+    js_liba_pid_neuron_init(ctx, m);
     js_liba_polytrack3_init(ctx, m);
     js_liba_polytrack5_init(ctx, m);
     js_liba_polytrack7_init(ctx, m);
+    js_liba_version_init(ctx, m);
     return JS_SetModuleExportList(ctx, m, js_liba_funcs, A_LEN(js_liba_funcs));
 }
 
@@ -813,9 +1685,12 @@ JSModuleDef *js_init_module(JSContext *const ctx, char const *const module_name)
     JSModuleDef *m = JS_NewCModule(ctx, module_name, js_liba_init);
     if (m)
     {
+        JS_AddModuleExport(ctx, m, "pid");
+        JS_AddModuleExport(ctx, m, "pid_neuron");
         JS_AddModuleExport(ctx, m, "polytrack3");
         JS_AddModuleExport(ctx, m, "polytrack5");
         JS_AddModuleExport(ctx, m, "polytrack7");
+        JS_AddModuleExport(ctx, m, "version");
         JS_AddModuleExportList(ctx, m, js_liba_funcs, A_LEN(js_liba_funcs));
     }
     return m;

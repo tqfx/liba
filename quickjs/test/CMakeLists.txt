@@ -8,8 +8,14 @@ unittest(a a)
 
 unittest(mf mf)
 
+unittest(pid pid)
+
+unittest(pid_neuron pid_neuron)
+
 unittest(polytrack3 polytrack3)
 
 unittest(polytrack5 polytrack5)
 
 unittest(polytrack7 polytrack7)
+
+unittest(version version)
