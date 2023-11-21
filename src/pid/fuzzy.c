@@ -43,11 +43,15 @@ unsigned int a_pid_fuzzy_mf(a_float_t const x, unsigned int const n, a_float_t c
     for (unsigned int i = 0; i != n; ++i)
     {
         a_float_t y = 0;
-        switch ((unsigned int)*a++)
+        switch ((int)*a++)
         {
         case A_MF_GAUSS:
             y = a_mf_gauss(x, a[0], a[1]);
             a += 2;
+            break;
+        case A_MF_GAUSS2:
+            y = a_mf_gauss2(x, a[0], a[1], a[2], a[3]);
+            a += 4;
             break;
         case A_MF_GBELL:
             y = a_mf_gbell(x, a[0], a[1], a[2]);
@@ -57,6 +61,14 @@ unsigned int a_pid_fuzzy_mf(a_float_t const x, unsigned int const n, a_float_t c
             y = a_mf_sig(x, a[0], a[1]);
             a += 2;
             break;
+        case A_MF_DSIG:
+            y = a_mf_dsig(x, a[0], a[1], a[2], a[3]);
+            a += 4;
+            break;
+        case A_MF_PSIG:
+            y = a_mf_psig(x, a[0], a[1], a[2], a[3]);
+            a += 4;
+            break;
         case A_MF_TRAP:
             y = a_mf_trap(x, a[0], a[1], a[2], a[3]);
             a += 4;
@@ -65,9 +77,25 @@ unsigned int a_pid_fuzzy_mf(a_float_t const x, unsigned int const n, a_float_t c
             y = a_mf_tri(x, a[0], a[1], a[2]);
             a += 3;
             break;
+        case A_MF_LINS:
+            y = a_mf_lins(x, a[0], a[1]);
+            a += 2;
+            break;
+        case A_MF_LINZ:
+            y = a_mf_linz(x, a[0], a[1]);
+            a += 2;
+            break;
+        case A_MF_S:
+            y = a_mf_s(x, a[0], a[1]);
+            a += 2;
+            break;
         case A_MF_Z:
             y = a_mf_z(x, a[0], a[1]);
             a += 2;
+            break;
+        case A_MF_PI:
+            y = a_mf_pi(x, a[0], a[1], a[2], a[3]);
+            a += 4;
             break;
         case A_MF_NUL:
         default:
