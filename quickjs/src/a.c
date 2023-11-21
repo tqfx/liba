@@ -273,15 +273,14 @@ static JSClassID js_pid_class_id;
 
 static void js_pid_finalizer(JSRuntime *const rt, JSValue const val)
 {
-    void *const ctx = JS_GetOpaque(val, js_pid_class_id);
-    js_free_rt(rt, ctx);
+    js_free_rt(rt, JS_GetOpaque(val, js_pid_class_id));
 }
 
 static JSClassDef js_pid_class = {"pid", .finalizer = js_pid_finalizer};
 
 static JSValue js_pid_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
-    JSValue obj = JS_UNDEFINED;
+    JSValue clazz = JS_UNDEFINED;
     a_pid_s *const self = (a_pid_s *)js_mallocz(ctx, sizeof(a_pid_s));
     if (!self)
     {
@@ -320,28 +319,28 @@ static JSValue js_pid_ctor(JSContext *const ctx, JSValueConst const new_target, 
     {
         goto fail;
     }
-    obj = JS_NewObjectProtoClass(ctx, proto, js_pid_class_id);
+    clazz = JS_NewObjectProtoClass(ctx, proto, js_pid_class_id);
     JS_FreeValue(ctx, proto);
-    if (JS_IsException(obj))
+    if (JS_IsException(clazz))
     {
         goto fail;
     }
-    JS_SetOpaque(obj, self);
-    return obj;
+    JS_SetOpaque(clazz, self);
+    return clazz;
 fail:
     js_free(ctx, self);
-    JS_FreeValue(ctx, obj);
+    JS_FreeValue(ctx, clazz);
     return JS_EXCEPTION;
 }
 
 static JSValue js_pid_get(JSContext *const ctx, JSValueConst const this_val, int magic)
 {
-    double x;
     a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, js_pid_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
     }
+    double x;
     switch (magic)
     {
     case 0:
@@ -381,16 +380,16 @@ static JSValue js_pid_get(JSContext *const ctx, JSValueConst const this_val, int
 
 static JSValue js_pid_set(JSContext *const ctx, JSValueConst const this_val, JSValueConst const val, int magic)
 {
-    union
-    {
-        uint32_t u;
-        double x;
-    } u;
     a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, js_pid_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
     }
+    union
+    {
+        a_u32_t u;
+        double x;
+    } u;
     if (magic == 0)
     {
         if (JS_ToUint32(ctx, &u.u, val))
@@ -482,7 +481,7 @@ static JSValue js_pid_zero(JSContext *const ctx, JSValueConst const this_val, in
     return JS_UNDEFINED;
 }
 
-static JSCFunctionListEntry const js_pid_proto_funcs[] = {
+static JSCFunctionListEntry const js_pid_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.pid", 0),
     JS_CGETSET_MAGIC_DEF("mode", js_pid_get, js_pid_set, 0),
     JS_CGETSET_MAGIC_DEF("kp", js_pid_get, js_pid_set, 1),
@@ -504,18 +503,18 @@ static A_INLINE int js_liba_pid_init(JSContext *const ctx, JSModuleDef *const m)
     JS_NewClassID(&js_pid_class_id);
     JS_NewClass(JS_GetRuntime(ctx), js_pid_class_id, &js_pid_class);
 
-    JSValue const pid_proto = JS_NewObject(ctx);
-    JS_SetPropertyFunctionList(ctx, pid_proto, js_pid_proto_funcs, A_LEN(js_pid_proto_funcs));
+    JSValue const proto = JS_NewObject(ctx);
+    JS_SetPropertyFunctionList(ctx, proto, js_pid_proto, A_LEN(js_pid_proto));
 
-    JSValue const pid_class = JS_NewCFunction2(ctx, js_pid_ctor, "pid", 6, JS_CFUNC_constructor, 0);
-    JS_SetConstructor(ctx, pid_class, pid_proto);
-    JS_SetClassProto(ctx, js_pid_class_id, pid_proto);
+    JSValue const clazz = JS_NewCFunction2(ctx, js_pid_ctor, "pid", 3, JS_CFUNC_constructor, 0);
+    JS_SetConstructor(ctx, clazz, proto);
+    JS_SetClassProto(ctx, js_pid_class_id, proto);
 
-    JS_DefinePropertyValueStr(ctx, pid_class, "OFF", JS_NewUint32(ctx, A_PID_OFF), 0);
-    JS_DefinePropertyValueStr(ctx, pid_class, "POS", JS_NewUint32(ctx, A_PID_POS), 0);
-    JS_DefinePropertyValueStr(ctx, pid_class, "INC", JS_NewUint32(ctx, A_PID_INC), 0);
+    JS_DefinePropertyValueStr(ctx, clazz, "OFF", JS_NewUint32(ctx, A_PID_OFF), 0);
+    JS_DefinePropertyValueStr(ctx, clazz, "POS", JS_NewUint32(ctx, A_PID_POS), 0);
+    JS_DefinePropertyValueStr(ctx, clazz, "INC", JS_NewUint32(ctx, A_PID_INC), 0);
 
-    JS_SetModuleExport(ctx, m, "pid", pid_class);
+    JS_SetModuleExport(ctx, m, "pid", clazz);
     return 0;
 }
 
@@ -525,15 +524,14 @@ static JSClassID js_pid_neuron_class_id;
 
 static void js_pid_neuron_finalizer(JSRuntime *const rt, JSValue const val)
 {
-    void *const ctx = JS_GetOpaque(val, js_pid_neuron_class_id);
-    js_free_rt(rt, ctx);
+    js_free_rt(rt, JS_GetOpaque(val, js_pid_neuron_class_id));
 }
 
 static JSClassDef js_pid_neuron_class = {"pid_neuron", .finalizer = js_pid_neuron_finalizer};
 
 static JSValue js_pid_neuron_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
-    JSValue obj = JS_UNDEFINED;
+    JSValue clazz = JS_UNDEFINED;
     a_pid_neuron_s *const self = (a_pid_neuron_s *)js_mallocz(ctx, sizeof(a_pid_neuron_s));
     if (!self)
     {
@@ -575,28 +573,28 @@ static JSValue js_pid_neuron_ctor(JSContext *const ctx, JSValueConst const new_t
     {
         goto fail;
     }
-    obj = JS_NewObjectProtoClass(ctx, proto, js_pid_neuron_class_id);
+    clazz = JS_NewObjectProtoClass(ctx, proto, js_pid_neuron_class_id);
     JS_FreeValue(ctx, proto);
-    if (JS_IsException(obj))
+    if (JS_IsException(clazz))
     {
         goto fail;
     }
-    JS_SetOpaque(obj, self);
-    return obj;
+    JS_SetOpaque(clazz, self);
+    return clazz;
 fail:
     js_free(ctx, self);
-    JS_FreeValue(ctx, obj);
+    JS_FreeValue(ctx, clazz);
     return JS_EXCEPTION;
 }
 
 static JSValue js_pid_neuron_get(JSContext *const ctx, JSValueConst const this_val, int magic)
 {
     a_pid_neuron_s *const self = (a_pid_neuron_s *)JS_GetOpaque2(ctx, this_val, js_pid_neuron_class_id);
-    double x;
     if (!self)
     {
         return JS_EXCEPTION;
     }
+    double x;
     switch (magic)
     {
     case 0:
@@ -652,16 +650,15 @@ static JSValue js_pid_neuron_get(JSContext *const ctx, JSValueConst const this_v
 static JSValue js_pid_neuron_set(JSContext *const ctx, JSValueConst const this_val, JSValueConst const val, int magic)
 {
     a_pid_neuron_s *const self = (a_pid_neuron_s *)JS_GetOpaque2(ctx, this_val, js_pid_neuron_class_id);
-    union
-    {
-        uint32_t u;
-        double x;
-
-    } u;
     if (!self)
     {
         return JS_EXCEPTION;
     }
+    union
+    {
+        a_u32_t u;
+        double x;
+    } u;
     if (magic == 0)
     {
         if (JS_ToUint32(ctx, &u.u, val))
@@ -785,7 +782,7 @@ static JSValue js_pid_neuron_zero(JSContext *const ctx, JSValueConst const this_
     return JS_UNDEFINED;
 }
 
-static JSCFunctionListEntry const js_pid_neuron_proto_funcs[] = {
+static JSCFunctionListEntry const js_pid_neuron_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.pid.neuron", 0),
     JS_CGETSET_MAGIC_DEF("mode", js_pid_neuron_get, js_pid_neuron_set, 0),
     JS_CGETSET_MAGIC_DEF("k", js_pid_neuron_get, js_pid_neuron_set, 1),
@@ -813,14 +810,14 @@ static A_INLINE int js_liba_pid_neuron_init(JSContext *const ctx, JSModuleDef *c
     JS_NewClassID(&js_pid_neuron_class_id);
     JS_NewClass(JS_GetRuntime(ctx), js_pid_neuron_class_id, &js_pid_neuron_class);
 
-    JSValue const pid_neuron_proto = JS_NewObject(ctx);
-    JS_SetPropertyFunctionList(ctx, pid_neuron_proto, js_pid_neuron_proto_funcs, A_LEN(js_pid_neuron_proto_funcs));
+    JSValue const proto = JS_NewObject(ctx);
+    JS_SetPropertyFunctionList(ctx, proto, js_pid_neuron_proto, A_LEN(js_pid_neuron_proto));
 
-    JSValue const pid_neuron_class = JS_NewCFunction2(ctx, js_pid_neuron_ctor, "pid_neuron", 6, JS_CFUNC_constructor, 0);
-    JS_SetConstructor(ctx, pid_neuron_class, pid_neuron_proto);
-    JS_SetClassProto(ctx, js_pid_neuron_class_id, pid_neuron_proto);
+    JSValue const clazz = JS_NewCFunction2(ctx, js_pid_neuron_ctor, "pid_neuron", 3, JS_CFUNC_constructor, 0);
+    JS_SetConstructor(ctx, clazz, proto);
+    JS_SetClassProto(ctx, js_pid_neuron_class_id, proto);
 
-    JS_SetModuleExport(ctx, m, "pid_neuron", pid_neuron_class);
+    JS_SetModuleExport(ctx, m, "pid_neuron", clazz);
     return 0;
 }
 
@@ -830,15 +827,14 @@ static JSClassID js_polytrack3_class_id;
 
 static void js_polytrack3_finalizer(JSRuntime *const rt, JSValue const val)
 {
-    void *const ctx = JS_GetOpaque(val, js_polytrack3_class_id);
-    js_free_rt(rt, ctx);
+    js_free_rt(rt, JS_GetOpaque(val, js_polytrack3_class_id));
 }
 
 static JSClassDef js_polytrack3_class = {"polytrack3", .finalizer = js_polytrack3_finalizer};
 
 static JSValue js_polytrack3_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
-    JSValue obj = JS_UNDEFINED;
+    JSValue clazz = JS_UNDEFINED;
     a_polytrack3_s *const self = (a_polytrack3_s *)js_mallocz(ctx, sizeof(a_polytrack3_s));
     if (!self)
     {
@@ -872,17 +868,17 @@ static JSValue js_polytrack3_ctor(JSContext *const ctx, JSValueConst const new_t
     {
         goto fail;
     }
-    obj = JS_NewObjectProtoClass(ctx, proto, js_polytrack3_class_id);
+    clazz = JS_NewObjectProtoClass(ctx, proto, js_polytrack3_class_id);
     JS_FreeValue(ctx, proto);
-    if (JS_IsException(obj))
+    if (JS_IsException(clazz))
     {
         goto fail;
     }
-    JS_SetOpaque(obj, self);
-    return obj;
+    JS_SetOpaque(clazz, self);
+    return clazz;
 fail:
     js_free(ctx, self);
-    JS_FreeValue(ctx, obj);
+    JS_FreeValue(ctx, clazz);
     return JS_EXCEPTION;
 }
 
@@ -927,7 +923,7 @@ static JSValue js_polytrack3_pos(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    double dt = 0;
+    double dt;
     if (JS_ToFloat64(ctx, &dt, argv[0]))
     {
         return JS_EXCEPTION;
@@ -944,7 +940,7 @@ static JSValue js_polytrack3_vel(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    double dt = 0;
+    double dt;
     if (JS_ToFloat64(ctx, &dt, argv[0]))
     {
         return JS_EXCEPTION;
@@ -961,7 +957,7 @@ static JSValue js_polytrack3_acc(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    double dt = 0;
+    double dt;
     if (JS_ToFloat64(ctx, &dt, argv[0]))
     {
         return JS_EXCEPTION;
@@ -970,7 +966,7 @@ static JSValue js_polytrack3_acc(JSContext *const ctx, JSValueConst const this_v
     return JS_NewFloat64(ctx, (double)acc);
 }
 
-static JSCFunctionListEntry const js_polytrack3_proto_funcs[] = {
+static JSCFunctionListEntry const js_polytrack3_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.polytrack3", 0),
     JS_CFUNC_DEF("gen", 6, js_polytrack3_gen),
     JS_CFUNC_DEF("pos", 1, js_polytrack3_pos),
@@ -983,14 +979,14 @@ static A_INLINE int js_liba_polytrack3_init(JSContext *const ctx, JSModuleDef *c
     JS_NewClassID(&js_polytrack3_class_id);
     JS_NewClass(JS_GetRuntime(ctx), js_polytrack3_class_id, &js_polytrack3_class);
 
-    JSValue const polytrack3_proto = JS_NewObject(ctx);
-    JS_SetPropertyFunctionList(ctx, polytrack3_proto, js_polytrack3_proto_funcs, A_LEN(js_polytrack3_proto_funcs));
+    JSValue const proto = JS_NewObject(ctx);
+    JS_SetPropertyFunctionList(ctx, proto, js_polytrack3_proto, A_LEN(js_polytrack3_proto));
 
-    JSValue const polytrack3_class = JS_NewCFunction2(ctx, js_polytrack3_ctor, "polytrack3", 6, JS_CFUNC_constructor, 0);
-    JS_SetConstructor(ctx, polytrack3_class, polytrack3_proto);
-    JS_SetClassProto(ctx, js_polytrack3_class_id, polytrack3_proto);
+    JSValue const clazz = JS_NewCFunction2(ctx, js_polytrack3_ctor, "polytrack3", 6, JS_CFUNC_constructor, 0);
+    JS_SetConstructor(ctx, clazz, proto);
+    JS_SetClassProto(ctx, js_polytrack3_class_id, proto);
 
-    JS_SetModuleExport(ctx, m, "polytrack3", polytrack3_class);
+    JS_SetModuleExport(ctx, m, "polytrack3", clazz);
     return 0;
 }
 
@@ -998,15 +994,14 @@ static JSClassID js_polytrack5_class_id;
 
 static void js_polytrack5_finalizer(JSRuntime *const rt, JSValue const val)
 {
-    void *const ctx = JS_GetOpaque(val, js_polytrack5_class_id);
-    js_free_rt(rt, ctx);
+    js_free_rt(rt, JS_GetOpaque(val, js_polytrack5_class_id));
 }
 
 static JSClassDef js_polytrack5_class = {"polytrack5", .finalizer = js_polytrack5_finalizer};
 
 static JSValue js_polytrack5_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
-    JSValue obj = JS_UNDEFINED;
+    JSValue clazz = JS_UNDEFINED;
     a_polytrack5_s *const self = (a_polytrack5_s *)js_mallocz(ctx, sizeof(a_polytrack5_s));
     if (!self)
     {
@@ -1041,17 +1036,17 @@ static JSValue js_polytrack5_ctor(JSContext *const ctx, JSValueConst const new_t
     {
         goto fail;
     }
-    obj = JS_NewObjectProtoClass(ctx, proto, js_polytrack5_class_id);
+    clazz = JS_NewObjectProtoClass(ctx, proto, js_polytrack5_class_id);
     JS_FreeValue(ctx, proto);
-    if (JS_IsException(obj))
+    if (JS_IsException(clazz))
     {
         goto fail;
     }
-    JS_SetOpaque(obj, self);
-    return obj;
+    JS_SetOpaque(clazz, self);
+    return clazz;
 fail:
     js_free(ctx, self);
-    JS_FreeValue(ctx, obj);
+    JS_FreeValue(ctx, clazz);
     return JS_EXCEPTION;
 }
 
@@ -1097,7 +1092,7 @@ static JSValue js_polytrack5_pos(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    double dt = 0;
+    double dt;
     if (JS_ToFloat64(ctx, &dt, argv[0]))
     {
         return JS_EXCEPTION;
@@ -1114,7 +1109,7 @@ static JSValue js_polytrack5_vel(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    double dt = 0;
+    double dt;
     if (JS_ToFloat64(ctx, &dt, argv[0]))
     {
         return JS_EXCEPTION;
@@ -1131,7 +1126,7 @@ static JSValue js_polytrack5_acc(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    double dt = 0;
+    double dt;
     if (JS_ToFloat64(ctx, &dt, argv[0]))
     {
         return JS_EXCEPTION;
@@ -1140,7 +1135,7 @@ static JSValue js_polytrack5_acc(JSContext *const ctx, JSValueConst const this_v
     return JS_NewFloat64(ctx, (double)acc);
 }
 
-static JSCFunctionListEntry const js_polytrack5_proto_funcs[] = {
+static JSCFunctionListEntry const js_polytrack5_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.polytrack5", 0),
     JS_CFUNC_DEF("gen", 8, js_polytrack5_gen),
     JS_CFUNC_DEF("pos", 1, js_polytrack5_pos),
@@ -1153,14 +1148,14 @@ static A_INLINE int js_liba_polytrack5_init(JSContext *const ctx, JSModuleDef *c
     JS_NewClassID(&js_polytrack5_class_id);
     JS_NewClass(JS_GetRuntime(ctx), js_polytrack5_class_id, &js_polytrack5_class);
 
-    JSValue const polytrack5_proto = JS_NewObject(ctx);
-    JS_SetPropertyFunctionList(ctx, polytrack5_proto, js_polytrack5_proto_funcs, A_LEN(js_polytrack5_proto_funcs));
+    JSValue const proto = JS_NewObject(ctx);
+    JS_SetPropertyFunctionList(ctx, proto, js_polytrack5_proto, A_LEN(js_polytrack5_proto));
 
-    JSValue const polytrack5_class = JS_NewCFunction2(ctx, js_polytrack5_ctor, "polytrack5", 8, JS_CFUNC_constructor, 0);
-    JS_SetConstructor(ctx, polytrack5_class, polytrack5_proto);
-    JS_SetClassProto(ctx, js_polytrack5_class_id, polytrack5_proto);
+    JSValue const clazz = JS_NewCFunction2(ctx, js_polytrack5_ctor, "polytrack5", 8, JS_CFUNC_constructor, 0);
+    JS_SetConstructor(ctx, clazz, proto);
+    JS_SetClassProto(ctx, js_polytrack5_class_id, proto);
 
-    JS_SetModuleExport(ctx, m, "polytrack5", polytrack5_class);
+    JS_SetModuleExport(ctx, m, "polytrack5", clazz);
     return 0;
 }
 
@@ -1168,15 +1163,14 @@ static JSClassID js_polytrack7_class_id;
 
 static void js_polytrack7_finalizer(JSRuntime *const rt, JSValue const val)
 {
-    void *const ctx = JS_GetOpaque(val, js_polytrack7_class_id);
-    js_free_rt(rt, ctx);
+    js_free_rt(rt, JS_GetOpaque(val, js_polytrack7_class_id));
 }
 
 static JSClassDef js_polytrack7_class = {"polytrack7", .finalizer = js_polytrack7_finalizer};
 
 static JSValue js_polytrack7_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
-    JSValue obj = JS_UNDEFINED;
+    JSValue clazz = JS_UNDEFINED;
     a_polytrack7_s *const self = (a_polytrack7_s *)js_mallocz(ctx, sizeof(a_polytrack7_s));
     if (!self)
     {
@@ -1212,17 +1206,17 @@ static JSValue js_polytrack7_ctor(JSContext *const ctx, JSValueConst const new_t
     {
         goto fail;
     }
-    obj = JS_NewObjectProtoClass(ctx, proto, js_polytrack7_class_id);
+    clazz = JS_NewObjectProtoClass(ctx, proto, js_polytrack7_class_id);
     JS_FreeValue(ctx, proto);
-    if (JS_IsException(obj))
+    if (JS_IsException(clazz))
     {
         goto fail;
     }
-    JS_SetOpaque(obj, self);
-    return obj;
+    JS_SetOpaque(clazz, self);
+    return clazz;
 fail:
     js_free(ctx, self);
-    JS_FreeValue(ctx, obj);
+    JS_FreeValue(ctx, clazz);
     return JS_EXCEPTION;
 }
 
@@ -1329,7 +1323,7 @@ static JSValue js_polytrack7_jer(JSContext *const ctx, JSValueConst const this_v
     return JS_NewFloat64(ctx, (double)jer);
 }
 
-static JSCFunctionListEntry const js_polytrack7_proto_funcs[] = {
+static JSCFunctionListEntry const js_polytrack7_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.polytrack7", 0),
     JS_CFUNC_DEF("gen", 10, js_polytrack7_gen),
     JS_CFUNC_DEF("pos", 1, js_polytrack7_pos),
@@ -1343,14 +1337,292 @@ static A_INLINE int js_liba_polytrack7_init(JSContext *const ctx, JSModuleDef *c
     JS_NewClassID(&js_polytrack7_class_id);
     JS_NewClass(JS_GetRuntime(ctx), js_polytrack7_class_id, &js_polytrack7_class);
 
-    JSValue const polytrack7_proto = JS_NewObject(ctx);
-    JS_SetPropertyFunctionList(ctx, polytrack7_proto, js_polytrack7_proto_funcs, A_LEN(js_polytrack7_proto_funcs));
+    JSValue const proto = JS_NewObject(ctx);
+    JS_SetPropertyFunctionList(ctx, proto, js_polytrack7_proto, A_LEN(js_polytrack7_proto));
 
-    JSValue const polytrack7_class = JS_NewCFunction2(ctx, js_polytrack7_ctor, "polytrack7", 10, JS_CFUNC_constructor, 0);
-    JS_SetConstructor(ctx, polytrack7_class, polytrack7_proto);
-    JS_SetClassProto(ctx, js_polytrack7_class_id, polytrack7_proto);
+    JSValue const clazz = JS_NewCFunction2(ctx, js_polytrack7_ctor, "polytrack7", 10, JS_CFUNC_constructor, 0);
+    JS_SetConstructor(ctx, clazz, proto);
+    JS_SetClassProto(ctx, js_polytrack7_class_id, proto);
 
-    JS_SetModuleExport(ctx, m, "polytrack7", polytrack7_class);
+    JS_SetModuleExport(ctx, m, "polytrack7", clazz);
+    return 0;
+}
+
+#include "a/tf.h"
+
+static JSClassID js_tf_class_id;
+
+static void js_tf_finalizer(JSRuntime *const rt, JSValue const val)
+{
+    a_tf_s *const self = (a_tf_s *)JS_GetOpaque(val, js_tf_class_id);
+    js_free_rt(rt, self->output);
+    js_free_rt(rt, self->input);
+    js_free_rt(rt, self);
+}
+
+static JSClassDef js_tf_class = {"tf", .finalizer = js_tf_finalizer};
+
+static int js_tf_set_num(JSContext *const ctx, a_tf_s *const self, JSValueConst num)
+{
+    int ret = ~0;
+    a_u32_t num_n = 0;
+    a_float_t *num_p = self->input;
+    JSValue num_length = JS_GetPropertyStr(ctx, num, "length");
+    if (JS_IsException(num_length))
+    {
+        return ret;
+    }
+    ret = JS_ToUint32(ctx, &num_n, num_length);
+    JS_FreeValue(ctx, num_length);
+    if (ret)
+    {
+        return ret;
+    }
+    if (num_n > self->num_n)
+    {
+        num_p = (a_float_t *)js_realloc(ctx, num_p, sizeof(a_float_t) * num_n * 2);
+        if (!num_p)
+        {
+            return ~0;
+        }
+        self->input = num_p;
+        num_p += num_n;
+        self->num_p = num_p;
+    }
+    else
+    {
+        num_p += self->num_n;
+    }
+    self->num_n = (unsigned int)num_n;
+    a_zero(self->input, sizeof(a_float_t) * num_n);
+    for (unsigned int i = 0; i < self->num_n; ++i)
+    {
+        JSValue val = JS_GetPropertyUint32(ctx, num, i);
+        if (JS_IsException(val))
+        {
+            return ret;
+        }
+        double x;
+        ret = JS_ToFloat64(ctx, &x, val);
+        JS_FreeValue(ctx, val);
+        if (ret)
+        {
+            return ret;
+        }
+        num_p[i] = (a_float_t)x;
+    }
+    return ret;
+}
+static int js_tf_set_den(JSContext *const ctx, a_tf_s *const self, JSValueConst den)
+{
+    int ret = ~0;
+    a_u32_t den_n = 0;
+    a_float_t *den_p = self->output;
+    JSValue den_length = JS_GetPropertyStr(ctx, den, "length");
+    if (JS_IsException(den_length))
+    {
+        return ret;
+    }
+    ret = JS_ToUint32(ctx, &den_n, den_length);
+    JS_FreeValue(ctx, den_length);
+    if (ret)
+    {
+        return ret;
+    }
+    if (den_n > self->den_n)
+    {
+        den_p = (a_float_t *)js_realloc(ctx, den_p, sizeof(a_float_t) * den_n * 2);
+        if (!den_p)
+        {
+            return ~0;
+        }
+        self->output = den_p;
+        den_p += den_n;
+        self->den_p = den_p;
+    }
+    else
+    {
+        den_p += self->den_n;
+    }
+    self->den_n = (unsigned int)den_n;
+    a_zero(self->output, sizeof(a_float_t) * den_n);
+    for (unsigned int i = 0; i < self->den_n; ++i)
+    {
+        JSValue val = JS_GetPropertyUint32(ctx, den, i);
+        if (JS_IsException(val))
+        {
+            return ret;
+        }
+        double x;
+        ret = JS_ToFloat64(ctx, &x, val);
+        JS_FreeValue(ctx, val);
+        if (ret)
+        {
+            return ret;
+        }
+        den_p[i] = (a_float_t)x;
+    }
+    return ret;
+}
+
+static JSValue js_tf_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    JSValue clazz = JS_UNDEFINED;
+    a_tf_s *const self = (a_tf_s *)js_mallocz(ctx, sizeof(a_tf_s));
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    if (JS_IsObject(argv[0]) && js_tf_set_num(ctx, self, argv[0]))
+    {
+        goto fail;
+    }
+    if (JS_IsObject(argv[1]) && js_tf_set_den(ctx, self, argv[1]))
+    {
+        goto fail;
+    }
+    JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
+    if (JS_IsException(proto))
+    {
+        goto fail;
+    }
+    clazz = JS_NewObjectProtoClass(ctx, proto, js_tf_class_id);
+    JS_FreeValue(ctx, proto);
+    if (JS_IsException(clazz))
+    {
+        goto fail;
+    }
+    JS_SetOpaque(clazz, self);
+    return clazz;
+fail:
+    js_free(ctx, self);
+    JS_FreeValue(ctx, clazz);
+    return JS_UNDEFINED;
+}
+
+static JSValue js_tf_get(JSContext *const ctx, JSValueConst const this_val, int magic)
+{
+    a_tf_s *const self = (a_tf_s *)JS_GetOpaque2(ctx, this_val, js_tf_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    JSValue val = JS_NewArray(ctx);
+    if (JS_IsException(val))
+    {
+        return val;
+    }
+    a_float_t const *val_p;
+    a_size_t val_n;
+    switch (magic)
+    {
+    case 0:
+        val_p = self->num_p;
+        val_n = self->num_n;
+        break;
+    case 1:
+        val_p = self->den_p;
+        val_n = self->den_n;
+        break;
+    case 2:
+        val_p = self->input;
+        val_n = self->num_n;
+        break;
+    case 3:
+        val_p = self->output;
+        val_n = self->den_n;
+        break;
+    default:
+        return JS_UNDEFINED;
+    }
+    for (unsigned int i = 0; i < val_n; ++i)
+    {
+        JSValue x = JS_NewFloat64(ctx, (double)val_p[i]);
+        JS_SetPropertyUint32(ctx, val, i, x);
+    }
+    return val;
+}
+
+static JSValue js_tf_set(JSContext *const ctx, JSValueConst const this_val, JSValueConst const val, int magic)
+{
+    a_tf_s *const self = (a_tf_s *)JS_GetOpaque2(ctx, this_val, js_tf_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    switch (magic)
+    {
+    case 0:
+        if (JS_IsObject(val))
+        {
+            js_tf_set_num(ctx, self, val);
+        }
+        break;
+    case 1:
+        if (JS_IsObject(val))
+        {
+            js_tf_set_den(ctx, self, val);
+        }
+        break;
+    default:
+        break;
+    }
+    return JS_UNDEFINED;
+}
+
+static JSValue js_tf_iter(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    a_tf_s *const self = (a_tf_s *)JS_GetOpaque2(ctx, this_val, js_tf_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    double x;
+    if (JS_ToFloat64(ctx, &x, argv[0]))
+    {
+        return JS_EXCEPTION;
+    }
+    return JS_NewFloat64(ctx, (double)a_tf_iter(self, (a_float_t)x));
+}
+
+static JSValue js_tf_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    (void)argv;
+    a_tf_s *const self = (a_tf_s *)JS_GetOpaque2(ctx, this_val, js_tf_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    a_tf_zero(self);
+    return JS_UNDEFINED;
+}
+
+static JSCFunctionListEntry const js_tf_proto[] = {
+    JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.tf", 0),
+    JS_CGETSET_MAGIC_DEF("num", js_tf_get, js_tf_set, 0),
+    JS_CGETSET_MAGIC_DEF("den", js_tf_get, js_tf_set, 1),
+    JS_CGETSET_MAGIC_DEF("input", js_tf_get, js_tf_set, 2),
+    JS_CGETSET_MAGIC_DEF("output", js_tf_get, js_tf_set, 3),
+    JS_CFUNC_DEF("iter", 1, js_tf_iter),
+    JS_CFUNC_DEF("zero", 0, js_tf_zero),
+};
+
+static A_INLINE int js_liba_tf_init(JSContext *const ctx, JSModuleDef *const m)
+{
+    JS_NewClassID(&js_tf_class_id);
+    JS_NewClass(JS_GetRuntime(ctx), js_tf_class_id, &js_tf_class);
+
+    JSValue const proto = JS_NewObject(ctx);
+    JS_SetPropertyFunctionList(ctx, proto, js_tf_proto, A_LEN(js_tf_proto));
+
+    JSValue const clazz = JS_NewCFunction2(ctx, js_tf_ctor, "tf", 2, JS_CFUNC_constructor, 0);
+    JS_SetConstructor(ctx, clazz, proto);
+    JS_SetClassProto(ctx, js_tf_class_id, proto);
+
+    JS_SetModuleExport(ctx, m, "tf", clazz);
     return 0;
 }
 
@@ -1360,22 +1632,21 @@ static JSClassID js_version_class_id;
 
 static void js_version_finalizer(JSRuntime *const rt, JSValue const val)
 {
-    void *const ctx = JS_GetOpaque(val, js_version_class_id);
-    js_free_rt(rt, ctx);
+    js_free_rt(rt, JS_GetOpaque(val, js_version_class_id));
 }
 
 static JSClassDef js_version_class = {"version", .finalizer = js_version_finalizer};
 
 static JSValue js_version_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
-    JSValue obj = JS_UNDEFINED;
+    JSValue clazz = JS_UNDEFINED;
     a_version_s *const self = (a_version_s *)js_mallocz(ctx, sizeof(a_version_s));
     if (!self)
     {
         return JS_EXCEPTION;
     }
     char const *ver = NULL;
-    uint32_t args[] = {0, 0, 0};
+    a_u32_t args[] = {0, 0, 0};
     if (argc > (int)A_LEN(args))
     {
         argc = (int)A_LEN(args);
@@ -1407,17 +1678,17 @@ static JSValue js_version_ctor(JSContext *const ctx, JSValueConst const new_targ
     {
         goto fail;
     }
-    obj = JS_NewObjectProtoClass(ctx, proto, js_version_class_id);
+    clazz = JS_NewObjectProtoClass(ctx, proto, js_version_class_id);
     JS_FreeValue(ctx, proto);
-    if (JS_IsException(obj))
+    if (JS_IsException(clazz))
     {
         goto fail;
     }
-    JS_SetOpaque(obj, self);
-    return obj;
+    JS_SetOpaque(clazz, self);
+    return clazz;
 fail:
     js_free(ctx, self);
-    JS_FreeValue(ctx, obj);
+    JS_FreeValue(ctx, clazz);
     return JS_EXCEPTION;
 }
 
@@ -1428,7 +1699,7 @@ static JSValue js_version_get(JSContext *const ctx, JSValueConst const this_val,
     {
         return JS_EXCEPTION;
     }
-    uint32_t ver;
+    a_u32_t ver;
     switch (magic)
     {
     case 0:
@@ -1453,7 +1724,7 @@ static JSValue js_version_set(JSContext *const ctx, JSValueConst const this_val,
     {
         return JS_EXCEPTION;
     }
-    uint32_t ver;
+    a_u32_t ver;
     if (JS_ToUint32(ctx, &ver, val))
     {
         return JS_EXCEPTION;
@@ -1478,7 +1749,7 @@ static JSValue js_version_set(JSContext *const ctx, JSValueConst const this_val,
 static JSValue js_version_check(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)this_val;
-    uint32_t args[] = {0, 0, 0};
+    a_u32_t args[] = {0, 0, 0};
     if (argc > (int)A_LEN(args))
     {
         argc = (int)A_LEN(args);
@@ -1624,7 +1895,7 @@ static JSValue js_version_ne(JSContext *const ctx, JSValueConst const this_val, 
     return JS_NewBool(ctx, a_version_ne(self, other));
 }
 
-static JSCFunctionListEntry const js_version_proto_funcs[] = {
+static JSCFunctionListEntry const js_version_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.version", 0),
     JS_CGETSET_MAGIC_DEF("major", js_version_get, js_version_set, 0),
     JS_CGETSET_MAGIC_DEF("minor", js_version_get, js_version_set, 1),
@@ -1644,21 +1915,21 @@ static A_INLINE int js_liba_version_init(JSContext *const ctx, JSModuleDef *cons
     JS_NewClassID(&js_version_class_id);
     JS_NewClass(JS_GetRuntime(ctx), js_version_class_id, &js_version_class);
 
-    JSValue const version_proto = JS_NewObject(ctx);
-    JS_SetPropertyFunctionList(ctx, version_proto, js_version_proto_funcs, A_LEN(js_version_proto_funcs));
+    JSValue const proto = JS_NewObject(ctx);
+    JS_SetPropertyFunctionList(ctx, proto, js_version_proto, A_LEN(js_version_proto));
 
-    JSValue const version_class = JS_NewCFunction2(ctx, js_version_ctor, "version", 3, JS_CFUNC_constructor, 0);
-    JS_SetConstructor(ctx, version_class, version_proto);
-    JS_SetClassProto(ctx, js_version_class_id, version_proto);
+    JSValue const clazz = JS_NewCFunction2(ctx, js_version_ctor, "version", 3, JS_CFUNC_constructor, 0);
+    JS_SetConstructor(ctx, clazz, proto);
+    JS_SetClassProto(ctx, js_version_class_id, proto);
 
-    JS_DefinePropertyValueStr(ctx, version_class, "MAJOR", JS_NewUint32(ctx, A_VERSION_MAJOR), 0);
-    JS_DefinePropertyValueStr(ctx, version_class, "MINOR", JS_NewUint32(ctx, A_VERSION_MINOR), 0);
-    JS_DefinePropertyValueStr(ctx, version_class, "PATCH", JS_NewUint32(ctx, A_VERSION_PATCH), 0);
-    JS_DefinePropertyValueStr(ctx, version_class, "TWEAK", JS_NewUint32(ctx, A_VERSION_TWEAK), 0);
+    JS_DefinePropertyValueStr(ctx, clazz, "MAJOR", JS_NewUint32(ctx, A_VERSION_MAJOR), 0);
+    JS_DefinePropertyValueStr(ctx, clazz, "MINOR", JS_NewUint32(ctx, A_VERSION_MINOR), 0);
+    JS_DefinePropertyValueStr(ctx, clazz, "PATCH", JS_NewUint32(ctx, A_VERSION_PATCH), 0);
+    JS_DefinePropertyValueStr(ctx, clazz, "TWEAK", JS_NewUint32(ctx, A_VERSION_TWEAK), 0);
     JSValue const version_check = JS_NewCFunction2(ctx, js_version_check, "check", 3, JS_CFUNC_generic, 0);
-    JS_DefinePropertyValueStr(ctx, version_class, "check", version_check, 0);
+    JS_DefinePropertyValueStr(ctx, clazz, "check", version_check, 0);
 
-    JS_SetModuleExport(ctx, m, "version", version_class);
+    JS_SetModuleExport(ctx, m, "version", clazz);
     return 0;
 }
 
@@ -1676,6 +1947,7 @@ static int js_liba_init(JSContext *const ctx, JSModuleDef *const m)
     js_liba_polytrack3_init(ctx, m);
     js_liba_polytrack5_init(ctx, m);
     js_liba_polytrack7_init(ctx, m);
+    js_liba_tf_init(ctx, m);
     js_liba_version_init(ctx, m);
     return JS_SetModuleExportList(ctx, m, js_liba_funcs, A_LEN(js_liba_funcs));
 }
@@ -1690,6 +1962,7 @@ JSModuleDef *js_init_module(JSContext *const ctx, char const *const module_name)
         JS_AddModuleExport(ctx, m, "polytrack3");
         JS_AddModuleExport(ctx, m, "polytrack5");
         JS_AddModuleExport(ctx, m, "polytrack7");
+        JS_AddModuleExport(ctx, m, "tf");
         JS_AddModuleExport(ctx, m, "version");
         JS_AddModuleExportList(ctx, m, js_liba_funcs, A_LEN(js_liba_funcs));
     }
