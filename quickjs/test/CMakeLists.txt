@@ -10,6 +10,8 @@ unittest(mf mf)
 
 unittest(pid pid)
 
+unittest(pid_fuzzy pid_fuzzy)
+
 unittest(pid_neuron pid_neuron)
 
 unittest(polytrack3 polytrack3)
