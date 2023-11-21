@@ -33,9 +33,6 @@ A_PUBLIC int LMODULE(pid_meta_)(lua_State *L, int ret);
 
 /***
  constructor for PID controller
- @tparam[opt] number kp proportional constant
- @tparam[opt] number ki integral constant
- @tparam[opt] number kd derivative constant
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
@@ -46,9 +43,6 @@ A_PUBLIC int LMODULE(pid_new)(lua_State *L);
 
 /***
  initialize function for PID controller
- @tparam[opt] number kp proportional constant
- @tparam[opt] number ki integral constant
- @tparam[opt] number kd derivative constant
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output

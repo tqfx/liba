@@ -38,9 +38,6 @@ A_PUBLIC int LMODULE(pid_neuron_meta_)(lua_State *L, int ret);
 
 /***
  constructor for single neuron PID controller
- @tparam[opt] number kp proportional learning constant
- @tparam[opt] number ki integral learning constant
- @tparam[opt] number kd derivative learning constant
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
@@ -51,9 +48,6 @@ A_PUBLIC int LMODULE(pid_neuron_new)(lua_State *L);
 
 /***
  initialize function for single neuron PID controller
- @tparam[opt] number kp proportional learning constant
- @tparam[opt] number ki integral learning constant
- @tparam[opt] number kd derivative learning constant
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output

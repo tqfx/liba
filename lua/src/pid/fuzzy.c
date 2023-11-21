@@ -7,50 +7,23 @@
 
 static int LMODULE(pid_fuzzy_init_)(lua_State *const L, a_pid_fuzzy_s *const ctx)
 {
+    int n = lua_gettop(L) - lua_isuserdata(L, -1);
     ctx->op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
-    switch (lua_gettop(L) - lua_isuserdata(L, -1))
+    ctx->pid.outmin = -A_FLOAT_INF;
+    ctx->pid.outmax = +A_FLOAT_INF;
+    ctx->pid.summax = +A_FLOAT_INF;
+    ctx->pid.mode = A_PID_INC;
+    if (n >= 2)
     {
-    case 6: /* kp, ki, kd, outmin, outmax, summax */
-    {
-        ctx->pid.summax = (a_float_t)luaL_checknumber(L, 6);
-        ctx->pid.mode = A_PID_POS;
-        A_FALLTHROUGH;
+        ctx->pid.outmin = (a_float_t)luaL_checknumber(L, 1);
+        ctx->pid.outmax = (a_float_t)luaL_checknumber(L, 2);
     }
-    case 5: /* kp, ki, kd, outmin, outmax */
-    {
-        ctx->pid.outmax = (a_float_t)luaL_checknumber(L, 5);
-        ctx->pid.outmin = (a_float_t)luaL_checknumber(L, 4);
-        ctx->pid.kd = ctx->kd = (a_float_t)luaL_checknumber(L, 3);
-        ctx->pid.ki = ctx->ki = (a_float_t)luaL_checknumber(L, 2);
-        ctx->pid.kp = ctx->kp = (a_float_t)luaL_checknumber(L, 1);
-        if (ctx->pid.mode != A_PID_POS)
-        {
-            ctx->pid.mode = A_PID_INC;
-        }
-        break;
-    }
-    case 3: /* outmin, outmax, summax */
+    if (n >= 3)
     {
         ctx->pid.summax = (a_float_t)luaL_checknumber(L, 3);
         ctx->pid.mode = A_PID_POS;
-        A_FALLTHROUGH;
     }
-    case 2: /* outmin, outmax */
-    {
-        ctx->pid.outmax = (a_float_t)luaL_checknumber(L, 2);
-        ctx->pid.outmin = (a_float_t)luaL_checknumber(L, 1);
-        if (ctx->pid.mode != A_PID_POS)
-        {
-            ctx->pid.mode = A_PID_INC;
-        }
-        break;
-    }
-    default:
-        ctx->pid.outmax = +A_FLOAT_INF;
-        ctx->pid.outmin = -A_FLOAT_INF;
-        ctx->pid.mode = A_PID_INC;
-        break;
-    }
+    ctx->pid.kp = ctx->kp = 1;
     a_pid_fuzzy_init(ctx, 0);
     return 1;
 }

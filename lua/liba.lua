@@ -478,50 +478,34 @@ liba.pid.OFF = 0
 liba.pid.POS = 1
 liba.pid.INC = 2
 
----@param kp number
----@param ki number
----@param kd number
 ---@param min number
 ---@param max number
 ---@param sum? number
 ---@return a.pid
 ---@overload fun(): a.pid
----@overload fun(min: number, max: number, sum?: number): a.pid
-function liba.pid.new(kp, ki, kd, min, max, sum) end
+function liba.pid.new(min, max, sum) end
 
----@param kp number
----@param ki number
----@param kd number
 ---@param min number
 ---@param max number
 ---@param sum? number
 ---@return a.pid
 ---@overload fun(): a.pid
----@overload fun(min: number, max: number, sum?: number): a.pid
-function pid.new(kp, ki, kd, min, max, sum) end
+function pid.new(min, max, sum) end
 
 ---@param ctx a.pid
----@param kp number
----@param ki number
----@param kd number
 ---@param min number
 ---@param max number
 ---@param sum? number
 ---@return a.pid
 ---@overload fun(ctx: a.pid): a.pid
----@overload fun(ctx: a.pid, min: number, max: number, sum?: number): a.pid
-function liba.pid.init(ctx, kp, ki, kd, min, max, sum) end
+function liba.pid.init(ctx, min, max, sum) end
 
----@param kp number
----@param ki number
----@param kd number
 ---@param min number
 ---@param max number
 ---@param sum? number
 ---@return a.pid
 ---@overload fun(): a.pid
----@overload fun(min: number, max: number, sum?: number): a.pid
-function pid:init(kp, ki, kd, min, max, sum) end
+function pid:init(min, max, sum) end
 
 ---@param ctx a.pid
 ---@param kp number
@@ -572,50 +556,34 @@ pid.fuzzy = setmetatable({}, {
 })
 liba.pid.fuzzy = {}
 
----@param kp number
----@param ki number
----@param kd number
 ---@param min number
 ---@param max number
 ---@param sum? number
 ---@return a.pid.fuzzy
 ---@overload fun(): a.pid.fuzzy
----@overload fun(min: number, max: number, sum?: number): a.pid.fuzzy
-function liba.pid.fuzzy.new(kp, ki, kd, min, max, sum) end
+function liba.pid.fuzzy.new(min, max, sum) end
 
----@param kp number
----@param ki number
----@param kd number
 ---@param min number
 ---@param max number
 ---@param sum? number
 ---@return a.pid.fuzzy
 ---@overload fun(): a.pid.fuzzy
----@overload fun(min: number, max: number, sum?: number): a.pid.fuzzy
-function pid.fuzzy.new(kp, ki, kd, min, max, sum) end
+function pid.fuzzy.new(min, max, sum) end
 
 ---@param ctx a.pid.fuzzy
----@param kp number
----@param ki number
----@param kd number
 ---@param min number
 ---@param max number
 ---@param sum? number
 ---@return a.pid.fuzzy
 ---@overload fun(ctx: a.pid.fuzzy): a.pid.fuzzy
----@overload fun(ctx: a.pid.fuzzy, min: number, max: number, sum?: number): a.pid.fuzzy
-function liba.pid.fuzzy.init(ctx, kp, ki, kd, min, max, sum) end
+function liba.pid.fuzzy.init(ctx, min, max, sum) end
 
----@param kp number
----@param ki number
----@param kd number
 ---@param min number
 ---@param max number
 ---@param sum? number
 ---@return a.pid.fuzzy
 ---@overload fun(): a.pid.fuzzy
----@overload fun(min: number, max: number, sum?: number): a.pid.fuzzy
-function pid.fuzzy:init(kp, ki, kd, min, max, sum) end
+function pid.fuzzy:init(min, max, sum) end
 
 ---@param ctx a.pid.fuzzy
 ---@param me table
@@ -712,50 +680,34 @@ pid.neuron = setmetatable({}, {
 })
 liba.pid.neuron = {}
 
----@param kp number
----@param ki number
----@param kd number
 ---@param min number
 ---@param max number
 ---@param sum? number
 ---@return a.pid.neuron
 ---@overload fun(): a.pid.neuron
----@overload fun(min: number, max: number, sum?: number): a.pid.neuron
-function liba.pid.neuron.new(kp, ki, kd, min, max, sum) end
+function liba.pid.neuron.new(min, max, sum) end
 
----@param kp number
----@param ki number
----@param kd number
 ---@param min number
 ---@param max number
 ---@param sum? number
 ---@return a.pid.neuron
 ---@overload fun(): a.pid.neuron
----@overload fun(min: number, max: number, sum?: number): a.pid.neuron
-function pid.neuron.new(kp, ki, kd, min, max, sum) end
+function pid.neuron.new(min, max, sum) end
 
 ---@param ctx a.pid.neuron
----@param kp number
----@param ki number
----@param kd number
 ---@param min number
 ---@param max number
 ---@param sum? number
 ---@return a.pid.neuron
 ---@overload fun(ctx: a.pid.neuron): a.pid.neuron
----@overload fun(ctx: a.pid.neuron, min: number, max: number, sum?: number): a.pid.neuron
-function liba.pid.neuron.init(ctx, kp, ki, kd, min, max, sum) end
+function liba.pid.neuron.init(ctx, min, max, sum) end
 
----@param kp number
----@param ki number
----@param kd number
 ---@param min number
 ---@param max number
 ---@param sum? number
 ---@return a.pid.neuron
 ---@overload fun(): a.pid.neuron
----@overload fun(min: number, max: number, sum?: number): a.pid.neuron
-function pid.neuron:init(kp, ki, kd, min, max, sum) end
+function pid.neuron:init(min, max, sum) end
 
 ---@param ctx a.pid.neuron
 ---@param k number

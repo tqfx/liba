@@ -7,48 +7,21 @@
 
 static int LMODULE(pid_init_)(lua_State *const L, a_pid_s *const ctx)
 {
-    switch (lua_gettop(L) - lua_isuserdata(L, -1))
+    int n = lua_gettop(L) - lua_isuserdata(L, -1);
+    ctx->outmin = -A_FLOAT_INF;
+    ctx->outmax = +A_FLOAT_INF;
+    ctx->summax = +A_FLOAT_INF;
+    ctx->mode = A_PID_INC;
+    ctx->kp = 1;
+    if (n >= 2)
     {
-    case 6: /* kp, ki, kd, outmin, outmax, summax */
-    {
-        ctx->summax = (a_float_t)luaL_checknumber(L, 6);
-        ctx->mode = A_PID_POS;
-        A_FALLTHROUGH;
+        ctx->outmin = (a_float_t)luaL_checknumber(L, 1);
+        ctx->outmax = (a_float_t)luaL_checknumber(L, 2);
     }
-    case 5: /* kp, ki, kd, outmin, outmax */
-    {
-        ctx->outmax = (a_float_t)luaL_checknumber(L, 5);
-        ctx->outmin = (a_float_t)luaL_checknumber(L, 4);
-        ctx->kd = (a_float_t)luaL_checknumber(L, 3);
-        ctx->ki = (a_float_t)luaL_checknumber(L, 2);
-        ctx->kp = (a_float_t)luaL_checknumber(L, 1);
-        if (ctx->mode != A_PID_POS)
-        {
-            ctx->mode = A_PID_INC;
-        }
-        break;
-    }
-    case 3: /* outmin, outmax, summax */
+    if (n >= 3)
     {
         ctx->summax = (a_float_t)luaL_checknumber(L, 3);
         ctx->mode = A_PID_POS;
-        A_FALLTHROUGH;
-    }
-    case 2: /* outmin, outmax */
-    {
-        ctx->outmax = (a_float_t)luaL_checknumber(L, 2);
-        ctx->outmin = (a_float_t)luaL_checknumber(L, 1);
-        if (ctx->mode != A_PID_POS)
-        {
-            ctx->mode = A_PID_INC;
-        }
-        break;
-    }
-    default:
-        ctx->outmax = +A_FLOAT_INF;
-        ctx->outmin = -A_FLOAT_INF;
-        ctx->mode = A_PID_INC;
-        break;
     }
     a_pid_init(ctx, 0);
     return 1;
@@ -56,9 +29,6 @@ static int LMODULE(pid_init_)(lua_State *const L, a_pid_s *const ctx)
 
 /***
  constructor for PID controller
- @tparam[opt] number kp proportional constant
- @tparam[opt] number ki integral constant
- @tparam[opt] number kd derivative constant
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
@@ -69,7 +39,6 @@ int LMODULE(pid_new)(lua_State *const L)
 {
     a_pid_s *const ctx = (a_pid_s *)lua_newuserdata(L, sizeof(a_pid_s));
     a_zero(ctx, sizeof(a_pid_s));
-    ctx->summax = +A_FLOAT_INF;
     LMODULE2(pid_meta_, L, 1);
     lua_setmetatable(L, -2);
     return LMODULE2(pid_init_, L, ctx);
@@ -78,9 +47,6 @@ int LMODULE(pid_new)(lua_State *const L)
 /***
  calculate function for PID controller
  @tparam a.pid ctx PID controller userdata
- @tparam[opt] number kp proportional constant
- @tparam[opt] number ki integral constant
- @tparam[opt] number kd derivative constant
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output

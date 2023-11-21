@@ -7,43 +7,31 @@
 
 static int LMODULE(pid_neuron_init_)(lua_State *const L, a_pid_neuron_s *const ctx)
 {
-    switch (lua_gettop(L) - lua_isuserdata(L, -1))
+    int n = lua_gettop(L) - lua_isuserdata(L, -1);
+    ctx->pid.outmin = -A_FLOAT_INF;
+    ctx->pid.outmax = +A_FLOAT_INF;
+    ctx->pid.summax = +A_FLOAT_INF;
+    ctx->pid.mode = A_PID_INC;
+    if (n >= 2)
     {
-    case 5: /* kp, ki, kd, outmin, outmax */
-    {
-        ctx->pid.outmax = (a_float_t)luaL_checknumber(L, 5);
-        ctx->pid.outmin = (a_float_t)luaL_checknumber(L, 4);
-        ctx->pid.kd = (a_float_t)luaL_checknumber(L, 3);
-        ctx->pid.ki = (a_float_t)luaL_checknumber(L, 2);
-        ctx->pid.kp = (a_float_t)luaL_checknumber(L, 1);
-        if (ctx->pid.mode != A_PID_POS)
-        {
-            ctx->pid.mode = A_PID_INC;
-        }
-        break;
-    }
-    case 2: /* outmin, outmax */
-    {
-        ctx->pid.outmax = (a_float_t)luaL_checknumber(L, 2);
         ctx->pid.outmin = (a_float_t)luaL_checknumber(L, 1);
-        ctx->pid.mode = A_PID_INC;
-        break;
+        ctx->pid.outmax = (a_float_t)luaL_checknumber(L, 2);
     }
-    default:
-        ctx->pid.outmax = +A_FLOAT_INF;
-        ctx->pid.outmin = -A_FLOAT_INF;
-        ctx->pid.mode = A_PID_INC;
-        break;
+    if (n >= 3)
+    {
+        ctx->pid.summax = (a_float_t)luaL_checknumber(L, 3);
+        ctx->pid.mode = A_PID_POS;
     }
+    ctx->k = 1;
+    ctx->wp.f = A_FLOAT_C(0.1);
+    ctx->wi.f = A_FLOAT_C(0.1);
+    ctx->wd.f = A_FLOAT_C(0.1);
     a_pid_neuron_init(ctx, 0);
     return 1;
 }
 
 /***
  constructor for single neuron PID controller
- @tparam[opt] number kp proportional learning constant
- @tparam[opt] number ki integral learning constant
- @tparam[opt] number kd derivative learning constant
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
@@ -63,9 +51,6 @@ int LMODULE(pid_neuron_new)(lua_State *const L)
 /***
  initialize function for single neuron PID controller
  @tparam a.pid.neuron ctx single neuron PID controller userdata
- @tparam[opt] number kp proportional learning constant
- @tparam[opt] number ki integral learning constant
- @tparam[opt] number kd derivative learning constant
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output

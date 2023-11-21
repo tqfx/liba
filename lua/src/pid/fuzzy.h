@@ -41,9 +41,6 @@ A_PUBLIC int LMODULE(pid_fuzzy_die)(lua_State *L);
 
 /***
  constructor for fuzzy PID controller
- @tparam[opt] number kp proportional constant
- @tparam[opt] number ki integral constant
- @tparam[opt] number kd derivative constant
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
@@ -54,9 +51,6 @@ A_PUBLIC int LMODULE(pid_fuzzy_new)(lua_State *L);
 
 /***
  initialize function for fuzzy PID controller
- @tparam[opt] number kp proportional constant
- @tparam[opt] number ki integral constant
- @tparam[opt] number kd derivative constant
  @tparam number min minimum output
  @tparam number max maximum output
  @tparam[opt] number sum maximum intergral output
