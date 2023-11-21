@@ -10,8 +10,8 @@
 
 static void test(a_complex_s a, a_complex_s b)
 {
-    a_float_t x = 0;
     a_complex_s c = a_complex_polar(A_FLOAT_C(1.0), a_float_c(, A_PI_2));
+    a_float_t x = a_complex_logabs(c);
 
     x = a_complex_logabs(a);
     debug("logabs" A_COMPLEX_PRI("", "g", "", "g") "=" A_FLOAT_PRI("", "g\n"), a_complex_real(a), a_complex_imag(a), x);

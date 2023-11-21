@@ -663,7 +663,6 @@ static JSValue js_pid_fuzzy_get(JSContext *const ctx, JSValueConst const this_va
         return JS_NewUint32(ctx, self->joint);
     case 1:
         return JS_NewUint32(ctx, self->pid.mode);
-        break;
     case 2:
         x = (double)self->kp;
         break;
@@ -808,8 +807,8 @@ static JSValue js_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this_v
         a_float_t *o;
     } u;
     a_u32_t row;
-    a_u32_t order;
     a_u32_t len = 0;
+    a_u32_t order = 0;
     JSValue one = JS_UNDEFINED;
     if (JS_IsArray(ctx, argv[0]))
     {
@@ -949,7 +948,6 @@ static JSValue js_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this_v
             }
         }
         JS_FreeValue(ctx, one);
-        one = JS_UNDEFINED;
     }
     return JS_UNDEFINED;
 fail:

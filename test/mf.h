@@ -82,7 +82,6 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
             a_float_t x = params[0] + delta * a_float_c(, i);
             a_float_t y = a_mf(e, x, params + 2);
             debug(A_FLOAT_PRI(, "g\t") A_FLOAT_PRI(, "g\n"), x, y);
-            y = 0;
         }
     }
     else
