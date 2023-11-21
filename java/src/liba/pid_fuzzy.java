@@ -37,8 +37,6 @@ public class pid_fuzzy {
 
     static final native void INIT();
 
-    final native void init(double min, double max, double sum);
-
     /**
      * construct a new {@link pid_fuzzy} object
      *
@@ -54,7 +52,7 @@ public class pid_fuzzy {
      * @param max maxinum output
      */
     public pid_fuzzy(double min, double max) {
-        init(min, max, 1.0 / 0.0);
+        init(min, max, 0);
     }
 
     /**
@@ -67,6 +65,8 @@ public class pid_fuzzy {
     public pid_fuzzy(double min, double max, double sum) {
         init(min, max, sum);
     }
+
+    final native void init(double min, double max, double sum);
 
     /**
      * get mode for fuzzy PID controller

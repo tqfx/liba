@@ -20,21 +20,22 @@ JNIEXPORT void JNICALL JPACKAGE(pid_INIT)(JNIEnv *jenv, jclass jcls)
     L.ctx = (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B");
 }
 
-JNIEXPORT void JNICALL JPACKAGE(pid_init)(JNIEnv *jenv, jobject jobj, jdouble kp, jdouble ki, jdouble kd, jdouble min, jdouble max, jdouble sum)
+JNIEXPORT void JNICALL JPACKAGE(pid_init)(JNIEnv *jenv, jobject jobj, jdouble min, jdouble max, jdouble sum)
 {
     a_pid_s ctx;
     jbyteArray jctx = (*jenv)->NewByteArray(jenv, sizeof(a_pid_s));
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
-    a_pid_kpid(&ctx, kp, ki, kd);
+    ctx.kp = 1;
     ctx.outmin = min;
     ctx.outmax = max;
-    ctx.summax = sum;
-    if (ctx.summax != 0)
+    if (sum != 0)
     {
+        ctx.summax = sum;
         ctx.mode = A_PID_POS;
     }
     else
     {
+        ctx.summax = A_FLOAT_INF;
         ctx.mode = A_PID_INC;
     }
     a_pid_init(&ctx, 0);

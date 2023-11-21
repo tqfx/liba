@@ -14,8 +14,6 @@ public class tf {
 
     static final native void INIT();
 
-    final native void init(double[] num, double[] den);
-
     /**
      * construct a new {@link tf} object
      *
@@ -25,6 +23,8 @@ public class tf {
     public tf(double[] num, double[] den) {
         init(num, den);
     }
+
+    final native void init(double[] num, double[] den);
 
     /**
      * get numerator for transfer function

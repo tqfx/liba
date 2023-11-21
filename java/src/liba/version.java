@@ -29,8 +29,6 @@ public class version {
         return major() + "." + minor() + "." + patch();
     }
 
-    final native void init(int maj, int min, int pat);
-
     /**
      * construct a new {@link version} object
      */
@@ -67,6 +65,8 @@ public class version {
     public version(int maj, int min, int pat) {
         init(maj, min, pat);
     }
+
+    final native void init(int maj, int min, int pat);
 
     /***
      * get major number for version
@@ -186,5 +186,4 @@ public class version {
      * @return -3(&lt;major),-2(&lt;minor),-1(&lt;patch),0,+1(&gt;patch),+2(&gt;minor),+3(&gt;major)
      */
     public static final native int check(int major, int minor, int patch);
-
 }

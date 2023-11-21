@@ -36,6 +36,40 @@ JNIEXPORT void JNICALL JPACKAGE(pid_1fuzzy_INIT)(JNIEnv *jenv, jclass jcls)
     L.joint = (*jenv)->GetFieldID(jenv, jcls, "joint", "[B");
 }
 
+JNIEXPORT void JNICALL JPACKAGE(pid_1fuzzy_init)(JNIEnv *jenv, jobject jobj, jdouble min, jdouble max, jdouble sum)
+{
+    a_pid_fuzzy_s ctx;
+    jbyteArray jctx = (*jenv)->NewByteArray(jenv, sizeof(a_pid_fuzzy_s));
+    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy_s), (jbyte *)&ctx);
+    ctx.pid.kp = 1;
+    ctx.pid.outmin = min;
+    ctx.pid.outmax = max;
+    if (sum != 0)
+    {
+        ctx.pid.summax = sum;
+        ctx.pid.mode = A_PID_POS;
+    }
+    else
+    {
+        ctx.pid.summax = A_FLOAT_INF;
+        ctx.pid.mode = A_PID_INC;
+    }
+    ctx.me = A_NULL;
+    ctx.mec = A_NULL;
+    ctx.mkp = A_NULL;
+    ctx.mki = A_NULL;
+    ctx.mkd = A_NULL;
+    ctx.idx = A_NULL;
+    ctx.val = A_NULL;
+    ctx.kp = 1;
+    ctx.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
+    ctx.order = 0;
+    ctx.joint = 0;
+    a_pid_fuzzy_init(&ctx, 0);
+    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy_s), (jbyte *)&ctx);
+    (*jenv)->SetObjectField(jenv, jobj, L.ctx, jctx);
+}
+
 JNIEXPORT jint JNICALL JPACKAGE(pid_1fuzzy_mode__)(JNIEnv *jenv, jobject jobj)
 {
     a_pid_fuzzy_s ctx;
@@ -192,41 +226,6 @@ JNIEXPORT jint JNICALL JPACKAGE(pid_1fuzzy_order)(JNIEnv *jenv, jobject jobj)
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy_s), (jbyte *)&ctx);
     return (jint)ctx.order;
-}
-
-JNIEXPORT void JNICALL JPACKAGE(pid_1fuzzy_init)(JNIEnv *jenv, jobject jobj, jdouble min, jdouble max, jdouble sum)
-{
-    a_pid_fuzzy_s ctx;
-    jbyteArray jctx = (*jenv)->NewByteArray(jenv, sizeof(a_pid_fuzzy_s));
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy_s), (jbyte *)&ctx);
-    a_pid_fuzzy_kpid(&ctx, 0, 0, 0);
-    ctx.pid.outmin = min;
-    ctx.pid.outmax = max;
-    ctx.pid.summax = sum;
-    if (ctx.pid.summax != 0)
-    {
-        ctx.pid.mode = A_PID_POS;
-    }
-    else
-    {
-        ctx.pid.mode = A_PID_INC;
-    }
-    ctx.me = A_NULL;
-    ctx.mec = A_NULL;
-    ctx.mkp = A_NULL;
-    ctx.mki = A_NULL;
-    ctx.mkd = A_NULL;
-    ctx.idx = A_NULL;
-    ctx.val = A_NULL;
-    ctx.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
-    ctx.kp = 0;
-    ctx.ki = 0;
-    ctx.kd = 0;
-    ctx.order = 0;
-    ctx.joint = 0;
-    a_pid_fuzzy_init(&ctx, 0);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy_s), (jbyte *)&ctx);
-    (*jenv)->SetObjectField(jenv, jobj, L.ctx, jctx);
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(pid_1fuzzy_op)(JNIEnv *jenv, jobject jobj, jint op)

@@ -10,8 +10,6 @@ public class pid_neuron {
 
     static final native void INIT();
 
-    final native void init(double min, double max, double sum);
-
     /**
      * construct a new {@link pid_neuron} object
      *
@@ -27,8 +25,10 @@ public class pid_neuron {
      * @param max maxinum output
      */
     public pid_neuron(double min, double max) {
-        init(min, max, 1.0 / 0.0);
+        init(min, max, 0);
     }
+
+    final native void init(double min, double max, double sum);
 
     /**
      * get mode for single neuron PID controller

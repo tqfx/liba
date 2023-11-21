@@ -19,13 +19,11 @@ public class pid {
 
     static final native void INIT();
 
-    final native void init(double kp, double ki, double kd, double min, double max, double sum);
-
     /**
      * construct a new {@link pid} object
      */
     public pid() {
-        init(0, 0, 0, -1.0 / 0.0, 1.0 / 0.0, 1.0 / 0.0);
+        init(-1.0 / 0.0, 1.0 / 0.0, 1.0 / 0.0);
     }
 
     /**
@@ -35,7 +33,7 @@ public class pid {
      * @param max maximum output
      */
     public pid(double min, double max) {
-        init(0, 0, 0, min, max, 1.0 / 0.0);
+        init(min, max, 0);
     }
 
     /**
@@ -46,35 +44,10 @@ public class pid {
      * @param sum maximum intergral output
      */
     public pid(double min, double max, double sum) {
-        init(0, 0, 0, min, max, sum);
+        init(min, max, sum);
     }
 
-    /**
-     * construct a new {@link pid} object
-     *
-     * @param kp  proportional constant
-     * @param ki  integral constant
-     * @param kd  derivative constant
-     * @param min minimum output
-     * @param max maximum output
-     */
-    public pid(double kp, double ki, double kd, double min, double max) {
-        init(kp, ki, kd, min, max, 0);
-    }
-
-    /**
-     * construct a new {@link pid} object
-     *
-     * @param kp  proportional constant
-     * @param ki  integral constant
-     * @param kd  derivative constant
-     * @param min minimum output
-     * @param max maximum output
-     * @param sum maximum intergral output
-     */
-    public pid(double kp, double ki, double kd, double min, double max, double sum) {
-        init(kp, ki, kd, min, max, sum);
-    }
+    final native void init(double min, double max, double sum);
 
     /**
      * get mode for PID controller

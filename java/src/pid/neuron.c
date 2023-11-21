@@ -22,19 +22,22 @@ JNIEXPORT void JNICALL JPACKAGE(pid_1neuron_init)(JNIEnv *jenv, jobject jobj, jd
     a_pid_neuron_s ctx;
     jbyteArray jctx = (*jenv)->NewByteArray(jenv, sizeof(a_pid_neuron_s));
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    a_pid_neuron_kpid(&ctx, 0, 0, 0, 0);
-    a_pid_neuron_wpid(&ctx, 0, 0, 0);
     ctx.pid.outmin = min;
     ctx.pid.outmax = max;
-    ctx.pid.summax = sum;
-    if (ctx.pid.summax != 0)
+    if (sum != 0)
     {
+        ctx.pid.summax = sum;
         ctx.pid.mode = A_PID_POS;
     }
     else
     {
+        ctx.pid.summax = A_FLOAT_INF;
         ctx.pid.mode = A_PID_INC;
     }
+    ctx.k = 1;
+    ctx.wp.f = A_FLOAT_C(0.1);
+    ctx.wi.f = A_FLOAT_C(0.1);
+    ctx.wd.f = A_FLOAT_C(0.1);
     a_pid_neuron_init(&ctx, 0);
     (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
     (*jenv)->SetObjectField(jenv, jobj, L.ctx, jctx);
