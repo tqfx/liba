@@ -19,8 +19,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
-A_PUBLIC int LMODULE(polytrack7_func_)(lua_State *L, int ret);
-A_PUBLIC int LMODULE(polytrack7_meta_)(lua_State *L, int ret);
+A_PUBLIC int liba_polytrack7_func_(lua_State *L, int ret);
+A_PUBLIC int liba_polytrack7_meta_(lua_State *L, int ret);
 
 /***
  constructor for hepta polynomial trajectory
@@ -39,10 +39,10 @@ A_PUBLIC int LMODULE(polytrack7_meta_)(lua_State *L, int ret);
  @treturn a.polytrack7 hepta polynomial trajectory userdata
  @function new
 */
-A_PUBLIC int LMODULE(polytrack7_new)(lua_State *L);
+A_PUBLIC int liba_polytrack7_new(lua_State *L);
 
 /***
- generation function for hepta polynomial trajectory
+ generate for hepta polynomial trajectory
  @tparam number t0 time for source
  @tparam number t1 time for target
  @tparam number q0 position for source
@@ -58,47 +58,47 @@ A_PUBLIC int LMODULE(polytrack7_new)(lua_State *L);
  @treturn a.polytrack7 hepta polynomial trajectory userdata
  @function gen
 */
-A_PUBLIC int LMODULE(polytrack7_gen)(lua_State *L);
+A_PUBLIC int liba_polytrack7_gen(lua_State *L);
 
 /***
- calculate function for hepta polynomial trajectory
+ calculate for hepta polynomial trajectory
  @tparam number dt difference between current time and initial time
  @treturn table {position,velocity,acceleration,jerk}
  @function out
 */
-A_PUBLIC int LMODULE(polytrack7_out)(lua_State *L);
+A_PUBLIC int liba_polytrack7_out(lua_State *L);
 
 /***
- calculate function for hepta polynomial trajectory position
+ calculate for hepta polynomial trajectory position
  @tparam number dt difference between current time and initial time
  @treturn number position output
  @function pos
 */
-A_PUBLIC int LMODULE(polytrack7_pos)(lua_State *L);
+A_PUBLIC int liba_polytrack7_pos(lua_State *L);
 
 /***
- calculate function for hepta polynomial trajectory velocity
+ calculate for hepta polynomial trajectory velocity
  @tparam number dt difference between current time and initial time
  @treturn number velocity output
  @function vel
 */
-A_PUBLIC int LMODULE(polytrack7_vel)(lua_State *L);
+A_PUBLIC int liba_polytrack7_vel(lua_State *L);
 
 /***
- calculate function for hepta polynomial trajectory acceleration
+ calculate for hepta polynomial trajectory acceleration
  @tparam number dt difference between current time and initial time
  @treturn number acceleration output
  @function acc
 */
-A_PUBLIC int LMODULE(polytrack7_acc)(lua_State *L);
+A_PUBLIC int liba_polytrack7_acc(lua_State *L);
 
 /***
- calculate function for hepta polynomial trajectory jerk
+ calculate for hepta polynomial trajectory jerk
  @tparam number dt difference between current time and initial time
  @treturn number jerk output
  @function jer
 */
-A_PUBLIC int LMODULE(polytrack7_jer)(lua_State *L);
+A_PUBLIC int liba_polytrack7_jer(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

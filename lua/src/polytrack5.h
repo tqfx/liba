@@ -19,8 +19,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
-A_PUBLIC int LMODULE(polytrack5_func_)(lua_State *L, int ret);
-A_PUBLIC int LMODULE(polytrack5_meta_)(lua_State *L, int ret);
+A_PUBLIC int liba_polytrack5_func_(lua_State *L, int ret);
+A_PUBLIC int liba_polytrack5_meta_(lua_State *L, int ret);
 
 /***
  constructor for quintic polynomial trajectory
@@ -37,10 +37,10 @@ A_PUBLIC int LMODULE(polytrack5_meta_)(lua_State *L, int ret);
  @treturn a.polytrack5 quintic polynomial trajectory userdata
  @function new
 */
-A_PUBLIC int LMODULE(polytrack5_new)(lua_State *L);
+A_PUBLIC int liba_polytrack5_new(lua_State *L);
 
 /***
- generation function for quintic polynomial trajectory
+ generate for quintic polynomial trajectory
  @tparam number t0 time for source
  @tparam number t1 time for target
  @tparam number q0 position for source
@@ -54,39 +54,39 @@ A_PUBLIC int LMODULE(polytrack5_new)(lua_State *L);
  @treturn a.polytrack5 quintic polynomial trajectory userdata
  @function gen
 */
-A_PUBLIC int LMODULE(polytrack5_gen)(lua_State *L);
+A_PUBLIC int liba_polytrack5_gen(lua_State *L);
 
 /***
- calculate function for quintic polynomial trajectory
+ calculate for quintic polynomial trajectory
  @tparam number dt difference between current time and initial time
  @treturn table {position,velocity,acceleration}
  @function out
 */
-A_PUBLIC int LMODULE(polytrack5_out)(lua_State *L);
+A_PUBLIC int liba_polytrack5_out(lua_State *L);
 
 /***
- calculate function for quintic polynomial trajectory position
+ calculate for quintic polynomial trajectory position
  @tparam number dt difference between current time and initial time
  @treturn number position output
  @function pos
 */
-A_PUBLIC int LMODULE(polytrack5_pos)(lua_State *L);
+A_PUBLIC int liba_polytrack5_pos(lua_State *L);
 
 /***
- calculate function for quintic polynomial trajectory velocity
+ calculate for quintic polynomial trajectory velocity
  @tparam number dt difference between current time and initial time
  @treturn number velocity output
  @function vel
 */
-A_PUBLIC int LMODULE(polytrack5_vel)(lua_State *L);
+A_PUBLIC int liba_polytrack5_vel(lua_State *L);
 
 /***
- calculate function for quintic polynomial trajectory acceleration
+ calculate for quintic polynomial trajectory acceleration
  @tparam number dt difference between current time and initial time
  @treturn number acceleration output
  @function acc
 */
-A_PUBLIC int LMODULE(polytrack5_acc)(lua_State *L);
+A_PUBLIC int liba_polytrack5_acc(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

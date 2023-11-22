@@ -3,32 +3,22 @@
 
 #include "api.h"
 
-#define LMODULES(S) "a." S
-#define L_MODULE(P, F) P##liba##F
-#define LMODULE(F) L_MODULE(, _##F)
-#define LMODULE1(F, a) L_MODULE(, _##F)(a)
-#define LMODULE2(F, a, b) L_MODULE(, _##F)(a, b)
-#define LMODULE3(F, a, b, c) L_MODULE(, _##F)(a, b, c)
-#define LMODULE_(F, L) L_MODULE(luaopen_, _##F)(L)
-#define LMODULE0(L) L_MODULE(luaopen_, )(L)
-#define LFUNC2P(F) L_FUNC2P(LMODULE(F))
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
 
-A_PUBLIC int LMODULE0(lua_State *L);
-A_PUBLIC int LMODULE_(mf, lua_State *L);
-A_PUBLIC int LMODULE_(tf, lua_State *L);
-A_PUBLIC int LMODULE_(pid, lua_State *L);
-A_PUBLIC int LMODULE_(pid_fuzzy, lua_State *L);
-A_PUBLIC int LMODULE_(pid_neuron, lua_State *L);
-A_PUBLIC int LMODULE_(complex, lua_State *L);
-A_PUBLIC int LMODULE_(polytrack3, lua_State *L);
-A_PUBLIC int LMODULE_(polytrack5, lua_State *L);
-A_PUBLIC int LMODULE_(polytrack7, lua_State *L);
-A_PUBLIC int LMODULE_(version, lua_State *L);
-A_PUBLIC int LMODULE(setter)(lua_State *L);
+A_PUBLIC int luaopen_liba(lua_State *L);
+A_PUBLIC int luaopen_liba_mf(lua_State *L);
+A_PUBLIC int luaopen_liba_tf(lua_State *L);
+A_PUBLIC int luaopen_liba_pid(lua_State *L);
+A_PUBLIC int luaopen_liba_pid_fuzzy(lua_State *L);
+A_PUBLIC int luaopen_liba_pid_neuron(lua_State *L);
+A_PUBLIC int luaopen_liba_complex(lua_State *L);
+A_PUBLIC int luaopen_liba_polytrack3(lua_State *L);
+A_PUBLIC int luaopen_liba_polytrack5(lua_State *L);
+A_PUBLIC int luaopen_liba_polytrack7(lua_State *L);
+A_PUBLIC int luaopen_liba_version(lua_State *L);
+A_PUBLIC int liba_setter(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

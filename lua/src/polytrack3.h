@@ -19,8 +19,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
-A_PUBLIC int LMODULE(polytrack3_func_)(lua_State *L, int ret);
-A_PUBLIC int LMODULE(polytrack3_meta_)(lua_State *L, int ret);
+A_PUBLIC int liba_polytrack3_func_(lua_State *L, int ret);
+A_PUBLIC int liba_polytrack3_meta_(lua_State *L, int ret);
 
 /***
  constructor for cubic polynomial trajectory
@@ -35,10 +35,10 @@ A_PUBLIC int LMODULE(polytrack3_meta_)(lua_State *L, int ret);
  @treturn a.polytrack3 cubic polynomial trajectory userdata
  @function new
 */
-A_PUBLIC int LMODULE(polytrack3_new)(lua_State *L);
+A_PUBLIC int liba_polytrack3_new(lua_State *L);
 
 /***
- generation function for cubic polynomial trajectory
+ generate for cubic polynomial trajectory
  @tparam number t0 time for source
  @tparam number t1 time for target
  @tparam number q0 position for source
@@ -50,39 +50,39 @@ A_PUBLIC int LMODULE(polytrack3_new)(lua_State *L);
  @treturn a.polytrack3 cubic polynomial trajectory userdata
  @function gen
 */
-A_PUBLIC int LMODULE(polytrack3_gen)(lua_State *L);
+A_PUBLIC int liba_polytrack3_gen(lua_State *L);
 
 /***
- calculate function for cubic polynomial trajectory
+ calculate for cubic polynomial trajectory
  @tparam number dt difference between current time and initial time
  @treturn table {position,velocity,acceleration}
  @function out
 */
-A_PUBLIC int LMODULE(polytrack3_out)(lua_State *L);
+A_PUBLIC int liba_polytrack3_out(lua_State *L);
 
 /***
- calculate function for cubic polynomial trajectory position
+ calculate for cubic polynomial trajectory position
  @tparam number dt difference between current time and initial time
  @treturn number position output
  @function pos
 */
-A_PUBLIC int LMODULE(polytrack3_pos)(lua_State *L);
+A_PUBLIC int liba_polytrack3_pos(lua_State *L);
 
 /***
- calculate function for cubic polynomial trajectory velocity
+ calculate for cubic polynomial trajectory velocity
  @tparam number dt difference between current time and initial time
  @treturn number velocity output
  @function vel
 */
-A_PUBLIC int LMODULE(polytrack3_vel)(lua_State *L);
+A_PUBLIC int liba_polytrack3_vel(lua_State *L);
 
 /***
- calculate function for cubic polynomial trajectory acceleration
+ calculate for cubic polynomial trajectory acceleration
  @tparam number dt difference between current time and initial time
  @treturn number acceleration output
  @function acc
 */
-A_PUBLIC int LMODULE(polytrack3_acc)(lua_State *L);
+A_PUBLIC int liba_polytrack3_acc(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

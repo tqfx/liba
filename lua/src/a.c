@@ -13,7 +13,7 @@
  @treturn integer hash value
  @function hash_bkdr
 */
-static int LMODULE(hash_bkdr)(lua_State *const L)
+static int liba_hash_bkdr(lua_State *const L)
 {
     a_umax_t val = 0;
     int const Ln = lua_gettop(L);
@@ -32,7 +32,7 @@ static int LMODULE(hash_bkdr)(lua_State *const L)
  @treturn number calculated result
  @function rsqrt
 */
-static int LMODULE(rsqrt)(lua_State *const L)
+static int liba_rsqrt(lua_State *const L)
 {
     int Li;
     int const Ln = lua_gettop(L);
@@ -51,17 +51,17 @@ static int LMODULE(rsqrt)(lua_State *const L)
     return 1 + Ln - Li;
 }
 
-static lua_State *LMODULE(L) = A_NULL;
-static void *LMODULE(alloc)(void *const addr, a_size_t const size)
+static lua_State *liba_L = A_NULL;
+static void *liba_alloc(void *const addr, a_size_t const size)
 {
-    return l_alloc(LMODULE(L), addr, size);
+    return l_alloc(liba_L, addr, size);
 }
 
-int LMODULE0(lua_State *const L)
+int luaopen_liba(lua_State *const L)
 {
     luaL_checkversion(L);
-    a_alloc = LMODULE(alloc);
-    LMODULE(L) = L;
+    a_alloc = liba_alloc;
+    liba_L = L;
 
     /***
      algorithm library
@@ -69,8 +69,8 @@ int LMODULE0(lua_State *const L)
      @table liba
     */
     l_func_s const funcs[] = {
-        {"hash_bkdr", LMODULE(hash_bkdr)},
-        {"rsqrt", LMODULE(rsqrt)},
+        {"hash_bkdr", liba_hash_bkdr},
+        {"rsqrt", liba_rsqrt},
         {NULL, NULL},
     };
     lua_createtable(L, 0, A_LEN(funcs));
@@ -78,46 +78,46 @@ int LMODULE0(lua_State *const L)
     l_func_reg(L, -1, funcs);
 
     lua_pushstring(L, "mf");
-    LMODULE_(mf, L);
+    luaopen_liba_mf(L);
     lua_rawset(L, -3);
 
     lua_pushstring(L, "tf");
-    LMODULE_(tf, L);
+    luaopen_liba_tf(L);
     lua_rawset(L, -3);
 
-    LMODULE_(pid, L);
+    luaopen_liba_pid(L);
     lua_pushstring(L, "pid");
     lua_pushvalue(L, -2);
     lua_rawset(L, -4);
     {
         lua_pushstring(L, "fuzzy");
-        LMODULE_(pid_fuzzy, L);
+        luaopen_liba_pid_fuzzy(L);
         lua_rawset(L, -3);
 
         lua_pushstring(L, "neuron");
-        LMODULE_(pid_neuron, L);
+        luaopen_liba_pid_neuron(L);
         lua_rawset(L, -3);
     }
     lua_pop(L, 1);
 
     lua_pushstring(L, "complex");
-    LMODULE_(complex, L);
+    luaopen_liba_complex(L);
     lua_rawset(L, -3);
 
     lua_pushstring(L, "polytrack3");
-    LMODULE_(polytrack3, L);
+    luaopen_liba_polytrack3(L);
     lua_rawset(L, -3);
 
     lua_pushstring(L, "polytrack5");
-    LMODULE_(polytrack5, L);
+    luaopen_liba_polytrack5(L);
     lua_rawset(L, -3);
 
     lua_pushstring(L, "polytrack7");
-    LMODULE_(polytrack7, L);
+    luaopen_liba_polytrack7(L);
     lua_rawset(L, -3);
 
     lua_pushstring(L, "version");
-    LMODULE_(version, L);
+    luaopen_liba_version(L);
     lua_rawset(L, -3);
 
     return 1;
@@ -126,7 +126,7 @@ int LMODULE0(lua_State *const L)
 #include <stdio.h>
 #include <inttypes.h>
 
-int LMODULE(setter)(lua_State *const L)
+int liba_setter(lua_State *const L)
 {
     char h[11];
     char const *const s = lua_tostring(L, 2);
