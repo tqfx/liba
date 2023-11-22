@@ -587,17 +587,12 @@ static void js_pid_fuzzy_finalizer(JSRuntime *const rt, JSValue const val)
         a_float_t const *p;
         a_float_t *o;
     } u;
-    u.p = self->me;
-    js_free_rt(rt, u.o);
-    u.p = self->mec;
-    js_free_rt(rt, u.o);
-    u.p = self->mkp;
-    js_free_rt(rt, u.o);
-    u.p = self->mki;
-    js_free_rt(rt, u.o);
-    u.p = self->mkd;
-    js_free_rt(rt, u.o);
-    js_free_rt(rt, self->idx);
+    js_free_rt(rt, ((void)(u.p = self->me), u.o));
+    js_free_rt(rt, ((void)(u.p = self->mec), u.o));
+    js_free_rt(rt, ((void)(u.p = self->mkp), u.o));
+    js_free_rt(rt, ((void)(u.p = self->mki), u.o));
+    js_free_rt(rt, ((void)(u.p = self->mkd), u.o));
+    js_free_rt(rt, a_pid_fuzzy_joint(self));
     js_free_rt(rt, self);
 }
 
@@ -712,49 +707,46 @@ static JSValue js_pid_fuzzy_set(JSContext *const ctx, JSValueConst const this_va
     {
         return JS_EXCEPTION;
     }
-    union
-    {
-        a_u32_t u;
-        double x;
-    } u;
+    a_u32_t u;
     if (magic == 0)
     {
-        if (JS_ToUint32(ctx, &u.u, val))
+        if (JS_ToUint32(ctx, &u, val))
         {
             return JS_EXCEPTION;
         }
-        if (js_pid_fuzzy_joint_(ctx, self, (unsigned int)u.u))
+        if (js_pid_fuzzy_joint_(ctx, self, (unsigned int)u))
         {
             return JS_EXCEPTION;
         }
         return JS_UNDEFINED;
     }
-    if (JS_ToFloat64(ctx, &u.x, val))
+    double x;
+    if (JS_ToFloat64(ctx, &x, val))
     {
         return JS_EXCEPTION;
     }
     switch (magic)
     {
     case 1:
-        self->pid.kp = self->kp = (a_float_t)u.x;
+        self->pid.kp = self->kp = (a_float_t)x;
         break;
     case 2:
-        self->pid.ki = self->ki = (a_float_t)u.x;
+        self->pid.ki = self->ki = (a_float_t)x;
         break;
     case 3:
-        self->pid.kd = self->kd = (a_float_t)u.x;
+        self->pid.kd = self->kd = (a_float_t)x;
         break;
     case 4:
-        self->pid.summax = (a_float_t)u.x;
+        self->pid.summax = (a_float_t)x;
         break;
     case 5:
-        self->pid.summin = (a_float_t)u.x;
+        self->pid.summin = (a_float_t)x;
         break;
     case 6:
-        self->pid.outmax = (a_float_t)u.x;
+        self->pid.outmax = (a_float_t)x;
         break;
     case 7:
-        self->pid.outmin = (a_float_t)u.x;
+        self->pid.outmin = (a_float_t)x;
         break;
     default:
         break;
@@ -795,34 +787,33 @@ static JSValue js_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this_v
     a_u32_t row;
     a_u32_t len = 0;
     a_u32_t order = 0;
-    JSValue one = JS_UNDEFINED;
+    JSValue res = JS_UNDEFINED;
     if (JS_IsArray(ctx, argv[0]))
     {
         if (ArrayLength(ctx, argv[0], &order))
         {
             goto fail;
         }
-        one = Concat(ctx, argv[0]);
-        if (ArrayLength(ctx, one, &len))
+        res = Concat(ctx, argv[0]);
+        if (ArrayLength(ctx, res, &len))
         {
             goto fail;
         }
         if (len)
         {
-            u.p = self->me;
-            a_float_t *const me = (a_float_t *)js_realloc(ctx, u.o, sizeof(a_float_t) * len);
+            a_float_t *const me = (a_float_t *)js_realloc(ctx, ((void)(u.p = self->me), u.o), sizeof(a_float_t) * len);
             if (!me)
             {
                 goto fail;
             }
             self->me = me;
-            if (ArrayFloat(ctx, one, me, len))
+            if (ArrayFloat(ctx, res, me, len))
             {
                 goto fail;
             }
         }
-        JS_FreeValue(ctx, one);
-        one = JS_UNDEFINED;
+        JS_FreeValue(ctx, res);
+        res = JS_UNDEFINED;
     }
     if (JS_IsArray(ctx, argv[1]))
     {
@@ -830,27 +821,26 @@ static JSValue js_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this_v
         {
             goto fail;
         }
-        one = Concat(ctx, argv[1]);
-        if (ArrayLength(ctx, one, &len))
+        res = Concat(ctx, argv[1]);
+        if (ArrayLength(ctx, res, &len))
         {
             goto fail;
         }
         if (len)
         {
-            u.p = self->mec;
-            a_float_t *const mec = (a_float_t *)js_realloc(ctx, u.o, sizeof(a_float_t) * len);
+            a_float_t *const mec = (a_float_t *)js_realloc(ctx, ((void)(u.p = self->mec), u.o), sizeof(a_float_t) * len);
             if (!mec)
             {
                 goto fail;
             }
             self->mec = mec;
-            if (ArrayFloat(ctx, one, mec, len))
+            if (ArrayFloat(ctx, res, mec, len))
             {
                 goto fail;
             }
         }
-        JS_FreeValue(ctx, one);
-        one = JS_UNDEFINED;
+        JS_FreeValue(ctx, res);
+        res = JS_UNDEFINED;
     }
     if (JS_IsArray(ctx, argv[2]))
     {
@@ -858,27 +848,26 @@ static JSValue js_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this_v
         {
             goto fail;
         }
-        one = Concat(ctx, argv[2]);
-        if (ArrayLength(ctx, one, &len))
+        res = Concat(ctx, argv[2]);
+        if (ArrayLength(ctx, res, &len))
         {
             goto fail;
         }
         if (len)
         {
-            u.p = self->mkp;
-            a_float_t *const mkp = (a_float_t *)js_realloc(ctx, u.o, sizeof(a_float_t) * len);
+            a_float_t *const mkp = (a_float_t *)js_realloc(ctx, ((void)(u.p = self->mkp), u.o), sizeof(a_float_t) * len);
             if (!mkp)
             {
                 goto fail;
             }
             self->mkp = mkp;
-            if (ArrayFloat(ctx, one, mkp, len))
+            if (ArrayFloat(ctx, res, mkp, len))
             {
                 goto fail;
             }
         }
-        JS_FreeValue(ctx, one);
-        one = JS_UNDEFINED;
+        JS_FreeValue(ctx, res);
+        res = JS_UNDEFINED;
     }
     if (JS_IsArray(ctx, argv[3]))
     {
@@ -886,27 +875,26 @@ static JSValue js_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this_v
         {
             goto fail;
         }
-        one = Concat(ctx, argv[3]);
-        if (ArrayLength(ctx, one, &len))
+        res = Concat(ctx, argv[3]);
+        if (ArrayLength(ctx, res, &len))
         {
             goto fail;
         }
         if (len)
         {
-            u.p = self->mki;
-            a_float_t *const mki = (a_float_t *)js_realloc(ctx, u.o, sizeof(a_float_t) * len);
+            a_float_t *const mki = (a_float_t *)js_realloc(ctx, ((void)(u.p = self->mki), u.o), sizeof(a_float_t) * len);
             if (!mki)
             {
                 goto fail;
             }
             self->mki = mki;
-            if (ArrayFloat(ctx, one, mki, len))
+            if (ArrayFloat(ctx, res, mki, len))
             {
                 goto fail;
             }
         }
-        JS_FreeValue(ctx, one);
-        one = JS_UNDEFINED;
+        JS_FreeValue(ctx, res);
+        res = JS_UNDEFINED;
     }
     if (JS_IsArray(ctx, argv[4]))
     {
@@ -914,30 +902,30 @@ static JSValue js_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this_v
         {
             goto fail;
         }
-        one = Concat(ctx, argv[4]);
-        if (ArrayLength(ctx, one, &len))
+        res = Concat(ctx, argv[4]);
+        if (ArrayLength(ctx, res, &len))
         {
             goto fail;
         }
         if (len)
         {
-            u.p = self->mkd;
-            a_float_t *const mkd = (a_float_t *)js_realloc(ctx, u.o, sizeof(a_float_t) * len);
+            a_float_t *const mkd = (a_float_t *)js_realloc(ctx, ((void)(u.p = self->mkd), u.o), sizeof(a_float_t) * len);
             if (!mkd)
             {
                 goto fail;
             }
             self->mkd = mkd;
-            if (ArrayFloat(ctx, one, mkd, len))
+            if (ArrayFloat(ctx, res, mkd, len))
             {
                 goto fail;
             }
         }
-        JS_FreeValue(ctx, one);
+        JS_FreeValue(ctx, res);
     }
+    self->order = order;
     return JS_UNDEFINED;
 fail:
-    JS_FreeValue(ctx, one);
+    JS_FreeValue(ctx, res);
     return JS_UNDEFINED;
 }
 
