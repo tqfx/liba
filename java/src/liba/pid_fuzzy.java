@@ -42,46 +42,10 @@ public class pid_fuzzy {
      *
      */
     public pid_fuzzy() {
-        init(-1.0 / 0.0, 1.0 / 0.0, 1.0 / 0.0);
+        init();
     }
 
-    /**
-     * construct a new {@link pid_fuzzy} object
-     *
-     * @param min mininum output
-     * @param max maxinum output
-     */
-    public pid_fuzzy(double min, double max) {
-        init(min, max, 0);
-    }
-
-    /**
-     * construct a new {@link pid_fuzzy} object
-     *
-     * @param min mininum output
-     * @param max maxinum output
-     * @param sum maximum intergral output
-     */
-    public pid_fuzzy(double min, double max, double sum) {
-        init(min, max, sum);
-    }
-
-    final native void init(double min, double max, double sum);
-
-    /**
-     * get mode for fuzzy PID controller
-     *
-     * @return mode
-     */
-    public final native int mode();
-
-    /**
-     * set mode for fuzzy PID controller
-     *
-     * @param mode mode
-     * @return {@link pid}
-     */
-    public final native pid mode(int mode);
+    final native void init();
 
     /**
      * get proportional constant for fuzzy PID controller
@@ -144,6 +108,21 @@ public class pid_fuzzy {
     public final native pid summax(double max);
 
     /**
+     * get minimum integral output for fuzzy PID controller
+     *
+     * @return minimum integral output
+     */
+    public final native double summin();
+
+    /**
+     * set minimum integral output for fuzzy PID controller
+     *
+     * @param min minimum integral output
+     * @return {@link pid}
+     */
+    public final native pid summin(double min);
+
+    /**
      * get maximum final output for fuzzy PID controller
      *
      * @return maximum final output
@@ -174,23 +153,23 @@ public class pid_fuzzy {
     public final native pid outmin(double min);
 
     /**
-     * get output cached for fuzzy PID controller
+     * get cached output for fuzzy PID controller
      *
-     * @return output cached
+     * @return cached output
      */
     public final native double out();
 
     /**
-     * get feedback cached for fuzzy PID controller
+     * get cached feedback for fuzzy PID controller
      *
-     * @return feedback cached
+     * @return cached feedback
      */
     public final native double fdb();
 
     /**
-     * get error cached for fuzzy PID controller
+     * get cached error for fuzzy PID controller
      *
-     * @return error cached
+     * @return cached error
      */
     public final native double err();
 
@@ -247,16 +226,34 @@ public class pid_fuzzy {
     public final native pid_fuzzy kpid(double kp, double ki, double kd);
 
     /**
-     * calculate function for fuzzy PID controller
+     * calculate for fuzzy PID controller
      *
-     * @param set setpoint
-     * @param fdb feedback
-     * @return output
+     * @param set setpoint value
+     * @param fdb feedback value
+     * @return setpoint value
      */
-    public final native double iter(double set, double fdb);
+    public final native double off(double set, double fdb);
 
     /**
-     * zero clear function for fuzzy PID controller
+     * calculate for positional fuzzy PID controller
+     *
+     * @param set setpoint value
+     * @param fdb feedback value
+     * @return output value
+     */
+    public final native double pos(double set, double fdb);
+
+    /**
+     * calculate for incremental fuzzy PID controller
+     *
+     * @param set setpoint value
+     * @param fdb feedback value
+     * @return output value
+     */
+    public final native double inc(double set, double fdb);
+
+    /**
+     * zeroing for fuzzy PID controller
      *
      * @return {@link pid_fuzzy}
      */

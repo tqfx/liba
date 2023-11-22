@@ -5,65 +5,49 @@
 
 #include "neuron.h"
 
-static int LMODULE(pid_neuron_init_)(lua_State *const L, a_pid_neuron_s *const ctx)
+/***
+ constructor for single neuron PID controller
+ @treturn a.pid.neuron single neuron PID controller userdata
+ @function new
+*/
+int liba_pid_neuron_new(lua_State *const L)
 {
-    int n = lua_gettop(L) - lua_isuserdata(L, -1);
-    ctx->pid.outmin = -A_FLOAT_INF;
-    ctx->pid.outmax = +A_FLOAT_INF;
+    a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_newuserdata(L, sizeof(a_pid_neuron_s));
+    a_zero(ctx, sizeof(a_pid_neuron_s));
+    liba_pid_neuron_meta_(L, 1);
+    lua_setmetatable(L, -2);
     ctx->pid.summax = +A_FLOAT_INF;
-    ctx->pid.mode = A_PID_INC;
-    if (n >= 2)
-    {
-        ctx->pid.outmin = (a_float_t)luaL_checknumber(L, 1);
-        ctx->pid.outmax = (a_float_t)luaL_checknumber(L, 2);
-    }
-    if (n >= 3)
-    {
-        ctx->pid.summax = (a_float_t)luaL_checknumber(L, 3);
-        ctx->pid.mode = A_PID_POS;
-    }
+    ctx->pid.summin = -A_FLOAT_INF;
+    ctx->pid.outmax = +A_FLOAT_INF;
+    ctx->pid.outmin = -A_FLOAT_INF;
     ctx->k = 1;
-    ctx->wp.f = A_FLOAT_C(0.1);
-    ctx->wi.f = A_FLOAT_C(0.1);
-    ctx->wd.f = A_FLOAT_C(0.1);
-    a_pid_neuron_init(ctx, 0);
+    ctx->wp = A_FLOAT_C(0.1);
+    ctx->wi = A_FLOAT_C(0.1);
+    ctx->wd = A_FLOAT_C(0.1);
+    a_pid_neuron_init(ctx);
     return 1;
 }
 
 /***
- constructor for single neuron PID controller
- @tparam number min minimum output
- @tparam number max maximum output
- @tparam[opt] number sum maximum intergral output
- @treturn a.pid.neuron single neuron PID controller userdata
- @function new
-*/
-int LMODULE(pid_neuron_new)(lua_State *const L)
-{
-    a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_newuserdata(L, sizeof(a_pid_neuron_s));
-    a_zero(ctx, sizeof(a_pid_neuron_s));
-    ctx->pid.summax = +A_FLOAT_INF;
-    LMODULE2(pid_neuron_meta_, L, 1);
-    lua_setmetatable(L, -2);
-    return LMODULE2(pid_neuron_init_, L, ctx);
-}
-
-/***
- initialize function for single neuron PID controller
+ initialize for single neuron PID controller
  @tparam a.pid.neuron ctx single neuron PID controller userdata
- @tparam number min minimum output
- @tparam number max maximum output
- @tparam[opt] number sum maximum intergral output
  @treturn a.pid.neuron single neuron PID controller userdata
  @function init
 */
-int LMODULE(pid_neuron_init)(lua_State *const L)
+int liba_pid_neuron_init(lua_State *const L)
 {
     luaL_checktype(L, 1, LUA_TUSERDATA);
     a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, 1);
-    lua_pushvalue(L, 1);
-    lua_remove(L, 1);
-    return LMODULE2(pid_neuron_init_, L, ctx);
+    ctx->pid.summax = +A_FLOAT_INF;
+    ctx->pid.summin = -A_FLOAT_INF;
+    ctx->pid.outmax = +A_FLOAT_INF;
+    ctx->pid.outmin = -A_FLOAT_INF;
+    ctx->k = 1;
+    ctx->wp = A_FLOAT_C(0.1);
+    ctx->wi = A_FLOAT_C(0.1);
+    ctx->wd = A_FLOAT_C(0.1);
+    a_pid_neuron_init(ctx);
+    return 1;
 }
 
 /***
@@ -76,7 +60,7 @@ int LMODULE(pid_neuron_init)(lua_State *const L)
  @treturn a.pid.neuron single neuron PID controller userdata
  @function kpid
 */
-int LMODULE(pid_neuron_kpid)(lua_State *const L)
+int liba_pid_neuron_kpid(lua_State *const L)
 {
     a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, 1);
     if (ctx)
@@ -86,7 +70,7 @@ int LMODULE(pid_neuron_kpid)(lua_State *const L)
         a_float_t const ki = (a_float_t)luaL_checknumber(L, 4);
         a_float_t const kd = (a_float_t)luaL_checknumber(L, 5);
         a_pid_neuron_kpid(ctx, k, kp, ki, kd);
-        lua_pop(L, 4);
+        lua_pushvalue(L, 1);
         return 1;
     }
     return 0;
@@ -101,7 +85,7 @@ int LMODULE(pid_neuron_kpid)(lua_State *const L)
  @treturn a.pid.neuron single neuron PID controller userdata
  @function wpid
 */
-int LMODULE(pid_neuron_wpid)(lua_State *const L)
+int liba_pid_neuron_wpid(lua_State *const L)
 {
     a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, 1);
     if (ctx)
@@ -110,41 +94,61 @@ int LMODULE(pid_neuron_wpid)(lua_State *const L)
         a_float_t const wi = (a_float_t)luaL_checknumber(L, 3);
         a_float_t const wd = (a_float_t)luaL_checknumber(L, 4);
         a_pid_neuron_wpid(ctx, wp, wi, wd);
-        lua_pop(L, 3);
+        lua_pushvalue(L, 1);
         return 1;
     }
     return 0;
 }
 
 /***
- calculate function for single neuron PID controller
+ calculate for single neuron PID controller
  @tparam a.pid.neuron ctx single neuron PID controller userdata
- @tparam number set setpoint
- @tparam number fdb feedback
- @treturn number output
- @function iter
+ @tparam number set setpoint value
+ @tparam number fdb feedback value
+ @treturn number setpoint value
+ @function off
 */
-int LMODULE(pid_neuron_iter)(lua_State *const L)
+int liba_pid_neuron_off(lua_State *const L)
 {
     a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, 1);
     if (ctx)
     {
         a_float_t const set = (a_float_t)luaL_checknumber(L, 2);
         a_float_t const fdb = (a_float_t)luaL_checknumber(L, 3);
-        lua_pushnumber(L, (lua_Number)a_pid_neuron_outf(ctx, set, fdb));
-        lua_pop(L, 2);
+        lua_pushnumber(L, (lua_Number)a_pid_neuron_off(ctx, set, fdb));
         return 1;
     }
     return 0;
 }
 
 /***
- zero clear function for single neuron PID controller
+ calculate for single neuron PID controller
+ @tparam a.pid.neuron ctx single neuron PID controller userdata
+ @tparam number set setpoint value
+ @tparam number fdb feedback value
+ @treturn number setpoint value
+ @function inc
+*/
+int liba_pid_neuron_inc(lua_State *const L)
+{
+    a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, 1);
+    if (ctx)
+    {
+        a_float_t const set = (a_float_t)luaL_checknumber(L, 2);
+        a_float_t const fdb = (a_float_t)luaL_checknumber(L, 3);
+        lua_pushnumber(L, (lua_Number)a_pid_neuron_inc(ctx, set, fdb));
+        return 1;
+    }
+    return 0;
+}
+
+/***
+ zeroing for single neuron PID controller
  @tparam a.pid.neuron ctx single neuron PID controller userdata
  @treturn a.pid.neuron single neuron PID controller userdata
  @function zero
 */
-int LMODULE(pid_neuron_zero)(lua_State *const L)
+int liba_pid_neuron_zero(lua_State *const L)
 {
     a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, 1);
     if (ctx)
@@ -155,13 +159,16 @@ int LMODULE(pid_neuron_zero)(lua_State *const L)
     return 0;
 }
 
-static int LMODULE(pid_neuron_set)(lua_State *const L)
+static int liba_pid_neuron_set(lua_State *const L)
 {
     char const *const field = lua_tostring(L, 2);
     a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, 1);
     a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
     switch (hash)
     {
+    case 0x0000006B: // k
+        ctx->k = (a_float_t)luaL_checknumber(L, 3);
+        break;
     case 0x00003731: // kp
         ctx->pid.kp = (a_float_t)luaL_checknumber(L, 3);
         break;
@@ -171,29 +178,20 @@ static int LMODULE(pid_neuron_set)(lua_State *const L)
     case 0x00003725: // kd
         ctx->pid.kd = (a_float_t)luaL_checknumber(L, 3);
         break;
-    case 0x10E9FF9D: // summax
-        ctx->pid.summax = (a_float_t)luaL_checknumber(L, 3);
+    case 0x00003D55: // wp
+        ctx->wp = (a_float_t)luaL_checknumber(L, 3);
+        break;
+    case 0x00003D4E: // wi
+        ctx->wi = (a_float_t)luaL_checknumber(L, 3);
+        break;
+    case 0x00003D49: // wd
+        ctx->wd = (a_float_t)luaL_checknumber(L, 3);
         break;
     case 0x23C8F10E: // outmax
         ctx->pid.outmax = (a_float_t)luaL_checknumber(L, 3);
         break;
     case 0x23C8F51C: // outmin
         ctx->pid.outmin = (a_float_t)luaL_checknumber(L, 3);
-        break;
-    case 0x0EB84F77: // mode
-        ctx->pid.mode = (unsigned int)luaL_checkinteger(L, 3);
-        break;
-    case 0x00003D55: // wp
-        ctx->wp.f = (a_float_t)luaL_checknumber(L, 3);
-        break;
-    case 0x00003D4E: // wi
-        ctx->wi.f = (a_float_t)luaL_checknumber(L, 3);
-        break;
-    case 0x00003D49: // wd
-        ctx->wd.f = (a_float_t)luaL_checknumber(L, 3);
-        break;
-    case 0x0000006B: // k
-        ctx->k = (a_float_t)luaL_checknumber(L, 3);
         break;
     case 0xE8859EEB: // __name
     case 0xE70C48C6: // __call
@@ -208,13 +206,16 @@ static int LMODULE(pid_neuron_set)(lua_State *const L)
     return 0;
 }
 
-static int LMODULE(pid_neuron_get)(lua_State *const L)
+static int liba_pid_neuron_get(lua_State *const L)
 {
     char const *const field = lua_tostring(L, 2);
     a_pid_neuron_s const *const ctx = (a_pid_neuron_s const *)lua_touserdata(L, 1);
     a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
     switch (hash)
     {
+    case 0x0000006B: // k
+        lua_pushnumber(L, (lua_Number)ctx->k);
+        break;
     case 0x00003731: // kp
         lua_pushnumber(L, (lua_Number)ctx->pid.kp);
         break;
@@ -224,8 +225,14 @@ static int LMODULE(pid_neuron_get)(lua_State *const L)
     case 0x00003725: // kd
         lua_pushnumber(L, (lua_Number)ctx->pid.kd);
         break;
-    case 0x10E9FF9D: // summax
-        lua_pushnumber(L, (lua_Number)ctx->pid.summax);
+    case 0x00003D55: // wp
+        lua_pushnumber(L, (lua_Number)ctx->wp);
+        break;
+    case 0x00003D4E: // wi
+        lua_pushnumber(L, (lua_Number)ctx->wi);
+        break;
+    case 0x00003D49: // wd
+        lua_pushnumber(L, (lua_Number)ctx->wd);
         break;
     case 0x23C8F10E: // outmax
         lua_pushnumber(L, (lua_Number)ctx->pid.outmax);
@@ -234,56 +241,40 @@ static int LMODULE(pid_neuron_get)(lua_State *const L)
         lua_pushnumber(L, (lua_Number)ctx->pid.outmin);
         break;
     case 0x001D4D3A: // out
-        lua_pushnumber(L, (lua_Number)ctx->pid.out.f);
+        lua_pushnumber(L, (lua_Number)ctx->pid.out);
         break;
     case 0x001AE924: // fdb
-        lua_pushnumber(L, (lua_Number)ctx->pid.fdb.f);
+        lua_pushnumber(L, (lua_Number)ctx->pid.fdb);
         break;
     case 0x001AAD55: // err
-        lua_pushnumber(L, (lua_Number)ctx->pid.err.f);
-        break;
-    case 0x0EB84F77: // mode
-        lua_pushinteger(L, (lua_Integer)ctx->pid.mode);
+        lua_pushnumber(L, (lua_Number)ctx->pid.err);
         break;
     case 0x00003412: // ec
-        lua_pushnumber(L, (lua_Number)ctx->ec.f);
-        break;
-    case 0x00003D55: // wp
-        lua_pushnumber(L, (lua_Number)ctx->wp.f);
-        break;
-    case 0x00003D4E: // wi
-        lua_pushnumber(L, (lua_Number)ctx->wi.f);
-        break;
-    case 0x00003D49: // wd
-        lua_pushnumber(L, (lua_Number)ctx->wd.f);
-        break;
-    case 0x0000006B: // k
-        lua_pushnumber(L, (lua_Number)ctx->k);
+        lua_pushnumber(L, (lua_Number)ctx->ec);
         break;
     case 0x001D0204: // new
-        lua_pushcfunction(L, LMODULE(pid_neuron_new));
+        lua_pushcfunction(L, liba_pid_neuron_new);
         break;
     case 0x0E2ED8A0: // init
-        lua_pushcfunction(L, LMODULE(pid_neuron_init));
-        break;
-    case 0x0E73F9D8: // kpid
-        lua_pushcfunction(L, LMODULE(pid_neuron_kpid));
-        break;
-    case 0x100F9D1C: // wpid
-        lua_pushcfunction(L, LMODULE(pid_neuron_wpid));
-        break;
-    case 0x0E3068C8: // iter
-        lua_pushcfunction(L, LMODULE(pid_neuron_iter));
+        lua_pushcfunction(L, liba_pid_neuron_init);
         break;
     case 0x1073A930: // zero
-        lua_pushcfunction(L, LMODULE(pid_neuron_zero));
+        lua_pushcfunction(L, liba_pid_neuron_zero);
+        break;
+    case 0x0E73F9D8: // kpid
+        lua_pushcfunction(L, liba_pid_neuron_kpid);
+        break;
+    case 0x100F9D1C: // wpid
+        lua_pushcfunction(L, liba_pid_neuron_wpid);
+        break;
+    case 0x001D457F: // off
+        lua_pushcfunction(L, liba_pid_neuron_off);
+        break;
+    case 0x001BB75E: // inc
+        lua_pushcfunction(L, liba_pid_neuron_inc);
         break;
     case 0xA65758B2: // __index
     {
-        l_int_s const enums[] = {
-            {"mode", (lua_Integer)ctx->pid.mode},
-            {NULL, 0},
-        };
         l_num_s const datas[] = {
             {"kp", ctx->pid.kp},
             {"ki", ctx->pid.ki},
@@ -291,27 +282,27 @@ static int LMODULE(pid_neuron_get)(lua_State *const L)
             {"summax", ctx->pid.summax},
             {"outmax", ctx->pid.outmax},
             {"outmin", ctx->pid.outmin},
-            {"out", ctx->pid.out.f},
-            {"fdb", ctx->pid.fdb.f},
-            {"err", ctx->pid.err.f},
-            {"ec", ctx->ec.f},
-            {"wp", ctx->wp.f},
-            {"wi", ctx->wi.f},
-            {"wd", ctx->wd.f},
+            {"out", ctx->pid.out},
+            {"fdb", ctx->pid.fdb},
+            {"err", ctx->pid.err},
+            {"ec", ctx->ec},
+            {"wp", ctx->wp},
+            {"wi", ctx->wi},
+            {"wd", ctx->wd},
             {"k", ctx->k},
             {NULL, 0},
         };
         l_func_s const funcs[] = {
-            {"init", LMODULE(pid_neuron_init)},
-            {"kpid", LMODULE(pid_neuron_kpid)},
-            {"wpid", LMODULE(pid_neuron_wpid)},
-            {"iter", LMODULE(pid_neuron_iter)},
-            {"zero", LMODULE(pid_neuron_zero)},
-            {"new", LMODULE(pid_neuron_new)},
+            {"new", liba_pid_neuron_new},
+            {"init", liba_pid_neuron_init},
+            {"zero", liba_pid_neuron_zero},
+            {"kpid", liba_pid_neuron_kpid},
+            {"wpid", liba_pid_neuron_wpid},
+            {"off", liba_pid_neuron_off},
+            {"inc", liba_pid_neuron_inc},
             {NULL, NULL},
         };
-        lua_createtable(L, 0, A_LEN(enums) + A_LEN(datas) + A_LEN(funcs) - 3);
-        l_int_reg(L, -1, enums);
+        lua_createtable(L, 0, A_LEN(datas) + A_LEN(funcs) - 2);
         l_num_reg(L, -1, datas);
         l_func_reg(L, -1, funcs);
         break;
@@ -323,61 +314,61 @@ static int LMODULE(pid_neuron_get)(lua_State *const L)
     return 1;
 }
 
-int LMODULE_(pid_neuron, lua_State *const L)
+int luaopen_liba_pid_neuron(lua_State *const L)
 {
     l_int_s const enums[] = {
         {NULL, 0},
     };
     l_func_s const funcs[] = {
-        {"init", LMODULE(pid_neuron_init)},
-        {"kpid", LMODULE(pid_neuron_kpid)},
-        {"wpid", LMODULE(pid_neuron_wpid)},
-        {"iter", LMODULE(pid_neuron_iter)},
-        {"zero", LMODULE(pid_neuron_zero)},
-        {"new", LMODULE(pid_neuron_new)},
+        {"new", liba_pid_neuron_new},
+        {"init", liba_pid_neuron_init},
+        {"zero", liba_pid_neuron_zero},
+        {"kpid", liba_pid_neuron_kpid},
+        {"wpid", liba_pid_neuron_wpid},
+        {"off", liba_pid_neuron_off},
+        {"inc", liba_pid_neuron_inc},
         {NULL, NULL},
     };
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
     l_int_reg(L, -1, enums);
     l_func_reg(L, -1, funcs);
     lua_createtable(L, 0, 1);
-    l_func_set(L, -1, L_SET, LMODULE(setter));
+    l_func_set(L, -1, L_SET, liba_setter);
     lua_setmetatable(L, -2);
 
     l_func_s const metas[] = {
-        {L_FUN, LMODULE(pid_neuron_iter)},
-        {L_SET, LMODULE(pid_neuron_set)},
-        {L_GET, LMODULE(pid_neuron_get)},
+        {L_SET, liba_pid_neuron_set},
+        {L_GET, liba_pid_neuron_get},
         {NULL, NULL},
     };
     lua_createtable(L, 0, A_LEN(metas));
-    l_str_set(L, -1, L_NAME, LMODULES("pid.neuron"));
+    l_str_set(L, -1, L_NAME, "a.pid.neuron");
     l_func_reg(L, -1, metas);
 
-    LMODULE2(pid_neuron_meta_, L, 0);
-    LMODULE2(pid_neuron_func_, L, 0);
+    liba_pid_neuron_meta_(L, 0);
+    liba_pid_neuron_func_(L, 0);
 
-    return LMODULE2(pid_neuron_func_, L, 1);
+    return liba_pid_neuron_func_(L, 1);
 }
 
-int LMODULE(pid_neuron_func_)(lua_State *const L, int const ret)
+int liba_pid_neuron_func_(lua_State *const L, int const ret)
 {
     if (ret)
     {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, LFUNC2P(pid_neuron_func_));
+        lua_rawgetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_pid_neuron_func_));
         return 1;
     }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, LFUNC2P(pid_neuron_func_));
+    lua_rawsetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_pid_neuron_func_));
     return 0;
 }
 
-int LMODULE(pid_neuron_meta_)(lua_State *const L, int const ret)
+int liba_pid_neuron_meta_(lua_State *const L, int const ret)
 {
     if (ret)
     {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, LFUNC2P(pid_neuron_meta_));
+        lua_rawgetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_pid_neuron_meta_));
         return 1;
     }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, LFUNC2P(pid_neuron_meta_));
+    lua_rawsetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_pid_neuron_meta_));
     return 0;
 }

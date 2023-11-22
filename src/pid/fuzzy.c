@@ -112,17 +112,17 @@ out:
     return counter;
 }
 
-void a_pid_fuzzy_init(a_pid_fuzzy_s *const ctx, unsigned int const num)
+void a_pid_fuzzy_zero(a_pid_fuzzy_s *const ctx)
 {
-    a_pid_init(&ctx->pid, num);
+    a_pid_zero(&ctx->pid);
 }
 
-void a_pid_fuzzy_chan(a_pid_fuzzy_s *const ctx, unsigned int const num, a_float_t *const out, a_float_t *const fdb, a_float_t *const tmp, a_float_t *const err)
+void a_pid_fuzzy_init(a_pid_fuzzy_s *const ctx)
 {
-    a_pid_chan(&ctx->pid, num, out, fdb, tmp, err);
+    a_pid_init(&ctx->pid);
 }
 
-void a_pid_fuzzy_rule(a_pid_fuzzy_s *const ctx, unsigned int const col, a_float_t const *const me, a_float_t const *const mec,
+void a_pid_fuzzy_rule(a_pid_fuzzy_s *const ctx, unsigned int const order, a_float_t const *const me, a_float_t const *const mec,
                       a_float_t const *const mkp, a_float_t const *const mki, a_float_t const *const mkd)
 {
     ctx->me = me;
@@ -130,10 +130,11 @@ void a_pid_fuzzy_rule(a_pid_fuzzy_s *const ctx, unsigned int const col, a_float_
     ctx->mkp = mkp;
     ctx->mki = mki;
     ctx->mkd = mkd;
-    ctx->order = col;
+    ctx->order = order;
 }
 
-void a_pid_fuzzy_joint(a_pid_fuzzy_s *const ctx, void *ptr, a_size_t const num)
+void *a_pid_fuzzy_joint(a_pid_fuzzy_s *const ctx) { return ctx->idx; }
+void a_pid_fuzzy_set_joint(a_pid_fuzzy_s *const ctx, void *ptr, a_size_t const num)
 {
     ctx->joint = (unsigned int)num;
     ctx->idx = (unsigned int *)ptr;
@@ -147,11 +148,6 @@ void a_pid_fuzzy_kpid(a_pid_fuzzy_s *const ctx, a_float_t const kp, a_float_t co
     ctx->kp = kp;
     ctx->ki = ki;
     ctx->kd = kd;
-}
-
-void a_pid_fuzzy_zero(a_pid_fuzzy_s *const ctx)
-{
-    a_pid_zero(&ctx->pid);
 }
 
 A_HIDDEN void a_pid_fuzzy_out_(a_pid_fuzzy_s *const ctx, a_float_t ec, a_float_t e);
@@ -233,35 +229,26 @@ pid:
     a_pid_kpid(&ctx->pid, ctx->kp + kp, ctx->ki + ki, ctx->kd + kd);
 }
 
-A_HIDDEN void a_pid_outf_(a_pid_s *ctx, a_float_t set, a_float_t fdb, a_float_t ec, a_float_t e);
-a_float_t a_pid_fuzzy_outf(a_pid_fuzzy_s *const ctx, a_float_t const set, a_float_t const fdb)
+A_HIDDEN a_float_t a_pid_off_(a_pid_s *ctx, a_float_t set, a_float_t fdb, a_float_t err);
+a_float_t a_pid_fuzzy_off(a_pid_fuzzy_s *const ctx, a_float_t const set, a_float_t const fdb)
 {
-    a_float_t const e = set - fdb;
-    a_float_t const ec = e - ctx->pid.err.f;
-    a_pid_fuzzy_out_(ctx, ec, e);
-    a_pid_outf_(&ctx->pid, set, fdb, ec, e);
-    return ctx->pid.out.f;
+    a_float_t const err = set - fdb;
+    a_pid_fuzzy_out_(ctx, err - ctx->pid.err, err);
+    return a_pid_off_(&ctx->pid, set, fdb, err);
 }
 
-A_HIDDEN void a_pid_outp_(a_pid_s const *ctx, a_float_t set, a_float_t fdb, a_float_t ec, a_float_t e, unsigned int i);
-a_float_t const *a_pid_fuzzy_outp(a_pid_fuzzy_s *const ctx, a_float_t const *const set, a_float_t const *const fdb)
+A_HIDDEN a_float_t a_pid_pos_(a_pid_s *ctx, a_float_t fdb, a_float_t err);
+a_float_t a_pid_fuzzy_pos(a_pid_fuzzy_s *const ctx, a_float_t const set, a_float_t const fdb)
 {
-    for (unsigned int i = 0; i != ctx->pid.chan; ++i)
-    {
-        a_float_t const e = set[i] - fdb[i];
-        a_float_t const ec = e - ctx->pid.err.p[i];
-        a_pid_fuzzy_out_(ctx, ec, e);
-        a_pid_outp_(&ctx->pid, set[i], fdb[i], ec, e, i);
-    }
-    return ctx->pid.out.p;
+    a_float_t const err = set - fdb;
+    a_pid_fuzzy_out_(ctx, err - ctx->pid.err, err);
+    return a_pid_pos_(&ctx->pid, fdb, err);
 }
 
-a_float_t const *a_pid_fuzzy_iter(a_pid_fuzzy_s *const ctx, a_float_t const *const set, a_float_t const *const fdb)
+A_HIDDEN a_float_t a_pid_inc_(a_pid_s *ctx, a_float_t fdb, a_float_t err);
+a_float_t a_pid_fuzzy_inc(a_pid_fuzzy_s *const ctx, a_float_t const set, a_float_t const fdb)
 {
-    if (ctx->pid.chan)
-    {
-        return a_pid_fuzzy_outp(ctx, set, fdb);
-    }
-    a_pid_fuzzy_outf(ctx, *set, *fdb);
-    return &ctx->pid.out.f;
+    a_float_t const err = set - fdb;
+    a_pid_fuzzy_out_(ctx, err - ctx->pid.err, err);
+    return a_pid_inc_(&ctx->pid, fdb, err);
 }

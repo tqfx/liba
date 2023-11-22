@@ -38,7 +38,7 @@
 */
 
 /*!
- @brief instance enumeration for PID controller mode
+ @brief enumeration for PID controller
 */
 typedef enum a_pid_e
 {
@@ -56,14 +56,14 @@ typedef struct a_pid_s
     a_float_t ki; //!< integral constant
     a_float_t kd; //!< derivative constant
     a_float_t summax; //!< maximum integral output
+    a_float_t summin; //!< minimum integral output
+    a_float_t sum; //!< controller integral output
     a_float_t outmax; //!< maximum final output
     a_float_t outmin; //!< minimum final output
-    a_float_u out; //!< controller output
-    a_float_u fdb; //!< cache feedback
-    a_float_u tmp; //!< cache variable
-    a_float_u err; //!< cache error
-    unsigned int chan; //!< channel
-    unsigned int mode; //!< mode
+    a_float_t out; //!< controller output
+    a_float_t fdb; //!< cache feedback
+    a_float_t var; //!< cache variable
+    a_float_t err; //!< cache error
 } a_pid_s;
 
 #if defined(__cplusplus)
@@ -71,22 +71,16 @@ extern "C" {
 #endif /* __cplusplus */
 
 /*!
- @brief initialize function for PID controller
+ @brief zeroing for PID controller
  @param[in,out] ctx points to an instance of PID controller
- @param[in] num number of controller channel
 */
-A_EXTERN void a_pid_init(a_pid_s *ctx, unsigned int num);
+A_EXTERN void a_pid_zero(a_pid_s *ctx);
 
 /*!
- @brief set buffer for multichannel PID controller
+ @brief initialize for PID controller
  @param[in,out] ctx points to an instance of PID controller
- @param[in] num number of controller output
- @param[in] out points to controller output
- @param[in] fdb points to cache feedback buffer
- @param[in] tmp points to cache variable buffer
- @param[in] err points to cache error buffer
 */
-A_EXTERN void a_pid_chan(a_pid_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err);
+A_EXTERN void a_pid_init(a_pid_s *ctx);
 
 /*!
  @brief set proportional integral derivative constant for PID controller
@@ -98,40 +92,31 @@ A_EXTERN void a_pid_chan(a_pid_s *ctx, unsigned int num, a_float_t *out, a_float
 A_EXTERN void a_pid_kpid(a_pid_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd);
 
 /*!
- @brief calculate function for PID controller
+ @brief calculate for PID controller
  @param[in,out] ctx points to an instance of PID controller
- @param[in] set setpoint
- @param[in] fdb feedback
+ @param[in] set setpoint value
+ @param[in] fdb feedback value
+ @return setpoint value
+*/
+A_EXTERN a_float_t a_pid_off(a_pid_s *ctx, a_float_t set, a_float_t fdb);
+
+/*!
+ @brief calculate for positional PID controller
+ @param[in,out] ctx points to an instance of PID controller
+ @param[in] set setpoint value
+ @param[in] fdb feedback value
  @return output value
-  @retval set when PID controller is off
 */
-A_EXTERN a_float_t a_pid_outf(a_pid_s *ctx, a_float_t set, a_float_t fdb);
+A_EXTERN a_float_t a_pid_pos(a_pid_s *ctx, a_float_t set, a_float_t fdb);
 
 /*!
- @brief calculate function for multichannel PID controller
- @param[in] ctx points to an instance of PID controller
- @param[in] set points to setpoint
- @param[in] fdb points to feedback
- @return points to output
-  @retval set when PID controller is off
-*/
-A_EXTERN a_float_t const *a_pid_outp(a_pid_s const *ctx, a_float_t const *set, a_float_t const *fdb);
-
-/*!
- @brief calculate function for PID controller
+ @brief calculate for incremental PID controller
  @param[in,out] ctx points to an instance of PID controller
- @param[in] set setpoint
- @param[in] fdb feedback
+ @param[in] set setpoint value
+ @param[in] fdb feedback value
  @return output value
-  @retval set when PID controller is off
 */
-A_EXTERN a_float_t const *a_pid_iter(a_pid_s *ctx, a_float_t const *set, a_float_t const *fdb);
-
-/*!
- @brief zero clear function for PID controller
- @param[in,out] ctx points to an instance of PID controller
-*/
-A_EXTERN void a_pid_zero(a_pid_s *ctx);
+A_EXTERN a_float_t a_pid_inc(a_pid_s *ctx, a_float_t set, a_float_t fdb);
 
 #if defined(__cplusplus)
 } /* extern "C" */

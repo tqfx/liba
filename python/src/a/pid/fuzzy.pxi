@@ -18,17 +18,14 @@ cdef class pid_fuzzy:
     cdef array mkp
     cdef array mki
     cdef array mkd
-    cdef void *ptr
-    def __cinit__(self, a_float_t min = -A_FLOAT_INF, a_float_t max = +A_FLOAT_INF, a_float_t sum = 0):
-        self.ctx.pid.summax = sum
-        self.ctx.pid.outmax = max
-        self.ctx.pid.outmin = min
-        a_pid_fuzzy_init(&self.ctx, 0)
-        if sum:
-            self.ctx.pid.mode = A_PID_POS
-        else:
-            self.ctx.pid.mode = A_PID_INC
+    def __init__(self):
+        self.ctx.pid.summax = +A_FLOAT_INF
+        self.ctx.pid.summin = -A_FLOAT_INF
+        self.ctx.pid.outmax = +A_FLOAT_INF
+        self.ctx.pid.outmin = -A_FLOAT_INF
+        self.ctx.kp = 1
         a_pid_fuzzy_set_op(&self.ctx, A_PID_FUZZY_EQU)
+        a_pid_fuzzy_init(&self.ctx)
     def op(self, op: int):
         '''set fuzzy relational operator for fuzzy PID controller'''
         a_pid_fuzzy_set_op(&self.ctx, op)
@@ -47,30 +44,37 @@ cdef class pid_fuzzy:
                          <a_float_t *>self.mki.data.as_voidptr,
                          <a_float_t *>self.mkd.data.as_voidptr)
         return self
-    def joint(self, num: int):
+    def set_joint(self, num: int):
         '''set joint buffer for fuzzy PID controller'''
-        self.ptr = PyMem_Realloc(self.ptr, A_PID_FUZZY_JOINT(num))
-        a_pid_fuzzy_joint(&self.ctx, self.ptr, num)
+        cdef void *ptr = a_pid_fuzzy_joint(&self.ctx);
+        ptr = PyMem_Realloc(ptr, A_PID_FUZZY_JOINT(num))
+        a_pid_fuzzy_set_joint(&self.ctx, ptr, num)
         return self
     def kpid(self, kp: a_float_t, ki: a_float_t, kd: a_float_t):
         '''set proportional integral derivative constant for fuzzy PID controller'''
         a_pid_fuzzy_kpid(&self.ctx, kp, ki, kd)
         return self
-    def __call__(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
-        '''calculate function for fuzzy PID controller'''
-        return a_pid_fuzzy_outf(&self.ctx, set, fdb)
+    def off(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
+        '''calculate for fuzzy PID controller'''
+        return a_pid_fuzzy_off(&self.ctx, set, fdb)
+    def pos(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
+        '''calculate for positional fuzzy PID controller'''
+        return a_pid_fuzzy_pos(&self.ctx, set, fdb)
+    def inc(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
+        '''calculate for incremental fuzzy PID controller'''
+        return a_pid_fuzzy_inc(&self.ctx, set, fdb)
     def __dealloc__(self):
-        '''terminate function for fuzzy PID controller'''
-        PyMem_Free(self.ptr)
+        '''terminate for fuzzy PID controller'''
+        PyMem_Free(a_pid_fuzzy_joint(&self.ctx))
     def zero(self):
-        '''zero clear function for fuzzy PID controller'''
+        '''zeroing for fuzzy PID controller'''
         a_pid_fuzzy_zero(&self.ctx)
         return self
-    property mode:
+    property joint:
         def __get__(self) -> int:
-            return self.ctx.pid.mode
-        def __set__(self, mode: int):
-            self.ctx.pid.mode = mode
+            return self.ctx.joint
+        def __set__(self, joint: int):
+            self.set_joint(joint)
     property kp:
         def __get__(self) -> a_float_t:
             return self.ctx.kp
@@ -94,6 +98,11 @@ cdef class pid_fuzzy:
             return self.ctx.pid.summax
         def __set__(self, summax: a_float_t):
             self.ctx.pid.summax = summax
+    property summin:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.summin
+        def __set__(self, summin: a_float_t):
+            self.ctx.pid.summin = summin
     property outmax:
         def __get__(self) -> a_float_t:
             return self.ctx.pid.outmax

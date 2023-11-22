@@ -15,7 +15,7 @@
 */
 
 /*!
- @brief instance enumeration for fuzzy PID controller operator
+ @brief enumeration for fuzzy PID controller operator
 */
 typedef enum a_pid_fuzzy_e
 {
@@ -72,22 +72,16 @@ A_EXTERN a_float_t (*a_pid_fuzzy_op(unsigned int op))(a_float_t, a_float_t);
 A_EXTERN void a_pid_fuzzy_set_op(a_pid_fuzzy_s *ctx, unsigned int op);
 
 /*!
- @brief initialize function for fuzzy PID controller
+ @brief zeroing for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
- @param[in] num number of controller channel
 */
-A_EXTERN void a_pid_fuzzy_init(a_pid_fuzzy_s *ctx, unsigned int num);
+A_EXTERN void a_pid_fuzzy_zero(a_pid_fuzzy_s *ctx);
 
 /*!
- @brief set buffer for multichannel fuzzy PID controller
+ @brief initialize for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
- @param[in] num number of controller output
- @param[in] out points to controller output
- @param[in] fdb points to cache feedback buffer
- @param[in] tmp points to cache variable buffer
- @param[in] err points to cache error buffer
 */
-A_EXTERN void a_pid_fuzzy_chan(a_pid_fuzzy_s *ctx, unsigned int num, a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err);
+A_EXTERN void a_pid_fuzzy_init(a_pid_fuzzy_s *ctx);
 
 /*!
  @brief set rule base for fuzzy PID controller
@@ -103,10 +97,11 @@ A_EXTERN void a_pid_fuzzy_rule(a_pid_fuzzy_s *ctx, unsigned int order, a_float_t
                                a_float_t const *mkp, a_float_t const *mki, a_float_t const *mkd);
 
 /*!
- @brief compute size of joint buffer for fuzzy PID controller
- @param n the maximum number triggered by the rule
+ @brief get joint buffer for fuzzy PID controller
+ @param[in,out] ctx points to an instance of fuzzy PID controller
+ @return joint buffer for fuzzy PID controller
 */
-#define A_PID_FUZZY_JOINT(n) (sizeof(unsigned int) * (n) * 2 + sizeof(a_float_t) * (n) * (2 + (n)))
+A_EXTERN void *a_pid_fuzzy_joint(a_pid_fuzzy_s *ctx);
 
 /*!
  @brief set joint buffer for fuzzy PID controller
@@ -114,7 +109,13 @@ A_EXTERN void a_pid_fuzzy_rule(a_pid_fuzzy_s *ctx, unsigned int order, a_float_t
  @param[in] ptr points to a buffer at least A_PID_FUZZY_JOINT(num)
  @param[in] num the maximum number triggered by the rule
 */
-A_EXTERN void a_pid_fuzzy_joint(a_pid_fuzzy_s *ctx, void *ptr, a_size_t num);
+A_EXTERN void a_pid_fuzzy_set_joint(a_pid_fuzzy_s *ctx, void *ptr, a_size_t num);
+
+/*!
+ @brief compute size of joint buffer for fuzzy PID controller
+ @param n the maximum number triggered by the rule
+*/
+#define A_PID_FUZZY_JOINT(n) (sizeof(unsigned int) * (n) * 2 + sizeof(a_float_t) * (n) * (2 + (n)))
 
 /*!
  @brief set proportional integral derivative constant for fuzzy PID controller
@@ -126,40 +127,31 @@ A_EXTERN void a_pid_fuzzy_joint(a_pid_fuzzy_s *ctx, void *ptr, a_size_t num);
 A_EXTERN void a_pid_fuzzy_kpid(a_pid_fuzzy_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd);
 
 /*!
- @brief calculate function for fuzzy PID controller
+ @brief calculate for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
- @param[in] set setpoint
- @param[in] fdb feedback
+ @param[in] set setpoint value
+ @param[in] fdb feedback value
+ @return setpoint value
+*/
+A_EXTERN a_float_t a_pid_fuzzy_off(a_pid_fuzzy_s *ctx, a_float_t set, a_float_t fdb);
+
+/*!
+ @brief calculate for positional fuzzy PID controller
+ @param[in,out] ctx points to an instance of fuzzy PID controller
+ @param[in] set setpoint value
+ @param[in] fdb feedback value
  @return output value
-  @retval set when fuzzy PID controller is off
 */
-A_EXTERN a_float_t a_pid_fuzzy_outf(a_pid_fuzzy_s *ctx, a_float_t set, a_float_t fdb);
+A_EXTERN a_float_t a_pid_fuzzy_pos(a_pid_fuzzy_s *ctx, a_float_t set, a_float_t fdb);
 
 /*!
- @brief calculate function for multichannel fuzzy PID controller
+ @brief calculate for incremental fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
- @param[in] set points to setpoint
- @param[in] fdb points to feedback
- @return points to output
-  @retval set when fuzzy PID controller is off
-*/
-A_EXTERN a_float_t const *a_pid_fuzzy_outp(a_pid_fuzzy_s *ctx, a_float_t const *set, a_float_t const *fdb);
-
-/*!
- @brief calculate function for fuzzy PID controller
- @param[in,out] ctx points to an instance of fuzzy PID controller
- @param[in] set setpoint
- @param[in] fdb feedback
+ @param[in] set setpoint value
+ @param[in] fdb feedback value
  @return output value
-  @retval set when PID controller is off
 */
-A_EXTERN a_float_t const *a_pid_fuzzy_iter(a_pid_fuzzy_s *ctx, a_float_t const *set, a_float_t const *fdb);
-
-/*!
- @brief zero clear function for fuzzy PID controller
- @param[in,out] ctx points to an instance of fuzzy PID controller
-*/
-A_EXTERN void a_pid_fuzzy_zero(a_pid_fuzzy_s *ctx);
+A_EXTERN a_float_t a_pid_fuzzy_inc(a_pid_fuzzy_s *ctx, a_float_t set, a_float_t fdb);
 
 #if defined(__cplusplus)
 } /* extern "C" */

@@ -1,15 +1,15 @@
 #include "a.h"
 
-static JSValue concat(JSContext *const ctx, JSValueConst const val)
+static JSValue Concat(JSContext *const ctx, JSValueConst const val)
 {
     JSValue this_val = JS_NewArray(ctx);
     JSValueConst argv[] = {this_val, val};
-    JSValue func = JS_GetPropertyStr(ctx, this_val, "concat");
-    JSValue fun = JS_GetPropertyStr(ctx, func, "apply");
-    JSValue res = JS_Call(ctx, fun, this_val, A_LEN(argv), argv);
+    JSValue concat = JS_GetPropertyStr(ctx, this_val, "concat");
+    JSValue apply = JS_GetPropertyStr(ctx, concat, "apply");
+    JSValue res = JS_Call(ctx, apply, this_val, A_LEN(argv), argv);
     JS_FreeValue(ctx, this_val);
-    JS_FreeValue(ctx, func);
-    JS_FreeValue(ctx, fun);
+    JS_FreeValue(ctx, concat);
+    JS_FreeValue(ctx, apply);
     return res;
 }
 
@@ -326,40 +326,20 @@ static JSClassDef js_pid_class = {"pid", .finalizer = js_pid_finalizer};
 
 static JSValue js_pid_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
+    (void)argc;
+    (void)argv;
     JSValue clazz = JS_UNDEFINED;
     a_pid_s *const self = (a_pid_s *)js_mallocz(ctx, sizeof(a_pid_s));
     if (!self)
     {
         return JS_EXCEPTION;
     }
-    double args[] = {0, 0, 0};
-    if (argc > (int)A_LEN(args))
-    {
-        argc = (int)A_LEN(args);
-    }
-    for (int i = 0; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, &args[i], argv[i]))
-        {
-            goto fail;
-        }
-    }
     self->kp = 1;
-    self->outmin = -A_FLOAT_INF;
-    self->outmax = +A_FLOAT_INF;
     self->summax = +A_FLOAT_INF;
-    self->mode = A_PID_INC;
-    if (argc > 1)
-    {
-        self->outmin = (a_float_t)args[0];
-        self->outmax = (a_float_t)args[1];
-    }
-    if (argc > 2)
-    {
-        self->summax = (a_float_t)args[2];
-        self->mode = A_PID_POS;
-    }
-    a_pid_init(self, 0);
+    self->summin = -A_FLOAT_INF;
+    self->outmax = +A_FLOAT_INF;
+    self->outmin = -A_FLOAT_INF;
+    a_pid_init(self);
     JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto))
     {
@@ -390,18 +370,19 @@ static JSValue js_pid_get(JSContext *const ctx, JSValueConst const this_val, int
     switch (magic)
     {
     case 0:
-        return JS_NewUint32(ctx, self->mode);
-    case 1:
         x = (double)self->kp;
         break;
-    case 2:
+    case 1:
         x = (double)self->ki;
         break;
-    case 3:
+    case 2:
         x = (double)self->kd;
         break;
-    case 4:
+    case 3:
         x = (double)self->summax;
+        break;
+    case 4:
+        x = (double)self->summin;
         break;
     case 5:
         x = (double)self->outmax;
@@ -410,13 +391,13 @@ static JSValue js_pid_get(JSContext *const ctx, JSValueConst const this_val, int
         x = (double)self->outmin;
         break;
     case 7:
-        x = (double)self->out.f;
+        x = (double)self->out;
         break;
     case 8:
-        x = (double)self->fdb.f;
+        x = (double)self->fdb;
         break;
     case 9:
-        x = (double)self->err.f;
+        x = (double)self->err;
         break;
     default:
         return JS_UNDEFINED;
@@ -431,47 +412,50 @@ static JSValue js_pid_set(JSContext *const ctx, JSValueConst const this_val, JSV
     {
         return JS_EXCEPTION;
     }
-    union
-    {
-        a_u32_t u;
-        double x;
-    } u;
-    if (magic == 0)
-    {
-        if (JS_ToUint32(ctx, &u.u, val))
-        {
-            return JS_EXCEPTION;
-        }
-        self->mode = (unsigned int)u.u;
-        return JS_UNDEFINED;
-    }
-    if (JS_ToFloat64(ctx, &u.x, val))
+    double x;
+    if (JS_ToFloat64(ctx, &x, val))
     {
         return JS_EXCEPTION;
     }
     switch (magic)
     {
+    case 0:
+        self->kp = (a_float_t)x;
+        break;
     case 1:
-        self->kp = (a_float_t)u.x;
+        self->ki = (a_float_t)x;
         break;
     case 2:
-        self->ki = (a_float_t)u.x;
+        self->kd = (a_float_t)x;
         break;
     case 3:
-        self->kd = (a_float_t)u.x;
+        self->summax = (a_float_t)x;
         break;
     case 4:
-        self->summax = (a_float_t)u.x;
+        self->summin = (a_float_t)x;
         break;
     case 5:
-        self->outmax = (a_float_t)u.x;
+        self->outmax = (a_float_t)x;
         break;
     case 6:
-        self->outmin = (a_float_t)u.x;
+        self->outmin = (a_float_t)x;
         break;
     default:
         break;
     }
+    return JS_UNDEFINED;
+}
+
+static JSValue js_pid_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    (void)argv;
+    a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, js_pid_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    a_pid_zero(self);
     return JS_UNDEFINED;
 }
 
@@ -495,7 +479,7 @@ static JSValue js_pid_kpid(JSContext *const ctx, JSValueConst const this_val, in
     return JS_UNDEFINED;
 }
 
-static JSValue js_pid_iter(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_pid_off(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
     a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, js_pid_class_id);
@@ -511,37 +495,64 @@ static JSValue js_pid_iter(JSContext *const ctx, JSValueConst const this_val, in
             return JS_EXCEPTION;
         }
     }
-    return JS_NewFloat64(ctx, (double)a_pid_outf(self, (a_float_t)args[0], (a_float_t)args[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_off(self, (a_float_t)args[0], (a_float_t)args[1]));
 }
 
-static JSValue js_pid_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_pid_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    (void)argv;
     a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, js_pid_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
     }
-    a_pid_zero(self);
-    return JS_UNDEFINED;
+    double args[] = {0, 0};
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    return JS_NewFloat64(ctx, (double)a_pid_pos(self, (a_float_t)args[0], (a_float_t)args[1]));
+}
+
+static JSValue js_pid_inc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, js_pid_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    double args[] = {0, 0};
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    return JS_NewFloat64(ctx, (double)a_pid_inc(self, (a_float_t)args[0], (a_float_t)args[1]));
 }
 
 static JSCFunctionListEntry const js_pid_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.pid", 0),
-    JS_CGETSET_MAGIC_DEF("mode", js_pid_get, js_pid_set, 0),
-    JS_CGETSET_MAGIC_DEF("kp", js_pid_get, js_pid_set, 1),
-    JS_CGETSET_MAGIC_DEF("ki", js_pid_get, js_pid_set, 2),
-    JS_CGETSET_MAGIC_DEF("kd", js_pid_get, js_pid_set, 3),
-    JS_CGETSET_MAGIC_DEF("summax", js_pid_get, js_pid_set, 4),
+    JS_CGETSET_MAGIC_DEF("kp", js_pid_get, js_pid_set, 0),
+    JS_CGETSET_MAGIC_DEF("ki", js_pid_get, js_pid_set, 1),
+    JS_CGETSET_MAGIC_DEF("kd", js_pid_get, js_pid_set, 2),
+    JS_CGETSET_MAGIC_DEF("summax", js_pid_get, js_pid_set, 3),
+    JS_CGETSET_MAGIC_DEF("summin", js_pid_get, js_pid_set, 4),
     JS_CGETSET_MAGIC_DEF("outmax", js_pid_get, js_pid_set, 5),
     JS_CGETSET_MAGIC_DEF("outmin", js_pid_get, js_pid_set, 6),
     JS_CGETSET_MAGIC_DEF("out", js_pid_get, NULL, 7),
     JS_CGETSET_MAGIC_DEF("fdb", js_pid_get, NULL, 8),
     JS_CGETSET_MAGIC_DEF("err", js_pid_get, NULL, 9),
     JS_CFUNC_DEF("kpid", 3, js_pid_kpid),
-    JS_CFUNC_DEF("iter", 2, js_pid_iter),
     JS_CFUNC_DEF("zero", 0, js_pid_zero),
+    JS_CFUNC_DEF("off", 2, js_pid_off),
+    JS_CFUNC_DEF("pos", 2, js_pid_pos),
+    JS_CFUNC_DEF("inc", 2, js_pid_inc),
 };
 
 static A_INLINE int js_liba_pid_init(JSContext *const ctx, JSModuleDef *const m)
@@ -594,42 +605,22 @@ static JSClassDef js_pid_fuzzy_class = {"pid_fuzzy", .finalizer = js_pid_fuzzy_f
 
 static JSValue js_pid_fuzzy_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
+    (void)argc;
+    (void)argv;
     JSValue clazz = JS_UNDEFINED;
     a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)js_mallocz(ctx, sizeof(a_pid_fuzzy_s));
     if (!self)
     {
         return JS_EXCEPTION;
     }
-    double args[] = {0, 0, 0};
-    if (argc > (int)A_LEN(args))
-    {
-        argc = (int)A_LEN(args);
-    }
-    for (int i = 0; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, &args[i], argv[i]))
-        {
-            goto fail;
-        }
-    }
-    self->pid.outmin = -A_FLOAT_INF;
-    self->pid.outmax = +A_FLOAT_INF;
-    self->pid.summax = +A_FLOAT_INF;
-    self->pid.mode = A_PID_INC;
     self->pid.kp = 1;
-    if (argc > 1)
-    {
-        self->pid.outmin = (a_float_t)args[0];
-        self->pid.outmax = (a_float_t)args[1];
-    }
-    if (argc > 2)
-    {
-        self->pid.summax = (a_float_t)args[2];
-        self->pid.mode = A_PID_POS;
-    }
+    self->pid.summax = +A_FLOAT_INF;
+    self->pid.summin = -A_FLOAT_INF;
+    self->pid.outmax = +A_FLOAT_INF;
+    self->pid.outmin = -A_FLOAT_INF;
     self->kp = 1;
     self->op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
-    a_pid_fuzzy_init(self, 0);
+    a_pid_fuzzy_init(self);
     JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto))
     {
@@ -662,18 +653,19 @@ static JSValue js_pid_fuzzy_get(JSContext *const ctx, JSValueConst const this_va
     case 0:
         return JS_NewUint32(ctx, self->joint);
     case 1:
-        return JS_NewUint32(ctx, self->pid.mode);
-    case 2:
         x = (double)self->kp;
         break;
-    case 3:
+    case 2:
         x = (double)self->ki;
         break;
-    case 4:
+    case 3:
         x = (double)self->kd;
         break;
-    case 5:
+    case 4:
         x = (double)self->pid.summax;
+        break;
+    case 5:
+        x = (double)self->pid.summin;
         break;
     case 6:
         x = (double)self->pid.outmax;
@@ -682,13 +674,13 @@ static JSValue js_pid_fuzzy_get(JSContext *const ctx, JSValueConst const this_va
         x = (double)self->pid.outmin;
         break;
     case 8:
-        x = (double)self->pid.out.f;
+        x = (double)self->pid.out;
         break;
     case 9:
-        x = (double)self->pid.fdb.f;
+        x = (double)self->pid.fdb;
         break;
     case 10:
-        x = (double)self->pid.err.f;
+        x = (double)self->pid.err;
         break;
     case 11:
         return JS_NewUint32(ctx, self->order);
@@ -700,7 +692,7 @@ static JSValue js_pid_fuzzy_get(JSContext *const ctx, JSValueConst const this_va
 
 static int js_pid_fuzzy_joint_(JSContext *const ctx, a_pid_fuzzy_s *const self, unsigned int joint)
 {
-    void *ptr = self->idx;
+    void *ptr = a_pid_fuzzy_joint(self);
     if (joint > self->joint)
     {
         ptr = js_realloc(ctx, ptr, A_PID_FUZZY_JOINT(joint));
@@ -709,7 +701,7 @@ static int js_pid_fuzzy_joint_(JSContext *const ctx, a_pid_fuzzy_s *const self, 
             return ~0;
         }
     }
-    a_pid_fuzzy_joint(self, ptr, joint);
+    a_pid_fuzzy_set_joint(self, ptr, joint);
     return 0;
 }
 
@@ -737,32 +729,26 @@ static JSValue js_pid_fuzzy_set(JSContext *const ctx, JSValueConst const this_va
         }
         return JS_UNDEFINED;
     }
-    if (magic == 1)
-    {
-        if (JS_ToUint32(ctx, &u.u, val))
-        {
-            return JS_EXCEPTION;
-        }
-        self->pid.mode = (unsigned int)u.u;
-        return JS_UNDEFINED;
-    }
     if (JS_ToFloat64(ctx, &u.x, val))
     {
         return JS_EXCEPTION;
     }
     switch (magic)
     {
-    case 2:
+    case 1:
         self->pid.kp = self->kp = (a_float_t)u.x;
         break;
-    case 3:
+    case 2:
         self->pid.ki = self->ki = (a_float_t)u.x;
         break;
-    case 4:
+    case 3:
         self->pid.kd = self->kd = (a_float_t)u.x;
         break;
-    case 5:
+    case 4:
         self->pid.summax = (a_float_t)u.x;
+        break;
+    case 5:
+        self->pid.summin = (a_float_t)u.x;
         break;
     case 6:
         self->pid.outmax = (a_float_t)u.x;
@@ -816,7 +802,7 @@ static JSValue js_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this_v
         {
             goto fail;
         }
-        one = concat(ctx, argv[0]);
+        one = Concat(ctx, argv[0]);
         if (ArrayLength(ctx, one, &len))
         {
             goto fail;
@@ -844,7 +830,7 @@ static JSValue js_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this_v
         {
             goto fail;
         }
-        one = concat(ctx, argv[1]);
+        one = Concat(ctx, argv[1]);
         if (ArrayLength(ctx, one, &len))
         {
             goto fail;
@@ -872,7 +858,7 @@ static JSValue js_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this_v
         {
             goto fail;
         }
-        one = concat(ctx, argv[2]);
+        one = Concat(ctx, argv[2]);
         if (ArrayLength(ctx, one, &len))
         {
             goto fail;
@@ -900,7 +886,7 @@ static JSValue js_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this_v
         {
             goto fail;
         }
-        one = concat(ctx, argv[3]);
+        one = Concat(ctx, argv[3]);
         if (ArrayLength(ctx, one, &len))
         {
             goto fail;
@@ -928,7 +914,7 @@ static JSValue js_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this_v
         {
             goto fail;
         }
-        one = concat(ctx, argv[4]);
+        one = Concat(ctx, argv[4]);
         if (ArrayLength(ctx, one, &len))
         {
             goto fail;
@@ -995,7 +981,20 @@ static JSValue js_pid_fuzzy_kpid(JSContext *const ctx, JSValueConst const this_v
     return JS_UNDEFINED;
 }
 
-static JSValue js_pid_fuzzy_iter(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_pid_fuzzy_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    (void)argv;
+    a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)JS_GetOpaque2(ctx, this_val, js_pid_fuzzy_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    a_pid_fuzzy_zero(self);
+    return JS_UNDEFINED;
+}
+
+static JSValue js_pid_fuzzy_off(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
     a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)JS_GetOpaque2(ctx, this_val, js_pid_fuzzy_class_id);
@@ -1011,30 +1010,55 @@ static JSValue js_pid_fuzzy_iter(JSContext *const ctx, JSValueConst const this_v
             return JS_EXCEPTION;
         }
     }
-    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_outf(self, (a_float_t)args[0], (a_float_t)args[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_off(self, (a_float_t)args[0], (a_float_t)args[1]));
 }
 
-static JSValue js_pid_fuzzy_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_pid_fuzzy_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    (void)argv;
     a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)JS_GetOpaque2(ctx, this_val, js_pid_fuzzy_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
     }
-    a_pid_fuzzy_zero(self);
-    return JS_UNDEFINED;
+    double args[] = {0, 0};
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_pos(self, (a_float_t)args[0], (a_float_t)args[1]));
+}
+
+static JSValue js_pid_fuzzy_inc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)JS_GetOpaque2(ctx, this_val, js_pid_fuzzy_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    double args[] = {0, 0};
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_inc(self, (a_float_t)args[0], (a_float_t)args[1]));
 }
 
 static JSCFunctionListEntry const js_pid_fuzzy_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.pid.fuzzy", 0),
     JS_CGETSET_MAGIC_DEF("joint", js_pid_fuzzy_get, js_pid_fuzzy_set, 0),
-    JS_CGETSET_MAGIC_DEF("mode", js_pid_fuzzy_get, js_pid_fuzzy_set, 1),
-    JS_CGETSET_MAGIC_DEF("kp", js_pid_fuzzy_get, js_pid_fuzzy_set, 2),
-    JS_CGETSET_MAGIC_DEF("ki", js_pid_fuzzy_get, js_pid_fuzzy_set, 3),
-    JS_CGETSET_MAGIC_DEF("kd", js_pid_fuzzy_get, js_pid_fuzzy_set, 4),
-    JS_CGETSET_MAGIC_DEF("summax", js_pid_fuzzy_get, js_pid_fuzzy_set, 5),
+    JS_CGETSET_MAGIC_DEF("kp", js_pid_fuzzy_get, js_pid_fuzzy_set, 1),
+    JS_CGETSET_MAGIC_DEF("ki", js_pid_fuzzy_get, js_pid_fuzzy_set, 2),
+    JS_CGETSET_MAGIC_DEF("kd", js_pid_fuzzy_get, js_pid_fuzzy_set, 3),
+    JS_CGETSET_MAGIC_DEF("summax", js_pid_fuzzy_get, js_pid_fuzzy_set, 4),
+    JS_CGETSET_MAGIC_DEF("summin", js_pid_fuzzy_get, js_pid_fuzzy_set, 5),
     JS_CGETSET_MAGIC_DEF("outmax", js_pid_fuzzy_get, js_pid_fuzzy_set, 6),
     JS_CGETSET_MAGIC_DEF("outmin", js_pid_fuzzy_get, js_pid_fuzzy_set, 7),
     JS_CGETSET_MAGIC_DEF("out", js_pid_fuzzy_get, NULL, 8),
@@ -1045,8 +1069,10 @@ static JSCFunctionListEntry const js_pid_fuzzy_proto[] = {
     JS_CFUNC_DEF("rule", 5, js_pid_fuzzy_rule),
     JS_CFUNC_DEF("set_joint", 1, js_pid_fuzzy_joint),
     JS_CFUNC_DEF("kpid", 3, js_pid_fuzzy_kpid),
-    JS_CFUNC_DEF("iter", 2, js_pid_fuzzy_iter),
     JS_CFUNC_DEF("zero", 0, js_pid_fuzzy_zero),
+    JS_CFUNC_DEF("off", 2, js_pid_fuzzy_off),
+    JS_CFUNC_DEF("pos", 2, js_pid_fuzzy_pos),
+    JS_CFUNC_DEF("inc", 2, js_pid_fuzzy_inc),
 };
 
 static A_INLINE int js_liba_pid_fuzzy_init(JSContext *const ctx, JSModuleDef *const m)
@@ -1086,43 +1112,23 @@ static JSClassDef js_pid_neuron_class = {"pid_neuron", .finalizer = js_pid_neuro
 
 static JSValue js_pid_neuron_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
+    (void)argc;
+    (void)argv;
     JSValue clazz = JS_UNDEFINED;
     a_pid_neuron_s *const self = (a_pid_neuron_s *)js_mallocz(ctx, sizeof(a_pid_neuron_s));
     if (!self)
     {
         return JS_EXCEPTION;
     }
-    double args[] = {0, 0, 0};
-    if (argc > (int)A_LEN(args))
-    {
-        argc = (int)A_LEN(args);
-    }
-    for (int i = 0; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, &args[i], argv[i]))
-        {
-            goto fail;
-        }
-    }
-    self->pid.outmin = -A_FLOAT_INF;
-    self->pid.outmax = +A_FLOAT_INF;
     self->pid.summax = +A_FLOAT_INF;
-    self->pid.mode = A_PID_INC;
-    if (argc > 1)
-    {
-        self->pid.outmin = (a_float_t)args[0];
-        self->pid.outmax = (a_float_t)args[1];
-    }
-    if (argc > 2)
-    {
-        self->pid.summax = (a_float_t)args[2];
-        self->pid.mode = A_PID_POS;
-    }
+    self->pid.summin = -A_FLOAT_INF;
+    self->pid.outmax = +A_FLOAT_INF;
+    self->pid.outmin = -A_FLOAT_INF;
     self->k = 1;
-    self->wp.f = A_FLOAT_C(0.1);
-    self->wi.f = A_FLOAT_C(0.1);
-    self->wd.f = A_FLOAT_C(0.1);
-    a_pid_neuron_init(self, 0);
+    self->wp = A_FLOAT_C(0.1);
+    self->wi = A_FLOAT_C(0.1);
+    self->wd = A_FLOAT_C(0.1);
+    a_pid_neuron_init(self);
     JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto))
     {
@@ -1153,48 +1159,43 @@ static JSValue js_pid_neuron_get(JSContext *const ctx, JSValueConst const this_v
     switch (magic)
     {
     case 0:
-        return JS_NewUint32(ctx, self->pid.mode);
-    case 1:
         x = (double)self->k;
         break;
-    case 2:
+    case 1:
         x = (double)self->pid.kp;
         break;
-    case 3:
+    case 2:
         x = (double)self->pid.ki;
         break;
-    case 4:
+    case 3:
         x = (double)self->pid.kd;
         break;
+    case 4:
+        x = (double)self->wp;
+        break;
     case 5:
-        x = (double)self->wp.f;
+        x = (double)self->wi;
         break;
     case 6:
-        x = (double)self->wi.f;
+        x = (double)self->wd;
         break;
     case 7:
-        x = (double)self->wd.f;
-        break;
-    case 8:
-        x = (double)self->pid.summax;
-        break;
-    case 9:
         x = (double)self->pid.outmax;
         break;
-    case 10:
+    case 8:
         x = (double)self->pid.outmin;
         break;
+    case 9:
+        x = (double)self->pid.out;
+        break;
+    case 10:
+        x = (double)self->pid.fdb;
+        break;
     case 11:
-        x = (double)self->pid.out.f;
+        x = (double)self->pid.err;
         break;
     case 12:
-        x = (double)self->pid.fdb.f;
-        break;
-    case 13:
-        x = (double)self->pid.err.f;
-        break;
-    case 14:
-        x = (double)self->ec.f;
+        x = (double)self->ec;
         break;
     default:
         return JS_UNDEFINED;
@@ -1209,55 +1210,39 @@ static JSValue js_pid_neuron_set(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    union
-    {
-        a_u32_t u;
-        double x;
-    } u;
-    if (magic == 0)
-    {
-        if (JS_ToUint32(ctx, &u.u, val))
-        {
-            return JS_EXCEPTION;
-        }
-        self->pid.mode = (unsigned int)u.u;
-        return JS_UNDEFINED;
-    }
-    if (JS_ToFloat64(ctx, &u.x, val))
+    double x;
+    if (JS_ToFloat64(ctx, &x, val))
     {
         return JS_EXCEPTION;
     }
     switch (magic)
     {
+    case 0:
+        self->k = (a_float_t)x;
+        break;
     case 1:
-        self->k = (a_float_t)u.x;
+        self->pid.kp = (a_float_t)x;
         break;
     case 2:
-        self->pid.kp = (a_float_t)u.x;
+        self->pid.ki = (a_float_t)x;
         break;
     case 3:
-        self->pid.ki = (a_float_t)u.x;
+        self->pid.kd = (a_float_t)x;
         break;
     case 4:
-        self->pid.kd = (a_float_t)u.x;
+        self->wp = (a_float_t)x;
         break;
     case 5:
-        self->wp.f = (a_float_t)u.x;
+        self->wi = (a_float_t)x;
         break;
     case 6:
-        self->wi.f = (a_float_t)u.x;
+        self->wd = (a_float_t)x;
         break;
     case 7:
-        self->wd.f = (a_float_t)u.x;
+        self->pid.outmax = (a_float_t)x;
         break;
     case 8:
-        self->pid.summax = (a_float_t)u.x;
-        break;
-    case 9:
-        self->pid.outmax = (a_float_t)u.x;
-        break;
-    case 10:
-        self->pid.outmin = (a_float_t)u.x;
+        self->pid.outmin = (a_float_t)x;
         break;
     default:
         break;
@@ -1305,7 +1290,20 @@ static JSValue js_pid_neuron_wpid(JSContext *const ctx, JSValueConst const this_
     return JS_UNDEFINED;
 }
 
-static JSValue js_pid_neuron_iter(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_pid_neuron_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+{
+    (void)argc;
+    (void)argv;
+    a_pid_neuron_s *const self = (a_pid_neuron_s *)JS_GetOpaque2(ctx, this_val, js_pid_neuron_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    a_pid_neuron_zero(self);
+    return JS_UNDEFINED;
+}
+
+static JSValue js_pid_neuron_off(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
     a_pid_neuron_s *const self = (a_pid_neuron_s *)JS_GetOpaque2(ctx, this_val, js_pid_neuron_class_id);
@@ -1321,43 +1319,48 @@ static JSValue js_pid_neuron_iter(JSContext *const ctx, JSValueConst const this_
             return JS_EXCEPTION;
         }
     }
-    return JS_NewFloat64(ctx, (double)a_pid_neuron_outf(self, (a_float_t)args[0], (a_float_t)args[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_neuron_off(self, (a_float_t)args[0], (a_float_t)args[1]));
 }
 
-static JSValue js_pid_neuron_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_pid_neuron_inc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    (void)argv;
     a_pid_neuron_s *const self = (a_pid_neuron_s *)JS_GetOpaque2(ctx, this_val, js_pid_neuron_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
     }
-    a_pid_neuron_zero(self);
-    return JS_UNDEFINED;
+    double args[] = {0, 0};
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i]))
+        {
+            return JS_EXCEPTION;
+        }
+    }
+    return JS_NewFloat64(ctx, (double)a_pid_neuron_inc(self, (a_float_t)args[0], (a_float_t)args[1]));
 }
 
 static JSCFunctionListEntry const js_pid_neuron_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.pid.neuron", 0),
-    JS_CGETSET_MAGIC_DEF("mode", js_pid_neuron_get, js_pid_neuron_set, 0),
-    JS_CGETSET_MAGIC_DEF("k", js_pid_neuron_get, js_pid_neuron_set, 1),
-    JS_CGETSET_MAGIC_DEF("kp", js_pid_neuron_get, js_pid_neuron_set, 2),
-    JS_CGETSET_MAGIC_DEF("ki", js_pid_neuron_get, js_pid_neuron_set, 3),
-    JS_CGETSET_MAGIC_DEF("kd", js_pid_neuron_get, js_pid_neuron_set, 4),
-    JS_CGETSET_MAGIC_DEF("wp", js_pid_neuron_get, js_pid_neuron_set, 5),
-    JS_CGETSET_MAGIC_DEF("wi", js_pid_neuron_get, js_pid_neuron_set, 6),
-    JS_CGETSET_MAGIC_DEF("wd", js_pid_neuron_get, js_pid_neuron_set, 7),
-    JS_CGETSET_MAGIC_DEF("summax", js_pid_neuron_get, js_pid_neuron_set, 8),
-    JS_CGETSET_MAGIC_DEF("outmax", js_pid_neuron_get, js_pid_neuron_set, 9),
-    JS_CGETSET_MAGIC_DEF("outmin", js_pid_neuron_get, js_pid_neuron_set, 10),
-    JS_CGETSET_MAGIC_DEF("out", js_pid_neuron_get, NULL, 11),
-    JS_CGETSET_MAGIC_DEF("fdb", js_pid_neuron_get, NULL, 12),
-    JS_CGETSET_MAGIC_DEF("err", js_pid_neuron_get, NULL, 13),
-    JS_CGETSET_MAGIC_DEF("ec", js_pid_neuron_get, NULL, 14),
+    JS_CGETSET_MAGIC_DEF("k", js_pid_neuron_get, js_pid_neuron_set, 0),
+    JS_CGETSET_MAGIC_DEF("kp", js_pid_neuron_get, js_pid_neuron_set, 1),
+    JS_CGETSET_MAGIC_DEF("ki", js_pid_neuron_get, js_pid_neuron_set, 2),
+    JS_CGETSET_MAGIC_DEF("kd", js_pid_neuron_get, js_pid_neuron_set, 3),
+    JS_CGETSET_MAGIC_DEF("wp", js_pid_neuron_get, js_pid_neuron_set, 4),
+    JS_CGETSET_MAGIC_DEF("wi", js_pid_neuron_get, js_pid_neuron_set, 5),
+    JS_CGETSET_MAGIC_DEF("wd", js_pid_neuron_get, js_pid_neuron_set, 6),
+    JS_CGETSET_MAGIC_DEF("outmax", js_pid_neuron_get, js_pid_neuron_set, 7),
+    JS_CGETSET_MAGIC_DEF("outmin", js_pid_neuron_get, js_pid_neuron_set, 8),
+    JS_CGETSET_MAGIC_DEF("out", js_pid_neuron_get, NULL, 9),
+    JS_CGETSET_MAGIC_DEF("fdb", js_pid_neuron_get, NULL, 10),
+    JS_CGETSET_MAGIC_DEF("err", js_pid_neuron_get, NULL, 11),
+    JS_CGETSET_MAGIC_DEF("ec", js_pid_neuron_get, NULL, 12),
     JS_CFUNC_DEF("kpid", 4, js_pid_neuron_kpid),
     JS_CFUNC_DEF("wpid", 3, js_pid_neuron_wpid),
-    JS_CFUNC_DEF("iter", 2, js_pid_neuron_iter),
     JS_CFUNC_DEF("zero", 0, js_pid_neuron_zero),
+    JS_CFUNC_DEF("off", 2, js_pid_neuron_off),
+    JS_CFUNC_DEF("inc", 2, js_pid_neuron_inc),
 };
 
 static A_INLINE int js_liba_pid_neuron_init(JSContext *const ctx, JSModuleDef *const m)

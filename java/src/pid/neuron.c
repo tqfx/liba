@@ -17,48 +17,22 @@ JNIEXPORT void JNICALL JPACKAGE(pid_1neuron_INIT)(JNIEnv *jenv, jclass jcls)
     L.ctx = (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B");
 }
 
-JNIEXPORT void JNICALL JPACKAGE(pid_1neuron_init)(JNIEnv *jenv, jobject jobj, jdouble min, jdouble max, jdouble sum)
+JNIEXPORT void JNICALL JPACKAGE(pid_1neuron_init)(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuron_s ctx;
     jbyteArray jctx = (*jenv)->NewByteArray(jenv, sizeof(a_pid_neuron_s));
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    ctx.pid.outmin = min;
-    ctx.pid.outmax = max;
-    if (sum != 0)
-    {
-        ctx.pid.summax = sum;
-        ctx.pid.mode = A_PID_POS;
-    }
-    else
-    {
-        ctx.pid.summax = A_FLOAT_INF;
-        ctx.pid.mode = A_PID_INC;
-    }
+    ctx.pid.summax = +A_FLOAT_INF;
+    ctx.pid.summin = -A_FLOAT_INF;
+    ctx.pid.outmax = +A_FLOAT_INF;
+    ctx.pid.outmin = -A_FLOAT_INF;
     ctx.k = 1;
-    ctx.wp.f = A_FLOAT_C(0.1);
-    ctx.wi.f = A_FLOAT_C(0.1);
-    ctx.wd.f = A_FLOAT_C(0.1);
-    a_pid_neuron_init(&ctx, 0);
+    ctx.wp = A_FLOAT_C(0.1);
+    ctx.wi = A_FLOAT_C(0.1);
+    ctx.wd = A_FLOAT_C(0.1);
+    a_pid_neuron_init(&ctx);
     (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
     (*jenv)->SetObjectField(jenv, jobj, L.ctx, jctx);
-}
-
-JNIEXPORT jint JNICALL JPACKAGE(pid_1neuron_mode__)(JNIEnv *jenv, jobject jobj)
-{
-    a_pid_neuron_s ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    return (jint)ctx.pid.mode;
-}
-
-JNIEXPORT jobject JNICALL JPACKAGE(pid_1neuron_mode__I)(JNIEnv *jenv, jobject jobj, jint mode)
-{
-    a_pid_neuron_s ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    ctx.pid.mode = (unsigned int)mode;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    return jobj;
 }
 
 JNIEXPORT jdouble JNICALL JPACKAGE(pid_1neuron_k__)(JNIEnv *jenv, jobject jobj)
@@ -138,7 +112,7 @@ JNIEXPORT jdouble JNICALL JPACKAGE(pid_1neuron_wp__)(JNIEnv *jenv, jobject jobj)
     a_pid_neuron_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    return ctx.wp.f;
+    return ctx.wp;
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(pid_1neuron_wp__D)(JNIEnv *jenv, jobject jobj, jdouble wp)
@@ -146,7 +120,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(pid_1neuron_wp__D)(JNIEnv *jenv, jobject jobj
     a_pid_neuron_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    ctx.wp.f = wp;
+    ctx.wp = wp;
     (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
     return jobj;
 }
@@ -156,7 +130,7 @@ JNIEXPORT jdouble JNICALL JPACKAGE(pid_1neuron_wi__)(JNIEnv *jenv, jobject jobj)
     a_pid_neuron_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    return ctx.wi.f;
+    return ctx.wi;
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(pid_1neuron_wi__D)(JNIEnv *jenv, jobject jobj, jdouble wi)
@@ -164,7 +138,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(pid_1neuron_wi__D)(JNIEnv *jenv, jobject jobj
     a_pid_neuron_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    ctx.wi.f = wi;
+    ctx.wi = wi;
     (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
     return jobj;
 }
@@ -174,7 +148,7 @@ JNIEXPORT jdouble JNICALL JPACKAGE(pid_1neuron_wd__)(JNIEnv *jenv, jobject jobj)
     a_pid_neuron_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    return ctx.wd.f;
+    return ctx.wd;
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(pid_1neuron_wd__D)(JNIEnv *jenv, jobject jobj, jdouble wd)
@@ -182,25 +156,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(pid_1neuron_wd__D)(JNIEnv *jenv, jobject jobj
     a_pid_neuron_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    ctx.wd.f = wd;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    return jobj;
-}
-
-JNIEXPORT jdouble JNICALL JPACKAGE(pid_1neuron_summax__)(JNIEnv *jenv, jobject jobj)
-{
-    a_pid_neuron_s ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    return ctx.pid.summax;
-}
-
-JNIEXPORT jobject JNICALL JPACKAGE(pid_1neuron_summax__D)(JNIEnv *jenv, jobject jobj, jdouble summax)
-{
-    a_pid_neuron_s ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    ctx.pid.summax = summax;
+    ctx.wd = wd;
     (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
     return jobj;
 }
@@ -246,7 +202,7 @@ JNIEXPORT jdouble JNICALL JPACKAGE(pid_1neuron_out)(JNIEnv *jenv, jobject jobj)
     a_pid_neuron_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    return ctx.pid.out.f;
+    return ctx.pid.out;
 }
 
 JNIEXPORT jdouble JNICALL JPACKAGE(pid_1neuron_fdb)(JNIEnv *jenv, jobject jobj)
@@ -254,7 +210,7 @@ JNIEXPORT jdouble JNICALL JPACKAGE(pid_1neuron_fdb)(JNIEnv *jenv, jobject jobj)
     a_pid_neuron_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    return ctx.pid.fdb.f;
+    return ctx.pid.fdb;
 }
 
 JNIEXPORT jdouble JNICALL JPACKAGE(pid_1neuron_err)(JNIEnv *jenv, jobject jobj)
@@ -262,7 +218,7 @@ JNIEXPORT jdouble JNICALL JPACKAGE(pid_1neuron_err)(JNIEnv *jenv, jobject jobj)
     a_pid_neuron_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    return ctx.pid.err.f;
+    return ctx.pid.err;
 }
 
 JNIEXPORT jdouble JNICALL JPACKAGE(pid_1neuron_ec)(JNIEnv *jenv, jobject jobj)
@@ -270,7 +226,7 @@ JNIEXPORT jdouble JNICALL JPACKAGE(pid_1neuron_ec)(JNIEnv *jenv, jobject jobj)
     a_pid_neuron_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    return ctx.ec.f;
+    return ctx.ec;
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(pid_1neuron_kpid)(JNIEnv *jenv, jobject jobj, jdouble k, jdouble kp, jdouble ki, jdouble kd)
@@ -293,12 +249,22 @@ JNIEXPORT jobject JNICALL JPACKAGE(pid_1neuron_wpid)(JNIEnv *jenv, jobject jobj,
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL JPACKAGE(pid_1neuron_iter)(JNIEnv *jenv, jobject jobj, jdouble jset, jdouble jfdb)
+JNIEXPORT jdouble JNICALL JPACKAGE(pid_1neuron_off)(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
 {
     a_pid_neuron_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
-    jdouble jres = a_pid_neuron_outf(&ctx, jset, jfdb);
+    jdouble jres = a_pid_neuron_off(&ctx, set, fdb);
+    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
+    return jres;
+}
+
+JNIEXPORT jdouble JNICALL JPACKAGE(pid_1neuron_inc)(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
+{
+    a_pid_neuron_s ctx;
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
+    jdouble jres = a_pid_neuron_inc(&ctx, set, fdb);
     (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuron_s), (jbyte *)&ctx);
     return jres;
 }

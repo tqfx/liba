@@ -26,14 +26,6 @@ pub type float = f64;
 /// floating-point number stored using `f32`
 #[cfg(feature = "float")]
 pub type float = f32;
-/// floating-point number union
-#[repr(C)]
-pub union Float {
-    /// as a floating-point number
-    pub f: float,
-    /// as a floating-point array
-    pub p: *mut float,
-}
 
 pub mod crc;
 pub mod mf;

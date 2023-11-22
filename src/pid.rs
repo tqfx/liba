@@ -2,7 +2,6 @@
 
 use crate::float;
 use crate::uint;
-use crate::Float;
 
 /// turn off PID controller
 pub const OFF: uint = 0;
@@ -22,100 +21,68 @@ pub struct pid {
     pub kd: float,
     /// maximum integral output
     pub summax: float,
+    /// minimum integral output
+    pub summin: float,
+    /// controller integral output
+    pub sum: float,
     /// maximum output
     pub outmax: float,
     /// minimum output
     pub outmin: float,
     /// controller output
-    pub out: Float,
+    pub out: float,
     /// cache feedback
-    pub fdb: Float,
+    pub fdb: float,
     /// cache variable
-    pub(crate) tmp: Float,
+    pub(crate) var: float,
     /// cache error
-    pub err: Float,
-    /// channel
-    pub chan: uint,
-    /// mode
-    pub mode: uint,
+    pub err: float,
 }
 
 extern "C" {
-    fn a_pid_chan(
-        ctx: *mut pid,
-        num: uint,
-        out: *mut float,
-        fdb: *mut float,
-        tmp: *mut float,
-        err: *mut float,
-    );
     fn a_pid_kpid(ctx: *mut pid, kp: float, ki: float, kd: float);
-    fn a_pid_outf(ctx: *mut pid, set: float, fdb: float) -> float;
-    fn a_pid_outp(ctx: *const pid, set: *const float, fdb: *const float) -> *const float;
+    fn a_pid_off(ctx: *mut pid, set: float, fdb: float) -> float;
+    fn a_pid_pos(ctx: *mut pid, set: float, fdb: float) -> float;
+    fn a_pid_inc(ctx: *mut pid, set: float, fdb: float) -> float;
     fn a_pid_zero(ctx: *mut pid);
 }
 
 impl pid {
-    /// initialize function for PID controller
-    pub fn new(min: float, max: float, sum: float) -> Self {
+    /// initialize for PID controller
+    pub fn new() -> Self {
         Self {
             kp: 0.0,
             ki: 0.0,
             kd: 0.0,
-            summax: sum,
-            outmax: max,
-            outmin: min,
-            out: Float { f: 0.0 },
-            fdb: Float { f: 0.0 },
-            tmp: Float { f: 0.0 },
-            err: Float { f: 0.0 },
-            chan: 0,
-            mode: if sum != 0.0 { POS } else { INC },
+            summax: float::INFINITY,
+            summin: -float::INFINITY,
+            sum: 0.0,
+            outmax: float::INFINITY,
+            outmin: -float::INFINITY,
+            out: 0.0,
+            fdb: 0.0,
+            var: 0.0,
+            err: 0.0,
         }
     }
-
-    /// set buffer for multichannel PID controller
-    pub fn chan(
-        &mut self,
-        out: &mut [float],
-        fdb: &mut [float],
-        tmp: &mut [float],
-        err: &mut [float],
-    ) -> &mut Self {
-        unsafe {
-            a_pid_chan(
-                self,
-                out.len() as uint,
-                out.as_mut_ptr(),
-                fdb.as_mut_ptr(),
-                tmp.as_mut_ptr(),
-                err.as_mut_ptr(),
-            )
-        };
-        self
-    }
-
     /// set proportional integral derivative constant for PID controller
     pub fn kpid(&mut self, kp: float, ki: float, kd: float) -> &mut Self {
         unsafe { a_pid_kpid(self, kp, ki, kd) };
         self
     }
-
-    /// calculate function for PID controller
-    pub fn outf(&mut self, set: float, fdb: float) -> float {
-        unsafe { a_pid_outf(self, set, fdb) }
+    /// calculate for PID controller
+    pub fn off(&mut self, set: float, fdb: float) -> float {
+        unsafe { a_pid_off(self, set, fdb) }
     }
-    /// calculate function for multichannel PID controller
-    pub fn outp(&self, set: &[float], fdb: &[float]) -> &[float] {
-        unsafe {
-            core::slice::from_raw_parts(
-                a_pid_outp(self, set.as_ptr(), fdb.as_ptr()),
-                self.chan as usize,
-            )
-        }
+    /// calculate for positional PID controller
+    pub fn pos(&mut self, set: float, fdb: float) -> float {
+        unsafe { a_pid_pos(self, set, fdb) }
     }
-
-    /// zero clear function for PID controller
+    /// calculate for incremental PID controller
+    pub fn inc(&mut self, set: float, fdb: float) -> float {
+        unsafe { a_pid_inc(self, set, fdb) }
+    }
+    /// zeroing for PID controller
     pub fn zero(&mut self) -> &mut Self {
         unsafe { a_pid_zero(self) };
         self
@@ -125,27 +92,10 @@ impl pid {
 #[test]
 fn pid() {
     extern crate std;
-    {
-        let mut a = crate::pid::pid::new(-10.0, 10.0, 10.0);
-        std::println!("{}", a.kpid(10.0, 0.1, 1.0).outf(1.0, 0.0));
-        assert!(a.mode == crate::pid::POS);
-    }
-    {
-        let mut a = crate::pid::pid::new(-10.0, 10.0, 0.0);
-        std::println!("{}", a.kpid(10.0, 0.1, 1.0).outf(1.0, 0.0));
-        assert!(a.mode == crate::pid::INC);
-    }
-    let mut a = crate::pid::pid::new(-10.0, 10.0, 0.0);
-    a.kpid(10.0, 0.1, 1.0).outf(1.0, 0.0);
-    a.zero();
-    {
-        let mut out: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut fdb: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut tmp: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut err: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        a.chan(&mut out, &mut fdb, &mut tmp, &mut err);
-        std::println!("{:?}", a.outp(&[0.1, 0.2, 0.3, 0.4], &[0.0, 0.0, 0.0, 0.0]));
-    }
+    let mut a = crate::pid::pid::new();
+    a.kpid(10.0, 0.1, 1.0);
+    std::println!("{}", a.zero().pos(1.0, 0.0));
+    std::println!("{}", a.zero().inc(1.0, 0.0));
 }
 
 /// fuzzy PID controller operator
@@ -204,14 +154,6 @@ pub struct pid_fuzzy {
 extern "C" {
     fn a_pid_fuzzy_op(op: uint) -> extern "C" fn(float, float) -> float;
     fn a_pid_fuzzy_set_op(ctx: *mut pid_fuzzy, op: uint);
-    fn a_pid_fuzzy_chan(
-        ctx: *mut pid_fuzzy,
-        num: uint,
-        out: *mut float,
-        fdb: *mut float,
-        tmp: *mut float,
-        err: *mut float,
-    );
     fn a_pid_fuzzy_rule(
         ctx: *mut pid_fuzzy,
         num: uint,
@@ -221,18 +163,20 @@ extern "C" {
         mki: *const float,
         mkd: *const float,
     );
-    fn a_pid_fuzzy_joint(ctx: *mut pid_fuzzy, ptr: *mut u8, num: usize);
+    fn a_pid_fuzzy_joint(ctx: *mut pid_fuzzy) -> *mut u8;
+    fn a_pid_fuzzy_set_joint(ctx: *mut pid_fuzzy, ptr: *mut u8, num: usize);
     fn a_pid_fuzzy_kpid(ctx: *mut pid_fuzzy, kp: float, ki: float, kd: float);
-    fn a_pid_fuzzy_outf(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
-    fn a_pid_fuzzy_outp(ctx: *mut pid_fuzzy, set: *const float, fdb: *const float) -> *const float;
+    fn a_pid_fuzzy_off(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
+    fn a_pid_fuzzy_pos(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
+    fn a_pid_fuzzy_inc(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
     fn a_pid_fuzzy_zero(ctx: *mut pid_fuzzy);
 }
 
 impl pid_fuzzy {
-    /// initialize function for fuzzy PID controller
-    pub fn new(min: float, max: float, sum: float) -> Self {
+    /// initialize for fuzzy PID controller
+    pub fn new() -> Self {
         pid_fuzzy {
-            pid: crate::pid::pid::new(min, max, sum),
+            pid: crate::pid::pid::new(),
             me: core::ptr::null(),
             mec: core::ptr::null(),
             mkp: core::ptr::null(),
@@ -248,28 +192,6 @@ impl pid_fuzzy {
             joint: 0,
         }
     }
-
-    /// set buffer for multichannel fuzzy PID controller
-    pub fn chan(
-        &mut self,
-        out: &mut [float],
-        fdb: &mut [float],
-        tmp: &mut [float],
-        err: &mut [float],
-    ) -> &mut Self {
-        unsafe {
-            a_pid_fuzzy_chan(
-                self,
-                out.len() as uint,
-                out.as_mut_ptr(),
-                fdb.as_mut_ptr(),
-                tmp.as_mut_ptr(),
-                err.as_mut_ptr(),
-            )
-        };
-        self
-    }
-
     /// set rule base for fuzzy PID controller
     pub fn rule(
         &mut self,
@@ -293,40 +215,43 @@ impl pid_fuzzy {
         };
         self
     }
-
     /// set proportional integral derivative constant for fuzzy PID controller
     pub fn kpid(&mut self, kp: float, ki: float, kd: float) -> &mut Self {
         unsafe { a_pid_fuzzy_kpid(self, kp, ki, kd) };
         self
     }
-
     /// set joint buffer for fuzzy PID controller
-    pub fn joint(&mut self, ptr: &mut [u8], num: usize) -> &mut Self {
-        unsafe { a_pid_fuzzy_joint(self, ptr.as_mut_ptr(), num) };
+    pub fn set_joint(&mut self, ptr: &mut [u8], num: usize) -> &mut Self {
+        unsafe { a_pid_fuzzy_set_joint(self, ptr.as_mut_ptr(), num) };
         self
     }
-
+    /// get joint buffer for fuzzy PID controller
+    pub fn joint(&mut self) -> &mut [u8] {
+        unsafe {
+            core::slice::from_raw_parts_mut(
+                a_pid_fuzzy_joint(self),
+                PID_FUZZY_JOINT!(self.joint as usize),
+            )
+        }
+    }
     /// set fuzzy relational operator for fuzzy PID controller
     pub fn op(&mut self, op: uint) -> &mut Self {
         unsafe { a_pid_fuzzy_set_op(self, op) };
         self
     }
-
-    /// calculate function for fuzzy PID controller
-    pub fn outf(&mut self, set: float, fdb: float) -> float {
-        unsafe { a_pid_fuzzy_outf(self, set, fdb) }
+    /// calculate for fuzzy PID controller
+    pub fn off(&mut self, set: float, fdb: float) -> float {
+        unsafe { a_pid_fuzzy_off(self, set, fdb) }
     }
-    /// calculate function for multichannel fuzzy PID controller
-    pub fn outp(&mut self, set: &[float], fdb: &[float]) -> &[float] {
-        unsafe {
-            core::slice::from_raw_parts(
-                a_pid_fuzzy_outp(self, set.as_ptr(), fdb.as_ptr()),
-                self.pid.chan as usize,
-            )
-        }
+    /// calculate for positional fuzzy PID controller
+    pub fn pos(&mut self, set: float, fdb: float) -> float {
+        unsafe { a_pid_fuzzy_pos(self, set, fdb) }
     }
-
-    /// zero clear function for fuzzy PID controller
+    /// calculate for incremental fuzzy PID controller
+    pub fn inc(&mut self, set: float, fdb: float) -> float {
+        unsafe { a_pid_fuzzy_inc(self, set, fdb) }
+    }
+    /// zeroing for fuzzy PID controller
     pub fn zero(&mut self) -> &mut Self {
         unsafe { a_pid_fuzzy_zero(self) };
         self
@@ -411,8 +336,7 @@ fn pid_fuzzy() {
         [NL, NM, NM, NM, NS, NS, NL],
     ];
     let mut joint = [0u8; crate::PID_FUZZY_JOINT!(2)];
-    let mut a = pid_fuzzy::new(-10.0, 10.0, 0.0);
-    assert!(a.pid.mode == crate::pid::INC);
+    let mut a = pid_fuzzy::new();
     a.rule(
         me.len(),
         &me.concat(),
@@ -421,18 +345,12 @@ fn pid_fuzzy() {
         &mki.concat(),
         &mkd.concat(),
     )
-    .joint(&mut joint, 2)
-    .kpid(10.0, 0.1, 1.0);
-    std::println!("{}", a.outf(1.0, 0.0));
+    .kpid(10.0, 0.1, 1.0)
+    .set_joint(&mut joint, 2);
     a.op(crate::pid::fuzzy::EQU).zero();
-    {
-        let mut out: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut fdb: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut tmp: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut err: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        a.chan(&mut out, &mut fdb, &mut tmp, &mut err);
-        std::println!("{:?}", a.outp(&[0.1, 0.2, 0.3, 0.4], &[0.0, 0.0, 0.0, 0.0]));
-    }
+    std::println!("{} {}", a.pos(1.0, 0.0), a.pos(1.0, 0.0));
+    a.op(crate::pid::fuzzy::EQU).zero();
+    std::println!("{} {}", a.inc(1.0, 0.0), a.inc(1.0, 0.0));
 }
 
 /// single neuron proportional integral derivative controller
@@ -440,112 +358,57 @@ fn pid_fuzzy() {
 pub struct pid_neuron {
     /// proportional integral derivative controller
     pub pid: crate::pid::pid,
-    /// error change
-    pub ec: Float,
-    /// proportional weight
-    pub wp: Float,
-    /// integral weight
-    pub wi: Float,
-    /// derivative weight
-    pub wd: Float,
     /// proportional coefficient
     pub k: float,
+    /// proportional weight
+    pub wp: float,
+    /// integral weight
+    pub wi: float,
+    /// derivative weight
+    pub wd: float,
+    /// error change
+    pub ec: float,
 }
 
 extern "C" {
-    fn a_pid_neuron_chan(
-        ctx: *mut pid_neuron,
-        num: uint,
-        out: *mut float,
-        fdb: *mut float,
-        tmp: *mut float,
-        err: *mut float,
-        ec: *mut float,
-        wp: *mut float,
-        wi: *mut float,
-        wd: *mut float,
-    );
     fn a_pid_neuron_kpid(ctx: *mut pid_neuron, k: float, kp: float, ki: float, kd: float);
     fn a_pid_neuron_wpid(ctx: *mut pid_neuron, wp: float, wi: float, wd: float);
-    fn a_pid_neuron_outf(ctx: *mut pid_neuron, set: float, fdb: float) -> float;
-    fn a_pid_neuron_outp(
-        ctx: *const pid_neuron,
-        set: *const float,
-        fdb: *const float,
-    ) -> *const float;
+    fn a_pid_neuron_off(ctx: *mut pid_neuron, set: float, fdb: float) -> float;
+    fn a_pid_neuron_inc(ctx: *mut pid_neuron, set: float, fdb: float) -> float;
     fn a_pid_neuron_zero(ctx: *mut pid_neuron);
 }
 
 impl pid_neuron {
-    /// initialize function for single neuron PID controller
-    pub fn new(min: float, max: float, sum: float) -> Self {
+    /// initialize for single neuron PID controller
+    pub fn new() -> Self {
         pid_neuron {
-            pid: crate::pid::pid::new(min, max, sum),
-            ec: Float { f: 0.0 },
-            wp: Float { f: 0.0 },
-            wi: Float { f: 0.0 },
-            wd: Float { f: 0.0 },
+            pid: crate::pid::pid::new(),
             k: 0.0,
+            wp: 0.0,
+            wi: 0.0,
+            wd: 0.0,
+            ec: 0.0,
         }
     }
-
-    /// set buffer for multichannel single neuron PID controller
-    #[allow(clippy::too_many_arguments)]
-    pub fn chan(
-        &mut self,
-        out: &mut [float],
-        fdb: &mut [float],
-        tmp: &mut [float],
-        err: &mut [float],
-        ec: &mut [float],
-        wp: &mut [float],
-        wi: &mut [float],
-        wd: &mut [float],
-    ) -> &mut Self {
-        unsafe {
-            a_pid_neuron_chan(
-                self,
-                out.len() as uint,
-                out.as_mut_ptr(),
-                fdb.as_mut_ptr(),
-                tmp.as_mut_ptr(),
-                err.as_mut_ptr(),
-                ec.as_mut_ptr(),
-                wp.as_mut_ptr(),
-                wi.as_mut_ptr(),
-                wd.as_mut_ptr(),
-            )
-        };
-        self
-    }
-
     /// set proportional integral derivative constant for single neuron PID controller
     pub fn kpid(&mut self, k: float, kp: float, ki: float, kd: float) -> &mut Self {
         unsafe { a_pid_neuron_kpid(self, k, kp, ki, kd) };
         self
     }
-
     /// set proportional integral derivative weight for single neuron PID controller
     pub fn wpid(&mut self, wp: float, wi: float, wd: float) -> &mut Self {
         unsafe { a_pid_neuron_wpid(self, wp, wi, wd) };
         self
     }
-
-    /// calculate function for single neuron PID controller
-    pub fn outf(&mut self, set: float, fdb: float) -> float {
-        unsafe { a_pid_neuron_outf(self, set, fdb) }
+    /// calculate for single neuron PID controller
+    pub fn off(&mut self, set: float, fdb: float) -> float {
+        unsafe { a_pid_neuron_off(self, set, fdb) }
     }
-    /// calculate function for multichannel single neuron PID controller
-    pub fn outp(&self, set: &[float], fdb: &[float]) -> &[float] {
-        unsafe {
-            core::slice::from_raw_parts(
-                a_pid_neuron_outp(self, set.as_ptr(), fdb.as_ptr()),
-                self.pid.chan as usize,
-            )
-        }
+    /// calculate for incremental single neuron PID controller
+    pub fn inc(&mut self, set: float, fdb: float) -> float {
+        unsafe { a_pid_neuron_inc(self, set, fdb) }
     }
-
-    /// zero clear function for single neuron PID controller
+    /// zeroing for single neuron PID controller
     pub fn zero(&mut self) -> &mut Self {
         unsafe { a_pid_neuron_zero(self) };
         self
@@ -555,24 +418,8 @@ impl pid_neuron {
 #[test]
 fn pid_neuron() {
     extern crate std;
-    let mut a = crate::pid::pid_neuron::new(-10.0, 10.0, 0.0);
+    let mut a = crate::pid::pid_neuron::new();
     a.kpid(10.0, 1.0, 0.1, 1.0).wpid(1.0, 0.0, 0.0);
-    assert!(a.pid.mode == crate::pid::INC);
-    std::println!("{}", a.outf(1.0, 0.0));
+    std::println!("{}", a.inc(1.0, 0.0));
     a.zero();
-    {
-        let mut out: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut fdb: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut tmp: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut err: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut ec: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut wp: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut wi: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        let mut wd: [float; 4] = [0.0, 0.0, 0.0, 0.0];
-        a.chan(
-            &mut out, &mut fdb, &mut tmp, &mut err, &mut ec, &mut wp, &mut wi, &mut wd,
-        )
-        .wpid(1.0, 0.0, 0.0);
-        std::println!("{:?}", a.outp(&[0.1, 0.2, 0.3, 0.4], &[0.0, 0.0, 0.0, 0.0]));
-    }
 }

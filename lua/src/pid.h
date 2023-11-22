@@ -9,12 +9,12 @@
  @field ki integral constant
  @field kd derivative constant
  @field summax maximum integral output
+ @field summin minimum integral output
  @field outmax maximum final output
  @field outmin minimum final output
  @field out controller output
  @field fdb cache feedback
  @field err cache error
- @field mode controller mode
  @table a.pid
 */
 
@@ -28,28 +28,29 @@
 extern "C" {
 #endif /* __cplusplus */
 
-A_PUBLIC int LMODULE(pid_func_)(lua_State *L, int ret);
-A_PUBLIC int LMODULE(pid_meta_)(lua_State *L, int ret);
+A_PUBLIC int liba_pid_func_(lua_State *L, int ret);
+A_PUBLIC int liba_pid_meta_(lua_State *L, int ret);
 
 /***
  constructor for PID controller
- @tparam number min minimum output
- @tparam number max maximum output
- @tparam[opt] number sum maximum intergral output
  @treturn a.pid PID controller userdata
  @function new
 */
-A_PUBLIC int LMODULE(pid_new)(lua_State *L);
+A_PUBLIC int liba_pid_new(lua_State *L);
 
 /***
- initialize function for PID controller
- @tparam number min minimum output
- @tparam number max maximum output
- @tparam[opt] number sum maximum intergral output
+ initialize for PID controller
  @treturn a.pid PID controller userdata
  @function init
 */
-A_PUBLIC int LMODULE(pid_init)(lua_State *L);
+A_PUBLIC int liba_pid_init(lua_State *L);
+
+/***
+ zeroing for PID controller
+ @treturn a.pid PID controller userdata
+ @function zero
+*/
+A_PUBLIC int liba_pid_zero(lua_State *L);
 
 /***
  set proportional integral derivative constant for PID controller
@@ -59,23 +60,34 @@ A_PUBLIC int LMODULE(pid_init)(lua_State *L);
  @treturn a.pid PID controller userdata
  @function kpid
 */
-A_PUBLIC int LMODULE(pid_kpid)(lua_State *L);
+A_PUBLIC int liba_pid_kpid(lua_State *L);
 
 /***
- calculate function for PID controller
- @tparam number set setpoint
- @tparam number fdb feedback
- @treturn number output
- @function iter
+ calculate for PID controller
+ @tparam number set setpoint value
+ @tparam number fdb feedback value
+ @treturn number setpoint value
+ @function off
 */
-A_PUBLIC int LMODULE(pid_iter)(lua_State *L);
+A_PUBLIC int liba_pid_off(lua_State *L);
 
 /***
- zero clear function for PID controller
- @treturn a.pid PID controller userdata
- @function zero
+ calculate for positional PID controller
+ @tparam number set setpoint value
+ @tparam number fdb feedback value
+ @treturn number output value
+ @function pos
 */
-A_PUBLIC int LMODULE(pid_zero)(lua_State *L);
+A_PUBLIC int liba_pid_pos(lua_State *L);
+
+/***
+ calculate for incremental PID controller
+ @tparam number set setpoint value
+ @tparam number fdb feedback value
+ @treturn number output value
+ @function inc
+*/
+A_PUBLIC int liba_pid_inc(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

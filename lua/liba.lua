@@ -463,49 +463,37 @@ function liba.mf.pi(x, a, b, c, d) end
 ---@field ki number
 ---@field kd number
 ---@field summax number
+---@field summin number
 ---@field outmax number
 ---@field outmin number
 ---@field out number
 ---@field fdb number
 ---@field err number
----@field mode integer
----@overload fun(set: number, fdb: number): number
-local pid = setmetatable({}, {
-    __call = liba.pid.iter
-})
+local pid = {}
 liba.pid = {}
 liba.pid.OFF = 0
 liba.pid.POS = 1
 liba.pid.INC = 2
 
----@param min number
----@param max number
----@param sum? number
 ---@return a.pid
----@overload fun(): a.pid
-function liba.pid.new(min, max, sum) end
+function liba.pid.new() end
 
----@param min number
----@param max number
----@param sum? number
 ---@return a.pid
----@overload fun(): a.pid
-function pid.new(min, max, sum) end
+function pid.new() end
 
 ---@param ctx a.pid
----@param min number
----@param max number
----@param sum? number
 ---@return a.pid
----@overload fun(ctx: a.pid): a.pid
-function liba.pid.init(ctx, min, max, sum) end
+function liba.pid.init(ctx) end
 
----@param min number
----@param max number
----@param sum? number
 ---@return a.pid
----@overload fun(): a.pid
-function pid:init(min, max, sum) end
+function pid:init() end
+
+---@param ctx a.pid
+---@return a.pid
+function liba.pid.zero(ctx) end
+
+---@return a.pid
+function pid:zero() end
 
 ---@param ctx a.pid
 ---@param kp number
@@ -524,66 +512,70 @@ function pid:kpid(kp, ki, kd) end
 ---@param set number
 ---@param fdb number
 ---@return number
-function liba.pid.iter(ctx, set, fdb) end
+function liba.pid.off(ctx, set, fdb) end
 
 ---@param set number
 ---@param fdb number
 ---@return number
-function pid:iter(set, fdb) end
+function pid:off(set, fdb) end
 
 ---@param ctx a.pid
----@return a.pid
-function liba.pid.zero(ctx) end
+---@param set number
+---@param fdb number
+---@return number
+function liba.pid.pos(ctx, set, fdb) end
 
----@return a.pid
-function pid:zero() end
+---@param set number
+---@param fdb number
+---@return number
+function pid:pos(set, fdb) end
+
+---@param ctx a.pid
+---@param set number
+---@param fdb number
+---@return number
+function liba.pid.inc(ctx, set, fdb) end
+
+---@param set number
+---@param fdb number
+---@return number
+function pid:inc(set, fdb) end
 
 ---@class a.pid.fuzzy
 ---@field kp number
 ---@field ki number
 ---@field kd number
 ---@field summax number
+---@field summin number
 ---@field outmax number
 ---@field outmin number
 ---@field out number
 ---@field fdb number
 ---@field err number
----@field mode integer
 ---@field order integer
----@overload fun(set: number, fdb: number): number
-pid.fuzzy = setmetatable({}, {
-    __call = liba.pid.fuzzy.iter
-})
+---@field joint integer
+pid.fuzzy = {}
 liba.pid.fuzzy = {}
 
----@param min number
----@param max number
----@param sum? number
 ---@return a.pid.fuzzy
----@overload fun(): a.pid.fuzzy
-function liba.pid.fuzzy.new(min, max, sum) end
+function liba.pid.fuzzy.new() end
 
----@param min number
----@param max number
----@param sum? number
 ---@return a.pid.fuzzy
----@overload fun(): a.pid.fuzzy
-function pid.fuzzy.new(min, max, sum) end
+function pid.fuzzy.new() end
 
 ---@param ctx a.pid.fuzzy
----@param min number
----@param max number
----@param sum? number
 ---@return a.pid.fuzzy
----@overload fun(ctx: a.pid.fuzzy): a.pid.fuzzy
-function liba.pid.fuzzy.init(ctx, min, max, sum) end
+function liba.pid.fuzzy.init(ctx) end
 
----@param min number
----@param max number
----@param sum? number
 ---@return a.pid.fuzzy
----@overload fun(): a.pid.fuzzy
-function pid.fuzzy:init(min, max, sum) end
+function pid.fuzzy:init() end
+
+---@param ctx a.pid.fuzzy
+---@return a.pid.fuzzy
+function liba.pid.fuzzy.zero(ctx) end
+
+---@return a.pid.fuzzy
+function pid.fuzzy:zero() end
 
 ---@param ctx a.pid.fuzzy
 ---@param me table
@@ -621,11 +613,11 @@ function pid.fuzzy:op(op) end
 ---@param ctx a.pid.fuzzy
 ---@param joint integer
 ---@return a.pid.fuzzy
-function liba.pid.fuzzy.joint(ctx, joint) end
+function liba.pid.fuzzy.set_joint(ctx, joint) end
 
 ---@param joint integer
 ---@return a.pid.fuzzy
-function pid.fuzzy:joint(joint) end
+function pid.fuzzy:set_joint(joint) end
 
 ---@param ctx a.pid.fuzzy
 ---@param kp number
@@ -644,19 +636,34 @@ function pid.fuzzy:kpid(kp, ki, kd) end
 ---@param set number
 ---@param fdb number
 ---@return number
-function liba.pid.fuzzy.iter(ctx, set, fdb) end
+function liba.pid.fuzzy.off(ctx, set, fdb) end
 
 ---@param set number
 ---@param fdb number
 ---@return number
-function pid.fuzzy:iter(set, fdb) end
+function pid.fuzzy:off(set, fdb) end
 
 ---@param ctx a.pid.fuzzy
----@return a.pid.fuzzy
-function liba.pid.fuzzy.zero(ctx) end
+---@param set number
+---@param fdb number
+---@return number
+function liba.pid.fuzzy.pos(ctx, set, fdb) end
 
----@return a.pid.fuzzy
-function pid.fuzzy:zero() end
+---@param set number
+---@param fdb number
+---@return number
+function pid.fuzzy:pos(set, fdb) end
+
+---@param ctx a.pid.fuzzy
+---@param set number
+---@param fdb number
+---@return number
+function liba.pid.fuzzy.inc(ctx, set, fdb) end
+
+---@param set number
+---@param fdb number
+---@return number
+function pid.fuzzy:inc(set, fdb) end
 
 ---@class a.pid.neuron
 ---@field k number
@@ -666,48 +673,34 @@ function pid.fuzzy:zero() end
 ---@field wp number
 ---@field wi number
 ---@field wd number
----@field summax number
 ---@field outmax number
 ---@field outmin number
 ---@field out number
 ---@field fdb number
 ---@field err number
 ---@field ec number
----@field mode integer
----@overload fun(set: number, fdb: number): number
-pid.neuron = setmetatable({}, {
-    __call = liba.pid.neuron.iter
-})
+pid.neuron = {}
 liba.pid.neuron = {}
 
----@param min number
----@param max number
----@param sum? number
 ---@return a.pid.neuron
----@overload fun(): a.pid.neuron
-function liba.pid.neuron.new(min, max, sum) end
+function liba.pid.neuron.new() end
 
----@param min number
----@param max number
----@param sum? number
 ---@return a.pid.neuron
----@overload fun(): a.pid.neuron
-function pid.neuron.new(min, max, sum) end
+function pid.neuron.new() end
 
 ---@param ctx a.pid.neuron
----@param min number
----@param max number
----@param sum? number
 ---@return a.pid.neuron
----@overload fun(ctx: a.pid.neuron): a.pid.neuron
-function liba.pid.neuron.init(ctx, min, max, sum) end
+function liba.pid.neuron.init(ctx) end
 
----@param min number
----@param max number
----@param sum? number
 ---@return a.pid.neuron
----@overload fun(): a.pid.neuron
-function pid.neuron:init(min, max, sum) end
+function pid.neuron:init() end
+
+---@param ctx a.pid.neuron
+---@return a.pid.neuron
+function liba.pid.neuron.zero(ctx) end
+
+---@return a.pid.neuron
+function pid.neuron:zero() end
 
 ---@param ctx a.pid.neuron
 ---@param k number
@@ -741,19 +734,23 @@ function pid.neuron:wpid(wp, wi, wd) end
 ---@param set number
 ---@param fdb number
 ---@return number
-function liba.pid.neuron.iter(ctx, set, fdb) end
+function liba.pid.neuron.off(ctx, set, fdb) end
 
 ---@param set number
 ---@param fdb number
 ---@return number
-function pid.neuron:iter(set, fdb) end
+function pid.neuron:off(set, fdb) end
 
 ---@param ctx a.pid.neuron
----@return a.pid.neuron
-function liba.pid.neuron.zero(ctx) end
+---@param set number
+---@param fdb number
+---@return number
+function liba.pid.neuron.inc(ctx, set, fdb) end
 
----@return a.pid.neuron
-function pid.neuron:zero() end
+---@param set number
+---@param fdb number
+---@return number
+function pid.neuron:inc(set, fdb) end
 
 ---@class a.polytrack3
 ---@field k table

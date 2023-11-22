@@ -6,15 +6,16 @@ from neuron cimport *
 cdef class pid_neuron:
     '''single neuron proportional integral derivative controller'''
     cdef a_pid_neuron_s ctx
-    def __init__(self, a_float_t min = -A_FLOAT_INF, a_float_t max = +A_FLOAT_INF, a_float_t sum = 0):
-        self.ctx.pid.summax = sum
-        self.ctx.pid.outmax = max
-        self.ctx.pid.outmin = min
-        a_pid_neuron_init(&self.ctx, 0)
-        if sum:
-            self.ctx.pid.mode = A_PID_POS
-        else:
-            self.ctx.pid.mode = A_PID_INC
+    def __init__(self):
+        self.ctx.pid.summax = +A_FLOAT_INF
+        self.ctx.pid.summin = -A_FLOAT_INF
+        self.ctx.pid.outmax = +A_FLOAT_INF
+        self.ctx.pid.outmin = -A_FLOAT_INF
+        self.ctx.k = 1
+        self.ctx.wp = 0.1
+        self.ctx.wi = 0.1
+        self.ctx.wd = 0.1
+        a_pid_neuron_init(&self.ctx)
     def kpid(self, k: a_float_t, kp: a_float_t, ki: a_float_t, kd: a_float_t):
         '''set proportional integral derivative constant for single neuron PID controller'''
         a_pid_neuron_kpid(&self.ctx, k, kp, ki, kd)
@@ -23,18 +24,16 @@ cdef class pid_neuron:
         '''set proportional integral derivative weight for single neuron PID controller'''
         a_pid_neuron_wpid(&self.ctx, wp, wi, wd)
         return self
-    def __call__(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
-        '''calculate function for single neuron PID controller'''
-        return a_pid_neuron_outf(&self.ctx, set, fdb)
+    def off(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
+        '''calculate for single neuron PID controller'''
+        return a_pid_neuron_off(&self.ctx, set, fdb)
+    def inc(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
+        '''calculate for incremental single neuron PID controller'''
+        return a_pid_neuron_inc(&self.ctx, set, fdb)
     def zero(self):
-        '''zero clear function for single neuron PID controller'''
+        '''zeroing for single neuron PID controller'''
         a_pid_neuron_zero(&self.ctx)
         return self
-    property mode:
-        def __get__(self) -> int:
-            return self.ctx.pid.mode
-        def __set__(self, mode: int):
-            self.ctx.pid.mode = mode
     property k:
         def __get__(self) -> a_float_t:
             return self.ctx.k
@@ -57,24 +56,29 @@ cdef class pid_neuron:
             self.ctx.pid.kd = kd
     property wp:
         def __get__(self) -> a_float_t:
-            return self.ctx.wp.f
+            return self.ctx.wp
         def __set__(self, wp: a_float_t):
-            self.ctx.wp.f = wp
+            self.ctx.wp = wp
     property wi:
         def __get__(self) -> a_float_t:
-            return self.ctx.wi.f
+            return self.ctx.wi
         def __set__(self, wi: a_float_t):
-            self.ctx.wi.f = wi
+            self.ctx.wi = wi
     property wd:
         def __get__(self) -> a_float_t:
-            return self.ctx.wd.f
+            return self.ctx.wd
         def __set__(self, wd: a_float_t):
-            self.ctx.wd.f = wd
+            self.ctx.wd = wd
     property summax:
         def __get__(self) -> a_float_t:
             return self.ctx.pid.summax
         def __set__(self, summax: a_float_t):
             self.ctx.pid.summax = summax
+    property summin:
+        def __get__(self) -> a_float_t:
+            return self.ctx.pid.summin
+        def __set__(self, summin: a_float_t):
+            self.ctx.pid.summin = summin
     property outmax:
         def __get__(self) -> a_float_t:
             return self.ctx.pid.outmax
@@ -87,13 +91,13 @@ cdef class pid_neuron:
             self.ctx.pid.outmin = outmin
     property out:
         def __get__(self) -> a_float_t:
-            return self.ctx.pid.out.f
+            return self.ctx.pid.out
     property fdb:
         def __get__(self) -> a_float_t:
-            return self.ctx.pid.fdb.f
+            return self.ctx.pid.fdb
     property err:
         def __get__(self) -> a_float_t:
-            return self.ctx.pid.err.f
+            return self.ctx.pid.err
     property ec:
         def __get__(self) -> a_float_t:
-            return self.ctx.ec.f
+            return self.ctx.ec

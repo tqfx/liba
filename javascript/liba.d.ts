@@ -159,8 +159,6 @@ declare namespace liba {
   };
 
   interface pid {
-    /** OFF POS INC */
-    mode: number;
     /** proportional constant */
     kp: number;
     /** integral constant */
@@ -169,6 +167,8 @@ declare namespace liba {
     kd: number;
     /** maximum integral output */
     summax: number;
+    /** minimum integral output */
+    summin: number;
     /** maximum final output */
     outmax: number;
     /** minimum final output */
@@ -187,24 +187,33 @@ declare namespace liba {
      */
     kpid(kp: number, ki: number, kd: number): pid;
     /**
-     * calculate function for PID controller
-     * @param set setpoint
-     * @param fdb feedback
+     * calculate for PID controller
+     * @param set setpoint value
+     * @param fdb feedback value
+     * @return setpoint value
      */
-    iter(set: number, fdb: number): number;
-    /** zero clear function for PID controller */
+    off(set: number, fdb: number): number;
+    /**
+     * calculate for positional PID controller
+     * @param set setpoint value
+     * @param fdb feedback value
+     * @return output value
+     */
+    pos(set: number, fdb: number): number;
+    /**
+     * calculate for incremental PID controller
+     * @param set setpoint value
+     * @param fdb feedback value
+     * @return output value
+     */
+    inc(set: number, fdb: number): number;
+    /** zeroing for PID controller */
     zero(): pid;
     delete(): void;
   }
   /** constructor for proportional integral derivative controller */
   let pid: {
     new(): pid;
-    /**
-     * @param min minimum final output
-     * @param max maximum final output
-     * @param sum maximum integral output
-     */
-    new(min: number, max: number, sum?: number): pid;
     /** turn off PID controller */
     OFF: number;
     /** positional PID controller */
@@ -215,8 +224,6 @@ declare namespace liba {
   }
 
   interface pid_fuzzy {
-    /** OFF POS INC */
-    mode: number;
     /** proportional constant */
     kp: number;
     /** integral constant */
@@ -225,6 +232,8 @@ declare namespace liba {
     kd: number;
     /** maximum integral output */
     summax: number;
+    /** minimum integral output */
+    summin: number;
     /** maximum final output */
     outmax: number;
     /** minimum final output */
@@ -237,6 +246,8 @@ declare namespace liba {
     readonly err: number;
     /** number of order in the square matrix */
     readonly order: number;
+    /** maximum number triggered by the rule */
+    joint: number;
     /**
      * set fuzzy relational operator for fuzzy PID controller
      * @param op enumeration for fuzzy PID controller operator
@@ -255,7 +266,7 @@ declare namespace liba {
      * set joint buffer for fuzzy PID controller
      * @param num the maximum number triggered by the rule
      */
-    joint(num: number): pid_fuzzy;
+    set_joint(num: number): pid_fuzzy;
     /**
      * set proportional integral derivative constant for fuzzy PID controller
      * @param kp proportional learning constant
@@ -264,24 +275,33 @@ declare namespace liba {
      */
     kpid(kp: number, ki: number, kd: number): pid_fuzzy;
     /**
-     * calculate function for fuzzy PID controller
-     * @param set setpoint
-     * @param fdb feedback
+     * calculate for fuzzy PID controller
+     * @param set setpoint value
+     * @param fdb feedback value
+     * @return setpoint value
      */
-    iter(set: number, fdb: number): number;
-    /** zero clear function for fuzzy PID controller */
+    off(set: number, fdb: number): number;
+    /**
+     * calculate for positional fuzzy PID controller
+     * @param set setpoint value
+     * @param fdb feedback value
+     * @return output value
+     */
+    pos(set: number, fdb: number): number;
+    /**
+     * calculate for incremental fuzzy PID controller
+     * @param set setpoint value
+     * @param fdb feedback value
+     * @return output value
+     */
+    inc(set: number, fdb: number): number;
+    /** zeroing for fuzzy PID controller */
     zero(): pid_fuzzy;
     delete(): void;
   }
   /** constructor for fuzzy PID controller */
   let pid_fuzzy: {
     new(): pid_fuzzy;
-    /**
-     * @param min minimum final output
-     * @param max maximum final output
-     * @param sum maximum integral output
-     */
-    new(min: number, max: number, sum?: number): pid_fuzzy;
     /** min(a,b) */
     CAP: number;
     /** a*b */
@@ -300,8 +320,6 @@ declare namespace liba {
   }
 
   interface pid_neuron {
-    /** OFF POS INC */
-    mode: number;
     /** proportional output coefficient */
     k: number;
     /** proportional learning constant */
@@ -316,8 +334,6 @@ declare namespace liba {
     wi: number;
     /** derivative weight */
     wd: number;
-    /** maximum integral output */
-    summax: number;
     /** maximum final output */
     outmax: number;
     /** minimum final output */
@@ -346,23 +362,26 @@ declare namespace liba {
      */
     wpid(wp: number, wi: number, wd: number): pid_neuron;
     /**
-     * calculate function for single neuron PID controller
-     * @param set setpoint
-     * @param fdb feedback
+     * calculate for single neuron PID controller
+     * @param set setpoint value
+     * @param fdb feedback value
+     * @return setpoint value
      */
-    iter(set: number, fdb: number): number;
-    /** zero clear function for single neuron PID controller */
+    off(set: number, fdb: number): number;
+    /**
+     * calculate for incremental single neuron PID controller
+     * @param set setpoint value
+     * @param fdb feedback value
+     * @return output value
+     */
+    inc(set: number, fdb: number): number;
+    /** zeroing for single neuron PID controller */
     zero(): pid_neuron;
     delete(): void;
   }
   /** constructor for single neuron PID controller */
   let pid_neuron: {
     new(): pid_neuron;
-    /**
-     * @param min minimum final output
-     * @param max maximum final output
-     */
-    new(min: number, max: number): pid_neuron;
     readonly prototype: pid_neuron;
   }
 
@@ -370,22 +389,22 @@ declare namespace liba {
     /** coefficients, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3 */
     readonly k: Float64Array | Float32Array;
     /**
-     * calculate function for cubic polynomial trajectory position
+     * calculate for cubic polynomial trajectory position
      * @param dt difference between current time and initial time
      */
     pos(dt: number): number;
     /**
-     * calculate function for cubic polynomial trajectory velocity
+     * calculate for cubic polynomial trajectory velocity
      * @param dt difference between current time and initial time
      */
     vel(dt: number): number;
     /**
-     * calculate function for cubic polynomial trajectory acceleration
+     * calculate for cubic polynomial trajectory acceleration
      * @param dt difference between current time and initial time
      */
     acc(dt: number): number;
     /**
-     * calculate function for cubic polynomial trajectory
+     * calculate for cubic polynomial trajectory
      * @param dt difference between current time and initial time
      */
     out(dt: number): Float64Array | Float32Array;
@@ -416,22 +435,22 @@ declare namespace liba {
     /** coefficients, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5 */
     readonly k: Float64Array | Float32Array;
     /**
-     * calculate function for quintic polynomial trajectory position
+     * calculate for quintic polynomial trajectory position
      * @param dt difference between current time and initial time
      */
     pos(dt: number): number;
     /**
-     * calculate function for quintic polynomial trajectory velocity
+     * calculate for quintic polynomial trajectory velocity
      * @param dt difference between current time and initial time
      */
     vel(dt: number): number;
     /**
-     * calculate function for quintic polynomial trajectory acceleration
+     * calculate for quintic polynomial trajectory acceleration
      * @param dt difference between current time and initial time
      */
     acc(dt: number): number;
     /**
-     * calculate function for quintic polynomial trajectory
+     * calculate for quintic polynomial trajectory
      * @param dt difference between current time and initial time
      */
     out(dt: number): Float64Array | Float32Array;
@@ -473,27 +492,27 @@ declare namespace liba {
     /** coefficients, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5+k_6(t-t_0)^6+k_7(t-t_0)^7 */
     readonly k: Float64Array | Float32Array;
     /**
-     * calculate function for hepta polynomial trajectory position
+     * calculate for hepta polynomial trajectory position
      * @param dt difference between current time and initial time
      */
     pos(dt: number): number;
     /**
-     * calculate function for hepta polynomial trajectory velocity
+     * calculate for hepta polynomial trajectory velocity
      * @param dt difference between current time and initial time
      */
     vel(dt: number): number;
     /**
-     * calculate function for hepta polynomial trajectory acceleration
+     * calculate for hepta polynomial trajectory acceleration
      * @param dt difference between current time and initial time
      */
     acc(dt: number): number;
     /**
-     * calculate function for hepta polynomial trajectory jerk
+     * calculate for hepta polynomial trajectory jerk
      * @param dt difference between current time and initial time
      */
     jer(dt: number): number;
     /**
-     * calculate function for hepta polynomial trajectory
+     * calculate for hepta polynomial trajectory
      * @param dt difference between current time and initial time
      */
     out(dt: number): Float64Array | Float32Array;
@@ -564,11 +583,11 @@ declare namespace liba {
      */
     set_den(den: number[]): tf;
     /**
-     * calculate function for transfer function
+     * calculate for transfer function
      * @param x controller output
      */
     iter(x: number): number;
-    /** zero clear function for transfer function */
+    /** zeroing for transfer function */
     zero(): tf;
     delete(): void;
   }
@@ -592,7 +611,7 @@ declare namespace liba {
     /** return string representation of version */
     toString(): string;
     /**
-     * parse function for version string
+     * parse for version string
      * @param ver version string to be parsed
      */
     parse(ver: string): version;

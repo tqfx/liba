@@ -52,7 +52,7 @@ error1 = []
 feedback1 = []
 pid_neuron.kpid(k, kp, ki, kd).wpid(wp, wi, wd)
 for i in data:
-    y = pid_neuron(r, y)
+    y = pid_neuron.inc(r, y)
     y = tf(y)
     feedback1.append(y)
     error1.append(r - y)

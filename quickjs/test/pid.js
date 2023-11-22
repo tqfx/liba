@@ -2,25 +2,17 @@ import * as a from "liba.so";
 
 var ctx = new a.pid()
 ctx.kpid(10, 0.1, 1)
-console.log(ctx.iter(1, 0))
+console.log(ctx.off(1, 0))
 ctx.zero()
-
-var ctx = new a.pid(-10, 10)
-ctx.kpid(10, 0.1, 1)
-console.log(ctx.iter(1, 0))
+console.log(ctx.pos(1, 0))
 ctx.zero()
-
-var ctx = new a.pid(-10, 10, 10)
-ctx.kpid(10, 0.1, 1)
-console.log(ctx.iter(1, 0))
+console.log(ctx.inc(1, 0))
 ctx.zero()
-
-var ctx = new a.pid()
-ctx.mode = ctx.mode
 ctx.kp = ctx.kp
 ctx.ki = ctx.ki
 ctx.kd = ctx.kd
 ctx.summax = ctx.summax
+ctx.summin = ctx.summin
 ctx.outmax = ctx.outmax
 ctx.outmin = ctx.outmin
 ctx.out

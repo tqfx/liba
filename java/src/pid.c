@@ -20,45 +20,19 @@ JNIEXPORT void JNICALL JPACKAGE(pid_INIT)(JNIEnv *jenv, jclass jcls)
     L.ctx = (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B");
 }
 
-JNIEXPORT void JNICALL JPACKAGE(pid_init)(JNIEnv *jenv, jobject jobj, jdouble min, jdouble max, jdouble sum)
+JNIEXPORT void JNICALL JPACKAGE(pid_init)(JNIEnv *jenv, jobject jobj)
 {
     a_pid_s ctx;
     jbyteArray jctx = (*jenv)->NewByteArray(jenv, sizeof(a_pid_s));
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
     ctx.kp = 1;
-    ctx.outmin = min;
-    ctx.outmax = max;
-    if (sum != 0)
-    {
-        ctx.summax = sum;
-        ctx.mode = A_PID_POS;
-    }
-    else
-    {
-        ctx.summax = A_FLOAT_INF;
-        ctx.mode = A_PID_INC;
-    }
-    a_pid_init(&ctx, 0);
+    ctx.summax = +A_FLOAT_INF;
+    ctx.summin = -A_FLOAT_INF;
+    ctx.outmax = +A_FLOAT_INF;
+    ctx.outmin = -A_FLOAT_INF;
+    a_pid_init(&ctx);
     (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
     (*jenv)->SetObjectField(jenv, jobj, L.ctx, jctx);
-}
-
-JNIEXPORT jint JNICALL JPACKAGE(pid_mode__)(JNIEnv *jenv, jobject jobj)
-{
-    a_pid_s ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
-    return (jint)ctx.mode;
-}
-
-JNIEXPORT jobject JNICALL JPACKAGE(pid_mode__I)(JNIEnv *jenv, jobject jobj, jint mode)
-{
-    a_pid_s ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
-    ctx.mode = (unsigned int)mode;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
-    return jobj;
 }
 
 JNIEXPORT jdouble JNICALL JPACKAGE(pid_kp__)(JNIEnv *jenv, jobject jobj)
@@ -133,6 +107,24 @@ JNIEXPORT jobject JNICALL JPACKAGE(pid_summax__D)(JNIEnv *jenv, jobject jobj, jd
     return jobj;
 }
 
+JNIEXPORT jdouble JNICALL JPACKAGE(pid_summin__)(JNIEnv *jenv, jobject jobj)
+{
+    a_pid_s ctx;
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
+    return ctx.summin;
+}
+
+JNIEXPORT jobject JNICALL JPACKAGE(pid_summin__D)(JNIEnv *jenv, jobject jobj, jdouble summin)
+{
+    a_pid_s ctx;
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
+    ctx.summin = summin;
+    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
+    return jobj;
+}
+
 JNIEXPORT jdouble JNICALL JPACKAGE(pid_outmax__)(JNIEnv *jenv, jobject jobj)
 {
     a_pid_s ctx;
@@ -174,7 +166,7 @@ JNIEXPORT jdouble JNICALL JPACKAGE(pid_out)(JNIEnv *jenv, jobject jobj)
     a_pid_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
-    return ctx.out.f;
+    return ctx.out;
 }
 
 JNIEXPORT jdouble JNICALL JPACKAGE(pid_fdb)(JNIEnv *jenv, jobject jobj)
@@ -182,7 +174,7 @@ JNIEXPORT jdouble JNICALL JPACKAGE(pid_fdb)(JNIEnv *jenv, jobject jobj)
     a_pid_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
-    return ctx.fdb.f;
+    return ctx.fdb;
 }
 
 JNIEXPORT jdouble JNICALL JPACKAGE(pid_err)(JNIEnv *jenv, jobject jobj)
@@ -190,7 +182,7 @@ JNIEXPORT jdouble JNICALL JPACKAGE(pid_err)(JNIEnv *jenv, jobject jobj)
     a_pid_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
-    return ctx.err.f;
+    return ctx.err;
 }
 
 JNIEXPORT jobject JNICALL JPACKAGE(pid_kpid)(JNIEnv *jenv, jobject jobj, jdouble kp, jdouble ki, jdouble kd)
@@ -203,12 +195,30 @@ JNIEXPORT jobject JNICALL JPACKAGE(pid_kpid)(JNIEnv *jenv, jobject jobj, jdouble
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL JPACKAGE(pid_iter)(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
+JNIEXPORT jdouble JNICALL JPACKAGE(pid_off)(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
 {
     a_pid_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
-    jdouble jres = a_pid_outf(&ctx, set, fdb);
+    jdouble jres = a_pid_off(&ctx, set, fdb);
+    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
+    return jres;
+}
+JNIEXPORT jdouble JNICALL JPACKAGE(pid_pos)(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
+{
+    a_pid_s ctx;
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
+    jdouble jres = a_pid_pos(&ctx, set, fdb);
+    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
+    return jres;
+}
+JNIEXPORT jdouble JNICALL JPACKAGE(pid_inc)(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
+{
+    a_pid_s ctx;
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
+    jdouble jres = a_pid_inc(&ctx, set, fdb);
     (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
     return jres;
 }

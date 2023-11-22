@@ -35,11 +35,11 @@
 typedef struct a_pid_neuron_s
 {
     a_pid_s pid; //!< instance structure for PID controller
-    a_float_u ec; //!< error change
-    a_float_u wp; //!< proportional weight
-    a_float_u wi; //!< integral weight
-    a_float_u wd; //!< derivative weight
     a_float_t k; //!< proportional output coefficient
+    a_float_t wp; //!< proportional weight
+    a_float_t wi; //!< integral weight
+    a_float_t wd; //!< derivative weight
+    a_float_t ec; //!< error change
 } a_pid_neuron_s;
 
 #if defined(__cplusplus)
@@ -47,28 +47,16 @@ extern "C" {
 #endif /* __cplusplus */
 
 /*!
- @brief initialize function for single neuron PID controller
+ @brief zeroing for single neuron PID controller
  @param[in,out] ctx points to an instance of single neuron PID controller
- @param[in] num number of controller channel
 */
-A_EXTERN void a_pid_neuron_init(a_pid_neuron_s *ctx, unsigned int num);
+A_EXTERN void a_pid_neuron_zero(a_pid_neuron_s *ctx);
 
 /*!
- @brief set buffer for multichannel single neuron PID controller
+ @brief initialize for single neuron PID controller
  @param[in,out] ctx points to an instance of single neuron PID controller
- @param[in] num number of controller output
- @param[in] out points to controller output
- @param[in] fdb points to cache feedback buffer
- @param[in] tmp points to cache variable buffer
- @param[in] err points to cache error buffer
- @param[in] ec points to error change buffer
- @param[in] wp points to kp's weight buffer
- @param[in] wi points to ki's weight buffer
- @param[in] wd points to kd's weight buffer
 */
-A_EXTERN void a_pid_neuron_chan(a_pid_neuron_s *ctx, unsigned int num,
-                                a_float_t *out, a_float_t *fdb, a_float_t *tmp, a_float_t *err,
-                                a_float_t *ec, a_float_t *wp, a_float_t *wi, a_float_t *wd);
+A_EXTERN void a_pid_neuron_init(a_pid_neuron_s *ctx);
 
 /*!
  @brief set proportional integral derivative constant for single neuron PID controller
@@ -90,38 +78,22 @@ A_EXTERN void a_pid_neuron_kpid(a_pid_neuron_s *ctx, a_float_t k, a_float_t kp, 
 A_EXTERN void a_pid_neuron_wpid(a_pid_neuron_s *ctx, a_float_t wp, a_float_t wi, a_float_t wd);
 
 /*!
- @brief calculate function for single neuron PID controller
+ @brief calculate for single neuron PID controller
  @param[in,out] ctx points to an instance of single neuron PID controller
- @param[in] set setpoint
- @param[in] fdb feedback
+ @param[in] set setpoint value
+ @param[in] fdb feedback value
+ @return setpoint value
+*/
+A_EXTERN a_float_t a_pid_neuron_off(a_pid_neuron_s *ctx, a_float_t set, a_float_t fdb);
+
+/*!
+ @brief calculate for incremental single neuron PID controller
+ @param[in,out] ctx points to an instance of single neuron PID controller
+ @param[in] set setpoint value
+ @param[in] fdb feedback value
  @return output value
 */
-A_EXTERN a_float_t a_pid_neuron_outf(a_pid_neuron_s *ctx, a_float_t set, a_float_t fdb);
-
-/*!
- @brief calculate function for multichannel single neuron PID controller
- @param[in] ctx points to an instance of single neuron PID controller
- @param[in] set points to setpoint
- @param[in] fdb points to feedback
- @return points to output
-*/
-A_EXTERN a_float_t const *a_pid_neuron_outp(a_pid_neuron_s const *ctx, a_float_t const *set, a_float_t const *fdb);
-
-/*!
- @brief calculate function for single neuron PID controller
- @param[in,out] ctx points to an instance of single neuron PID controller
- @param[in] set setpoint
- @param[in] fdb feedback
- @return output value
-  @retval set when PID controller is off
-*/
-A_EXTERN a_float_t const *a_pid_neuron_iter(a_pid_neuron_s *ctx, a_float_t const *set, a_float_t const *fdb);
-
-/*!
- @brief zero clear function for single neuron PID controller
- @param[in,out] ctx points to an instance of single neuron PID controller
-*/
-A_EXTERN void a_pid_neuron_zero(a_pid_neuron_s *ctx);
+A_EXTERN a_float_t a_pid_neuron_inc(a_pid_neuron_s *ctx, a_float_t set, a_float_t fdb);
 
 #if defined(__cplusplus)
 } /* extern "C" */

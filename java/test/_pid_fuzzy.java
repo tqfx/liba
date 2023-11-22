@@ -76,34 +76,18 @@ class _pid_fuzzy {
                 { NL, NS, NS, NS, NS, NS, NL },
                 { NL, NM, NM, NM, NS, NS, NL },
         };
-        {
-            pid_fuzzy obj = new pid_fuzzy();
-            obj.rule(me, mec, mkp, mki, mkd).joint(2);
-            System.out.print(obj.iter(1, 0) + " ");
-            obj.kpid(10, 0.1, 1).zero();
-            System.out.println(obj.iter(1, 0));
-        }
-        {
-            pid_fuzzy obj = new pid_fuzzy(-10, +10);
-            obj.rule(me, mec, mkp, mki, mkd).joint(2);
-            System.out.print(obj.iter(1, 0) + " ");
-            obj.kpid(10, 0.1, 1).zero();
-            System.out.println(obj.iter(1, 0));
-        }
-        {
-            pid_fuzzy obj = new pid_fuzzy(-10, +10, +10);
-            obj.rule(me, mec, mkp, mki, mkd).joint(2);
-            System.out.print(obj.iter(1, 0) + " ");
-            obj.kpid(10, 0.1, 1).zero();
-            System.out.println(obj.iter(1, 0));
-        }
         pid_fuzzy obj = new pid_fuzzy();
-        obj.mode(obj.mode());
+        obj.rule(me, mec, mkp, mki, mkd).joint(2);
+        obj.kpid(10, 0.1, 1);
+        System.out.print(obj.zero().pos(1, 0) + " ");
+        System.out.print(obj.zero().inc(1, 0) + " ");
+        System.out.println(obj.off(1, 0));
         obj.joint(obj.joint());
         obj.kp(obj.kp());
         obj.ki(obj.ki());
         obj.kd(obj.kd());
         obj.summax(obj.summax());
+        obj.summin(obj.summin());
         obj.outmax(obj.outmax());
         obj.outmin(obj.outmin());
         obj.out();

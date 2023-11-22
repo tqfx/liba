@@ -92,45 +92,21 @@ unsigned int const mf::PI = A_MF_PI;
 
 class pid: public a_pid_s
 {
-    void init()
-    {
-        kp = 0;
-        ki = 0;
-        kd = 0;
-        a_pid_init(this, 0);
-    }
-
 public:
     static unsigned int const OFF;
     static unsigned int const POS;
     static unsigned int const INC;
     pid()
     {
+        kp = 1;
+        ki = 0;
+        kd = 0;
         summax = +A_FLOAT_INF;
+        summin = -A_FLOAT_INF;
         outmax = +A_FLOAT_INF;
         outmin = -A_FLOAT_INF;
-        mode = A_PID_INC;
-        init();
+        a_pid_init(this);
     }
-    pid(a_float_t min, a_float_t max)
-    {
-        summax = +A_FLOAT_INF;
-        outmax = max;
-        outmin = min;
-        mode = A_PID_INC;
-        init();
-    }
-    pid(a_float_t min, a_float_t max, a_float_t sum)
-    {
-        summax = sum;
-        outmax = max;
-        outmin = min;
-        mode = A_PID_POS;
-        init();
-    }
-    a_float_t get_out() const { return out.f; }
-    a_float_t get_fdb() const { return fdb.f; }
-    a_float_t get_err() const { return err.f; }
 };
 unsigned int const pid::OFF = A_PID_OFF;
 unsigned int const pid::POS = A_PID_POS;
@@ -138,7 +114,7 @@ unsigned int const pid::INC = A_PID_INC;
 
 #include "a/pid/fuzzy.h"
 
-static emscripten::val concat(emscripten::val x)
+static emscripten::val Concat(emscripten::val x)
 {
     emscripten::val array = emscripten::val::array();
     return array["concat"].call<emscripten::val>("apply", array, x);
@@ -157,27 +133,6 @@ static a_float_t *ArrayFloat(emscripten::val const &x, a_size_t n, a_float_t *p)
 
 class pid_fuzzy: public a_pid_fuzzy_s
 {
-    void init()
-    {
-        pid.kp = 0;
-        pid.ki = 0;
-        pid.kd = 0;
-        op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
-        kp = 0;
-        ki = 0;
-        kd = 0;
-        order = 0;
-        joint = 0;
-        me = nullptr;
-        mec = nullptr;
-        mkp = nullptr;
-        mki = nullptr;
-        mkd = nullptr;
-        idx = nullptr;
-        val = nullptr;
-        a_pid_fuzzy_init(this, 0);
-    }
-
 public:
     static unsigned int const CAP;
     static unsigned int const CAP_ALGEBRA;
@@ -188,27 +143,27 @@ public:
     static unsigned int const EQU;
     pid_fuzzy()
     {
+        pid.kp = 1;
+        pid.ki = 0;
+        pid.kd = 0;
         pid.summax = +A_FLOAT_INF;
+        pid.summin = -A_FLOAT_INF;
         pid.outmax = +A_FLOAT_INF;
         pid.outmin = -A_FLOAT_INF;
-        pid.mode = A_PID_INC;
-        init();
-    }
-    pid_fuzzy(a_float_t min, a_float_t max)
-    {
-        pid.summax = +A_FLOAT_INF;
-        pid.outmax = max;
-        pid.outmin = min;
-        pid.mode = A_PID_INC;
-        init();
-    }
-    pid_fuzzy(a_float_t min, a_float_t max, a_float_t sum)
-    {
-        pid.summax = sum;
-        pid.outmax = max;
-        pid.outmin = min;
-        pid.mode = A_PID_POS;
-        init();
+        kp = 1;
+        ki = 0;
+        kd = 0;
+        me = nullptr;
+        mec = nullptr;
+        mkp = nullptr;
+        mki = nullptr;
+        mkd = nullptr;
+        idx = nullptr;
+        val = nullptr;
+        op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
+        order = 0;
+        joint = 0;
+        a_pid_fuzzy_init(this);
     }
     ~pid_fuzzy()
     {
@@ -217,7 +172,7 @@ public:
             a_float_t const *p;
             a_float_t *o;
         } u;
-        a_alloc(idx, 0);
+        a_alloc(a_pid_fuzzy_joint(this), 0);
         u.p = me;
         a_alloc(u.o, 0);
         u.p = mec;
@@ -229,17 +184,23 @@ public:
         u.p = mkd;
         a_alloc(u.o, 0);
     }
-    unsigned int get_mode() const { return pid.mode; }
-    void set_mode(unsigned int mode) { pid.mode = mode; }
+    unsigned int get_joint() const { return joint; }
+    void set_joint(unsigned int num)
+    {
+        void *ptr = a_alloc(a_pid_fuzzy_joint(this), A_PID_FUZZY_JOINT(num));
+        a_pid_fuzzy_set_joint(reinterpret_cast<a_pid_fuzzy_s *>(this), ptr, num);
+    }
     a_float_t get_summax() const { return pid.summax; }
     void set_summax(a_float_t summax) { pid.summax = summax; }
+    a_float_t get_summin() const { return pid.summin; }
+    void set_summin(a_float_t summin) { pid.summin = summin; }
     a_float_t get_outmax() const { return pid.outmax; }
     void set_outmax(a_float_t outmax) { pid.outmax = outmax; }
     a_float_t get_outmin() const { return pid.outmin; }
     void set_outmin(a_float_t outmin) { pid.outmin = outmin; }
-    a_float_t get_out() const { return pid.out.f; }
-    a_float_t get_fdb() const { return pid.fdb.f; }
-    a_float_t get_err() const { return pid.err.f; }
+    a_float_t get_out() const { return pid.out; }
+    a_float_t get_fdb() const { return pid.fdb; }
+    a_float_t get_err() const { return pid.err; }
 };
 unsigned int const pid_fuzzy::CAP = A_PID_FUZZY_CAP;
 unsigned int const pid_fuzzy::CAP_ALGEBRA = A_PID_FUZZY_CAP_ALGEBRA;
@@ -253,59 +214,42 @@ unsigned int const pid_fuzzy::EQU = A_PID_FUZZY_EQU;
 
 class pid_neuron: public a_pid_neuron_s
 {
-    void init()
-    {
-        pid.kp = 0;
-        pid.ki = 0;
-        pid.kd = 0;
-        wp.f = 1;
-        wi.f = 0;
-        wd.f = 0;
-        k = 1;
-        a_pid_neuron_init(this, 0);
-    }
-
 public:
     pid_neuron()
     {
         pid.summax = +A_FLOAT_INF;
+        pid.summin = -A_FLOAT_INF;
         pid.outmax = +A_FLOAT_INF;
         pid.outmin = -A_FLOAT_INF;
-        pid.mode = A_PID_INC;
-        init();
+        pid.kp = 0;
+        pid.ki = 0;
+        pid.kd = 0;
+        k = 1;
+        wp = A_FLOAT_C(0.1);
+        wi = A_FLOAT_C(0.1);
+        wd = A_FLOAT_C(0.1);
+        a_pid_neuron_init(this);
     }
-    pid_neuron(a_float_t min, a_float_t max)
-    {
-        pid.summax = +A_FLOAT_INF;
-        pid.outmax = max;
-        pid.outmin = min;
-        pid.mode = A_PID_INC;
-        init();
-    }
-    unsigned int get_mode() const { return pid.mode; }
-    void set_mode(unsigned int mode) { pid.mode = mode; }
     a_float_t get_kp() const { return pid.kp; }
     void set_kp(a_float_t kp) { pid.kp = kp; }
     a_float_t get_ki() const { return pid.ki; }
     void set_ki(a_float_t ki) { pid.ki = ki; }
     a_float_t get_kd() const { return pid.kd; }
     void set_kd(a_float_t kd) { pid.kd = kd; }
-    a_float_t get_wp() const { return wp.f; }
-    void set_wp(a_float_t _wp) { wp.f = _wp; }
-    a_float_t get_wi() const { return wi.f; }
-    void set_wi(a_float_t _wi) { wi.f = _wi; }
-    a_float_t get_wd() const { return wd.f; }
-    void set_wd(a_float_t _wd) { wd.f = _wd; }
-    a_float_t get_summax() const { return pid.summax; }
-    void set_summax(a_float_t summax) { pid.summax = summax; }
+    a_float_t get_wp() const { return wp; }
+    void set_wp(a_float_t _wp) { wp = _wp; }
+    a_float_t get_wi() const { return wi; }
+    void set_wi(a_float_t _wi) { wi = _wi; }
+    a_float_t get_wd() const { return wd; }
+    void set_wd(a_float_t _wd) { wd = _wd; }
     a_float_t get_outmax() const { return pid.outmax; }
     void set_outmax(a_float_t outmax) { pid.outmax = outmax; }
     a_float_t get_outmin() const { return pid.outmin; }
     void set_outmin(a_float_t outmin) { pid.outmin = outmin; }
-    a_float_t get_out() const { return pid.out.f; }
-    a_float_t get_fdb() const { return pid.fdb.f; }
-    a_float_t get_err() const { return pid.err.f; }
-    a_float_t get_ec() const { return ec.f; }
+    a_float_t get_out() const { return pid.out; }
+    a_float_t get_fdb() const { return pid.fdb; }
+    a_float_t get_err() const { return pid.err; }
+    a_float_t get_ec() const { return ec; }
 };
 
 #include "a/polytrack.h"
@@ -468,15 +412,21 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .class_property("PI", &mf::PI);
     emscripten::class_<pid>("pid")
         .constructor<>()
-        .constructor<a_float_t, a_float_t>()
-        .constructor<a_float_t, a_float_t, a_float_t>()
         .function("kpid", emscripten::optional_override([](pid *ctx, a_float_t kp, a_float_t ki, a_float_t kd) {
                       a_pid_kpid(reinterpret_cast<a_pid_s *>(ctx), kp, ki, kd);
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
-        .function("iter", emscripten::optional_override([](pid *ctx, a_float_t set, a_float_t fdb) {
-                      return a_pid_outf(reinterpret_cast<a_pid_s *>(ctx), set, fdb);
+        .function("off", emscripten::optional_override([](pid *ctx, a_float_t set, a_float_t fdb) {
+                      return a_pid_off(reinterpret_cast<a_pid_s *>(ctx), set, fdb);
+                  }),
+                  emscripten::allow_raw_pointers())
+        .function("pos", emscripten::optional_override([](pid *ctx, a_float_t set, a_float_t fdb) {
+                      return a_pid_pos(reinterpret_cast<a_pid_s *>(ctx), set, fdb);
+                  }),
+                  emscripten::allow_raw_pointers())
+        .function("inc", emscripten::optional_override([](pid *ctx, a_float_t set, a_float_t fdb) {
+                      return a_pid_inc(reinterpret_cast<a_pid_s *>(ctx), set, fdb);
                   }),
                   emscripten::allow_raw_pointers())
         .function("zero", emscripten::optional_override([](pid *ctx) {
@@ -487,20 +437,18 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .class_property("OFF", &pid::OFF)
         .class_property("POS", &pid::POS)
         .class_property("INC", &pid::INC)
-        .property<unsigned int, void>("mode", &pid::mode)
         .property<a_float_t, void>("kp", &pid::kp)
         .property<a_float_t, void>("ki", &pid::ki)
         .property<a_float_t, void>("kd", &pid::kd)
         .property<a_float_t, void>("summax", &pid::summax)
+        .property<a_float_t, void>("summin", &pid::summin)
         .property<a_float_t, void>("outmax", &pid::outmax)
         .property<a_float_t, void>("outmin", &pid::outmin)
-        .property("out", &pid::get_out)
-        .property("fdb", &pid::get_fdb)
-        .property("err", &pid::get_err);
+        .property<a_float_t, void>("out", &pid::out)
+        .property<a_float_t, void>("fdb", &pid::fdb)
+        .property<a_float_t, void>("err", &pid::err);
     emscripten::class_<pid_fuzzy>("pid_fuzzy")
         .constructor<>()
-        .constructor<a_float_t, a_float_t>()
-        .constructor<a_float_t, a_float_t, a_float_t>()
         .function("op", emscripten::optional_override([](pid_fuzzy *ctx, unsigned int op) {
                       a_pid_fuzzy_set_op(reinterpret_cast<a_pid_fuzzy_s *>(ctx), op);
                       return ctx;
@@ -514,20 +462,20 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       } u;
                       ctx->order = me["length"].as<unsigned int>();
                       u.p = ctx->me;
-                      ctx->me = ArrayFloat(concat(me), me["length"].as<a_size_t>(), u.o);
+                      ctx->me = ArrayFloat(Concat(me), me["length"].as<a_size_t>(), u.o);
                       u.p = ctx->mec;
-                      ctx->mec = ArrayFloat(concat(mec), mec["length"].as<a_size_t>(), u.o);
+                      ctx->mec = ArrayFloat(Concat(mec), mec["length"].as<a_size_t>(), u.o);
                       u.p = ctx->mkp;
-                      ctx->mkp = ArrayFloat(concat(mkp), mkp["length"].as<a_size_t>(), u.o);
+                      ctx->mkp = ArrayFloat(Concat(mkp), mkp["length"].as<a_size_t>(), u.o);
                       u.p = ctx->mki;
-                      ctx->mki = ArrayFloat(concat(mki), mki["length"].as<a_size_t>(), u.o);
+                      ctx->mki = ArrayFloat(Concat(mki), mki["length"].as<a_size_t>(), u.o);
                       u.p = ctx->mkd;
-                      ctx->mkd = ArrayFloat(concat(mkd), mkd["length"].as<a_size_t>(), u.o);
+                      ctx->mkd = ArrayFloat(Concat(mkd), mkd["length"].as<a_size_t>(), u.o);
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
-        .function("joint", emscripten::optional_override([](pid_fuzzy *ctx, unsigned int num) {
-                      a_pid_fuzzy_joint(reinterpret_cast<a_pid_fuzzy_s *>(ctx), a_alloc(ctx->idx, A_PID_FUZZY_JOINT(num)), num);
+        .function("set_joint", emscripten::optional_override([](pid_fuzzy *ctx, unsigned int num) {
+                      ctx->set_joint(num);
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
@@ -536,8 +484,16 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
-        .function("iter", emscripten::optional_override([](pid_fuzzy *ctx, a_float_t set, a_float_t fdb) {
-                      return a_pid_fuzzy_outf(reinterpret_cast<a_pid_fuzzy_s *>(ctx), set, fdb);
+        .function("off", emscripten::optional_override([](pid_fuzzy *ctx, a_float_t set, a_float_t fdb) {
+                      return a_pid_fuzzy_off(reinterpret_cast<a_pid_fuzzy_s *>(ctx), set, fdb);
+                  }),
+                  emscripten::allow_raw_pointers())
+        .function("pos", emscripten::optional_override([](pid_fuzzy *ctx, a_float_t set, a_float_t fdb) {
+                      return a_pid_fuzzy_pos(reinterpret_cast<a_pid_fuzzy_s *>(ctx), set, fdb);
+                  }),
+                  emscripten::allow_raw_pointers())
+        .function("inc", emscripten::optional_override([](pid_fuzzy *ctx, a_float_t set, a_float_t fdb) {
+                      return a_pid_fuzzy_inc(reinterpret_cast<a_pid_fuzzy_s *>(ctx), set, fdb);
                   }),
                   emscripten::allow_raw_pointers())
         .function("zero", emscripten::optional_override([](pid_fuzzy *ctx) {
@@ -552,20 +508,20 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .class_property("CUP_ALGEBRA", &pid_fuzzy::CUP_ALGEBRA)
         .class_property("CUP_BOUNDED", &pid_fuzzy::CUP_BOUNDED)
         .class_property("EQU", &pid_fuzzy::EQU)
-        .property("mode", &pid_fuzzy::get_mode, &pid_fuzzy::set_mode)
         .property<a_float_t, void>("kp", &pid_fuzzy::kp)
         .property<a_float_t, void>("ki", &pid_fuzzy::ki)
         .property<a_float_t, void>("kd", &pid_fuzzy::kd)
         .property("summax", &pid_fuzzy::get_summax, &pid_fuzzy::set_summax)
+        .property("summin", &pid_fuzzy::get_summin, &pid_fuzzy::set_summin)
         .property("outmax", &pid_fuzzy::get_outmax, &pid_fuzzy::set_outmax)
         .property("outmin", &pid_fuzzy::get_outmin, &pid_fuzzy::set_outmin)
         .property("out", &pid_fuzzy::get_out)
         .property("fdb", &pid_fuzzy::get_fdb)
         .property("err", &pid_fuzzy::get_err)
-        .property<unsigned int const, void>("order", &pid_fuzzy::order);
+        .property<unsigned int, void>("order", &pid_fuzzy::order)
+        .property("joint", &pid_fuzzy::get_joint, &pid_fuzzy::set_joint);
     emscripten::class_<pid_neuron>("pid_neuron")
         .constructor<>()
-        .constructor<a_float_t, a_float_t>()
         .function("kpid", emscripten::optional_override([](pid_neuron *ctx, a_float_t k, a_float_t kp, a_float_t ki, a_float_t kd) {
                       a_pid_neuron_kpid(reinterpret_cast<a_pid_neuron_s *>(ctx), k, kp, ki, kd);
                       return ctx;
@@ -576,8 +532,12 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
-        .function("iter", emscripten::optional_override([](pid_neuron *ctx, a_float_t set, a_float_t fdb) {
-                      return a_pid_neuron_outf(reinterpret_cast<a_pid_neuron_s *>(ctx), set, fdb);
+        .function("off", emscripten::optional_override([](pid_neuron *ctx, a_float_t set, a_float_t fdb) {
+                      return a_pid_neuron_off(reinterpret_cast<a_pid_neuron_s *>(ctx), set, fdb);
+                  }),
+                  emscripten::allow_raw_pointers())
+        .function("inc", emscripten::optional_override([](pid_neuron *ctx, a_float_t set, a_float_t fdb) {
+                      return a_pid_neuron_inc(reinterpret_cast<a_pid_neuron_s *>(ctx), set, fdb);
                   }),
                   emscripten::allow_raw_pointers())
         .function("zero", emscripten::optional_override([](pid_neuron *ctx) {
@@ -585,7 +545,6 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
-        .property("mode", &pid_neuron::get_mode, &pid_neuron::set_mode)
         .property<a_float_t, void>("k", &pid_neuron::k)
         .property("kp", &pid_neuron::get_kp, &pid_neuron::set_kp)
         .property("ki", &pid_neuron::get_ki, &pid_neuron::set_ki)
@@ -593,7 +552,6 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("wp", &pid_neuron::get_wp, &pid_neuron::set_wp)
         .property("wi", &pid_neuron::get_wi, &pid_neuron::set_wi)
         .property("wd", &pid_neuron::get_wd, &pid_neuron::set_wd)
-        .property("summax", &pid_neuron::get_summax, &pid_neuron::set_summax)
         .property("outmax", &pid_neuron::get_outmax, &pid_neuron::set_outmax)
         .property("outmin", &pid_neuron::get_outmin, &pid_neuron::set_outmin)
         .property("out", &pid_neuron::get_out)

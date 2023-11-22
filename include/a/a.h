@@ -813,12 +813,6 @@
 /*! compiler built-in floating-point number type */
 #define a_float_t A_FLOAT_T
 
-typedef union a_float_u
-{
-    a_float_t f; //!< as a floating-point number
-    a_float_t *p; //!< as a floating-point array
-} a_float_u;
-
 /*! @} A_FLOAT */
 
 typedef union a_cast_u

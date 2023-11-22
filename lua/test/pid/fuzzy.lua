@@ -88,46 +88,46 @@ local mkd = {
     -- LuaFormatter on
 }
 test.dir(getmetatable(a.pid.fuzzy))
-assert(a.pid.fuzzy.new())
-assert(a.pid.fuzzy.new(-10, 10))
-assert(a.pid.fuzzy.new(-10, 10, 10))
-local ctx = a.pid.fuzzy.new(-10, 10)
+local ctx = a.pid.fuzzy.new()
+assert(ctx)
 test.dir(getmetatable(ctx))
 assert(type(a.pid.fuzzy.rule(ctx, me, mec, mkp, mki, mkd)) == "userdata")
 assert(type(a.pid.fuzzy.kpid(ctx, 10, 0.1, 1)) == "userdata")
-assert(type(a.pid.fuzzy.joint(ctx, 2)) == "userdata")
-assert(type(a.pid.fuzzy.iter(ctx, 1, 0)) == "number")
+assert(type(a.pid.fuzzy.set_joint(ctx, 2)) == "userdata")
+assert(type(a.pid.fuzzy.off(ctx, 1, 0)) == "number")
+assert(type(a.pid.fuzzy.pos(ctx, 1, 0)) == "number")
+assert(type(a.pid.fuzzy.inc(ctx, 1, 0)) == "number")
 assert(type(a.pid.fuzzy.zero(ctx)) == "userdata")
-ctx:rule(me, mec, mkp, mki, mkd):kpid(3, 2, 1):joint(2):op(a.pid.fuzzy.EQU)
-assert(type(ctx(1, 0)) == "number")
+ctx:rule(me, mec, mkp, mki, mkd):kpid(3, 2, 1):set_joint(2):op(a.pid.fuzzy.EQU):zero()
+assert(type(ctx:off(1, 0)) == "number")
+assert(type(ctx:pos(1, 0)) == "number")
+assert(type(ctx:inc(1, 0)) == "number")
 assert(type(ctx.kp) == "number")
 assert(type(ctx.ki) == "number")
 assert(type(ctx.kd) == "number")
 assert(type(ctx.summax) == "number")
+assert(type(ctx.summin) == "number")
 assert(type(ctx.outmax) == "number")
 assert(type(ctx.outmin) == "number")
 assert(type(ctx.out) == "number")
 assert(type(ctx.fdb) == "number")
 assert(type(ctx.err) == "number")
 assert(type(ctx.order) == "number")
-assert(ctx.mode == a.pid.INC)
-ctx.mode = a.pid.OFF
+assert(type(ctx.joint) == "number")
 ctx.outmin = -10
 ctx.outmax = 10
+ctx.summin = -5
 ctx.summax = 5
 ctx.kp = 3
 ctx.ki = 2
 ctx.kd = 1
 ctx.__name = nil
 assert(ctx.__name)
-ctx.__call = nil
-assert(ctx.__call)
 ctx.__index = nil
 assert(ctx.__index)
 ctx.__newindex = nil
 assert(ctx.__newindex)
 ---@class a.pid.fuzzy
 ---@field __name string
----@field __call function
 ---@field __index table
 ---@field __newindex table

@@ -74,34 +74,22 @@ var mkd = [
     [NL, NM, NM, NM, NS, NS, NL],
 ]
 
-var ctx = new liba.pid_fuzzy().zero()
-ctx.rule(me, mec, mkp, mki, mkd).joint(2)
-ctx.kpid(10, 0.1, 1).op(liba.PID_FUZZY_EQU)
-console.log(ctx.iter(10, 0))
-ctx.delete()
-
-var ctx = new liba.pid_fuzzy(-10, 10).zero()
-ctx.rule(me, mec, mkp, mki, mkd).joint(2)
-ctx.kpid(10, 0.1, 1).op(liba.PID_FUZZY_EQU)
-console.log(ctx.iter(10, 0))
-ctx.delete()
-
-var ctx = new liba.pid_fuzzy(-10, 10, 10).zero()
-ctx.rule(me, mec, mkp, mki, mkd).joint(2)
-ctx.kpid(10, 0.1, 1).op(liba.PID_FUZZY_EQU)
-console.log(ctx.iter(10, 0))
-ctx.delete()
-
 var ctx = new liba.pid_fuzzy()
-ctx.mode = ctx.mode
+ctx.rule(me, mec, mkp, mki, mkd).set_joint(2)
+ctx.kpid(10, 0.1, 1).op(liba.pid_fuzzy.EQU)
+console.log(ctx.zero().off(10, 0))
+console.log(ctx.zero().pos(10, 0))
+console.log(ctx.zero().inc(10, 0))
 ctx.kp = ctx.kp
 ctx.ki = ctx.ki
 ctx.kd = ctx.kd
 ctx.summax = ctx.summax
+ctx.summin = ctx.summin
 ctx.outmax = ctx.outmax
 ctx.outmin = ctx.outmin
 ctx.out
 ctx.fdb
 ctx.err
 ctx.order
+ctx.joint = ctx.joint
 ctx.delete()

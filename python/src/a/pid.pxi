@@ -8,31 +8,30 @@ cdef class pid:
     POS = A_PID_POS
     INC = A_PID_INC
     cdef a_pid_s ctx
-    def __init__(self, a_float_t min = -A_FLOAT_INF, a_float_t max = +A_FLOAT_INF, a_float_t sum = 0):
-        self.ctx.summax = sum
-        self.ctx.outmax = max
-        self.ctx.outmin = min
-        a_pid_init(&self.ctx, 0)
-        if sum:
-            self.ctx.mode = A_PID_POS
-        else:
-            self.ctx.mode = A_PID_INC
+    def __init__(self):
+        self.ctx.kp = 1
+        self.ctx.summax = +A_FLOAT_INF
+        self.ctx.summin = -A_FLOAT_INF
+        self.ctx.outmax = +A_FLOAT_INF
+        self.ctx.outmin = -A_FLOAT_INF
+        a_pid_init(&self.ctx)
     def kpid(self, kp: a_float_t, ki: a_float_t, kd: a_float_t):
         '''set proportional integral derivative constant for PID controller'''
         a_pid_kpid(&self.ctx, kp, ki, kd)
         return self
-    def __call__(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
-        '''calculate function for PID controller'''
-        return a_pid_outf(&self.ctx, set, fdb)
+    def off(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
+        '''calculate for PID controller'''
+        return a_pid_off(&self.ctx, set, fdb)
+    def pos(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
+        '''calculate for positional PID controller'''
+        return a_pid_pos(&self.ctx, set, fdb)
+    def inc(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
+        '''calculate for incremental PID controller'''
+        return a_pid_inc(&self.ctx, set, fdb)
     def zero(self):
-        '''zero clear function for PID controller'''
+        '''zeroing for PID controller'''
         a_pid_zero(&self.ctx)
         return self
-    property mode:
-        def __get__(self) -> int:
-            return self.ctx.mode
-        def __set__(self, mode: int):
-            self.ctx.mode = mode
     property kp:
         def __get__(self) -> a_float_t:
             return self.ctx.kp
@@ -53,6 +52,11 @@ cdef class pid:
             return self.ctx.summax
         def __set__(self, summax: a_float_t):
             self.ctx.summax = summax
+    property summin:
+        def __get__(self) -> a_float_t:
+            return self.ctx.summin
+        def __set__(self, summin: a_float_t):
+            self.ctx.summin = summin
     property outmax:
         def __get__(self) -> a_float_t:
             return self.ctx.outmax
@@ -65,13 +69,13 @@ cdef class pid:
             self.ctx.outmin = outmin
     property out:
         def __get__(self) -> a_float_t:
-            return self.ctx.out.f
+            return self.ctx.out
     property fdb:
         def __get__(self) -> a_float_t:
-            return self.ctx.fdb.f
+            return self.ctx.fdb
     property err:
         def __get__(self) -> a_float_t:
-            return self.ctx.err.f
+            return self.ctx.err
 
 include "pid/fuzzy.pxi"
 include "pid/neuron.pxi"

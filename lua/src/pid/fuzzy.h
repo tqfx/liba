@@ -9,12 +9,12 @@
  @field ki integral constant
  @field kd derivative constant
  @field summax maximum integral output
+ @field summin minimum integral output
  @field outmax maximum final output
  @field outmin minimum final output
  @field out controller output
  @field fdb cache feedback
  @field err cache error
- @field mode controller mode
  @field order number of order in the square matrix
  @field joint maximum number triggered by the rule
  @table a.pid.fuzzy
@@ -30,34 +30,35 @@
 extern "C" {
 #endif /* __cplusplus */
 
-A_PUBLIC int LMODULE(pid_fuzzy_func_)(lua_State *L, int ret);
-A_PUBLIC int LMODULE(pid_fuzzy_meta_)(lua_State *L, int ret);
+A_PUBLIC int liba_pid_fuzzy_func_(lua_State *L, int ret);
+A_PUBLIC int liba_pid_fuzzy_meta_(lua_State *L, int ret);
 
 /***
  destructor for fuzzy PID controller
  @function die
 */
-A_PUBLIC int LMODULE(pid_fuzzy_die)(lua_State *L);
+A_PUBLIC int liba_pid_fuzzy_die(lua_State *L);
 
 /***
  constructor for fuzzy PID controller
- @tparam number min minimum output
- @tparam number max maximum output
- @tparam[opt] number sum maximum intergral output
  @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function new
 */
-A_PUBLIC int LMODULE(pid_fuzzy_new)(lua_State *L);
+A_PUBLIC int liba_pid_fuzzy_new(lua_State *L);
 
 /***
- initialize function for fuzzy PID controller
- @tparam number min minimum output
- @tparam number max maximum output
- @tparam[opt] number sum maximum intergral output
+ initialize for fuzzy PID controller
  @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function init
 */
-A_PUBLIC int LMODULE(pid_fuzzy_init)(lua_State *L);
+A_PUBLIC int liba_pid_fuzzy_init(lua_State *L);
+
+/***
+ zeroing for fuzzy PID controller
+ @treturn a.pid.fuzzy fuzzy PID controller userdata
+ @function zero
+*/
+A_PUBLIC int liba_pid_fuzzy_zero(lua_State *L);
 
 /***
  set fuzzy relational operator for fuzzy PID controller
@@ -65,7 +66,7 @@ A_PUBLIC int LMODULE(pid_fuzzy_init)(lua_State *L);
  @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function op
 */
-A_PUBLIC int LMODULE(pid_fuzzy_op)(lua_State *L);
+A_PUBLIC int liba_pid_fuzzy_op(lua_State *L);
 
 /***
  set rule base for fuzzy PID controller
@@ -77,15 +78,15 @@ A_PUBLIC int LMODULE(pid_fuzzy_op)(lua_State *L);
  @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function rule
 */
-A_PUBLIC int LMODULE(pid_fuzzy_rule)(lua_State *L);
+A_PUBLIC int liba_pid_fuzzy_rule(lua_State *L);
 
 /***
  set joint buffer for fuzzy PID controller
  @tparam int num maximum number triggered by the rule
  @treturn a.pid.fuzzy fuzzy PID controller userdata
- @function joint
+ @function set_joint
 */
-A_PUBLIC int LMODULE(pid_fuzzy_joint)(lua_State *L);
+A_PUBLIC int liba_pid_fuzzy_joint(lua_State *L);
 
 /***
  set proportional integral derivative constant for fuzzy PID controller
@@ -95,23 +96,34 @@ A_PUBLIC int LMODULE(pid_fuzzy_joint)(lua_State *L);
  @treturn a.pid.fuzzy fuzzy PID controller userdata
  @function kpid
 */
-A_PUBLIC int LMODULE(pid_fuzzy_kpid)(lua_State *L);
+A_PUBLIC int liba_pid_fuzzy_kpid(lua_State *L);
 
 /***
- calculate function for fuzzy PID controller
- @tparam number set setpoint
- @tparam number fdb feedback
- @treturn number output
- @function iter
+ calculate for fuzzy PID controller
+ @tparam number set setpoint value
+ @tparam number fdb feedback value
+ @treturn number setpoint value
+ @function off
 */
-A_PUBLIC int LMODULE(pid_fuzzy_iter)(lua_State *L);
+A_PUBLIC int liba_pid_fuzzy_off(lua_State *L);
 
 /***
- zero clear function for fuzzy PID controller
- @treturn a.pid.fuzzy fuzzy PID controller userdata
- @function zero
+ calculate for positional fuzzy PID controller
+ @tparam number set setpoint value
+ @tparam number fdb feedback value
+ @treturn number output value
+ @function pos
 */
-A_PUBLIC int LMODULE(pid_fuzzy_zero)(lua_State *L);
+A_PUBLIC int liba_pid_fuzzy_pos(lua_State *L);
+
+/***
+ calculate for incremental fuzzy PID controller
+ @tparam number set setpoint value
+ @tparam number fdb feedback value
+ @treturn number output value
+ @function inc
+*/
+A_PUBLIC int liba_pid_fuzzy_inc(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

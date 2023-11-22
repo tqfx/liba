@@ -13,7 +13,7 @@ public class pid {
         System.loadLibrary("a");
         OFF = 0;
         POS = 1;
-        INC = 3;
+        INC = 2;
         INIT();
     }
 
@@ -23,46 +23,10 @@ public class pid {
      * construct a new {@link pid} object
      */
     public pid() {
-        init(-1.0 / 0.0, 1.0 / 0.0, 1.0 / 0.0);
+        init();
     }
 
-    /**
-     * construct a new {@link pid} object
-     *
-     * @param min minimum output
-     * @param max maximum output
-     */
-    public pid(double min, double max) {
-        init(min, max, 0);
-    }
-
-    /**
-     * construct a new {@link pid} object
-     *
-     * @param min minimum output
-     * @param max maximum output
-     * @param sum maximum intergral output
-     */
-    public pid(double min, double max, double sum) {
-        init(min, max, sum);
-    }
-
-    final native void init(double min, double max, double sum);
-
-    /**
-     * get mode for PID controller
-     *
-     * @return mode
-     */
-    public final native int mode();
-
-    /**
-     * set mode for PID controller
-     *
-     * @param mode mode
-     * @return {@link pid}
-     */
-    public final native pid mode(int mode);
+    final native void init();
 
     /**
      * get proportional constant for PID controller
@@ -125,6 +89,21 @@ public class pid {
     public final native pid summax(double max);
 
     /**
+     * get minimum integral output for PID controller
+     *
+     * @return minimum integral output
+     */
+    public final native double summin();
+
+    /**
+     * set minimum integral output for PID controller
+     *
+     * @param min minimum integral output
+     * @return {@link pid}
+     */
+    public final native pid summin(double min);
+
+    /**
      * get maximum final output for PID controller
      *
      * @return maximum final output
@@ -155,23 +134,23 @@ public class pid {
     public final native pid outmin(double min);
 
     /**
-     * get output cached for PID controller
+     * get cached output for PID controller
      *
-     * @return output cached
+     * @return cached output
      */
     public final native double out();
 
     /**
-     * get feedback cached for PID controller
+     * get cached feedback for PID controller
      *
-     * @return feedback cached
+     * @return cached feedback
      */
     public final native double fdb();
 
     /**
-     * get error cached for PID controller
+     * get cached error for PID controller
      *
-     * @return error cached
+     * @return cached error
      */
     public final native double err();
 
@@ -186,16 +165,34 @@ public class pid {
     public final native pid kpid(double kp, double ki, double kd);
 
     /**
-     * calculate function for PID controller
+     * calculate for PID controller
      *
-     * @param set setpoint
-     * @param fdb feedback
-     * @return output
+     * @param set setpoint value
+     * @param fdb feedback value
+     * @return setpoint value
      */
-    public final native double iter(double set, double fdb);
+    public final native double off(double set, double fdb);
 
     /**
-     * zero clear function for PID controller
+     * calculate for positional PID controller
+     *
+     * @param set setpoint value
+     * @param fdb feedback value
+     * @return output value
+     */
+    public final native double pos(double set, double fdb);
+
+    /**
+     * calculate for incremental PID controller
+     *
+     * @param set setpoint value
+     * @param fdb feedback value
+     * @return output value
+     */
+    public final native double inc(double set, double fdb);
+
+    /**
+     * zeroing for PID controller
      *
      * @return {@link pid}
      */
