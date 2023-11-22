@@ -38,7 +38,7 @@ public class polytrack5 {
     }
 
     /**
-     * generation function for quintic polynomial trajectory
+     * generate for quintic polynomial trajectory
      *
      * @param t0 time for source
      * @param t1 time for target
@@ -54,7 +54,7 @@ public class polytrack5 {
             double a0, double a1);
 
     /**
-     * calculate function for quintic polynomial trajectory
+     * calculate for quintic polynomial trajectory
      *
      * @param dt difference between current time and initial time
      * @return current output
@@ -62,7 +62,7 @@ public class polytrack5 {
     public final native double[] out(double dt);
 
     /**
-     * calculate function for quintic polynomial trajectory position
+     * calculate for quintic polynomial trajectory position
      *
      * @param dt difference between current time and initial time
      * @return position output
@@ -70,7 +70,7 @@ public class polytrack5 {
     public final native double pos(double dt);
 
     /**
-     * calculate function for quintic polynomial trajectory velocity
+     * calculate for quintic polynomial trajectory velocity
      *
      * @param dt difference between current time and initial time
      * @return velocity output
@@ -78,7 +78,7 @@ public class polytrack5 {
     public final native double vel(double dt);
 
     /**
-     * calculate function for quintic polynomial trajectory acceleration
+     * calculate for quintic polynomial trajectory acceleration
      *
      * @param dt difference between current time and initial time
      * @return acceleration output

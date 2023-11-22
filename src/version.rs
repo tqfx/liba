@@ -60,7 +60,7 @@ impl PartialEq for version {
 }
 
 impl version {
-    /// initialize function for version
+    /// initialize for version
     pub fn new(major: uint, minor: uint, patch: uint) -> Self {
         Self {
             major,

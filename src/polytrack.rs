@@ -26,14 +26,14 @@ extern "C" {
 }
 
 impl polytrack3 {
-    /// initialize function for cubic polynomial trajectory
+    /// initialize for cubic polynomial trajectory
     pub fn new(t0: float, t1: float, q0: float, q1: float, v0: float, v1: float) -> Self {
         let mut ctx: Self = Self { k: [0.0; 4] };
         unsafe { a_polytrack3_gen(&mut ctx, t0, t1, q0, q1, v0, v1) };
         ctx
     }
 
-    /// generation function for cubic polynomial trajectory
+    /// generate for cubic polynomial trajectory
     pub fn gen(
         &mut self,
         t0: float,
@@ -47,24 +47,24 @@ impl polytrack3 {
         self
     }
 
-    /// calculate function for cubic polynomial trajectory
+    /// calculate for cubic polynomial trajectory
     pub fn out(&mut self, dt: float) -> [float; 3] {
         let mut out: [float; 3] = [0.0; 3];
         unsafe { a_polytrack3_out(self, dt, &mut out) };
         out
     }
 
-    /// calculate function for cubic polynomial trajectory position
+    /// calculate for cubic polynomial trajectory position
     pub fn pos(&mut self, dt: float) -> float {
         unsafe { a_polytrack3_pos(self, dt) }
     }
 
-    /// calculate function for cubic polynomial trajectory velocity
+    /// calculate for cubic polynomial trajectory velocity
     pub fn vel(&mut self, dt: float) -> float {
         unsafe { a_polytrack3_vel(self, dt) }
     }
 
-    /// calculate function for cubic polynomial trajectory acceleration
+    /// calculate for cubic polynomial trajectory acceleration
     pub fn acc(&mut self, dt: float) -> float {
         unsafe { a_polytrack3_acc(self, dt) }
     }
@@ -111,7 +111,7 @@ extern "C" {
 }
 
 impl polytrack5 {
-    /// initialize function for quintic polynomial trajectory
+    /// initialize for quintic polynomial trajectory
     #[allow(clippy::too_many_arguments)]
     pub fn new(
         t0: float,
@@ -128,7 +128,7 @@ impl polytrack5 {
         ctx
     }
 
-    /// generation function for quintic polynomial trajectory
+    /// generate for quintic polynomial trajectory
     #[allow(clippy::too_many_arguments)]
     pub fn gen(
         &mut self,
@@ -145,24 +145,24 @@ impl polytrack5 {
         self
     }
 
-    /// calculate function for quintic polynomial trajectory
+    /// calculate for quintic polynomial trajectory
     pub fn out(&mut self, dt: float) -> [float; 3] {
         let mut out: [float; 3] = [0.0; 3];
         unsafe { a_polytrack5_out(self, dt, &mut out) };
         out
     }
 
-    /// calculate function for quintic polynomial trajectory position
+    /// calculate for quintic polynomial trajectory position
     pub fn pos(&mut self, dt: float) -> float {
         unsafe { a_polytrack5_pos(self, dt) }
     }
 
-    /// calculate function for quintic polynomial trajectory velocity
+    /// calculate for quintic polynomial trajectory velocity
     pub fn vel(&mut self, dt: float) -> float {
         unsafe { a_polytrack5_vel(self, dt) }
     }
 
-    /// calculate function for quintic polynomial trajectory acceleration
+    /// calculate for quintic polynomial trajectory acceleration
     pub fn acc(&mut self, dt: float) -> float {
         unsafe { a_polytrack5_acc(self, dt) }
     }
@@ -212,7 +212,7 @@ extern "C" {
 }
 
 impl polytrack7 {
-    /// initialize function for hepta polynomial trajectory
+    /// initialize for hepta polynomial trajectory
     #[allow(clippy::too_many_arguments)]
     pub fn new(
         t0: float,
@@ -231,7 +231,7 @@ impl polytrack7 {
         ctx
     }
 
-    /// generation function for hepta polynomial trajectory
+    /// generate for hepta polynomial trajectory
     #[allow(clippy::too_many_arguments)]
     pub fn gen(
         &mut self,
@@ -250,29 +250,29 @@ impl polytrack7 {
         self
     }
 
-    /// calculate function for hepta polynomial trajectory
+    /// calculate for hepta polynomial trajectory
     pub fn out(&mut self, dt: float) -> [float; 4] {
         let mut out: [float; 4] = [0.0; 4];
         unsafe { a_polytrack7_out(self, dt, &mut out) };
         out
     }
 
-    /// calculate function for hepta polynomial trajectory position
+    /// calculate for hepta polynomial trajectory position
     pub fn pos(&mut self, dt: float) -> float {
         unsafe { a_polytrack7_pos(self, dt) }
     }
 
-    /// calculate function for hepta polynomial trajectory velocity
+    /// calculate for hepta polynomial trajectory velocity
     pub fn vel(&mut self, dt: float) -> float {
         unsafe { a_polytrack7_vel(self, dt) }
     }
 
-    /// calculate function for hepta polynomial trajectory acceleration
+    /// calculate for hepta polynomial trajectory acceleration
     pub fn acc(&mut self, dt: float) -> float {
         unsafe { a_polytrack7_acc(self, dt) }
     }
 
-    /// calculate function for hepta polynomial trajectory jerk
+    /// calculate for hepta polynomial trajectory jerk
     pub fn jer(&mut self, dt: float) -> float {
         unsafe { a_polytrack7_jer(self, dt) }
     }

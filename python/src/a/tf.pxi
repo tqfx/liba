@@ -6,10 +6,10 @@ cdef class tf:
     '''transfer function'''
     cdef a_tf_s ctx
     def __call__(self, x: a_float_t) -> a_float_t:
-        '''calculate function for transfer function'''
+        '''calculate for transfer function'''
         return a_tf_iter(&self.ctx, x)
     def zero(self):
-        '''zero clear function for transfer function'''
+        '''zeroing for transfer function'''
         a_tf_zero(&self.ctx)
         return self
     cdef array input

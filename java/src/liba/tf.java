@@ -79,7 +79,7 @@ public class tf {
     }
 
     /**
-     * calculate function for transfer function
+     * calculate for transfer function
      *
      * @param x controller output
      * @return feedback
@@ -87,7 +87,7 @@ public class tf {
     public final native double iter(double x);
 
     /**
-     * zero clear function for transfer function
+     * zeroing for transfer function
      *
      * @return {@link tf}
      */

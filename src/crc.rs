@@ -12,33 +12,33 @@ pub struct crc8 {
 }
 
 extern "C" {
-    fn a_crc8l_init(table: *mut u8, poly: u8);
-    fn a_crc8h_init(table: *mut u8, poly: u8);
+    fn a_crc8le_init(table: *mut u8, poly: u8);
+    fn a_crc8be_init(table: *mut u8, poly: u8);
     fn a_crc8(table: *const u8, pdate: *const u8, nbyte: usize, value: u8) -> u8;
 }
 
 impl crc8 {
-    /// initialize function for low 8 bits Cyclic Redundancy Check
-    pub fn new_low(poly: u8) -> Self {
+    /// initialize for little-endian 8 bits Cyclic Redundancy Check
+    pub fn new_le(poly: u8) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
-        unsafe { a_crc8l_init(ctx.table.as_mut_ptr(), poly) };
+        unsafe { a_crc8le_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
 
-    /// calculation function for low 8 bits Cyclic Redundancy Check
-    pub fn low(self, data: &[u8], value: u8) -> u8 {
+    /// calculate for little-endian 8 bits Cyclic Redundancy Check
+    pub fn le(self, data: &[u8], value: u8) -> u8 {
         unsafe { a_crc8(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
 
-    /// initialize function for high 8 bits Cyclic Redundancy Check
-    pub fn new_high(poly: u8) -> Self {
+    /// initialize for big-endian 8 bits Cyclic Redundancy Check
+    pub fn new_be(poly: u8) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
-        unsafe { a_crc8h_init(ctx.table.as_mut_ptr(), poly) };
+        unsafe { a_crc8be_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
 
-    /// calculation function for high 8 bits Cyclic Redundancy Check
-    pub fn high(self, data: &[u8], value: u8) -> u8 {
+    /// calculate for big-endian 8 bits Cyclic Redundancy Check
+    pub fn be(self, data: &[u8], value: u8) -> u8 {
         unsafe { a_crc8(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
 }
@@ -46,12 +46,12 @@ impl crc8 {
 #[test]
 fn crc8() {
     {
-        let ctx = crate::crc::crc8::new_low(POLY8);
-        ctx.low(b"", INIT8);
+        let ctx = crate::crc::crc8::new_le(POLY8);
+        ctx.le(b"", INIT8);
     }
     {
-        let ctx = crate::crc::crc8::new_high(POLY8);
-        ctx.high(b"", INIT8);
+        let ctx = crate::crc::crc8::new_be(POLY8);
+        ctx.be(b"", INIT8);
     }
 }
 
@@ -67,47 +67,47 @@ pub struct crc16 {
 }
 
 extern "C" {
-    fn a_crc16l_init(table: *mut u16, poly: u16);
-    fn a_crc16h_init(table: *mut u16, poly: u16);
-    fn a_crc16l(table: *const u16, pdate: *const u8, nbyte: usize, value: u16) -> u16;
-    fn a_crc16h(table: *const u16, pdate: *const u8, nbyte: usize, value: u16) -> u16;
+    fn a_crc16le_init(table: *mut u16, poly: u16);
+    fn a_crc16be_init(table: *mut u16, poly: u16);
+    fn a_crc16le(table: *const u16, pdate: *const u8, nbyte: usize, value: u16) -> u16;
+    fn a_crc16be(table: *const u16, pdate: *const u8, nbyte: usize, value: u16) -> u16;
 }
 
 impl crc16 {
-    /// initialize function for low 16 bits Cyclic Redundancy Check
-    pub fn new_low(poly: u16) -> Self {
+    /// initialize for little-endian 16 bits Cyclic Redundancy Check
+    pub fn new_le(poly: u16) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
-        unsafe { a_crc16l_init(ctx.table.as_mut_ptr(), poly) };
+        unsafe { a_crc16le_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
 
-    /// calculation function for low 16 bits Cyclic Redundancy Check
-    pub fn low(self, data: &[u8], value: u16) -> u16 {
-        unsafe { a_crc16l(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    /// calculate for little-endian 16 bits Cyclic Redundancy Check
+    pub fn le(self, data: &[u8], value: u16) -> u16 {
+        unsafe { a_crc16le(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
 
-    /// initialize function for high 16 bits Cyclic Redundancy Check
-    pub fn new_high(poly: u16) -> Self {
+    /// initialize for big-endian 16 bits Cyclic Redundancy Check
+    pub fn new_be(poly: u16) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
-        unsafe { a_crc16h_init(ctx.table.as_mut_ptr(), poly) };
+        unsafe { a_crc16be_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
 
-    /// calculation function for high 16 bits Cyclic Redundancy Check
-    pub fn high(self, data: &[u8], value: u16) -> u16 {
-        unsafe { a_crc16h(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    /// calculate for big-endian 16 bits Cyclic Redundancy Check
+    pub fn be(self, data: &[u8], value: u16) -> u16 {
+        unsafe { a_crc16be(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
 }
 
 #[test]
 fn crc16() {
     {
-        let ctx = crate::crc::crc16::new_low(POLY16);
-        ctx.low(b"", INIT16);
+        let ctx = crate::crc::crc16::new_le(POLY16);
+        ctx.le(b"", INIT16);
     }
     {
-        let ctx = crate::crc::crc16::new_high(POLY16);
-        ctx.high(b"", INIT16);
+        let ctx = crate::crc::crc16::new_be(POLY16);
+        ctx.be(b"", INIT16);
     }
 }
 
@@ -123,47 +123,47 @@ pub struct crc32 {
 }
 
 extern "C" {
-    fn a_crc32l_init(table: *mut u32, poly: u32);
-    fn a_crc32h_init(table: *mut u32, poly: u32);
-    fn a_crc32l(table: *const u32, pdate: *const u8, nbyte: usize, value: u32) -> u32;
-    fn a_crc32h(table: *const u32, pdate: *const u8, nbyte: usize, value: u32) -> u32;
+    fn a_crc32le_init(table: *mut u32, poly: u32);
+    fn a_crc32be_init(table: *mut u32, poly: u32);
+    fn a_crc32le(table: *const u32, pdate: *const u8, nbyte: usize, value: u32) -> u32;
+    fn a_crc32be(table: *const u32, pdate: *const u8, nbyte: usize, value: u32) -> u32;
 }
 
 impl crc32 {
-    /// initialize function for low 32 bits Cyclic Redundancy Check
-    pub fn new_low(poly: u32) -> Self {
+    /// initialize for little-endian 32 bits Cyclic Redundancy Check
+    pub fn new_le(poly: u32) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
-        unsafe { a_crc32l_init(ctx.table.as_mut_ptr(), poly) };
+        unsafe { a_crc32le_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
 
-    /// calculation function for low 32 bits Cyclic Redundancy Check
-    pub fn low(self, data: &[u8], value: u32) -> u32 {
-        unsafe { a_crc32l(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    /// calculate for little-endian 32 bits Cyclic Redundancy Check
+    pub fn le(self, data: &[u8], value: u32) -> u32 {
+        unsafe { a_crc32le(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
 
-    /// initialize function for high 32 bits Cyclic Redundancy Check
-    pub fn new_high(poly: u32) -> Self {
+    /// initialize for big-endian 32 bits Cyclic Redundancy Check
+    pub fn new_be(poly: u32) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
-        unsafe { a_crc32h_init(ctx.table.as_mut_ptr(), poly) };
+        unsafe { a_crc32be_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
 
-    /// calculation function for high 32 bits Cyclic Redundancy Check
-    pub fn high(self, data: &[u8], value: u32) -> u32 {
-        unsafe { a_crc32h(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    /// calculate for big-endian 32 bits Cyclic Redundancy Check
+    pub fn be(self, data: &[u8], value: u32) -> u32 {
+        unsafe { a_crc32be(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
 }
 
 #[test]
 fn crc32() {
     {
-        let ctx = crate::crc::crc32::new_low(POLY32);
-        ctx.low(b"", INIT32);
+        let ctx = crate::crc::crc32::new_le(POLY32);
+        ctx.le(b"", INIT32);
     }
     {
-        let ctx = crate::crc::crc32::new_high(POLY32);
-        ctx.high(b"", INIT32);
+        let ctx = crate::crc::crc32::new_be(POLY32);
+        ctx.be(b"", INIT32);
     }
 }
 
@@ -179,46 +179,46 @@ pub struct crc64 {
 }
 
 extern "C" {
-    fn a_crc64l_init(table: *mut u64, poly: u64);
-    fn a_crc64h_init(table: *mut u64, poly: u64);
-    fn a_crc64l(table: *const u64, pdate: *const u8, nbyte: usize, value: u64) -> u64;
-    fn a_crc64h(table: *const u64, pdate: *const u8, nbyte: usize, value: u64) -> u64;
+    fn a_crc64le_init(table: *mut u64, poly: u64);
+    fn a_crc64be_init(table: *mut u64, poly: u64);
+    fn a_crc64le(table: *const u64, pdate: *const u8, nbyte: usize, value: u64) -> u64;
+    fn a_crc64be(table: *const u64, pdate: *const u8, nbyte: usize, value: u64) -> u64;
 }
 
 impl crc64 {
-    /// initialize function for low 64 bits Cyclic Redundancy Check
-    pub fn new_low(poly: u64) -> Self {
+    /// initialize for little-endian 64 bits Cyclic Redundancy Check
+    pub fn new_le(poly: u64) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
-        unsafe { a_crc64l_init(ctx.table.as_mut_ptr(), poly) };
+        unsafe { a_crc64le_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
 
-    /// calculation function for low 64 bits Cyclic Redundancy Check
-    pub fn low(self, data: &[u8], value: u64) -> u64 {
-        unsafe { a_crc64l(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    /// calculate for little-endian 64 bits Cyclic Redundancy Check
+    pub fn le(self, data: &[u8], value: u64) -> u64 {
+        unsafe { a_crc64le(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
 
-    /// initialize function for high 64 bits Cyclic Redundancy Check
-    pub fn new_high(poly: u64) -> Self {
+    /// initialize for big-endian 64 bits Cyclic Redundancy Check
+    pub fn new_be(poly: u64) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
-        unsafe { a_crc64h_init(ctx.table.as_mut_ptr(), poly) };
+        unsafe { a_crc64be_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
 
-    /// calculation function for high 64 bits Cyclic Redundancy Check
-    pub fn high(self, data: &[u8], value: u64) -> u64 {
-        unsafe { a_crc64h(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    /// calculate for big-endian 64 bits Cyclic Redundancy Check
+    pub fn be(self, data: &[u8], value: u64) -> u64 {
+        unsafe { a_crc64be(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
 }
 
 #[test]
 fn crc64() {
     {
-        let ctx = crate::crc::crc64::new_low(POLY64);
-        ctx.low(b"", INIT64);
+        let ctx = crate::crc::crc64::new_le(POLY64);
+        ctx.le(b"", INIT64);
     }
     {
-        let ctx = crate::crc::crc64::new_high(POLY64);
-        ctx.high(b"", INIT64);
+        let ctx = crate::crc::crc64::new_be(POLY64);
+        ctx.be(b"", INIT64);
     }
 }

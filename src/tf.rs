@@ -37,7 +37,7 @@ extern "C" {
 }
 
 impl tf {
-    /// initialize function for transfer function
+    /// initialize for transfer function
     pub fn new(num: &[float], input: &mut [float], den: &[float], output: &mut [float]) -> Self {
         let mut ctx: Self = Self {
             input: core::ptr::null_mut(),
@@ -61,12 +61,12 @@ impl tf {
         ctx
     }
 
-    /// calculate function for transfer function
+    /// calculate for transfer function
     pub fn iter(&mut self, x: float) -> float {
         unsafe { a_tf_iter(self, x) }
     }
 
-    /// zero clear function for transfer function
+    /// zeroing for transfer function
     pub fn zero(&mut self) -> &mut Self {
         unsafe { a_tf_zero(self) };
         self

@@ -58,7 +58,7 @@ A_INTERN a_rbt_s *a_rbt_parent(a_rbt_s const *const node)
 }
 
 /*!
- @brief initialize function for red–black binary search tree node
+ @brief initialize for red–black binary search tree node
  @param[in] node node to be initialized
  @param[in] parent node parent
  @return initialized node
@@ -85,7 +85,7 @@ typedef union a_rbt_u
 } a_rbt_u;
 
 /*!
- @brief initialize function for red–black binary search tree root
+ @brief initialize for red–black binary search tree root
  @param[in,out] root red–black binary search tree root
 */
 A_INTERN void a_rbt_root(a_rbt_u *const root) { root->node = A_NULL; }

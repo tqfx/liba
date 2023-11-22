@@ -36,7 +36,7 @@ typedef struct a_hpf_s
 } a_hpf_s;
 
 /*!
- @brief generation function for High Pass Filter
+ @brief generate for High Pass Filter
  \f{cases}{
   \alpha=\frac{RC}{RC+T_{s}},&\alpha\in[0,1]\\
   RC=\frac{1}{2\pi{f_c}}.
@@ -55,7 +55,7 @@ A_INTERN a_float_t a_hpf_gen(a_float_t const fc, a_float_t const dt)
 #define A_HPF_GEN(fc, dt) (1 / (2 * A_FLOAT_PI * a_float_c(, fc) * a_float_c(, dt) + 1))
 
 /*!
- @brief initialize function for High Pass Filter
+ @brief initialize for High Pass Filter
  @param[in,out] ctx points to an instance of High Pass Filter
  @param[in] alpha filter coefficient [0,1]
 */
@@ -67,7 +67,7 @@ A_INTERN void a_hpf_init(a_hpf_s *const ctx, a_float_t const alpha)
 }
 
 /*!
- @brief calculate function for High Pass Filter
+ @brief calculate for High Pass Filter
  \f[
   V_{out}(n)=\alpha(V_{out}(n-1)+V_{in}(n)-V_{in}(n-1))
  \f]
@@ -82,7 +82,7 @@ A_INTERN a_float_t a_hpf_iter(a_hpf_s *const ctx, a_float_t const x)
 }
 
 /*!
- @brief zero clear function for High Pass Filter
+ @brief zeroing for High Pass Filter
  @param[in,out] ctx points to an instance of High Pass Filter
 */
 A_INTERN void a_hpf_zero(a_hpf_s *const ctx) { ctx->y = ctx->x = 0; }

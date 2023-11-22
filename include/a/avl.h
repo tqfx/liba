@@ -61,7 +61,7 @@ A_INTERN a_avl_s *a_avl_parent(a_avl_s const *const node)
 }
 
 /*!
- @brief initialize function for AVL binary search tree node
+ @brief initialize for AVL binary search tree node
  @param[in] node node to be initialized
  @param[in] parent node parent
  @return initialized node
@@ -88,7 +88,7 @@ typedef union a_avl_u
 } a_avl_u;
 
 /*!
- @brief initialize function for AVL binary search tree root
+ @brief initialize for AVL binary search tree root
  @param[in,out] root AVL binary search tree root
 */
 A_INTERN void a_avl_root(a_avl_u *const root) { root->node = A_NULL; }

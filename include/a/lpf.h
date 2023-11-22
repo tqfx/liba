@@ -35,7 +35,7 @@ typedef struct a_lpf_s
 } a_lpf_s;
 
 /*!
- @brief generation function for Low Pass Filter
+ @brief generate for Low Pass Filter
  \f{cases}{
   \alpha=\frac{T_{s}}{T_{s}+RC},&\alpha\in[0,1]\\
   RC=\frac{1}{2\pi{f_c}}.
@@ -54,7 +54,7 @@ A_INTERN a_float_t a_lpf_gen(a_float_t const fc, a_float_t const dt)
 #define A_LPF_GEN(fc, dt) (a_float_c(, dt) / (a_float_c(, dt) + A_FLOAT_1_PI / 2 / a_float_c(, fc)))
 
 /*!
- @brief initialize function for Low Pass Filter
+ @brief initialize for Low Pass Filter
  @param[in,out] ctx points to an instance of Low Pass Filter
  @param[in] alpha filter coefficient [0,1]
 */
@@ -65,7 +65,7 @@ A_INTERN void a_lpf_init(a_lpf_s *const ctx, a_float_t const alpha)
 }
 
 /*!
- @brief calculate function for Low Pass Filter
+ @brief calculate for Low Pass Filter
  \f[
   V_{out}(n)=(1-\alpha)V_{out}(n-1)+\alpha V_{in}
  \f]
@@ -81,7 +81,7 @@ A_INTERN a_float_t a_lpf_iter(a_lpf_s *const ctx, a_float_t const x)
 }
 
 /*!
- @brief zero clear function for Low Pass Filter
+ @brief zeroing for Low Pass Filter
  @param[in,out] ctx points to an instance of Low Pass Filter
 */
 A_INTERN void a_lpf_zero(a_lpf_s *const ctx) { ctx->y = 0; }

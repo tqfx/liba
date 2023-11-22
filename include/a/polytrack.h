@@ -76,7 +76,7 @@ extern "C" {
 /* function for cubic polynomial trajectory */
 
 /*!
- @brief generation function for cubic polynomial trajectory
+ @brief generate for cubic polynomial trajectory
  \f{aligned}{
   \left\{\begin{array}{l}
   t=t_{1}-t_{0}\\
@@ -101,7 +101,7 @@ A_EXTERN void a_polytrack3_gen(a_polytrack3_s *ctx,
                                a_float_t v0, a_float_t v1);
 
 /*!
- @brief calculate function for cubic polynomial trajectory
+ @brief calculate for cubic polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3} \\
@@ -119,7 +119,7 @@ A_EXTERN void a_polytrack3_gen(a_polytrack3_s *ctx,
 A_EXTERN void a_polytrack3_out(a_polytrack3_s const *ctx, a_float_t dt, a_float_t out[3]);
 
 /*!
- @brief calculate function for cubic polynomial trajectory position
+ @brief calculate for cubic polynomial trajectory position
  \f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3} \\
@@ -132,7 +132,7 @@ A_EXTERN void a_polytrack3_out(a_polytrack3_s const *ctx, a_float_t dt, a_float_
 A_EXTERN a_float_t a_polytrack3_pos(a_polytrack3_s const *ctx, a_float_t dt);
 
 /*!
- @brief calculate function for cubic polynomial trajectory velocity
+ @brief calculate for cubic polynomial trajectory velocity
  \f{aligned}{
   \begin{array}{l}
   \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2} \\
@@ -145,7 +145,7 @@ A_EXTERN a_float_t a_polytrack3_pos(a_polytrack3_s const *ctx, a_float_t dt);
 A_EXTERN a_float_t a_polytrack3_vel(a_polytrack3_s const *ctx, a_float_t dt);
 
 /*!
- @brief calculate function for cubic polynomial trajectory acceleration
+ @brief calculate for cubic polynomial trajectory acceleration
  \f{aligned}{
   \begin{array}{l}
   \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)
@@ -160,7 +160,7 @@ A_EXTERN a_float_t a_polytrack3_acc(a_polytrack3_s const *ctx, a_float_t dt);
 /* function for quintic polynomial trajectory */
 
 /*!
- @brief generation function for quintic polynomial trajectory
+ @brief generate for quintic polynomial trajectory
  \f{aligned}{
   \left\{\begin{array}{l}
   t=t_{1}-t_{0}\\
@@ -190,7 +190,7 @@ A_EXTERN void a_polytrack5_gen(a_polytrack5_s *ctx,
                                a_float_t a0, a_float_t a1);
 
 /*!
- @brief calculate function for quintic polynomial trajectory
+ @brief calculate for quintic polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3}+k_{4}\left(t-t_{0}\right)^{4}+k_{5}\left(t-t_{0}\right)^{5}\\
@@ -208,7 +208,7 @@ A_EXTERN void a_polytrack5_gen(a_polytrack5_s *ctx,
 A_EXTERN void a_polytrack5_out(a_polytrack5_s const *ctx, a_float_t dt, a_float_t out[3]);
 
 /*!
- @brief calculate function for quintic polynomial trajectory position
+ @brief calculate for quintic polynomial trajectory position
  \f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3}+k_{4}\left(t-t_{0}\right)^{4}+k_{5}\left(t-t_{0}\right)^{5}\\
@@ -221,7 +221,7 @@ A_EXTERN void a_polytrack5_out(a_polytrack5_s const *ctx, a_float_t dt, a_float_
 A_EXTERN a_float_t a_polytrack5_pos(a_polytrack5_s const *ctx, a_float_t dt);
 
 /*!
- @brief calculate function for quintic polynomial trajectory velocity
+ @brief calculate for quintic polynomial trajectory velocity
  \f{aligned}{
   \begin{array}{l}
   \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2}+4 k_{4}\left(t-t_{0}\right)^{3}+5 k_{5}\left(t-t_{0}\right)^{4}\\
@@ -234,7 +234,7 @@ A_EXTERN a_float_t a_polytrack5_pos(a_polytrack5_s const *ctx, a_float_t dt);
 A_EXTERN a_float_t a_polytrack5_vel(a_polytrack5_s const *ctx, a_float_t dt);
 
 /*!
- @brief calculate function for quintic polynomial trajectory acceleration
+ @brief calculate for quintic polynomial trajectory acceleration
  \f{aligned}{
   \begin{array}{l}
   \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)+12 k_{4}\left(t-t_{0}\right)^{2}+20 k_{5}\left(t-t_{0}\right)^{3}
@@ -249,7 +249,7 @@ A_EXTERN a_float_t a_polytrack5_acc(a_polytrack5_s const *ctx, a_float_t dt);
 /* function for hepta polynomial trajectory */
 
 /*!
- @brief generation function for hepta polynomial trajectory
+ @brief generate for hepta polynomial trajectory
  \f{aligned}{
   \left\{\begin{array}{l}
   t=t_{1}-t_{0}\\
@@ -284,7 +284,7 @@ A_EXTERN void a_polytrack7_gen(a_polytrack7_s *ctx,
                                a_float_t j0, a_float_t j1);
 
 /*!
- @brief calculate function for hepta polynomial trajectory
+ @brief calculate for hepta polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3}+k_{4}\left(t-t_{0}\right)^{4}+k_{5}\left(t-t_{0}\right)^{5}+k_{6}\left(t-t_{0}\right)^{6}+k_{7}\left(t-t_{0}\right)^{7}\\
@@ -304,7 +304,7 @@ A_EXTERN void a_polytrack7_gen(a_polytrack7_s *ctx,
 A_EXTERN void a_polytrack7_out(a_polytrack7_s const *ctx, a_float_t dt, a_float_t out[4]);
 
 /*!
- @brief calculate function for hepta polynomial trajectory position
+ @brief calculate for hepta polynomial trajectory position
  \f{aligned}{
   \begin{array}{l}
   q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3}+k_{4}\left(t-t_{0}\right)^{4}+k_{5}\left(t-t_{0}\right)^{5}+k_{6}\left(t-t_{0}\right)^{6}+k_{7}\left(t-t_{0}\right)^{7}\\
@@ -317,7 +317,7 @@ A_EXTERN void a_polytrack7_out(a_polytrack7_s const *ctx, a_float_t dt, a_float_
 A_EXTERN a_float_t a_polytrack7_pos(a_polytrack7_s const *ctx, a_float_t dt);
 
 /*!
- @brief calculate function for hepta polynomial trajectory velocity
+ @brief calculate for hepta polynomial trajectory velocity
  \f{aligned}{
   \begin{array}{l}
   \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2}+4 k_{4}\left(t-t_{0}\right)^{3}+5 k_{5}\left(t-t_{0}\right)^{4}+6 k_{6}\left(t-t_{0}\right)^{5}+7 k_{7}\left(t-t_{0}\right)^{6}\\
@@ -330,7 +330,7 @@ A_EXTERN a_float_t a_polytrack7_pos(a_polytrack7_s const *ctx, a_float_t dt);
 A_EXTERN a_float_t a_polytrack7_vel(a_polytrack7_s const *ctx, a_float_t dt);
 
 /*!
- @brief calculate function for hepta polynomial trajectory acceleration
+ @brief calculate for hepta polynomial trajectory acceleration
  \f{aligned}{
   \begin{array}{l}
   \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)+12 k_{4}\left(t-t_{0}\right)^{2}+20 k_{5}\left(t-t_{0}\right)^{3}+30 k_{6}\left(t-t_{0}\right)^{4}+42 k_{7}\left(t-t_{0}\right)^{5}\\
@@ -343,7 +343,7 @@ A_EXTERN a_float_t a_polytrack7_vel(a_polytrack7_s const *ctx, a_float_t dt);
 A_EXTERN a_float_t a_polytrack7_acc(a_polytrack7_s const *ctx, a_float_t dt);
 
 /*!
- @brief calculate function for hepta polynomial trajectory jerk
+ @brief calculate for hepta polynomial trajectory jerk
  \f{aligned}{
   \begin{array}{l}
   q^{(3)}(t)=6 k_{3}+24 k_{4}\left(t-t_{0}\right)+60 k_{5}\left(t-t_{0}\right)^{2}+120 k_{6}\left(t-t_{0}\right)^{3}+210 k_{7}\left(t-t_{0}\right)^{4}

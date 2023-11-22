@@ -114,7 +114,7 @@ public class version {
     public final native version patch(int pat);
 
     /**
-     * parse function for {@link version} object
+     * parse for {@link version} object
      *
      * @param ver version string to be parsed
      * @return {@link version}

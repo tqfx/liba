@@ -35,7 +35,7 @@ public class polytrack3 {
     }
 
     /**
-     * generation function for cubic polynomial trajectory
+     * generate for cubic polynomial trajectory
      *
      * @param t0 time for source
      * @param t1 time for target
@@ -48,7 +48,7 @@ public class polytrack3 {
     public final native polytrack3 gen(double t0, double t1, double q0, double q1, double v0, double v1);
 
     /**
-     * calculate function for cubic polynomial trajectory
+     * calculate for cubic polynomial trajectory
      *
      * @param dt difference between current time and initial time
      * @return current output
@@ -56,7 +56,7 @@ public class polytrack3 {
     public final native double[] out(double dt);
 
     /**
-     * calculate function for cubic polynomial trajectory position
+     * calculate for cubic polynomial trajectory position
      *
      * @param dt difference between current time and initial time
      * @return position output
@@ -64,7 +64,7 @@ public class polytrack3 {
     public final native double pos(double dt);
 
     /**
-     * calculate function for cubic polynomial trajectory velocity
+     * calculate for cubic polynomial trajectory velocity
      *
      * @param dt difference between current time and initial time
      * @return velocity output
@@ -72,7 +72,7 @@ public class polytrack3 {
     public final native double vel(double dt);
 
     /**
-     * calculate function for cubic polynomial trajectory acceleration
+     * calculate for cubic polynomial trajectory acceleration
      *
      * @param dt difference between current time and initial time
      * @return acceleration output

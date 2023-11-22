@@ -40,21 +40,21 @@ extern "C" {
 #endif /* __cplusplus */
 
 /*!
- @brief calculate function for radial basis function
+ @brief calculate for radial basis function
  @param[in] ctx points to an instance of radial basis function
  @return radial basis function output
 */
 A_EXTERN a_float_t const *a_rbf_iter(a_rbf_s const *ctx);
 
 /*!
- @brief tuning function for radial basis function
+ @brief tuning for radial basis function
  @param[in] ctx points to an instance of radial basis function
  @param[in] out points to the desired output buffer
 */
 A_EXTERN void a_rbf_tune(a_rbf_s const *ctx, a_float_t const *out);
 
 /*!
- @brief zero clear function for radial basis function
+ @brief zeroing for radial basis function
  @param[in] ctx points to an instance of radial basis function
 */
 A_EXTERN void a_rbf_zero(a_rbf_s const *ctx);
