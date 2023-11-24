@@ -55,7 +55,7 @@
 namespace a
 {
 /*! algorithm library version string */
-char const *const VERSION = A_VERSION;
+A_EXTERN char const *const VERSION;
 #endif /* __cplusplus */
 
 /*!
@@ -106,49 +106,16 @@ typedef a::version a_version_s;
 extern "C" {
 #endif /* __cplusplus */
 
-/*!
- @brief algorithm library version string
-*/
-A_EXTERN char const *a_version(void);
-
-/*!
- @brief algorithm library version major
-*/
-A_EXTERN unsigned int a_version_major(void);
-
-/*!
- @brief algorithm library version minor
-*/
-A_EXTERN unsigned int a_version_minor(void);
-
-/*!
- @brief algorithm library version patch
-*/
-A_EXTERN unsigned int a_version_patch(void);
-
-/*!
- @brief algorithm library version tweak
-*/
-A_EXTERN a_u64_t a_version_tweak(void);
-
-/*!
- @brief algorithm library version parse
- @param[in,out] ctx points to an instance structure for version
- @param[in] ver version string to be parsed
- @return number of characters parsed
-*/
-A_EXTERN unsigned int a_version_parse(a_version_s *ctx, char const *ver);
-
-/*!
- @brief compare the version lhs with the version rhs
- @param[in] lhs version structure to be compared
- @param[in] rhs version structure to be compared
- @return relationship between the versions
-  @retval <0 version lhs < version rhs
-  @retval >0 version lhs > version rhs
-  @retval 0 version lhs == version rhs
-*/
-A_EXTERN int a_version_cmp(a_version_s const *lhs, a_version_s const *rhs);
+/*! algorithm library version string */
+A_EXTERN char const *const a_version;
+/*! algorithm library version major */
+A_EXTERN unsigned int const a_version_major;
+/*! algorithm library version minor */
+A_EXTERN unsigned int const a_version_minor;
+/*! algorithm library version patch */
+A_EXTERN unsigned int const a_version_patch;
+/*! algorithm library version tweak */
+A_EXTERN a_u32_t const a_version_tweak;
 
 /*!
  @brief algorithm library version check
@@ -292,6 +259,25 @@ A_INTERN a_bool_t a_version_ne(a_version_s const *const lhs, a_version_s const *
 #undef A_INTERN
 #define A_INTERN static A_INLINE
 #endif /* LIBA_VERSION_C */
+
+/*!
+ @brief compare the version lhs with the version rhs
+ @param[in] lhs version structure to be compared
+ @param[in] rhs version structure to be compared
+ @return relationship between the versions
+  @retval <0 version lhs < version rhs
+  @retval >0 version lhs > version rhs
+  @retval 0 version lhs == version rhs
+*/
+A_EXTERN int a_version_cmp(a_version_s const *lhs, a_version_s const *rhs);
+
+/*!
+ @brief algorithm library version parse
+ @param[in,out] ctx points to an instance structure for version
+ @param[in] ver version string to be parsed
+ @return number of characters parsed
+*/
+A_EXTERN unsigned int a_version_parse(a_version_s *ctx, char const *ver);
 
 #if defined(__cplusplus)
 } /* extern "C" */

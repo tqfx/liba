@@ -15,17 +15,17 @@ pub struct version {
 }
 
 extern "C" {
-    fn a_version_cmp(lhs: *const version, rhs: *const version) -> int;
+    static a_version_major: uint;
+    static a_version_minor: uint;
+    static a_version_patch: uint;
+    static a_version_tweak: u32;
+    fn a_version_check(major: uint, minor: uint, patch: uint) -> int;
     fn a_version_lt(lhs: *const version, rhs: *const version) -> bool;
     fn a_version_gt(lhs: *const version, rhs: *const version) -> bool;
     fn a_version_le(lhs: *const version, rhs: *const version) -> bool;
     fn a_version_ge(lhs: *const version, rhs: *const version) -> bool;
     fn a_version_eq(lhs: *const version, rhs: *const version) -> bool;
-    fn a_version_check(major: uint, minor: uint, patch: uint) -> int;
-    fn a_version_major() -> uint;
-    fn a_version_minor() -> uint;
-    fn a_version_patch() -> uint;
-    fn a_version_tweak() -> u32;
+    fn a_version_cmp(lhs: *const version, rhs: *const version) -> int;
 }
 
 impl PartialOrd for version {
@@ -77,22 +77,22 @@ pub fn check(major: uint, minor: uint, patch: uint) -> int {
 
 /// algorithm library version major
 pub fn major() -> uint {
-    unsafe { a_version_major() }
+    unsafe { a_version_major }
 }
 
 /// algorithm library version minor
 pub fn minor() -> uint {
-    unsafe { a_version_minor() }
+    unsafe { a_version_minor }
 }
 
 /// algorithm library version patch
 pub fn patch() -> uint {
-    unsafe { a_version_patch() }
+    unsafe { a_version_patch }
 }
 
 /// algorithm library version tweak
 pub fn tweak() -> u32 {
-    unsafe { a_version_tweak() }
+    unsafe { a_version_tweak }
 }
 
 #[test]

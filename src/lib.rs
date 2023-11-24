@@ -35,7 +35,7 @@ pub mod tf;
 pub mod version;
 
 extern "C" {
-    fn a_version() -> *const c_char;
+    static a_version: *const c_char;
 }
 
 /**
@@ -49,7 +49,7 @@ println!("version {}", liba::version());
 */
 pub fn version() -> &'static str {
     unsafe {
-        core::ffi::CStr::from_ptr(a_version())
+        core::ffi::CStr::from_ptr(a_version)
             .to_str()
             .unwrap_unchecked()
     }

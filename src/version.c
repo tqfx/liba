@@ -1,29 +1,18 @@
 #define LIBA_VERSION_C
 #include "a/version.h"
 
-char const *a_version(void)
-{
-    return A_VERSION;
-}
+char const *const a_version = A_VERSION;
+unsigned int const a_version_major = A_VERSION_MAJOR;
+unsigned int const a_version_minor = A_VERSION_MINOR;
+unsigned int const a_version_patch = A_VERSION_PATCH;
+a_u32_t const a_version_tweak = A_VERSION_TWEAK;
 
-unsigned int a_version_major(void)
+#undef a_version_check
+int a_version_check(unsigned int const major, unsigned int const minor, unsigned int const patch)
 {
-    return A_VERSION_MAJOR;
-}
-
-unsigned int a_version_minor(void)
-{
-    return A_VERSION_MINOR;
-}
-
-unsigned int a_version_patch(void)
-{
-    return A_VERSION_PATCH;
-}
-
-a_u64_t a_version_tweak(void)
-{
-    return A_VERSION_TWEAK;
+    a_version_s inner = A_VERSION_C(a_version_major, a_version_minor, a_version_patch);
+    a_version_s outer = A_VERSION_C(major, minor, patch);
+    return a_version_cmp(&inner, &outer);
 }
 
 int a_version_cmp(a_version_s const *const lhs, a_version_s const *const rhs)
@@ -92,18 +81,4 @@ unsigned int a_version_parse(a_version_s *const ctx, char const *const ver)
         return (unsigned int)(u.p - ver);
     }
     return 0;
-}
-
-#undef a_version_check
-int a_version_check(unsigned int const major, unsigned int const minor, unsigned int const patch)
-{
-    a_version_s inner = A_VERSION_C(0, 0, 0);
-    a_version_s outer = A_VERSION_C(0, 0, 0);
-    inner.major = a_version_major();
-    inner.minor = a_version_minor();
-    inner.patch = a_version_patch();
-    outer.major = major;
-    outer.minor = minor;
-    outer.patch = patch;
-    return a_version_cmp(&inner, &outer);
 }

@@ -18,11 +18,11 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     printf("patch %u\n", a::version::PATCH);
     printf("tweak %" PRIu32 "\n", a::version::TWEAK);
 #else /* !__cplusplus */
-    printf("version %s+%" PRIu32 "\n", a_version(), A_VERSION_TWEAK);
-    printf("major %u\n", a_version_major());
-    printf("minor %u\n", a_version_minor());
-    printf("patch %u\n", a_version_patch());
-    printf("tweak %" PRIu32 "\n", A_VERSION_TWEAK);
+    printf("version %s+%" PRIu32 "\n", a_version, a_version_tweak);
+    printf("major %u\n", a_version_major);
+    printf("minor %u\n", a_version_minor);
+    printf("patch %u\n", a_version_patch);
+    printf("tweak %" PRIu32 "\n", a_version_tweak);
 #endif /* __cplusplus */
 #if defined(__cplusplus)
     a::version v000 = a::version(0, 0);
