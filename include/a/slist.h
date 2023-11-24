@@ -137,12 +137,7 @@ A_INTERN void a_slist_add(a_slist_s *const ctx, a_slist_u *const prev, a_slist_u
 */
 A_INTERN void a_slist_add_head(a_slist_s *const ctx, a_slist_u *const node)
 {
-    if (!ctx->head.next)
-    {
-        ctx->tail = node;
-    }
-    a_slist_link(&ctx->head, node);
-    a_slist_node(node);
+    a_slist_add(ctx, &ctx->head, node);
 }
 
 /*!
@@ -200,14 +195,15 @@ A_INTERN void a_slist_del_head(a_slist_s *const ctx)
 */
 A_INTERN void a_slist_mov(a_slist_s *const ctx, a_slist_s *const to, a_slist_u *const at)
 {
-    if (ctx->head.next)
+    a_slist_u *const node = ctx->head.next;
+    if (node)
     {
         if (!at->next)
         {
             to->tail = ctx->tail;
         }
         a_slist_link(ctx->tail, at->next);
-        a_slist_link(at, ctx->head.next);
+        a_slist_link(at, node);
     }
 }
 
