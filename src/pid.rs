@@ -39,17 +39,8 @@ pub struct pid {
     pub err: float,
 }
 
-extern "C" {
-    fn a_pid_kpid(ctx: *mut pid, kp: float, ki: float, kd: float);
-    fn a_pid_off(ctx: *mut pid, set: float, fdb: float) -> float;
-    fn a_pid_pos(ctx: *mut pid, set: float, fdb: float) -> float;
-    fn a_pid_inc(ctx: *mut pid, set: float, fdb: float) -> float;
-    fn a_pid_zero(ctx: *mut pid);
-}
-
-impl pid {
-    /// initialize for PID controller
-    pub fn new() -> Self {
+impl Default for pid {
+    fn default() -> Self {
         Self {
             kp: 0.0,
             ki: 0.0,
@@ -64,6 +55,21 @@ impl pid {
             var: 0.0,
             err: 0.0,
         }
+    }
+}
+
+extern "C" {
+    fn a_pid_kpid(ctx: *mut pid, kp: float, ki: float, kd: float);
+    fn a_pid_off(ctx: *mut pid, set: float, fdb: float) -> float;
+    fn a_pid_pos(ctx: *mut pid, set: float, fdb: float) -> float;
+    fn a_pid_inc(ctx: *mut pid, set: float, fdb: float) -> float;
+    fn a_pid_zero(ctx: *mut pid);
+}
+
+impl pid {
+    /// initialize for PID controller
+    pub fn new() -> Self {
+        Self { ..Self::default() }
     }
     /// set proportional integral derivative constant for PID controller
     pub fn kpid(&mut self, kp: float, ki: float, kd: float) -> &mut Self {
@@ -151,6 +157,27 @@ pub struct pid_fuzzy {
     pub(crate) joint: uint,
 }
 
+impl Default for pid_fuzzy {
+    fn default() -> Self {
+        Self {
+            pid: pid::default(),
+            me: core::ptr::null(),
+            mec: core::ptr::null(),
+            mkp: core::ptr::null(),
+            mki: core::ptr::null(),
+            mkd: core::ptr::null(),
+            idx: core::ptr::null_mut(),
+            val: core::ptr::null_mut(),
+            op: unsafe { a_pid_fuzzy_op(fuzzy::EQU) },
+            kp: 0.0,
+            ki: 0.0,
+            kd: 0.0,
+            order: 0,
+            joint: 0,
+        }
+    }
+}
+
 extern "C" {
     fn a_pid_fuzzy_op(op: uint) -> extern "C" fn(float, float) -> float;
     fn a_pid_fuzzy_set_op(ctx: *mut pid_fuzzy, op: uint);
@@ -175,22 +202,7 @@ extern "C" {
 impl pid_fuzzy {
     /// initialize for fuzzy PID controller
     pub fn new() -> Self {
-        pid_fuzzy {
-            pid: crate::pid::pid::new(),
-            me: core::ptr::null(),
-            mec: core::ptr::null(),
-            mkp: core::ptr::null(),
-            mki: core::ptr::null(),
-            mkd: core::ptr::null(),
-            idx: core::ptr::null_mut(),
-            val: core::ptr::null_mut(),
-            op: unsafe { a_pid_fuzzy_op(fuzzy::EQU) },
-            kp: 0.0,
-            ki: 0.0,
-            kd: 0.0,
-            order: 0,
-            joint: 0,
-        }
+        Self { ..Self::default() }
     }
     /// set rule base for fuzzy PID controller
     pub fn rule(
@@ -370,6 +382,19 @@ pub struct pid_neuron {
     pub ec: float,
 }
 
+impl Default for pid_neuron {
+    fn default() -> Self {
+        Self {
+            pid: pid::default(),
+            k: 0.0,
+            wp: 0.0,
+            wi: 0.0,
+            wd: 0.0,
+            ec: 0.0,
+        }
+    }
+}
+
 extern "C" {
     fn a_pid_neuron_kpid(ctx: *mut pid_neuron, k: float, kp: float, ki: float, kd: float);
     fn a_pid_neuron_wpid(ctx: *mut pid_neuron, wp: float, wi: float, wd: float);
@@ -381,14 +406,7 @@ extern "C" {
 impl pid_neuron {
     /// initialize for single neuron PID controller
     pub fn new() -> Self {
-        pid_neuron {
-            pid: crate::pid::pid::new(),
-            k: 0.0,
-            wp: 0.0,
-            wi: 0.0,
-            wd: 0.0,
-            ec: 0.0,
-        }
+        Self { ..Self::default() }
     }
     /// set proportional integral derivative constant for single neuron PID controller
     pub fn kpid(&mut self, k: float, kp: float, ki: float, kd: float) -> &mut Self {
