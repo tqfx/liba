@@ -136,7 +136,7 @@ int liba_polytrack7_gen(lua_State *const L)
                          source[2], target[2],
                          source[3], target[3],
                          source[4], target[4]);
-        lua_pop(L, 2);
+        lua_pushvalue(L, 1);
         return 1;
     }
     return 0;

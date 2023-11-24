@@ -87,7 +87,7 @@ int liba_version_parse(lua_State *const L)
     if (ctx)
     {
         a_version_parse(ctx, lua_tostring(L, 2));
-        lua_pop(L, 1);
+        lua_pushvalue(L, 1);
         return 1;
     }
     return 0;

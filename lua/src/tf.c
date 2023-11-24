@@ -70,13 +70,13 @@ int liba_tf_init(lua_State *const L)
         luaL_checktype(L, 3, LUA_TTABLE);
         a_tf_s *const ctx = (a_tf_s *)lua_touserdata(L, 1);
         unsigned int const num_n = (unsigned int)lua_rawlen(L, 2);
-        a_float_t *const num_p = (a_float_t *)l_alloc(L, NULL, sizeof(a_float_t) * num_n * 2);
+        a_float_t *const num_p = (a_float_t *)l_alloc(L, ctx->num_p, sizeof(a_float_t) * num_n * 2);
         l_array_num_get(L, 2, num_p, num_n);
         unsigned int const den_n = (unsigned int)lua_rawlen(L, 3);
-        a_float_t *const den_p = (a_float_t *)l_alloc(L, NULL, sizeof(a_float_t) * den_n * 2);
+        a_float_t *const den_p = (a_float_t *)l_alloc(L, ctx->den_p, sizeof(a_float_t) * den_n * 2);
         l_array_num_get(L, 3, den_p, den_n);
         a_tf_init(ctx, num_n, num_p, num_p + num_n, den_n, den_p, den_p + den_n);
-        lua_pop(L, 2);
+        lua_pushvalue(L, 1);
         return 1;
     }
     return 0;
