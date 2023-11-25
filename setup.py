@@ -88,7 +88,7 @@ def configure(config, define_macros=[]):
 #define A_VERSION_MAJOR {}
 #define A_VERSION_MINOR {}
 #define A_VERSION_PATCH {}
-#define A_VERSION_TWEAK A_U32_C({})
+#define A_VERSION_TWEAK {}
 #if !defined A_SIZE_POINTER
 #define A_SIZE_POINTER {}
 #endif /* A_SIZE_POINTER */
