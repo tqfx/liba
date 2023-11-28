@@ -27,7 +27,7 @@ if(LIBA_SANITIZE)
   include(cmake/TargetSanitize.cmake)
 endif()
 
-option(LIBA_STATIC "Enable/Disable static" 0)
+option(LIBA_STATIC "Enable/Disable finding and linking static libraries" 0)
 
 if(LIBA_STATIC)
   include(cmake/CMakeFindLibraryStatic.cmake)
@@ -273,7 +273,13 @@ elseif(A_HAVE_MIMALLOC_H)
   target_link_libraries(a PUBLIC mimalloc-static)
 endif()
 
-set(INSTALL_TARGETS alib)
+include(GNUInstallDirs)
+set(INSTALL_TARGETS "")
+set(LIBA_MODULE "" CACHE STRING "Specify the installation module")
+
+if(NOT LIBA_MODULE)
+  list(APPEND INSTALL_TARGETS alib)
+endif()
 
 add_library(alib $<TARGET_OBJECTS:a>)
 set_library_compile(alib)
@@ -283,7 +289,9 @@ if(A_HAVE_MIMALLOC_H)
 endif()
 
 if(TARGET_SUPPORTS_SHARED_LIBS)
-  list(APPEND INSTALL_TARGETS liba)
+  if(NOT LIBA_MODULE)
+    list(APPEND INSTALL_TARGETS liba)
+  endif()
 
   if(BUILD_SHARED_LIBS)
     set(module STATIC)
@@ -369,22 +377,24 @@ if(A_HAVE_MIMALLOC_H AND CMAKE_VERSION VERSION_LESS 3.12)
 elseif(A_HAVE_MIMALLOC_H)
 \ttarget_link_libraries(adev PUBLIC mimalloc-static)
 endif()
-include(GNUInstallDirs)
-install(TARGETS adev EXPORT \${PROJECT_NAME}-targets
-\tARCHIVE DESTINATION \${CMAKE_INSTALL_LIBDIR}
-\tLIBRARY DESTINATION \${CMAKE_INSTALL_LIBDIR}
-)")
+if(NOT LIBA_MODULE)
+\tinstall(TARGETS adev EXPORT \${PROJECT_NAME}-targets
+\t\tARCHIVE DESTINATION \${CMAKE_INSTALL_LIBDIR}
+\t\tLIBRARY DESTINATION \${CMAKE_INSTALL_LIBDIR}
+\t)\nendif()")
   add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/lib lib)
 else()
   add_library(adev ALIAS alib)
 endif()
 
-include(cmake/InstallTargets.cmake)
-install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/a DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+if(INSTALL_TARGETS)
+  include(cmake/InstallTargets.cmake)
+  install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/a DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-if(EXISTS "${A_HAVE_H}")
-  install(FILES ${A_HAVE_H} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/a)
-  install_fixup(${CMAKE_INSTALL_INCLUDEDIR}/a/a.h A_HAVE_H ${A_HAVE_H})
+  if(EXISTS "${A_HAVE_H}")
+    install(FILES ${A_HAVE_H} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/a)
+    install_fixup(${CMAKE_INSTALL_INCLUDEDIR}/a/a.h A_HAVE_H ${A_HAVE_H})
+  endif()
 endif()
 
 option(LIBA_PKGCONFIG "Enable/Disable pkgconfig" 0)
