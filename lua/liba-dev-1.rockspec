@@ -16,7 +16,8 @@ build = {
       CMAKE_INSTALL_PREFIX="$(PREFIX)",
       LUA_INCLUDE_DIR="$(LUA_INCDIR)",
       LIBA_MODULE="lua",
-      LIBA_LUA=1,
+      LIBA_CXX=0,
+      LIBA_LUA=1
    },
    copy_directories = {}
 }
