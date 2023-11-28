@@ -33,9 +33,8 @@ static int liba_hash_bkdr(lua_State *const L)
 */
 static int liba_rsqrt(lua_State *const L)
 {
-    int Li;
     int const Ln = lua_gettop(L);
-    for (Li = 1; Li <= Ln; ++Li)
+    for (int Li = 1; Li <= Ln; ++Li)
     {
         lua_Number x = luaL_checknumber(L, Li);
 #if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
@@ -47,7 +46,7 @@ static int liba_rsqrt(lua_State *const L)
 #endif /* A_FLOAT_TYPE */
         lua_pushnumber(L, x);
     }
-    return 1 + Ln - Li;
+    return Ln;
 }
 
 static lua_State *liba_L = A_NULL;
