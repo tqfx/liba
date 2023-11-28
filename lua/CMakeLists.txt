@@ -5,7 +5,7 @@ if(WIN32)
 endif()
 
 if(LIBA_WITH_LUA)
-  add_subdirectory(lua)
+  add_subdirectory(src)
   set(LUA_LIBRARIES lualib)
   set(LUA_EXECUTABLE ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:lua>)
   string(REGEX REPLACE "^([0-9]).*" "\\1" LUA_VERSION_MAJOR "${LUA_VERSION}")
