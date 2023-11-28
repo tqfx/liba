@@ -120,6 +120,10 @@ liba/[~0.1]
 
 ### Lua
 
+```bash
+luarocks install liba
+```
+
 ```lua
 local liba = require("liba")
 print("version", liba.VERSION)
