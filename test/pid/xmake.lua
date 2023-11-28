@@ -1,3 +1,5 @@
+---@diagnostic disable
+
 target("test/pid/expert")
 building({ "expert.c", "expert.cpp" })
 target_end()

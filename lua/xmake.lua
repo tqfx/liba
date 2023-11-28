@@ -1,3 +1,4 @@
+---@diagnostic disable
 -- option: liba-lua
 option("liba-lua")
 set_showmenu(true)

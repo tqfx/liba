@@ -1,3 +1,5 @@
+---@diagnostic disable
+
 target("test/host/que")
 building({ "que.c", "que.cpp" })
 target_end()

@@ -1,3 +1,4 @@
+---@diagnostic disable
 -- set project name
 set_project("liba")
 

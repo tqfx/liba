@@ -1,3 +1,4 @@
+---@diagnostic disable
 del_files = remove_files or del_files
 
 function building(sources)
