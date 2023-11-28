@@ -761,7 +761,7 @@ function pid.neuron:inc(set, fdb) end
 ---@field k table
 ---@overload fun(dt: number): table
 local polytrack3 = setmetatable({}, {
-    __call = liba.polytrack3.out
+    __call = function() end
 })
 liba.polytrack3 = {}
 
@@ -846,7 +846,7 @@ function polytrack3:acc(dt) end
 ---@field k table
 ---@overload fun(dt: number): table
 local polytrack5 = setmetatable({}, {
-    __call = liba.polytrack5.out
+    __call = function() end
 })
 liba.polytrack5 = {}
 
@@ -939,7 +939,7 @@ function polytrack5:acc(dt) end
 ---@field k table
 ---@overload fun(dt: number): table
 local polytrack7 = setmetatable({}, {
-    __call = liba.polytrack7.out
+    __call = function() end
 })
 liba.polytrack7 = {}
 
@@ -1052,7 +1052,7 @@ function polytrack7:jer(dt) end
 ---@field output table
 ---@overload fun(x: number): number
 local tf = setmetatable({}, {
-    __call = liba.tf.iter
+    __call = function() end
 })
 liba.tf = {}
 
@@ -1105,7 +1105,7 @@ function tf:zero() end
 ---@overload fun(major?: integer, minor?: integer, patch?: integer): a.version
 ---@overload fun(ver: string): a.version
 local version = setmetatable({}, {
-    __call = liba.version.init
+    __call = function() end
 })
 liba.version = {}
 liba.version.MAJOR = 0
