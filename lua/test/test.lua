@@ -1,4 +1,5 @@
 local test = {}
+test.indent = "    "
 function test.dir(...)
     local io_write_cache = {}
     local function io_write(indent, x)
@@ -12,7 +13,7 @@ function test.dir(...)
                     if type(val) == "table" then
                         io.write(indent .. "[" .. idx .. "] => " .. str .. "\n")
                         io.write(indent .. "{\n")
-                        io_write(indent .. indent, val)
+                        io_write(indent .. test.indent, val)
                         io.write(indent .. "}\n")
                     elseif type(val) == "string" then
                         io.write(indent .. "[" .. idx .. '] => "' .. val .. '"\n')
@@ -29,13 +30,14 @@ function test.dir(...)
         if type(x) == "table" then
             io.write(tostring(x) .. "\n")
             io.write("{\n")
-            io_write("    ", x)
+            io_write(test.indent, x)
             io.write("}\n")
         else
             io_write("", x)
         end
     end
 end
+
 function test.log(...)
     for i, v in ipairs({ ... }) do
         if i > 1 then
@@ -45,7 +47,9 @@ function test.log(...)
     end
     io.write("\n")
 end
+
 function test.fmt(...)
     io.write(string.format(...) .. "\n")
 end
+
 return test
