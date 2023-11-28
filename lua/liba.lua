@@ -31,6 +31,11 @@ liba.complex = {}
 ---@return a.complex
 function liba.complex.new(real, imag) end
 
+---@param real number
+---@param imag number
+---@return a.complex
+function complex.new(real, imag) end
+
 ---@param r number
 ---@param theta number
 ---@return a.complex
@@ -39,7 +44,7 @@ function liba.complex.polar(r, theta) end
 ---@param r number
 ---@param theta number
 ---@return a.complex
-function complex:polar(r, theta) end
+function complex.polar(r, theta) end
 
 ---@param z a.complex|number|string
 ---@return number

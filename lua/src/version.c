@@ -203,7 +203,23 @@ FUNC(eq)
  @function ne
 */
 FUNC(ne)
-#undef FUNC
+
+#undef funcs
+#define funcs liba_version_funcs
+static l_func_s const funcs[] = {
+    {"check", liba_version_check},
+    {"parse", liba_version_parse},
+    {"init", liba_version_init},
+    {"new", liba_version_new},
+    {"cmp", liba_version_cmp},
+    {"lt", liba_version_lt},
+    {"gt", liba_version_gt},
+    {"le", liba_version_le},
+    {"ge", liba_version_ge},
+    {"eq", liba_version_eq},
+    {"ne", liba_version_ne},
+    {NULL, NULL},
+};
 
 static int liba_version_set(lua_State *const L)
 {
@@ -292,22 +308,9 @@ static int liba_version_get(lua_State *const L)
             {"patch", (lua_Integer)ctx->patch},
             {NULL, 0},
         };
-        l_func_s const funcs[] = {
-            {"parse", liba_version_parse},
-            {"init", liba_version_init},
-            {"new", liba_version_new},
-            {"cmp", liba_version_cmp},
-            {"lt", liba_version_lt},
-            {"gt", liba_version_gt},
-            {"le", liba_version_le},
-            {"ge", liba_version_ge},
-            {"eq", liba_version_eq},
-            {"ne", liba_version_ne},
-            {NULL, NULL},
-        };
-        lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
+        lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 3);
         l_int_reg(L, -1, enums);
-        l_func_reg(L, -1, funcs);
+        l_func_reg(L, -1, funcs + 1);
         break;
     }
     default:
@@ -333,20 +336,6 @@ int luaopen_liba_version(lua_State *const L)
         {"PATCH", A_VERSION_PATCH},
         {"TWEAK", A_VERSION_TWEAK},
         {NULL, 0},
-    };
-    l_func_s const funcs[] = {
-        {"check", liba_version_check},
-        {"parse", liba_version_parse},
-        {"init", liba_version_init},
-        {"new", liba_version_new},
-        {"cmp", liba_version_cmp},
-        {"lt", liba_version_lt},
-        {"gt", liba_version_gt},
-        {"le", liba_version_le},
-        {"ge", liba_version_ge},
-        {"eq", liba_version_eq},
-        {"ne", liba_version_ne},
-        {NULL, NULL},
     };
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
     l_int_reg(L, -1, enums);

@@ -209,6 +209,18 @@ int liba_polytrack5_acc(lua_State *const L)
     return 0;
 }
 
+#undef funcs
+#define funcs liba_polytrack5_funcs
+static l_func_s const funcs[] = {
+    {"new", liba_polytrack5_new},
+    {"gen", liba_polytrack5_gen},
+    {"out", liba_polytrack5_out},
+    {"pos", liba_polytrack5_pos},
+    {"vel", liba_polytrack5_vel},
+    {"acc", liba_polytrack5_acc},
+    {NULL, NULL},
+};
+
 static int liba_polytrack5_set(lua_State *const L)
 {
     char const *const field = lua_tostring(L, 2);
@@ -259,15 +271,6 @@ static int liba_polytrack5_get(lua_State *const L)
         break;
     case 0xA65758B2: // __index
     {
-        l_func_s const funcs[] = {
-            {"new", liba_polytrack5_new},
-            {"gen", liba_polytrack5_gen},
-            {"out", liba_polytrack5_out},
-            {"pos", liba_polytrack5_pos},
-            {"vel", liba_polytrack5_vel},
-            {"acc", liba_polytrack5_acc},
-            {NULL, NULL},
-        };
         lua_createtable(L, 0, A_LEN(funcs));
         l_func_reg(L, -1, funcs);
         lua_createtable(L, A_LEN(ctx->k), 0);
@@ -284,15 +287,6 @@ static int liba_polytrack5_get(lua_State *const L)
 
 int luaopen_liba_polytrack5(lua_State *const L)
 {
-    l_func_s const funcs[] = {
-        {"new", liba_polytrack5_new},
-        {"gen", liba_polytrack5_gen},
-        {"out", liba_polytrack5_out},
-        {"pos", liba_polytrack5_pos},
-        {"vel", liba_polytrack5_vel},
-        {"acc", liba_polytrack5_acc},
-        {NULL, NULL},
-    };
     lua_createtable(L, 0, A_LEN(funcs) - 1);
     l_func_reg(L, -1, funcs);
     lua_createtable(L, 0, 1);

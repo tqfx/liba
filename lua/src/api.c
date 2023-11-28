@@ -3,9 +3,12 @@
 void *l_alloc(lua_State *const L, void const *const ptr, size_t const siz)
 {
     void *ud;
-    lua_Alloc alloc = lua_getallocf(L, &ud);
-    // NOLINTNEXTLINE(performance-no-int-to-ptr)
-    return alloc(ud, (void *)(intptr_t)ptr, 0, siz);
+    union
+    {
+        void const *ptr;
+        void *p;
+    } u = {ptr};
+    return lua_getallocf(L, &ud)(ud, u.p, 0, siz);
 }
 
 void l_func_set(lua_State *const L, int const idx, char const *const name, lua_CFunction const func)

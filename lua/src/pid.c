@@ -45,6 +45,23 @@ int liba_pid_init(lua_State *const L)
 }
 
 /***
+ zeroing for PID controller
+ @tparam a.pid ctx PID controller userdata
+ @treturn a.pid PID controller userdata
+ @function zero
+*/
+int liba_pid_zero(lua_State *const L)
+{
+    a_pid_s *const ctx = (a_pid_s *)lua_touserdata(L, 1);
+    if (ctx)
+    {
+        a_pid_zero(ctx);
+        return 1;
+    }
+    return 0;
+}
+
+/***
  set proportional integral derivative constant for PID controller
  @tparam a.pid ctx PID controller userdata
  @tparam number kp proportional constant
@@ -131,22 +148,18 @@ int liba_pid_inc(lua_State *const L)
     return 0;
 }
 
-/***
- zeroing for PID controller
- @tparam a.pid ctx PID controller userdata
- @treturn a.pid PID controller userdata
- @function zero
-*/
-int liba_pid_zero(lua_State *const L)
-{
-    a_pid_s *const ctx = (a_pid_s *)lua_touserdata(L, 1);
-    if (ctx)
-    {
-        a_pid_zero(ctx);
-        return 1;
-    }
-    return 0;
-}
+#undef funcs
+#define funcs liba_pid_funcs
+static l_func_s const funcs[] = {
+    {"new", liba_pid_new},
+    {"init", liba_pid_init},
+    {"zero", liba_pid_zero},
+    {"kpid", liba_pid_kpid},
+    {"off", liba_pid_off},
+    {"pos", liba_pid_pos},
+    {"inc", liba_pid_inc},
+    {NULL, NULL},
+};
 
 static int liba_pid_set(lua_State *const L)
 {
@@ -262,16 +275,6 @@ static int liba_pid_get(lua_State *const L)
             {"err", ctx->err},
             {NULL, 0},
         };
-        l_func_s const funcs[] = {
-            {"new", liba_pid_new},
-            {"init", liba_pid_init},
-            {"zero", liba_pid_zero},
-            {"kpid", liba_pid_kpid},
-            {"off", liba_pid_off},
-            {"pos", liba_pid_pos},
-            {"inc", liba_pid_inc},
-            {NULL, NULL},
-        };
         lua_createtable(L, 0, A_LEN(datas) + A_LEN(funcs) - 2);
         l_num_reg(L, -1, datas);
         l_func_reg(L, -1, funcs);
@@ -298,16 +301,6 @@ int luaopen_liba_pid(lua_State *const L)
         {"POS", A_PID_POS},
         {"INC", A_PID_INC},
         {NULL, 0},
-    };
-    l_func_s const funcs[] = {
-        {"new", liba_pid_new},
-        {"init", liba_pid_init},
-        {"zero", liba_pid_zero},
-        {"kpid", liba_pid_kpid},
-        {"off", liba_pid_off},
-        {"pos", liba_pid_pos},
-        {"inc", liba_pid_inc},
-        {NULL, NULL},
     };
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
     l_int_reg(L, -1, enums);

@@ -51,6 +51,23 @@ int liba_pid_neuron_init(lua_State *const L)
 }
 
 /***
+ zeroing for single neuron PID controller
+ @tparam a.pid.neuron ctx single neuron PID controller userdata
+ @treturn a.pid.neuron single neuron PID controller userdata
+ @function zero
+*/
+int liba_pid_neuron_zero(lua_State *const L)
+{
+    a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, 1);
+    if (ctx)
+    {
+        a_pid_neuron_zero(ctx);
+        return 1;
+    }
+    return 0;
+}
+
+/***
  set proportional integral derivative constant for single neuron PID controller
  @tparam a.pid.neuron ctx single neuron PID controller userdata
  @tparam number k proportional output coefficient
@@ -142,22 +159,18 @@ int liba_pid_neuron_inc(lua_State *const L)
     return 0;
 }
 
-/***
- zeroing for single neuron PID controller
- @tparam a.pid.neuron ctx single neuron PID controller userdata
- @treturn a.pid.neuron single neuron PID controller userdata
- @function zero
-*/
-int liba_pid_neuron_zero(lua_State *const L)
-{
-    a_pid_neuron_s *const ctx = (a_pid_neuron_s *)lua_touserdata(L, 1);
-    if (ctx)
-    {
-        a_pid_neuron_zero(ctx);
-        return 1;
-    }
-    return 0;
-}
+#undef funcs
+#define funcs liba_pid_neuron_funcs
+static l_func_s const funcs[] = {
+    {"new", liba_pid_neuron_new},
+    {"init", liba_pid_neuron_init},
+    {"zero", liba_pid_neuron_zero},
+    {"kpid", liba_pid_neuron_kpid},
+    {"wpid", liba_pid_neuron_wpid},
+    {"off", liba_pid_neuron_off},
+    {"inc", liba_pid_neuron_inc},
+    {NULL, NULL},
+};
 
 static int liba_pid_neuron_set(lua_State *const L)
 {
@@ -292,16 +305,6 @@ static int liba_pid_neuron_get(lua_State *const L)
             {"k", ctx->k},
             {NULL, 0},
         };
-        l_func_s const funcs[] = {
-            {"new", liba_pid_neuron_new},
-            {"init", liba_pid_neuron_init},
-            {"zero", liba_pid_neuron_zero},
-            {"kpid", liba_pid_neuron_kpid},
-            {"wpid", liba_pid_neuron_wpid},
-            {"off", liba_pid_neuron_off},
-            {"inc", liba_pid_neuron_inc},
-            {NULL, NULL},
-        };
         lua_createtable(L, 0, A_LEN(datas) + A_LEN(funcs) - 2);
         l_num_reg(L, -1, datas);
         l_func_reg(L, -1, funcs);
@@ -316,21 +319,7 @@ static int liba_pid_neuron_get(lua_State *const L)
 
 int luaopen_liba_pid_neuron(lua_State *const L)
 {
-    l_int_s const enums[] = {
-        {NULL, 0},
-    };
-    l_func_s const funcs[] = {
-        {"new", liba_pid_neuron_new},
-        {"init", liba_pid_neuron_init},
-        {"zero", liba_pid_neuron_zero},
-        {"kpid", liba_pid_neuron_kpid},
-        {"wpid", liba_pid_neuron_wpid},
-        {"off", liba_pid_neuron_off},
-        {"inc", liba_pid_neuron_inc},
-        {NULL, NULL},
-    };
-    lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
-    l_int_reg(L, -1, enums);
+    lua_createtable(L, 0, A_LEN(funcs) - 1);
     l_func_reg(L, -1, funcs);
     lua_createtable(L, 0, 1);
     l_func_set(L, -1, L_SET, liba_setter);

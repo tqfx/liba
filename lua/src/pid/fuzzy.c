@@ -74,6 +74,23 @@ int liba_pid_fuzzy_init(lua_State *const L)
 }
 
 /***
+ zeroing for fuzzy PID controller
+ @tparam a.pid.fuzzy ctx fuzzy PID controller userdata
+ @treturn a.pid.fuzzy fuzzy PID controller userdata
+ @function zero
+*/
+int liba_pid_fuzzy_zero(lua_State *const L)
+{
+    a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, 1);
+    if (ctx)
+    {
+        a_pid_fuzzy_zero(ctx);
+        return 1;
+    }
+    return 0;
+}
+
+/***
  set fuzzy relational operator for fuzzy PID controller
  @tparam a.pid.fuzzy ctx fuzzy PID controller userdata
  @tparam int op enumeration for fuzzy PID controller operator
@@ -229,22 +246,21 @@ int liba_pid_fuzzy_inc(lua_State *const L)
     return 0;
 }
 
-/***
- zeroing for fuzzy PID controller
- @tparam a.pid.fuzzy ctx fuzzy PID controller userdata
- @treturn a.pid.fuzzy fuzzy PID controller userdata
- @function zero
-*/
-int liba_pid_fuzzy_zero(lua_State *const L)
-{
-    a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, 1);
-    if (ctx)
-    {
-        a_pid_fuzzy_zero(ctx);
-        return 1;
-    }
-    return 0;
-}
+#undef funcs
+#define funcs liba_pid_fuzzy_funcs
+static l_func_s const funcs[] = {
+    {"new", liba_pid_fuzzy_new},
+    {"init", liba_pid_fuzzy_init},
+    {"zero", liba_pid_fuzzy_zero},
+    {"op", liba_pid_fuzzy_op},
+    {"rule", liba_pid_fuzzy_rule},
+    {"set_joint", liba_pid_fuzzy_joint},
+    {"kpid", liba_pid_fuzzy_kpid},
+    {"off", liba_pid_fuzzy_off},
+    {"pos", liba_pid_fuzzy_pos},
+    {"inc", liba_pid_fuzzy_inc},
+    {NULL, NULL},
+};
 
 static int liba_pid_fuzzy_set(lua_State *const L)
 {
@@ -387,19 +403,6 @@ static int liba_pid_fuzzy_get(lua_State *const L)
             {"err", ctx->pid.err},
             {NULL, 0},
         };
-        l_func_s const funcs[] = {
-            {"new", liba_pid_fuzzy_new},
-            {"init", liba_pid_fuzzy_init},
-            {"zero", liba_pid_fuzzy_zero},
-            {"op", liba_pid_fuzzy_op},
-            {"rule", liba_pid_fuzzy_rule},
-            {"set_joint", liba_pid_fuzzy_joint},
-            {"kpid", liba_pid_fuzzy_kpid},
-            {"off", liba_pid_fuzzy_off},
-            {"pos", liba_pid_fuzzy_pos},
-            {"inc", liba_pid_fuzzy_inc},
-            {NULL, NULL},
-        };
         lua_createtable(L, 0, A_LEN(enums) + A_LEN(datas) + A_LEN(funcs) - 3);
         l_int_reg(L, -1, enums);
         l_num_reg(L, -1, datas);
@@ -435,19 +438,6 @@ int luaopen_liba_pid_fuzzy(lua_State *const L)
         {"CUP_BOUNDED", A_PID_FUZZY_CUP_BOUNDED},
         {"EQU", A_PID_FUZZY_EQU},
         {NULL, 0},
-    };
-    l_func_s const funcs[] = {
-        {"new", liba_pid_fuzzy_new},
-        {"init", liba_pid_fuzzy_init},
-        {"zero", liba_pid_fuzzy_zero},
-        {"op", liba_pid_fuzzy_op},
-        {"rule", liba_pid_fuzzy_rule},
-        {"set_joint", liba_pid_fuzzy_joint},
-        {"kpid", liba_pid_fuzzy_kpid},
-        {"off", liba_pid_fuzzy_off},
-        {"pos", liba_pid_fuzzy_pos},
-        {"inc", liba_pid_fuzzy_inc},
-        {NULL, NULL},
     };
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
     l_int_reg(L, -1, enums);

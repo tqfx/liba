@@ -460,7 +460,56 @@ FUNC(acsch)
  @function acoth
 */
 FUNC(acoth)
-#undef FUNC
+
+#undef funcs
+#define funcs liba_complex_funcs
+static l_func_s const funcs[] = {
+    {"new", liba_complex_new},
+    {"polar", liba_complex_polar},
+    {"logabs", liba_complex_logabs},
+    {"conj", liba_complex_conj},
+    {"abs2", liba_complex_abs2},
+    {"abs", liba_complex_abs},
+    {"arg", liba_complex_arg},
+    {"unm", liba_complex_neg},
+    {"add", liba_complex_add},
+    {"sub", liba_complex_sub},
+    {"mul", liba_complex_mul},
+    {"div", liba_complex_div},
+    {"inv", liba_complex_inv},
+    {"pow", liba_complex_pow},
+    {"exp", liba_complex_exp},
+    {"log", liba_complex_log},
+    {"log2", liba_complex_log2},
+    {"log10", liba_complex_log10},
+    {"logb", liba_complex_logb},
+    {"sqrt", liba_complex_sqrt},
+    {"sin", liba_complex_sin},
+    {"cos", liba_complex_cos},
+    {"tan", liba_complex_tan},
+    {"sec", liba_complex_sec},
+    {"csc", liba_complex_csc},
+    {"cot", liba_complex_cot},
+    {"asin", liba_complex_asin},
+    {"acos", liba_complex_acos},
+    {"atan", liba_complex_atan},
+    {"asec", liba_complex_asec},
+    {"acsc", liba_complex_acsc},
+    {"acot", liba_complex_acot},
+    {"sinh", liba_complex_sinh},
+    {"cosh", liba_complex_cosh},
+    {"tanh", liba_complex_tanh},
+    {"sech", liba_complex_sech},
+    {"csch", liba_complex_csch},
+    {"coth", liba_complex_coth},
+    {"asinh", liba_complex_asinh},
+    {"acosh", liba_complex_acosh},
+    {"atanh", liba_complex_atanh},
+    {"asech", liba_complex_asech},
+    {"acsch", liba_complex_acsch},
+    {"acoth", liba_complex_acoth},
+    {NULL, NULL},
+};
 
 static int liba_complex_set(lua_State *const L)
 {
@@ -514,11 +563,14 @@ static int liba_complex_get(lua_State *const L)
     case 0x0240D1F6: // theta
         lua_pushnumber(L, (lua_Number)a_complex_arg(*ctx));
         break;
-    case 0xC628B402: // logabs
-        lua_pushcfunction(L, liba_complex_logabs);
+    case 0x001D0204: // new
+        lua_pushcfunction(L, liba_complex_new);
         break;
     case 0xBCFBE386: // polar
         lua_pushcfunction(L, liba_complex_polar);
+        break;
+    case 0xC628B402: // logabs
+        lua_pushcfunction(L, liba_complex_logabs);
         break;
     case 0x0D614C8C: // conj
         lua_pushcfunction(L, liba_complex_conj);
@@ -652,52 +704,6 @@ static int liba_complex_get(lua_State *const L)
             {"theta", a_complex_arg(*ctx)},
             {NULL, 0},
         };
-        l_func_s const funcs[] = {
-            {"polar", liba_complex_polar},
-            {"logabs", liba_complex_logabs},
-            {"conj", liba_complex_conj},
-            {"abs2", liba_complex_abs2},
-            {"abs", liba_complex_abs},
-            {"arg", liba_complex_arg},
-            {"unm", liba_complex_neg},
-            {"add", liba_complex_add},
-            {"sub", liba_complex_sub},
-            {"mul", liba_complex_mul},
-            {"div", liba_complex_div},
-            {"inv", liba_complex_inv},
-            {"pow", liba_complex_pow},
-            {"exp", liba_complex_exp},
-            {"log", liba_complex_log},
-            {"log2", liba_complex_log2},
-            {"log10", liba_complex_log10},
-            {"logb", liba_complex_logb},
-            {"sqrt", liba_complex_sqrt},
-            {"sin", liba_complex_sin},
-            {"cos", liba_complex_cos},
-            {"tan", liba_complex_tan},
-            {"sec", liba_complex_sec},
-            {"csc", liba_complex_csc},
-            {"cot", liba_complex_cot},
-            {"asin", liba_complex_asin},
-            {"acos", liba_complex_acos},
-            {"atan", liba_complex_atan},
-            {"asec", liba_complex_asec},
-            {"acsc", liba_complex_acsc},
-            {"acot", liba_complex_acot},
-            {"sinh", liba_complex_sinh},
-            {"cosh", liba_complex_cosh},
-            {"tanh", liba_complex_tanh},
-            {"sech", liba_complex_sech},
-            {"csch", liba_complex_csch},
-            {"coth", liba_complex_coth},
-            {"asinh", liba_complex_asinh},
-            {"acosh", liba_complex_acosh},
-            {"atanh", liba_complex_atanh},
-            {"asech", liba_complex_asech},
-            {"acsch", liba_complex_acsch},
-            {"acoth", liba_complex_acoth},
-            {NULL, NULL},
-        };
         lua_createtable(L, 0, A_LEN(datas) + A_LEN(funcs) - 2);
         l_num_reg(L, -1, datas);
         l_func_reg(L, -1, funcs);
@@ -712,53 +718,6 @@ static int liba_complex_get(lua_State *const L)
 
 int luaopen_liba_complex(lua_State *const L)
 {
-    l_func_s const funcs[] = {
-        {"new", liba_complex_new},
-        {"polar", liba_complex_polar},
-        {"logabs", liba_complex_logabs},
-        {"conj", liba_complex_conj},
-        {"abs2", liba_complex_abs2},
-        {"abs", liba_complex_abs},
-        {"arg", liba_complex_arg},
-        {"unm", liba_complex_neg},
-        {"add", liba_complex_add},
-        {"sub", liba_complex_sub},
-        {"mul", liba_complex_mul},
-        {"div", liba_complex_div},
-        {"inv", liba_complex_inv},
-        {"pow", liba_complex_pow},
-        {"exp", liba_complex_exp},
-        {"log", liba_complex_log},
-        {"log2", liba_complex_log2},
-        {"log10", liba_complex_log10},
-        {"logb", liba_complex_logb},
-        {"sqrt", liba_complex_sqrt},
-        {"sin", liba_complex_sin},
-        {"cos", liba_complex_cos},
-        {"tan", liba_complex_tan},
-        {"sec", liba_complex_sec},
-        {"csc", liba_complex_csc},
-        {"cot", liba_complex_cot},
-        {"asin", liba_complex_asin},
-        {"acos", liba_complex_acos},
-        {"atan", liba_complex_atan},
-        {"asec", liba_complex_asec},
-        {"acsc", liba_complex_acsc},
-        {"acot", liba_complex_acot},
-        {"sinh", liba_complex_sinh},
-        {"cosh", liba_complex_cosh},
-        {"tanh", liba_complex_tanh},
-        {"sech", liba_complex_sech},
-        {"csch", liba_complex_csch},
-        {"coth", liba_complex_coth},
-        {"asinh", liba_complex_asinh},
-        {"acosh", liba_complex_acosh},
-        {"atanh", liba_complex_atanh},
-        {"asech", liba_complex_asech},
-        {"acsch", liba_complex_acsch},
-        {"acoth", liba_complex_acoth},
-        {NULL, NULL},
-    };
     lua_createtable(L, 0, A_LEN(funcs) - 1);
     l_func_reg(L, -1, funcs);
     lua_createtable(L, 0, 1);

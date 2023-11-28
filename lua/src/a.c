@@ -16,8 +16,7 @@
 static int liba_hash_bkdr(lua_State *const L)
 {
     a_umax_t val = 0;
-    int const Ln = lua_gettop(L);
-    for (int Li = 1; Li <= Ln; ++Li)
+    for (int Li = 1, Ln = lua_gettop(L); Li <= Ln; ++Li)
     {
         val = a_hash_bkdr(luaL_checklstring(L, Li, A_NULL), val);
     }
