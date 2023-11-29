@@ -17,56 +17,55 @@
 
 /*!
  @brief instance structure for cubic polynomial trajectory
+ \f{aligned}{
+  \begin{array}{l}
+  q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3} \\
+  \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2} \\
+  \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)
+  \end{array}
+ \f}
 */
 typedef struct a_polytraj3_s
 {
-    /*!
-     \f[
-      q(t)=k_{0}
-          +k_{1}\left(t-t_{0}\right)
-          +k_{2}\left(t-t_{0}\right)^{2}
-          +k_{3}\left(t-t_{0}\right)^{3}
-     \f]
-    */
-    a_float_t k[4]; //!< coefficients
+    a_float_t q[4]; //!< coefficients of position
+    a_float_t v[3]; //!< coefficients of velocity
+    a_float_t a[2]; //!< coefficients of acceleration
 } a_polytraj3_s;
 
 /*!
  @brief instance structure for quintic polynomial trajectory
+ \f{aligned}{
+  \begin{array}{l}
+  q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3}+k_{4}\left(t-t_{0}\right)^{4}+k_{5}\left(t-t_{0}\right)^{5}\\
+  \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2}+4 k_{4}\left(t-t_{0}\right)^{3}+5 k_{5}\left(t-t_{0}\right)^{4}\\
+  \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)+12 k_{4}\left(t-t_{0}\right)^{2}+20 k_{5}\left(t-t_{0}\right)^{3}
+  \end{array}
+ \f}
 */
 typedef struct a_polytraj5_s
 {
-    /*!
-     \f[
-      q(t)=k_{0}
-          +k_{1}\left(t-t_{0}\right)
-          +k_{2}\left(t-t_{0}\right)^{2}
-          +k_{3}\left(t-t_{0}\right)^{3}
-          +k_{4}\left(t-t_{0}\right)^{4}
-          +k_{5}\left(t-t_{0}\right)^{5}
-     \f]
-    */
-    a_float_t k[6]; //!< coefficients
+    a_float_t q[6]; //!< coefficients of position
+    a_float_t v[5]; //!< coefficients of velocity
+    a_float_t a[4]; //!< coefficients of acceleration
 } a_polytraj5_s;
 
 /*!
  @brief instance structure for hepta polynomial trajectory
+ \f{aligned}{
+  \begin{array}{l}
+  q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3}+k_{4}\left(t-t_{0}\right)^{4}+k_{5}\left(t-t_{0}\right)^{5}+k_{6}\left(t-t_{0}\right)^{6}+k_{7}\left(t-t_{0}\right)^{7}\\
+  \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2}+4 k_{4}\left(t-t_{0}\right)^{3}+5 k_{5}\left(t-t_{0}\right)^{4}+6 k_{6}\left(t-t_{0}\right)^{5}+7 k_{7}\left(t-t_{0}\right)^{6}\\
+  \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)+12 k_{4}\left(t-t_{0}\right)^{2}+20 k_{5}\left(t-t_{0}\right)^{3}+30 k_{6}\left(t-t_{0}\right)^{4}+42 k_{7}\left(t-t_{0}\right)^{5}\\
+  q^{(3)}(t)=6 k_{3}+24 k_{4}\left(t-t_{0}\right)+60 k_{5}\left(t-t_{0}\right)^{2}+120 k_{6}\left(t-t_{0}\right)^{3}+210 k_{7}\left(t-t_{0}\right)^{4}
+  \end{array}
+ \f}
 */
 typedef struct a_polytraj7_s
 {
-    /*!
-     \f[
-      q(t)=k_{0}
-          +k_{1}\left(t-t_{0}\right)
-          +k_{2}\left(t-t_{0}\right)^{2}
-          +k_{3}\left(t-t_{0}\right)^{3}
-          +k_{4}\left(t-t_{0}\right)^{4}
-          +k_{5}\left(t-t_{0}\right)^{5}
-          +k_{6}\left(t-t_{0}\right)^{6}
-          +k_{7}\left(t-t_{0}\right)^{7}
-     \f]
-    */
-    a_float_t k[8]; //!< coefficients
+    a_float_t q[8]; //!< coefficients of position
+    a_float_t v[7]; //!< coefficients of velocity
+    a_float_t a[6]; //!< coefficients of acceleration
+    a_float_t j[5]; //!< coefficients of jerk
 } a_polytraj7_s;
 
 #if defined(__cplusplus)
@@ -96,27 +95,9 @@ extern "C" {
  @param[in] v1 velocity for target
 */
 A_EXTERN void a_polytraj3_gen(a_polytraj3_s *ctx,
-                               a_float_t t0, a_float_t t1,
-                               a_float_t q0, a_float_t q1,
-                               a_float_t v0, a_float_t v1);
-
-/*!
- @brief calculate for cubic polynomial trajectory
- \f{aligned}{
-  \begin{array}{l}
-  q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3} \\
-  \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2} \\
-  \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)
-  \end{array}
- \f}
- @param[in] ctx points to an instance of cubic polynomial trajectory
- @param[in] dt difference between current time and initial time
- @param[out] out buffer for result
-  @arg 0 position output
-  @arg 1 velocity output
-  @arg 2 acceleration output
-*/
-A_EXTERN void a_polytraj3_out(a_polytraj3_s const *ctx, a_float_t dt, a_float_t out[3]);
+                              a_float_t t0, a_float_t t1,
+                              a_float_t q0, a_float_t q1,
+                              a_float_t v0, a_float_t v1);
 
 /*!
  @brief calculate for cubic polynomial trajectory position
@@ -184,28 +165,10 @@ A_EXTERN a_float_t a_polytraj3_acc(a_polytraj3_s const *ctx, a_float_t dt);
  @param[in] a1 acceleration for target
 */
 A_EXTERN void a_polytraj5_gen(a_polytraj5_s *ctx,
-                               a_float_t t0, a_float_t t1,
-                               a_float_t q0, a_float_t q1,
-                               a_float_t v0, a_float_t v1,
-                               a_float_t a0, a_float_t a1);
-
-/*!
- @brief calculate for quintic polynomial trajectory
- \f{aligned}{
-  \begin{array}{l}
-  q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3}+k_{4}\left(t-t_{0}\right)^{4}+k_{5}\left(t-t_{0}\right)^{5}\\
-  \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2}+4 k_{4}\left(t-t_{0}\right)^{3}+5 k_{5}\left(t-t_{0}\right)^{4}\\
-  \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)+12 k_{4}\left(t-t_{0}\right)^{2}+20 k_{5}\left(t-t_{0}\right)^{3}
-  \end{array}
- \f}
- @param[in] ctx points to an instance of quintic polynomial trajectory
- @param[in] dt difference between current time and initial time
- @param[out] out buffer for result
-  @arg 0 position output
-  @arg 1 velocity output
-  @arg 2 acceleration output
-*/
-A_EXTERN void a_polytraj5_out(a_polytraj5_s const *ctx, a_float_t dt, a_float_t out[3]);
+                              a_float_t t0, a_float_t t1,
+                              a_float_t q0, a_float_t q1,
+                              a_float_t v0, a_float_t v1,
+                              a_float_t a0, a_float_t a1);
 
 /*!
  @brief calculate for quintic polynomial trajectory position
@@ -277,31 +240,11 @@ A_EXTERN a_float_t a_polytraj5_acc(a_polytraj5_s const *ctx, a_float_t dt);
  @param[in] j1 jerk for target
 */
 A_EXTERN void a_polytraj7_gen(a_polytraj7_s *ctx,
-                               a_float_t t0, a_float_t t1,
-                               a_float_t q0, a_float_t q1,
-                               a_float_t v0, a_float_t v1,
-                               a_float_t a0, a_float_t a1,
-                               a_float_t j0, a_float_t j1);
-
-/*!
- @brief calculate for hepta polynomial trajectory
- \f{aligned}{
-  \begin{array}{l}
-  q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3}+k_{4}\left(t-t_{0}\right)^{4}+k_{5}\left(t-t_{0}\right)^{5}+k_{6}\left(t-t_{0}\right)^{6}+k_{7}\left(t-t_{0}\right)^{7}\\
-  \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2}+4 k_{4}\left(t-t_{0}\right)^{3}+5 k_{5}\left(t-t_{0}\right)^{4}+6 k_{6}\left(t-t_{0}\right)^{5}+7 k_{7}\left(t-t_{0}\right)^{6}\\
-  \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)+12 k_{4}\left(t-t_{0}\right)^{2}+20 k_{5}\left(t-t_{0}\right)^{3}+30 k_{6}\left(t-t_{0}\right)^{4}+42 k_{7}\left(t-t_{0}\right)^{5}\\
-  q^{(3)}(t)=6 k_{3}+24 k_{4}\left(t-t_{0}\right)+60 k_{5}\left(t-t_{0}\right)^{2}+120 k_{6}\left(t-t_{0}\right)^{3}+210 k_{7}\left(t-t_{0}\right)^{4}
-  \end{array}
- \f}
- @param[in] ctx points to an instance of hepta polynomial trajectory
- @param[in] dt difference between current time and initial time
- @param[out] out buffer for result
-  @arg 0 position output
-  @arg 1 velocity output
-  @arg 2 acceleration output
-  @arg 3 jerk output
-*/
-A_EXTERN void a_polytraj7_out(a_polytraj7_s const *ctx, a_float_t dt, a_float_t out[4]);
+                              a_float_t t0, a_float_t t1,
+                              a_float_t q0, a_float_t q1,
+                              a_float_t v0, a_float_t v1,
+                              a_float_t a0, a_float_t a1,
+                              a_float_t j0, a_float_t j1);
 
 /*!
  @brief calculate for hepta polynomial trajectory position

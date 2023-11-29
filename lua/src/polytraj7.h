@@ -5,7 +5,10 @@
 
 /***
  hepta polynomial trajectory
- @field k coefficient table, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5+k_6(t-t_0)^6+k_7(t-t_0)^7
+ @field q coefficients of position
+ @field v coefficients of velocity
+ @field a coefficients of acceleration
+ @field j coefficients of jerk
  @table a.polytraj7
 */
 
@@ -59,14 +62,6 @@ A_PUBLIC int liba_polytraj7_new(lua_State *L);
  @function gen
 */
 A_PUBLIC int liba_polytraj7_gen(lua_State *L);
-
-/***
- calculate for hepta polynomial trajectory
- @tparam number dt difference between current time and initial time
- @treturn table {position,velocity,acceleration,jerk}
- @function out
-*/
-A_PUBLIC int liba_polytraj7_out(lua_State *L);
 
 /***
  calculate for hepta polynomial trajectory position

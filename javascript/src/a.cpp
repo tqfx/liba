@@ -1,6 +1,23 @@
 #include "a/host/a.h"
 #include <emscripten/bind.h>
 
+static emscripten::val Jconcat(emscripten::val x)
+{
+    emscripten::val array = emscripten::val::array();
+    return array["concat"].call<emscripten::val>("apply", array, x);
+}
+
+static a_float_t *JArrayFloat(emscripten::val const &x, a_size_t n, a_float_t *p)
+{
+    p = a_float_c(*, a_alloc(p, sizeof(a_float_t) * n));
+    a_size_t length = x["length"].as<a_size_t>();
+    for (a_size_t i = 0; i < length; ++i)
+    {
+        p[i] = x[i].as<a_float_t>();
+    }
+    return p;
+}
+
 #include "a/mf.h"
 
 class mf
@@ -113,23 +130,6 @@ unsigned int const pid::POS = A_PID_POS;
 unsigned int const pid::INC = A_PID_INC;
 
 #include "a/pid/fuzzy.h"
-
-static emscripten::val Concat(emscripten::val x)
-{
-    emscripten::val array = emscripten::val::array();
-    return array["concat"].call<emscripten::val>("apply", array, x);
-}
-
-static a_float_t *ArrayFloat(emscripten::val const &x, a_size_t n, a_float_t *p)
-{
-    p = a_float_c(*, a_alloc(p, sizeof(a_float_t) * n));
-    a_size_t length = x["length"].as<a_size_t>();
-    for (a_size_t i = 0; i < length; ++i)
-    {
-        p[i] = x[i].as<a_float_t>();
-    }
-    return p;
-}
 
 class pid_fuzzy: public a_pid_fuzzy_s
 {
@@ -258,13 +258,21 @@ class polytraj3: public a_polytraj3_s
 {
 public:
     polytraj3(a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1,
-               a_float_t v0 = 0, a_float_t v1 = 0)
+              a_float_t v0 = 0, a_float_t v1 = 0)
     {
         a_polytraj3_gen(this, t0, t1, q0, q1, v0, v1);
     }
-    emscripten::val get_k() const
+    emscripten::val get_q() const
     {
-        return emscripten::val(emscripten::typed_memory_view(A_LEN(k), k));
+        return emscripten::val(emscripten::typed_memory_view(A_LEN(q), q));
+    }
+    emscripten::val get_v() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(A_LEN(v), v));
+    }
+    emscripten::val get_a() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(A_LEN(a), a));
     }
 };
 
@@ -272,14 +280,22 @@ class polytraj5: public a_polytraj5_s
 {
 public:
     polytraj5(a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1,
-               a_float_t v0 = 0, a_float_t v1 = 0,
-               a_float_t a0 = 0, a_float_t a1 = 0)
+              a_float_t v0 = 0, a_float_t v1 = 0,
+              a_float_t a0 = 0, a_float_t a1 = 0)
     {
         a_polytraj5_gen(this, t0, t1, q0, q1, v0, v1, a0, a1);
     }
-    emscripten::val get_k() const
+    emscripten::val get_q() const
     {
-        return emscripten::val(emscripten::typed_memory_view(A_LEN(k), k));
+        return emscripten::val(emscripten::typed_memory_view(A_LEN(q), q));
+    }
+    emscripten::val get_v() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(A_LEN(v), v));
+    }
+    emscripten::val get_a() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(A_LEN(a), a));
     }
 };
 
@@ -287,15 +303,27 @@ class polytraj7: public a_polytraj7_s
 {
 public:
     polytraj7(a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1,
-               a_float_t v0 = 0, a_float_t v1 = 0,
-               a_float_t a0 = 0, a_float_t a1 = 0,
-               a_float_t j0 = 0, a_float_t j1 = 0)
+              a_float_t v0 = 0, a_float_t v1 = 0,
+              a_float_t a0 = 0, a_float_t a1 = 0,
+              a_float_t j0 = 0, a_float_t j1 = 0)
     {
         a_polytraj7_gen(this, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1);
     }
-    emscripten::val get_k() const
+    emscripten::val get_q() const
     {
-        return emscripten::val(emscripten::typed_memory_view(A_LEN(k), k));
+        return emscripten::val(emscripten::typed_memory_view(A_LEN(q), q));
+    }
+    emscripten::val get_v() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(A_LEN(v), v));
+    }
+    emscripten::val get_a() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(A_LEN(a), a));
+    }
+    emscripten::val get_j() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(A_LEN(j), j));
     }
 };
 
@@ -306,13 +334,13 @@ class tf: public a_tf_s
     void set_num_(emscripten::val const &_num, a_float_t *num)
     {
         a_uint_t num_n = _num["length"].as<a_uint_t>();
-        a_float_t *p = ArrayFloat(_num, a_size_c(, num_n) * 2, num);
+        a_float_t *p = JArrayFloat(_num, a_size_c(, num_n) * 2, num);
         a_tf_set_num(this, num_n, p, p + num_n);
     }
     void set_den_(emscripten::val const &_den, a_float_t *den)
     {
         a_uint_t den_n = _den["length"].as<a_uint_t>();
-        a_float_t *p = ArrayFloat(_den, a_size_c(, den_n) * 2, den);
+        a_float_t *p = JArrayFloat(_den, a_size_c(, den_n) * 2, den);
         a_tf_set_den(this, den_n, p, p + den_n);
     }
 
@@ -462,15 +490,15 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       } u;
                       ctx->order = me["length"].as<unsigned int>();
                       u.p = ctx->me;
-                      ctx->me = ArrayFloat(Concat(me), me["length"].as<a_size_t>(), u.o);
+                      ctx->me = JArrayFloat(Jconcat(me), me["length"].as<a_size_t>(), u.o);
                       u.p = ctx->mec;
-                      ctx->mec = ArrayFloat(Concat(mec), mec["length"].as<a_size_t>(), u.o);
+                      ctx->mec = JArrayFloat(Jconcat(mec), mec["length"].as<a_size_t>(), u.o);
                       u.p = ctx->mkp;
-                      ctx->mkp = ArrayFloat(Concat(mkp), mkp["length"].as<a_size_t>(), u.o);
+                      ctx->mkp = JArrayFloat(Jconcat(mkp), mkp["length"].as<a_size_t>(), u.o);
                       u.p = ctx->mki;
-                      ctx->mki = ArrayFloat(Concat(mki), mki["length"].as<a_size_t>(), u.o);
+                      ctx->mki = JArrayFloat(Jconcat(mki), mki["length"].as<a_size_t>(), u.o);
                       u.p = ctx->mkd;
-                      ctx->mkd = ArrayFloat(Concat(mkd), mkd["length"].as<a_size_t>(), u.o);
+                      ctx->mkd = JArrayFloat(Jconcat(mkd), mkd["length"].as<a_size_t>(), u.o);
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
@@ -573,13 +601,9 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       return a_polytraj3_acc(reinterpret_cast<polytraj3 *>(ctx), dt);
                   }),
                   emscripten::allow_raw_pointers())
-        .function("out", emscripten::optional_override([](polytraj3 *ctx, a_float_t dt) {
-                      a_float_t out[3];
-                      a_polytraj3_out(reinterpret_cast<polytraj3 *>(ctx), dt, out);
-                      return emscripten::val(emscripten::typed_memory_view(A_LEN(out), out));
-                  }),
-                  emscripten::allow_raw_pointers())
-        .property("k", &polytraj3::get_k);
+        .property("q", &polytraj3::get_q)
+        .property("v", &polytraj3::get_v)
+        .property("a", &polytraj3::get_a);
     emscripten::class_<polytraj5>("polytraj5")
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
@@ -596,13 +620,9 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       return a_polytraj5_acc(reinterpret_cast<polytraj5 *>(ctx), dt);
                   }),
                   emscripten::allow_raw_pointers())
-        .function("out", emscripten::optional_override([](polytraj5 *ctx, a_float_t dt) {
-                      a_float_t out[3];
-                      a_polytraj5_out(reinterpret_cast<polytraj5 *>(ctx), dt, out);
-                      return emscripten::val(emscripten::typed_memory_view(A_LEN(out), out));
-                  }),
-                  emscripten::allow_raw_pointers())
-        .property("k", &polytraj5::get_k);
+        .property("q", &polytraj5::get_q)
+        .property("v", &polytraj5::get_v)
+        .property("a", &polytraj5::get_a);
     emscripten::class_<polytraj7>("polytraj7")
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
@@ -624,13 +644,10 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       return a_polytraj7_jer(reinterpret_cast<polytraj7 *>(ctx), dt);
                   }),
                   emscripten::allow_raw_pointers())
-        .function("out", emscripten::optional_override([](polytraj7 *ctx, a_float_t dt) {
-                      a_float_t out[4];
-                      a_polytraj7_out(reinterpret_cast<polytraj7 *>(ctx), dt, out);
-                      return emscripten::val(emscripten::typed_memory_view(A_LEN(out), out));
-                  }),
-                  emscripten::allow_raw_pointers())
-        .property("k", &polytraj7::get_k);
+        .property("q", &polytraj7::get_q)
+        .property("v", &polytraj7::get_v)
+        .property("a", &polytraj7::get_a)
+        .property("j", &polytraj7::get_j);
     emscripten::class_<tf>("tf")
         .constructor<emscripten::val, emscripten::val>()
         .function("iter", emscripten::optional_override([](tf *ctx, a_float_t x) {

@@ -2,7 +2,10 @@ package liba;
 
 /** hepta polynomial trajectory */
 public class polytraj7 {
-    double[] k = new double[8];
+    double[] q = new double[8];
+    double[] v = new double[7];
+    double[] a = new double[6];
+    double[] j = new double[5];
     static {
         System.loadLibrary("a");
         INIT();
@@ -11,13 +14,39 @@ public class polytraj7 {
     static final native void INIT();
 
     /**
-     * get coefficients for hepta polynomial trajectory,
-     * q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5+k_6(t-t_0)^6+k_7(t-t_0)^7
+     * get coefficients of position for hepta polynomial trajectory
      *
-     * @return coefficients
+     * @return coefficients of position
      */
-    public final double[] k() {
-        return k;
+    public final double[] q() {
+        return q;
+    }
+
+    /**
+     * get coefficients of velocity for hepta polynomial trajectory
+     *
+     * @return coefficients of velocity
+     */
+    public final double[] v() {
+        return v;
+    }
+
+    /**
+     * get coefficients of acceleration for hepta polynomial trajectory
+     *
+     * @return coefficients of acceleration
+     */
+    public final double[] a() {
+        return a;
+    }
+
+    /**
+     * get coefficients of jerk for hepta polynomial trajectory
+     *
+     * @return coefficients of jerk
+     */
+    public final double[] j() {
+        return j;
     }
 
     /**
@@ -56,14 +85,6 @@ public class polytraj7 {
      */
     public final native polytraj7 gen(double t0, double t1, double q0, double q1, double v0, double v1,
             double a0, double a1, double j0, double j1);
-
-    /**
-     * calculate for hepta polynomial trajectory
-     *
-     * @param dt difference between current time and initial time
-     * @return current output
-     */
-    public final native double[] out(double dt);
 
     /**
      * calculate for hepta polynomial trajectory position

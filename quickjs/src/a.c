@@ -1406,9 +1406,9 @@ static JSValue js_polytraj3_ctor(JSContext *const ctx, JSValueConst const new_ta
         }
     }
     a_polytraj3_gen(self,
-                     (a_float_t)args[0], (a_float_t)args[1],
-                     (a_float_t)args[2], (a_float_t)args[3],
-                     (a_float_t)args[4], (a_float_t)args[5]);
+                    (a_float_t)args[0], (a_float_t)args[1],
+                    (a_float_t)args[2], (a_float_t)args[3],
+                    (a_float_t)args[4], (a_float_t)args[5]);
     JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto))
     {
@@ -1426,6 +1426,44 @@ fail:
     js_free(ctx, self);
     JS_FreeValue(ctx, clazz);
     return JS_EXCEPTION;
+}
+
+static JSValue js_polytraj3_get(JSContext *const ctx, JSValueConst const this_val, int magic)
+{
+    a_polytraj3_s *const self = (a_polytraj3_s *)JS_GetOpaque2(ctx, this_val, js_polytraj3_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    a_float_t const *val_p;
+    a_size_t val_n;
+    switch (magic)
+    {
+    case 0:
+        val_p = self->q;
+        val_n = A_LEN(self->q);
+        break;
+    case 1:
+        val_p = self->v;
+        val_n = A_LEN(self->v);
+        break;
+    case 2:
+        val_p = self->a;
+        val_n = A_LEN(self->a);
+        break;
+    default:
+        return JS_UNDEFINED;
+    }
+    JSValue val = JS_NewArray(ctx);
+    if (JS_IsException(val))
+    {
+        return val;
+    }
+    for (unsigned int i = 0; i < val_n; ++i)
+    {
+        JS_SetPropertyUint32(ctx, val, i, JS_NewFloat64(ctx, (double)val_p[i]));
+    }
+    return val;
 }
 
 static JSValue js_polytraj3_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
@@ -1455,9 +1493,9 @@ static JSValue js_polytraj3_gen(JSContext *const ctx, JSValueConst const this_va
         }
     }
     a_polytraj3_gen(self,
-                     (a_float_t)args[0], (a_float_t)args[1],
-                     (a_float_t)args[2], (a_float_t)args[3],
-                     (a_float_t)args[4], (a_float_t)args[5]);
+                    (a_float_t)args[0], (a_float_t)args[1],
+                    (a_float_t)args[2], (a_float_t)args[3],
+                    (a_float_t)args[4], (a_float_t)args[5]);
     return JS_UNDEFINED;
 }
 
@@ -1514,6 +1552,9 @@ static JSValue js_polytraj3_acc(JSContext *const ctx, JSValueConst const this_va
 
 static JSCFunctionListEntry const js_polytraj3_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.polytraj3", 0),
+    JS_CGETSET_MAGIC_DEF("q", js_polytraj3_get, NULL, 0),
+    JS_CGETSET_MAGIC_DEF("v", js_polytraj3_get, NULL, 1),
+    JS_CGETSET_MAGIC_DEF("a", js_polytraj3_get, NULL, 2),
     JS_CFUNC_DEF("gen", 6, js_polytraj3_gen),
     JS_CFUNC_DEF("pos", 1, js_polytraj3_pos),
     JS_CFUNC_DEF("vel", 1, js_polytraj3_vel),
@@ -1573,10 +1614,10 @@ static JSValue js_polytraj5_ctor(JSContext *const ctx, JSValueConst const new_ta
         }
     }
     a_polytraj5_gen(self,
-                     (a_float_t)args[0], (a_float_t)args[1],
-                     (a_float_t)args[2], (a_float_t)args[3],
-                     (a_float_t)args[4], (a_float_t)args[5],
-                     (a_float_t)args[6], (a_float_t)args[7]);
+                    (a_float_t)args[0], (a_float_t)args[1],
+                    (a_float_t)args[2], (a_float_t)args[3],
+                    (a_float_t)args[4], (a_float_t)args[5],
+                    (a_float_t)args[6], (a_float_t)args[7]);
     JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto))
     {
@@ -1594,6 +1635,44 @@ fail:
     js_free(ctx, self);
     JS_FreeValue(ctx, clazz);
     return JS_EXCEPTION;
+}
+
+static JSValue js_polytraj5_get(JSContext *const ctx, JSValueConst const this_val, int magic)
+{
+    a_polytraj5_s *const self = (a_polytraj5_s *)JS_GetOpaque2(ctx, this_val, js_polytraj5_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    a_float_t const *val_p;
+    a_size_t val_n;
+    switch (magic)
+    {
+    case 0:
+        val_p = self->q;
+        val_n = A_LEN(self->q);
+        break;
+    case 1:
+        val_p = self->v;
+        val_n = A_LEN(self->v);
+        break;
+    case 2:
+        val_p = self->a;
+        val_n = A_LEN(self->a);
+        break;
+    default:
+        return JS_UNDEFINED;
+    }
+    JSValue val = JS_NewArray(ctx);
+    if (JS_IsException(val))
+    {
+        return val;
+    }
+    for (unsigned int i = 0; i < val_n; ++i)
+    {
+        JS_SetPropertyUint32(ctx, val, i, JS_NewFloat64(ctx, (double)val_p[i]));
+    }
+    return val;
 }
 
 static JSValue js_polytraj5_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
@@ -1623,10 +1702,10 @@ static JSValue js_polytraj5_gen(JSContext *const ctx, JSValueConst const this_va
         }
     }
     a_polytraj5_gen(self,
-                     (a_float_t)args[0], (a_float_t)args[1],
-                     (a_float_t)args[2], (a_float_t)args[3],
-                     (a_float_t)args[4], (a_float_t)args[5],
-                     (a_float_t)args[6], (a_float_t)args[7]);
+                    (a_float_t)args[0], (a_float_t)args[1],
+                    (a_float_t)args[2], (a_float_t)args[3],
+                    (a_float_t)args[4], (a_float_t)args[5],
+                    (a_float_t)args[6], (a_float_t)args[7]);
     return JS_UNDEFINED;
 }
 
@@ -1683,6 +1762,9 @@ static JSValue js_polytraj5_acc(JSContext *const ctx, JSValueConst const this_va
 
 static JSCFunctionListEntry const js_polytraj5_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.polytraj5", 0),
+    JS_CGETSET_MAGIC_DEF("q", js_polytraj5_get, NULL, 0),
+    JS_CGETSET_MAGIC_DEF("v", js_polytraj5_get, NULL, 1),
+    JS_CGETSET_MAGIC_DEF("a", js_polytraj5_get, NULL, 2),
     JS_CFUNC_DEF("gen", 8, js_polytraj5_gen),
     JS_CFUNC_DEF("pos", 1, js_polytraj5_pos),
     JS_CFUNC_DEF("vel", 1, js_polytraj5_vel),
@@ -1742,11 +1824,11 @@ static JSValue js_polytraj7_ctor(JSContext *const ctx, JSValueConst const new_ta
         }
     }
     a_polytraj7_gen(self,
-                     (a_float_t)args[0], (a_float_t)args[1],
-                     (a_float_t)args[2], (a_float_t)args[3],
-                     (a_float_t)args[4], (a_float_t)args[5],
-                     (a_float_t)args[6], (a_float_t)args[7],
-                     (a_float_t)args[8], (a_float_t)args[9]);
+                    (a_float_t)args[0], (a_float_t)args[1],
+                    (a_float_t)args[2], (a_float_t)args[3],
+                    (a_float_t)args[4], (a_float_t)args[5],
+                    (a_float_t)args[6], (a_float_t)args[7],
+                    (a_float_t)args[8], (a_float_t)args[9]);
     JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto))
     {
@@ -1764,6 +1846,48 @@ fail:
     js_free(ctx, self);
     JS_FreeValue(ctx, clazz);
     return JS_EXCEPTION;
+}
+
+static JSValue js_polytraj7_get(JSContext *const ctx, JSValueConst const this_val, int magic)
+{
+    a_polytraj7_s *const self = (a_polytraj7_s *)JS_GetOpaque2(ctx, this_val, js_polytraj7_class_id);
+    if (!self)
+    {
+        return JS_EXCEPTION;
+    }
+    a_float_t const *val_p;
+    a_size_t val_n;
+    switch (magic)
+    {
+    case 0:
+        val_p = self->q;
+        val_n = A_LEN(self->q);
+        break;
+    case 1:
+        val_p = self->v;
+        val_n = A_LEN(self->v);
+        break;
+    case 2:
+        val_p = self->a;
+        val_n = A_LEN(self->a);
+        break;
+    case 3:
+        val_p = self->j;
+        val_n = A_LEN(self->j);
+        break;
+    default:
+        return JS_UNDEFINED;
+    }
+    JSValue val = JS_NewArray(ctx);
+    if (JS_IsException(val))
+    {
+        return val;
+    }
+    for (unsigned int i = 0; i < val_n; ++i)
+    {
+        JS_SetPropertyUint32(ctx, val, i, JS_NewFloat64(ctx, (double)val_p[i]));
+    }
+    return val;
 }
 
 static JSValue js_polytraj7_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
@@ -1793,11 +1917,11 @@ static JSValue js_polytraj7_gen(JSContext *const ctx, JSValueConst const this_va
         }
     }
     a_polytraj7_gen(self,
-                     (a_float_t)args[0], (a_float_t)args[1],
-                     (a_float_t)args[2], (a_float_t)args[3],
-                     (a_float_t)args[4], (a_float_t)args[5],
-                     (a_float_t)args[6], (a_float_t)args[7],
-                     (a_float_t)args[8], (a_float_t)args[9]);
+                    (a_float_t)args[0], (a_float_t)args[1],
+                    (a_float_t)args[2], (a_float_t)args[3],
+                    (a_float_t)args[4], (a_float_t)args[5],
+                    (a_float_t)args[6], (a_float_t)args[7],
+                    (a_float_t)args[8], (a_float_t)args[9]);
     return JS_UNDEFINED;
 }
 
@@ -1871,6 +1995,10 @@ static JSValue js_polytraj7_jer(JSContext *const ctx, JSValueConst const this_va
 
 static JSCFunctionListEntry const js_polytraj7_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.polytraj7", 0),
+    JS_CGETSET_MAGIC_DEF("q", js_polytraj7_get, NULL, 0),
+    JS_CGETSET_MAGIC_DEF("v", js_polytraj7_get, NULL, 1),
+    JS_CGETSET_MAGIC_DEF("a", js_polytraj7_get, NULL, 2),
+    JS_CGETSET_MAGIC_DEF("j", js_polytraj7_get, NULL, 3),
     JS_CFUNC_DEF("gen", 10, js_polytraj7_gen),
     JS_CFUNC_DEF("pos", 1, js_polytraj7_pos),
     JS_CFUNC_DEF("vel", 1, js_polytraj7_vel),
@@ -2009,11 +2137,6 @@ static JSValue js_tf_get(JSContext *const ctx, JSValueConst const this_val, int 
     {
         return JS_EXCEPTION;
     }
-    JSValue val = JS_NewArray(ctx);
-    if (JS_IsException(val))
-    {
-        return val;
-    }
     a_float_t const *val_p;
     a_size_t val_n;
     switch (magic)
@@ -2037,10 +2160,14 @@ static JSValue js_tf_get(JSContext *const ctx, JSValueConst const this_val, int 
     default:
         return JS_UNDEFINED;
     }
+    JSValue val = JS_NewArray(ctx);
+    if (JS_IsException(val))
+    {
+        return val;
+    }
     for (unsigned int i = 0; i < val_n; ++i)
     {
-        JSValue x = JS_NewFloat64(ctx, (double)val_p[i]);
-        JS_SetPropertyUint32(ctx, val, i, x);
+        JS_SetPropertyUint32(ctx, val, i, JS_NewFloat64(ctx, (double)val_p[i]));
     }
     return val;
 }

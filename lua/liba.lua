@@ -758,11 +758,10 @@ function liba.pid.neuron.inc(ctx, set, fdb) end
 function pid.neuron:inc(set, fdb) end
 
 ---@class a.polytraj3
----@field k table
----@overload fun(dt: number): table
-local polytraj3 = setmetatable({}, {
-    __call = function() end,
-})
+---@field q table
+---@field v table
+---@field a table
+local polytraj3 = {}
 liba.polytraj3 = {}
 
 ---@param t0 number
@@ -808,15 +807,6 @@ function polytraj3:gen(t0, t1, q0, q1, v0, v1) end
 
 ---@param ctx a.polytraj3
 ---@param dt number
----@return table
-function liba.polytraj3.out(ctx, dt) end
-
----@param dt number
----@return table
-function polytraj3:out(dt) end
-
----@param ctx a.polytraj3
----@param dt number
 ---@return number
 function liba.polytraj3.pos(ctx, dt) end
 
@@ -843,11 +833,10 @@ function liba.polytraj3.acc(ctx, dt) end
 function polytraj3:acc(dt) end
 
 ---@class a.polytraj5
----@field k table
----@overload fun(dt: number): table
-local polytraj5 = setmetatable({}, {
-    __call = function() end,
-})
+---@field q table
+---@field v table
+---@field a table
+local polytraj5 = {}
 liba.polytraj5 = {}
 
 ---@param t0 number
@@ -901,15 +890,6 @@ function polytraj5:gen(t0, t1, q0, q1, v0, v1, a0, a1) end
 
 ---@param ctx a.polytraj5
 ---@param dt number
----@return table
-function liba.polytraj5.out(ctx, dt) end
-
----@param dt number
----@return table
-function polytraj5:out(dt) end
-
----@param ctx a.polytraj5
----@param dt number
 ---@return number
 function liba.polytraj5.pos(ctx, dt) end
 
@@ -936,11 +916,11 @@ function liba.polytraj5.acc(ctx, dt) end
 function polytraj5:acc(dt) end
 
 ---@class a.polytraj7
----@field k table
----@overload fun(dt: number): table
-local polytraj7 = setmetatable({}, {
-    __call = function() end,
-})
+---@field q table
+---@field v table
+---@field a table
+---@field j table
+local polytraj7 = {}
 liba.polytraj7 = {}
 
 ---@param t0 number
@@ -999,15 +979,6 @@ function liba.polytraj7.gen(ctx, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
 ---@return a.polytraj7
 ---@overload fun(source: table, target: table): a.polytraj7
 function polytraj7:gen(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
-
----@param ctx a.polytraj7
----@param dt number
----@return table
-function liba.polytraj7.out(ctx, dt) end
-
----@param dt number
----@return table
-function polytraj7:out(dt) end
 
 ---@param ctx a.polytraj7
 ---@param dt number

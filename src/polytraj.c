@@ -4,67 +4,53 @@
 /* function for cubic polynomial trajectory */
 
 void a_polytraj3_gen(a_polytraj3_s *const ctx,
-                      a_float_t const t0, a_float_t const t1,
-                      a_float_t const q0, a_float_t const q1,
-                      a_float_t const v0, a_float_t const v1)
+                     a_float_t const t0, a_float_t const t1,
+                     a_float_t const q0, a_float_t const q1,
+                     a_float_t const v0, a_float_t const v1)
 {
     a_float_t const q = q1 - q0;
     a_float_t const t = t1 - t0;
     a_float_t const inv_t1 = 1 / t;
     a_float_t const inv_t2 = inv_t1 * inv_t1;
     a_float_t const inv_t3 = inv_t1 * inv_t2;
-    ctx->k[0] = q0;
-    ctx->k[1] = v0;
-    ctx->k[2] = inv_t1 * (-2 * v0 - v1) +
-                inv_t2 * q * 3;
-    ctx->k[3] = inv_t2 * (v0 + v1) -
-                inv_t3 * q * 2;
-}
 
-void a_polytraj3_out(a_polytraj3_s const *const ctx, a_float_t dt, a_float_t out[3])
-{
-    a_float_t a[4];
-    a[0] = ctx->k[0];
-    a[1] = ctx->k[1];
-    a[2] = ctx->k[2];
-    a[3] = ctx->k[3];
-    out[0] = a_poly_eval(a + 0, 4, dt);
-    a[2] *= 2;
-    a[3] *= 3;
-    out[1] = a_poly_eval(a + 1, 3, dt);
-    a[3] *= 2;
-    out[2] = a_poly_eval(a + 2, 2, dt);
+    ctx->q[0] = q0;
+    ctx->q[1] = v0;
+    ctx->q[2] = inv_t1 * (-2 * v0 - v1) +
+                inv_t2 * q * 3;
+    ctx->q[3] = inv_t2 * (v0 + v1) -
+                inv_t3 * q * 2;
+
+    ctx->v[0] = ctx->q[1];
+    ctx->v[1] = ctx->q[2] * 2;
+    ctx->v[2] = ctx->q[3] * 3;
+
+    ctx->a[0] = ctx->v[1];
+    ctx->a[1] = ctx->v[2] * 2;
 }
 
 a_float_t a_polytraj3_pos(a_polytraj3_s const *const ctx, a_float_t const dt)
 {
-    return a_poly_eval(ctx->k, 4, dt);
+    return a_poly_eval(ctx->q, A_LEN(ctx->q), dt);
 }
 
 a_float_t a_polytraj3_vel(a_polytraj3_s const *const ctx, a_float_t const dt)
 {
-    a_float_t a[3];
-    a[0] = ctx->k[1];
-    a[1] = ctx->k[2] * 2;
-    a[2] = ctx->k[3] * 3;
-    return a_poly_eval(a, 3, dt);
+    return a_poly_eval(ctx->v, A_LEN(ctx->v), dt);
 }
 
 a_float_t a_polytraj3_acc(a_polytraj3_s const *const ctx, a_float_t const dt)
 {
-    a_float_t a[2];
-    a[0] = ctx->k[2] * 2;
-    a[1] = ctx->k[3] * 3 * 2;
-    return a_poly_eval(a, 2, dt);
+    return a_poly_eval(ctx->a, A_LEN(ctx->a), dt);
 }
 
 /* function for quintic polynomial trajectory */
 
 void a_polytraj5_gen(a_polytraj5_s *const ctx,
-                      a_float_t const t0, a_float_t const t1,
-                      a_float_t const q0, a_float_t const q1,
-                      a_float_t const v0, a_float_t const v1,
-                      a_float_t const a0, a_float_t const a1)
+                     a_float_t const t0, a_float_t const t1,
+                     a_float_t const q0, a_float_t const q1,
+                     a_float_t const v0, a_float_t const v1,
+                     a_float_t const a0, a_float_t const a1)
 {
     a_float_t const q = q1 - q0;
     a_float_t const t = t1 - t0;
@@ -73,78 +59,58 @@ void a_polytraj5_gen(a_polytraj5_s *const ctx,
     a_float_t const inv_t3 = inv_t1 * inv_t2;
     a_float_t const inv_t4 = inv_t2 * inv_t2;
     a_float_t const inv_t5 = inv_t2 * inv_t3;
-    ctx->k[0] = q0;
-    ctx->k[1] = v0;
-    ctx->k[2] = a0 * (a_float_t)(1 / 2.0);
-    ctx->k[3] = (a_float_t)(1 / 2.0) *
+
+    ctx->q[0] = q0;
+    ctx->q[1] = v0;
+    ctx->q[2] = a0 * (a_float_t)(1 / 2.0);
+    ctx->q[3] = (a_float_t)(1 / 2.0) *
                 (inv_t1 * (a1 - 3 * a0) -
                  inv_t2 * (12 * v0 + 8 * v1) +
                  inv_t3 * q * 20);
-    ctx->k[4] = (a_float_t)(1 / 2.0) *
+    ctx->q[4] = (a_float_t)(1 / 2.0) *
                 (inv_t2 * (3 * a0 - 2 * a1) +
                  inv_t3 * (16 * v0 + 14 * v1) -
                  inv_t4 * q * 30);
-    ctx->k[5] = (a_float_t)(1 / 2.0) *
+    ctx->q[5] = (a_float_t)(1 / 2.0) *
                 (inv_t3 * (a1 - a0) -
                  inv_t4 * (v0 + v1) * 6 +
                  inv_t5 * q * 12);
-}
 
-void a_polytraj5_out(a_polytraj5_s const *const ctx, a_float_t dt, a_float_t out[3])
-{
-    a_float_t a[6];
-    a[0] = ctx->k[0];
-    a[1] = ctx->k[1];
-    a[2] = ctx->k[2];
-    a[3] = ctx->k[3];
-    a[4] = ctx->k[4];
-    a[5] = ctx->k[5];
-    out[0] = a_poly_eval(a + 0, 6, dt);
-    a[2] *= 2;
-    a[3] *= 3;
-    a[4] *= 4;
-    a[5] *= 5;
-    out[1] = a_poly_eval(a + 1, 5, dt);
-    a[3] *= 2;
-    a[4] *= 3;
-    a[5] *= 4;
-    out[2] = a_poly_eval(a + 2, 4, dt);
+    ctx->v[0] = ctx->q[1];
+    ctx->v[1] = ctx->q[2] * 2;
+    ctx->v[2] = ctx->q[3] * 3;
+    ctx->v[3] = ctx->q[4] * 4;
+    ctx->v[4] = ctx->q[5] * 5;
+
+    ctx->a[0] = ctx->v[1];
+    ctx->a[1] = ctx->v[2] * 2;
+    ctx->a[2] = ctx->v[3] * 3;
+    ctx->a[3] = ctx->v[4] * 4;
 }
 
 a_float_t a_polytraj5_pos(a_polytraj5_s const *const ctx, a_float_t const dt)
 {
-    return a_poly_eval(ctx->k, 6, dt);
+    return a_poly_eval(ctx->q, A_LEN(ctx->q), dt);
 }
 
 a_float_t a_polytraj5_vel(a_polytraj5_s const *const ctx, a_float_t const dt)
 {
-    a_float_t a[5];
-    a[0] = ctx->k[1];
-    a[1] = ctx->k[2] * 2;
-    a[2] = ctx->k[3] * 3;
-    a[3] = ctx->k[4] * 4;
-    a[4] = ctx->k[5] * 5;
-    return a_poly_eval(a, 5, dt);
+    return a_poly_eval(ctx->v, A_LEN(ctx->v), dt);
 }
 
 a_float_t a_polytraj5_acc(a_polytraj5_s const *const ctx, a_float_t const dt)
 {
-    a_float_t a[4];
-    a[0] = ctx->k[2] * 2;
-    a[1] = ctx->k[3] * 3 * 2;
-    a[2] = ctx->k[4] * 4 * 3;
-    a[3] = ctx->k[5] * 5 * 4;
-    return a_poly_eval(a, 4, dt);
+    return a_poly_eval(ctx->a, A_LEN(ctx->a), dt);
 }
 
 /* function for hepta polynomial trajectory */
 
 void a_polytraj7_gen(a_polytraj7_s *const ctx,
-                      a_float_t const t0, a_float_t const t1,
-                      a_float_t const q0, a_float_t const q1,
-                      a_float_t const v0, a_float_t const v1,
-                      a_float_t const a0, a_float_t const a1,
-                      a_float_t const j0, a_float_t const j1)
+                     a_float_t const t0, a_float_t const t1,
+                     a_float_t const q0, a_float_t const q1,
+                     a_float_t const v0, a_float_t const v1,
+                     a_float_t const a0, a_float_t const a1,
+                     a_float_t const j0, a_float_t const j1)
 {
     a_float_t const q = q1 - q0;
     a_float_t const t = t1 - t0;
@@ -155,101 +121,70 @@ void a_polytraj7_gen(a_polytraj7_s *const ctx,
     a_float_t const inv_t5 = inv_t2 * inv_t3;
     a_float_t const inv_t6 = inv_t3 * inv_t3;
     a_float_t const inv_t7 = inv_t3 * inv_t4;
-    ctx->k[0] = q0;
-    ctx->k[1] = v0;
-    ctx->k[2] = a0 * (a_float_t)(1 / 2.0);
-    ctx->k[3] = j0 * (a_float_t)(1 / 6.0);
-    ctx->k[4] = (a_float_t)(1 / 6.0) *
+
+    ctx->q[0] = q0;
+    ctx->q[1] = v0;
+    ctx->q[2] = a0 * (a_float_t)(1 / 2.0);
+    ctx->q[3] = j0 * (a_float_t)(1 / 6.0);
+    ctx->q[4] = (a_float_t)(1 / 6.0) *
                 (inv_t1 * (-4 * j0 - j1) +
                  inv_t2 * (15 * a1 - 30 * a0) -
                  inv_t3 * (120 * v0 + 90 * v1) +
                  inv_t4 * q * 210);
-    ctx->k[5] = (a_float_t)(1 / 2.0) *
+    ctx->q[5] = (a_float_t)(1 / 2.0) *
                 (inv_t2 * (2 * j0 + j1) +
                  inv_t3 * (20 * a0 - 14 * a1) +
                  inv_t4 * (90 * v0 + 78 * v1) -
                  inv_t5 * q * 168);
-    ctx->k[6] = (a_float_t)(1 / 6.0) *
+    ctx->q[6] = (a_float_t)(1 / 6.0) *
                 (inv_t3 * (-4 * j0 - 3 * j1) +
                  inv_t4 * (39 * a1 - 45 * a0) -
                  inv_t5 * (216 * v0 + 204 * v1) +
                  inv_t6 * q * 420);
-    ctx->k[7] = (a_float_t)(1 / 6.0) *
+    ctx->q[7] = (a_float_t)(1 / 6.0) *
                 (inv_t4 * (j0 + j1) +
                  inv_t5 * (a0 - a1) * 12 +
                  inv_t6 * (v0 + v1) * 60 -
                  inv_t7 * q * 120);
-}
 
-void a_polytraj7_out(a_polytraj7_s const *const ctx, a_float_t dt, a_float_t out[4])
-{
-    a_float_t a[8];
-    a[0] = ctx->k[0];
-    a[1] = ctx->k[1];
-    a[2] = ctx->k[2];
-    a[3] = ctx->k[3];
-    a[4] = ctx->k[4];
-    a[5] = ctx->k[5];
-    a[6] = ctx->k[6];
-    a[7] = ctx->k[7];
-    out[0] = a_poly_eval(a + 0, 8, dt);
-    a[2] *= 2;
-    a[3] *= 3;
-    a[4] *= 4;
-    a[5] *= 5;
-    a[6] *= 6;
-    a[7] *= 7;
-    out[1] = a_poly_eval(a + 1, 7, dt);
-    a[3] *= 2;
-    a[4] *= 3;
-    a[5] *= 4;
-    a[6] *= 5;
-    a[7] *= 6;
-    out[2] = a_poly_eval(a + 2, 6, dt);
-    a[4] *= 2;
-    a[5] *= 3;
-    a[6] *= 4;
-    a[7] *= 5;
-    out[3] = a_poly_eval(a + 3, 5, dt);
+    ctx->v[0] = ctx->q[1];
+    ctx->v[1] = ctx->q[2] * 2;
+    ctx->v[2] = ctx->q[3] * 3;
+    ctx->v[3] = ctx->q[4] * 4;
+    ctx->v[4] = ctx->q[5] * 5;
+    ctx->v[5] = ctx->q[6] * 6;
+    ctx->v[6] = ctx->q[7] * 7;
+
+    ctx->a[0] = ctx->v[1];
+    ctx->a[1] = ctx->v[2] * 2;
+    ctx->a[2] = ctx->v[3] * 3;
+    ctx->a[3] = ctx->v[4] * 4;
+    ctx->a[4] = ctx->v[5] * 5;
+    ctx->a[5] = ctx->v[6] * 6;
+
+    ctx->j[0] = ctx->a[1];
+    ctx->j[1] = ctx->a[2] * 2;
+    ctx->j[2] = ctx->a[3] * 3;
+    ctx->j[3] = ctx->a[4] * 4;
+    ctx->j[4] = ctx->a[5] * 5;
 }
 
 a_float_t a_polytraj7_pos(a_polytraj7_s const *const ctx, a_float_t const dt)
 {
-    return a_poly_eval(ctx->k, 8, dt);
+    return a_poly_eval(ctx->q, A_LEN(ctx->q), dt);
 }
 
 a_float_t a_polytraj7_vel(a_polytraj7_s const *const ctx, a_float_t const dt)
 {
-    a_float_t a[7];
-    a[0] = ctx->k[1];
-    a[1] = ctx->k[2] * 2;
-    a[2] = ctx->k[3] * 3;
-    a[3] = ctx->k[4] * 4;
-    a[4] = ctx->k[5] * 5;
-    a[5] = ctx->k[6] * 6;
-    a[6] = ctx->k[7] * 7;
-    return a_poly_eval(a, 7, dt);
+    return a_poly_eval(ctx->v, A_LEN(ctx->v), dt);
 }
 
 a_float_t a_polytraj7_acc(a_polytraj7_s const *const ctx, a_float_t const dt)
 {
-    a_float_t a[6];
-    a[0] = ctx->k[2] * 2;
-    a[1] = ctx->k[3] * 3 * 2;
-    a[2] = ctx->k[4] * 4 * 3;
-    a[3] = ctx->k[5] * 5 * 4;
-    a[4] = ctx->k[6] * 6 * 5;
-    a[5] = ctx->k[7] * 7 * 6;
-    return a_poly_eval(a, 6, dt);
+    return a_poly_eval(ctx->a, A_LEN(ctx->a), dt);
 }
 
 a_float_t a_polytraj7_jer(a_polytraj7_s const *const ctx, a_float_t const dt)
 {
-    a_float_t a[5];
-    a[0] = ctx->k[3] * 3 * 2;
-    a[1] = ctx->k[4] * 4 * 3 * 2;
-    a[2] = ctx->k[5] * 5 * 4 * 3;
-    a[3] = ctx->k[6] * 6 * 5 * 4;
-    a[4] = ctx->k[7] * 7 * 6 * 5;
-    return a_poly_eval(a, 5, dt);
+    return a_poly_eval(ctx->j, A_LEN(ctx->j), dt);
 }

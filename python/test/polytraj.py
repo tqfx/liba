@@ -13,288 +13,198 @@ except Exception as e:
     print(e)
     exit()
 
-
-def polytraj3_formula(k):
-    text_p = "p="
-    if k[0]:
-        text_p += "%g" % (k[0])
-    if k[1]:
-        text_p += "%+g%s" % (k[1], "t")
-    if k[2]:
-        text_p += "%+g%s" % (k[2], "t^2")
-    if k[3]:
-        text_p += "%+g%s" % (k[3], "t^3")
-    text_v = "v="
-    if k[1]:
-        text_v += "%g" % (k[1])
-    if k[2]:
-        text_v += "%+g%s" % (k[2] * 2, "t")
-    if k[3]:
-        text_v += "%+g%s" % (k[3] * 3, "t^2")
-    text_a = "a="
-    if k[2]:
-        text_a += "%g" % (k[2] * 2)
-    if k[3]:
-        text_a += "%+g%s" % (k[3] * 6, "t")
-    return (
-        text_p.replace("=+", "="),
-        text_v.replace("=+", "="),
-        text_a.replace("=+", "="),
-    )
-
-
-def polytraj5_formula(k):
-    text_p = "p="
-    if k[0]:
-        text_p += "%g" % (k[0])
-    if k[1]:
-        text_p += "%+g%s" % (k[1], "t")
-    if k[2]:
-        text_p += "%+g%s" % (k[2], "t^2")
-    if k[3]:
-        text_p += "%+g%s" % (k[3], "t^3")
-    if k[4]:
-        text_p += "%+g%s" % (k[4], "t^4")
-    if k[5]:
-        text_p += "%+g%s" % (k[5], "t^5")
-    text_v = "v="
-    if k[1]:
-        text_v += "%g" % (k[1])
-    if k[2]:
-        text_v += "%+g%s" % (k[2] * 2, "t")
-    if k[3]:
-        text_v += "%+g%s" % (k[3] * 3, "t^2")
-    if k[4]:
-        text_v += "%+g%s" % (k[4] * 4, "t^3")
-    if k[5]:
-        text_v += "%+g%s" % (k[5] * 5, "t^4")
-    text_a = "a="
-    if k[2]:
-        text_a += "%g" % (k[2] * 2)
-    if k[3]:
-        text_a += "%+g%s" % (k[3] * 6, "t")
-    if k[4]:
-        text_a += "%+g%s" % (k[4] * 12, "t^2")
-    if k[5]:
-        text_a += "%+g%s" % (k[3] * 20, "t^3")
-    return (
-        text_p.replace("=+", "="),
-        text_v.replace("=+", "="),
-        text_a.replace("=+", "="),
-    )
-
-
-def polytraj7_formula(k):
-    text_p = "p="
-    if k[0]:
-        text_p += "%g" % (k[0])
-    if k[1]:
-        text_p += "%+g%s" % (k[1], "t")
-    if k[2]:
-        text_p += "%+g%s" % (k[2], "t^2")
-    if k[3]:
-        text_p += "%+g%s" % (k[3], "t^3")
-    if k[4]:
-        text_p += "%+g%s" % (k[4], "t^4")
-    if k[5]:
-        text_p += "%+g%s" % (k[5], "t^5")
-    if k[6]:
-        text_p += "%+g%s" % (k[6], "t^6")
-    if k[7]:
-        text_p += "%+g%s" % (k[7], "t^7")
-    text_v = "v="
-    if k[1]:
-        text_v += "%g" % (k[1])
-    if k[2]:
-        text_v += "%+g%s" % (k[2] * 2, "t")
-    if k[3]:
-        text_v += "%+g%s" % (k[3] * 3, "t^2")
-    if k[4]:
-        text_v += "%+g%s" % (k[4] * 4, "t^3")
-    if k[5]:
-        text_v += "%+g%s" % (k[5] * 5, "t^4")
-    if k[6]:
-        text_v += "%+g%s" % (k[6] * 6, "t^5")
-    if k[7]:
-        text_v += "%+g%s" % (k[7] * 7, "t^6")
-    text_a = "a="
-    if k[2]:
-        text_a += "%g" % (k[2] * 2)
-    if k[3]:
-        text_a += "%+g%s" % (k[3] * 6, "t")
-    if k[4]:
-        text_a += "%+g%s" % (k[4] * 12, "t^2")
-    if k[5]:
-        text_a += "%+g%s" % (k[3] * 20, "t^3")
-    if k[6]:
-        text_a += "%+g%s" % (k[6] * 30, "t^4")
-    if k[7]:
-        text_a += "%+g%s" % (k[7] * 42, "t^5")
-    text_j = "j="
-    if k[3]:
-        text_j += "%g" % (k[3] * 6)
-    if k[4]:
-        text_j += "%+g%s" % (k[4] * 12, "t")
-    if k[5]:
-        text_j += "%+g%s" % (k[3] * 60, "t^2")
-    if k[6]:
-        text_j += "%+g%s" % (k[6] * 120, "t^3")
-    if k[7]:
-        text_j += "%+g%s" % (k[7] * 210, "t^4")
-    return (
-        text_p.replace("=+", "="),
-        text_v.replace("=+", "="),
-        text_a.replace("=+", "="),
-        text_j.replace("=+", "="),
-    )
-
-
 t = (0, 1)
 q = (0, 1)
 v = (0, 1)
 data = np.arange(t[0], t[1], 0.01)
 
-track = a.polytraj3(t[0], t[1], q[0], q[1], v[0], v[1])
-label = polytraj3_formula(track.k)
+traj = a.polytraj3(t[0], t[1], q[0], q[1], v[0], v[1])
+text_p = "p="
+if traj.q[0]:
+    text_p += "%g" % (traj.q[0])
+if traj.q[1]:
+    text_p += "%+g%s" % (traj.q[1], "t")
+if traj.q[2]:
+    text_p += "%+g%s" % (traj.q[2], "t^2")
+if traj.q[3]:
+    text_p += "%+g%s" % (traj.q[3], "t^3")
+text_p = text_p.replace("=+", "=")
+text_v = "v="
+if traj.v[0]:
+    text_v += "%g" % (traj.v[0])
+if traj.v[1]:
+    text_v += "%+g%s" % (traj.v[1], "t")
+if traj.v[2]:
+    text_v += "%+g%s" % (traj.v[2], "t^2")
+text_v = text_v.replace("=+", "=")
+text_a = "a="
+if traj.a[0]:
+    text_a += "%g" % (traj.a[0])
+if traj.a[1]:
+    text_a += "%+g%s" % (traj.a[1], "t")
+text_a = text_a.replace("=+", "=")
 plt.figure("3 polynomial trajectory")
 
 plt.subplot(311)
 plt.title("cubic polynomial trajectory")
 plt.ylabel("Position")
-plt.plot(data, track.pos(data), "r-", label=label[0])
+plt.plot(data, traj.pos(data), "r-", label=text_p)
 plt.legend()
 
 plt.subplot(312)
 plt.ylabel("Velocity")
-plt.plot(data, track.vel(data), "b-", label=label[1])
+plt.plot(data, traj.vel(data), "b-", label=text_v)
 plt.legend()
 
 plt.subplot(313)
 plt.ylabel("Acceleration")
-plt.plot(data, track.acc(data), "g-", label=label[2])
+plt.plot(data, traj.acc(data), "g-", label=text_a)
 plt.legend()
 
 plt.xlabel("t")
 plt.savefig(os.path.join(prefix, "trajectory_polynomial_3.png"))
 
-(pos, vel, acc) = track(data)
-plt.figure("all 3 polynomial trajectory")
-
-plt.subplot(311)
-plt.title("all cubic polynomial trajectory")
-plt.ylabel("Position")
-plt.plot(data, pos, "r-", label=label[0])
-plt.legend()
-
-plt.subplot(312)
-plt.ylabel("Velocity")
-plt.plot(data, vel, "b-", label=label[1])
-plt.legend()
-
-plt.subplot(313)
-plt.ylabel("Acceleration")
-plt.plot(data, acc, "g-", label=label[2])
-plt.legend()
-
-plt.xlabel("t")
-plt.savefig(os.path.join(prefix, "trajectory_polynomial_3a.png"))
-
-track = a.polytraj5(t[0], t[1], q[0], q[1], v[0], v[1])
-label = polytraj5_formula(track.k)
+traj = a.polytraj5(t[0], t[1], q[0], q[1], v[0], v[1])
+text_p = "p="
+if traj.q[0]:
+    text_p += "%g" % (traj.q[0])
+if traj.q[1]:
+    text_p += "%+g%s" % (traj.q[1], "t")
+if traj.q[2]:
+    text_p += "%+g%s" % (traj.q[2], "t^2")
+if traj.q[3]:
+    text_p += "%+g%s" % (traj.q[3], "t^3")
+if traj.q[4]:
+    text_p += "%+g%s" % (traj.q[4], "t^4")
+if traj.q[5]:
+    text_p += "%+g%s" % (traj.q[5], "t^5")
+text_p = text_p.replace("=+", "=")
+text_v = "v="
+if traj.v[0]:
+    text_v += "%g" % (traj.v[0])
+if traj.v[1]:
+    text_v += "%+g%s" % (traj.v[1], "t")
+if traj.v[2]:
+    text_v += "%+g%s" % (traj.v[2], "t^2")
+if traj.v[3]:
+    text_v += "%+g%s" % (traj.v[3], "t^3")
+if traj.v[4]:
+    text_v += "%+g%s" % (traj.v[4], "t^4")
+text_v = text_v.replace("=+", "=")
+text_a = "a="
+if traj.a[0]:
+    text_a += "%g" % (traj.a[0])
+if traj.a[1]:
+    text_a += "%+g%s" % (traj.a[1], "t")
+if traj.a[2]:
+    text_a += "%+g%s" % (traj.a[2], "t^2")
+if traj.a[3]:
+    text_a += "%+g%s" % (traj.a[3], "t^3")
+text_a = text_a.replace("=+", "=")
 plt.figure("5 polynomial trajectory")
 
 plt.subplot(311)
 plt.title("quintic polynomial trajectory")
 plt.ylabel("Position")
-plt.plot(data, track.pos(data), "r-", label=label[0])
+plt.plot(data, traj.pos(data), "r-", label=text_p)
 plt.legend()
 
 plt.subplot(312)
 plt.ylabel("Velocity")
-plt.plot(data, track.vel(data), "b-", label=label[1])
+plt.plot(data, traj.vel(data), "b-", label=text_v)
 plt.legend()
 
 plt.subplot(313)
 plt.ylabel("Acceleration")
-plt.plot(data, track.acc(data), "g-", label=label[2])
+plt.plot(data, traj.acc(data), "g-", label=text_a)
 plt.legend()
 
 plt.xlabel("t")
 plt.savefig(os.path.join(prefix, "trajectory_polynomial_5.png"))
 
-(pos, vel, acc) = track(data)
-plt.figure("all 5 polynomial trajectory")
-
-plt.subplot(311)
-plt.title("all quintic polynomial trajectory")
-plt.ylabel("Position")
-plt.plot(data, pos, "r-", label=label[0])
-plt.legend()
-
-plt.subplot(312)
-plt.ylabel("Velocity")
-plt.plot(data, vel, "b-", label=label[1])
-plt.legend()
-
-plt.subplot(313)
-plt.ylabel("Acceleration")
-plt.plot(data, acc, "g-", label=label[2])
-plt.legend()
-
-plt.xlabel("t")
-plt.savefig(os.path.join(prefix, "trajectory_polynomial_5a.png"))
-
-track = a.polytraj7(t[0], t[1], q[0], q[1], v[0], v[1])
-label = polytraj7_formula(track.k)
+traj = a.polytraj7(t[0], t[1], q[0], q[1], v[0], v[1])
+text_p = "p="
+if traj.q[0]:
+    text_p += "%g" % (traj.q[0])
+if traj.q[1]:
+    text_p += "%+g%s" % (traj.q[1], "t")
+if traj.q[2]:
+    text_p += "%+g%s" % (traj.q[2], "t^2")
+if traj.q[3]:
+    text_p += "%+g%s" % (traj.q[3], "t^3")
+if traj.q[4]:
+    text_p += "%+g%s" % (traj.q[4], "t^4")
+if traj.q[5]:
+    text_p += "%+g%s" % (traj.q[5], "t^5")
+if traj.q[6]:
+    text_p += "%+g%s" % (traj.q[6], "t^6")
+if traj.q[7]:
+    text_p += "%+g%s" % (traj.q[7], "t^7")
+text_p = text_p.replace("=+", "=")
+text_v = "v="
+if traj.v[0]:
+    text_v += "%g" % (traj.v[0])
+if traj.v[1]:
+    text_v += "%+g%s" % (traj.v[1], "t")
+if traj.v[2]:
+    text_v += "%+g%s" % (traj.v[2], "t^2")
+if traj.v[3]:
+    text_v += "%+g%s" % (traj.v[3], "t^3")
+if traj.v[4]:
+    text_v += "%+g%s" % (traj.v[4], "t^4")
+if traj.v[5]:
+    text_v += "%+g%s" % (traj.v[5], "t^5")
+if traj.v[6]:
+    text_v += "%+g%s" % (traj.v[6], "t^6")
+text_v = text_v.replace("=+", "=")
+text_a = "a="
+if traj.a[0]:
+    text_a += "%g" % (traj.a[0])
+if traj.a[1]:
+    text_a += "%+g%s" % (traj.a[1], "t")
+if traj.a[2]:
+    text_a += "%+g%s" % (traj.a[2], "t^2")
+if traj.a[3]:
+    text_a += "%+g%s" % (traj.a[3], "t^3")
+if traj.a[4]:
+    text_a += "%+g%s" % (traj.a[4], "t^4")
+if traj.a[5]:
+    text_a += "%+g%s" % (traj.a[5], "t^5")
+text_a = text_a.replace("=+", "=")
+text_j = "j="
+if traj.j[0]:
+    text_j += "%g" % (traj.j[0])
+if traj.j[1]:
+    text_j += "%+g%s" % (traj.j[1], "t")
+if traj.j[2]:
+    text_j += "%+g%s" % (traj.j[2], "t^2")
+if traj.j[3]:
+    text_j += "%+g%s" % (traj.j[3], "t^3")
+if traj.j[4]:
+    text_j += "%+g%s" % (traj.j[4], "t^4")
+text_j = text_j.replace("=+", "=")
 plt.figure("7 polynomial trajectory")
 
 plt.subplot(411)
 plt.title("hepta polynomial trajectory")
 plt.ylabel("Position")
-plt.plot(data, track.pos(data), "r-", label=label[0])
+plt.plot(data, traj.pos(data), "r-", label=text_p)
 plt.legend()
 
 plt.subplot(412)
 plt.ylabel("Velocity")
-plt.plot(data, track.vel(data), "b-", label=label[1])
+plt.plot(data, traj.vel(data), "b-", label=text_v)
 plt.legend()
 
 plt.subplot(413)
 plt.ylabel("Acceleration")
-plt.plot(data, track.acc(data), "g-", label=label[2])
+plt.plot(data, traj.acc(data), "g-", label=text_a)
 plt.legend()
 
 plt.subplot(414)
 plt.ylabel("Jerk")
-plt.plot(data, track.jer(data), "k-", label=label[3])
+plt.plot(data, traj.jer(data), "k-", label=text_j)
 plt.legend()
 
 plt.xlabel("t")
 plt.savefig(os.path.join(prefix, "trajectory_polynomial_7.png"))
-
-(pos, vel, acc, jer) = track(data)
-plt.figure("all 7 polynomial trajectory")
-
-plt.subplot(411)
-plt.title("all hepta polynomial trajectory")
-plt.ylabel("Position")
-plt.plot(data, pos, "r-", label=label[0])
-plt.legend()
-
-plt.subplot(412)
-plt.ylabel("Velocity")
-plt.plot(data, vel, "b-", label=label[1])
-plt.legend()
-
-plt.subplot(413)
-plt.ylabel("Acceleration")
-plt.plot(data, acc, "g-", label=label[2])
-plt.legend()
-
-plt.subplot(414)
-plt.ylabel("Jerk")
-plt.plot(data, jer, "k-", label=label[3])
-plt.legend()
-
-plt.xlabel("t")
-plt.savefig(os.path.join(prefix, "trajectory_polynomial_7a.png"))

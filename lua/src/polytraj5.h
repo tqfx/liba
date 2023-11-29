@@ -5,7 +5,9 @@
 
 /***
  quintic polynomial trajectory
- @field k coefficient table, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5
+ @field q coefficients of position
+ @field v coefficients of velocity
+ @field a coefficients of acceleration
  @table a.polytraj5
 */
 
@@ -55,14 +57,6 @@ A_PUBLIC int liba_polytraj5_new(lua_State *L);
  @function gen
 */
 A_PUBLIC int liba_polytraj5_gen(lua_State *L);
-
-/***
- calculate for quintic polynomial trajectory
- @tparam number dt difference between current time and initial time
- @treturn table {position,velocity,acceleration}
- @function out
-*/
-A_PUBLIC int liba_polytraj5_out(lua_State *L);
 
 /***
  calculate for quintic polynomial trajectory position

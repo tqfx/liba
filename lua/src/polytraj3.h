@@ -5,7 +5,9 @@
 
 /***
  cubic polynomial trajectory
- @field k coefficient table, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3
+ @field q coefficients of position
+ @field v coefficients of velocity
+ @field a coefficients of acceleration
  @table a.polytraj3
 */
 
@@ -51,14 +53,6 @@ A_PUBLIC int liba_polytraj3_new(lua_State *L);
  @function gen
 */
 A_PUBLIC int liba_polytraj3_gen(lua_State *L);
-
-/***
- calculate for cubic polynomial trajectory
- @tparam number dt difference between current time and initial time
- @treturn table {position,velocity,acceleration}
- @function out
-*/
-A_PUBLIC int liba_polytraj3_out(lua_State *L);
 
 /***
  calculate for cubic polynomial trajectory position

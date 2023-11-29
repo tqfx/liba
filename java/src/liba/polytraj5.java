@@ -2,7 +2,9 @@ package liba;
 
 /** quintic polynomial trajectory */
 public class polytraj5 {
-    double[] k = new double[6];
+    double[] q = new double[6];
+    double[] v = new double[5];
+    double[] a = new double[4];
     static {
         System.loadLibrary("a");
         INIT();
@@ -11,13 +13,30 @@ public class polytraj5 {
     static final native void INIT();
 
     /**
-     * get coefficients for quintic polynomial trajectory,
-     * q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5
+     * get coefficients of position for quintic polynomial trajectory
      *
-     * @return coefficients
+     * @return coefficients of position
      */
-    public final double[] k() {
-        return k;
+    public final double[] q() {
+        return q;
+    }
+
+    /**
+     * get coefficients of velocity for quintic polynomial trajectory
+     *
+     * @return coefficients of velocity
+     */
+    public final double[] v() {
+        return v;
+    }
+
+    /**
+     * get coefficients of acceleration for quintic polynomial trajectory
+     *
+     * @return coefficients of acceleration
+     */
+    public final double[] a() {
+        return a;
     }
 
     /**
@@ -52,14 +71,6 @@ public class polytraj5 {
      */
     public final native polytraj5 gen(double t0, double t1, double q0, double q1, double v0, double v1,
             double a0, double a1);
-
-    /**
-     * calculate for quintic polynomial trajectory
-     *
-     * @param dt difference between current time and initial time
-     * @return current output
-     */
-    public final native double[] out(double dt);
 
     /**
      * calculate for quintic polynomial trajectory position

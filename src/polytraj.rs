@@ -5,8 +5,12 @@ use crate::float;
 /// cubic polynomial trajectory
 #[repr(C)]
 pub struct polytraj3 {
-    /// coefficients, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3
-    k: [float; 4],
+    /// coefficients of position
+    pub q: [float; 4],
+    /// coefficients of velocity
+    pub v: [float; 3],
+    /// coefficients of acceleration
+    pub a: [float; 2],
 }
 
 extern "C" {
@@ -22,13 +26,16 @@ extern "C" {
     fn a_polytraj3_pos(ctx: *const polytraj3, dt: float) -> float;
     fn a_polytraj3_vel(ctx: *const polytraj3, dt: float) -> float;
     fn a_polytraj3_acc(ctx: *const polytraj3, dt: float) -> float;
-    fn a_polytraj3_out(ctx: *const polytraj3, dt: float, out: *mut [float; 3]);
 }
 
 impl polytraj3 {
     /// initialize for cubic polynomial trajectory
     pub fn new(t0: float, t1: float, q0: float, q1: float, v0: float, v1: float) -> Self {
-        let mut ctx: Self = Self { k: [0.0; 4] };
+        let mut ctx: Self = Self {
+            q: [0.0; 4],
+            v: [0.0; 3],
+            a: [0.0; 2],
+        };
         unsafe { a_polytraj3_gen(&mut ctx, t0, t1, q0, q1, v0, v1) };
         ctx
     }
@@ -45,13 +52,6 @@ impl polytraj3 {
     ) -> &mut Self {
         unsafe { a_polytraj3_gen(self, t0, t1, q0, q1, v0, v1) };
         self
-    }
-
-    /// calculate for cubic polynomial trajectory
-    pub fn out(&mut self, dt: float) -> [float; 3] {
-        let mut out: [float; 3] = [0.0; 3];
-        unsafe { a_polytraj3_out(self, dt, &mut out) };
-        out
     }
 
     /// calculate for cubic polynomial trajectory position
@@ -79,17 +79,19 @@ fn polytraj3() {
         let pos = a.pos(dt);
         let vel = a.vel(dt);
         let acc = a.acc(dt);
-        let out = a.out(dt);
         std::println!("[{}, {}, {}]", pos, vel, acc);
-        std::println!("{:?}", out);
     }
 }
 
 /// quintic polynomial trajectory
 #[repr(C)]
 pub struct polytraj5 {
-    /// coefficients, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5
-    k: [float; 6],
+    /// coefficients of position
+    pub q: [float; 6],
+    /// coefficients of velocity
+    pub v: [float; 5],
+    /// coefficients of acceleration
+    pub a: [float; 4],
 }
 
 extern "C" {
@@ -107,7 +109,6 @@ extern "C" {
     fn a_polytraj5_pos(ctx: *const polytraj5, dt: float) -> float;
     fn a_polytraj5_vel(ctx: *const polytraj5, dt: float) -> float;
     fn a_polytraj5_acc(ctx: *const polytraj5, dt: float) -> float;
-    fn a_polytraj5_out(ctx: *const polytraj5, dt: float, out: *mut [float; 3]);
 }
 
 impl polytraj5 {
@@ -123,7 +124,11 @@ impl polytraj5 {
         a0: float,
         a1: float,
     ) -> Self {
-        let mut ctx: Self = Self { k: [0.0; 6] };
+        let mut ctx: Self = Self {
+            q: [0.0; 6],
+            v: [0.0; 5],
+            a: [0.0; 4],
+        };
         unsafe { a_polytraj5_gen(&mut ctx, t0, t1, q0, q1, v0, v1, a0, a1) };
         ctx
     }
@@ -143,13 +148,6 @@ impl polytraj5 {
     ) -> &mut Self {
         unsafe { a_polytraj5_gen(self, t0, t1, q0, q1, v0, v1, a0, a1) };
         self
-    }
-
-    /// calculate for quintic polynomial trajectory
-    pub fn out(&mut self, dt: float) -> [float; 3] {
-        let mut out: [float; 3] = [0.0; 3];
-        unsafe { a_polytraj5_out(self, dt, &mut out) };
-        out
     }
 
     /// calculate for quintic polynomial trajectory position
@@ -177,17 +175,21 @@ fn polytraj5() {
         let pos = a.pos(dt);
         let vel = a.vel(dt);
         let acc = a.acc(dt);
-        let out = a.out(dt);
         std::println!("[{}, {}, {}]", pos, vel, acc);
-        std::println!("{:?}", out);
     }
 }
 
 /// hepta polynomial trajectory
 #[repr(C)]
 pub struct polytraj7 {
-    /// coefficients, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5+k_6(t-t_0)^6+k_7(t-t_0)^7
-    k: [float; 8],
+    /// coefficients of position
+    pub q: [float; 8],
+    /// coefficients of velocity
+    pub v: [float; 7],
+    /// coefficients of acceleration
+    pub a: [float; 6],
+    /// coefficients of jerk
+    pub j: [float; 5],
 }
 
 extern "C" {
@@ -208,7 +210,6 @@ extern "C" {
     fn a_polytraj7_vel(ctx: *const polytraj7, dt: float) -> float;
     fn a_polytraj7_acc(ctx: *const polytraj7, dt: float) -> float;
     fn a_polytraj7_jer(ctx: *const polytraj7, dt: float) -> float;
-    fn a_polytraj7_out(ctx: *const polytraj7, dt: float, out: *mut [float; 4]);
 }
 
 impl polytraj7 {
@@ -226,7 +227,12 @@ impl polytraj7 {
         j0: float,
         j1: float,
     ) -> Self {
-        let mut ctx: Self = Self { k: [0.0; 8] };
+        let mut ctx: Self = Self {
+            q: [0.0; 8],
+            v: [0.0; 7],
+            a: [0.0; 6],
+            j: [0.0; 5],
+        };
         unsafe { a_polytraj7_gen(&mut ctx, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) };
         ctx
     }
@@ -248,13 +254,6 @@ impl polytraj7 {
     ) -> &mut Self {
         unsafe { a_polytraj7_gen(self, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) };
         self
-    }
-
-    /// calculate for hepta polynomial trajectory
-    pub fn out(&mut self, dt: float) -> [float; 4] {
-        let mut out: [float; 4] = [0.0; 4];
-        unsafe { a_polytraj7_out(self, dt, &mut out) };
-        out
     }
 
     /// calculate for hepta polynomial trajectory position
@@ -289,8 +288,6 @@ fn polytraj7() {
         let vel = a.vel(dt);
         let acc = a.acc(dt);
         let jer = a.jer(dt);
-        let out = a.out(dt);
         std::println!("[{}, {}, {}, {}]", pos, vel, acc, jer);
-        std::println!("{:?}", out);
     }
 }

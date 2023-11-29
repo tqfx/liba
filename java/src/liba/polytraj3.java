@@ -2,7 +2,9 @@ package liba;
 
 /** cubic polynomial trajectory */
 public class polytraj3 {
-    double[] k = new double[4];
+    double[] q = new double[4];
+    double[] v = new double[3];
+    double[] a = new double[2];
     static {
         System.loadLibrary("a");
         INIT();
@@ -11,13 +13,30 @@ public class polytraj3 {
     static final native void INIT();
 
     /**
-     * get coefficients for cubic polynomial trajectory,
-     * q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3
+     * get coefficients of position for cubic polynomial trajectory
      *
-     * @return coefficients
+     * @return coefficients of position
      */
-    public final double[] k() {
-        return k;
+    public final double[] q() {
+        return q;
+    }
+
+    /**
+     * get coefficients of velocity for cubic polynomial trajectory
+     *
+     * @return coefficients of velocity
+     */
+    public final double[] v() {
+        return v;
+    }
+
+    /**
+     * get coefficients of acceleration for cubic polynomial trajectory
+     *
+     * @return coefficients of acceleration
+     */
+    public final double[] a() {
+        return a;
     }
 
     /**
@@ -46,14 +65,6 @@ public class polytraj3 {
      * @return {@link polytraj3}
      */
     public final native polytraj3 gen(double t0, double t1, double q0, double q1, double v0, double v1);
-
-    /**
-     * calculate for cubic polynomial trajectory
-     *
-     * @param dt difference between current time and initial time
-     * @return current output
-     */
-    public final native double[] out(double dt);
 
     /**
      * calculate for cubic polynomial trajectory position

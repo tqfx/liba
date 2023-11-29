@@ -1,37 +1,6 @@
 #define MAIN_(x) A_CAST_2(x, _polytraj)
 #include "test.h"
 #include "a/polytraj.h"
-#include <string.h>
-
-static void test(void)
-{
-    a_float_t out[4];
-    {
-        a_polytraj3_s ctx;
-        a_polytraj3_gen(&ctx, 0, 10, 0, 10, 0, 10);
-        a_polytraj3_pos(&ctx, 0);
-        a_polytraj3_vel(&ctx, 0);
-        a_polytraj3_acc(&ctx, 0);
-        a_polytraj3_out(&ctx, 0, out);
-    }
-    {
-        a_polytraj5_s ctx;
-        a_polytraj5_gen(&ctx, 0, 10, 0, 10, 0, 10, 0, 10);
-        a_polytraj5_pos(&ctx, 0);
-        a_polytraj5_vel(&ctx, 0);
-        a_polytraj5_acc(&ctx, 0);
-        a_polytraj5_out(&ctx, 0, out);
-    }
-    {
-        a_polytraj7_s ctx;
-        a_polytraj7_gen(&ctx, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10);
-        a_polytraj7_pos(&ctx, 0);
-        a_polytraj7_vel(&ctx, 0);
-        a_polytraj7_acc(&ctx, 0);
-        a_polytraj7_jer(&ctx, 0);
-        a_polytraj7_out(&ctx, 0, out);
-    }
-}
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
@@ -72,19 +41,14 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_polytraj7_gen(&pt7, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7], arg[8], arg[9]);
     for (a_float_t dt = arg[0], delta = (arg[1] - arg[0]) / 1000; dt < arg[1]; dt += delta) // NOLINT
     {
-        a_float_t out3[3];
-        a_polytraj3_out(&pt3, dt, out3);
-        a_float_t out5[3];
-        a_polytraj5_out(&pt5, dt, out5);
-        a_float_t out7[4];
-        a_polytraj7_out(&pt7, dt, out7);
         debug(A_FLOAT_PRI("+", "f "), dt);
-        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f "), out3[0], out3[1], out3[2]);
-        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f "), out5[0], out5[1], out5[2]);
-        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), out7[0], out7[1], out7[2], out7[3]);
+        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f "),
+              a_polytraj3_pos(&pt3, dt), a_polytraj3_vel(&pt3, dt), a_polytraj3_acc(&pt3, dt));
+        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f "),
+              a_polytraj5_pos(&pt5, dt), a_polytraj5_vel(&pt5, dt), a_polytraj5_acc(&pt5, dt));
+        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
+              a_polytraj7_pos(&pt7, dt), a_polytraj7_vel(&pt7, dt), a_polytraj7_acc(&pt7, dt), a_polytraj7_jer(&pt7, dt));
     }
-
-    test();
 
     return 0;
 }

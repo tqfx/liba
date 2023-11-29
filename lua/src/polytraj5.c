@@ -74,10 +74,10 @@ int liba_polytraj5_new(lua_State *const L)
         liba_polytraj5_meta_(L, 1);
         lua_setmetatable(L, -2);
         a_polytraj5_gen(ctx,
-                         source[0], target[0],
-                         source[1], target[1],
-                         source[2], target[2],
-                         source[3], target[3]);
+                        source[0], target[0],
+                        source[1], target[1],
+                        source[2], target[2],
+                        source[3], target[3]);
         return 1;
     }
     return 0;
@@ -120,33 +120,11 @@ int liba_polytraj5_gen(lua_State *const L)
         l_array_num_get(L, 2, source, A_LEN(source));
         l_array_num_get(L, 3, target, A_LEN(target));
         a_polytraj5_gen(ctx,
-                         source[0], target[0],
-                         source[1], target[1],
-                         source[2], target[2],
-                         source[3], target[3]);
+                        source[0], target[0],
+                        source[1], target[1],
+                        source[2], target[2],
+                        source[3], target[3]);
         lua_pushvalue(L, 1);
-        return 1;
-    }
-    return 0;
-}
-
-/***
- calculate for quintic polynomial trajectory
- @tparam a.polytraj5 ctx quintic polynomial trajectory userdata
- @tparam number dt difference between current time and initial time
- @treturn table {position,velocity,acceleration}
- @function out
-*/
-int liba_polytraj5_out(lua_State *const L)
-{
-    a_polytraj5_s const *const ctx = (a_polytraj5_s const *)lua_touserdata(L, 1);
-    if (ctx)
-    {
-        a_float_t out[3];
-        a_float_t const dt = (a_float_t)luaL_checknumber(L, 2);
-        a_polytraj5_out(ctx, dt, out);
-        lua_createtable(L, A_LEN(out), 0);
-        l_array_num_set(L, -1, out, A_LEN(out));
         return 1;
     }
     return 0;
@@ -214,7 +192,6 @@ int liba_polytraj5_acc(lua_State *const L)
 static l_func_s const funcs[] = {
     {"new", liba_polytraj5_new},
     {"gen", liba_polytraj5_gen},
-    {"out", liba_polytraj5_out},
     {"pos", liba_polytraj5_pos},
     {"vel", liba_polytraj5_vel},
     {"acc", liba_polytraj5_acc},
@@ -228,7 +205,6 @@ static int liba_polytraj5_set(lua_State *const L)
     switch (hash)
     {
     case 0xE8859EEB: // __name
-    case 0xE70C48C6: // __call
     case 0xA65758B2: // __index
     case 0xAEB551C6: // __newindex
         return 0;
@@ -247,18 +223,23 @@ static int liba_polytraj5_get(lua_State *const L)
     a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
     switch (hash)
     {
-    case 0x0000006B: // k
-        lua_createtable(L, A_LEN(ctx->k), 0);
-        l_array_num_set(L, -1, ctx->k, A_LEN(ctx->k));
+    case 0x00000071: // q
+        lua_createtable(L, A_LEN(ctx->q), 0);
+        l_array_num_set(L, -1, ctx->q, A_LEN(ctx->q));
+        break;
+    case 0x00000076: // v
+        lua_createtable(L, A_LEN(ctx->v), 0);
+        l_array_num_set(L, -1, ctx->v, A_LEN(ctx->v));
+        break;
+    case 0x00000061: // a
+        lua_createtable(L, A_LEN(ctx->a), 0);
+        l_array_num_set(L, -1, ctx->a, A_LEN(ctx->a));
         break;
     case 0x001D0204: // new
         lua_pushcfunction(L, liba_polytraj5_new);
         break;
     case 0x001B2CBC: // gen
         lua_pushcfunction(L, liba_polytraj5_gen);
-        break;
-    case 0x001D4D3A: // out
-        lua_pushcfunction(L, liba_polytraj5_out);
         break;
     case 0x001D8D30: // pos
         lua_pushcfunction(L, liba_polytraj5_pos);
@@ -273,9 +254,15 @@ static int liba_polytraj5_get(lua_State *const L)
     {
         lua_createtable(L, 0, A_LEN(funcs));
         l_func_reg(L, -1, funcs);
-        lua_createtable(L, A_LEN(ctx->k), 0);
-        l_array_num_set(L, -1, ctx->k, A_LEN(ctx->k));
-        lua_setfield(L, -2, "k");
+        lua_createtable(L, A_LEN(ctx->q), 0);
+        l_array_num_set(L, -1, ctx->q, A_LEN(ctx->q));
+        lua_setfield(L, -2, "q");
+        lua_createtable(L, A_LEN(ctx->v), 0);
+        l_array_num_set(L, -1, ctx->v, A_LEN(ctx->v));
+        lua_setfield(L, -2, "v");
+        lua_createtable(L, A_LEN(ctx->a), 0);
+        l_array_num_set(L, -1, ctx->a, A_LEN(ctx->a));
+        lua_setfield(L, -2, "a");
         break;
     }
     default:
@@ -294,7 +281,6 @@ int luaopen_liba_polytraj5(lua_State *const L)
     lua_setmetatable(L, -2);
 
     l_func_s const metas[] = {
-        {L_FUN, liba_polytraj5_out},
         {L_SET, liba_polytraj5_set},
         {L_GET, liba_polytraj5_get},
         {NULL, NULL},
