@@ -1367,21 +1367,21 @@ static A_INLINE int js_liba_pid_neuron_init(JSContext *const ctx, JSModuleDef *c
     return 0;
 }
 
-#include "a/polytrack.h"
+#include "a/polytraj.h"
 
-static JSClassID js_polytrack3_class_id;
+static JSClassID js_polytraj3_class_id;
 
-static void js_polytrack3_finalizer(JSRuntime *const rt, JSValue const val)
+static void js_polytraj3_finalizer(JSRuntime *const rt, JSValue const val)
 {
-    js_free_rt(rt, JS_GetOpaque(val, js_polytrack3_class_id));
+    js_free_rt(rt, JS_GetOpaque(val, js_polytraj3_class_id));
 }
 
-static JSClassDef js_polytrack3_class = {"polytrack3", .finalizer = js_polytrack3_finalizer};
+static JSClassDef js_polytraj3_class = {"polytraj3", .finalizer = js_polytraj3_finalizer};
 
-static JSValue js_polytrack3_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
+static JSValue js_polytraj3_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
     JSValue clazz = JS_UNDEFINED;
-    a_polytrack3_s *const self = (a_polytrack3_s *)js_mallocz(ctx, sizeof(a_polytrack3_s));
+    a_polytraj3_s *const self = (a_polytraj3_s *)js_mallocz(ctx, sizeof(a_polytraj3_s));
     if (!self)
     {
         return JS_EXCEPTION;
@@ -1405,7 +1405,7 @@ static JSValue js_polytrack3_ctor(JSContext *const ctx, JSValueConst const new_t
             goto fail;
         }
     }
-    a_polytrack3_gen(self,
+    a_polytraj3_gen(self,
                      (a_float_t)args[0], (a_float_t)args[1],
                      (a_float_t)args[2], (a_float_t)args[3],
                      (a_float_t)args[4], (a_float_t)args[5]);
@@ -1414,7 +1414,7 @@ static JSValue js_polytrack3_ctor(JSContext *const ctx, JSValueConst const new_t
     {
         goto fail;
     }
-    clazz = JS_NewObjectProtoClass(ctx, proto, js_polytrack3_class_id);
+    clazz = JS_NewObjectProtoClass(ctx, proto, js_polytraj3_class_id);
     JS_FreeValue(ctx, proto);
     if (JS_IsException(clazz))
     {
@@ -1428,9 +1428,9 @@ fail:
     return JS_EXCEPTION;
 }
 
-static JSValue js_polytrack3_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_polytraj3_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    a_polytrack3_s *const self = (a_polytrack3_s *)JS_GetOpaque2(ctx, this_val, js_polytrack3_class_id);
+    a_polytraj3_s *const self = (a_polytraj3_s *)JS_GetOpaque2(ctx, this_val, js_polytraj3_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
@@ -1454,17 +1454,17 @@ static JSValue js_polytrack3_gen(JSContext *const ctx, JSValueConst const this_v
             return JS_EXCEPTION;
         }
     }
-    a_polytrack3_gen(self,
+    a_polytraj3_gen(self,
                      (a_float_t)args[0], (a_float_t)args[1],
                      (a_float_t)args[2], (a_float_t)args[3],
                      (a_float_t)args[4], (a_float_t)args[5]);
     return JS_UNDEFINED;
 }
 
-static JSValue js_polytrack3_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_polytraj3_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack3_s *const self = (a_polytrack3_s *)JS_GetOpaque2(ctx, this_val, js_polytrack3_class_id);
+    a_polytraj3_s *const self = (a_polytraj3_s *)JS_GetOpaque2(ctx, this_val, js_polytraj3_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
@@ -1474,14 +1474,14 @@ static JSValue js_polytrack3_pos(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t pos = a_polytrack3_pos(self, (a_float_t)dt);
+    a_float_t pos = a_polytraj3_pos(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)pos);
 }
 
-static JSValue js_polytrack3_vel(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_polytraj3_vel(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack3_s *const self = (a_polytrack3_s *)JS_GetOpaque2(ctx, this_val, js_polytrack3_class_id);
+    a_polytraj3_s *const self = (a_polytraj3_s *)JS_GetOpaque2(ctx, this_val, js_polytraj3_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
@@ -1491,14 +1491,14 @@ static JSValue js_polytrack3_vel(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t vel = a_polytrack3_vel(self, (a_float_t)dt);
+    a_float_t vel = a_polytraj3_vel(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)vel);
 }
 
-static JSValue js_polytrack3_acc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_polytraj3_acc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack3_s *const self = (a_polytrack3_s *)JS_GetOpaque2(ctx, this_val, js_polytrack3_class_id);
+    a_polytraj3_s *const self = (a_polytraj3_s *)JS_GetOpaque2(ctx, this_val, js_polytraj3_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
@@ -1508,47 +1508,47 @@ static JSValue js_polytrack3_acc(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t acc = a_polytrack3_acc(self, (a_float_t)dt);
+    a_float_t acc = a_polytraj3_acc(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)acc);
 }
 
-static JSCFunctionListEntry const js_polytrack3_proto[] = {
-    JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.polytrack3", 0),
-    JS_CFUNC_DEF("gen", 6, js_polytrack3_gen),
-    JS_CFUNC_DEF("pos", 1, js_polytrack3_pos),
-    JS_CFUNC_DEF("vel", 1, js_polytrack3_vel),
-    JS_CFUNC_DEF("acc", 1, js_polytrack3_acc),
+static JSCFunctionListEntry const js_polytraj3_proto[] = {
+    JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.polytraj3", 0),
+    JS_CFUNC_DEF("gen", 6, js_polytraj3_gen),
+    JS_CFUNC_DEF("pos", 1, js_polytraj3_pos),
+    JS_CFUNC_DEF("vel", 1, js_polytraj3_vel),
+    JS_CFUNC_DEF("acc", 1, js_polytraj3_acc),
 };
 
-static A_INLINE int js_liba_polytrack3_init(JSContext *const ctx, JSModuleDef *const m)
+static A_INLINE int js_liba_polytraj3_init(JSContext *const ctx, JSModuleDef *const m)
 {
-    JS_NewClassID(&js_polytrack3_class_id);
-    JS_NewClass(JS_GetRuntime(ctx), js_polytrack3_class_id, &js_polytrack3_class);
+    JS_NewClassID(&js_polytraj3_class_id);
+    JS_NewClass(JS_GetRuntime(ctx), js_polytraj3_class_id, &js_polytraj3_class);
 
     JSValue const proto = JS_NewObject(ctx);
-    JS_SetPropertyFunctionList(ctx, proto, js_polytrack3_proto, A_LEN(js_polytrack3_proto));
+    JS_SetPropertyFunctionList(ctx, proto, js_polytraj3_proto, A_LEN(js_polytraj3_proto));
 
-    JSValue const clazz = JS_NewCFunction2(ctx, js_polytrack3_ctor, "polytrack3", 6, JS_CFUNC_constructor, 0);
+    JSValue const clazz = JS_NewCFunction2(ctx, js_polytraj3_ctor, "polytraj3", 6, JS_CFUNC_constructor, 0);
     JS_SetConstructor(ctx, clazz, proto);
-    JS_SetClassProto(ctx, js_polytrack3_class_id, proto);
+    JS_SetClassProto(ctx, js_polytraj3_class_id, proto);
 
-    JS_SetModuleExport(ctx, m, "polytrack3", clazz);
+    JS_SetModuleExport(ctx, m, "polytraj3", clazz);
     return 0;
 }
 
-static JSClassID js_polytrack5_class_id;
+static JSClassID js_polytraj5_class_id;
 
-static void js_polytrack5_finalizer(JSRuntime *const rt, JSValue const val)
+static void js_polytraj5_finalizer(JSRuntime *const rt, JSValue const val)
 {
-    js_free_rt(rt, JS_GetOpaque(val, js_polytrack5_class_id));
+    js_free_rt(rt, JS_GetOpaque(val, js_polytraj5_class_id));
 }
 
-static JSClassDef js_polytrack5_class = {"polytrack5", .finalizer = js_polytrack5_finalizer};
+static JSClassDef js_polytraj5_class = {"polytraj5", .finalizer = js_polytraj5_finalizer};
 
-static JSValue js_polytrack5_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
+static JSValue js_polytraj5_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
     JSValue clazz = JS_UNDEFINED;
-    a_polytrack5_s *const self = (a_polytrack5_s *)js_mallocz(ctx, sizeof(a_polytrack5_s));
+    a_polytraj5_s *const self = (a_polytraj5_s *)js_mallocz(ctx, sizeof(a_polytraj5_s));
     if (!self)
     {
         return JS_EXCEPTION;
@@ -1572,7 +1572,7 @@ static JSValue js_polytrack5_ctor(JSContext *const ctx, JSValueConst const new_t
             goto fail;
         }
     }
-    a_polytrack5_gen(self,
+    a_polytraj5_gen(self,
                      (a_float_t)args[0], (a_float_t)args[1],
                      (a_float_t)args[2], (a_float_t)args[3],
                      (a_float_t)args[4], (a_float_t)args[5],
@@ -1582,7 +1582,7 @@ static JSValue js_polytrack5_ctor(JSContext *const ctx, JSValueConst const new_t
     {
         goto fail;
     }
-    clazz = JS_NewObjectProtoClass(ctx, proto, js_polytrack5_class_id);
+    clazz = JS_NewObjectProtoClass(ctx, proto, js_polytraj5_class_id);
     JS_FreeValue(ctx, proto);
     if (JS_IsException(clazz))
     {
@@ -1596,9 +1596,9 @@ fail:
     return JS_EXCEPTION;
 }
 
-static JSValue js_polytrack5_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_polytraj5_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    a_polytrack5_s *const self = (a_polytrack5_s *)JS_GetOpaque2(ctx, this_val, js_polytrack5_class_id);
+    a_polytraj5_s *const self = (a_polytraj5_s *)JS_GetOpaque2(ctx, this_val, js_polytraj5_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
@@ -1622,7 +1622,7 @@ static JSValue js_polytrack5_gen(JSContext *const ctx, JSValueConst const this_v
             return JS_EXCEPTION;
         }
     }
-    a_polytrack5_gen(self,
+    a_polytraj5_gen(self,
                      (a_float_t)args[0], (a_float_t)args[1],
                      (a_float_t)args[2], (a_float_t)args[3],
                      (a_float_t)args[4], (a_float_t)args[5],
@@ -1630,10 +1630,10 @@ static JSValue js_polytrack5_gen(JSContext *const ctx, JSValueConst const this_v
     return JS_UNDEFINED;
 }
 
-static JSValue js_polytrack5_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_polytraj5_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack5_s *const self = (a_polytrack5_s *)JS_GetOpaque2(ctx, this_val, js_polytrack5_class_id);
+    a_polytraj5_s *const self = (a_polytraj5_s *)JS_GetOpaque2(ctx, this_val, js_polytraj5_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
@@ -1643,14 +1643,14 @@ static JSValue js_polytrack5_pos(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t pos = a_polytrack5_pos(self, (a_float_t)dt);
+    a_float_t pos = a_polytraj5_pos(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)pos);
 }
 
-static JSValue js_polytrack5_vel(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_polytraj5_vel(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack5_s *const self = (a_polytrack5_s *)JS_GetOpaque2(ctx, this_val, js_polytrack5_class_id);
+    a_polytraj5_s *const self = (a_polytraj5_s *)JS_GetOpaque2(ctx, this_val, js_polytraj5_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
@@ -1660,14 +1660,14 @@ static JSValue js_polytrack5_vel(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t vel = a_polytrack5_vel(self, (a_float_t)dt);
+    a_float_t vel = a_polytraj5_vel(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)vel);
 }
 
-static JSValue js_polytrack5_acc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_polytraj5_acc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack5_s *const self = (a_polytrack5_s *)JS_GetOpaque2(ctx, this_val, js_polytrack5_class_id);
+    a_polytraj5_s *const self = (a_polytraj5_s *)JS_GetOpaque2(ctx, this_val, js_polytraj5_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
@@ -1677,47 +1677,47 @@ static JSValue js_polytrack5_acc(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t acc = a_polytrack5_acc(self, (a_float_t)dt);
+    a_float_t acc = a_polytraj5_acc(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)acc);
 }
 
-static JSCFunctionListEntry const js_polytrack5_proto[] = {
-    JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.polytrack5", 0),
-    JS_CFUNC_DEF("gen", 8, js_polytrack5_gen),
-    JS_CFUNC_DEF("pos", 1, js_polytrack5_pos),
-    JS_CFUNC_DEF("vel", 1, js_polytrack5_vel),
-    JS_CFUNC_DEF("acc", 1, js_polytrack5_acc),
+static JSCFunctionListEntry const js_polytraj5_proto[] = {
+    JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.polytraj5", 0),
+    JS_CFUNC_DEF("gen", 8, js_polytraj5_gen),
+    JS_CFUNC_DEF("pos", 1, js_polytraj5_pos),
+    JS_CFUNC_DEF("vel", 1, js_polytraj5_vel),
+    JS_CFUNC_DEF("acc", 1, js_polytraj5_acc),
 };
 
-static A_INLINE int js_liba_polytrack5_init(JSContext *const ctx, JSModuleDef *const m)
+static A_INLINE int js_liba_polytraj5_init(JSContext *const ctx, JSModuleDef *const m)
 {
-    JS_NewClassID(&js_polytrack5_class_id);
-    JS_NewClass(JS_GetRuntime(ctx), js_polytrack5_class_id, &js_polytrack5_class);
+    JS_NewClassID(&js_polytraj5_class_id);
+    JS_NewClass(JS_GetRuntime(ctx), js_polytraj5_class_id, &js_polytraj5_class);
 
     JSValue const proto = JS_NewObject(ctx);
-    JS_SetPropertyFunctionList(ctx, proto, js_polytrack5_proto, A_LEN(js_polytrack5_proto));
+    JS_SetPropertyFunctionList(ctx, proto, js_polytraj5_proto, A_LEN(js_polytraj5_proto));
 
-    JSValue const clazz = JS_NewCFunction2(ctx, js_polytrack5_ctor, "polytrack5", 8, JS_CFUNC_constructor, 0);
+    JSValue const clazz = JS_NewCFunction2(ctx, js_polytraj5_ctor, "polytraj5", 8, JS_CFUNC_constructor, 0);
     JS_SetConstructor(ctx, clazz, proto);
-    JS_SetClassProto(ctx, js_polytrack5_class_id, proto);
+    JS_SetClassProto(ctx, js_polytraj5_class_id, proto);
 
-    JS_SetModuleExport(ctx, m, "polytrack5", clazz);
+    JS_SetModuleExport(ctx, m, "polytraj5", clazz);
     return 0;
 }
 
-static JSClassID js_polytrack7_class_id;
+static JSClassID js_polytraj7_class_id;
 
-static void js_polytrack7_finalizer(JSRuntime *const rt, JSValue const val)
+static void js_polytraj7_finalizer(JSRuntime *const rt, JSValue const val)
 {
-    js_free_rt(rt, JS_GetOpaque(val, js_polytrack7_class_id));
+    js_free_rt(rt, JS_GetOpaque(val, js_polytraj7_class_id));
 }
 
-static JSClassDef js_polytrack7_class = {"polytrack7", .finalizer = js_polytrack7_finalizer};
+static JSClassDef js_polytraj7_class = {"polytraj7", .finalizer = js_polytraj7_finalizer};
 
-static JSValue js_polytrack7_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
+static JSValue js_polytraj7_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
     JSValue clazz = JS_UNDEFINED;
-    a_polytrack7_s *const self = (a_polytrack7_s *)js_mallocz(ctx, sizeof(a_polytrack7_s));
+    a_polytraj7_s *const self = (a_polytraj7_s *)js_mallocz(ctx, sizeof(a_polytraj7_s));
     if (!self)
     {
         return JS_EXCEPTION;
@@ -1741,7 +1741,7 @@ static JSValue js_polytrack7_ctor(JSContext *const ctx, JSValueConst const new_t
             goto fail;
         }
     }
-    a_polytrack7_gen(self,
+    a_polytraj7_gen(self,
                      (a_float_t)args[0], (a_float_t)args[1],
                      (a_float_t)args[2], (a_float_t)args[3],
                      (a_float_t)args[4], (a_float_t)args[5],
@@ -1752,7 +1752,7 @@ static JSValue js_polytrack7_ctor(JSContext *const ctx, JSValueConst const new_t
     {
         goto fail;
     }
-    clazz = JS_NewObjectProtoClass(ctx, proto, js_polytrack7_class_id);
+    clazz = JS_NewObjectProtoClass(ctx, proto, js_polytraj7_class_id);
     JS_FreeValue(ctx, proto);
     if (JS_IsException(clazz))
     {
@@ -1766,9 +1766,9 @@ fail:
     return JS_EXCEPTION;
 }
 
-static JSValue js_polytrack7_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_polytraj7_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    a_polytrack7_s *const self = (a_polytrack7_s *)JS_GetOpaque2(ctx, this_val, js_polytrack7_class_id);
+    a_polytraj7_s *const self = (a_polytraj7_s *)JS_GetOpaque2(ctx, this_val, js_polytraj7_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
@@ -1792,7 +1792,7 @@ static JSValue js_polytrack7_gen(JSContext *const ctx, JSValueConst const this_v
             return JS_EXCEPTION;
         }
     }
-    a_polytrack7_gen(self,
+    a_polytraj7_gen(self,
                      (a_float_t)args[0], (a_float_t)args[1],
                      (a_float_t)args[2], (a_float_t)args[3],
                      (a_float_t)args[4], (a_float_t)args[5],
@@ -1801,10 +1801,10 @@ static JSValue js_polytrack7_gen(JSContext *const ctx, JSValueConst const this_v
     return JS_UNDEFINED;
 }
 
-static JSValue js_polytrack7_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_polytraj7_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack7_s *const self = (a_polytrack7_s *)JS_GetOpaque2(ctx, this_val, js_polytrack7_class_id);
+    a_polytraj7_s *const self = (a_polytraj7_s *)JS_GetOpaque2(ctx, this_val, js_polytraj7_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
@@ -1814,14 +1814,14 @@ static JSValue js_polytrack7_pos(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t pos = a_polytrack7_pos(self, (a_float_t)dt);
+    a_float_t pos = a_polytraj7_pos(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)pos);
 }
 
-static JSValue js_polytrack7_vel(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_polytraj7_vel(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack7_s *const self = (a_polytrack7_s *)JS_GetOpaque2(ctx, this_val, js_polytrack7_class_id);
+    a_polytraj7_s *const self = (a_polytraj7_s *)JS_GetOpaque2(ctx, this_val, js_polytraj7_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
@@ -1831,14 +1831,14 @@ static JSValue js_polytrack7_vel(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t vel = a_polytrack7_vel(self, (a_float_t)dt);
+    a_float_t vel = a_polytraj7_vel(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)vel);
 }
 
-static JSValue js_polytrack7_acc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_polytraj7_acc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack7_s *const self = (a_polytrack7_s *)JS_GetOpaque2(ctx, this_val, js_polytrack7_class_id);
+    a_polytraj7_s *const self = (a_polytraj7_s *)JS_GetOpaque2(ctx, this_val, js_polytraj7_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
@@ -1848,14 +1848,14 @@ static JSValue js_polytrack7_acc(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t acc = a_polytrack7_acc(self, (a_float_t)dt);
+    a_float_t acc = a_polytraj7_acc(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)acc);
 }
 
-static JSValue js_polytrack7_jer(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue js_polytraj7_jer(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytrack7_s *const self = (a_polytrack7_s *)JS_GetOpaque2(ctx, this_val, js_polytrack7_class_id);
+    a_polytraj7_s *const self = (a_polytraj7_s *)JS_GetOpaque2(ctx, this_val, js_polytraj7_class_id);
     if (!self)
     {
         return JS_EXCEPTION;
@@ -1865,32 +1865,32 @@ static JSValue js_polytrack7_jer(JSContext *const ctx, JSValueConst const this_v
     {
         return JS_EXCEPTION;
     }
-    a_float_t jer = a_polytrack7_jer(self, (a_float_t)dt);
+    a_float_t jer = a_polytraj7_jer(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)jer);
 }
 
-static JSCFunctionListEntry const js_polytrack7_proto[] = {
-    JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.polytrack7", 0),
-    JS_CFUNC_DEF("gen", 10, js_polytrack7_gen),
-    JS_CFUNC_DEF("pos", 1, js_polytrack7_pos),
-    JS_CFUNC_DEF("vel", 1, js_polytrack7_vel),
-    JS_CFUNC_DEF("acc", 1, js_polytrack7_acc),
-    JS_CFUNC_DEF("jer", 1, js_polytrack7_jer),
+static JSCFunctionListEntry const js_polytraj7_proto[] = {
+    JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.polytraj7", 0),
+    JS_CFUNC_DEF("gen", 10, js_polytraj7_gen),
+    JS_CFUNC_DEF("pos", 1, js_polytraj7_pos),
+    JS_CFUNC_DEF("vel", 1, js_polytraj7_vel),
+    JS_CFUNC_DEF("acc", 1, js_polytraj7_acc),
+    JS_CFUNC_DEF("jer", 1, js_polytraj7_jer),
 };
 
-static A_INLINE int js_liba_polytrack7_init(JSContext *const ctx, JSModuleDef *const m)
+static A_INLINE int js_liba_polytraj7_init(JSContext *const ctx, JSModuleDef *const m)
 {
-    JS_NewClassID(&js_polytrack7_class_id);
-    JS_NewClass(JS_GetRuntime(ctx), js_polytrack7_class_id, &js_polytrack7_class);
+    JS_NewClassID(&js_polytraj7_class_id);
+    JS_NewClass(JS_GetRuntime(ctx), js_polytraj7_class_id, &js_polytraj7_class);
 
     JSValue const proto = JS_NewObject(ctx);
-    JS_SetPropertyFunctionList(ctx, proto, js_polytrack7_proto, A_LEN(js_polytrack7_proto));
+    JS_SetPropertyFunctionList(ctx, proto, js_polytraj7_proto, A_LEN(js_polytraj7_proto));
 
-    JSValue const clazz = JS_NewCFunction2(ctx, js_polytrack7_ctor, "polytrack7", 10, JS_CFUNC_constructor, 0);
+    JSValue const clazz = JS_NewCFunction2(ctx, js_polytraj7_ctor, "polytraj7", 10, JS_CFUNC_constructor, 0);
     JS_SetConstructor(ctx, clazz, proto);
-    JS_SetClassProto(ctx, js_polytrack7_class_id, proto);
+    JS_SetClassProto(ctx, js_polytraj7_class_id, proto);
 
-    JS_SetModuleExport(ctx, m, "polytrack7", clazz);
+    JS_SetModuleExport(ctx, m, "polytraj7", clazz);
     return 0;
 }
 
@@ -2446,9 +2446,9 @@ static int js_liba_init(JSContext *const ctx, JSModuleDef *const m)
     js_liba_pid_init(ctx, m);
     js_liba_pid_fuzzy_init(ctx, m);
     js_liba_pid_neuron_init(ctx, m);
-    js_liba_polytrack3_init(ctx, m);
-    js_liba_polytrack5_init(ctx, m);
-    js_liba_polytrack7_init(ctx, m);
+    js_liba_polytraj3_init(ctx, m);
+    js_liba_polytraj5_init(ctx, m);
+    js_liba_polytraj7_init(ctx, m);
     js_liba_tf_init(ctx, m);
     js_liba_version_init(ctx, m);
     return JS_SetModuleExportList(ctx, m, js_liba_funcs, A_LEN(js_liba_funcs));
@@ -2462,9 +2462,9 @@ JSModuleDef *js_init_module(JSContext *const ctx, char const *const module_name)
         JS_AddModuleExport(ctx, m, "pid");
         JS_AddModuleExport(ctx, m, "pid_fuzzy");
         JS_AddModuleExport(ctx, m, "pid_neuron");
-        JS_AddModuleExport(ctx, m, "polytrack3");
-        JS_AddModuleExport(ctx, m, "polytrack5");
-        JS_AddModuleExport(ctx, m, "polytrack7");
+        JS_AddModuleExport(ctx, m, "polytraj3");
+        JS_AddModuleExport(ctx, m, "polytraj5");
+        JS_AddModuleExport(ctx, m, "polytraj7");
         JS_AddModuleExport(ctx, m, "tf");
         JS_AddModuleExport(ctx, m, "version");
         JS_AddModuleExportList(ctx, m, js_liba_funcs, A_LEN(js_liba_funcs));

@@ -1,9 +1,9 @@
 import java.util.Arrays;
-import liba.polytrack3;
+import liba.polytraj5;
 
-class _polytrack3 {
+class _polytraj5 {
     public static void main(String[] args) {
-        polytrack3 obj = new polytrack3(0, 1, 0, 1, 0, 1);
+        polytraj5 obj = new polytraj5(0, 1, 0, 1, 0, 1, 0, 1);
         double[] out = obj.out(0.5);
         System.out.println(Arrays.toString(obj.k()));
         System.out.println(obj.pos(0.5) + "," + obj.vel(0.5) + "," + obj.acc(0.5));

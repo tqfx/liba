@@ -231,11 +231,11 @@ endif()
 building(poly poly.c poly.cpp)
 unittest(poly)
 
-building(polytrack polytrack.c polytrack.cpp)
-unittest(polytrack ARGS polytrack.log 0 10 0 10)
+building(polytraj polytraj.c polytraj.cpp)
+unittest(polytraj ARGS polytraj.log 0 10 0 10)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(polytrack polytrack.gp polytrack.log 0 10 0 10)
+  unitplot(polytraj polytraj.gp polytraj.log 0 10 0 10)
 endif()
 
 building(rbf rbf.c rbf.cpp)

@@ -252,15 +252,15 @@ public:
     a_float_t get_ec() const { return ec; }
 };
 
-#include "a/polytrack.h"
+#include "a/polytraj.h"
 
-class polytrack3: public a_polytrack3_s
+class polytraj3: public a_polytraj3_s
 {
 public:
-    polytrack3(a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1,
+    polytraj3(a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1,
                a_float_t v0 = 0, a_float_t v1 = 0)
     {
-        a_polytrack3_gen(this, t0, t1, q0, q1, v0, v1);
+        a_polytraj3_gen(this, t0, t1, q0, q1, v0, v1);
     }
     emscripten::val get_k() const
     {
@@ -268,14 +268,14 @@ public:
     }
 };
 
-class polytrack5: public a_polytrack5_s
+class polytraj5: public a_polytraj5_s
 {
 public:
-    polytrack5(a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1,
+    polytraj5(a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1,
                a_float_t v0 = 0, a_float_t v1 = 0,
                a_float_t a0 = 0, a_float_t a1 = 0)
     {
-        a_polytrack5_gen(this, t0, t1, q0, q1, v0, v1, a0, a1);
+        a_polytraj5_gen(this, t0, t1, q0, q1, v0, v1, a0, a1);
     }
     emscripten::val get_k() const
     {
@@ -283,15 +283,15 @@ public:
     }
 };
 
-class polytrack7: public a_polytrack7_s
+class polytraj7: public a_polytraj7_s
 {
 public:
-    polytrack7(a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1,
+    polytraj7(a_float_t t0, a_float_t t1, a_float_t q0, a_float_t q1,
                a_float_t v0 = 0, a_float_t v1 = 0,
                a_float_t a0 = 0, a_float_t a1 = 0,
                a_float_t j0 = 0, a_float_t j1 = 0)
     {
-        a_polytrack7_gen(this, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1);
+        a_polytraj7_gen(this, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1);
     }
     emscripten::val get_k() const
     {
@@ -558,79 +558,79 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("fdb", &pid_neuron::get_fdb)
         .property("err", &pid_neuron::get_err)
         .property("ec", &pid_neuron::get_ec);
-    emscripten::class_<polytrack3>("polytrack3")
+    emscripten::class_<polytraj3>("polytraj3")
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
-        .function("pos", emscripten::optional_override([](polytrack3 *ctx, a_float_t dt) {
-                      return a_polytrack3_pos(reinterpret_cast<polytrack3 *>(ctx), dt);
+        .function("pos", emscripten::optional_override([](polytraj3 *ctx, a_float_t dt) {
+                      return a_polytraj3_pos(reinterpret_cast<polytraj3 *>(ctx), dt);
                   }),
                   emscripten::allow_raw_pointers())
-        .function("vel", emscripten::optional_override([](polytrack3 *ctx, a_float_t dt) {
-                      return a_polytrack3_vel(reinterpret_cast<polytrack3 *>(ctx), dt);
+        .function("vel", emscripten::optional_override([](polytraj3 *ctx, a_float_t dt) {
+                      return a_polytraj3_vel(reinterpret_cast<polytraj3 *>(ctx), dt);
                   }),
                   emscripten::allow_raw_pointers())
-        .function("acc", emscripten::optional_override([](polytrack3 *ctx, a_float_t dt) {
-                      return a_polytrack3_acc(reinterpret_cast<polytrack3 *>(ctx), dt);
+        .function("acc", emscripten::optional_override([](polytraj3 *ctx, a_float_t dt) {
+                      return a_polytraj3_acc(reinterpret_cast<polytraj3 *>(ctx), dt);
                   }),
                   emscripten::allow_raw_pointers())
-        .function("out", emscripten::optional_override([](polytrack3 *ctx, a_float_t dt) {
+        .function("out", emscripten::optional_override([](polytraj3 *ctx, a_float_t dt) {
                       a_float_t out[3];
-                      a_polytrack3_out(reinterpret_cast<polytrack3 *>(ctx), dt, out);
+                      a_polytraj3_out(reinterpret_cast<polytraj3 *>(ctx), dt, out);
                       return emscripten::val(emscripten::typed_memory_view(A_LEN(out), out));
                   }),
                   emscripten::allow_raw_pointers())
-        .property("k", &polytrack3::get_k);
-    emscripten::class_<polytrack5>("polytrack5")
+        .property("k", &polytraj3::get_k);
+    emscripten::class_<polytraj5>("polytraj5")
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
-        .function("pos", emscripten::optional_override([](polytrack5 *ctx, a_float_t dt) {
-                      return a_polytrack5_pos(reinterpret_cast<polytrack5 *>(ctx), dt);
+        .function("pos", emscripten::optional_override([](polytraj5 *ctx, a_float_t dt) {
+                      return a_polytraj5_pos(reinterpret_cast<polytraj5 *>(ctx), dt);
                   }),
                   emscripten::allow_raw_pointers())
-        .function("vel", emscripten::optional_override([](polytrack5 *ctx, a_float_t dt) {
-                      return a_polytrack5_vel(reinterpret_cast<polytrack5 *>(ctx), dt);
+        .function("vel", emscripten::optional_override([](polytraj5 *ctx, a_float_t dt) {
+                      return a_polytraj5_vel(reinterpret_cast<polytraj5 *>(ctx), dt);
                   }),
                   emscripten::allow_raw_pointers())
-        .function("acc", emscripten::optional_override([](polytrack5 *ctx, a_float_t dt) {
-                      return a_polytrack5_acc(reinterpret_cast<polytrack5 *>(ctx), dt);
+        .function("acc", emscripten::optional_override([](polytraj5 *ctx, a_float_t dt) {
+                      return a_polytraj5_acc(reinterpret_cast<polytraj5 *>(ctx), dt);
                   }),
                   emscripten::allow_raw_pointers())
-        .function("out", emscripten::optional_override([](polytrack5 *ctx, a_float_t dt) {
+        .function("out", emscripten::optional_override([](polytraj5 *ctx, a_float_t dt) {
                       a_float_t out[3];
-                      a_polytrack5_out(reinterpret_cast<polytrack5 *>(ctx), dt, out);
+                      a_polytraj5_out(reinterpret_cast<polytraj5 *>(ctx), dt, out);
                       return emscripten::val(emscripten::typed_memory_view(A_LEN(out), out));
                   }),
                   emscripten::allow_raw_pointers())
-        .property("k", &polytrack5::get_k);
-    emscripten::class_<polytrack7>("polytrack7")
+        .property("k", &polytraj5::get_k);
+    emscripten::class_<polytraj7>("polytraj7")
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()
-        .function("pos", emscripten::optional_override([](polytrack7 *ctx, a_float_t dt) {
-                      return a_polytrack7_pos(reinterpret_cast<polytrack7 *>(ctx), dt);
+        .function("pos", emscripten::optional_override([](polytraj7 *ctx, a_float_t dt) {
+                      return a_polytraj7_pos(reinterpret_cast<polytraj7 *>(ctx), dt);
                   }),
                   emscripten::allow_raw_pointers())
-        .function("vel", emscripten::optional_override([](polytrack7 *ctx, a_float_t dt) {
-                      return a_polytrack7_vel(reinterpret_cast<polytrack7 *>(ctx), dt);
+        .function("vel", emscripten::optional_override([](polytraj7 *ctx, a_float_t dt) {
+                      return a_polytraj7_vel(reinterpret_cast<polytraj7 *>(ctx), dt);
                   }),
                   emscripten::allow_raw_pointers())
-        .function("acc", emscripten::optional_override([](polytrack7 *ctx, a_float_t dt) {
-                      return a_polytrack7_acc(reinterpret_cast<polytrack7 *>(ctx), dt);
+        .function("acc", emscripten::optional_override([](polytraj7 *ctx, a_float_t dt) {
+                      return a_polytraj7_acc(reinterpret_cast<polytraj7 *>(ctx), dt);
                   }),
                   emscripten::allow_raw_pointers())
-        .function("jer", emscripten::optional_override([](polytrack7 *ctx, a_float_t dt) {
-                      return a_polytrack7_jer(reinterpret_cast<polytrack7 *>(ctx), dt);
+        .function("jer", emscripten::optional_override([](polytraj7 *ctx, a_float_t dt) {
+                      return a_polytraj7_jer(reinterpret_cast<polytraj7 *>(ctx), dt);
                   }),
                   emscripten::allow_raw_pointers())
-        .function("out", emscripten::optional_override([](polytrack7 *ctx, a_float_t dt) {
+        .function("out", emscripten::optional_override([](polytraj7 *ctx, a_float_t dt) {
                       a_float_t out[4];
-                      a_polytrack7_out(reinterpret_cast<polytrack7 *>(ctx), dt, out);
+                      a_polytraj7_out(reinterpret_cast<polytraj7 *>(ctx), dt, out);
                       return emscripten::val(emscripten::typed_memory_view(A_LEN(out), out));
                   }),
                   emscripten::allow_raw_pointers())
-        .property("k", &polytrack7::get_k);
+        .property("k", &polytraj7::get_k);
     emscripten::class_<tf>("tf")
         .constructor<emscripten::val, emscripten::val>()
         .function("iter", emscripten::optional_override([](tf *ctx, a_float_t x) {

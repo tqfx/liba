@@ -41,14 +41,14 @@ unittest(pid_fuzzy)
 building(pid_neuron)
 unittest(pid_neuron)
 
-building(polytrack3)
-unittest(polytrack3)
+building(polytraj3)
+unittest(polytraj3)
 
-building(polytrack5)
-unittest(polytrack5)
+building(polytraj5)
+unittest(polytraj5)
 
-building(polytrack7)
-unittest(polytrack7)
+building(polytraj7)
+unittest(polytraj7)
 
 building(tf)
 unittest(tf)

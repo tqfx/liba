@@ -14,10 +14,10 @@ unittest(pid_fuzzy pid_fuzzy)
 
 unittest(pid_neuron pid_neuron)
 
-unittest(polytrack3 polytrack3)
+unittest(polytraj3 polytraj3)
 
-unittest(polytrack5 polytrack5)
+unittest(polytraj5 polytraj5)
 
-unittest(polytrack7 polytrack7)
+unittest(polytraj7 polytraj7)
 
 unittest(version version)

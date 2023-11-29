@@ -378,7 +378,7 @@ def poly_evar(x: Iterable[float], *a: float) -> array[float]: ...
 @overload
 def poly_evar(x: float, *a: float) -> float: ...
 
-class polytrack3:
+class polytraj3:
     def __init__(
         self,
         t0: float,
@@ -396,7 +396,7 @@ class polytrack3:
         q1: float,
         v0: float = 0,
         v1: float = 0,
-    ) -> polytrack3: ...
+    ) -> polytraj3: ...
     @overload
     def __call__(self, dt: Iterable[float]) -> tuple[array[float], array[float], array[float]]: ...
     @overload
@@ -416,7 +416,7 @@ class polytrack3:
     @property
     def k(self) -> array[float]: ...
 
-class polytrack5:
+class polytraj5:
     def __init__(
         self,
         t0: float,
@@ -438,7 +438,7 @@ class polytrack5:
         v1: float = 0,
         a0: float = 0,
         a1: float = 0,
-    ) -> polytrack5: ...
+    ) -> polytraj5: ...
     @overload
     def __call__(self, dt: Iterable[float]) -> tuple[array[float], array[float], array[float]]: ...
     @overload
@@ -458,7 +458,7 @@ class polytrack5:
     @property
     def k(self) -> array[float]: ...
 
-class polytrack7:
+class polytraj7:
     def __init__(
         self,
         t0: float,
@@ -484,7 +484,7 @@ class polytrack7:
         a1: float = 0,
         j0: float = 0,
         j1: float = 0,
-    ) -> polytrack7: ...
+    ) -> polytraj7: ...
     @overload
     def __call__(
         self, dt: Iterable[float]

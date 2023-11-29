@@ -77,8 +77,8 @@ target("test/poly")
 building({ "poly.c", "poly.cpp" })
 target_end()
 
-target("test/polytrack")
-building({ "polytrack.c", "polytrack.cpp" })
+target("test/polytraj")
+building({ "polytraj.c", "polytraj.cpp" })
 target_end()
 
 target("test/rbf")

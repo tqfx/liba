@@ -30,7 +30,7 @@ pub type float = f32;
 pub mod crc;
 pub mod mf;
 pub mod pid;
-pub mod polytrack;
+pub mod polytraj;
 pub mod tf;
 pub mod version;
 

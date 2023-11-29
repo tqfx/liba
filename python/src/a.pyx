@@ -142,7 +142,7 @@ include "a/crc.pxi"
 include "a/mf.pxi"
 include "a/pid.pxi"
 include "a/poly.pxi"
-include "a/polytrack.pxi"
+include "a/polytraj.pxi"
 include "a/tf.pxi"
 include "a/version.pxi"
 

@@ -5,17 +5,17 @@ package.path = arg[0]:sub(0, -arg[0]:match("([^/\\]*)$"):len() - 1) .. "?.lua;" 
 local test = require("test")
 local a = require("liba")
 
-test.log("polytrack3")
-test.dir(getmetatable(a.polytrack3))
-local ctx = a.polytrack3.new({ 0, 0, 0 }, { 1, 1, 1 })
+test.log("polytraj3")
+test.dir(getmetatable(a.polytraj3))
+local ctx = a.polytraj3.new({ 0, 0, 0 }, { 1, 1, 1 })
 assert(ctx)
-local ctx = a.polytrack3.new(0, 1, 0, 1, 0, 1)
+local ctx = a.polytraj3.new(0, 1, 0, 1, 0, 1)
 assert(ctx)
 test.dir(getmetatable(ctx))
-assert(type(a.polytrack3.out(ctx, 0.5)) == "table")
-assert(type(a.polytrack3.pos(ctx, 0.5)) == "number")
-assert(type(a.polytrack3.vel(ctx, 0.5)) == "number")
-assert(type(a.polytrack3.acc(ctx, 0.5)) == "number")
+assert(type(a.polytraj3.out(ctx, 0.5)) == "table")
+assert(type(a.polytraj3.pos(ctx, 0.5)) == "number")
+assert(type(a.polytraj3.vel(ctx, 0.5)) == "number")
+assert(type(a.polytraj3.acc(ctx, 0.5)) == "number")
 assert(type(ctx.out(ctx, 0.5)) == "table")
 assert(type(ctx.pos(ctx, 0.5)) == "number")
 assert(type(ctx.vel(ctx, 0.5)) == "number")
@@ -34,23 +34,23 @@ ctx.__index = nil
 assert(ctx.__index)
 ctx.__newindex = nil
 assert(ctx.__newindex)
----@class a.polytrack3
+---@class a.polytraj3
 ---@field __name string
 ---@field __call function
 ---@field __index table
 ---@field __newindex table
 
-test.log("polytrack5")
-test.dir(getmetatable(a.polytrack5))
-local ctx = a.polytrack5.new({ 0, 0, 0, 0 }, { 1, 1, 1, 1 })
+test.log("polytraj5")
+test.dir(getmetatable(a.polytraj5))
+local ctx = a.polytraj5.new({ 0, 0, 0, 0 }, { 1, 1, 1, 1 })
 assert(ctx)
-local ctx = a.polytrack5.new(0, 1, 0, 1, 0, 1, 0, 1)
+local ctx = a.polytraj5.new(0, 1, 0, 1, 0, 1, 0, 1)
 assert(ctx)
 test.dir(getmetatable(ctx))
-assert(type(a.polytrack5.out(ctx, 0.5)) == "table")
-assert(type(a.polytrack5.pos(ctx, 0.5)) == "number")
-assert(type(a.polytrack5.vel(ctx, 0.5)) == "number")
-assert(type(a.polytrack5.acc(ctx, 0.5)) == "number")
+assert(type(a.polytraj5.out(ctx, 0.5)) == "table")
+assert(type(a.polytraj5.pos(ctx, 0.5)) == "number")
+assert(type(a.polytraj5.vel(ctx, 0.5)) == "number")
+assert(type(a.polytraj5.acc(ctx, 0.5)) == "number")
 assert(type(ctx.out(ctx, 0.5)) == "table")
 assert(type(ctx.pos(ctx, 0.5)) == "number")
 assert(type(ctx.vel(ctx, 0.5)) == "number")
@@ -69,24 +69,24 @@ ctx.__index = nil
 assert(ctx.__index)
 ctx.__newindex = nil
 assert(ctx.__newindex)
----@class a.polytrack5
+---@class a.polytraj5
 ---@field __name string
 ---@field __call function
 ---@field __index table
 ---@field __newindex table
 
-test.log("polytrack7")
-test.dir(getmetatable(a.polytrack7))
-local ctx = a.polytrack7.new({ 0, 0, 0, 0, 0 }, { 1, 1, 1, 1, 1 })
+test.log("polytraj7")
+test.dir(getmetatable(a.polytraj7))
+local ctx = a.polytraj7.new({ 0, 0, 0, 0, 0 }, { 1, 1, 1, 1, 1 })
 assert(ctx)
-local ctx = a.polytrack7.new(0, 1, 0, 1, 0, 1, 0, 1, 0, 1)
+local ctx = a.polytraj7.new(0, 1, 0, 1, 0, 1, 0, 1, 0, 1)
 assert(ctx)
 test.dir(getmetatable(ctx))
-assert(type(a.polytrack7.out(ctx, 0.5)) == "table")
-assert(type(a.polytrack7.pos(ctx, 0.5)) == "number")
-assert(type(a.polytrack7.vel(ctx, 0.5)) == "number")
-assert(type(a.polytrack7.acc(ctx, 0.5)) == "number")
-assert(type(a.polytrack7.jer(ctx, 0.5)) == "number")
+assert(type(a.polytraj7.out(ctx, 0.5)) == "table")
+assert(type(a.polytraj7.pos(ctx, 0.5)) == "number")
+assert(type(a.polytraj7.vel(ctx, 0.5)) == "number")
+assert(type(a.polytraj7.acc(ctx, 0.5)) == "number")
+assert(type(a.polytraj7.jer(ctx, 0.5)) == "number")
 assert(type(ctx.out(ctx, 0.5)) == "table")
 assert(type(ctx.pos(ctx, 0.5)) == "number")
 assert(type(ctx.vel(ctx, 0.5)) == "number")
@@ -107,7 +107,7 @@ ctx.__index = nil
 assert(ctx.__index)
 ctx.__newindex = nil
 assert(ctx.__newindex)
----@class a.polytrack7
+---@class a.polytraj7
 ---@field __name string
 ---@field __call function
 ---@field __index table

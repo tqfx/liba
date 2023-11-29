@@ -1,8 +1,8 @@
 package liba;
 
-/** cubic polynomial trajectory */
-public class polytrack3 {
-    double[] k = new double[4];
+/** quintic polynomial trajectory */
+public class polytraj5 {
+    double[] k = new double[6];
     static {
         System.loadLibrary("a");
         INIT();
@@ -11,8 +11,8 @@ public class polytrack3 {
     static final native void INIT();
 
     /**
-     * get coefficients for cubic polynomial trajectory,
-     * q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3
+     * get coefficients for quintic polynomial trajectory,
+     * q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5
      *
      * @return coefficients
      */
@@ -21,7 +21,7 @@ public class polytrack3 {
     }
 
     /**
-     * construct a new {@link polytrack3} object
+     * construct a new {@link polytraj5} object
      *
      * @param t0 time for source
      * @param t1 time for target
@@ -29,13 +29,16 @@ public class polytrack3 {
      * @param q1 position for target
      * @param v0 velocity for source
      * @param v1 velocity for target
+     * @param a0 acceleration for source
+     * @param a1 acceleration for target
      */
-    public polytrack3(double t0, double t1, double q0, double q1, double v0, double v1) {
-        gen(t0, t1, q0, q1, v0, v1);
+    public polytraj5(double t0, double t1, double q0, double q1, double v0, double v1,
+            double a0, double a1) {
+        gen(t0, t1, q0, q1, v0, v1, a0, a1);
     }
 
     /**
-     * generate for cubic polynomial trajectory
+     * generate for quintic polynomial trajectory
      *
      * @param t0 time for source
      * @param t1 time for target
@@ -43,12 +46,15 @@ public class polytrack3 {
      * @param q1 position for target
      * @param v0 velocity for source
      * @param v1 velocity for target
-     * @return {@link polytrack3}
+     * @param a0 acceleration for source
+     * @param a1 acceleration for target
+     * @return {@link polytraj5}
      */
-    public final native polytrack3 gen(double t0, double t1, double q0, double q1, double v0, double v1);
+    public final native polytraj5 gen(double t0, double t1, double q0, double q1, double v0, double v1,
+            double a0, double a1);
 
     /**
-     * calculate for cubic polynomial trajectory
+     * calculate for quintic polynomial trajectory
      *
      * @param dt difference between current time and initial time
      * @return current output
@@ -56,7 +62,7 @@ public class polytrack3 {
     public final native double[] out(double dt);
 
     /**
-     * calculate for cubic polynomial trajectory position
+     * calculate for quintic polynomial trajectory position
      *
      * @param dt difference between current time and initial time
      * @return position output
@@ -64,7 +70,7 @@ public class polytrack3 {
     public final native double pos(double dt);
 
     /**
-     * calculate for cubic polynomial trajectory velocity
+     * calculate for quintic polynomial trajectory velocity
      *
      * @param dt difference between current time and initial time
      * @return velocity output
@@ -72,7 +78,7 @@ public class polytrack3 {
     public final native double vel(double dt);
 
     /**
-     * calculate for cubic polynomial trajectory acceleration
+     * calculate for quintic polynomial trajectory acceleration
      *
      * @param dt difference between current time and initial time
      * @return acceleration output

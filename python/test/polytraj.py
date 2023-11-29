@@ -14,7 +14,7 @@ except Exception as e:
     exit()
 
 
-def polytrack3_formula(k):
+def polytraj3_formula(k):
     text_p = "p="
     if k[0]:
         text_p += "%g" % (k[0])
@@ -43,7 +43,7 @@ def polytrack3_formula(k):
     )
 
 
-def polytrack5_formula(k):
+def polytraj5_formula(k):
     text_p = "p="
     if k[0]:
         text_p += "%g" % (k[0])
@@ -84,7 +84,7 @@ def polytrack5_formula(k):
     )
 
 
-def polytrack7_formula(k):
+def polytraj7_formula(k):
     text_p = "p="
     if k[0]:
         text_p += "%g" % (k[0])
@@ -154,8 +154,8 @@ q = (0, 1)
 v = (0, 1)
 data = np.arange(t[0], t[1], 0.01)
 
-track = a.polytrack3(t[0], t[1], q[0], q[1], v[0], v[1])
-label = polytrack3_formula(track.k)
+track = a.polytraj3(t[0], t[1], q[0], q[1], v[0], v[1])
+label = polytraj3_formula(track.k)
 plt.figure("3 polynomial trajectory")
 
 plt.subplot(311)
@@ -199,8 +199,8 @@ plt.legend()
 plt.xlabel("t")
 plt.savefig(os.path.join(prefix, "trajectory_polynomial_3a.png"))
 
-track = a.polytrack5(t[0], t[1], q[0], q[1], v[0], v[1])
-label = polytrack5_formula(track.k)
+track = a.polytraj5(t[0], t[1], q[0], q[1], v[0], v[1])
+label = polytraj5_formula(track.k)
 plt.figure("5 polynomial trajectory")
 
 plt.subplot(311)
@@ -244,8 +244,8 @@ plt.legend()
 plt.xlabel("t")
 plt.savefig(os.path.join(prefix, "trajectory_polynomial_5a.png"))
 
-track = a.polytrack7(t[0], t[1], q[0], q[1], v[0], v[1])
-label = polytrack7_formula(track.k)
+track = a.polytraj7(t[0], t[1], q[0], q[1], v[0], v[1])
+label = polytraj7_formula(track.k)
 plt.figure("7 polynomial trajectory")
 
 plt.subplot(411)

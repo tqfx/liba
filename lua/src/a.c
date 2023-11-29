@@ -102,16 +102,16 @@ int luaopen_liba(lua_State *const L)
     luaopen_liba_complex(L);
     lua_rawset(L, -3);
 
-    lua_pushstring(L, "polytrack3");
-    luaopen_liba_polytrack3(L);
+    lua_pushstring(L, "polytraj3");
+    luaopen_liba_polytraj3(L);
     lua_rawset(L, -3);
 
-    lua_pushstring(L, "polytrack5");
-    luaopen_liba_polytrack5(L);
+    lua_pushstring(L, "polytraj5");
+    luaopen_liba_polytraj5(L);
     lua_rawset(L, -3);
 
-    lua_pushstring(L, "polytrack7");
-    luaopen_liba_polytrack7(L);
+    lua_pushstring(L, "polytraj7");
+    luaopen_liba_polytraj7(L);
     lua_rawset(L, -3);
 
     lua_pushstring(L, "version");

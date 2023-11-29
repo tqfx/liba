@@ -385,7 +385,7 @@ declare namespace liba {
     readonly prototype: pid_neuron;
   }
 
-  interface polytrack3 {
+  interface polytraj3 {
     /** coefficients, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3 */
     readonly k: Float64Array | Float32Array;
     /**
@@ -411,14 +411,14 @@ declare namespace liba {
     delete(): void;
   }
   /** constructor for cubic polynomial trajectory */
-  let polytrack3: {
+  let polytraj3: {
     /**
      * @param t0 time for source
      * @param t1 time for target
      * @param q0 position for source
      * @param q1 position for target
      */
-    new(t0: number, t1: number, q0: number, q1: number): polytrack3;
+    new(t0: number, t1: number, q0: number, q1: number): polytraj3;
     /**
      * @param t0 time for source
      * @param t1 time for target
@@ -427,11 +427,11 @@ declare namespace liba {
      * @param v0 velocity for source
      * @param v1 velocity for target
      */
-    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number): polytrack3;
-    readonly prototype: polytrack3;
+    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number): polytraj3;
+    readonly prototype: polytraj3;
   }
 
-  interface polytrack5 {
+  interface polytraj5 {
     /** coefficients, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5 */
     readonly k: Float64Array | Float32Array;
     /**
@@ -457,14 +457,14 @@ declare namespace liba {
     delete(): void;
   }
   /** constructor for quintic polynomial trajectory */
-  let polytrack5: {
+  let polytraj5: {
     /**
      * @param t0 time for source
      * @param t1 time for target
      * @param q0 position for source
      * @param q1 position for target
      */
-    new(t0: number, t1: number, q0: number, q1: number): polytrack5;
+    new(t0: number, t1: number, q0: number, q1: number): polytraj5;
     /**
      * @param t0 time for source
      * @param t1 time for target
@@ -473,7 +473,7 @@ declare namespace liba {
      * @param v0 velocity for source
      * @param v1 velocity for target
      */
-    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number): polytrack5;
+    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number): polytraj5;
     /**
      * @param t0 time for source
      * @param t1 time for target
@@ -484,11 +484,11 @@ declare namespace liba {
      * @param a0 acceleration for source
      * @param a1 acceleration for target
      */
-    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): polytrack5;
-    readonly prototype: polytrack5;
+    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): polytraj5;
+    readonly prototype: polytraj5;
   }
 
-  interface polytrack7 {
+  interface polytraj7 {
     /** coefficients, q(t)=k_0+k_1(t-t_0)+k_2(t-t_0)^2+k_3(t-t_0)^3+k_4(t-t_0)^4+k_5(t-t_0)^5+k_6(t-t_0)^6+k_7(t-t_0)^7 */
     readonly k: Float64Array | Float32Array;
     /**
@@ -519,14 +519,14 @@ declare namespace liba {
     delete(): void;
   }
   /** constructor for hepta polynomial trajectory */
-  let polytrack7: {
+  let polytraj7: {
     /**
      * @param t0 time for source
      * @param t1 time for target
      * @param q0 position for source
      * @param q1 position for target
      */
-    new(t0: number, t1: number, q0: number, q1: number): polytrack7;
+    new(t0: number, t1: number, q0: number, q1: number): polytraj7;
     /**
      * @param t0 time for source
      * @param t1 time for target
@@ -535,7 +535,7 @@ declare namespace liba {
      * @param v0 velocity for source
      * @param v1 velocity for target
      */
-    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number): polytrack7;
+    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number): polytraj7;
     /**
      * @param t0 time for source
      * @param t1 time for target
@@ -546,7 +546,7 @@ declare namespace liba {
      * @param a0 acceleration for source
      * @param a1 acceleration for target
      */
-    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): polytrack7;
+    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): polytraj7;
     /**
      * @param t0 time for source
      * @param t1 time for target
@@ -559,8 +559,8 @@ declare namespace liba {
      * @param j0 jerk for source
      * @param j1 jerk for target
      */
-    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number, j0: number, j1: number): polytrack7;
-    readonly prototype: polytrack7;
+    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number, j0: number, j1: number): polytraj7;
+    readonly prototype: polytraj7;
   }
 
   interface tf {

@@ -28,7 +28,7 @@ if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/pid/CMakeLists.txt)
   add_subdirectory(pid)
 endif()
 
-unittest(polytrack polytrack)
+unittest(polytraj polytraj)
 
 unittest(tf tf)
 

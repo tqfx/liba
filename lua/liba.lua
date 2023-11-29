@@ -757,13 +757,13 @@ function liba.pid.neuron.inc(ctx, set, fdb) end
 ---@return number
 function pid.neuron:inc(set, fdb) end
 
----@class a.polytrack3
+---@class a.polytraj3
 ---@field k table
 ---@overload fun(dt: number): table
-local polytrack3 = setmetatable({}, {
+local polytraj3 = setmetatable({}, {
     __call = function() end,
 })
-liba.polytrack3 = {}
+liba.polytraj3 = {}
 
 ---@param t0 number
 ---@param t1 number
@@ -771,9 +771,9 @@ liba.polytrack3 = {}
 ---@param q1 number
 ---@param v0? number
 ---@param v1? number
----@return a.polytrack3
----@overload fun(source: table, target: table): a.polytrack3
-function liba.polytrack3.new(t0, t1, q0, q1, v0, v1) end
+---@return a.polytraj3
+---@overload fun(source: table, target: table): a.polytraj3
+function liba.polytraj3.new(t0, t1, q0, q1, v0, v1) end
 
 ---@param t0 number
 ---@param t1 number
@@ -781,20 +781,20 @@ function liba.polytrack3.new(t0, t1, q0, q1, v0, v1) end
 ---@param q1 number
 ---@param v0? number
 ---@param v1? number
----@return a.polytrack3
----@overload fun(source: table, target: table): a.polytrack3
-function polytrack3.new(t0, t1, q0, q1, v0, v1) end
+---@return a.polytraj3
+---@overload fun(source: table, target: table): a.polytraj3
+function polytraj3.new(t0, t1, q0, q1, v0, v1) end
 
----@param ctx a.polytrack3
+---@param ctx a.polytraj3
 ---@param t0 number
 ---@param t1 number
 ---@param q0 number
 ---@param q1 number
 ---@param v0? number
 ---@param v1? number
----@return a.polytrack3
----@overload fun(ctx: a.polytrack3, source: table, target: table): a.polytrack3
-function liba.polytrack3.gen(ctx, t0, t1, q0, q1, v0, v1) end
+---@return a.polytraj3
+---@overload fun(ctx: a.polytraj3, source: table, target: table): a.polytraj3
+function liba.polytraj3.gen(ctx, t0, t1, q0, q1, v0, v1) end
 
 ---@param t0 number
 ---@param t1 number
@@ -802,53 +802,53 @@ function liba.polytrack3.gen(ctx, t0, t1, q0, q1, v0, v1) end
 ---@param q1 number
 ---@param v0? number
 ---@param v1? number
----@return a.polytrack3
----@overload fun(source: table, target: table): a.polytrack3
-function polytrack3:gen(t0, t1, q0, q1, v0, v1) end
+---@return a.polytraj3
+---@overload fun(source: table, target: table): a.polytraj3
+function polytraj3:gen(t0, t1, q0, q1, v0, v1) end
 
----@param ctx a.polytrack3
+---@param ctx a.polytraj3
 ---@param dt number
 ---@return table
-function liba.polytrack3.out(ctx, dt) end
+function liba.polytraj3.out(ctx, dt) end
 
 ---@param dt number
 ---@return table
-function polytrack3:out(dt) end
+function polytraj3:out(dt) end
 
----@param ctx a.polytrack3
+---@param ctx a.polytraj3
 ---@param dt number
 ---@return number
-function liba.polytrack3.pos(ctx, dt) end
-
----@param dt number
----@return number
-function polytrack3:pos(dt) end
-
----@param ctx a.polytrack3
----@param dt number
----@return number
-function liba.polytrack3.vel(ctx, dt) end
+function liba.polytraj3.pos(ctx, dt) end
 
 ---@param dt number
 ---@return number
-function polytrack3:vel(dt) end
+function polytraj3:pos(dt) end
 
----@param ctx a.polytrack3
+---@param ctx a.polytraj3
 ---@param dt number
 ---@return number
-function liba.polytrack3.acc(ctx, dt) end
+function liba.polytraj3.vel(ctx, dt) end
 
 ---@param dt number
 ---@return number
-function polytrack3:acc(dt) end
+function polytraj3:vel(dt) end
 
----@class a.polytrack5
+---@param ctx a.polytraj3
+---@param dt number
+---@return number
+function liba.polytraj3.acc(ctx, dt) end
+
+---@param dt number
+---@return number
+function polytraj3:acc(dt) end
+
+---@class a.polytraj5
 ---@field k table
 ---@overload fun(dt: number): table
-local polytrack5 = setmetatable({}, {
+local polytraj5 = setmetatable({}, {
     __call = function() end,
 })
-liba.polytrack5 = {}
+liba.polytraj5 = {}
 
 ---@param t0 number
 ---@param t1 number
@@ -858,9 +858,9 @@ liba.polytrack5 = {}
 ---@param v1? number
 ---@param a0? number
 ---@param a1? number
----@return a.polytrack5
----@overload fun(source: table, target: table): a.polytrack5
-function liba.polytrack5.new(t0, t1, q0, q1, v0, v1, a0, a1) end
+---@return a.polytraj5
+---@overload fun(source: table, target: table): a.polytraj5
+function liba.polytraj5.new(t0, t1, q0, q1, v0, v1, a0, a1) end
 
 ---@param t0 number
 ---@param t1 number
@@ -870,11 +870,11 @@ function liba.polytrack5.new(t0, t1, q0, q1, v0, v1, a0, a1) end
 ---@param v1? number
 ---@param a0? number
 ---@param a1? number
----@return a.polytrack5
----@overload fun(source: table, target: table): a.polytrack5
-function polytrack5.new(t0, t1, q0, q1, v0, v1, a0, a1) end
+---@return a.polytraj5
+---@overload fun(source: table, target: table): a.polytraj5
+function polytraj5.new(t0, t1, q0, q1, v0, v1, a0, a1) end
 
----@param ctx a.polytrack5
+---@param ctx a.polytraj5
 ---@param t0 number
 ---@param t1 number
 ---@param q0 number
@@ -883,9 +883,9 @@ function polytrack5.new(t0, t1, q0, q1, v0, v1, a0, a1) end
 ---@param v1? number
 ---@param a0? number
 ---@param a1? number
----@return a.polytrack5
----@overload fun(ctx: a.polytrack5, source: table, target: table): a.polytrack5
-function liba.polytrack5.gen(ctx, t0, t1, q0, q1, v0, v1, a0, a1) end
+---@return a.polytraj5
+---@overload fun(ctx: a.polytraj5, source: table, target: table): a.polytraj5
+function liba.polytraj5.gen(ctx, t0, t1, q0, q1, v0, v1, a0, a1) end
 
 ---@param t0 number
 ---@param t1 number
@@ -895,53 +895,53 @@ function liba.polytrack5.gen(ctx, t0, t1, q0, q1, v0, v1, a0, a1) end
 ---@param v1? number
 ---@param a0? number
 ---@param a1? number
----@return a.polytrack5
----@overload fun(source: table, target: table): a.polytrack5
-function polytrack5:gen(t0, t1, q0, q1, v0, v1, a0, a1) end
+---@return a.polytraj5
+---@overload fun(source: table, target: table): a.polytraj5
+function polytraj5:gen(t0, t1, q0, q1, v0, v1, a0, a1) end
 
----@param ctx a.polytrack5
+---@param ctx a.polytraj5
 ---@param dt number
 ---@return table
-function liba.polytrack5.out(ctx, dt) end
+function liba.polytraj5.out(ctx, dt) end
 
 ---@param dt number
 ---@return table
-function polytrack5:out(dt) end
+function polytraj5:out(dt) end
 
----@param ctx a.polytrack5
+---@param ctx a.polytraj5
 ---@param dt number
 ---@return number
-function liba.polytrack5.pos(ctx, dt) end
-
----@param dt number
----@return number
-function polytrack5:pos(dt) end
-
----@param ctx a.polytrack5
----@param dt number
----@return number
-function liba.polytrack5.vel(ctx, dt) end
+function liba.polytraj5.pos(ctx, dt) end
 
 ---@param dt number
 ---@return number
-function polytrack5:vel(dt) end
+function polytraj5:pos(dt) end
 
----@param ctx a.polytrack5
+---@param ctx a.polytraj5
 ---@param dt number
 ---@return number
-function liba.polytrack5.acc(ctx, dt) end
+function liba.polytraj5.vel(ctx, dt) end
 
 ---@param dt number
 ---@return number
-function polytrack5:acc(dt) end
+function polytraj5:vel(dt) end
 
----@class a.polytrack7
+---@param ctx a.polytraj5
+---@param dt number
+---@return number
+function liba.polytraj5.acc(ctx, dt) end
+
+---@param dt number
+---@return number
+function polytraj5:acc(dt) end
+
+---@class a.polytraj7
 ---@field k table
 ---@overload fun(dt: number): table
-local polytrack7 = setmetatable({}, {
+local polytraj7 = setmetatable({}, {
     __call = function() end,
 })
-liba.polytrack7 = {}
+liba.polytraj7 = {}
 
 ---@param t0 number
 ---@param t1 number
@@ -953,9 +953,9 @@ liba.polytrack7 = {}
 ---@param a1? number
 ---@param j0? number
 ---@param j1? number
----@return a.polytrack7
----@overload fun(source: table, target: table): a.polytrack7
-function liba.polytrack7.new(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
+---@return a.polytraj7
+---@overload fun(source: table, target: table): a.polytraj7
+function liba.polytraj7.new(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
 
 ---@param t0 number
 ---@param t1 number
@@ -967,11 +967,11 @@ function liba.polytrack7.new(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
 ---@param a1? number
 ---@param j0? number
 ---@param j1? number
----@return a.polytrack7
----@overload fun(source: table, target: table): a.polytrack7
-function polytrack7.new(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
+---@return a.polytraj7
+---@overload fun(source: table, target: table): a.polytraj7
+function polytraj7.new(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
 
----@param ctx a.polytrack7
+---@param ctx a.polytraj7
 ---@param t0 number
 ---@param t1 number
 ---@param q0 number
@@ -982,9 +982,9 @@ function polytrack7.new(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
 ---@param a1? number
 ---@param j0? number
 ---@param j1? number
----@return a.polytrack7
----@overload fun(ctx: a.polytrack7, source: table, target: table): a.polytrack7
-function liba.polytrack7.gen(ctx, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
+---@return a.polytraj7
+---@overload fun(ctx: a.polytraj7, source: table, target: table): a.polytraj7
+function liba.polytraj7.gen(ctx, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
 
 ---@param t0 number
 ---@param t1 number
@@ -996,54 +996,54 @@ function liba.polytrack7.gen(ctx, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
 ---@param a1? number
 ---@param j0? number
 ---@param j1? number
----@return a.polytrack7
----@overload fun(source: table, target: table): a.polytrack7
-function polytrack7:gen(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
+---@return a.polytraj7
+---@overload fun(source: table, target: table): a.polytraj7
+function polytraj7:gen(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
 
----@param ctx a.polytrack7
+---@param ctx a.polytraj7
 ---@param dt number
 ---@return table
-function liba.polytrack7.out(ctx, dt) end
+function liba.polytraj7.out(ctx, dt) end
 
 ---@param dt number
 ---@return table
-function polytrack7:out(dt) end
+function polytraj7:out(dt) end
 
----@param ctx a.polytrack7
+---@param ctx a.polytraj7
 ---@param dt number
 ---@return number
-function liba.polytrack7.pos(ctx, dt) end
-
----@param dt number
----@return number
-function polytrack7:pos(dt) end
-
----@param ctx a.polytrack7
----@param dt number
----@return number
-function liba.polytrack7.vel(ctx, dt) end
+function liba.polytraj7.pos(ctx, dt) end
 
 ---@param dt number
 ---@return number
-function polytrack7:vel(dt) end
+function polytraj7:pos(dt) end
 
----@param ctx a.polytrack7
+---@param ctx a.polytraj7
 ---@param dt number
 ---@return number
-function liba.polytrack7.acc(ctx, dt) end
-
----@param dt number
----@return number
-function polytrack7:acc(dt) end
-
----@param ctx a.polytrack7
----@param dt number
----@return number
-function liba.polytrack7.jer(ctx, dt) end
+function liba.polytraj7.vel(ctx, dt) end
 
 ---@param dt number
 ---@return number
-function polytrack7:jer(dt) end
+function polytraj7:vel(dt) end
+
+---@param ctx a.polytraj7
+---@param dt number
+---@return number
+function liba.polytraj7.acc(ctx, dt) end
+
+---@param dt number
+---@return number
+function polytraj7:acc(dt) end
+
+---@param ctx a.polytraj7
+---@param dt number
+---@return number
+function liba.polytraj7.jer(ctx, dt) end
+
+---@param dt number
+---@return number
+function polytraj7:jer(dt) end
 
 ---@class a.tf
 ---@field num table

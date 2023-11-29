@@ -14,9 +14,9 @@ A_PUBLIC int luaopen_liba_pid(lua_State *L);
 A_PUBLIC int luaopen_liba_pid_fuzzy(lua_State *L);
 A_PUBLIC int luaopen_liba_pid_neuron(lua_State *L);
 A_PUBLIC int luaopen_liba_complex(lua_State *L);
-A_PUBLIC int luaopen_liba_polytrack3(lua_State *L);
-A_PUBLIC int luaopen_liba_polytrack5(lua_State *L);
-A_PUBLIC int luaopen_liba_polytrack7(lua_State *L);
+A_PUBLIC int luaopen_liba_polytraj3(lua_State *L);
+A_PUBLIC int luaopen_liba_polytraj5(lua_State *L);
+A_PUBLIC int luaopen_liba_polytraj7(lua_State *L);
 A_PUBLIC int luaopen_liba_version(lua_State *L);
 A_PUBLIC int liba_setter(lua_State *L);
 
