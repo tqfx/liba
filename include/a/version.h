@@ -130,136 +130,6 @@ A_EXTERN a_u32_t const a_version_tweak;
 A_EXTERN int a_version_check(unsigned int major, unsigned int minor, unsigned int patch);
 #define a_version_check() a_version_check(A_VERSION_MAJOR, A_VERSION_MINOR, A_VERSION_PATCH)
 
-#if defined(LIBA_VERSION_C)
-#undef A_INTERN
-#define A_INTERN A_INLINE
-#endif /* LIBA_VERSION_C */
-
-/*!
- @brief version lhs is less than version rhs
- @param[in] lhs operand on the left
- @param[in] rhs operand on the right
- @return result of comparison
-*/
-#if !defined A_HAVE_INLINE || defined(LIBA_VERSION_C)
-A_EXTERN a_bool_t a_version_lt(a_version_s const *lhs, a_version_s const *rhs);
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_VERSION_C)
-A_INTERN a_bool_t a_version_lt(a_version_s const *const lhs, a_version_s const *const rhs)
-{
-    if (lhs->major < rhs->major)
-    {
-        return A_TRUE;
-    }
-    if (lhs->minor < rhs->minor)
-    {
-        return A_TRUE;
-    }
-    if (lhs->patch < rhs->patch)
-    {
-        return A_TRUE;
-    }
-    return A_FALSE;
-}
-#endif /* A_HAVE_INLINE */
-
-/*!
- @brief version lhs is greater than version rhs
- @param[in] lhs operand on the left
- @param[in] rhs operand on the right
- @return result of comparison
-*/
-#if !defined A_HAVE_INLINE || defined(LIBA_VERSION_C)
-A_EXTERN a_bool_t a_version_gt(a_version_s const *lhs, a_version_s const *rhs);
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_VERSION_C)
-A_INTERN a_bool_t a_version_gt(a_version_s const *const lhs, a_version_s const *const rhs)
-{
-    if (lhs->major > rhs->major)
-    {
-        return A_TRUE;
-    }
-    if (lhs->minor > rhs->minor)
-    {
-        return A_TRUE;
-    }
-    if (lhs->patch > rhs->patch)
-    {
-        return A_TRUE;
-    }
-    return A_FALSE;
-}
-#endif /* A_HAVE_INLINE */
-
-/*!
- @brief version lhs is less than or equal to version rhs
- @param[in] lhs operand on the left
- @param[in] rhs operand on the right
- @return result of comparison
-*/
-#if !defined A_HAVE_INLINE || defined(LIBA_VERSION_C)
-A_EXTERN a_bool_t a_version_le(a_version_s const *lhs, a_version_s const *rhs);
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_VERSION_C)
-A_INTERN a_bool_t a_version_le(a_version_s const *const lhs, a_version_s const *const rhs)
-{
-    return !a_version_lt(rhs, lhs);
-}
-#endif /* A_HAVE_INLINE */
-
-/*!
- @brief version lhs is greater than or equal to version rhs
- @param[in] lhs operand on the left
- @param[in] rhs operand on the right
- @return result of comparison
-*/
-#if !defined A_HAVE_INLINE || defined(LIBA_VERSION_C)
-A_EXTERN a_bool_t a_version_ge(a_version_s const *lhs, a_version_s const *rhs);
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_VERSION_C)
-A_INTERN a_bool_t a_version_ge(a_version_s const *const lhs, a_version_s const *const rhs)
-{
-    return !a_version_gt(rhs, lhs);
-}
-#endif /* A_HAVE_INLINE */
-
-/*!
- @brief version lhs is equal to version rhs
- @param[in] lhs operand on the left
- @param[in] rhs operand on the right
- @return result of comparison
-*/
-#if !defined A_HAVE_INLINE || defined(LIBA_VERSION_C)
-A_EXTERN a_bool_t a_version_eq(a_version_s const *lhs, a_version_s const *rhs);
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_VERSION_C)
-A_INTERN a_bool_t a_version_eq(a_version_s const *const lhs, a_version_s const *const rhs)
-{
-    return (lhs->major == rhs->major) && (lhs->minor == rhs->minor) && (lhs->patch == rhs->patch);
-}
-#endif /* A_HAVE_INLINE */
-
-/*!
- @brief version lhs is not equal to version rhs
- @param[in] lhs operand on the left
- @param[in] rhs operand on the right
- @return result of comparison
-*/
-#if !defined A_HAVE_INLINE || defined(LIBA_VERSION_C)
-A_EXTERN a_bool_t a_version_ne(a_version_s const *lhs, a_version_s const *rhs);
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_VERSION_C)
-A_INTERN a_bool_t a_version_ne(a_version_s const *const lhs, a_version_s const *const rhs)
-{
-    return (lhs->major != rhs->major) || (lhs->minor != rhs->minor) || (lhs->patch != rhs->patch);
-}
-#endif /* A_HAVE_INLINE */
-
-#if defined(LIBA_VERSION_C)
-#undef A_INTERN
-#define A_INTERN static A_INLINE
-#endif /* LIBA_VERSION_C */
-
 /*!
  @brief compare the version lhs with the version rhs
  @param[in] lhs version structure to be compared
@@ -270,6 +140,54 @@ A_INTERN a_bool_t a_version_ne(a_version_s const *const lhs, a_version_s const *
   @retval 0 version lhs == version rhs
 */
 A_EXTERN int a_version_cmp(a_version_s const *lhs, a_version_s const *rhs);
+
+/*!
+ @brief version lhs is less than version rhs
+ @param[in] lhs operand on the left
+ @param[in] rhs operand on the right
+ @return result of comparison
+*/
+A_EXTERN a_bool_t a_version_lt(a_version_s const *lhs, a_version_s const *rhs);
+
+/*!
+ @brief version lhs is greater than version rhs
+ @param[in] lhs operand on the left
+ @param[in] rhs operand on the right
+ @return result of comparison
+*/
+A_EXTERN a_bool_t a_version_gt(a_version_s const *lhs, a_version_s const *rhs);
+
+/*!
+ @brief version lhs is less than or equal to version rhs
+ @param[in] lhs operand on the left
+ @param[in] rhs operand on the right
+ @return result of comparison
+*/
+A_EXTERN a_bool_t a_version_le(a_version_s const *lhs, a_version_s const *rhs);
+
+/*!
+ @brief version lhs is greater than or equal to version rhs
+ @param[in] lhs operand on the left
+ @param[in] rhs operand on the right
+ @return result of comparison
+*/
+A_EXTERN a_bool_t a_version_ge(a_version_s const *lhs, a_version_s const *rhs);
+
+/*!
+ @brief version lhs is equal to version rhs
+ @param[in] lhs operand on the left
+ @param[in] rhs operand on the right
+ @return result of comparison
+*/
+A_EXTERN a_bool_t a_version_eq(a_version_s const *lhs, a_version_s const *rhs);
+
+/*!
+ @brief version lhs is not equal to version rhs
+ @param[in] lhs operand on the left
+ @param[in] rhs operand on the right
+ @return result of comparison
+*/
+A_EXTERN a_bool_t a_version_ne(a_version_s const *lhs, a_version_s const *rhs);
 
 /*!
  @brief algorithm library version parse
