@@ -16,6 +16,20 @@ extern "C" {
 
 A_PUBLIC JSModuleDef *js_init_module(JSContext *ctx, char const *module_name);
 
+int js_liba_init(JSContext *ctx, JSModuleDef *m);
+int js_liba_pid_init(JSContext *ctx, JSModuleDef *m);
+int js_liba_pid_fuzzy_init(JSContext *ctx, JSModuleDef *m);
+int js_liba_pid_neuron_init(JSContext *ctx, JSModuleDef *m);
+int js_liba_polytraj3_init(JSContext *ctx, JSModuleDef *m);
+int js_liba_polytraj5_init(JSContext *ctx, JSModuleDef *m);
+int js_liba_polytraj7_init(JSContext *ctx, JSModuleDef *m);
+int js_liba_tf_init(JSContext *ctx, JSModuleDef *m);
+int js_liba_version_init(JSContext *ctx, JSModuleDef *m);
+
+JSValue Jconcat(JSContext *ctx, JSValueConst val);
+int JArrayLength(JSContext *ctx, JSValueConst val, a_u32_t *plen);
+int JArrayFloat(JSContext *ctx, JSValueConst val, a_float_t *ptr, a_u32_t len);
+
 #if defined(__cplusplus)
 } /* extern "C" */
 #endif /* __cplusplus */
