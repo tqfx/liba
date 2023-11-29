@@ -3,7 +3,7 @@
 #include "liba_polytraj7.h"
 
 #undef L
-#define L JPACKAGE(polytraj7)
+#define L Java_liba_polytraj7
 static struct
 {
     jfieldID q;
@@ -12,7 +12,7 @@ static struct
     jfieldID j;
 } L = {NULL, NULL, NULL, NULL};
 
-JNIEXPORT void JNICALL JPACKAGE(polytraj7_INIT)(JNIEnv *jenv, jclass jcls)
+JNIEXPORT void JNICALL Java_liba_polytraj7_INIT(JNIEnv *jenv, jclass jcls)
 {
     L.q = (*jenv)->GetFieldID(jenv, jcls, "q", "[D");
     L.v = (*jenv)->GetFieldID(jenv, jcls, "v", "[D");
@@ -20,7 +20,7 @@ JNIEXPORT void JNICALL JPACKAGE(polytraj7_INIT)(JNIEnv *jenv, jclass jcls)
     L.j = (*jenv)->GetFieldID(jenv, jcls, "j", "[D");
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(polytraj7_gen)(JNIEnv *jenv, jobject jobj, jdouble t0, jdouble t1, jdouble q0, jdouble q1, jdouble v0, jdouble v1, jdouble a0, jdouble a1, jdouble j0, jdouble j1)
+JNIEXPORT jobject JNICALL Java_liba_polytraj7_gen(JNIEnv *jenv, jobject jobj, jdouble t0, jdouble t1, jdouble q0, jdouble q1, jdouble v0, jdouble v1, jdouble a0, jdouble a1, jdouble j0, jdouble j1)
 {
     a_polytraj7_s ctx;
     jdoubleArray jq = (*jenv)->GetObjectField(jenv, jobj, L.q);
@@ -39,7 +39,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(polytraj7_gen)(JNIEnv *jenv, jobject jobj, jd
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL JPACKAGE(polytraj7_pos)(JNIEnv *jenv, jobject jobj, jdouble dt)
+JNIEXPORT jdouble JNICALL Java_liba_polytraj7_pos(JNIEnv *jenv, jobject jobj, jdouble dt)
 {
     a_polytraj7_s ctx;
     jdoubleArray jq = (*jenv)->GetObjectField(jenv, jobj, L.q);
@@ -47,7 +47,7 @@ JNIEXPORT jdouble JNICALL JPACKAGE(polytraj7_pos)(JNIEnv *jenv, jobject jobj, jd
     return a_polytraj7_pos(&ctx, dt);
 }
 
-JNIEXPORT jdouble JNICALL JPACKAGE(polytraj7_vel)(JNIEnv *jenv, jobject jobj, jdouble dt)
+JNIEXPORT jdouble JNICALL Java_liba_polytraj7_vel(JNIEnv *jenv, jobject jobj, jdouble dt)
 {
     a_polytraj7_s ctx;
     jdoubleArray jv = (*jenv)->GetObjectField(jenv, jobj, L.v);
@@ -55,7 +55,7 @@ JNIEXPORT jdouble JNICALL JPACKAGE(polytraj7_vel)(JNIEnv *jenv, jobject jobj, jd
     return a_polytraj7_vel(&ctx, dt);
 }
 
-JNIEXPORT jdouble JNICALL JPACKAGE(polytraj7_acc)(JNIEnv *jenv, jobject jobj, jdouble dt)
+JNIEXPORT jdouble JNICALL Java_liba_polytraj7_acc(JNIEnv *jenv, jobject jobj, jdouble dt)
 {
     a_polytraj7_s ctx;
     jdoubleArray ja = (*jenv)->GetObjectField(jenv, jobj, L.a);
@@ -63,7 +63,7 @@ JNIEXPORT jdouble JNICALL JPACKAGE(polytraj7_acc)(JNIEnv *jenv, jobject jobj, jd
     return a_polytraj7_acc(&ctx, dt);
 }
 
-JNIEXPORT jdouble JNICALL JPACKAGE(polytraj7_jer)(JNIEnv *jenv, jobject jobj, jdouble dt)
+JNIEXPORT jdouble JNICALL Java_liba_polytraj7_jer(JNIEnv *jenv, jobject jobj, jdouble dt)
 {
     a_polytraj7_s ctx;
     jdoubleArray jj = (*jenv)->GetObjectField(jenv, jobj, L.j);

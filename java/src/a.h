@@ -13,6 +13,4 @@
 #endif /* -Wreserved-identifier */
 #include <jni.h>
 
-#define JPACKAGE(F) Java_liba_##F
-
 #endif /* a.h */

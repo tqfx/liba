@@ -3,7 +3,7 @@
 #include "liba_tf.h"
 
 #undef L
-#define L JPACKAGE(tf)
+#define L Java_liba_tf
 static struct
 {
     jfieldID ctx;
@@ -13,7 +13,7 @@ static struct
     jfieldID output;
 } L = {NULL, NULL, NULL, NULL, NULL};
 
-JNIEXPORT void JNICALL JPACKAGE(tf_INIT)(JNIEnv *jenv, jclass jcls)
+JNIEXPORT void JNICALL Java_liba_tf_INIT(JNIEnv *jenv, jclass jcls)
 {
     L.ctx = (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B");
     L.num = (*jenv)->GetFieldID(jenv, jcls, "num", "[D");
@@ -22,7 +22,7 @@ JNIEXPORT void JNICALL JPACKAGE(tf_INIT)(JNIEnv *jenv, jclass jcls)
     L.output = (*jenv)->GetFieldID(jenv, jcls, "output", "[D");
 }
 
-JNIEXPORT void JNICALL JPACKAGE(tf_init)(JNIEnv *jenv, jobject jobj, jdoubleArray num, jdoubleArray den)
+JNIEXPORT void JNICALL Java_liba_tf_init(JNIEnv *jenv, jobject jobj, jdoubleArray num, jdoubleArray den)
 {
     a_tf_s ctx;
     jbyteArray jctx = (*jenv)->NewByteArray(jenv, sizeof(a_tf_s));
@@ -37,7 +37,7 @@ JNIEXPORT void JNICALL JPACKAGE(tf_init)(JNIEnv *jenv, jobject jobj, jdoubleArra
     (*jenv)->SetObjectField(jenv, jobj, L.output, (*jenv)->NewDoubleArray(jenv, (jsize)ctx.den_n));
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(tf_num)(JNIEnv *jenv, jobject jobj, jdoubleArray num)
+JNIEXPORT jobject JNICALL Java_liba_tf_num(JNIEnv *jenv, jobject jobj, jdoubleArray num)
 {
     a_tf_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -53,7 +53,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(tf_num)(JNIEnv *jenv, jobject jobj, jdoubleAr
     return jobj;
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(tf_den)(JNIEnv *jenv, jobject jobj, jdoubleArray den)
+JNIEXPORT jobject JNICALL Java_liba_tf_den(JNIEnv *jenv, jobject jobj, jdoubleArray den)
 {
     a_tf_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -69,7 +69,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(tf_den)(JNIEnv *jenv, jobject jobj, jdoubleAr
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL JPACKAGE(tf_iter)(JNIEnv *jenv, jobject jobj, jdouble x)
+JNIEXPORT jdouble JNICALL Java_liba_tf_iter(JNIEnv *jenv, jobject jobj, jdouble x)
 {
     union
     {
@@ -98,7 +98,7 @@ JNIEXPORT jdouble JNICALL JPACKAGE(tf_iter)(JNIEnv *jenv, jobject jobj, jdouble 
     return jres;
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(tf_zero)(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jobject JNICALL Java_liba_tf_zero(JNIEnv *jenv, jobject jobj)
 {
     a_tf_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);

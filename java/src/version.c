@@ -3,13 +3,13 @@
 #include "liba_version.h"
 
 #undef L
-#define L JPACKAGE(version)
+#define L Java_liba_version
 static struct
 {
     jfieldID ctx;
 } L = {NULL};
 
-JNIEXPORT void JNICALL JPACKAGE(version_INIT)(JNIEnv *jenv, jclass jcls)
+JNIEXPORT void JNICALL Java_liba_version_INIT(JNIEnv *jenv, jclass jcls)
 {
     (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "MAJOR", "I"), A_VERSION_MAJOR);
     (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "MINOR", "I"), A_VERSION_MINOR);
@@ -18,7 +18,7 @@ JNIEXPORT void JNICALL JPACKAGE(version_INIT)(JNIEnv *jenv, jclass jcls)
     L.ctx = (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B");
 }
 
-JNIEXPORT void JNICALL JPACKAGE(version_init)(JNIEnv *jenv, jobject jobj, jint major, jint minor, jint patch)
+JNIEXPORT void JNICALL Java_liba_version_init(JNIEnv *jenv, jobject jobj, jint major, jint minor, jint patch)
 {
     a_version_s ctx;
     jbyteArray jctx = (*jenv)->NewByteArray(jenv, sizeof(a_version_s));
@@ -30,7 +30,7 @@ JNIEXPORT void JNICALL JPACKAGE(version_init)(JNIEnv *jenv, jobject jobj, jint m
     (*jenv)->SetObjectField(jenv, jobj, L.ctx, jctx);
 }
 
-JNIEXPORT jint JNICALL JPACKAGE(version_major__)(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jint JNICALL Java_liba_version_major__(JNIEnv *jenv, jobject jobj)
 {
     a_version_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -38,7 +38,7 @@ JNIEXPORT jint JNICALL JPACKAGE(version_major__)(JNIEnv *jenv, jobject jobj)
     return (jint)ctx.major;
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(version_major__I)(JNIEnv *jenv, jobject jobj, jint major)
+JNIEXPORT jobject JNICALL Java_liba_version_major__I(JNIEnv *jenv, jobject jobj, jint major)
 {
     a_version_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -48,7 +48,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(version_major__I)(JNIEnv *jenv, jobject jobj,
     return jobj;
 }
 
-JNIEXPORT jint JNICALL JPACKAGE(version_minor__)(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jint JNICALL Java_liba_version_minor__(JNIEnv *jenv, jobject jobj)
 {
     a_version_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -56,7 +56,7 @@ JNIEXPORT jint JNICALL JPACKAGE(version_minor__)(JNIEnv *jenv, jobject jobj)
     return (jint)ctx.minor;
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(version_minor__I)(JNIEnv *jenv, jobject jobj, jint minor)
+JNIEXPORT jobject JNICALL Java_liba_version_minor__I(JNIEnv *jenv, jobject jobj, jint minor)
 {
     a_version_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -66,7 +66,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(version_minor__I)(JNIEnv *jenv, jobject jobj,
     return jobj;
 }
 
-JNIEXPORT jint JNICALL JPACKAGE(version_patch__)(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jint JNICALL Java_liba_version_patch__(JNIEnv *jenv, jobject jobj)
 {
     a_version_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -74,7 +74,7 @@ JNIEXPORT jint JNICALL JPACKAGE(version_patch__)(JNIEnv *jenv, jobject jobj)
     return (jint)ctx.patch;
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(version_patch__I)(JNIEnv *jenv, jobject jobj, jint patch)
+JNIEXPORT jobject JNICALL Java_liba_version_patch__I(JNIEnv *jenv, jobject jobj, jint patch)
 {
     a_version_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -84,7 +84,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(version_patch__I)(JNIEnv *jenv, jobject jobj,
     return jobj;
 }
 
-JNIEXPORT jobject JNICALL JPACKAGE(version_parse)(JNIEnv *jenv, jobject jobj, jstring jver)
+JNIEXPORT jobject JNICALL Java_liba_version_parse(JNIEnv *jenv, jobject jobj, jstring jver)
 {
     a_version_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -95,7 +95,7 @@ JNIEXPORT jobject JNICALL JPACKAGE(version_parse)(JNIEnv *jenv, jobject jobj, js
     return jobj;
 }
 
-JNIEXPORT jboolean JNICALL JPACKAGE(version_lt)(JNIEnv *jenv, jobject jobj, jobject jver)
+JNIEXPORT jboolean JNICALL Java_liba_version_lt(JNIEnv *jenv, jobject jobj, jobject jver)
 {
     a_version_s ctx;
     a_version_s other;
@@ -106,7 +106,7 @@ JNIEXPORT jboolean JNICALL JPACKAGE(version_lt)(JNIEnv *jenv, jobject jobj, jobj
     return a_version_lt(&ctx, &other);
 }
 
-JNIEXPORT jboolean JNICALL JPACKAGE(version_gt)(JNIEnv *jenv, jobject jobj, jobject jver)
+JNIEXPORT jboolean JNICALL Java_liba_version_gt(JNIEnv *jenv, jobject jobj, jobject jver)
 {
     a_version_s ctx;
     a_version_s other;
@@ -117,7 +117,7 @@ JNIEXPORT jboolean JNICALL JPACKAGE(version_gt)(JNIEnv *jenv, jobject jobj, jobj
     return a_version_gt(&ctx, &other);
 }
 
-JNIEXPORT jboolean JNICALL JPACKAGE(version_le)(JNIEnv *jenv, jobject jobj, jobject jver)
+JNIEXPORT jboolean JNICALL Java_liba_version_le(JNIEnv *jenv, jobject jobj, jobject jver)
 {
     a_version_s ctx;
     a_version_s other;
@@ -128,7 +128,7 @@ JNIEXPORT jboolean JNICALL JPACKAGE(version_le)(JNIEnv *jenv, jobject jobj, jobj
     return a_version_le(&ctx, &other);
 }
 
-JNIEXPORT jboolean JNICALL JPACKAGE(version_ge)(JNIEnv *jenv, jobject jobj, jobject jver)
+JNIEXPORT jboolean JNICALL Java_liba_version_ge(JNIEnv *jenv, jobject jobj, jobject jver)
 {
     a_version_s ctx;
     a_version_s other;
@@ -139,7 +139,7 @@ JNIEXPORT jboolean JNICALL JPACKAGE(version_ge)(JNIEnv *jenv, jobject jobj, jobj
     return a_version_ge(&ctx, &other);
 }
 
-JNIEXPORT jboolean JNICALL JPACKAGE(version_eq)(JNIEnv *jenv, jobject jobj, jobject jver)
+JNIEXPORT jboolean JNICALL Java_liba_version_eq(JNIEnv *jenv, jobject jobj, jobject jver)
 {
     a_version_s ctx;
     a_version_s other;
@@ -150,7 +150,7 @@ JNIEXPORT jboolean JNICALL JPACKAGE(version_eq)(JNIEnv *jenv, jobject jobj, jobj
     return a_version_eq(&ctx, &other);
 }
 
-JNIEXPORT jboolean JNICALL JPACKAGE(version_ne)(JNIEnv *jenv, jobject jobj, jobject jver)
+JNIEXPORT jboolean JNICALL Java_liba_version_ne(JNIEnv *jenv, jobject jobj, jobject jver)
 {
     a_version_s ctx;
     a_version_s other;
@@ -161,7 +161,7 @@ JNIEXPORT jboolean JNICALL JPACKAGE(version_ne)(JNIEnv *jenv, jobject jobj, jobj
     return a_version_ne(&ctx, &other);
 }
 
-JNIEXPORT jint JNICALL JPACKAGE(version_cmp)(JNIEnv *jenv, jobject jobj, jobject jver)
+JNIEXPORT jint JNICALL Java_liba_version_cmp(JNIEnv *jenv, jobject jobj, jobject jver)
 {
     a_version_s ctx;
     a_version_s other;
@@ -172,7 +172,7 @@ JNIEXPORT jint JNICALL JPACKAGE(version_cmp)(JNIEnv *jenv, jobject jobj, jobject
     return a_version_cmp(&ctx, &other);
 }
 
-JNIEXPORT jint JNICALL JPACKAGE(version_check)(JNIEnv *jenv, jclass jcls, jint major, jint minor, jint patch)
+JNIEXPORT jint JNICALL Java_liba_version_check(JNIEnv *jenv, jclass jcls, jint major, jint minor, jint patch)
 {
 #undef a_version_check
     return (void)(jenv), (void)(jcls), a_version_check((unsigned int)major, (unsigned int)minor, (unsigned int)patch);
