@@ -1,7 +1,10 @@
 from a.version cimport *
 
 '''algorithm library version'''
-VERSION = A_VERSION.decode()
+if PY_MAJOR_VERSION >= 3:
+    VERSION = A_VERSION.decode()
+else:
+    VERSION = A_VERSION
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
