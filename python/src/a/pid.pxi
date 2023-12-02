@@ -76,6 +76,3 @@ cdef class pid:
     property err:
         def __get__(self) -> a_float_t:
             return self.ctx.err
-
-include "pid/fuzzy.pxi"
-include "pid/neuron.pxi"

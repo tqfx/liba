@@ -77,7 +77,7 @@ static void fore(void)
     a_buf_dtor(&ctx, dtor);
 }
 
-#include "a/host/str.h"
+#include "a/str.h"
 #include <time.h>
 
 static int cmp(void const *lhs, void const *rhs)

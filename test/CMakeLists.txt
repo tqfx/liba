@@ -33,10 +33,6 @@ endfunction()
 
 set(TARGET_PREFIX test_)
 
-if(NOT CMAKE_EXECUTABLE_SUFFIX)
-  set(CMAKE_EXECUTABLE_SUFFIX .elf)
-endif()
-
 function(building target)
   set(TARGET "${TARGET_PREFIX}${target}")
   list(FIND ENABLED_LANGUAGES CXX HAS_CXX)
@@ -224,6 +220,27 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(pid 3.gp pid.log)
 endif()
 
+building(pid_expert pid_expert.c pid_expert.cpp)
+unittest(pid_expert)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(pid_expert 3.gp pid_expert.log)
+endif()
+
+building(pid_fuzzy pid_fuzzy.c pid_fuzzy.cpp)
+unittest(pid_fuzzy)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(pid_fuzzy 3.gp pid_fuzzy.log)
+endif()
+
+building(pid_neuron pid_neuron.c pid_neuron.cpp)
+unittest(pid_neuron)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(pid_neuron 3.gp pid_neuron.log)
+endif()
+
 if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/pid/CMakeLists.txt)
   add_subdirectory(pid)
 endif()
@@ -238,6 +255,9 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(polytraj polytraj.gp polytraj.log 0 10 0 10)
 endif()
 
+building(que que.c que.cpp)
+unittest(que)
+
 building(rbf rbf.c rbf.cpp)
 unittest(rbf)
 
@@ -247,6 +267,9 @@ endif()
 
 building(rbt rbt.c rbt.cpp)
 unittest(rbt)
+
+building(str str.c str.cpp)
+unittest(str)
 
 building(slist slist.c slist.cpp)
 unittest(slist)
@@ -261,9 +284,11 @@ endif()
 building(utf utf.c utf.cpp)
 unittest(utf)
 
+building(vec vec.c vec.cpp)
+unittest(vec)
+
+building(vector vector.c vector.cpp)
+unittest(vector)
+
 building(version version.c version.cpp)
 unittest(version)
-
-if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/host/CMakeLists.txt)
-  add_subdirectory(host)
-endif()

@@ -79,3 +79,18 @@ void a_float_roll(a_float_t *const array_p, a_size_t const array_n,
         array_p[i] = shift_p[i];
     }
 }
+
+A_ALLOC((*a_alloc), , ) = a_alloc_;
+A_ALLOC(a_alloc_, const addr, const size)
+{
+    if (size)
+    {
+        if (addr)
+        {
+            return realloc(addr, size);
+        }
+        return malloc(size);
+    }
+    free(addr);
+    return A_NULL;
+}

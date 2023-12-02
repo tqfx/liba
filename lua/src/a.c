@@ -71,31 +71,24 @@ int luaopen_liba(lua_State *const L)
     lua_str_set(L, -1, "VERSION", A_VERSION);
     lua_fun_reg(L, -1, funcs);
 
+    lua_pushstring(L, "complex");
+    luaopen_liba_complex(L);
+    lua_rawset(L, -3);
+
     lua_pushstring(L, "mf");
     luaopen_liba_mf(L);
     lua_rawset(L, -3);
 
-    lua_pushstring(L, "tf");
-    luaopen_liba_tf(L);
+    lua_pushstring(L, "pid");
+    luaopen_liba_pid(L);
     lua_rawset(L, -3);
 
-    luaopen_liba_pid(L);
-    lua_pushstring(L, "pid");
-    lua_pushvalue(L, -2);
-    lua_rawset(L, -4);
-    {
-        lua_pushstring(L, "fuzzy");
-        luaopen_liba_pid_fuzzy(L);
-        lua_rawset(L, -3);
+    lua_pushstring(L, "pid_fuzzy");
+    luaopen_liba_pid_fuzzy(L);
+    lua_rawset(L, -3);
 
-        lua_pushstring(L, "neuron");
-        luaopen_liba_pid_neuron(L);
-        lua_rawset(L, -3);
-    }
-    lua_pop(L, 1);
-
-    lua_pushstring(L, "complex");
-    luaopen_liba_complex(L);
+    lua_pushstring(L, "pid_neuron");
+    luaopen_liba_pid_neuron(L);
     lua_rawset(L, -3);
 
     lua_pushstring(L, "polytraj3");
@@ -108,6 +101,10 @@ int luaopen_liba(lua_State *const L)
 
     lua_pushstring(L, "polytraj7");
     luaopen_liba_polytraj7(L);
+    lua_rawset(L, -3);
+
+    lua_pushstring(L, "tf");
+    luaopen_liba_tf(L);
     lua_rawset(L, -3);
 
     lua_pushstring(L, "version");

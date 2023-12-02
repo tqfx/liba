@@ -1,7 +1,7 @@
 #define MAIN_(x) A_CAST_2(x, _avl)
 #include "test.h"
 #include "a/avl.h"
-#include "a/host/str.h"
+#include "a/str.h"
 
 typedef struct
 {

@@ -546,7 +546,7 @@ function liba.pid.inc(ctx, set, fdb) end
 ---@return number
 function pid:inc(set, fdb) end
 
----@class a.pid.fuzzy
+---@class a.pid_fuzzy
 ---@field kp number
 ---@field ki number
 ---@field kd number
@@ -559,118 +559,118 @@ function pid:inc(set, fdb) end
 ---@field err number
 ---@field order integer
 ---@field joint integer
-pid.fuzzy = {}
-liba.pid.fuzzy = {}
+local pid_fuzzy = {}
+liba.pid_fuzzy = {}
 
----@return a.pid.fuzzy
-function liba.pid.fuzzy.new() end
+---@return a.pid_fuzzy
+function liba.pid_fuzzy.new() end
 
----@return a.pid.fuzzy
-function pid.fuzzy.new() end
+---@return a.pid_fuzzy
+function pid_fuzzy.new() end
 
----@param ctx a.pid.fuzzy
----@return a.pid.fuzzy
-function liba.pid.fuzzy.init(ctx) end
+---@param ctx a.pid_fuzzy
+---@return a.pid_fuzzy
+function liba.pid_fuzzy.init(ctx) end
 
----@return a.pid.fuzzy
-function pid.fuzzy:init() end
+---@return a.pid_fuzzy
+function pid_fuzzy:init() end
 
----@param ctx a.pid.fuzzy
----@return a.pid.fuzzy
-function liba.pid.fuzzy.zero(ctx) end
+---@param ctx a.pid_fuzzy
+---@return a.pid_fuzzy
+function liba.pid_fuzzy.zero(ctx) end
 
----@return a.pid.fuzzy
-function pid.fuzzy:zero() end
+---@return a.pid_fuzzy
+function pid_fuzzy:zero() end
 
----@param ctx a.pid.fuzzy
+---@param ctx a.pid_fuzzy
 ---@param me table
 ---@param mec table
 ---@param mkp table
 ---@param mki table
 ---@param mkd table
----@return a.pid.fuzzy
-function liba.pid.fuzzy.rule(ctx, me, mec, mkp, mki, mkd) end
+---@return a.pid_fuzzy
+function liba.pid_fuzzy.rule(ctx, me, mec, mkp, mki, mkd) end
 
 ---@param me table
 ---@param mec table
 ---@param mkp table
 ---@param mki table
 ---@param mkd table
----@return a.pid.fuzzy
-function pid.fuzzy:rule(me, mec, mkp, mki, mkd) end
+---@return a.pid_fuzzy
+function pid_fuzzy:rule(me, mec, mkp, mki, mkd) end
 
-liba.pid.fuzzy.CAP = 1
-liba.pid.fuzzy.CAP_ALGEBRA = 2
-liba.pid.fuzzy.CAP_BOUNDED = 3
-liba.pid.fuzzy.CUP = 4
-liba.pid.fuzzy.CUP_ALGEBRA = 5
-liba.pid.fuzzy.CUP_BOUNDED = 6
-liba.pid.fuzzy.EQU = 0
----@param ctx a.pid.fuzzy
+liba.pid_fuzzy.CAP = 1
+liba.pid_fuzzy.CAP_ALGEBRA = 2
+liba.pid_fuzzy.CAP_BOUNDED = 3
+liba.pid_fuzzy.CUP = 4
+liba.pid_fuzzy.CUP_ALGEBRA = 5
+liba.pid_fuzzy.CUP_BOUNDED = 6
+liba.pid_fuzzy.EQU = 0
+---@param ctx a.pid_fuzzy
 ---@param op integer
----@return a.pid.fuzzy
-function liba.pid.fuzzy.op(ctx, op) end
+---@return a.pid_fuzzy
+function liba.pid_fuzzy.op(ctx, op) end
 
 ---@param op integer
----@return a.pid.fuzzy
-function pid.fuzzy:op(op) end
+---@return a.pid_fuzzy
+function pid_fuzzy:op(op) end
 
----@param ctx a.pid.fuzzy
+---@param ctx a.pid_fuzzy
 ---@param joint integer
----@return a.pid.fuzzy
-function liba.pid.fuzzy.set_joint(ctx, joint) end
+---@return a.pid_fuzzy
+function liba.pid_fuzzy.set_joint(ctx, joint) end
 
 ---@param joint integer
----@return a.pid.fuzzy
-function pid.fuzzy:set_joint(joint) end
+---@return a.pid_fuzzy
+function pid_fuzzy:set_joint(joint) end
 
----@param ctx a.pid.fuzzy
+---@param ctx a.pid_fuzzy
 ---@param kp number
 ---@param ki number
 ---@param kd number
----@return a.pid.fuzzy
-function liba.pid.fuzzy.kpid(ctx, kp, ki, kd) end
+---@return a.pid_fuzzy
+function liba.pid_fuzzy.kpid(ctx, kp, ki, kd) end
 
 ---@param kp number
 ---@param ki number
 ---@param kd number
----@return a.pid.fuzzy
-function pid.fuzzy:kpid(kp, ki, kd) end
+---@return a.pid_fuzzy
+function pid_fuzzy:kpid(kp, ki, kd) end
 
----@param ctx a.pid.fuzzy
+---@param ctx a.pid_fuzzy
 ---@param set number
 ---@param fdb number
 ---@return number
-function liba.pid.fuzzy.off(ctx, set, fdb) end
-
----@param set number
----@param fdb number
----@return number
-function pid.fuzzy:off(set, fdb) end
-
----@param ctx a.pid.fuzzy
----@param set number
----@param fdb number
----@return number
-function liba.pid.fuzzy.pos(ctx, set, fdb) end
+function liba.pid_fuzzy.off(ctx, set, fdb) end
 
 ---@param set number
 ---@param fdb number
 ---@return number
-function pid.fuzzy:pos(set, fdb) end
+function pid_fuzzy:off(set, fdb) end
 
----@param ctx a.pid.fuzzy
+---@param ctx a.pid_fuzzy
 ---@param set number
 ---@param fdb number
 ---@return number
-function liba.pid.fuzzy.inc(ctx, set, fdb) end
+function liba.pid_fuzzy.pos(ctx, set, fdb) end
 
 ---@param set number
 ---@param fdb number
 ---@return number
-function pid.fuzzy:inc(set, fdb) end
+function pid_fuzzy:pos(set, fdb) end
 
----@class a.pid.neuron
+---@param ctx a.pid_fuzzy
+---@param set number
+---@param fdb number
+---@return number
+function liba.pid_fuzzy.inc(ctx, set, fdb) end
+
+---@param set number
+---@param fdb number
+---@return number
+function pid_fuzzy:inc(set, fdb) end
+
+---@class a.pid_neuron
 ---@field k number
 ---@field kp number
 ---@field ki number
@@ -684,78 +684,78 @@ function pid.fuzzy:inc(set, fdb) end
 ---@field fdb number
 ---@field err number
 ---@field ec number
-pid.neuron = {}
-liba.pid.neuron = {}
+local pid_neuron = {}
+liba.pid_neuron = {}
 
----@return a.pid.neuron
-function liba.pid.neuron.new() end
+---@return a.pid_neuron
+function liba.pid_neuron.new() end
 
----@return a.pid.neuron
-function pid.neuron.new() end
+---@return a.pid_neuron
+function pid_neuron.new() end
 
----@param ctx a.pid.neuron
----@return a.pid.neuron
-function liba.pid.neuron.init(ctx) end
+---@param ctx a.pid_neuron
+---@return a.pid_neuron
+function liba.pid_neuron.init(ctx) end
 
----@return a.pid.neuron
-function pid.neuron:init() end
+---@return a.pid_neuron
+function pid_neuron:init() end
 
----@param ctx a.pid.neuron
----@return a.pid.neuron
-function liba.pid.neuron.zero(ctx) end
+---@param ctx a.pid_neuron
+---@return a.pid_neuron
+function liba.pid_neuron.zero(ctx) end
 
----@return a.pid.neuron
-function pid.neuron:zero() end
+---@return a.pid_neuron
+function pid_neuron:zero() end
 
----@param ctx a.pid.neuron
+---@param ctx a.pid_neuron
 ---@param k number
 ---@param kp number
 ---@param ki number
 ---@param kd number
----@return a.pid.neuron
-function liba.pid.neuron.kpid(ctx, k, kp, ki, kd) end
+---@return a.pid_neuron
+function liba.pid_neuron.kpid(ctx, k, kp, ki, kd) end
 
 ---@param k number
 ---@param kp number
 ---@param ki number
 ---@param kd number
----@return a.pid.neuron
-function pid.neuron:kpid(k, kp, ki, kd) end
+---@return a.pid_neuron
+function pid_neuron:kpid(k, kp, ki, kd) end
 
----@param ctx a.pid.neuron
+---@param ctx a.pid_neuron
 ---@param wp number
 ---@param wi number
 ---@param wd number
----@return a.pid.neuron
-function liba.pid.neuron.wpid(ctx, wp, wi, wd) end
+---@return a.pid_neuron
+function liba.pid_neuron.wpid(ctx, wp, wi, wd) end
 
 ---@param wp number
 ---@param wi number
 ---@param wd number
----@return a.pid.neuron
-function pid.neuron:wpid(wp, wi, wd) end
+---@return a.pid_neuron
+function pid_neuron:wpid(wp, wi, wd) end
 
----@param ctx a.pid.neuron
+---@param ctx a.pid_neuron
 ---@param set number
 ---@param fdb number
 ---@return number
-function liba.pid.neuron.off(ctx, set, fdb) end
-
----@param set number
----@param fdb number
----@return number
-function pid.neuron:off(set, fdb) end
-
----@param ctx a.pid.neuron
----@param set number
----@param fdb number
----@return number
-function liba.pid.neuron.inc(ctx, set, fdb) end
+function liba.pid_neuron.off(ctx, set, fdb) end
 
 ---@param set number
 ---@param fdb number
 ---@return number
-function pid.neuron:inc(set, fdb) end
+function pid_neuron:off(set, fdb) end
+
+---@param ctx a.pid_neuron
+---@param set number
+---@param fdb number
+---@return number
+function liba.pid_neuron.inc(ctx, set, fdb) end
+
+---@param set number
+---@param fdb number
+---@return number
+function pid_neuron:inc(set, fdb) end
 
 ---@class a.polytraj3
 ---@field q table

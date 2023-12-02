@@ -135,20 +135,22 @@ cdef class float_:
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
+cdef class hash:
+    @staticmethod
+    def bkdr(str: bytes, val: a_umax_t) -> a_umax_t:
+        return a_hash_bkdr(str, val)
+
+@cython.wraparound(False)
+@cython.boundscheck(False)
 cdef bint iterable(object o):
     return PyObject_HasAttrString(o, "__contains__")
 
 include "a/crc.pxi"
 include "a/mf.pxi"
 include "a/pid.pxi"
+include "a/pid_fuzzy.pxi"
+include "a/pid_neuron.pxi"
 include "a/poly.pxi"
 include "a/polytraj.pxi"
 include "a/tf.pxi"
 include "a/version.pxi"
-
-@cython.wraparound(False)
-@cython.boundscheck(False)
-cdef class hash:
-    @staticmethod
-    def bkdr(str: bytes, val: a_umax_t) -> a_umax_t:
-        return a_hash_bkdr(str, val)

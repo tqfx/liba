@@ -4,7 +4,7 @@
 #if defined(_MSC_VER)
 #define _CRT_SECURE_NO_WARNINGS
 #endif /* _MSC_VER */
-#include "a/host/a.h"
+#include "a/a.h"
 #include <stdio.h>
 #include <assert.h>
 #include <inttypes.h>

@@ -1149,6 +1149,22 @@ A_EXTERN void a_float_save(a_float_t *array_p, a_size_t array_n,
 A_EXTERN void a_float_roll(a_float_t *array_p, a_size_t array_n,
                            a_float_t *shift_p, a_size_t shift_n);
 
+/*!
+ @brief allocation function pointer
+ @param[in] addr address of memory block
+ @param[in] size new size of memory block
+ @return new address of memory block or null
+*/
+A_EXTERN void *(*a_alloc)(void *addr, a_size_t size);
+
+/*!
+ @brief default allocation function
+ @param[in] addr address of memory block
+ @param[in] size new size of memory block
+ @return new address of memory block or null
+*/
+A_EXTERN void *a_alloc_(void *addr, a_size_t size);
+
 #if defined(LIBA_A_C)
 #undef A_INTERN
 #define A_INTERN static A_INLINE
@@ -1157,6 +1173,18 @@ A_EXTERN void a_float_roll(a_float_t *array_p, a_size_t array_n,
 } /* extern "C" */
 #endif /* __cplusplus */
 
+/*!
+ @brief declare allocation function
+*/
+#define A_ALLOC(alloc, addr, size) void *alloc(void *addr, a_size_t size)
+#define a_new(T, ptr, num) a_cast_s(T *, a_alloc(ptr, sizeof(T) * (num)))
+#define a_die(ptr) a_alloc(ptr, 0)
+
 /*! @} A */
+
+#include <stdlib.h>
+#if defined(A_HAVE_MIMALLOC_H)
+#include <mimalloc-override.h>
+#endif /* A_HAVE_MIMALLOC_H */
 
 #endif /* a/a.h */

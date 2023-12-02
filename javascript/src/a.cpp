@@ -1,4 +1,4 @@
-#include "a/host/a.h"
+#include "a/a.h"
 #include <emscripten/bind.h>
 
 static emscripten::val js_concat(emscripten::val x)
@@ -134,7 +134,7 @@ unsigned int const pid::OFF = A_PID_OFF;
 unsigned int const pid::POS = A_PID_POS;
 unsigned int const pid::INC = A_PID_INC;
 
-#include "a/pid/fuzzy.h"
+#include "a/pid_fuzzy.h"
 
 class pid_fuzzy: public a_pid_fuzzy_s
 {
@@ -215,7 +215,7 @@ unsigned int const pid_fuzzy::CUP_ALGEBRA = A_PID_FUZZY_CUP_ALGEBRA;
 unsigned int const pid_fuzzy::CUP_BOUNDED = A_PID_FUZZY_CUP_BOUNDED;
 unsigned int const pid_fuzzy::EQU = A_PID_FUZZY_EQU;
 
-#include "a/pid/neuron.h"
+#include "a/pid_neuron.h"
 
 class pid_neuron: public a_pid_neuron_s
 {
