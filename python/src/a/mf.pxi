@@ -20,10 +20,10 @@ cdef class mf:
     PI     = A_MF_PI
     @staticmethod
     def __call__(e: a_mf_e, x, a):
-        cdef array f = float_.array(a)
+        cdef array f = array_num(a)
         cdef a_float_t *v = <a_float_t *>f.data.as_voidptr
         if iterable(x):
-            y = float_.array(x)
+            y = array_num(x)
             for i, it in enumerate(x):
                 y[i] = a_mf(e, it, v)
             return y
@@ -32,7 +32,7 @@ cdef class mf:
     def gauss(x, sigma: a_float_t, c: a_float_t):
         '''Gaussian membership function'''
         if iterable(x):
-            y = float_.array(x)
+            y = array_num(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_gauss(it, sigma, c)
             return y
@@ -41,7 +41,7 @@ cdef class mf:
     def gauss2(x, sigma1: a_float_t, c1: a_float_t, sigma2: a_float_t, c2: a_float_t):
         '''Gaussian combination membership function'''
         if iterable(x):
-            y = float_.array(x)
+            y = array_num(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_gauss2(it, sigma1, c1, sigma2, c2)
             return y
@@ -50,7 +50,7 @@ cdef class mf:
     def gbell(x, a: a_float_t, b: a_float_t, c: a_float_t):
         '''Generalized bell-shaped membership function'''
         if iterable(x):
-            y = float_.array(x)
+            y = array_num(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_gbell(it, a, b, c)
             return y
@@ -59,7 +59,7 @@ cdef class mf:
     def sig(x, a: a_float_t, c: a_float_t):
         '''Sigmoidal membership function'''
         if iterable(x):
-            y = float_.array(x)
+            y = array_num(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_sig(it, a, c)
             return y
@@ -68,7 +68,7 @@ cdef class mf:
     def dsig(x, a1: a_float_t, c1: a_float_t, a2: a_float_t, c2: a_float_t):
         '''Difference between two sigmoidal membership functions'''
         if iterable(x):
-            y = float_.array(x)
+            y = array_num(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_dsig(it, a1, c1, a2, c2)
             return y
@@ -77,7 +77,7 @@ cdef class mf:
     def psig(x, a1: a_float_t, c1: a_float_t, a2: a_float_t, c2: a_float_t):
         '''Product of two sigmoidal membership functions'''
         if iterable(x):
-            y = float_.array(x)
+            y = array_num(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_psig(it, a1, c1, a2, c2)
             return y
@@ -86,7 +86,7 @@ cdef class mf:
     def trap(x, a: a_float_t, b: a_float_t, c: a_float_t, d: a_float_t):
         '''Trapezoidal membership function'''
         if iterable(x):
-            y = float_.array(x)
+            y = array_num(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_trap(it, a, b, c, d)
             return y
@@ -95,7 +95,7 @@ cdef class mf:
     def tri(x, a: a_float_t, b: a_float_t, c: a_float_t):
         '''Triangular membership function'''
         if iterable(x):
-            y = float_.array(x)
+            y = array_num(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_tri(it, a, b, c)
             return y
@@ -104,7 +104,7 @@ cdef class mf:
     def lins(x, a: a_float_t, b: a_float_t):
         '''Linear s-shaped saturation membership function'''
         if iterable(x):
-            y = float_.array(x)
+            y = array_num(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_lins(it, a, b)
             return y
@@ -112,7 +112,7 @@ cdef class mf:
     def linz(x, a: a_float_t, b: a_float_t):
         '''Linear z-shaped saturation membership function'''
         if iterable(x):
-            y = float_.array(x)
+            y = array_num(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_linz(it, a, b)
             return y
@@ -121,7 +121,7 @@ cdef class mf:
     def s(x, a: a_float_t, b: a_float_t):
         '''S-shaped membership function'''
         if iterable(x):
-            y = float_.array(x)
+            y = array_num(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_s(it, a, b)
             return y
@@ -129,7 +129,7 @@ cdef class mf:
     def z(x, a: a_float_t, b: a_float_t):
         '''Z-shaped membership function'''
         if iterable(x):
-            y = float_.array(x)
+            y = array_num(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_z(it, a, b)
             return y
@@ -138,7 +138,7 @@ cdef class mf:
     def pi(x, a: a_float_t, b: a_float_t, c: a_float_t, d: a_float_t):
         '''Pi-shaped membership function'''
         if iterable(x):
-            y = float_.array(x)
+            y = array_num(x)
             for i, it in enumerate(x):
                 y[i] = a_mf_pi(it, a, b, c, d)
             return y

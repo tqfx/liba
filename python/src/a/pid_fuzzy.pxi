@@ -32,11 +32,11 @@ cdef class pid_fuzzy:
         return self
     def rule(self, me, mec, mkp, mki, mkd):
         '''set rule base for fuzzy PID controller'''
-        self.me = float_.array((col for row in me for col in row))
-        self.mec = float_.array((col for row in mec for col in row))
-        self.mkp = float_.array((col for row in mkp for col in row))
-        self.mki = float_.array((col for row in mki for col in row))
-        self.mkd = float_.array((col for row in mkd for col in row))
+        self.me = array_num((_2 for _1 in me for _2 in _1))
+        self.mec = array_num((_2 for _1 in mec for _2 in _1))
+        self.mkp = array_num((_2 for _1 in mkp for _2 in _1))
+        self.mki = array_num((_2 for _1 in mki for _2 in _1))
+        self.mkd = array_num((_2 for _1 in mkd for _2 in _1))
         a_pid_fuzzy_rule(&self.ctx, <unsigned int>len(me),
                          <a_float_t *>self.me.data.as_voidptr,
                          <a_float_t *>self.mec.data.as_voidptr,

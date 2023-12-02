@@ -21,8 +21,8 @@ cdef class tf:
         def __get__(self):
             return self._num
         def __set__(self, num):
-            self._num = float_.array(num)
-            self.input = float_.array(num)
+            self._num = array_num(num)
+            self.input = array_num(num)
             a_tf_set_num(&self.ctx, <unsigned int>len(num), <a_float_t *>self._num.data.as_voidptr, <a_float_t *>self.input.data.as_voidptr)
     cdef array output
     property output:
@@ -33,8 +33,8 @@ cdef class tf:
         def __get__(self):
             return self._den
         def __set__(self, den):
-            self._den = float_.array(den)
-            self.output = float_.array(den)
+            self._den = array_num(den)
+            self.output = array_num(den)
             a_tf_set_den(&self.ctx, <unsigned int>len(den), <a_float_t *>self._den.data.as_voidptr, <a_float_t *>self.output.data.as_voidptr)
     def __init__(self, num, den):
         tf.num.__set__(self, num)

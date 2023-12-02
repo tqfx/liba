@@ -7,6 +7,6 @@ if len(sys.argv) > 1:
 
 import liba
 
-print(liba.f64.rsqrt(4), liba.f32.rsqrt(4))
-print(liba.f64.rsqrt([4, 8]), liba.f32.rsqrt([4, 8]))
-print(liba.hash.bkdr(b"0", 0), liba.u32.sqrt(3), liba.u64.sqrt(7))
+print(liba.rsqrt_f64(4), liba.rsqrt_f32(4))
+print(liba.rsqrt_f64([4, 8]), liba.rsqrt_f32([4, 8]))
+print(liba.hash_bkdr(b"0", 0), liba.sqrt_u32(3), liba.sqrt_u64(7))

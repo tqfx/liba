@@ -14,7 +14,7 @@ cdef class polytraj3:
     def pos(self, dt):
         '''calculate position'''
         if iterable(dt):
-            out = float_.array(dt)
+            out = array_num(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytraj3_pos(&self.ctx, it)
             return out
@@ -22,7 +22,7 @@ cdef class polytraj3:
     def vel(self, dt):
         '''calculate velocity'''
         if iterable(dt):
-            out = float_.array(dt)
+            out = array_num(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytraj3_vel(&self.ctx, it)
             return out
@@ -30,7 +30,7 @@ cdef class polytraj3:
     def acc(self, dt):
         '''calculate acceleration'''
         if iterable(dt):
-            out = float_.array(dt)
+            out = array_num(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytraj3_acc(&self.ctx, it)
             return out
@@ -59,7 +59,7 @@ cdef class polytraj5:
     def pos(self, dt):
         '''calculate position'''
         if iterable(dt):
-            out = float_.array(dt)
+            out = array_num(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytraj5_pos(&self.ctx, it)
             return out
@@ -67,7 +67,7 @@ cdef class polytraj5:
     def vel(self, dt):
         '''calculate velocity'''
         if iterable(dt):
-            out = float_.array(dt)
+            out = array_num(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytraj5_vel(&self.ctx, it)
             return out
@@ -75,7 +75,7 @@ cdef class polytraj5:
     def acc(self, dt):
         '''calculate acceleration'''
         if iterable(dt):
-            out = float_.array(dt)
+            out = array_num(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytraj5_acc(&self.ctx, it)
             return out
@@ -104,7 +104,7 @@ cdef class polytraj7:
     def pos(self, dt):
         '''calculate position'''
         if iterable(dt):
-            out = float_.array(dt)
+            out = array_num(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytraj7_pos(&self.ctx, it)
             return out
@@ -112,7 +112,7 @@ cdef class polytraj7:
     def vel(self, dt):
         '''calculate velocity'''
         if iterable(dt):
-            out = float_.array(dt)
+            out = array_num(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytraj7_vel(&self.ctx, it)
             return out
@@ -120,7 +120,7 @@ cdef class polytraj7:
     def acc(self, dt):
         '''calculate acceleration'''
         if iterable(dt):
-            out = float_.array(dt)
+            out = array_num(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytraj7_acc(&self.ctx, it)
             return out
@@ -128,7 +128,7 @@ cdef class polytraj7:
     def jer(self, dt):
         '''calculate jerk'''
         if iterable(dt):
-            out = float_.array(dt)
+            out = array_num(dt)
             for i, it in enumerate(dt):
                 out[i] = a_polytraj7_jer(&self.ctx, it)
             return out
