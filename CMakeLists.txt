@@ -275,9 +275,9 @@ endif()
 
 include(GNUInstallDirs)
 set(INSTALL_TARGETS "")
-set(LIBA_MODULE "" CACHE STRING "Specify the installation module")
+set(LIBA_INSTALL "" CACHE STRING "Specify the installation")
 
-if(NOT LIBA_MODULE)
+if(NOT LIBA_INSTALL)
   list(APPEND INSTALL_TARGETS alib)
 endif()
 
@@ -289,7 +289,7 @@ if(A_HAVE_MIMALLOC_H)
 endif()
 
 if(TARGET_SUPPORTS_SHARED_LIBS)
-  if(NOT LIBA_MODULE)
+  if(NOT LIBA_INSTALL)
     list(APPEND INSTALL_TARGETS liba)
   endif()
 
@@ -377,7 +377,7 @@ if(A_HAVE_MIMALLOC_H AND CMAKE_VERSION VERSION_LESS 3.12)
 elseif(A_HAVE_MIMALLOC_H)
 \ttarget_link_libraries(adev PUBLIC mimalloc-static)
 endif()
-if(NOT LIBA_MODULE)
+if(NOT LIBA_INSTALL)
 \tinstall(TARGETS adev EXPORT \${PROJECT_NAME}-targets
 \t\tARCHIVE DESTINATION \${CMAKE_INSTALL_LIBDIR}
 \t\tLIBRARY DESTINATION \${CMAKE_INSTALL_LIBDIR}
@@ -406,7 +406,7 @@ endif()
 
 option(LIBA_LIBTOOL "Enable/Disable libtool" 0)
 
-if(LIBA_LIBTOOL)
+if(LIBA_LIBTOOL AND INSTALL_TARGETS)
   include(cmake/InstallLibtool.cmake)
   install_libtool(${INSTALL_TARGETS})
 endif()
