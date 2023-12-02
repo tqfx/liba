@@ -21,6 +21,7 @@ static int liba_version_init_(lua_State *const L, a_version_s *const ctx)
 {
     switch (lua_gettop(L) - lua_isuserdata(L, -1))
     {
+    default:
     case 3:
         ctx->patch = (unsigned int)luaL_checkinteger(L, 3);
         A_FALLTHROUGH;
@@ -35,8 +36,7 @@ static int liba_version_init_(lua_State *const L, a_version_s *const ctx)
         }
         ctx->major = (unsigned int)luaL_checkinteger(L, 1);
         A_FALLTHROUGH;
-    default:
-        break;
+    case 0:;
     }
     return 1;
 }

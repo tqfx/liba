@@ -12,6 +12,7 @@ static int liba_polytraj7_gen_(lua_State *const L, a_polytraj7_s *const ctx)
     a_float_t t1 = 0, q1 = 0, v1 = 0, a1 = 0, j1 = 0;
     switch (lua_gettop(L) - lua_isuserdata(L, -1))
     {
+    default:
     case 10:
         j1 = (a_float_t)luaL_checknumber(L, 10);
         A_FALLTHROUGH;
@@ -32,12 +33,17 @@ static int liba_polytraj7_gen_(lua_State *const L, a_polytraj7_s *const ctx)
         A_FALLTHROUGH;
     case 4:
         q1 = (a_float_t)luaL_checknumber(L, 4);
+        A_FALLTHROUGH;
+    case 3:
         q0 = (a_float_t)luaL_checknumber(L, 3);
+        A_FALLTHROUGH;
+    case 2:
         t1 = (a_float_t)luaL_checknumber(L, 2);
+        A_FALLTHROUGH;
+    case 1:
         t0 = (a_float_t)luaL_checknumber(L, 1);
         A_FALLTHROUGH;
-    default:
-        break;
+    case 0:;
     }
     a_polytraj7_gen(ctx, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1);
     return 1;
