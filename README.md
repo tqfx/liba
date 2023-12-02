@@ -121,7 +121,11 @@ liba/[~0.1]
 ### Lua
 
 ```bash
-luarocks install liba
+luarocks install liba # release
+```
+
+```bash
+luarocks install --server=https://luarocks.org/dev liba # latest
 ```
 
 ```lua
@@ -159,6 +163,16 @@ fn main() {
 
 ### Python
 
+```bash
+pip install liba # release
+```
+
+```bash
+pip install git+https://github.com/tqfx/liba.git # latest
+```
+
+#### main.py
+
 ```py
 import liba
 print("version", liba.VERSION)
@@ -170,12 +184,16 @@ print("version", liba.VERSION)
 npm i @tqfx/liba
 ```
 
+#### index.js
+
 ```js
 import liba from "@tqfx/liba";
 console.log(liba.VERSION)
 ```
 
 ### QuickJS
+
+#### main.js
 
 ```js
 import * as liba from "liba.so";
