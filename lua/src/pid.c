@@ -4,6 +4,7 @@
 */
 
 #include "pid.h"
+#include "a/pid.h"
 
 /***
  constructor for PID controller
@@ -150,7 +151,7 @@ int liba_pid_inc(lua_State *const L)
 
 #undef funcs
 #define funcs liba_pid_funcs
-static l_func_s const funcs[] = {
+static lua_fun_s const funcs[] = {
     {"new", liba_pid_new},
     {"init", liba_pid_init},
     {"zero", liba_pid_zero},
@@ -262,7 +263,7 @@ static int liba_pid_get(lua_State *const L)
         break;
     case 0xA65758B2: // __index
     {
-        l_num_s const datas[] = {
+        lua_num_s const reals[] = {
             {"kp", ctx->kp},
             {"ki", ctx->ki},
             {"kd", ctx->kd},
@@ -275,9 +276,9 @@ static int liba_pid_get(lua_State *const L)
             {"err", ctx->err},
             {NULL, 0},
         };
-        lua_createtable(L, 0, A_LEN(datas) + A_LEN(funcs) - 2);
-        l_num_reg(L, -1, datas);
-        l_func_reg(L, -1, funcs);
+        lua_createtable(L, 0, A_LEN(reals) + A_LEN(funcs) - 2);
+        lua_num_reg(L, -1, reals);
+        lua_fun_reg(L, -1, funcs);
         break;
     }
     default:
@@ -296,27 +297,27 @@ int luaopen_liba_pid(lua_State *const L)
      @field INC incremental PID controller
      @table mode
     */
-    l_int_s const enums[] = {
+    lua_int_s const enums[] = {
         {"OFF", A_PID_OFF},
         {"POS", A_PID_POS},
         {"INC", A_PID_INC},
         {NULL, 0},
     };
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
-    l_int_reg(L, -1, enums);
-    l_func_reg(L, -1, funcs);
+    lua_int_reg(L, -1, enums);
+    lua_fun_reg(L, -1, funcs);
     lua_createtable(L, 0, 1);
-    l_func_set(L, -1, L_SET, liba_setter);
+    lua_fun_set(L, -1, "__newindex", liba_setter);
     lua_setmetatable(L, -2);
 
-    l_func_s const metas[] = {
-        {L_SET, liba_pid_set},
-        {L_GET, liba_pid_get},
+    lua_fun_s const metas[] = {
+        {"__newindex", liba_pid_set},
+        {"__index", liba_pid_get},
         {NULL, NULL},
     };
     lua_createtable(L, 0, A_LEN(metas));
-    l_str_set(L, -1, L_NAME, "a.pid");
-    l_func_reg(L, -1, metas);
+    lua_str_set(L, -1, "__name", "a.pid");
+    lua_fun_reg(L, -1, metas);
 
     liba_pid_meta_(L, 0);
     liba_pid_func_(L, 0);
@@ -328,10 +329,10 @@ int liba_pid_func_(lua_State *const L, int const ret)
 {
     if (ret)
     {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_pid_func_));
+        lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_func_));
         return 1;
     }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_pid_func_));
+    lua_rawsetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_func_));
     return 0;
 }
 
@@ -339,9 +340,9 @@ int liba_pid_meta_(lua_State *const L, int const ret)
 {
     if (ret)
     {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_pid_meta_));
+        lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_meta_));
         return 1;
     }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_pid_meta_));
+    lua_rawsetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_meta_));
     return 0;
 }

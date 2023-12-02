@@ -3,6 +3,11 @@
  @classmod a.pid.neuron
 */
 
+#ifndef LUA_LIBA_PID_NEURON_H
+#define LUA_LIBA_PID_NEURON_H
+
+#include "../a.h"
+
 /***
  single neuron proportional integral derivative controller
  @field k proportional output coefficient
@@ -20,40 +25,33 @@
  @field ec error change
  @table a.pid.neuron
 */
-
-#ifndef L_PID_NEURON_H
-#define L_PID_NEURON_H
-
-#include "../pid.h"
-#include "a/pid/neuron.h"
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
 
-A_PUBLIC int liba_pid_neuron_func_(lua_State *L, int ret);
-A_PUBLIC int liba_pid_neuron_meta_(lua_State *L, int ret);
+int liba_pid_neuron_func_(lua_State *L, int ret);
+int liba_pid_neuron_meta_(lua_State *L, int ret);
 
 /***
  constructor for single neuron PID controller
  @treturn a.pid.neuron single neuron PID controller userdata
  @function new
 */
-A_PUBLIC int liba_pid_neuron_new(lua_State *L);
+int liba_pid_neuron_new(lua_State *L);
 
 /***
  initialize for single neuron PID controller
  @treturn a.pid.neuron single neuron PID controller userdata
  @function init
 */
-A_PUBLIC int liba_pid_neuron_init(lua_State *L);
+int liba_pid_neuron_init(lua_State *L);
 
 /***
  zeroing for single neuron PID controller
  @treturn a.pid.neuron single neuron PID controller userdata
  @function zero
 */
-A_PUBLIC int liba_pid_neuron_zero(lua_State *L);
+int liba_pid_neuron_zero(lua_State *L);
 
 /***
  set proportional integral derivative constant for single neuron PID controller
@@ -64,7 +62,7 @@ A_PUBLIC int liba_pid_neuron_zero(lua_State *L);
  @treturn a.pid.neuron single neuron PID controller userdata
  @function kpid
 */
-A_PUBLIC int liba_pid_neuron_kpid(lua_State *L);
+int liba_pid_neuron_kpid(lua_State *L);
 
 /***
  set proportional integral derivative weight for single neuron PID controller
@@ -74,7 +72,7 @@ A_PUBLIC int liba_pid_neuron_kpid(lua_State *L);
  @treturn a.pid.neuron single neuron PID controller userdata
  @function wpid
 */
-A_PUBLIC int liba_pid_neuron_wpid(lua_State *L);
+int liba_pid_neuron_wpid(lua_State *L);
 
 /***
  calculate for single neuron PID controller
@@ -83,7 +81,7 @@ A_PUBLIC int liba_pid_neuron_wpid(lua_State *L);
  @treturn number setpoint value
  @function off
 */
-A_PUBLIC int liba_pid_neuron_off(lua_State *L);
+int liba_pid_neuron_off(lua_State *L);
 
 /***
  calculate for incremental single neuron PID controller
@@ -92,7 +90,7 @@ A_PUBLIC int liba_pid_neuron_off(lua_State *L);
  @treturn number output value
  @function inc
 */
-A_PUBLIC int liba_pid_neuron_inc(lua_State *L);
+int liba_pid_neuron_inc(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

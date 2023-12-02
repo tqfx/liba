@@ -3,6 +3,11 @@
  @classmod a.polytraj3
 */
 
+#ifndef LUA_LIBA_POLYTRAJ3_H
+#define LUA_LIBA_POLYTRAJ3_H
+
+#include "a.h"
+
 /***
  cubic polynomial trajectory
  @field q coefficients of position
@@ -10,19 +15,12 @@
  @field a coefficients of acceleration
  @table a.polytraj3
 */
-
-#ifndef L_POLYTRAJ3_H
-#define L_POLYTRAJ3_H
-
-#include "a.h"
-#include "a/polytraj.h"
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
 
-A_PUBLIC int liba_polytraj3_func_(lua_State *L, int ret);
-A_PUBLIC int liba_polytraj3_meta_(lua_State *L, int ret);
+int liba_polytraj3_func_(lua_State *L, int ret);
+int liba_polytraj3_meta_(lua_State *L, int ret);
 
 /***
  constructor for cubic polynomial trajectory
@@ -37,7 +35,7 @@ A_PUBLIC int liba_polytraj3_meta_(lua_State *L, int ret);
  @treturn a.polytraj3 cubic polynomial trajectory userdata
  @function new
 */
-A_PUBLIC int liba_polytraj3_new(lua_State *L);
+int liba_polytraj3_new(lua_State *L);
 
 /***
  generate for cubic polynomial trajectory
@@ -52,7 +50,7 @@ A_PUBLIC int liba_polytraj3_new(lua_State *L);
  @treturn a.polytraj3 cubic polynomial trajectory userdata
  @function gen
 */
-A_PUBLIC int liba_polytraj3_gen(lua_State *L);
+int liba_polytraj3_gen(lua_State *L);
 
 /***
  calculate for cubic polynomial trajectory position
@@ -60,7 +58,7 @@ A_PUBLIC int liba_polytraj3_gen(lua_State *L);
  @treturn number position output
  @function pos
 */
-A_PUBLIC int liba_polytraj3_pos(lua_State *L);
+int liba_polytraj3_pos(lua_State *L);
 
 /***
  calculate for cubic polynomial trajectory velocity
@@ -68,7 +66,7 @@ A_PUBLIC int liba_polytraj3_pos(lua_State *L);
  @treturn number velocity output
  @function vel
 */
-A_PUBLIC int liba_polytraj3_vel(lua_State *L);
+int liba_polytraj3_vel(lua_State *L);
 
 /***
  calculate for cubic polynomial trajectory acceleration
@@ -76,7 +74,7 @@ A_PUBLIC int liba_polytraj3_vel(lua_State *L);
  @treturn number acceleration output
  @function acc
 */
-A_PUBLIC int liba_polytraj3_acc(lua_State *L);
+int liba_polytraj3_acc(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

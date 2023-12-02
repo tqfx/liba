@@ -369,7 +369,7 @@ int luaopen_liba_mf(lua_State *const L)
      @field PI pi-shaped membership function
      @table mf
     */
-    l_int_s const enums[] = {
+    lua_int_s const enums[] = {
         {"NUL", A_MF_NUL},
         {"GAUSS", A_MF_GAUSS},
         {"GAUSS2", A_MF_GAUSS2},
@@ -386,7 +386,7 @@ int luaopen_liba_mf(lua_State *const L)
         {"PI", A_MF_PI},
         {NULL, 0},
     };
-    l_func_s const funcs[] = {
+    lua_fun_s const funcs[] = {
         {"gauss", liba_mf_gauss},
         {"gauss2", liba_mf_gauss2},
         {"gbell", liba_mf_gbell},
@@ -404,10 +404,10 @@ int luaopen_liba_mf(lua_State *const L)
         {NULL, NULL},
     };
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
-    l_int_reg(L, -1, enums);
-    l_func_reg(L, -1, funcs);
+    lua_int_reg(L, -1, enums);
+    lua_fun_reg(L, -1, funcs);
     lua_createtable(L, 0, 1);
-    l_func_set(L, -1, L_SET, liba_setter);
+    lua_fun_set(L, -1, "__newindex", liba_setter);
     lua_setmetatable(L, -2);
     return 1;
 }

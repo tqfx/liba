@@ -4,6 +4,7 @@
 */
 
 #include "fuzzy.h"
+#include "a/pid/fuzzy.h"
 
 /***
  destructor for fuzzy PID controller
@@ -15,12 +16,12 @@ int liba_pid_fuzzy_die(lua_State *const L)
     a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, 1);
     if (ctx)
     {
-        l_alloc(L, ctx->me, 0);
-        l_alloc(L, ctx->mec, 0);
-        l_alloc(L, ctx->mkp, 0);
-        l_alloc(L, ctx->mki, 0);
-        l_alloc(L, ctx->mkd, 0);
-        l_alloc(L, a_pid_fuzzy_joint(ctx), 0);
+        lua_alloc(L, ctx->me, 0);
+        lua_alloc(L, ctx->mec, 0);
+        lua_alloc(L, ctx->mkp, 0);
+        lua_alloc(L, ctx->mki, 0);
+        lua_alloc(L, ctx->mkd, 0);
+        lua_alloc(L, a_pid_fuzzy_joint(ctx), 0);
         ctx->me = 0;
         ctx->mec = 0;
         ctx->mkp = 0;
@@ -126,11 +127,11 @@ int liba_pid_fuzzy_rule(lua_State *const L)
     if (ctx)
     {
         unsigned int const num = (unsigned int)lua_rawlen(L, 2);
-        a_float_t const *const me = l_table_num_get(L, 2, ctx->me, 0);
-        a_float_t const *const mec = l_table_num_get(L, 3, ctx->mec, 0);
-        a_float_t const *const mkp = l_table_num_get(L, 4, ctx->mkp, 0);
-        a_float_t const *const mki = l_table_num_get(L, 5, ctx->mki, 0);
-        a_float_t const *const mkd = l_table_num_get(L, 6, ctx->mkd, 0);
+        a_float_t const *const me = lua_table_num_get(L, 2, ctx->me, 0);
+        a_float_t const *const mec = lua_table_num_get(L, 3, ctx->mec, 0);
+        a_float_t const *const mkp = lua_table_num_get(L, 4, ctx->mkp, 0);
+        a_float_t const *const mki = lua_table_num_get(L, 5, ctx->mki, 0);
+        a_float_t const *const mkd = lua_table_num_get(L, 6, ctx->mkd, 0);
         a_pid_fuzzy_rule(ctx, num, me, mec, mkp, mki, mkd);
         lua_pushvalue(L, 1);
         return 1;
@@ -151,7 +152,7 @@ int liba_pid_fuzzy_joint(lua_State *const L)
     if (ctx)
     {
         unsigned int const num = (unsigned int)luaL_checkinteger(L, 2);
-        void *ptr = l_alloc(L, a_pid_fuzzy_joint(ctx), A_PID_FUZZY_JOINT(num));
+        void *ptr = lua_alloc(L, a_pid_fuzzy_joint(ctx), A_PID_FUZZY_JOINT(num));
         a_pid_fuzzy_set_joint(ctx, ptr, num);
         lua_pushvalue(L, 1);
         return 1;
@@ -248,7 +249,7 @@ int liba_pid_fuzzy_inc(lua_State *const L)
 
 #undef funcs
 #define funcs liba_pid_fuzzy_funcs
-static l_func_s const funcs[] = {
+static lua_fun_s const funcs[] = {
     {"new", liba_pid_fuzzy_new},
     {"init", liba_pid_fuzzy_init},
     {"zero", liba_pid_fuzzy_zero},
@@ -293,7 +294,7 @@ static int liba_pid_fuzzy_set(lua_State *const L)
     case 0x53A8DB2E: // joint
     {
         unsigned int const num = (unsigned int)luaL_checkinteger(L, 3);
-        void *ptr = l_alloc(L, a_pid_fuzzy_joint(ctx), A_PID_FUZZY_JOINT(num));
+        void *ptr = lua_alloc(L, a_pid_fuzzy_joint(ctx), A_PID_FUZZY_JOINT(num));
         a_pid_fuzzy_set_joint(ctx, ptr, num);
         break;
     }
@@ -385,12 +386,12 @@ static int liba_pid_fuzzy_get(lua_State *const L)
         break;
     case 0xA65758B2: // __index
     {
-        l_int_s const enums[] = {
+        lua_int_s const enums[] = {
             {"order", (lua_Integer)ctx->order},
             {"joint", (lua_Integer)ctx->joint},
             {NULL, 0},
         };
-        l_num_s const datas[] = {
+        lua_num_s const reals[] = {
             {"kp", ctx->kp},
             {"ki", ctx->ki},
             {"kd", ctx->kd},
@@ -403,10 +404,10 @@ static int liba_pid_fuzzy_get(lua_State *const L)
             {"err", ctx->pid.err},
             {NULL, 0},
         };
-        lua_createtable(L, 0, A_LEN(enums) + A_LEN(datas) + A_LEN(funcs) - 3);
-        l_int_reg(L, -1, enums);
-        l_num_reg(L, -1, datas);
-        l_func_reg(L, -1, funcs);
+        lua_createtable(L, 0, A_LEN(enums) + A_LEN(reals) + A_LEN(funcs) - 3);
+        lua_int_reg(L, -1, enums);
+        lua_num_reg(L, -1, reals);
+        lua_fun_reg(L, -1, funcs);
         break;
     }
     default:
@@ -429,7 +430,7 @@ int luaopen_liba_pid_fuzzy(lua_State *const L)
      @field EQU         sqrt(a,b)*sqrt(1-(1-a)*(1-b))
      @table op
     */
-    l_int_s const enums[] = {
+    lua_int_s const enums[] = {
         {"CAP", A_PID_FUZZY_CAP},
         {"CAP_ALGEBRA", A_PID_FUZZY_CAP_ALGEBRA},
         {"CAP_BOUNDED", A_PID_FUZZY_CAP_BOUNDED},
@@ -440,21 +441,21 @@ int luaopen_liba_pid_fuzzy(lua_State *const L)
         {NULL, 0},
     };
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
-    l_int_reg(L, -1, enums);
-    l_func_reg(L, -1, funcs);
+    lua_int_reg(L, -1, enums);
+    lua_fun_reg(L, -1, funcs);
     lua_createtable(L, 0, 1);
-    l_func_set(L, -1, L_SET, liba_setter);
+    lua_fun_set(L, -1, "__newindex", liba_setter);
     lua_setmetatable(L, -2);
 
-    l_func_s const metas[] = {
-        {L_DIE, liba_pid_fuzzy_die},
-        {L_SET, liba_pid_fuzzy_set},
-        {L_GET, liba_pid_fuzzy_get},
+    lua_fun_s const metas[] = {
+        {"__newindex", liba_pid_fuzzy_set},
+        {"__index", liba_pid_fuzzy_get},
+        {"__gc", liba_pid_fuzzy_die},
         {NULL, NULL},
     };
     lua_createtable(L, 0, A_LEN(metas));
-    l_str_set(L, -1, L_NAME, "a.pid.fuzzy");
-    l_func_reg(L, -1, metas);
+    lua_str_set(L, -1, "__name", "a.pid.fuzzy");
+    lua_fun_reg(L, -1, metas);
 
     liba_pid_fuzzy_meta_(L, 0);
     liba_pid_fuzzy_func_(L, 0);
@@ -466,10 +467,10 @@ int liba_pid_fuzzy_func_(lua_State *const L, int const ret)
 {
     if (ret)
     {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_pid_fuzzy_func_));
+        lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_fuzzy_func_));
         return 1;
     }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_pid_fuzzy_func_));
+    lua_rawsetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_fuzzy_func_));
     return 0;
 }
 
@@ -477,9 +478,9 @@ int liba_pid_fuzzy_meta_(lua_State *const L, int const ret)
 {
     if (ret)
     {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_pid_fuzzy_meta_));
+        lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_fuzzy_meta_));
         return 1;
     }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_pid_fuzzy_meta_));
+    lua_rawsetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_fuzzy_meta_));
     return 0;
 }

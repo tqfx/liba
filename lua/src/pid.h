@@ -3,6 +3,11 @@
  @classmod a.pid
 */
 
+#ifndef LUA_LIBA_PID_H
+#define LUA_LIBA_PID_H
+
+#include "a.h"
+
 /***
  proportional integral derivative controller
  @field kp proportional constant
@@ -17,40 +22,33 @@
  @field err cache error
  @table a.pid
 */
-
-#ifndef L_PID_H
-#define L_PID_H
-
-#include "a.h"
-#include "a/pid.h"
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
 
-A_PUBLIC int liba_pid_func_(lua_State *L, int ret);
-A_PUBLIC int liba_pid_meta_(lua_State *L, int ret);
+int liba_pid_func_(lua_State *L, int ret);
+int liba_pid_meta_(lua_State *L, int ret);
 
 /***
  constructor for PID controller
  @treturn a.pid PID controller userdata
  @function new
 */
-A_PUBLIC int liba_pid_new(lua_State *L);
+int liba_pid_new(lua_State *L);
 
 /***
  initialize for PID controller
  @treturn a.pid PID controller userdata
  @function init
 */
-A_PUBLIC int liba_pid_init(lua_State *L);
+int liba_pid_init(lua_State *L);
 
 /***
  zeroing for PID controller
  @treturn a.pid PID controller userdata
  @function zero
 */
-A_PUBLIC int liba_pid_zero(lua_State *L);
+int liba_pid_zero(lua_State *L);
 
 /***
  set proportional integral derivative constant for PID controller
@@ -60,7 +58,7 @@ A_PUBLIC int liba_pid_zero(lua_State *L);
  @treturn a.pid PID controller userdata
  @function kpid
 */
-A_PUBLIC int liba_pid_kpid(lua_State *L);
+int liba_pid_kpid(lua_State *L);
 
 /***
  calculate for PID controller
@@ -69,7 +67,7 @@ A_PUBLIC int liba_pid_kpid(lua_State *L);
  @treturn number setpoint value
  @function off
 */
-A_PUBLIC int liba_pid_off(lua_State *L);
+int liba_pid_off(lua_State *L);
 
 /***
  calculate for positional PID controller
@@ -78,7 +76,7 @@ A_PUBLIC int liba_pid_off(lua_State *L);
  @treturn number output value
  @function pos
 */
-A_PUBLIC int liba_pid_pos(lua_State *L);
+int liba_pid_pos(lua_State *L);
 
 /***
  calculate for incremental PID controller
@@ -87,7 +85,7 @@ A_PUBLIC int liba_pid_pos(lua_State *L);
  @treturn number output value
  @function inc
 */
-A_PUBLIC int liba_pid_inc(lua_State *L);
+int liba_pid_inc(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

@@ -3,6 +3,11 @@
  @classmod a.version
 */
 
+#ifndef LUA_LIBA_VERSION_H
+#define LUA_LIBA_VERSION_H
+
+#include "a.h"
+
 /***
  algorithm library version
  @field major version major number
@@ -10,19 +15,12 @@
  @field patch version patch number
  @table a.version
 */
-
-#ifndef L_VERSION_H
-#define L_VERSION_H
-
-#include "a.h"
-#include "a/version.h"
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
 
-A_PUBLIC int liba_version_func_(lua_State *L, int ret);
-A_PUBLIC int liba_version_meta_(lua_State *L, int ret);
+int liba_version_func_(lua_State *L, int ret);
+int liba_version_meta_(lua_State *L, int ret);
 
 /***
  constructor for algorithm library version
@@ -32,7 +30,7 @@ A_PUBLIC int liba_version_meta_(lua_State *L, int ret);
  @treturn a.version algorithm library version userdata
  @function new
 */
-A_PUBLIC int liba_version_new(lua_State *L);
+int liba_version_new(lua_State *L);
 
 /***
  initialize for algorithm library version
@@ -42,7 +40,7 @@ A_PUBLIC int liba_version_new(lua_State *L);
  @treturn a.version algorithm library version userdata
  @function init
 */
-A_PUBLIC int liba_version_init(lua_State *L);
+int liba_version_init(lua_State *L);
 
 /***
  algorithm library version parse
@@ -50,7 +48,7 @@ A_PUBLIC int liba_version_init(lua_State *L);
  @treturn a.version algorithm library version userdata
  @function parse
 */
-A_PUBLIC int liba_version_parse(lua_State *L);
+int liba_version_parse(lua_State *L);
 
 /***
  compare the version lhs with the version rhs
@@ -61,7 +59,7 @@ A_PUBLIC int liba_version_parse(lua_State *L);
  @treturn integer 0 version lhs == version rhs
  @function cmp
 */
-A_PUBLIC int liba_version_cmp(lua_State *L);
+int liba_version_cmp(lua_State *L);
 
 /***
  version lhs is less than version rhs
@@ -70,7 +68,7 @@ A_PUBLIC int liba_version_cmp(lua_State *L);
  @treturn integer result of comparison
  @function lt
 */
-A_PUBLIC int liba_version_lt(lua_State *L);
+int liba_version_lt(lua_State *L);
 
 /***
  version lhs is greater than version rhs
@@ -79,7 +77,7 @@ A_PUBLIC int liba_version_lt(lua_State *L);
  @treturn integer result of comparison
  @function gt
 */
-A_PUBLIC int liba_version_gt(lua_State *L);
+int liba_version_gt(lua_State *L);
 
 /***
  version lhs is less than or equal to version rhs
@@ -88,7 +86,7 @@ A_PUBLIC int liba_version_gt(lua_State *L);
  @treturn integer result of comparison
  @function le
 */
-A_PUBLIC int liba_version_le(lua_State *L);
+int liba_version_le(lua_State *L);
 
 /***
  version lhs is greater than or equal to version rhs
@@ -97,7 +95,7 @@ A_PUBLIC int liba_version_le(lua_State *L);
  @treturn integer result of comparison
  @function ge
 */
-A_PUBLIC int liba_version_ge(lua_State *L);
+int liba_version_ge(lua_State *L);
 
 /***
  version lhs is equal to version rhs
@@ -106,7 +104,7 @@ A_PUBLIC int liba_version_ge(lua_State *L);
  @treturn integer result of comparison
  @function eq
 */
-A_PUBLIC int liba_version_eq(lua_State *L);
+int liba_version_eq(lua_State *L);
 
 /***
  version lhs is not equal to version rhs
@@ -115,7 +113,7 @@ A_PUBLIC int liba_version_eq(lua_State *L);
  @treturn integer result of comparison
  @function ne
 */
-A_PUBLIC int liba_version_ne(lua_State *L);
+int liba_version_ne(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

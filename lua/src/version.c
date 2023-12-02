@@ -4,7 +4,7 @@
 */
 
 #include "version.h"
-#include <string.h>
+#include "a/version.h"
 
 static int liba_version_tostring(lua_State *const L)
 {
@@ -206,7 +206,7 @@ FUNC(ne)
 
 #undef funcs
 #define funcs liba_version_funcs
-static l_func_s const funcs[] = {
+static lua_fun_s const funcs[] = {
     {"check", liba_version_check},
     {"parse", liba_version_parse},
     {"init", liba_version_init},
@@ -302,15 +302,15 @@ static int liba_version_get(lua_State *const L)
         break;
     case 0xA65758B2: // __index
     {
-        l_int_s const enums[] = {
+        lua_int_s const enums[] = {
             {"major", (lua_Integer)ctx->major},
             {"minor", (lua_Integer)ctx->minor},
             {"patch", (lua_Integer)ctx->patch},
             {NULL, 0},
         };
         lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 3);
-        l_int_reg(L, -1, enums);
-        l_func_reg(L, -1, funcs + 1);
+        lua_int_reg(L, -1, enums);
+        lua_fun_reg(L, -1, funcs + 1);
         break;
     }
     default:
@@ -330,7 +330,7 @@ int luaopen_liba_version(lua_State *const L)
      @field TWEAK algorithm library version tweak
      @table liba.version
     */
-    l_int_s const enums[] = {
+    lua_int_s const enums[] = {
         {"MAJOR", A_VERSION_MAJOR},
         {"MINOR", A_VERSION_MINOR},
         {"PATCH", A_VERSION_PATCH},
@@ -338,25 +338,25 @@ int luaopen_liba_version(lua_State *const L)
         {NULL, 0},
     };
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
-    l_int_reg(L, -1, enums);
-    l_func_reg(L, -1, funcs);
+    lua_int_reg(L, -1, enums);
+    lua_fun_reg(L, -1, funcs);
     lua_createtable(L, 0, 1);
-    l_func_set(L, -1, L_SET, liba_setter);
+    lua_fun_set(L, -1, "__newindex", liba_setter);
     lua_setmetatable(L, -2);
 
-    l_func_s const metas[] = {
-        {L_PRI, liba_version_tostring},
-        {L_FUN, liba_version_init},
-        {L_GET, liba_version_get},
-        {L_SET, liba_version_set},
-        {L_EQ, liba_version_eq},
-        {L_LT, liba_version_lt},
-        {L_LE, liba_version_le},
+    lua_fun_s const metas[] = {
+        {"__tostring", liba_version_tostring},
+        {"__newindex", liba_version_set},
+        {"__index", liba_version_get},
+        {"__call", liba_version_init},
+        {"__eq", liba_version_eq},
+        {"__lt", liba_version_lt},
+        {"__le", liba_version_le},
         {NULL, NULL},
     };
     lua_createtable(L, 0, A_LEN(metas));
-    l_str_set(L, -1, L_NAME, "a.version");
-    l_func_reg(L, -1, metas);
+    lua_str_set(L, -1, "__name", "a.version");
+    lua_fun_reg(L, -1, metas);
 
     liba_version_meta_(L, 0);
     liba_version_func_(L, 0);
@@ -368,10 +368,10 @@ int liba_version_func_(lua_State *const L, int const ret)
 {
     if (ret)
     {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_version_func_));
+        lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_version_func_));
         return 1;
     }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_version_func_));
+    lua_rawsetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_version_func_));
     return 0;
 }
 
@@ -379,9 +379,9 @@ int liba_version_meta_(lua_State *const L, int const ret)
 {
     if (ret)
     {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_version_meta_));
+        lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_version_meta_));
         return 1;
     }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_version_meta_));
+    lua_rawsetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_version_meta_));
     return 0;
 }

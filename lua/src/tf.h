@@ -3,6 +3,11 @@
  @classmod a.tf
 */
 
+#ifndef LUA_LIBA_TF_H
+#define LUA_LIBA_TF_H
+
+#include "a.h"
+
 /***
  transfer function
  @field num numerator table
@@ -11,25 +16,18 @@
  @field output output table
  @table a.tf
 */
-
-#ifndef L_TF_H
-#define L_TF_H
-
-#include "a.h"
-#include "a/tf.h"
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
 
-A_PUBLIC int liba_tf_func_(lua_State *L, int ret);
-A_PUBLIC int liba_tf_meta_(lua_State *L, int ret);
+int liba_tf_func_(lua_State *L, int ret);
+int liba_tf_meta_(lua_State *L, int ret);
 
 /***
  destructor for transfer function
  @function die
 */
-A_PUBLIC int liba_tf_die(lua_State *L);
+int liba_tf_die(lua_State *L);
 
 /***
  constructor for transfer function
@@ -38,7 +36,7 @@ A_PUBLIC int liba_tf_die(lua_State *L);
  @treturn a.tf transfer function userdata
  @function new
 */
-A_PUBLIC int liba_tf_new(lua_State *L);
+int liba_tf_new(lua_State *L);
 
 /***
  initialize for transfer function
@@ -47,7 +45,7 @@ A_PUBLIC int liba_tf_new(lua_State *L);
  @treturn a.tf transfer function userdata
  @function init
 */
-A_PUBLIC int liba_tf_init(lua_State *L);
+int liba_tf_init(lua_State *L);
 
 /***
  calculate for transfer function
@@ -55,14 +53,14 @@ A_PUBLIC int liba_tf_init(lua_State *L);
  @treturn number output
  @function iter
 */
-A_PUBLIC int liba_tf_iter(lua_State *L);
+int liba_tf_iter(lua_State *L);
 
 /***
  zeroing for transfer function
  @treturn a.tf transfer function userdata
  @function zero
 */
-A_PUBLIC int liba_tf_zero(lua_State *L);
+int liba_tf_zero(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

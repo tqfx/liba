@@ -4,6 +4,7 @@
 */
 
 #include "complex.h"
+#include "a/complex.h"
 
 #if A_PREREQ_GNUC(2, 95) || __has_warning("-Waggregate-return")
 #pragma GCC diagnostic ignored "-Waggregate-return"
@@ -463,7 +464,7 @@ FUNC(acoth)
 
 #undef funcs
 #define funcs liba_complex_funcs
-static l_func_s const funcs[] = {
+static lua_fun_s const funcs[] = {
     {"new", liba_complex_new},
     {"polar", liba_complex_polar},
     {"logabs", liba_complex_logabs},
@@ -697,16 +698,16 @@ static int liba_complex_get(lua_State *const L)
         break;
     case 0xA65758B2: // __index
     {
-        l_num_s const datas[] = {
+        lua_num_s const reals[] = {
             {"real", a_complex_real(*ctx)},
             {"imag", a_complex_imag(*ctx)},
             {"r", a_complex_abs(*ctx)},
             {"theta", a_complex_arg(*ctx)},
             {NULL, 0},
         };
-        lua_createtable(L, 0, A_LEN(datas) + A_LEN(funcs) - 2);
-        l_num_reg(L, -1, datas);
-        l_func_reg(L, -1, funcs);
+        lua_createtable(L, 0, A_LEN(reals) + A_LEN(funcs) - 2);
+        lua_num_reg(L, -1, reals);
+        lua_fun_reg(L, -1, funcs);
         break;
     }
     default:
@@ -719,27 +720,27 @@ static int liba_complex_get(lua_State *const L)
 int luaopen_liba_complex(lua_State *const L)
 {
     lua_createtable(L, 0, A_LEN(funcs) - 1);
-    l_func_reg(L, -1, funcs);
+    lua_fun_reg(L, -1, funcs);
     lua_createtable(L, 0, 1);
-    l_func_set(L, -1, L_SET, liba_setter);
+    lua_fun_set(L, -1, "__newindex", liba_setter);
     lua_setmetatable(L, -2);
 
-    l_func_s const metas[] = {
-        {L_PRI, liba_complex_tostring},
-        {L_GET, liba_complex_get},
-        {L_SET, liba_complex_set},
-        {L_UNM, liba_complex_neg},
-        {L_ADD, liba_complex_add},
-        {L_SUB, liba_complex_sub},
-        {L_MUL, liba_complex_mul},
-        {L_DIV, liba_complex_div},
-        {L_POW, liba_complex_pow},
-        {L_LEN, liba_complex_abs},
+    lua_fun_s const metas[] = {
+        {"__tostring", liba_complex_tostring},
+        {"__newindex", liba_complex_set},
+        {"__index", liba_complex_get},
+        {"__unm", liba_complex_neg},
+        {"__add", liba_complex_add},
+        {"__sub", liba_complex_sub},
+        {"__mul", liba_complex_mul},
+        {"__div", liba_complex_div},
+        {"__pow", liba_complex_pow},
+        {"__len", liba_complex_abs},
         {NULL, NULL},
     };
     lua_createtable(L, 0, A_LEN(metas));
-    l_str_set(L, -1, L_NAME, "a.complex");
-    l_func_reg(L, -1, metas);
+    lua_str_set(L, -1, "__name", "a.complex");
+    lua_fun_reg(L, -1, metas);
 
     liba_complex_meta_(L, 0);
     liba_complex_func_(L, 0);
@@ -751,10 +752,10 @@ int liba_complex_func_(lua_State *const L, int const ret)
 {
     if (ret)
     {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_complex_func_));
+        lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_complex_func_));
         return 1;
     }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_complex_func_));
+    lua_rawsetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_complex_func_));
     return 0;
 }
 
@@ -762,9 +763,9 @@ int liba_complex_meta_(lua_State *const L, int const ret)
 {
     if (ret)
     {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_complex_meta_));
+        lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_complex_meta_));
         return 1;
     }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_complex_meta_));
+    lua_rawsetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_complex_meta_));
     return 0;
 }

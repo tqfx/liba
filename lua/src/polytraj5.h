@@ -3,6 +3,11 @@
  @classmod a.polytraj5
 */
 
+#ifndef LUA_LIBA_POLYTRAJ5_H
+#define LUA_LIBA_POLYTRAJ5_H
+
+#include "a.h"
+
 /***
  quintic polynomial trajectory
  @field q coefficients of position
@@ -10,19 +15,12 @@
  @field a coefficients of acceleration
  @table a.polytraj5
 */
-
-#ifndef L_POLYTRAJ5_H
-#define L_POLYTRAJ5_H
-
-#include "a.h"
-#include "a/polytraj.h"
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
 
-A_PUBLIC int liba_polytraj5_func_(lua_State *L, int ret);
-A_PUBLIC int liba_polytraj5_meta_(lua_State *L, int ret);
+int liba_polytraj5_func_(lua_State *L, int ret);
+int liba_polytraj5_meta_(lua_State *L, int ret);
 
 /***
  constructor for quintic polynomial trajectory
@@ -39,7 +37,7 @@ A_PUBLIC int liba_polytraj5_meta_(lua_State *L, int ret);
  @treturn a.polytraj5 quintic polynomial trajectory userdata
  @function new
 */
-A_PUBLIC int liba_polytraj5_new(lua_State *L);
+int liba_polytraj5_new(lua_State *L);
 
 /***
  generate for quintic polynomial trajectory
@@ -56,7 +54,7 @@ A_PUBLIC int liba_polytraj5_new(lua_State *L);
  @treturn a.polytraj5 quintic polynomial trajectory userdata
  @function gen
 */
-A_PUBLIC int liba_polytraj5_gen(lua_State *L);
+int liba_polytraj5_gen(lua_State *L);
 
 /***
  calculate for quintic polynomial trajectory position
@@ -64,7 +62,7 @@ A_PUBLIC int liba_polytraj5_gen(lua_State *L);
  @treturn number position output
  @function pos
 */
-A_PUBLIC int liba_polytraj5_pos(lua_State *L);
+int liba_polytraj5_pos(lua_State *L);
 
 /***
  calculate for quintic polynomial trajectory velocity
@@ -72,7 +70,7 @@ A_PUBLIC int liba_polytraj5_pos(lua_State *L);
  @treturn number velocity output
  @function vel
 */
-A_PUBLIC int liba_polytraj5_vel(lua_State *L);
+int liba_polytraj5_vel(lua_State *L);
 
 /***
  calculate for quintic polynomial trajectory acceleration
@@ -80,7 +78,7 @@ A_PUBLIC int liba_polytraj5_vel(lua_State *L);
  @treturn number acceleration output
  @function acc
 */
-A_PUBLIC int liba_polytraj5_acc(lua_State *L);
+int liba_polytraj5_acc(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

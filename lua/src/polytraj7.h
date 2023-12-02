@@ -3,6 +3,11 @@
  @classmod a.polytraj7
 */
 
+#ifndef LUA_LIBA_POLYTRAJ7_H
+#define LUA_LIBA_POLYTRAJ7_H
+
+#include "a.h"
+
 /***
  hepta polynomial trajectory
  @field q coefficients of position
@@ -11,19 +16,12 @@
  @field j coefficients of jerk
  @table a.polytraj7
 */
-
-#ifndef L_POLYTRAJ7_H
-#define L_POLYTRAJ7_H
-
-#include "a.h"
-#include "a/polytraj.h"
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
 
-A_PUBLIC int liba_polytraj7_func_(lua_State *L, int ret);
-A_PUBLIC int liba_polytraj7_meta_(lua_State *L, int ret);
+int liba_polytraj7_func_(lua_State *L, int ret);
+int liba_polytraj7_meta_(lua_State *L, int ret);
 
 /***
  constructor for hepta polynomial trajectory
@@ -42,7 +40,7 @@ A_PUBLIC int liba_polytraj7_meta_(lua_State *L, int ret);
  @treturn a.polytraj7 hepta polynomial trajectory userdata
  @function new
 */
-A_PUBLIC int liba_polytraj7_new(lua_State *L);
+int liba_polytraj7_new(lua_State *L);
 
 /***
  generate for hepta polynomial trajectory
@@ -61,7 +59,7 @@ A_PUBLIC int liba_polytraj7_new(lua_State *L);
  @treturn a.polytraj7 hepta polynomial trajectory userdata
  @function gen
 */
-A_PUBLIC int liba_polytraj7_gen(lua_State *L);
+int liba_polytraj7_gen(lua_State *L);
 
 /***
  calculate for hepta polynomial trajectory position
@@ -69,7 +67,7 @@ A_PUBLIC int liba_polytraj7_gen(lua_State *L);
  @treturn number position output
  @function pos
 */
-A_PUBLIC int liba_polytraj7_pos(lua_State *L);
+int liba_polytraj7_pos(lua_State *L);
 
 /***
  calculate for hepta polynomial trajectory velocity
@@ -77,7 +75,7 @@ A_PUBLIC int liba_polytraj7_pos(lua_State *L);
  @treturn number velocity output
  @function vel
 */
-A_PUBLIC int liba_polytraj7_vel(lua_State *L);
+int liba_polytraj7_vel(lua_State *L);
 
 /***
  calculate for hepta polynomial trajectory acceleration
@@ -85,7 +83,7 @@ A_PUBLIC int liba_polytraj7_vel(lua_State *L);
  @treturn number acceleration output
  @function acc
 */
-A_PUBLIC int liba_polytraj7_acc(lua_State *L);
+int liba_polytraj7_acc(lua_State *L);
 
 /***
  calculate for hepta polynomial trajectory jerk
@@ -93,7 +91,7 @@ A_PUBLIC int liba_polytraj7_acc(lua_State *L);
  @treturn number jerk output
  @function jer
 */
-A_PUBLIC int liba_polytraj7_jer(lua_State *L);
+int liba_polytraj7_jer(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

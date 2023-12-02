@@ -4,6 +4,7 @@
 */
 
 #include "neuron.h"
+#include "a/pid/neuron.h"
 
 /***
  constructor for single neuron PID controller
@@ -161,7 +162,7 @@ int liba_pid_neuron_inc(lua_State *const L)
 
 #undef funcs
 #define funcs liba_pid_neuron_funcs
-static l_func_s const funcs[] = {
+static lua_fun_s const funcs[] = {
     {"new", liba_pid_neuron_new},
     {"init", liba_pid_neuron_init},
     {"zero", liba_pid_neuron_zero},
@@ -288,7 +289,7 @@ static int liba_pid_neuron_get(lua_State *const L)
         break;
     case 0xA65758B2: // __index
     {
-        l_num_s const datas[] = {
+        lua_num_s const reals[] = {
             {"kp", ctx->pid.kp},
             {"ki", ctx->pid.ki},
             {"kd", ctx->pid.kd},
@@ -305,9 +306,9 @@ static int liba_pid_neuron_get(lua_State *const L)
             {"k", ctx->k},
             {NULL, 0},
         };
-        lua_createtable(L, 0, A_LEN(datas) + A_LEN(funcs) - 2);
-        l_num_reg(L, -1, datas);
-        l_func_reg(L, -1, funcs);
+        lua_createtable(L, 0, A_LEN(reals) + A_LEN(funcs) - 2);
+        lua_num_reg(L, -1, reals);
+        lua_fun_reg(L, -1, funcs);
         break;
     }
     default:
@@ -320,19 +321,19 @@ static int liba_pid_neuron_get(lua_State *const L)
 int luaopen_liba_pid_neuron(lua_State *const L)
 {
     lua_createtable(L, 0, A_LEN(funcs) - 1);
-    l_func_reg(L, -1, funcs);
+    lua_fun_reg(L, -1, funcs);
     lua_createtable(L, 0, 1);
-    l_func_set(L, -1, L_SET, liba_setter);
+    lua_fun_set(L, -1, "__newindex", liba_setter);
     lua_setmetatable(L, -2);
 
-    l_func_s const metas[] = {
-        {L_SET, liba_pid_neuron_set},
-        {L_GET, liba_pid_neuron_get},
+    lua_fun_s const metas[] = {
+        {"__newindex", liba_pid_neuron_set},
+        {"__index", liba_pid_neuron_get},
         {NULL, NULL},
     };
     lua_createtable(L, 0, A_LEN(metas));
-    l_str_set(L, -1, L_NAME, "a.pid.neuron");
-    l_func_reg(L, -1, metas);
+    lua_str_set(L, -1, "__name", "a.pid.neuron");
+    lua_fun_reg(L, -1, metas);
 
     liba_pid_neuron_meta_(L, 0);
     liba_pid_neuron_func_(L, 0);
@@ -344,10 +345,10 @@ int liba_pid_neuron_func_(lua_State *const L, int const ret)
 {
     if (ret)
     {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_pid_neuron_func_));
+        lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_neuron_func_));
         return 1;
     }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_pid_neuron_func_));
+    lua_rawsetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_neuron_func_));
     return 0;
 }
 
@@ -355,9 +356,9 @@ int liba_pid_neuron_meta_(lua_State *const L, int const ret)
 {
     if (ret)
     {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_pid_neuron_meta_));
+        lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_neuron_meta_));
         return 1;
     }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, L_FUNC2P(liba_pid_neuron_meta_));
+    lua_rawsetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_neuron_meta_));
     return 0;
 }
