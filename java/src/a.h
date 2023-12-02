@@ -1,5 +1,5 @@
-#ifndef J_A_H
-#define J_A_H
+#ifndef JAVA_LIBA_A_H
+#define JAVA_LIBA_A_H
 
 #if defined(__GNUC__) || defined(__clang__)
 #pragma GCC system_header
