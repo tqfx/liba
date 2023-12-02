@@ -28,7 +28,7 @@ if has_config("warning") then
     set_warnings("everything")
     -- disable some compiler errors
     if is_plat("windows") then
-        add_cxflags("/wd4514", "/wd4710", "/wd4711", "/wd4820", "/wd5039", "/wd5045")
+        add_cxflags("/wd4464", "/wd4514", "/wd4710", "/wd4711", "/wd4820", "/wd5039", "/wd5045")
     end
     add_cflags("-Wno-declaration-after-statement")
     add_cxxflags("-Wno-c++98-compat-pedantic")
@@ -64,19 +64,35 @@ set_category("liba")
 set_description("dynamic library search path")
 option_end()
 
+if xmake.version():ge("2.8.5") then
+    includes("@builtin/check")
+else
+    includes("check_csnippets.lua")
+    includes("check_cincludes.lua")
+    includes("check_cfuncs.lua")
+end
+
+configvar_check_sizeof = configvar_check_sizeof
+    or function(define_name, type_name)
+        configvar_check_csnippets(
+            define_name,
+            'printf("%u", sizeof(' .. type_name .. "));return 0;",
+            { output = true, number = true }
+        )
+    end
+
 target("a")
 -- make as a collection of objects
 set_kind("object")
 -- detect c code functions
 float = get_config("liba-float")
-includes("check_csnippets.lua")
-local source = 'printf("%u", (unsigned int)sizeof(void *));'
-configvar_check_csnippets("A_SIZE_POINTER", source, { output = true, number = true })
-local source = 'int x = 1; puts(*(char *)&x ? "1234" : "4321");'
-configvar_check_csnippets("A_BYTE_ORDER", source, { output = true, number = true })
-includes("check_cincludes.lua")
+configvar_check_sizeof("A_SIZE_POINTER", "void *")
+configvar_check_csnippets(
+    "A_BYTE_ORDER",
+    'int x = 1; puts(*(char *)&x ? "1234" : "4321");',
+    { output = true, number = true }
+)
 function check_math(funcs, opt)
-    includes("check_cfuncs.lua")
     for i, func in pairs(funcs) do
         local have = "A_HAVE_" .. string.upper(func)
         if float == "16" then

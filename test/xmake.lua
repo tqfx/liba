@@ -1,5 +1,6 @@
 ---@diagnostic disable
 del_files = remove_files or del_files
+add_tests = add_tests or function() end
 
 function building(sources)
     set_group("test")
@@ -15,6 +16,7 @@ function building(sources)
         del_files("*.cpp")
     end
     add_deps("a")
+    add_tests("")
 end
 
 target("test/a")
