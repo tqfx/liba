@@ -59,7 +59,9 @@ static JSCFunctionListEntry const liba_mf_table[] = {
     JS_CFUNC_DEF("pi", 5, liba_mf_pi),
 };
 
+#if !defined A_VERSION
 #include "a/version.h"
+#endif /* A_VERSION */
 
 static JSCFunctionListEntry const liba_table[] = {
     JS_OBJECT_DEF("mf", liba_mf_table, A_LEN(liba_mf_table), 0),
@@ -99,7 +101,7 @@ JSModuleDef *js_init_module(JSContext *const ctx, char const *const module_name)
     return m;
 }
 
-JSValue Jconcat(JSContext *const ctx, JSValueConst const val)
+JSValue js_concat(JSContext *const ctx, JSValueConst const val)
 {
     JSValue this_val = JS_NewArray(ctx);
     JSValueConst argv[] = {this_val, val};
@@ -112,7 +114,7 @@ JSValue Jconcat(JSContext *const ctx, JSValueConst const val)
     return res;
 }
 
-int JArrayLength(JSContext *const ctx, JSValueConst const val, a_u32_t *const plen)
+int js_array_length(JSContext *const ctx, JSValueConst const val, a_u32_t *const plen)
 {
     JSValue length = JS_GetPropertyStr(ctx, val, "length");
     if (JS_IsException(length))
@@ -124,7 +126,7 @@ int JArrayLength(JSContext *const ctx, JSValueConst const val, a_u32_t *const pl
     return ret;
 }
 
-int JArrayFloat(JSContext *const ctx, JSValueConst const val, a_float_t *const ptr, a_u32_t const len)
+int js_array_num_get(JSContext *const ctx, JSValueConst const val, a_float_t *const ptr, a_u32_t const len)
 {
     for (unsigned int i = 0; i < len; ++i)
     {
@@ -143,4 +145,18 @@ int JArrayFloat(JSContext *const ctx, JSValueConst const val, a_float_t *const p
         ptr[i] = (a_float_t)x;
     }
     return 0;
+}
+
+JSValue js_array_num_new(JSContext *const ctx, a_float_t const *const ptr, a_u32_t const len)
+{
+    JSValue val = JS_NewArray(ctx);
+    if (JS_IsException(val))
+    {
+        return val;
+    }
+    for (unsigned int i = 0; i < len; ++i)
+    {
+        JS_SetPropertyUint32(ctx, val, i, JS_NewFloat64(ctx, (double)ptr[i]));
+    }
+    return val;
 }

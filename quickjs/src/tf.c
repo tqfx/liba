@@ -1,23 +1,11 @@
 #include "a.h"
 #include "a/tf.h"
 
-static JSClassID liba_tf_class_id;
-
-static void liba_tf_finalizer(JSRuntime *const rt, JSValue const val)
-{
-    a_tf_s *const self = (a_tf_s *)JS_GetOpaque(val, liba_tf_class_id);
-    js_free_rt(rt, self->output);
-    js_free_rt(rt, self->input);
-    js_free_rt(rt, self);
-}
-
-static JSClassDef liba_tf_class = {"tf", .finalizer = liba_tf_finalizer};
-
-static int liba_tf_set_num(JSContext *const ctx, a_tf_s *const self, JSValueConst num)
+static int liba_tf_set_num_(JSContext *const ctx, a_tf_s *const self, JSValueConst num)
 {
     a_u32_t num_n = 0;
     a_float_t *num_p = self->input;
-    int ret = JArrayLength(ctx, num, &num_n);
+    int ret = js_array_length(ctx, num, &num_n);
     if (ret)
     {
         return ret;
@@ -39,14 +27,14 @@ static int liba_tf_set_num(JSContext *const ctx, a_tf_s *const self, JSValueCons
     }
     self->num_n = (unsigned int)num_n;
     a_zero(self->input, sizeof(a_float_t) * num_n);
-    return JArrayFloat(ctx, num, num_p, num_n);
+    return js_array_num_get(ctx, num, num_p, num_n);
 }
 
-static int liba_tf_set_den(JSContext *const ctx, a_tf_s *const self, JSValueConst den)
+static int liba_tf_set_den_(JSContext *const ctx, a_tf_s *const self, JSValueConst den)
 {
     a_u32_t den_n = 0;
     a_float_t *den_p = self->output;
-    int ret = JArrayLength(ctx, den, &den_n);
+    int ret = js_array_length(ctx, den, &den_n);
     if (ret)
     {
         return ret;
@@ -68,8 +56,20 @@ static int liba_tf_set_den(JSContext *const ctx, a_tf_s *const self, JSValueCons
     }
     self->den_n = (unsigned int)den_n;
     a_zero(self->output, sizeof(a_float_t) * den_n);
-    return JArrayFloat(ctx, den, den_p, den_n);
+    return js_array_num_get(ctx, den, den_p, den_n);
 }
+
+static JSClassID liba_tf_class_id;
+
+static void liba_tf_finalizer(JSRuntime *const rt, JSValue const val)
+{
+    a_tf_s *const self = (a_tf_s *)JS_GetOpaque(val, liba_tf_class_id);
+    js_free_rt(rt, self->output);
+    js_free_rt(rt, self->input);
+    js_free_rt(rt, self);
+}
+
+static JSClassDef liba_tf_class = {"tf", .finalizer = liba_tf_finalizer};
 
 static JSValue liba_tf_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
@@ -80,11 +80,11 @@ static JSValue liba_tf_ctor(JSContext *const ctx, JSValueConst const new_target,
     {
         return JS_EXCEPTION;
     }
-    if (JS_IsObject(argv[0]) && liba_tf_set_num(ctx, self, argv[0]))
+    if (JS_IsObject(argv[0]) && liba_tf_set_num_(ctx, self, argv[0]))
     {
         goto fail;
     }
-    if (JS_IsObject(argv[1]) && liba_tf_set_den(ctx, self, argv[1]))
+    if (JS_IsObject(argv[1]) && liba_tf_set_den_(ctx, self, argv[1]))
     {
         goto fail;
     }
@@ -114,39 +114,19 @@ static JSValue liba_tf_get(JSContext *const ctx, JSValueConst const this_val, in
     {
         return JS_EXCEPTION;
     }
-    a_float_t const *val_p;
-    a_size_t val_n;
     switch (magic)
     {
     case 0:
-        val_p = self->num_p;
-        val_n = self->num_n;
-        break;
+        return js_array_num_new(ctx, self->num_p, self->num_n);
     case 1:
-        val_p = self->den_p;
-        val_n = self->den_n;
-        break;
+        return js_array_num_new(ctx, self->den_p, self->den_n);
     case 2:
-        val_p = self->input;
-        val_n = self->num_n;
-        break;
+        return js_array_num_new(ctx, self->input, self->num_n);
     case 3:
-        val_p = self->output;
-        val_n = self->den_n;
-        break;
+        return js_array_num_new(ctx, self->output, self->den_n);
     default:
         return JS_UNDEFINED;
     }
-    JSValue val = JS_NewArray(ctx);
-    if (JS_IsException(val))
-    {
-        return val;
-    }
-    for (unsigned int i = 0; i < val_n; ++i)
-    {
-        JS_SetPropertyUint32(ctx, val, i, JS_NewFloat64(ctx, (double)val_p[i]));
-    }
-    return val;
 }
 
 static JSValue liba_tf_set(JSContext *const ctx, JSValueConst const this_val, JSValueConst const val, int magic)
@@ -161,13 +141,13 @@ static JSValue liba_tf_set(JSContext *const ctx, JSValueConst const this_val, JS
     case 0:
         if (JS_IsObject(val))
         {
-            liba_tf_set_num(ctx, self, val);
+            liba_tf_set_num_(ctx, self, val);
         }
         break;
     case 1:
         if (JS_IsObject(val))
         {
-            liba_tf_set_den(ctx, self, val);
+            liba_tf_set_den_(ctx, self, val);
         }
         break;
     default:

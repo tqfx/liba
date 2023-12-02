@@ -68,35 +68,17 @@ static JSValue liba_polytraj5_get(JSContext *const ctx, JSValueConst const this_
     {
         return JS_EXCEPTION;
     }
-    a_float_t const *val_p;
-    a_size_t val_n;
     switch (magic)
     {
     case 0:
-        val_p = self->q;
-        val_n = A_LEN(self->q);
-        break;
+        return js_array_num_new(ctx, self->q, A_LEN(self->q));
     case 1:
-        val_p = self->v;
-        val_n = A_LEN(self->v);
-        break;
+        return js_array_num_new(ctx, self->v, A_LEN(self->v));
     case 2:
-        val_p = self->a;
-        val_n = A_LEN(self->a);
-        break;
+        return js_array_num_new(ctx, self->a, A_LEN(self->a));
     default:
         return JS_UNDEFINED;
     }
-    JSValue val = JS_NewArray(ctx);
-    if (JS_IsException(val))
-    {
-        return val;
-    }
-    for (unsigned int i = 0; i < val_n; ++i)
-    {
-        JS_SetPropertyUint32(ctx, val, i, JS_NewFloat64(ctx, (double)val_p[i]));
-    }
-    return val;
 }
 
 static JSValue liba_polytraj5_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)

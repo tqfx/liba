@@ -1,13 +1,13 @@
 #include "a/host/a.h"
 #include <emscripten/bind.h>
 
-static emscripten::val Jconcat(emscripten::val x)
+static emscripten::val js_concat(emscripten::val x)
 {
-    emscripten::val array = emscripten::val::array();
-    return array["concat"].call<emscripten::val>("apply", array, x);
+    emscripten::val empty = emscripten::val::array();
+    return empty["concat"].call<emscripten::val>("apply", empty, x);
 }
 
-static a_float_t *JArrayFloat(emscripten::val const &x, a_size_t n, a_float_t *p)
+static a_float_t *js_array_num_get(emscripten::val const &x, a_size_t n, a_float_t *p)
 {
     p = a_float_c(*, a_alloc(p, sizeof(a_float_t) * n));
     a_size_t length = x["length"].as<a_size_t>();
@@ -16,6 +16,11 @@ static a_float_t *JArrayFloat(emscripten::val const &x, a_size_t n, a_float_t *p
         p[i] = x[i].as<a_float_t>();
     }
     return p;
+}
+
+static emscripten::val js_array_num_new(a_float_t const *p, a_size_t n)
+{
+    return emscripten::val(emscripten::typed_memory_view(n, p));
 }
 
 #include "a/mf.h"
@@ -262,18 +267,9 @@ public:
     {
         a_polytraj3_gen(this, t0, t1, q0, q1, v0, v1);
     }
-    emscripten::val get_q() const
-    {
-        return emscripten::val(emscripten::typed_memory_view(A_LEN(q), q));
-    }
-    emscripten::val get_v() const
-    {
-        return emscripten::val(emscripten::typed_memory_view(A_LEN(v), v));
-    }
-    emscripten::val get_a() const
-    {
-        return emscripten::val(emscripten::typed_memory_view(A_LEN(a), a));
-    }
+    emscripten::val get_q() const { return js_array_num_new(q, A_LEN(q)); }
+    emscripten::val get_v() const { return js_array_num_new(v, A_LEN(v)); }
+    emscripten::val get_a() const { return js_array_num_new(a, A_LEN(a)); }
 };
 
 class polytraj5: public a_polytraj5_s
@@ -285,18 +281,9 @@ public:
     {
         a_polytraj5_gen(this, t0, t1, q0, q1, v0, v1, a0, a1);
     }
-    emscripten::val get_q() const
-    {
-        return emscripten::val(emscripten::typed_memory_view(A_LEN(q), q));
-    }
-    emscripten::val get_v() const
-    {
-        return emscripten::val(emscripten::typed_memory_view(A_LEN(v), v));
-    }
-    emscripten::val get_a() const
-    {
-        return emscripten::val(emscripten::typed_memory_view(A_LEN(a), a));
-    }
+    emscripten::val get_q() const { return js_array_num_new(q, A_LEN(q)); }
+    emscripten::val get_v() const { return js_array_num_new(v, A_LEN(v)); }
+    emscripten::val get_a() const { return js_array_num_new(a, A_LEN(a)); }
 };
 
 class polytraj7: public a_polytraj7_s
@@ -309,22 +296,10 @@ public:
     {
         a_polytraj7_gen(this, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1);
     }
-    emscripten::val get_q() const
-    {
-        return emscripten::val(emscripten::typed_memory_view(A_LEN(q), q));
-    }
-    emscripten::val get_v() const
-    {
-        return emscripten::val(emscripten::typed_memory_view(A_LEN(v), v));
-    }
-    emscripten::val get_a() const
-    {
-        return emscripten::val(emscripten::typed_memory_view(A_LEN(a), a));
-    }
-    emscripten::val get_j() const
-    {
-        return emscripten::val(emscripten::typed_memory_view(A_LEN(j), j));
-    }
+    emscripten::val get_q() const { return js_array_num_new(q, A_LEN(q)); }
+    emscripten::val get_v() const { return js_array_num_new(v, A_LEN(v)); }
+    emscripten::val get_a() const { return js_array_num_new(a, A_LEN(a)); }
+    emscripten::val get_j() const { return js_array_num_new(j, A_LEN(j)); }
 };
 
 #include "a/tf.h"
@@ -334,13 +309,13 @@ class tf: public a_tf_s
     void set_num_(emscripten::val const &_num, a_float_t *num)
     {
         a_uint_t num_n = _num["length"].as<a_uint_t>();
-        a_float_t *p = JArrayFloat(_num, a_size_c(, num_n) * 2, num);
+        a_float_t *p = js_array_num_get(_num, a_size_c(, num_n) * 2, num);
         a_tf_set_num(this, num_n, p, p + num_n);
     }
     void set_den_(emscripten::val const &_den, a_float_t *den)
     {
         a_uint_t den_n = _den["length"].as<a_uint_t>();
-        a_float_t *p = JArrayFloat(_den, a_size_c(, den_n) * 2, den);
+        a_float_t *p = js_array_num_get(_den, a_size_c(, den_n) * 2, den);
         a_tf_set_den(this, den_n, p, p + den_n);
     }
 
@@ -362,18 +337,10 @@ public:
         u.p = den_p;
         a_alloc(u.o, 0);
     }
-    emscripten::val get_input() const
-    {
-        return emscripten::val(emscripten::typed_memory_view(num_n, input));
-    }
-    emscripten::val get_output() const
-    {
-        return emscripten::val(emscripten::typed_memory_view(den_n, output));
-    }
-    emscripten::val get_num() const
-    {
-        return emscripten::val(emscripten::typed_memory_view(num_n, num_p));
-    }
+    emscripten::val get_input() const { return js_array_num_new(input, num_n); }
+    emscripten::val get_output() const { return js_array_num_new(output, den_n); }
+    emscripten::val get_num() const { return js_array_num_new(num_p, num_n); }
+    emscripten::val get_den() const { return js_array_num_new(den_p, den_n); }
     tf *set_num(emscripten::val const &num)
     {
         union
@@ -383,10 +350,6 @@ public:
         } u = {num_p};
         set_num_(num, u.o);
         return this;
-    }
-    emscripten::val get_den() const
-    {
-        return emscripten::val(emscripten::typed_memory_view(den_n, den_p));
     }
     tf *set_den(emscripten::val const &den)
     {
@@ -490,15 +453,15 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       } u;
                       ctx->order = me["length"].as<unsigned int>();
                       u.p = ctx->me;
-                      ctx->me = JArrayFloat(Jconcat(me), me["length"].as<a_size_t>(), u.o);
+                      ctx->me = js_array_num_get(js_concat(me), me["length"].as<a_size_t>(), u.o);
                       u.p = ctx->mec;
-                      ctx->mec = JArrayFloat(Jconcat(mec), mec["length"].as<a_size_t>(), u.o);
+                      ctx->mec = js_array_num_get(js_concat(mec), mec["length"].as<a_size_t>(), u.o);
                       u.p = ctx->mkp;
-                      ctx->mkp = JArrayFloat(Jconcat(mkp), mkp["length"].as<a_size_t>(), u.o);
+                      ctx->mkp = js_array_num_get(js_concat(mkp), mkp["length"].as<a_size_t>(), u.o);
                       u.p = ctx->mki;
-                      ctx->mki = JArrayFloat(Jconcat(mki), mki["length"].as<a_size_t>(), u.o);
+                      ctx->mki = js_array_num_get(js_concat(mki), mki["length"].as<a_size_t>(), u.o);
                       u.p = ctx->mkd;
-                      ctx->mkd = JArrayFloat(Jconcat(mkd), mkd["length"].as<a_size_t>(), u.o);
+                      ctx->mkd = js_array_num_get(js_concat(mkd), mkd["length"].as<a_size_t>(), u.o);
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())

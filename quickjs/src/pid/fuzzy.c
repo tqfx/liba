@@ -214,12 +214,12 @@ static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this
     JSValue res = JS_UNDEFINED;
     if (JS_IsArray(ctx, argv[0]))
     {
-        if (JArrayLength(ctx, argv[0], &order))
+        if (js_array_length(ctx, argv[0], &order))
         {
             goto fail;
         }
-        res = Jconcat(ctx, argv[0]);
-        if (JArrayLength(ctx, res, &len))
+        res = js_concat(ctx, argv[0]);
+        if (js_array_length(ctx, res, &len))
         {
             goto fail;
         }
@@ -231,7 +231,7 @@ static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this
                 goto fail;
             }
             self->me = me;
-            if (JArrayFloat(ctx, res, me, len))
+            if (js_array_num_get(ctx, res, me, len))
             {
                 goto fail;
             }
@@ -241,12 +241,12 @@ static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this
     }
     if (JS_IsArray(ctx, argv[1]))
     {
-        if (JArrayLength(ctx, argv[1], &row) || row != order)
+        if (js_array_length(ctx, argv[1], &row) || row != order)
         {
             goto fail;
         }
-        res = Jconcat(ctx, argv[1]);
-        if (JArrayLength(ctx, res, &len))
+        res = js_concat(ctx, argv[1]);
+        if (js_array_length(ctx, res, &len))
         {
             goto fail;
         }
@@ -258,7 +258,7 @@ static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this
                 goto fail;
             }
             self->mec = mec;
-            if (JArrayFloat(ctx, res, mec, len))
+            if (js_array_num_get(ctx, res, mec, len))
             {
                 goto fail;
             }
@@ -268,12 +268,12 @@ static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this
     }
     if (JS_IsArray(ctx, argv[2]))
     {
-        if (JArrayLength(ctx, argv[2], &row) || row != order)
+        if (js_array_length(ctx, argv[2], &row) || row != order)
         {
             goto fail;
         }
-        res = Jconcat(ctx, argv[2]);
-        if (JArrayLength(ctx, res, &len))
+        res = js_concat(ctx, argv[2]);
+        if (js_array_length(ctx, res, &len))
         {
             goto fail;
         }
@@ -285,7 +285,7 @@ static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this
                 goto fail;
             }
             self->mkp = mkp;
-            if (JArrayFloat(ctx, res, mkp, len))
+            if (js_array_num_get(ctx, res, mkp, len))
             {
                 goto fail;
             }
@@ -295,12 +295,12 @@ static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this
     }
     if (JS_IsArray(ctx, argv[3]))
     {
-        if (JArrayLength(ctx, argv[3], &row) || row != order)
+        if (js_array_length(ctx, argv[3], &row) || row != order)
         {
             goto fail;
         }
-        res = Jconcat(ctx, argv[3]);
-        if (JArrayLength(ctx, res, &len))
+        res = js_concat(ctx, argv[3]);
+        if (js_array_length(ctx, res, &len))
         {
             goto fail;
         }
@@ -312,7 +312,7 @@ static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this
                 goto fail;
             }
             self->mki = mki;
-            if (JArrayFloat(ctx, res, mki, len))
+            if (js_array_num_get(ctx, res, mki, len))
             {
                 goto fail;
             }
@@ -322,12 +322,12 @@ static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this
     }
     if (JS_IsArray(ctx, argv[4]))
     {
-        if (JArrayLength(ctx, argv[4], &row) || row != order)
+        if (js_array_length(ctx, argv[4], &row) || row != order)
         {
             goto fail;
         }
-        res = Jconcat(ctx, argv[4]);
-        if (JArrayLength(ctx, res, &len))
+        res = js_concat(ctx, argv[4]);
+        if (js_array_length(ctx, res, &len))
         {
             goto fail;
         }
@@ -339,7 +339,7 @@ static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this
                 goto fail;
             }
             self->mkd = mkd;
-            if (JArrayFloat(ctx, res, mkd, len))
+            if (js_array_num_get(ctx, res, mkd, len))
             {
                 goto fail;
             }

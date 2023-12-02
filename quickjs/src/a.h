@@ -1,5 +1,5 @@
-#ifndef QJS_A_H
-#define QJS_A_H
+#ifndef QUICKJS_LIBA_A_H
+#define QUICKJS_LIBA_A_H
 
 #if defined(__GNUC__) || defined(__clang__)
 #pragma GCC system_header
@@ -26,9 +26,10 @@ int js_liba_polytraj7_init(JSContext *ctx, JSModuleDef *m);
 int js_liba_tf_init(JSContext *ctx, JSModuleDef *m);
 int js_liba_version_init(JSContext *ctx, JSModuleDef *m);
 
-JSValue Jconcat(JSContext *ctx, JSValueConst val);
-int JArrayLength(JSContext *ctx, JSValueConst val, a_u32_t *plen);
-int JArrayFloat(JSContext *ctx, JSValueConst val, a_float_t *ptr, a_u32_t len);
+JSValue js_concat(JSContext *ctx, JSValueConst val);
+int js_array_length(JSContext *ctx, JSValueConst val, a_u32_t *plen);
+int js_array_num_get(JSContext *ctx, JSValueConst val, a_float_t *ptr, a_u32_t len);
+JSValue js_array_num_new(JSContext *ctx, a_float_t const *ptr, a_u32_t len);
 
 #if defined(__cplusplus)
 } /* extern "C" */

@@ -1,5 +1,5 @@
-#ifndef QJS_MF_H
-#define QJS_MF_H
+#ifndef QUICKJS_LIBA_MF_H
+#define QUICKJS_LIBA_MF_H
 
 #include "a.h"
 #include "a/mf.h"
