@@ -230,50 +230,50 @@ a_f64_t a_f64_rsqrt(a_f64_t const x)
 #endif
 }
 
-a_u32_t a_u32_sqrt(a_u32_t x, a_u32_t *const o)
+a_u32_t a_u32_sqrt(a_u32_t x, a_u32_t *const r)
 {
     a_u32_t y = 0;
-    for (unsigned int i = 0; i < 32; i += 2)
+    a_u32_t b = A_U32_C(0x40000000);
+    for (; b > x; b >>= 2)
     {
-        a_u32_t k = A_U32_C(0x40000000) >> i;
-        a_u32_t j = y + k;
-        if (x >= j)
+    }
+    for (a_u32_t c; b; b >>= 2)
+    {
+        y >>= 1;
+        c = y + b;
+        if (x >= c)
         {
-            x -= j;
-            y = (y >> 1) | k;
-        }
-        else
-        {
-            y >>= 1;
+            x -= c;
+            y |= b;
         }
     }
-    if (o)
+    if (r)
     {
-        *o = x;
+        *r = x;
     }
     return y;
 }
 
-a_u64_t a_u64_sqrt(a_u64_t x, a_u64_t *const o)
+a_u64_t a_u64_sqrt(a_u64_t x, a_u64_t *const r)
 {
     a_u64_t y = 0;
-    for (unsigned int i = 0; i < 64; i += 2)
+    a_u64_t b = A_U64_C(0x4000000000000000);
+    for (; b > x; b >>= 2)
     {
-        a_u64_t k = A_U64_C(0x4000000000000000) >> i;
-        a_u64_t j = y + k;
-        if (x >= j)
+    }
+    for (a_u64_t c; b; b >>= 2)
+    {
+        y >>= 1;
+        c = y + b;
+        if (x >= c)
         {
-            x -= j;
-            y = (y >> 1) | k;
-        }
-        else
-        {
-            y >>= 1;
+            x -= c;
+            y |= b;
         }
     }
-    if (o)
+    if (r)
     {
-        *o = x;
+        *r = x;
     }
     return y;
 }
