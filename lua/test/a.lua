@@ -11,4 +11,5 @@ for i, v in pairs(arg) do
 end
 test.dir(a)
 test.log(a.hash_bkdr(arg[0]))
+test.log(a.isqrt(1, 2, 4))
 test.log(a.rsqrt(1, 2, 4))

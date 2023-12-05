@@ -371,8 +371,8 @@ public:
 #endif /* -Wglobal-constructors */
 EMSCRIPTEN_BINDINGS(liba) // NOLINT
 {
-    emscripten::function("f32_rsqrt", a_f32_rsqrt);
-    emscripten::function("f64_rsqrt", a_f64_rsqrt);
+    emscripten::function("isqrt", a_u32_sqrt);
+    emscripten::function("rsqrt", a_f64_rsqrt);
     emscripten::class_<mf>("mf")
         .class_property("NUL", &mf::NUL)
         .class_function("gauss", &mf::gauss)

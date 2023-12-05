@@ -25,6 +25,29 @@ static int liba_hash_bkdr(lua_State *const L)
 #include "a/math.h"
 
 /***
+ square root of an unsigned integer
+ @tparam integer x independent variable
+ @tparam integer ... independent variables
+ @treturn integer calculated result
+ @function isqrt
+*/
+static int liba_isqrt(lua_State *const L)
+{
+    int const Ln = lua_gettop(L);
+    for (int Li = 1; Li <= Ln; ++Li)
+    {
+        lua_Integer x = luaL_checkinteger(L, Li);
+#if A_SIZE_MAX == A_U64_MAX
+        x = (lua_Integer)a_u64_sqrt((a_u64_t)x);
+#else /* !A_SIZE_MAX */
+        x = (lua_Integer)a_u32_sqrt((a_u32_t)x);
+#endif /* A_SIZE_MAX */
+        lua_pushinteger(L, x);
+    }
+    return Ln;
+}
+
+/***
  reciprocal of square-root
  @tparam number x independent variable
  @tparam number ... independent variables
@@ -37,10 +60,10 @@ static int liba_rsqrt(lua_State *const L)
     for (int Li = 1; Li <= Ln; ++Li)
     {
         lua_Number x = luaL_checknumber(L, Li);
-#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
-        x = (lua_Number)a_f32_rsqrt((a_f32_t)x);
-#elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
+#if A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
         x = (lua_Number)a_f64_rsqrt((a_f64_t)x);
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
+        x = (lua_Number)a_f32_rsqrt((a_f32_t)x);
 #else /* !A_FLOAT_TYPE */
         x = (lua_Number)(1 / sqrt((double)x));
 #endif /* A_FLOAT_TYPE */
@@ -64,6 +87,7 @@ int luaopen_liba(lua_State *const L)
     */
     lua_fun_s const funcs[] = {
         {"hash_bkdr", liba_hash_bkdr},
+        {"isqrt", liba_isqrt},
         {"rsqrt", liba_rsqrt},
         {NULL, NULL},
     };

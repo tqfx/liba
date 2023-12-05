@@ -61,11 +61,10 @@ A_EXTERN a_f64_t a_f64_rsqrt(a_f64_t x);
 /*!
  @brief square root of an unsigned integer
  @param[in] x independent variable
- @param[out] r stores remainder
  @return calculated result
 */
-A_EXTERN a_u32_t a_u32_sqrt(a_u32_t x, a_u32_t *r);
-A_EXTERN a_u64_t a_u64_sqrt(a_u64_t x, a_u64_t *r);
+A_EXTERN a_u16_t a_u32_sqrt(a_u32_t x);
+A_EXTERN a_u32_t a_u64_sqrt(a_u64_t x);
 
 #if defined(__cplusplus)
 } /* extern "C" */

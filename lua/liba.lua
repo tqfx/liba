@@ -6,6 +6,11 @@ local liba = {}
 ---@return integer
 function liba.hash_bkdr(str, ...) end
 
+---@param x integer
+---@param ... integer
+---@return integer ...
+function liba.isqrt(x, ...) end
+
 ---@param x number
 ---@param ... number
 ---@return number ...

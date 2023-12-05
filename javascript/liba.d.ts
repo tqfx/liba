@@ -1,14 +1,16 @@
 declare namespace liba {
   /**
-   * reciprocal of square-root
+   * square root of an unsigned integer
    * @param x independent variable
+   * @return calculated result
    */
-  function f32_rsqrt(x: number): number;
+  function isqrt(x: number): number;
   /**
    * reciprocal of square-root
    * @param x independent variable
+   * @return calculated result
    */
-  function f64_rsqrt(x: number): number;
+  function rsqrt(x: number): number;
 
   /** membership function */
   let mf: {

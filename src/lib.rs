@@ -56,8 +56,20 @@ pub fn version() -> &'static str {
 }
 
 extern "C" {
+    fn a_u32_sqrt(x: u32) -> u16;
+    fn a_u64_sqrt(x: u64) -> u32;
     fn a_f32_rsqrt(x: f32) -> f32;
     fn a_f64_rsqrt(x: f64) -> f64;
+}
+
+/// square root of an unsigned integer
+pub fn u32_sqrt(x: u32) -> u16 {
+    unsafe { a_u32_sqrt(x) }
+}
+
+/// square root of an unsigned integer
+pub fn u64_sqrt(x: u64) -> u32 {
+    unsafe { a_u64_sqrt(x) }
 }
 
 /// reciprocal of square-root, $ \frac{1}{\sqrt{x}} $
@@ -76,6 +88,11 @@ mod test {
     #[test]
     fn version() {
         std::println!("version {}", crate::version());
+    }
+    #[test]
+    fn isqrt() {
+        std::println!("{}", crate::u32_sqrt(u32::MAX));
+        std::println!("{}", crate::u64_sqrt(u64::MAX));
     }
     #[test]
     fn rsqrt() {

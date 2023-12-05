@@ -1,8 +1,12 @@
 cimport cython
 from a cimport *
-from a.math cimport *
 from cpython cimport *
 from cpython.array cimport array
+
+@cython.wraparound(False)
+@cython.boundscheck(False)
+cdef bint iterable(object o):
+    return PyObject_HasAttrString(o, "__contains__")
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
@@ -76,61 +80,11 @@ def array_num(object o):
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def sqrt_u32(x):
-    cdef a_u32_t o
-    if iterable(x):
-        y = array_u32(x)
-        z = array_u32(x)
-        for i, it in enumerate(x):
-            y[i], z[i] = a_u32_sqrt(it, &o), o
-        return y, z
-    return a_u32_sqrt(x, &o), o
-
-@cython.wraparound(False)
-@cython.boundscheck(False)
-def sqrt_u64(x):
-    cdef a_u64_t o
-    if iterable(x):
-        y = array_u64(x)
-        z = array_u64(x)
-        for i, it in enumerate(x):
-            y[i], z[i] = a_u64_sqrt(it, &o), o
-        return y, z
-    return a_u64_sqrt(x, &o), o
-
-@cython.wraparound(False)
-@cython.boundscheck(False)
-def rsqrt_f32(x):
-    '''fast inverse square-root'''
-    if iterable(x):
-        y = array('f', x)
-        for i, it in enumerate(x):
-            y[i] = a_f32_rsqrt(it)
-        return y
-    return a_f32_rsqrt(x)
-
-@cython.wraparound(False)
-@cython.boundscheck(False)
-def rsqrt_f64(x):
-    '''fast inverse square-root'''
-    if iterable(x):
-        y = array('d', x)
-        for i, it in enumerate(x):
-            y[i] = a_f64_rsqrt(it)
-        return y
-    return a_f64_rsqrt(x)
-
-@cython.wraparound(False)
-@cython.boundscheck(False)
 def hash_bkdr(str: bytes, val: a_umax_t) -> a_umax_t:
     return a_hash_bkdr(str, val)
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
-cdef bint iterable(object o):
-    return PyObject_HasAttrString(o, "__contains__")
-
 include "a/crc.pxi"
+include "a/math.pxi"
 include "a/mf.pxi"
 include "a/pid.pxi"
 include "a/pid_fuzzy.pxi"

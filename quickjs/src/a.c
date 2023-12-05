@@ -15,6 +15,18 @@ static JSValue liba_hash_bkdr(JSContext *const ctx, JSValueConst const this_val,
 
 #include "a/math.h"
 
+static JSValue liba_isqrt(JSContext *const ctx, JSValueConst const this_val, int const argc, JSValueConst *const argv)
+{
+    (void)this_val;
+    (void)argc;
+    uint64_t x;
+    if (JS_ToIndex(ctx, &x, argv[0]))
+    {
+        return JS_EXCEPTION;
+    }
+    return JS_NewUint32(ctx, a_u64_sqrt(x));
+}
+
 static JSValue liba_rsqrt(JSContext *const ctx, JSValueConst const this_val, int const argc, JSValueConst *const argv)
 {
     (void)this_val;
@@ -67,6 +79,7 @@ static JSCFunctionListEntry const liba_table[] = {
     JS_OBJECT_DEF("mf", liba_mf_table, A_LEN(liba_mf_table), 0),
     JS_PROP_STRING_DEF("VERSION", A_VERSION, 0),
     JS_CFUNC_DEF("hash_bkdr", 1, liba_hash_bkdr),
+    JS_CFUNC_DEF("isqrt", 1, liba_isqrt),
     JS_CFUNC_DEF("rsqrt", 1, liba_rsqrt),
 };
 

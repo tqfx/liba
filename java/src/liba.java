@@ -6,19 +6,27 @@ public class liba {
     public static final String VERSION;
     static {
         System.loadLibrary("a");
-        VERSION = "";
+        VERSION = "0.0.0";
         INIT();
     }
 
     static final native void INIT();
 
     /**
-     * reciprocal of square-root
+     * square root of an unsigned integer
      *
      * @param x independent variable
      * @return calculated result
      */
-    public static final native float f32_rsqrt(float x);
+    public static final native int isqrt(int x);
+
+    /**
+     * square root of an unsigned integer
+     *
+     * @param x independent variable
+     * @return calculated result
+     */
+    public static final native int isqrt(long x);
 
     /**
      * reciprocal of square-root
@@ -26,5 +34,13 @@ public class liba {
      * @param x independent variable
      * @return calculated result
      */
-    public static final native double f64_rsqrt(double x);
+    public static final native float rsqrt(float x);
+
+    /**
+     * reciprocal of square-root
+     *
+     * @param x independent variable
+     * @return calculated result
+     */
+    public static final native double rsqrt(double x);
 }

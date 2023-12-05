@@ -166,11 +166,9 @@ a_f64_t a_f64_hypot(a_f64_t x, a_f64_t y)
 
 a_f32_t a_f32_rsqrt(a_f32_t const x)
 {
-#if 0
+#if 1
     return 1 / a_f32_sqrt(x);
 #else
-#undef U
-#define U 0x5F375A86
     union
     {
         a_f32_t x;
@@ -180,7 +178,7 @@ a_f32_t a_f32_rsqrt(a_f32_t const x)
     if (a_likely(x > 0))
     {
         a_f32_t xh = A_F32_C(0.5) * x;
-        u.u = A_U32_C(U) - (u.u >> 1);
+        u.u = A_U32_C(0x5F375A86) - (u.u >> 1);
         u.x *= A_F32_C(1.5) - u.x * u.x * xh;
         u.x *= A_F32_C(1.5) - u.x * u.x * xh;
     }
@@ -193,17 +191,14 @@ a_f32_t a_f32_rsqrt(a_f32_t const x)
         u.u |= A_F32_PINF;
     }
     return u.x;
-#undef U
 #endif
 }
 
 a_f64_t a_f64_rsqrt(a_f64_t const x)
 {
-#if 0
+#if 1
     return 1 / a_f64_sqrt(x);
 #else
-#undef U
-#define U 0x5FE6EC85E7DE30DA
     union
     {
         a_f64_t x;
@@ -213,7 +208,7 @@ a_f64_t a_f64_rsqrt(a_f64_t const x)
     if (a_likely(x > 0))
     {
         a_f64_t xh = A_F64_C(0.5) * x;
-        u.u = A_U64_C(U) - (u.u >> 1);
+        u.u = A_U64_C(0x5FE6EC85E7DE30DA) - (u.u >> 1);
         u.x *= A_F64_C(1.5) - u.x * u.x * xh;
         u.x *= A_F64_C(1.5) - u.x * u.x * xh;
     }
@@ -226,62 +221,81 @@ a_f64_t a_f64_rsqrt(a_f64_t const x)
         u.u |= A_F64_PINF;
     }
     return u.x;
-#undef U
 #endif
 }
 
-a_u32_t a_u32_sqrt(a_u32_t x, a_u32_t *const r)
+a_u16_t a_u32_sqrt(a_u32_t x)
 {
-    a_u32_t y = 0;
-    a_u32_t b = A_U32_C(0x40000000);
-    for (; b > x; b >>= 2)
+#if 0 /* Newton's method */
+    a_u32_t x0, x1;
+    if (x <= 1)
+    {
+        return (a_u16_t)x;
+    }
+    x1 = x >> 1;
+    do
+    {
+        x0 = x1;
+        x1 = (x0 + x / x0) >> 1;
+    } while (x0 > x1);
+    return (a_u16_t)x0;
+#else /* Digit-by-digit */
+    a_u32_t a, b = 1, y = 0;
+    for (b <<= sizeof(b) * 8 - 2; b > x; b >>= 2)
     {
     }
-    for (a_u32_t c; b; b >>= 2)
+    for (; b; b >>= 2)
     {
+        a = y + b;
         y >>= 1;
-        c = y + b;
-        if (x >= c)
+        if (x >= a)
         {
-            x -= c;
+            x -= a;
             y |= b;
         }
     }
-    if (r)
-    {
-        *r = x;
-    }
-    return y;
+    return (a_u16_t)y;
+#endif
 }
 
-a_u64_t a_u64_sqrt(a_u64_t x, a_u64_t *const r)
+a_u32_t a_u64_sqrt(a_u64_t x)
 {
-    a_u64_t y = 0;
-    a_u64_t b = A_U64_C(0x4000000000000000);
-    for (; b > x; b >>= 2)
+#if 0 /* Newton's method */
+    a_u64_t x0, x1;
+    if (x <= 1)
+    {
+        return (a_u32_t)x;
+    }
+    x1 = x >> 1;
+    do
+    {
+        x0 = x1;
+        x1 = (x0 + x / x0) >> 1;
+    } while (x0 > x1);
+    return (a_u32_t)x0;
+#else /* Digit-by-digit */
+    a_u64_t a, b = 1, y = 0;
+    for (b <<= sizeof(b) * 8 - 2; b > x; b >>= 2)
     {
     }
-    for (a_u64_t c; b; b >>= 2)
+    for (; b; b >>= 2)
     {
+        a = y + b;
         y >>= 1;
-        c = y + b;
-        if (x >= c)
+        if (x >= a)
         {
-            x -= c;
+            x -= a;
             y |= b;
         }
     }
-    if (r)
-    {
-        *r = x;
-    }
-    return y;
+    return (a_u32_t)y;
+#endif
 }
 
 #undef a_float_log1p
 a_float_t a_float_log1p(a_float_t const x)
 {
-    return A_FLOAT_F1(log, x + 1);
+    return a_float_log(x + 1);
 }
 
 #undef a_float_hypot
@@ -292,7 +306,7 @@ a_float_t a_float_hypot(a_float_t const x, a_float_t const y)
 #elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
     return a_f64_hypot(x, y);
 #elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
-    return A_FLOAT_F1(sqrt, x * x + y * y);
+    return a_float_sqrt(x * x + y * y);
 #endif /* A_FLOAT_TYPE */
 }
 
@@ -301,15 +315,15 @@ a_float_t a_float_atan2(a_float_t const x, a_float_t const y)
 {
     if (x > 0)
     {
-        return A_FLOAT_F1(atan, y / x);
+        return a_float_atan(y / x);
     }
     if (x < 0)
     {
         if (y >= 0)
         {
-            return A_FLOAT_F1(atan, y / x) + A_FLOAT_PI;
+            return a_float_atan(y / x) + A_FLOAT_PI;
         }
-        return A_FLOAT_F1(atan, y / x) - A_FLOAT_PI;
+        return a_float_atan(y / x) - A_FLOAT_PI;
     }
     if (y > 0)
     {
