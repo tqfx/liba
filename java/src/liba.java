@@ -13,7 +13,7 @@ public class liba {
     static final native void INIT();
 
     /**
-     * fast inverse square-root
+     * reciprocal of square-root
      *
      * @param x independent variable
      * @return calculated result
@@ -21,7 +21,7 @@ public class liba {
     public static final native float f32_rsqrt(float x);
 
     /**
-     * fast inverse square-root
+     * reciprocal of square-root
      *
      * @param x independent variable
      * @return calculated result

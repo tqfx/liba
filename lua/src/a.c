@@ -25,7 +25,7 @@ static int liba_hash_bkdr(lua_State *const L)
 #include "a/math.h"
 
 /***
- fast inverse square-root
+ reciprocal of square-root
  @tparam number x independent variable
  @tparam number ... independent variables
  @treturn number calculated result

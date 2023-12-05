@@ -50,7 +50,7 @@ A_EXTERN a_f32_t a_f32_hypot(a_f32_t x, a_f32_t y);
 A_EXTERN a_f64_t a_f64_hypot(a_f64_t x, a_f64_t y);
 
 /*!
- @brief fast inverse square-root, \f$ \frac{1}{\sqrt{x}} \f$
+ @brief reciprocal of square-root, \f$ \frac{1}{\sqrt{x}} \f$
  @details http://en.wikipedia.org/wiki/Fast_inverse_square_root
  @param[in] x independent variable
  @return calculated result

@@ -1,11 +1,11 @@
 declare namespace liba {
   /**
-   * fast inverse square-root
+   * reciprocal of square-root
    * @param x independent variable
    */
   function f32_rsqrt(x: number): number;
   /**
-   * fast inverse square-root
+   * reciprocal of square-root
    * @param x independent variable
    */
   function f64_rsqrt(x: number): number;

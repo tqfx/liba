@@ -60,12 +60,12 @@ extern "C" {
     fn a_f64_rsqrt(x: f64) -> f64;
 }
 
-/// fast inverse square-root, $ \frac{1}{\sqrt{x}} $
+/// reciprocal of square-root, $ \frac{1}{\sqrt{x}} $
 pub fn f32_rsqrt(x: f32) -> f32 {
     unsafe { a_f32_rsqrt(x) }
 }
 
-/// fast inverse square-root, $ \frac{1}{\sqrt{x}} $
+/// reciprocal of square-root, $ \frac{1}{\sqrt{x}} $
 pub fn f64_rsqrt(x: f64) -> f64 {
     unsafe { a_f64_rsqrt(x) }
 }
