@@ -26,11 +26,9 @@
 */
 typedef struct a_rbt_s
 {
-    /*!< pointer to left child or null */
-    struct a_rbt_s *left;
-    /*!< pointer to right child or null */
-    struct a_rbt_s *right;
-    /*!< pointer to parent combined with the color. The mapping is: 0 => red, 1 => black.
+    struct a_rbt_s *left; /*!< pointer to left child or null */
+    struct a_rbt_s *right; /*!< pointer to right child or null */
+    /*! pointer to parent combined with the color. The mapping is: 0 => red, 1 => black.
      The rest of the bits are the pointer to the parent node. It must be 2-byte aligned,
      and it will be null if this is the root node and therefore has no parent.
     */

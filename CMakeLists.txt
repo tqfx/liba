@@ -629,15 +629,23 @@ if(NOT CMAKE_VERSION VERSION_LESS 3.9 AND DOXYGEN_FOUND)
   # Configuration options related to the Perl module output
   # Configuration options related to the preprocessor
   set(DOXYGEN_MACRO_EXPANSION YES)
-  set(DOXYGEN_EXPAND_ONLY_PREDEF YES)
   set(DOXYGEN_PREDEFINED
     "__STDC_VERSION__=201112L"
     "__cplusplus=201103L"
+    "A_BYTE_ORDER=1234"
+    "A_SIZE_POINTER=8"
     "A_EXTERN:="
     "A_INTERN:="
     "A_PUBLIC:="
     "A_HIDDEN:="
   )
+
+  file(STRINGS "${A_HAVE_H}" macros REGEX "#define[ ]+A_HAVE_.+")
+
+  foreach(macro ${macros})
+    string(REGEX REPLACE "#define[ ]+(.*)[ ]+(.+)" "\\1=\\2" macro "${macro}")
+    list(APPEND DOXYGEN_PREDEFINED ${macro})
+  endforeach()
 
   # Configuration options related to external references
   # Configuration options related to the dot tool

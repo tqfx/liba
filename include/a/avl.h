@@ -23,11 +23,9 @@
 */
 typedef struct a_avl_s
 {
-    /*!< pointer to left child or null */
-    struct a_avl_s *left;
-    /*!< pointer to right child or null */
-    struct a_avl_s *right;
-    /*!< pointer to parent combined with the balance factor
+    struct a_avl_s *left; /*!< pointer to left child or null */
+    struct a_avl_s *right; /*!< pointer to right child or null */
+    /*! pointer to parent combined with the balance factor
      Low 2 bits: One greater than the balance factor of this subtree,
      which is equal to height(right) - height(left). The mapping is:
         00 => -1
