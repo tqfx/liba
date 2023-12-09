@@ -72,7 +72,6 @@ sources = [
     'include/a/tf.h',
     'include/a/utf.h',
     'include/a/vec.h',
-    'include/a/vector.h',
     'include/a/version.h',
     'src/a.c',
     'src/avl.c',
@@ -94,7 +93,6 @@ sources = [
     'src/tf.c',
     'src/utf.c',
     'src/vec.c',
-    'src/vector.c',
     'src/version.c',
     'src/version.cpp',
 ]

@@ -287,8 +287,5 @@ unittest(utf)
 building(vec vec.c vec.cpp)
 unittest(vec)
 
-building(vector vector.c vector.cpp)
-unittest(vector)
-
 building(version version.c version.cpp)
 unittest(version)

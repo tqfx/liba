@@ -124,10 +124,6 @@ target("test/vec")
 building({ "vec.c", "vec.cpp" })
 target_end()
 
-target("test/vector")
-building({ "vector.c", "vector.cpp" })
-target_end()
-
 target("test/version")
 building({ "version.c", "version.cpp" })
 target_end()
