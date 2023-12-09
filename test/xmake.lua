@@ -88,8 +88,16 @@ target("test/poly")
 building({ "poly.c", "poly.cpp" })
 target_end()
 
-target("test/polytraj")
-building({ "polytraj.c", "polytraj.cpp" })
+target("test/polytraj3")
+building({ "polytraj3.c", "polytraj3.cpp" })
+target_end()
+
+target("test/polytraj5")
+building({ "polytraj5.c", "polytraj5.cpp" })
+target_end()
+
+target("test/polytraj7")
+building({ "polytraj7.c", "polytraj7.cpp" })
 target_end()
 
 target("test/que")

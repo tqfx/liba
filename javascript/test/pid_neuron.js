@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 var liba = require("../liba")
-
 var ctx = new liba.pid_neuron()
 ctx.wpid(1, 0, 0).kpid(10, 1, 0.1, 1)
 console.log(ctx.zero().off(10, 0))

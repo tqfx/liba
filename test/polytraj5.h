@@ -1,6 +1,6 @@
-#define MAIN_(x) A_CAST_2(x, _polytraj)
+#define MAIN_(x) A_CAST_2(x, _polytraj5)
 #include "test.h"
-#include "a/polytraj.h"
+#include "a/polytraj5.h"
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
@@ -22,7 +22,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         }
     }
 
-    a_float_t arg[10] = {0};
+    a_float_t arg[8] = {0};
     for (int i = start; i < argc; ++i)
     {
 #if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
@@ -33,21 +33,12 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         arg[i - start] = strtold(argv[i], A_NULL);
 #endif /* A_FLOAT_TYPE */
     }
-    a_polytraj3_s pt3;
-    a_polytraj3_gen(&pt3, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5]);
-    a_polytraj5_s pt5;
-    a_polytraj5_gen(&pt5, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7]);
-    a_polytraj7_s pt7;
-    a_polytraj7_gen(&pt7, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7], arg[8], arg[9]);
+    a_polytraj5_s ctx;
+    a_polytraj5_gen(&ctx, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7]);
     for (a_float_t dt = arg[0], delta = (arg[1] - arg[0]) / 1000; dt < arg[1]; dt += delta) // NOLINT
     {
-        debug(A_FLOAT_PRI("+", "f "), dt);
-        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f "),
-              a_polytraj3_pos(&pt3, dt), a_polytraj3_vel(&pt3, dt), a_polytraj3_acc(&pt3, dt));
-        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f "),
-              a_polytraj5_pos(&pt5, dt), a_polytraj5_vel(&pt5, dt), a_polytraj5_acc(&pt5, dt));
         debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
-              a_polytraj7_pos(&pt7, dt), a_polytraj7_vel(&pt7, dt), a_polytraj7_acc(&pt7, dt), a_polytraj7_jer(&pt7, dt));
+              dt, a_polytraj5_pos(&ctx, dt), a_polytraj5_vel(&ctx, dt), a_polytraj5_acc(&ctx, dt));
     }
 
     return 0;

@@ -1,5 +1,5 @@
 #include "a.h"
-#include "a/polytraj.h"
+#include "a/polytraj5.h"
 
 static JSClassID liba_polytraj5_class_id;
 

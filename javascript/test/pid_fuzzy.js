@@ -73,7 +73,6 @@ var mkd = [
     [NL, NS, NS, NS, NS, NS, NL],
     [NL, NM, NM, NM, NS, NS, NL],
 ]
-
 var ctx = new liba.pid_fuzzy()
 ctx.rule(me, mec, mkp, mki, mkd).set_joint(2)
 ctx.kpid(10, 0.1, 1).op(liba.pid_fuzzy.EQU)

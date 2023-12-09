@@ -4,7 +4,7 @@
 */
 
 #include "polytraj5.h"
-#include "a/polytraj.h"
+#include "a/polytraj5.h"
 
 static int liba_polytraj5_gen_(lua_State *const L, a_polytraj5_s *const ctx)
 {

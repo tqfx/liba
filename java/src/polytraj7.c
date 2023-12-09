@@ -1,5 +1,5 @@
 #include "a.h"
-#include "a/polytraj.h"
+#include "a/polytraj7.h"
 #include "liba_polytraj7.h"
 
 #undef L

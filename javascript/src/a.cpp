@@ -257,7 +257,7 @@ public:
     a_float_t get_ec() const { return ec; }
 };
 
-#include "a/polytraj.h"
+#include "a/polytraj3.h"
 
 class polytraj3: public a_polytraj3_s
 {
@@ -272,6 +272,8 @@ public:
     emscripten::val get_a() const { return js_array_num_new(a, A_LEN(a)); }
 };
 
+#include "a/polytraj5.h"
+
 class polytraj5: public a_polytraj5_s
 {
 public:
@@ -285,6 +287,8 @@ public:
     emscripten::val get_v() const { return js_array_num_new(v, A_LEN(v)); }
     emscripten::val get_a() const { return js_array_num_new(a, A_LEN(a)); }
 };
+
+#include "a/polytraj7.h"
 
 class polytraj7: public a_polytraj7_s
 {

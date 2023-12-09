@@ -248,11 +248,25 @@ endif()
 building(poly poly.c poly.cpp)
 unittest(poly)
 
-building(polytraj polytraj.c polytraj.cpp)
-unittest(polytraj ARGS polytraj.log 0 10 0 10)
+building(polytraj3 polytraj3.c polytraj3.cpp)
+unittest(polytraj3 ARGS polytraj3.log 0 10 0 10)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(polytraj polytraj.gp polytraj.log 0 10 0 10)
+  unitplot(polytraj3 polytraj3.gp polytraj3.log 0 10 0 10)
+endif()
+
+building(polytraj5 polytraj5.c polytraj5.cpp)
+unittest(polytraj5 ARGS polytraj5.log 0 10 0 10)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(polytraj5 polytraj3.gp polytraj5.log 0 10 0 10)
+endif()
+
+building(polytraj7 polytraj7.c polytraj7.cpp)
+unittest(polytraj7 ARGS polytraj7.log 0 10 0 10)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(polytraj7 polytraj7.gp polytraj7.log 0 10 0 10)
 endif()
 
 building(que que.c que.cpp)
