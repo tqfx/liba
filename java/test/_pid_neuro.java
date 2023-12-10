@@ -5,7 +5,7 @@ class _pid_neuro {
         pid_neuro obj = new pid_neuro();
         obj.kpid(10, 1, 0.1, 1).wpid(1, 0, 0).zero();
         System.out.print(obj.inc(1, 0) + " ");
-        System.out.println(obj.off(1, 0));
+        System.out.println(obj.run(1, 0));
         obj.k(obj.k());
         obj.kp(obj.kp());
         obj.ki(obj.ki());

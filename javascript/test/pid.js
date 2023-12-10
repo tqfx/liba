@@ -3,7 +3,7 @@ var liba = require("../liba")
 
 var ctx = new liba.pid()
 ctx.kpid(10, 0.1, 1)
-console.log(ctx.zero().off(1, 0))
+console.log(ctx.zero().run(1, 0))
 console.log(ctx.zero().pos(1, 0))
 console.log(ctx.zero().inc(1, 0))
 ctx.delete()

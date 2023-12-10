@@ -81,7 +81,7 @@ class _pid_fuzzy {
         obj.kpid(10, 0.1, 1);
         System.out.print(obj.zero().pos(1, 0) + " ");
         System.out.print(obj.zero().inc(1, 0) + " ");
-        System.out.println(obj.off(1, 0));
+        System.out.println(obj.run(1, 0));
         obj.joint(obj.joint());
         obj.kp(obj.kp());
         obj.ki(obj.ki());

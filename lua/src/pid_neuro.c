@@ -124,16 +124,16 @@ int liba_pid_neuro_wpid(lua_State *const L)
  @tparam number set setpoint value
  @tparam number fdb feedback value
  @treturn number setpoint value
- @function off
+ @function run
 */
-int liba_pid_neuro_off(lua_State *const L)
+int liba_pid_neuro_run(lua_State *const L)
 {
     a_pid_neuro_s *const ctx = (a_pid_neuro_s *)lua_touserdata(L, 1);
     if (ctx)
     {
         a_float_t const set = (a_float_t)luaL_checknumber(L, 2);
         a_float_t const fdb = (a_float_t)luaL_checknumber(L, 3);
-        lua_pushnumber(L, (lua_Number)a_pid_neuro_off(ctx, set, fdb));
+        lua_pushnumber(L, (lua_Number)a_pid_neuro_run(ctx, set, fdb));
         return 1;
     }
     return 0;
@@ -168,7 +168,7 @@ static lua_fun_s const funcs[] = {
     {"zero", liba_pid_neuro_zero},
     {"kpid", liba_pid_neuro_kpid},
     {"wpid", liba_pid_neuro_wpid},
-    {"off", liba_pid_neuro_off},
+    {"run", liba_pid_neuro_run},
     {"inc", liba_pid_neuro_inc},
     {NULL, NULL},
 };
@@ -281,8 +281,8 @@ static int liba_pid_neuro_get(lua_State *const L)
     case 0x100F9D1C: // wpid
         lua_pushcfunction(L, liba_pid_neuro_wpid);
         break;
-    case 0x001D457F: // off
-        lua_pushcfunction(L, liba_pid_neuro_off);
+    case 0x001E164F: // run
+        lua_pushcfunction(L, liba_pid_neuro_run);
         break;
     case 0x001BB75E: // inc
         lua_pushcfunction(L, liba_pid_neuro_inc);

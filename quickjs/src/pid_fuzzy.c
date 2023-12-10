@@ -406,7 +406,7 @@ static JSValue liba_pid_fuzzy_zero(JSContext *const ctx, JSValueConst const this
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_fuzzy_off(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_fuzzy_run(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
     a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
@@ -422,7 +422,7 @@ static JSValue liba_pid_fuzzy_off(JSContext *const ctx, JSValueConst const this_
             return JS_EXCEPTION;
         }
     }
-    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_off(self, (a_float_t)args[0], (a_float_t)args[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_run(self, (a_float_t)args[0], (a_float_t)args[1]));
 }
 
 static JSValue liba_pid_fuzzy_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
@@ -482,7 +482,7 @@ static JSCFunctionListEntry const liba_pid_fuzzy_proto[] = {
     JS_CFUNC_DEF("set_joint", 1, liba_pid_fuzzy_joint),
     JS_CFUNC_DEF("kpid", 3, liba_pid_fuzzy_kpid),
     JS_CFUNC_DEF("zero", 0, liba_pid_fuzzy_zero),
-    JS_CFUNC_DEF("off", 2, liba_pid_fuzzy_off),
+    JS_CFUNC_DEF("run", 2, liba_pid_fuzzy_run),
     JS_CFUNC_DEF("pos", 2, liba_pid_fuzzy_pos),
     JS_CFUNC_DEF("inc", 2, liba_pid_fuzzy_inc),
 };

@@ -292,7 +292,7 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_kpid(JNIEnv *jenv, jobject jobj, 
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_off(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_run(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
 {
     union
     {
@@ -315,7 +315,7 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_off(JNIEnv *jenv, jobject jobj, j
     ctx.mkd = (*jenv)->GetDoubleArrayElements(jenv, jmkd, NULL);
     jbyte *joint = (*jenv)->GetByteArrayElements(jenv, jjoint, NULL);
     a_pid_fuzzy_set_joint(&ctx, joint, ctx.joint);
-    jdouble jres = a_pid_fuzzy_off(&ctx, set, fdb);
+    jdouble jres = a_pid_fuzzy_run(&ctx, set, fdb);
     (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy_s), (jbyte *)&ctx);
     u.p = ctx.me;
     (*jenv)->ReleaseDoubleArrayElements(jenv, jme, u.o, JNI_ABORT);

@@ -4,7 +4,7 @@ from a.pid cimport *
 @cython.boundscheck(False)
 cdef class pid:
     '''proportional integral derivative controller'''
-    OFF = A_PID_OFF
+    RUN = A_PID_RUN
     POS = A_PID_POS
     INC = A_PID_INC
     cdef a_pid_s ctx
@@ -19,9 +19,9 @@ cdef class pid:
         '''set proportional integral derivative constant for PID controller'''
         a_pid_kpid(&self.ctx, kp, ki, kd)
         return self
-    def off(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
+    def run(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
         '''calculate for PID controller'''
-        return a_pid_off(&self.ctx, set, fdb)
+        return a_pid_run(&self.ctx, set, fdb)
     def pos(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
         '''calculate for positional PID controller'''
         return a_pid_pos(&self.ctx, set, fdb)

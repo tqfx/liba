@@ -25,7 +25,7 @@ cdef extern from "a/pid_fuzzy.h":
     void a_pid_fuzzy_set_joint(a_pid_fuzzy_s *ctx, void *ptr, a_size_t num)
     a_size_t A_PID_FUZZY_JOINT(unsigned int num)
     void a_pid_fuzzy_kpid(a_pid_fuzzy_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd)
-    a_float_t a_pid_fuzzy_off(a_pid_fuzzy_s *ctx, a_float_t set, a_float_t fdb)
+    a_float_t a_pid_fuzzy_run(a_pid_fuzzy_s *ctx, a_float_t set, a_float_t fdb)
     a_float_t a_pid_fuzzy_pos(a_pid_fuzzy_s *ctx, a_float_t set, a_float_t fdb)
     a_float_t a_pid_fuzzy_inc(a_pid_fuzzy_s *ctx, a_float_t set, a_float_t fdb)
     void a_pid_fuzzy_zero(a_pid_fuzzy_s *ctx)

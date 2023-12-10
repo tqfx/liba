@@ -21,12 +21,12 @@ void a_pid_kpid(a_pid_s *const ctx, a_float_t const kp, a_float_t const ki, a_fl
     ctx->kd = kd;
 }
 
-A_HIDDEN a_float_t a_pid_off_(a_pid_s *ctx, a_float_t set, a_float_t fdb, a_float_t err);
-a_float_t a_pid_off(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb)
+A_HIDDEN a_float_t a_pid_run_(a_pid_s *ctx, a_float_t set, a_float_t fdb, a_float_t err);
+a_float_t a_pid_run(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb)
 {
-    return a_pid_off_(ctx, set, fdb, set - fdb);
+    return a_pid_run_(ctx, set, fdb, set - fdb);
 }
-a_float_t a_pid_off_(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb, a_float_t const err)
+a_float_t a_pid_run_(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb, a_float_t const err)
 {
     a_float_t const var = ctx->fdb - fdb;
     ctx->out = A_SAT(set, ctx->outmin, ctx->outmax);
@@ -47,7 +47,11 @@ a_float_t a_pid_pos_(a_pid_s *const ctx, a_float_t const fdb, a_float_t const er
     // When the limit of integration is exceeded or the direction of integration is the same, the integration stops.
     if ((ctx->sum > ctx->summin && ctx->sum < ctx->summax) || ctx->sum * err < 0)
     {
+#if 1
         ctx->sum += ctx->ki * err; // sum = K_i[\sum^k_{i=0}err(i)]
+#else
+        ctx->sum += ctx->ki * (err + ctx->err) * A_FLOAT_C(0.5);
+#endif
     }
     // Avoid derivative kick, fdb[k-1]-fdb[k]. out = K_p[err(k)]+sum+K_d[fdb(k-1)-fdb(k)].
     ctx->out = ctx->kp * err + ctx->sum + ctx->kd * var;

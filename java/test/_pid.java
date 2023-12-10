@@ -6,7 +6,7 @@ class _pid {
         obj.kpid(10, 0.1, 1);
         System.out.print(obj.zero().pos(1, 0) + " ");
         System.out.print(obj.zero().inc(1, 0) + " ");
-        System.out.println(obj.zero().off(1, 0));
+        System.out.println(obj.zero().run(1, 0));
         obj.kp(obj.kp());
         obj.ki(obj.ki());
         obj.kd(obj.kd());

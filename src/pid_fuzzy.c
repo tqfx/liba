@@ -229,12 +229,12 @@ pid:
     a_pid_kpid(&ctx->pid, ctx->kp + kp, ctx->ki + ki, ctx->kd + kd);
 }
 
-A_HIDDEN a_float_t a_pid_off_(a_pid_s *ctx, a_float_t set, a_float_t fdb, a_float_t err);
-a_float_t a_pid_fuzzy_off(a_pid_fuzzy_s *const ctx, a_float_t const set, a_float_t const fdb)
+A_HIDDEN a_float_t a_pid_run_(a_pid_s *ctx, a_float_t set, a_float_t fdb, a_float_t err);
+a_float_t a_pid_fuzzy_run(a_pid_fuzzy_s *const ctx, a_float_t const set, a_float_t const fdb)
 {
     a_float_t const err = set - fdb;
     a_pid_fuzzy_out_(ctx, err - ctx->pid.err, err);
-    return a_pid_off_(&ctx->pid, set, fdb, err);
+    return a_pid_run_(&ctx->pid, set, fdb, err);
 }
 
 A_HIDDEN a_float_t a_pid_pos_(a_pid_s *ctx, a_float_t fdb, a_float_t err);

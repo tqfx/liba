@@ -115,7 +115,7 @@ unsigned int const mf::PI = A_MF_PI;
 class pid: public a_pid_s
 {
 public:
-    static unsigned int const OFF;
+    static unsigned int const RUN;
     static unsigned int const POS;
     static unsigned int const INC;
     pid()
@@ -130,7 +130,7 @@ public:
         a_pid_init(this);
     }
 };
-unsigned int const pid::OFF = A_PID_OFF;
+unsigned int const pid::RUN = A_PID_RUN;
 unsigned int const pid::POS = A_PID_POS;
 unsigned int const pid::INC = A_PID_INC;
 
@@ -412,8 +412,8 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
-        .function("off", emscripten::optional_override([](pid *ctx, a_float_t set, a_float_t fdb) {
-                      return a_pid_off(reinterpret_cast<a_pid_s *>(ctx), set, fdb);
+        .function("run", emscripten::optional_override([](pid *ctx, a_float_t set, a_float_t fdb) {
+                      return a_pid_run(reinterpret_cast<a_pid_s *>(ctx), set, fdb);
                   }),
                   emscripten::allow_raw_pointers())
         .function("pos", emscripten::optional_override([](pid *ctx, a_float_t set, a_float_t fdb) {
@@ -429,7 +429,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
-        .class_property("OFF", &pid::OFF)
+        .class_property("RUN", &pid::RUN)
         .class_property("POS", &pid::POS)
         .class_property("INC", &pid::INC)
         .property<a_float_t, void>("kp", &pid::kp)
@@ -479,8 +479,8 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
-        .function("off", emscripten::optional_override([](pid_fuzzy *ctx, a_float_t set, a_float_t fdb) {
-                      return a_pid_fuzzy_off(reinterpret_cast<a_pid_fuzzy_s *>(ctx), set, fdb);
+        .function("run", emscripten::optional_override([](pid_fuzzy *ctx, a_float_t set, a_float_t fdb) {
+                      return a_pid_fuzzy_run(reinterpret_cast<a_pid_fuzzy_s *>(ctx), set, fdb);
                   }),
                   emscripten::allow_raw_pointers())
         .function("pos", emscripten::optional_override([](pid_fuzzy *ctx, a_float_t set, a_float_t fdb) {
@@ -527,8 +527,8 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
-        .function("off", emscripten::optional_override([](pid_neuro *ctx, a_float_t set, a_float_t fdb) {
-                      return a_pid_neuro_off(reinterpret_cast<a_pid_neuro_s *>(ctx), set, fdb);
+        .function("run", emscripten::optional_override([](pid_neuro *ctx, a_float_t set, a_float_t fdb) {
+                      return a_pid_neuro_run(reinterpret_cast<a_pid_neuro_s *>(ctx), set, fdb);
                   }),
                   emscripten::allow_raw_pointers())
         .function("inc", emscripten::optional_override([](pid_neuro *ctx, a_float_t set, a_float_t fdb) {

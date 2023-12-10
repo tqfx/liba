@@ -194,7 +194,7 @@ declare namespace liba {
      * @param fdb feedback value
      * @return setpoint value
      */
-    off(set: number, fdb: number): number;
+    run(set: number, fdb: number): number;
     /**
      * calculate for positional PID controller
      * @param set setpoint value
@@ -216,8 +216,8 @@ declare namespace liba {
   /** constructor for proportional integral derivative controller */
   let pid: {
     new(): pid;
-    /** turn off PID controller */
-    OFF: number;
+    /** run and output setpoint */
+    RUN: number;
     /** positional PID controller */
     POS: number;
     /** incremental PID controller */
@@ -282,7 +282,7 @@ declare namespace liba {
      * @param fdb feedback value
      * @return setpoint value
      */
-    off(set: number, fdb: number): number;
+    run(set: number, fdb: number): number;
     /**
      * calculate for positional fuzzy PID controller
      * @param set setpoint value
@@ -369,7 +369,7 @@ declare namespace liba {
      * @param fdb feedback value
      * @return setpoint value
      */
-    off(set: number, fdb: number): number;
+    run(set: number, fdb: number): number;
     /**
      * calculate for incremental single neuron PID controller
      * @param set setpoint value

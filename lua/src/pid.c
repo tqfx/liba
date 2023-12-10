@@ -92,16 +92,16 @@ int liba_pid_kpid(lua_State *const L)
  @tparam number set setpoint value
  @tparam number fdb feedback value
  @treturn number setpoint value
- @function off
+ @function run
 */
-int liba_pid_off(lua_State *const L)
+int liba_pid_run(lua_State *const L)
 {
     a_pid_s *const ctx = (a_pid_s *)lua_touserdata(L, 1);
     if (ctx)
     {
         a_float_t const set = (a_float_t)luaL_checknumber(L, 2);
         a_float_t const fdb = (a_float_t)luaL_checknumber(L, 3);
-        lua_pushnumber(L, (lua_Number)a_pid_off(ctx, set, fdb));
+        lua_pushnumber(L, (lua_Number)a_pid_run(ctx, set, fdb));
         return 1;
     }
     return 0;
@@ -156,7 +156,7 @@ static lua_fun_s const funcs[] = {
     {"init", liba_pid_init},
     {"zero", liba_pid_zero},
     {"kpid", liba_pid_kpid},
-    {"off", liba_pid_off},
+    {"run", liba_pid_run},
     {"pos", liba_pid_pos},
     {"inc", liba_pid_inc},
     {NULL, NULL},
@@ -252,8 +252,8 @@ static int liba_pid_get(lua_State *const L)
     case 0x0E73F9D8: // kpid
         lua_pushcfunction(L, liba_pid_kpid);
         break;
-    case 0x001D457F: // off
-        lua_pushcfunction(L, liba_pid_off);
+    case 0x001E164F: // run
+        lua_pushcfunction(L, liba_pid_run);
         break;
     case 0x001D8D30: // pos
         lua_pushcfunction(L, liba_pid_pos);
@@ -292,13 +292,13 @@ int luaopen_liba_pid(lua_State *const L)
 {
     /***
      enumeration for PID controller
-     @field OFF turn off PID controller
+     @field RUN run and output setpoint
      @field POS positional PID controller
      @field INC incremental PID controller
      @table mode
     */
     lua_int_s const enums[] = {
-        {"OFF", A_PID_OFF},
+        {"RUN", A_PID_RUN},
         {"POS", A_PID_POS},
         {"INC", A_PID_INC},
         {NULL, 0},

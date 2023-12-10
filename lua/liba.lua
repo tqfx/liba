@@ -481,7 +481,7 @@ function liba.mf.pi(x, a, b, c, d) end
 ---@field err number
 local pid = {}
 liba.pid = {}
-liba.pid.OFF = 0
+liba.pid.RUN = 0
 liba.pid.POS = 1
 liba.pid.INC = 2
 
@@ -522,12 +522,12 @@ function pid:kpid(kp, ki, kd) end
 ---@param set number
 ---@param fdb number
 ---@return number
-function liba.pid.off(ctx, set, fdb) end
+function liba.pid.run(ctx, set, fdb) end
 
 ---@param set number
 ---@param fdb number
 ---@return number
-function pid:off(set, fdb) end
+function pid:run(set, fdb) end
 
 ---@param ctx a.pid
 ---@param set number
@@ -646,12 +646,12 @@ function pid_fuzzy:kpid(kp, ki, kd) end
 ---@param set number
 ---@param fdb number
 ---@return number
-function liba.pid_fuzzy.off(ctx, set, fdb) end
+function liba.pid_fuzzy.run(ctx, set, fdb) end
 
 ---@param set number
 ---@param fdb number
 ---@return number
-function pid_fuzzy:off(set, fdb) end
+function pid_fuzzy:run(set, fdb) end
 
 ---@param ctx a.pid_fuzzy
 ---@param set number
@@ -744,12 +744,12 @@ function pid_neuro:wpid(wp, wi, wd) end
 ---@param set number
 ---@param fdb number
 ---@return number
-function liba.pid_neuro.off(ctx, set, fdb) end
+function liba.pid_neuro.run(ctx, set, fdb) end
 
 ---@param set number
 ---@param fdb number
 ---@return number
-function pid_neuro:off(set, fdb) end
+function pid_neuro:run(set, fdb) end
 
 ---@param ctx a.pid_neuro
 ---@param set number

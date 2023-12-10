@@ -190,16 +190,16 @@ int liba_pid_fuzzy_kpid(lua_State *const L)
  @tparam number set setpoint value
  @tparam number fdb feedback value
  @treturn number setpoint value
- @function off
+ @function run
 */
-int liba_pid_fuzzy_off(lua_State *const L)
+int liba_pid_fuzzy_run(lua_State *const L)
 {
     a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_touserdata(L, 1);
     if (ctx)
     {
         a_float_t const set = (a_float_t)luaL_checknumber(L, 2);
         a_float_t const fdb = (a_float_t)luaL_checknumber(L, 3);
-        lua_pushnumber(L, (lua_Number)a_pid_fuzzy_off(ctx, set, fdb));
+        lua_pushnumber(L, (lua_Number)a_pid_fuzzy_run(ctx, set, fdb));
         return 1;
     }
     return 0;
@@ -257,7 +257,7 @@ static lua_fun_s const funcs[] = {
     {"rule", liba_pid_fuzzy_rule},
     {"set_joint", liba_pid_fuzzy_joint},
     {"kpid", liba_pid_fuzzy_kpid},
-    {"off", liba_pid_fuzzy_off},
+    {"run", liba_pid_fuzzy_run},
     {"pos", liba_pid_fuzzy_pos},
     {"inc", liba_pid_fuzzy_inc},
     {NULL, NULL},
@@ -375,8 +375,8 @@ static int liba_pid_fuzzy_get(lua_State *const L)
     case 0x0E73F9D8: // kpid
         lua_pushcfunction(L, liba_pid_fuzzy_kpid);
         break;
-    case 0x001D457F: // off
-        lua_pushcfunction(L, liba_pid_fuzzy_off);
+    case 0x001E164F: // run
+        lua_pushcfunction(L, liba_pid_fuzzy_run);
         break;
     case 0x001D8D30: // pos
         lua_pushcfunction(L, liba_pid_fuzzy_pos);

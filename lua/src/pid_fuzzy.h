@@ -101,9 +101,9 @@ int liba_pid_fuzzy_kpid(lua_State *L);
  @tparam number set setpoint value
  @tparam number fdb feedback value
  @treturn number setpoint value
- @function off
+ @function run
 */
-int liba_pid_fuzzy_off(lua_State *L);
+int liba_pid_fuzzy_run(lua_State *L);
 
 /***
  calculate for positional fuzzy PID controller

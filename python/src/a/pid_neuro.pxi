@@ -24,9 +24,9 @@ cdef class pid_neuro:
         '''set proportional integral derivative weight for single neuron PID controller'''
         a_pid_neuro_wpid(&self.ctx, wp, wi, wd)
         return self
-    def off(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
+    def run(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
         '''calculate for single neuron PID controller'''
-        return a_pid_neuro_off(&self.ctx, set, fdb)
+        return a_pid_neuro_run(&self.ctx, set, fdb)
     def inc(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
         '''calculate for incremental single neuron PID controller'''
         return a_pid_neuro_inc(&self.ctx, set, fdb)

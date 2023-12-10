@@ -54,9 +54,9 @@ cdef class pid_fuzzy:
         '''set proportional integral derivative constant for fuzzy PID controller'''
         a_pid_fuzzy_kpid(&self.ctx, kp, ki, kd)
         return self
-    def off(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
+    def run(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
         '''calculate for fuzzy PID controller'''
-        return a_pid_fuzzy_off(&self.ctx, set, fdb)
+        return a_pid_fuzzy_run(&self.ctx, set, fdb)
     def pos(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
         '''calculate for positional fuzzy PID controller'''
         return a_pid_fuzzy_pos(&self.ctx, set, fdb)

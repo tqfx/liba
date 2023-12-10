@@ -232,7 +232,7 @@ public class pid_fuzzy {
      * @param fdb feedback value
      * @return setpoint value
      */
-    public final native double off(double set, double fdb);
+    public final native double run(double set, double fdb);
 
     /**
      * calculate for positional fuzzy PID controller

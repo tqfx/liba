@@ -2,8 +2,8 @@ package liba;
 
 /** proportional integral derivative controller */
 public class pid {
-    /** turn off PID controller */
-    public static final int OFF;
+    /** run and output setpoint */
+    public static final int RUN;
     /** positional PID controller */
     public static final int POS;
     /** incremental PID controller */
@@ -11,7 +11,7 @@ public class pid {
     byte[] ctx;
     static {
         System.loadLibrary("a");
-        OFF = 0;
+        RUN = 0;
         POS = 1;
         INC = 2;
         INIT();
@@ -171,7 +171,7 @@ public class pid {
      * @param fdb feedback value
      * @return setpoint value
      */
-    public final native double off(double set, double fdb);
+    public final native double run(double set, double fdb);
 
     /**
      * calculate for positional PID controller

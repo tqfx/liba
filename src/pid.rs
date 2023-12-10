@@ -3,8 +3,8 @@
 use crate::float;
 use crate::uint;
 
-/// turn off PID controller
-pub const OFF: uint = 0;
+/// run and output setpoint
+pub const RUN: uint = 0;
 /// positional PID controller
 pub const POS: uint = 1;
 /// incremental PID controller
@@ -60,7 +60,7 @@ impl Default for pid {
 
 extern "C" {
     fn a_pid_kpid(ctx: *mut pid, kp: float, ki: float, kd: float);
-    fn a_pid_off(ctx: *mut pid, set: float, fdb: float) -> float;
+    fn a_pid_run(ctx: *mut pid, set: float, fdb: float) -> float;
     fn a_pid_pos(ctx: *mut pid, set: float, fdb: float) -> float;
     fn a_pid_inc(ctx: *mut pid, set: float, fdb: float) -> float;
     fn a_pid_zero(ctx: *mut pid);
@@ -77,8 +77,8 @@ impl pid {
         self
     }
     /// calculate for PID controller
-    pub fn off(&mut self, set: float, fdb: float) -> float {
-        unsafe { a_pid_off(self, set, fdb) }
+    pub fn run(&mut self, set: float, fdb: float) -> float {
+        unsafe { a_pid_run(self, set, fdb) }
     }
     /// calculate for positional PID controller
     pub fn pos(&mut self, set: float, fdb: float) -> float {
@@ -193,7 +193,7 @@ extern "C" {
     fn a_pid_fuzzy_joint(ctx: *mut pid_fuzzy) -> *mut u8;
     fn a_pid_fuzzy_set_joint(ctx: *mut pid_fuzzy, ptr: *mut u8, num: usize);
     fn a_pid_fuzzy_kpid(ctx: *mut pid_fuzzy, kp: float, ki: float, kd: float);
-    fn a_pid_fuzzy_off(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
+    fn a_pid_fuzzy_run(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
     fn a_pid_fuzzy_pos(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
     fn a_pid_fuzzy_inc(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
     fn a_pid_fuzzy_zero(ctx: *mut pid_fuzzy);
@@ -252,8 +252,8 @@ impl pid_fuzzy {
         self
     }
     /// calculate for fuzzy PID controller
-    pub fn off(&mut self, set: float, fdb: float) -> float {
-        unsafe { a_pid_fuzzy_off(self, set, fdb) }
+    pub fn run(&mut self, set: float, fdb: float) -> float {
+        unsafe { a_pid_fuzzy_run(self, set, fdb) }
     }
     /// calculate for positional fuzzy PID controller
     pub fn pos(&mut self, set: float, fdb: float) -> float {
@@ -398,7 +398,7 @@ impl Default for pid_neuro {
 extern "C" {
     fn a_pid_neuro_kpid(ctx: *mut pid_neuro, k: float, kp: float, ki: float, kd: float);
     fn a_pid_neuro_wpid(ctx: *mut pid_neuro, wp: float, wi: float, wd: float);
-    fn a_pid_neuro_off(ctx: *mut pid_neuro, set: float, fdb: float) -> float;
+    fn a_pid_neuro_run(ctx: *mut pid_neuro, set: float, fdb: float) -> float;
     fn a_pid_neuro_inc(ctx: *mut pid_neuro, set: float, fdb: float) -> float;
     fn a_pid_neuro_zero(ctx: *mut pid_neuro);
 }
@@ -419,8 +419,8 @@ impl pid_neuro {
         self
     }
     /// calculate for single neuron PID controller
-    pub fn off(&mut self, set: float, fdb: float) -> float {
-        unsafe { a_pid_neuro_off(self, set, fdb) }
+    pub fn run(&mut self, set: float, fdb: float) -> float {
+        unsafe { a_pid_neuro_run(self, set, fdb) }
     }
     /// calculate for incremental single neuron PID controller
     pub fn inc(&mut self, set: float, fdb: float) -> float {

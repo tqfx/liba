@@ -14,7 +14,7 @@ static struct
 
 JNIEXPORT void JNICALL Java_liba_pid_INIT(JNIEnv *jenv, jclass jcls)
 {
-    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "OFF", "I"), A_PID_OFF);
+    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "RUN", "I"), A_PID_RUN);
     (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "POS", "I"), A_PID_POS);
     (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "INC", "I"), A_PID_INC);
     L.ctx = (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B");
@@ -195,12 +195,12 @@ JNIEXPORT jobject JNICALL Java_liba_pid_kpid(JNIEnv *jenv, jobject jobj, jdouble
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_off(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
+JNIEXPORT jdouble JNICALL Java_liba_pid_run(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
 {
     a_pid_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
-    jdouble jres = a_pid_off(&ctx, set, fdb);
+    jdouble jres = a_pid_run(&ctx, set, fdb);
     (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_s), (jbyte *)&ctx);
     return jres;
 }

@@ -213,7 +213,7 @@ public class pid_neuro {
      * @param fdb feedback value
      * @return setpoint value
      */
-    public final native double off(double set, double fdb);
+    public final native double run(double set, double fdb);
 
     /**
      * calculate for incremental single neuron PID controller

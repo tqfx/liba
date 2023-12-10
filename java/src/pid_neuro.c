@@ -6,18 +6,18 @@
 #endif /* -Wfloat-equal */
 
 #undef L
-#define L Java_liba_pid_1neuron
+#define L Java_liba_pid_1neuro
 static struct
 {
     jfieldID ctx;
 } L = {NULL};
 
-JNIEXPORT void JNICALL Java_liba_pid_1neuron_INIT(JNIEnv *jenv, jclass jcls)
+JNIEXPORT void JNICALL Java_liba_pid_1neuro_INIT(JNIEnv *jenv, jclass jcls)
 {
     L.ctx = (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B");
 }
 
-JNIEXPORT void JNICALL Java_liba_pid_1neuron_init(JNIEnv *jenv, jobject jobj)
+JNIEXPORT void JNICALL Java_liba_pid_1neuro_init(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->NewByteArray(jenv, sizeof(a_pid_neuro_s));
@@ -35,7 +35,7 @@ JNIEXPORT void JNICALL Java_liba_pid_1neuron_init(JNIEnv *jenv, jobject jobj)
     (*jenv)->SetObjectField(jenv, jobj, L.ctx, jctx);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_k__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_k__(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -43,7 +43,7 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_k__(JNIEnv *jenv, jobject jobj)
     return ctx.k;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_k__D(JNIEnv *jenv, jobject jobj, jdouble k)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_k__D(JNIEnv *jenv, jobject jobj, jdouble k)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -53,7 +53,7 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_k__D(JNIEnv *jenv, jobject jobj,
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_kp__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_kp__(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -61,7 +61,7 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_kp__(JNIEnv *jenv, jobject jobj)
     return ctx.pid.kp;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_kp__D(JNIEnv *jenv, jobject jobj, jdouble kp)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_kp__D(JNIEnv *jenv, jobject jobj, jdouble kp)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -71,7 +71,7 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_kp__D(JNIEnv *jenv, jobject jobj
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_ki__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_ki__(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -79,7 +79,7 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_ki__(JNIEnv *jenv, jobject jobj)
     return ctx.pid.ki;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_ki__D(JNIEnv *jenv, jobject jobj, jdouble ki)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_ki__D(JNIEnv *jenv, jobject jobj, jdouble ki)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -89,7 +89,7 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_ki__D(JNIEnv *jenv, jobject jobj
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_kd__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_kd__(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -97,7 +97,7 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_kd__(JNIEnv *jenv, jobject jobj)
     return ctx.pid.kd;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_kd__D(JNIEnv *jenv, jobject jobj, jdouble kd)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_kd__D(JNIEnv *jenv, jobject jobj, jdouble kd)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -107,7 +107,7 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_kd__D(JNIEnv *jenv, jobject jobj
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_wp__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_wp__(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -115,7 +115,7 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_wp__(JNIEnv *jenv, jobject jobj)
     return ctx.wp;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_wp__D(JNIEnv *jenv, jobject jobj, jdouble wp)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wp__D(JNIEnv *jenv, jobject jobj, jdouble wp)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -125,7 +125,7 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_wp__D(JNIEnv *jenv, jobject jobj
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_wi__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_wi__(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -133,7 +133,7 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_wi__(JNIEnv *jenv, jobject jobj)
     return ctx.wi;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_wi__D(JNIEnv *jenv, jobject jobj, jdouble wi)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wi__D(JNIEnv *jenv, jobject jobj, jdouble wi)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -143,7 +143,7 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_wi__D(JNIEnv *jenv, jobject jobj
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_wd__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_wd__(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -151,7 +151,7 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_wd__(JNIEnv *jenv, jobject jobj)
     return ctx.wd;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_wd__D(JNIEnv *jenv, jobject jobj, jdouble wd)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wd__D(JNIEnv *jenv, jobject jobj, jdouble wd)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -161,7 +161,7 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_wd__D(JNIEnv *jenv, jobject jobj
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_outmax__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_outmax__(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -169,7 +169,7 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_outmax__(JNIEnv *jenv, jobject j
     return ctx.pid.outmax;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_outmax__D(JNIEnv *jenv, jobject jobj, jdouble outmax)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_outmax__D(JNIEnv *jenv, jobject jobj, jdouble outmax)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -179,7 +179,7 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_outmax__D(JNIEnv *jenv, jobject 
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_outmin__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_outmin__(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -187,7 +187,7 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_outmin__(JNIEnv *jenv, jobject j
     return ctx.pid.outmin;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_outmin__D(JNIEnv *jenv, jobject jobj, jdouble outmin)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_outmin__D(JNIEnv *jenv, jobject jobj, jdouble outmin)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -197,7 +197,7 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_outmin__D(JNIEnv *jenv, jobject 
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_out(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_out(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -205,7 +205,7 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_out(JNIEnv *jenv, jobject jobj)
     return ctx.pid.out;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_fdb(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_fdb(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -213,7 +213,7 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_fdb(JNIEnv *jenv, jobject jobj)
     return ctx.pid.fdb;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_err(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_err(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -221,7 +221,7 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_err(JNIEnv *jenv, jobject jobj)
     return ctx.pid.err;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_ec(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_ec(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -229,7 +229,7 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_ec(JNIEnv *jenv, jobject jobj)
     return ctx.ec;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_kpid(JNIEnv *jenv, jobject jobj, jdouble k, jdouble kp, jdouble ki, jdouble kd)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_kpid(JNIEnv *jenv, jobject jobj, jdouble k, jdouble kp, jdouble ki, jdouble kd)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -239,7 +239,7 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_kpid(JNIEnv *jenv, jobject jobj,
     return jobj;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_wpid(JNIEnv *jenv, jobject jobj, jdouble wp, jdouble wi, jdouble wd)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wpid(JNIEnv *jenv, jobject jobj, jdouble wp, jdouble wi, jdouble wd)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -249,17 +249,17 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_wpid(JNIEnv *jenv, jobject jobj,
     return jobj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_off(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_run(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
     (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuro_s), (jbyte *)&ctx);
-    jdouble jres = a_pid_neuro_off(&ctx, set, fdb);
+    jdouble jres = a_pid_neuro_run(&ctx, set, fdb);
     (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_neuro_s), (jbyte *)&ctx);
     return jres;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_inc(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_inc(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
@@ -269,7 +269,7 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1neuron_inc(JNIEnv *jenv, jobject jobj, 
     return jres;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuron_zero(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_zero(JNIEnv *jenv, jobject jobj)
 {
     a_pid_neuro_s ctx;
     jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);

@@ -84,7 +84,7 @@ A_EXTERN void a_pid_neuro_wpid(a_pid_neuro_s *ctx, a_float_t wp, a_float_t wi, a
  @param[in] fdb feedback value
  @return setpoint value
 */
-A_EXTERN a_float_t a_pid_neuro_off(a_pid_neuro_s *ctx, a_float_t set, a_float_t fdb);
+A_EXTERN a_float_t a_pid_neuro_run(a_pid_neuro_s *ctx, a_float_t set, a_float_t fdb);
 
 /*!
  @brief calculate for incremental single neuron PID controller

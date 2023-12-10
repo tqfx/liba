@@ -2,7 +2,7 @@
 var liba = require("../liba")
 var ctx = new liba.pid_neuro()
 ctx.wpid(1, 0, 0).kpid(10, 1, 0.1, 1)
-console.log(ctx.zero().off(10, 0))
+console.log(ctx.zero().run(10, 0))
 console.log(ctx.zero().inc(10, 0))
 ctx.k = ctx.k
 ctx.kp = ctx.kp

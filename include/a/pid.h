@@ -42,7 +42,7 @@
 */
 typedef enum a_pid_e
 {
-    A_PID_OFF, //!< turn off PID controller
+    A_PID_RUN, //!< run and output setpoint
     A_PID_POS, //!< positional PID controller
     A_PID_INC //!< incremental PID controller
 } a_pid_e;
@@ -98,7 +98,7 @@ A_EXTERN void a_pid_kpid(a_pid_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd)
  @param[in] fdb feedback value
  @return setpoint value
 */
-A_EXTERN a_float_t a_pid_off(a_pid_s *ctx, a_float_t set, a_float_t fdb);
+A_EXTERN a_float_t a_pid_run(a_pid_s *ctx, a_float_t set, a_float_t fdb);
 
 /*!
  @brief calculate for positional PID controller

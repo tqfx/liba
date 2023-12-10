@@ -133,7 +133,7 @@ A_EXTERN void a_pid_fuzzy_kpid(a_pid_fuzzy_s *ctx, a_float_t kp, a_float_t ki, a
  @param[in] fdb feedback value
  @return setpoint value
 */
-A_EXTERN a_float_t a_pid_fuzzy_off(a_pid_fuzzy_s *ctx, a_float_t set, a_float_t fdb);
+A_EXTERN a_float_t a_pid_fuzzy_run(a_pid_fuzzy_s *ctx, a_float_t set, a_float_t fdb);
 
 /*!
  @brief calculate for positional fuzzy PID controller

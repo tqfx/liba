@@ -79,9 +79,9 @@ int liba_pid_neuro_wpid(lua_State *L);
  @tparam number set setpoint value
  @tparam number fdb feedback value
  @treturn number setpoint value
- @function off
+ @function run
 */
-int liba_pid_neuro_off(lua_State *L);
+int liba_pid_neuro_run(lua_State *L);
 
 /***
  calculate for incremental single neuron PID controller
