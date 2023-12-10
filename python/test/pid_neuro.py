@@ -39,7 +39,7 @@ except Exception as e:
     exit()
 
 tf = a.tf(num, den[1:])
-pid_neuron = a.pid_neuron()
+pid_neuro = a.pid_neuro()
 
 r = 1.0
 setpoint = [r] * len(data)
@@ -50,9 +50,9 @@ y = 0.0
 tf.zero()
 error1 = []
 feedback1 = []
-pid_neuron.kpid(k, kp, ki, kd).wpid(wp, wi, wd)
+pid_neuro.kpid(k, kp, ki, kd).wpid(wp, wi, wd)
 for i in data:
-    y = pid_neuron.inc(r, y)
+    y = pid_neuro.inc(r, y)
     y = tf(y)
     feedback1.append(y)
     error1.append(r - y)
@@ -68,4 +68,4 @@ plt.plot(data, error1, "b-")
 plt.ylabel("error")
 plt.xlabel("time(s)")
 plt.grid(True)
-plt.savefig(os.path.join(prefix, "pid_neuron.png"))
+plt.savefig(os.path.join(prefix, "pid_neuro.png"))

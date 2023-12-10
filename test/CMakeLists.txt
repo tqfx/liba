@@ -234,11 +234,11 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(pid_fuzzy 3.gp pid_fuzzy.log)
 endif()
 
-building(pid_neuron pid_neuron.c pid_neuron.cpp)
-unittest(pid_neuron)
+building(pid_neuro pid_neuro.c pid_neuro.cpp)
+unittest(pid_neuro)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(pid_neuron 3.gp pid_neuron.log)
+  unitplot(pid_neuro 3.gp pid_neuro.log)
 endif()
 
 if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/pid/CMakeLists.txt)

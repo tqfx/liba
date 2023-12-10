@@ -12,7 +12,7 @@ unittest(pid pid)
 
 unittest(pid_fuzzy pid_fuzzy)
 
-unittest(pid_neuron pid_neuron)
+unittest(pid_neuro pid_neuro)
 
 unittest(polytraj3 polytraj3)
 

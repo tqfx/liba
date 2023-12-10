@@ -1,7 +1,7 @@
 package liba;
 
 /** single neuron proportional integral derivative controller */
-public class pid_neuron {
+public class pid_neuro {
     byte[] ctx;
     static {
         System.loadLibrary("a");
@@ -11,10 +11,10 @@ public class pid_neuron {
     static final native void INIT();
 
     /**
-     * construct a new {@link pid_neuron} object
+     * construct a new {@link pid_neuro} object
      *
      */
-    public pid_neuron() {
+    public pid_neuro() {
         init();
     }
 
@@ -191,9 +191,9 @@ public class pid_neuron {
      * @param kp proportional learning constant
      * @param ki integral learning constant
      * @param kd derivative learning constant
-     * @return {@link pid_neuron}
+     * @return {@link pid_neuro}
      */
-    public final native pid_neuron kpid(double k, double kp, double ki, double kd);
+    public final native pid_neuro kpid(double k, double kp, double ki, double kd);
 
     /**
      * set proportional integral derivative weight for single neuron PID
@@ -202,9 +202,9 @@ public class pid_neuron {
      * @param wp proportional weight
      * @param wi integral weight
      * @param wd derivative weight
-     * @return {@link pid_neuron}
+     * @return {@link pid_neuro}
      */
-    public final native pid_neuron wpid(double wp, double wi, double wd);
+    public final native pid_neuro wpid(double wp, double wi, double wd);
 
     /**
      * calculate for single neuron PID controller
@@ -227,7 +227,7 @@ public class pid_neuron {
     /**
      * zeroing for single neuron PID controller
      *
-     * @return {@link pid_neuron}
+     * @return {@link pid_neuro}
      */
-    public final native pid_neuron zero();
+    public final native pid_neuro zero();
 }

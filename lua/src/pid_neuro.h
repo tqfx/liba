@@ -1,6 +1,6 @@
 /***
  single neuron proportional integral derivative controller
- @classmod a.pid_neuron
+ @classmod a.pid_neuro
 */
 
 #ifndef LUA_LIBA_PID_NEURON_H
@@ -23,35 +23,35 @@
  @field fdb cache feedback
  @field err cache error
  @field ec error change
- @table a.pid_neuron
+ @table a.pid_neuro
 */
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
 
-int liba_pid_neuron_func_(lua_State *L, int ret);
-int liba_pid_neuron_meta_(lua_State *L, int ret);
+int liba_pid_neuro_func_(lua_State *L, int ret);
+int liba_pid_neuro_meta_(lua_State *L, int ret);
 
 /***
  constructor for single neuron PID controller
- @treturn a.pid_neuron single neuron PID controller userdata
+ @treturn a.pid_neuro single neuron PID controller userdata
  @function new
 */
-int liba_pid_neuron_new(lua_State *L);
+int liba_pid_neuro_new(lua_State *L);
 
 /***
  initialize for single neuron PID controller
- @treturn a.pid_neuron single neuron PID controller userdata
+ @treturn a.pid_neuro single neuron PID controller userdata
  @function init
 */
-int liba_pid_neuron_init(lua_State *L);
+int liba_pid_neuro_init(lua_State *L);
 
 /***
  zeroing for single neuron PID controller
- @treturn a.pid_neuron single neuron PID controller userdata
+ @treturn a.pid_neuro single neuron PID controller userdata
  @function zero
 */
-int liba_pid_neuron_zero(lua_State *L);
+int liba_pid_neuro_zero(lua_State *L);
 
 /***
  set proportional integral derivative constant for single neuron PID controller
@@ -59,20 +59,20 @@ int liba_pid_neuron_zero(lua_State *L);
  @tparam number kp proportional learning constant
  @tparam number ki integral learning constant
  @tparam number kd derivative learning constant
- @treturn a.pid_neuron single neuron PID controller userdata
+ @treturn a.pid_neuro single neuron PID controller userdata
  @function kpid
 */
-int liba_pid_neuron_kpid(lua_State *L);
+int liba_pid_neuro_kpid(lua_State *L);
 
 /***
  set proportional integral derivative weight for single neuron PID controller
  @tparam number wp proportional weight
  @tparam number wi integral weight
  @tparam number wd derivative weight
- @treturn a.pid_neuron single neuron PID controller userdata
+ @treturn a.pid_neuro single neuron PID controller userdata
  @function wpid
 */
-int liba_pid_neuron_wpid(lua_State *L);
+int liba_pid_neuro_wpid(lua_State *L);
 
 /***
  calculate for single neuron PID controller
@@ -81,7 +81,7 @@ int liba_pid_neuron_wpid(lua_State *L);
  @treturn number setpoint value
  @function off
 */
-int liba_pid_neuron_off(lua_State *L);
+int liba_pid_neuro_off(lua_State *L);
 
 /***
  calculate for incremental single neuron PID controller
@@ -90,7 +90,7 @@ int liba_pid_neuron_off(lua_State *L);
  @treturn number output value
  @function inc
 */
-int liba_pid_neuron_inc(lua_State *L);
+int liba_pid_neuro_inc(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

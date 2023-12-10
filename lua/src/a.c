@@ -111,8 +111,8 @@ int luaopen_liba(lua_State *const L)
     luaopen_liba_pid_fuzzy(L);
     lua_rawset(L, -3);
 
-    lua_pushstring(L, "pid_neuron");
-    luaopen_liba_pid_neuron(L);
+    lua_pushstring(L, "pid_neuro");
+    luaopen_liba_pid_neuro(L);
     lua_rawset(L, -3);
 
     lua_pushstring(L, "polytraj3");

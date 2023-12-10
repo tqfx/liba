@@ -1,11 +1,11 @@
 from a cimport *
-from a.pid_neuron cimport *
+from a.pid_neuro cimport *
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-cdef class pid_neuron:
+cdef class pid_neuro:
     '''single neuron proportional integral derivative controller'''
-    cdef a_pid_neuron_s ctx
+    cdef a_pid_neuro_s ctx
     def __init__(self):
         self.ctx.pid.summax = +A_FLOAT_INF
         self.ctx.pid.summin = -A_FLOAT_INF
@@ -15,24 +15,24 @@ cdef class pid_neuron:
         self.ctx.wp = 0.1
         self.ctx.wi = 0.1
         self.ctx.wd = 0.1
-        a_pid_neuron_init(&self.ctx)
+        a_pid_neuro_init(&self.ctx)
     def kpid(self, k: a_float_t, kp: a_float_t, ki: a_float_t, kd: a_float_t):
         '''set proportional integral derivative constant for single neuron PID controller'''
-        a_pid_neuron_kpid(&self.ctx, k, kp, ki, kd)
+        a_pid_neuro_kpid(&self.ctx, k, kp, ki, kd)
         return self
     def wpid(self, wp: a_float_t, wi: a_float_t, wd: a_float_t):
         '''set proportional integral derivative weight for single neuron PID controller'''
-        a_pid_neuron_wpid(&self.ctx, wp, wi, wd)
+        a_pid_neuro_wpid(&self.ctx, wp, wi, wd)
         return self
     def off(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
         '''calculate for single neuron PID controller'''
-        return a_pid_neuron_off(&self.ctx, set, fdb)
+        return a_pid_neuro_off(&self.ctx, set, fdb)
     def inc(self, set: a_float_t, fdb: a_float_t) -> a_float_t:
         '''calculate for incremental single neuron PID controller'''
-        return a_pid_neuron_inc(&self.ctx, set, fdb)
+        return a_pid_neuro_inc(&self.ctx, set, fdb)
     def zero(self):
         '''zeroing for single neuron PID controller'''
-        a_pid_neuron_zero(&self.ctx)
+        a_pid_neuro_zero(&self.ctx)
         return self
     property k:
         def __get__(self) -> a_float_t:

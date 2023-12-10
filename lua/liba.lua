@@ -675,7 +675,7 @@ function liba.pid_fuzzy.inc(ctx, set, fdb) end
 ---@return number
 function pid_fuzzy:inc(set, fdb) end
 
----@class a.pid_neuron
+---@class a.pid_neuro
 ---@field k number
 ---@field kp number
 ---@field ki number
@@ -689,78 +689,78 @@ function pid_fuzzy:inc(set, fdb) end
 ---@field fdb number
 ---@field err number
 ---@field ec number
-local pid_neuron = {}
-liba.pid_neuron = {}
+local pid_neuro = {}
+liba.pid_neuro = {}
 
----@return a.pid_neuron
-function liba.pid_neuron.new() end
+---@return a.pid_neuro
+function liba.pid_neuro.new() end
 
----@return a.pid_neuron
-function pid_neuron.new() end
+---@return a.pid_neuro
+function pid_neuro.new() end
 
----@param ctx a.pid_neuron
----@return a.pid_neuron
-function liba.pid_neuron.init(ctx) end
+---@param ctx a.pid_neuro
+---@return a.pid_neuro
+function liba.pid_neuro.init(ctx) end
 
----@return a.pid_neuron
-function pid_neuron:init() end
+---@return a.pid_neuro
+function pid_neuro:init() end
 
----@param ctx a.pid_neuron
----@return a.pid_neuron
-function liba.pid_neuron.zero(ctx) end
+---@param ctx a.pid_neuro
+---@return a.pid_neuro
+function liba.pid_neuro.zero(ctx) end
 
----@return a.pid_neuron
-function pid_neuron:zero() end
+---@return a.pid_neuro
+function pid_neuro:zero() end
 
----@param ctx a.pid_neuron
+---@param ctx a.pid_neuro
 ---@param k number
 ---@param kp number
 ---@param ki number
 ---@param kd number
----@return a.pid_neuron
-function liba.pid_neuron.kpid(ctx, k, kp, ki, kd) end
+---@return a.pid_neuro
+function liba.pid_neuro.kpid(ctx, k, kp, ki, kd) end
 
 ---@param k number
 ---@param kp number
 ---@param ki number
 ---@param kd number
----@return a.pid_neuron
-function pid_neuron:kpid(k, kp, ki, kd) end
+---@return a.pid_neuro
+function pid_neuro:kpid(k, kp, ki, kd) end
 
----@param ctx a.pid_neuron
+---@param ctx a.pid_neuro
 ---@param wp number
 ---@param wi number
 ---@param wd number
----@return a.pid_neuron
-function liba.pid_neuron.wpid(ctx, wp, wi, wd) end
+---@return a.pid_neuro
+function liba.pid_neuro.wpid(ctx, wp, wi, wd) end
 
 ---@param wp number
 ---@param wi number
 ---@param wd number
----@return a.pid_neuron
-function pid_neuron:wpid(wp, wi, wd) end
+---@return a.pid_neuro
+function pid_neuro:wpid(wp, wi, wd) end
 
----@param ctx a.pid_neuron
+---@param ctx a.pid_neuro
 ---@param set number
 ---@param fdb number
 ---@return number
-function liba.pid_neuron.off(ctx, set, fdb) end
-
----@param set number
----@param fdb number
----@return number
-function pid_neuron:off(set, fdb) end
-
----@param ctx a.pid_neuron
----@param set number
----@param fdb number
----@return number
-function liba.pid_neuron.inc(ctx, set, fdb) end
+function liba.pid_neuro.off(ctx, set, fdb) end
 
 ---@param set number
 ---@param fdb number
 ---@return number
-function pid_neuron:inc(set, fdb) end
+function pid_neuro:off(set, fdb) end
+
+---@param ctx a.pid_neuro
+---@param set number
+---@param fdb number
+---@return number
+function liba.pid_neuro.inc(ctx, set, fdb) end
+
+---@param set number
+---@param fdb number
+---@return number
+function pid_neuro:inc(set, fdb) end
 
 ---@class a.polytraj3
 ---@field q table

@@ -38,8 +38,8 @@ unittest(pid)
 building(pid_fuzzy)
 unittest(pid_fuzzy)
 
-building(pid_neuron)
-unittest(pid_neuron)
+building(pid_neuro)
+unittest(pid_neuro)
 
 building(polytraj3)
 unittest(polytraj3)

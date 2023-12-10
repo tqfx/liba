@@ -80,8 +80,8 @@ target("test/pid_fuzzy")
 building({ "pid_fuzzy.c", "pid_fuzzy.cpp" })
 target_end()
 
-target("test/pid_neuron")
-building({ "pid_neuron.c", "pid_neuron.cpp" })
+target("test/pid_neuro")
+building({ "pid_neuro.c", "pid_neuro.cpp" })
 target_end()
 
 target("test/poly")

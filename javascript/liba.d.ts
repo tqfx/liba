@@ -321,7 +321,7 @@ declare namespace liba {
     readonly prototype: pid_fuzzy;
   }
 
-  interface pid_neuron {
+  interface pid_neuro {
     /** proportional output coefficient */
     k: number;
     /** proportional learning constant */
@@ -355,14 +355,14 @@ declare namespace liba {
      * @param ki integral learning constant
      * @param kd derivative learning constant
      */
-    kpid(k: number, kp: number, ki: number, kd: number): pid_neuron;
+    kpid(k: number, kp: number, ki: number, kd: number): pid_neuro;
     /**
      * set proportional integral derivative weight for single neuron PID controller
      * @param wp proportional weight
      * @param wi integral weight
      * @param wd derivative weight
      */
-    wpid(wp: number, wi: number, wd: number): pid_neuron;
+    wpid(wp: number, wi: number, wd: number): pid_neuro;
     /**
      * calculate for single neuron PID controller
      * @param set setpoint value
@@ -378,13 +378,13 @@ declare namespace liba {
      */
     inc(set: number, fdb: number): number;
     /** zeroing for single neuron PID controller */
-    zero(): pid_neuron;
+    zero(): pid_neuro;
     delete(): void;
   }
   /** constructor for single neuron PID controller */
-  let pid_neuron: {
-    new(): pid_neuron;
-    readonly prototype: pid_neuron;
+  let pid_neuro: {
+    new(): pid_neuro;
+    readonly prototype: pid_neuro;
   }
 
   interface polytraj3 {

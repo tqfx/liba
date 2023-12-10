@@ -3,15 +3,15 @@
 package.path = arg[0]:sub(0, -arg[0]:match("([^/\\]*)$"):len() - 1) .. "?.lua;" .. package.path
 local test = require("test")
 local a = require("liba")
-test.dir(getmetatable(a.pid_neuron))
-local ctx = a.pid_neuron.new()
+test.dir(getmetatable(a.pid_neuro))
+local ctx = a.pid_neuro.new()
 assert(ctx)
 test.dir(getmetatable(ctx))
-assert(type(a.pid_neuron.kpid(ctx, 4, 3, 2, 1)) == "userdata")
-assert(type(a.pid_neuron.wpid(ctx, 3, 2, 1)) == "userdata")
-assert(type(a.pid_neuron.off(ctx, 1, 0)) == "number")
-assert(type(a.pid_neuron.inc(ctx, 1, 0)) == "number")
-assert(type(a.pid_neuron.zero(ctx)) == "userdata")
+assert(type(a.pid_neuro.kpid(ctx, 4, 3, 2, 1)) == "userdata")
+assert(type(a.pid_neuro.wpid(ctx, 3, 2, 1)) == "userdata")
+assert(type(a.pid_neuro.off(ctx, 1, 0)) == "number")
+assert(type(a.pid_neuro.inc(ctx, 1, 0)) == "number")
+assert(type(a.pid_neuro.zero(ctx)) == "userdata")
 ctx:kpid(4, 3, 2, 1):wpid(3, 2, 1):zero()
 assert(type(ctx:off(1, 0)) == "number")
 assert(type(ctx:inc(1, 0)) == "number")
@@ -43,7 +43,7 @@ ctx.__index = nil
 assert(ctx.__index)
 ctx.__newindex = nil
 assert(ctx.__newindex)
----@class a.pid_neuron
+---@class a.pid_neuro
 ---@field __name string
 ---@field __index table
 ---@field __newindex table

@@ -1,6 +1,6 @@
 import * as a from "liba.so";
 
-var ctx = new a.pid_neuron()
+var ctx = new a.pid_neuro()
 ctx.kpid(10, 1, 0.1, 1)
 ctx.wpid(1, 0, 0)
 console.log(ctx.off(10, 0))

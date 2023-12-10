@@ -367,7 +367,7 @@ fn pid_fuzzy() {
 
 /// single neuron proportional integral derivative controller
 #[repr(C)]
-pub struct pid_neuron {
+pub struct pid_neuro {
     /// proportional integral derivative controller
     pub pid: crate::pid::pid,
     /// proportional coefficient
@@ -382,7 +382,7 @@ pub struct pid_neuron {
     pub ec: float,
 }
 
-impl Default for pid_neuron {
+impl Default for pid_neuro {
     fn default() -> Self {
         Self {
             pid: pid::default(),
@@ -396,47 +396,47 @@ impl Default for pid_neuron {
 }
 
 extern "C" {
-    fn a_pid_neuron_kpid(ctx: *mut pid_neuron, k: float, kp: float, ki: float, kd: float);
-    fn a_pid_neuron_wpid(ctx: *mut pid_neuron, wp: float, wi: float, wd: float);
-    fn a_pid_neuron_off(ctx: *mut pid_neuron, set: float, fdb: float) -> float;
-    fn a_pid_neuron_inc(ctx: *mut pid_neuron, set: float, fdb: float) -> float;
-    fn a_pid_neuron_zero(ctx: *mut pid_neuron);
+    fn a_pid_neuro_kpid(ctx: *mut pid_neuro, k: float, kp: float, ki: float, kd: float);
+    fn a_pid_neuro_wpid(ctx: *mut pid_neuro, wp: float, wi: float, wd: float);
+    fn a_pid_neuro_off(ctx: *mut pid_neuro, set: float, fdb: float) -> float;
+    fn a_pid_neuro_inc(ctx: *mut pid_neuro, set: float, fdb: float) -> float;
+    fn a_pid_neuro_zero(ctx: *mut pid_neuro);
 }
 
-impl pid_neuron {
+impl pid_neuro {
     /// initialize for single neuron PID controller
     pub fn new() -> Self {
         Self { ..Self::default() }
     }
     /// set proportional integral derivative constant for single neuron PID controller
     pub fn kpid(&mut self, k: float, kp: float, ki: float, kd: float) -> &mut Self {
-        unsafe { a_pid_neuron_kpid(self, k, kp, ki, kd) };
+        unsafe { a_pid_neuro_kpid(self, k, kp, ki, kd) };
         self
     }
     /// set proportional integral derivative weight for single neuron PID controller
     pub fn wpid(&mut self, wp: float, wi: float, wd: float) -> &mut Self {
-        unsafe { a_pid_neuron_wpid(self, wp, wi, wd) };
+        unsafe { a_pid_neuro_wpid(self, wp, wi, wd) };
         self
     }
     /// calculate for single neuron PID controller
     pub fn off(&mut self, set: float, fdb: float) -> float {
-        unsafe { a_pid_neuron_off(self, set, fdb) }
+        unsafe { a_pid_neuro_off(self, set, fdb) }
     }
     /// calculate for incremental single neuron PID controller
     pub fn inc(&mut self, set: float, fdb: float) -> float {
-        unsafe { a_pid_neuron_inc(self, set, fdb) }
+        unsafe { a_pid_neuro_inc(self, set, fdb) }
     }
     /// zeroing for single neuron PID controller
     pub fn zero(&mut self) -> &mut Self {
-        unsafe { a_pid_neuron_zero(self) };
+        unsafe { a_pid_neuro_zero(self) };
         self
     }
 }
 
 #[test]
-fn pid_neuron() {
+fn pid_neuro() {
     extern crate std;
-    let mut a = crate::pid::pid_neuron::new();
+    let mut a = crate::pid::pid_neuro::new();
     a.kpid(10.0, 1.0, 0.1, 1.0).wpid(1.0, 0.0, 0.0);
     std::println!("{}", a.inc(1.0, 0.0));
     a.zero();

@@ -215,12 +215,12 @@ unsigned int const pid_fuzzy::CUP_ALGEBRA = A_PID_FUZZY_CUP_ALGEBRA;
 unsigned int const pid_fuzzy::CUP_BOUNDED = A_PID_FUZZY_CUP_BOUNDED;
 unsigned int const pid_fuzzy::EQU = A_PID_FUZZY_EQU;
 
-#include "a/pid_neuron.h"
+#include "a/pid_neuro.h"
 
-class pid_neuron: public a_pid_neuron_s
+class pid_neuro: public a_pid_neuro_s
 {
 public:
-    pid_neuron()
+    pid_neuro()
     {
         pid.summax = +A_FLOAT_INF;
         pid.summin = -A_FLOAT_INF;
@@ -233,7 +233,7 @@ public:
         wp = A_FLOAT_C(0.1);
         wi = A_FLOAT_C(0.1);
         wd = A_FLOAT_C(0.1);
-        a_pid_neuron_init(this);
+        a_pid_neuro_init(this);
     }
     a_float_t get_kp() const { return pid.kp; }
     void set_kp(a_float_t kp) { pid.kp = kp; }
@@ -515,44 +515,44 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("err", &pid_fuzzy::get_err)
         .property<unsigned int, void>("order", &pid_fuzzy::order)
         .property("joint", &pid_fuzzy::get_joint, &pid_fuzzy::set_joint);
-    emscripten::class_<pid_neuron>("pid_neuron")
+    emscripten::class_<pid_neuro>("pid_neuro")
         .constructor<>()
-        .function("kpid", emscripten::optional_override([](pid_neuron *ctx, a_float_t k, a_float_t kp, a_float_t ki, a_float_t kd) {
-                      a_pid_neuron_kpid(reinterpret_cast<a_pid_neuron_s *>(ctx), k, kp, ki, kd);
+        .function("kpid", emscripten::optional_override([](pid_neuro *ctx, a_float_t k, a_float_t kp, a_float_t ki, a_float_t kd) {
+                      a_pid_neuro_kpid(reinterpret_cast<a_pid_neuro_s *>(ctx), k, kp, ki, kd);
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
-        .function("wpid", emscripten::optional_override([](pid_neuron *ctx, a_float_t wp, a_float_t wi, a_float_t wd) {
-                      a_pid_neuron_wpid(reinterpret_cast<a_pid_neuron_s *>(ctx), wp, wi, wd);
+        .function("wpid", emscripten::optional_override([](pid_neuro *ctx, a_float_t wp, a_float_t wi, a_float_t wd) {
+                      a_pid_neuro_wpid(reinterpret_cast<a_pid_neuro_s *>(ctx), wp, wi, wd);
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
-        .function("off", emscripten::optional_override([](pid_neuron *ctx, a_float_t set, a_float_t fdb) {
-                      return a_pid_neuron_off(reinterpret_cast<a_pid_neuron_s *>(ctx), set, fdb);
+        .function("off", emscripten::optional_override([](pid_neuro *ctx, a_float_t set, a_float_t fdb) {
+                      return a_pid_neuro_off(reinterpret_cast<a_pid_neuro_s *>(ctx), set, fdb);
                   }),
                   emscripten::allow_raw_pointers())
-        .function("inc", emscripten::optional_override([](pid_neuron *ctx, a_float_t set, a_float_t fdb) {
-                      return a_pid_neuron_inc(reinterpret_cast<a_pid_neuron_s *>(ctx), set, fdb);
+        .function("inc", emscripten::optional_override([](pid_neuro *ctx, a_float_t set, a_float_t fdb) {
+                      return a_pid_neuro_inc(reinterpret_cast<a_pid_neuro_s *>(ctx), set, fdb);
                   }),
                   emscripten::allow_raw_pointers())
-        .function("zero", emscripten::optional_override([](pid_neuron *ctx) {
-                      a_pid_neuron_zero(reinterpret_cast<a_pid_neuron_s *>(ctx));
+        .function("zero", emscripten::optional_override([](pid_neuro *ctx) {
+                      a_pid_neuro_zero(reinterpret_cast<a_pid_neuro_s *>(ctx));
                       return ctx;
                   }),
                   emscripten::allow_raw_pointers())
-        .property<a_float_t, void>("k", &pid_neuron::k)
-        .property("kp", &pid_neuron::get_kp, &pid_neuron::set_kp)
-        .property("ki", &pid_neuron::get_ki, &pid_neuron::set_ki)
-        .property("kd", &pid_neuron::get_kd, &pid_neuron::set_kd)
-        .property("wp", &pid_neuron::get_wp, &pid_neuron::set_wp)
-        .property("wi", &pid_neuron::get_wi, &pid_neuron::set_wi)
-        .property("wd", &pid_neuron::get_wd, &pid_neuron::set_wd)
-        .property("outmax", &pid_neuron::get_outmax, &pid_neuron::set_outmax)
-        .property("outmin", &pid_neuron::get_outmin, &pid_neuron::set_outmin)
-        .property("out", &pid_neuron::get_out)
-        .property("fdb", &pid_neuron::get_fdb)
-        .property("err", &pid_neuron::get_err)
-        .property("ec", &pid_neuron::get_ec);
+        .property<a_float_t, void>("k", &pid_neuro::k)
+        .property("kp", &pid_neuro::get_kp, &pid_neuro::set_kp)
+        .property("ki", &pid_neuro::get_ki, &pid_neuro::set_ki)
+        .property("kd", &pid_neuro::get_kd, &pid_neuro::set_kd)
+        .property("wp", &pid_neuro::get_wp, &pid_neuro::set_wp)
+        .property("wi", &pid_neuro::get_wi, &pid_neuro::set_wi)
+        .property("wd", &pid_neuro::get_wd, &pid_neuro::set_wd)
+        .property("outmax", &pid_neuro::get_outmax, &pid_neuro::set_outmax)
+        .property("outmin", &pid_neuro::get_outmin, &pid_neuro::set_outmin)
+        .property("out", &pid_neuro::get_out)
+        .property("fdb", &pid_neuro::get_fdb)
+        .property("err", &pid_neuro::get_err)
+        .property("ec", &pid_neuro::get_ec);
     emscripten::class_<polytraj3>("polytraj3")
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t>()
         .constructor<a_float_t, a_float_t, a_float_t, a_float_t, a_float_t, a_float_t>()

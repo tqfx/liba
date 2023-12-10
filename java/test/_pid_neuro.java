@@ -1,8 +1,8 @@
-import liba.pid_neuron;
+import liba.pid_neuro;
 
-class _pid_neuron {
+class _pid_neuro {
     public static void main(String[] args) {
-        pid_neuron obj = new pid_neuron();
+        pid_neuro obj = new pid_neuro();
         obj.kpid(10, 1, 0.1, 1).wpid(1, 0, 0).zero();
         System.out.print(obj.inc(1, 0) + " ");
         System.out.println(obj.off(1, 0));

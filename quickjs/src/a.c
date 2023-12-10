@@ -87,7 +87,7 @@ int js_liba_init(JSContext *const ctx, JSModuleDef *const m)
 {
     js_liba_pid_init(ctx, m);
     js_liba_pid_fuzzy_init(ctx, m);
-    js_liba_pid_neuron_init(ctx, m);
+    js_liba_pid_neuro_init(ctx, m);
     js_liba_polytraj3_init(ctx, m);
     js_liba_polytraj5_init(ctx, m);
     js_liba_polytraj7_init(ctx, m);
@@ -103,7 +103,7 @@ JSModuleDef *js_init_module(JSContext *const ctx, char const *const module_name)
     {
         JS_AddModuleExport(ctx, m, "pid");
         JS_AddModuleExport(ctx, m, "pid_fuzzy");
-        JS_AddModuleExport(ctx, m, "pid_neuron");
+        JS_AddModuleExport(ctx, m, "pid_neuro");
         JS_AddModuleExport(ctx, m, "polytraj3");
         JS_AddModuleExport(ctx, m, "polytraj5");
         JS_AddModuleExport(ctx, m, "polytraj7");
