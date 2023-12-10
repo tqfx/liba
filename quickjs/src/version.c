@@ -28,9 +28,13 @@ static JSValue liba_version_ctor(JSContext *const ctx, JSValueConst const new_ta
     {
         if (JS_ToUint32(ctx, &args[i], argv[i]))
         {
-            if (!i && ((void)(ver = JS_ToCString(ctx, argv[0])), ver))
+            if (!i)
             {
-                break;
+                ver = JS_ToCString(ctx, argv[0]);
+                if (ver)
+                {
+                    break;
+                }
             }
             goto fail;
         }
