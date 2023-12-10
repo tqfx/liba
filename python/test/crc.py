@@ -11,7 +11,7 @@ crc = a.crc8()
 print(crc(b""))
 crc.table
 
-crc = a.crc8(be=True)
+crc = a.crc8(big_endian=True)
 print(crc(b""))
 crc.table
 
@@ -19,7 +19,7 @@ crc = a.crc16()
 print(crc(b""))
 crc.table
 
-crc = a.crc16(be=True)
+crc = a.crc16(big_endian=True)
 print(crc(b""))
 crc.table
 
@@ -27,7 +27,7 @@ crc = a.crc32()
 print(crc(b""))
 crc.table
 
-crc = a.crc32(be=True)
+crc = a.crc32(big_endian=True)
 print(crc(b""))
 crc.table
 
@@ -35,6 +35,6 @@ crc = a.crc64()
 print(crc(b""))
 crc.table
 
-crc = a.crc64(be=True)
+crc = a.crc64(big_endian=True)
 print(crc(b""))
 crc.table

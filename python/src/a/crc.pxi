@@ -9,9 +9,9 @@ cdef class crc8:
     property table:
         def __get__(self):
             return self.table
-    def __init__(self, poly: a_u8_t = A_CRC8_POLY, be = False):
+    def __init__(self, poly: a_u8_t = A_CRC8_POLY, big_endian = False):
         self.table = array_u8([0] * A_CRC_SIZ)
-        if be:
+        if big_endian:
             a_crc8be_init(<a_u8_t *>self.table.data.as_voidptr, poly)
         else:
             a_crc8le_init(<a_u8_t *>self.table.data.as_voidptr, poly)
@@ -28,9 +28,9 @@ cdef class crc16:
         def __get__(self):
             return self.table
     cdef a_u16_t (*call)(const a_u16_t *, const void *, a_size_t, a_u16_t)
-    def __init__(self, poly: a_u16_t = A_CRC16_POLY, be = False):
+    def __init__(self, poly: a_u16_t = A_CRC16_POLY, big_endian = False):
         self.table = array_u16([0] * A_CRC_SIZ)
-        if be:
+        if big_endian:
             self.call = a_crc16be
             a_crc16be_init(<a_u16_t *>self.table.data.as_voidptr, poly)
         else:
@@ -49,9 +49,9 @@ cdef class crc32:
         def __get__(self):
             return self.table
     cdef a_u32_t (*call)(const a_u32_t *, const void *, a_size_t, a_u32_t)
-    def __init__(self, poly: a_u32_t = A_CRC32_POLY, be = False):
+    def __init__(self, poly: a_u32_t = A_CRC32_POLY, big_endian = False):
         self.table = array_u32([0] * A_CRC_SIZ)
-        if be:
+        if big_endian:
             self.call = a_crc32be
             a_crc32be_init(<a_u32_t *>self.table.data.as_voidptr, poly)
         else:
@@ -70,9 +70,9 @@ cdef class crc64:
         def __get__(self):
             return self.table
     cdef a_u64_t (*call)(const a_u64_t *, const void *, a_size_t, a_u64_t)
-    def __init__(self, poly: a_u64_t = A_CRC64_POLY, be = False):
+    def __init__(self, poly: a_u64_t = A_CRC64_POLY, big_endian = False):
         self.table = array_u64([0] * A_CRC_SIZ)
-        if be:
+        if big_endian:
             self.call = a_crc64be
             a_crc64be_init(<a_u64_t *>self.table.data.as_voidptr, poly)
         else:
