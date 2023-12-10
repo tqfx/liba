@@ -50,27 +50,27 @@ static void create_table(char const *const name)
 
     a_u8_t table8[A_CRC_SIZ];
     a_crc8le_init(table8, A_CRC8_POLY);
-    write_table8(out, table8, "CRC8L");
+    write_table8(out, table8, "CRC8LE");
     a_crc8be_init(table8, A_CRC8_POLY);
-    write_table8(out, table8, "CRC8H");
+    write_table8(out, table8, "CRC8BE");
 
     a_u16_t table16[A_CRC_SIZ];
     a_crc16le_init(table16, A_CRC16_POLY);
-    write_table16(out, table16, "CRC16L");
+    write_table16(out, table16, "CRC16LE");
     a_crc16be_init(table16, A_CRC16_POLY);
-    write_table16(out, table16, "CRC16H");
+    write_table16(out, table16, "CRC16BE");
 
     a_u32_t table32[A_CRC_SIZ];
     a_crc32le_init(table32, A_CRC32_POLY);
-    write_table32(out, table32, "CRC32L");
+    write_table32(out, table32, "CRC32LE");
     a_crc32be_init(table32, A_CRC32_POLY);
-    write_table32(out, table32, "CRC32H");
+    write_table32(out, table32, "CRC32BE");
 
     a_u64_t table64[A_CRC_SIZ];
     a_crc64le_init(table64, A_CRC64_POLY);
-    write_table64(out, table64, "CRC64L");
+    write_table64(out, table64, "CRC64LE");
     a_crc64be_init(table64, A_CRC64_POLY);
-    write_table64(out, table64, "CRC64H");
+    write_table64(out, table64, "CRC64BE");
 
     if (stdout != out && fclose(out) == EOF)
     {
@@ -98,11 +98,11 @@ static void test(void)
     debug("POLY: 0x%04u\n", A_CRC16_POLY);
     debug("INIT: 0x%04u\n", A_CRC16_INIT);
     a_crc16le_init(table16, A_CRC16_POLY);
-    debug("LSB: 0x%04" PRIX16 "(L) 0x%04" PRIX16 "(H)\n",
+    debug("LSB: 0x%04" PRIX16 "(LE) 0x%04" PRIX16 "(BE)\n",
           a_crc16le(table16, TEXT, SIZE, A_CRC16_INIT),
           a_crc16be(table16, TEXT, SIZE, A_CRC16_INIT));
     a_crc16be_init(table16, A_CRC16_POLY);
-    debug("MSB: 0x%04" PRIX16 "(L) 0x%04" PRIX16 "(H)\n",
+    debug("MSB: 0x%04" PRIX16 "(LE) 0x%04" PRIX16 "(BE)\n",
           a_crc16le(table16, TEXT, SIZE, A_CRC16_INIT),
           a_crc16be(table16, TEXT, SIZE, A_CRC16_INIT));
 
@@ -110,11 +110,11 @@ static void test(void)
     debug("POLY: 0x%08" PRIX32 "\n", A_CRC32_POLY);
     debug("INIT: 0x%08" PRIX32 "\n", A_CRC32_INIT);
     a_crc32le_init(table32, A_CRC32_POLY);
-    debug("LSB: 0x%08" PRIX32 "(L) 0x%08" PRIX32 "(H)\n",
+    debug("LSB: 0x%08" PRIX32 "(LE) 0x%08" PRIX32 "(BE)\n",
           a_crc32le(table32, TEXT, SIZE, A_CRC32_INIT),
           a_crc32be(table32, TEXT, SIZE, A_CRC32_INIT));
     a_crc32be_init(table32, A_CRC32_POLY);
-    debug("MSB: 0x%08" PRIX32 "(L) 0x%08" PRIX32 "(H)\n",
+    debug("MSB: 0x%08" PRIX32 "(LE) 0x%08" PRIX32 "(BE)\n",
           a_crc32le(table32, TEXT, SIZE, A_CRC32_INIT),
           a_crc32be(table32, TEXT, SIZE, A_CRC32_INIT));
 
@@ -122,11 +122,11 @@ static void test(void)
     debug("POLY: 0x%016" PRIX64 "\n", A_CRC64_POLY);
     debug("INIT: 0x%016" PRIX64 "\n", A_CRC64_INIT);
     a_crc64le_init(table64, A_CRC64_POLY);
-    debug("LSB: 0x%016" PRIX64 "(L) 0x%016" PRIX64 "(H)\n",
+    debug("LSB: 0x%016" PRIX64 "(LE) 0x%016" PRIX64 "(BE)\n",
           a_crc64le(table64, TEXT, SIZE, A_CRC64_INIT),
           a_crc64be(table64, TEXT, SIZE, A_CRC64_INIT));
     a_crc64be_init(table64, A_CRC64_POLY);
-    debug("MSB: 0x%016" PRIX64 "(L) 0x%016" PRIX64 "(H)\n",
+    debug("MSB: 0x%016" PRIX64 "(LE) 0x%016" PRIX64 "(BE)\n",
           a_crc64le(table64, TEXT, SIZE, A_CRC64_INIT),
           a_crc64be(table64, TEXT, SIZE, A_CRC64_INIT));
 
