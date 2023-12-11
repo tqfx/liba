@@ -1,7 +1,7 @@
 get_property(IS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
-string_append(CMAKE_CXX_FLAGS ${WARNINGS_CXXFLAGS} ${SANITIZE_CXXFLAGS})
-string_append(CMAKE_C_FLAGS ${WARNINGS_CFLAGS} ${SANITIZE_CFLAGS})
-string_append(CMAKE_EXE_LINKER_FLAGS ${SANITIZE_LDFLAGS})
+string_append(CMAKE_CXX_FLAGS ${WARNINGS_XX} ${SANITIZE_XX})
+string_append(CMAKE_C_FLAGS ${WARNINGS_CC} ${SANITIZE_CC})
+string_append(CMAKE_EXE_LINKER_FLAGS ${SANITIZE_LD})
 
 function(set_executable_options)
   list(FIND ENABLED_LANGUAGES CXX HAS_CXX)
@@ -239,10 +239,6 @@ unittest(pid_neuro)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(pid_neuro 3.gp pid_neuro.log)
-endif()
-
-if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/pid/CMakeLists.txt)
-  add_subdirectory(pid)
 endif()
 
 building(poly poly.c poly.cpp)
