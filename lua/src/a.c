@@ -13,12 +13,12 @@
 */
 static int liba_hash_bkdr(lua_State *const L)
 {
-    a_umax_t val = 0;
+    lua_Integer val = 0;
     for (int Li = 1, Ln = lua_gettop(L); Li <= Ln; ++Li)
     {
-        val = a_hash_bkdr(luaL_checklstring(L, Li, A_NULL), val);
+        val = (lua_Integer)a_hash_bkdr(luaL_checklstring(L, Li, A_NULL), (a_umax_t)val);
     }
-    lua_pushinteger(L, (lua_Integer)val);
+    lua_pushinteger(L, val & 0x7FFFFFFF);
     return 1;
 }
 

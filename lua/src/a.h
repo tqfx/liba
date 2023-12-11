@@ -23,9 +23,9 @@
 #include <lua.h>
 
 #if defined(__GNUC__) || defined(__clang__)
-#define FUNC2P(F) __extension__ a_cast_s(void *, F)
+#define FUNC2P(F) __extension__ a_cast_r(void *, F)
 #else /* !__GNUC__ */
-#define FUNC2P(F) a_cast_s(void *, F)
+#define FUNC2P(F) a_cast_r(void *, F)
 #endif /* __GNUC__ */
 #if !defined LUA_INT
 #define LUA_INT lua_Integer
@@ -66,7 +66,7 @@ extern "C" {
 LUALIB_API void luaL_checkversion_(lua_State *L, lua_Number ver, size_t sz);
 #define luaL_checkversion(L) luaL_checkversion_(L, LUA_VERSION_NUM, sizeof(lua_Number) + sizeof(lua_Integer) * 16)
 #else /* !LUA_VERSION_NUM */
-#define luaL_checkversion(L)
+#define luaL_checkversion(L) ((void)0)
 #endif /* LUA_VERSION_NUM */
 
 #if !defined LUA_VERSION_NUM || (LUA_VERSION_NUM <= 501)
