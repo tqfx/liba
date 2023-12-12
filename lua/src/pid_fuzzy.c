@@ -443,9 +443,6 @@ int luaopen_liba_pid_fuzzy(lua_State *const L)
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
     lua_int_reg(L, -1, enums);
     lua_fun_reg(L, -1, funcs);
-    lua_createtable(L, 0, 1);
-    lua_fun_set(L, -1, "__newindex", liba_setter);
-    lua_setmetatable(L, -2);
 
     lua_fun_s const metas[] = {
         {"__newindex", liba_pid_fuzzy_set},
@@ -454,8 +451,8 @@ int luaopen_liba_pid_fuzzy(lua_State *const L)
         {NULL, NULL},
     };
     lua_createtable(L, 0, A_LEN(metas));
-    lua_str_set(L, -1, "__name", "a.pid_fuzzy");
     lua_fun_reg(L, -1, metas);
+    lua_str_set(L, -1, "__name", "a.pid_fuzzy");
 
     liba_pid_fuzzy_meta_(L, 0);
     liba_pid_fuzzy_func_(L, 0);

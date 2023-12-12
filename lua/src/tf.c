@@ -227,9 +227,6 @@ int luaopen_liba_tf(lua_State *const L)
 {
     lua_createtable(L, 0, A_LEN(funcs) - 1);
     lua_fun_reg(L, -1, funcs);
-    lua_createtable(L, 0, 1);
-    lua_fun_set(L, -1, "__newindex", liba_setter);
-    lua_setmetatable(L, -2);
 
     lua_fun_s const metas[] = {
         {"__newindex", liba_tf_set},
@@ -239,8 +236,8 @@ int luaopen_liba_tf(lua_State *const L)
         {NULL, NULL},
     };
     lua_createtable(L, 0, A_LEN(metas));
-    lua_str_set(L, -1, "__name", "a.tf");
     lua_fun_reg(L, -1, metas);
+    lua_str_set(L, -1, "__name", "a.tf");
 
     liba_tf_meta_(L, 0);
     liba_tf_func_(L, 0);

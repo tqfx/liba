@@ -4,21 +4,25 @@
 */
 
 #include "a.h"
+#include <stdio.h>
+#include <inttypes.h>
 
 /***
  Brian Kernighan and Dennis Ritchie
  @tparam number str string to be processed
- @treturn integer hash value
+ @treturn string hash value
  @function hash_bkdr
 */
 static int liba_hash_bkdr(lua_State *const L)
 {
-    lua_Integer val = 0;
+    char str[11];
+    a_u32_t val = 0;
     for (int Li = 1, Ln = lua_gettop(L); Li <= Ln; ++Li)
     {
-        val = (lua_Integer)a_hash_bkdr(luaL_checklstring(L, Li, A_NULL), (a_umax_t)val);
+        val = (a_u32_t)a_hash_bkdr(luaL_checklstring(L, Li, A_NULL), val);
     }
-    lua_pushinteger(L, val & 0x7FFFFFFF);
+    (void)snprintf(str, 11, "0x%08" PRIX32, val);
+    lua_pushstring(L, str);
     return 1;
 }
 
@@ -430,17 +434,6 @@ LUA_NUM *lua_table_num_get(lua_State *const L, int const idx, LUA_NUM const *con
         }
     }
     return ret;
-}
-
-#include <stdio.h>
-#include <inttypes.h>
-
-int liba_setter(lua_State *const L)
-{
-    char h[11];
-    char const *const s = lua_tostring(L, 2);
-    (void)snprintf(h, 11, "0x%08" PRIX32, (a_u32_t)a_hash_bkdr(s, 0));
-    return luaL_error(L, "field(%s) '%s' missing in setter", h, s);
 }
 
 void lua_stack_type(lua_State *const L, unsigned int const line)

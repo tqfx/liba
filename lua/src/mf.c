@@ -406,8 +406,5 @@ int luaopen_liba_mf(lua_State *const L)
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
     lua_int_reg(L, -1, enums);
     lua_fun_reg(L, -1, funcs);
-    lua_createtable(L, 0, 1);
-    lua_fun_set(L, -1, "__newindex", liba_setter);
-    lua_setmetatable(L, -2);
     return 1;
 }

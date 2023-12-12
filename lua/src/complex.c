@@ -721,9 +721,6 @@ int luaopen_liba_complex(lua_State *const L)
 {
     lua_createtable(L, 0, A_LEN(funcs) - 1);
     lua_fun_reg(L, -1, funcs);
-    lua_createtable(L, 0, 1);
-    lua_fun_set(L, -1, "__newindex", liba_setter);
-    lua_setmetatable(L, -2);
 
     lua_fun_s const metas[] = {
         {"__tostring", liba_complex_tostring},
@@ -739,8 +736,8 @@ int luaopen_liba_complex(lua_State *const L)
         {NULL, NULL},
     };
     lua_createtable(L, 0, A_LEN(metas));
-    lua_str_set(L, -1, "__name", "a.complex");
     lua_fun_reg(L, -1, metas);
+    lua_str_set(L, -1, "__name", "a.complex");
 
     liba_complex_meta_(L, 0);
     liba_complex_func_(L, 0);

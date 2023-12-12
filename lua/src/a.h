@@ -70,7 +70,7 @@ LUALIB_API void luaL_checkversion_(lua_State *L, lua_Number ver, size_t sz);
 #endif /* LUA_VERSION_NUM */
 
 #if !defined LUA_VERSION_NUM || (LUA_VERSION_NUM <= 501)
-LUALIB_API void luaL_register(lua_State *L, const char *libname, const lua_fun_s *l);
+LUALIB_API void luaL_register(lua_State *L, char const *libname, lua_fun_s const *l);
 #define lua_rawsetp(L, idx, p) (lua_pushlightuserdata(L, p), lua_insert(L, -2), lua_rawset(L, idx))
 #define lua_rawgetp(L, idx, p) (lua_pushlightuserdata(L, p), lua_rawget(L, idx))
 #define lua_rawlen(L, i) lua_objlen(L, i)
@@ -138,7 +138,6 @@ A_PUBLIC int luaopen_liba_polytraj5(lua_State *L);
 A_PUBLIC int luaopen_liba_polytraj7(lua_State *L);
 A_PUBLIC int luaopen_liba_tf(lua_State *L);
 A_PUBLIC int luaopen_liba_version(lua_State *L);
-A_PUBLIC int liba_setter(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

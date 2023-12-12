@@ -3,7 +3,7 @@ local liba = {}
 
 ---@param str string
 ---@param ... string
----@return integer
+---@return string
 function liba.hash_bkdr(str, ...) end
 
 ---@param x integer
