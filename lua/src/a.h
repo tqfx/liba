@@ -70,6 +70,7 @@ LUALIB_API void luaL_checkversion_(lua_State *L, lua_Number ver, size_t sz);
 #endif /* LUA_VERSION_NUM */
 
 #if !defined LUA_VERSION_NUM || (LUA_VERSION_NUM <= 501)
+LUALIB_API void luaL_register(lua_State *L, const char *libname, const lua_fun_s *l);
 #define lua_rawsetp(L, idx, p) (lua_pushlightuserdata(L, p), lua_insert(L, -2), lua_rawset(L, idx))
 #define lua_rawgetp(L, idx, p) (lua_pushlightuserdata(L, p), lua_rawget(L, idx))
 #define lua_rawlen(L, i) lua_objlen(L, i)

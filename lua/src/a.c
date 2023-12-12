@@ -91,9 +91,13 @@ int luaopen_liba(lua_State *const L)
         {"rsqrt", liba_rsqrt},
         {NULL, NULL},
     };
+#if !defined LUA_VERSION_NUM || (LUA_VERSION_NUM <= 501)
+    luaL_register(L, "liba", funcs);
+#else /* !LUA_VERSION_NUM */
     lua_createtable(L, 0, A_LEN(funcs));
-    lua_str_set(L, -1, "VERSION", A_VERSION);
     lua_fun_reg(L, -1, funcs);
+#endif /* LUA_VERSION_NUM */
+    lua_str_set(L, -1, "VERSION", A_VERSION);
 
     lua_pushstring(L, "complex");
     luaopen_liba_complex(L);
@@ -140,12 +144,12 @@ int luaopen_liba(lua_State *const L)
 
 void *lua_alloc(lua_State *const L, void const *const ptr, size_t const siz)
 {
-    void *ud;
     union
     {
         void const *ptr;
         void *p;
     } u = {ptr};
+    void *ud = u.p;
     return lua_getallocf(L, &ud)(ud, u.p, 0, siz);
 }
 
