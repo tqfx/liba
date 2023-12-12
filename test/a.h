@@ -75,7 +75,7 @@ static void test_for(int argc, char *argv[])
 
     a_iterate(int, it, p, d)
     {
-        debug("%i ", *it);
+        debug("%i ", it ? *it : ~0);
     }
     debug("\n");
 

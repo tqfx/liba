@@ -986,8 +986,8 @@ typedef union a_cast_u
  @param end the end address of this array
 */
 #define a_iterate_reverse(T, it, ptr, end)                           \
-    for (T *it##_ = a_likely(ptr) ? a_cast_s(T *, ptr) - 1 : A_NULL, \
-           *it = a_likely(end) ? a_cast_s(T *, end) - 1 : A_NULL;    \
+    for (T *it = a_likely(end) ? a_cast_s(T *, end) - 1 : A_NULL,    \
+           *it##_ = a_likely(end) ? a_cast_s(T *, ptr) - 1 : A_NULL; \
          it > it##_; --it)
 
 /*!

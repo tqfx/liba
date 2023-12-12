@@ -26,6 +26,10 @@ function(set_executable_options)
     add_cppcheck(TARGETS ${ARGN} OPTIONS --enable=warning,performance)
   endif()
 
+  if(LIBA_ANALYZER)
+    target_compile_analyzer(${ARGN})
+  endif()
+
   if(LIBA_STATIC)
     target_link_static(${ARGN})
   endif()

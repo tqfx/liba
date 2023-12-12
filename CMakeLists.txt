@@ -21,6 +21,12 @@ if(LIBA_WARNINGS)
   include(cmake/TargetWarnings.cmake)
 endif()
 
+option(LIBA_ANALYZER "Enable/Disable analyzer" 0)
+
+if(LIBA_ANALYZER)
+  include(cmake/TargetAnalyzer.cmake)
+endif()
+
 option(LIBA_SANITIZE "Enable/Disable sanitize" 0)
 
 if(LIBA_SANITIZE)
@@ -161,6 +167,10 @@ function(set_library_options)
 
   if(LIBA_WARNINGS)
     target_compile_warnings(${ARGN})
+  endif()
+
+  if(LIBA_ANALYZER)
+    target_compile_analyzer(${ARGN})
   endif()
 endfunction()
 

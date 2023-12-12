@@ -31,21 +31,9 @@ WRITE_TABLE(64, 4, 16)
 #undef WRITE_TABLE
 #endif /* __cplusplus */
 
-static void create_table(char const *const name)
+static void create_table(FILE *out)
 {
 #if !defined __cplusplus
-    FILE *out = stdout;
-
-    if (name && *name)
-    {
-        out = fopen(name, "wb");
-        if (!out)
-        {
-            perror(name);
-            exit(EXIT_FAILURE);
-        }
-    }
-
     (void)fprintf(out, "#include <stdint.h>\n");
 
     a_u8_t table8[A_CRC_SIZ];
@@ -72,12 +60,8 @@ static void create_table(char const *const name)
     a_crc64be_init(table64, A_CRC64_POLY);
     write_table64(out, table64, "CRC64BE");
 
-    if (stdout != out && fclose(out) == EOF)
-    {
-        perror(name);
-    }
 #else /* !__cplusplus */
-    (void)name;
+    (void)out;
 #endif /* __cplusplus */
 }
 
@@ -136,9 +120,24 @@ static void test(void)
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
+    FILE *out = stdout;
     if (argc > 1)
     {
-        create_table(argv[argc - 1]);
+        char const *name = argv[argc - 1];
+        if (*name)
+        {
+            out = fopen(name, "wb");
+            if (!out)
+            {
+                perror(name);
+                exit(EXIT_FAILURE);
+            }
+        }
+        create_table(out);
+        if (*name && fclose(out) == EOF)
+        {
+            perror(argv[argc - 1]);
+        }
     }
     test();
     return 0;
