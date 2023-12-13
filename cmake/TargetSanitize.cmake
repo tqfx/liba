@@ -46,16 +46,16 @@ macro(sanitize_flag_ld)
   foreach(arg ${ARGN})
     string(REPLACE "+" "x" var ${arg})
     string(REGEX REPLACE "[^A-Za-z0-9_-]+" "-" var ${var})
-    list(FIND ENABLED_LANGUAGES C index)
+    list(FIND ENABLED_LANGUAGES CXX index)
     if(${index} GREATER -1)
-      check_c_compiler_flag(${arg} ld${var})
+      check_cxx_compiler_flag(${arg} ld${var})
       if(ld${var})
         list_append(SANITIZE_LD ${arg})
       endif()
     endif()
-    list(FIND ENABLED_LANGUAGES CXX index)
+    list(FIND ENABLED_LANGUAGES C index)
     if(${index} GREATER -1)
-      check_cxx_compiler_flag(${arg} ld${var})
+      check_c_compiler_flag(${arg} ld${var})
       if(ld${var})
         list_append(SANITIZE_LD ${arg})
       endif()
@@ -82,18 +82,6 @@ if(
     CMAKE_CXX_COMPILER_ID MATCHES "Apple[Cc]lang"
     ))
     sanitize_flag_cx(-fsanitize=leak)
-    if(
-      CMAKE_C_COMPILER_ID MATCHES "GNU" OR
-      CMAKE_CXX_COMPILER_ID MATCHES "GNU"
-    )
-      sanitize_flag_ld(-static-liblsan)
-    endif()
-  endif()
-  if(
-    CMAKE_C_COMPILER_ID MATCHES "GNU" OR
-    CMAKE_CXX_COMPILER_ID MATCHES "GNU"
-  )
-    sanitize_flag_ld(-static-libubsan)
   endif()
   if(
     CMAKE_C_COMPILER_ID MATCHES "(Apple)?[Cc]lang" OR
