@@ -1,71 +1,331 @@
 cmake_minimum_required(VERSION 2.8.12...4.0)
 project(lua C)
-set(VERSIONS
-  "5.4.6 7d5ea1b9cb6aa0b59ca3dde1c6adcb57ef83a1ba8e5432c0ecd06bf439b3ad88"
-  "5.4.5 59df426a3d50ea535a460a452315c4c0d4e1121ba72ff0bdde58c2ef31d6f444"
-  "5.4.4 164c7849653b80ae67bec4b7473b884bf5cc8d2dca05653475ec2ed27b9ebf61"
-  "5.4.3 f8612276169e3bfcbcfb8f226195bfc6e466fe13042f1076cbde92b7ec96bbfb"
-  "5.4.2 11570d97e9d7303c0a59567ed1ac7c648340cd0db10d5fd594c09223ef2f524f"
-  "5.4.1 4ba786c3705eb9db6567af29c91a01b81f1c0ac3124fdbf6cd94bdd9e53cca7d"
-  "5.4.0 eac0836eb7219e421a96b7ee3692b93f0629e4cdb0c788432e3d10ce9ed47e28"
-  "5.3.6 fc5fd69bb8736323f026672b1b7235da613d7177e72558893a0bdcd320466d60"
-  "5.3.5 0c2eed3f960446e1a3e4b9a1ca2f3ff893b6ce41942cf54d5dd59ab4b3b058ac"
-  "5.3.4 f681aa518233bc407e23acf0f5887c884f17436f000d453b2491a9f11a52400c"
-  "5.3.3 5113c06884f7de453ce57702abaac1d618307f33f6789fa870e87a59d772aca2"
-  "5.3.2 c740c7bb23a936944e1cc63b7c3c5351a8976d7867c5252c8854f7b2af9da68f"
-  "5.3.1 072767aad6cc2e62044a66e8562f51770d941e972dc1e4068ba719cd8bffac17"
-  "5.3.0 ae4a5eb2d660515eb191bfe3e061f2b8ffe94dce73d32cfd0de090ddcc0ddb01"
-  "5.2.4 b9e2e4aad6789b3b63a056d442f7b39f0ecfca3ae0f1fc0ae4e9614401b69f4b"
-  "5.2.3 13c2fb97961381f7d06d5b5cea55b743c163800896fd5c5e2356201d3619002d"
-  "5.2.2 3fd67de3f5ed133bf312906082fa524545c6b9e1b952e8215ffbd27113f49f00"
-  "5.2.1 64304da87976133196f9e4c15250b70f444467b6ed80d7cfd7b3b982b5177be5"
-  "5.2.0 cabe379465aa8e388988073d59b69e76ba0025429d2c1da80821a252cdf6be0d"
-  "5.1.5 2640fc56a795f29d28ef15e13c34a47e223960b0240e8cb0a82d9b0738695333"
-  "5.1.4 b038e225eaf2a5b57c9bcc35cd13aa8c6c8288ef493d52970c9545074098af3a"
-  "5.1.3 6b5df2edaa5e02bf1a2d85e1442b2e329493b30b0c0780f77199d24f087d296d"
-  "5.1.2 5cf098c6fe68d3d2d9221904f1017ff0286e4a9cc166a1452a456df9b88b3d9e"
-  "5.1.1 c5daeed0a75d8e4dd2328b7c7a69888247868154acbda69110e97d4a6e17d1f0"
-  "5.1   7f5bb9061eb3b9ba1e406a5aa68001a66cb82bac95748839dc02dd10048472c1"
-)
 
-string(REGEX REPLACE "([^ ]+)[^;]+" "\\1" LUA_VERSION-STRINGS "${VERSIONS}")
-list(GET LUA_VERSION-STRINGS 0 LUA_VERSION)
-set(LUA_VERSION ${LUA_VERSION} CACHE STRING "specifies building version for lua")
-set_property(CACHE LUA_VERSION PROPERTY STRINGS ${LUA_VERSION-STRINGS})
+file(GLOB LUA_H lua.h src/lua.h include/lua.h)
+file(STRINGS "${LUA_H}" VERSION REGEX "^#define[ \t]+LUA_(RELEASE[ \t]+\"Lua [0-9]|VERSION([ \t]+\"Lua [0-9]|_[MR])).*")
+string(REGEX REPLACE ".*;#define[ \t]+LUA_VERSION_MAJOR[ \t]+\"([0-9])\"[ \t]*;.*" "\\1" LUA_VERSION_MAJOR ";${VERSION};")
+if(LUA_VERSION_MAJOR MATCHES "^[0-9]+$")
+  string(REGEX REPLACE ".*;#define[ \t]+LUA_VERSION_MINOR[ \t]+\"([0-9])\"[ \t]*;.*" "\\1" LUA_VERSION_MINOR ";${VERSION};")
+  string(REGEX REPLACE ".*;#define[ \t]+LUA_VERSION_RELEASE[ \t]+\"([0-9])\"[ \t]*;.*" "\\1" LUA_VERSION_PATCH ";${VERSION};")
+  set(LUA_RELEASE "${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}.${LUA_VERSION_PATCH}")
+else()
+  string(REGEX REPLACE ".*;#define[ \t]+LUA_RELEASE[ \t]+\"Lua ([0-9.]+)\"[ \t]*;.*" "\\1" LUA_RELEASE ";${VERSION};")
+  if(NOT LUA_RELEASE MATCHES "^[0-9.]+$")
+    string(REGEX REPLACE ".*;#define[ \t]+LUA_VERSION[ \t]+\"Lua ([0-9.]+)\"[ \t]*;.*" "\\1" LUA_RELEASE ";${VERSION};")
+  endif()
+  string(REGEX REPLACE "^[0-9]+\\.[0-9]+\\.([0-9]).*" "\\1" LUA_VERSION_PATCH "${LUA_RELEASE}")
+  string(REGEX REPLACE "^[0-9]+\\.([0-9]).*" "\\1" LUA_VERSION_MINOR "${LUA_RELEASE}")
+  string(REGEX REPLACE "^([0-9]).*" "\\1" LUA_VERSION_MAJOR "${LUA_RELEASE}")
+endif()
+set(LUA_VERSION "${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}")
 
-string(REPLACE "." "\\." VERSION "$CACHE{LUA_VERSION}")
-string(REGEX MATCH ";${VERSION}[^;]*;" VERSION ";${LUA_VERSION-STRINGS};")
-if(NOT VERSION)
-  foreach(VERSION ${LUA_VERSION-STRINGS})
-    if(LUA_VERSION VERSION_EQUAL VERSION)
-      set(LUA_VERSION ${VERSION})
-      break()
-    endif()
+set(PROJECT_VERSION ${LUA_RELEASE})
+set(PROJECT_VERSION_MAJOR ${LUA_VERSION_MAJOR})
+set(PROJECT_VERSION_MINOR ${LUA_VERSION_MINOR})
+set(PROJECT_VERSION_PATCH ${LUA_VERSION_PATCH})
+set(PROJECT_DESCRIPTION "A powerful, efficient, lightweight, embeddable scripting language.")
+set(PROJECT_HOMEPAGE_URL "http://www.lua.org")
+set(CMAKE_C_EXTENSIONS 1)
+set(CMAKE_C_STANDARD 99)
+
+if(LUA_STATIC)
+  list(REMOVE_ITEM CMAKE_FIND_LIBRARY_PREFIXES "${CMAKE_STATIC_LIBRARY_PREFIX}")
+  list(REMOVE_ITEM CMAKE_FIND_LIBRARY_SUFFIXES "${CMAKE_STATIC_LIBRARY_SUFFIX}")
+  list(INSERT CMAKE_FIND_LIBRARY_PREFIXES 0 "${CMAKE_STATIC_LIBRARY_PREFIX}")
+  list(INSERT CMAKE_FIND_LIBRARY_SUFFIXES 0 "${CMAKE_STATIC_LIBRARY_SUFFIX}")
+endif()
+
+option(LUA_IPO "Enable/Disable interprocedural optimization" 0)
+if(NOT CMAKE_VERSION VERSION_LESS 3.9 AND LUA_IPO)
+  cmake_policy(SET CMP0069 NEW)
+  include(CheckIPOSupported)
+  check_ipo_supported(RESULT LUA_IPO)
+endif()
+
+if(DEFINED ENV{ANDROID_ROOT} AND EXISTS $ENV{ANDROID_ROOT})
+  option(LUA_PIE "Enable/Disable position independent code" 1)
+else()
+  option(LUA_PIE "Enable/Disable position independent code" 0)
+endif()
+set(CMAKE_POSITION_INDEPENDENT_CODE ${LUA_PIE})
+if(NOT CMAKE_VERSION VERSION_LESS 3.14)
+  cmake_policy(SET CMP0083 NEW)
+  include(CheckPIESupported)
+  check_pie_supported()
+endif()
+
+if(CMAKE_STATIC_LIBRARY_SUFFIX STREQUAL .lib)
+  list(APPEND LUA_PRIVATE _CRT_SECURE_NO_WARNINGS)
+endif()
+if(NOT LUA_VERSION VERSION_LESS 5.1)
+  option(LUA_APICHECK "Enable/Disable checks on the C API" 0)
+  if(LUA_APICHECK)
+    list(APPEND LUA_PRIVATE LUA_USE_APICHECK)
+  endif()
+else()
+  unset(LUA_APICHECK CACHE)
+endif()
+
+macro(load name text)
+  file(READ ${name} ${text})
+  file(READ ${name} ${text}_)
+endmacro()
+macro(save name text)
+  if(NOT ${text} STREQUAL ${text}_)
+    file(WRITE ${name} "${${text}}")
+    message(STATUS "write ${name}")
+  endif()
+  set(${text}_)
+  set(${text})
+endmacro()
+
+file(GLOB LUACONF_H luaconf.h src/luaconf.h)
+if(EXISTS ${LUACONF_H})
+  load(${LUACONF_H} LUACONF_H_TEXT)
+  if(APPLE)
+    list(APPEND LUA_PUBLIC LUA_USE_MACOSX)
+  elseif(UNIX)
+    list(APPEND LUA_PUBLIC LUA_USE_LINUX)
+  elseif(NOT WIN32)
+    list(APPEND LUA_PUBLIC LUA_USE_POSIX)
+  endif()
+endif()
+option(LUA_COMPAT "Enable/Disable build lua compatibility" 0)
+if(LUA_COMPAT)
+  if(NOT LUA_VERSION VERSION_LESS 5.4)
+    list(APPEND LUA_PUBLIC LUA_COMPAT_5_3)
+  elseif(NOT LUA_VERSION VERSION_LESS 5.3)
+    list(APPEND LUA_PUBLIC LUA_COMPAT_5_2 LUA_COMPAT_5_1)
+  elseif(NOT LUA_VERSION VERSION_LESS 5.2)
+    list(APPEND LUA_PUBLIC LUA_COMPAT_ALL)
+  elseif(LUA_VERSION VERSION_LESS 5.1)
+    list(APPEND LUA_PUBLIC LUA_COMPATUPSYNTAX LUA_COMPATUPVALUES)
+  endif()
+endif()
+string(REGEX REPLACE "#define LUA_USE_READLINE[^\n]*\n" "" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+if(NOT LUA_VERSION VERSION_LESS 5.1 AND LUA_VERSION VERSION_LESS 5.2 AND LUA_COMPAT)
+  string(REPLACE "#undef LUA_COMPAT_GETN" "#define LUA_COMPAT_GETN" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  string(REPLACE "#undef LUA_COMPAT_LOADLIB" "#define LUA_COMPAT_LOADLIB" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+elseif(NOT LUA_VERSION VERSION_LESS 5.1 AND LUA_VERSION VERSION_LESS 5.2)
+  string(REPLACE "#define LUA_COMPAT_GETN" "#undef LUA_COMPAT_GETN" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  string(REPLACE "#define LUA_COMPAT_LOADLIB" "#undef LUA_COMPAT_LOADLIB" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+endif()
+
+if(NOT LUA_VERSION VERSION_LESS 5.3)
+  option(LUA_NOCVTN2S "Disable/Enable automatic coercion from strings to numbers" 0)
+  if(LUA_NOCVTN2S)
+    string(REGEX REPLACE "[^\n]*#define LUA_NOCVTN2S[^\n]*" "#define LUA_NOCVTN2S" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  else()
+    string(REGEX REPLACE "[^\n]*#define LUA_NOCVTN2S[^\n]*" "/* #define LUA_NOCVTN2S */" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  endif()
+  option(LUA_NOCVTS2N "Disable/Enable automatic coercion from numbers to strings" 0)
+  if(LUA_NOCVTS2N)
+    string(REGEX REPLACE "[^\n]*#define LUA_NOCVTS2N[^\n]*" "#define LUA_NOCVTS2N" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  else()
+    string(REGEX REPLACE "[^\n]*#define LUA_NOCVTS2N[^\n]*" "/* #define LUA_NOCVTS2N */" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  endif()
+else()
+  unset(LUA_NOCVTN2S CACHE)
+  unset(LUA_NOCVTS2N CACHE)
+endif()
+
+option(LUA_32BITS "Enable/Disable build lua 32bits" 0)
+if(LUA_32BITS)
+  string(REGEX REPLACE "[^\n]*#define LUA_32BITS[^\n]*" "#define LUA_32BITS\t1" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+elseif(NOT LUA_VERSION VERSION_LESS 5.4)
+  string(REGEX REPLACE "[^\n]*#define LUA_32BITS[^\n]*" "#define LUA_32BITS\t0" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+elseif(NOT LUA_VERSION VERSION_LESS 5.3)
+  string(REGEX REPLACE "[^\n]*#define LUA_32BITS[^\n]*" "/* #define LUA_32BITS */" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+endif()
+if(LUA_VERSION VERSION_LESS 5.3 AND LUA_32BITS)
+  string(REPLACE "#define LUA_NUMBER_DOUBLE" "#define LUA_NUMBER_FLOAT" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  string(REGEX REPLACE "#define LUA_NUMBER([ \t])+[^\n]*" "#define LUA_NUMBER\\1float" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  string(REGEX REPLACE "#define LUAI_UACNUMBER([ \t])+[^\n]*" "#define LUAI_UACNUMBER\\1float" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  string(REGEX REPLACE "#define LUA_NUMBER_SCAN([ \t])+[^\n]*" "#define LUA_NUMBER_SCAN\\1\"%f\"" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  string(REGEX REPLACE "#define LUA_NUMBER_FMT([ \t])+[^\n]*" "#define LUA_NUMBER_FMT\\1\"%.7g\"" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  string(REGEX REPLACE "#define l_mathop\\(([^)]+)\\)([ \t])+[^\n]*" "#define l_mathop(\\1)\\2(\\1##f)" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  string(REPLACE "strtod(" "strtof(" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+elseif(LUA_VERSION VERSION_LESS 5.3)
+  string(REPLACE "#define LUA_NUMBER_FLOAT" "#define LUA_NUMBER_DOUBLE" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  string(REGEX REPLACE "#define LUA_NUMBER([ \t])+[^\n]*" "#define LUA_NUMBER\\1double" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  string(REGEX REPLACE "#define LUAI_UACNUMBER([ \t])+[^\n]*" "#define LUAI_UACNUMBER\\1double" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  string(REGEX REPLACE "#define LUA_NUMBER_SCAN([ \t])+[^\n]*" "#define LUA_NUMBER_SCAN\\1\"%lf\"" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  string(REGEX REPLACE "#define LUA_NUMBER_FMT([ \t])+[^\n]*" "#define LUA_NUMBER_FMT\\1\"%.14g\"" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  string(REGEX REPLACE "#define l_mathop\\(([^)]+)\\)([ \t])+[^\n]*" "#define l_mathop(\\1)\\2(\\1)" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  string(REPLACE "strtof(" "strtod(" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+endif()
+
+if(NOT WIN32)
+  string(REGEX REPLACE "([^/\\]+)$" "\\1/" LUA_ROOT "${CMAKE_INSTALL_PREFIX}")
+  string(REGEX REPLACE "#define LUA_ROOT([ \t])+[^\n]*" "#define LUA_ROOT\\1\"${LUA_ROOT}\"" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+endif()
+if(APPLE)
+  if(NOT LUA_VERSION VERSION_LESS 5.2)
+    set(LUA_CPATH_DEFAULT ".so;\" \\\n\t\tLUA_CDIR\"?.dylib;\" LUA_CDIR\"loadall.dylib;\" \"./?.dylib\"\n")
+  else()
+    set(LUA_CPATH_DEFAULT ".so;\" \\\n\t\"./?.dylib;\" LUA_CDIR\"?.dylib;\" LUA_CDIR\"loadall.dylib\"\n")
+  endif()
+  string(REPLACE ".so\"\n" "${LUA_CPATH_DEFAULT}" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+endif()
+
+file(GLOB LOSLIB_C loslib.c src/loslib.c)
+if(EXISTS ${LOSLIB_C})
+  load(${LOSLIB_C} LOSLIB_C_TEXT)
+endif()
+
+string(REGEX REPLACE "([^/\\]+)[/\\]*$" "\\1/tmp/lua_XXXXXX" LUA_TMPNAMTEMPLATE "$ENV{PREFIX}")
+if(LUA_TMPNAMTEMPLATE)
+  string(LENGTH "${LUA_TMPNAMTEMPLATE} " LUA_TMPNAMBUFSIZE)
+  if(NOT LUA_VERSION VERSION_LESS 5.2)
+    string(REGEX REPLACE "\"[^\"]*/tmp/lua_XXXXXX\"" "\"${LUA_TMPNAMTEMPLATE}\"" LOSLIB_C_TEXT "${LOSLIB_C_TEXT}")
+    string(REGEX REPLACE "LUA_TMPNAMBUFSIZE\t[0-9]*\n" "LUA_TMPNAMBUFSIZE\t${LUA_TMPNAMBUFSIZE}\n" LOSLIB_C_TEXT "${LOSLIB_C_TEXT}")
+  else()
+    string(REGEX REPLACE "\"[^\"]*/tmp/lua_XXXXXX\"" "\"${LUA_TMPNAMTEMPLATE}\"" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+    string(REGEX REPLACE "LUA_TMPNAMBUFSIZE\t[0-9]*\n" "LUA_TMPNAMBUFSIZE\t${LUA_TMPNAMBUFSIZE}\n" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
+  endif()
+endif()
+
+file(GLOB LUA_C lua.c src/lua.c src/lua/lua.c)
+if(EXISTS ${LUA_C})
+  load(${LUA_C} LUA_C_TEXT)
+endif()
+
+string(FIND "${LUA_C_TEXT}" "lua_initreadline" index)
+if(${index} EQUAL -1)
+  set(index "  while ((status = loadline(L)) != -1)")
+  string(REPLACE "${index}" "#if defined(lua_initreadline)\n  lua_initreadline(L);\n#endif\n${index}" LUA_C_TEXT "${LUA_C_TEXT}")
+endif()
+set(index)
+
+if(EXISTS ${LUA_C})
+  save(${LUA_C} LUA_C_TEXT)
+endif()
+if(EXISTS ${LOSLIB_C})
+  save(${LOSLIB_C} LOSLIB_C_TEXT)
+endif()
+if(EXISTS ${LUACONF_H})
+  save(${LUACONF_H} LUACONF_H_TEXT)
+endif()
+
+set(LUA_USER_H CACHE FILEPATH "generic extra include file")
+function(lua_library target)
+  target_compile_definitions(${target} PUBLIC ${LUA_PUBLIC})
+  target_include_directories(${target} PUBLIC $<INSTALL_INTERFACE:include>)
+  if(EXISTS ${LUA_USER_H})
+    get_filename_component(lua_user_h ${LUA_USER_H} DIRECTORY)
+    target_include_directories(${target} PUBLIC $<BUILD_INTERFACE:${lua_user_h}>)
+    get_filename_component(lua_user_h ${LUA_USER_H} NAME)
+    target_compile_definitions(${target} PUBLIC $<BUILD_INTERFACE:LUA_USER_H="${lua_user_h}">)
+    set(lua_user_h)
+  endif()
+  if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/include)
+    target_include_directories(${target} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
+  endif()
+  if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/src)
+    target_include_directories(${target} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/src>)
+  endif()
+  if(CMAKE_C_COMPILER_ID MATCHES "TinyCC" AND CMAKE_STATIC_LIBRARY_SUFFIX STREQUAL .lib)
+    set_target_properties(${target} PROPERTIES IMPORT_SUFFIX .def)
+  endif()
+  set_target_properties(${target} PROPERTIES POSITION_INDEPENDENT_CODE 1
+    INTERPROCEDURAL_OPTIMIZATION ${LUA_IPO}
+  )
+endfunction()
+
+if(NOT LUA_MATH_LIBRARY AND WIN32)
+  unset(LUA_MATH_LIBRARY CACHE)
+elseif(NOT LUA_MATH_LIBRARY)
+  set(LUA_MATH_LIBRARY m)
+endif()
+function(lua_library_link)
+  foreach(target ${ARGN})
+    target_link_libraries(${target} INTERFACE ${CMAKE_DL_LIBS} ${LUA_MATH_LIBRARY})
   endforeach()
+endfunction()
+
+file(GLOB_RECURSE SOURCES src/*.[ch])
+file(GLOB SOURCE *.[ch] include/*.h)
+list(APPEND SOURCES ${SOURCE})
+file(GLOB LUA_C lua.c src/lua.c src/lua/*.c)
+file(GLOB LUAC_C luac.c src/luac.c src/luac/*.c)
+list(REMOVE_ITEM SOURCES ${LUA_C} ${LUAC_C})
+
+add_library(lua.o OBJECT ${SOURCES})
+lua_library(lua.o)
+add_library(lualib SHARED $<TARGET_OBJECTS:lua.o>)
+lua_library(lualib)
+add_library(liblua STATIC $<TARGET_OBJECTS:lua.o>)
+lua_library(liblua)
+add_executable(lua ${LUA_C})
+add_executable(luac ${LUAC_C})
+lua_library_link(lualib liblua)
+target_link_libraries(lua PRIVATE lualib)
+target_link_libraries(luac PRIVATE liblua)
+if(WIN32)
+  set_property(TARGET lualib PROPERTY PREFIX "")
+  set_property(TARGET liblua PROPERTY PREFIX lib)
+  set(suffix ${PROJECT_VERSION_MAJOR}${PROJECT_VERSION_MINOR})
 else()
-  list(GET VERSION 1 LUA_VERSION)
+  set(suffix ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
+  set_target_properties(luac lua PROPERTIES SUFFIX ${suffix})
 endif()
-list(FIND LUA_VERSION-STRINGS ${LUA_VERSION} VERSION)
-if(${VERSION} EQUAL -1)
-  message(FATAL_ERROR "The Lua ${LUA_VERSION} is not supported.")
-endif()
-
-string(REPLACE "." "\\." VERSION "${LUA_VERSION}")
-set(LUA_ARCHIVE_DIR ${CMAKE_BINARY_DIR}/lua-${LUA_VERSION})
-set(LUA_ARCHIVE_URL http://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz)
-string(REGEX REPLACE ".*${VERSION}[ ]+([^;]+).*" "\\1" LUA_ARCHIVE_HASH "${VERSIONS}")
-if(CMAKE_HOST_WIN32)
-  file(TO_CMAKE_PATH $ENV{USERPROFILE}/.cache/lua-${LUA_VERSION}.tar.gz LUA_ARCHIVE_NAME)
-else()
-  file(TO_CMAKE_PATH $ENV{HOME}/.cache/lua-${LUA_VERSION}.tar.gz LUA_ARCHIVE_NAME)
+set_property(TARGET lualib liblua PROPERTY OUTPUT_NAME lua${suffix})
+set_property(TARGET luac lua PROPERTY INTERPROCEDURAL_OPTIMIZATION ${LUA_IPO})
+set_property(TARGET luac lua lua.o APPEND PROPERTY COMPILE_DEFINITIONS ${LUA_PRIVATE})
+if(WIN32)
+  set_property(TARGET lualib APPEND PROPERTY INTERFACE_COMPILE_DEFINITIONS LUA_BUILD_AS_DLL)
+  set_property(TARGET lua.o APPEND PROPERTY COMPILE_DEFINITIONS LUA_BUILD_AS_DLL)
 endif()
 
-file(GLOB_RECURSE LUA_H ${LUA_ARCHIVE_DIR}/*lua.h)
-if(NOT EXISTS ${LUA_H})
-  file(DOWNLOAD ${LUA_ARCHIVE_URL} ${LUA_ARCHIVE_NAME} EXPECTED_HASH SHA256=${LUA_ARCHIVE_HASH} SHOW_PROGRESS)
-  execute_process(WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND ${CMAKE_COMMAND} -E tar xf ${LUA_ARCHIVE_NAME})
-endif()
+include(GNUInstallDirs)
+file(GLOB MAN1 doc/*.1)
+file(GLOB PUBLIC_HEADER ${LUA_USER_H}
+  lauxlib.h src/lauxlib.h include/lauxlib.h
+  lua.h src/lua.h include/lua.h
+  lua.hpp src/lua.hpp etc/lua.hpp
+  luaconf.h src/luaconf.h
+  lualib.h src/lualib.h include/lualib.h
+)
+install(FILES ${PUBLIC_HEADER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lua${LUA_VERSION})
+install(TARGETS lualib liblua lua luac EXPORT ${PROJECT_NAME}-targets
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+install(EXPORT ${PROJECT_NAME}-targets FILE ${PROJECT_NAME}-targets.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+)
+get_property(prop TARGET lualib PROPERTY INTERFACE_COMPILE_DEFINITIONS)
+string(REPLACE "<BUILD_" "<INSTALL_" PC_CFLAGS "-D$<JOIN:${prop}, -D>")
+get_property(prop TARGET lualib PROPERTY INTERFACE_LINK_LIBRARIES)
+string(REGEX REPLACE "\\$<BUILD_INTERFACE:[^>]*>" "" prop "${prop}")
+string(REPLACE "INSTALL_INTERFACE" "BUILD_INTERFACE" prop "${prop}")
+string(REPLACE "-l$<JOIN:, -l>" "" PC_LDFLAGS "-l$<JOIN:${prop}, -l>")
+file(GENERATE OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/lua${LUA_VERSION}.pc CONTENT
+"prefix=${CMAKE_INSTALL_PREFIX}
+exec_prefix=\${prefix}
+libdir=\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}
+includedir=\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}/lua${LUA_VERSION}
+INSTALL_LMOD=\${prefix}/${CMAKE_INSTALL_DATADIR}/lua/${LUA_VERSION}
+INSTALL_CMOD=\${prefix}/${CMAKE_INSTALL_LIBDIR}/lua/${LUA_VERSION}\n
+Name: ${PROJECT_NAME}
+Description: ${PROJECT_DESCRIPTION}
+Version: ${PROJECT_VERSION}
+URL: ${PROJECT_HOMEPAGE_URL}
+Cflags: -I\${includedir} ${PC_CFLAGS}
+Libs: -L\${libdir} -llua${suffix}
+Libs.private: ${PC_LDFLAGS}
+")
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/lua${LUA_VERSION}.pc
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+)
+install(FILES ${MAN1} DESTINATION ${CMAKE_INSTALL_MANDIR}/man1)
+set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+include(CPack)
 
-file(GLOB module ${CMAKE_CURRENT_LIST_DIR}/src/*.*)
-file(COPY ${module} DESTINATION ${LUA_ARCHIVE_DIR})
-add_subdirectory(${LUA_ARCHIVE_DIR} ${LUA_ARCHIVE_DIR})
+if(EXISTS ${LUA_USER_H})
+  get_filename_component(LUA_USER_H ${LUA_USER_H} NAME)
+  install(CODE "file(READ \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/lua${LUA_VERSION}/lua.h\" text)
+  string(REGEX REPLACE \"/([^/]+)#if defined\\\\(LUA_USER_H\\\\)\" \"/\\\\1#include \\\"${LUA_USER_H}\\\"\\n#if defined(LUA_USER_H)\" text \"\${text}\")
+  file(WRITE \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/lua${LUA_VERSION}/lua.h\" \"\${text}\")")
+endif()

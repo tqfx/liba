@@ -5,7 +5,15 @@ if(WIN32)
 endif()
 
 if(LIBA_WITH_LUA)
-  add_subdirectory(src)
+  include(${CMAKE_CURRENT_LIST_DIR}/lua.cmake)
+  option(LUA_ISOCLINE "Enable/Disable isocline in Lua" 1)
+
+  if(NOT EXISTS "${LUA_USER_H}" AND LUA_ISOCLINE)
+    target_include_directories(lua PRIVATE ${CMAKE_CURRENT_LIST_DIR})
+    target_compile_definitions(lua PRIVATE LUA_USER_H=\"isocline.h\")
+    set_property(TARGET lua APPEND PROPERTY SOURCES ${CMAKE_CURRENT_LIST_DIR}/isocline.c)
+  endif()
+
   set(LUA_LIBRARIES lualib)
   set(LUA_EXECUTABLE ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:lua>)
   string(REGEX REPLACE "^([0-9]).*" "\\1" LUA_VERSION_MAJOR "${LUA_VERSION}")
