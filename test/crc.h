@@ -124,7 +124,8 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     if (argc > 1)
     {
         char const *name = argv[argc - 1];
-        if (*name)
+        int file = *name;
+        if (file)
         {
             out = fopen(name, "wb");
             if (!out)
@@ -134,9 +135,9 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
             }
         }
         create_table(out);
-        if (*name && fclose(out) == EOF)
+        if (file && fclose(out) == EOF)
         {
-            perror(argv[argc - 1]);
+            perror(name);
         }
     }
     test();
