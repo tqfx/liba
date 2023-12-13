@@ -12,7 +12,7 @@ if(LIBA_WITH_LUA)
   string(REGEX REPLACE "^[0-9]+\\.([0-9]).*" "\\1" LUA_VERSION_MINOR "${LUA_VERSION}")
 
   if(LIBA_SANITIZE)
-    target_compile_sanitize(PUBLIC liblua lualib luaobj)
+    target_compile_sanitize(PUBLIC liblua lualib lua.o)
     target_link_sanitize(PUBLIC liblua lualib)
     set(OBJECTS $<TARGET_OBJECTS:asan>)
   endif()
