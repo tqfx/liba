@@ -160,19 +160,6 @@ int liba_pid_neuro_inc(lua_State *const L)
     return 0;
 }
 
-#undef funcs
-#define funcs liba_pid_neuro_funcs
-static lua_fun_s const funcs[] = {
-    {"new", liba_pid_neuro_new},
-    {"init", liba_pid_neuro_init},
-    {"zero", liba_pid_neuro_zero},
-    {"kpid", liba_pid_neuro_kpid},
-    {"wpid", liba_pid_neuro_wpid},
-    {"run", liba_pid_neuro_run},
-    {"inc", liba_pid_neuro_inc},
-    {NULL, NULL},
-};
-
 static int liba_pid_neuro_set(lua_State *const L)
 {
     char const *const field = lua_tostring(L, 2);
@@ -288,29 +275,23 @@ static int liba_pid_neuro_get(lua_State *const L)
         lua_pushcfunction(L, liba_pid_neuro_inc);
         break;
     case 0xA65758B2: // __index
-    {
-        lua_num_s const reals[] = {
-            {"kp", ctx->pid.kp},
-            {"ki", ctx->pid.ki},
-            {"kd", ctx->pid.kd},
-            {"summax", ctx->pid.summax},
-            {"outmax", ctx->pid.outmax},
-            {"outmin", ctx->pid.outmin},
-            {"out", ctx->pid.out},
-            {"fdb", ctx->pid.fdb},
-            {"err", ctx->pid.err},
-            {"ec", ctx->ec},
-            {"wp", ctx->wp},
-            {"wi", ctx->wi},
-            {"wd", ctx->wd},
-            {"k", ctx->k},
-            {NULL, 0},
-        };
-        lua_createtable(L, 0, A_LEN(reals) + A_LEN(funcs) - 2);
-        lua_num_reg(L, -1, reals);
-        lua_fun_reg(L, -1, funcs);
+        liba_pid_neuro_meta_(L, 1);
+        lua_num_set(L, -1, "kp", ctx->pid.kp);
+        lua_num_set(L, -1, "ki", ctx->pid.ki);
+        lua_num_set(L, -1, "kd", ctx->pid.kd);
+        lua_num_set(L, -1, "summax", ctx->pid.summax);
+        lua_num_set(L, -1, "summin", ctx->pid.summin);
+        lua_num_set(L, -1, "outmax", ctx->pid.outmax);
+        lua_num_set(L, -1, "outmin", ctx->pid.outmin);
+        lua_num_set(L, -1, "out", ctx->pid.out);
+        lua_num_set(L, -1, "fdb", ctx->pid.fdb);
+        lua_num_set(L, -1, "err", ctx->pid.err);
+        lua_num_set(L, -1, "ec", ctx->ec);
+        lua_num_set(L, -1, "wp", ctx->wp);
+        lua_num_set(L, -1, "wi", ctx->wi);
+        lua_num_set(L, -1, "wd", ctx->wd);
+        lua_num_set(L, -1, "k", ctx->k);
         break;
-    }
     default:
         lua_getmetatable(L, 1);
         lua_getfield(L, 3, field);
@@ -320,6 +301,16 @@ static int liba_pid_neuro_get(lua_State *const L)
 
 int luaopen_liba_pid_neuro(lua_State *const L)
 {
+    lua_fun_s const funcs[] = {
+        {"new", liba_pid_neuro_new},
+        {"init", liba_pid_neuro_init},
+        {"zero", liba_pid_neuro_zero},
+        {"kpid", liba_pid_neuro_kpid},
+        {"wpid", liba_pid_neuro_wpid},
+        {"run", liba_pid_neuro_run},
+        {"inc", liba_pid_neuro_inc},
+        {NULL, NULL},
+    };
     lua_createtable(L, 0, A_LEN(funcs) - 1);
     lua_fun_reg(L, -1, funcs);
 
@@ -328,8 +319,9 @@ int luaopen_liba_pid_neuro(lua_State *const L)
         {"__index", liba_pid_neuro_get},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(metas));
+    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) - 1);
     lua_fun_reg(L, -1, metas);
+    lua_fun_reg(L, -1, funcs);
     lua_str_set(L, -1, "__name", "a.pid_neuro");
 
     liba_pid_neuro_meta_(L, 0);

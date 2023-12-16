@@ -149,19 +149,6 @@ int liba_pid_inc(lua_State *const L)
     return 0;
 }
 
-#undef funcs
-#define funcs liba_pid_funcs
-static lua_fun_s const funcs[] = {
-    {"new", liba_pid_new},
-    {"init", liba_pid_init},
-    {"zero", liba_pid_zero},
-    {"kpid", liba_pid_kpid},
-    {"run", liba_pid_run},
-    {"pos", liba_pid_pos},
-    {"inc", liba_pid_inc},
-    {NULL, NULL},
-};
-
 static int liba_pid_set(lua_State *const L)
 {
     char const *const field = lua_tostring(L, 2);
@@ -262,25 +249,18 @@ static int liba_pid_get(lua_State *const L)
         lua_pushcfunction(L, liba_pid_inc);
         break;
     case 0xA65758B2: // __index
-    {
-        lua_num_s const reals[] = {
-            {"kp", ctx->kp},
-            {"ki", ctx->ki},
-            {"kd", ctx->kd},
-            {"summax", ctx->summax},
-            {"summin", ctx->summin},
-            {"outmax", ctx->outmax},
-            {"outmin", ctx->outmin},
-            {"out", ctx->out},
-            {"fdb", ctx->fdb},
-            {"err", ctx->err},
-            {NULL, 0},
-        };
-        lua_createtable(L, 0, A_LEN(reals) + A_LEN(funcs) - 2);
-        lua_num_reg(L, -1, reals);
-        lua_fun_reg(L, -1, funcs);
+        liba_pid_meta_(L, 1);
+        lua_num_set(L, -1, "kp", ctx->kp);
+        lua_num_set(L, -1, "ki", ctx->ki);
+        lua_num_set(L, -1, "kd", ctx->kd);
+        lua_num_set(L, -1, "summax", ctx->summax);
+        lua_num_set(L, -1, "summin", ctx->summin);
+        lua_num_set(L, -1, "outmax", ctx->outmax);
+        lua_num_set(L, -1, "outmin", ctx->outmin);
+        lua_num_set(L, -1, "out", ctx->out);
+        lua_num_set(L, -1, "fdb", ctx->fdb);
+        lua_num_set(L, -1, "err", ctx->err);
         break;
-    }
     default:
         lua_getmetatable(L, 1);
         lua_getfield(L, 3, field);
@@ -303,6 +283,16 @@ int luaopen_liba_pid(lua_State *const L)
         {"INC", A_PID_INC},
         {NULL, 0},
     };
+    lua_fun_s const funcs[] = {
+        {"new", liba_pid_new},
+        {"init", liba_pid_init},
+        {"zero", liba_pid_zero},
+        {"kpid", liba_pid_kpid},
+        {"run", liba_pid_run},
+        {"pos", liba_pid_pos},
+        {"inc", liba_pid_inc},
+        {NULL, NULL},
+    };
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
     lua_int_reg(L, -1, enums);
     lua_fun_reg(L, -1, funcs);
@@ -312,8 +302,9 @@ int luaopen_liba_pid(lua_State *const L)
         {"__index", liba_pid_get},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(metas));
+    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) - 1);
     lua_fun_reg(L, -1, metas);
+    lua_fun_reg(L, -1, funcs);
     lua_str_set(L, -1, "__name", "a.pid");
 
     liba_pid_meta_(L, 0);

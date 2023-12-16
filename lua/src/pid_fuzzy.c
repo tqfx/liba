@@ -247,22 +247,6 @@ int liba_pid_fuzzy_inc(lua_State *const L)
     return 0;
 }
 
-#undef funcs
-#define funcs liba_pid_fuzzy_funcs
-static lua_fun_s const funcs[] = {
-    {"new", liba_pid_fuzzy_new},
-    {"init", liba_pid_fuzzy_init},
-    {"zero", liba_pid_fuzzy_zero},
-    {"op", liba_pid_fuzzy_op},
-    {"rule", liba_pid_fuzzy_rule},
-    {"set_joint", liba_pid_fuzzy_joint},
-    {"kpid", liba_pid_fuzzy_kpid},
-    {"run", liba_pid_fuzzy_run},
-    {"pos", liba_pid_fuzzy_pos},
-    {"inc", liba_pid_fuzzy_inc},
-    {NULL, NULL},
-};
-
 static int liba_pid_fuzzy_set(lua_State *const L)
 {
     char const *const field = lua_tostring(L, 2);
@@ -385,31 +369,20 @@ static int liba_pid_fuzzy_get(lua_State *const L)
         lua_pushcfunction(L, liba_pid_fuzzy_inc);
         break;
     case 0xA65758B2: // __index
-    {
-        lua_int_s const enums[] = {
-            {"order", (lua_Integer)ctx->order},
-            {"joint", (lua_Integer)ctx->joint},
-            {NULL, 0},
-        };
-        lua_num_s const reals[] = {
-            {"kp", ctx->kp},
-            {"ki", ctx->ki},
-            {"kd", ctx->kd},
-            {"summax", ctx->pid.summax},
-            {"summax", ctx->pid.summin},
-            {"outmax", ctx->pid.outmax},
-            {"outmin", ctx->pid.outmin},
-            {"out", ctx->pid.out},
-            {"fdb", ctx->pid.fdb},
-            {"err", ctx->pid.err},
-            {NULL, 0},
-        };
-        lua_createtable(L, 0, A_LEN(enums) + A_LEN(reals) + A_LEN(funcs) - 3);
-        lua_int_reg(L, -1, enums);
-        lua_num_reg(L, -1, reals);
-        lua_fun_reg(L, -1, funcs);
+        liba_pid_fuzzy_meta_(L, 1);
+        lua_num_set(L, -1, "kp", ctx->kp);
+        lua_num_set(L, -1, "ki", ctx->ki);
+        lua_num_set(L, -1, "kd", ctx->kd);
+        lua_num_set(L, -1, "summax", ctx->pid.summax);
+        lua_num_set(L, -1, "summin", ctx->pid.summin);
+        lua_num_set(L, -1, "outmax", ctx->pid.outmax);
+        lua_num_set(L, -1, "outmin", ctx->pid.outmin);
+        lua_num_set(L, -1, "out", ctx->pid.out);
+        lua_num_set(L, -1, "fdb", ctx->pid.fdb);
+        lua_num_set(L, -1, "err", ctx->pid.err);
+        lua_int_set(L, -1, "order", (lua_Integer)ctx->order);
+        lua_int_set(L, -1, "joint", (lua_Integer)ctx->joint);
         break;
-    }
     default:
         lua_getmetatable(L, 1);
         lua_getfield(L, 3, field);
@@ -440,6 +413,19 @@ int luaopen_liba_pid_fuzzy(lua_State *const L)
         {"EQU", A_PID_FUZZY_EQU},
         {NULL, 0},
     };
+    lua_fun_s const funcs[] = {
+        {"new", liba_pid_fuzzy_new},
+        {"init", liba_pid_fuzzy_init},
+        {"zero", liba_pid_fuzzy_zero},
+        {"op", liba_pid_fuzzy_op},
+        {"rule", liba_pid_fuzzy_rule},
+        {"set_joint", liba_pid_fuzzy_joint},
+        {"kpid", liba_pid_fuzzy_kpid},
+        {"run", liba_pid_fuzzy_run},
+        {"pos", liba_pid_fuzzy_pos},
+        {"inc", liba_pid_fuzzy_inc},
+        {NULL, NULL},
+    };
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
     lua_int_reg(L, -1, enums);
     lua_fun_reg(L, -1, funcs);
@@ -450,8 +436,9 @@ int luaopen_liba_pid_fuzzy(lua_State *const L)
         {"__gc", liba_pid_fuzzy_die},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(metas));
+    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) - 1);
     lua_fun_reg(L, -1, metas);
+    lua_fun_reg(L, -1, funcs);
     lua_str_set(L, -1, "__name", "a.pid_fuzzy");
 
     liba_pid_fuzzy_meta_(L, 0);

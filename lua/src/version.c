@@ -204,23 +204,6 @@ FUNC(eq)
 */
 FUNC(ne)
 
-#undef funcs
-#define funcs liba_version_funcs
-static lua_fun_s const funcs[] = {
-    {"check", liba_version_check},
-    {"parse", liba_version_parse},
-    {"init", liba_version_init},
-    {"new", liba_version_new},
-    {"cmp", liba_version_cmp},
-    {"lt", liba_version_lt},
-    {"gt", liba_version_gt},
-    {"le", liba_version_le},
-    {"ge", liba_version_ge},
-    {"eq", liba_version_eq},
-    {"ne", liba_version_ne},
-    {NULL, NULL},
-};
-
 static int liba_version_set(lua_State *const L)
 {
     char const *const field = lua_tostring(L, 2);
@@ -301,18 +284,11 @@ static int liba_version_get(lua_State *const L)
         lua_pushcfunction(L, liba_version_ne);
         break;
     case 0xA65758B2: // __index
-    {
-        lua_int_s const enums[] = {
-            {"major", (lua_Integer)ctx->major},
-            {"minor", (lua_Integer)ctx->minor},
-            {"patch", (lua_Integer)ctx->patch},
-            {NULL, 0},
-        };
-        lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 3);
-        lua_int_reg(L, -1, enums);
-        lua_fun_reg(L, -1, funcs + 1);
+        liba_version_meta_(L, 1);
+        lua_int_set(L, -1, "major", (lua_Integer)ctx->major);
+        lua_int_set(L, -1, "minor", (lua_Integer)ctx->minor);
+        lua_int_set(L, -1, "patch", (lua_Integer)ctx->patch);
         break;
-    }
     default:
         lua_getmetatable(L, 1);
         lua_getfield(L, 3, field);
@@ -337,6 +313,20 @@ int luaopen_liba_version(lua_State *const L)
         {"TWEAK", A_VERSION_TWEAK},
         {NULL, 0},
     };
+    lua_fun_s const funcs[] = {
+        {"check", liba_version_check},
+        {"parse", liba_version_parse},
+        {"init", liba_version_init},
+        {"new", liba_version_new},
+        {"cmp", liba_version_cmp},
+        {"lt", liba_version_lt},
+        {"gt", liba_version_gt},
+        {"le", liba_version_le},
+        {"ge", liba_version_ge},
+        {"eq", liba_version_eq},
+        {"ne", liba_version_ne},
+        {NULL, NULL},
+    };
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
     lua_int_reg(L, -1, enums);
     lua_fun_reg(L, -1, funcs);
@@ -351,8 +341,9 @@ int luaopen_liba_version(lua_State *const L)
         {"__le", liba_version_le},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(metas));
+    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) - 2);
     lua_fun_reg(L, -1, metas);
+    lua_fun_reg(L, -1, funcs + 1);
     lua_str_set(L, -1, "__name", "a.version");
 
     liba_version_meta_(L, 0);

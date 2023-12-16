@@ -182,17 +182,6 @@ int liba_polytraj3_acc(lua_State *const L)
     return 0;
 }
 
-#undef funcs
-#define funcs liba_polytraj3_funcs
-static lua_fun_s const funcs[] = {
-    {"new", liba_polytraj3_new},
-    {"gen", liba_polytraj3_gen},
-    {"pos", liba_polytraj3_pos},
-    {"vel", liba_polytraj3_vel},
-    {"acc", liba_polytraj3_acc},
-    {NULL, NULL},
-};
-
 static int liba_polytraj3_set(lua_State *const L)
 {
     char const *const field = lua_tostring(L, 2);
@@ -202,13 +191,13 @@ static int liba_polytraj3_set(lua_State *const L)
     case 0xE8859EEB: // __name
     case 0xA65758B2: // __index
     case 0xAEB551C6: // __newindex
-        return 0;
+        break;
     default:
         lua_getmetatable(L, 1);
         lua_pushvalue(L, 3);
         lua_setfield(L, 4, field);
-        return 0;
     }
+    return 0;
 }
 
 static int liba_polytraj3_get(lua_State *const L)
@@ -243,9 +232,7 @@ static int liba_polytraj3_get(lua_State *const L)
         lua_pushcfunction(L, liba_polytraj3_acc);
         break;
     case 0xA65758B2: // __index
-    {
-        lua_createtable(L, 0, A_LEN(funcs));
-        lua_fun_reg(L, -1, funcs);
+        liba_polytraj3_meta_(L, 1);
         lua_array_num_new(L, ctx->q, A_LEN(ctx->q));
         lua_setfield(L, -2, "q");
         lua_array_num_new(L, ctx->v, A_LEN(ctx->v));
@@ -253,7 +240,6 @@ static int liba_polytraj3_get(lua_State *const L)
         lua_array_num_new(L, ctx->a, A_LEN(ctx->a));
         lua_setfield(L, -2, "a");
         break;
-    }
     default:
         lua_getmetatable(L, 1);
         lua_getfield(L, 3, field);
@@ -263,6 +249,14 @@ static int liba_polytraj3_get(lua_State *const L)
 
 int luaopen_liba_polytraj3(lua_State *const L)
 {
+    lua_fun_s const funcs[] = {
+        {"new", liba_polytraj3_new},
+        {"gen", liba_polytraj3_gen},
+        {"pos", liba_polytraj3_pos},
+        {"vel", liba_polytraj3_vel},
+        {"acc", liba_polytraj3_acc},
+        {NULL, NULL},
+    };
     lua_createtable(L, 0, A_LEN(funcs) - 1);
     lua_fun_reg(L, -1, funcs);
 
@@ -271,8 +265,9 @@ int luaopen_liba_polytraj3(lua_State *const L)
         {"__index", liba_polytraj3_get},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(metas));
+    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) - 1);
     lua_fun_reg(L, -1, metas);
+    lua_fun_reg(L, -1, funcs);
     lua_str_set(L, -1, "__name", "a.polytraj3");
 
     liba_polytraj3_meta_(L, 0);

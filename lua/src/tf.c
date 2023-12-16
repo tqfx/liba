@@ -119,17 +119,6 @@ int liba_tf_zero(lua_State *const L)
     return 0;
 }
 
-#undef funcs
-#define funcs liba_tf_funcs
-static lua_fun_s const funcs[] = {
-    {"init", liba_tf_init},
-    {"iter", liba_tf_iter},
-    {"zero", liba_tf_zero},
-    {"new", liba_tf_new},
-    {"die", liba_tf_die},
-    {NULL, NULL},
-};
-
 static int liba_tf_set(lua_State *const L)
 {
     char const *const field = lua_tostring(L, 2);
@@ -203,9 +192,7 @@ static int liba_tf_get(lua_State *const L)
         lua_pushcfunction(L, liba_tf_zero);
         break;
     case 0xA65758B2: // __index
-    {
-        lua_createtable(L, 0, A_LEN(funcs) + 1);
-        lua_fun_reg(L, -1, funcs);
+        liba_tf_meta_(L, 1);
         lua_array_num_new(L, ctx->num_p, ctx->num_n);
         lua_setfield(L, -2, "num");
         lua_array_num_new(L, ctx->den_p, ctx->den_n);
@@ -215,7 +202,6 @@ static int liba_tf_get(lua_State *const L)
         lua_array_num_new(L, ctx->output, ctx->den_n);
         lua_setfield(L, -2, "output");
         break;
-    }
     default:
         lua_getmetatable(L, 1);
         lua_getfield(L, 3, field);
@@ -225,6 +211,14 @@ static int liba_tf_get(lua_State *const L)
 
 int luaopen_liba_tf(lua_State *const L)
 {
+    lua_fun_s const funcs[] = {
+        {"init", liba_tf_init},
+        {"iter", liba_tf_iter},
+        {"zero", liba_tf_zero},
+        {"new", liba_tf_new},
+        {"die", liba_tf_die},
+        {NULL, NULL},
+    };
     lua_createtable(L, 0, A_LEN(funcs) - 1);
     lua_fun_reg(L, -1, funcs);
 
@@ -235,8 +229,9 @@ int luaopen_liba_tf(lua_State *const L)
         {"__gc", liba_tf_die},
         {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(metas));
+    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) - 1);
     lua_fun_reg(L, -1, metas);
+    lua_fun_reg(L, -1, funcs);
     lua_str_set(L, -1, "__name", "a.tf");
 
     liba_tf_meta_(L, 0);
