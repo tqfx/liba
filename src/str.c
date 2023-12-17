@@ -8,10 +8,7 @@
 a_str_s *a_str_new(void)
 {
     a_str_s *const ctx = (a_str_s *)a_alloc(A_NULL, sizeof(a_str_s));
-    if (ctx)
-    {
-        a_str_ctor(ctx);
-    }
+    if (ctx) { a_str_ctor(ctx); }
     return ctx;
 }
 
@@ -48,10 +45,7 @@ int a_str_init(a_str_s *const ctx, void const *const pdata, a_size_t const nbyte
     ctx->_mem = ctx->_num + 1;
     ctx->_mem = a_size_up(sizeof(void *), ctx->_mem);
     ctx->_ptr = (char *)a_alloc(A_NULL, ctx->_mem);
-    if (a_unlikely(!ctx->_ptr))
-    {
-        return A_FAILURE;
-    }
+    if (a_unlikely(!ctx->_ptr)) { return A_FAILURE; }
     if (pdata && nbyte)
     {
         a_copy(ctx->_ptr, pdata, nbyte);
@@ -90,15 +84,9 @@ int a_str_cmp(a_str_s const *const lhs, a_str_s const *const rhs)
     if (lhs->_ptr && rhs->_ptr)
     {
         ok = memcmp(lhs->_ptr, rhs->_ptr, A_MIN(lhs->_num, rhs->_num));
-        if (ok)
-        {
-            return ok;
-        }
+        if (ok) { return ok; }
     }
-    if (lhs->_num == rhs->_num)
-    {
-        return 0;
-    }
+    if (lhs->_num == rhs->_num) { return 0; }
     return lhs->_num < rhs->_num ? -1 : +1;
 }
 
@@ -107,10 +95,7 @@ int a_str_alloc_(a_str_s *const ctx, a_size_t mem)
     char *ptr;
     mem = a_size_up(sizeof(void *), mem);
     ptr = (char *)a_alloc(ctx->_ptr, mem);
-    if (a_unlikely(!ptr && mem))
-    {
-        return A_FAILURE;
-    }
+    if (a_unlikely(!ptr && mem)) { return A_FAILURE; }
     ctx->_ptr = ptr;
     ctx->_mem = mem;
     return A_SUCCESS;
@@ -144,20 +129,14 @@ int a_str_getc(a_str_s *const ctx)
 
 int a_str_putc_(a_str_s *const ctx, int const c)
 {
-    if (a_unlikely(a_str_alloc(ctx, ctx->_num + 1)))
-    {
-        return ~0;
-    }
+    if (a_unlikely(a_str_alloc(ctx, ctx->_num + 1))) { return ~0; }
     ctx->_ptr[ctx->_num++] = (char)c;
     return c;
 }
 
 int a_str_putc(a_str_s *const ctx, int const c)
 {
-    if (a_unlikely(a_str_alloc(ctx, ctx->_num + 2)))
-    {
-        return ~0;
-    }
+    if (a_unlikely(a_str_alloc(ctx, ctx->_num + 2))) { return ~0; }
     ctx->_ptr[ctx->_num++] = (char)c;
     ctx->_ptr[ctx->_num] = 0;
     return c;
@@ -165,10 +144,7 @@ int a_str_putc(a_str_s *const ctx, int const c)
 
 a_size_t a_str_getn_(a_str_s *const ctx, void *const pdata, a_size_t nbyte)
 {
-    if (nbyte > ctx->_num)
-    {
-        nbyte = ctx->_num;
-    }
+    if (nbyte > ctx->_num) { nbyte = ctx->_num; }
     if (pdata && nbyte)
     {
         ctx->_num -= nbyte;
@@ -179,10 +155,7 @@ a_size_t a_str_getn_(a_str_s *const ctx, void *const pdata, a_size_t nbyte)
 
 a_size_t a_str_getn(a_str_s *const ctx, void *const pdata, a_size_t nbyte)
 {
-    if (nbyte > ctx->_num)
-    {
-        nbyte = ctx->_num;
-    }
+    if (nbyte > ctx->_num) { nbyte = ctx->_num; }
     if (pdata && nbyte)
     {
         ctx->_num -= nbyte;
@@ -196,10 +169,7 @@ int a_str_putn_(a_str_s *const ctx, void const *const pdata, a_size_t const nbyt
 {
     if (pdata && nbyte)
     {
-        if (a_unlikely(a_str_alloc(ctx, ctx->_num + nbyte)))
-        {
-            return A_FAILURE;
-        }
+        if (a_unlikely(a_str_alloc(ctx, ctx->_num + nbyte))) { return A_FAILURE; }
         a_copy(ctx->_ptr + ctx->_num, pdata, nbyte);
         ctx->_num += nbyte;
     }
@@ -210,10 +180,7 @@ int a_str_putn(a_str_s *const ctx, void const *const pdata, a_size_t const nbyte
 {
     if (pdata && nbyte)
     {
-        if (a_unlikely(a_str_alloc(ctx, ctx->_num + nbyte + 1)))
-        {
-            return A_FAILURE;
-        }
+        if (a_unlikely(a_str_alloc(ctx, ctx->_num + nbyte + 1))) { return A_FAILURE; }
         a_copy(ctx->_ptr + ctx->_num, pdata, nbyte);
         ctx->_num += nbyte;
         ctx->_ptr[ctx->_num] = 0;
@@ -256,20 +223,14 @@ int a_str_putf_(a_str_s *const ctx, char const *const fmt, va_list va)
     va_end(ap);
     if (mem > ctx->_mem)
     {
-        if (a_unlikely(a_str_alloc_(ctx, mem)))
-        {
-            return 0;
-        }
+        if (a_unlikely(a_str_alloc_(ctx, mem))) { return 0; }
         va_copy(ap, va);
         ptr = ctx->_ptr + ctx->_num;
         mem = ctx->_mem - ctx->_num;
         res = vsnprintf(ptr, mem, fmt, ap);
         va_end(ap);
     }
-    if (res > 0)
-    {
-        ctx->_num += (size_t)res;
-    }
+    if (res > 0) { ctx->_num += (size_t)res; }
     return res;
 }
 
@@ -297,10 +258,7 @@ a_size_t a_str_utflen(a_str_s const *const ctx)
         {
             ++length;
             head += offset;
-            if (head >= tail)
-            {
-                break;
-            }
+            if (head >= tail) { break; }
         }
     }
     return length;

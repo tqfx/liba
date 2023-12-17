@@ -11,10 +11,7 @@ typedef struct
 static a_size_t a_slist_len(a_slist_s const *const ctx)
 {
     a_size_t count = 0;
-    a_slist_foreach(it, ctx)
-    {
-        ++count;
-    }
+    a_slist_foreach(it, ctx) { ++count; }
     return count;
 }
 

@@ -26,10 +26,16 @@ cdef class version:
             return self.ctx.patch
         def __set__(self, patch):
             self.ctx.patch = patch
-    def __init__(self, major = 0, minor = 0, patch = 0):
+    property extra:
+        def __get__(self):
+            return self.ctx.extra
+        def __set__(self, extra):
+            self.ctx.extra = extra
+    def __init__(self, major = 0, minor = 0, patch = 0, extra = 0):
         self.ctx.major = major
         self.ctx.minor = minor
         self.ctx.patch = patch
+        self.ctx.extra = extra
     def __repr__(self):
         return "%u.%u.%u" % (self.ctx.major, self.ctx.minor, self.ctx.patch)
     def __lt__(self, other: version):
@@ -48,7 +54,7 @@ cdef class version:
         a_version_parse(&self.ctx, ver)
         return self
     @staticmethod
-    def check(unsigned int major = 0, unsigned int minor = 0,unsigned int  patch = 0):
+    def check(unsigned int major = 0, unsigned int minor = 0, unsigned int patch = 0):
         return a_version_check(major, minor, patch)
     '''algorithm library version major'''
     MAJOR = A_VERSION_MAJOR

@@ -6,26 +6,17 @@ static char const *str_suffix(char const *buffer, char const *sep)
 {
     for (; *buffer; ++buffer)
     {
-        if (strchr(sep, *buffer))
-        {
-            return buffer;
-        }
+        if (strchr(sep, *buffer)) { return buffer; }
     }
     return NULL;
 }
 
-static int char_is_luaid(int c)
-{
-    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_';
-}
+static int char_is_luaid(int c) { return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_'; }
 
 static void completion_exec(ic_completion_env_t *cenv, char const *buffer, char const *suffix, char const *sep)
 {
     lua_State *L = ic_completion_arg(cenv);
-    if (suffix == NULL)
-    {
-        suffix = buffer;
-    }
+    if (suffix == NULL) { suffix = buffer; }
 
     char const *result = str_suffix(suffix, ".:[");
     if (result > suffix)
@@ -194,7 +185,7 @@ static void completion_exec(ic_completion_env_t *cenv, char const *buffer, char 
         }
     }
 
-    prefix = (char *)alloc(ud, prefix, prefix_len + 1, 0);
+    alloc(ud, prefix, prefix_len + 1, 0);
 }
 
 static void completion_fun(ic_completion_env_t *cenv, char const *buffer)
@@ -226,103 +217,42 @@ static void completer(ic_completion_env_t *cenv, char const *buffer)
 static size_t is_number(void const *_s, size_t i)
 {
     char const *s = (char const *)_s + i;
-    if (i && (isalnum(s[-1]) || s[-1] == '_'))
-    {
-        return 0;
-    }
+    if (i && (isalnum(s[-1]) || s[-1] == '_')) { return 0; }
     if (s[0] == '0' && (s[1] == 'X' || s[1] == 'x'))
     {
         s += 2;
-        for (; isxdigit(*s); ++s)
-        {
-        }
-        if (*s == '.')
-        {
-            ++s;
-        }
-        for (; isxdigit(*s); ++s)
-        {
-        }
+        for (; isxdigit(*s); ++s) {}
+        if (*s == '.') { ++s; }
+        for (; isxdigit(*s); ++s) {}
         if (*s == 'P' || *s == 'p')
         {
             ++s;
-            if (*s == '+' || *s == '-')
-            {
-                ++s;
-            }
-            if (!isdigit(*s))
-            {
-                return 0;
-            }
+            if (*s == '+' || *s == '-') { ++s; }
+            if (!isdigit(*s)) { return 0; }
         }
-        for (; isdigit(*s); ++s)
-        {
-        }
+        for (; isdigit(*s); ++s) {}
     }
     else
     {
-        for (; isdigit(*s); ++s)
-        {
-        }
-        if (*s == '.')
-        {
-            ++s;
-        }
-        for (; isdigit(*s); ++s)
-        {
-        }
+        for (; isdigit(*s); ++s) {}
+        if (*s == '.') { ++s; }
+        for (; isdigit(*s); ++s) {}
         if (*s == 'E' || *s == 'e')
         {
             ++s;
-            if (*s == '+' || *s == '-')
-            {
-                ++s;
-            }
-            if (!isdigit(*s))
-            {
-                return 0;
-            }
+            if (*s == '+' || *s == '-') { ++s; }
+            if (!isdigit(*s)) { return 0; }
         }
-        for (; isdigit(*s); ++s)
-        {
-        }
+        for (; isdigit(*s); ++s) {}
     }
     return s - (char const *)_s - i;
 }
 
 static void highlighter(ic_highlight_env_t *henv, char const *input, void *arg)
 {
-    static char const *keywords[] = {
-        "and",
-        "false",
-        "function",
-        "in",
-        "local",
-        "nil",
-        "not",
-        "or",
-        "true",
-        NULL,
-    };
-    static char const *controls[] = {
-        "break",
-        "do",
-        "else",
-        "elseif",
-        "end",
-        "for",
-        "goto",
-        "if",
-        "repeat",
-        "return",
-        "then",
-        "until",
-        "while",
-        NULL,
-    };
-    static char const *types[] = {
-        NULL,
-    };
+    static char const *keywords[] = {"and", "false", "function", "in", "local", "nil", "not", "or", "true", NULL};
+    static char const *controls[] = {"break", "do", "else", "elseif", "end", "for", "goto", "if", "repeat", "return", "then", "until", "while", NULL};
+    static char const *types[] = {NULL};
     long len = (long)strlen(input);
     for (long i = 0; i < len;)
     {
@@ -366,33 +296,14 @@ static void highlighter(ic_highlight_env_t *henv, char const *input, void *arg)
 static void joinpath(void *buff, char const *path, char const *name)
 {
     char *p = (char *)buff;
-    while (*path)
+    for (; *path; ++path)
     {
-        if (*path != '\\')
-        {
-            *p++ = *path;
-        }
-        else
-        {
-            *p++ = '/';
-        }
-        ++path;
+        *p++ = (char)(*path != '\\' ? *path : '/');
     }
-    if (p > (char *)buff && p[-1] != '/')
+    if (p > (char *)buff && p[-1] != '/') { *p++ = '/'; }
+    for (; *name; ++name)
     {
-        *p++ = '/';
-    }
-    while (*name)
-    {
-        if (*name != '\\')
-        {
-            *p++ = *name;
-        }
-        else
-        {
-            *p++ = '/';
-        }
-        ++name;
+        *p++ = (char)(*name != '\\' ? *name : '/');
     }
     *p = 0;
 }

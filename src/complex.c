@@ -197,10 +197,7 @@ a_complex_s a_complex_sqrt(a_complex_s z)
 #elif defined(A_HAVE_CSQRT)
     return A_FLOAT_F1(csqrt, z);
 #else /* !A_HAVE_CSQRT */
-    if (z.real == 0 && z.imag == 0)
-    {
-        return z;
-    }
+    if (z.real == 0 && z.imag == 0) { return z; }
     a_float_t const x = a_float_abs(z.real);
     a_float_t const y = a_float_abs(z.imag);
     a_float_t w;
@@ -220,10 +217,7 @@ a_complex_s a_complex_sqrt(a_complex_s z)
         z.imag = z.imag / (2 * w);
         return z;
     }
-    if (z.imag < 0)
-    {
-        w = -w;
-    }
+    if (z.imag < 0) { w = -w; }
     z.real = z.imag / (2 * w);
     z.imag = w;
     return z;
@@ -265,10 +259,7 @@ a_complex_s a_complex_pow(a_complex_s z, a_complex_s const a)
 #else /* !A_HAVE_CPOW */
     if (z.real == 0 && z.imag == 0)
     {
-        if (a.real == 0 && a.imag == 0)
-        {
-            z.real = 1;
-        }
+        if (a.real == 0 && a.imag == 0) { z.real = 1; }
         return z;
     }
     a_float_t const logr = a_complex_logabs(z);
@@ -283,10 +274,7 @@ a_complex_s a_complex_pow_real(a_complex_s z, a_float_t const a)
 {
     if (z.real == 0 && z.imag == 0)
     {
-        if (a == 0)
-        {
-            z.real = 1;
-        }
+        if (a == 0) { z.real = 1; }
         return z;
     }
     a_float_t const logr = a_complex_logabs(z);
@@ -496,10 +484,7 @@ a_complex_s a_complex_asin(a_complex_s z)
 #elif defined(A_HAVE_CASIN)
     return A_FLOAT_F1(casin, z);
 #else /* !A_HAVE_CASIN */
-    if (z.imag == 0)
-    {
-        return a_complex_asin_real(z.real);
-    }
+    if (z.imag == 0) { return a_complex_asin_real(z.real); }
     a_float_t const a_crossover = A_FLOAT_C(1.5);
     a_float_t const b_crossover = A_FLOAT_C(0.6417);
     a_float_t const x = a_float_abs(z.real);
@@ -525,10 +510,7 @@ a_complex_s a_complex_asin(a_complex_s z)
         a_float_t const den = A_FLOAT_C(0.5) * (ax / (r + x + 1) + ax / (s + x - 1));
         z.real = a_float_atan(x / (a_float_sqrt(den) * y));
     }
-    if (real < 0)
-    {
-        z.real = -z.real;
-    }
+    if (real < 0) { z.real = -z.real; }
     a_float_t const imag = z.imag;
     if (a <= a_crossover)
     {
@@ -547,10 +529,7 @@ a_complex_s a_complex_asin(a_complex_s z)
     {
         z.imag = a_float_log(a + a_float_sqrt(a * a - 1));
     }
-    if (imag < 0)
-    {
-        z.imag = -z.imag;
-    }
+    if (imag < 0) { z.imag = -z.imag; }
     return z;
 #endif /* A_HAVE_CASIN */
 }
@@ -594,10 +573,7 @@ a_complex_s a_complex_acos(a_complex_s z)
 #elif defined(A_HAVE_CACOS)
     return A_FLOAT_F1(cacos, z);
 #else /* !A_HAVE_CACOS */
-    if (z.imag == 0)
-    {
-        return a_complex_acos_real(z.real);
-    }
+    if (z.imag == 0) { return a_complex_acos_real(z.real); }
     a_float_t const a_crossover = A_FLOAT_C(1.5);
     a_float_t const b_crossover = A_FLOAT_C(0.6417);
     a_float_t const x = a_float_abs(z.real);
@@ -623,10 +599,7 @@ a_complex_s a_complex_acos(a_complex_s z)
         a_float_t const den = A_FLOAT_C(0.5) * (ax / (r + x + 1) + ax / (s + x - 1));
         z.real = a_float_atan(a_float_sqrt(den) * y / x);
     }
-    if (real < 0)
-    {
-        z.real = A_FLOAT_PI - z.real;
-    }
+    if (real < 0) { z.real = A_FLOAT_PI - z.real; }
     a_float_t const imag = z.imag;
     if (a <= a_crossover)
     {
@@ -645,10 +618,7 @@ a_complex_s a_complex_acos(a_complex_s z)
     {
         z.imag = a_float_log(a + a_float_sqrt(a * a - 1));
     }
-    if (imag >= 0)
-    {
-        z.imag = -z.imag;
-    }
+    if (imag >= 0) { z.imag = -z.imag; }
     return z;
 #endif /* A_HAVE_CACOS */
 }

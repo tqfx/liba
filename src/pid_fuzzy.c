@@ -31,10 +31,7 @@ a_float_t (*a_pid_fuzzy_op(unsigned int const op))(a_float_t, a_float_t)
     }
 }
 
-void a_pid_fuzzy_set_op(a_pid_fuzzy_s *const ctx, unsigned int const op)
-{
-    ctx->op = a_pid_fuzzy_op(op);
-}
+void a_pid_fuzzy_set_op(a_pid_fuzzy_s *const ctx, unsigned int const op) { ctx->op = a_pid_fuzzy_op(op); }
 
 A_HIDDEN unsigned int a_pid_fuzzy_mf(a_float_t x, unsigned int n, a_float_t const *a, unsigned int *idx, a_float_t *val);
 unsigned int a_pid_fuzzy_mf(a_float_t const x, unsigned int const n, a_float_t const *a, unsigned int *idx, a_float_t *val)
@@ -112,15 +109,9 @@ out:
     return counter;
 }
 
-void a_pid_fuzzy_zero(a_pid_fuzzy_s *const ctx)
-{
-    a_pid_zero(&ctx->pid);
-}
+void a_pid_fuzzy_zero(a_pid_fuzzy_s *const ctx) { a_pid_zero(&ctx->pid); }
 
-void a_pid_fuzzy_init(a_pid_fuzzy_s *const ctx)
-{
-    a_pid_init(&ctx->pid);
-}
+void a_pid_fuzzy_init(a_pid_fuzzy_s *const ctx) { a_pid_init(&ctx->pid); }
 
 void a_pid_fuzzy_rule(a_pid_fuzzy_s *const ctx, unsigned int const order, a_float_t const *const me, a_float_t const *const mec,
                       a_float_t const *const mkp, a_float_t const *const mki, a_float_t const *const mkd)
@@ -158,17 +149,11 @@ void a_pid_fuzzy_out_(a_pid_fuzzy_s *const ctx, a_float_t const ec, a_float_t co
     a_float_t kd = 0;
     /* calculate membership */
     unsigned int const ne = a_pid_fuzzy_mf(e, ctx->order, ctx->me, ctx->idx, ctx->val);
-    if (!ne)
-    {
-        goto pid;
-    }
+    if (!ne) { goto pid; }
     unsigned int *const idx = ctx->idx + ne;
     a_float_t *const val = ctx->val + ne;
     unsigned int const nec = a_pid_fuzzy_mf(ec, ctx->order, ctx->mec, idx, val);
-    if (!nec)
-    {
-        goto pid;
-    }
+    if (!nec) { goto pid; }
     a_float_t *const mat = val + nec;
     /* joint membership */
     a_float_t inv = 0;

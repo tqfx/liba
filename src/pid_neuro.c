@@ -6,10 +6,7 @@ void a_pid_neuro_zero(a_pid_neuro_s *const ctx)
     ctx->ec = 0;
 }
 
-void a_pid_neuro_init(a_pid_neuro_s *const ctx)
-{
-    a_pid_neuro_zero(ctx);
-}
+void a_pid_neuro_init(a_pid_neuro_s *const ctx) { a_pid_neuro_zero(ctx); }
 
 void a_pid_neuro_kpid(a_pid_neuro_s *const ctx, a_float_t const k, a_float_t const kp, a_float_t const ki, a_float_t const kd)
 {

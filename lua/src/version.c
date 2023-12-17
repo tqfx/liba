@@ -22,6 +22,9 @@ static int liba_version_init_(lua_State *const L, a_version_s *const ctx)
     switch (lua_gettop(L) - lua_isuserdata(L, -1))
     {
     default:
+    case 4:
+        ctx->extra = (unsigned int)luaL_checkinteger(L, 3);
+        A_FALLTHROUGH;
     case 3:
         ctx->patch = (unsigned int)luaL_checkinteger(L, 3);
         A_FALLTHROUGH;
@@ -46,6 +49,7 @@ static int liba_version_init_(lua_State *const L, a_version_s *const ctx)
  @tparam[opt] integer major version major number
  @tparam[opt] integer minor version minor number
  @tparam[opt] integer patch version patch number
+ @tparam[opt] integer extra version extra number
  @treturn a.version algorithm library version userdata
  @function new
 */
@@ -64,6 +68,7 @@ int liba_version_new(lua_State *const L)
  @tparam[opt] integer major version major number
  @tparam[opt] integer minor version minor number
  @tparam[opt] integer patch version patch number
+ @tparam[opt] integer extra version extra number
  @treturn a.version algorithm library version userdata
  @function init
 */
@@ -220,6 +225,9 @@ static int liba_version_set(lua_State *const L)
     case 0xBB1DBE50: // patch
         ctx->patch = (unsigned int)luaL_checkinteger(L, 3);
         break;
+    case 0xFD1BE968: // extra
+        ctx->extra = (unsigned int)luaL_checkinteger(L, 3);
+        break;
     case 0x0CD3E494: // __lt
     case 0x0CD3E485: // __le
     case 0x0CD3E0FC: // __eq
@@ -252,6 +260,9 @@ static int liba_version_get(lua_State *const L)
         break;
     case 0xBB1DBE50: // patch
         lua_pushinteger(L, (lua_Integer)ctx->patch);
+        break;
+    case 0xFD1BE968: // extra
+        lua_pushinteger(L, (lua_Integer)ctx->extra);
         break;
     case 0xBB1D406B: // parse
         lua_pushcfunction(L, liba_version_parse);
@@ -288,6 +299,7 @@ static int liba_version_get(lua_State *const L)
         lua_int_set(L, -1, "major", (lua_Integer)ctx->major);
         lua_int_set(L, -1, "minor", (lua_Integer)ctx->minor);
         lua_int_set(L, -1, "patch", (lua_Integer)ctx->patch);
+        lua_int_set(L, -1, "extra", (lua_Integer)ctx->extra);
         break;
     default:
         lua_getmetatable(L, 1);

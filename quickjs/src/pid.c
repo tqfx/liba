@@ -16,10 +16,7 @@ static JSValue liba_pid_ctor(JSContext *const ctx, JSValueConst const new_target
     (void)argv;
     JSValue clazz = JS_UNDEFINED;
     a_pid_s *const self = (a_pid_s *)js_mallocz(ctx, sizeof(a_pid_s));
-    if (!self)
-    {
-        return JS_EXCEPTION;
-    }
+    if (!self) { return JS_EXCEPTION; }
     self->kp = 1;
     self->summax = +A_FLOAT_INF;
     self->summin = -A_FLOAT_INF;
@@ -27,16 +24,10 @@ static JSValue liba_pid_ctor(JSContext *const ctx, JSValueConst const new_target
     self->outmin = -A_FLOAT_INF;
     a_pid_init(self);
     JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
-    if (JS_IsException(proto))
-    {
-        goto fail;
-    }
+    if (JS_IsException(proto)) { goto fail; }
     clazz = JS_NewObjectProtoClass(ctx, proto, liba_pid_class_id);
     JS_FreeValue(ctx, proto);
-    if (JS_IsException(clazz))
-    {
-        goto fail;
-    }
+    if (JS_IsException(clazz)) { goto fail; }
     JS_SetOpaque(clazz, self);
     return clazz;
 fail:
@@ -48,45 +39,21 @@ fail:
 static JSValue liba_pid_get(JSContext *const ctx, JSValueConst const this_val, int magic)
 {
     a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
-    if (!self)
-    {
-        return JS_EXCEPTION;
-    }
+    if (!self) { return JS_EXCEPTION; }
     double x;
     switch (magic)
     {
-    case 0:
-        x = (double)self->kp;
-        break;
-    case 1:
-        x = (double)self->ki;
-        break;
-    case 2:
-        x = (double)self->kd;
-        break;
-    case 3:
-        x = (double)self->summax;
-        break;
-    case 4:
-        x = (double)self->summin;
-        break;
-    case 5:
-        x = (double)self->outmax;
-        break;
-    case 6:
-        x = (double)self->outmin;
-        break;
-    case 7:
-        x = (double)self->out;
-        break;
-    case 8:
-        x = (double)self->fdb;
-        break;
-    case 9:
-        x = (double)self->err;
-        break;
-    default:
-        return JS_UNDEFINED;
+    case 0: x = (double)self->kp; break;
+    case 1: x = (double)self->ki; break;
+    case 2: x = (double)self->kd; break;
+    case 3: x = (double)self->summax; break;
+    case 4: x = (double)self->summin; break;
+    case 5: x = (double)self->outmax; break;
+    case 6: x = (double)self->outmin; break;
+    case 7: x = (double)self->out; break;
+    case 8: x = (double)self->fdb; break;
+    case 9: x = (double)self->err; break;
+    default: return JS_UNDEFINED;
     }
     return JS_NewFloat64(ctx, x);
 }
@@ -94,40 +61,19 @@ static JSValue liba_pid_get(JSContext *const ctx, JSValueConst const this_val, i
 static JSValue liba_pid_set(JSContext *const ctx, JSValueConst const this_val, JSValueConst const val, int magic)
 {
     a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
-    if (!self)
-    {
-        return JS_EXCEPTION;
-    }
+    if (!self) { return JS_EXCEPTION; }
     double x;
-    if (JS_ToFloat64(ctx, &x, val))
-    {
-        return JS_EXCEPTION;
-    }
+    if (JS_ToFloat64(ctx, &x, val)) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case 0:
-        self->kp = (a_float_t)x;
-        break;
-    case 1:
-        self->ki = (a_float_t)x;
-        break;
-    case 2:
-        self->kd = (a_float_t)x;
-        break;
-    case 3:
-        self->summax = (a_float_t)x;
-        break;
-    case 4:
-        self->summin = (a_float_t)x;
-        break;
-    case 5:
-        self->outmax = (a_float_t)x;
-        break;
-    case 6:
-        self->outmin = (a_float_t)x;
-        break;
-    default:
-        break;
+    case 0: self->kp = (a_float_t)x; break;
+    case 1: self->ki = (a_float_t)x; break;
+    case 2: self->kd = (a_float_t)x; break;
+    case 3: self->summax = (a_float_t)x; break;
+    case 4: self->summin = (a_float_t)x; break;
+    case 5: self->outmax = (a_float_t)x; break;
+    case 6: self->outmin = (a_float_t)x; break;
+    default: break;
     }
     return JS_UNDEFINED;
 }
@@ -137,10 +83,7 @@ static JSValue liba_pid_zero(JSContext *const ctx, JSValueConst const this_val, 
     (void)argc;
     (void)argv;
     a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
-    if (!self)
-    {
-        return JS_EXCEPTION;
-    }
+    if (!self) { return JS_EXCEPTION; }
     a_pid_zero(self);
     return JS_UNDEFINED;
 }
@@ -149,17 +92,11 @@ static JSValue liba_pid_kpid(JSContext *const ctx, JSValueConst const this_val, 
 {
     (void)argc;
     a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
-    if (!self)
-    {
-        return JS_EXCEPTION;
-    }
+    if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0, 0};
     for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        if (JS_ToFloat64(ctx, &args[i], argv[i]))
-        {
-            return JS_EXCEPTION;
-        }
+        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
     a_pid_kpid(self, (a_float_t)args[0], (a_float_t)args[1], (a_float_t)args[2]);
     return JS_UNDEFINED;
@@ -169,17 +106,11 @@ static JSValue liba_pid_run(JSContext *const ctx, JSValueConst const this_val, i
 {
     (void)argc;
     a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
-    if (!self)
-    {
-        return JS_EXCEPTION;
-    }
+    if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0};
     for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        if (JS_ToFloat64(ctx, &args[i], argv[i]))
-        {
-            return JS_EXCEPTION;
-        }
+        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
     return JS_NewFloat64(ctx, (double)a_pid_run(self, (a_float_t)args[0], (a_float_t)args[1]));
 }
@@ -188,17 +119,11 @@ static JSValue liba_pid_pos(JSContext *const ctx, JSValueConst const this_val, i
 {
     (void)argc;
     a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
-    if (!self)
-    {
-        return JS_EXCEPTION;
-    }
+    if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0};
     for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        if (JS_ToFloat64(ctx, &args[i], argv[i]))
-        {
-            return JS_EXCEPTION;
-        }
+        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
     return JS_NewFloat64(ctx, (double)a_pid_pos(self, (a_float_t)args[0], (a_float_t)args[1]));
 }
@@ -207,17 +132,11 @@ static JSValue liba_pid_inc(JSContext *const ctx, JSValueConst const this_val, i
 {
     (void)argc;
     a_pid_s *const self = (a_pid_s *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
-    if (!self)
-    {
-        return JS_EXCEPTION;
-    }
+    if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0};
     for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
-        if (JS_ToFloat64(ctx, &args[i], argv[i]))
-        {
-            return JS_EXCEPTION;
-        }
+        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
     return JS_NewFloat64(ctx, (double)a_pid_inc(self, (a_float_t)args[0], (a_float_t)args[1]));
 }

@@ -9,10 +9,7 @@ void a_pid_zero(a_pid_s *const ctx)
     ctx->err = 0;
 }
 
-void a_pid_init(a_pid_s *const ctx)
-{
-    a_pid_zero(ctx);
-}
+void a_pid_init(a_pid_s *const ctx) { a_pid_zero(ctx); }
 
 void a_pid_kpid(a_pid_s *const ctx, a_float_t const kp, a_float_t const ki, a_float_t const kd)
 {

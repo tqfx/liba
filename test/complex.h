@@ -6,7 +6,6 @@
 #include "a/complex.h"
 #include "a/math.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 static void test(a_complex_s a, a_complex_s b)
 {
@@ -305,9 +304,6 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     {
         debug("y=" A_COMPLEX_PRI("", "g", "", "g") " ", a_complex_real(y), a_complex_imag(y));
     }
-    if (argc > 1)
-    {
-        debug("\n");
-    }
+    if (argc > 1) { debug("\n"); }
     return 0;
 }

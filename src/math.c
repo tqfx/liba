@@ -62,14 +62,8 @@ a_f32_t a_f32_hypot(a_f32_t x, a_f32_t y)
 
     x = ux.x;
     y = uy.x;
-    if (uy.u == 0xFF << 23)
-    {
-        return y;
-    }
-    if (ux.u >= 0xFF << 23 || uy.u == 0 || ux.u - uy.u >= 25 << 23)
-    {
-        return x + y;
-    }
+    if (uy.u == 0xFF << 23) { return y; }
+    if (ux.u >= 0xFF << 23 || uy.u == 0 || ux.u - uy.u >= 25 << 23) { return x + y; }
 
     z = 1;
     if (ux.u >= (0x7F + 60) << 23)
@@ -131,18 +125,9 @@ a_f64_t a_f64_hypot(a_f64_t x, a_f64_t y)
     ex = (unsigned int)(ux.u >> 52);
     ey = (unsigned int)(uy.u >> 52);
     /* hypot(inf,nan) == inf */
-    if (ey == 0x7FF)
-    {
-        return y;
-    }
-    if (ex == 0x7FF || uy.u == 0)
-    {
-        return x;
-    }
-    if (ex - ey > 64)
-    {
-        return x + y;
-    }
+    if (ey == 0x7FF) { return y; }
+    if (ex == 0x7FF || uy.u == 0) { return x; }
+    if (ex - ey > 64) { return x + y; }
 
     z = 1;
     if (ex > 0x3FF + 510)
@@ -228,22 +213,16 @@ a_u16_t a_u32_sqrt(a_u32_t x)
 {
 #if 0 /* Newton's method */
     a_u32_t x0, x1;
-    if (x <= 1)
-    {
-        return (a_u16_t)x;
-    }
+    if (x <= 1) { return (a_u16_t)x; }
     x1 = x >> 1;
-    do
-    {
+    do {
         x0 = x1;
         x1 = (x0 + x / x0) >> 1;
     } while (x0 > x1);
     return (a_u16_t)x0;
 #else /* Digit-by-digit */
     a_u32_t a, b = 1, y = 0;
-    for (b <<= sizeof(b) * 8 - 2; b > x; b >>= 2)
-    {
-    }
+    for (b <<= sizeof(b) * 8 - 2; b > x; b >>= 2) {}
     for (; b; b >>= 2)
     {
         a = y + b;
@@ -262,22 +241,16 @@ a_u32_t a_u64_sqrt(a_u64_t x)
 {
 #if 0 /* Newton's method */
     a_u64_t x0, x1;
-    if (x <= 1)
-    {
-        return (a_u32_t)x;
-    }
+    if (x <= 1) { return (a_u32_t)x; }
     x1 = x >> 1;
-    do
-    {
+    do {
         x0 = x1;
         x1 = (x0 + x / x0) >> 1;
     } while (x0 > x1);
     return (a_u32_t)x0;
 #else /* Digit-by-digit */
     a_u64_t a, b = 1, y = 0;
-    for (b <<= sizeof(b) * 8 - 2; b > x; b >>= 2)
-    {
-    }
+    for (b <<= sizeof(b) * 8 - 2; b > x; b >>= 2) {}
     for (; b; b >>= 2)
     {
         a = y + b;
@@ -293,10 +266,7 @@ a_u32_t a_u64_sqrt(a_u64_t x)
 }
 
 #undef a_float_log1p
-a_float_t a_float_log1p(a_float_t const x)
-{
-    return a_float_log(x + 1);
-}
+a_float_t a_float_log1p(a_float_t const x) { return a_float_log(x + 1); }
 
 #undef a_float_hypot
 a_float_t a_float_hypot(a_float_t const x, a_float_t const y)
@@ -313,25 +283,13 @@ a_float_t a_float_hypot(a_float_t const x, a_float_t const y)
 #undef a_float_atan2
 a_float_t a_float_atan2(a_float_t const x, a_float_t const y)
 {
-    if (x > 0)
-    {
-        return a_float_atan(y / x);
-    }
+    if (x > 0) { return a_float_atan(y / x); }
     if (x < 0)
     {
-        if (y >= 0)
-        {
-            return a_float_atan(y / x) + A_FLOAT_PI;
-        }
+        if (y >= 0) { return a_float_atan(y / x) + A_FLOAT_PI; }
         return a_float_atan(y / x) - A_FLOAT_PI;
     }
-    if (y > 0)
-    {
-        return +A_FLOAT_PI;
-    }
-    if (y < 0)
-    {
-        return -A_FLOAT_PI;
-    }
+    if (y > 0) { return +A_FLOAT_PI; }
+    if (y < 0) { return -A_FLOAT_PI; }
     return 0;
 }

@@ -28,10 +28,7 @@ static a_complex_s liba_complex_from_lua(lua_State *const L, int const idx)
     switch (lua_type(L, idx))
     {
     case LUA_TUSERDATA:
-        if (liba_complex_isok(L, idx))
-        {
-            z = *(a_complex_s *)lua_touserdata(L, idx);
-        }
+        if (liba_complex_isok(L, idx)) { z = *(a_complex_s *)lua_touserdata(L, idx); }
         break;
     case LUA_TSTRING:
     case LUA_TNUMBER:
@@ -75,14 +72,8 @@ int liba_complex_new(lua_State *const L)
 {
     a_complex_s z = A_COMPLEX_C(0.0, 0.0);
     int const top = lua_gettop(L);
-    if (top >= 2)
-    {
-        a_complex_imag(z) = (a_float_t)lua_tonumber(L, 2);
-    }
-    if (top >= 1)
-    {
-        a_complex_real(z) = (a_float_t)lua_tonumber(L, 1);
-    }
+    if (top >= 2) { a_complex_imag(z) = (a_float_t)lua_tonumber(L, 2); }
+    if (top >= 1) { a_complex_real(z) = (a_float_t)lua_tonumber(L, 1); }
     *liba_complex_new_(L) = z;
     return 1;
 }
@@ -99,14 +90,8 @@ int liba_complex_polar(lua_State *const L)
     a_float_t theta = A_FLOAT_C(0.0);
     a_float_t r = A_FLOAT_C(0.0);
     int const top = lua_gettop(L);
-    if (top >= 2)
-    {
-        theta = (a_float_t)lua_tonumber(L, 2);
-    }
-    if (top >= 1)
-    {
-        r = (a_float_t)lua_tonumber(L, 1);
-    }
+    if (top >= 2) { theta = (a_float_t)lua_tonumber(L, 2); }
+    if (top >= 1) { r = (a_float_t)lua_tonumber(L, 1); }
     *liba_complex_new_(L) = a_complex_polar(r, theta);
     return 1;
 }

@@ -115,8 +115,7 @@
 #endif /* C > 199900 or C++ > 201100 */
 
 #define TEST_IS_TRUE(expression, message)                   \
-    do                                                      \
-    {                                                       \
+    do {                                                    \
         if (!(expression))                                  \
         {                                                   \
             (void)fprintf(stderr, "%s: file %s, line %i\n", \
@@ -125,8 +124,7 @@
     } while (0)
 
 #define TEST_IS_FASLE(expression, message)                  \
-    do                                                      \
-    {                                                       \
+    do {                                                    \
         if (expression)                                     \
         {                                                   \
             (void)fprintf(stderr, "%s: file %s, line %i\n", \
@@ -162,10 +160,7 @@ int test_init(int argc, char *argv[], int out)
     if (!log && argc > out)
     {
         log = freopen(argv[out], "wb", stdout);
-        if (log)
-        {
-            out = atexit(test_exit);
-        }
+        if (log) { out = atexit(test_exit); }
     }
     return out;
 }
@@ -179,9 +174,7 @@ int main(int argc, char *argv[])
 }
 static void test_exit(void)
 {
-    if (fclose(stdout))
-    {
-    }
+    if (fclose(stdout)) {}
 }
 #endif /* __cplusplus */
 #if defined(__cplusplus) == defined(HAS_CXX)

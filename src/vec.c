@@ -32,10 +32,7 @@ static void a_vec_drop_(a_vec_s *const ctx, a_size_t const bot, void (*const dto
 {
     if (dtor)
     {
-        while (ctx->_num > bot)
-        {
-            dtor(a_vec_dec_(ctx));
-        }
+        while (ctx->_num > bot) { dtor(a_vec_dec_(ctx)); }
     }
     ctx->_num = bot;
 }
@@ -45,16 +42,12 @@ static int a_vec_alloc(a_vec_s *const ctx, a_size_t const num)
     if (ctx->_mem <= num)
     {
         a_size_t mem = ctx->_mem;
-        do
-        {
+        do {
             mem += (mem >> 1) + 1;
         } while (mem < num);
         a_size_t const siz = a_size_up(sizeof(void *), ctx->_siz * mem);
         void *ptr = a_alloc(ctx->_ptr, siz);
-        if (a_unlikely(!ptr))
-        {
-            return A_FAILURE;
-        }
+        if (a_unlikely(!ptr)) { return A_FAILURE; }
         ctx->_ptr = ptr;
         ctx->_mem = mem;
     }
@@ -64,10 +57,7 @@ static int a_vec_alloc(a_vec_s *const ctx, a_size_t const num)
 a_vec_s *a_vec_new(a_size_t const size)
 {
     a_vec_s *const ctx = (a_vec_s *)a_alloc(A_NULL, sizeof(a_vec_s));
-    if (ctx)
-    {
-        a_vec_ctor(ctx, size);
-    }
+    if (ctx) { a_vec_ctor(ctx, size); }
     return ctx;
 }
 
@@ -102,10 +92,7 @@ void a_vec_dtor(a_vec_s *const ctx, void (*const dtor)(void *))
 int a_vec_copy(a_vec_s *const ctx, a_vec_s const *const obj, int (*const dup)(void *, void const *))
 {
     ctx->_ptr = a_alloc(A_NULL, obj->_mem * obj->_siz);
-    if (a_unlikely(!ctx->_ptr))
-    {
-        return A_FAILURE;
-    }
+    if (a_unlikely(!ctx->_ptr)) { return A_FAILURE; }
     ctx->_num = obj->_num;
     ctx->_mem = obj->_mem;
     ctx->_siz = obj->_siz;
@@ -143,10 +130,7 @@ void a_vec_edit(a_vec_s *const ctx, a_size_t size, void (*const dtor)(void *))
 
 int a_vec_make(a_vec_s *const ctx, a_size_t const num, void (*const dtor)(void *))
 {
-    if (a_unlikely(a_vec_alloc(ctx, num)))
-    {
-        return A_FAILURE;
-    }
+    if (a_unlikely(a_vec_alloc(ctx, num))) { return A_FAILURE; }
     a_vec_drop_(ctx, num, dtor);
     return A_SUCCESS;
 }
@@ -180,17 +164,13 @@ void a_vec_sort_fore(a_vec_s const *const ctx, int (*const cmp)(void const *, vo
     {
         a_byte_t *ptr = (a_byte_t *)ctx->_ptr;
         a_byte_t *const end = (a_byte_t *)ctx->_ptr + ctx->_siz * ctx->_num - ctx->_siz;
-        do
-        {
+        do {
             a_byte_t *const cur = ptr + ctx->_siz;
             if (cmp(ptr, cur) > 0)
             {
                 a_swap(cur, ptr, ctx->_siz);
             }
-            else
-            {
-                break;
-            }
+            else { break; }
             ptr = cur;
         } while (ptr != end);
     }
@@ -201,17 +181,13 @@ void a_vec_sort_back(a_vec_s const *const ctx, int (*const cmp)(void const *, vo
     if (ctx->_num > 1)
     {
         a_byte_t *ptr = (a_byte_t *)ctx->_ptr + ctx->_siz * ctx->_num - ctx->_siz;
-        do
-        {
+        do {
             a_byte_t *const cur = ptr - ctx->_siz;
             if (cmp(cur, ptr) > 0)
             {
                 a_swap(cur, ptr, ctx->_siz);
             }
-            else
-            {
-                break;
-            }
+            else { break; }
             ptr = cur;
         } while (ptr != ctx->_ptr);
     }
@@ -224,10 +200,7 @@ void *a_vec_search(a_vec_s const *const ctx, void const *const obj, int (*const 
 
 void *a_vec_insert(a_vec_s *const ctx, a_size_t const idx)
 {
-    if (a_unlikely(a_vec_alloc(ctx, ctx->_num)))
-    {
-        return A_NULL;
-    }
+    if (a_unlikely(a_vec_alloc(ctx, ctx->_num))) { return A_NULL; }
     if (idx < ctx->_num)
     {
         a_byte_t *const src = (a_byte_t *)ctx->_ptr + ctx->_siz * (idx + 0);
@@ -243,10 +216,7 @@ void *a_vec_push_fore(a_vec_s *const ctx) { return a_vec_insert(ctx, 0); }
 
 void *a_vec_push_back(a_vec_s *const ctx)
 {
-    if (a_unlikely(a_vec_alloc(ctx, ctx->_num)))
-    {
-        return A_NULL;
-    }
+    if (a_unlikely(a_vec_alloc(ctx, ctx->_num))) { return A_NULL; }
     return a_vec_inc_(ctx);
 }
 
@@ -254,10 +224,7 @@ void *a_vec_remove(a_vec_s *const ctx, a_size_t const idx)
 {
     if (ctx->_num && idx < ctx->_num - 1)
     {
-        if (a_unlikely(a_vec_alloc(ctx, ctx->_num)))
-        {
-            return A_NULL;
-        }
+        if (a_unlikely(a_vec_alloc(ctx, ctx->_num))) { return A_NULL; }
         a_byte_t *const ptr = (a_byte_t *)ctx->_ptr + ctx->_siz * ctx->_num;
         a_byte_t *const dst = (a_byte_t *)ctx->_ptr + ctx->_siz * (idx + 0);
         a_byte_t *const src = (a_byte_t *)ctx->_ptr + ctx->_siz * (idx + 1);

@@ -265,10 +265,7 @@ void lua_num_reg(lua_State *const L, int idx, lua_num_s const *tab, size_t len)
 void lua_array_str_get(lua_State *const L, int const idx, char const **const ptr, unsigned int num)
 {
     size_t len = (size_t)lua_rawlen(L, idx);
-    if (num > len)
-    {
-        num = (unsigned int)len;
-    }
+    if (num > len) { num = (unsigned int)len; }
     for (unsigned int i = num; i--; num = i)
     {
         lua_rawgeti(L, idx, (int)num);
@@ -300,10 +297,7 @@ void lua_array_str_new(lua_State *const L, char const *const *const ptr, unsigne
 void lua_array_int_get(lua_State *const L, int const idx, LUA_INT *const ptr, unsigned int num)
 {
     size_t len = (size_t)lua_rawlen(L, idx);
-    if (num > len)
-    {
-        num = (unsigned int)len;
-    }
+    if (num > len) { num = (unsigned int)len; }
     for (unsigned int i = num; i--; num = i)
     {
         lua_rawgeti(L, idx, (int)num);
@@ -335,10 +329,7 @@ void lua_array_int_new(lua_State *const L, LUA_INT const *const ptr, unsigned in
 void lua_array_num_get(lua_State *const L, int const idx, LUA_NUM *const ptr, unsigned int num)
 {
     size_t len = (size_t)lua_rawlen(L, idx);
-    if (num > len)
-    {
-        num = (unsigned int)len;
-    }
+    if (num > len) { num = (unsigned int)len; }
     for (unsigned int i = num; i--; num = i)
     {
         lua_rawgeti(L, idx, (int)num);
@@ -376,10 +367,7 @@ size_t lua_table_num_len(lua_State *const L, int const idx) // NOLINT(misc-no-re
     {
         lua_rawgeti(L, idx, (int)i);
         int e = lua_type(L, -1);
-        if (e == LUA_TNUMBER)
-        {
-            ++num;
-        }
+        if (e == LUA_TNUMBER) { ++num; }
         else if (e == LUA_TTABLE)
         {
             num += lua_table_num_len(L, -1);

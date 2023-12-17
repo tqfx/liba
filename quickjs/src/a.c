@@ -20,10 +20,7 @@ static JSValue liba_isqrt(JSContext *const ctx, JSValueConst const this_val, int
     (void)this_val;
     (void)argc;
     uint64_t x;
-    if (JS_ToIndex(ctx, &x, argv[0]))
-    {
-        return JS_EXCEPTION;
-    }
+    if (JS_ToIndex(ctx, &x, argv[0])) { return JS_EXCEPTION; }
     return JS_NewUint32(ctx, a_u64_sqrt(x));
 }
 
@@ -32,10 +29,7 @@ static JSValue liba_rsqrt(JSContext *const ctx, JSValueConst const this_val, int
     (void)this_val;
     (void)argc;
     double x;
-    if (JS_ToFloat64(ctx, &x, argv[0]))
-    {
-        return JS_EXCEPTION;
-    }
+    if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
     return JS_NewFloat64(ctx, a_f64_rsqrt(x));
 }
 
@@ -130,10 +124,7 @@ JSValue js_concat(JSContext *const ctx, JSValueConst const val)
 int js_array_length(JSContext *const ctx, JSValueConst const val, a_u32_t *const plen)
 {
     JSValue length = JS_GetPropertyStr(ctx, val, "length");
-    if (JS_IsException(length))
-    {
-        return ~0;
-    }
+    if (JS_IsException(length)) { return ~0; }
     int ret = JS_ToUint32(ctx, plen, length);
     JS_FreeValue(ctx, length);
     return ret;
@@ -144,17 +135,11 @@ int js_array_num_get(JSContext *const ctx, JSValueConst const val, a_float_t *co
     for (unsigned int i = 0; i < len; ++i)
     {
         JSValue tmp = JS_GetPropertyUint32(ctx, val, i);
-        if (JS_IsException(tmp))
-        {
-            return ~0;
-        }
+        if (JS_IsException(tmp)) { return ~0; }
         double x;
         int ret = JS_ToFloat64(ctx, &x, tmp);
         JS_FreeValue(ctx, tmp);
-        if (ret)
-        {
-            return ret;
-        }
+        if (ret) { return ret; }
         ptr[i] = (a_float_t)x;
     }
     return 0;
@@ -163,10 +148,7 @@ int js_array_num_get(JSContext *const ctx, JSValueConst const val, a_float_t *co
 JSValue js_array_num_new(JSContext *const ctx, a_float_t const *const ptr, a_u32_t const len)
 {
     JSValue val = JS_NewArray(ctx);
-    if (JS_IsException(val))
-    {
-        return val;
-    }
+    if (JS_IsException(val)) { return val; }
     for (unsigned int i = 0; i < len; ++i)
     {
         JS_SetPropertyUint32(ctx, val, i, JS_NewFloat64(ctx, (double)ptr[i]));

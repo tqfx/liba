@@ -8,10 +8,7 @@ static void print(a_float_t const *const a, a_size_t const n)
     a_forenum(a_size_t, i, n)
     {
         printf(A_FLOAT_PRI("", "g"), a[i]);
-        if (i < n - 1)
-        {
-            putchar(',');
-        }
+        if (i < n - 1) { putchar(','); }
     }
     putchar('}');
 }

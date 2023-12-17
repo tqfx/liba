@@ -31,10 +31,7 @@ extern "C" {
 A_EXTERN a_float_t a_fuzzy_not(a_float_t x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
-A_INTERN a_float_t a_fuzzy_not(a_float_t const x)
-{
-    return 1 - x;
-}
+A_INTERN a_float_t a_fuzzy_not(a_float_t const x) { return 1 - x; }
 #endif /* A_HAVE_INLINE */
 
 /*!
@@ -47,11 +44,7 @@ A_INTERN a_float_t a_fuzzy_not(a_float_t const x)
 A_EXTERN a_float_t a_fuzzy_cap(a_float_t a, a_float_t b);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
-A_INTERN a_float_t a_fuzzy_cap(a_float_t const a, a_float_t const b)
-{
-    return A_MIN(a, b);
-}
-
+A_INTERN a_float_t a_fuzzy_cap(a_float_t const a, a_float_t const b) { return A_MIN(a, b); }
 #endif /* A_HAVE_INLINE */
 
 /*!
@@ -64,10 +57,7 @@ A_INTERN a_float_t a_fuzzy_cap(a_float_t const a, a_float_t const b)
 A_EXTERN a_float_t a_fuzzy_cap_algebra(a_float_t a, a_float_t b);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
-A_INTERN a_float_t a_fuzzy_cap_algebra(a_float_t const a, a_float_t const b)
-{
-    return a * b;
-}
+A_INTERN a_float_t a_fuzzy_cap_algebra(a_float_t const a, a_float_t const b) { return a * b; }
 #endif /* A_HAVE_INLINE */
 
 /*!
@@ -97,10 +87,7 @@ A_INTERN a_float_t a_fuzzy_cap_bounded(a_float_t const a, a_float_t const b)
 A_EXTERN a_float_t a_fuzzy_cup(a_float_t a, a_float_t b);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
-A_INTERN a_float_t a_fuzzy_cup(a_float_t const a, a_float_t const b)
-{
-    return A_MAX(a, b);
-}
+A_INTERN a_float_t a_fuzzy_cup(a_float_t const a, a_float_t const b) { return A_MAX(a, b); }
 #endif /* A_HAVE_INLINE */
 
 /*!
@@ -113,10 +100,7 @@ A_INTERN a_float_t a_fuzzy_cup(a_float_t const a, a_float_t const b)
 A_EXTERN a_float_t a_fuzzy_cup_algebra(a_float_t a, a_float_t b);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
-A_INTERN a_float_t a_fuzzy_cup_algebra(a_float_t const a, a_float_t const b)
-{
-    return a + b - a * b;
-}
+A_INTERN a_float_t a_fuzzy_cup_algebra(a_float_t const a, a_float_t const b) { return a + b - a * b; }
 #endif /* A_HAVE_INLINE */
 
 /*!

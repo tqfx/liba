@@ -55,10 +55,7 @@ static void test_for(int argc, char *argv[])
     {
         char *endptr = A_NULL;
         unsigned long l = strtoul(argv[1], &endptr, 0);
-        if (l > n)
-        {
-            n = a_cast_s(unsigned int, l);
-        }
+        if (l > n) { n = a_cast_s(unsigned int, l); }
     }
 
     int *p = a_new(int, A_NULL, n);
@@ -71,18 +68,12 @@ static void test_for(int argc, char *argv[])
     }
     debug("\n");
 
-    a_foreach(int, it, p, n)
-    {
-        debug("%i ", *it);
-    }
+    a_foreach(int, it, p, n) { debug("%i ", *it); }
     debug("\n");
 
     if (p && d)
     {
-        a_iterate(int, it, p, d)
-        {
-            debug("%i ", *it);
-        }
+        a_iterate(int, it, p, d) { debug("%i ", *it); }
         debug("\n");
     }
 
@@ -93,18 +84,12 @@ static void test_for(int argc, char *argv[])
     }
     debug("\n");
 
-    a_foreach_reverse(int, it, p, n)
-    {
-        debug("%i ", *it);
-    }
+    a_foreach_reverse(int, it, p, n) { debug("%i ", *it); }
     debug("\n");
 
     if (p && d)
     {
-        a_iterate_reverse(int, it, p, d)
-        {
-            debug("%i ", *it);
-        }
+        a_iterate_reverse(int, it, p, d) { debug("%i ", *it); }
         debug("\n");
     }
 

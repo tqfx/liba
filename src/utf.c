@@ -90,29 +90,20 @@ unsigned int a_utf_decode(void const *const _str, a_u32_t *const val)
     if (chr < 0x80)
     {
         res = chr;
-        if (!chr)
-        {
-            return offset;
-        }
+        if (!chr) { return offset; }
     }
     else
     {
         for (; chr & 0x40; chr <<= 1)
         {
             unsigned int c = *(++str);
-            if ((c & 0xC0) != 0x80)
-            {
-                return offset;
-            }
+            if ((c & 0xC0) != 0x80) { return offset; }
             res = (res << 6) | (c & 0x3F);
         }
         offset = (unsigned int)(str - (a_byte_t const *)_str);
         res |= (a_u32_t)(chr & 0x7F) << (offset * 5);
     }
-    if (val)
-    {
-        *val = res;
-    }
+    if (val) { *val = res; }
     return offset + 1;
 }
 
@@ -120,9 +111,6 @@ a_size_t a_utf_length(void const *const _str)
 {
     a_size_t length = 0;
     char const *str = (char const *)_str;
-    for (unsigned int offset; (void)(offset = a_utf_decode(str, A_NULL)), offset; str += offset)
-    {
-        ++length;
-    }
+    for (unsigned int offset; (void)(offset = a_utf_decode(str, A_NULL)), offset; str += offset) { ++length; }
     return length;
 }

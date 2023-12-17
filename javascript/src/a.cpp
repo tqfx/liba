@@ -637,9 +637,11 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .constructor<a_uint_t>()
         .constructor<a_uint_t, a_uint_t>()
         .constructor<a_uint_t, a_uint_t, a_uint_t>()
+        .constructor<a_uint_t, a_uint_t, a_uint_t, a_uint_t>()
         .property<unsigned int, void>("major", &a::version::major)
         .property<unsigned int, void>("minor", &a::version::minor)
         .property<unsigned int, void>("patch", &a::version::patch)
+        .property<unsigned int, void>("extra", &a::version::extra)
         .function("toString", emscripten::optional_override([](a::version const *ctx) {
                       return std::to_string(ctx->major) + "." + std::to_string(ctx->minor) + "." + std::to_string(ctx->patch);
                   }),

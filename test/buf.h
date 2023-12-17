@@ -18,10 +18,7 @@ static void back(void)
     for (a_u32_t i = 0; i != 20; ++i)
     {
         a_u32_t *obj = a_buf_push_back(a_u32_t, &ctx);
-        if (obj)
-        {
-            *obj = i;
-        }
+        if (obj) { *obj = i; }
     }
 
     a_buf_foreach(a_u32_t, it, &ctx)
@@ -33,10 +30,7 @@ static void back(void)
     for (a_u32_t i = 0; i != 20; ++i)
     {
         a_u32_t *obj = a_buf_pull_back(a_u32_t, &ctx);
-        if (obj)
-        {
-            printf("%" PRIu32 " ", *obj);
-        }
+        if (obj) { printf("%" PRIu32 " ", *obj); }
     }
     putchar('\n');
 
@@ -52,10 +46,7 @@ static void fore(void)
     for (a_u32_t i = 0; i != 20; ++i)
     {
         a_u32_t *obj = a_buf_push_fore(a_u32_t, &ctx);
-        if (obj)
-        {
-            *obj = i;
-        }
+        if (obj) { *obj = i; }
     }
 
     a_buf_foreach_reverse(a_u32_t, it, &ctx)
@@ -67,10 +58,7 @@ static void fore(void)
     for (a_u32_t i = 0; i != 20; ++i)
     {
         a_u32_t *obj = a_buf_pull_fore(a_u32_t, &ctx);
-        if (obj)
-        {
-            printf("%" PRIu32 " ", *obj);
-        }
+        if (obj) { printf("%" PRIu32 " ", *obj); }
     }
     putchar('\n');
 

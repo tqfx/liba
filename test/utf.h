@@ -1,7 +1,6 @@
 #define MAIN_(x) A_CAST_2(x, _utf)
 #include "test.h"
 #include "a/utf.h"
-#include <stdio.h>
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
@@ -16,10 +15,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
             a_utf_encode(A_NULL, val);
             buf[a_utf_encode(buf, val)] = 0;
             debug(" %s:%" PRIu32, buf, val);
-            if (!*s)
-            {
-                break;
-            }
+            if (!*s) { break; }
         }
         debug("\n");
     }

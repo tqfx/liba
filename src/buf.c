@@ -32,10 +32,7 @@ static void a_buf_drop_(a_buf_s *const ctx, a_size_t const bot, void (*const dto
 {
     if (dtor)
     {
-        while (ctx->_num > bot)
-        {
-            dtor(a_buf_dec_(ctx));
-        }
+        while (ctx->_num > bot) { dtor(a_buf_dec_(ctx)); }
     }
     ctx->_num = bot;
 }
@@ -94,17 +91,13 @@ void a_buf_sort_fore(a_buf_s const *const ctx, int (*const cmp)(void const *, vo
     {
         a_byte_t *ptr = (a_byte_t *)ctx->_ptr;
         a_byte_t *const end = (a_byte_t *)ctx->_ptr + ctx->_siz * ctx->_num - ctx->_siz;
-        do
-        {
+        do {
             a_byte_t *const cur = ptr + ctx->_siz;
             if (cmp(ptr, cur) > 0)
             {
                 a_swap(cur, ptr, ctx->_siz);
             }
-            else
-            {
-                break;
-            }
+            else { break; }
             ptr = cur;
         } while (ptr != end);
     }
@@ -115,17 +108,13 @@ void a_buf_sort_back(a_buf_s const *const ctx, int (*const cmp)(void const *, vo
     if (ctx->_num > 1)
     {
         a_byte_t *ptr = (a_byte_t *)ctx->_ptr + ctx->_siz * ctx->_num - ctx->_siz;
-        do
-        {
+        do {
             a_byte_t *const cur = ptr - ctx->_siz;
             if (cmp(cur, ptr) > 0)
             {
                 a_swap(cur, ptr, ctx->_siz);
             }
-            else
-            {
-                break;
-            }
+            else { break; }
             ptr = cur;
         } while (ptr != ctx->_ptr);
     }

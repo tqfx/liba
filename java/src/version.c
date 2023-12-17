@@ -84,6 +84,24 @@ JNIEXPORT jobject JNICALL Java_liba_version_patch__I(JNIEnv *jenv, jobject jobj,
     return jobj;
 }
 
+JNIEXPORT jint JNICALL Java_liba_version_extra__(JNIEnv *jenv, jobject jobj)
+{
+    a_version_s ctx;
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
+    return (jint)ctx.extra;
+}
+
+JNIEXPORT jobject JNICALL Java_liba_version_extra__I(JNIEnv *jenv, jobject jobj, jint extra)
+{
+    a_version_s ctx;
+    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
+    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
+    ctx.extra = (unsigned int)extra;
+    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_version_s), (jbyte *)&ctx);
+    return jobj;
+}
+
 JNIEXPORT jobject JNICALL Java_liba_version_parse(JNIEnv *jenv, jobject jobj, jstring jver)
 {
     a_version_s ctx;

@@ -116,10 +116,7 @@ void a_rbt_insert_adjust(a_rbt_u *const root, a_rbt_s *node)
         If there is a black parent, we are done. Otherwise, take some corrective action as, per 4),
         we don't want a red root or two consecutive red nodes.
         */
-        if (a_rbt_color(parent) == A_RBT_B)
-        {
-            break;
-        }
+        if (a_rbt_color(parent) == A_RBT_B) { break; }
         gparent = a_rbt_parent(parent);
         tmp = gparent->right;
         if (parent != tmp) /* parent == gparent->left */
@@ -161,10 +158,7 @@ void a_rbt_insert_adjust(a_rbt_u *const root, a_rbt_s *node)
                 tmp = node->left;
                 parent->right = tmp;
                 node->left = parent;
-                if (tmp)
-                {
-                    a_rbt_set_parent_color(tmp, parent, A_RBT_B);
-                }
+                if (tmp) { a_rbt_set_parent_color(tmp, parent, A_RBT_B); }
                 a_rbt_set_parent_color(parent, node, A_RBT_R);
                 parent = node;
                 tmp = node->right;
@@ -181,10 +175,7 @@ void a_rbt_insert_adjust(a_rbt_u *const root, a_rbt_s *node)
             */
             gparent->left = tmp; /* == parent->right */
             parent->right = gparent;
-            if (tmp)
-            {
-                a_rbt_set_parent_color(tmp, gparent, A_RBT_B);
-            }
+            if (tmp) { a_rbt_set_parent_color(tmp, gparent, A_RBT_B); }
             a_rbt_set_parents(root, gparent, parent, A_RBT_R);
             break;
         }
@@ -208,10 +199,7 @@ void a_rbt_insert_adjust(a_rbt_u *const root, a_rbt_s *node)
                 tmp = node->right;
                 parent->left = tmp;
                 node->right = parent;
-                if (tmp)
-                {
-                    a_rbt_set_parent_color(tmp, parent, A_RBT_B);
-                }
+                if (tmp) { a_rbt_set_parent_color(tmp, parent, A_RBT_B); }
                 a_rbt_set_parent_color(parent, node, A_RBT_R);
                 parent = node;
                 tmp = node->left;
@@ -219,10 +207,7 @@ void a_rbt_insert_adjust(a_rbt_u *const root, a_rbt_s *node)
             /* Case 3 - left rotate at gparent */
             gparent->right = tmp; /* == parent->left */
             parent->left = gparent;
-            if (tmp)
-            {
-                a_rbt_set_parent_color(tmp, gparent, A_RBT_B);
-            }
+            if (tmp) { a_rbt_set_parent_color(tmp, gparent, A_RBT_B); }
             a_rbt_set_parents(root, gparent, parent, A_RBT_R);
             break;
         }
@@ -288,10 +273,7 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt_u *const root, a_rbt_s *parent)
                     {
                         node = parent;
                         parent = a_rbt_parent(node);
-                        if (parent)
-                        {
-                            continue;
-                        }
+                        if (parent) { continue; }
                     }
                     break;
                 }
@@ -321,10 +303,7 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt_u *const root, a_rbt_s *parent)
                 sibling->left = tmp1;
                 tmp2->right = sibling;
                 parent->right = tmp2;
-                if (tmp1)
-                {
-                    a_rbt_set_parent_color(tmp1, sibling, A_RBT_B);
-                }
+                if (tmp1) { a_rbt_set_parent_color(tmp1, sibling, A_RBT_B); }
                 tmp1 = sibling;
                 sibling = tmp2;
             }
@@ -342,10 +321,7 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt_u *const root, a_rbt_s *parent)
             parent->right = tmp2;
             sibling->left = parent;
             a_rbt_set_parent_color(tmp1, sibling, A_RBT_B);
-            if (tmp2)
-            {
-                a_rbt_set_parent(tmp2, parent);
-            }
+            if (tmp2) { a_rbt_set_parent(tmp2, parent); }
             a_rbt_set_parents(root, parent, sibling, A_RBT_B);
             break;
         }
@@ -378,10 +354,7 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt_u *const root, a_rbt_s *parent)
                     {
                         node = parent;
                         parent = a_rbt_parent(node);
-                        if (parent)
-                        {
-                            continue;
-                        }
+                        if (parent) { continue; }
                     }
                     break;
                 }
@@ -390,10 +363,7 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt_u *const root, a_rbt_s *parent)
                 sibling->right = tmp1;
                 tmp2->left = sibling;
                 parent->left = tmp2;
-                if (tmp1)
-                {
-                    a_rbt_set_parent_color(tmp1, sibling, A_RBT_B);
-                }
+                if (tmp1) { a_rbt_set_parent_color(tmp1, sibling, A_RBT_B); }
                 tmp1 = sibling;
                 sibling = tmp2;
             }
@@ -402,17 +372,11 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt_u *const root, a_rbt_s *parent)
             parent->left = tmp2;
             sibling->right = parent;
             a_rbt_set_parent_color(tmp1, sibling, A_RBT_B);
-            if (tmp2)
-            {
-                a_rbt_set_parent(tmp2, parent);
-            }
+            if (tmp2) { a_rbt_set_parent(tmp2, parent); }
             a_rbt_set_parents(root, parent, sibling, A_RBT_B);
             break;
         }
-        else
-        {
-            break;
-        }
+        else { break; }
     }
 }
 
@@ -507,8 +471,7 @@ void a_rbt_remove(a_rbt_u *const root, a_rbt_s *const node)
                   \
                   (c)
             */
-            do
-            {
+            do {
                 parent = successor;
                 successor = tmp;
                 tmp = tmp->left;
@@ -548,10 +511,7 @@ void a_rbt_remove(a_rbt_u *const root, a_rbt_s *const node)
 #endif /* A_SIZE_POINTER */
     }
 
-    if (adjust)
-    {
-        a_rbt_remove_adjust(root, adjust);
-    }
+    if (adjust) { a_rbt_remove_adjust(root, adjust); }
 }
 
 a_rbt_s *a_rbt_insert(a_rbt_u *const root, a_rbt_s *const node, int (*const cmp)(void const *, void const *))
@@ -570,10 +530,7 @@ a_rbt_s *a_rbt_insert(a_rbt_u *const root, a_rbt_s *const node, int (*const cmp)
         {
             link = &parent->right;
         }
-        else
-        {
-            return parent;
-        }
+        else { return parent; }
     }
     *link = a_rbt_init(node, parent);
     a_rbt_insert_adjust(root, node);
@@ -593,10 +550,7 @@ a_rbt_s *a_rbt_search(a_rbt_u const *const root, void const *const ctx, int (*co
         {
             cur = cur->right;
         }
-        else
-        {
-            return cur;
-        }
+        else { return cur; }
     }
     return A_NULL;
 }
@@ -606,10 +560,7 @@ a_rbt_s *a_rbt_head(a_rbt_u const *const root)
     a_rbt_s *node = root->node;
     if (node)
     {
-        while (node->left)
-        {
-            node = node->left;
-        }
+        while (node->left) { node = node->left; }
     }
     return node;
 }
@@ -619,10 +570,7 @@ a_rbt_s *a_rbt_tail(a_rbt_u const *const root)
     a_rbt_s *node = root->node;
     if (node)
     {
-        while (node->right)
-        {
-            node = node->right;
-        }
+        while (node->right) { node = node->right; }
     }
     return node;
 }
@@ -636,10 +584,7 @@ a_rbt_s *a_rbt_next(a_rbt_s *node)
      / \   / \
     A   C E   G
     */
-    if (!node)
-    {
-        return node;
-    }
+    if (!node) { return node; }
     if (node->right) /* D -> F -> E */
     {
         for (node = node->right; node->left; node = node->left)
@@ -660,15 +605,10 @@ a_rbt_s *a_rbt_next(a_rbt_s *node)
 
 a_rbt_s *a_rbt_prev(a_rbt_s *node)
 {
-    if (!node)
-    {
-        return node;
-    }
+    if (!node) { return node; }
     if (node->left)
     {
-        for (node = node->left; node->right; node = node->right)
-        {
-        }
+        for (node = node->left; node->right; node = node->right) {}
     }
     else
     {
@@ -691,19 +631,10 @@ a_rbt_s *a_rbt_pre_next(a_rbt_s *node)
      / \   / \
     A   C E   G
     */
-    if (!node)
-    {
-        return node;
-    }
-    if (node->left)
-    {
-        return node->left;
-    }
-    if (node->right)
-    {
-        return node->right;
-    }
     a_rbt_s *last = node;
+    if (!node) { return node; }
+    if (node->left) { return node->left; }
+    if (node->right) { return node->right; }
     for (node = a_rbt_parent(node); node; node = a_rbt_parent(node))
     {
         if (node->right && node->right != last)
@@ -718,19 +649,10 @@ a_rbt_s *a_rbt_pre_next(a_rbt_s *node)
 
 a_rbt_s *a_rbt_pre_prev(a_rbt_s *node)
 {
-    if (!node)
-    {
-        return node;
-    }
-    if (node->right)
-    {
-        return node->right;
-    }
-    if (node->left)
-    {
-        return node->left;
-    }
     a_rbt_s *last = node;
+    if (!node) { return node; }
+    if (node->right) { return node->right; }
+    if (node->left) { return node->left; }
     for (node = a_rbt_parent(node); node; node = a_rbt_parent(node))
     {
         if (node->left && node->left != last)
@@ -744,8 +666,7 @@ a_rbt_s *a_rbt_pre_prev(a_rbt_s *node)
 }
 
 #define A_RBT_POST(head, tail) \
-    do                         \
-    {                          \
+    do {                       \
         if (node->head)        \
         {                      \
             node = node->head; \
@@ -754,29 +675,20 @@ a_rbt_s *a_rbt_pre_prev(a_rbt_s *node)
         {                      \
             node = node->tail; \
         }                      \
-        else                   \
-        {                      \
-            break;             \
-        }                      \
+        else { break; }        \
     } while (!0)
 
 a_rbt_s *a_rbt_post_head(a_rbt_u const *const root)
 {
     a_rbt_s *node = root->node;
-    if (node)
-    {
-        A_RBT_POST(left, right);
-    }
+    if (node) { A_RBT_POST(left, right); }
     return node;
 }
 
 a_rbt_s *a_rbt_post_tail(a_rbt_u const *const root)
 {
     a_rbt_s *node = root->node;
-    if (node)
-    {
-        A_RBT_POST(right, left);
-    }
+    if (node) { A_RBT_POST(right, left); }
     return node;
 }
 
@@ -789,11 +701,8 @@ a_rbt_s *a_rbt_post_next(a_rbt_s *node)
      / \   / \
     A   C E   G
     */
-    if (!node)
-    {
-        return node;
-    }
     a_rbt_s *last = node;
+    if (!node) { return node; }
     node = a_rbt_parent(node);
     if (node && node->right && node->right != last)
     {
@@ -805,11 +714,8 @@ a_rbt_s *a_rbt_post_next(a_rbt_s *node)
 
 a_rbt_s *a_rbt_post_prev(a_rbt_s *node)
 {
-    if (!node)
-    {
-        return node;
-    }
     a_rbt_s *last = node;
+    if (!node) { return node; }
     node = a_rbt_parent(node);
     if (node && node->left && node->left != last)
     {
@@ -825,10 +731,7 @@ a_rbt_s *a_rbt_tear(a_rbt_u *const root, a_rbt_s **const next)
     if (!node)
     {
         node = root->node;
-        if (!node)
-        {
-            return node;
-        }
+        if (!node) { return node; }
     }
     A_RBT_POST(left, right);
     *next = a_rbt_parent(node);

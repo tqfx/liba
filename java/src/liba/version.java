@@ -113,6 +113,21 @@ public class version {
      */
     public final native version patch(int pat);
 
+    /***
+     * get extra number for version
+     *
+     * @return extra number
+     */
+    public final native int extra();
+
+    /***
+     * set extra number for version
+     *
+     * @param pat extra number
+     * @return {@link version}
+     */
+    public final native version extra(int pat);
+
     /**
      * parse for {@link version} object
      *

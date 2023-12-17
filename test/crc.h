@@ -14,10 +14,7 @@
             for (a_size_t j = 0; j != (row); ++j)                                                 \
             {                                                                                     \
                 (void)fprintf(out, "0x%0" #fmt PRIX##bit ",", ctx[(row) * i + j]);                \
-                if (j != (row)-1)                                                                 \
-                {                                                                                 \
-                    (void)fputc(' ', out);                                                        \
-                }                                                                                 \
+                if (j != (row)-1) { (void)fputc(' ', out); }                                      \
             }                                                                                     \
             (void)fputc('\n', out);                                                               \
         }                                                                                         \
@@ -124,7 +121,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     if (argc > 1)
     {
         char const *name = argv[argc - 1];
-        int file = *name;
+        int file = a_cast_s(int, *name);
         if (file)
         {
             out = fopen(name, "wb");

@@ -12,6 +12,8 @@ pub struct version {
     pub minor: uint,
     /// patch number
     pub patch: uint,
+    /// extra number
+    pub extra: uint,
 }
 
 extern "C" {
@@ -20,12 +22,12 @@ extern "C" {
     static a_version_patch: uint;
     static a_version_tweak: u32;
     fn a_version_check(major: uint, minor: uint, patch: uint) -> int;
+    fn a_version_cmp(lhs: *const version, rhs: *const version) -> int;
     fn a_version_lt(lhs: *const version, rhs: *const version) -> bool;
     fn a_version_gt(lhs: *const version, rhs: *const version) -> bool;
     fn a_version_le(lhs: *const version, rhs: *const version) -> bool;
     fn a_version_ge(lhs: *const version, rhs: *const version) -> bool;
     fn a_version_eq(lhs: *const version, rhs: *const version) -> bool;
-    fn a_version_cmp(lhs: *const version, rhs: *const version) -> int;
 }
 
 impl PartialOrd for version {
@@ -66,6 +68,7 @@ impl version {
             major,
             minor,
             patch,
+            extra: 0,
         }
     }
 }
@@ -105,6 +108,7 @@ fn version() {
                 .field("major", &self.major)
                 .field("minor", &self.minor)
                 .field("patch", &self.patch)
+                .field("extra", &self.extra)
                 .finish()
         }
     }

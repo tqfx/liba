@@ -395,6 +395,7 @@ static bool tty_init_utf8(tty_t* tty) {
 ic_private tty_t* tty_new(alloc_t* mem, int fd_in)
 {
   tty_t* tty = mem_zalloc_tp(mem, tty_t);
+  if (tty == NULL) { return NULL; }
   tty->mem = mem;
   tty->fd_in = (fd_in < 0 ? STDIN_FILENO : fd_in);
   #if defined(__APPLE__)

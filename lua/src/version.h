@@ -13,6 +13,7 @@
  @field major version major number
  @field minor version minor number
  @field patch version patch number
+ @field extra version extra number
  @table a.version
 */
 #if defined(__cplusplus)
@@ -27,6 +28,7 @@ int liba_version_meta_(lua_State *L, int ret);
  @tparam[opt] integer major version major number
  @tparam[opt] integer minor version minor number
  @tparam[opt] integer patch version patch number
+ @tparam[opt] integer extra version extra number
  @treturn a.version algorithm library version userdata
  @function new
 */
@@ -37,6 +39,7 @@ int liba_version_new(lua_State *L);
  @tparam[opt] integer major version major number
  @tparam[opt] integer minor version minor number
  @tparam[opt] integer patch version patch number
+ @tparam[opt] integer extra version extra number
  @treturn a.version algorithm library version userdata
  @function init
 */

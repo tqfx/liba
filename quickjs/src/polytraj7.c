@@ -14,28 +14,16 @@ static JSValue liba_polytraj7_ctor(JSContext *const ctx, JSValueConst const new_
 {
     JSValue clazz = JS_UNDEFINED;
     a_polytraj7_s *const self = (a_polytraj7_s *)js_mallocz(ctx, sizeof(a_polytraj7_s));
-    if (!self)
-    {
-        return JS_EXCEPTION;
-    }
+    if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    if (argc > (int)A_LEN(args))
-    {
-        argc = (int)A_LEN(args);
-    }
+    if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
     for (int i = 0; i < 4; ++i)
     {
-        if (JS_ToFloat64(ctx, &args[i], argv[i]))
-        {
-            goto fail;
-        }
+        if (JS_ToFloat64(ctx, &args[i], argv[i])) { goto fail; }
     }
     for (int i = 4; i < argc; ++i)
     {
-        if (JS_ToFloat64(ctx, &args[i], argv[i]))
-        {
-            goto fail;
-        }
+        if (JS_ToFloat64(ctx, &args[i], argv[i])) { goto fail; }
     }
     a_polytraj7_gen(self,
                     (a_float_t)args[0], (a_float_t)args[1],
@@ -44,16 +32,10 @@ static JSValue liba_polytraj7_ctor(JSContext *const ctx, JSValueConst const new_
                     (a_float_t)args[6], (a_float_t)args[7],
                     (a_float_t)args[8], (a_float_t)args[9]);
     JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
-    if (JS_IsException(proto))
-    {
-        goto fail;
-    }
+    if (JS_IsException(proto)) { goto fail; }
     clazz = JS_NewObjectProtoClass(ctx, proto, liba_polytraj7_class_id);
     JS_FreeValue(ctx, proto);
-    if (JS_IsException(clazz))
-    {
-        goto fail;
-    }
+    if (JS_IsException(clazz)) { goto fail; }
     JS_SetOpaque(clazz, self);
     return clazz;
 fail:
@@ -65,50 +47,30 @@ fail:
 static JSValue liba_polytraj7_get(JSContext *const ctx, JSValueConst const this_val, int magic)
 {
     a_polytraj7_s *const self = (a_polytraj7_s *)JS_GetOpaque2(ctx, this_val, liba_polytraj7_class_id);
-    if (!self)
-    {
-        return JS_EXCEPTION;
-    }
+    if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case 0:
-        return js_array_num_new(ctx, self->q, A_LEN(self->q));
-    case 1:
-        return js_array_num_new(ctx, self->v, A_LEN(self->v));
-    case 2:
-        return js_array_num_new(ctx, self->a, A_LEN(self->a));
-    case 3:
-        return js_array_num_new(ctx, self->j, A_LEN(self->j));
-    default:
-        return JS_UNDEFINED;
+    case 0: return js_array_num_new(ctx, self->q, A_LEN(self->q));
+    case 1: return js_array_num_new(ctx, self->v, A_LEN(self->v));
+    case 2: return js_array_num_new(ctx, self->a, A_LEN(self->a));
+    case 3: return js_array_num_new(ctx, self->j, A_LEN(self->j));
+    default: return JS_UNDEFINED;
     }
 }
 
 static JSValue liba_polytraj7_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     a_polytraj7_s *const self = (a_polytraj7_s *)JS_GetOpaque2(ctx, this_val, liba_polytraj7_class_id);
-    if (!self)
-    {
-        return JS_EXCEPTION;
-    }
+    if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    if (argc > (int)A_LEN(args))
-    {
-        argc = (int)A_LEN(args);
-    }
+    if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
     for (int i = 0; i < 4; ++i)
     {
-        if (JS_ToFloat64(ctx, &args[i], argv[i]))
-        {
-            return JS_EXCEPTION;
-        }
+        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
     for (int i = 4; i < argc; ++i)
     {
-        if (JS_ToFloat64(ctx, &args[i], argv[i]))
-        {
-            return JS_EXCEPTION;
-        }
+        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
     a_polytraj7_gen(self,
                     (a_float_t)args[0], (a_float_t)args[1],
@@ -123,15 +85,9 @@ static JSValue liba_polytraj7_pos(JSContext *const ctx, JSValueConst const this_
 {
     (void)argc;
     a_polytraj7_s *const self = (a_polytraj7_s *)JS_GetOpaque2(ctx, this_val, liba_polytraj7_class_id);
-    if (!self)
-    {
-        return JS_EXCEPTION;
-    }
+    if (!self) { return JS_EXCEPTION; }
     double dt;
-    if (JS_ToFloat64(ctx, &dt, argv[0]))
-    {
-        return JS_EXCEPTION;
-    }
+    if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
     a_float_t pos = a_polytraj7_pos(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)pos);
 }
@@ -140,15 +96,9 @@ static JSValue liba_polytraj7_vel(JSContext *const ctx, JSValueConst const this_
 {
     (void)argc;
     a_polytraj7_s *const self = (a_polytraj7_s *)JS_GetOpaque2(ctx, this_val, liba_polytraj7_class_id);
-    if (!self)
-    {
-        return JS_EXCEPTION;
-    }
+    if (!self) { return JS_EXCEPTION; }
     double dt;
-    if (JS_ToFloat64(ctx, &dt, argv[0]))
-    {
-        return JS_EXCEPTION;
-    }
+    if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
     a_float_t vel = a_polytraj7_vel(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)vel);
 }
@@ -157,15 +107,9 @@ static JSValue liba_polytraj7_acc(JSContext *const ctx, JSValueConst const this_
 {
     (void)argc;
     a_polytraj7_s *const self = (a_polytraj7_s *)JS_GetOpaque2(ctx, this_val, liba_polytraj7_class_id);
-    if (!self)
-    {
-        return JS_EXCEPTION;
-    }
+    if (!self) { return JS_EXCEPTION; }
     double dt;
-    if (JS_ToFloat64(ctx, &dt, argv[0]))
-    {
-        return JS_EXCEPTION;
-    }
+    if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
     a_float_t acc = a_polytraj7_acc(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)acc);
 }
@@ -174,15 +118,9 @@ static JSValue liba_polytraj7_jer(JSContext *const ctx, JSValueConst const this_
 {
     (void)argc;
     a_polytraj7_s *const self = (a_polytraj7_s *)JS_GetOpaque2(ctx, this_val, liba_polytraj7_class_id);
-    if (!self)
-    {
-        return JS_EXCEPTION;
-    }
+    if (!self) { return JS_EXCEPTION; }
     double dt;
-    if (JS_ToFloat64(ctx, &dt, argv[0]))
-    {
-        return JS_EXCEPTION;
-    }
+    if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
     a_float_t jer = a_polytraj7_jer(self, (a_float_t)dt);
     return JS_NewFloat64(ctx, (double)jer);
 }

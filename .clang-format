@@ -3,6 +3,10 @@ BasedOnStyle: LLVM
 AccessModifierOffset: -4
 AlignEscapedNewlines: Left
 AlignTrailingComments: false
+AllowShortBlocksOnASingleLine: Always
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AllowShortLoopsOnASingleLine: true
 AlwaysBreakTemplateDeclarations: Yes
 BreakBeforeBraces: Custom
 BreakInheritanceList: BeforeComma
