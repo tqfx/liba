@@ -211,27 +211,25 @@ static int liba_tf_get(lua_State *const L)
 
 int luaopen_liba_tf(lua_State *const L)
 {
-    lua_fun_s const funcs[] = {
+    static lua_fun_s const funcs[] = {
         {"init", liba_tf_init},
         {"iter", liba_tf_iter},
         {"zero", liba_tf_zero},
         {"new", liba_tf_new},
         {"die", liba_tf_die},
-        {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(funcs) - 1);
-    lua_fun_reg(L, -1, funcs);
+    lua_createtable(L, 0, A_LEN(funcs));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
 
-    lua_fun_s const metas[] = {
+    static lua_fun_s const metas[] = {
         {"__newindex", liba_tf_set},
         {"__index", liba_tf_get},
         {"__call", liba_tf_iter},
         {"__gc", liba_tf_die},
-        {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) - 1);
-    lua_fun_reg(L, -1, metas);
-    lua_fun_reg(L, -1, funcs);
+    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
+    lua_fun_reg(L, -1, metas, A_LEN(metas));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_str_set(L, -1, "__name", "a.tf");
 
     liba_tf_meta_(L, 0);

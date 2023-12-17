@@ -662,7 +662,7 @@ static int liba_complex_get(lua_State *const L)
 
 int luaopen_liba_complex(lua_State *const L)
 {
-    lua_fun_s const funcs[] = {
+    static lua_fun_s const funcs[] = {
         {"new", liba_complex_new},
         {"polar", liba_complex_polar},
         {"logabs", liba_complex_logabs},
@@ -707,12 +707,11 @@ int luaopen_liba_complex(lua_State *const L)
         {"asech", liba_complex_asech},
         {"acsch", liba_complex_acsch},
         {"acoth", liba_complex_acoth},
-        {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(funcs) - 1);
-    lua_fun_reg(L, -1, funcs);
+    lua_createtable(L, 0, A_LEN(funcs));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
 
-    lua_fun_s const metas[] = {
+    static lua_fun_s const metas[] = {
         {"__tostring", liba_complex_tostring},
         {"__newindex", liba_complex_set},
         {"__index", liba_complex_get},
@@ -723,11 +722,10 @@ int luaopen_liba_complex(lua_State *const L)
         {"__div", liba_complex_div},
         {"__pow", liba_complex_pow},
         {"__len", liba_complex_abs},
-        {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) - 1);
-    lua_fun_reg(L, -1, metas);
-    lua_fun_reg(L, -1, funcs);
+    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
+    lua_fun_reg(L, -1, metas, A_LEN(metas));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_str_set(L, -1, "__name", "a.complex");
 
     liba_complex_meta_(L, 0);

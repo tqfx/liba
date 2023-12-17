@@ -301,7 +301,7 @@ static int liba_pid_neuro_get(lua_State *const L)
 
 int luaopen_liba_pid_neuro(lua_State *const L)
 {
-    lua_fun_s const funcs[] = {
+    static lua_fun_s const funcs[] = {
         {"new", liba_pid_neuro_new},
         {"init", liba_pid_neuro_init},
         {"zero", liba_pid_neuro_zero},
@@ -309,19 +309,17 @@ int luaopen_liba_pid_neuro(lua_State *const L)
         {"wpid", liba_pid_neuro_wpid},
         {"run", liba_pid_neuro_run},
         {"inc", liba_pid_neuro_inc},
-        {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(funcs) - 1);
-    lua_fun_reg(L, -1, funcs);
+    lua_createtable(L, 0, A_LEN(funcs));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
 
-    lua_fun_s const metas[] = {
+    static lua_fun_s const metas[] = {
         {"__newindex", liba_pid_neuro_set},
         {"__index", liba_pid_neuro_get},
-        {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) - 1);
-    lua_fun_reg(L, -1, metas);
-    lua_fun_reg(L, -1, funcs);
+    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
+    lua_fun_reg(L, -1, metas, A_LEN(metas));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_str_set(L, -1, "__name", "a.pid_neuro");
 
     liba_pid_neuro_meta_(L, 0);

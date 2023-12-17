@@ -94,18 +94,18 @@ LUALIB_API int luaL_error(lua_State *L, char const *fmt, ...);
 
 void *lua_alloc(lua_State *L, void const *ptr, size_t siz);
 
-void lua_fun_reg(lua_State *L, int idx, lua_fun_s const *tab);
+void lua_fun_reg(lua_State *L, int idx, lua_fun_s const *tab, size_t len);
 void lua_fun_set(lua_State *L, int idx, char const *name, lua_CFunction func);
 
-void lua_str_reg(lua_State *L, int idx, lua_str_s const *tab);
+void lua_str_reg(lua_State *L, int idx, lua_str_s const *tab, size_t len);
 void lua_str_set(lua_State *L, int idx, char const *name, char const *data);
 char const *lua_str_get(lua_State *L, int idx, char const *name);
 
-void lua_int_reg(lua_State *L, int idx, lua_int_s const *tab);
+void lua_int_reg(lua_State *L, int idx, lua_int_s const *tab, size_t len);
 void lua_int_set(lua_State *L, int idx, char const *name, LUA_INT data);
 LUA_INT lua_int_get(lua_State *L, int idx, char const *name);
 
-void lua_num_reg(lua_State *L, int idx, lua_num_s const *tab);
+void lua_num_reg(lua_State *L, int idx, lua_num_s const *tab, size_t len);
 void lua_num_set(lua_State *L, int idx, char const *name, LUA_NUM data);
 LUA_NUM lua_num_get(lua_State *L, int idx, char const *name);
 

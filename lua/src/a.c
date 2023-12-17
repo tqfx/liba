@@ -83,24 +83,23 @@ static int liba_rsqrt(lua_State *const L)
 int luaopen_liba(lua_State *const L)
 {
     luaL_checkversion(L);
-
     /***
      algorithm library
      @field VERSION algorithm library version string
      @table liba
     */
-    lua_fun_s const funcs[] = {
+    static lua_fun_s const funcs[] = {
         {"hash_bkdr", liba_hash_bkdr},
         {"isqrt", liba_isqrt},
         {"rsqrt", liba_rsqrt},
-        {NULL, NULL},
     };
 #if !defined LUA_VERSION_NUM || (LUA_VERSION_NUM <= 501)
-    luaL_register(L, "liba", funcs);
+    lua_fun_s func = {NULL, NULL};
+    luaL_register(L, "liba", &func);
 #else /* !LUA_VERSION_NUM */
-    lua_createtable(L, 0, A_LEN(funcs));
-    lua_fun_reg(L, -1, funcs);
+    lua_createtable(L, 0, A_LEN(funcs) + 1);
 #endif /* LUA_VERSION_NUM */
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_str_set(L, -1, "VERSION", A_VERSION);
 
     lua_pushstring(L, "complex");
@@ -165,16 +164,14 @@ void lua_fun_set(lua_State *const L, int const idx, char const *const name, lua_
     lua_rawset(L, idx < 0 ? idx - 2 : idx);
 }
 
-void lua_fun_reg(lua_State *const L, int idx, lua_fun_s const *tab)
+void lua_fun_reg(lua_State *const L, int idx, lua_fun_s const *tab, size_t len)
 {
-    idx = idx < 0 ? idx - 2 : idx;
-    while (tab->name)
+    for (idx = idx < 0 ? idx - 2 : idx; len--; ++tab)
     {
         /* table[name]=func */
         lua_pushstring(L, tab->name);
         lua_pushcclosure(L, tab->func, 0);
         lua_rawset(L, idx);
-        ++tab;
     }
 }
 
@@ -191,21 +188,19 @@ char const *lua_str_get(lua_State *const L, int const idx, char const *const nam
     /* data=table[name] */
     lua_pushstring(L, name);
     lua_rawget(L, idx < 0 ? idx - 1 : idx);
-    char const *data = lua_tostring(L, -1);
+    char const *s = lua_tostring(L, -1);
     lua_pop(L, 1);
-    return data;
+    return s;
 }
 
-void lua_str_reg(lua_State *const L, int idx, lua_str_s const *tab)
+void lua_str_reg(lua_State *const L, int idx, lua_str_s const *tab, size_t len)
 {
-    idx = idx < 0 ? idx - 2 : idx;
-    while (tab->name)
+    for (idx = idx < 0 ? idx - 2 : idx; len--; ++tab)
     {
         /* table[name]=data */
         lua_pushstring(L, tab->name);
         lua_pushstring(L, tab->data);
         lua_rawset(L, idx);
-        ++tab;
     }
 }
 
@@ -227,16 +222,14 @@ LUA_INT lua_int_get(lua_State *const L, int const idx, char const *const name)
     return x;
 }
 
-void lua_int_reg(lua_State *const L, int idx, lua_int_s const *tab)
+void lua_int_reg(lua_State *const L, int idx, lua_int_s const *tab, size_t len)
 {
-    idx = idx < 0 ? idx - 2 : idx;
-    while (tab->name)
+    for (idx = idx < 0 ? idx - 2 : idx; len--; ++tab)
     {
         /* table[name]=data */
         lua_pushstring(L, tab->name);
         lua_pushinteger(L, (lua_Integer)tab->data);
         lua_rawset(L, idx);
-        ++tab;
     }
 }
 
@@ -258,16 +251,14 @@ LUA_NUM lua_num_get(lua_State *const L, int const idx, char const *const name)
     return x;
 }
 
-void lua_num_reg(lua_State *const L, int idx, lua_num_s const *tab)
+void lua_num_reg(lua_State *const L, int idx, lua_num_s const *tab, size_t len)
 {
-    idx = idx < 0 ? idx - 2 : idx;
-    while (tab->name)
+    for (idx = idx < 0 ? idx - 2 : idx; len--; ++tab)
     {
         /* table[name]=data */
         lua_pushstring(L, tab->name);
         lua_pushnumber(L, (lua_Number)tab->data);
         lua_rawset(L, idx);
-        ++tab;
     }
 }
 

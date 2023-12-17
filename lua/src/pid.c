@@ -277,13 +277,12 @@ int luaopen_liba_pid(lua_State *const L)
      @field INC incremental PID controller
      @table mode
     */
-    lua_int_s const enums[] = {
+    static lua_int_s const enums[] = {
         {"RUN", A_PID_RUN},
         {"POS", A_PID_POS},
         {"INC", A_PID_INC},
-        {NULL, 0},
     };
-    lua_fun_s const funcs[] = {
+    static lua_fun_s const funcs[] = {
         {"new", liba_pid_new},
         {"init", liba_pid_init},
         {"zero", liba_pid_zero},
@@ -291,20 +290,18 @@ int luaopen_liba_pid(lua_State *const L)
         {"run", liba_pid_run},
         {"pos", liba_pid_pos},
         {"inc", liba_pid_inc},
-        {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
-    lua_int_reg(L, -1, enums);
-    lua_fun_reg(L, -1, funcs);
+    lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs));
+    lua_int_reg(L, -1, enums, A_LEN(enums));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
 
-    lua_fun_s const metas[] = {
+    static lua_fun_s const metas[] = {
         {"__newindex", liba_pid_set},
         {"__index", liba_pid_get},
-        {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) - 1);
-    lua_fun_reg(L, -1, metas);
-    lua_fun_reg(L, -1, funcs);
+    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
+    lua_fun_reg(L, -1, metas, A_LEN(metas));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_str_set(L, -1, "__name", "a.pid");
 
     liba_pid_meta_(L, 0);

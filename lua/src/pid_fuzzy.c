@@ -403,7 +403,7 @@ int luaopen_liba_pid_fuzzy(lua_State *const L)
      @field EQU         sqrt(a,b)*sqrt(1-(1-a)*(1-b))
      @table op
     */
-    lua_int_s const enums[] = {
+    static lua_int_s const enums[] = {
         {"CAP", A_PID_FUZZY_CAP},
         {"CAP_ALGEBRA", A_PID_FUZZY_CAP_ALGEBRA},
         {"CAP_BOUNDED", A_PID_FUZZY_CAP_BOUNDED},
@@ -411,9 +411,8 @@ int luaopen_liba_pid_fuzzy(lua_State *const L)
         {"CUP_ALGEBRA", A_PID_FUZZY_CUP_ALGEBRA},
         {"CUP_BOUNDED", A_PID_FUZZY_CUP_BOUNDED},
         {"EQU", A_PID_FUZZY_EQU},
-        {NULL, 0},
     };
-    lua_fun_s const funcs[] = {
+    static lua_fun_s const funcs[] = {
         {"new", liba_pid_fuzzy_new},
         {"init", liba_pid_fuzzy_init},
         {"zero", liba_pid_fuzzy_zero},
@@ -424,21 +423,19 @@ int luaopen_liba_pid_fuzzy(lua_State *const L)
         {"run", liba_pid_fuzzy_run},
         {"pos", liba_pid_fuzzy_pos},
         {"inc", liba_pid_fuzzy_inc},
-        {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
-    lua_int_reg(L, -1, enums);
-    lua_fun_reg(L, -1, funcs);
+    lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs));
+    lua_int_reg(L, -1, enums, A_LEN(enums));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
 
-    lua_fun_s const metas[] = {
+    static lua_fun_s const metas[] = {
         {"__newindex", liba_pid_fuzzy_set},
         {"__index", liba_pid_fuzzy_get},
         {"__gc", liba_pid_fuzzy_die},
-        {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) - 1);
-    lua_fun_reg(L, -1, metas);
-    lua_fun_reg(L, -1, funcs);
+    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
+    lua_fun_reg(L, -1, metas, A_LEN(metas));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_str_set(L, -1, "__name", "a.pid_fuzzy");
 
     liba_pid_fuzzy_meta_(L, 0);

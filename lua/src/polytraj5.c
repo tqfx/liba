@@ -261,25 +261,23 @@ static int liba_polytraj5_get(lua_State *const L)
 
 int luaopen_liba_polytraj5(lua_State *const L)
 {
-    lua_fun_s const funcs[] = {
+    static lua_fun_s const funcs[] = {
         {"new", liba_polytraj5_new},
         {"gen", liba_polytraj5_gen},
         {"pos", liba_polytraj5_pos},
         {"vel", liba_polytraj5_vel},
         {"acc", liba_polytraj5_acc},
-        {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(funcs) - 1);
-    lua_fun_reg(L, -1, funcs);
+    lua_createtable(L, 0, A_LEN(funcs));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
 
-    lua_fun_s const metas[] = {
+    static lua_fun_s const metas[] = {
         {"__newindex", liba_polytraj5_set},
         {"__index", liba_polytraj5_get},
-        {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) - 1);
-    lua_fun_reg(L, -1, metas);
-    lua_fun_reg(L, -1, funcs);
+    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
+    lua_fun_reg(L, -1, metas, A_LEN(metas));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_str_set(L, -1, "__name", "a.polytraj5");
 
     liba_polytraj5_meta_(L, 0);

@@ -306,14 +306,13 @@ int luaopen_liba_version(lua_State *const L)
      @field TWEAK algorithm library version tweak
      @table liba.version
     */
-    lua_int_s const enums[] = {
+    static lua_int_s const enums[] = {
         {"MAJOR", A_VERSION_MAJOR},
         {"MINOR", A_VERSION_MINOR},
         {"PATCH", A_VERSION_PATCH},
         {"TWEAK", A_VERSION_TWEAK},
-        {NULL, 0},
     };
-    lua_fun_s const funcs[] = {
+    static lua_fun_s const funcs[] = {
         {"check", liba_version_check},
         {"parse", liba_version_parse},
         {"init", liba_version_init},
@@ -325,13 +324,12 @@ int luaopen_liba_version(lua_State *const L)
         {"ge", liba_version_ge},
         {"eq", liba_version_eq},
         {"ne", liba_version_ne},
-        {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs) - 2);
-    lua_int_reg(L, -1, enums);
-    lua_fun_reg(L, -1, funcs);
+    lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs));
+    lua_int_reg(L, -1, enums, A_LEN(enums));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
 
-    lua_fun_s const metas[] = {
+    static lua_fun_s const metas[] = {
         {"__tostring", liba_version_tostring},
         {"__newindex", liba_version_set},
         {"__index", liba_version_get},
@@ -339,11 +337,10 @@ int luaopen_liba_version(lua_State *const L)
         {"__eq", liba_version_eq},
         {"__lt", liba_version_lt},
         {"__le", liba_version_le},
-        {NULL, NULL},
     };
-    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) - 2);
-    lua_fun_reg(L, -1, metas);
-    lua_fun_reg(L, -1, funcs + 1);
+    lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs));
+    lua_fun_reg(L, -1, metas, A_LEN(metas));
+    lua_fun_reg(L, -1, funcs + 1, A_LEN(funcs) - 1);
     lua_str_set(L, -1, "__name", "a.version");
 
     liba_version_meta_(L, 0);
