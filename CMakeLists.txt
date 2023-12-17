@@ -376,25 +376,25 @@ endforeach()
 set(CMAKE_EXECUTABLE_SUFFIX \"\")
 set(CMAKE_STATIC_LIBRARY_SUFFIX .o)
 set(CMAKE_STATIC_LIBRARY_PREFIX lib)
-add_executable(aelf \$<TARGET_OBJECTS:a>)
-add_library(adev STATIC \$<TARGET_OBJECTS:a>)
-set_library_compile(adev)\nadd_dependencies(adev aelf)
-set_target_properties(aelf PROPERTIES OUTPUT_NAME liba
+add_executable(a.o \$<TARGET_OBJECTS:a>)
+add_library(liba.o STATIC \$<TARGET_OBJECTS:a>)
+set_library_compile(liba.o)\nadd_dependencies(liba.o a.o)
+set_target_properties(a.o PROPERTIES OUTPUT_NAME liba
 \tINTERPROCEDURAL_OPTIMIZATION \${LIBA_IPO}
 )
 if(A_HAVE_MIMALLOC_H AND CMAKE_VERSION VERSION_LESS 3.12)
-\tadd_library_properties(adev PUBLIC mimalloc-static INTERFACE_)
+\tadd_library_properties(liba.o PUBLIC mimalloc-static INTERFACE_)
 elseif(A_HAVE_MIMALLOC_H)
-\ttarget_link_libraries(adev PUBLIC mimalloc-static)
+\ttarget_link_libraries(liba.o PUBLIC mimalloc-static)
 endif()
 if(NOT LIBA_INSTALL)
-\tinstall(TARGETS adev EXPORT \${PROJECT_NAME}-targets
+\tinstall(TARGETS liba.o EXPORT \${PROJECT_NAME}-targets
 \t\tARCHIVE DESTINATION \${CMAKE_INSTALL_LIBDIR}
 \t\tLIBRARY DESTINATION \${CMAKE_INSTALL_LIBDIR}
 \t)\nendif()")
   add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/lib lib)
 else()
-  add_library(adev ALIAS alib)
+  add_library(liba.o ALIAS alib)
 endif()
 
 if(INSTALL_TARGETS)
