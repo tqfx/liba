@@ -8,10 +8,9 @@ if(LIBA_WITH_LUA)
   include(${CMAKE_CURRENT_LIST_DIR}/lua.cmake)
   option(LUA_ISOCLINE "Enable/Disable isocline in Lua" 1)
 
-  if(NOT EXISTS "${LUA_USER_H}" AND LUA_ISOCLINE)
-    target_include_directories(lua PRIVATE ${CMAKE_CURRENT_LIST_DIR})
-    target_compile_definitions(lua PRIVATE LUA_USER_H=\"isocline.h\")
-    set_property(TARGET lua APPEND PROPERTY SOURCES ${CMAKE_CURRENT_LIST_DIR}/isocline.c)
+  if(LUA_ISOCLINE)
+    file(RELATIVE_PATH LUA_READLINE_C ${LUA_ARCHIVE_DIR}/src ${CMAKE_CURRENT_LIST_DIR}/isocline.c)
+    target_compile_definitions(lua PRIVATE LUA_READLINE_C="${LUA_READLINE_C}")
   endif()
 
   set(LUA_LIBRARIES lualib)

@@ -15,6 +15,7 @@
 #if defined(_WIN32)
 #include <windows.h>
 #include <io.h>
+#undef isatty
 #define isatty(fd)     _isatty(fd)
 #define read(fd,s,n)   _read(fd,s,n)
 #define STDIN_FILENO   0
