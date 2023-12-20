@@ -20,8 +20,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
-int liba_tf_func_(lua_State *L, int ret);
-int liba_tf_meta_(lua_State *L, int ret);
+int liba_tf_func_(lua_State *L, int op);
+int liba_tf_meta_(lua_State *L, int op);
 
 /***
  destructor for transfer function

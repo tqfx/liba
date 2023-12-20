@@ -18,8 +18,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
-int liba_complex_func_(lua_State *L, int ret);
-int liba_complex_meta_(lua_State *L, int ret);
+int liba_complex_func_(lua_State *L, int op);
+int liba_complex_meta_(lua_State *L, int op);
 
 /***
  constructor for complex number from rectangular Cartesian components

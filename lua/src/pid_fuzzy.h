@@ -28,8 +28,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
-int liba_pid_fuzzy_func_(lua_State *L, int ret);
-int liba_pid_fuzzy_meta_(lua_State *L, int ret);
+int liba_pid_fuzzy_func_(lua_State *L, int op);
+int liba_pid_fuzzy_meta_(lua_State *L, int op);
 
 /***
  destructor for fuzzy PID controller

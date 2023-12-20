@@ -15,7 +15,7 @@ static int liba_complex_isok(lua_State *const L, int const idx)
     int ok = 0;
     if (lua_getmetatable(L, idx))
     {
-        liba_complex_meta_(L, 1);
+        liba_complex_meta_(L, 0);
         ok = lua_rawequal(L, -1, -2);
         lua_pop(L, 2);
     }
@@ -43,7 +43,7 @@ static a_complex_s liba_complex_from_lua(lua_State *const L, int const idx)
 static a_complex_s *liba_complex_new_(lua_State *const L)
 {
     a_complex_s *const ctx = (a_complex_s *)lua_newuserdata(L, sizeof(a_complex_s));
-    liba_complex_meta_(L, 1);
+    liba_complex_meta_(L, 0);
     lua_setmetatable(L, -2);
     return ctx;
 }
@@ -632,7 +632,7 @@ static int liba_complex_get(lua_State *const L)
         lua_pushcfunction(L, liba_complex_acoth);
         break;
     case 0xA65758B2: // __index
-        liba_complex_meta_(L, 1);
+        liba_complex_meta_(L, 0);
         lua_num_set(L, -1, "real", a_complex_real(*ctx));
         lua_num_set(L, -1, "imag", a_complex_imag(*ctx));
         lua_num_set(L, -1, "r", a_complex_abs(*ctx));
@@ -725,15 +725,15 @@ int luaopen_liba_complex(lua_State *const L)
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_str_set(L, -1, "__name", "a.complex");
 
-    liba_complex_meta_(L, 0);
-    liba_complex_func_(L, 0);
+    liba_complex_meta_(L, -1);
+    liba_complex_func_(L, -1);
 
-    return liba_complex_func_(L, 1);
+    return liba_complex_func_(L, 0);
 }
 
-int liba_complex_func_(lua_State *const L, int const ret)
+int liba_complex_func_(lua_State *const L, int const op)
 {
-    if (ret)
+    if (op != ~0)
     {
         lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_complex_func_));
         return 1;
@@ -742,9 +742,9 @@ int liba_complex_func_(lua_State *const L, int const ret)
     return 0;
 }
 
-int liba_complex_meta_(lua_State *const L, int const ret)
+int liba_complex_meta_(lua_State *const L, int const op)
 {
-    if (ret)
+    if (op != ~0)
     {
         lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_complex_meta_));
         return 1;

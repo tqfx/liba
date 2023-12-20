@@ -58,7 +58,7 @@ int liba_version_new(lua_State *const L)
     int const top = lua_gettop(L);
     a_version_s *const ctx = (a_version_s *)lua_newuserdata(L, sizeof(a_version_s));
     a_zero(ctx, sizeof(a_version_s));
-    liba_version_meta_(L, 1);
+    liba_version_meta_(L, 0);
     lua_setmetatable(L, -2);
     return liba_version_init_(L, ctx, 0, top);
 }
@@ -298,7 +298,7 @@ static int liba_version_get(lua_State *const L)
         lua_pushcfunction(L, liba_version_ne);
         break;
     case 0xA65758B2: // __index
-        liba_version_meta_(L, 1);
+        liba_version_meta_(L, 0);
         lua_int_set(L, -1, "major", (lua_Integer)ctx->major);
         lua_int_set(L, -1, "minor", (lua_Integer)ctx->minor);
         lua_int_set(L, -1, "patch", (lua_Integer)ctx->patch);
@@ -370,15 +370,15 @@ int luaopen_liba_version(lua_State *const L)
     lua_fun_reg(L, -1, funcs + 1, A_LEN(funcs) - 1);
     lua_str_set(L, -1, "__name", "a.version");
 
-    liba_version_meta_(L, 0);
-    liba_version_func_(L, 0);
+    liba_version_meta_(L, -1);
+    liba_version_func_(L, -1);
 
-    return liba_version_func_(L, 1);
+    return liba_version_func_(L, 0);
 }
 
-int liba_version_func_(lua_State *const L, int const ret)
+int liba_version_func_(lua_State *const L, int const op)
 {
-    if (ret)
+    if (op != ~0)
     {
         lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_version_func_));
         return 1;
@@ -387,9 +387,9 @@ int liba_version_func_(lua_State *const L, int const ret)
     return 0;
 }
 
-int liba_version_meta_(lua_State *const L, int const ret)
+int liba_version_meta_(lua_State *const L, int const op)
 {
-    if (ret)
+    if (op != ~0)
     {
         lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_version_meta_));
         return 1;

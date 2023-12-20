@@ -20,8 +20,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
-int liba_polytraj7_func_(lua_State *L, int ret);
-int liba_polytraj7_meta_(lua_State *L, int ret);
+int liba_polytraj7_func_(lua_State *L, int op);
+int liba_polytraj7_meta_(lua_State *L, int op);
 
 /***
  constructor for hepta polynomial trajectory

@@ -15,7 +15,7 @@ int liba_pid_neuro_new(lua_State *const L)
 {
     a_pid_neuro_s *const ctx = (a_pid_neuro_s *)lua_newuserdata(L, sizeof(a_pid_neuro_s));
     a_zero(ctx, sizeof(a_pid_neuro_s));
-    liba_pid_neuro_meta_(L, 1);
+    liba_pid_neuro_meta_(L, 0);
     lua_setmetatable(L, -2);
     ctx->pid.summax = +A_FLOAT_INF;
     ctx->pid.summin = -A_FLOAT_INF;
@@ -275,7 +275,7 @@ static int liba_pid_neuro_get(lua_State *const L)
         lua_pushcfunction(L, liba_pid_neuro_inc);
         break;
     case 0xA65758B2: // __index
-        liba_pid_neuro_meta_(L, 1);
+        liba_pid_neuro_meta_(L, 0);
         lua_num_set(L, -1, "kp", ctx->pid.kp);
         lua_num_set(L, -1, "ki", ctx->pid.ki);
         lua_num_set(L, -1, "kd", ctx->pid.kd);
@@ -334,15 +334,15 @@ int luaopen_liba_pid_neuro(lua_State *const L)
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_str_set(L, -1, "__name", "a.pid_neuro");
 
-    liba_pid_neuro_meta_(L, 0);
-    liba_pid_neuro_func_(L, 0);
+    liba_pid_neuro_meta_(L, -1);
+    liba_pid_neuro_func_(L, -1);
 
-    return liba_pid_neuro_func_(L, 1);
+    return liba_pid_neuro_func_(L, 0);
 }
 
-int liba_pid_neuro_func_(lua_State *const L, int const ret)
+int liba_pid_neuro_func_(lua_State *const L, int const op)
 {
-    if (ret)
+    if (op != ~0)
     {
         lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_neuro_func_));
         return 1;
@@ -351,9 +351,9 @@ int liba_pid_neuro_func_(lua_State *const L, int const ret)
     return 0;
 }
 
-int liba_pid_neuro_meta_(lua_State *const L, int const ret)
+int liba_pid_neuro_meta_(lua_State *const L, int const op)
 {
-    if (ret)
+    if (op != ~0)
     {
         lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_neuro_meta_));
         return 1;

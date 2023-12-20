@@ -29,8 +29,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
-int liba_pid_neuro_func_(lua_State *L, int ret);
-int liba_pid_neuro_meta_(lua_State *L, int ret);
+int liba_pid_neuro_func_(lua_State *L, int op);
+int liba_pid_neuro_meta_(lua_State *L, int op);
 
 /***
  constructor for single neuron PID controller

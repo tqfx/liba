@@ -46,7 +46,7 @@ int liba_tf_new(lua_State *const L)
         a_float_t *const den_p = (a_float_t *)lua_alloc(L, NULL, sizeof(a_float_t) * den_n * 2);
         lua_array_num_get(L, 2, den_p, den_n);
         a_tf_s *const ctx = (a_tf_s *)lua_newuserdata(L, sizeof(a_tf_s));
-        liba_tf_meta_(L, 1);
+        liba_tf_meta_(L, 0);
         lua_setmetatable(L, -2);
         a_tf_init(ctx, num_n, num_p, num_p + num_n, den_n, den_p, den_p + den_n);
         return 1;
@@ -192,7 +192,7 @@ static int liba_tf_get(lua_State *const L)
         lua_pushcfunction(L, liba_tf_zero);
         break;
     case 0xA65758B2: // __index
-        liba_tf_meta_(L, 1);
+        liba_tf_meta_(L, 0);
         lua_array_num_new(L, ctx->num_p, ctx->num_n);
         lua_setfield(L, -2, "num");
         lua_array_num_new(L, ctx->den_p, ctx->den_n);
@@ -244,15 +244,15 @@ int luaopen_liba_tf(lua_State *const L)
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_str_set(L, -1, "__name", "a.tf");
 
-    liba_tf_meta_(L, 0);
-    liba_tf_func_(L, 0);
+    liba_tf_meta_(L, -1);
+    liba_tf_func_(L, -1);
 
-    return liba_tf_func_(L, 1);
+    return liba_tf_func_(L, 0);
 }
 
-int liba_tf_func_(lua_State *const L, int const ret)
+int liba_tf_func_(lua_State *const L, int const op)
 {
-    if (ret)
+    if (op != ~0)
     {
         lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_tf_func_));
         return 1;
@@ -261,9 +261,9 @@ int liba_tf_func_(lua_State *const L, int const ret)
     return 0;
 }
 
-int liba_tf_meta_(lua_State *const L, int const ret)
+int liba_tf_meta_(lua_State *const L, int const op)
 {
-    if (ret)
+    if (op != ~0)
     {
         lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_tf_meta_));
         return 1;

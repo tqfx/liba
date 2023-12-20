@@ -65,7 +65,7 @@ int liba_polytraj5_new(lua_State *const L)
     if (top > 3 && type == LUA_TNUMBER)
     {
         a_polytraj5_s *const ctx = (a_polytraj5_s *)lua_newuserdata(L, sizeof(a_polytraj5_s));
-        liba_polytraj5_meta_(L, 1);
+        liba_polytraj5_meta_(L, 0);
         lua_setmetatable(L, -2);
         return liba_polytraj5_gen_(L, ctx, 0, top);
     }
@@ -78,7 +78,7 @@ int liba_polytraj5_new(lua_State *const L)
         lua_array_num_get(L, 1, source, A_LEN(source));
         lua_array_num_get(L, 2, target, A_LEN(target));
         a_polytraj5_s *const ctx = (a_polytraj5_s *)lua_newuserdata(L, sizeof(a_polytraj5_s));
-        liba_polytraj5_meta_(L, 1);
+        liba_polytraj5_meta_(L, 0);
         lua_setmetatable(L, -2);
         a_polytraj5_gen(ctx,
                         source[0], target[0],
@@ -245,7 +245,7 @@ static int liba_polytraj5_get(lua_State *const L)
         lua_pushcfunction(L, liba_polytraj5_acc);
         break;
     case 0xA65758B2: // __index
-        liba_polytraj5_meta_(L, 1);
+        liba_polytraj5_meta_(L, 0);
         lua_array_num_new(L, ctx->q, A_LEN(ctx->q));
         lua_setfield(L, -2, "q");
         lua_array_num_new(L, ctx->v, A_LEN(ctx->v));
@@ -293,15 +293,15 @@ int luaopen_liba_polytraj5(lua_State *const L)
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_str_set(L, -1, "__name", "a.polytraj5");
 
-    liba_polytraj5_meta_(L, 0);
-    liba_polytraj5_func_(L, 0);
+    liba_polytraj5_meta_(L, -1);
+    liba_polytraj5_func_(L, -1);
 
-    return liba_polytraj5_func_(L, 1);
+    return liba_polytraj5_func_(L, 0);
 }
 
-int liba_polytraj5_func_(lua_State *const L, int const ret)
+int liba_polytraj5_func_(lua_State *const L, int const op)
 {
-    if (ret)
+    if (op != ~0)
     {
         lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_polytraj5_func_));
         return 1;
@@ -310,9 +310,9 @@ int liba_polytraj5_func_(lua_State *const L, int const ret)
     return 0;
 }
 
-int liba_polytraj5_meta_(lua_State *const L, int const ret)
+int liba_polytraj5_meta_(lua_State *const L, int const op)
 {
-    if (ret)
+    if (op != ~0)
     {
         lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_polytraj5_meta_));
         return 1;
