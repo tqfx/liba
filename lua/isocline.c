@@ -22,7 +22,6 @@ char *ic_readline(char const *prompt_text);
         ic_history_add(lua_tostring(L, idx));
 #endif /* LUA_VERSION_NUM */
 #define lua_freeline(L, b) free(b)
-
 static int haschr(char const *str, int chr)
 {
     for (; *str; ++str)
@@ -31,8 +30,14 @@ static int haschr(char const *str, int chr)
     }
     return 0;
 }
-
-static int is_id(int c) { return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_'; }
+static int is_id(char const *str)
+{
+    for (int c = *str; c; ++str, c = (int)*str)
+    {
+        if ((c < 'A' || c > 'Z') && (c < 'a' || c > 'z') && c != '_') { return 0; }
+    }
+    return 1;
+}
 static void completion_exec(ic_completion_env_t *cenv, char const *buffer, char const *suffix, char const *sep)
 {
     char const *result = NULL;
@@ -63,7 +68,9 @@ static void completion_exec(ic_completion_env_t *cenv, char const *buffer, char 
                 integer = 1;
             }
         }
-        lua_pushlstring(L, suffix, (size_t)(result - suffix) - fix);
+        size_t key_len = (size_t)(result - suffix);
+        if (key_len >= fix) { key_len -= fix; }
+        lua_pushlstring(L, suffix, key_len);
         if (integer)
         {
             integer = lua_tointeger(L, -1);
@@ -150,7 +157,7 @@ static void completion_exec(ic_completion_env_t *cenv, char const *buffer, char 
                     char const *p;
                     char *o;
                 } s;
-                if ((sep && *sep == '[') || (!is_id(*key) && sep && *sep))
+                if ((sep && *sep == '[') || (!is_id(key) && sep && *sep))
                 {
                     lua_pushfstring(L, "%s%s", key, key);
                     char const *k2 = lua_tostring(L, -1);
