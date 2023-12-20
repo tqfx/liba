@@ -6,36 +6,36 @@
 #include "polytraj5.h"
 #include "a/polytraj5.h"
 
-static int liba_polytraj5_gen_(lua_State *const L, a_polytraj5_s *const ctx)
+static int liba_polytraj5_gen_(lua_State *const L, a_polytraj5_s *const ctx, int const arg, int const top)
 {
     a_float_t t0 = 0, q0 = 0, v0 = 0, a0 = 0;
     a_float_t t1 = 0, q1 = 0, v1 = 0, a1 = 0;
-    switch (lua_gettop(L) - lua_isuserdata(L, -1))
+    switch (top)
     {
     default:
     case 8:
-        a1 = (a_float_t)luaL_checknumber(L, 8);
+        a1 = (a_float_t)luaL_checknumber(L, arg + 8);
         A_FALLTHROUGH;
     case 7:
-        a0 = (a_float_t)luaL_checknumber(L, 7);
+        a0 = (a_float_t)luaL_checknumber(L, arg + 7);
         A_FALLTHROUGH;
     case 6:
-        v1 = (a_float_t)luaL_checknumber(L, 6);
+        v1 = (a_float_t)luaL_checknumber(L, arg + 6);
         A_FALLTHROUGH;
     case 5:
-        v0 = (a_float_t)luaL_checknumber(L, 5);
+        v0 = (a_float_t)luaL_checknumber(L, arg + 5);
         A_FALLTHROUGH;
     case 4:
-        q1 = (a_float_t)luaL_checknumber(L, 4);
+        q1 = (a_float_t)luaL_checknumber(L, arg + 4);
         A_FALLTHROUGH;
     case 3:
-        q0 = (a_float_t)luaL_checknumber(L, 3);
+        q0 = (a_float_t)luaL_checknumber(L, arg + 3);
         A_FALLTHROUGH;
     case 2:
-        t1 = (a_float_t)luaL_checknumber(L, 2);
+        t1 = (a_float_t)luaL_checknumber(L, arg + 2);
         A_FALLTHROUGH;
     case 1:
-        t0 = (a_float_t)luaL_checknumber(L, 1);
+        t0 = (a_float_t)luaL_checknumber(L, arg + 1);
         A_FALLTHROUGH;
     case 0:;
     }
@@ -67,7 +67,7 @@ int liba_polytraj5_new(lua_State *const L)
         a_polytraj5_s *const ctx = (a_polytraj5_s *)lua_newuserdata(L, sizeof(a_polytraj5_s));
         liba_polytraj5_meta_(L, 1);
         lua_setmetatable(L, -2);
-        return liba_polytraj5_gen_(L, ctx);
+        return liba_polytraj5_gen_(L, ctx, 0, top);
     }
     if (top > 1 && type == LUA_TTABLE)
     {
@@ -114,7 +114,8 @@ int liba_polytraj5_gen(lua_State *const L)
     {
         luaL_checktype(L, 1, LUA_TUSERDATA);
         a_polytraj5_s *const ctx = (a_polytraj5_s *)lua_touserdata(L, 1);
-        return liba_polytraj5_gen_(L, ctx);
+        lua_pushvalue(L, 1);
+        return liba_polytraj5_gen_(L, ctx, 1, top - 1);
     }
     if (top > 2 && type == LUA_TTABLE)
     {
