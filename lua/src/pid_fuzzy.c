@@ -390,6 +390,14 @@ static int liba_pid_fuzzy_get(lua_State *const L)
     return 1;
 }
 
+static int liba_pid_fuzzy_(lua_State *const L)
+{
+    lua_pushcfunction(L, liba_pid_fuzzy_new);
+    lua_replace(L, 1);
+    lua_call(L, lua_gettop(L) - 1, 1);
+    return 1;
+}
+
 int luaopen_liba_pid_fuzzy(lua_State *const L)
 {
     /***
@@ -427,6 +435,10 @@ int luaopen_liba_pid_fuzzy(lua_State *const L)
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs));
     lua_int_reg(L, -1, enums, A_LEN(enums));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
+
+    lua_createtable(L, 0, 1);
+    lua_fun_set(L, -1, "__call", liba_pid_fuzzy_);
+    lua_setmetatable(L, -2);
 
     static lua_fun_s const metas[] = {
         {"__newindex", liba_pid_fuzzy_set},

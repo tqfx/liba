@@ -299,6 +299,14 @@ static int liba_polytraj7_get(lua_State *const L)
     return 1;
 }
 
+static int liba_polytraj7_(lua_State *const L)
+{
+    lua_pushcfunction(L, liba_polytraj7_new);
+    lua_replace(L, 1);
+    lua_call(L, lua_gettop(L) - 1, 1);
+    return 1;
+}
+
 int luaopen_liba_polytraj7(lua_State *const L)
 {
     static lua_fun_s const funcs[] = {
@@ -311,6 +319,10 @@ int luaopen_liba_polytraj7(lua_State *const L)
     };
     lua_createtable(L, 0, A_LEN(funcs));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
+
+    lua_createtable(L, 0, 1);
+    lua_fun_set(L, -1, "__call", liba_polytraj7_);
+    lua_setmetatable(L, -2);
 
     static lua_fun_s const metas[] = {
         {"__newindex", liba_polytraj7_set},
