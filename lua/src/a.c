@@ -415,19 +415,8 @@ LUA_NUM *lua_table_num_get(lua_State *const L, int const idx, LUA_NUM const *con
     return ret;
 }
 
-void lua_stack_type(lua_State *const L, unsigned int const line)
-{
-    char const *map[] = {"nil", "bool", "ptr", "num", "str", "tab", "func", "data", "thrd"};
-    int const n = lua_gettop(L);
-    printf("%u:", line);
-    for (int i = 0; i++ != n;)
-    {
-        printf(" %s", map[lua_type(L, i) % (int)sizeof(map)]);
-    }
-    putchar('\n');
-}
-
-void lua_stack_show(lua_State *const L, unsigned int const line)
+#if defined(LUA_STACK)
+void lua_stack_view(lua_State *const L, unsigned int const line)
 {
     int const n = lua_gettop(L);
     printf("%u:", line);
@@ -460,9 +449,9 @@ void lua_stack_show(lua_State *const L, unsigned int const line)
         case LUA_TTHREAD:
             printf("thrd:%p", (void *)lua_tothread(L, i));
             break;
-        default:
-            printf("%s", "nil");
+        default: printf("%s", "nil");
         }
     }
     putchar('\n');
 }
+#endif /* LUA_STACK */

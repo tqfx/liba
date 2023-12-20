@@ -123,9 +123,8 @@ void lua_array_num_set(lua_State *L, int idx, LUA_NUM const *ptr, unsigned int n
 
 LUA_NUM *lua_table_num_get(lua_State *L, int idx, LUA_NUM const *ptr, size_t *num);
 
-void lua_stack_type(lua_State *L, unsigned int line);
-void lua_stack_show(lua_State *L, unsigned int line);
-#define LUA_STACK(L) lua_stack_show(L, __LINE__)
+void lua_stack_view(lua_State *L, unsigned int line);
+//#define LUA_STACK(L) lua_stack_view(L, __LINE__)
 
 A_PUBLIC int luaopen_liba(lua_State *L);
 A_PUBLIC int luaopen_liba_complex(lua_State *L);
