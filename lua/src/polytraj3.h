@@ -19,9 +19,6 @@
 extern "C" {
 #endif /* __cplusplus */
 
-int liba_polytraj3_func_(lua_State *L, int op);
-int liba_polytraj3_meta_(lua_State *L, int op);
-
 /***
  constructor for cubic polynomial trajectory
  @tparam number t0 time for source

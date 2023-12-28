@@ -22,11 +22,6 @@
 #endif /* -Wpadded */
 #include <lua.h>
 
-#if defined(__GNUC__) || defined(__clang__)
-#define FUNC2P(F) __extension__ a_cast_r(void *, F)
-#else /* !__GNUC__ */
-#define FUNC2P(F) a_cast_r(void *, F)
-#endif /* __GNUC__ */
 #if !defined LUA_INT
 #define LUA_INT lua_Integer
 #endif /* LUA_INT */
@@ -93,6 +88,9 @@ LUALIB_API void luaL_where(lua_State *L, int lvl);
 LUALIB_API int luaL_error(lua_State *L, char const *fmt, ...);
 
 void *lua_alloc(lua_State *L, void const *ptr, size_t siz);
+
+void lua_registry_get(lua_State *L, int (*fn)(lua_State *));
+void lua_registry_set(lua_State *L, int (*fn)(lua_State *));
 
 void lua_fun_reg(lua_State *L, int idx, lua_fun_s const *tab, size_t len);
 void lua_fun_set(lua_State *L, int idx, char const *name, lua_CFunction func);

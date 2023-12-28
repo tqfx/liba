@@ -26,9 +26,6 @@
 extern "C" {
 #endif /* __cplusplus */
 
-int liba_pid_func_(lua_State *L, int op);
-int liba_pid_meta_(lua_State *L, int op);
-
 /***
  constructor for PID controller
  @treturn a.pid PID controller userdata

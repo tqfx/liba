@@ -156,6 +156,26 @@ void *lua_alloc(lua_State *const L, void const *const ptr, size_t const siz)
     return lua_getallocf(L, &ud)(ud, u.p, 0, siz);
 }
 
+void lua_registry_get(lua_State *const L, int (*const fn)(lua_State *))
+{
+    union
+    {
+        int (*fn)(lua_State *);
+        void *p;
+    } u = {fn};
+    lua_rawgetp(L, LUA_REGISTRYINDEX, u.p);
+}
+
+void lua_registry_set(lua_State *const L, int (*const fn)(lua_State *))
+{
+    union
+    {
+        int (*fn)(lua_State *);
+        void *p;
+    } u = {fn};
+    lua_rawsetp(L, LUA_REGISTRYINDEX, u.p);
+}
+
 void lua_fun_set(lua_State *const L, int const idx, char const *const name, lua_CFunction const func)
 {
     /* table[name]=func */

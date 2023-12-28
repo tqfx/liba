@@ -57,7 +57,7 @@ int liba_polytraj3_new(lua_State *const L)
     if (top > 3 && type == LUA_TNUMBER)
     {
         a_polytraj3_s *const ctx = (a_polytraj3_s *)lua_newuserdata(L, sizeof(a_polytraj3_s));
-        liba_polytraj3_meta_(L, 0);
+        lua_registry_get(L, liba_polytraj3_new);
         lua_setmetatable(L, -2);
         return liba_polytraj3_gen_(L, ctx, 0, top);
     }
@@ -70,7 +70,7 @@ int liba_polytraj3_new(lua_State *const L)
         lua_array_num_get(L, 1, source, A_LEN(source));
         lua_array_num_get(L, 2, target, A_LEN(target));
         a_polytraj3_s *const ctx = (a_polytraj3_s *)lua_newuserdata(L, sizeof(a_polytraj3_s));
-        liba_polytraj3_meta_(L, 0);
+        lua_registry_get(L, liba_polytraj3_new);
         lua_setmetatable(L, -2);
         a_polytraj3_gen(ctx,
                         source[0], target[0],
@@ -233,7 +233,7 @@ static int liba_polytraj3_get(lua_State *const L)
         lua_pushcfunction(L, liba_polytraj3_acc);
         break;
     case 0xA65758B2: // __index
-        liba_polytraj3_meta_(L, 0);
+        lua_registry_get(L, liba_polytraj3_new);
         lua_array_num_new(L, ctx->q, A_LEN(ctx->q));
         lua_setfield(L, -2, "q");
         lua_array_num_new(L, ctx->v, A_LEN(ctx->v));
@@ -281,30 +281,6 @@ int luaopen_liba_polytraj3(lua_State *const L)
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_str_set(L, -1, "__name", "a.polytraj3");
 
-    liba_polytraj3_meta_(L, -1);
-    liba_polytraj3_func_(L, -1);
-
-    return liba_polytraj3_func_(L, 0);
-}
-
-int liba_polytraj3_func_(lua_State *const L, int const op)
-{
-    if (op != ~0)
-    {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_polytraj3_func_));
-        return 1;
-    }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_polytraj3_func_));
-    return 0;
-}
-
-int liba_polytraj3_meta_(lua_State *const L, int const op)
-{
-    if (op != ~0)
-    {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_polytraj3_meta_));
-        return 1;
-    }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_polytraj3_meta_));
-    return 0;
+    lua_registry_set(L, liba_polytraj3_new);
+    return 1;
 }

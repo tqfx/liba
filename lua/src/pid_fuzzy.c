@@ -42,7 +42,7 @@ int liba_pid_fuzzy_new(lua_State *const L)
 {
     a_pid_fuzzy_s *const ctx = (a_pid_fuzzy_s *)lua_newuserdata(L, sizeof(a_pid_fuzzy_s));
     a_zero(ctx, sizeof(a_pid_fuzzy_s));
-    liba_pid_fuzzy_meta_(L, 0);
+    lua_registry_get(L, liba_pid_fuzzy_new);
     lua_setmetatable(L, -2);
     ctx->pid.summax = +A_FLOAT_INF;
     ctx->pid.summin = -A_FLOAT_INF;
@@ -369,7 +369,7 @@ static int liba_pid_fuzzy_get(lua_State *const L)
         lua_pushcfunction(L, liba_pid_fuzzy_inc);
         break;
     case 0xA65758B2: // __index
-        liba_pid_fuzzy_meta_(L, 0);
+        lua_registry_get(L, liba_pid_fuzzy_new);
         lua_num_set(L, -1, "kp", ctx->kp);
         lua_num_set(L, -1, "ki", ctx->ki);
         lua_num_set(L, -1, "kd", ctx->kd);
@@ -450,30 +450,6 @@ int luaopen_liba_pid_fuzzy(lua_State *const L)
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_str_set(L, -1, "__name", "a.pid_fuzzy");
 
-    liba_pid_fuzzy_meta_(L, -1);
-    liba_pid_fuzzy_func_(L, -1);
-
-    return liba_pid_fuzzy_func_(L, 0);
-}
-
-int liba_pid_fuzzy_func_(lua_State *const L, int const op)
-{
-    if (op != ~0)
-    {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_fuzzy_func_));
-        return 1;
-    }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_fuzzy_func_));
-    return 0;
-}
-
-int liba_pid_fuzzy_meta_(lua_State *const L, int const op)
-{
-    if (op != ~0)
-    {
-        lua_rawgetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_fuzzy_meta_));
-        return 1;
-    }
-    lua_rawsetp(L, LUA_REGISTRYINDEX, FUNC2P(liba_pid_fuzzy_meta_));
-    return 0;
+    lua_registry_set(L, liba_pid_fuzzy_new);
+    return 1;
 }
