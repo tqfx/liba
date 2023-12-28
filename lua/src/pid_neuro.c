@@ -162,10 +162,8 @@ int liba_pid_neuro_inc(lua_State *const L)
 
 static int liba_pid_neuro_set(lua_State *const L)
 {
-    char const *const field = lua_tostring(L, 2);
     a_pid_neuro_s *const ctx = (a_pid_neuro_s *)lua_touserdata(L, 1);
-    a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
-    switch (hash)
+    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x0000006B: // k
         ctx->k = (a_float_t)luaL_checknumber(L, 3);
@@ -201,18 +199,16 @@ static int liba_pid_neuro_set(lua_State *const L)
         break;
     default:
         lua_getmetatable(L, 1);
-        lua_pushvalue(L, 3);
-        lua_setfield(L, 4, field);
+        lua_replace(L, 1);
+        lua_rawset(L, 1);
     }
     return 0;
 }
 
 static int liba_pid_neuro_get(lua_State *const L)
 {
-    char const *const field = lua_tostring(L, 2);
     a_pid_neuro_s const *const ctx = (a_pid_neuro_s const *)lua_touserdata(L, 1);
-    a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
-    switch (hash)
+    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x0000006B: // k
         lua_pushnumber(L, (lua_Number)ctx->k);
@@ -253,27 +249,6 @@ static int liba_pid_neuro_get(lua_State *const L)
     case 0x00003412: // ec
         lua_pushnumber(L, (lua_Number)ctx->ec);
         break;
-    case 0x001D0204: // new
-        lua_pushcfunction(L, liba_pid_neuro_new);
-        break;
-    case 0x0E2ED8A0: // init
-        lua_pushcfunction(L, liba_pid_neuro_init);
-        break;
-    case 0x1073A930: // zero
-        lua_pushcfunction(L, liba_pid_neuro_zero);
-        break;
-    case 0x0E73F9D8: // kpid
-        lua_pushcfunction(L, liba_pid_neuro_kpid);
-        break;
-    case 0x100F9D1C: // wpid
-        lua_pushcfunction(L, liba_pid_neuro_wpid);
-        break;
-    case 0x001E164F: // run
-        lua_pushcfunction(L, liba_pid_neuro_run);
-        break;
-    case 0x001BB75E: // inc
-        lua_pushcfunction(L, liba_pid_neuro_inc);
-        break;
     case 0xA65758B2: // __index
         lua_registry_get(L, liba_pid_neuro_new);
         lua_num_set(L, -1, "kp", ctx->pid.kp);
@@ -294,7 +269,8 @@ static int liba_pid_neuro_get(lua_State *const L)
         break;
     default:
         lua_getmetatable(L, 1);
-        lua_getfield(L, 3, field);
+        lua_replace(L, 1);
+        lua_rawget(L, 1);
     }
     return 1;
 }

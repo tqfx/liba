@@ -228,9 +228,7 @@ int liba_polytraj7_jer(lua_State *const L)
 
 static int liba_polytraj7_set(lua_State *const L)
 {
-    char const *const field = lua_tostring(L, 2);
-    a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
-    switch (hash)
+    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0xE8859EEB: // __name
     case 0xA65758B2: // __index
@@ -238,18 +236,16 @@ static int liba_polytraj7_set(lua_State *const L)
         break;
     default:
         lua_getmetatable(L, 1);
-        lua_pushvalue(L, 3);
-        lua_setfield(L, 4, field);
+        lua_replace(L, 1);
+        lua_rawset(L, 1);
     }
     return 0;
 }
 
 static int liba_polytraj7_get(lua_State *const L)
 {
-    char const *const field = lua_tostring(L, 2);
     a_polytraj7_s const *const ctx = (a_polytraj7_s const *)lua_touserdata(L, 1);
-    a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
-    switch (hash)
+    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x00000071: // q
         lua_array_num_new(L, ctx->q, A_LEN(ctx->q));
@@ -263,38 +259,25 @@ static int liba_polytraj7_get(lua_State *const L)
     case 0x0000006A: // j
         lua_array_num_new(L, ctx->j, A_LEN(ctx->j));
         break;
-    case 0x001D0204: // new
-        lua_pushcfunction(L, liba_polytraj7_new);
-        break;
-    case 0x001B2CBC: // gen
-        lua_pushcfunction(L, liba_polytraj7_gen);
-        break;
-    case 0x001D8D30: // pos
-        lua_pushcfunction(L, liba_polytraj7_pos);
-        break;
-    case 0x001F1A41: // vel
-        lua_pushcfunction(L, liba_polytraj7_vel);
-        break;
-    case 0x00199975: // acc
-        lua_pushcfunction(L, liba_polytraj7_acc);
-        break;
-    case 0x001BF5DB: // jer
-        lua_pushcfunction(L, liba_polytraj7_jer);
-        break;
     case 0xA65758B2: // __index
         lua_registry_get(L, liba_polytraj7_new);
+        lua_pushstring(L, "q");
         lua_array_num_new(L, ctx->q, A_LEN(ctx->q));
-        lua_setfield(L, -2, "q");
+        lua_rawset(L, -3);
+        lua_pushstring(L, "v");
         lua_array_num_new(L, ctx->v, A_LEN(ctx->v));
-        lua_setfield(L, -2, "v");
+        lua_rawset(L, -3);
+        lua_pushstring(L, "a");
         lua_array_num_new(L, ctx->a, A_LEN(ctx->a));
-        lua_setfield(L, -2, "a");
+        lua_rawset(L, -3);
+        lua_pushstring(L, "j");
         lua_array_num_new(L, ctx->j, A_LEN(ctx->j));
-        lua_setfield(L, -2, "j");
+        lua_rawset(L, -3);
         break;
     default:
         lua_getmetatable(L, 1);
-        lua_getfield(L, 3, field);
+        lua_replace(L, 1);
+        lua_rawget(L, 1);
     }
     return 1;
 }

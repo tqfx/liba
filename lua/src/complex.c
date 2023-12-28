@@ -449,10 +449,8 @@ FUNC(acoth)
 
 static int liba_complex_set(lua_State *const L)
 {
-    char const *const field = lua_tostring(L, 2);
     a_complex_s *const ctx = (a_complex_s *)lua_touserdata(L, 1);
-    a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
-    switch (hash)
+    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x0F6133A2: // real
         a_complex_real(*ctx) = (a_float_t)luaL_checknumber(L, 3);
@@ -474,18 +472,16 @@ static int liba_complex_set(lua_State *const L)
         break;
     default:
         lua_getmetatable(L, 1);
-        lua_pushvalue(L, 3);
-        lua_setfield(L, 4, field);
+        lua_replace(L, 1);
+        lua_rawset(L, 1);
     }
     return 0;
 }
 
 static int liba_complex_get(lua_State *const L)
 {
-    char const *const field = lua_tostring(L, 2);
     a_complex_s const *const ctx = (a_complex_s const *)lua_touserdata(L, 1);
-    a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
-    switch (hash)
+    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x0F6133A2: // real
         lua_pushnumber(L, (lua_Number)a_complex_real(*ctx));
@@ -499,138 +495,6 @@ static int liba_complex_get(lua_State *const L)
     case 0x0240D1F6: // theta
         lua_pushnumber(L, (lua_Number)a_complex_arg(*ctx));
         break;
-    case 0x001D0204: // new
-        lua_pushcfunction(L, liba_complex_new);
-        break;
-    case 0xBCFBE386: // polar
-        lua_pushcfunction(L, liba_complex_polar);
-        break;
-    case 0xC628B402: // logabs
-        lua_pushcfunction(L, liba_complex_logabs);
-        break;
-    case 0x0D614C8C: // conj
-        lua_pushcfunction(L, liba_complex_conj);
-        break;
-    case 0x0D194C38: // abs2
-        lua_pushcfunction(L, liba_complex_abs2);
-        break;
-    case 0x00199902: // abs
-        lua_pushcfunction(L, liba_complex_abs);
-        break;
-    case 0x0019A126: // arg
-        lua_pushcfunction(L, liba_complex_arg);
-        break;
-    case 0x001EDBD4: // unm
-        lua_pushcfunction(L, liba_complex_neg);
-        break;
-    case 0x001999F9: // add
-        lua_pushcfunction(L, liba_complex_add);
-        break;
-    case 0x001E594C: // sub
-        lua_pushcfunction(L, liba_complex_sub);
-        break;
-    case 0x001CC720: // mul
-        lua_pushcfunction(L, liba_complex_mul);
-        break;
-    case 0x001A65B5: // div
-        lua_pushcfunction(L, liba_complex_div);
-        break;
-    case 0x001BB771: // inv
-        lua_pushcfunction(L, liba_complex_inv);
-        break;
-    case 0x001D8D34: // pow
-        lua_pushcfunction(L, liba_complex_pow);
-        break;
-    case 0x001AB065: // exp
-        lua_pushcfunction(L, liba_complex_exp);
-        break;
-    case 0x001C8100: // log
-        lua_pushcfunction(L, liba_complex_log);
-        break;
-    case 0x0E960332: // log2
-        lua_pushcfunction(L, liba_complex_log2);
-        break;
-    case 0x76C3A243: // log10
-        lua_pushcfunction(L, liba_complex_log10);
-        break;
-    case 0x0E960362: // logb
-        lua_pushcfunction(L, liba_complex_logb);
-        break;
-    case 0x0F86AE64: // sqrt
-        lua_pushcfunction(L, liba_complex_sqrt);
-        break;
-    case 0x001E5334: // sin
-        lua_pushcfunction(L, liba_complex_sin);
-        break;
-    case 0x001A25BB: // cos
-        lua_pushcfunction(L, liba_complex_cos);
-        break;
-    case 0x001E9225: // tan
-        lua_pushcfunction(L, liba_complex_tan);
-        break;
-    case 0x001E511D: // sec
-        lua_pushcfunction(L, liba_complex_sec);
-        break;
-    case 0x001A27B7: // csc
-        lua_pushcfunction(L, liba_complex_csc);
-        break;
-    case 0x001A25BC: // cot
-        lua_pushcfunction(L, liba_complex_cot);
-        break;
-    case 0x0D1DBAEF: // asin
-        lua_pushcfunction(L, liba_complex_asin);
-        break;
-    case 0x0D198D76: // acos
-        lua_pushcfunction(L, liba_complex_acos);
-        break;
-    case 0x0D1DF9E0: // atan
-        lua_pushcfunction(L, liba_complex_atan);
-        break;
-    case 0x0D1DB8D8: // asec
-        lua_pushcfunction(L, liba_complex_asec);
-        break;
-    case 0x0D198F72: // acsc
-        lua_pushcfunction(L, liba_complex_acsc);
-        break;
-    case 0x0D198D77: // acot
-        lua_pushcfunction(L, liba_complex_acot);
-        break;
-    case 0x0F849404: // sinh
-        lua_pushcfunction(L, liba_complex_sinh);
-        break;
-    case 0x0D614F19: // cosh
-        lua_pushcfunction(L, liba_complex_cosh);
-        break;
-    case 0x0FA4C957: // tanh
-        lua_pushcfunction(L, liba_complex_tanh);
-        break;
-    case 0x0F83823F: // sech
-        lua_pushcfunction(L, liba_complex_sech);
-        break;
-    case 0x0D62530D: // csch
-        lua_pushcfunction(L, liba_complex_csch);
-        break;
-    case 0x0D614F9C: // coth
-        lua_pushcfunction(L, liba_complex_coth);
-        break;
-    case 0xB636A8B5: // asinh
-        lua_pushcfunction(L, liba_complex_asinh);
-        break;
-    case 0xB41363CA: // acosh
-        lua_pushcfunction(L, liba_complex_acosh);
-        break;
-    case 0xB656DE08: // atanh
-        lua_pushcfunction(L, liba_complex_atanh);
-        break;
-    case 0xB63596F0: // asech
-        lua_pushcfunction(L, liba_complex_asech);
-        break;
-    case 0xB41467BE: // acsch
-        lua_pushcfunction(L, liba_complex_acsch);
-        break;
-    case 0xB413644D: // acoth
-        lua_pushcfunction(L, liba_complex_acoth);
-        break;
     case 0xA65758B2: // __index
         lua_registry_get(L, liba_complex_new);
         lua_num_set(L, -1, "real", a_complex_real(*ctx));
@@ -640,7 +504,8 @@ static int liba_complex_get(lua_State *const L)
         break;
     default:
         lua_getmetatable(L, 1);
-        lua_getfield(L, 3, field);
+        lua_replace(L, 1);
+        lua_rawget(L, 1);
     }
     return 1;
 }

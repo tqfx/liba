@@ -121,10 +121,8 @@ int liba_tf_zero(lua_State *const L)
 
 static int liba_tf_set(lua_State *const L)
 {
-    char const *const field = lua_tostring(L, 2);
     a_tf_s *const ctx = (a_tf_s *)lua_touserdata(L, 1);
-    a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
-    switch (hash)
+    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x001D0A2A: // num
     {
@@ -151,18 +149,16 @@ static int liba_tf_set(lua_State *const L)
         break;
     default:
         lua_getmetatable(L, 1);
-        lua_pushvalue(L, 3);
-        lua_setfield(L, 4, field);
+        lua_replace(L, 1);
+        lua_rawset(L, 1);
     }
     return 0;
 }
 
 static int liba_tf_get(lua_State *const L)
 {
-    char const *const field = lua_tostring(L, 2);
     a_tf_s const *const ctx = (a_tf_s const *)lua_touserdata(L, 1);
-    a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
-    switch (hash)
+    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x001D0A2A: // num
         lua_array_num_new(L, ctx->num_p, ctx->num_n);
@@ -176,35 +172,25 @@ static int liba_tf_get(lua_State *const L)
     case 0x23C9C461: // output
         lua_array_num_new(L, ctx->output, ctx->den_n);
         break;
-    case 0x001D0204: // new
-        lua_pushcfunction(L, liba_tf_new);
-        break;
-    case 0x001A65A4: // die
-        lua_pushcfunction(L, liba_tf_die);
-        break;
-    case 0x0E2ED8A0: // init
-        lua_pushcfunction(L, liba_tf_init);
-        break;
-    case 0x0E3068C8: // iter
-        lua_pushcfunction(L, liba_tf_iter);
-        break;
-    case 0x1073A930: // zero
-        lua_pushcfunction(L, liba_tf_zero);
-        break;
     case 0xA65758B2: // __index
         lua_registry_get(L, liba_tf_new);
+        lua_pushstring(L, "num");
         lua_array_num_new(L, ctx->num_p, ctx->num_n);
-        lua_setfield(L, -2, "num");
+        lua_rawset(L, -3);
+        lua_pushstring(L, "den");
         lua_array_num_new(L, ctx->den_p, ctx->den_n);
-        lua_setfield(L, -2, "den");
+        lua_rawset(L, -3);
+        lua_pushstring(L, "input");
         lua_array_num_new(L, ctx->input, ctx->num_n);
-        lua_setfield(L, -2, "input");
+        lua_rawset(L, -3);
+        lua_pushstring(L, "output");
         lua_array_num_new(L, ctx->output, ctx->den_n);
-        lua_setfield(L, -2, "output");
+        lua_rawset(L, -3);
         break;
     default:
         lua_getmetatable(L, 1);
-        lua_getfield(L, 3, field);
+        lua_replace(L, 1);
+        lua_rawget(L, 1);
     }
     return 1;
 }

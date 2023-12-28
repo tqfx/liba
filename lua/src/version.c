@@ -214,10 +214,8 @@ FUNC(ne)
 
 static int liba_version_set(lua_State *const L)
 {
-    char const *const field = lua_tostring(L, 2);
     a_version_s *const ctx = (a_version_s *)lua_touserdata(L, 1);
-    a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
-    switch (hash)
+    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x86720331: // major
         ctx->major = (unsigned int)luaL_checkinteger(L, 3);
@@ -242,18 +240,16 @@ static int liba_version_set(lua_State *const L)
         break;
     default:
         lua_getmetatable(L, 1);
-        lua_pushvalue(L, 3);
-        lua_setfield(L, 4, field);
+        lua_replace(L, 1);
+        lua_rawset(L, 1);
     }
     return 0;
 }
 
 static int liba_version_get(lua_State *const L)
 {
-    char const *const field = lua_tostring(L, 2);
     a_version_s const *const ctx = (a_version_s const *)lua_touserdata(L, 1);
-    a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
-    switch (hash)
+    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x86720331: // major
         lua_pushinteger(L, (lua_Integer)ctx->major);
@@ -267,36 +263,6 @@ static int liba_version_get(lua_State *const L)
     case 0xFD1BE968: // extra
         lua_pushinteger(L, (lua_Integer)ctx->extra);
         break;
-    case 0xBB1D406B: // parse
-        lua_pushcfunction(L, liba_version_parse);
-        break;
-    case 0x0E2ED8A0: // init
-        lua_pushcfunction(L, liba_version_init);
-        break;
-    case 0x001D0204: // new
-        lua_pushcfunction(L, liba_version_new);
-        break;
-    case 0x001A24B2: // cmp
-        lua_pushcfunction(L, liba_version_cmp);
-        break;
-    case 0x000037B8: // lt
-        lua_pushcfunction(L, liba_version_lt);
-        break;
-    case 0x00003529: // gt
-        lua_pushcfunction(L, liba_version_gt);
-        break;
-    case 0x000037A9: // le
-        lua_pushcfunction(L, liba_version_le);
-        break;
-    case 0x0000351A: // ge
-        lua_pushcfunction(L, liba_version_ge);
-        break;
-    case 0x00003420: // eq
-        lua_pushcfunction(L, liba_version_eq);
-        break;
-    case 0x000038AF: // ne
-        lua_pushcfunction(L, liba_version_ne);
-        break;
     case 0xA65758B2: // __index
         lua_registry_get(L, liba_version_new);
         lua_int_set(L, -1, "major", (lua_Integer)ctx->major);
@@ -306,7 +272,8 @@ static int liba_version_get(lua_State *const L)
         break;
     default:
         lua_getmetatable(L, 1);
-        lua_getfield(L, 3, field);
+        lua_replace(L, 1);
+        lua_rawget(L, 1);
     }
     return 1;
 }

@@ -151,10 +151,8 @@ int liba_pid_inc(lua_State *const L)
 
 static int liba_pid_set(lua_State *const L)
 {
-    char const *const field = lua_tostring(L, 2);
     a_pid_s *const ctx = (a_pid_s *)lua_touserdata(L, 1);
-    a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
-    switch (hash)
+    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x00003731: // kp
         ctx->kp = (a_float_t)luaL_checknumber(L, 3);
@@ -184,18 +182,16 @@ static int liba_pid_set(lua_State *const L)
         break;
     default:
         lua_getmetatable(L, 1);
-        lua_pushvalue(L, 3);
-        lua_setfield(L, 4, field);
+        lua_replace(L, 1);
+        lua_rawset(L, 1);
     }
     return 0;
 }
 
 static int liba_pid_get(lua_State *const L)
 {
-    char const *const field = lua_tostring(L, 2);
     a_pid_s const *const ctx = (a_pid_s const *)lua_touserdata(L, 1);
-    a_u32_t const hash = (a_u32_t)a_hash_bkdr(field, 0);
-    switch (hash)
+    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x00003731: // kp
         lua_pushnumber(L, (lua_Number)ctx->kp);
@@ -227,27 +223,6 @@ static int liba_pid_get(lua_State *const L)
     case 0x001AAD55: // err
         lua_pushnumber(L, (lua_Number)ctx->err);
         break;
-    case 0x001D0204: // new
-        lua_pushcfunction(L, liba_pid_new);
-        break;
-    case 0x0E2ED8A0: // init
-        lua_pushcfunction(L, liba_pid_init);
-        break;
-    case 0x1073A930: // zero
-        lua_pushcfunction(L, liba_pid_zero);
-        break;
-    case 0x0E73F9D8: // kpid
-        lua_pushcfunction(L, liba_pid_kpid);
-        break;
-    case 0x001E164F: // run
-        lua_pushcfunction(L, liba_pid_run);
-        break;
-    case 0x001D8D30: // pos
-        lua_pushcfunction(L, liba_pid_pos);
-        break;
-    case 0x001BB75E: // inc
-        lua_pushcfunction(L, liba_pid_inc);
-        break;
     case 0xA65758B2: // __index
         lua_registry_get(L, liba_pid_new);
         lua_num_set(L, -1, "kp", ctx->kp);
@@ -263,7 +238,8 @@ static int liba_pid_get(lua_State *const L)
         break;
     default:
         lua_getmetatable(L, 1);
-        lua_getfield(L, 3, field);
+        lua_replace(L, 1);
+        lua_rawget(L, 1);
     }
     return 1;
 }
