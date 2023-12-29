@@ -264,7 +264,24 @@ static void completer(ic_completion_env_t *cenv, char const *buffer)
     }
 }
 
-static long is_number(void const *_s, long i)
+static long match_string(void const *_s, long i)
+{
+    int quote = 0;
+    char const *s = (char const *)_s + i;
+    if (*s == '\'') { quote = '\''; }
+    if (*s == '\"') { quote = '\"'; }
+    if (quote)
+    {
+        for (++s; *s && *s != quote; ++s)
+        {
+            if (s[0] == '\\' && s[1] == quote) { ++s; }
+        }
+        if (*s == quote) { ++s; }
+    }
+    return (long)(s - (char const *)_s - i);
+}
+
+static long match_number(void const *_s, long i)
 {
     char const *s = (char const *)_s + i;
     if (i && (isalnum(s[-1]) || s[-1] == '_')) { return 0; }
@@ -315,7 +332,12 @@ static void highlighter(ic_highlight_env_t *henv, char const *input, void *arg)
             ic_highlight(henv, i, tlen, "keyword");
             i += tlen;
         }
-        else if ((tlen = is_number(input, i)) > 0)
+        else if ((tlen = match_string(input, i)) > 0)
+        {
+            ic_highlight(henv, i, tlen, "string");
+            i += tlen;
+        }
+        else if ((tlen = match_number(input, i)) > 0)
         {
             ic_highlight(henv, i, tlen, "number");
             i += tlen;
