@@ -22,6 +22,11 @@ char *ic_readline(char const *prompt_text);
         ic_history_add(lua_tostring(L, idx));
 #endif /* LUA_VERSION_NUM */
 #define lua_freeline(L, b) free(b)
+static char const *keywords[] = {
+    "and", "break", "do", "else", "elseif", "end",
+    "false", "for", "function", "goto", "if", "in",
+    "local", "nil", "not", "or", "repeat", "return",
+    "then", "true", "until", "while", NULL};
 static int haschr(char const *str, int chr)
 {
     for (; *str; ++str)
@@ -42,22 +47,22 @@ static int is_id(char const *str)
 }
 static void completion_exec(ic_completion_env_t *cenv, char const *buffer, char const *suffix, char const *sep)
 {
-    char const *result = NULL;
+    char const *subfix = NULL;
     lua_State *L = ic_completion_arg(cenv);
     if (suffix == NULL) { suffix = buffer; }
-    for (char const *p = suffix; *p; ++p)
+    for (char const *s = suffix; *s; ++s)
     {
-        if (*p == '.' || *p == ':' || *p == '[')
+        if (*s == '.' || *s == ':' || *s == '[')
         {
-            result = p;
+            subfix = s;
             break;
         }
     }
-    if (result > suffix)
+    if (subfix > suffix)
     {
         unsigned int fix = 0;
         lua_Integer integer = 0;
-        if (result[-1] == ']')
+        if (subfix[-1] == ']')
         {
             ++fix; // 1]
             if (*suffix == '\'' || *suffix == '\"')
@@ -70,7 +75,7 @@ static void completion_exec(ic_completion_env_t *cenv, char const *buffer, char 
                 integer = 1;
             }
         }
-        size_t key_len = (size_t)(result - suffix);
+        size_t key_len = (size_t)(subfix - suffix);
         if (key_len >= fix) { key_len -= fix; }
         lua_pushlstring(L, suffix, key_len);
         if (integer)
@@ -82,8 +87,8 @@ static void completion_exec(ic_completion_env_t *cenv, char const *buffer, char 
                 lua_remove(L, -2); // table, string, integer
             }
         }
-        sep = result;
-        suffix = result + 1;
+        sep = subfix;
+        suffix = subfix + 1;
         lua_gettable(L, -2); // table, key
         if (*suffix != '.' && *suffix != ':' && *suffix != '[')
         {
@@ -219,6 +224,17 @@ static void completion_exec(ic_completion_env_t *cenv, char const *buffer, char 
         }
     }
 
+    if (!sep)
+    {
+        for (char const **s = keywords; *s; ++s)
+        {
+            if (strncmp(*s, suffix, suffix_len) == 0)
+            {
+                ic_add_completion(cenv, *s);
+            }
+        }
+    }
+
     alloc(ud, prefix, prefix_len + 1, 0);
 }
 
@@ -284,26 +300,19 @@ static long is_number(void const *_s, long i)
 
 static void highlighter(ic_highlight_env_t *henv, char const *input, void *arg)
 {
-    static char const *keywords[] = {"and", "false", "function", "in", "local", "nil", "not", "or", "true", NULL};
-    static char const *controls[] = {"break", "do", "else", "elseif", "end", "for", "goto", "if", "repeat", "return", "then", "until", "while", NULL};
-    static char const *types[] = {NULL};
     long len = (long)strlen(input);
     for (long i = 0; i < len;)
     {
         long tlen; // token length
-        if ((tlen = ic_match_any_token(input, i, ic_char_is_idletter, keywords)) > 0)
+        if (ic_starts_with(input + i, "--")) // line comment
+        {
+            for (tlen = 2; i + tlen < len && input[i + tlen] != '\n'; ++tlen) {}
+            ic_highlight(henv, i, tlen, "comment");
+            i += tlen;
+        }
+        else if ((tlen = ic_match_any_token(input, i, ic_char_is_idletter, keywords)) > 0)
         {
             ic_highlight(henv, i, tlen, "keyword");
-            i += tlen;
-        }
-        else if ((tlen = ic_match_any_token(input, i, ic_char_is_idletter, controls)) > 0)
-        {
-            ic_highlight(henv, i, tlen, "plum");
-            i += tlen;
-        }
-        else if ((tlen = ic_match_any_token(input, i, ic_char_is_idletter, types)) > 0)
-        {
-            ic_highlight(henv, i, tlen, "type");
             i += tlen;
         }
         else if ((tlen = is_number(input, i)) > 0)
@@ -311,17 +320,7 @@ static void highlighter(ic_highlight_env_t *henv, char const *input, void *arg)
             ic_highlight(henv, i, tlen, "number");
             i += tlen;
         }
-        else if (ic_starts_with(input + i, "--")) // line comment
-        {
-            for (tlen = 2; i + tlen < len && input[i + tlen] != '\n'; ++tlen) {}
-            ic_highlight(henv, i, tlen, "comment");
-            i += tlen;
-        }
-        else
-        {
-            ic_highlight(henv, i, 1, NULL);
-            ++i;
-        }
+        else { ++i; }
     }
     (void)arg;
 }
