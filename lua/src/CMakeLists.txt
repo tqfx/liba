@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 2.8.12...4.0)
 project(lua C)
 
-file(GLOB LUA_H lua.h src/lua.h include/lua.h)
+file(GLOB LUA_H lua.h src/lua.h)
 file(STRINGS "${LUA_H}" VERSION REGEX "^#define[ \t]+LUA_(RELEASE[ \t]+\"Lua [0-9]|VERSION([ \t]+\"Lua [0-9]|_[MR])).*")
-string(REGEX REPLACE ".*;#define[ \t]+LUA_VERSION_MAJOR[ \t]+\"([0-9])\"[ \t]*;.*" "\\1" LUA_VERSION_MAJOR ";${VERSION};")
+string(REGEX REPLACE ".*;#define[ \t]+LUA_VERSION_MAJOR[^0-9]+([0-9]+)[^;]*;.*" "\\1" LUA_VERSION_MAJOR ";${VERSION};")
 if(LUA_VERSION_MAJOR MATCHES "^[0-9]+$")
-  string(REGEX REPLACE ".*;#define[ \t]+LUA_VERSION_MINOR[ \t]+\"([0-9])\"[ \t]*;.*" "\\1" LUA_VERSION_MINOR ";${VERSION};")
-  string(REGEX REPLACE ".*;#define[ \t]+LUA_VERSION_RELEASE[ \t]+\"([0-9])\"[ \t]*;.*" "\\1" LUA_VERSION_PATCH ";${VERSION};")
+  string(REGEX REPLACE ".*;#define[ \t]+LUA_VERSION_MINOR[^0-9]+([0-9]+)[^;]*;.*" "\\1" LUA_VERSION_MINOR ";${VERSION};")
+  string(REGEX REPLACE ".*;#define[ \t]+LUA_VERSION_RELEASE[^0-9]+([0-9]+)[^;]*;.*" "\\1" LUA_VERSION_PATCH ";${VERSION};")
   set(LUA_RELEASE "${LUA_VERSION_MAJOR}.${LUA_VERSION_MINOR}.${LUA_VERSION_PATCH}")
 else()
   string(REGEX REPLACE ".*;#define[ \t]+LUA_RELEASE[ \t]+\"Lua ([0-9.]+)\"[ \t]*;.*" "\\1" LUA_RELEASE ";${VERSION};")
@@ -98,8 +98,6 @@ if(LUA_COMPAT)
     list(APPEND LUA_PUBLIC LUA_COMPAT_5_2 LUA_COMPAT_5_1)
   elseif(NOT LUA_VERSION VERSION_LESS 5.2)
     list(APPEND LUA_PUBLIC LUA_COMPAT_ALL)
-  elseif(LUA_VERSION VERSION_LESS 5.1)
-    list(APPEND LUA_PUBLIC LUA_COMPATUPSYNTAX LUA_COMPATUPVALUES)
   endif()
 endif()
 string(REGEX REPLACE "#define LUA_USE_READLINE[^\n]*\n" "" LUACONF_H_TEXT "${LUACONF_H_TEXT}")
@@ -185,7 +183,7 @@ if(LUA_TMPNAMTEMPLATE)
   endif()
 endif()
 
-file(GLOB LUA_C lua.c src/lua.c src/lua/lua.c)
+file(GLOB LUA_C lua.c src/lua.c)
 if(EXISTS ${LUA_C})
   load(${LUA_C} LUA_C_TEXT)
 endif()
@@ -223,9 +221,6 @@ function(lua_library target)
     target_compile_definitions(${target} PUBLIC $<BUILD_INTERFACE:LUA_USER_H="${lua_user_h}">)
     set(lua_user_h)
   endif()
-  if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/include)
-    target_include_directories(${target} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
-  endif()
   if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/src)
     target_include_directories(${target} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/src>)
   endif()
@@ -248,11 +243,9 @@ function(lua_library_link)
   endforeach()
 endfunction()
 
-file(GLOB_RECURSE SOURCES src/*.[ch])
-file(GLOB SOURCE *.[ch] include/*.h)
-list(APPEND SOURCES ${SOURCE})
-file(GLOB LUA_C lua.c src/lua.c src/lua/*.c)
-file(GLOB LUAC_C luac.c src/luac.c src/luac/*.c)
+file(GLOB LUA_C lua.c src/lua.c)
+file(GLOB LUAC_C luac.c src/luac.c)
+file(GLOB SOURCES *.[ch] src/*.[ch])
 list(REMOVE_ITEM SOURCES ${LUA_C} ${LUAC_C})
 
 add_library(lua.o OBJECT ${SOURCES})
@@ -285,11 +278,11 @@ endif()
 include(GNUInstallDirs)
 file(GLOB MAN1 doc/*.1)
 file(GLOB PUBLIC_HEADER ${LUA_USER_H}
-  lauxlib.h src/lauxlib.h include/lauxlib.h
-  lua.h src/lua.h include/lua.h
-  lua.hpp src/lua.hpp etc/lua.hpp
+  lauxlib.h src/lauxlib.h
   luaconf.h src/luaconf.h
-  lualib.h src/lualib.h include/lualib.h
+  lualib.h src/lualib.h
+  lua.h src/lua.h
+  lua.hpp src/lua.hpp etc/lua.hpp
 )
 install(FILES ${PUBLIC_HEADER} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lua${LUA_VERSION})
 install(TARGETS lualib liblua lua luac EXPORT ${PROJECT_NAME}-targets
