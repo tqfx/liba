@@ -45,6 +45,33 @@ static int is_id(char const *str)
     }
     return 1;
 }
+static int match(char const *str, char const *sub, size_t const len)
+{
+    char const *const suf = sub + len;
+    if (str[0] == '_' && str[1] == '_')
+    {
+        if (sub[0] != '_') { return 0; }
+        if (sub[1] == '_' && str[2] && sub[2] && str[2] != sub[2]) { return 0; }
+    }
+    if (str[0] && sub[0] && str[0] != sub[0]) { return 0; }
+    for (; *str && sub < suf; ++sub)
+    {
+        if (*str != *sub)
+        {
+            for (;;)
+            {
+                if (*++str == 0) { return 0; }
+                if (*str == *sub)
+                {
+                    ++str;
+                    break;
+                }
+            }
+        }
+        else { ++str; }
+    }
+    return sub == suf;
+}
 static void completion_exec(ic_completion_env_t *cenv, char const *buffer, char const *suffix, char const *sep)
 {
     char const *subfix = NULL;
@@ -157,7 +184,7 @@ static void completion_exec(ic_completion_env_t *cenv, char const *buffer, char 
             int type = lua_type(L, -1);
             if (sep && *sep == ':' && type != LUA_TFUNCTION) { continue; }
             char const *key = lua_tostring(L, -2);
-            if (strncmp(key, suffix, suffix_len) == 0)
+            if (match(key, suffix, suffix_len))
             {
                 union
                 {
@@ -214,7 +241,7 @@ static void completion_exec(ic_completion_env_t *cenv, char const *buffer, char 
             lua_pushfstring(L, "%d", lua_tointeger(L, -2));
 #endif /* LUA_VERSION_NUM */
             char const *key = lua_tostring(L, -1);
-            if (strncmp(key, suffix, suffix_len) == 0)
+            if (match(key, suffix, suffix_len))
             {
                 lua_pushfstring(L, "%s[%s", prefix, key);
                 ic_add_completion_ex(cenv, lua_tostring(L, -1), key, NULL);
@@ -228,7 +255,7 @@ static void completion_exec(ic_completion_env_t *cenv, char const *buffer, char 
     {
         for (char const **s = keywords; *s; ++s)
         {
-            if (strncmp(*s, suffix, suffix_len) == 0)
+            if (match(*s, suffix, suffix_len))
             {
                 ic_add_completion(cenv, *s);
             }
