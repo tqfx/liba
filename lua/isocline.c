@@ -410,8 +410,10 @@ static void loadhistory(char const *name)
 
 static void lua_initline(lua_State *L)
 {
+    ic_style_def("ic-bracematch", "teal");
     ic_set_default_completer(completer, L);
     ic_set_default_highlighter(highlighter, L);
     ic_set_prompt_marker("", "");
+    ic_enable_brace_insertion(0);
     loadhistory(".lua_history");
 }
