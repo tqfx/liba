@@ -135,7 +135,3 @@ target_end()
 target("test/version")
 building({ "version.c", "version.cpp" })
 target_end()
-
-if not table.empty(os.files("*/xmake.lua")) then
-    includes("*/xmake.lua")
-end
