@@ -461,8 +461,15 @@ void lua_stack_view(lua_State *const L, unsigned int const line)
             printf("tab:%p", lua_topointer(L, i));
             break;
         case LUA_TFUNCTION:
-            printf("func:%p", FUNC2P(lua_tocfunction(L, i)));
+        {
+            union
+            {
+                int (*fn)(lua_State *);
+                void *p;
+            } func = {lua_tocfunction(L, i)};
+            printf("func:%p", func.p);
             break;
+        }
         case LUA_TUSERDATA:
             printf("data:%p", lua_touserdata(L, i));
             break;
