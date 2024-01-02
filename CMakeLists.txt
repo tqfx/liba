@@ -291,7 +291,7 @@ if(NOT LIBA_INSTALL)
   list(APPEND INSTALL_TARGETS alib)
 endif()
 
-add_library(alib $<TARGET_OBJECTS:a>)
+add_library(alib STATIC $<TARGET_OBJECTS:a>)
 set_library_compile(alib)
 
 if(A_HAVE_MIMALLOC_H)
@@ -303,15 +303,7 @@ if(TARGET_SUPPORTS_SHARED_LIBS)
     list(APPEND INSTALL_TARGETS liba)
   endif()
 
-  if(BUILD_SHARED_LIBS)
-    set(module STATIC)
-    set(shared alib)
-  else()
-    set(module SHARED)
-    set(shared liba)
-  endif()
-
-  add_library(liba ${module} $<TARGET_OBJECTS:a>)
+  add_library(liba SHARED $<TARGET_OBJECTS:a>)
   set_library_compile(liba)
 
   if(A_HAVE_MIMALLOC_H)
@@ -319,13 +311,13 @@ if(TARGET_SUPPORTS_SHARED_LIBS)
   endif()
 
   if(CMAKE_STATIC_LIBRARY_SUFFIX STREQUAL .lib)
-    set_property(TARGET ${shared} PROPERTY OUTPUT_NAME liba)
+    set_property(TARGET liba PROPERTY OUTPUT_NAME liba)
   endif()
 
-  target_compile_definitions(${shared} INTERFACE A_IMPORTS)
+  target_compile_definitions(liba INTERFACE A_IMPORTS)
 
   if(LIBA_STATIC)
-    target_link_static(${shared})
+    target_link_static(liba)
   endif()
 endif()
 
