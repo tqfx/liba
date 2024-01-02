@@ -72,7 +72,7 @@ int liba_polytraj7_new(lua_State *const L)
     int const type = lua_type(L, 1);
     if (top > 3 && type == LUA_TNUMBER)
     {
-        a_polytraj7_s *const ctx = (a_polytraj7_s *)lua_newuserdata(L, sizeof(a_polytraj7_s));
+        a_polytraj7_s *const ctx = lua_newclass(L, a_polytraj7_s);
         lua_registry_get(L, liba_polytraj7_new);
         lua_setmetatable(L, -2);
         return liba_polytraj7_gen_(L, ctx, 0, top);
@@ -85,7 +85,7 @@ int liba_polytraj7_new(lua_State *const L)
         luaL_checktype(L, 2, LUA_TTABLE);
         lua_array_num_get(L, 1, source, A_LEN(source));
         lua_array_num_get(L, 2, target, A_LEN(target));
-        a_polytraj7_s *const ctx = (a_polytraj7_s *)lua_newuserdata(L, sizeof(a_polytraj7_s));
+        a_polytraj7_s *const ctx = lua_newclass(L, a_polytraj7_s);
         lua_registry_get(L, liba_polytraj7_new);
         lua_setmetatable(L, -2);
         a_polytraj7_gen(ctx,

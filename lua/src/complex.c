@@ -42,7 +42,7 @@ static a_complex_s liba_complex_from(lua_State *const L, int const idx)
 
 static a_complex_s *liba_complex_new_(lua_State *const L)
 {
-    a_complex_s *const ctx = (a_complex_s *)lua_newuserdata(L, sizeof(a_complex_s));
+    a_complex_s *const ctx = lua_newclass(L, a_complex_s);
     lua_registry_get(L, liba_complex_new);
     lua_setmetatable(L, -2);
     return ctx;

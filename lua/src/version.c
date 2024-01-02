@@ -56,7 +56,7 @@ static int liba_version_init_(lua_State *const L, a_version_s *const ctx, int co
 int liba_version_new(lua_State *const L)
 {
     int const top = lua_gettop(L);
-    a_version_s *const ctx = (a_version_s *)lua_newuserdata(L, sizeof(a_version_s));
+    a_version_s *const ctx = lua_newclass(L, a_version_s);
     a_zero(ctx, sizeof(a_version_s));
     lua_registry_get(L, liba_version_new);
     lua_setmetatable(L, -2);

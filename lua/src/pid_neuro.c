@@ -13,7 +13,7 @@
 */
 int liba_pid_neuro_new(lua_State *const L)
 {
-    a_pid_neuro_s *const ctx = (a_pid_neuro_s *)lua_newuserdata(L, sizeof(a_pid_neuro_s));
+    a_pid_neuro_s *const ctx = lua_newclass(L, a_pid_neuro_s);
     a_zero(ctx, sizeof(a_pid_neuro_s));
     lua_registry_get(L, liba_pid_neuro_new);
     lua_setmetatable(L, -2);

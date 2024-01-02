@@ -45,7 +45,7 @@ int liba_tf_new(lua_State *const L)
         unsigned int const den_n = (unsigned int)lua_rawlen(L, 2);
         a_float_t *const den_p = (a_float_t *)lua_alloc(L, NULL, sizeof(a_float_t) * den_n * 2);
         lua_array_num_get(L, 2, den_p, den_n);
-        a_tf_s *const ctx = (a_tf_s *)lua_newuserdata(L, sizeof(a_tf_s));
+        a_tf_s *const ctx = lua_newclass(L, a_tf_s);
         lua_registry_get(L, liba_tf_new);
         lua_setmetatable(L, -2);
         a_tf_init(ctx, num_n, num_p, num_p + num_n, den_n, den_p, den_p + den_n);
