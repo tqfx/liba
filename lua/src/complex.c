@@ -22,7 +22,7 @@ static int liba_complex_isok(lua_State *const L, int const idx)
     return ok;
 }
 
-static a_complex_s liba_complex_from_lua(lua_State *const L, int const idx)
+static a_complex_s liba_complex_from(lua_State *const L, int const idx)
 {
     a_complex_s z = A_COMPLEX_C(0.0, 0.0);
     switch (lua_type(L, idx))
@@ -97,17 +97,17 @@ int liba_complex_polar(lua_State *const L)
 }
 
 #undef FUNC
-#define FUNC(func)                                             \
-    int liba_complex_##func(lua_State *const L)                \
-    {                                                          \
-        if (lua_gettop(L) >= 1)                                \
-        {                                                      \
-            a_complex_s const z = liba_complex_from_lua(L, 1); \
-            a_float_t const x = a_complex_##func(z);           \
-            lua_pushnumber(L, (lua_Number)x);                  \
-            return 1;                                          \
-        }                                                      \
-        return 0;                                              \
+#define FUNC(func)                                         \
+    int liba_complex_##func(lua_State *const L)            \
+    {                                                      \
+        if (lua_gettop(L) >= 1)                            \
+        {                                                  \
+            a_complex_s const z = liba_complex_from(L, 1); \
+            a_float_t const x = a_complex_##func(z);       \
+            lua_pushnumber(L, (lua_Number)x);              \
+            return 1;                                      \
+        }                                                  \
+        return 0;                                          \
     }
 /***
  computes the natural logarithm of magnitude of a complex number
@@ -138,16 +138,16 @@ FUNC(abs)
 */
 FUNC(arg)
 #undef FUNC
-#define FUNC(func)                                             \
-    int liba_complex_##func(lua_State *const L)                \
-    {                                                          \
-        if (lua_gettop(L) >= 1)                                \
-        {                                                      \
-            a_complex_s const z = liba_complex_from_lua(L, 1); \
-            *liba_complex_new_(L) = a_complex_##func(z);       \
-            return 1;                                          \
-        }                                                      \
-        return 0;                                              \
+#define FUNC(func)                                         \
+    int liba_complex_##func(lua_State *const L)            \
+    {                                                      \
+        if (lua_gettop(L) >= 1)                            \
+        {                                                  \
+            a_complex_s const z = liba_complex_from(L, 1); \
+            *liba_complex_new_(L) = a_complex_##func(z);   \
+            return 1;                                      \
+        }                                                  \
+        return 0;                                          \
     }
 /***
  computes the complex conjugate
@@ -171,17 +171,17 @@ FUNC(neg)
 */
 FUNC(inv)
 #undef FUNC
-#define FUNC(func)                                             \
-    int liba_complex_##func(lua_State *const L)                \
-    {                                                          \
-        if (lua_gettop(L) >= 2)                                \
-        {                                                      \
-            a_complex_s const x = liba_complex_from_lua(L, 1); \
-            a_complex_s const y = liba_complex_from_lua(L, 2); \
-            *liba_complex_new_(L) = a_complex_##func(x, y);    \
-            return 1;                                          \
-        }                                                      \
-        return 0;                                              \
+#define FUNC(func)                                          \
+    int liba_complex_##func(lua_State *const L)             \
+    {                                                       \
+        if (lua_gettop(L) >= 2)                             \
+        {                                                   \
+            a_complex_s const x = liba_complex_from(L, 1);  \
+            a_complex_s const y = liba_complex_from(L, 2);  \
+            *liba_complex_new_(L) = a_complex_##func(x, y); \
+            return 1;                                       \
+        }                                                   \
+        return 0;                                           \
     }
 /***
  addition of complex numbers
@@ -232,16 +232,16 @@ FUNC(pow)
 */
 FUNC(logb)
 #undef FUNC
-#define FUNC(func)                                             \
-    int liba_complex_##func(lua_State *const L)                \
-    {                                                          \
-        if (lua_gettop(L) >= 1)                                \
-        {                                                      \
-            a_complex_s const z = liba_complex_from_lua(L, 1); \
-            *liba_complex_new_(L) = a_complex_##func(z);       \
-            return 1;                                          \
-        }                                                      \
-        return 0;                                              \
+#define FUNC(func)                                         \
+    int liba_complex_##func(lua_State *const L)            \
+    {                                                      \
+        if (lua_gettop(L) >= 1)                            \
+        {                                                  \
+            a_complex_s const z = liba_complex_from(L, 1); \
+            *liba_complex_new_(L) = a_complex_##func(z);   \
+            return 1;                                      \
+        }                                                  \
+        return 0;                                          \
     }
 /***
  computes the complex base-e exponential
