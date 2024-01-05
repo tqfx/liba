@@ -4,7 +4,19 @@
  @details
  high frequencies are passed, low frequencies are attenuated.
  \f[
-  V_{out}(n)=\alpha(V_{out}(n-1)+V_{in}(n)-V_{in}(n-1))
+  RC\frac{\text{d}(V_{\mathrm i}-V_{\mathrm o})}{\text{dt}}=V_{\mathrm o}
+ \f]
+ \f[
+  RC\frac{[V_{\mathrm i}(n)-V_{\mathrm i}(n-1)]-[V_{\mathrm o}(n)-V_{\mathrm o}(n-1)]}{T_s}=V_{\mathrm o}(n)
+ \f]
+ \f[
+  V_{\mathrm o}(n)=\frac{RC}{RC+T_s}[V_{\mathrm o}(n-1)+V_{\mathrm i}(n)-V_{\mathrm i}(n-1)]
+ \f]
+ \f[
+  \alpha=\frac{RC}{RC+T_s}=\frac{1}{2\pi f_c T_s + 1}
+ \f]
+ \f[
+  V_{\mathrm o}(n)=\alpha[V_{\mathrm o}(n-1)+V_{\mathrm i}(n)-V_{\mathrm i}(n-1)]
  \f]
  https://en.wikipedia.org/wiki/High-pass_filter
 */
@@ -38,21 +50,21 @@ typedef struct a_hpf_s
 /*!
  @brief generate for High Pass Filter
  \f{cases}{
-  \alpha=\frac{RC}{RC+T_{s}},&\alpha\in[0,1]\\
-  RC=\frac{1}{2\pi{f_c}}.
+  \alpha=\frac{RC}{RC+T_s},&\alpha\in[0,1]\\
+  RC=\frac{1}{2\pi f_c}.
  \f}
  \f[
-  \alpha=\frac{1}{2\pi{f_c}{T_s}+1}
+  \alpha=\frac{1}{2\pi f_c T_s+1}
  \f]
  @param[in] fc cut-off frequency unit(hz)
- @param[in] dt sampling time unit(s)
+ @param[in] ts sampling time unit(s)
  @return filter coefficient [0,1]
 */
-A_INTERN a_float_t a_hpf_gen(a_float_t const fc, a_float_t const dt)
+A_INTERN a_float_t a_hpf_gen(a_float_t const fc, a_float_t const ts)
 {
-    return 1 / (2 * A_FLOAT_PI * fc * dt + 1);
+    return 1 / (2 * A_FLOAT_PI * fc * ts + 1);
 }
-#define A_HPF_GEN(fc, dt) (1 / (2 * A_FLOAT_PI * a_float_c(, fc) * a_float_c(, dt) + 1))
+#define A_HPF_GEN(fc, ts) (1 / (2 * A_FLOAT_PI * a_float_c(, fc) * a_float_c(, ts) + 1))
 
 /*!
  @brief initialize for High Pass Filter
@@ -69,7 +81,7 @@ A_INTERN void a_hpf_init(a_hpf_s *const ctx, a_float_t const alpha)
 /*!
  @brief calculate for High Pass Filter
  \f[
-  V_{out}(n)=\alpha(V_{out}(n-1)+V_{in}(n)-V_{in}(n-1))
+  V_{\mathrm o}(n)=\alpha[V_{\mathrm o}(n-1)+V_{\mathrm i}(n)-V_{\mathrm i}(n-1)]
  \f]
  @param[in,out] ctx points to an instance of High Pass Filter
  @param[in] x input value
