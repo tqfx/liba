@@ -14,7 +14,7 @@ static JSValue liba_pid_neuro_ctor(JSContext *const ctx, JSValueConst const new_
 {
     (void)argc;
     (void)argv;
-    JSValue clazz = JS_UNDEFINED;
+    JSValue proto, clazz = JS_UNDEFINED;
     a_pid_neuro_s *const self = (a_pid_neuro_s *)js_mallocz(ctx, sizeof(a_pid_neuro_s));
     if (!self) { return JS_EXCEPTION; }
     self->pid.summax = +A_FLOAT_INF;
@@ -26,7 +26,7 @@ static JSValue liba_pid_neuro_ctor(JSContext *const ctx, JSValueConst const new_
     self->wi = A_FLOAT_C(0.1);
     self->wd = A_FLOAT_C(0.1);
     a_pid_neuro_init(self);
-    JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
+    proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
     clazz = JS_NewObjectProtoClass(ctx, proto, liba_pid_neuro_class_id);
     JS_FreeValue(ctx, proto);

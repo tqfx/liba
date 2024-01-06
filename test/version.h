@@ -4,26 +4,6 @@
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-    for (int i = 0; i < argc; ++i)
-    {
-        a_version_s ctx;
-        a_version_parse(&ctx, argv[i]);
-        debug("parse \"%s\" -> %u.%u.%u\n", argv[i], ctx.major, ctx.minor, ctx.patch);
-    }
-    printf("%s\n", A_FUNC);
-#if defined(__cplusplus)
-    printf("version %s+%" PRIu32 "\n", a::VERSION, a::version::TWEAK);
-    printf("major %u\n", a::version::MAJOR);
-    printf("minor %u\n", a::version::MINOR);
-    printf("patch %u\n", a::version::PATCH);
-    printf("tweak %" PRIu32 "\n", a::version::TWEAK);
-#else /* !__cplusplus */
-    printf("version %s+%" PRIu32 "\n", a_version, a_version_tweak);
-    printf("major %u\n", a_version_major);
-    printf("minor %u\n", a_version_minor);
-    printf("patch %u\n", a_version_patch);
-    printf("tweak %" PRIu32 "\n", a_version_tweak);
-#endif /* __cplusplus */
 #if defined(__cplusplus)
     a::version v000 = a::version();
     a::version v100 = a::version(1);
@@ -92,6 +72,26 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     TEST_BUG(a_version_cmp(&v010, &v001) > 0);
     TEST_BUG(a_version_cmp(&v001, &v000) > 0);
     TEST_BUG(a_version_cmp(&v000, &v000) == 0);
+#endif /* __cplusplus */
+    for (int i = 0; i < argc; ++i)
+    {
+        a_version_s ctx;
+        a_version_parse(&ctx, argv[i]);
+        debug("parse \"%s\" -> %u.%u.%u\n", argv[i], ctx.major, ctx.minor, ctx.patch);
+    }
+    printf("%s\n", A_FUNC);
+#if defined(__cplusplus)
+    printf("version %s+%" PRIu32 "\n", a::VERSION, a::version::TWEAK);
+    printf("major %u\n", a::version::MAJOR);
+    printf("minor %u\n", a::version::MINOR);
+    printf("patch %u\n", a::version::PATCH);
+    printf("tweak %" PRIu32 "\n", a::version::TWEAK);
+#else /* !__cplusplus */
+    printf("version %s+%" PRIu32 "\n", a_version, a_version_tweak);
+    printf("major %u\n", a_version_major);
+    printf("minor %u\n", a_version_minor);
+    printf("patch %u\n", a_version_patch);
+    printf("tweak %" PRIu32 "\n", a_version_tweak);
 #endif /* __cplusplus */
     TEST_BUG(a_version_check() == 0);
     return 0;

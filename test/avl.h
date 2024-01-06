@@ -40,8 +40,8 @@ static void set_height(a_avl_s *node) // NOLINT
         TEST_BUG(node->right != node);
         set_height(node->left);
         set_height(node->right);
-        int hl = int_height(node->left);
-        int hr = int_height(node->right);
+        int const hl = int_height(node->left);
+        int const hr = int_height(node->right);
         int_entry(node)->height = int_max(hl, hr) + 1;
     }
 }
@@ -50,7 +50,7 @@ static void check_tree(a_avl_s *node) // NOLINT
 {
     if (node)
     {
-        int e = int_factor(node);
+        int const e = int_factor(node);
         TEST_BUG(-1 <= e && e <= 1);
         TEST_BUG(int_height(node->right) - int_height(node->left) == e);
         if (node->left)
@@ -76,10 +76,9 @@ static int test(int argc, char *argv[])
     (void)(argc);
     (void)(argv);
 
-    unsigned int const n = 0x1000;
-
     a_str_s str = A_STR_NUL;
     a_avl_u root = A_AVL_ROOT;
+    unsigned int const n = 0x1000;
     int_node *vec = a_new(int_node, A_NULL, n);
     int *sorted = a_new(int, A_NULL, n);
     for (unsigned int i = 0; i < n; ++i)

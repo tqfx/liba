@@ -171,6 +171,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_pid_fuzzy_init(&inc_pid);
     a_byte_t inc_joint[A_PID_FUZZY_JOINT(2)];
     a_pid_fuzzy_set_joint(&inc_pid, inc_joint, 2);
+
     a_pid_fuzzy_kpid(&pos_pid, 600, A_FLOAT_C(20.0), A_FLOAT_C(6000.0));
     a_pid_fuzzy_kpid(&inc_pid, 600, A_FLOAT_C(20.0), A_FLOAT_C(6000.0));
     for (unsigned int i = 0; i < 200; ++i)

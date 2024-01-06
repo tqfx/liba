@@ -165,7 +165,6 @@ int luaopen_liba_lpf(lua_State *const L)
     };
     lua_createtable(L, 0, A_LEN(funcs));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
-
     lua_createtable(L, 0, 1);
     lua_fun_set(L, -1, "__call", liba_lpf_);
     lua_setmetatable(L, -2);
@@ -179,7 +178,7 @@ int luaopen_liba_lpf(lua_State *const L)
     lua_fun_reg(L, -1, metas, A_LEN(metas));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_str_set(L, -1, "__name", "a.lpf");
-
     lua_registry_set(L, liba_lpf_new);
+
     return 1;
 }

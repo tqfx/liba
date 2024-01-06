@@ -56,12 +56,12 @@ static JSClassDef liba_tf_class = {"tf", .finalizer = liba_tf_finalizer};
 static JSValue liba_tf_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    JSValue clazz = JS_UNDEFINED;
+    JSValue proto, clazz = JS_UNDEFINED;
     a_tf_s *const self = (a_tf_s *)js_mallocz(ctx, sizeof(a_tf_s));
     if (!self) { return JS_EXCEPTION; }
     if (JS_IsObject(argv[0]) && liba_tf_set_num_(ctx, self, argv[0])) { goto fail; }
     if (JS_IsObject(argv[1]) && liba_tf_set_den_(ctx, self, argv[1])) { goto fail; }
-    JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
+    proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
     clazz = JS_NewObjectProtoClass(ctx, proto, liba_tf_class_id);
     JS_FreeValue(ctx, proto);

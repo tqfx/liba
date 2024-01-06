@@ -12,7 +12,7 @@ static JSClassDef liba_version_class = {"version", .finalizer = liba_version_fin
 
 static JSValue liba_version_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
-    JSValue clazz = JS_UNDEFINED;
+    JSValue proto, clazz = JS_UNDEFINED;
     a_version_s *const self = (a_version_s *)js_mallocz(ctx, sizeof(a_version_s));
     if (!self) { return JS_EXCEPTION; }
     char const *ver = NULL;
@@ -41,7 +41,7 @@ static JSValue liba_version_ctor(JSContext *const ctx, JSValueConst const new_ta
         self->minor = (unsigned int)args[1];
         self->patch = (unsigned int)args[2];
     }
-    JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
+    proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
     clazz = JS_NewObjectProtoClass(ctx, proto, liba_version_class_id);
     JS_FreeValue(ctx, proto);

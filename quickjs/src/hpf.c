@@ -12,7 +12,7 @@ static JSClassDef liba_hpf_class = {"hpf", .finalizer = liba_hpf_finalizer};
 
 static JSValue liba_hpf_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
-    JSValue clazz = JS_UNDEFINED;
+    JSValue proto, clazz = JS_UNDEFINED;
     a_hpf_s *const self = (a_hpf_s *)js_mallocz(ctx, sizeof(a_hpf_s));
     if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0};
@@ -27,7 +27,7 @@ static JSValue liba_hpf_ctor(JSContext *const ctx, JSValueConst const new_target
         if (JS_ToFloat64(ctx, &args[0], argv[0])) { goto fail; }
         a_hpf_init(self, args[0]);
     }
-    JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
+    proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
     clazz = JS_NewObjectProtoClass(ctx, proto, liba_hpf_class_id);
     JS_FreeValue(ctx, proto);

@@ -26,7 +26,7 @@ static JSValue liba_pid_fuzzy_ctor(JSContext *const ctx, JSValueConst const new_
 {
     (void)argc;
     (void)argv;
-    JSValue clazz = JS_UNDEFINED;
+    JSValue proto, clazz = JS_UNDEFINED;
     a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)js_mallocz(ctx, sizeof(a_pid_fuzzy_s));
     if (!self) { return JS_EXCEPTION; }
     self->pid.kp = 1;
@@ -37,7 +37,7 @@ static JSValue liba_pid_fuzzy_ctor(JSContext *const ctx, JSValueConst const new_
     self->kp = 1;
     self->op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
     a_pid_fuzzy_init(self);
-    JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
+    proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
     clazz = JS_NewObjectProtoClass(ctx, proto, liba_pid_fuzzy_class_id);
     JS_FreeValue(ctx, proto);

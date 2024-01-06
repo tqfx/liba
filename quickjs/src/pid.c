@@ -14,7 +14,7 @@ static JSValue liba_pid_ctor(JSContext *const ctx, JSValueConst const new_target
 {
     (void)argc;
     (void)argv;
-    JSValue clazz = JS_UNDEFINED;
+    JSValue proto, clazz = JS_UNDEFINED;
     a_pid_s *const self = (a_pid_s *)js_mallocz(ctx, sizeof(a_pid_s));
     if (!self) { return JS_EXCEPTION; }
     self->kp = 1;
@@ -23,7 +23,7 @@ static JSValue liba_pid_ctor(JSContext *const ctx, JSValueConst const new_target
     self->outmax = +A_FLOAT_INF;
     self->outmin = -A_FLOAT_INF;
     a_pid_init(self);
-    JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
+    proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
     clazz = JS_NewObjectProtoClass(ctx, proto, liba_pid_class_id);
     JS_FreeValue(ctx, proto);

@@ -12,7 +12,7 @@ static JSClassDef liba_polytraj3_class = {"polytraj3", .finalizer = liba_polytra
 
 static JSValue liba_polytraj3_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
-    JSValue clazz = JS_UNDEFINED;
+    JSValue proto, clazz = JS_UNDEFINED;
     a_polytraj3_s *const self = (a_polytraj3_s *)js_mallocz(ctx, sizeof(a_polytraj3_s));
     if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0, 0, 0, 0, 0};
@@ -29,7 +29,7 @@ static JSValue liba_polytraj3_ctor(JSContext *const ctx, JSValueConst const new_
                     (a_float_t)args[0], (a_float_t)args[1],
                     (a_float_t)args[2], (a_float_t)args[3],
                     (a_float_t)args[4], (a_float_t)args[5]);
-    JSValue proto = JS_GetPropertyStr(ctx, new_target, "prototype");
+    proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
     clazz = JS_NewObjectProtoClass(ctx, proto, liba_polytraj3_class_id);
     JS_FreeValue(ctx, proto);
