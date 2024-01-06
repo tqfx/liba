@@ -21,7 +21,7 @@ static int liba_hash_bkdr(lua_State *const L)
     {
         val = (a_u32_t)a_hash_bkdr(luaL_checklstring(L, Li, A_NULL), val);
     }
-    (void)snprintf(str, 11, "0x%08" PRIX32, val);
+    (void)sprintf(str, "0x%08" PRIX32, val);
     lua_pushstring(L, str);
     return 1;
 }
