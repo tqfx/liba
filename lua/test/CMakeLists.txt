@@ -20,6 +20,10 @@ unittest(a a a.log)
 
 unittest(complex complex)
 
+unittest(hpf hpf)
+
+unittest(lpf lpf)
+
 unittest(mf mf)
 
 unittest(pid pid)

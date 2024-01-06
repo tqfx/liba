@@ -357,8 +357,108 @@ function liba.complex.acoth(z) end
 ---@return a.complex
 function complex:acoth() end
 
-liba.mf = {}
+---@class a.hpf
+---@field alpha number
+---@field output number
+---@field input number
+---@overload fun(x: number): number
+local hpf = setmetatable({}, {
+    __call = function() end,
+})
+liba.hpf = {}
 
+---@param fc number
+---@param ts number
+---@return a.hpf
+---@overload fun(alpha: number): a.hpf
+function liba.hpf.new(fc, ts) end
+
+---@param fc number
+---@param ts number
+---@return a.hpf
+---@overload fun(alpha: number): a.hpf
+function hpf.new(fc, ts) end
+
+---@param ctx a.hpf
+---@param fc number
+---@param ts number
+---@return a.hpf
+---@overload fun(ctx: a.hpf, alpha: number): a.hpf
+function liba.hpf.gen(ctx, fc, ts) end
+
+---@param fc number
+---@param ts number
+---@return a.hpf
+---@overload fun(ctx: a.hpf, alpha: number): a.hpf
+function hpf:gen(fc, ts) end
+
+---@param ctx a.hpf
+---@param x number
+---@return number
+function liba.hpf.iter(ctx, x) end
+
+---@param x number
+---@return number
+function hpf:iter(x) end
+
+---@param ctx a.hpf
+---@return a.hpf
+function liba.hpf.zero(ctx) end
+
+---@return a.hpf
+function hpf:zero() end
+
+---@class a.lpf
+---@field alpha number
+---@field output number
+---@overload fun(x: number): number
+local lpf = setmetatable({}, {
+    __call = function() end,
+})
+liba.lpf = {}
+
+---@param fc number
+---@param ts number
+---@return a.lpf
+---@overload fun(alpha: number): a.lpf
+function liba.lpf.new(fc, ts) end
+
+---@param fc number
+---@param ts number
+---@return a.lpf
+---@overload fun(alpha: number): a.lpf
+function lpf.new(fc, ts) end
+
+---@param ctx a.lpf
+---@param fc number
+---@param ts number
+---@return a.lpf
+---@overload fun(ctx: a.lpf, alpha: number): a.lpf
+function liba.lpf.gen(ctx, fc, ts) end
+
+---@param fc number
+---@param ts number
+---@return a.lpf
+---@overload fun(ctx: a.lpf, alpha: number): a.lpf
+function lpf:gen(fc, ts) end
+
+---@param ctx a.lpf
+---@param x number
+---@return number
+function liba.lpf.iter(ctx, x) end
+
+---@param x number
+---@return number
+function lpf:iter(x) end
+
+---@param ctx a.lpf
+---@return a.lpf
+function liba.lpf.zero(ctx) end
+
+---@return a.lpf
+function lpf:zero() end
+
+liba.mf = {}
 liba.mf.NUL = 0
 ---@param e integer
 ---@param x number
@@ -1063,9 +1163,9 @@ function tf:init(num, den) end
 ---@return number
 function liba.tf.iter(ctx, x) end
 
----@param dt number
+---@param x number
 ---@return number
-function tf:iter(dt) end
+function tf:iter(x) end
 
 ---@param ctx a.tf
 ---@return a.tf

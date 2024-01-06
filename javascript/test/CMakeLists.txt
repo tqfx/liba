@@ -8,6 +8,10 @@ unittest(a a)
 
 unittest(mf mf)
 
+unittest(hpf hpf)
+
+unittest(lpf lpf)
+
 unittest(pid pid)
 
 unittest(pid_fuzzy pid_fuzzy)

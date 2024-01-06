@@ -84,6 +84,8 @@ def hash_bkdr(str: bytes, val: a_umax_t) -> a_umax_t:
     return a_hash_bkdr(str, val)
 
 include "a/crc.pxi"
+include "a/hpf.pxi"
+include "a/lpf.pxi"
 include "a/math.pxi"
 include "a/mf.pxi"
 include "a/pid.pxi"

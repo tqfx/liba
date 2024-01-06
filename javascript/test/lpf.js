@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+var liba = require("../liba")
+var ctx = new liba.lpf(10, 0.01)
+ctx.gen(10, 0.01).zero()
+console.log(ctx.iter(1.0), ctx.iter(1.0))
+console.log(ctx.alpha, ctx.output)
+ctx.delete()
+var ctx = new liba.lpf(0.1)
+console.log(ctx.iter(1.0), ctx.iter(1.0))
+console.log(ctx.alpha, ctx.output)
+ctx.delete()

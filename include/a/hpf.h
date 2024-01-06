@@ -43,8 +43,8 @@
 typedef struct a_hpf_s
 {
     a_float_t alpha; //!< filter coefficient [0,1]
-    a_float_t y; //!< filter output
-    a_float_t x; //!< filter input
+    a_float_t output; //!< filter output
+    a_float_t input; //!< filter input
 } a_hpf_s;
 
 /*!
@@ -74,8 +74,8 @@ A_INTERN a_float_t a_hpf_gen(a_float_t const fc, a_float_t const ts)
 A_INTERN void a_hpf_init(a_hpf_s *const ctx, a_float_t const alpha)
 {
     ctx->alpha = alpha;
-    ctx->y = 0;
-    ctx->x = 0;
+    ctx->output = 0;
+    ctx->input = 0;
 }
 
 /*!
@@ -89,15 +89,19 @@ A_INTERN void a_hpf_init(a_hpf_s *const ctx, a_float_t const alpha)
 */
 A_INTERN a_float_t a_hpf_iter(a_hpf_s *const ctx, a_float_t const x)
 {
-    ctx->y = (ctx->y + x - ctx->x) * ctx->alpha;
-    return (void)(ctx->x = x), ctx->y;
+    ctx->output = ctx->alpha * (ctx->output + x - ctx->input);
+    return (void)(ctx->input = x), ctx->output;
 }
 
 /*!
  @brief zeroing for High Pass Filter
  @param[in,out] ctx points to an instance of High Pass Filter
 */
-A_INTERN void a_hpf_zero(a_hpf_s *const ctx) { ctx->y = ctx->x = 0; }
+A_INTERN void a_hpf_zero(a_hpf_s *const ctx)
+{
+    ctx->output = 0;
+    ctx->input = 0;
+}
 
 /*! @} A_HPF */
 

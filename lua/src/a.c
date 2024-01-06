@@ -106,6 +106,14 @@ int luaopen_liba(lua_State *const L)
     luaopen_liba_complex(L);
     lua_rawset(L, -3);
 
+    lua_pushstring(L, "hpf");
+    luaopen_liba_hpf(L);
+    lua_rawset(L, -3);
+
+    lua_pushstring(L, "lpf");
+    luaopen_liba_lpf(L);
+    lua_rawset(L, -3);
+
     lua_pushstring(L, "mf");
     luaopen_liba_mf(L);
     lua_rawset(L, -3);

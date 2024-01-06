@@ -43,7 +43,7 @@
 typedef struct a_lpf_s
 {
     a_float_t alpha; //!< filter coefficient [0,1]
-    a_float_t y; //!< filter output
+    a_float_t output; //!< filter output
 } a_lpf_s;
 
 /*!
@@ -73,7 +73,7 @@ A_INTERN a_float_t a_lpf_gen(a_float_t const fc, a_float_t const ts)
 A_INTERN void a_lpf_init(a_lpf_s *const ctx, a_float_t const alpha)
 {
     ctx->alpha = alpha;
-    ctx->y = 0;
+    ctx->output = 0;
 }
 
 /*!
@@ -87,16 +87,16 @@ A_INTERN void a_lpf_init(a_lpf_s *const ctx, a_float_t const alpha)
 */
 A_INTERN a_float_t a_lpf_iter(a_lpf_s *const ctx, a_float_t const x)
 {
-    ctx->y *= 1 - ctx->alpha;
-    ctx->y += x * ctx->alpha;
-    return ctx->y;
+    ctx->output *= 1 - ctx->alpha;
+    ctx->output += x * ctx->alpha;
+    return ctx->output;
 }
 
 /*!
  @brief zeroing for Low Pass Filter
  @param[in,out] ctx points to an instance of Low Pass Filter
 */
-A_INTERN void a_lpf_zero(a_lpf_s *const ctx) { ctx->y = 0; }
+A_INTERN void a_lpf_zero(a_lpf_s *const ctx) { ctx->output = 0; }
 
 /*! @} A_LPF */
 

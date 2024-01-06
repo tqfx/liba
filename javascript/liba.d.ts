@@ -12,6 +12,78 @@ declare namespace liba {
    */
   function rsqrt(x: number): number;
 
+  interface hpf {
+    /** filter coefficient [0,1] */
+    readonly alpha: number;
+    /** filter output */
+    readonly output: number;
+    /** filter input */
+    readonly input: number;
+    /**
+     * generate for High Pass Filter
+     * @param fc cut-off frequency unit(hz)
+     * @param ts sampling time unit(s)
+     */
+    gen(fc: number, ts: number): hpf;
+    /**
+     * calculate for High Pass Filter
+     * @param x input value
+     * @return output value
+     */
+    iter(x: number): number;
+    /** zeroing for High Pass Filter */
+    zero(): hpf;
+    delete(): void;
+  }
+  /** constructor for High Pass Filter */
+  let hpf: {
+    /**
+     * @param fc cut-off frequency unit(hz)
+     * @param ts sampling time unit(s)
+     */
+    new(fc: number, ts: number): hpf
+    /**
+     * @param alpha filter coefficient [0,1]
+     */
+    new(alpha: number): hpf
+    readonly prototype: hpf;
+  }
+
+  interface lpf {
+    /** filter coefficient [0,1] */
+    readonly alpha: number;
+    /** filter output */
+    readonly output: number;
+    /**
+     * generate for Low Pass Filter
+     * @param fc cut-off frequency unit(hz)
+     * @param ts sampling time unit(s)
+     */
+    gen(fc: number, ts: number): lpf;
+    /**
+     * calculate for Low Pass Filter
+     * @param x input value
+     * @return output value
+     */
+    iter(x: number): number;
+    /** zeroing for Low Pass Filter */
+    zero(): lpf;
+    delete(): void;
+  }
+  /** constructor for Low Pass Filter */
+  let lpf: {
+    /**
+     * @param fc cut-off frequency unit(hz)
+     * @param ts sampling time unit(s)
+     */
+    new(fc: number, ts: number): lpf
+    /**
+     * @param alpha filter coefficient [0,1]
+     */
+    new(alpha: number): lpf
+    readonly prototype: lpf;
+  }
+
   /** membership function */
   let mf: {
     /** none */

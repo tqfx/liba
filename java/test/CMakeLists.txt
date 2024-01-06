@@ -32,6 +32,12 @@ unittest(a a.log)
 building(mf)
 unittest(mf)
 
+building(hpf)
+unittest(hpf)
+
+building(lpf)
+unittest(lpf)
+
 building(pid)
 unittest(pid)
 

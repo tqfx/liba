@@ -132,6 +132,8 @@ void lua_stack_view(lua_State *L, unsigned int line);
 
 A_PUBLIC int luaopen_liba(lua_State *L);
 A_PUBLIC int luaopen_liba_complex(lua_State *L);
+A_PUBLIC int luaopen_liba_hpf(lua_State *L);
+A_PUBLIC int luaopen_liba_lpf(lua_State *L);
 A_PUBLIC int luaopen_liba_mf(lua_State *L);
 A_PUBLIC int luaopen_liba_pid(lua_State *L);
 A_PUBLIC int luaopen_liba_pid_fuzzy(lua_State *L);

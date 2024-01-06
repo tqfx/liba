@@ -6,6 +6,10 @@ endfunction()
 
 unittest(a a)
 
+unittest(hpf hpf)
+
+unittest(lpf lpf)
+
 unittest(mf mf)
 
 unittest(pid pid)

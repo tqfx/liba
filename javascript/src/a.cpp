@@ -23,6 +23,24 @@ static emscripten::val js_array_num_new(a_float_t const *p, a_size_t n)
     return emscripten::val(emscripten::typed_memory_view(n, p));
 }
 
+#include "a/hpf.h"
+
+class hpf: public a_hpf_s
+{
+public:
+    hpf(a_float_t fc, a_float_t ts) { a_hpf_init(this, A_HPF_GEN(fc, ts)); }
+    hpf(a_float_t c) { a_hpf_init(this, c); }
+};
+
+#include "a/lpf.h"
+
+class lpf: public a_lpf_s
+{
+public:
+    lpf(a_float_t fc, a_float_t ts) { a_lpf_init(this, A_LPF_GEN(fc, ts)); }
+    lpf(a_float_t c) { a_lpf_init(this, c); }
+};
+
 #include "a/mf.h"
 
 class mf
@@ -405,6 +423,45 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .class_property("Z", &mf::Z)
         .class_function("pi", &mf::pi)
         .class_property("PI", &mf::PI);
+    emscripten::class_<hpf>("hpf")
+        .constructor<a_float_t>()
+        .constructor<a_float_t, a_float_t>()
+        .function("gen", emscripten::optional_override([](hpf *ctx, a_float_t fc, a_float_t ts) {
+                      reinterpret_cast<a_hpf_s *>(ctx)->alpha = A_HPF_GEN(fc, ts);
+                      return ctx;
+                  }),
+                  emscripten::allow_raw_pointers())
+        .function("iter", emscripten::optional_override([](hpf *ctx, a_float_t x) {
+                      return a_hpf_iter(reinterpret_cast<a_hpf_s *>(ctx), x);
+                  }),
+                  emscripten::allow_raw_pointers())
+        .function("zero", emscripten::optional_override([](hpf *ctx) {
+                      a_hpf_zero(reinterpret_cast<a_hpf_s *>(ctx));
+                      return ctx;
+                  }),
+                  emscripten::allow_raw_pointers())
+        .property<a_float_t const, void>("alpha", &hpf::alpha)
+        .property<a_float_t const, void>("output", &hpf::output)
+        .property<a_float_t const, void>("input", &hpf::input);
+    emscripten::class_<lpf>("lpf")
+        .constructor<a_float_t>()
+        .constructor<a_float_t, a_float_t>()
+        .function("gen", emscripten::optional_override([](lpf *ctx, a_float_t fc, a_float_t ts) {
+                      reinterpret_cast<a_lpf_s *>(ctx)->alpha = A_LPF_GEN(fc, ts);
+                      return ctx;
+                  }),
+                  emscripten::allow_raw_pointers())
+        .function("iter", emscripten::optional_override([](lpf *ctx, a_float_t x) {
+                      return a_lpf_iter(reinterpret_cast<a_lpf_s *>(ctx), x);
+                  }),
+                  emscripten::allow_raw_pointers())
+        .function("zero", emscripten::optional_override([](lpf *ctx) {
+                      a_lpf_zero(reinterpret_cast<a_lpf_s *>(ctx));
+                      return ctx;
+                  }),
+                  emscripten::allow_raw_pointers())
+        .property<a_float_t const, void>("alpha", &lpf::alpha)
+        .property<a_float_t const, void>("output", &lpf::output);
     emscripten::class_<pid>("pid")
         .constructor<>()
         .function("kpid", emscripten::optional_override([](pid *ctx, a_float_t kp, a_float_t ki, a_float_t kd) {

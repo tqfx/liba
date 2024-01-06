@@ -79,6 +79,8 @@ static JSCFunctionListEntry const liba_table[] = {
 
 int js_liba_init(JSContext *const ctx, JSModuleDef *const m)
 {
+    js_liba_hpf_init(ctx, m);
+    js_liba_lpf_init(ctx, m);
     js_liba_pid_init(ctx, m);
     js_liba_pid_fuzzy_init(ctx, m);
     js_liba_pid_neuro_init(ctx, m);
@@ -95,6 +97,8 @@ JSModuleDef *js_init_module(JSContext *const ctx, char const *const module_name)
     JSModuleDef *m = JS_NewCModule(ctx, module_name, js_liba_init);
     if (m)
     {
+        JS_AddModuleExport(ctx, m, "hpf");
+        JS_AddModuleExport(ctx, m, "lpf");
         JS_AddModuleExport(ctx, m, "pid");
         JS_AddModuleExport(ctx, m, "pid_fuzzy");
         JS_AddModuleExport(ctx, m, "pid_neuro");
