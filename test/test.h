@@ -24,7 +24,7 @@
 #endif /* A_FLOAT_TYPE + 0 == 0x04 */
 #endif /* -Wdouble-promotion */
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ > 199900L) || \
-    defined(__cplusplus) && (__cplusplus > 201100L) || defined(_MSC_VER)
+    defined(__cplusplus) && (__cplusplus > 201100L) || A_PREREQ_MSVC(19, 0)
 
 #define PRIjd "jd"
 #define PRIji "ji"

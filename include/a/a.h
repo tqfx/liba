@@ -86,18 +86,8 @@
 #endif /* __func__ */
 #endif /* A_FUNC */
 
-/* https://en.cppreference.com/w/cpp/preprocessor/replace */
-#if !defined __cplusplus
-/* https://en.cppreference.com/w/c/preprocessor/replace */
-#if !defined __STDC_VERSION__ && A_PREREQ_MSVC(18, 0)
-#define __STDC_VERSION__ 199901L /* C99 */
-#elif !defined __STDC_VERSION__
-#define __STDC_VERSION__ 199001L /* C90 */
-#endif /* __STDC_VERSION__ */
-#endif /* __cplusplus */
-
-#if defined(__cplusplus) && (__cplusplus > 201100L) || \
-    defined(__STDC_VERSION__) && (__STDC_VERSION__ > 199900L)
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ > 199900L) || \
+    defined(__cplusplus) && (__cplusplus > 201100L) || A_PREREQ_MSVC(18, 0)
 
 #if !defined A_HAVE_VARIADIC_MACROS
 #define A_HAVE_VARIADIC_MACROS 1
