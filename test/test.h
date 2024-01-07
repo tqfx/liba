@@ -25,93 +25,31 @@
 #endif /* -Wdouble-promotion */
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ > 199900L) || \
     defined(__cplusplus) && (__cplusplus > 201100L) || A_PREREQ_MSVC(19, 0)
-
-#define PRIjd "jd"
-#define PRIji "ji"
-#define PRIjo "jo"
-#define PRIju "ju"
-#define PRIjx "jx"
-#define PRIjX "jX"
-
-#define SCNjd "jd"
-#define SCNji "ji"
-#define SCNjo "jo"
-#define SCNju "ju"
-#define SCNjx "jx"
-#define SCNjX "jX"
-
-#define PRIzd "zd"
-#define PRIzi "zi"
-#define PRIzo "zo"
-#define PRIzu "zu"
-#define PRIzx "zx"
-#define PRIzX "zX"
-
-#define SCNzd "zd"
-#define SCNzi "zi"
-#define SCNzo "zo"
-#define SCNzu "zu"
-#define SCNzx "zx"
-#define SCNzX "zX"
-
-#define PRItd "td"
-#define PRIti "ti"
-#define PRIto "to"
-#define PRItu "tu"
-#define PRItx "tx"
-#define PRItX "tX"
-
-#define SCNtd "td"
-#define SCNti "ti"
-#define SCNto "to"
-#define SCNtu "tu"
-#define SCNtx "tx"
-#define SCNtX "tX"
-
+#define PRIj "j"
+#define SCNj "j"
+#define PRIz "z"
+#define SCNz "z"
+#define PRIt "t"
+#define SCNt "t"
+#elif defined(_MSC_VER)
+#define PRIj "I64"
+#define SCNj "I64"
+#define PRIz "I"
+#define SCNz "I"
+#define PRIt "I"
+#define SCNt "I"
 #else /* C < 199900 and C++ < 201100 */
-
-#define PRIjd PRIdMAX
-#define PRIji PRIiMAX
-#define PRIjo PRIoMAX
-#define PRIju PRIuMAX
-#define PRIjx PRIxMAX
-#define PRIjX PRIXMAX
-
-#define SCNjd PRIdMAX
-#define SCNji PRIiMAX
-#define SCNjo PRIoMAX
-#define SCNju PRIuMAX
-#define SCNjx PRIxMAX
-#define SCNjX PRIXMAX
-
-#define PRIzd PRIdPTR
-#define PRIzi PRIiPTR
-#define PRIzo PRIoPTR
-#define PRIzu PRIuPTR
-#define PRIzx PRIxPTR
-#define PRIzX PRIXPTR
-
-#define SCNzd PRIdPTR
-#define SCNzi PRIiPTR
-#define SCNzo PRIoPTR
-#define SCNzu PRIuPTR
-#define SCNzx PRIxPTR
-#define SCNzX PRIXPTR
-
-#define PRItd PRIdPTR
-#define PRIti PRIiPTR
-#define PRIto PRIoPTR
-#define PRItu PRIuPTR
-#define PRItx PRIxPTR
-#define PRItX PRIXPTR
-
-#define SCNtd PRIdPTR
-#define SCNti PRIiPTR
-#define SCNto PRIoPTR
-#define SCNtu PRIuPTR
-#define SCNtx PRIxPTR
-#define SCNtX PRIXPTR
-
+#if LONG_MAX < INT64_MAX
+#define PRIj "ll"
+#define SCNj "ll"
+#else
+#define PRIj "l"
+#define SCNj "l"
+#endif
+#define PRIz "l"
+#define SCNz "l"
+#define PRIt "l"
+#define SCNt "l"
 #endif /* C > 199900 or C++ > 201100 */
 
 #define TEST_IS_TRUE(expression, message)                   \
