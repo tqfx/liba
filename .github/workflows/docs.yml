@@ -22,8 +22,9 @@ jobs:
       - name: Install doxygen
         run: |
           set -x
-          uri=$(curl -s https://www.doxygen.nl/download.html | grep -oE 'https://www.doxygen.nl/files/doxygen-[^"]+.linux.bin.tar.gz')
-          curl $uri | tar -xzf - && cd $(basename -s .linux.bin.tar.gz $uri) && sudo make install
+          curl https://www.doxygen.nl/files/doxygen-1.10.0.linux.bin.tar.gz | tar -xzf -
+          cd doxygen-1.10.0
+          sudo make install
       - uses: actions/checkout@v2
         with:
           repository: luarocks/luarocks
