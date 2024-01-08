@@ -353,17 +353,11 @@ endif()
 if(TARGET_SUPPORTS_RELOCATABLE)
   file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/lib/CMakeLists.txt "get_cmake_property(ENABLED_LANGUAGES ENABLED_LANGUAGES)
 foreach(LANG \${ENABLED_LANGUAGES})
-\tset(CMAKE_\${LANG}_LINK_EXECUTABLE
-\t\t\"<CMAKE_\${LANG}_COMPILER> <FLAGS> -nostdlib -o <TARGET>\${CMAKE_EXECUTABLE_SUFFIX} -r <OBJECTS>\"
-\t\t\"\${CMAKE_COMMAND} -E copy <TARGET>\${CMAKE_EXECUTABLE_SUFFIX} <TARGET>.o\"
-\t)
-\tif(CMAKE_EXECUTABLE_SUFFIX)
-\t\tset(RM rm)\n\t\tif(CMAKE_VERSION VERSION_LESS 3.17)\n\t\t\tset(RM remove)\n\t\tendif()
-\t\tlist(APPEND CMAKE_\${LANG}_LINK_EXECUTABLE \"\${CMAKE_COMMAND} -E \${RM} -f <TARGET>\"
-\t\t\t\"\${CMAKE_COMMAND} -E rename <TARGET>\${CMAKE_EXECUTABLE_SUFFIX} <TARGET>\"
-\t\t)\n\t\tset(RM)
-\tendif()
 \tset(CMAKE_\${LANG}_CREATE_STATIC_LIBRARY \"\")
+\tset(CMAKE_\${LANG}_LINK_EXECUTABLE
+\t\t\"<CMAKE_\${LANG}_COMPILER> <FLAGS> -nostdlib -o <TARGET>.o -r <OBJECTS>\"
+\t\t\"\${CMAKE_COMMAND} -E copy <TARGET>.o <TARGET>\"
+\t)
 endforeach()
 set(CMAKE_EXECUTABLE_SUFFIX \"\")
 set(CMAKE_STATIC_LIBRARY_SUFFIX .o)
