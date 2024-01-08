@@ -100,7 +100,8 @@ python setup.py build_ext --inplace
 #### xmake.lua
 
 ```lua
-add_requires("a")
+add_requires("alib") -- static
+add_requires("liba") -- shared
 ```
 
 ### CMakeLists.txt
