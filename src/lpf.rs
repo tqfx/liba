@@ -9,7 +9,7 @@ use core::f64::consts::FRAC_1_PI;
 /// Low Pass Filter
 #[repr(C)]
 pub struct lpf {
-    /// filter coefficient [0,1]
+    /// filter coefficient
     pub alpha: float,
     /// filter output
     pub output: float,

@@ -9,7 +9,7 @@ use core::f64::consts::PI;
 /// High Pass Filter
 #[repr(C)]
 pub struct hpf {
-    /// filter coefficient [0,1]
+    /// filter coefficient
     pub alpha: float,
     /// filter output
     pub output: float,
