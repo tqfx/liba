@@ -150,7 +150,7 @@ A_EXTERN a_bool_t a_version_ne(a_version_s const *lhs, a_version_s const *rhs);
  @brief algorithm library version parse
  @param[in,out] ctx points to an instance structure for version
  @param[in] ver version string to be parsed
- @return number of characters parsed
+ @return number of parsed characters
 */
 A_EXTERN unsigned int a_version_parse(a_version_s *ctx, char const *ver);
 

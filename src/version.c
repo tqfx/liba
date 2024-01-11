@@ -83,27 +83,20 @@ unsigned int a_version_parse(a_version_s *const ctx, char const *const ver)
 {
     union
     {
-        char const *p;
-        char *s;
+        char const *s;
+        char *p;
     } u = {ver};
-    ctx->major = 0;
-    ctx->minor = 0;
-    ctx->patch = 0;
-    ctx->extra = 0;
-    if (ver)
-    {
-        ctx->major = (unsigned int)strtoul(u.p, &u.s, 0);
-        if (u.p[0] == '.' && u.p[1] >= '0' && u.p[1] <= '9') { ++u.p; }
-        else { goto done; }
-        ctx->minor = (unsigned int)strtoul(u.p, &u.s, 0);
-        if (u.p[0] == '.' && u.p[1] >= '0' && u.p[1] <= '9') { ++u.p; }
-        else { goto done; }
-        ctx->patch = (unsigned int)strtoul(u.p, &u.s, 0);
-        if (u.p[0] == '.' && u.p[1] >= '0' && u.p[1] <= '9') { ++u.p; }
-        else { goto done; }
-        ctx->extra = (unsigned int)strtoul(u.p, &u.s, 0);
-    done:
-        return (unsigned int)(u.p - ver);
-    }
-    return 0;
+    if (!ver) { return 0; }
+    ctx->major = (unsigned int)strtoul(u.s, &u.p, 0);
+    if (u.s[0] == '.' && u.s[1] >= '0' && u.s[1] <= '9') { ++u.s; }
+    else { goto done; }
+    ctx->minor = (unsigned int)strtoul(u.s, &u.p, 0);
+    if (u.s[0] == '.' && u.s[1] >= '0' && u.s[1] <= '9') { ++u.s; }
+    else { goto done; }
+    ctx->patch = (unsigned int)strtoul(u.s, &u.p, 0);
+    if (u.s[0] == '.' && u.s[1] >= '0' && u.s[1] <= '9') { ++u.s; }
+    else { goto done; }
+    ctx->extra = (unsigned int)strtoul(u.s, &u.p, 0);
+done:
+    return (unsigned int)(u.s - ver);
 }
