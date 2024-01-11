@@ -102,25 +102,6 @@ int liba_version_parse(lua_State *const L)
 }
 
 /***
- compare the version lhs with the version rhs
- @tparam a.version lhs version userdata on the left
- @tparam a.version rhs version userdata on the right
- @treturn integer <0 version lhs < version rhs
- @treturn integer >0 version lhs > version rhs
- @treturn integer 0 version lhs == version rhs
- @function cmp
-*/
-int liba_version_cmp(lua_State *const L)
-{
-    luaL_checktype(L, 1, LUA_TUSERDATA);
-    luaL_checktype(L, 2, LUA_TUSERDATA);
-    a_version_s const *const lhs = (a_version_s const *)lua_touserdata(L, 1);
-    a_version_s const *const rhs = (a_version_s const *)lua_touserdata(L, 2);
-    lua_pushinteger(L, a_version_cmp(lhs, rhs));
-    return 1;
-}
-
-/***
  algorithm library version check
  @tparam integer major required major number
  @tparam integer minor required minor number
@@ -152,6 +133,25 @@ static int liba_version_check(lua_State *const L)
     return 1;
 }
 
+/***
+ compare the version lhs with the version rhs
+ @tparam a.version lhs version userdata on the left
+ @tparam a.version rhs version userdata on the right
+ @treturn integer <0 version lhs < version rhs
+ @treturn integer >0 version lhs > version rhs
+ @treturn integer 0 version lhs == version rhs
+ @function cmp
+*/
+int liba_version_cmp(lua_State *const L)
+{
+    luaL_checktype(L, 1, LUA_TUSERDATA);
+    luaL_checktype(L, 2, LUA_TUSERDATA);
+    a_version_s const *const lhs = (a_version_s const *)lua_touserdata(L, 1);
+    a_version_s const *const rhs = (a_version_s const *)lua_touserdata(L, 2);
+    lua_pushinteger(L, a_version_cmp(lhs, rhs));
+    return 1;
+}
+
 #undef FUNC
 #define FUNC(func)                                              \
     int liba_version_##func(lua_State *const L)                 \
@@ -167,7 +167,7 @@ static int liba_version_check(lua_State *const L)
  version lhs is less than version rhs
  @tparam a.version lhs version userdata on the left
  @tparam a.version rhs version userdata on the right
- @treturn integer result of comparison
+ @treturn bool result of comparison
  @function lt
 */
 FUNC(lt)
@@ -175,7 +175,7 @@ FUNC(lt)
  version lhs is greater than version rhs
  @tparam a.version lhs version userdata on the left
  @tparam a.version rhs version userdata on the right
- @treturn integer result of comparison
+ @treturn bool result of comparison
  @function gt
 */
 FUNC(gt)
@@ -183,7 +183,7 @@ FUNC(gt)
  version lhs is less than or equal to version rhs
  @tparam a.version lhs version userdata on the left
  @tparam a.version rhs version userdata on the right
- @treturn integer result of comparison
+ @treturn bool result of comparison
  @function le
 */
 FUNC(le)
@@ -191,7 +191,7 @@ FUNC(le)
  version lhs is greater than or equal to version rhs
  @tparam a.version lhs version userdata on the left
  @tparam a.version rhs version userdata on the right
- @treturn integer result of comparison
+ @treturn bool result of comparison
  @function ge
 */
 FUNC(ge)
@@ -199,7 +199,7 @@ FUNC(ge)
  version lhs is equal to version rhs
  @tparam a.version lhs version userdata on the left
  @tparam a.version rhs version userdata on the right
- @treturn integer result of comparison
+ @treturn bool result of comparison
  @function eq
 */
 FUNC(eq)
@@ -207,7 +207,7 @@ FUNC(eq)
  version lhs is not equal to version rhs
  @tparam a.version lhs version userdata on the left
  @tparam a.version rhs version userdata on the right
- @treturn integer result of comparison
+ @treturn bool result of comparison
  @function ne
 */
 FUNC(ne)
