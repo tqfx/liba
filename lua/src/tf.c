@@ -16,10 +16,12 @@ int liba_tf_die(lua_State *const L)
     a_tf_s *const ctx = (a_tf_s *)lua_touserdata(L, 1);
     if (ctx)
     {
-        ctx->num_p = (a_float_t const *)lua_alloc(L, ctx->num_p, 0);
+        lua_alloc(L, ctx->num_p, 0);
+        ctx->num_p = 0;
         ctx->num_n = 0;
         ctx->input = 0;
-        ctx->den_p = (a_float_t const *)lua_alloc(L, ctx->den_p, 0);
+        lua_alloc(L, ctx->den_p, 0);
+        ctx->den_p = 0;
         ctx->den_n = 0;
         ctx->output = 0;
     }
@@ -221,6 +223,9 @@ int luaopen_liba_tf(lua_State *const L)
     static lua_fun_s const metas[] = {
         {"__newindex", liba_tf_set},
         {"__index", liba_tf_get},
+#if defined(LUA_VERSION_NUM) && (LUA_VERSION_NUM > 503)
+        {"__close", liba_tf_die},
+#endif /* LUA_VERSION_NUM */
         {"__call", liba_tf_iter},
         {"__gc", liba_tf_die},
     };

@@ -409,6 +409,9 @@ int luaopen_liba_pid_fuzzy(lua_State *const L)
     static lua_fun_s const metas[] = {
         {"__newindex", liba_pid_fuzzy_set},
         {"__index", liba_pid_fuzzy_get},
+#if defined(LUA_VERSION_NUM) && (LUA_VERSION_NUM > 503)
+        {"__close", liba_pid_fuzzy_die},
+#endif /* LUA_VERSION_NUM */
         {"__gc", liba_pid_fuzzy_die},
     };
     lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
