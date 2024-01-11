@@ -23,12 +23,57 @@
 #endif /* A_COMPLEX_T */
 #include "a/math.h"
 
+#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
+#define strtonum(string, endptr) strtof(string, endptr)
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
+#define strtonum(string, endptr) strtod(string, endptr)
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
+#define strtonum(string, endptr) strtold(string, endptr)
+#endif /* A_FLOAT_TYPE */
+
+unsigned int a_complex_parse(a_complex_s *const ctx, char const *const str)
+{
+    union
+    {
+        char const *s;
+        char *p;
+    } u = {str};
+    if (!str) { return 0; }
+    for (; *u.s; ++u.s)
+    {
+        if (*u.s == '+' || *u.s == '-' || ('0' <= *u.s && *u.s <= '9') || *u.s == '.')
+        {
+            ctx->real = strtonum(u.s, &u.p);
+            break;
+        }
+    }
+    for (; *u.s; ++u.s)
+    {
+        if (*u.s == '+' || *u.s == '-' || ('0' <= *u.s && *u.s <= '9') || *u.s == '.')
+        {
+            ctx->imag = strtonum(u.s, &u.p);
+            break;
+        }
+    }
+    return (unsigned int)(u.s - str);
+}
+
 a_complex_s a_complex_polar(a_float_t const r, a_float_t const theta)
 {
     a_complex_s z;
     z.real = r * a_float_cos(theta);
     z.imag = r * a_float_sin(theta);
     return z;
+}
+
+a_bool_t a_complex_eq(a_complex_s const x, a_complex_s const y)
+{
+    return x.real == y.real && x.imag == y.imag;
+}
+
+a_bool_t a_complex_ne(a_complex_s const x, a_complex_s const y)
+{
+    return x.real != y.real || x.imag != y.imag;
 }
 
 a_float_t a_complex_logabs(a_complex_s const z)

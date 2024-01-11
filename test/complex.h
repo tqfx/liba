@@ -25,7 +25,7 @@ static void test(a_complex_s a, a_complex_s b)
     debug("arg" A_COMPLEX_PRI("", "g", "", "g") "=" A_FLOAT_PRI("", "g\n"), a_complex_real(a), a_complex_imag(a), x);
 
     c = a_complex_conj(a);
-    debug(A_COMPLEX_PRI("", "g", "", "g") "*=" A_COMPLEX_PRI("", "g", "", "g") "\n",
+    debug(A_COMPLEX_PRI("", "g", "", "g") "'=" A_COMPLEX_PRI("", "g", "", "g") "\n",
           a_complex_real(a), a_complex_imag(a), a_complex_real(c), a_complex_imag(c));
 
     c = a_complex_neg(a);
@@ -252,44 +252,17 @@ static void test_atrih(a_complex_s x)
     debug("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 }
 
-#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
-#define strtoreal(str, endptr) strtof(str, endptr)
-#elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
-#define strtoreal(str, endptr) strtod(str, endptr)
-#elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
-#define strtoreal(str, endptr) strtold(str, endptr)
-#endif /* A_FLOAT_TYPE */
-
-static a_complex_s strtocomplex(char const *A_RESTRICT str, char **A_RESTRICT endptr)
-{
-    a_complex_s z = A_COMPLEX_C(0.0, 0.0);
-    a_complex_real(z) = strtoreal(str, endptr);
-    if (endptr && *endptr)
-    {
-        for (str = *endptr; *str; ++str)
-        {
-            if (*str == '+' || *str == '-' || ('0' <= *str && *str <= '9') || *str == '.')
-            {
-                a_complex_imag(z) = strtoreal(str, endptr);
-                break;
-            }
-        }
-    }
-    return z;
-}
-
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     a_complex_s x = A_COMPLEX_C(0.0, 0.0);
     a_complex_s y = a_complex_c(0.0, 0.0);
-    char *endptr = A_NULL;
     if (argc > 1)
     {
-        x = strtocomplex(argv[1], &endptr);
+        a_complex_parse(&x, argv[1]);
     }
     if (argc > 2)
     {
-        y = strtocomplex(argv[2], &endptr);
+        a_complex_parse(&y, argv[2]);
     }
     test(x, y);
     test_tri(x);
@@ -303,6 +276,8 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     if (argc > 2)
     {
         debug("y=" A_COMPLEX_PRI("", "g", "", "g") " ", a_complex_real(y), a_complex_imag(y));
+        if (a_complex_eq(x, y)) { debug("x==y"); }
+        if (a_complex_ne(x, y)) { debug("x!=y"); }
     }
     if (argc > 1) { debug("\n"); }
     return 0;

@@ -9,6 +9,9 @@
 #if A_PREREQ_GNUC(2, 95) || __has_warning("-Waggregate-return")
 #pragma GCC diagnostic ignored "-Waggregate-return"
 #endif /* -Waggregate-return */
+#if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif /* -Wfloat-equal */
 
 static int liba_complex_isok(lua_State *const L, int const idx)
 {
@@ -27,12 +30,14 @@ static a_complex_s liba_complex_from(lua_State *const L, int const idx)
     a_complex_s z = A_COMPLEX_C(0.0, 0.0);
     switch (lua_type(L, idx))
     {
-    case LUA_TUSERDATA:
-        if (liba_complex_isok(L, idx)) { z = *(a_complex_s *)lua_touserdata(L, idx); }
-        break;
-    case LUA_TSTRING:
     case LUA_TNUMBER:
         a_complex_real(z) = (a_float_t)lua_tonumber(L, idx);
+        break;
+    case LUA_TSTRING:
+        a_complex_parse(&z, lua_tostring(L, idx));
+        break;
+    case LUA_TUSERDATA:
+        if (liba_complex_isok(L, idx)) { z = *(a_complex_s *)lua_touserdata(L, idx); }
         break;
     default:
         break;
@@ -63,8 +68,8 @@ static int liba_complex_tostring(lua_State *const L)
 
 /***
  constructor for complex number from rectangular Cartesian components
- @tparam number real real part of complex number
- @tparam number imag imaginary part of complex number
+ @tparam[opt] number|string|a.complex real real part of complex number
+ @tparam[opt] number imag imaginary part of complex number
  @treturn a.complex complex number userdata
  @function new
 */
@@ -72,16 +77,16 @@ int liba_complex_new(lua_State *const L)
 {
     a_complex_s z = A_COMPLEX_C(0.0, 0.0);
     int const top = lua_gettop(L);
+    if (top >= 1) { z = liba_complex_from(L, 1); }
     if (top >= 2) { a_complex_imag(z) = (a_float_t)lua_tonumber(L, 2); }
-    if (top >= 1) { a_complex_real(z) = (a_float_t)lua_tonumber(L, 1); }
     *liba_complex_new_(L) = z;
     return 1;
 }
 
 /***
  constructor for complex number from polar form
- @tparam number r a distance from a reference point
- @tparam number theta an angle from a reference direction
+ @tparam[opt] number r a distance from a reference point
+ @tparam[opt] number theta an angle from a reference direction
  @treturn a.complex complex number userdata
  @function polar
 */
@@ -94,6 +99,44 @@ int liba_complex_polar(lua_State *const L)
     if (top >= 1) { r = (a_float_t)lua_tonumber(L, 1); }
     *liba_complex_new_(L) = a_complex_polar(r, theta);
     return 1;
+}
+
+/***
+ complex number x is equal to complex number y
+ @tparam a.complex x complex number on the left
+ @tparam a.complex y complex number on the right
+ @treturn bool result of comparison
+ @function eq
+*/
+int liba_complex_eq(lua_State *const L)
+{
+    if (lua_gettop(L) >= 2)
+    {
+        a_complex_s const x = liba_complex_from(L, 1);
+        a_complex_s const y = liba_complex_from(L, 2);
+        lua_pushboolean(L, a_complex_eq(x, y));
+        return 1;
+    }
+    return 0;
+}
+
+/***
+ complex number x is not equal to complex number y
+ @tparam a.complex x complex number on the left
+ @tparam a.complex y complex number on the right
+ @treturn bool result of comparison
+ @function ne
+*/
+int liba_complex_ne(lua_State *const L)
+{
+    if (lua_gettop(L) >= 2)
+    {
+        a_complex_s const x = liba_complex_from(L, 1);
+        a_complex_s const y = liba_complex_from(L, 2);
+        lua_pushboolean(L, a_complex_ne(x, y));
+        return 1;
+    }
+    return 0;
 }
 
 #undef FUNC
@@ -458,6 +501,7 @@ static int liba_complex_set(lua_State *const L)
     case 0x0E2E9172: // imag
         a_complex_imag(*ctx) = (a_float_t)luaL_checknumber(L, 3);
         break;
+    case 0x0CD3E0FC: // __eq
     case 0x90705068: // __unm
     case 0x906B0E8D: // __add
     case 0x906FCDE0: // __sub
@@ -523,6 +567,8 @@ int luaopen_liba_complex(lua_State *const L)
     static lua_fun_s const funcs[] = {
         {"new", liba_complex_new},
         {"polar", liba_complex_polar},
+        {"eq", liba_complex_eq},
+        {"ne", liba_complex_ne},
         {"logabs", liba_complex_logabs},
         {"conj", liba_complex_conj},
         {"abs2", liba_complex_abs2},
@@ -583,6 +629,7 @@ int luaopen_liba_complex(lua_State *const L)
         {"__div", liba_complex_div},
         {"__pow", liba_complex_pow},
         {"__len", liba_complex_abs},
+        {"__eq", liba_complex_eq},
     };
     lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
     lua_fun_reg(L, -1, metas, A_LEN(metas));

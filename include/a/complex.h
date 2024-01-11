@@ -17,33 +17,20 @@
 /*! format constants for the fprintf family of functions */
 #define A_COMPLEX_PRI(RF, RC, IF, IC) "(" A_FLOAT_PRI(RF, RC) "," A_FLOAT_PRI(IF, IC) ")"
 
-/*! constructs a complex number constant from real and imaginary parts */
-#if !defined __cplusplus
-#define a_complex_c(r, i)              \
-    (a_complex_s)                      \
-    {                                  \
-        a_float_c(, r), a_float_c(, i) \
-    }
-#else /* !__cplusplus */
-#define a_complex_c(r, i)              \
-    {                                  \
-        a_float_c(, r), a_float_c(, i) \
-    }
-#endif /* __cplusplus */
-
+// clang-format off
 /*! constructs a complex number from real and imaginary parts */
 #if !defined __cplusplus
-#define A_COMPLEX_C(R, I)          \
-    (a_complex_s)                  \
-    {                              \
-        A_FLOAT_C(R), A_FLOAT_C(I) \
-    }
+#define a_complex_c(r, i) (a_complex_s){a_float_c(, r), a_float_c(, i)}
 #else /* !__cplusplus */
-#define A_COMPLEX_C(R, I)          \
-    {                              \
-        A_FLOAT_C(R), A_FLOAT_C(I) \
-    }
+#define a_complex_c(r, i) {a_float_c(, r), a_float_c(, i)}
 #endif /* __cplusplus */
+/*! constructs a complex number constant from real and imaginary parts */
+#if !defined __cplusplus
+#define A_COMPLEX_C(R, I) (a_complex_s){A_FLOAT_C(R), A_FLOAT_C(I)}
+#else /* !__cplusplus */
+#define A_COMPLEX_C(R, I) {A_FLOAT_C(R), A_FLOAT_C(I)}
+#endif /* __cplusplus */
+// clang-format on
 
 /*! real part of complex number */
 #define a_complex_real(ctx) (ctx).real
@@ -68,12 +55,36 @@ extern "C" {
 #endif /* LIBA_COMPLEX_C */
 
 /*!
+ @brief parse a string into a complex number
+ @param[in,out] ctx points to an instance structure for version
+ @param[in] str complex number string to be parsed
+ @return number of parsed characters
+*/
+A_EXTERN unsigned int a_complex_parse(a_complex_s *ctx, char const *str);
+
+/*!
  @brief constructs a complex number from polar form
  @param r a distance from a reference point
  @param theta an angle from a reference direction
  @return = \f$ (r\cos\theta,r\sin\theta{i}) \f$
 */
 A_EXTERN a_complex_s a_complex_polar(a_float_t r, a_float_t theta);
+
+/*!
+ @brief complex number x is equal to complex number y
+ @param[in] x complex number on the left
+ @param[in] y complex number on the right
+ @return result of comparison
+*/
+A_EXTERN a_bool_t a_complex_eq(a_complex_s x, a_complex_s y);
+
+/*!
+ @brief complex number x is not equal to complex number y
+ @param[in] x complex number on the left
+ @param[in] y complex number on the right
+ @return result of comparison
+*/
+A_EXTERN a_bool_t a_complex_ne(a_complex_s x, a_complex_s y);
 
 /* Properties of complex numbers */
 

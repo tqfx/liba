@@ -29,25 +29,27 @@ function liba.rsqrt(x, ...) end
 ---@operator pow(a.complex): a.complex
 ---@operator len(a.complex): number
 local complex = {}
+---@class liba.complex
+---@overload fun(real?: a.complex|number|string, imag?: number): a.complex
 liba.complex = {}
 
----@param real number
----@param imag number
+---@param real? a.complex|number|string
+---@param imag? number
 ---@return a.complex
 function liba.complex.new(real, imag) end
 
----@param real number
----@param imag number
+---@param real? a.complex|number|string
+---@param imag? number
 ---@return a.complex
 function complex.new(real, imag) end
 
----@param r number
----@param theta number
+---@param r? number
+---@param theta? number
 ---@return a.complex
 function liba.complex.polar(r, theta) end
 
----@param r number
----@param theta number
+---@param r? number
+---@param theta? number
 ---@return a.complex
 function complex.polar(r, theta) end
 
@@ -362,9 +364,10 @@ function complex:acoth() end
 ---@field output number
 ---@field input number
 ---@overload fun(x: number): number
-local hpf = setmetatable({}, {
-    __call = function() end,
-})
+local hpf = {}
+---@class liba.hpf
+---@overload fun(alpha: number): a.hpf
+---@overload fun(fc: number, ts: number): a.hpf
 liba.hpf = {}
 
 ---@param fc number
@@ -412,9 +415,10 @@ function hpf:zero() end
 ---@field alpha number
 ---@field output number
 ---@overload fun(x: number): number
-local lpf = setmetatable({}, {
-    __call = function() end,
-})
+local lpf = {}
+---@class liba.lpf
+---@overload fun(alpha: number): a.lpf
+---@overload fun(fc: number, ts: number): a.lpf
 liba.lpf = {}
 
 ---@param fc number
@@ -580,6 +584,8 @@ function liba.mf.pi(x, a, b, c, d) end
 ---@field fdb number
 ---@field err number
 local pid = {}
+---@class liba.pid
+---@overload fun(): a.pid
 liba.pid = {}
 liba.pid.RUN = 0
 liba.pid.POS = 1
@@ -665,6 +671,8 @@ function pid:inc(set, fdb) end
 ---@field order integer
 ---@field joint integer
 local pid_fuzzy = {}
+---@class liba.pid_fuzzy
+---@overload fun(): a.pid_fuzzy
 liba.pid_fuzzy = {}
 
 ---@return a.pid_fuzzy
@@ -790,6 +798,8 @@ function pid_fuzzy:inc(set, fdb) end
 ---@field err number
 ---@field ec number
 local pid_neuro = {}
+---@class liba.pid_neuro
+---@overload fun(): a.pid_neuro
 liba.pid_neuro = {}
 
 ---@return a.pid_neuro
@@ -867,6 +877,9 @@ function pid_neuro:inc(set, fdb) end
 ---@field v table
 ---@field a table
 local polytraj3 = {}
+---@class liba.polytraj3
+---@overload fun(t0: number, t1: number, q0: number, q1: number, v0?: number, v1?: number): a.polytraj3
+---@overload fun(source: table, target: table): a.polytraj3
 liba.polytraj3 = {}
 
 ---@param t0 number
@@ -942,6 +955,9 @@ function polytraj3:acc(dt) end
 ---@field v table
 ---@field a table
 local polytraj5 = {}
+---@class liba.polytraj5
+---@overload fun(t0: number, t1: number, q0: number, q1: number, v0?: number, v1?: number, a0?: number, a1?: number): a.polytraj5
+---@overload fun(source: table, target: table): a.polytraj5
 liba.polytraj5 = {}
 
 ---@param t0 number
@@ -1026,6 +1042,9 @@ function polytraj5:acc(dt) end
 ---@field a table
 ---@field j table
 local polytraj7 = {}
+---@class liba.polytraj7
+---@overload fun(t0: number, t1: number, q0: number, q1: number, v0?: number, v1?: number, a0?: number, a1?: number, j0?: number, j1?: number): a.polytraj7
+---@overload fun(source: table, target: table): a.polytraj7
 liba.polytraj7 = {}
 
 ---@param t0 number
@@ -1127,9 +1146,9 @@ function polytraj7:jer(dt) end
 ---@field input table
 ---@field output table
 ---@overload fun(x: number): number
-local tf = setmetatable({}, {
-    __call = function() end,
-})
+local tf = {}
+---@class liba.tf
+---@overload fun(num: table, den: table): a.tf
 liba.tf = {}
 
 ---@param num table
@@ -1181,9 +1200,10 @@ function tf:zero() end
 ---@field extra integer
 ---@overload fun(major?: integer, minor?: integer, patch?: integer, extra?: integer): a.version
 ---@overload fun(ver: string): a.version
-local version = setmetatable({}, {
-    __call = function() end,
-})
+local version = {}
+---@class liba.version
+---@overload fun(major?: integer, minor?: integer, patch?: integer, extra?: integer): a.version
+---@overload fun(ver: string): a.version
 liba.version = {}
 liba.version.MAJOR = 0
 liba.version.MINOR = 0

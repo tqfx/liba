@@ -20,8 +20,8 @@ extern "C" {
 
 /***
  constructor for complex number from rectangular Cartesian components
- @tparam number real real part of complex number
- @tparam number imag imaginary part of complex number
+ @tparam[opt] number|string|a.complex real real part of complex number
+ @tparam[opt] number imag imaginary part of complex number
  @treturn a.complex complex number userdata
  @function new
 */
@@ -29,12 +29,28 @@ int liba_complex_new(lua_State *L);
 
 /***
  constructor for complex number from polar form
- @tparam number r a distance from a reference point
- @tparam number theta an angle from a reference direction
+ @tparam[opt] number r a distance from a reference point
+ @tparam[opt] number theta an angle from a reference direction
  @treturn a.complex complex number userdata
  @function polar
 */
 int liba_complex_polar(lua_State *L);
+
+/***
+ complex number self is equal to complex number other
+ @tparam a.complex other other complex number
+ @treturn bool result of comparison
+ @function eq
+*/
+int liba_complex_eq(lua_State *L);
+
+/***
+ complex number self is not equal to complex number other
+ @tparam a.complex other other complex number
+ @treturn bool result of comparison
+ @function ne
+*/
+int liba_complex_ne(lua_State *L);
 
 /***
  computes the natural logarithm of magnitude of a complex number
