@@ -19,15 +19,15 @@ function liba.rsqrt(x, ...) end
 ---@class a.complex
 ---@field real number
 ---@field imag number
----@field r number
+---@field rho number
 ---@field theta number
----@operator unm(a.complex): a.complex
+---@operator len: number
+---@operator unm: a.complex
 ---@operator add(a.complex): a.complex
 ---@operator sub(a.complex): a.complex
 ---@operator mul(a.complex): a.complex
 ---@operator div(a.complex): a.complex
 ---@operator pow(a.complex): a.complex
----@operator len(a.complex): number
 local complex = {}
 ---@class liba.complex
 ---@overload fun(real?: a.complex|number|string, imag?: number): a.complex
@@ -43,15 +43,15 @@ function liba.complex.new(real, imag) end
 ---@return a.complex
 function complex.new(real, imag) end
 
----@param r? number
+---@param rho? number
 ---@param theta? number
 ---@return a.complex
-function liba.complex.polar(r, theta) end
+function liba.complex.polar(rho, theta) end
 
----@param r? number
+---@param rho? number
 ---@param theta? number
 ---@return a.complex
-function complex.polar(r, theta) end
+function complex.polar(rho, theta) end
 
 ---@param z a.complex|number|string
 ---@return number
@@ -80,6 +80,13 @@ function liba.complex.arg(z) end
 
 ---@return number
 function complex:arg() end
+
+---@param z a.complex|number|string
+---@return a.complex
+function liba.complex.proj(z) end
+
+---@return a.complex
+function complex:proj() end
 
 ---@param z a.complex|number|string
 ---@return a.complex

@@ -8,7 +8,7 @@ local x = a.complex.new(1, 2)
 local y = a.complex.new(2, 1)
 local z = a.complex.polar(1, math.pi)
 test.dir(getmetatable(z))
-test.log(z, z:conj(), z.r, z.theta)
+test.log(z:proj(), z:conj(), z.rho, z.theta)
 z.real, z.imag = math.pi, math.pi
 test.log("- " .. tostring(x) .. " = " .. tostring(-x))
 test.log(tostring(x) .. " + " .. tostring(y) .. " = " .. tostring(x + y))

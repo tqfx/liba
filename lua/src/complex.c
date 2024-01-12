@@ -85,7 +85,7 @@ int liba_complex_new(lua_State *const L)
 
 /***
  constructor for complex number from polar form
- @tparam[opt] number r a distance from a reference point
+ @tparam[opt] number rho a distance from a reference point
  @tparam[opt] number theta an angle from a reference direction
  @treturn a.complex complex number userdata
  @function polar
@@ -93,11 +93,11 @@ int liba_complex_new(lua_State *const L)
 int liba_complex_polar(lua_State *const L)
 {
     a_float_t theta = A_FLOAT_C(0.0);
-    a_float_t r = A_FLOAT_C(0.0);
+    a_float_t rho = A_FLOAT_C(0.0);
     int const top = lua_gettop(L);
     if (top >= 2) { theta = (a_float_t)lua_tonumber(L, 2); }
-    if (top >= 1) { r = (a_float_t)lua_tonumber(L, 1); }
-    *liba_complex_new_(L) = a_complex_polar(r, theta);
+    if (top >= 1) { rho = (a_float_t)lua_tonumber(L, 1); }
+    *liba_complex_new_(L) = a_complex_polar(rho, theta);
     return 1;
 }
 
@@ -192,6 +192,13 @@ FUNC(arg)
         }                                                  \
         return 0;                                          \
     }
+/***
+ computes the projection on Riemann sphere
+ @tparam a.complex z complex number userdata
+ @treturn a.complex complex number userdata
+ @function proj
+*/
+FUNC(proj)
 /***
  computes the complex conjugate
  @tparam a.complex z complex number userdata
@@ -490,6 +497,8 @@ FUNC(acsch)
 */
 FUNC(acoth)
 
+#include "a/math.h"
+
 static int liba_complex_set(lua_State *const L)
 {
     a_complex_s *const ctx = (a_complex_s *)lua_touserdata(L, 1);
@@ -501,14 +510,30 @@ static int liba_complex_set(lua_State *const L)
     case 0x0E2E9172: // imag
         a_complex_imag(*ctx) = (a_float_t)luaL_checknumber(L, 3);
         break;
+    case 0x001E0FA9: // rho
+    {
+        a_float_t const rho = (a_float_t)luaL_checknumber(L, 3);
+        a_float_t const theta = a_complex_arg(*ctx);
+        ctx->real = rho * a_float_cos(theta);
+        ctx->imag = rho * a_float_sin(theta);
+        break;
+    }
+    case 0x0240D1F6: // theta
+    {
+        a_float_t const theta = (a_float_t)luaL_checknumber(L, 3);
+        a_float_t const rho = a_complex_abs(*ctx);
+        ctx->real = rho * a_float_cos(theta);
+        ctx->imag = rho * a_float_sin(theta);
+        break;
+    }
     case 0x0CD3E0FC: // __eq
+    case 0x906DF07D: // __len
     case 0x90705068: // __unm
     case 0x906B0E8D: // __add
     case 0x906FCDE0: // __sub
     case 0x906E3BB4: // __mul
     case 0x906BDA49: // __div
     case 0x906F01C8: // __pow
-    case 0x906DF07D: // __len
     case 0xE8859EEB: // __name
     case 0xA65758B2: // __index
     case 0xAEB551C6: // __newindex
@@ -533,7 +558,7 @@ static int liba_complex_get(lua_State *const L)
     case 0x0E2E9172: // imag
         lua_pushnumber(L, (lua_Number)a_complex_imag(*ctx));
         break;
-    case 0x00000072: // r
+    case 0x001E0FA9: // rho
         lua_pushnumber(L, (lua_Number)a_complex_abs(*ctx));
         break;
     case 0x0240D1F6: // theta
@@ -543,7 +568,7 @@ static int liba_complex_get(lua_State *const L)
         lua_registry_get(L, liba_complex_new);
         lua_num_set(L, -1, "real", a_complex_real(*ctx));
         lua_num_set(L, -1, "imag", a_complex_imag(*ctx));
-        lua_num_set(L, -1, "r", a_complex_abs(*ctx));
+        lua_num_set(L, -1, "rho", a_complex_abs(*ctx));
         lua_num_set(L, -1, "theta", a_complex_arg(*ctx));
         break;
     default:
@@ -570,6 +595,7 @@ int luaopen_liba_complex(lua_State *const L)
         {"eq", liba_complex_eq},
         {"ne", liba_complex_ne},
         {"logabs", liba_complex_logabs},
+        {"proj", liba_complex_proj},
         {"conj", liba_complex_conj},
         {"abs2", liba_complex_abs2},
         {"abs", liba_complex_abs},
@@ -622,13 +648,13 @@ int luaopen_liba_complex(lua_State *const L)
         {"__tostring", liba_complex_tostring},
         {"__newindex", liba_complex_set},
         {"__index", liba_complex_get},
+        {"__len", liba_complex_abs},
         {"__unm", liba_complex_neg},
         {"__add", liba_complex_add},
         {"__sub", liba_complex_sub},
         {"__mul", liba_complex_mul},
         {"__div", liba_complex_div},
         {"__pow", liba_complex_pow},
-        {"__len", liba_complex_abs},
         {"__eq", liba_complex_eq},
     };
     lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);

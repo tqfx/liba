@@ -24,6 +24,10 @@ static void test(a_complex_s a, a_complex_s b)
     x = a_complex_arg(a);
     debug("arg" A_COMPLEX_PRI("", "g", "", "g") "=" A_FLOAT_PRI("", "g\n"), a_complex_real(a), a_complex_imag(a), x);
 
+    c = a_complex_proj(a);
+    debug("proj" A_COMPLEX_PRI("", "g", "", "g") "=" A_COMPLEX_PRI("", "g", "", "g") "\n",
+          a_complex_real(a), a_complex_imag(a), a_complex_real(c), a_complex_imag(c));
+
     c = a_complex_conj(a);
     debug(A_COMPLEX_PRI("", "g", "", "g") "'=" A_COMPLEX_PRI("", "g", "", "g") "\n",
           a_complex_real(a), a_complex_imag(a), a_complex_real(c), a_complex_imag(c));

@@ -12,6 +12,8 @@
  complex number
  @field real real part of complex number
  @field imag imaginary part of complex number
+ @field rho the magnitude of complex number
+ @field theta the phase angle of complex number
  @table a.complex
 */
 #if defined(__cplusplus)
@@ -29,7 +31,7 @@ int liba_complex_new(lua_State *L);
 
 /***
  constructor for complex number from polar form
- @tparam[opt] number r a distance from a reference point
+ @tparam[opt] number rho a distance from a reference point
  @tparam[opt] number theta an angle from a reference direction
  @treturn a.complex complex number userdata
  @function polar
@@ -79,6 +81,13 @@ int liba_complex_abs(lua_State *L);
  @function arg
 */
 int liba_complex_arg(lua_State *L);
+
+/***
+ computes the projection on Riemann sphere
+ @treturn a.complex complex number userdata
+ @function proj
+*/
+int liba_complex_proj(lua_State *L);
 
 /***
  computes the complex conjugate

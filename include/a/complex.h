@@ -64,11 +64,11 @@ A_EXTERN unsigned int a_complex_parse(a_complex_s *ctx, char const *str);
 
 /*!
  @brief constructs a complex number from polar form
- @param r a distance from a reference point
+ @param rho a distance from a reference point
  @param theta an angle from a reference direction
- @return = \f$ (r\cos\theta,r\sin\theta{i}) \f$
+ @return = \f$ (\rho\cos\theta,\rho\sin\theta{i}) \f$
 */
-A_EXTERN a_complex_s a_complex_polar(a_float_t r, a_float_t theta);
+A_EXTERN a_complex_s a_complex_polar(a_float_t rho, a_float_t theta);
 
 /*!
  @brief complex number x is equal to complex number y
@@ -117,6 +117,13 @@ A_EXTERN a_float_t a_complex_abs(a_complex_s z);
 A_EXTERN a_float_t a_complex_arg(a_complex_s z);
 
 /* Complex arithmetic operators */
+
+/*!
+ @brief computes the projection on Riemann sphere
+ @param z a complex number
+ @return = \f$ z \f$ or \f$ (\inf,\rm{copysign}(0,b)i) \f$
+*/
+A_EXTERN a_complex_s a_complex_proj(a_complex_s z);
 
 /*!
  @brief computes the complex conjugate
