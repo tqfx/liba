@@ -115,12 +115,19 @@ a_float_t a_complex_arg(a_complex_s const z)
 
 a_complex_s a_complex_proj(a_complex_s z)
 {
-    if (a_float_isinf(z.real) || a_float_isinf(z.imag))
+#if defined(__MINGW32__) && A_PREREQ_GNUC(3, 0)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
+#endif /* __MINGW32__ */
+    if (isinf(z.real) || isinf(z.imag))
     {
         z.imag = a_float_copysign(0, z.imag);
         z.real = A_FLOAT_INF;
     }
     return z;
+#if defined(__MINGW32__) && A_PREREQ_GNUC(3, 0)
+#pragma GCC diagnostic pop
+#endif /* __MINGW32__ */
 }
 
 a_complex_s a_complex_add(a_complex_s x, a_complex_s const y)
