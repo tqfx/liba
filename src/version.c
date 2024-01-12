@@ -89,14 +89,21 @@ unsigned int a_version_parse(a_version_s *const ctx, char const *const ver)
     if (!ver) { return 0; }
     ctx->major = (unsigned int)strtoul(u.s, &u.p, 0);
     if (u.s[0] == '.' && u.s[1] >= '0' && u.s[1] <= '9') { ++u.s; }
-    else { goto done; }
+    else { goto major; }
     ctx->minor = (unsigned int)strtoul(u.s, &u.p, 0);
     if (u.s[0] == '.' && u.s[1] >= '0' && u.s[1] <= '9') { ++u.s; }
-    else { goto done; }
+    else { goto minor; }
     ctx->patch = (unsigned int)strtoul(u.s, &u.p, 0);
     if (u.s[0] == '.' && u.s[1] >= '0' && u.s[1] <= '9') { ++u.s; }
-    else { goto done; }
+    else { goto patch; }
     ctx->extra = (unsigned int)strtoul(u.s, &u.p, 0);
-done:
+    goto extra;
+major:
+    ctx->minor = 0;
+minor:
+    ctx->patch = 0;
+patch:
+    ctx->extra = 0;
+extra:
     return (unsigned int)(u.s - ver);
 }

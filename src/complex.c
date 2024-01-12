@@ -39,7 +39,7 @@ unsigned int a_complex_parse(a_complex_s *const ctx, char const *const str)
         char *p;
     } u = {str};
     if (!str) { return 0; }
-    for (; *u.s; ++u.s)
+    for (ctx->real = 0; *u.s; ++u.s)
     {
         if (*u.s == '+' || *u.s == '-' || ('0' <= *u.s && *u.s <= '9') || *u.s == '.')
         {
@@ -47,7 +47,7 @@ unsigned int a_complex_parse(a_complex_s *const ctx, char const *const str)
             break;
         }
     }
-    for (; *u.s; ++u.s)
+    for (ctx->imag = 0; *u.s; ++u.s)
     {
         if (*u.s == '+' || *u.s == '-' || ('0' <= *u.s && *u.s <= '9') || *u.s == '.')
         {
