@@ -8,13 +8,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     if (argc > 1)
     {
         char *endptr = A_NULL;
-#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
-        (void)strtof(argv[1], &endptr);
-#elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
-        (void)strtod(argv[1], &endptr);
-#elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
-        (void)strtold(argv[1], &endptr);
-#endif /* A_FLOAT_TYPE */
+        (void)strtonum(argv[1], &endptr);
         if (argv[1] == endptr)
         {
             test_init(argc, argv, 1);
@@ -25,13 +19,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_float_t arg[10] = {0};
     for (int i = start; i < argc; ++i)
     {
-#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
-        arg[i - start] = strtof(argv[i], A_NULL);
-#elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
-        arg[i - start] = strtod(argv[i], A_NULL);
-#elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
-        arg[i - start] = strtold(argv[i], A_NULL);
-#endif /* A_FLOAT_TYPE */
+        arg[i - start] = strtonum(argv[i], A_NULL);
     }
     a_polytraj7_s pt7;
     a_polytraj7_gen(&pt7, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7], arg[8], arg[9]);

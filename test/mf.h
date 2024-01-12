@@ -26,14 +26,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_float_t params[6];
     for (int i = 2; i < argc && i < 8; ++i)
     {
-        char *endptr = A_NULL;
-#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
-        params[i - 2] = strtof(argv[i], &endptr);
-#elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
-        params[i - 2] = strtod(argv[i], &endptr);
-#elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
-        params[i - 2] = strtold(argv[i], &endptr);
-#endif /* A_FLOAT_TYPE */
+        params[i - 2] = strtonum(argv[i], A_NULL);
     }
     if (e != A_MF_NUL)
     {

@@ -52,6 +52,14 @@
 #define SCNt "l"
 #endif /* C > 199900 or C++ > 201100 */
 
+#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
+#define strtonum(string, endptr) strtof(string, endptr)
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
+#define strtonum(string, endptr) strtod(string, endptr)
+#elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
+#define strtonum(string, endptr) strtold(string, endptr)
+#endif /* A_FLOAT_TYPE */
+
 #define TEST_IS_TRUE(expression, message)                   \
     do {                                                    \
         if (!(expression))                                  \
