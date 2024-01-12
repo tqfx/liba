@@ -14,27 +14,29 @@ jobs:
         ]
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           lfs: true
           submodules: true
-      - name: Run debug
+      - name: Run setup
         run: |
+          choco install ninja
+          python -m venv venv
+          venv/Scripts/Activate.ps1
+          python -m pip install -r requirements.txt
           Get-ChildItem Env: | Sort Name
       - name: Run cmake
         run: |
+          venv/Scripts/Activate.ps1
           Set-PSDebug -Trace 1
           cmake -S . -B build/cl -A ${{ matrix.arch }} `
+            -DBUILD_TESTING=1 `
             -DLIBA_WARNINGS=1 `
             -DLIBA_SANITIZE=1 `
             -DLIBA_WITH_LUA=1 `
             -DLIBA_PYTHON=1 `
             -DLIBA_VCPKG=1 `
-            -DLIBA_JAVA=1 `
-            -DLIBA_LUA=1 `
-            -DBUILD_TESTING=1
-          cmake --build build/cl --target apip -- -noLogo
-          cmake -S . -B build/cl
+            -DLIBA_JAVA=1
           cmake --build build/cl --config ${{ matrix.type }} --target package -- -noLogo
       - name: Run vcpkg
         if: ${{ matrix.type == 'Debug' }}
@@ -49,18 +51,20 @@ jobs:
         run: |
           Set-PSDebug -Trace 1
           cmake --build build/cl --config ${{ matrix.type }} --target run_tests -- -noLogo
+      - uses: mymindstorm/setup-emsdk@v13
       - name: Run cmake
         if: ${{ matrix.arch == 'x64' }}
         run: |
+          venv/Scripts/Activate.ps1
           Set-PSDebug -Trace 1
           cmake -S . -B build/clang -G "Ninja Multi-Config" --toolchain cmake/UseClang.cmake `
+            -DBUILD_TESTING=1 `
             -DLIBA_WARNINGS=1 `
+            -DLIBA_JAVASCRIPT=1 `
+            -DLIBA_WITH_LUA=1 `
             -DLIBA_PYTHON=1 `
             -DLIBA_VCPKG=1 `
-            -DLIBA_JAVA=1 `
-            -DLIBA_LUA=1 `
-            -DBUILD_TESTING=1
-          cmake -S . -B build/clang
+            -DLIBA_JAVA=1
           cmake --build build/clang --config ${{ matrix.type }} --target package
       - name: Run ctest
         if: ${{ matrix.arch == 'x64' }}

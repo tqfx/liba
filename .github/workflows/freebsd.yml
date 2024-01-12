@@ -10,36 +10,36 @@ jobs:
           { type: Debug },
           { type: RelWithDebInfo },
         ]
-    runs-on: macos-12
+    runs-on: ubuntu-latest
     env:
       CTEST_OUTPUT_ON_FAILURE: 1
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           lfs: true
           submodules: true
-      - uses: vmactions/freebsd-vm@v0
+      - uses: vmactions/freebsd-vm@v1
         with:
           envs: 'CTEST_OUTPUT_ON_FAILURE'
           copyback: false
-          mem: 2048
           prepare: |
-            pkg install -y cmake gmake
+            pkg install -y cmake gmake curl
             pkg install -y python && curl -sSL https://bootstrap.pypa.io/get-pip.py | python -
             pkg install -y openjdk8
             pkg install -y lua54
             pkg install -y rust
           run: |
+            python -m venv venv
+            . venv/bin/activate
+            python -m pip install -r requirements.txt
             cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }} \
+              -DBUILD_TESTING=1 \
               -DLIBA_WARNINGS=1 \
               -DLIBA_SANITIZE=1 \
               -DLIBA_PYTHON=1 \
               -DLIBA_VCPKG=1 \
               -DLIBA_JAVA=1 \
-              -DLIBA_LUA=1 \
-              -DBUILD_TESTING=1
-            cmake --build build --target apip
-            cmake -S . -B build
+              -DLIBA_LUA=1
             cmake --build build --config ${{ matrix.type }} --target package
             cmake --build build --target test
             cargo test

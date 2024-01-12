@@ -60,17 +60,21 @@ target/
 build/
 dist/
 
-# MacOS Cache
-.DS_Store
+# venv
+.venv/
+venv/
 
 # Visual Studio Code
-.vscode
+.vscode/
+
+# MacOS Cache
+.DS_Store/
 
 # clangd
-*.cache
+.cache/
 
 # Xmake
-.xmake
+.xmake/
 
 # Rust
 Cargo.lock
@@ -84,6 +88,3 @@ Cargo.lock
 .sconf_temp/
 config.log
 a.scons.h
-
-# pipenv
-Pipfile.lock

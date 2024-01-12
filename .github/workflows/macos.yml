@@ -14,32 +14,36 @@ jobs:
         ]
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           lfs: true
           submodules: true
-      - name: Run debug
+      - name: Run setup
         env:
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
-        run: env
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          python3 -m pip install -r requirements.txt
+          env
+      - uses: mymindstorm/setup-emsdk@v13
       - name: Run cmake
         env:
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
         run: |
+          source venv/bin/activate
           set -x
           cmake -S . -B build/${{ matrix.cc }} -DCMAKE_BUILD_TYPE=${{ matrix.type }} \
+            -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_SANITIZE=1 \
+            -DLIBA_JAVASCRIPT=1 \
             -DLIBA_WITH_LUA=1 \
             -DLIBA_PYTHON=1 \
             -DLIBA_VCPKG=1 \
-            -DLIBA_JAVA=1 \
-            -DLIBA_LUA=1 \
-            -DBUILD_TESTING=1
-          cmake --build build/${{ matrix.cc }} --target apip
-          cmake -S . -B build/${{ matrix.cc }}
+            -DLIBA_JAVA=1
           cmake --build build/${{ matrix.cc }} --config ${{ matrix.type }} --target package
       - name: Run vcpkg
         if: ${{ matrix.type == 'Debug' }}

@@ -567,13 +567,6 @@ if(BLACK_FOUND)
   add_dependencies(afmt ablack)
 endif()
 
-if(PYTHON_FOUND)
-  add_custom_target(apip # https://pip.readthedocs.io/en/stable
-    ${PYTHON_EXECUTABLE} -m pip install -r ${CMAKE_CURRENT_LIST_DIR}/requirements.txt
-    COMMENT "${PYTHON_EXECUTABLE} -m pip install -r requirements.txt"
-  )
-endif()
-
 if(PYTHON_FOUND AND CYTHON_FOUND)
   set(OPTIONS)
 

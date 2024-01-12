@@ -9,7 +9,7 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           lfs: true
           submodules: true
@@ -25,7 +25,7 @@ jobs:
           curl https://www.doxygen.nl/files/doxygen-1.10.0.linux.bin.tar.gz | tar -xzf -
           cd doxygen-1.10.0
           sudo make install
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           repository: luarocks/luarocks
           path: luarocks
@@ -46,7 +46,7 @@ jobs:
                               -DLIBA_JAVA=1 -DLIBA_JAVADOC=1
           cmake --build build --target adoc
           cargo doc --release --no-deps
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           lfs: true
           submodules: true
