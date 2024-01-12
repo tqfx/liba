@@ -6,6 +6,9 @@
 #include "a.h"
 #include <stdio.h>
 #include <inttypes.h>
+#if defined(_MSC_VER) && (_MSC_VER < 1900)
+#define snprintf sprintf_s
+#endif /* _MSC_VER */
 
 /***
  Brian Kernighan and Dennis Ritchie
@@ -21,7 +24,7 @@ static int liba_hash_bkdr(lua_State *const L)
     {
         val = (a_u32_t)a_hash_bkdr(luaL_checklstring(L, Li, A_NULL), val);
     }
-    (void)sprintf(str, "0x%08" PRIX32, val);
+    (void)snprintf(str, 11, "0x%08" PRIX32, val);
     lua_pushstring(L, str);
     return 1;
 }
