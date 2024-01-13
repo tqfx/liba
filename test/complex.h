@@ -9,7 +9,7 @@
 
 static void test(a_complex_s a, a_complex_s b)
 {
-    a_complex_s c = a_complex_polar(A_FLOAT_C(1.0), a_float_c(, A_PI_2));
+    a_complex_s c = a_complex_polar(A_FLOAT_C(1.0), a_float_c(A_PI_2));
     a_float_t x = a_complex_logabs(c);
 
     x = a_complex_logabs(a);

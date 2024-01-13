@@ -49,7 +49,7 @@ typedef struct a_rbt_s
 A_INTERN a_rbt_s *a_rbt_parent(a_rbt_s const *const node)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    return a_cast_r(a_rbt_s *, node->_parent & ~a_uptr_c(, 1));
+    return a_cast_r(a_rbt_s *, node->_parent & ~a_uptr_c(1));
 #else /* !A_SIZE_POINTER */
     return node->parent;
 #endif /* A_SIZE_POINTER */

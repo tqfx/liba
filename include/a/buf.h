@@ -58,7 +58,7 @@ A_INTERN a_size_t a_buf_siz(a_buf_s const *const ctx) { return ctx->_siz; }
 */
 A_INTERN void *a_buf_at_(a_buf_s const *const ctx, a_size_t const idx)
 {
-    return a_byte_c(*, ctx->_ptr) + ctx->_siz * idx;
+    return a_byte_(*, ctx->_ptr) + ctx->_siz * idx;
 }
 
 /*!
@@ -82,7 +82,7 @@ A_INTERN void *a_buf_at(a_buf_s const *const ctx, a_size_t const idx)
 */
 A_INTERN void *a_buf_idx(a_buf_s const *const ctx, a_diff_t const idx)
 {
-    a_size_t const num = idx < 0 ? a_size_c(, idx) + ctx->_num : a_size_c(, idx);
+    a_size_t const num = idx < 0 ? a_size_c(idx) + ctx->_num : a_size_c(idx);
     return a_likely(num < ctx->_mem) ? a_buf_at_(ctx, num) : A_NULL;
 }
 
@@ -94,7 +94,7 @@ A_INTERN void *a_buf_idx(a_buf_s const *const ctx, a_diff_t const idx)
 */
 A_INTERN void *a_buf_top_(a_buf_s const *const ctx)
 {
-    return a_byte_c(*, ctx->_ptr) + ctx->_siz * (ctx->_num - 1);
+    return a_byte_(*, ctx->_ptr) + ctx->_siz * (ctx->_num - 1);
 }
 
 /*!
@@ -115,7 +115,7 @@ A_INTERN void *a_buf_top(a_buf_s const *const ctx)
 */
 A_INTERN void *a_buf_end(a_buf_s const *const ctx)
 {
-    return a_byte_c(*, ctx->_ptr) + ctx->_siz * ctx->_num;
+    return a_byte_(*, ctx->_ptr) + ctx->_siz * ctx->_num;
 }
 
 #if defined(__cplusplus)

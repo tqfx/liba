@@ -43,7 +43,7 @@ static void test_bkdr(int argc, char *argv[])
 {
     for (int idx = 1; idx < argc; ++idx)
     {
-        a_u32_t val = a_u32_c(, a_hash_bkdr(argv[idx], 0));
+        a_u32_t val = a_u32_c(a_hash_bkdr(argv[idx], 0));
         debug("case 0x%08" PRIX32 ": // %s\n    break;\n", val, argv[idx]);
     }
 }
@@ -221,7 +221,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         test_roll(argc, argv);
         return 0;
     }
-    a_u32_t bkdr = a_u32_c(, a_hash_bkdr(argv[1], 0));
+    a_u32_t bkdr = a_u32_c(a_hash_bkdr(argv[1], 0));
     switch (bkdr)
     {
     case 0x001AEED5: // for

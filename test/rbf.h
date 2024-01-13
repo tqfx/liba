@@ -44,12 +44,12 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 
     for (unsigned int i = 0; i < 1000; ++i)
     {
-        ctx.input_p[0] = a_float_sin(A_FLOAT_C(0.002) * A_FLOAT_PI * a_float_c(, i));
+        ctx.input_p[0] = a_float_sin(A_FLOAT_C(0.002) * A_FLOAT_PI * a_float_c(i));
         ctx.input_p[1] = *tf.output;
         a_rbf_tune(&ctx, ctx.input_p);
         a_tf_iter(&tf, *a_rbf_iter(&ctx));
         debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
-              A_FLOAT_C(0.002) * A_FLOAT_PI * a_float_c(, i), *ctx.input_p, *ctx.output_p, *tf.output);
+              A_FLOAT_C(0.002) * A_FLOAT_PI * a_float_c(i), *ctx.input_p, *ctx.output_p, *tf.output);
     }
 
     return 0;

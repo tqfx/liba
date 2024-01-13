@@ -34,7 +34,7 @@
 */
 
 // clang-format off
-#define A_HPF_INIT(alpha) {a_float_c(, alpha), 0, 0}
+#define A_HPF_INIT(alpha) {a_float_c(alpha), 0, 0}
 // clang-format on
 
 /*!
@@ -64,7 +64,7 @@ A_INTERN a_float_t a_hpf_gen(a_float_t const fc, a_float_t const ts)
 {
     return 1 / (2 * A_FLOAT_PI * fc * ts + 1);
 }
-#define A_HPF_GEN(fc, ts) (1 / (2 * A_FLOAT_PI * a_float_c(, fc) * a_float_c(, ts) + 1))
+#define A_HPF_GEN(fc, ts) (1 / (2 * A_FLOAT_PI * a_float_c(fc) * a_float_c(ts) + 1))
 
 /*!
  @brief initialize for High Pass Filter

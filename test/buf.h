@@ -5,7 +5,7 @@
 
 static void dtor(void *ptr)
 {
-    a_u32_t *obj = a_u32_c(*, ptr);
+    a_u32_t *obj = a_u32_(*, ptr);
     printf("%" PRIu32 " ", *obj);
 }
 
@@ -70,12 +70,12 @@ static void fore(void)
 
 static int cmp(void const *lhs, void const *rhs)
 {
-    return *a_int_c(const *, lhs) - *a_int_c(const *, rhs);
+    return *a_int_(const *, lhs) - *a_int_(const *, rhs);
 }
 
 static int cmpr(void const *lhs, void const *rhs)
 {
-    return *a_int_c(const *, rhs) - *a_int_c(const *, lhs);
+    return *a_int_(const *, rhs) - *a_int_(const *, lhs);
 }
 
 static int rand10(void)

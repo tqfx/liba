@@ -34,7 +34,7 @@
 */
 
 // clang-format off
-#define A_LPF_INIT(alpha) {a_float_c(, alpha), 0}
+#define A_LPF_INIT(alpha) {a_float_c(alpha), 0}
 // clang-format on
 
 /*!
@@ -63,7 +63,7 @@ A_INTERN a_float_t a_lpf_gen(a_float_t const fc, a_float_t const ts)
 {
     return ts / (A_FLOAT_1_PI / 2 / fc + ts);
 }
-#define A_LPF_GEN(fc, ts) (a_float_c(, ts) / (A_FLOAT_1_PI / 2 / a_float_c(, fc) + a_float_c(, ts)))
+#define A_LPF_GEN(fc, ts) (a_float_c(ts) / (A_FLOAT_1_PI / 2 / a_float_c(fc) + a_float_c(ts)))
 
 /*!
  @brief initialize for Low Pass Filter

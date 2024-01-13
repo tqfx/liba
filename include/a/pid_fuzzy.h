@@ -25,7 +25,7 @@ typedef enum a_pid_fuzzy_e
     A_PID_FUZZY_CAP_BOUNDED, //!< max(a+b-1,0)
     A_PID_FUZZY_CUP, //!< max(a,b)
     A_PID_FUZZY_CUP_ALGEBRA, //!< a+b-a*b
-    A_PID_FUZZY_CUP_BOUNDED, //!< min(a+b,1)
+    A_PID_FUZZY_CUP_BOUNDED //!< min(a+b,1)
 } a_pid_fuzzy_e;
 
 /*!

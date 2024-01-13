@@ -115,10 +115,10 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_pid_expert_init(&ctx);
     for (unsigned int i = 0; i < 500; ++i)
     {
-        a_float_t in = input(A_FLOAT_C(0.001) * a_float_c(, i));
+        a_float_t in = input(A_FLOAT_C(0.001) * a_float_c(i));
         a_tf_iter(&tf, a_pid_expert_iter(&ctx, in, *tf.output));
         debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
-              A_FLOAT_C(0.001) * a_float_c(, i), in, *tf.output, ctx.pid.err);
+              A_FLOAT_C(0.001) * a_float_c(i), in, *tf.output, ctx.pid.err);
     }
     a_pid_expert_zero(&ctx);
     a_tf_zero(&tf);

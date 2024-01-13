@@ -9,7 +9,7 @@ static emscripten::val js_concat(emscripten::val x)
 
 static a_float_t *js_array_num_get(emscripten::val const &x, a_size_t n, a_float_t *p)
 {
-    p = a_float_c(*, a_alloc(p, sizeof(a_float_t) * n));
+    p = a_float_(*, a_alloc(p, sizeof(a_float_t) * n));
     a_size_t length = x["length"].as<a_size_t>();
     for (a_size_t i = 0; i < length; ++i)
     {
@@ -331,13 +331,13 @@ class tf: public a_tf_s
     void set_num_(emscripten::val const &_num, a_float_t *num)
     {
         a_uint_t num_n = _num["length"].as<a_uint_t>();
-        a_float_t *p = js_array_num_get(_num, a_size_c(, num_n) * 2, num);
+        a_float_t *p = js_array_num_get(_num, a_size_c(num_n) * 2, num);
         a_tf_set_num(this, num_n, p, p + num_n);
     }
     void set_den_(emscripten::val const &_den, a_float_t *den)
     {
         a_uint_t den_n = _den["length"].as<a_uint_t>();
-        a_float_t *p = js_array_num_get(_den, a_size_c(, den_n) * 2, den);
+        a_float_t *p = js_array_num_get(_den, a_size_c(den_n) * 2, den);
         a_tf_set_den(this, den_n, p, p + den_n);
     }
 
