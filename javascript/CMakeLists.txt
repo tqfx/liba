@@ -56,8 +56,8 @@ option(LIBA_JAVASCRIPT_ASYNC "Enable/Disable compilation of wasm async" 0)
 option(LIBA_JAVASCRIPT_BIGINT "Enable/Disable JavaScript BigInt" 0)
 
 if(LIBA_JAVASCRIPT_TSGEN)
-  string_append(CMAKE_C_LINK_EXECUTABLE --embind-emit-tsd <TARGET_BASE>.gen.d.ts)
-  string_append(CMAKE_CXX_LINK_EXECUTABLE --embind-emit-tsd <TARGET_BASE>.gen.d.ts)
+  string_append(CMAKE_C_LINK_EXECUTABLE --embind-emit-tsd liba.gen.d.ts)
+  string_append(CMAKE_CXX_LINK_EXECUTABLE --embind-emit-tsd liba.gen.d.ts)
 endif()
 
 if(NOT LIBA_JAVASCRIPT_ASYNC)
