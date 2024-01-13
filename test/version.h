@@ -35,10 +35,10 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     TEST_BUG(v100 >= v010);
     TEST_BUG(v100 >= v100);
 #else /* !__cplusplus */
-    a_version_s v000 = A_VERSION_C(0, 0, 0);
-    a_version_s v100 = A_VERSION_C(1, 0, 0);
-    a_version_s v010 = A_VERSION_C(0, 1, 0);
-    a_version_s v001 = A_VERSION_C(0, 0, 1);
+    a_version v000 = A_VERSION_C(0, 0, 0);
+    a_version v100 = A_VERSION_C(1, 0, 0);
+    a_version v010 = A_VERSION_C(0, 1, 0);
+    a_version v001 = A_VERSION_C(0, 0, 1);
 
     TEST_BUG(a_version_eq(&v000, &v000));
     TEST_BUG(a_version_ne(&v000, &v001));
@@ -75,23 +75,15 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 #endif /* __cplusplus */
     for (int i = 0; i < argc; ++i)
     {
-        a_version_s ctx;
+        a_version ctx;
         a_version_parse(&ctx, argv[i]);
         debug("parse \"%s\" -> %u.%u.%u\n", argv[i], ctx.major, ctx.minor, ctx.patch);
     }
     printf("%s\n", A_FUNC);
 #if defined(__cplusplus)
-    printf("version %s+%" PRIu32 "\n", a::VERSION, a::version::TWEAK);
-    printf("major %u\n", a::version::MAJOR);
-    printf("minor %u\n", a::version::MINOR);
-    printf("patch %u\n", a::version::PATCH);
-    printf("tweak %" PRIu32 "\n", a::version::TWEAK);
+    printf("version %u.%u.%u+%" PRIu32 "\n", a::version::MAJOR, a::version::MINOR, a::version::PATCH, a::version::TWEAK);
 #else /* !__cplusplus */
-    printf("version %s+%" PRIu32 "\n", a_version, a_version_tweak);
-    printf("major %u\n", a_version_major);
-    printf("minor %u\n", a_version_minor);
-    printf("patch %u\n", a_version_patch);
-    printf("tweak %" PRIu32 "\n", a_version_tweak);
+    printf("version %u.%u.%u+%" PRIu32 "\n", a_version_major, a_version_minor, a_version_patch, a_version_tweak);
 #endif /* __cplusplus */
     TEST_BUG(a_version_check() == 0);
     return 0;

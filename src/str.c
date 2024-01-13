@@ -5,14 +5,14 @@
 #endif /* _MSC_VER */
 #include "a/str.h"
 
-a_str_s *a_str_new(void)
+a_str *a_str_new(void)
 {
-    a_str_s *const ctx = (a_str_s *)a_alloc(A_NULL, sizeof(a_str_s));
+    a_str *const ctx = (a_str *)a_alloc(A_NULL, sizeof(a_str));
     if (ctx) { a_str_ctor(ctx); }
     return ctx;
 }
 
-void a_str_die(a_str_s *const ctx)
+void a_str_die(a_str *const ctx)
 {
     if (ctx)
     {
@@ -21,14 +21,14 @@ void a_str_die(a_str_s *const ctx)
     }
 }
 
-void a_str_ctor(a_str_s *const ctx)
+void a_str_ctor(a_str *const ctx)
 {
     ctx->_ptr = A_NULL;
     ctx->_num = 0;
     ctx->_mem = 0;
 }
 
-void a_str_dtor(a_str_s *const ctx)
+void a_str_dtor(a_str *const ctx)
 {
     if (ctx->_ptr)
     {
@@ -39,7 +39,7 @@ void a_str_dtor(a_str_s *const ctx)
     ctx->_mem = 0;
 }
 
-int a_str_init(a_str_s *const ctx, void const *const pdata, a_size_t const nbyte)
+int a_str_init(a_str *const ctx, void const *const pdata, a_size const nbyte)
 {
     ctx->_num = nbyte;
     ctx->_mem = ctx->_num + 1;
@@ -54,18 +54,18 @@ int a_str_init(a_str_s *const ctx, void const *const pdata, a_size_t const nbyte
     return A_SUCCESS;
 }
 
-int a_str_copy(a_str_s *const ctx, a_str_s const *const obj)
+int a_str_copy(a_str *const ctx, a_str const *const obj)
 {
     return a_str_init(ctx, obj->_ptr, obj->_num);
 }
 
-void a_str_move(a_str_s *const ctx, a_str_s *const obj)
+void a_str_move(a_str *const ctx, a_str *const obj)
 {
     a_copy(ctx, obj, sizeof(*obj));
     a_zero(obj, sizeof(*obj));
 }
 
-char *a_str_exit(a_str_s *const ctx)
+char *a_str_exit(a_str *const ctx)
 {
     char *const str = ctx->_ptr;
     if (ctx->_ptr)
@@ -78,7 +78,7 @@ char *a_str_exit(a_str_s *const ctx)
     return str;
 }
 
-int a_str_cmp(a_str_s const *const lhs, a_str_s const *const rhs)
+int a_str_cmp(a_str const *const lhs, a_str const *const rhs)
 {
     int ok = 0;
     if (lhs->_ptr && rhs->_ptr)
@@ -90,7 +90,7 @@ int a_str_cmp(a_str_s const *const lhs, a_str_s const *const rhs)
     return lhs->_num < rhs->_num ? -1 : +1;
 }
 
-int a_str_alloc_(a_str_s *const ctx, a_size_t mem)
+int a_str_alloc_(a_str *const ctx, a_size mem)
 {
     char *ptr;
     mem = a_size_up(sizeof(void *), mem);
@@ -101,12 +101,12 @@ int a_str_alloc_(a_str_s *const ctx, a_size_t mem)
     return A_SUCCESS;
 }
 
-int a_str_alloc(a_str_s *const ctx, a_size_t const mem)
+int a_str_alloc(a_str *const ctx, a_size const mem)
 {
     return ctx->_mem < mem ? a_str_alloc_(ctx, mem) : A_SUCCESS;
 }
 
-int a_str_getc_(a_str_s *const ctx)
+int a_str_getc_(a_str *const ctx)
 {
     int c = ~0;
     if (ctx->_num)
@@ -116,7 +116,7 @@ int a_str_getc_(a_str_s *const ctx)
     return c;
 }
 
-int a_str_getc(a_str_s *const ctx)
+int a_str_getc(a_str *const ctx)
 {
     int c = ~0;
     if (ctx->_num)
@@ -127,14 +127,14 @@ int a_str_getc(a_str_s *const ctx)
     return c;
 }
 
-int a_str_putc_(a_str_s *const ctx, int const c)
+int a_str_putc_(a_str *const ctx, int const c)
 {
     if (a_unlikely(a_str_alloc(ctx, ctx->_num + 1))) { return ~0; }
     ctx->_ptr[ctx->_num++] = (char)c;
     return c;
 }
 
-int a_str_putc(a_str_s *const ctx, int const c)
+int a_str_putc(a_str *const ctx, int const c)
 {
     if (a_unlikely(a_str_alloc(ctx, ctx->_num + 2))) { return ~0; }
     ctx->_ptr[ctx->_num++] = (char)c;
@@ -142,7 +142,7 @@ int a_str_putc(a_str_s *const ctx, int const c)
     return c;
 }
 
-a_size_t a_str_getn_(a_str_s *const ctx, void *const pdata, a_size_t nbyte)
+a_size a_str_getn_(a_str *const ctx, void *const pdata, a_size nbyte)
 {
     if (nbyte > ctx->_num) { nbyte = ctx->_num; }
     if (pdata && nbyte)
@@ -153,7 +153,7 @@ a_size_t a_str_getn_(a_str_s *const ctx, void *const pdata, a_size_t nbyte)
     return nbyte;
 }
 
-a_size_t a_str_getn(a_str_s *const ctx, void *const pdata, a_size_t nbyte)
+a_size a_str_getn(a_str *const ctx, void *const pdata, a_size nbyte)
 {
     if (nbyte > ctx->_num) { nbyte = ctx->_num; }
     if (pdata && nbyte)
@@ -165,7 +165,7 @@ a_size_t a_str_getn(a_str_s *const ctx, void *const pdata, a_size_t nbyte)
     return nbyte;
 }
 
-int a_str_putn_(a_str_s *const ctx, void const *const pdata, a_size_t const nbyte)
+int a_str_putn_(a_str *const ctx, void const *const pdata, a_size const nbyte)
 {
     if (pdata && nbyte)
     {
@@ -176,7 +176,7 @@ int a_str_putn_(a_str_s *const ctx, void const *const pdata, a_size_t const nbyt
     return A_SUCCESS;
 }
 
-int a_str_putn(a_str_s *const ctx, void const *const pdata, a_size_t const nbyte)
+int a_str_putn(a_str *const ctx, void const *const pdata, a_size const nbyte)
 {
     if (pdata && nbyte)
     {
@@ -188,33 +188,33 @@ int a_str_putn(a_str_s *const ctx, void const *const pdata, a_size_t const nbyte
     return A_SUCCESS;
 }
 
-int a_str_puts_(a_str_s *const ctx, void const *const str)
+int a_str_puts_(a_str *const ctx, void const *const str)
 {
     return a_str_putn_(ctx, str, strlen((char const *)str));
 }
 
-int a_str_puts(a_str_s *const ctx, void const *const str)
+int a_str_puts(a_str *const ctx, void const *const str)
 {
     return a_str_putn(ctx, str, strlen((char const *)str));
 }
 
-int a_str_cat_(a_str_s *const ctx, a_str_s const *const obj)
+int a_str_cat_(a_str *const ctx, a_str const *const obj)
 {
     return a_str_putn_(ctx, obj->_ptr, obj->_num);
 }
 
-int a_str_cat(a_str_s *const ctx, a_str_s const *const obj)
+int a_str_cat(a_str *const ctx, a_str const *const obj)
 {
     return a_str_putn(ctx, obj->_ptr, obj->_num);
 }
 
 #include <stdio.h>
 
-int a_str_putf_(a_str_s *const ctx, char const *const fmt, va_list va)
+int a_str_putf_(a_str *const ctx, char const *const fmt, va_list va)
 {
     int res;
     va_list ap;
-    a_size_t mem;
+    a_size mem;
     char *ptr = ctx->_ptr ? ctx->_ptr + ctx->_num : ctx->_ptr;
     va_copy(ap, va);
     mem = ctx->_mem - ctx->_num;
@@ -234,7 +234,7 @@ int a_str_putf_(a_str_s *const ctx, char const *const fmt, va_list va)
     return res;
 }
 
-int a_str_putf(a_str_s *const ctx, char const *const fmt, ...)
+int a_str_putf(a_str *const ctx, char const *const fmt, ...)
 {
     int res;
     va_list va;
@@ -246,9 +246,9 @@ int a_str_putf(a_str_s *const ctx, char const *const fmt, ...)
 
 #include "a/utf.h"
 
-a_size_t a_str_utflen(a_str_s const *const ctx)
+a_size a_str_utflen(a_str const *const ctx)
 {
-    a_size_t length = 0;
+    a_size length = 0;
     if (ctx->_num)
     {
         unsigned int offset;

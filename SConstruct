@@ -34,7 +34,7 @@ int main()
 if res[0]:
     conf.Define('A_BYTE_ORDER', res[1], 'The byte order of compiler target architecture.')
 A_SIZE_FLOAT = int(env.GetOption('float'))
-conf.Define('A_SIZE_FLOAT', A_SIZE_FLOAT, "The size of `a_float_t', as computed by sizeof.")
+conf.Define('A_SIZE_FLOAT', A_SIZE_FLOAT, "The size of `a_float', as computed by sizeof.")
 conf.CheckLib('m')
 Undefine(conf)
 for func in (

@@ -15,7 +15,7 @@ static JSValue liba_pid_neuro_ctor(JSContext *const ctx, JSValueConst const new_
     (void)argc;
     (void)argv;
     JSValue proto, clazz = JS_UNDEFINED;
-    a_pid_neuro_s *const self = (a_pid_neuro_s *)js_mallocz(ctx, sizeof(a_pid_neuro_s));
+    a_pid_neuro *const self = (a_pid_neuro *)js_mallocz(ctx, sizeof(a_pid_neuro));
     if (!self) { return JS_EXCEPTION; }
     self->pid.summax = +A_FLOAT_INF;
     self->pid.summin = -A_FLOAT_INF;
@@ -41,7 +41,7 @@ fail:
 
 static JSValue liba_pid_neuro_get(JSContext *const ctx, JSValueConst const this_val, int magic)
 {
-    a_pid_neuro_s *const self = (a_pid_neuro_s *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
+    a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
     if (!self) { return JS_EXCEPTION; }
     double x;
     switch (magic)
@@ -66,21 +66,21 @@ static JSValue liba_pid_neuro_get(JSContext *const ctx, JSValueConst const this_
 
 static JSValue liba_pid_neuro_set(JSContext *const ctx, JSValueConst const this_val, JSValueConst const val, int magic)
 {
-    a_pid_neuro_s *const self = (a_pid_neuro_s *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
+    a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
     if (!self) { return JS_EXCEPTION; }
     double x;
     if (JS_ToFloat64(ctx, &x, val)) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case 0: self->k = (a_float_t)x; break;
-    case 1: self->pid.kp = (a_float_t)x; break;
-    case 2: self->pid.ki = (a_float_t)x; break;
-    case 3: self->pid.kd = (a_float_t)x; break;
-    case 4: self->wp = (a_float_t)x; break;
-    case 5: self->wi = (a_float_t)x; break;
-    case 6: self->wd = (a_float_t)x; break;
-    case 7: self->pid.outmax = (a_float_t)x; break;
-    case 8: self->pid.outmin = (a_float_t)x; break;
+    case 0: self->k = (a_float)x; break;
+    case 1: self->pid.kp = (a_float)x; break;
+    case 2: self->pid.ki = (a_float)x; break;
+    case 3: self->pid.kd = (a_float)x; break;
+    case 4: self->wp = (a_float)x; break;
+    case 5: self->wi = (a_float)x; break;
+    case 6: self->wd = (a_float)x; break;
+    case 7: self->pid.outmax = (a_float)x; break;
+    case 8: self->pid.outmin = (a_float)x; break;
     default: break;
     }
     return JS_UNDEFINED;
@@ -89,28 +89,28 @@ static JSValue liba_pid_neuro_set(JSContext *const ctx, JSValueConst const this_
 static JSValue liba_pid_neuro_kpid(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_pid_neuro_s *const self = (a_pid_neuro_s *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
+    a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
     if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0, 0, 0};
     for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    a_pid_neuro_kpid(self, (a_float_t)args[0], (a_float_t)args[1], (a_float_t)args[2], (a_float_t)args[3]);
+    a_pid_neuro_kpid(self, (a_float)args[0], (a_float)args[1], (a_float)args[2], (a_float)args[3]);
     return JS_UNDEFINED;
 }
 
 static JSValue liba_pid_neuro_wpid(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_pid_neuro_s *const self = (a_pid_neuro_s *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
+    a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
     if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0, 0};
     for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    a_pid_neuro_wpid(self, (a_float_t)args[0], (a_float_t)args[1], (a_float_t)args[2]);
+    a_pid_neuro_wpid(self, (a_float)args[0], (a_float)args[1], (a_float)args[2]);
     return JS_UNDEFINED;
 }
 
@@ -118,7 +118,7 @@ static JSValue liba_pid_neuro_zero(JSContext *const ctx, JSValueConst const this
 {
     (void)argc;
     (void)argv;
-    a_pid_neuro_s *const self = (a_pid_neuro_s *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
+    a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_pid_neuro_zero(self);
     return JS_UNDEFINED;
@@ -127,27 +127,27 @@ static JSValue liba_pid_neuro_zero(JSContext *const ctx, JSValueConst const this
 static JSValue liba_pid_neuro_run(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_pid_neuro_s *const self = (a_pid_neuro_s *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
+    a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
     if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0};
     for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    return JS_NewFloat64(ctx, (double)a_pid_neuro_run(self, (a_float_t)args[0], (a_float_t)args[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_neuro_run(self, (a_float)args[0], (a_float)args[1]));
 }
 
 static JSValue liba_pid_neuro_inc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_pid_neuro_s *const self = (a_pid_neuro_s *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
+    a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
     if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0};
     for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    return JS_NewFloat64(ctx, (double)a_pid_neuro_inc(self, (a_float_t)args[0], (a_float_t)args[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_neuro_inc(self, (a_float)args[0], (a_float)args[1]));
 }
 
 static JSCFunctionListEntry const liba_pid_neuro_proto[] = {

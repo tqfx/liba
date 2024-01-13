@@ -48,11 +48,11 @@ namespace a
 {
 struct version;
 }
-typedef struct a::version a_version_s;
+typedef struct a::version a_version;
 #define A_VERSION_C(maj, min, pat) a::version(maj, min, pat)
 #define A_VERSION_EX(maj, min, pat, ext) a::version(maj, min, pat, ext)
 #else /* !__cplusplus */
-typedef struct a_version_s a_version_s;
+typedef struct a_version a_version;
 // clang-format off
 #define A_VERSION_C(maj, min, pat) {maj, min, pat, 0}
 #define A_VERSION_EX(maj, min, pat, ext) {maj, min, pat, ext}
@@ -63,8 +63,6 @@ typedef struct a_version_s a_version_s;
 extern "C" {
 #endif /* __cplusplus */
 
-/*! algorithm library version string */
-A_EXTERN char const *const a_version;
 /*! algorithm library version major */
 A_EXTERN unsigned int const a_version_major;
 /*! algorithm library version minor */
@@ -72,7 +70,7 @@ A_EXTERN unsigned int const a_version_minor;
 /*! algorithm library version patch */
 A_EXTERN unsigned int const a_version_patch;
 /*! algorithm library version tweak */
-A_EXTERN a_u32_t const a_version_tweak;
+A_EXTERN a_u32 const a_version_tweak;
 
 /*!
  @brief algorithm library version check
@@ -96,7 +94,7 @@ A_EXTERN int a_version_check(unsigned int major, unsigned int minor, unsigned in
   @retval >0 version lhs > version rhs
   @retval 0 version lhs == version rhs
 */
-A_EXTERN int a_version_cmp(a_version_s const *lhs, a_version_s const *rhs);
+A_EXTERN int a_version_cmp(a_version const *lhs, a_version const *rhs);
 
 /*!
  @brief version lhs is less than version rhs
@@ -104,7 +102,7 @@ A_EXTERN int a_version_cmp(a_version_s const *lhs, a_version_s const *rhs);
  @param[in] rhs operand on the right
  @return result of comparison
 */
-A_EXTERN a_bool_t a_version_lt(a_version_s const *lhs, a_version_s const *rhs);
+A_EXTERN a_bool a_version_lt(a_version const *lhs, a_version const *rhs);
 
 /*!
  @brief version lhs is greater than version rhs
@@ -112,7 +110,7 @@ A_EXTERN a_bool_t a_version_lt(a_version_s const *lhs, a_version_s const *rhs);
  @param[in] rhs operand on the right
  @return result of comparison
 */
-A_EXTERN a_bool_t a_version_gt(a_version_s const *lhs, a_version_s const *rhs);
+A_EXTERN a_bool a_version_gt(a_version const *lhs, a_version const *rhs);
 
 /*!
  @brief version lhs is less than or equal to version rhs
@@ -120,7 +118,7 @@ A_EXTERN a_bool_t a_version_gt(a_version_s const *lhs, a_version_s const *rhs);
  @param[in] rhs operand on the right
  @return result of comparison
 */
-A_EXTERN a_bool_t a_version_le(a_version_s const *lhs, a_version_s const *rhs);
+A_EXTERN a_bool a_version_le(a_version const *lhs, a_version const *rhs);
 
 /*!
  @brief version lhs is greater than or equal to version rhs
@@ -128,7 +126,7 @@ A_EXTERN a_bool_t a_version_le(a_version_s const *lhs, a_version_s const *rhs);
  @param[in] rhs operand on the right
  @return result of comparison
 */
-A_EXTERN a_bool_t a_version_ge(a_version_s const *lhs, a_version_s const *rhs);
+A_EXTERN a_bool a_version_ge(a_version const *lhs, a_version const *rhs);
 
 /*!
  @brief version lhs is equal to version rhs
@@ -136,7 +134,7 @@ A_EXTERN a_bool_t a_version_ge(a_version_s const *lhs, a_version_s const *rhs);
  @param[in] rhs operand on the right
  @return result of comparison
 */
-A_EXTERN a_bool_t a_version_eq(a_version_s const *lhs, a_version_s const *rhs);
+A_EXTERN a_bool a_version_eq(a_version const *lhs, a_version const *rhs);
 
 /*!
  @brief version lhs is not equal to version rhs
@@ -144,7 +142,7 @@ A_EXTERN a_bool_t a_version_eq(a_version_s const *lhs, a_version_s const *rhs);
  @param[in] rhs operand on the right
  @return result of comparison
 */
-A_EXTERN a_bool_t a_version_ne(a_version_s const *lhs, a_version_s const *rhs);
+A_EXTERN a_bool a_version_ne(a_version const *lhs, a_version const *rhs);
 
 /*!
  @brief algorithm library version parse
@@ -152,24 +150,19 @@ A_EXTERN a_bool_t a_version_ne(a_version_s const *lhs, a_version_s const *rhs);
  @param[in] ver version string to be parsed
  @return number of parsed characters
 */
-A_EXTERN unsigned int a_version_parse(a_version_s *ctx, char const *ver);
+A_EXTERN unsigned int a_version_parse(a_version *ctx, char const *ver);
 
 #if defined(__cplusplus)
 } /* extern "C" */
-#endif /* __cplusplus */
-
-#if defined(__cplusplus)
 namespace a
 {
-/*! algorithm library version string */
-A_EXTERN char const *const VERSION;
 #endif /* __cplusplus */
 
 /*!
  @brief instance structure for version
 */
 #if !defined __cplusplus
-struct a_version_s
+struct a_version
 #else /* !__cplusplus */
 struct version
 #endif /* __cplusplus */
@@ -186,7 +179,7 @@ struct version
     /*! algorithm library version patch */
     A_PUBLIC static unsigned int const PATCH;
     /*! algorithm library version tweak */
-    A_PUBLIC static a_u32_t const TWEAK;
+    A_PUBLIC static a_u32 const TWEAK;
     A_INLINE bool operator<(version const &ver) const
     {
         return a_version_lt(this, &ver);

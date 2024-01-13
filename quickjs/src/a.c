@@ -3,14 +3,14 @@
 static JSValue liba_hash_bkdr(JSContext *const ctx, JSValueConst const this_val, int const argc, JSValueConst *const argv)
 {
     (void)this_val;
-    a_umax_t x = 0;
+    a_umax x = 0;
     for (int i = 0; i < argc; ++i)
     {
         char const *str = JS_ToCString(ctx, argv[i]);
         x = a_hash_bkdr(str, x);
         JS_FreeCString(ctx, str);
     }
-    return JS_NewUint32(ctx, (a_u32_t)x);
+    return JS_NewUint32(ctx, (a_u32)x);
 }
 
 #include "a/math.h"
@@ -125,7 +125,7 @@ JSValue js_concat(JSContext *const ctx, JSValueConst const val)
     return res;
 }
 
-int js_array_length(JSContext *const ctx, JSValueConst const val, a_u32_t *const plen)
+int js_array_length(JSContext *const ctx, JSValueConst const val, a_u32 *const plen)
 {
     JSValue length = JS_GetPropertyStr(ctx, val, "length");
     if (JS_IsException(length)) { return ~0; }
@@ -134,7 +134,7 @@ int js_array_length(JSContext *const ctx, JSValueConst const val, a_u32_t *const
     return ret;
 }
 
-int js_array_num_get(JSContext *const ctx, JSValueConst const val, a_float_t *const ptr, a_u32_t const len)
+int js_array_num_get(JSContext *const ctx, JSValueConst const val, a_float *const ptr, a_u32 const len)
 {
     for (unsigned int i = 0; i < len; ++i)
     {
@@ -144,12 +144,12 @@ int js_array_num_get(JSContext *const ctx, JSValueConst const val, a_float_t *co
         int ret = JS_ToFloat64(ctx, &x, tmp);
         JS_FreeValue(ctx, tmp);
         if (ret) { return ret; }
-        ptr[i] = (a_float_t)x;
+        ptr[i] = (a_float)x;
     }
     return 0;
 }
 
-JSValue js_array_num_new(JSContext *const ctx, a_float_t const *const ptr, a_u32_t const len)
+JSValue js_array_num_new(JSContext *const ctx, a_float const *const ptr, a_u32 const len)
 {
     JSValue val = JS_NewArray(ctx);
     if (JS_IsException(val)) { return val; }

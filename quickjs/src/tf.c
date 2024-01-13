@@ -1,15 +1,15 @@
 #include "a.h"
 #include "a/tf.h"
 
-static int liba_tf_set_num_(JSContext *const ctx, a_tf_s *const self, JSValueConst num)
+static int liba_tf_set_num_(JSContext *const ctx, a_tf *const self, JSValueConst num)
 {
-    a_u32_t num_n = 0;
-    a_float_t *num_p = self->input;
+    a_u32 num_n = 0;
+    a_float *num_p = self->input;
     int ret = js_array_length(ctx, num, &num_n);
     if (ret) { return ret; }
     if (num_n > self->num_n)
     {
-        num_p = (a_float_t *)js_realloc(ctx, num_p, sizeof(a_float_t) * num_n * 2);
+        num_p = (a_float *)js_realloc(ctx, num_p, sizeof(a_float) * num_n * 2);
         if (!num_p) { return ~0; }
         self->input = num_p;
         num_p += num_n;
@@ -17,19 +17,19 @@ static int liba_tf_set_num_(JSContext *const ctx, a_tf_s *const self, JSValueCon
     }
     else { num_p += self->num_n; }
     self->num_n = (unsigned int)num_n;
-    a_zero(self->input, sizeof(a_float_t) * num_n);
+    a_zero(self->input, sizeof(a_float) * num_n);
     return js_array_num_get(ctx, num, num_p, num_n);
 }
 
-static int liba_tf_set_den_(JSContext *const ctx, a_tf_s *const self, JSValueConst den)
+static int liba_tf_set_den_(JSContext *const ctx, a_tf *const self, JSValueConst den)
 {
-    a_u32_t den_n = 0;
-    a_float_t *den_p = self->output;
+    a_u32 den_n = 0;
+    a_float *den_p = self->output;
     int ret = js_array_length(ctx, den, &den_n);
     if (ret) { return ret; }
     if (den_n > self->den_n)
     {
-        den_p = (a_float_t *)js_realloc(ctx, den_p, sizeof(a_float_t) * den_n * 2);
+        den_p = (a_float *)js_realloc(ctx, den_p, sizeof(a_float) * den_n * 2);
         if (!den_p) { return ~0; }
         self->output = den_p;
         den_p += den_n;
@@ -37,7 +37,7 @@ static int liba_tf_set_den_(JSContext *const ctx, a_tf_s *const self, JSValueCon
     }
     else { den_p += self->den_n; }
     self->den_n = (unsigned int)den_n;
-    a_zero(self->output, sizeof(a_float_t) * den_n);
+    a_zero(self->output, sizeof(a_float) * den_n);
     return js_array_num_get(ctx, den, den_p, den_n);
 }
 
@@ -45,7 +45,7 @@ static JSClassID liba_tf_class_id;
 
 static void liba_tf_finalizer(JSRuntime *const rt, JSValue const val)
 {
-    a_tf_s *const self = (a_tf_s *)JS_GetOpaque(val, liba_tf_class_id);
+    a_tf *const self = (a_tf *)JS_GetOpaque(val, liba_tf_class_id);
     js_free_rt(rt, self->output);
     js_free_rt(rt, self->input);
     js_free_rt(rt, self);
@@ -57,7 +57,7 @@ static JSValue liba_tf_ctor(JSContext *const ctx, JSValueConst const new_target,
 {
     (void)argc;
     JSValue proto, clazz = JS_UNDEFINED;
-    a_tf_s *const self = (a_tf_s *)js_mallocz(ctx, sizeof(a_tf_s));
+    a_tf *const self = (a_tf *)js_mallocz(ctx, sizeof(a_tf));
     if (!self) { return JS_EXCEPTION; }
     if (JS_IsObject(argv[0]) && liba_tf_set_num_(ctx, self, argv[0])) { goto fail; }
     if (JS_IsObject(argv[1]) && liba_tf_set_den_(ctx, self, argv[1])) { goto fail; }
@@ -76,7 +76,7 @@ fail:
 
 static JSValue liba_tf_get(JSContext *const ctx, JSValueConst const this_val, int magic)
 {
-    a_tf_s *const self = (a_tf_s *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
+    a_tf *const self = (a_tf *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
@@ -90,7 +90,7 @@ static JSValue liba_tf_get(JSContext *const ctx, JSValueConst const this_val, in
 
 static JSValue liba_tf_set(JSContext *const ctx, JSValueConst const this_val, JSValueConst const val, int magic)
 {
-    a_tf_s *const self = (a_tf_s *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
+    a_tf *const self = (a_tf *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
@@ -109,18 +109,18 @@ static JSValue liba_tf_set(JSContext *const ctx, JSValueConst const this_val, JS
 static JSValue liba_tf_iter(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_tf_s *const self = (a_tf_s *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
+    a_tf *const self = (a_tf *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
     if (!self) { return JS_EXCEPTION; }
     double x;
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    return JS_NewFloat64(ctx, (double)a_tf_iter(self, (a_float_t)x));
+    return JS_NewFloat64(ctx, (double)a_tf_iter(self, (a_float)x));
 }
 
 static JSValue liba_tf_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
     (void)argv;
-    a_tf_s *const self = (a_tf_s *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
+    a_tf *const self = (a_tf *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_tf_zero(self);
     return JS_UNDEFINED;

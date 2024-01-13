@@ -80,7 +80,7 @@ def array_num(object o):
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def hash_bkdr(str: bytes, val: a_umax_t) -> a_umax_t:
+def hash_bkdr(str: bytes, val: a_umax) -> a_umax:
     return a_hash_bkdr(str, val)
 
 include "a/crc.pxi"

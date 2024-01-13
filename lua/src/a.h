@@ -26,32 +26,32 @@
 #define LUA_INT lua_Integer
 #endif /* LUA_INT */
 #if !defined LUA_NUM
-#define LUA_NUM a_float_t
+#define LUA_NUM a_float
 #endif /* LUA_NUM */
 
 typedef struct
 {
     char const *name;
     lua_CFunction func;
-} lua_fun_s;
+} lua_fun;
 
 typedef struct
 {
     char const *name;
     char const *data;
-} lua_str_s;
+} lua_str;
 
 typedef struct
 {
     char const *name;
     LUA_INT data;
-} lua_int_s;
+} lua_int;
 
 typedef struct
 {
     char const *name;
     LUA_NUM data;
-} lua_num_s;
+} lua_num;
 
 #if defined(__cplusplus)
 extern "C" {
@@ -71,7 +71,7 @@ LUALIB_API void luaL_checkversion_(lua_State *L, lua_Number ver, size_t sz);
 #endif /* LUA_VERSION_NUM */
 
 #if !defined LUA_VERSION_NUM || (LUA_VERSION_NUM <= 501)
-LUALIB_API void luaL_register(lua_State *L, char const *libname, lua_fun_s const *l);
+LUALIB_API void luaL_register(lua_State *L, char const *libname, lua_fun const *l);
 #define lua_rawsetp(L, idx, p) (lua_pushlightuserdata(L, p), lua_insert(L, -2), lua_rawset(L, idx))
 #define lua_rawgetp(L, idx, p) (lua_pushlightuserdata(L, p), lua_rawget(L, idx))
 #define lua_rawlen lua_objlen
@@ -98,18 +98,18 @@ void *lua_alloc(lua_State *L, void const *ptr, size_t siz);
 void lua_registry_get(lua_State *L, int (*fn)(lua_State *));
 void lua_registry_set(lua_State *L, int (*fn)(lua_State *));
 
-void lua_fun_reg(lua_State *L, int idx, lua_fun_s const *tab, size_t len);
+void lua_fun_reg(lua_State *L, int idx, lua_fun const *tab, size_t len);
 void lua_fun_set(lua_State *L, int idx, char const *name, lua_CFunction func);
 
-void lua_str_reg(lua_State *L, int idx, lua_str_s const *tab, size_t len);
+void lua_str_reg(lua_State *L, int idx, lua_str const *tab, size_t len);
 void lua_str_set(lua_State *L, int idx, char const *name, char const *data);
 char const *lua_str_get(lua_State *L, int idx, char const *name);
 
-void lua_int_reg(lua_State *L, int idx, lua_int_s const *tab, size_t len);
+void lua_int_reg(lua_State *L, int idx, lua_int const *tab, size_t len);
 void lua_int_set(lua_State *L, int idx, char const *name, LUA_INT data);
 LUA_INT lua_int_get(lua_State *L, int idx, char const *name);
 
-void lua_num_reg(lua_State *L, int idx, lua_num_s const *tab, size_t len);
+void lua_num_reg(lua_State *L, int idx, lua_num const *tab, size_t len);
 void lua_num_set(lua_State *L, int idx, char const *name, LUA_NUM data);
 LUA_NUM lua_num_get(lua_State *L, int idx, char const *name);
 

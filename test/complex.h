@@ -5,12 +5,11 @@
 #endif /* -Waggregate-return */
 #include "a/complex.h"
 #include "a/math.h"
-#include <stdlib.h>
 
-static void test(a_complex_s a, a_complex_s b)
+static void test(a_complex a, a_complex b)
 {
-    a_complex_s c = a_complex_polar(A_FLOAT_C(1.0), a_float_c(A_PI_2));
-    a_float_t x = a_complex_logabs(c);
+    a_complex c = a_complex_polar(A_FLOAT_C(1.0), a_float_c(A_PI_2));
+    a_float x = a_complex_logabs(c);
 
     x = a_complex_logabs(a);
     debug("logabs" A_COMPLEX_PRI("", "g", "", "g") "=" A_FLOAT_PRI("", "g\n"), a_complex_real(a), a_complex_imag(a), x);
@@ -140,9 +139,9 @@ static void test(a_complex_s a, a_complex_s b)
           a_complex_real(c), a_complex_imag(c));
 }
 
-static void test_tri(a_complex_s x)
+static void test_tri(a_complex x)
 {
-    a_complex_s z;
+    a_complex z;
 
     debug("sin" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
     z = a_complex_sin(x);
@@ -169,9 +168,9 @@ static void test_tri(a_complex_s x)
     debug("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 }
 
-static void test_trih(a_complex_s x)
+static void test_trih(a_complex x)
 {
-    a_complex_s z;
+    a_complex z;
 
     debug("sinh" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
     z = a_complex_sinh(x);
@@ -198,9 +197,9 @@ static void test_trih(a_complex_s x)
     debug("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 }
 
-static void test_atri(a_complex_s x)
+static void test_atri(a_complex x)
 {
-    a_complex_s z;
+    a_complex z;
 
     debug("asin" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
     z = a_complex_asin(x);
@@ -227,9 +226,9 @@ static void test_atri(a_complex_s x)
     debug("=" A_COMPLEX_PRI("", "g", "", "g") "\n", a_complex_real(z), a_complex_imag(z));
 }
 
-static void test_atrih(a_complex_s x)
+static void test_atrih(a_complex x)
 {
-    a_complex_s z;
+    a_complex z;
 
     debug("asinh" A_COMPLEX_PRI("", "g", "", "g"), a_complex_real(x), a_complex_imag(x));
     z = a_complex_asinh(x);
@@ -258,8 +257,8 @@ static void test_atrih(a_complex_s x)
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-    a_complex_s x = A_COMPLEX_C(0.0, 0.0);
-    a_complex_s y = a_complex_c(0.0, 0.0);
+    a_complex x = A_COMPLEX_C(0.0, 0.0);
+    a_complex y = a_complex_c(0.0, 0.0);
     if (argc > 1)
     {
         a_complex_parse(&x, argv[1]);

@@ -1,6 +1,6 @@
 #include "a/pid.h"
 
-void a_pid_zero(a_pid_s *const ctx)
+void a_pid_zero(a_pid *const ctx)
 {
     ctx->sum = 0;
     ctx->out = 0;
@@ -9,23 +9,23 @@ void a_pid_zero(a_pid_s *const ctx)
     ctx->err = 0;
 }
 
-void a_pid_init(a_pid_s *const ctx) { a_pid_zero(ctx); }
+void a_pid_init(a_pid *const ctx) { a_pid_zero(ctx); }
 
-void a_pid_kpid(a_pid_s *const ctx, a_float_t const kp, a_float_t const ki, a_float_t const kd)
+void a_pid_kpid(a_pid *const ctx, a_float const kp, a_float const ki, a_float const kd)
 {
     ctx->kp = kp;
     ctx->ki = ki;
     ctx->kd = kd;
 }
 
-A_HIDDEN a_float_t a_pid_run_(a_pid_s *ctx, a_float_t set, a_float_t fdb, a_float_t err);
-a_float_t a_pid_run(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb)
+A_HIDDEN a_float a_pid_run_(a_pid *ctx, a_float set, a_float fdb, a_float err);
+a_float a_pid_run(a_pid *const ctx, a_float const set, a_float const fdb)
 {
     return a_pid_run_(ctx, set, fdb, set - fdb);
 }
-a_float_t a_pid_run_(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb, a_float_t const err)
+a_float a_pid_run_(a_pid *const ctx, a_float const set, a_float const fdb, a_float const err)
 {
-    a_float_t const var = ctx->fdb - fdb;
+    a_float const var = ctx->fdb - fdb;
     ctx->out = A_SAT(set, ctx->outmin, ctx->outmax);
     ctx->fdb = fdb;
     ctx->var = var;
@@ -33,14 +33,14 @@ a_float_t a_pid_run_(a_pid_s *const ctx, a_float_t const set, a_float_t const fd
     return ctx->out;
 }
 
-A_HIDDEN a_float_t a_pid_pos_(a_pid_s *ctx, a_float_t fdb, a_float_t err);
-a_float_t a_pid_pos(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb)
+A_HIDDEN a_float a_pid_pos_(a_pid *ctx, a_float fdb, a_float err);
+a_float a_pid_pos(a_pid *const ctx, a_float const set, a_float const fdb)
 {
     return a_pid_pos_(ctx, fdb, set - fdb);
 }
-a_float_t a_pid_pos_(a_pid_s *const ctx, a_float_t const fdb, a_float_t const err)
+a_float a_pid_pos_(a_pid *const ctx, a_float const fdb, a_float const err)
 {
-    a_float_t const var = ctx->fdb - fdb;
+    a_float const var = ctx->fdb - fdb;
     // When the limit of integration is exceeded or the direction of integration is the same, the integration stops.
     if ((ctx->sum > ctx->summin && ctx->sum < ctx->summax) || ctx->sum * err < 0)
     {
@@ -59,14 +59,14 @@ a_float_t a_pid_pos_(a_pid_s *const ctx, a_float_t const fdb, a_float_t const er
     return ctx->out;
 }
 
-A_HIDDEN a_float_t a_pid_inc_(a_pid_s *ctx, a_float_t fdb, a_float_t err);
-a_float_t a_pid_inc(a_pid_s *const ctx, a_float_t const set, a_float_t const fdb)
+A_HIDDEN a_float a_pid_inc_(a_pid *ctx, a_float fdb, a_float err);
+a_float a_pid_inc(a_pid *const ctx, a_float const set, a_float const fdb)
 {
     return a_pid_inc_(ctx, fdb, set - fdb);
 }
-a_float_t a_pid_inc_(a_pid_s *const ctx, a_float_t const fdb, a_float_t const err)
+a_float a_pid_inc_(a_pid *const ctx, a_float const fdb, a_float const err)
 {
-    a_float_t const var = ctx->fdb - fdb;
+    a_float const var = ctx->fdb - fdb;
     ctx->out += ctx->kp * (err - ctx->err) + ctx->ki * err + ctx->kd * (var - ctx->var);
     ctx->out = A_SAT(ctx->out, ctx->outmin, ctx->outmax);
     ctx->fdb = fdb;

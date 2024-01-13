@@ -1,24 +1,24 @@
 from a cimport *
 
 cdef extern from "a/pid.h":
-    ctypedef enum a_pid_e:
+    enum:
         A_PID_RUN
         A_PID_POS
         A_PID_INC
-    ctypedef struct a_pid_s:
-        a_float_t kp
-        a_float_t ki
-        a_float_t kd
-        a_float_t summax
-        a_float_t summin
-        a_float_t outmax
-        a_float_t outmin
-        a_float_t out
-        a_float_t fdb
-        a_float_t err
-    void a_pid_init(a_pid_s *ctx)
-    void a_pid_kpid(a_pid_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd)
-    a_float_t a_pid_run(a_pid_s *ctx, a_float_t set, a_float_t fdb)
-    a_float_t a_pid_pos(a_pid_s *ctx, a_float_t set, a_float_t fdb)
-    a_float_t a_pid_inc(a_pid_s *ctx, a_float_t set, a_float_t fdb)
-    void a_pid_zero(a_pid_s *ctx)
+    ctypedef struct a_pid:
+        a_float kp
+        a_float ki
+        a_float kd
+        a_float summax
+        a_float summin
+        a_float outmax
+        a_float outmin
+        a_float out
+        a_float fdb
+        a_float err
+    void a_pid_init(a_pid *ctx)
+    void a_pid_kpid(a_pid *ctx, a_float kp, a_float ki, a_float kd)
+    a_float a_pid_run(a_pid *ctx, a_float set, a_float fdb)
+    a_float a_pid_pos(a_pid *ctx, a_float set, a_float fdb)
+    a_float a_pid_inc(a_pid *ctx, a_float set, a_float fdb)
+    void a_pid_zero(a_pid *ctx)

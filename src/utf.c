@@ -1,10 +1,10 @@
 #include "a/utf.h"
 
-unsigned int a_utf_encode(void *const _str, a_u32_t const val)
+unsigned int a_utf_encode(void *const _str, a_u32 const val)
 {
-    a_u32_t mask = 0;
+    a_u32 mask = 0;
     unsigned int offset = 0;
-    a_u32_t x = val & A_U32_C(0x7FFFFFFF);
+    a_u32 x = val & A_U32_C(0x7FFFFFFF);
     if (x < A_U32_C(0x0010000))
     {
         if (x < A_U32_C(0x0000800))
@@ -48,31 +48,31 @@ unsigned int a_utf_encode(void *const _str, a_u32_t const val)
     }
     if (_str)
     {
-        a_byte_t *const str = (a_byte_t *)_str;
+        a_byte *const str = (a_byte *)_str;
         switch (offset)
         {
         case 6:
-            str[5] = (a_byte_t)(0x80 | (x & 0x3F));
+            str[5] = (a_byte)(0x80 | (x & 0x3F));
             x >>= 6;
             A_FALLTHROUGH;
         case 5:
-            str[4] = (a_byte_t)(0x80 | (x & 0x3F));
+            str[4] = (a_byte)(0x80 | (x & 0x3F));
             x >>= 6;
             A_FALLTHROUGH;
         case 4:
-            str[3] = (a_byte_t)(0x80 | (x & 0x3F));
+            str[3] = (a_byte)(0x80 | (x & 0x3F));
             x >>= 6;
             A_FALLTHROUGH;
         case 3:
-            str[2] = (a_byte_t)(0x80 | (x & 0x3F));
+            str[2] = (a_byte)(0x80 | (x & 0x3F));
             x >>= 6;
             A_FALLTHROUGH;
         case 2:
-            str[1] = (a_byte_t)(0x80 | (x & 0x3F));
+            str[1] = (a_byte)(0x80 | (x & 0x3F));
             x >>= 6;
             A_FALLTHROUGH;
         case 1:
-            str[0] = (a_byte_t)(mask | x);
+            str[0] = (a_byte)(mask | x);
             A_FALLTHROUGH;
         default:
             break;
@@ -81,12 +81,12 @@ unsigned int a_utf_encode(void *const _str, a_u32_t const val)
     return offset;
 }
 
-unsigned int a_utf_decode(void const *const _str, a_u32_t *const val)
+unsigned int a_utf_decode(void const *const _str, a_u32 *const val)
 {
-    a_byte_t const *str = (a_byte_t const *)_str;
+    a_byte const *str = (a_byte const *)_str;
     unsigned int offset = 0;
     unsigned int chr = *str;
-    a_u32_t res = 0;
+    a_u32 res = 0;
     if (chr < 0x80)
     {
         res = chr;
@@ -100,16 +100,16 @@ unsigned int a_utf_decode(void const *const _str, a_u32_t *const val)
             if ((c & 0xC0) != 0x80) { return offset; }
             res = (res << 6) | (c & 0x3F);
         }
-        offset = (unsigned int)(str - (a_byte_t const *)_str);
-        res |= (a_u32_t)(chr & 0x7F) << (offset * 5);
+        offset = (unsigned int)(str - (a_byte const *)_str);
+        res |= (a_u32)(chr & 0x7F) << (offset * 5);
     }
     if (val) { *val = res; }
     return offset + 1;
 }
 
-a_size_t a_utf_length(void const *const _str)
+a_size a_utf_length(void const *const _str)
 {
-    a_size_t length = 0;
+    a_size length = 0;
     char const *str = (char const *)_str;
     for (unsigned int offset; (void)(offset = a_utf_decode(str, A_NULL)), offset; str += offset) { ++length; }
     return length;

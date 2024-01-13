@@ -5,11 +5,11 @@ static JSClassID liba_pid_fuzzy_class_id;
 
 static void liba_pid_fuzzy_finalizer(JSRuntime *const rt, JSValue const val)
 {
-    a_pid_fuzzy_s *self = (a_pid_fuzzy_s *)JS_GetOpaque(val, liba_pid_fuzzy_class_id);
+    a_pid_fuzzy *self = (a_pid_fuzzy *)JS_GetOpaque(val, liba_pid_fuzzy_class_id);
     union
     {
-        a_float_t const *p;
-        a_float_t *o;
+        a_float const *p;
+        a_float *o;
     } u;
     js_free_rt(rt, ((void)(u.p = self->me), u.o));
     js_free_rt(rt, ((void)(u.p = self->mec), u.o));
@@ -27,7 +27,7 @@ static JSValue liba_pid_fuzzy_ctor(JSContext *const ctx, JSValueConst const new_
     (void)argc;
     (void)argv;
     JSValue proto, clazz = JS_UNDEFINED;
-    a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)js_mallocz(ctx, sizeof(a_pid_fuzzy_s));
+    a_pid_fuzzy *const self = (a_pid_fuzzy *)js_mallocz(ctx, sizeof(a_pid_fuzzy));
     if (!self) { return JS_EXCEPTION; }
     self->pid.kp = 1;
     self->pid.summax = +A_FLOAT_INF;
@@ -52,7 +52,7 @@ fail:
 
 static JSValue liba_pid_fuzzy_get(JSContext *const ctx, JSValueConst const this_val, int magic)
 {
-    a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
+    a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
     double x;
     switch (magic)
@@ -74,7 +74,7 @@ static JSValue liba_pid_fuzzy_get(JSContext *const ctx, JSValueConst const this_
     return JS_NewFloat64(ctx, x);
 }
 
-static int liba_pid_fuzzy_joint_(JSContext *const ctx, a_pid_fuzzy_s *const self, unsigned int joint)
+static int liba_pid_fuzzy_joint_(JSContext *const ctx, a_pid_fuzzy *const self, unsigned int joint)
 {
     void *ptr = a_pid_fuzzy_joint(self);
     if (joint > self->joint)
@@ -88,9 +88,9 @@ static int liba_pid_fuzzy_joint_(JSContext *const ctx, a_pid_fuzzy_s *const self
 
 static JSValue liba_pid_fuzzy_set(JSContext *const ctx, JSValueConst const this_val, JSValueConst const val, int magic)
 {
-    a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
+    a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_u32_t u;
+    a_u32 u;
     if (magic == 0)
     {
         if (JS_ToUint32(ctx, &u, val)) { return JS_EXCEPTION; }
@@ -101,13 +101,13 @@ static JSValue liba_pid_fuzzy_set(JSContext *const ctx, JSValueConst const this_
     if (JS_ToFloat64(ctx, &x, val)) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case 1: self->pid.kp = self->kp = (a_float_t)x; break;
-    case 2: self->pid.ki = self->ki = (a_float_t)x; break;
-    case 3: self->pid.kd = self->kd = (a_float_t)x; break;
-    case 4: self->pid.summax = (a_float_t)x; break;
-    case 5: self->pid.summin = (a_float_t)x; break;
-    case 6: self->pid.outmax = (a_float_t)x; break;
-    case 7: self->pid.outmin = (a_float_t)x; break;
+    case 1: self->pid.kp = self->kp = (a_float)x; break;
+    case 2: self->pid.ki = self->ki = (a_float)x; break;
+    case 3: self->pid.kd = self->kd = (a_float)x; break;
+    case 4: self->pid.summax = (a_float)x; break;
+    case 5: self->pid.summin = (a_float)x; break;
+    case 6: self->pid.outmax = (a_float)x; break;
+    case 7: self->pid.outmin = (a_float)x; break;
     default: break;
     }
     return JS_UNDEFINED;
@@ -116,9 +116,9 @@ static JSValue liba_pid_fuzzy_set(JSContext *const ctx, JSValueConst const this_
 static JSValue liba_pid_fuzzy_op(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
+    a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_u32_t op;
+    a_u32 op;
     if (JS_ToUint32(ctx, &op, argv[0])) { return JS_EXCEPTION; }
     a_pid_fuzzy_set_op(self, (unsigned int)op);
     return JS_UNDEFINED;
@@ -127,16 +127,16 @@ static JSValue liba_pid_fuzzy_op(JSContext *const ctx, JSValueConst const this_v
 static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
+    a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
     union
     {
-        a_float_t const *p;
-        a_float_t *o;
+        a_float const *p;
+        a_float *o;
     } u;
-    a_u32_t row;
-    a_u32_t len = 0;
-    a_u32_t order = 0;
+    a_u32 row;
+    a_u32 len = 0;
+    a_u32 order = 0;
     JSValue res = JS_UNDEFINED;
     if (JS_IsArray(ctx, argv[0]))
     {
@@ -145,7 +145,7 @@ static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this
         if (js_array_length(ctx, res, &len)) { goto fail; }
         if (len)
         {
-            a_float_t *const me = (a_float_t *)js_realloc(ctx, ((void)(u.p = self->me), u.o), sizeof(a_float_t) * len);
+            a_float *const me = (a_float *)js_realloc(ctx, ((void)(u.p = self->me), u.o), sizeof(a_float) * len);
             if (!me) { goto fail; }
             self->me = me;
             if (js_array_num_get(ctx, res, me, len)) { goto fail; }
@@ -160,7 +160,7 @@ static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this
         if (js_array_length(ctx, res, &len)) { goto fail; }
         if (len)
         {
-            a_float_t *const mec = (a_float_t *)js_realloc(ctx, ((void)(u.p = self->mec), u.o), sizeof(a_float_t) * len);
+            a_float *const mec = (a_float *)js_realloc(ctx, ((void)(u.p = self->mec), u.o), sizeof(a_float) * len);
             if (!mec) { goto fail; }
             self->mec = mec;
             if (js_array_num_get(ctx, res, mec, len)) { goto fail; }
@@ -175,7 +175,7 @@ static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this
         if (js_array_length(ctx, res, &len)) { goto fail; }
         if (len)
         {
-            a_float_t *const mkp = (a_float_t *)js_realloc(ctx, ((void)(u.p = self->mkp), u.o), sizeof(a_float_t) * len);
+            a_float *const mkp = (a_float *)js_realloc(ctx, ((void)(u.p = self->mkp), u.o), sizeof(a_float) * len);
             if (!mkp) { goto fail; }
             self->mkp = mkp;
             if (js_array_num_get(ctx, res, mkp, len)) { goto fail; }
@@ -190,7 +190,7 @@ static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this
         if (js_array_length(ctx, res, &len)) { goto fail; }
         if (len)
         {
-            a_float_t *const mki = (a_float_t *)js_realloc(ctx, ((void)(u.p = self->mki), u.o), sizeof(a_float_t) * len);
+            a_float *const mki = (a_float *)js_realloc(ctx, ((void)(u.p = self->mki), u.o), sizeof(a_float) * len);
             if (!mki) { goto fail; }
             self->mki = mki;
             if (js_array_num_get(ctx, res, mki, len)) { goto fail; }
@@ -205,7 +205,7 @@ static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this
         if (js_array_length(ctx, res, &len)) { goto fail; }
         if (len)
         {
-            a_float_t *const mkd = (a_float_t *)js_realloc(ctx, ((void)(u.p = self->mkd), u.o), sizeof(a_float_t) * len);
+            a_float *const mkd = (a_float *)js_realloc(ctx, ((void)(u.p = self->mkd), u.o), sizeof(a_float) * len);
             if (!mkd) { goto fail; }
             self->mkd = mkd;
             if (js_array_num_get(ctx, res, mkd, len)) { goto fail; }
@@ -222,9 +222,9 @@ fail:
 static JSValue liba_pid_fuzzy_joint(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
+    a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_u32_t joint;
+    a_u32 joint;
     if (JS_ToUint32(ctx, &joint, argv[0])) { return JS_EXCEPTION; }
     if (liba_pid_fuzzy_joint_(ctx, self, joint)) { return JS_EXCEPTION; }
     return JS_UNDEFINED;
@@ -233,14 +233,14 @@ static JSValue liba_pid_fuzzy_joint(JSContext *const ctx, JSValueConst const thi
 static JSValue liba_pid_fuzzy_kpid(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
+    a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0, 0};
     for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    a_pid_fuzzy_kpid(self, (a_float_t)args[0], (a_float_t)args[1], (a_float_t)args[2]);
+    a_pid_fuzzy_kpid(self, (a_float)args[0], (a_float)args[1], (a_float)args[2]);
     return JS_UNDEFINED;
 }
 
@@ -248,7 +248,7 @@ static JSValue liba_pid_fuzzy_zero(JSContext *const ctx, JSValueConst const this
 {
     (void)argc;
     (void)argv;
-    a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
+    a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_pid_fuzzy_zero(self);
     return JS_UNDEFINED;
@@ -257,40 +257,40 @@ static JSValue liba_pid_fuzzy_zero(JSContext *const ctx, JSValueConst const this
 static JSValue liba_pid_fuzzy_run(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
+    a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0};
     for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_run(self, (a_float_t)args[0], (a_float_t)args[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_run(self, (a_float)args[0], (a_float)args[1]));
 }
 
 static JSValue liba_pid_fuzzy_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
+    a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0};
     for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_pos(self, (a_float_t)args[0], (a_float_t)args[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_pos(self, (a_float)args[0], (a_float)args[1]));
 }
 
 static JSValue liba_pid_fuzzy_inc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_pid_fuzzy_s *const self = (a_pid_fuzzy_s *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
+    a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0};
     for (unsigned int i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_inc(self, (a_float_t)args[0], (a_float_t)args[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_inc(self, (a_float)args[0], (a_float)args[1]));
 }
 
 static JSCFunctionListEntry const liba_pid_fuzzy_proto[] = {

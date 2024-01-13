@@ -8,7 +8,7 @@
 
 static int liba_version_tostring(lua_State *const L)
 {
-    a_version_s const *const ctx = (a_version_s const *)lua_touserdata(L, 1);
+    a_version const *const ctx = (a_version const *)lua_touserdata(L, 1);
     if (ctx)
     {
         lua_pushfstring(L, "%d.%d.%d", ctx->major, ctx->minor, ctx->patch);
@@ -17,7 +17,7 @@ static int liba_version_tostring(lua_State *const L)
     return 0;
 }
 
-static int liba_version_init_(lua_State *const L, a_version_s *const ctx, int const arg, int const top)
+static int liba_version_init_(lua_State *const L, a_version *const ctx, int const arg, int const top)
 {
     switch (top)
     {
@@ -56,8 +56,8 @@ static int liba_version_init_(lua_State *const L, a_version_s *const ctx, int co
 int liba_version_new(lua_State *const L)
 {
     int const top = lua_gettop(L);
-    a_version_s *const ctx = lua_newclass(L, a_version_s);
-    a_zero(ctx, sizeof(a_version_s));
+    a_version *const ctx = lua_newclass(L, a_version);
+    a_zero(ctx, sizeof(a_version));
     lua_registry_get(L, liba_version_new);
     lua_setmetatable(L, -2);
     return liba_version_init_(L, ctx, 0, top);
@@ -77,7 +77,7 @@ int liba_version_init(lua_State *const L)
 {
     int const top = lua_gettop(L);
     luaL_checktype(L, 1, LUA_TUSERDATA);
-    a_version_s *const ctx = (a_version_s *)lua_touserdata(L, 1);
+    a_version *const ctx = (a_version *)lua_touserdata(L, 1);
     lua_pushvalue(L, 1);
     return liba_version_init_(L, ctx, 1, top - 1);
 }
@@ -91,7 +91,7 @@ int liba_version_init(lua_State *const L)
 */
 int liba_version_parse(lua_State *const L)
 {
-    a_version_s *const ctx = (a_version_s *)lua_touserdata(L, 1);
+    a_version *const ctx = (a_version *)lua_touserdata(L, 1);
     if (ctx)
     {
         a_version_parse(ctx, lua_tostring(L, 2));
@@ -113,7 +113,7 @@ int liba_version_parse(lua_State *const L)
 */
 static int liba_version_check(lua_State *const L)
 {
-    a_version_s v = A_VERSION_C(0, 0, 0);
+    a_version v = A_VERSION_C(0, 0, 0);
     switch (lua_gettop(L) & 0x3)
     {
     case 3:
@@ -146,22 +146,22 @@ int liba_version_cmp(lua_State *const L)
 {
     luaL_checktype(L, 1, LUA_TUSERDATA);
     luaL_checktype(L, 2, LUA_TUSERDATA);
-    a_version_s const *const lhs = (a_version_s const *)lua_touserdata(L, 1);
-    a_version_s const *const rhs = (a_version_s const *)lua_touserdata(L, 2);
+    a_version const *const lhs = (a_version const *)lua_touserdata(L, 1);
+    a_version const *const rhs = (a_version const *)lua_touserdata(L, 2);
     lua_pushinteger(L, a_version_cmp(lhs, rhs));
     return 1;
 }
 
 #undef FUNC
-#define FUNC(func)                                              \
-    int liba_version_##func(lua_State *const L)                 \
-    {                                                           \
-        luaL_checktype(L, 1, LUA_TUSERDATA);                    \
-        luaL_checktype(L, 2, LUA_TUSERDATA);                    \
-        a_version_s *lhs = (a_version_s *)lua_touserdata(L, 1); \
-        a_version_s *rhs = (a_version_s *)lua_touserdata(L, 2); \
-        lua_pushboolean(L, a_version_##func(lhs, rhs));         \
-        return 1;                                               \
+#define FUNC(func)                                          \
+    int liba_version_##func(lua_State *const L)             \
+    {                                                       \
+        luaL_checktype(L, 1, LUA_TUSERDATA);                \
+        luaL_checktype(L, 2, LUA_TUSERDATA);                \
+        a_version *lhs = (a_version *)lua_touserdata(L, 1); \
+        a_version *rhs = (a_version *)lua_touserdata(L, 2); \
+        lua_pushboolean(L, a_version_##func(lhs, rhs));     \
+        return 1;                                           \
     }
 /***
  version lhs is less than version rhs
@@ -214,8 +214,8 @@ FUNC(ne)
 
 static int liba_version_set(lua_State *const L)
 {
-    a_version_s *const ctx = (a_version_s *)lua_touserdata(L, 1);
-    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
+    a_version *const ctx = (a_version *)lua_touserdata(L, 1);
+    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x86720331: // major
         ctx->major = (unsigned int)luaL_checkinteger(L, 3);
@@ -248,8 +248,8 @@ static int liba_version_set(lua_State *const L)
 
 static int liba_version_get(lua_State *const L)
 {
-    a_version_s const *const ctx = (a_version_s const *)lua_touserdata(L, 1);
-    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
+    a_version const *const ctx = (a_version const *)lua_touserdata(L, 1);
+    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x86720331: // major
         lua_pushinteger(L, (lua_Integer)ctx->major);
@@ -296,13 +296,13 @@ int luaopen_liba_version(lua_State *const L)
      @field TWEAK algorithm library version tweak
      @table liba.version
     */
-    static lua_int_s const enums[] = {
+    static lua_int const enums[] = {
         {"MAJOR", A_VERSION_MAJOR},
         {"MINOR", A_VERSION_MINOR},
         {"PATCH", A_VERSION_PATCH},
         {"TWEAK", A_VERSION_TWEAK},
     };
-    static lua_fun_s const funcs[] = {
+    static lua_fun const funcs[] = {
         {"check", liba_version_check},
         {"parse", liba_version_parse},
         {"init", liba_version_init},
@@ -322,7 +322,7 @@ int luaopen_liba_version(lua_State *const L)
     lua_fun_set(L, -1, "__call", liba_version_);
     lua_setmetatable(L, -2);
 
-    static lua_fun_s const metas[] = {
+    static lua_fun const metas[] = {
         {"__tostring", liba_version_tostring},
         {"__newindex", liba_version_set},
         {"__index", liba_version_get},

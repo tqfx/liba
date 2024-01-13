@@ -13,7 +13,7 @@ static JSClassDef liba_hpf_class = {"hpf", .finalizer = liba_hpf_finalizer};
 static JSValue liba_hpf_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
     JSValue proto, clazz = JS_UNDEFINED;
-    a_hpf_s *const self = (a_hpf_s *)js_mallocz(ctx, sizeof(a_hpf_s));
+    a_hpf *const self = (a_hpf *)js_mallocz(ctx, sizeof(a_hpf));
     if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0};
     if (argc > 1)
@@ -42,7 +42,7 @@ fail:
 
 static JSValue liba_hpf_get(JSContext *const ctx, JSValueConst const this_val, int magic)
 {
-    a_hpf_s *const self = (a_hpf_s *)JS_GetOpaque2(ctx, this_val, liba_hpf_class_id);
+    a_hpf *const self = (a_hpf *)JS_GetOpaque2(ctx, this_val, liba_hpf_class_id);
     if (!self) { return JS_EXCEPTION; }
     double x;
     switch (magic)
@@ -57,7 +57,7 @@ static JSValue liba_hpf_get(JSContext *const ctx, JSValueConst const this_val, i
 
 static JSValue liba_hpf_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    a_hpf_s *const self = (a_hpf_s *)JS_GetOpaque2(ctx, this_val, liba_hpf_class_id);
+    a_hpf *const self = (a_hpf *)JS_GetOpaque2(ctx, this_val, liba_hpf_class_id);
     if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0};
     if (argc > 1)
@@ -77,18 +77,18 @@ static JSValue liba_hpf_gen(JSContext *const ctx, JSValueConst const this_val, i
 static JSValue liba_hpf_iter(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_hpf_s *const self = (a_hpf_s *)JS_GetOpaque2(ctx, this_val, liba_hpf_class_id);
+    a_hpf *const self = (a_hpf *)JS_GetOpaque2(ctx, this_val, liba_hpf_class_id);
     if (!self) { return JS_EXCEPTION; }
     double x;
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    return JS_NewFloat64(ctx, (double)a_hpf_iter(self, (a_float_t)x));
+    return JS_NewFloat64(ctx, (double)a_hpf_iter(self, (a_float)x));
 }
 
 static JSValue liba_hpf_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
     (void)argv;
-    a_hpf_s *const self = (a_hpf_s *)JS_GetOpaque2(ctx, this_val, liba_hpf_class_id);
+    a_hpf *const self = (a_hpf *)JS_GetOpaque2(ctx, this_val, liba_hpf_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_hpf_zero(self);
     return JS_UNDEFINED;

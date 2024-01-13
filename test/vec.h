@@ -4,7 +4,7 @@
 
 static void dtor(void *ptr)
 {
-    a_u32_t *obj = a_u32_(*, ptr);
+    a_u32 *obj = a_u32_(*, ptr);
     printf("%" PRIu32 " ", *obj);
 }
 
@@ -17,28 +17,28 @@ static int u32dup(void *dst, void const *src)
 
 static void test(void)
 {
-    a_vec_s *ctx = a_vec_new(sizeof(a_u64_t));
-    a_vec_foreach(a_u64_t, it, ctx);
-    a_vec_foreach_reverse(a_u64_t, it, ctx);
-    for (a_u64_t i = 0; i != 10; ++i)
+    a_vec *ctx = a_vec_new(sizeof(a_u64));
+    a_vec_foreach(a_u64, it, ctx);
+    a_vec_foreach_reverse(a_u64, it, ctx);
+    for (a_u64 i = 0; i != 10; ++i)
     {
-        a_u64_t *obj = a_vec_push(a_u64_t, ctx);
+        a_u64 *obj = a_vec_push(a_u64, ctx);
         if (obj) { *obj = i; }
     }
-    a_vec_edit(ctx, sizeof(a_u32_t), A_NULL);
-    for (a_u32_t i = 0; i != 20; ++i)
+    a_vec_edit(ctx, sizeof(a_u32), A_NULL);
+    for (a_u32 i = 0; i != 20; ++i)
     {
-        a_u32_t *obj = a_vec_push(a_u32_t, ctx);
+        a_u32 *obj = a_vec_push(a_u32, ctx);
         if (obj) { *obj = i; }
     }
-    for (a_u32_t i = 0; i != 10; ++i)
+    for (a_u32 i = 0; i != 10; ++i)
     {
-        (void)(a_vec_pull(a_u32_t, ctx));
+        (void)(a_vec_pull(a_u32, ctx));
     }
 
     {
-        a_u8_t *end = a_vec_end(a_u8_t, ctx);
-        a_u8_t *top = a_vec_top(a_u8_t, ctx);
+        a_u8 *end = a_vec_end(a_u8, ctx);
+        a_u8 *top = a_vec_top(a_u8, ctx);
         TEST_BUG(a_vec_siz(ctx) == a_size_c(end - top));
     }
 
@@ -50,36 +50,36 @@ static void test(void)
 
     a_vec_forenum(i, ctx)
     {
-        a_u32_t *it = a_vec_at(a_u32_t, ctx, i);
+        a_u32 *it = a_vec_at(a_u32, ctx, i);
         TEST_BUG(a_vec_siz(ctx) == sizeof(*it));
         if (it) { printf("%" PRIu32 " ", *it); }
     }
     putchar('\n');
     a_vec_forenum_reverse(i, ctx)
     {
-        a_u32_t *it = a_vec_at(a_u32_t, ctx, i);
+        a_u32 *it = a_vec_at(a_u32, ctx, i);
         TEST_BUG(a_vec_siz(ctx) == sizeof(*it));
         if (it) { printf("%" PRIu32 " ", *it); }
     }
     putchar('\n');
 
-    a_vec_foreach(a_u32_t, it, ctx)
+    a_vec_foreach(a_u32, it, ctx)
     {
         TEST_BUG(a_vec_siz(ctx) == sizeof(*it));
-        TEST_BUG(sizeof(a_u32_t) == sizeof(*it));
+        TEST_BUG(sizeof(a_u32) == sizeof(*it));
         printf("%" PRIu32 " ", *it);
     }
     putchar('\n');
-    a_vec_foreach_reverse(a_u32_t, it, ctx)
+    a_vec_foreach_reverse(a_u32, it, ctx)
     {
         TEST_BUG(a_vec_siz(ctx) == sizeof(*it));
-        TEST_BUG(sizeof(a_u32_t) == sizeof(*it));
+        TEST_BUG(sizeof(a_u32) == sizeof(*it));
         printf("%" PRIu32 " ", *it);
     }
     putchar('\n');
 
     {
-        a_vec_s obj;
+        a_vec obj;
         a_vec_copy(&obj, ctx, u32dup);
         putchar('\n');
         a_vec_dtor(ctx, A_NULL);
@@ -90,55 +90,55 @@ static void test(void)
     putchar('\n');
 
     {
-        ctx = a_vec_new(sizeof(a_u32_t));
-        for (a_u32_t i = 5; i != 10; ++i)
+        ctx = a_vec_new(sizeof(a_u32));
+        for (a_u32 i = 5; i != 10; ++i)
         {
-            a_u32_t *obj = a_vec_insert(a_u32_t, ctx, i);
+            a_u32 *obj = a_vec_insert(a_u32, ctx, i);
             if (obj) { *obj = i; }
         }
-        for (a_u32_t i = 0; i != 5; ++i)
+        for (a_u32 i = 0; i != 5; ++i)
         {
-            a_u32_t *obj = a_vec_insert(a_u32_t, ctx, i);
+            a_u32 *obj = a_vec_insert(a_u32, ctx, i);
             if (obj) { *obj = i; }
         }
-        a_vec_foreach(a_u32_t, it, ctx)
+        a_vec_foreach(a_u32, it, ctx)
         {
             printf("%" PRIu32 " ", *it);
         }
         putchar('\n');
-        for (a_u32_t i = 0; i != 5; ++i)
+        for (a_u32 i = 0; i != 5; ++i)
         {
-            a_u32_t *obj = a_vec_remove(a_u32_t, ctx, i);
+            a_u32 *obj = a_vec_remove(a_u32, ctx, i);
             if (obj) { printf("%" PRIu32 " ", *obj); }
         }
-        for (a_u32_t i = 0; i != 5; ++i)
+        for (a_u32 i = 0; i != 5; ++i)
         {
-            a_u32_t *obj = a_vec_remove(a_u32_t, ctx, 0);
+            a_u32 *obj = a_vec_remove(a_u32, ctx, 0);
             if (obj) { printf("%" PRIu32 " ", *obj); }
         }
         putchar('\n');
         a_vec_die(ctx, A_NULL);
     }
     {
-        ctx = a_vec_new(sizeof(a_u32_t));
-        for (a_u32_t i = 5; i != 10; ++i)
+        ctx = a_vec_new(sizeof(a_u32));
+        for (a_u32 i = 5; i != 10; ++i)
         {
-            a_u32_t *obj = a_vec_push_back(a_u32_t, ctx);
+            a_u32 *obj = a_vec_push_back(a_u32, ctx);
             if (obj) { *obj = i; }
         }
-        for (a_u32_t i = 5; i != 10; ++i)
+        for (a_u32 i = 5; i != 10; ++i)
         {
-            a_u32_t *obj = a_vec_pull_back(a_u32_t, ctx);
+            a_u32 *obj = a_vec_pull_back(a_u32, ctx);
             if (obj) { printf("%" PRIu32 " ", *obj); }
         }
-        for (a_u32_t i = 0; i != 5; ++i)
+        for (a_u32 i = 0; i != 5; ++i)
         {
-            a_u32_t *obj = a_vec_push_fore(a_u32_t, ctx);
+            a_u32 *obj = a_vec_push_fore(a_u32, ctx);
             if (obj) { *obj = i; }
         }
-        for (a_u32_t i = 0; i != 5; ++i)
+        for (a_u32 i = 0; i != 5; ++i)
         {
-            a_u32_t *obj = a_vec_pull_fore(a_u32_t, ctx);
+            a_u32 *obj = a_vec_pull_fore(a_u32, ctx);
             if (obj) { printf("%" PRIu32 " ", *obj); }
         }
         putchar('\n');
@@ -162,7 +162,7 @@ static int cmpr(void const *lhs, void const *rhs)
 static void test_sort(void)
 {
     unsigned int t = a_cast_s(unsigned int, time(A_NULL));
-    a_vec_s *ctx = a_vec_new(sizeof(int));
+    a_vec *ctx = a_vec_new(sizeof(int));
 
     a_vec_make(ctx, 10, A_NULL);
 
@@ -233,8 +233,8 @@ static void test_sort(void)
     putchar('\n');
 
     {
-        a_str_s *ok = a_str_new();
-        a_str_s *no = a_str_new();
+        a_str *ok = a_str_new();
+        a_str *no = a_str_new();
         a_str_puts(ok, "finding ");
         a_str_puts(no, "missing ");
         for (int i = 0; i != 10; ++i)

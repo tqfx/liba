@@ -2,7 +2,7 @@
 #include "test.h"
 #include "a/tf.h"
 
-static a_float_t u[] = {
+static a_float u[] = {
     A_FLOAT_C(2000.0),
     A_FLOAT_C(-652.99418),
     A_FLOAT_C(-344.66975),
@@ -109,12 +109,12 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     test_init(argc, argv, 1);
 
-    a_float_t num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
-    a_float_t den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
+    a_float num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
+    a_float den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
 
-    a_tf_s ctx;
-    a_float_t input[A_LEN(num)];
-    a_float_t output[A_LEN(den)];
+    a_tf ctx;
+    a_float input[A_LEN(num)];
+    a_float output[A_LEN(den)];
     a_tf_init(&ctx, A_LEN(num), num, input, A_LEN(den), den, output);
 
     for (unsigned int i = 0; i < A_LEN(u); ++i)

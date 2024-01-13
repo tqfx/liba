@@ -5,14 +5,14 @@
 
 typedef struct
 {
-    a_rbt_s node;
+    a_rbt_node node;
     int data;
     int reached;
 } int_node;
 
 static A_INLINE int_node *int_entry(void const *node)
 {
-    return a_cast_r(int_node *, a_cast_r(a_uptr_t, node) - a_offsetof(int_node, node)); // NOLINT
+    return a_cast_r(int_node *, a_cast_r(a_uptr, node) - a_offsetof(int_node, node)); // NOLINT
 }
 
 static int int_cmp(void const *lhs, void const *rhs)
@@ -32,8 +32,8 @@ static int test(int argc, char *argv[])
 
     unsigned int const n = 0x1000;
 
-    a_str_s str = A_STR_NUL;
-    a_rbt_u root = A_RBT_ROOT;
+    a_str str = A_STR_NUL;
+    a_rbt root = A_RBT_ROOT;
     int_node *vec = a_new(int_node, A_NULL, n);
     int *sorted = a_new(int, A_NULL, n);
     for (unsigned int i = 0; i < n; ++i)

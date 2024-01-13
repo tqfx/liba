@@ -20,7 +20,7 @@ red-black trees properties: https://en.wikipedia.org/wiki/Rbtree
 */
 
 /* Replaces the child of the specified red–black tree node. */
-static A_INLINE void a_rbt_new_child(a_rbt_u *const root, a_rbt_s *const parent, a_rbt_s *const oldnode, a_rbt_s *const newnode)
+static A_INLINE void a_rbt_new_child(a_rbt *const root, a_rbt_node *const parent, a_rbt_node *const oldnode, a_rbt_node *const newnode)
 {
     if (parent)
     {
@@ -40,10 +40,10 @@ static A_INLINE void a_rbt_new_child(a_rbt_u *const root, a_rbt_s *const parent,
 }
 
 /* Sets the parent and color of the specified red–black tree node. */
-static A_INLINE void a_rbt_set_parent_color(a_rbt_s *const node, a_rbt_s *const parent, unsigned int const color)
+static A_INLINE void a_rbt_set_parent_color(a_rbt_node *const node, a_rbt_node *const parent, unsigned int const color)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    node->_parent = (a_uptr_t)parent | color;
+    node->_parent = (a_uptr)parent | color;
 #else /* !A_SIZE_POINTER */
     node->parent = parent;
     node->color = color;
@@ -51,17 +51,17 @@ static A_INLINE void a_rbt_set_parent_color(a_rbt_s *const node, a_rbt_s *const 
 }
 
 /* Sets the parent of the specified red–black tree node. */
-static A_INLINE void a_rbt_set_parent(a_rbt_s *const node, a_rbt_s *const parent)
+static A_INLINE void a_rbt_set_parent(a_rbt_node *const node, a_rbt_node *const parent)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    node->_parent = (a_uptr_t)parent | (node->_parent & 1);
+    node->_parent = (a_uptr)parent | (node->_parent & 1);
 #else /* !A_SIZE_POINTER */
     node->parent = parent;
 #endif /* A_SIZE_POINTER */
 }
 
 /* Returns the color of the specified red–black tree node. */
-static A_INLINE unsigned int a_rbt_color(a_rbt_s const *const node)
+static A_INLINE unsigned int a_rbt_color(a_rbt_node const *const node)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
     return (unsigned int)(node->_parent & 1);
@@ -71,7 +71,7 @@ static A_INLINE unsigned int a_rbt_color(a_rbt_s const *const node)
 }
 
 /* Sets the black color of the specified red–black tree node. */
-static A_INLINE void a_rbt_set_black(a_rbt_s *const node)
+static A_INLINE void a_rbt_set_black(a_rbt_node *const node)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
     node->_parent |= A_RBT_B;
@@ -85,9 +85,9 @@ Helper function for rotations:
  - old's parent and color get assigned to new
  - old gets assigned new as a parent and 'color' as a color.
 */
-static A_INLINE void a_rbt_set_parents(a_rbt_u *const root, a_rbt_s *const oldnode, a_rbt_s *const newnode, unsigned int const color)
+static A_INLINE void a_rbt_set_parents(a_rbt *const root, a_rbt_node *const oldnode, a_rbt_node *const newnode, unsigned int const color)
 {
-    a_rbt_s *const parent = a_rbt_parent(oldnode);
+    a_rbt_node *const parent = a_rbt_parent(oldnode);
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
     newnode->_parent = oldnode->_parent;
 #else /* !A_SIZE_POINTER */
@@ -98,9 +98,9 @@ static A_INLINE void a_rbt_set_parents(a_rbt_u *const root, a_rbt_s *const oldno
     a_rbt_new_child(root, parent, oldnode, newnode);
 }
 
-void a_rbt_insert_adjust(a_rbt_u *const root, a_rbt_s *node)
+void a_rbt_insert_adjust(a_rbt *const root, a_rbt_node *node)
 {
-    for (a_rbt_s *parent = a_rbt_parent(node), *gparent, *tmp;;)
+    for (a_rbt_node *parent = a_rbt_parent(node), *gparent, *tmp;;)
     {
         /* Loop invariant: node is red. */
         if (a_unlikely(!parent))
@@ -214,9 +214,9 @@ void a_rbt_insert_adjust(a_rbt_u *const root, a_rbt_s *node)
     }
 }
 
-static A_INLINE void a_rbt_remove_adjust(a_rbt_u *const root, a_rbt_s *parent)
+static A_INLINE void a_rbt_remove_adjust(a_rbt *const root, a_rbt_node *parent)
 {
-    for (a_rbt_s *node = A_NULL, *sibling, *tmp1, *tmp2;;)
+    for (a_rbt_node *node = A_NULL, *sibling, *tmp1, *tmp2;;)
     {
         /*
         Loop invariants:
@@ -380,13 +380,13 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt_u *const root, a_rbt_s *parent)
     }
 }
 
-void a_rbt_remove(a_rbt_u *const root, a_rbt_s *const node)
+void a_rbt_remove(a_rbt *const root, a_rbt_node *const node)
 {
-    a_rbt_s *child = node->right;
-    a_rbt_s *tmp = node->left;
-    a_rbt_s *parent, *adjust;
+    a_rbt_node *child = node->right;
+    a_rbt_node *tmp = node->left;
+    a_rbt_node *parent, *adjust;
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    a_uptr_t pc;
+    a_uptr pc;
 #else /* !A_SIZE_POINTER */
     unsigned int color;
 #endif /* A_SIZE_POINTER */
@@ -439,7 +439,7 @@ void a_rbt_remove(a_rbt_u *const root, a_rbt_s *const node)
     }
     else
     {
-        a_rbt_s *successor = child, *child2;
+        a_rbt_node *successor = child, *child2;
 
         tmp = child->left;
         if (!tmp)
@@ -514,10 +514,10 @@ void a_rbt_remove(a_rbt_u *const root, a_rbt_s *const node)
     if (adjust) { a_rbt_remove_adjust(root, adjust); }
 }
 
-a_rbt_s *a_rbt_insert(a_rbt_u *const root, a_rbt_s *const node, int (*const cmp)(void const *, void const *))
+a_rbt_node *a_rbt_insert(a_rbt *const root, a_rbt_node *const node, int (*const cmp)(void const *, void const *))
 {
-    a_rbt_s *parent = root->node;
-    a_rbt_s **link = &root->node;
+    a_rbt_node *parent = root->node;
+    a_rbt_node **link = &root->node;
     while (*link)
     {
         parent = *link;
@@ -537,9 +537,9 @@ a_rbt_s *a_rbt_insert(a_rbt_u *const root, a_rbt_s *const node, int (*const cmp)
     return A_NULL;
 }
 
-a_rbt_s *a_rbt_search(a_rbt_u const *const root, void const *const ctx, int (*const cmp)(void const *, void const *))
+a_rbt_node *a_rbt_search(a_rbt const *const root, void const *const ctx, int (*const cmp)(void const *, void const *))
 {
-    for (a_rbt_s *cur = root->node; cur;)
+    for (a_rbt_node *cur = root->node; cur;)
     {
         int const res = cmp(ctx, cur);
         if (res < 0)
@@ -555,9 +555,9 @@ a_rbt_s *a_rbt_search(a_rbt_u const *const root, void const *const ctx, int (*co
     return A_NULL;
 }
 
-a_rbt_s *a_rbt_head(a_rbt_u const *const root)
+a_rbt_node *a_rbt_head(a_rbt const *const root)
 {
-    a_rbt_s *node = root->node;
+    a_rbt_node *node = root->node;
     if (node)
     {
         while (node->left) { node = node->left; }
@@ -565,9 +565,9 @@ a_rbt_s *a_rbt_head(a_rbt_u const *const root)
     return node;
 }
 
-a_rbt_s *a_rbt_tail(a_rbt_u const *const root)
+a_rbt_node *a_rbt_tail(a_rbt const *const root)
 {
-    a_rbt_s *node = root->node;
+    a_rbt_node *node = root->node;
     if (node)
     {
         while (node->right) { node = node->right; }
@@ -575,7 +575,7 @@ a_rbt_s *a_rbt_tail(a_rbt_u const *const root)
     return node;
 }
 
-a_rbt_s *a_rbt_next(a_rbt_s *node)
+a_rbt_node *a_rbt_next(a_rbt_node *node)
 {
     /*
          D
@@ -593,7 +593,7 @@ a_rbt_s *a_rbt_next(a_rbt_s *node)
     }
     else /* C -> B -> D */
     {
-        a_rbt_s *last = node;
+        a_rbt_node *last = node;
         for (node = a_rbt_parent(node); node && node->left != last;)
         {
             last = node;
@@ -603,7 +603,7 @@ a_rbt_s *a_rbt_next(a_rbt_s *node)
     return node;
 }
 
-a_rbt_s *a_rbt_prev(a_rbt_s *node)
+a_rbt_node *a_rbt_prev(a_rbt_node *node)
 {
     if (!node) { return node; }
     if (node->left)
@@ -612,7 +612,7 @@ a_rbt_s *a_rbt_prev(a_rbt_s *node)
     }
     else
     {
-        a_rbt_s *last = node;
+        a_rbt_node *last = node;
         for (node = a_rbt_parent(node); node && node->right != last;)
         {
             last = node;
@@ -622,7 +622,7 @@ a_rbt_s *a_rbt_prev(a_rbt_s *node)
     return node;
 }
 
-a_rbt_s *a_rbt_pre_next(a_rbt_s *node)
+a_rbt_node *a_rbt_pre_next(a_rbt_node *node)
 {
     /*
          D
@@ -631,7 +631,7 @@ a_rbt_s *a_rbt_pre_next(a_rbt_s *node)
      / \   / \
     A   C E   G
     */
-    a_rbt_s *last = node;
+    a_rbt_node *last = node;
     if (!node) { return node; }
     if (node->left) { return node->left; }
     if (node->right) { return node->right; }
@@ -647,9 +647,9 @@ a_rbt_s *a_rbt_pre_next(a_rbt_s *node)
     return node;
 }
 
-a_rbt_s *a_rbt_pre_prev(a_rbt_s *node)
+a_rbt_node *a_rbt_pre_prev(a_rbt_node *node)
 {
-    a_rbt_s *last = node;
+    a_rbt_node *last = node;
     if (!node) { return node; }
     if (node->right) { return node->right; }
     if (node->left) { return node->left; }
@@ -678,21 +678,21 @@ a_rbt_s *a_rbt_pre_prev(a_rbt_s *node)
         else { break; }        \
     } while (!0)
 
-a_rbt_s *a_rbt_post_head(a_rbt_u const *const root)
+a_rbt_node *a_rbt_post_head(a_rbt const *const root)
 {
-    a_rbt_s *node = root->node;
+    a_rbt_node *node = root->node;
     if (node) { A_RBT_POST(left, right); }
     return node;
 }
 
-a_rbt_s *a_rbt_post_tail(a_rbt_u const *const root)
+a_rbt_node *a_rbt_post_tail(a_rbt const *const root)
 {
-    a_rbt_s *node = root->node;
+    a_rbt_node *node = root->node;
     if (node) { A_RBT_POST(right, left); }
     return node;
 }
 
-a_rbt_s *a_rbt_post_next(a_rbt_s *node)
+a_rbt_node *a_rbt_post_next(a_rbt_node *node)
 {
     /*
          D
@@ -701,7 +701,7 @@ a_rbt_s *a_rbt_post_next(a_rbt_s *node)
      / \   / \
     A   C E   G
     */
-    a_rbt_s *last = node;
+    a_rbt_node *last = node;
     if (!node) { return node; }
     node = a_rbt_parent(node);
     if (node && node->right && node->right != last)
@@ -712,9 +712,9 @@ a_rbt_s *a_rbt_post_next(a_rbt_s *node)
     return node;
 }
 
-a_rbt_s *a_rbt_post_prev(a_rbt_s *node)
+a_rbt_node *a_rbt_post_prev(a_rbt_node *node)
 {
-    a_rbt_s *last = node;
+    a_rbt_node *last = node;
     if (!node) { return node; }
     node = a_rbt_parent(node);
     if (node && node->left && node->left != last)
@@ -725,9 +725,9 @@ a_rbt_s *a_rbt_post_prev(a_rbt_s *node)
     return node;
 }
 
-a_rbt_s *a_rbt_tear(a_rbt_u *const root, a_rbt_s **const next)
+a_rbt_node *a_rbt_tear(a_rbt *const root, a_rbt_node **const next)
 {
-    a_rbt_s *node = *next;
+    a_rbt_node *node = *next;
     if (!node)
     {
         node = root->node;

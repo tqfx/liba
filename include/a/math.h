@@ -46,8 +46,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
-A_EXTERN a_f32_t a_f32_hypot(a_f32_t x, a_f32_t y);
-A_EXTERN a_f64_t a_f64_hypot(a_f64_t x, a_f64_t y);
+A_EXTERN a_f32 a_f32_hypot(a_f32 x, a_f32 y);
+A_EXTERN a_f64 a_f64_hypot(a_f64 x, a_f64 y);
 
 /*!
  @brief reciprocal of square-root, \f$ \frac{1}{\sqrt{x}} \f$
@@ -55,16 +55,16 @@ A_EXTERN a_f64_t a_f64_hypot(a_f64_t x, a_f64_t y);
  @param[in] x independent variable
  @return calculated result
 */
-A_EXTERN a_f32_t a_f32_rsqrt(a_f32_t x);
-A_EXTERN a_f64_t a_f64_rsqrt(a_f64_t x);
+A_EXTERN a_f32 a_f32_rsqrt(a_f32 x);
+A_EXTERN a_f64 a_f64_rsqrt(a_f64 x);
 
 /*!
  @brief square root of an unsigned integer
  @param[in] x independent variable
  @return calculated result
 */
-A_EXTERN a_u16_t a_u32_sqrt(a_u32_t x);
-A_EXTERN a_u32_t a_u64_sqrt(a_u64_t x);
+A_EXTERN a_u16 a_u32_sqrt(a_u32 x);
+A_EXTERN a_u32 a_u64_sqrt(a_u64 x);
 
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -109,7 +109,7 @@ A_EXTERN a_u32_t a_u64_sqrt(a_u64_t x);
 
 #define a_f32_sin A_F32_F(sin)
 #define a_f32_cos A_F32_F(cos)
-#define a_f32_tan A_F32_F(tan)
+#define a_f32an A_F32_F(tan)
 #define a_f32_asin A_F32_F(asin)
 #define a_f32_acos A_F32_F(acos)
 #define a_f32_atan A_F32_F(atan)
@@ -117,19 +117,19 @@ A_EXTERN a_u32_t a_u64_sqrt(a_u64_t x);
 
 #define a_f32_sinh A_F32_F(sinh)
 #define a_f32_cosh A_F32_F(cosh)
-#define a_f32_tanh A_F32_F(tanh)
+#define a_f32anh A_F32_F(tanh)
 #define a_f32_asinh A_F32_F(asinh)
 #define a_f32_acosh A_F32_F(acosh)
 #define a_f32_atanh A_F32_F(atanh)
 
 #define a_f32_erf A_F32_F(erf)
 #define a_f32_erfc A_F32_F(erfc)
-#define a_f32_tgamma A_F32_F(tgamma)
+#define a_f32gamma A_F32_F(tgamma)
 #define a_f32_lgamma A_F32_F(lgamma)
 
 #define a_f32_ceil A_F32_F(ceil)
 #define a_f32_floor A_F32_F(floor)
-#define a_f32_trunc A_F32_F(trunc)
+#define a_f32runc A_F32_F(trunc)
 #define a_f32_round A_F32_F(round)
 #define a_f32_lround A_F32_F(lround)
 #define a_f32_llround A_F32_F(llround)
@@ -177,7 +177,7 @@ A_EXTERN a_u32_t a_u64_sqrt(a_u64_t x);
 
 #define a_f64_sin A_F64_F(sin)
 #define a_f64_cos A_F64_F(cos)
-#define a_f64_tan A_F64_F(tan)
+#define a_f64an A_F64_F(tan)
 #define a_f64_asin A_F64_F(asin)
 #define a_f64_acos A_F64_F(acos)
 #define a_f64_atan A_F64_F(atan)
@@ -185,19 +185,19 @@ A_EXTERN a_u32_t a_u64_sqrt(a_u64_t x);
 
 #define a_f64_sinh A_F64_F(sinh)
 #define a_f64_cosh A_F64_F(cosh)
-#define a_f64_tanh A_F64_F(tanh)
+#define a_f64anh A_F64_F(tanh)
 #define a_f64_asinh A_F64_F(asinh)
 #define a_f64_acosh A_F64_F(acosh)
 #define a_f64_atanh A_F64_F(atanh)
 
 #define a_f64_erf A_F64_F(erf)
 #define a_f64_erfc A_F64_F(erfc)
-#define a_f64_tgamma A_F64_F(tgamma)
+#define a_f64gamma A_F64_F(tgamma)
 #define a_f64_lgamma A_F64_F(lgamma)
 
 #define a_f64_ceil A_F64_F(ceil)
 #define a_f64_floor A_F64_F(floor)
-#define a_f64_trunc A_F64_F(trunc)
+#define a_f64runc A_F64_F(trunc)
 #define a_f64_round A_F64_F(round)
 #define a_f64_lround A_F64_F(lround)
 #define a_f64_llround A_F64_F(llround)
@@ -245,9 +245,9 @@ A_EXTERN a_u32_t a_u64_sqrt(a_u64_t x);
 extern "C" {
 #endif /* __cplusplus */
 
-A_EXTERN a_float_t a_float_log1p(a_float_t x);
-A_EXTERN a_float_t a_float_hypot(a_float_t x, a_float_t y);
-A_EXTERN a_float_t a_float_atan2(a_float_t x, a_float_t y);
+A_EXTERN a_float a_float_log1p(a_float x);
+A_EXTERN a_float a_float_hypot(a_float x, a_float y);
+A_EXTERN a_float a_float_atan2(a_float x, a_float y);
 
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -294,7 +294,7 @@ A_EXTERN a_float_t a_float_atan2(a_float_t x, a_float_t y);
 
 #define a_float_sin A_FLOAT_F(sin)
 #define a_float_cos A_FLOAT_F(cos)
-#define a_float_tan A_FLOAT_F(tan)
+#define a_floatan A_FLOAT_F(tan)
 #define a_float_asin A_FLOAT_F(asin)
 #define a_float_acos A_FLOAT_F(acos)
 #define a_float_atan A_FLOAT_F(atan)
@@ -304,19 +304,19 @@ A_EXTERN a_float_t a_float_atan2(a_float_t x, a_float_t y);
 
 #define a_float_sinh A_FLOAT_F(sinh)
 #define a_float_cosh A_FLOAT_F(cosh)
-#define a_float_tanh A_FLOAT_F(tanh)
+#define a_floatanh A_FLOAT_F(tanh)
 #define a_float_asinh A_FLOAT_F(asinh)
 #define a_float_acosh A_FLOAT_F(acosh)
 #define a_float_atanh A_FLOAT_F(atanh)
 
 #define a_float_erf A_FLOAT_F(erf)
 #define a_float_erfc A_FLOAT_F(erfc)
-#define a_float_tgamma A_FLOAT_F(tgamma)
+#define a_floatgamma A_FLOAT_F(tgamma)
 #define a_float_lgamma A_FLOAT_F(lgamma)
 
 #define a_float_ceil A_FLOAT_F(ceil)
 #define a_float_floor A_FLOAT_F(floor)
-#define a_float_trunc A_FLOAT_F(trunc)
+#define a_floatrunc A_FLOAT_F(trunc)
 #define a_float_round A_FLOAT_F(round)
 #define a_float_lround A_FLOAT_F(lround)
 #define a_float_llround A_FLOAT_F(llround)

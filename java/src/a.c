@@ -12,12 +12,12 @@ JNIEXPORT void JNICALL Java_liba_INIT(JNIEnv *jenv, jclass jcls)
 
 JNIEXPORT jint JNICALL Java_liba_isqrt__I(JNIEnv *jenv, jclass jcls, jint x)
 {
-    return (void)(jenv), (void)(jcls), (jint)a_u32_sqrt((a_u32_t)x);
+    return (void)(jenv), (void)(jcls), (jint)a_u32_sqrt((a_u32)x);
 }
 
 JNIEXPORT jint JNICALL Java_liba_isqrt__J(JNIEnv *jenv, jclass jcls, jlong x)
 {
-    return (void)(jenv), (void)(jcls), (jint)a_u64_sqrt((a_u64_t)x);
+    return (void)(jenv), (void)(jcls), (jint)a_u64_sqrt((a_u64)x);
 }
 
 JNIEXPORT jfloat JNICALL Java_liba_rsqrt__F(JNIEnv *jenv, jclass jcls, jfloat x)

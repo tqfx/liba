@@ -3,13 +3,13 @@
 #include "a/math.h"
 #include "a/mf.h"
 
-A_HIDDEN a_float_t a_pid_fuzzy_equ(a_float_t a, a_float_t b);
-a_float_t a_pid_fuzzy_equ(a_float_t const a, a_float_t const b)
+A_HIDDEN a_float a_pid_fuzzy_equ(a_float a, a_float b);
+a_float a_pid_fuzzy_equ(a_float const a, a_float const b)
 {
     return a_float_sqrt(a * b) * a_float_sqrt(1 - (1 - a) * (1 - b));
 }
 
-a_float_t (*a_pid_fuzzy_op(unsigned int const op))(a_float_t, a_float_t)
+a_float (*a_pid_fuzzy_op(unsigned int const op))(a_float, a_float)
 {
     switch (op)
     {
@@ -31,15 +31,15 @@ a_float_t (*a_pid_fuzzy_op(unsigned int const op))(a_float_t, a_float_t)
     }
 }
 
-void a_pid_fuzzy_set_op(a_pid_fuzzy_s *const ctx, unsigned int const op) { ctx->op = a_pid_fuzzy_op(op); }
+void a_pid_fuzzy_set_op(a_pid_fuzzy *const ctx, unsigned int const op) { ctx->op = a_pid_fuzzy_op(op); }
 
-A_HIDDEN unsigned int a_pid_fuzzy_mf(a_float_t x, unsigned int n, a_float_t const *a, unsigned int *idx, a_float_t *val);
-unsigned int a_pid_fuzzy_mf(a_float_t const x, unsigned int const n, a_float_t const *a, unsigned int *idx, a_float_t *val)
+A_HIDDEN unsigned int a_pid_fuzzy_mf(a_float x, unsigned int n, a_float const *a, unsigned int *idx, a_float *val);
+unsigned int a_pid_fuzzy_mf(a_float const x, unsigned int const n, a_float const *a, unsigned int *idx, a_float *val)
 {
     unsigned int counter = 0;
     for (unsigned int i = 0; i != n; ++i)
     {
-        a_float_t y = 0;
+        a_float y = 0;
         switch ((int)*a++)
         {
         case A_MF_GAUSS:
@@ -109,12 +109,12 @@ out:
     return counter;
 }
 
-void a_pid_fuzzy_zero(a_pid_fuzzy_s *const ctx) { a_pid_zero(&ctx->pid); }
+void a_pid_fuzzy_zero(a_pid_fuzzy *const ctx) { a_pid_zero(&ctx->pid); }
 
-void a_pid_fuzzy_init(a_pid_fuzzy_s *const ctx) { a_pid_init(&ctx->pid); }
+void a_pid_fuzzy_init(a_pid_fuzzy *const ctx) { a_pid_init(&ctx->pid); }
 
-void a_pid_fuzzy_rule(a_pid_fuzzy_s *const ctx, unsigned int const order, a_float_t const *const me, a_float_t const *const mec,
-                      a_float_t const *const mkp, a_float_t const *const mki, a_float_t const *const mkd)
+void a_pid_fuzzy_rule(a_pid_fuzzy *const ctx, unsigned int const order, a_float const *const me, a_float const *const mec,
+                      a_float const *const mkp, a_float const *const mki, a_float const *const mkd)
 {
     ctx->me = me;
     ctx->mec = mec;
@@ -124,16 +124,16 @@ void a_pid_fuzzy_rule(a_pid_fuzzy_s *const ctx, unsigned int const order, a_floa
     ctx->order = order;
 }
 
-void *a_pid_fuzzy_joint(a_pid_fuzzy_s *const ctx) { return ctx->idx; }
-void a_pid_fuzzy_set_joint(a_pid_fuzzy_s *const ctx, void *ptr, a_size_t const num)
+void *a_pid_fuzzy_joint(a_pid_fuzzy *const ctx) { return ctx->idx; }
+void a_pid_fuzzy_set_joint(a_pid_fuzzy *const ctx, void *ptr, a_size const num)
 {
     ctx->joint = (unsigned int)num;
     ctx->idx = (unsigned int *)ptr;
-    ptr = (a_byte_t *)ptr + sizeof(unsigned int) * 2 * num;
-    ctx->val = (a_float_t *)ptr;
+    ptr = (a_byte *)ptr + sizeof(unsigned int) * 2 * num;
+    ctx->val = (a_float *)ptr;
 }
 
-void a_pid_fuzzy_kpid(a_pid_fuzzy_s *const ctx, a_float_t const kp, a_float_t const ki, a_float_t const kd)
+void a_pid_fuzzy_kpid(a_pid_fuzzy *const ctx, a_float const kp, a_float const ki, a_float const kd)
 {
     a_pid_kpid(&ctx->pid, kp, ki, kd);
     ctx->kp = kp;
@@ -141,24 +141,24 @@ void a_pid_fuzzy_kpid(a_pid_fuzzy_s *const ctx, a_float_t const kp, a_float_t co
     ctx->kd = kd;
 }
 
-A_HIDDEN void a_pid_fuzzy_out_(a_pid_fuzzy_s *const ctx, a_float_t ec, a_float_t e);
-void a_pid_fuzzy_out_(a_pid_fuzzy_s *const ctx, a_float_t const ec, a_float_t const e)
+A_HIDDEN void a_pid_fuzzy_out_(a_pid_fuzzy *const ctx, a_float ec, a_float e);
+void a_pid_fuzzy_out_(a_pid_fuzzy *const ctx, a_float const ec, a_float const e)
 {
-    a_float_t kp = 0;
-    a_float_t ki = 0;
-    a_float_t kd = 0;
+    a_float kp = 0;
+    a_float ki = 0;
+    a_float kd = 0;
     /* calculate membership */
     unsigned int const ne = a_pid_fuzzy_mf(e, ctx->order, ctx->me, ctx->idx, ctx->val);
     if (!ne) { goto pid; }
     unsigned int *const idx = ctx->idx + ne;
-    a_float_t *const val = ctx->val + ne;
+    a_float *const val = ctx->val + ne;
     unsigned int const nec = a_pid_fuzzy_mf(ec, ctx->order, ctx->mec, idx, val);
     if (!nec) { goto pid; }
-    a_float_t *const mat = val + nec;
+    a_float *const mat = val + nec;
     /* joint membership */
-    a_float_t inv = 0;
+    a_float inv = 0;
     {
-        a_float_t *it = mat;
+        a_float *it = mat;
         for (unsigned int i = 0; i != ne; ++i)
         {
             for (unsigned int j = 0; j != nec; ++j)
@@ -173,10 +173,10 @@ void a_pid_fuzzy_out_(a_pid_fuzzy_s *const ctx, a_float_t const ec, a_float_t co
     /* mean of centers defuzzifier */
     if (ctx->mkp)
     {
-        a_float_t const *it = mat;
+        a_float const *it = mat;
         for (unsigned int i = 0; i != ne; ++i)
         {
-            a_float_t const *const mkp = ctx->mkp + ctx->idx[i];
+            a_float const *const mkp = ctx->mkp + ctx->idx[i];
             for (unsigned int j = 0; j != nec; ++j)
             {
                 kp += *it++ * mkp[idx[j]]; /* += mat(i,j) * mkp(e[i],ec[j]) */
@@ -186,10 +186,10 @@ void a_pid_fuzzy_out_(a_pid_fuzzy_s *const ctx, a_float_t const ec, a_float_t co
     }
     if (ctx->mki)
     {
-        a_float_t const *it = mat;
+        a_float const *it = mat;
         for (unsigned int i = 0; i != ne; ++i)
         {
-            a_float_t const *const mki = ctx->mki + ctx->idx[i];
+            a_float const *const mki = ctx->mki + ctx->idx[i];
             for (unsigned int j = 0; j != nec; ++j)
             {
                 ki += *it++ * mki[idx[j]]; /* += mat(i,j) * mki(e[i],ec[j]) */
@@ -199,10 +199,10 @@ void a_pid_fuzzy_out_(a_pid_fuzzy_s *const ctx, a_float_t const ec, a_float_t co
     }
     if (ctx->mkd)
     {
-        a_float_t const *it = mat;
+        a_float const *it = mat;
         for (unsigned int i = 0; i != ne; ++i)
         {
-            a_float_t const *const mkd = ctx->mkd + ctx->idx[i];
+            a_float const *const mkd = ctx->mkd + ctx->idx[i];
             for (unsigned int j = 0; j != nec; ++j)
             {
                 kd += *it++ * mkd[idx[j]]; /* += mat(i,j) * mkd(e[i],ec[j]) */
@@ -214,26 +214,26 @@ pid:
     a_pid_kpid(&ctx->pid, ctx->kp + kp, ctx->ki + ki, ctx->kd + kd);
 }
 
-A_HIDDEN a_float_t a_pid_run_(a_pid_s *ctx, a_float_t set, a_float_t fdb, a_float_t err);
-a_float_t a_pid_fuzzy_run(a_pid_fuzzy_s *const ctx, a_float_t const set, a_float_t const fdb)
+A_HIDDEN a_float a_pid_run_(a_pid *ctx, a_float set, a_float fdb, a_float err);
+a_float a_pid_fuzzy_run(a_pid_fuzzy *const ctx, a_float const set, a_float const fdb)
 {
-    a_float_t const err = set - fdb;
+    a_float const err = set - fdb;
     a_pid_fuzzy_out_(ctx, err - ctx->pid.err, err);
     return a_pid_run_(&ctx->pid, set, fdb, err);
 }
 
-A_HIDDEN a_float_t a_pid_pos_(a_pid_s *ctx, a_float_t fdb, a_float_t err);
-a_float_t a_pid_fuzzy_pos(a_pid_fuzzy_s *const ctx, a_float_t const set, a_float_t const fdb)
+A_HIDDEN a_float a_pid_pos_(a_pid *ctx, a_float fdb, a_float err);
+a_float a_pid_fuzzy_pos(a_pid_fuzzy *const ctx, a_float const set, a_float const fdb)
 {
-    a_float_t const err = set - fdb;
+    a_float const err = set - fdb;
     a_pid_fuzzy_out_(ctx, err - ctx->pid.err, err);
     return a_pid_pos_(&ctx->pid, fdb, err);
 }
 
-A_HIDDEN a_float_t a_pid_inc_(a_pid_s *ctx, a_float_t fdb, a_float_t err);
-a_float_t a_pid_fuzzy_inc(a_pid_fuzzy_s *const ctx, a_float_t const set, a_float_t const fdb)
+A_HIDDEN a_float a_pid_inc_(a_pid *ctx, a_float fdb, a_float err);
+a_float a_pid_fuzzy_inc(a_pid_fuzzy *const ctx, a_float const set, a_float const fdb)
 {
-    a_float_t const err = set - fdb;
+    a_float const err = set - fdb;
     a_pid_fuzzy_out_(ctx, err - ctx->pid.err, err);
     return a_pid_inc_(&ctx->pid, fdb, err);
 }

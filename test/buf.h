@@ -5,31 +5,31 @@
 
 static void dtor(void *ptr)
 {
-    a_u32_t *obj = a_u32_(*, ptr);
+    a_u32 *obj = a_u32_(*, ptr);
     printf("%" PRIu32 " ", *obj);
 }
 
 static void back(void)
 {
-    a_buf_s ctx;
-    a_u32_t buf[10];
-    a_buf_ctor(&ctx, buf, sizeof(a_u32_t), 10);
+    a_buf ctx;
+    a_u32 buf[10];
+    a_buf_ctor(&ctx, buf, sizeof(a_u32), 10);
 
-    for (a_u32_t i = 0; i != 20; ++i)
+    for (a_u32 i = 0; i != 20; ++i)
     {
-        a_u32_t *obj = a_buf_push_back(a_u32_t, &ctx);
+        a_u32 *obj = a_buf_push_back(a_u32, &ctx);
         if (obj) { *obj = i; }
     }
 
-    a_buf_foreach(a_u32_t, it, &ctx)
+    a_buf_foreach(a_u32, it, &ctx)
     {
         printf("%" PRIu32 " ", *it);
     }
     putchar('\n');
 
-    for (a_u32_t i = 0; i != 20; ++i)
+    for (a_u32 i = 0; i != 20; ++i)
     {
-        a_u32_t *obj = a_buf_pull_back(a_u32_t, &ctx);
+        a_u32 *obj = a_buf_pull_back(a_u32, &ctx);
         if (obj) { printf("%" PRIu32 " ", *obj); }
     }
     putchar('\n');
@@ -39,25 +39,25 @@ static void back(void)
 
 static void fore(void)
 {
-    a_buf_s ctx;
-    a_u32_t buf[10];
-    a_buf_ctor(&ctx, buf, sizeof(a_u32_t), 10);
+    a_buf ctx;
+    a_u32 buf[10];
+    a_buf_ctor(&ctx, buf, sizeof(a_u32), 10);
 
-    for (a_u32_t i = 0; i != 20; ++i)
+    for (a_u32 i = 0; i != 20; ++i)
     {
-        a_u32_t *obj = a_buf_push_fore(a_u32_t, &ctx);
+        a_u32 *obj = a_buf_push_fore(a_u32, &ctx);
         if (obj) { *obj = i; }
     }
 
-    a_buf_foreach_reverse(a_u32_t, it, &ctx)
+    a_buf_foreach_reverse(a_u32, it, &ctx)
     {
         printf("%" PRIu32 " ", *it);
     }
     putchar('\n');
 
-    for (a_u32_t i = 0; i != 20; ++i)
+    for (a_u32 i = 0; i != 20; ++i)
     {
-        a_u32_t *obj = a_buf_pull_fore(a_u32_t, &ctx);
+        a_u32 *obj = a_buf_pull_fore(a_u32, &ctx);
         if (obj) { printf("%" PRIu32 " ", *obj); }
     }
     putchar('\n');
@@ -85,7 +85,7 @@ static int rand10(void)
 
 static void test_sort(void)
 {
-    a_buf_s ctx;
+    a_buf ctx;
     int buf[10];
     unsigned int t = a_cast_s(unsigned int, time(A_NULL));
     a_buf_ctor(&ctx, buf, sizeof(int), 10);
@@ -157,8 +157,8 @@ static void test_sort(void)
     putchar('\n');
 
     {
-        a_str_s *ok = a_str_new();
-        a_str_s *no = a_str_new();
+        a_str *ok = a_str_new();
+        a_str *no = a_str_new();
         a_str_puts(ok, "finding ");
         a_str_puts(no, "missing ");
         for (int i = 0; i != 10; ++i)

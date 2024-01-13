@@ -18,9 +18,9 @@ int liba_hpf_new(lua_State *const L)
     int top = lua_gettop(L);
     if (top > 1)
     {
-        a_float_t fc = (a_float_t)luaL_checknumber(L, 1);
-        a_float_t ts = (a_float_t)luaL_checknumber(L, 2);
-        a_hpf_s *const ctx = lua_newclass(L, a_hpf_s);
+        a_float fc = (a_float)luaL_checknumber(L, 1);
+        a_float ts = (a_float)luaL_checknumber(L, 2);
+        a_hpf *const ctx = lua_newclass(L, a_hpf);
         lua_registry_get(L, liba_hpf_new);
         lua_setmetatable(L, -2);
         a_hpf_init(ctx, A_HPF_GEN(fc, ts));
@@ -28,8 +28,8 @@ int liba_hpf_new(lua_State *const L)
     }
     if (top > 0)
     {
-        a_float_t alpha = (a_float_t)luaL_checknumber(L, 1);
-        a_hpf_s *const ctx = lua_newclass(L, a_hpf_s);
+        a_float alpha = (a_float)luaL_checknumber(L, 1);
+        a_hpf *const ctx = lua_newclass(L, a_hpf);
         lua_registry_get(L, liba_hpf_new);
         lua_setmetatable(L, -2);
         a_hpf_init(ctx, alpha);
@@ -52,9 +52,9 @@ int liba_hpf_gen(lua_State *const L)
     if (top > 2)
     {
         luaL_checktype(L, 1, LUA_TUSERDATA);
-        a_hpf_s *const ctx = (a_hpf_s *)lua_touserdata(L, 1);
-        a_float_t fc = (a_float_t)luaL_checknumber(L, 2);
-        a_float_t ts = (a_float_t)luaL_checknumber(L, 3);
+        a_hpf *const ctx = (a_hpf *)lua_touserdata(L, 1);
+        a_float fc = (a_float)luaL_checknumber(L, 2);
+        a_float ts = (a_float)luaL_checknumber(L, 3);
         ctx->alpha = A_HPF_GEN(fc, ts);
         lua_pushvalue(L, 1);
         return 1;
@@ -62,8 +62,8 @@ int liba_hpf_gen(lua_State *const L)
     if (top > 1)
     {
         luaL_checktype(L, 1, LUA_TUSERDATA);
-        a_hpf_s *const ctx = (a_hpf_s *)lua_touserdata(L, 1);
-        ctx->alpha = (a_float_t)luaL_checknumber(L, 2);
+        a_hpf *const ctx = (a_hpf *)lua_touserdata(L, 1);
+        ctx->alpha = (a_float)luaL_checknumber(L, 2);
         lua_pushvalue(L, 1);
         return 1;
     }
@@ -79,10 +79,10 @@ int liba_hpf_gen(lua_State *const L)
 */
 int liba_hpf_iter(lua_State *const L)
 {
-    a_hpf_s *const ctx = (a_hpf_s *)lua_touserdata(L, 1);
+    a_hpf *const ctx = (a_hpf *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float_t x = (a_float_t)luaL_checknumber(L, 2);
+        a_float x = (a_float)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_hpf_iter(ctx, x));
         return 1;
     }
@@ -97,7 +97,7 @@ int liba_hpf_iter(lua_State *const L)
 */
 int liba_hpf_zero(lua_State *const L)
 {
-    a_hpf_s *const ctx = (a_hpf_s *)lua_touserdata(L, 1);
+    a_hpf *const ctx = (a_hpf *)lua_touserdata(L, 1);
     if (ctx)
     {
         a_hpf_zero(ctx);
@@ -108,7 +108,7 @@ int liba_hpf_zero(lua_State *const L)
 
 static int liba_hpf_set(lua_State *const L)
 {
-    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
+    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0xE8859EEB: // __name
     case 0xE70C48C6: // __call
@@ -125,8 +125,8 @@ static int liba_hpf_set(lua_State *const L)
 
 static int liba_hpf_get(lua_State *const L)
 {
-    a_hpf_s const *const ctx = (a_hpf_s const *)lua_touserdata(L, 1);
-    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
+    a_hpf const *const ctx = (a_hpf const *)lua_touserdata(L, 1);
+    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0xB5485B9E: // alpha
         lua_pushnumber(L, (lua_Number)ctx->alpha);
@@ -161,7 +161,7 @@ static int liba_hpf_(lua_State *const L)
 
 int luaopen_liba_hpf(lua_State *const L)
 {
-    static lua_fun_s const funcs[] = {
+    static lua_fun const funcs[] = {
         {"new", liba_hpf_new},
         {"gen", liba_hpf_gen},
         {"iter", liba_hpf_iter},
@@ -173,7 +173,7 @@ int luaopen_liba_hpf(lua_State *const L)
     lua_fun_set(L, -1, "__call", liba_hpf_);
     lua_setmetatable(L, -2);
 
-    static lua_fun_s const metas[] = {
+    static lua_fun const metas[] = {
         {"__newindex", liba_hpf_set},
         {"__index", liba_hpf_get},
         {"__call", liba_hpf_iter},

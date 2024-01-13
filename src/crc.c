@@ -1,10 +1,10 @@
 #include "a/crc.h"
 
-void a_crc8le_init(a_u8_t table[A_CRC_SIZ], a_u8_t const poly)
+void a_crc8le_init(a_u8 table[A_CRC_SIZ], a_u8 const poly)
 {
     for (unsigned int i = 0; i != A_CRC_SIZ; ++i)
     {
-        a_u8_t value = (a_u8_t)i;
+        a_u8 value = (a_u8)i;
         for (unsigned int j = 8; j; --j)
         {
             unsigned int is1 = (unsigned int)(value & 1);
@@ -15,11 +15,11 @@ void a_crc8le_init(a_u8_t table[A_CRC_SIZ], a_u8_t const poly)
     }
 }
 
-void a_crc16le_init(a_u16_t table[A_CRC_SIZ], a_u16_t const poly)
+void a_crc16le_init(a_u16 table[A_CRC_SIZ], a_u16 const poly)
 {
     for (unsigned int i = 0; i != A_CRC_SIZ; ++i)
     {
-        a_u16_t value = (a_u16_t)i;
+        a_u16 value = (a_u16)i;
         for (unsigned int j = 8; j; --j)
         {
             unsigned int is1 = (unsigned int)(value & 1);
@@ -30,11 +30,11 @@ void a_crc16le_init(a_u16_t table[A_CRC_SIZ], a_u16_t const poly)
     }
 }
 
-void a_crc32le_init(a_u32_t table[A_CRC_SIZ], a_u32_t const poly)
+void a_crc32le_init(a_u32 table[A_CRC_SIZ], a_u32 const poly)
 {
     for (unsigned int i = 0; i != A_CRC_SIZ; ++i)
     {
-        a_u32_t value = i;
+        a_u32 value = i;
         for (unsigned int j = 8; j; --j)
         {
             unsigned int is1 = (unsigned int)(value & 1);
@@ -45,11 +45,11 @@ void a_crc32le_init(a_u32_t table[A_CRC_SIZ], a_u32_t const poly)
     }
 }
 
-void a_crc64le_init(a_u64_t table[A_CRC_SIZ], a_u64_t const poly)
+void a_crc64le_init(a_u64 table[A_CRC_SIZ], a_u64 const poly)
 {
     for (unsigned int i = 0; i != A_CRC_SIZ; ++i)
     {
-        a_u64_t value = i;
+        a_u64 value = i;
         for (unsigned int j = 8; j; --j)
         {
             unsigned int is1 = (unsigned int)(value & 1);
@@ -60,7 +60,7 @@ void a_crc64le_init(a_u64_t table[A_CRC_SIZ], a_u64_t const poly)
     }
 }
 
-void a_crc8be_init(a_u8_t table[A_CRC_SIZ], a_u8_t const poly)
+void a_crc8be_init(a_u8 table[A_CRC_SIZ], a_u8 const poly)
 {
     for (unsigned int i = 0; i != A_CRC_SIZ; ++i)
     {
@@ -71,11 +71,11 @@ void a_crc8be_init(a_u8_t table[A_CRC_SIZ], a_u8_t const poly)
             value <<= 1;
             if (is1) { value ^= poly; }
         }
-        table[i] = (a_u8_t)value;
+        table[i] = (a_u8)value;
     }
 }
 
-void a_crc16be_init(a_u16_t table[A_CRC_SIZ], a_u16_t const poly)
+void a_crc16be_init(a_u16 table[A_CRC_SIZ], a_u16 const poly)
 {
     for (unsigned int i = 0; i != A_CRC_SIZ; ++i)
     {
@@ -86,18 +86,18 @@ void a_crc16be_init(a_u16_t table[A_CRC_SIZ], a_u16_t const poly)
             value <<= 1;
             if (is1) { value ^= poly; }
         }
-        table[i] = (a_u16_t)value;
+        table[i] = (a_u16)value;
     }
 }
 
-void a_crc32be_init(a_u32_t table[A_CRC_SIZ], a_u32_t const poly)
+void a_crc32be_init(a_u32 table[A_CRC_SIZ], a_u32 const poly)
 {
-    for (a_u32_t i = 0; i != A_CRC_SIZ; ++i)
+    for (a_u32 i = 0; i != A_CRC_SIZ; ++i)
     {
-        a_u32_t value = i << 24;
+        a_u32 value = i << 24;
         for (unsigned int j = 8; j; --j)
         {
-            a_u32_t is1 = A_U32_C(0x80000000) & value;
+            a_u32 is1 = A_U32_C(0x80000000) & value;
             value <<= 1;
             if (is1) { value ^= poly; }
         }
@@ -105,14 +105,14 @@ void a_crc32be_init(a_u32_t table[A_CRC_SIZ], a_u32_t const poly)
     }
 }
 
-void a_crc64be_init(a_u64_t table[A_CRC_SIZ], a_u64_t const poly)
+void a_crc64be_init(a_u64 table[A_CRC_SIZ], a_u64 const poly)
 {
-    for (a_u64_t i = 0; i != A_CRC_SIZ; ++i)
+    for (a_u64 i = 0; i != A_CRC_SIZ; ++i)
     {
-        a_u64_t value = i << 56;
+        a_u64 value = i << 56;
         for (unsigned int j = 8; j; --j)
         {
-            a_u64_t is1 = A_U64_C(0x8000000000000000) & value;
+            a_u64 is1 = A_U64_C(0x8000000000000000) & value;
             value <<= 1;
             if (is1) { value ^= poly; }
         }
@@ -120,58 +120,58 @@ void a_crc64be_init(a_u64_t table[A_CRC_SIZ], a_u64_t const poly)
     }
 }
 
-a_u8_t a_crc8(a_u8_t const table[A_CRC_SIZ], void const *const pdata, a_size_t const nbyte, a_u8_t value)
+a_u8 a_crc8(a_u8 const table[A_CRC_SIZ], void const *const pdata, a_size const nbyte, a_u8 value)
 {
-    a_byte_t const *p = (a_byte_t const *)pdata;
-    a_byte_t const *q = (a_byte_t const *)pdata + nbyte;
+    a_byte const *p = (a_byte const *)pdata;
+    a_byte const *q = (a_byte const *)pdata + nbyte;
     while (p != q) { value = table[value ^ *p++]; }
     return value;
 }
 
-a_u16_t a_crc16le(a_u16_t const table[A_CRC_SIZ], void const *const pdata, a_size_t const nbyte, a_u16_t value)
+a_u16 a_crc16le(a_u16 const table[A_CRC_SIZ], void const *const pdata, a_size const nbyte, a_u16 value)
 {
-    a_byte_t const *p = (a_byte_t const *)pdata;
-    a_byte_t const *q = (a_byte_t const *)pdata + nbyte;
-    while (p != q) { value = (a_u16_t)((value >> 8) ^ table[(value ^ *p++) & 0xFF]); }
+    a_byte const *p = (a_byte const *)pdata;
+    a_byte const *q = (a_byte const *)pdata + nbyte;
+    while (p != q) { value = (a_u16)((value >> 8) ^ table[(value ^ *p++) & 0xFF]); }
     return value;
 }
 
-a_u32_t a_crc32le(a_u32_t const table[A_CRC_SIZ], void const *const pdata, a_size_t const nbyte, a_u32_t value)
+a_u32 a_crc32le(a_u32 const table[A_CRC_SIZ], void const *const pdata, a_size const nbyte, a_u32 value)
 {
-    a_byte_t const *p = (a_byte_t const *)pdata;
-    a_byte_t const *q = (a_byte_t const *)pdata + nbyte;
+    a_byte const *p = (a_byte const *)pdata;
+    a_byte const *q = (a_byte const *)pdata + nbyte;
     while (p != q) { value = (value >> 8) ^ table[(value ^ *p++) & 0xFF]; }
     return value;
 }
 
-a_u64_t a_crc64le(a_u64_t const table[A_CRC_SIZ], void const *const pdata, a_size_t const nbyte, a_u64_t value)
+a_u64 a_crc64le(a_u64 const table[A_CRC_SIZ], void const *const pdata, a_size const nbyte, a_u64 value)
 {
-    a_byte_t const *p = (a_byte_t const *)pdata;
-    a_byte_t const *q = (a_byte_t const *)pdata + nbyte;
+    a_byte const *p = (a_byte const *)pdata;
+    a_byte const *q = (a_byte const *)pdata + nbyte;
     while (p != q) { value = (value >> 8) ^ table[(value ^ *p++) & 0xFF]; }
     return value;
 }
 
-a_u16_t a_crc16be(a_u16_t const table[A_CRC_SIZ], void const *const pdata, a_size_t const nbyte, a_u16_t value)
+a_u16 a_crc16be(a_u16 const table[A_CRC_SIZ], void const *const pdata, a_size const nbyte, a_u16 value)
 {
-    a_byte_t const *p = (a_byte_t const *)pdata;
-    a_byte_t const *q = (a_byte_t const *)pdata + nbyte;
-    while (p != q) { value = (a_u16_t)((value << 8) ^ table[((value >> 8) ^ *p++) & 0xFF]); }
+    a_byte const *p = (a_byte const *)pdata;
+    a_byte const *q = (a_byte const *)pdata + nbyte;
+    while (p != q) { value = (a_u16)((value << 8) ^ table[((value >> 8) ^ *p++) & 0xFF]); }
     return value;
 }
 
-a_u32_t a_crc32be(a_u32_t const table[A_CRC_SIZ], void const *const pdata, a_size_t const nbyte, a_u32_t value)
+a_u32 a_crc32be(a_u32 const table[A_CRC_SIZ], void const *const pdata, a_size const nbyte, a_u32 value)
 {
-    a_byte_t const *p = (a_byte_t const *)pdata;
-    a_byte_t const *q = (a_byte_t const *)pdata + nbyte;
+    a_byte const *p = (a_byte const *)pdata;
+    a_byte const *q = (a_byte const *)pdata + nbyte;
     while (p != q) { value = (value << 8) ^ table[((value >> 24) ^ *p++) & 0xFF]; }
     return value;
 }
 
-a_u64_t a_crc64be(a_u64_t const table[A_CRC_SIZ], void const *const pdata, a_size_t const nbyte, a_u64_t value)
+a_u64 a_crc64be(a_u64 const table[A_CRC_SIZ], void const *const pdata, a_size const nbyte, a_u64 value)
 {
-    a_byte_t const *p = (a_byte_t const *)pdata;
-    a_byte_t const *q = (a_byte_t const *)pdata + nbyte;
+    a_byte const *p = (a_byte const *)pdata;
+    a_byte const *q = (a_byte const *)pdata + nbyte;
     while (p != q) { value = (value << 8) ^ table[((value >> 56) ^ *p++) & 0xFF]; }
     return value;
 }

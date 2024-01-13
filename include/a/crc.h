@@ -27,24 +27,24 @@
 extern "C" {
 #endif /* __cplusplus */
 
-A_EXTERN void a_crc8le_init(a_u8_t table[A_CRC_SIZ], a_u8_t poly);
-A_EXTERN void a_crc8be_init(a_u8_t table[A_CRC_SIZ], a_u8_t poly);
-A_EXTERN a_u8_t a_crc8(a_u8_t const table[A_CRC_SIZ], void const *pdata, a_size_t nbyte, a_u8_t value);
+A_EXTERN void a_crc8le_init(a_u8 table[A_CRC_SIZ], a_u8 poly);
+A_EXTERN void a_crc8be_init(a_u8 table[A_CRC_SIZ], a_u8 poly);
+A_EXTERN a_u8 a_crc8(a_u8 const table[A_CRC_SIZ], void const *pdata, a_size nbyte, a_u8 value);
 
-A_EXTERN void a_crc16le_init(a_u16_t table[A_CRC_SIZ], a_u16_t poly);
-A_EXTERN void a_crc16be_init(a_u16_t table[A_CRC_SIZ], a_u16_t poly);
-A_EXTERN a_u16_t a_crc16le(a_u16_t const table[A_CRC_SIZ], void const *pdata, a_size_t nbyte, a_u16_t value);
-A_EXTERN a_u16_t a_crc16be(a_u16_t const table[A_CRC_SIZ], void const *pdata, a_size_t nbyte, a_u16_t value);
+A_EXTERN void a_crc16le_init(a_u16 table[A_CRC_SIZ], a_u16 poly);
+A_EXTERN void a_crc16be_init(a_u16 table[A_CRC_SIZ], a_u16 poly);
+A_EXTERN a_u16 a_crc16le(a_u16 const table[A_CRC_SIZ], void const *pdata, a_size nbyte, a_u16 value);
+A_EXTERN a_u16 a_crc16be(a_u16 const table[A_CRC_SIZ], void const *pdata, a_size nbyte, a_u16 value);
 
-A_EXTERN void a_crc32le_init(a_u32_t table[A_CRC_SIZ], a_u32_t poly);
-A_EXTERN void a_crc32be_init(a_u32_t table[A_CRC_SIZ], a_u32_t poly);
-A_EXTERN a_u32_t a_crc32le(a_u32_t const table[A_CRC_SIZ], void const *pdata, a_size_t nbyte, a_u32_t value);
-A_EXTERN a_u32_t a_crc32be(a_u32_t const table[A_CRC_SIZ], void const *pdata, a_size_t nbyte, a_u32_t value);
+A_EXTERN void a_crc32le_init(a_u32 table[A_CRC_SIZ], a_u32 poly);
+A_EXTERN void a_crc32be_init(a_u32 table[A_CRC_SIZ], a_u32 poly);
+A_EXTERN a_u32 a_crc32le(a_u32 const table[A_CRC_SIZ], void const *pdata, a_size nbyte, a_u32 value);
+A_EXTERN a_u32 a_crc32be(a_u32 const table[A_CRC_SIZ], void const *pdata, a_size nbyte, a_u32 value);
 
-A_EXTERN void a_crc64le_init(a_u64_t table[A_CRC_SIZ], a_u64_t poly);
-A_EXTERN void a_crc64be_init(a_u64_t table[A_CRC_SIZ], a_u64_t poly);
-A_EXTERN a_u64_t a_crc64le(a_u64_t const table[A_CRC_SIZ], void const *pdata, a_size_t nbyte, a_u64_t value);
-A_EXTERN a_u64_t a_crc64be(a_u64_t const table[A_CRC_SIZ], void const *pdata, a_size_t nbyte, a_u64_t value);
+A_EXTERN void a_crc64le_init(a_u64 table[A_CRC_SIZ], a_u64 poly);
+A_EXTERN void a_crc64be_init(a_u64 table[A_CRC_SIZ], a_u64 poly);
+A_EXTERN a_u64 a_crc64le(a_u64 const table[A_CRC_SIZ], void const *pdata, a_size nbyte, a_u64 value);
+A_EXTERN a_u64 a_crc64be(a_u64 const table[A_CRC_SIZ], void const *pdata, a_size nbyte, a_u64 value);
 
 #if defined(__cplusplus)
 } /* extern "C" */

@@ -10,7 +10,7 @@ else:
 @cython.boundscheck(False)
 cdef class version:
     '''version'''
-    cdef a_version_s ctx
+    cdef a_version ctx
     property major:
         def __get__(self):
             return self.ctx.major

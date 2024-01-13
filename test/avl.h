@@ -5,13 +5,13 @@
 
 typedef struct
 {
-    a_avl_s node;
+    a_avl_node node;
     int data;
     int height;
     int reached;
 } int_node;
 
-static A_INLINE int int_factor(a_avl_s *node)
+static A_INLINE int int_factor(a_avl_node *node)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
     return a_cast_s(int, node->_parent & 3) - 1;
@@ -22,7 +22,7 @@ static A_INLINE int int_factor(a_avl_s *node)
 
 static A_INLINE int_node *int_entry(void const *node)
 {
-    return a_cast_r(int_node *, a_cast_r(a_uptr_t, node) - a_offsetof(int_node, node)); // NOLINT
+    return a_cast_r(int_node *, a_cast_r(a_uptr, node) - a_offsetof(int_node, node)); // NOLINT
 }
 
 static int int_cmp(void const *lhs, void const *rhs)
@@ -32,7 +32,7 @@ static int int_cmp(void const *lhs, void const *rhs)
 
 #define int_max(a, b) ((a) > (b) ? (a) : (b))
 #define int_height(node) ((node) ? int_entry(node)->height : 0)
-static void set_height(a_avl_s *node) // NOLINT
+static void set_height(a_avl_node *node) // NOLINT
 {
     if (node)
     {
@@ -46,7 +46,7 @@ static void set_height(a_avl_s *node) // NOLINT
     }
 }
 
-static void check_tree(a_avl_s *node) // NOLINT
+static void check_tree(a_avl_node *node) // NOLINT
 {
     if (node)
     {
@@ -76,8 +76,8 @@ static int test(int argc, char *argv[])
     (void)(argc);
     (void)(argv);
 
-    a_str_s str = A_STR_NUL;
-    a_avl_u root = A_AVL_ROOT;
+    a_str str = A_STR_NUL;
+    a_avl root = A_AVL_ROOT;
     unsigned int const n = 0x1000;
     int_node *vec = a_new(int_node, A_NULL, n);
     int *sorted = a_new(int, A_NULL, n);

@@ -21,10 +21,10 @@
 /*!
  @brief instance structure for circular doubly linked list
 */
-typedef struct a_list_s
+typedef struct a_list
 {
-    struct a_list_s *next, *prev;
-} a_list_s;
+    struct a_list *next, *prev;
+} a_list;
 
 /*!
  @brief cast a list pointer from another type pointer
@@ -32,13 +32,13 @@ typedef struct a_list_s
  @param[in] x points to circular doubly linked list
  @return a pointer to circular doubly linked list
 */
-#define a_list_c(_, x) a_cast_s(a_list_s _, a_cast_s(void _, x))
+#define a_list_(_, x) a_cast_s(a_list _, a_cast_s(void _, x))
 
 /*!
  @brief access the struct for this entry
- @param ptr the &a_list_s pointer
+ @param ptr the &a_list pointer
  @param type the type of the struct this is embedded in
- @param member the name of the a_list_s within the struct
+ @param member the name of the a_list within the struct
 */
 #define a_list_entry(ptr, type, member) a_container_of(ptr, type, member)
 #define a_list_entry_next(ptr, type, member) a_list_entry((ptr)->next, type, member)
@@ -46,28 +46,28 @@ typedef struct a_list_s
 
 /*!
  @brief iterate over a list
- @param it the &a_list_s to use as a loop counter
+ @param it the &a_list to use as a loop counter
  @param ctx points to circular doubly linked list
  @param next the direction of loop iteration
   @arg next the backward iteration
   @arg prev the forward iteration
 */
 #define a_list_foreach_(it, ctx, next) \
-    for (a_list_s *it = (ctx)->next; it != (ctx); it = it->next)
+    for (a_list *it = (ctx)->next; it != (ctx); it = it->next)
 #define a_list_foreach_next(it, ctx) a_list_foreach_(it, ctx, next)
 #define a_list_foreach_prev(it, ctx) a_list_foreach_(it, ctx, prev)
 
 /*!
  @brief iterate over a list safe against removal of list entry
- @param it the &a_list_s to use as a loop counter
- @param at another &a_list_s to use as temporary storage
+ @param it the &a_list to use as a loop counter
+ @param at another &a_list to use as temporary storage
  @param ctx points to circular doubly linked list
  @param next the direction of loop iteration
   @arg next the backward iteration
   @arg prev the forward iteration
 */
 #define a_list_forsafe_(it, at, ctx, next) \
-    for (a_list_s *it = (ctx)->next, *at = it->next; it != (ctx); it = at, at = it->next)
+    for (a_list *it = (ctx)->next, *at = it->next; it != (ctx); it = at, at = it->next)
 #define a_list_forsafe_next(it, at, ctx) a_list_forsafe_(it, at, ctx, next)
 #define a_list_forsafe_prev(it, at, ctx) a_list_forsafe_(it, at, ctx, prev)
 
@@ -75,19 +75,19 @@ typedef struct a_list_s
  @brief constructor for circular doubly linked list
  @param[in,out] ctx points to circular doubly linked list
 */
-A_INTERN void a_list_ctor(a_list_s *const ctx) { ctx->prev = ctx->next = ctx; }
+A_INTERN void a_list_ctor(a_list *const ctx) { ctx->prev = ctx->next = ctx; }
 
 /*!
  @brief initialize for circular doubly linked list
  @param[in,out] ctx points to circular doubly linked list
 */
-A_INTERN void a_list_init(a_list_s *const ctx) { ctx->prev = ctx->next = ctx; }
+A_INTERN void a_list_init(a_list *const ctx) { ctx->prev = ctx->next = ctx; }
 
 /*!
  @brief destructor for circular doubly linked list
  @param[in,out] ctx points to circular doubly linked list
 */
-A_INTERN void a_list_dtor(a_list_s *const ctx) { ctx->prev = ctx->next = ctx; }
+A_INTERN void a_list_dtor(a_list *const ctx) { ctx->prev = ctx->next = ctx; }
 
 /*!
  @brief link head node and tail node
@@ -104,7 +104,7 @@ A_INTERN void a_list_dtor(a_list_s *const ctx) { ctx->prev = ctx->next = ctx; }
  @param[in,out] head the head node of a list
  @param[in,out] tail the tail node of a list
 */
-A_INTERN void a_list_link(a_list_s *const head, a_list_s *const tail)
+A_INTERN void a_list_link(a_list *const head, a_list *const tail)
 {
     head->next = tail;
     tail->prev = head;
@@ -125,7 +125,7 @@ A_INTERN void a_list_link(a_list_s *const head, a_list_s *const tail)
  @param[in,out] head the head node of a list
  @param[in,out] tail the tail node of a list
 */
-A_INTERN void a_list_loop(a_list_s *const head, a_list_s *const tail)
+A_INTERN void a_list_loop(a_list *const head, a_list *const tail)
 {
     head->prev = tail;
     tail->next = head;
@@ -155,7 +155,7 @@ A_INTERN void a_list_loop(a_list_s *const head, a_list_s *const tail)
  @param[in,out] head2 the head node of the list2
  @param[in,out] tail2 the tail node of the list2
 */
-A_INTERN void a_list_add_(a_list_s *const head1, a_list_s *const tail1, a_list_s *const head2, a_list_s *const tail2)
+A_INTERN void a_list_add_(a_list *const head1, a_list *const tail1, a_list *const head2, a_list *const tail2)
 {
     a_list_link(tail1, head2);
     a_list_link(tail2, head1);
@@ -180,7 +180,7 @@ A_INTERN void a_list_add_(a_list_s *const head1, a_list_s *const tail1, a_list_s
  @param[in,out] tail the tail node of a list
  @param[in] node a circular doubly linked list node
 */
-A_INTERN void a_list_add_node(a_list_s *const head, a_list_s *const tail, a_list_s *const node)
+A_INTERN void a_list_add_node(a_list *const head, a_list *const tail, a_list *const node)
 {
     a_list_add_(head, tail, node, node);
 }
@@ -203,7 +203,7 @@ A_INTERN void a_list_add_node(a_list_s *const head, a_list_s *const tail, a_list
  @param[in,out] ctx points to circular doubly linked list
  @param[in] node a circular doubly linked list node
 */
-A_INTERN void a_list_add_next(a_list_s *const ctx, a_list_s *const node)
+A_INTERN void a_list_add_next(a_list *const ctx, a_list *const node)
 {
     a_list_add_(ctx->next, ctx, node, node);
 }
@@ -226,7 +226,7 @@ A_INTERN void a_list_add_next(a_list_s *const ctx, a_list_s *const node)
  @param[in,out] ctx points to circular doubly linked list
  @param[in] node a circular doubly linked list node
 */
-A_INTERN void a_list_add_prev(a_list_s *const ctx, a_list_s *const node)
+A_INTERN void a_list_add_prev(a_list *const ctx, a_list *const node)
 {
     a_list_add_(ctx, ctx->prev, node, node);
 }
@@ -248,7 +248,7 @@ A_INTERN void a_list_add_prev(a_list_s *const ctx, a_list_s *const node)
  @param[in,out] head the head node of a list
  @param[in,out] tail the tail node of a list
 */
-A_INTERN void a_list_del_(a_list_s *const head, a_list_s *const tail)
+A_INTERN void a_list_del_(a_list *const head, a_list *const tail)
 {
     a_list_link(head->prev, tail->next);
 }
@@ -270,7 +270,7 @@ A_INTERN void a_list_del_(a_list_s *const head, a_list_s *const tail)
  @enddot
  @param[in] node a circular doubly linked list node
 */
-A_INTERN void a_list_del_node(a_list_s *const node) { a_list_del_(node, node); }
+A_INTERN void a_list_del_node(a_list *const node) { a_list_del_(node, node); }
 
 /*!
  @brief remove a node from a list forward
@@ -289,7 +289,7 @@ A_INTERN void a_list_del_node(a_list_s *const node) { a_list_del_(node, node); }
  @enddot
  @param[in] node a circular doubly linked list node
 */
-A_INTERN void a_list_del_next(a_list_s *const node) { a_list_del_(node->next, node->next); }
+A_INTERN void a_list_del_next(a_list *const node) { a_list_del_(node->next, node->next); }
 
 /*!
  @brief remove a node from a list backward
@@ -308,7 +308,7 @@ A_INTERN void a_list_del_next(a_list_s *const node) { a_list_del_(node->next, no
  @enddot
  @param[in] node a circular doubly linked list node
 */
-A_INTERN void a_list_del_prev(a_list_s *const node) { a_list_del_(node->prev, node->prev); }
+A_INTERN void a_list_del_prev(a_list *const node) { a_list_del_(node->prev, node->prev); }
 
 /*!
  @brief moving a list to another list forward
@@ -328,7 +328,7 @@ A_INTERN void a_list_del_prev(a_list_s *const node) { a_list_del_(node->prev, no
  @param[in,out] ctx points to circular doubly linked list
  @param[in,out] out another circular doubly linked list
 */
-A_INTERN void a_list_mov_next(a_list_s *const ctx, a_list_s *const out)
+A_INTERN void a_list_mov_next(a_list *const ctx, a_list *const out)
 {
     a_list_add_(out->next, out, ctx->next, ctx->prev);
 }
@@ -351,7 +351,7 @@ A_INTERN void a_list_mov_next(a_list_s *const ctx, a_list_s *const out)
  @param[in,out] ctx points to circular doubly linked list
  @param[in,out] out another circular doubly linked list
 */
-A_INTERN void a_list_mov_prev(a_list_s *const ctx, a_list_s *const out)
+A_INTERN void a_list_mov_prev(a_list *const ctx, a_list *const out)
 {
     a_list_add_(out, out->prev, ctx->next, ctx->prev);
 }
@@ -376,9 +376,9 @@ A_INTERN void a_list_mov_prev(a_list_s *const ctx, a_list_s *const out)
  @enddot
  @param[in,out] ctx points to circular doubly linked list
 */
-A_INTERN void a_list_rot_next(a_list_s *const ctx)
+A_INTERN void a_list_rot_next(a_list *const ctx)
 {
-    a_list_s *const node = ctx->prev;
+    a_list *const node = ctx->prev;
     a_list_del_(node, node);
     a_list_add_(ctx->next, ctx, node, node);
 }
@@ -403,9 +403,9 @@ A_INTERN void a_list_rot_next(a_list_s *const ctx)
  @enddot
  @param[in,out] ctx points to circular doubly linked list
 */
-A_INTERN void a_list_rot_prev(a_list_s *const ctx)
+A_INTERN void a_list_rot_prev(a_list *const ctx)
 {
-    a_list_s *const node = ctx->next;
+    a_list *const node = ctx->next;
     a_list_del_(node, node);
     a_list_add_(ctx, ctx->prev, node, node);
 }
@@ -430,7 +430,7 @@ A_INTERN void a_list_rot_prev(a_list_s *const ctx)
  @param[in,out] head2 the head node of the list2
  @param[in,out] tail2 the tail node of the list2
 */
-A_INTERN void a_list_shift_(a_list_s *const head1, a_list_s *const tail1, a_list_s *const head2, a_list_s *const tail2)
+A_INTERN void a_list_shift_(a_list *const head1, a_list *const tail1, a_list *const head2, a_list *const tail2)
 {
     a_list_add_(tail1->next, head1->prev, head2, tail2);
 }
@@ -440,7 +440,7 @@ A_INTERN void a_list_shift_(a_list_s *const head1, a_list_s *const tail1, a_list
  @param[in,out] lhs the old node
  @param[in,out] rhs the new node
 */
-A_INTERN void a_list_shift_node(a_list_s *const lhs, a_list_s *const rhs)
+A_INTERN void a_list_shift_node(a_list *const lhs, a_list *const rhs)
 {
     a_list_shift_(lhs, lhs, rhs, rhs);
 }
@@ -467,9 +467,9 @@ A_INTERN void a_list_shift_node(a_list_s *const lhs, a_list_s *const rhs)
  @param[in,out] head2 the head node of the list2
  @param[in,out] tail2 the tail node of the list2
 */
-A_INTERN void a_list_swap_(a_list_s *const head1, a_list_s *const tail1, a_list_s *const head2, a_list_s *const tail2)
+A_INTERN void a_list_swap_(a_list *const head1, a_list *const tail1, a_list *const head2, a_list *const tail2)
 {
-    a_list_s *const head = tail2->next, *const tail = head2->prev;
+    a_list *const head = tail2->next, *const tail = head2->prev;
     a_list_add_(tail1->next, head1->prev, head2, tail2);
     a_list_add_(head, tail, head1, tail1);
 }
@@ -479,7 +479,7 @@ A_INTERN void a_list_swap_(a_list_s *const head1, a_list_s *const tail1, a_list_
  @param[in,out] lhs the node on the left
  @param[in,out] rhs the node on the right
 */
-A_INTERN void a_list_swap_node(a_list_s *const lhs, a_list_s *const rhs)
+A_INTERN void a_list_swap_node(a_list *const lhs, a_list *const rhs)
 {
     a_list_swap_(lhs, lhs, rhs, rhs);
 }

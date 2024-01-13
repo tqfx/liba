@@ -22,7 +22,7 @@ JNIEXPORT void JNICALL Java_liba_polytraj7_INIT(JNIEnv *jenv, jclass jcls)
 
 JNIEXPORT jobject JNICALL Java_liba_polytraj7_gen(JNIEnv *jenv, jobject jobj, jdouble t0, jdouble t1, jdouble q0, jdouble q1, jdouble v0, jdouble v1, jdouble a0, jdouble a1, jdouble j0, jdouble j1)
 {
-    a_polytraj7_s ctx;
+    a_polytraj7 ctx;
     jdoubleArray jq = (*jenv)->GetObjectField(jenv, jobj, L.q);
     jdoubleArray jv = (*jenv)->GetObjectField(jenv, jobj, L.v);
     jdoubleArray ja = (*jenv)->GetObjectField(jenv, jobj, L.a);
@@ -41,7 +41,7 @@ JNIEXPORT jobject JNICALL Java_liba_polytraj7_gen(JNIEnv *jenv, jobject jobj, jd
 
 JNIEXPORT jdouble JNICALL Java_liba_polytraj7_pos(JNIEnv *jenv, jobject jobj, jdouble dt)
 {
-    a_polytraj7_s ctx;
+    a_polytraj7 ctx;
     jdoubleArray jq = (*jenv)->GetObjectField(jenv, jobj, L.q);
     (*jenv)->GetDoubleArrayRegion(jenv, jq, 0, A_LEN(ctx.q), ctx.q);
     return a_polytraj7_pos(&ctx, dt);
@@ -49,7 +49,7 @@ JNIEXPORT jdouble JNICALL Java_liba_polytraj7_pos(JNIEnv *jenv, jobject jobj, jd
 
 JNIEXPORT jdouble JNICALL Java_liba_polytraj7_vel(JNIEnv *jenv, jobject jobj, jdouble dt)
 {
-    a_polytraj7_s ctx;
+    a_polytraj7 ctx;
     jdoubleArray jv = (*jenv)->GetObjectField(jenv, jobj, L.v);
     (*jenv)->GetDoubleArrayRegion(jenv, jv, 0, A_LEN(ctx.v), ctx.v);
     return a_polytraj7_vel(&ctx, dt);
@@ -57,7 +57,7 @@ JNIEXPORT jdouble JNICALL Java_liba_polytraj7_vel(JNIEnv *jenv, jobject jobj, jd
 
 JNIEXPORT jdouble JNICALL Java_liba_polytraj7_acc(JNIEnv *jenv, jobject jobj, jdouble dt)
 {
-    a_polytraj7_s ctx;
+    a_polytraj7 ctx;
     jdoubleArray ja = (*jenv)->GetObjectField(jenv, jobj, L.a);
     (*jenv)->GetDoubleArrayRegion(jenv, ja, 0, A_LEN(ctx.a), ctx.a);
     return a_polytraj7_acc(&ctx, dt);
@@ -65,7 +65,7 @@ JNIEXPORT jdouble JNICALL Java_liba_polytraj7_acc(JNIEnv *jenv, jobject jobj, jd
 
 JNIEXPORT jdouble JNICALL Java_liba_polytraj7_jer(JNIEnv *jenv, jobject jobj, jdouble dt)
 {
-    a_polytraj7_s ctx;
+    a_polytraj7 ctx;
     jdoubleArray jj = (*jenv)->GetObjectField(jenv, jobj, L.j);
     (*jenv)->GetDoubleArrayRegion(jenv, jj, 0, A_LEN(ctx.j), ctx.j);
     return a_polytraj7_jer(&ctx, dt);

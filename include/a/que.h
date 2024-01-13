@@ -18,11 +18,11 @@
 /*!
  @brief instance structure for basic queue node
 */
-typedef struct a_que_node_s
+typedef struct a_que_node
 {
-    a_list_s _node; /*!< element node */
+    a_list _node; /*!< element node */
     void *_data; /*!< element data */
-} a_que_node_s;
+} a_que_node;
 
 /*!
  @brief cast a list pointer from another type pointer
@@ -30,32 +30,32 @@ typedef struct a_que_node_s
  @param[in] x points to basic queue node
  @return a pointer to basic queue node
 */
-#define a_que_node_c(_, x) a_cast_s(a_que_node_s _, a_cast_s(void _, x))
+#define a_que_node_(_, x) a_cast_s(a_que_node _, a_cast_s(void _, x))
 
 /*!
  @brief instance structure for basic queue
 */
-typedef struct a_que_s
+typedef struct a_que
 {
-    a_que_node_s **_ptr; /*!< mempool block */
-    a_list_s _head; /*!< element head */
-    a_size_t _siz; /*!< element sizeof */
-    a_size_t _num; /*!< element number */
-    a_size_t _cur; /*!< mempool cursor */
-    a_size_t _mem; /*!< mempool memory */
-} a_que_s;
+    a_que_node **_ptr; /*!< mempool block */
+    a_list _head; /*!< element head */
+    a_size _siz; /*!< element sizeof */
+    a_size _num; /*!< element number */
+    a_size _cur; /*!< mempool cursor */
+    a_size _mem; /*!< mempool memory */
+} a_que;
 
 /*!
  @brief access size of a element for a pointer to queue structure
  @param[in] ctx points to an instance of queue structure
 */
-A_INTERN a_size_t a_que_siz(a_que_s const *const ctx) { return ctx->_siz; }
+A_INTERN a_size a_que_siz(a_que const *const ctx) { return ctx->_siz; }
 
 /*!
  @brief access number of element for a pointer to queue structure
  @param[in] ctx points to an instance of queue structure
 */
-A_INTERN a_size_t a_que_num(a_que_s const *const ctx) { return ctx->_num; }
+A_INTERN a_size a_que_num(a_que const *const ctx) { return ctx->_num; }
 
 /*!
  @brief access foremost element for a pointer to queue structure
@@ -63,9 +63,9 @@ A_INTERN a_size_t a_que_num(a_que_s const *const ctx) { return ctx->_num; }
  @note should check if queue is empty
  @return element pointer
 */
-A_INTERN void *a_que_fore_(a_que_s const *const ctx)
+A_INTERN void *a_que_fore_(a_que const *const ctx)
 {
-    return a_que_node_c(*, ctx->_head.next)->_data;
+    return a_que_node_(*, ctx->_head.next)->_data;
 }
 
 /*!
@@ -74,9 +74,9 @@ A_INTERN void *a_que_fore_(a_que_s const *const ctx)
  @note should check if queue is empty
  @return element pointer
 */
-A_INTERN void *a_que_back_(a_que_s const *const ctx)
+A_INTERN void *a_que_back_(a_que const *const ctx)
 {
-    return a_que_node_c(*, ctx->_head.prev)->_data;
+    return a_que_node_(*, ctx->_head.prev)->_data;
 }
 
 /*!
@@ -85,7 +85,7 @@ A_INTERN void *a_que_back_(a_que_s const *const ctx)
  @return element pointer
   @retval 0 empty queue
 */
-A_INTERN void *a_que_fore(a_que_s const *const ctx)
+A_INTERN void *a_que_fore(a_que const *const ctx)
 {
     return a_likely(ctx->_head.next != &ctx->_head) ? a_que_fore_(ctx) : A_NULL;
 }
@@ -96,7 +96,7 @@ A_INTERN void *a_que_fore(a_que_s const *const ctx)
  @return element pointer
   @retval 0 empty queue
 */
-A_INTERN void *a_que_back(a_que_s const *const ctx)
+A_INTERN void *a_que_back(a_que const *const ctx)
 {
     return a_likely(ctx->_head.prev != &ctx->_head) ? a_que_back_(ctx) : A_NULL;
 }
@@ -109,35 +109,35 @@ extern "C" {
  @brief allocate a pointer to queue structure from memory
  @param[in] size size of element
 */
-A_EXTERN a_que_s *a_que_new(a_size_t size);
+A_EXTERN a_que *a_que_new(a_size size);
 
 /*!
  @brief deallocate a pointer to queue structure
  @param[in] ctx points to an instance of queue structure
  @param[in] dtor element destructor
 */
-A_EXTERN void a_que_die(a_que_s *ctx, void (*dtor)(void *));
+A_EXTERN void a_que_die(a_que *ctx, void (*dtor)(void *));
 
 /*!
  @brief constructor for queue structure
  @param[in] ctx points to an instance of queue structure
  @param[in] size size of element
 */
-A_EXTERN void a_que_ctor(a_que_s *ctx, a_size_t size);
+A_EXTERN void a_que_ctor(a_que *ctx, a_size size);
 
 /*!
  @brief destructor for queue structure
  @param[in] ctx points to an instance of queue structure
  @param[in] dtor element destructor
 */
-A_EXTERN void a_que_dtor(a_que_s *ctx, void (*dtor)(void *));
+A_EXTERN void a_que_dtor(a_que *ctx, void (*dtor)(void *));
 
 /*!
  @brief initialize a pointer to queue structure by moving
  @param[in] ctx points to an instance of queue structure
  @param[in] obj input source pointing to an instance
 */
-A_EXTERN void a_que_move(a_que_s *ctx, a_que_s *obj);
+A_EXTERN void a_que_move(a_que *ctx, a_que *obj);
 
 /*!
  @brief access specified element for a pointer to queue structure
@@ -146,14 +146,14 @@ A_EXTERN void a_que_move(a_que_s *ctx, a_que_s *obj);
  @return element pointer
   @retval 0 out of bounds
 */
-A_EXTERN void *a_que_at(a_que_s const *ctx, a_imax_t idx);
+A_EXTERN void *a_que_at(a_que const *ctx, a_imax idx);
 
 /*!
  @brief drop all the elements for a pointer to queue structure
  @param[in] ctx points to an instance of queue structure
  @param[in] dtor current element destructor
 */
-A_EXTERN void a_que_drop(a_que_s *ctx, void (*dtor)(void *));
+A_EXTERN void a_que_drop(a_que *ctx, void (*dtor)(void *));
 
 /*!
  @brief edit size of a element for a pointer to queue structure
@@ -161,7 +161,7 @@ A_EXTERN void a_que_drop(a_que_s *ctx, void (*dtor)(void *));
  @param[in] size the size of the new element
  @param[in] dtor previous element destructor
 */
-A_EXTERN void a_que_edit(a_que_s *ctx, a_size_t size, void (*dtor)(void *));
+A_EXTERN void a_que_edit(a_que *ctx, a_size size, void (*dtor)(void *));
 
 /*!
  @brief swap elements lhs and rhs for a pointer to queue structure
@@ -172,7 +172,7 @@ A_EXTERN void a_que_edit(a_que_s *ctx, a_size_t size, void (*dtor)(void *));
   @retval 0 success
   @retval 1 failure
 */
-A_EXTERN int a_que_swap_(a_que_s const *ctx, void *lhs, void *rhs);
+A_EXTERN int a_que_swap_(a_que const *ctx, void *lhs, void *rhs);
 
 /*!
  @brief swap elements lhs and rhs for a pointer to queue structure
@@ -180,7 +180,7 @@ A_EXTERN int a_que_swap_(a_que_s const *ctx, void *lhs, void *rhs);
  @param[in] lhs element index on the left
  @param[in] rhs element index on the right
 */
-A_EXTERN void a_que_swap(a_que_s const *ctx, a_size_t lhs, a_size_t rhs);
+A_EXTERN void a_que_swap(a_que const *ctx, a_size lhs, a_size rhs);
 
 /*!
  @brief insert sort foremost element for a pointer to queue structure
@@ -199,7 +199,7 @@ A_EXTERN void a_que_swap(a_que_s const *ctx, a_size_t lhs, a_size_t rhs);
   @arg cmp(lhs,rhs)<0 *lhs goes before *rhs
   @arg cmp(lhs,rhs)>0 *lhs goes after *rhs
 */
-A_EXTERN void a_que_sort_fore(a_que_s const *ctx, int (*cmp)(void const *, void const *));
+A_EXTERN void a_que_sort_fore(a_que const *ctx, int (*cmp)(void const *, void const *));
 
 /*!
  @brief insert sort backmost element for a pointer to queue structure
@@ -218,7 +218,7 @@ A_EXTERN void a_que_sort_fore(a_que_s const *ctx, int (*cmp)(void const *, void 
   @arg cmp(lhs,rhs)<0 *lhs goes before *rhs
   @arg cmp(lhs,rhs)>0 *lhs goes after *rhs
 */
-A_EXTERN void a_que_sort_back(a_que_s const *ctx, int (*cmp)(void const *, void const *));
+A_EXTERN void a_que_sort_back(a_que const *ctx, int (*cmp)(void const *, void const *));
 
 /*!
  @brief push an element into the queue forward
@@ -226,7 +226,7 @@ A_EXTERN void a_que_sort_back(a_que_s const *ctx, int (*cmp)(void const *, void 
  @return element pointer
   @retval 0 failure
 */
-A_EXTERN void *a_que_push_fore(a_que_s *ctx);
+A_EXTERN void *a_que_push_fore(a_que *ctx);
 
 /*!
  @brief push an element into the queue backward
@@ -234,7 +234,7 @@ A_EXTERN void *a_que_push_fore(a_que_s *ctx);
  @return element pointer
   @retval 0 failure
 */
-A_EXTERN void *a_que_push_back(a_que_s *ctx);
+A_EXTERN void *a_que_push_back(a_que *ctx);
 
 /*!
  @brief pull an element from the queue forward
@@ -242,7 +242,7 @@ A_EXTERN void *a_que_push_back(a_que_s *ctx);
  @return element pointer
   @retval 0 failure
 */
-A_EXTERN void *a_que_pull_fore(a_que_s *ctx);
+A_EXTERN void *a_que_pull_fore(a_que *ctx);
 
 /*!
  @brief pull an element from the queue backward
@@ -250,7 +250,7 @@ A_EXTERN void *a_que_pull_fore(a_que_s *ctx);
  @return element pointer
   @retval 0 failure
 */
-A_EXTERN void *a_que_pull_back(a_que_s *ctx);
+A_EXTERN void *a_que_pull_back(a_que *ctx);
 
 /*!
  @brief insert an element into the queue
@@ -261,7 +261,7 @@ A_EXTERN void *a_que_pull_back(a_que_s *ctx);
  @return element pointer
   @retval 0 failure
 */
-A_EXTERN void *a_que_insert(a_que_s *ctx, a_size_t idx);
+A_EXTERN void *a_que_insert(a_que *ctx, a_size idx);
 
 /*!
  @brief remove an element from the queue
@@ -272,7 +272,7 @@ A_EXTERN void *a_que_insert(a_que_s *ctx, a_size_t idx);
  @return element pointer
   @retval 0 failure
 */
-A_EXTERN void *a_que_remove(a_que_s *ctx, a_size_t idx);
+A_EXTERN void *a_que_remove(a_que *ctx, a_size idx);
 
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -287,16 +287,16 @@ A_EXTERN void *a_que_remove(a_que_s *ctx, a_size_t idx);
  }
  @endcode
  @param T type of elements in the queue
- @param it the &a_que_s to use as a loop counter
+ @param it the &a_que to use as a loop counter
  @param ctx points to an instance of queue structure
 */
-#define a_que_foreach(T, it, ctx)                                          \
-    for (T *it = a_cast_r(T *, (ctx)->_head.next),                         \
-           *it##_ = a_cast_r(T *, a_list_c(*, it)->next);                  \
-         a_list_c(*, it) != &(ctx)->_head                                  \
-             ? ((void)(it = a_cast_s(T *, a_que_node_c(*, it)->_data)), 1) \
-             : (0);                                                        \
-         it = it##_, it##_ = a_cast_r(T *, a_list_c(*, it)->next))
+#define a_que_foreach(T, it, ctx)                                         \
+    for (T *it = a_cast_r(T *, (ctx)->_head.next),                        \
+           *it##_ = a_cast_r(T *, a_list_(*, it)->next);                  \
+         a_list_(*, it) != &(ctx)->_head                                  \
+             ? ((void)(it = a_cast_s(T *, a_que_node_(*, it)->_data)), 1) \
+             : (0);                                                       \
+         it = it##_, it##_ = a_cast_r(T *, a_list_(*, it)->next))
 
 /*!
  @brief iterate over a queue in reverse
@@ -307,16 +307,16 @@ A_EXTERN void *a_que_remove(a_que_s *ctx, a_size_t idx);
  }
  @endcode
  @param T type of elements in the queue
- @param it the &a_que_s to use as a loop counter
+ @param it the &a_que to use as a loop counter
  @param ctx points to an instance of queue structure
 */
-#define a_que_foreach_reverse(T, it, ctx)                                  \
-    for (T *it = a_cast_r(T *, (ctx)->_head.prev),                         \
-           *it##_ = a_cast_r(T *, a_list_c(*, it)->prev);                  \
-         a_list_c(*, it) != &(ctx)->_head                                  \
-             ? ((void)(it = a_cast_s(T *, a_que_node_c(*, it)->_data)), 1) \
-             : (0);                                                        \
-         it = it##_, it##_ = a_cast_r(T *, a_list_c(*, it)->prev))
+#define a_que_foreach_reverse(T, it, ctx)                                 \
+    for (T *it = a_cast_r(T *, (ctx)->_head.prev),                        \
+           *it##_ = a_cast_r(T *, a_list_(*, it)->prev);                  \
+         a_list_(*, it) != &(ctx)->_head                                  \
+             ? ((void)(it = a_cast_s(T *, a_que_node_(*, it)->_data)), 1) \
+             : (0);                                                       \
+         it = it##_, it##_ = a_cast_r(T *, a_list_(*, it)->prev))
 
 #define a_que_fore(T, ctx) a_cast_s(T *, a_que_fore(ctx))
 #define a_que_back(T, ctx) a_cast_s(T *, a_que_back(ctx))

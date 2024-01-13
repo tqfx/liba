@@ -13,7 +13,7 @@ static JSClassDef liba_polytraj5_class = {"polytraj5", .finalizer = liba_polytra
 static JSValue liba_polytraj5_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
 {
     JSValue proto, clazz = JS_UNDEFINED;
-    a_polytraj5_s *const self = (a_polytraj5_s *)js_mallocz(ctx, sizeof(a_polytraj5_s));
+    a_polytraj5 *const self = (a_polytraj5 *)js_mallocz(ctx, sizeof(a_polytraj5));
     if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0, 0, 0, 0, 0, 0, 0};
     if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
@@ -26,10 +26,10 @@ static JSValue liba_polytraj5_ctor(JSContext *const ctx, JSValueConst const new_
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { goto fail; }
     }
     a_polytraj5_gen(self,
-                    (a_float_t)args[0], (a_float_t)args[1],
-                    (a_float_t)args[2], (a_float_t)args[3],
-                    (a_float_t)args[4], (a_float_t)args[5],
-                    (a_float_t)args[6], (a_float_t)args[7]);
+                    (a_float)args[0], (a_float)args[1],
+                    (a_float)args[2], (a_float)args[3],
+                    (a_float)args[4], (a_float)args[5],
+                    (a_float)args[6], (a_float)args[7]);
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
     clazz = JS_NewObjectProtoClass(ctx, proto, liba_polytraj5_class_id);
@@ -45,7 +45,7 @@ fail:
 
 static JSValue liba_polytraj5_get(JSContext *const ctx, JSValueConst const this_val, int magic)
 {
-    a_polytraj5_s *const self = (a_polytraj5_s *)JS_GetOpaque2(ctx, this_val, liba_polytraj5_class_id);
+    a_polytraj5 *const self = (a_polytraj5 *)JS_GetOpaque2(ctx, this_val, liba_polytraj5_class_id);
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
@@ -58,7 +58,7 @@ static JSValue liba_polytraj5_get(JSContext *const ctx, JSValueConst const this_
 
 static JSValue liba_polytraj5_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
-    a_polytraj5_s *const self = (a_polytraj5_s *)JS_GetOpaque2(ctx, this_val, liba_polytraj5_class_id);
+    a_polytraj5 *const self = (a_polytraj5 *)JS_GetOpaque2(ctx, this_val, liba_polytraj5_class_id);
     if (!self) { return JS_EXCEPTION; }
     double args[] = {0, 0, 0, 0, 0, 0, 0, 0};
     if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
@@ -71,43 +71,43 @@ static JSValue liba_polytraj5_gen(JSContext *const ctx, JSValueConst const this_
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
     a_polytraj5_gen(self,
-                    (a_float_t)args[0], (a_float_t)args[1],
-                    (a_float_t)args[2], (a_float_t)args[3],
-                    (a_float_t)args[4], (a_float_t)args[5],
-                    (a_float_t)args[6], (a_float_t)args[7]);
+                    (a_float)args[0], (a_float)args[1],
+                    (a_float)args[2], (a_float)args[3],
+                    (a_float)args[4], (a_float)args[5],
+                    (a_float)args[6], (a_float)args[7]);
     return JS_UNDEFINED;
 }
 
 static JSValue liba_polytraj5_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytraj5_s *const self = (a_polytraj5_s *)JS_GetOpaque2(ctx, this_val, liba_polytraj5_class_id);
+    a_polytraj5 *const self = (a_polytraj5 *)JS_GetOpaque2(ctx, this_val, liba_polytraj5_class_id);
     if (!self) { return JS_EXCEPTION; }
     double dt;
     if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
-    a_float_t pos = a_polytraj5_pos(self, (a_float_t)dt);
+    a_float pos = a_polytraj5_pos(self, (a_float)dt);
     return JS_NewFloat64(ctx, (double)pos);
 }
 
 static JSValue liba_polytraj5_vel(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytraj5_s *const self = (a_polytraj5_s *)JS_GetOpaque2(ctx, this_val, liba_polytraj5_class_id);
+    a_polytraj5 *const self = (a_polytraj5 *)JS_GetOpaque2(ctx, this_val, liba_polytraj5_class_id);
     if (!self) { return JS_EXCEPTION; }
     double dt;
     if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
-    a_float_t vel = a_polytraj5_vel(self, (a_float_t)dt);
+    a_float vel = a_polytraj5_vel(self, (a_float)dt);
     return JS_NewFloat64(ctx, (double)vel);
 }
 
 static JSValue liba_polytraj5_acc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
 {
     (void)argc;
-    a_polytraj5_s *const self = (a_polytraj5_s *)JS_GetOpaque2(ctx, this_val, liba_polytraj5_class_id);
+    a_polytraj5 *const self = (a_polytraj5 *)JS_GetOpaque2(ctx, this_val, liba_polytraj5_class_id);
     if (!self) { return JS_EXCEPTION; }
     double dt;
     if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
-    a_float_t acc = a_polytraj5_acc(self, (a_float_t)dt);
+    a_float acc = a_polytraj5_acc(self, (a_float)dt);
     return JS_NewFloat64(ctx, (double)acc);
 }
 

@@ -6,36 +6,36 @@
 #include "polytraj5.h"
 #include "a/polytraj5.h"
 
-static int liba_polytraj5_gen_(lua_State *const L, a_polytraj5_s *const ctx, int const arg, int const top)
+static int liba_polytraj5_gen_(lua_State *const L, a_polytraj5 *const ctx, int const arg, int const top)
 {
-    a_float_t t0 = 0, q0 = 0, v0 = 0, a0 = 0;
-    a_float_t t1 = 0, q1 = 0, v1 = 0, a1 = 0;
+    a_float t0 = 0, q0 = 0, v0 = 0, a0 = 0;
+    a_float t1 = 0, q1 = 0, v1 = 0, a1 = 0;
     switch (top)
     {
     default:
     case 8:
-        a1 = (a_float_t)luaL_checknumber(L, arg + 8);
+        a1 = (a_float)luaL_checknumber(L, arg + 8);
         A_FALLTHROUGH;
     case 7:
-        a0 = (a_float_t)luaL_checknumber(L, arg + 7);
+        a0 = (a_float)luaL_checknumber(L, arg + 7);
         A_FALLTHROUGH;
     case 6:
-        v1 = (a_float_t)luaL_checknumber(L, arg + 6);
+        v1 = (a_float)luaL_checknumber(L, arg + 6);
         A_FALLTHROUGH;
     case 5:
-        v0 = (a_float_t)luaL_checknumber(L, arg + 5);
+        v0 = (a_float)luaL_checknumber(L, arg + 5);
         A_FALLTHROUGH;
     case 4:
-        q1 = (a_float_t)luaL_checknumber(L, arg + 4);
+        q1 = (a_float)luaL_checknumber(L, arg + 4);
         A_FALLTHROUGH;
     case 3:
-        q0 = (a_float_t)luaL_checknumber(L, arg + 3);
+        q0 = (a_float)luaL_checknumber(L, arg + 3);
         A_FALLTHROUGH;
     case 2:
-        t1 = (a_float_t)luaL_checknumber(L, arg + 2);
+        t1 = (a_float)luaL_checknumber(L, arg + 2);
         A_FALLTHROUGH;
     case 1:
-        t0 = (a_float_t)luaL_checknumber(L, arg + 1);
+        t0 = (a_float)luaL_checknumber(L, arg + 1);
         A_FALLTHROUGH;
     case 0:;
     }
@@ -64,20 +64,20 @@ int liba_polytraj5_new(lua_State *const L)
     int const type = lua_type(L, 1);
     if (top > 3 && type == LUA_TNUMBER)
     {
-        a_polytraj5_s *const ctx = lua_newclass(L, a_polytraj5_s);
+        a_polytraj5 *const ctx = lua_newclass(L, a_polytraj5);
         lua_registry_get(L, liba_polytraj5_new);
         lua_setmetatable(L, -2);
         return liba_polytraj5_gen_(L, ctx, 0, top);
     }
     if (top > 1 && type == LUA_TTABLE)
     {
-        a_float_t source[4] = {0};
-        a_float_t target[4] = {0};
+        a_float source[4] = {0};
+        a_float target[4] = {0};
         luaL_checktype(L, 1, LUA_TTABLE);
         luaL_checktype(L, 2, LUA_TTABLE);
         lua_array_num_get(L, 1, source, A_LEN(source));
         lua_array_num_get(L, 2, target, A_LEN(target));
-        a_polytraj5_s *const ctx = lua_newclass(L, a_polytraj5_s);
+        a_polytraj5 *const ctx = lua_newclass(L, a_polytraj5);
         lua_registry_get(L, liba_polytraj5_new);
         lua_setmetatable(L, -2);
         a_polytraj5_gen(ctx,
@@ -113,18 +113,18 @@ int liba_polytraj5_gen(lua_State *const L)
     if (top > 4 && type == LUA_TNUMBER)
     {
         luaL_checktype(L, 1, LUA_TUSERDATA);
-        a_polytraj5_s *const ctx = (a_polytraj5_s *)lua_touserdata(L, 1);
+        a_polytraj5 *const ctx = (a_polytraj5 *)lua_touserdata(L, 1);
         lua_pushvalue(L, 1);
         return liba_polytraj5_gen_(L, ctx, 1, top - 1);
     }
     if (top > 2 && type == LUA_TTABLE)
     {
-        a_float_t source[4] = {0};
-        a_float_t target[4] = {0};
+        a_float source[4] = {0};
+        a_float target[4] = {0};
         luaL_checktype(L, 1, LUA_TUSERDATA);
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
-        a_polytraj5_s *const ctx = (a_polytraj5_s *)lua_touserdata(L, 1);
+        a_polytraj5 *const ctx = (a_polytraj5 *)lua_touserdata(L, 1);
         lua_array_num_get(L, 2, source, A_LEN(source));
         lua_array_num_get(L, 3, target, A_LEN(target));
         a_polytraj5_gen(ctx,
@@ -147,10 +147,10 @@ int liba_polytraj5_gen(lua_State *const L)
 */
 int liba_polytraj5_pos(lua_State *const L)
 {
-    a_polytraj5_s const *const ctx = (a_polytraj5_s const *)lua_touserdata(L, 1);
+    a_polytraj5 const *const ctx = (a_polytraj5 const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float_t const dt = (a_float_t)luaL_checknumber(L, 2);
+        a_float const dt = (a_float)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_polytraj5_pos(ctx, dt));
         return 1;
     }
@@ -166,10 +166,10 @@ int liba_polytraj5_pos(lua_State *const L)
 */
 int liba_polytraj5_vel(lua_State *const L)
 {
-    a_polytraj5_s const *const ctx = (a_polytraj5_s const *)lua_touserdata(L, 1);
+    a_polytraj5 const *const ctx = (a_polytraj5 const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float_t const dt = (a_float_t)luaL_checknumber(L, 2);
+        a_float const dt = (a_float)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_polytraj5_vel(ctx, dt));
         return 1;
     }
@@ -185,10 +185,10 @@ int liba_polytraj5_vel(lua_State *const L)
 */
 int liba_polytraj5_acc(lua_State *const L)
 {
-    a_polytraj5_s const *const ctx = (a_polytraj5_s const *)lua_touserdata(L, 1);
+    a_polytraj5 const *const ctx = (a_polytraj5 const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float_t const dt = (a_float_t)luaL_checknumber(L, 2);
+        a_float const dt = (a_float)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_polytraj5_acc(ctx, dt));
         return 1;
     }
@@ -197,7 +197,7 @@ int liba_polytraj5_acc(lua_State *const L)
 
 static int liba_polytraj5_set(lua_State *const L)
 {
-    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
+    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0xE8859EEB: // __name
     case 0xA65758B2: // __index
@@ -213,8 +213,8 @@ static int liba_polytraj5_set(lua_State *const L)
 
 static int liba_polytraj5_get(lua_State *const L)
 {
-    a_polytraj5_s const *const ctx = (a_polytraj5_s const *)lua_touserdata(L, 1);
-    switch ((a_u32_t)a_hash_bkdr(lua_tostring(L, 2), 0))
+    a_polytraj5 const *const ctx = (a_polytraj5 const *)lua_touserdata(L, 1);
+    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x00000071: // q
         lua_array_num_new(L, ctx->q, A_LEN(ctx->q));
@@ -255,7 +255,7 @@ static int liba_polytraj5_(lua_State *const L)
 
 int luaopen_liba_polytraj5(lua_State *const L)
 {
-    static lua_fun_s const funcs[] = {
+    static lua_fun const funcs[] = {
         {"new", liba_polytraj5_new},
         {"gen", liba_polytraj5_gen},
         {"pos", liba_polytraj5_pos},
@@ -268,7 +268,7 @@ int luaopen_liba_polytraj5(lua_State *const L)
     lua_fun_set(L, -1, "__call", liba_polytraj5_);
     lua_setmetatable(L, -2);
 
-    static lua_fun_s const metas[] = {
+    static lua_fun const metas[] = {
         {"__newindex", liba_polytraj5_set},
         {"__index", liba_polytraj5_get},
     };

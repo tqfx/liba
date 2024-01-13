@@ -40,11 +40,11 @@
 /*!
  @brief instance structure for Low Pass Filter
 */
-typedef struct a_lpf_s
+typedef struct a_lpf
 {
-    a_float_t alpha; //!< filter coefficient [0,1]
-    a_float_t output; //!< filter output
-} a_lpf_s;
+    a_float alpha; //!< filter coefficient [0,1]
+    a_float output; //!< filter output
+} a_lpf;
 
 /*!
  @brief generate for Low Pass Filter
@@ -59,7 +59,7 @@ typedef struct a_lpf_s
  @param[in] ts sampling time unit(s)
  @return filter coefficient [0,1]
 */
-A_INTERN a_float_t a_lpf_gen(a_float_t const fc, a_float_t const ts)
+A_INTERN a_float a_lpf_gen(a_float const fc, a_float const ts)
 {
     return ts / (A_FLOAT_1_PI / 2 / fc + ts);
 }
@@ -70,7 +70,7 @@ A_INTERN a_float_t a_lpf_gen(a_float_t const fc, a_float_t const ts)
  @param[in,out] ctx points to an instance of Low Pass Filter
  @param[in] alpha filter coefficient [0,1]
 */
-A_INTERN void a_lpf_init(a_lpf_s *const ctx, a_float_t const alpha)
+A_INTERN void a_lpf_init(a_lpf *const ctx, a_float const alpha)
 {
     ctx->alpha = alpha;
     ctx->output = 0;
@@ -85,7 +85,7 @@ A_INTERN void a_lpf_init(a_lpf_s *const ctx, a_float_t const alpha)
  @param[in] x input value
  @return output value
 */
-A_INTERN a_float_t a_lpf_iter(a_lpf_s *const ctx, a_float_t const x)
+A_INTERN a_float a_lpf_iter(a_lpf *const ctx, a_float const x)
 {
     ctx->output *= 1 - ctx->alpha;
     ctx->output += x * ctx->alpha;
@@ -96,7 +96,7 @@ A_INTERN a_float_t a_lpf_iter(a_lpf_s *const ctx, a_float_t const x)
  @brief zeroing for Low Pass Filter
  @param[in,out] ctx points to an instance of Low Pass Filter
 */
-A_INTERN void a_lpf_zero(a_lpf_s *const ctx) { ctx->output = 0; }
+A_INTERN void a_lpf_zero(a_lpf *const ctx) { ctx->output = 0; }
 
 /*! @} A_LPF */
 

@@ -20,7 +20,7 @@ JNIEXPORT void JNICALL Java_liba_polytraj3_INIT(JNIEnv *jenv, jclass jcls)
 
 JNIEXPORT jobject JNICALL Java_liba_polytraj3_gen(JNIEnv *jenv, jobject jobj, jdouble t0, jdouble t1, jdouble q0, jdouble q1, jdouble v0, jdouble v1)
 {
-    a_polytraj3_s ctx;
+    a_polytraj3 ctx;
     jdoubleArray jq = (*jenv)->GetObjectField(jenv, jobj, L.q);
     jdoubleArray jv = (*jenv)->GetObjectField(jenv, jobj, L.v);
     jdoubleArray ja = (*jenv)->GetObjectField(jenv, jobj, L.a);
@@ -36,7 +36,7 @@ JNIEXPORT jobject JNICALL Java_liba_polytraj3_gen(JNIEnv *jenv, jobject jobj, jd
 
 JNIEXPORT jdouble JNICALL Java_liba_polytraj3_pos(JNIEnv *jenv, jobject jobj, jdouble dt)
 {
-    a_polytraj3_s ctx;
+    a_polytraj3 ctx;
     jdoubleArray jq = (*jenv)->GetObjectField(jenv, jobj, L.q);
     (*jenv)->GetDoubleArrayRegion(jenv, jq, 0, A_LEN(ctx.q), ctx.q);
     return a_polytraj3_pos(&ctx, dt);
@@ -44,7 +44,7 @@ JNIEXPORT jdouble JNICALL Java_liba_polytraj3_pos(JNIEnv *jenv, jobject jobj, jd
 
 JNIEXPORT jdouble JNICALL Java_liba_polytraj3_vel(JNIEnv *jenv, jobject jobj, jdouble dt)
 {
-    a_polytraj3_s ctx;
+    a_polytraj3 ctx;
     jdoubleArray jv = (*jenv)->GetObjectField(jenv, jobj, L.v);
     (*jenv)->GetDoubleArrayRegion(jenv, jv, 0, A_LEN(ctx.v), ctx.v);
     return a_polytraj3_vel(&ctx, dt);
@@ -52,7 +52,7 @@ JNIEXPORT jdouble JNICALL Java_liba_polytraj3_vel(JNIEnv *jenv, jobject jobj, jd
 
 JNIEXPORT jdouble JNICALL Java_liba_polytraj3_acc(JNIEnv *jenv, jobject jobj, jdouble dt)
 {
-    a_polytraj3_s ctx;
+    a_polytraj3 ctx;
     jdoubleArray ja = (*jenv)->GetObjectField(jenv, jobj, L.a);
     (*jenv)->GetDoubleArrayRegion(jenv, ja, 0, A_LEN(ctx.a), ctx.a);
     return a_polytraj3_acc(&ctx, dt);

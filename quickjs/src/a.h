@@ -29,9 +29,9 @@ int js_liba_tf_init(JSContext *ctx, JSModuleDef *m);
 int js_liba_version_init(JSContext *ctx, JSModuleDef *m);
 
 JSValue js_concat(JSContext *ctx, JSValueConst val);
-int js_array_length(JSContext *ctx, JSValueConst val, a_u32_t *plen);
-int js_array_num_get(JSContext *ctx, JSValueConst val, a_float_t *ptr, a_u32_t len);
-JSValue js_array_num_new(JSContext *ctx, a_float_t const *ptr, a_u32_t len);
+int js_array_length(JSContext *ctx, JSValueConst val, a_u32 *plen);
+int js_array_num_get(JSContext *ctx, JSValueConst val, a_float *ptr, a_u32 len);
+JSValue js_array_num_new(JSContext *ctx, a_float const *ptr, a_u32 len);
 
 #if defined(__cplusplus)
 } /* extern "C" */

@@ -17,15 +17,15 @@
 /*!
  @brief instance structure for transfer function
 */
-typedef struct a_tf_s
+typedef struct a_tf
 {
-    a_float_t *input; //!< input
-    a_float_t *output; //!< output
-    a_float_t const *num_p; //!< numerator
-    a_float_t const *den_p; //!< denominator
+    a_float *input; //!< input
+    a_float *output; //!< output
+    a_float const *num_p; //!< numerator
+    a_float const *den_p; //!< denominator
     unsigned int num_n; //!< numerator number
     unsigned int den_n; //!< denominator number
-} a_tf_s;
+} a_tf;
 
 #if defined(__cplusplus)
 extern "C" {
@@ -38,7 +38,7 @@ extern "C" {
  @param[in] num_p numerator
  @param[in] input input
 */
-A_EXTERN void a_tf_set_num(a_tf_s *ctx, unsigned int num_n, a_float_t const *num_p, a_float_t *input);
+A_EXTERN void a_tf_set_num(a_tf *ctx, unsigned int num_n, a_float const *num_p, a_float *input);
 
 /*!
  @brief set denominator for transfer function
@@ -47,7 +47,7 @@ A_EXTERN void a_tf_set_num(a_tf_s *ctx, unsigned int num_n, a_float_t const *num
  @param[in] den_p denominator
  @param[in] output output
 */
-A_EXTERN void a_tf_set_den(a_tf_s *ctx, unsigned int den_n, a_float_t const *den_p, a_float_t *output);
+A_EXTERN void a_tf_set_den(a_tf *ctx, unsigned int den_n, a_float const *den_p, a_float *output);
 
 /*!
  @brief initialize for transfer function
@@ -59,9 +59,9 @@ A_EXTERN void a_tf_set_den(a_tf_s *ctx, unsigned int den_n, a_float_t const *den
  @param[in] den_p denominator
  @param[in] output output
 */
-A_EXTERN void a_tf_init(a_tf_s *ctx,
-                        unsigned int num_n, a_float_t const *num_p, a_float_t *input,
-                        unsigned int den_n, a_float_t const *den_p, a_float_t *output);
+A_EXTERN void a_tf_init(a_tf *ctx,
+                        unsigned int num_n, a_float const *num_p, a_float *input,
+                        unsigned int den_n, a_float const *den_p, a_float *output);
 
 /*!
  @brief calculate for transfer function
@@ -69,13 +69,13 @@ A_EXTERN void a_tf_init(a_tf_s *ctx,
  @param[in] x transfer function input
  @return transfer function output
 */
-A_EXTERN a_float_t a_tf_iter(a_tf_s const *ctx, a_float_t x);
+A_EXTERN a_float a_tf_iter(a_tf const *ctx, a_float x);
 
 /*!
  @brief zeroing for transfer function
  @param[in] ctx points to an instance of transfer function
 */
-A_EXTERN void a_tf_zero(a_tf_s const *ctx);
+A_EXTERN void a_tf_zero(a_tf const *ctx);
 
 #if defined(__cplusplus)
 } /* extern "C" */

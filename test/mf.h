@@ -23,18 +23,18 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         else if (strstr(argv[1], "z.")) { e = A_MF_Z; }
         else if (strstr(argv[1], "pi.")) { e = A_MF_PI; }
     }
-    a_float_t params[6];
+    a_float params[6];
     for (int i = 2; i < argc && i < 8; ++i)
     {
         params[i - 2] = strtonum(argv[i], A_NULL);
     }
     if (e != A_MF_NUL)
     {
-        a_float_t delta = (params[1] - params[0]) / A_FLOAT_C(100.0);
+        a_float delta = (params[1] - params[0]) / A_FLOAT_C(100.0);
         for (int i = 0; i < 100; ++i)
         {
-            a_float_t x = params[0] + delta * a_float_c(i);
-            a_float_t y = a_mf(e, x, params + 2);
+            a_float x = params[0] + delta * a_float_c(i);
+            a_float y = a_mf(e, x, params + 2);
             debug(A_FLOAT_PRI(, "g\t") A_FLOAT_PRI(, "g\n"), x, y);
         }
     }

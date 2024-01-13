@@ -21,7 +21,7 @@ extern "C" {
 /*!
  @brief swap between \f$ \sum_{i=0}^{n}a_{i}x^{i} \f$ and \f$ \sum_{i=0}^{n}a_{i}x^{n-i} \f$
 */
-A_EXTERN a_float_t *a_poly_swap(a_float_t *a, a_size_t n);
+A_EXTERN a_float *a_poly_swap(a_float *a, a_size n);
 
 /*!
  @brief horner function for polynomial \f$ \sum_{i=0}^{n}a_{i}x^{i} \f$
@@ -33,8 +33,8 @@ A_EXTERN a_float_t *a_poly_swap(a_float_t *a, a_size_t n);
   \end{array}\right.
  \f]
 */
-A_EXTERN a_float_t a_poly_eval(a_float_t const *a, a_size_t n, a_float_t x);
-A_EXTERN a_float_t *a_poly_evaln(a_float_t const *a, a_size_t n, a_float_t const *ptr, a_size_t num, a_float_t *out);
+A_EXTERN a_float a_poly_eval(a_float const *a, a_size n, a_float x);
+A_EXTERN a_float *a_poly_evaln(a_float const *a, a_size n, a_float const *ptr, a_size num, a_float *out);
 
 /*!
  @brief horner function for polynomial \f$ \sum_{i=0}^{n}a_{i}x^{n-i} \f$
@@ -46,8 +46,8 @@ A_EXTERN a_float_t *a_poly_evaln(a_float_t const *a, a_size_t n, a_float_t const
   \end{array}\right.
  \f]
 */
-A_EXTERN a_float_t a_poly_evar(a_float_t const *a, a_size_t n, a_float_t x);
-A_EXTERN a_float_t *a_poly_evarn(a_float_t const *a, a_size_t n, a_float_t const *ptr, a_size_t num, a_float_t *out);
+A_EXTERN a_float a_poly_evar(a_float const *a, a_size n, a_float x);
+A_EXTERN a_float *a_poly_evarn(a_float const *a, a_size n, a_float const *ptr, a_size num, a_float *out);
 
 #if defined(__cplusplus)
 } /* extern "C" */

@@ -8,23 +8,23 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     test_init(argc, argv, 1);
 
-    a_tf_s tf;
+    a_tf tf;
     {
-        static a_float_t num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
-        static a_float_t den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
-        static a_float_t input[A_LEN(num)];
-        static a_float_t output[A_LEN(den)];
+        static a_float num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
+        static a_float den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
+        static a_float input[A_LEN(num)];
+        static a_float output[A_LEN(den)];
         a_tf_init(&tf, A_LEN(num), num, input, A_LEN(den), den, output);
     }
-    a_rbf_s ctx;
+    a_rbf ctx;
     {
-        static a_float_t input[2];
-        static a_float_t center[10] = {-1, A_FLOAT_C(-0.5), 0, A_FLOAT_C(0.5), 1, -10, 5, 0, 5, 10};
-        static a_float_t height[5] = {A_FLOAT_C(1.5), A_FLOAT_C(1.5), A_FLOAT_C(1.5), A_FLOAT_C(1.5), A_FLOAT_C(1.5)};
-        static a_float_t hidden[5];
-        static a_float_t weight[5];
-        static a_float_t deltaw[5];
-        static a_float_t output[1];
+        static a_float input[2];
+        static a_float center[10] = {-1, A_FLOAT_C(-0.5), 0, A_FLOAT_C(0.5), 1, -10, 5, 0, 5, 10};
+        static a_float height[5] = {A_FLOAT_C(1.5), A_FLOAT_C(1.5), A_FLOAT_C(1.5), A_FLOAT_C(1.5), A_FLOAT_C(1.5)};
+        static a_float hidden[5];
+        static a_float weight[5];
+        static a_float deltaw[5];
+        static a_float output[1];
         ctx.input_p = input;
         ctx.input_n = 2;
         ctx.center_p = center;

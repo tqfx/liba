@@ -25,19 +25,19 @@
   \end{array}
  \f}
 */
-typedef struct a_polytraj5_s
+typedef struct a_polytraj5
 {
 #if !defined A_POLYTRAJ5
 #define A_POLYTRAJ5 3
 #endif /* A_POLYTRAJ5 */
-    a_float_t q[6]; //!< coefficients of position
+    a_float q[6]; //!< coefficients of position
 #if defined(A_POLYTRAJ5) && (A_POLYTRAJ5 + 0 > 1)
-    a_float_t v[5]; //!< coefficients of velocity
+    a_float v[5]; //!< coefficients of velocity
 #endif /* A_POLYTRAJ5 */
 #if defined(A_POLYTRAJ5) && (A_POLYTRAJ5 + 0 > 2)
-    a_float_t a[4]; //!< coefficients of acceleration
+    a_float a[4]; //!< coefficients of acceleration
 #endif /* A_POLYTRAJ5 */
-} a_polytraj5_s;
+} a_polytraj5;
 
 #if defined(__cplusplus)
 extern "C" {
@@ -67,21 +67,21 @@ extern "C" {
  @param[in] a0 acceleration for source
  @param[in] a1 acceleration for target
 */
-A_EXTERN void a_polytraj5_gen(a_polytraj5_s *ctx,
-                              a_float_t t0, a_float_t t1,
-                              a_float_t q0, a_float_t q1,
-                              a_float_t v0, a_float_t v1,
-                              a_float_t a0, a_float_t a1);
-A_EXTERN void a_polytraj5_gen0(a_polytraj5_s *ctx,
-                               a_float_t t0, a_float_t t1,
-                               a_float_t q0, a_float_t q1,
-                               a_float_t v0, a_float_t v1,
-                               a_float_t a0, a_float_t a1);
+A_EXTERN void a_polytraj5_gen(a_polytraj5 *ctx,
+                              a_float t0, a_float t1,
+                              a_float q0, a_float q1,
+                              a_float v0, a_float v1,
+                              a_float a0, a_float a1);
+A_EXTERN void a_polytraj5_gen0(a_polytraj5 *ctx,
+                               a_float t0, a_float t1,
+                               a_float q0, a_float q1,
+                               a_float v0, a_float v1,
+                               a_float a0, a_float a1);
 #if defined(A_POLYTRAJ5) && (A_POLYTRAJ5 + 0 > 1)
-A_EXTERN void a_polytraj5_gen1(a_polytraj5_s *ctx);
+A_EXTERN void a_polytraj5_gen1(a_polytraj5 *ctx);
 #endif /* A_POLYTRAJ5 */
 #if defined(A_POLYTRAJ5) && (A_POLYTRAJ5 + 0 > 2)
-A_EXTERN void a_polytraj5_gen2(a_polytraj5_s *ctx);
+A_EXTERN void a_polytraj5_gen2(a_polytraj5 *ctx);
 #endif /* A_POLYTRAJ5 */
 
 /*!
@@ -95,7 +95,7 @@ A_EXTERN void a_polytraj5_gen2(a_polytraj5_s *ctx);
  @param[in] dt difference between current time and initial time
  @return position output
 */
-A_EXTERN a_float_t a_polytraj5_pos(a_polytraj5_s const *ctx, a_float_t dt);
+A_EXTERN a_float a_polytraj5_pos(a_polytraj5 const *ctx, a_float dt);
 
 #if defined(A_POLYTRAJ5) && (A_POLYTRAJ5 + 0 > 1)
 /*!
@@ -109,7 +109,7 @@ A_EXTERN a_float_t a_polytraj5_pos(a_polytraj5_s const *ctx, a_float_t dt);
  @param[in] dt difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_float_t a_polytraj5_vel(a_polytraj5_s const *ctx, a_float_t dt);
+A_EXTERN a_float a_polytraj5_vel(a_polytraj5 const *ctx, a_float dt);
 #endif /* A_POLYTRAJ5 */
 
 #if defined(A_POLYTRAJ5) && (A_POLYTRAJ5 + 0 > 2)
@@ -124,7 +124,7 @@ A_EXTERN a_float_t a_polytraj5_vel(a_polytraj5_s const *ctx, a_float_t dt);
  @param[in] dt difference between current time and initial time
  @return acceleration output
 */
-A_EXTERN a_float_t a_polytraj5_acc(a_polytraj5_s const *ctx, a_float_t dt);
+A_EXTERN a_float a_polytraj5_acc(a_polytraj5 const *ctx, a_float dt);
 #endif /* A_POLYTRAJ5 */
 
 #if defined(__cplusplus)

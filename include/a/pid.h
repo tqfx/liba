@@ -40,31 +40,31 @@
 /*!
  @brief enumeration for PID controller
 */
-typedef enum a_pid_e
+enum
 {
     A_PID_RUN, //!< run and output setpoint
     A_PID_POS, //!< positional PID controller
     A_PID_INC //!< incremental PID controller
-} a_pid_e;
+};
 
 /*!
  @brief instance structure for PID controller
 */
-typedef struct a_pid_s
+typedef struct a_pid
 {
-    a_float_t kp; //!< proportional constant
-    a_float_t ki; //!< integral constant
-    a_float_t kd; //!< derivative constant
-    a_float_t summax; //!< maximum integral output
-    a_float_t summin; //!< minimum integral output
-    a_float_t sum; //!< controller integral output
-    a_float_t outmax; //!< maximum final output
-    a_float_t outmin; //!< minimum final output
-    a_float_t out; //!< controller output
-    a_float_t fdb; //!< cache feedback
-    a_float_t var; //!< cache variable
-    a_float_t err; //!< cache error
-} a_pid_s;
+    a_float kp; //!< proportional constant
+    a_float ki; //!< integral constant
+    a_float kd; //!< derivative constant
+    a_float summax; //!< maximum integral output
+    a_float summin; //!< minimum integral output
+    a_float sum; //!< controller integral output
+    a_float outmax; //!< maximum final output
+    a_float outmin; //!< minimum final output
+    a_float out; //!< controller output
+    a_float fdb; //!< cache feedback
+    a_float var; //!< cache variable
+    a_float err; //!< cache error
+} a_pid;
 
 #if defined(__cplusplus)
 extern "C" {
@@ -74,13 +74,13 @@ extern "C" {
  @brief zeroing for PID controller
  @param[in,out] ctx points to an instance of PID controller
 */
-A_EXTERN void a_pid_zero(a_pid_s *ctx);
+A_EXTERN void a_pid_zero(a_pid *ctx);
 
 /*!
  @brief initialize for PID controller
  @param[in,out] ctx points to an instance of PID controller
 */
-A_EXTERN void a_pid_init(a_pid_s *ctx);
+A_EXTERN void a_pid_init(a_pid *ctx);
 
 /*!
  @brief set proportional integral derivative constant for PID controller
@@ -89,7 +89,7 @@ A_EXTERN void a_pid_init(a_pid_s *ctx);
  @param[in] ki integral constant
  @param[in] kd derivative constant
 */
-A_EXTERN void a_pid_kpid(a_pid_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd);
+A_EXTERN void a_pid_kpid(a_pid *ctx, a_float kp, a_float ki, a_float kd);
 
 /*!
  @brief calculate for PID controller
@@ -98,7 +98,7 @@ A_EXTERN void a_pid_kpid(a_pid_s *ctx, a_float_t kp, a_float_t ki, a_float_t kd)
  @param[in] fdb feedback value
  @return setpoint value
 */
-A_EXTERN a_float_t a_pid_run(a_pid_s *ctx, a_float_t set, a_float_t fdb);
+A_EXTERN a_float a_pid_run(a_pid *ctx, a_float set, a_float fdb);
 
 /*!
  @brief calculate for positional PID controller
@@ -107,7 +107,7 @@ A_EXTERN a_float_t a_pid_run(a_pid_s *ctx, a_float_t set, a_float_t fdb);
  @param[in] fdb feedback value
  @return output value
 */
-A_EXTERN a_float_t a_pid_pos(a_pid_s *ctx, a_float_t set, a_float_t fdb);
+A_EXTERN a_float a_pid_pos(a_pid *ctx, a_float set, a_float fdb);
 
 /*!
  @brief calculate for incremental PID controller
@@ -116,7 +116,7 @@ A_EXTERN a_float_t a_pid_pos(a_pid_s *ctx, a_float_t set, a_float_t fdb);
  @param[in] fdb feedback value
  @return output value
 */
-A_EXTERN a_float_t a_pid_inc(a_pid_s *ctx, a_float_t set, a_float_t fdb);
+A_EXTERN a_float a_pid_inc(a_pid *ctx, a_float set, a_float fdb);
 
 #if defined(__cplusplus)
 } /* extern "C" */

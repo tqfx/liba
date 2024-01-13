@@ -3,26 +3,26 @@
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
 
-void a_pid_expert_zero(a_pid_expert_s *const ctx)
+void a_pid_expert_zero(a_pid_expert *const ctx)
 {
     a_pid_zero(&ctx->pid);
     ctx->ec = 0;
 }
 
-void a_pid_expert_init(a_pid_expert_s *const ctx) { a_pid_expert_zero(ctx); }
+void a_pid_expert_init(a_pid_expert *const ctx) { a_pid_expert_zero(ctx); }
 
-void a_pid_expert_kpid(a_pid_expert_s *const ctx, a_float_t const kp, a_float_t const ki, a_float_t const kd)
+void a_pid_expert_kpid(a_pid_expert *const ctx, a_float const kp, a_float const ki, a_float const kd)
 {
     a_pid_kpid(&ctx->pid, kp, ki, kd);
 }
 
-a_float_t a_pid_expert_iter(a_pid_expert_s *const ctx, a_float_t const set, a_float_t const fdb)
+a_float a_pid_expert_iter(a_pid_expert *const ctx, a_float const set, a_float const fdb)
 {
-    a_float_t out = 0;
-    a_float_t const err = set - fdb;
-    a_float_t const abs = A_ABS(err);
-    a_float_t const var = ctx->pid.fdb - fdb;
-    a_float_t const ec = err - ctx->pid.err;
+    a_float out = 0;
+    a_float const err = set - fdb;
+    a_float const abs = A_ABS(err);
+    a_float const var = ctx->pid.fdb - fdb;
+    a_float const ec = err - ctx->pid.err;
 
     if (-ctx->max1 > err)
     {

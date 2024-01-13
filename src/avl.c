@@ -1,7 +1,7 @@
 #include "a/avl.h"
 
 /* Replaces the child of the specified AVL tree node. */
-static A_INLINE void a_avl_new_child(a_avl_u *const root, a_avl_s *const parent, a_avl_s *const oldnode, a_avl_s *const newnode)
+static A_INLINE void a_avl_new_child(a_avl *const root, a_avl_node *const parent, a_avl_node *const oldnode, a_avl_node *const newnode)
 {
     if (parent)
     {
@@ -21,22 +21,22 @@ static A_INLINE void a_avl_new_child(a_avl_u *const root, a_avl_s *const parent,
 }
 
 /* Returns the child of the specified AVL tree node. */
-static A_INLINE a_avl_s *a_avl_child(a_avl_s const *const node, int const sign)
+static A_INLINE a_avl_node *a_avl_child(a_avl_node const *const node, int const sign)
 {
     return sign < 0 ? node->left : node->right;
 }
 
 /* Sets the child of the specified AVL tree node. */
-static A_INLINE void a_avl_set_child(a_avl_s *const node, a_avl_s *const child, int const sign)
+static A_INLINE void a_avl_set_child(a_avl_node *const node, a_avl_node *const child, int const sign)
 {
     *(sign < 0 ? &node->left : &node->right) = child;
 }
 
 /* Sets the parent and balance factor of the specified AVL tree node. */
-static A_INLINE void a_avl_set_parent_factor(a_avl_s *const node, a_avl_s *const parent, int const factor)
+static A_INLINE void a_avl_set_parent_factor(a_avl_node *const node, a_avl_node *const parent, int const factor)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
-    node->_parent = (a_uptr_t)parent | (a_uptr_t)(factor + 1);
+    node->_parent = (a_uptr)parent | (a_uptr)(factor + 1);
 #else /* !A_SIZE_POINTER */
     node->parent = parent;
     node->factor = factor;
@@ -44,10 +44,10 @@ static A_INLINE void a_avl_set_parent_factor(a_avl_s *const node, a_avl_s *const
 }
 
 /* Sets the parent of the specified AVL tree node. */
-static A_INLINE void a_avl_set_parent(a_avl_s *const node, a_avl_s *const parent)
+static A_INLINE void a_avl_set_parent(a_avl_node *const node, a_avl_node *const parent)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
-    node->_parent = (a_uptr_t)parent | (node->_parent & 3);
+    node->_parent = (a_uptr)parent | (node->_parent & 3);
 #else /* !A_SIZE_POINTER */
     node->parent = parent;
 #endif /* A_SIZE_POINTER */
@@ -57,7 +57,7 @@ static A_INLINE void a_avl_set_parent(a_avl_s *const node, a_avl_s *const parent
 Returns the balance factor of the specified AVL tree node --- that is,
 the height of its right subtree minus the height of its left subtree.
 */
-static A_INLINE int a_avl_factor(a_avl_s const *const node)
+static A_INLINE int a_avl_factor(a_avl_node const *const node)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
     return (int)(node->_parent & 3) - 1;
@@ -70,10 +70,10 @@ static A_INLINE int a_avl_factor(a_avl_s const *const node)
 Adds $amount to the balance factor of the specified AVL tree node.
 The caller must ensure this still results in a valid balance factor (-1, 0, or 1).
 */
-static A_INLINE void a_avl_set_factor(a_avl_s *const node, int const amount)
+static A_INLINE void a_avl_set_factor(a_avl_node *const node, int const amount)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
-    node->_parent += (a_uptr_t)amount;
+    node->_parent += (a_uptr)amount;
 #else /* !A_SIZE_POINTER */
     node->factor += amount;
 #endif /* A_SIZE_POINTER */
@@ -104,11 +104,11 @@ sign < 0: Rotate counterclockwise (left) rooted at A:
 
 This updates pointers but not balance factors!
 */
-static A_INLINE void a_avl_rotate(a_avl_u *const root, a_avl_s *const A, int const sign)
+static A_INLINE void a_avl_rotate(a_avl *const root, a_avl_node *const A, int const sign)
 {
-    a_avl_s *const P = a_avl_parent(A);
-    a_avl_s *const B = a_avl_child(A, -sign);
-    a_avl_s *const E = a_avl_child(B, +sign);
+    a_avl_node *const P = a_avl_parent(A);
+    a_avl_node *const B = a_avl_child(A, -sign);
+    a_avl_node *const E = a_avl_child(B, +sign);
 
     a_avl_set_child(A, E, -sign);
     a_avl_set_parent(A, B);
@@ -152,12 +152,12 @@ Returns a pointer to E and updates balance factors. Except for those two things,
     a_avl_rotate(root, B, -sign);
     a_avl_rotate(root, A, +sign);
 */
-static A_INLINE a_avl_s *a_avl_rotate2(a_avl_u *const root, a_avl_s *const B, a_avl_s *const A, int const sign)
+static A_INLINE a_avl_node *a_avl_rotate2(a_avl *const root, a_avl_node *const B, a_avl_node *const A, int const sign)
 {
-    a_avl_s *const P = a_avl_parent(A);
-    a_avl_s *const E = a_avl_child(B, +sign);
-    a_avl_s *const F = a_avl_child(E, -sign);
-    a_avl_s *const G = a_avl_child(E, +sign);
+    a_avl_node *const P = a_avl_parent(A);
+    a_avl_node *const E = a_avl_child(B, +sign);
+    a_avl_node *const F = a_avl_child(E, -sign);
+    a_avl_node *const G = a_avl_child(E, +sign);
     int const e = a_avl_factor(E);
 
     a_avl_set_child(A, G, -sign);
@@ -201,7 +201,7 @@ so the caller should continue up the tree.
 Note that if $false is returned, no rotation will have been done.
 Indeed, a single node insertion cannot require that more than one (single or double) rotation be done.
 */
-static A_INLINE a_bool_t a_avl_handle_growth(a_avl_u *const root, a_avl_s *const parent, a_avl_s *const node, int const sign)
+static A_INLINE a_bool a_avl_handle_growth(a_avl *const root, a_avl_node *const parent, a_avl_node *const node, int const sign)
 {
     int const old_factor = a_avl_factor(parent);
     if (old_factor == 0)
@@ -308,11 +308,11 @@ static A_INLINE a_bool_t a_avl_handle_growth(a_avl_u *const root, a_avl_s *const
     return A_TRUE;
 }
 
-void a_avl_insert_adjust(a_avl_u *const root, a_avl_s *node)
+void a_avl_insert_adjust(a_avl *const root, a_avl_node *node)
 {
     /* Adjust balance factor of new node's parent. No rotation will need to be done at this level. */
 
-    a_avl_s *parent = a_avl_parent(node);
+    a_avl_node *parent = a_avl_parent(node);
     if (!parent) { return; }
 
     if (parent->left == node)
@@ -329,7 +329,7 @@ void a_avl_insert_adjust(a_avl_u *const root, a_avl_s *node)
 
     /* The subtree rooted at parent increased in height by 1. */
 
-    a_bool_t done;
+    a_bool done;
     do {
         node = parent;
         parent = a_avl_parent(node);
@@ -370,7 +370,7 @@ The return value will be null if the full AVL tree is now adequately balanced,
 or a pointer to the parent of parent if parent is now adequately balanced but has decreased in height by 1.
 Also in the latter case, *left will be set.
 */
-static A_INLINE a_avl_s *a_avl_handle_shrink(a_avl_u *const root, a_avl_s *parent, int const sign, a_bool_t *const left)
+static A_INLINE a_avl_node *a_avl_handle_shrink(a_avl *const root, a_avl_node *parent, int const sign, a_bool *const left)
 {
     int const old_factor = a_avl_factor(parent);
     if (old_factor == 0)
@@ -383,7 +383,7 @@ static A_INLINE a_avl_s *a_avl_handle_shrink(a_avl_u *const root, a_avl_s *paren
         return A_NULL;
     }
 
-    a_avl_s *node;
+    a_avl_node *node;
     int const new_factor = old_factor + sign;
     if (new_factor == 0)
     {
@@ -468,11 +468,11 @@ static A_INLINE a_avl_s *a_avl_handle_shrink(a_avl_u *const root, a_avl_s *paren
 Swaps node X, which must have 2 children, with its in-order successor, then unlinks node X.
 Returns the parent of X just before unlinking, without its balance factor having been updated to account for the unlink.
 */
-static A_INLINE a_avl_s *a_avl_handle_remove(a_avl_u *const root, a_avl_s *const X, a_bool_t *const left)
+static A_INLINE a_avl_node *a_avl_handle_remove(a_avl *const root, a_avl_node *const X, a_bool *const left)
 {
-    a_avl_s *node;
+    a_avl_node *node;
 
-    a_avl_s *Y = X->right;
+    a_avl_node *Y = X->right;
     if (!Y->left)
     {
         /*
@@ -491,7 +491,7 @@ static A_INLINE a_avl_s *a_avl_handle_remove(a_avl_u *const root, a_avl_s *const
     }
     else
     {
-        a_avl_s *Q;
+        a_avl_node *Q;
         do {
             Q = Y;
             Y = Y->left;
@@ -536,10 +536,10 @@ static A_INLINE a_avl_s *a_avl_handle_remove(a_avl_u *const root, a_avl_s *const
     return node;
 }
 
-void a_avl_remove(a_avl_u *const root, a_avl_s *const node)
+void a_avl_remove(a_avl *const root, a_avl_node *const node)
 {
-    a_avl_s *parent;
-    a_bool_t left = A_FALSE;
+    a_avl_node *parent;
+    a_bool left = A_FALSE;
     if (node->left && node->right)
     {
         /*
@@ -556,7 +556,7 @@ void a_avl_remove(a_avl_u *const root, a_avl_s *const node)
     }
     else
     {
-        a_avl_s *const child = node->left ? node->left : node->right;
+        a_avl_node *const child = node->left ? node->left : node->right;
         /*
         $node is missing at least one child. Unlink it. Set $parent to $node's parent,
         and set $left to reflect which child of $parent $node was.
@@ -598,10 +598,10 @@ void a_avl_remove(a_avl_u *const root, a_avl_s *const node)
     } while (parent);
 }
 
-a_avl_s *a_avl_insert(a_avl_u *const root, a_avl_s *const node, int (*const cmp)(void const *, void const *))
+a_avl_node *a_avl_insert(a_avl *const root, a_avl_node *const node, int (*const cmp)(void const *, void const *))
 {
-    a_avl_s *parent = root->node;
-    a_avl_s **link = &root->node;
+    a_avl_node *parent = root->node;
+    a_avl_node **link = &root->node;
     while (*link)
     {
         parent = *link;
@@ -621,9 +621,9 @@ a_avl_s *a_avl_insert(a_avl_u *const root, a_avl_s *const node, int (*const cmp)
     return A_NULL;
 }
 
-a_avl_s *a_avl_search(a_avl_u const *const root, void const *const ctx, int (*const cmp)(void const *, void const *))
+a_avl_node *a_avl_search(a_avl const *const root, void const *const ctx, int (*const cmp)(void const *, void const *))
 {
-    for (a_avl_s *cur = root->node; cur;)
+    for (a_avl_node *cur = root->node; cur;)
     {
         int const res = cmp(ctx, cur);
         if (res < 0)
@@ -639,9 +639,9 @@ a_avl_s *a_avl_search(a_avl_u const *const root, void const *const ctx, int (*co
     return A_NULL;
 }
 
-a_avl_s *a_avl_head(a_avl_u const *const root)
+a_avl_node *a_avl_head(a_avl const *const root)
 {
-    a_avl_s *node = root->node;
+    a_avl_node *node = root->node;
     if (node)
     {
         while (node->left) { node = node->left; }
@@ -649,9 +649,9 @@ a_avl_s *a_avl_head(a_avl_u const *const root)
     return node;
 }
 
-a_avl_s *a_avl_tail(a_avl_u const *const root)
+a_avl_node *a_avl_tail(a_avl const *const root)
 {
-    a_avl_s *node = root->node;
+    a_avl_node *node = root->node;
     if (node)
     {
         while (node->right) { node = node->right; }
@@ -659,7 +659,7 @@ a_avl_s *a_avl_tail(a_avl_u const *const root)
     return node;
 }
 
-a_avl_s *a_avl_next(a_avl_s *node)
+a_avl_node *a_avl_next(a_avl_node *node)
 {
     /*
          D
@@ -675,7 +675,7 @@ a_avl_s *a_avl_next(a_avl_s *node)
     }
     else /* C -> B -> D */
     {
-        a_avl_s *last = node;
+        a_avl_node *last = node;
         for (node = a_avl_parent(node); node && node->left != last;)
         {
             last = node;
@@ -685,7 +685,7 @@ a_avl_s *a_avl_next(a_avl_s *node)
     return node;
 }
 
-a_avl_s *a_avl_prev(a_avl_s *node)
+a_avl_node *a_avl_prev(a_avl_node *node)
 {
     if (!node) { return node; }
     if (node->left)
@@ -694,7 +694,7 @@ a_avl_s *a_avl_prev(a_avl_s *node)
     }
     else
     {
-        a_avl_s *last = node;
+        a_avl_node *last = node;
         for (node = a_avl_parent(node); node && node->right != last;)
         {
             last = node;
@@ -704,7 +704,7 @@ a_avl_s *a_avl_prev(a_avl_s *node)
     return node;
 }
 
-a_avl_s *a_avl_pre_next(a_avl_s *node)
+a_avl_node *a_avl_pre_next(a_avl_node *node)
 {
     /*
          D
@@ -713,7 +713,7 @@ a_avl_s *a_avl_pre_next(a_avl_s *node)
      / \   / \
     A   C E   G
     */
-    a_avl_s *last = node;
+    a_avl_node *last = node;
     if (!node) { return node; }
     if (node->left) { return node->left; }
     if (node->right) { return node->right; }
@@ -729,9 +729,9 @@ a_avl_s *a_avl_pre_next(a_avl_s *node)
     return node;
 }
 
-a_avl_s *a_avl_pre_prev(a_avl_s *node)
+a_avl_node *a_avl_pre_prev(a_avl_node *node)
 {
-    a_avl_s *last = node;
+    a_avl_node *last = node;
     if (!node) { return node; }
     if (node->right) { return node->right; }
     if (node->left) { return node->left; }
@@ -760,21 +760,21 @@ a_avl_s *a_avl_pre_prev(a_avl_s *node)
         else { break; }        \
     } while (!0)
 
-a_avl_s *a_avl_post_head(a_avl_u const *const root)
+a_avl_node *a_avl_post_head(a_avl const *const root)
 {
-    a_avl_s *node = root->node;
+    a_avl_node *node = root->node;
     if (node) { A_AVL_POST(left, right); }
     return node;
 }
 
-a_avl_s *a_avl_post_tail(a_avl_u const *const root)
+a_avl_node *a_avl_post_tail(a_avl const *const root)
 {
-    a_avl_s *node = root->node;
+    a_avl_node *node = root->node;
     if (node) { A_AVL_POST(right, left); }
     return node;
 }
 
-a_avl_s *a_avl_post_next(a_avl_s *node)
+a_avl_node *a_avl_post_next(a_avl_node *node)
 {
     /*
          D
@@ -783,7 +783,7 @@ a_avl_s *a_avl_post_next(a_avl_s *node)
      / \   / \
     A   C E   G
     */
-    a_avl_s *last = node;
+    a_avl_node *last = node;
     if (!node) { return node; }
     node = a_avl_parent(node);
     if (node && node->right && node->right != last)
@@ -794,9 +794,9 @@ a_avl_s *a_avl_post_next(a_avl_s *node)
     return node;
 }
 
-a_avl_s *a_avl_post_prev(a_avl_s *node)
+a_avl_node *a_avl_post_prev(a_avl_node *node)
 {
-    a_avl_s *last = node;
+    a_avl_node *last = node;
     if (!node) { return node; }
     node = a_avl_parent(node);
     if (node && node->left && node->left != last)
@@ -807,9 +807,9 @@ a_avl_s *a_avl_post_prev(a_avl_s *node)
     return node;
 }
 
-a_avl_s *a_avl_tear(a_avl_u *const root, a_avl_s **const next)
+a_avl_node *a_avl_tear(a_avl *const root, a_avl_node **const next)
 {
-    a_avl_s *node = *next;
+    a_avl_node *node = *next;
     if (!node)
     {
         node = root->node;

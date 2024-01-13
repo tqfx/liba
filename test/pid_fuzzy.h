@@ -5,7 +5,7 @@
 #include "a/math.h"
 #include "a/pid_fuzzy.h"
 
-static A_INLINE a_float_t input(a_float_t const x)
+static A_INLINE a_float input(a_float const x)
 {
 #if 0
     return a_float_sin(4 * A_FLOAT_PI * x);
@@ -19,31 +19,31 @@ static A_INLINE a_float_t input(a_float_t const x)
 #define P (+1 * X)
 #undef X
 #define X 1
-static a_float_t const m3e[] = {
+static a_float const m3e[] = {
     A_MF_TRI, N, N, Z,
     A_MF_TRI, N, Z, P,
     A_MF_TRI, Z, P, P};
 #undef X
 #define X 2
-static a_float_t const m3ec[] = {
+static a_float const m3ec[] = {
     A_MF_TRI, N, N, Z,
     A_MF_TRI, N, Z, P,
     A_MF_TRI, Z, P, P};
 #undef X
 #define X A_FLOAT_C(5.0)
-static a_float_t const m3kp[] = {
+static a_float const m3kp[] = {
     N, N, N,
     N, P, P,
     P, P, P};
 #undef X
 #define X A_FLOAT_C(0.01)
-static a_float_t const m3ki[] = {
+static a_float const m3ki[] = {
     Z, Z, Z,
     P, P, P,
     Z, Z, Z};
 #undef X
 #define X A_FLOAT_C(0.1)
-static a_float_t const m3kd[] = {
+static a_float const m3kd[] = {
     N, N, Z,
     Z, Z, Z,
     Z, P, P};
@@ -65,7 +65,7 @@ static a_float_t const m3kd[] = {
 #define PL (+3 * X)
 #undef X
 #define X A_FLOAT_C(1.0) / 2
-static a_float_t const m7e[] = {
+static a_float const m7e[] = {
     A_MF_TRI, NL, NL, NM,
     A_MF_TRI, NL, NM, NS,
     A_MF_TRI, NM, NS, ZO,
@@ -75,7 +75,7 @@ static a_float_t const m7e[] = {
     A_MF_TRI, PM, PL, PL};
 #undef X
 #define X A_FLOAT_C(1.0) / 2
-static a_float_t const m7ec[] = {
+static a_float const m7ec[] = {
     A_MF_TRI, NL, NL, NM,
     A_MF_TRI, NL, NM, NS,
     A_MF_TRI, NM, NS, ZO,
@@ -85,7 +85,7 @@ static a_float_t const m7ec[] = {
     A_MF_TRI, PM, PL, PL};
 #undef X
 #define X A_FLOAT_C(500.0) / 6
-static a_float_t const m7kp[] = {
+static a_float const m7kp[] = {
     NL, NL, NM, NM, NS, ZO, ZO,
     NL, NL, NM, NS, NS, ZO, PS,
     NM, NM, NM, NS, ZO, PS, PS,
@@ -95,7 +95,7 @@ static a_float_t const m7kp[] = {
     ZO, ZO, PM, PM, PM, PL, PL};
 #undef X
 #define X A_FLOAT_C(10.0) / 3
-static a_float_t const m7ki[] = {
+static a_float const m7ki[] = {
     PL, PL, PM, PM, PS, ZO, ZO,
     PL, PL, PM, PS, PS, ZO, ZO,
     PL, PM, PS, PS, ZO, NS, NS,
@@ -105,7 +105,7 @@ static a_float_t const m7ki[] = {
     ZO, ZO, NS, NM, NM, NL, NL};
 #undef X
 #define X A_FLOAT_C(5000.0) / 3
-static a_float_t const m7kd[] = {
+static a_float const m7kd[] = {
     NS, PS, PL, PL, PL, PM, NS,
     NS, PS, PL, PM, PM, PS, ZO,
     ZO, PS, PM, PM, PS, PS, ZO,
@@ -119,19 +119,19 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     test_init(argc, argv, 1);
 
-    a_float_t num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
-    a_float_t den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
+    a_float num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
+    a_float den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
 
-    a_tf_s pos_tf;
-    a_float_t pos_input[A_LEN(num)];
-    a_float_t pos_output[A_LEN(den)];
+    a_tf pos_tf;
+    a_float pos_input[A_LEN(num)];
+    a_float pos_output[A_LEN(den)];
     a_tf_init(&pos_tf, A_LEN(num), num, pos_input, A_LEN(den), den, pos_output);
-    a_tf_s inc_tf;
-    a_float_t inc_input[A_LEN(num)];
-    a_float_t inc_output[A_LEN(den)];
+    a_tf inc_tf;
+    a_float inc_input[A_LEN(num)];
+    a_float inc_output[A_LEN(den)];
     a_tf_init(&inc_tf, A_LEN(num), num, inc_input, A_LEN(den), den, inc_output);
 
-    a_pid_fuzzy_s pos_pid;
+    a_pid_fuzzy pos_pid;
     pos_pid.pid.summax = +10;
     pos_pid.pid.summin = -10;
     pos_pid.pid.outmax = +10;
@@ -150,9 +150,9 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     pos_pid.mkd = m7kd;
     pos_pid.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
     a_pid_fuzzy_init(&pos_pid);
-    a_byte_t pos_joint[A_PID_FUZZY_JOINT(2)];
+    a_byte pos_joint[A_PID_FUZZY_JOINT(2)];
     a_pid_fuzzy_set_joint(&pos_pid, pos_joint, 2);
-    a_pid_fuzzy_s inc_pid;
+    a_pid_fuzzy inc_pid;
     inc_pid.pid.outmax = +10;
     inc_pid.pid.outmin = -10;
     inc_pid.order = 3;
@@ -169,14 +169,14 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     inc_pid.mkd = m7kd;
     inc_pid.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
     a_pid_fuzzy_init(&inc_pid);
-    a_byte_t inc_joint[A_PID_FUZZY_JOINT(2)];
+    a_byte inc_joint[A_PID_FUZZY_JOINT(2)];
     a_pid_fuzzy_set_joint(&inc_pid, inc_joint, 2);
 
     a_pid_fuzzy_kpid(&pos_pid, 600, A_FLOAT_C(20.0), A_FLOAT_C(6000.0));
     a_pid_fuzzy_kpid(&inc_pid, 600, A_FLOAT_C(20.0), A_FLOAT_C(6000.0));
     for (unsigned int i = 0; i < 200; ++i)
     {
-        a_float_t in = input(A_FLOAT_C(0.001) * a_float_c(i));
+        a_float in = input(A_FLOAT_C(0.001) * a_float_c(i));
         a_tf_iter(&pos_tf, a_pid_fuzzy_pos(&pos_pid, in, *pos_tf.output));
         a_tf_iter(&inc_tf, a_pid_fuzzy_inc(&inc_pid, in, *inc_tf.output));
         debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),

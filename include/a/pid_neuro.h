@@ -32,15 +32,15 @@
 /*!
  @brief instance structure for single neuron PID controller
 */
-typedef struct a_pid_neuro_s
+typedef struct a_pid_neuro
 {
-    a_pid_s pid; //!< instance structure for PID controller
-    a_float_t k; //!< proportional output coefficient
-    a_float_t wp; //!< proportional weight
-    a_float_t wi; //!< integral weight
-    a_float_t wd; //!< derivative weight
-    a_float_t ec; //!< error change
-} a_pid_neuro_s;
+    a_pid pid; //!< instance structure for PID controller
+    a_float k; //!< proportional output coefficient
+    a_float wp; //!< proportional weight
+    a_float wi; //!< integral weight
+    a_float wd; //!< derivative weight
+    a_float ec; //!< error change
+} a_pid_neuro;
 
 #if defined(__cplusplus)
 extern "C" {
@@ -50,13 +50,13 @@ extern "C" {
  @brief zeroing for single neuron PID controller
  @param[in,out] ctx points to an instance of single neuron PID controller
 */
-A_EXTERN void a_pid_neuro_zero(a_pid_neuro_s *ctx);
+A_EXTERN void a_pid_neuro_zero(a_pid_neuro *ctx);
 
 /*!
  @brief initialize for single neuron PID controller
  @param[in,out] ctx points to an instance of single neuron PID controller
 */
-A_EXTERN void a_pid_neuro_init(a_pid_neuro_s *ctx);
+A_EXTERN void a_pid_neuro_init(a_pid_neuro *ctx);
 
 /*!
  @brief set proportional integral derivative constant for single neuron PID controller
@@ -66,7 +66,7 @@ A_EXTERN void a_pid_neuro_init(a_pid_neuro_s *ctx);
  @param[in] ki integral learning constant
  @param[in] kd derivative learning constant
 */
-A_EXTERN void a_pid_neuro_kpid(a_pid_neuro_s *ctx, a_float_t k, a_float_t kp, a_float_t ki, a_float_t kd);
+A_EXTERN void a_pid_neuro_kpid(a_pid_neuro *ctx, a_float k, a_float kp, a_float ki, a_float kd);
 
 /*!
  @brief set proportional integral derivative weight for single neuron PID controller
@@ -75,7 +75,7 @@ A_EXTERN void a_pid_neuro_kpid(a_pid_neuro_s *ctx, a_float_t k, a_float_t kp, a_
  @param[in] wi integral weight
  @param[in] wd derivative lweight
 */
-A_EXTERN void a_pid_neuro_wpid(a_pid_neuro_s *ctx, a_float_t wp, a_float_t wi, a_float_t wd);
+A_EXTERN void a_pid_neuro_wpid(a_pid_neuro *ctx, a_float wp, a_float wi, a_float wd);
 
 /*!
  @brief calculate for single neuron PID controller
@@ -84,7 +84,7 @@ A_EXTERN void a_pid_neuro_wpid(a_pid_neuro_s *ctx, a_float_t wp, a_float_t wi, a
  @param[in] fdb feedback value
  @return setpoint value
 */
-A_EXTERN a_float_t a_pid_neuro_run(a_pid_neuro_s *ctx, a_float_t set, a_float_t fdb);
+A_EXTERN a_float a_pid_neuro_run(a_pid_neuro *ctx, a_float set, a_float fdb);
 
 /*!
  @brief calculate for incremental single neuron PID controller
@@ -93,7 +93,7 @@ A_EXTERN a_float_t a_pid_neuro_run(a_pid_neuro_s *ctx, a_float_t set, a_float_t 
  @param[in] fdb feedback value
  @return output value
 */
-A_EXTERN a_float_t a_pid_neuro_inc(a_pid_neuro_s *ctx, a_float_t set, a_float_t fdb);
+A_EXTERN a_float a_pid_neuro_inc(a_pid_neuro *ctx, a_float set, a_float fdb);
 
 #if defined(__cplusplus)
 } /* extern "C" */
