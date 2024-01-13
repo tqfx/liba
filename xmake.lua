@@ -85,13 +85,13 @@ target("a")
 -- make as a collection of objects
 set_kind("object")
 -- detect c code functions
-float = get_config("liba-float")
 configvar_check_sizeof("A_SIZE_POINTER", "void *")
 configvar_check_csnippets(
     "A_BYTE_ORDER",
     'int x = 1; puts(*(char *)&x ? "1234" : "4321");',
     { output = true, number = true }
 )
+float = get_config("liba-float")
 function check_math(funcs, opt)
     for i, func in pairs(funcs) do
         local have = "A_HAVE_" .. string.upper(func)
@@ -104,7 +104,6 @@ function check_math(funcs, opt)
         configvar_check_cfuncs(have, func, opt)
     end
 end
-
 local funcs = { "hypot", "log1p", "atan2" }
 check_math(funcs, { includes = "math.h" })
 -- stylua: ignore
@@ -128,15 +127,15 @@ add_includedirs("include", { public = true })
 -- set export library symbols
 add_defines("A_EXPORTS")
 -- add the common source files
+add_files("src/**.c")
 if not table.empty(os.files("src/**.cpp")) and has_config("liba-cxx") then
     add_files("src/**.cpp")
 end
-add_files("src/**.c")
 -- add the platform options
 rpath = get_config("liba-rpath")
 if rpath then
-    add_rpathdirs(rpath, { public = true })
     add_linkdirs(rpath, { public = true })
+    add_rpathdirs(rpath, { public = true })
 end
 if not is_plat("windows", "mingw") then
     add_syslinks("m", { public = true })
@@ -167,11 +166,14 @@ set_basename("a")
 -- make as a static library
 set_kind("static")
 -- add the header files for installing
+add_headerfiles("include/(**.h)")
+add_headerfiles("$(buildir)/a.xmake.h", { prefixdir = "a" })
 if not table.empty(os.files("include/**.hpp")) and has_config("liba-cxx") then
     add_headerfiles("include/(**.hpp)")
 end
-add_headerfiles("include/(**.h)")
-add_headerfiles("$(buildir)/a.xmake.h", { prefixdir = "a" })
+on_load(function(target)
+    target:set("links", target:targetfile(), { interface = true })
+end)
 after_install(function(target)
     if target:installdir() then
         local old = "#if defined(A_HAVE_H)"
@@ -185,14 +187,23 @@ add_deps("a")
 target_end()
 
 target("liba")
-set_basename("a")
-set_prefixname("lib")
 -- make as a shared library
 set_kind("shared")
 -- add the platform options
-if is_plat("windows") then
-    add_defines("A_IMPORTS", { interface = true })
+if not is_plat("windows") then
+    set_prefixname("lib")
+    set_basename("a")
 end
+on_load(function(target)
+    local liba = target:targetfile()
+    if target:is_plat("windows") then
+        liba = liba:gsub(".dll", ".lib")
+    elseif target:is_plat("mingw") then
+        liba = liba .. ".a"
+    end
+    target:set("links", liba, { interface = true })
+end)
+add_defines("A_IMPORTS", { interface = true })
 -- add the dependent target
 add_deps("a")
 target_end()
