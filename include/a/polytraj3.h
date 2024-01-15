@@ -15,29 +15,10 @@
  @{
 */
 
-/*!
- @brief instance structure for cubic polynomial trajectory
- \f{aligned}{
-  \begin{array}{l}
-  q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3} \\
-  \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2} \\
-  \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)
-  \end{array}
- \f}
-*/
-typedef struct a_polytraj3
-{
 #if !defined A_POLYTRAJ3
 #define A_POLYTRAJ3 3
 #endif /* A_POLYTRAJ3 */
-    a_float q[4]; //!< coefficients of position
-#if defined(A_POLYTRAJ3) && (A_POLYTRAJ3 + 0 > 1)
-    a_float v[3]; //!< coefficients of velocity
-#endif /* A_POLYTRAJ3 */
-#if defined(A_POLYTRAJ3) && (A_POLYTRAJ3 + 0 > 2)
-    a_float a[2]; //!< coefficients of acceleration
-#endif /* A_POLYTRAJ3 */
-} a_polytraj3;
+typedef struct a_polytraj3 a_polytraj3;
 
 #if defined(__cplusplus)
 extern "C" {
@@ -123,7 +104,64 @@ A_EXTERN a_float a_polytraj3_acc(a_polytraj3 const *ctx, a_float dt);
 
 #if defined(__cplusplus)
 } /* extern "C" */
+namespace a
+{
+typedef struct a_polytraj3 polytraj3;
+} /* namespace a */
 #endif /* __cplusplus */
+
+/*!
+ @brief instance structure for cubic polynomial trajectory
+ \f{aligned}{
+  \begin{array}{l}
+  q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3} \\
+  \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2} \\
+  \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)
+  \end{array}
+ \f}
+*/
+struct a_polytraj3
+{
+    a_float q[4]; //!< coefficients of position
+#if defined(A_POLYTRAJ3) && (A_POLYTRAJ3 + 0 > 1)
+    a_float v[3]; //!< coefficients of velocity
+#endif /* A_POLYTRAJ3 */
+#if defined(A_POLYTRAJ3) && (A_POLYTRAJ3 + 0 > 2)
+    a_float a[2]; //!< coefficients of acceleration
+#endif /* A_POLYTRAJ3 */
+#if defined(__cplusplus)
+    A_INLINE void gen(a_float t0, a_float t1,
+                      a_float q0, a_float q1,
+                      a_float v0 = 0, a_float v1 = 0)
+    {
+        a_polytraj3_gen(this, t0, t1, q0, q1, v0, v1);
+    }
+    A_INLINE void gen0(a_float t0, a_float t1,
+                       a_float q0, a_float q1,
+                       a_float v0 = 0, a_float v1 = 0)
+    {
+        a_polytraj3_gen0(this, t0, t1, q0, q1, v0, v1);
+    }
+    A_INLINE a_float pos(a_float dt)
+    {
+        return a_polytraj3_pos(this, dt);
+    }
+#if defined(A_POLYTRAJ3) && (A_POLYTRAJ3 + 0 > 1)
+    A_INLINE void gen1() { a_polytraj3_gen1(this); }
+    A_INLINE a_float vel(a_float dt)
+    {
+        return a_polytraj3_vel(this, dt);
+    }
+#endif /* A_POLYTRAJ3 */
+#if defined(A_POLYTRAJ3) && (A_POLYTRAJ3 + 0 > 2)
+    A_INLINE void gen2() { a_polytraj3_gen2(this); }
+    A_INLINE a_float acc(a_float dt)
+    {
+        return a_polytraj3_acc(this, dt);
+    }
+#endif /* A_POLYTRAJ3 */
+#endif /* __cplusplus */
+};
 
 /*! @} A_POLYTRAJ3 */
 

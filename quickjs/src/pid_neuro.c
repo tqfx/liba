@@ -3,14 +3,14 @@
 
 static JSClassID liba_pid_neuro_class_id;
 
-static void liba_pid_neuro_finalizer(JSRuntime *const rt, JSValue const val)
+static void liba_pid_neuro_finalizer(JSRuntime *rt, JSValue val)
 {
     js_free_rt(rt, JS_GetOpaque(val, liba_pid_neuro_class_id));
 }
 
 static JSClassDef liba_pid_neuro_class = {"pid_neuro", .finalizer = liba_pid_neuro_finalizer};
 
-static JSValue liba_pid_neuro_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
+static JSValue liba_pid_neuro_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)argv;
@@ -39,7 +39,7 @@ fail:
     return JS_EXCEPTION;
 }
 
-static JSValue liba_pid_neuro_get(JSContext *const ctx, JSValueConst const this_val, int magic)
+static JSValue liba_pid_neuro_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
     a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -64,7 +64,7 @@ static JSValue liba_pid_neuro_get(JSContext *const ctx, JSValueConst const this_
     return JS_NewFloat64(ctx, x);
 }
 
-static JSValue liba_pid_neuro_set(JSContext *const ctx, JSValueConst const this_val, JSValueConst const val, int magic)
+static JSValue liba_pid_neuro_set(JSContext *ctx, JSValueConst this_val, JSValueConst val, int magic)
 {
     a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -86,7 +86,7 @@ static JSValue liba_pid_neuro_set(JSContext *const ctx, JSValueConst const this_
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_neuro_kpid(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_neuro_kpid(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
@@ -100,7 +100,7 @@ static JSValue liba_pid_neuro_kpid(JSContext *const ctx, JSValueConst const this
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_neuro_wpid(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_neuro_wpid(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
@@ -114,7 +114,7 @@ static JSValue liba_pid_neuro_wpid(JSContext *const ctx, JSValueConst const this
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_neuro_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_neuro_zero(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)argv;
@@ -124,7 +124,7 @@ static JSValue liba_pid_neuro_zero(JSContext *const ctx, JSValueConst const this
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_neuro_run(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_neuro_run(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
@@ -137,7 +137,7 @@ static JSValue liba_pid_neuro_run(JSContext *const ctx, JSValueConst const this_
     return JS_NewFloat64(ctx, (double)a_pid_neuro_run(self, (a_float)args[0], (a_float)args[1]));
 }
 
-static JSValue liba_pid_neuro_inc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_neuro_inc(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
@@ -172,7 +172,7 @@ static JSCFunctionListEntry const liba_pid_neuro_proto[] = {
     JS_CFUNC_DEF("inc", 2, liba_pid_neuro_inc),
 };
 
-int js_liba_pid_neuro_init(JSContext *const ctx, JSModuleDef *const m)
+int js_liba_pid_neuro_init(JSContext *ctx, JSModuleDef *m)
 {
     JS_NewClassID(&liba_pid_neuro_class_id);
     JS_NewClass(JS_GetRuntime(ctx), liba_pid_neuro_class_id, &liba_pid_neuro_class);

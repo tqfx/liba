@@ -14,9 +14,6 @@
  @{
 */
 
-/*! format constants for the fprintf family of functions */
-#define A_COMPLEX_PRI(RF, RC, IF, IC) "(" A_FLOAT_PRI(RF, RC) "," A_FLOAT_PRI(IF, IC) ")"
-
 // clang-format off
 /*! constructs a complex number from real and imaginary parts */
 #if !defined __cplusplus
@@ -30,12 +27,9 @@
 #else /* !__cplusplus */
 #define A_COMPLEX_C(R, I) {A_FLOAT_C(R), A_FLOAT_C(I)}
 #endif /* __cplusplus */
+/*! format constants for the fprintf family of functions */
+#define A_COMPLEX_PRI(RF, RC, IF, IC) "(" A_FLOAT_PRI(RF, RC) "," A_FLOAT_PRI(IF, IC) ")"
 // clang-format on
-
-/*! real part of complex number */
-#define a_complex_real(ctx) (ctx).real
-/*! imaginary part of complex number */
-#define a_complex_imag(ctx) (ctx).imag
 
 /*!
  @brief instance structure for complex number
@@ -45,6 +39,11 @@ typedef struct a_complex
     a_float real; //!< real part of complex number
     a_float imag; //!< imaginary part of complex number
 } a_complex;
+
+/*! real part of complex number */
+#define a_complex_real(ctx) (ctx).real
+/*! imaginary part of complex number */
+#define a_complex_imag(ctx) (ctx).imag
 
 #if defined(__cplusplus)
 extern "C" {

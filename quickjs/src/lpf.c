@@ -3,14 +3,14 @@
 
 static JSClassID liba_lpf_class_id;
 
-static void liba_lpf_finalizer(JSRuntime *const rt, JSValue const val)
+static void liba_lpf_finalizer(JSRuntime *rt, JSValue val)
 {
     js_free_rt(rt, JS_GetOpaque(val, liba_lpf_class_id));
 }
 
 static JSClassDef liba_lpf_class = {"lpf", .finalizer = liba_lpf_finalizer};
 
-static JSValue liba_lpf_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
+static JSValue liba_lpf_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
     JSValue proto, clazz = JS_UNDEFINED;
     a_lpf *const self = (a_lpf *)js_mallocz(ctx, sizeof(a_lpf));
@@ -40,7 +40,7 @@ fail:
     return JS_UNDEFINED;
 }
 
-static JSValue liba_lpf_get(JSContext *const ctx, JSValueConst const this_val, int magic)
+static JSValue liba_lpf_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
     a_lpf *const self = (a_lpf *)JS_GetOpaque2(ctx, this_val, liba_lpf_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -54,7 +54,7 @@ static JSValue liba_lpf_get(JSContext *const ctx, JSValueConst const this_val, i
     return JS_NewFloat64(ctx, x);
 }
 
-static JSValue liba_lpf_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_lpf_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     a_lpf *const self = (a_lpf *)JS_GetOpaque2(ctx, this_val, liba_lpf_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -73,7 +73,7 @@ static JSValue liba_lpf_gen(JSContext *const ctx, JSValueConst const this_val, i
     return JS_UNDEFINED;
 }
 
-static JSValue liba_lpf_iter(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_lpf_iter(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_lpf *const self = (a_lpf *)JS_GetOpaque2(ctx, this_val, liba_lpf_class_id);
@@ -83,7 +83,7 @@ static JSValue liba_lpf_iter(JSContext *const ctx, JSValueConst const this_val, 
     return JS_NewFloat64(ctx, (double)a_lpf_iter(self, (a_float)x));
 }
 
-static JSValue liba_lpf_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_lpf_zero(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)argv;
@@ -102,7 +102,7 @@ static JSCFunctionListEntry const liba_lpf_proto[] = {
     JS_CFUNC_DEF("zero", 0, liba_lpf_zero),
 };
 
-int js_liba_lpf_init(JSContext *const ctx, JSModuleDef *const m)
+int js_liba_lpf_init(JSContext *ctx, JSModuleDef *m)
 {
     JS_NewClassID(&liba_lpf_class_id);
     JS_NewClass(JS_GetRuntime(ctx), liba_lpf_class_id, &liba_lpf_class);

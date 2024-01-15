@@ -43,23 +43,22 @@
 #define A_VERSION A_VERSION_TOSTR(A_VERSION_MAJOR) "." A_VERSION_TOSTR(A_VERSION_MINOR) "." A_VERSION_TOSTR(A_VERSION_PATCH)
 #endif /* A_VERSION */
 
+typedef struct a_version a_version;
+// clang-format off
+#if defined(__cplusplus)
+#define A_VERSION_C(maj, min, pat) {maj, min, pat, 0}
+#define A_VERSION_EX(maj, min, pat, ext) {maj, min, pat, ext}
+#else /* !__cplusplus */
+#define A_VERSION_C(maj, min, pat) (a_version){maj, min, pat, 0}
+#define A_VERSION_EX(maj, min, pat, ext) (a_version){maj, min, pat, ext}
+#endif /* __cplusplus */
+// clang-format on
+
 #if defined(__cplusplus)
 namespace a
 {
-struct version;
-}
-typedef struct a::version a_version;
-#define A_VERSION_C(maj, min, pat) a::version(maj, min, pat)
-#define A_VERSION_EX(maj, min, pat, ext) a::version(maj, min, pat, ext)
-#else /* !__cplusplus */
-typedef struct a_version a_version;
-// clang-format off
-#define A_VERSION_C(maj, min, pat) {maj, min, pat, 0}
-#define A_VERSION_EX(maj, min, pat, ext) {maj, min, pat, ext}
-// clang-format on
-#endif /* __cplusplus */
-
-#if defined(__cplusplus)
+typedef a_version version;
+} /* namespace a */
 extern "C" {
 #endif /* __cplusplus */
 
@@ -154,24 +153,50 @@ A_EXTERN unsigned int a_version_parse(a_version *ctx, char const *ver);
 
 #if defined(__cplusplus)
 } /* extern "C" */
-namespace a
-{
 #endif /* __cplusplus */
 
 /*!
  @brief instance structure for version
 */
-#if !defined __cplusplus
 struct a_version
-#else /* !__cplusplus */
-struct version
-#endif /* __cplusplus */
 {
     unsigned int major; //!< major number
     unsigned int minor; //!< minor number
     unsigned int patch; //!< patch number
     unsigned int extra; //!< extra number
 #if defined(__cplusplus)
+    A_INLINE int cmp(a_version const &ver) const
+    {
+        return a_version_cmp(this, &ver);
+    }
+    A_INLINE bool operator<(a_version const &ver) const
+    {
+        return a_version_lt(this, &ver);
+    }
+    A_INLINE bool operator>(a_version const &ver) const
+    {
+        return a_version_gt(this, &ver);
+    }
+    A_INLINE bool operator<=(a_version const &ver) const
+    {
+        return a_version_le(this, &ver);
+    }
+    A_INLINE bool operator>=(a_version const &ver) const
+    {
+        return a_version_ge(this, &ver);
+    }
+    A_INLINE bool operator==(a_version const &ver) const
+    {
+        return a_version_eq(this, &ver);
+    }
+    A_INLINE bool operator!=(a_version const &ver) const
+    {
+        return a_version_ne(this, &ver);
+    }
+    A_INLINE unsigned int parse(char const *ver)
+    {
+        return a_version_parse(this, ver);
+    }
     /*! algorithm library version major */
     A_PUBLIC static unsigned int const MAJOR;
     /*! algorithm library version minor */
@@ -180,54 +205,8 @@ struct version
     A_PUBLIC static unsigned int const PATCH;
     /*! algorithm library version tweak */
     A_PUBLIC static a_u32 const TWEAK;
-    A_INLINE bool operator<(version const &ver) const
-    {
-        return a_version_lt(this, &ver);
-    }
-    A_INLINE bool operator>(version const &ver) const
-    {
-        return a_version_gt(this, &ver);
-    }
-    A_INLINE bool operator<=(version const &ver) const
-    {
-        return a_version_le(this, &ver);
-    }
-    A_INLINE bool operator>=(version const &ver) const
-    {
-        return a_version_ge(this, &ver);
-    }
-    A_INLINE bool operator==(version const &ver) const
-    {
-        return a_version_eq(this, &ver);
-    }
-    A_INLINE bool operator!=(version const &ver) const
-    {
-        return a_version_ne(this, &ver);
-    }
-    A_INLINE version(unsigned int const maj = 0,
-                     unsigned int const min = 0,
-                     unsigned int const pat = 0,
-                     unsigned int const ext = 0)
-        : major(maj)
-        , minor(min)
-        , patch(pat)
-        , extra(ext)
-    {
-    }
-    A_INLINE version(char const *ver)
-        : major(0)
-        , minor(0)
-        , patch(0)
-        , extra(0)
-    {
-        a_version_parse(this, ver);
-    }
 #endif /* __cplusplus */
 };
-
-#if defined(__cplusplus)
-} /* namespace a */
-#endif /* __cplusplus */
 
 /*! @} A_VERSION */
 

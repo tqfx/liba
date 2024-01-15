@@ -1030,7 +1030,7 @@ extern "C" {
 A_EXTERN a_f32 a_f32_from(a_u32 x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
-A_INTERN a_f32 a_f32_from(a_u32 const x)
+A_INTERN a_f32 a_f32_from(a_u32 x)
 {
     union
     {
@@ -1045,7 +1045,7 @@ A_INTERN a_f32 a_f32_from(a_u32 const x)
 A_EXTERN a_u32 a_f32_into(a_f32 x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
-A_INTERN a_u32 a_f32_into(a_f32 const x)
+A_INTERN a_u32 a_f32_into(a_f32 x)
 {
     union
     {
@@ -1060,7 +1060,7 @@ A_INTERN a_u32 a_f32_into(a_f32 const x)
 A_EXTERN a_f64 a_f64_from(a_u64 x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
-A_INTERN a_f64 a_f64_from(a_u64 const x)
+A_INTERN a_f64 a_f64_from(a_u64 x)
 {
     union
     {
@@ -1075,7 +1075,7 @@ A_INTERN a_f64 a_f64_from(a_u64 const x)
 A_EXTERN a_u64 a_f64_into(a_f64 x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
-A_INTERN a_u64 a_f64_into(a_f64 const x)
+A_INTERN a_u64 a_f64_into(a_f64 x)
 {
     union
     {

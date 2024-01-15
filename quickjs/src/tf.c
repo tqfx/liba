@@ -1,7 +1,7 @@
 #include "a.h"
 #include "a/tf.h"
 
-static int liba_tf_set_num_(JSContext *const ctx, a_tf *const self, JSValueConst num)
+static int liba_tf_set_num_(JSContext *ctx, a_tf *self, JSValueConst num)
 {
     a_u32 num_n = 0;
     a_float *num_p = self->input;
@@ -21,7 +21,7 @@ static int liba_tf_set_num_(JSContext *const ctx, a_tf *const self, JSValueConst
     return js_array_num_get(ctx, num, num_p, num_n);
 }
 
-static int liba_tf_set_den_(JSContext *const ctx, a_tf *const self, JSValueConst den)
+static int liba_tf_set_den_(JSContext *ctx, a_tf *self, JSValueConst den)
 {
     a_u32 den_n = 0;
     a_float *den_p = self->output;
@@ -43,7 +43,7 @@ static int liba_tf_set_den_(JSContext *const ctx, a_tf *const self, JSValueConst
 
 static JSClassID liba_tf_class_id;
 
-static void liba_tf_finalizer(JSRuntime *const rt, JSValue const val)
+static void liba_tf_finalizer(JSRuntime *rt, JSValue val)
 {
     a_tf *const self = (a_tf *)JS_GetOpaque(val, liba_tf_class_id);
     js_free_rt(rt, self->output);
@@ -53,7 +53,7 @@ static void liba_tf_finalizer(JSRuntime *const rt, JSValue const val)
 
 static JSClassDef liba_tf_class = {"tf", .finalizer = liba_tf_finalizer};
 
-static JSValue liba_tf_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
+static JSValue liba_tf_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
     (void)argc;
     JSValue proto, clazz = JS_UNDEFINED;
@@ -74,7 +74,7 @@ fail:
     return JS_UNDEFINED;
 }
 
-static JSValue liba_tf_get(JSContext *const ctx, JSValueConst const this_val, int magic)
+static JSValue liba_tf_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
     a_tf *const self = (a_tf *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -88,7 +88,7 @@ static JSValue liba_tf_get(JSContext *const ctx, JSValueConst const this_val, in
     }
 }
 
-static JSValue liba_tf_set(JSContext *const ctx, JSValueConst const this_val, JSValueConst const val, int magic)
+static JSValue liba_tf_set(JSContext *ctx, JSValueConst this_val, JSValueConst val, int magic)
 {
     a_tf *const self = (a_tf *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -106,7 +106,7 @@ static JSValue liba_tf_set(JSContext *const ctx, JSValueConst const this_val, JS
     return JS_UNDEFINED;
 }
 
-static JSValue liba_tf_iter(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_tf_iter(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_tf *const self = (a_tf *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
@@ -116,7 +116,7 @@ static JSValue liba_tf_iter(JSContext *const ctx, JSValueConst const this_val, i
     return JS_NewFloat64(ctx, (double)a_tf_iter(self, (a_float)x));
 }
 
-static JSValue liba_tf_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_tf_zero(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)argv;
@@ -136,7 +136,7 @@ static JSCFunctionListEntry const liba_tf_proto[] = {
     JS_CFUNC_DEF("zero", 0, liba_tf_zero),
 };
 
-int js_liba_tf_init(JSContext *const ctx, JSModuleDef *const m)
+int js_liba_tf_init(JSContext *ctx, JSModuleDef *m)
 {
     JS_NewClassID(&liba_tf_class_id);
     JS_NewClass(JS_GetRuntime(ctx), liba_tf_class_id, &liba_tf_class);

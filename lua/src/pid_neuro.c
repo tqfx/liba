@@ -11,7 +11,7 @@
  @treturn a.pid_neuro single neuron PID controller userdata
  @function new
 */
-int liba_pid_neuro_new(lua_State *const L)
+int liba_pid_neuro_new(lua_State *L)
 {
     a_pid_neuro *const ctx = lua_newclass(L, a_pid_neuro);
     a_zero(ctx, sizeof(a_pid_neuro));
@@ -35,7 +35,7 @@ int liba_pid_neuro_new(lua_State *const L)
  @treturn a.pid_neuro single neuron PID controller userdata
  @function init
 */
-int liba_pid_neuro_init(lua_State *const L)
+int liba_pid_neuro_init(lua_State *L)
 {
     luaL_checktype(L, 1, LUA_TUSERDATA);
     a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
@@ -57,7 +57,7 @@ int liba_pid_neuro_init(lua_State *const L)
  @treturn a.pid_neuro single neuron PID controller userdata
  @function zero
 */
-int liba_pid_neuro_zero(lua_State *const L)
+int liba_pid_neuro_zero(lua_State *L)
 {
     a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
     if (ctx)
@@ -78,7 +78,7 @@ int liba_pid_neuro_zero(lua_State *const L)
  @treturn a.pid_neuro single neuron PID controller userdata
  @function kpid
 */
-int liba_pid_neuro_kpid(lua_State *const L)
+int liba_pid_neuro_kpid(lua_State *L)
 {
     a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
     if (ctx)
@@ -103,7 +103,7 @@ int liba_pid_neuro_kpid(lua_State *const L)
  @treturn a.pid_neuro single neuron PID controller userdata
  @function wpid
 */
-int liba_pid_neuro_wpid(lua_State *const L)
+int liba_pid_neuro_wpid(lua_State *L)
 {
     a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
     if (ctx)
@@ -126,7 +126,7 @@ int liba_pid_neuro_wpid(lua_State *const L)
  @treturn number setpoint value
  @function run
 */
-int liba_pid_neuro_run(lua_State *const L)
+int liba_pid_neuro_run(lua_State *L)
 {
     a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
     if (ctx)
@@ -147,7 +147,7 @@ int liba_pid_neuro_run(lua_State *const L)
  @treturn number setpoint value
  @function inc
 */
-int liba_pid_neuro_inc(lua_State *const L)
+int liba_pid_neuro_inc(lua_State *L)
 {
     a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
     if (ctx)
@@ -160,7 +160,7 @@ int liba_pid_neuro_inc(lua_State *const L)
     return 0;
 }
 
-static int liba_pid_neuro_set(lua_State *const L)
+static int liba_pid_neuro_set(lua_State *L)
 {
     a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
     switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
@@ -205,7 +205,7 @@ static int liba_pid_neuro_set(lua_State *const L)
     return 0;
 }
 
-static int liba_pid_neuro_get(lua_State *const L)
+static int liba_pid_neuro_get(lua_State *L)
 {
     a_pid_neuro const *const ctx = (a_pid_neuro const *)lua_touserdata(L, 1);
     switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
@@ -275,7 +275,7 @@ static int liba_pid_neuro_get(lua_State *const L)
     return 1;
 }
 
-static int liba_pid_neuro_(lua_State *const L)
+static int liba_pid_neuro_(lua_State *L)
 {
     lua_pushcfunction(L, liba_pid_neuro_new);
     lua_replace(L, 1);
@@ -283,7 +283,7 @@ static int liba_pid_neuro_(lua_State *const L)
     return 1;
 }
 
-int luaopen_liba_pid_neuro(lua_State *const L)
+int luaopen_liba_pid_neuro(lua_State *L)
 {
     static lua_fun const funcs[] = {
         {"new", liba_pid_neuro_new},

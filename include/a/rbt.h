@@ -46,7 +46,7 @@ typedef struct a_rbt_node
  @return a pointer to the parent of the specified red–black tree node,
  or null if it is already the root of the tree.
 */
-A_INTERN a_rbt_node *a_rbt_parent(a_rbt_node const *const node)
+A_INTERN a_rbt_node *a_rbt_parent(a_rbt_node const *node)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
     return a_cast_r(a_rbt_node *, node->_parent & ~a_uptr_c(1));
@@ -61,7 +61,7 @@ A_INTERN a_rbt_node *a_rbt_parent(a_rbt_node const *const node)
  @param[in] parent node parent
  @return initialized node
 */
-A_INTERN a_rbt_node *a_rbt_init(a_rbt_node *const node, a_rbt_node *const parent)
+A_INTERN a_rbt_node *a_rbt_init(a_rbt_node *node, a_rbt_node *parent)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
     node->_parent = a_cast_r(a_uptr, parent);
@@ -86,7 +86,7 @@ typedef union a_rbt
  @brief initialize for red–black binary search tree root
  @param[in,out] root red–black binary search tree root
 */
-A_INTERN void a_rbt_root(a_rbt *const root) { root->node = A_NULL; }
+A_INTERN void a_rbt_root(a_rbt *root) { root->node = A_NULL; }
 
 #if defined(__cplusplus)
 extern "C" {

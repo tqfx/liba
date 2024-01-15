@@ -18,17 +18,17 @@
 #undef a_buf_pull_fore
 #undef a_buf_pull_back
 
-static A_INLINE void *a_buf_inc_(a_buf *const ctx)
+static A_INLINE void *a_buf_inc_(a_buf *ctx)
 {
     return (a_byte *)ctx->_ptr + ctx->_siz * ctx->_num++;
 }
 
-static A_INLINE void *a_buf_dec_(a_buf *const ctx)
+static A_INLINE void *a_buf_dec_(a_buf *ctx)
 {
     return (a_byte *)ctx->_ptr + ctx->_siz * --ctx->_num;
 }
 
-static void a_buf_drop_(a_buf *const ctx, a_size const bot, void (*const dtor)(void *))
+static void a_buf_drop_(a_buf *ctx, a_size bot, void (*dtor)(void *))
 {
     if (dtor)
     {
@@ -37,7 +37,7 @@ static void a_buf_drop_(a_buf *const ctx, a_size const bot, void (*const dtor)(v
     ctx->_num = bot;
 }
 
-void a_buf_ctor(a_buf *const ctx, void *const ptr, a_size const siz, a_size const num)
+void a_buf_ctor(a_buf *ctx, void *ptr, a_size siz, a_size num)
 {
     ctx->_ptr = ptr;
     ctx->_siz = siz;
@@ -45,7 +45,7 @@ void a_buf_ctor(a_buf *const ctx, void *const ptr, a_size const siz, a_size cons
     ctx->_num = 0;
 }
 
-void a_buf_dtor(a_buf *const ctx, void (*const dtor)(void *))
+void a_buf_dtor(a_buf *ctx, void (*dtor)(void *))
 {
     if (ctx->_ptr)
     {
@@ -56,18 +56,18 @@ void a_buf_dtor(a_buf *const ctx, void (*const dtor)(void *))
     ctx->_siz = 0;
 }
 
-void a_buf_move(a_buf *const ctx, a_buf *const obj)
+void a_buf_move(a_buf *ctx, a_buf *obj)
 {
     a_copy(ctx, obj, sizeof(*obj));
     a_zero(obj, sizeof(*obj));
 }
 
-void a_buf_drop(a_buf *const ctx, void (*const dtor)(void *))
+void a_buf_drop(a_buf *ctx, void (*dtor)(void *))
 {
     a_buf_drop_(ctx, 0, dtor);
 }
 
-void a_buf_swap(a_buf const *const ctx, a_size lhs, a_size rhs)
+void a_buf_swap(a_buf const *ctx, a_size lhs, a_size rhs)
 {
     a_size const num = ctx->_num - 1;
     lhs = lhs < ctx->_num ? lhs : num;
@@ -80,12 +80,12 @@ void a_buf_swap(a_buf const *const ctx, a_size lhs, a_size rhs)
     }
 }
 
-void a_buf_sort(a_buf const *const ctx, int (*const cmp)(void const *, void const *))
+void a_buf_sort(a_buf const *ctx, int (*cmp)(void const *, void const *))
 {
     qsort(ctx->_ptr, ctx->_num, ctx->_siz, cmp);
 }
 
-void a_buf_sort_fore(a_buf const *const ctx, int (*const cmp)(void const *, void const *))
+void a_buf_sort_fore(a_buf const *ctx, int (*cmp)(void const *, void const *))
 {
     if (ctx->_num > 1)
     {
@@ -103,7 +103,7 @@ void a_buf_sort_fore(a_buf const *const ctx, int (*const cmp)(void const *, void
     }
 }
 
-void a_buf_sort_back(a_buf const *const ctx, int (*const cmp)(void const *, void const *))
+void a_buf_sort_back(a_buf const *ctx, int (*cmp)(void const *, void const *))
 {
     if (ctx->_num > 1)
     {
@@ -120,12 +120,12 @@ void a_buf_sort_back(a_buf const *const ctx, int (*const cmp)(void const *, void
     }
 }
 
-void *a_buf_search(a_buf const *const ctx, void const *const obj, int (*const cmp)(void const *, void const *))
+void *a_buf_search(a_buf const *ctx, void const *obj, int (*cmp)(void const *, void const *))
 {
     return bsearch(obj, ctx->_ptr, ctx->_num, ctx->_siz, cmp);
 }
 
-void *a_buf_insert(a_buf *const ctx, a_size const idx)
+void *a_buf_insert(a_buf *ctx, a_size idx)
 {
     if (a_likely(ctx->_num < ctx->_mem))
     {
@@ -142,14 +142,14 @@ void *a_buf_insert(a_buf *const ctx, a_size const idx)
     return A_NULL;
 }
 
-void *a_buf_push_fore(a_buf *const ctx) { return a_buf_insert(ctx, 0); }
+void *a_buf_push_fore(a_buf *ctx) { return a_buf_insert(ctx, 0); }
 
-void *a_buf_push_back(a_buf *const ctx)
+void *a_buf_push_back(a_buf *ctx)
 {
     return a_likely(ctx->_num < ctx->_mem) ? a_buf_inc_(ctx) : A_NULL;
 }
 
-void *a_buf_remove(a_buf *const ctx, a_size const idx)
+void *a_buf_remove(a_buf *ctx, a_size idx)
 {
     a_size const num = ctx->_num - 1;
     if (ctx->_num && idx < num)
@@ -164,9 +164,9 @@ void *a_buf_remove(a_buf *const ctx, a_size const idx)
     return a_likely(ctx->_num) ? a_buf_dec_(ctx) : A_NULL;
 }
 
-void *a_buf_pull_fore(a_buf *const ctx) { return a_buf_remove(ctx, 0); }
+void *a_buf_pull_fore(a_buf *ctx) { return a_buf_remove(ctx, 0); }
 
-void *a_buf_pull_back(a_buf *const ctx)
+void *a_buf_pull_back(a_buf *ctx)
 {
     return a_likely(ctx->_num) ? a_buf_dec_(ctx) : A_NULL;
 }

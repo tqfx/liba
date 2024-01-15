@@ -1,7 +1,7 @@
 #include "a/rbf.h"
 #include "a/math.h"
 
-a_float const *a_rbf_iter(a_rbf const *const ctx)
+a_float const *a_rbf_iter(a_rbf const *ctx)
 {
     a_size const input_hidden_n = ctx->input_n * ctx->hidden_n;
     for (a_size hidden_i = 0; hidden_i != ctx->hidden_n; ++hidden_i)
@@ -55,7 +55,7 @@ a_float const *a_rbf_iter(a_rbf const *const ctx)
     return ctx->output_p;
 }
 
-void a_rbf_tune(a_rbf const *const ctx, a_float const *const out)
+void a_rbf_tune(a_rbf const *ctx, a_float const *out)
 {
     a_float *weight = ctx->weight;
     a_float *deltaw = ctx->deltaw;
@@ -70,7 +70,7 @@ void a_rbf_tune(a_rbf const *const ctx, a_float const *const out)
     }
 }
 
-void a_rbf_zero(a_rbf const *const ctx)
+void a_rbf_zero(a_rbf const *ctx)
 {
     a_size const hidden_output_n = ctx->hidden_n * ctx->output_n;
     a_zero(ctx->input_p, sizeof(a_float) * ctx->input_n);

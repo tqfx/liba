@@ -2,7 +2,7 @@
 #include "test.h"
 #include "a/slist.h"
 
-static a_size a_slist_len(a_slist const *const ctx)
+static a_size a_slist_len(a_slist const *ctx)
 {
     a_size count = 0;
     a_slist_foreach(it, ctx) { ++count; }

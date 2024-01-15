@@ -1,6 +1,6 @@
 #include "a/crc.h"
 
-void a_crc8le_init(a_u8 table[A_CRC_SIZ], a_u8 const poly)
+void a_crc8le_init(a_u8 table[A_CRC_SIZ], a_u8 poly)
 {
     for (unsigned int i = 0; i != A_CRC_SIZ; ++i)
     {
@@ -15,7 +15,7 @@ void a_crc8le_init(a_u8 table[A_CRC_SIZ], a_u8 const poly)
     }
 }
 
-void a_crc16le_init(a_u16 table[A_CRC_SIZ], a_u16 const poly)
+void a_crc16le_init(a_u16 table[A_CRC_SIZ], a_u16 poly)
 {
     for (unsigned int i = 0; i != A_CRC_SIZ; ++i)
     {
@@ -30,7 +30,7 @@ void a_crc16le_init(a_u16 table[A_CRC_SIZ], a_u16 const poly)
     }
 }
 
-void a_crc32le_init(a_u32 table[A_CRC_SIZ], a_u32 const poly)
+void a_crc32le_init(a_u32 table[A_CRC_SIZ], a_u32 poly)
 {
     for (unsigned int i = 0; i != A_CRC_SIZ; ++i)
     {
@@ -45,7 +45,7 @@ void a_crc32le_init(a_u32 table[A_CRC_SIZ], a_u32 const poly)
     }
 }
 
-void a_crc64le_init(a_u64 table[A_CRC_SIZ], a_u64 const poly)
+void a_crc64le_init(a_u64 table[A_CRC_SIZ], a_u64 poly)
 {
     for (unsigned int i = 0; i != A_CRC_SIZ; ++i)
     {
@@ -60,7 +60,7 @@ void a_crc64le_init(a_u64 table[A_CRC_SIZ], a_u64 const poly)
     }
 }
 
-void a_crc8be_init(a_u8 table[A_CRC_SIZ], a_u8 const poly)
+void a_crc8be_init(a_u8 table[A_CRC_SIZ], a_u8 poly)
 {
     for (unsigned int i = 0; i != A_CRC_SIZ; ++i)
     {
@@ -75,7 +75,7 @@ void a_crc8be_init(a_u8 table[A_CRC_SIZ], a_u8 const poly)
     }
 }
 
-void a_crc16be_init(a_u16 table[A_CRC_SIZ], a_u16 const poly)
+void a_crc16be_init(a_u16 table[A_CRC_SIZ], a_u16 poly)
 {
     for (unsigned int i = 0; i != A_CRC_SIZ; ++i)
     {
@@ -90,7 +90,7 @@ void a_crc16be_init(a_u16 table[A_CRC_SIZ], a_u16 const poly)
     }
 }
 
-void a_crc32be_init(a_u32 table[A_CRC_SIZ], a_u32 const poly)
+void a_crc32be_init(a_u32 table[A_CRC_SIZ], a_u32 poly)
 {
     for (a_u32 i = 0; i != A_CRC_SIZ; ++i)
     {
@@ -105,7 +105,7 @@ void a_crc32be_init(a_u32 table[A_CRC_SIZ], a_u32 const poly)
     }
 }
 
-void a_crc64be_init(a_u64 table[A_CRC_SIZ], a_u64 const poly)
+void a_crc64be_init(a_u64 table[A_CRC_SIZ], a_u64 poly)
 {
     for (a_u64 i = 0; i != A_CRC_SIZ; ++i)
     {
@@ -120,7 +120,7 @@ void a_crc64be_init(a_u64 table[A_CRC_SIZ], a_u64 const poly)
     }
 }
 
-a_u8 a_crc8(a_u8 const table[A_CRC_SIZ], void const *const pdata, a_size const nbyte, a_u8 value)
+a_u8 a_crc8(a_u8 const table[A_CRC_SIZ], void const *pdata, a_size nbyte, a_u8 value)
 {
     a_byte const *p = (a_byte const *)pdata;
     a_byte const *q = (a_byte const *)pdata + nbyte;
@@ -128,7 +128,7 @@ a_u8 a_crc8(a_u8 const table[A_CRC_SIZ], void const *const pdata, a_size const n
     return value;
 }
 
-a_u16 a_crc16le(a_u16 const table[A_CRC_SIZ], void const *const pdata, a_size const nbyte, a_u16 value)
+a_u16 a_crc16le(a_u16 const table[A_CRC_SIZ], void const *pdata, a_size nbyte, a_u16 value)
 {
     a_byte const *p = (a_byte const *)pdata;
     a_byte const *q = (a_byte const *)pdata + nbyte;
@@ -136,7 +136,7 @@ a_u16 a_crc16le(a_u16 const table[A_CRC_SIZ], void const *const pdata, a_size co
     return value;
 }
 
-a_u32 a_crc32le(a_u32 const table[A_CRC_SIZ], void const *const pdata, a_size const nbyte, a_u32 value)
+a_u32 a_crc32le(a_u32 const table[A_CRC_SIZ], void const *pdata, a_size nbyte, a_u32 value)
 {
     a_byte const *p = (a_byte const *)pdata;
     a_byte const *q = (a_byte const *)pdata + nbyte;
@@ -144,7 +144,7 @@ a_u32 a_crc32le(a_u32 const table[A_CRC_SIZ], void const *const pdata, a_size co
     return value;
 }
 
-a_u64 a_crc64le(a_u64 const table[A_CRC_SIZ], void const *const pdata, a_size const nbyte, a_u64 value)
+a_u64 a_crc64le(a_u64 const table[A_CRC_SIZ], void const *pdata, a_size nbyte, a_u64 value)
 {
     a_byte const *p = (a_byte const *)pdata;
     a_byte const *q = (a_byte const *)pdata + nbyte;
@@ -152,7 +152,7 @@ a_u64 a_crc64le(a_u64 const table[A_CRC_SIZ], void const *const pdata, a_size co
     return value;
 }
 
-a_u16 a_crc16be(a_u16 const table[A_CRC_SIZ], void const *const pdata, a_size const nbyte, a_u16 value)
+a_u16 a_crc16be(a_u16 const table[A_CRC_SIZ], void const *pdata, a_size nbyte, a_u16 value)
 {
     a_byte const *p = (a_byte const *)pdata;
     a_byte const *q = (a_byte const *)pdata + nbyte;
@@ -160,7 +160,7 @@ a_u16 a_crc16be(a_u16 const table[A_CRC_SIZ], void const *const pdata, a_size co
     return value;
 }
 
-a_u32 a_crc32be(a_u32 const table[A_CRC_SIZ], void const *const pdata, a_size const nbyte, a_u32 value)
+a_u32 a_crc32be(a_u32 const table[A_CRC_SIZ], void const *pdata, a_size nbyte, a_u32 value)
 {
     a_byte const *p = (a_byte const *)pdata;
     a_byte const *q = (a_byte const *)pdata + nbyte;
@@ -168,7 +168,7 @@ a_u32 a_crc32be(a_u32 const table[A_CRC_SIZ], void const *const pdata, a_size co
     return value;
 }
 
-a_u64 a_crc64be(a_u64 const table[A_CRC_SIZ], void const *const pdata, a_size const nbyte, a_u64 value)
+a_u64 a_crc64be(a_u64 const table[A_CRC_SIZ], void const *pdata, a_size nbyte, a_u64 value)
 {
     a_byte const *p = (a_byte const *)pdata;
     a_byte const *q = (a_byte const *)pdata + nbyte;

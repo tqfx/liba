@@ -3,23 +3,23 @@
 #include "a/crc.h"
 #if !defined __cplusplus
 #include <stdlib.h>
-#define WRITE_TABLE(bit, row, fmt)                                                            \
-    static void write_table##bit(FILE *out, a_u##bit ctx[A_CRC_SIZ], char const *const label) \
-    {                                                                                         \
-        (void)fprintf(out, "uint%i_t const %s[0x%X] = {\n", bit, label, A_CRC_SIZ);           \
-        (void)fprintf(out, "    /* clang-format off */\n");                                   \
-        for (a_size i = 0; i != A_CRC_SIZ / (row); ++i)                                       \
-        {                                                                                     \
-            (void)fprintf(out, "    ");                                                       \
-            for (a_size j = 0; j != (row); ++j)                                               \
-            {                                                                                 \
-                (void)fprintf(out, "0x%0" #fmt PRIX##bit ",", ctx[(row) * i + j]);            \
-                if (j != (row)-1) { (void)fputc(' ', out); }                                  \
-            }                                                                                 \
-            (void)fputc('\n', out);                                                           \
-        }                                                                                     \
-        (void)fprintf(out, "    /* clang-format on */\n");                                    \
-        (void)fprintf(out, "};\n");                                                           \
+#define WRITE_TABLE(bit, row, fmt)                                                      \
+    static void write_table##bit(FILE *out, a_u##bit ctx[A_CRC_SIZ], char const *label) \
+    {                                                                                   \
+        (void)fprintf(out, "uint%i_t const %s[0x%X] = {\n", bit, label, A_CRC_SIZ);     \
+        (void)fprintf(out, "    /* clang-format off */\n");                             \
+        for (a_size i = 0; i != A_CRC_SIZ / (row); ++i)                                 \
+        {                                                                               \
+            (void)fprintf(out, "    ");                                                 \
+            for (a_size j = 0; j != (row); ++j)                                         \
+            {                                                                           \
+                (void)fprintf(out, "0x%0" #fmt PRIX##bit ",", ctx[(row) * i + j]);      \
+                if (j != (row)-1) { (void)fputc(' ', out); }                            \
+            }                                                                           \
+            (void)fputc('\n', out);                                                     \
+        }                                                                               \
+        (void)fprintf(out, "    /* clang-format on */\n");                              \
+        (void)fprintf(out, "};\n");                                                     \
     }
 WRITE_TABLE(8, 8, 2)
 WRITE_TABLE(16, 8, 4)

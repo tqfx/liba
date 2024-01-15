@@ -2,28 +2,28 @@
 #include "a/a.h"
 #include <string.h>
 
-void *a_copy(void *const A_RESTRICT dst, void const *const A_RESTRICT src, a_size const siz) { return memcpy(dst, src, siz); }
+void *a_copy(void *A_RESTRICT dst, void const *A_RESTRICT src, a_size siz) { return memcpy(dst, src, siz); }
 
-void *a_move(void *const dst, void const *const src, a_size const siz) { return memmove(dst, src, siz); }
+void *a_move(void *dst, void const *src, a_size siz) { return memmove(dst, src, siz); }
 
-void *a_fill(void *const ptr, a_size siz, int const val) { return memset(ptr, val, siz); }
+void *a_fill(void *ptr, a_size siz, int val) { return memset(ptr, val, siz); }
 
-void *a_zero(void *const ptr, a_size const siz) { return memset(ptr, 0, siz); }
+void *a_zero(void *ptr, a_size siz) { return memset(ptr, 0, siz); }
 
-void a_swap(void *const _lhs, void *const _rhs, a_size siz)
+void a_swap(void *_lhs, void *_rhs, a_size siz)
 {
-    a_byte tmp[1];
+    a_byte buf[1];
     for (a_byte *lhs = (a_byte *)_lhs,
                 *rhs = (a_byte *)_rhs;
          siz; ++lhs, ++rhs, --siz)
     {
-        *tmp = *lhs;
+        *buf = *lhs;
         *lhs = *rhs;
-        *rhs = *tmp;
+        *rhs = *buf;
     }
 }
 
-a_umax a_hash_bkdr(void const *const _str, a_umax val)
+a_umax a_hash_bkdr(void const *_str, a_umax val)
 {
     if (_str)
     {
@@ -35,7 +35,7 @@ a_umax a_hash_bkdr(void const *const _str, a_umax val)
     return val;
 }
 
-a_umax a_hash_bkdrn(void const *const _ptr, a_size siz, a_umax val)
+a_umax a_hash_bkdrn(void const *_ptr, a_size siz, a_umax val)
 {
     if (_ptr && siz)
     {
@@ -47,8 +47,8 @@ a_umax a_hash_bkdrn(void const *const _ptr, a_size siz, a_umax val)
     return val;
 }
 
-void a_float_save(a_float *const array_p, a_size const array_n,
-                  a_float const *const cache_p, a_size const cache_n)
+void a_float_save(a_float *array_p, a_size array_n,
+                  a_float const *cache_p, a_size cache_n)
 {
     a_size const n = A_MIN(cache_n, array_n);
     for (a_size i = array_n, j = array_n - n; j;)
@@ -61,8 +61,8 @@ void a_float_save(a_float *const array_p, a_size const array_n,
     }
 }
 
-void a_float_roll(a_float *const array_p, a_size const array_n,
-                  a_float *const shift_p, a_size const shift_n)
+void a_float_roll(a_float *array_p, a_size array_n,
+                  a_float *shift_p, a_size shift_n)
 {
     a_size const shift = shift_n % array_n;
     a_size const start = array_n - shift;
@@ -80,8 +80,8 @@ void a_float_roll(a_float *const array_p, a_size const array_n,
     }
 }
 
-A_ALLOC((*a_alloc), , ) = a_alloc_;
-A_ALLOC(a_alloc_, const addr, const size)
+A_ALLOC((*a_alloc), addr, size) = a_alloc_;
+A_ALLOC(a_alloc_, addr, size)
 {
     if (size)
     {

@@ -3,14 +3,14 @@
 
 static JSClassID liba_hpf_class_id;
 
-static void liba_hpf_finalizer(JSRuntime *const rt, JSValue const val)
+static void liba_hpf_finalizer(JSRuntime *rt, JSValue val)
 {
     js_free_rt(rt, JS_GetOpaque(val, liba_hpf_class_id));
 }
 
 static JSClassDef liba_hpf_class = {"hpf", .finalizer = liba_hpf_finalizer};
 
-static JSValue liba_hpf_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
+static JSValue liba_hpf_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
     JSValue proto, clazz = JS_UNDEFINED;
     a_hpf *const self = (a_hpf *)js_mallocz(ctx, sizeof(a_hpf));
@@ -40,7 +40,7 @@ fail:
     return JS_UNDEFINED;
 }
 
-static JSValue liba_hpf_get(JSContext *const ctx, JSValueConst const this_val, int magic)
+static JSValue liba_hpf_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
     a_hpf *const self = (a_hpf *)JS_GetOpaque2(ctx, this_val, liba_hpf_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -55,7 +55,7 @@ static JSValue liba_hpf_get(JSContext *const ctx, JSValueConst const this_val, i
     return JS_NewFloat64(ctx, x);
 }
 
-static JSValue liba_hpf_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_hpf_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     a_hpf *const self = (a_hpf *)JS_GetOpaque2(ctx, this_val, liba_hpf_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -74,7 +74,7 @@ static JSValue liba_hpf_gen(JSContext *const ctx, JSValueConst const this_val, i
     return JS_UNDEFINED;
 }
 
-static JSValue liba_hpf_iter(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_hpf_iter(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_hpf *const self = (a_hpf *)JS_GetOpaque2(ctx, this_val, liba_hpf_class_id);
@@ -84,7 +84,7 @@ static JSValue liba_hpf_iter(JSContext *const ctx, JSValueConst const this_val, 
     return JS_NewFloat64(ctx, (double)a_hpf_iter(self, (a_float)x));
 }
 
-static JSValue liba_hpf_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_hpf_zero(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)argv;
@@ -104,7 +104,7 @@ static JSCFunctionListEntry const liba_hpf_proto[] = {
     JS_CFUNC_DEF("zero", 0, liba_hpf_zero),
 };
 
-int js_liba_hpf_init(JSContext *const ctx, JSModuleDef *const m)
+int js_liba_hpf_init(JSContext *ctx, JSModuleDef *m)
 {
     JS_NewClassID(&liba_hpf_class_id);
     JS_NewClass(JS_GetRuntime(ctx), liba_hpf_class_id, &liba_hpf_class);

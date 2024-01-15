@@ -1,11 +1,11 @@
 #include "a/polytraj5.h"
 #include "a/poly.h"
 
-void a_polytraj5_gen(a_polytraj5 *const ctx,
-                     a_float const t0, a_float const t1,
-                     a_float const q0, a_float const q1,
-                     a_float const v0, a_float const v1,
-                     a_float const a0, a_float const a1)
+void a_polytraj5_gen(a_polytraj5 *ctx,
+                     a_float t0, a_float t1,
+                     a_float q0, a_float q1,
+                     a_float v0, a_float v1,
+                     a_float a0, a_float a1)
 {
     a_polytraj5_gen0(ctx, t0, t1, q0, q1, v0, v1, a0, a1);
 #if defined(A_POLYTRAJ5) && (A_POLYTRAJ5 + 0 > 1)
@@ -16,11 +16,11 @@ void a_polytraj5_gen(a_polytraj5 *const ctx,
 #endif /* A_POLYTRAJ5 */
 }
 
-void a_polytraj5_gen0(a_polytraj5 *const ctx,
-                      a_float const t0, a_float const t1,
-                      a_float const q0, a_float const q1,
-                      a_float const v0, a_float const v1,
-                      a_float const a0, a_float const a1)
+void a_polytraj5_gen0(a_polytraj5 *ctx,
+                      a_float t0, a_float t1,
+                      a_float q0, a_float q1,
+                      a_float v0, a_float v1,
+                      a_float a0, a_float a1)
 {
     a_float const q = q1 - q0;
     a_float const t = t1 - t0;
@@ -48,7 +48,7 @@ void a_polytraj5_gen0(a_polytraj5 *const ctx,
 }
 
 #if defined(A_POLYTRAJ5) && (A_POLYTRAJ5 + 0 > 1)
-void a_polytraj5_gen1(a_polytraj5 *const ctx)
+void a_polytraj5_gen1(a_polytraj5 *ctx)
 {
     ctx->v[0] = ctx->q[1];
     ctx->v[1] = ctx->q[2] * 2;
@@ -59,7 +59,7 @@ void a_polytraj5_gen1(a_polytraj5 *const ctx)
 #endif /* A_POLYTRAJ5 */
 
 #if defined(A_POLYTRAJ5) && (A_POLYTRAJ5 + 0 > 2)
-void a_polytraj5_gen2(a_polytraj5 *const ctx)
+void a_polytraj5_gen2(a_polytraj5 *ctx)
 {
     ctx->a[0] = ctx->v[1];
     ctx->a[1] = ctx->v[2] * 2;
@@ -68,20 +68,20 @@ void a_polytraj5_gen2(a_polytraj5 *const ctx)
 }
 #endif /* A_POLYTRAJ5 */
 
-a_float a_polytraj5_pos(a_polytraj5 const *const ctx, a_float const dt)
+a_float a_polytraj5_pos(a_polytraj5 const *ctx, a_float dt)
 {
     return a_poly_eval(ctx->q, A_LEN(ctx->q), dt);
 }
 
 #if defined(A_POLYTRAJ5) && (A_POLYTRAJ5 + 0 > 1)
-a_float a_polytraj5_vel(a_polytraj5 const *const ctx, a_float const dt)
+a_float a_polytraj5_vel(a_polytraj5 const *ctx, a_float dt)
 {
     return a_poly_eval(ctx->v, A_LEN(ctx->v), dt);
 }
 #endif /* A_POLYTRAJ5 */
 
 #if defined(A_POLYTRAJ5) && (A_POLYTRAJ5 + 0 > 2)
-a_float a_polytraj5_acc(a_polytraj5 const *const ctx, a_float const dt)
+a_float a_polytraj5_acc(a_polytraj5 const *ctx, a_float dt)
 {
     return a_poly_eval(ctx->a, A_LEN(ctx->a), dt);
 }

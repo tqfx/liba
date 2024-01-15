@@ -18,17 +18,17 @@
 #undef a_vec_pull_fore
 #undef a_vec_pull_back
 
-static A_INLINE void *a_vec_inc_(a_vec *const ctx)
+static A_INLINE void *a_vec_inc_(a_vec *ctx)
 {
     return (a_byte *)ctx->_ptr + ctx->_siz * ctx->_num++;
 }
 
-static A_INLINE void *a_vec_dec_(a_vec *const ctx)
+static A_INLINE void *a_vec_dec_(a_vec *ctx)
 {
     return (a_byte *)ctx->_ptr + ctx->_siz * --ctx->_num;
 }
 
-static void a_vec_drop_(a_vec *const ctx, a_size const bot, void (*const dtor)(void *))
+static void a_vec_drop_(a_vec *ctx, a_size bot, void (*dtor)(void *))
 {
     if (dtor)
     {
@@ -37,7 +37,7 @@ static void a_vec_drop_(a_vec *const ctx, a_size const bot, void (*const dtor)(v
     ctx->_num = bot;
 }
 
-static int a_vec_alloc(a_vec *const ctx, a_size const num)
+static int a_vec_alloc(a_vec *ctx, a_size num)
 {
     if (ctx->_mem <= num)
     {
@@ -54,14 +54,14 @@ static int a_vec_alloc(a_vec *const ctx, a_size const num)
     return A_SUCCESS;
 }
 
-a_vec *a_vec_new(a_size const size)
+a_vec *a_vec_new(a_size size)
 {
     a_vec *const ctx = (a_vec *)a_alloc(A_NULL, sizeof(a_vec));
     if (ctx) { a_vec_ctor(ctx, size); }
     return ctx;
 }
 
-void a_vec_die(a_vec *const ctx, void (*const dtor)(void *))
+void a_vec_die(a_vec *ctx, void (*dtor)(void *))
 {
     if (ctx)
     {
@@ -70,7 +70,7 @@ void a_vec_die(a_vec *const ctx, void (*const dtor)(void *))
     }
 }
 
-void a_vec_ctor(a_vec *const ctx, a_size const size)
+void a_vec_ctor(a_vec *ctx, a_size size)
 {
     ctx->_siz = size ? size : sizeof(a_cast);
     ctx->_ptr = A_NULL;
@@ -78,7 +78,7 @@ void a_vec_ctor(a_vec *const ctx, a_size const size)
     ctx->_mem = 0;
 }
 
-void a_vec_dtor(a_vec *const ctx, void (*const dtor)(void *))
+void a_vec_dtor(a_vec *ctx, void (*dtor)(void *))
 {
     if (ctx->_ptr)
     {
@@ -89,7 +89,7 @@ void a_vec_dtor(a_vec *const ctx, void (*const dtor)(void *))
     ctx->_siz = 0;
 }
 
-int a_vec_copy(a_vec *const ctx, a_vec const *const obj, int (*const dup)(void *, void const *))
+int a_vec_copy(a_vec *ctx, a_vec const *obj, int (*dup)(void *, void const *))
 {
     ctx->_ptr = a_alloc(A_NULL, obj->_mem * obj->_siz);
     if (a_unlikely(!ctx->_ptr)) { return A_FAILURE; }
@@ -114,13 +114,13 @@ int a_vec_copy(a_vec *const ctx, a_vec const *const obj, int (*const dup)(void *
     return A_SUCCESS;
 }
 
-void a_vec_move(a_vec *const ctx, a_vec *const obj)
+void a_vec_move(a_vec *ctx, a_vec *obj)
 {
     a_copy(ctx, obj, sizeof(*obj));
     a_zero(obj, sizeof(*obj));
 }
 
-void a_vec_edit(a_vec *const ctx, a_size size, void (*const dtor)(void *))
+void a_vec_edit(a_vec *ctx, a_size size, void (*dtor)(void *))
 {
     size = size ? size : sizeof(a_cast);
     a_vec_drop_(ctx, 0, dtor);
@@ -128,19 +128,19 @@ void a_vec_edit(a_vec *const ctx, a_size size, void (*const dtor)(void *))
     ctx->_siz = size;
 }
 
-int a_vec_make(a_vec *const ctx, a_size const num, void (*const dtor)(void *))
+int a_vec_make(a_vec *ctx, a_size num, void (*dtor)(void *))
 {
     if (a_unlikely(a_vec_alloc(ctx, num))) { return A_FAILURE; }
     a_vec_drop_(ctx, num, dtor);
     return A_SUCCESS;
 }
 
-void a_vec_drop(a_vec *const ctx, void (*const dtor)(void *))
+void a_vec_drop(a_vec *ctx, void (*dtor)(void *))
 {
     a_vec_drop_(ctx, 0, dtor);
 }
 
-void a_vec_swap(a_vec const *const ctx, a_size lhs, a_size rhs)
+void a_vec_swap(a_vec const *ctx, a_size lhs, a_size rhs)
 {
     a_size const num = ctx->_num - 1;
     lhs = lhs < ctx->_num ? lhs : num;
@@ -153,12 +153,12 @@ void a_vec_swap(a_vec const *const ctx, a_size lhs, a_size rhs)
     }
 }
 
-void a_vec_sort(a_vec const *const ctx, int (*const cmp)(void const *, void const *))
+void a_vec_sort(a_vec const *ctx, int (*cmp)(void const *, void const *))
 {
     qsort(ctx->_ptr, ctx->_num, ctx->_siz, cmp);
 }
 
-void a_vec_sort_fore(a_vec const *const ctx, int (*const cmp)(void const *, void const *))
+void a_vec_sort_fore(a_vec const *ctx, int (*cmp)(void const *, void const *))
 {
     if (ctx->_num > 1)
     {
@@ -176,7 +176,7 @@ void a_vec_sort_fore(a_vec const *const ctx, int (*const cmp)(void const *, void
     }
 }
 
-void a_vec_sort_back(a_vec const *const ctx, int (*const cmp)(void const *, void const *))
+void a_vec_sort_back(a_vec const *ctx, int (*cmp)(void const *, void const *))
 {
     if (ctx->_num > 1)
     {
@@ -193,12 +193,12 @@ void a_vec_sort_back(a_vec const *const ctx, int (*const cmp)(void const *, void
     }
 }
 
-void *a_vec_search(a_vec const *const ctx, void const *const obj, int (*const cmp)(void const *, void const *))
+void *a_vec_search(a_vec const *ctx, void const *obj, int (*cmp)(void const *, void const *))
 {
     return bsearch(obj, ctx->_ptr, ctx->_num, ctx->_siz, cmp);
 }
 
-void *a_vec_insert(a_vec *const ctx, a_size const idx)
+void *a_vec_insert(a_vec *ctx, a_size idx)
 {
     if (a_unlikely(a_vec_alloc(ctx, ctx->_num))) { return A_NULL; }
     if (idx < ctx->_num)
@@ -212,15 +212,15 @@ void *a_vec_insert(a_vec *const ctx, a_size const idx)
     return a_vec_inc_(ctx);
 }
 
-void *a_vec_push_fore(a_vec *const ctx) { return a_vec_insert(ctx, 0); }
+void *a_vec_push_fore(a_vec *ctx) { return a_vec_insert(ctx, 0); }
 
-void *a_vec_push_back(a_vec *const ctx)
+void *a_vec_push_back(a_vec *ctx)
 {
     if (a_unlikely(a_vec_alloc(ctx, ctx->_num))) { return A_NULL; }
     return a_vec_inc_(ctx);
 }
 
-void *a_vec_remove(a_vec *const ctx, a_size const idx)
+void *a_vec_remove(a_vec *ctx, a_size idx)
 {
     if (ctx->_num && idx < ctx->_num - 1)
     {
@@ -236,9 +236,9 @@ void *a_vec_remove(a_vec *const ctx, a_size const idx)
     return a_likely(ctx->_num) ? a_vec_dec_(ctx) : A_NULL;
 }
 
-void *a_vec_pull_fore(a_vec *const ctx) { return a_vec_remove(ctx, 0); }
+void *a_vec_pull_fore(a_vec *ctx) { return a_vec_remove(ctx, 0); }
 
-void *a_vec_pull_back(a_vec *const ctx)
+void *a_vec_pull_back(a_vec *ctx)
 {
     return a_likely(ctx->_num) ? a_vec_dec_(ctx) : A_NULL;
 }

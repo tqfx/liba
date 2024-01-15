@@ -13,7 +13,7 @@
  @treturn a.lpf Low Pass Filter userdata
  @function new
 */
-int liba_lpf_new(lua_State *const L)
+int liba_lpf_new(lua_State *L)
 {
     int top = lua_gettop(L);
     if (top > 1)
@@ -46,7 +46,7 @@ int liba_lpf_new(lua_State *const L)
  @treturn a.lpf Low Pass Filter userdata
  @function gen
 */
-int liba_lpf_gen(lua_State *const L)
+int liba_lpf_gen(lua_State *L)
 {
     int top = lua_gettop(L);
     if (top > 2)
@@ -77,7 +77,7 @@ int liba_lpf_gen(lua_State *const L)
  @treturn number output value
  @function iter
 */
-int liba_lpf_iter(lua_State *const L)
+int liba_lpf_iter(lua_State *L)
 {
     a_lpf *const ctx = (a_lpf *)lua_touserdata(L, 1);
     if (ctx)
@@ -95,7 +95,7 @@ int liba_lpf_iter(lua_State *const L)
  @treturn a.lpf Low Pass Filter userdata
  @function zero
 */
-int liba_lpf_zero(lua_State *const L)
+int liba_lpf_zero(lua_State *L)
 {
     a_lpf *const ctx = (a_lpf *)lua_touserdata(L, 1);
     if (ctx)
@@ -106,7 +106,7 @@ int liba_lpf_zero(lua_State *const L)
     return 0;
 }
 
-static int liba_lpf_set(lua_State *const L)
+static int liba_lpf_set(lua_State *L)
 {
     switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
@@ -123,7 +123,7 @@ static int liba_lpf_set(lua_State *const L)
     return 0;
 }
 
-static int liba_lpf_get(lua_State *const L)
+static int liba_lpf_get(lua_State *L)
 {
     a_lpf const *const ctx = (a_lpf const *)lua_touserdata(L, 1);
     switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
@@ -147,7 +147,7 @@ static int liba_lpf_get(lua_State *const L)
     return 1;
 }
 
-static int liba_lpf_(lua_State *const L)
+static int liba_lpf_(lua_State *L)
 {
     lua_pushcfunction(L, liba_lpf_new);
     lua_replace(L, 1);
@@ -155,7 +155,7 @@ static int liba_lpf_(lua_State *const L)
     return 1;
 }
 
-int luaopen_liba_lpf(lua_State *const L)
+int luaopen_liba_lpf(lua_State *L)
 {
     static lua_fun const funcs[] = {
         {"new", liba_lpf_new},

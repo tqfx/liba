@@ -1,12 +1,12 @@
 #include "a/math.h"
 #include "a/mf.h"
 
-a_float a_mf_gauss(a_float const x, a_float const sigma, a_float const c)
+a_float a_mf_gauss(a_float x, a_float sigma, a_float c)
 {
     return a_float_exp(a_float_pow((x - c) / sigma, 2) / -2);
 }
 
-a_float a_mf_gauss2(a_float x, a_float const sigma1, a_float const c1, a_float const sigma2, a_float const c2)
+a_float a_mf_gauss2(a_float x, a_float sigma1, a_float c1, a_float sigma2, a_float c2)
 {
     if (x < c1)
     {
@@ -23,27 +23,27 @@ a_float a_mf_gauss2(a_float x, a_float const sigma1, a_float const c1, a_float c
     return x;
 }
 
-a_float a_mf_gbell(a_float const x, a_float const a, a_float const b, a_float const c)
+a_float a_mf_gbell(a_float x, a_float a, a_float b, a_float c)
 {
     return 1 / (a_float_pow(a_float_abs((x - c) / a), 2 * b) + 1);
 }
 
-a_float a_mf_sig(a_float const x, a_float const a, a_float const c)
+a_float a_mf_sig(a_float x, a_float a, a_float c)
 {
     return 1 / (a_float_exp((c - x) * a) + 1);
 }
 
-a_float a_mf_dsig(a_float const x, a_float const a1, a_float const c1, a_float const a2, a_float const c2)
+a_float a_mf_dsig(a_float x, a_float a1, a_float c1, a_float a2, a_float c2)
 {
     return a_mf_sig(x, a1, c1) - a_mf_sig(x, a2, c2);
 }
 
-a_float a_mf_psig(a_float const x, a_float const a1, a_float const c1, a_float const a2, a_float const c2)
+a_float a_mf_psig(a_float x, a_float a1, a_float c1, a_float a2, a_float c2)
 {
     return a_mf_sig(x, a1, c1) * a_mf_sig(x, a2, c2);
 }
 
-a_float a_mf_trap(a_float x, a_float const a, a_float const b, a_float const c, a_float const d)
+a_float a_mf_trap(a_float x, a_float a, a_float b, a_float c, a_float d)
 {
     if (x < b)
     {
@@ -74,7 +74,7 @@ a_float a_mf_trap(a_float x, a_float const a, a_float const b, a_float const c, 
     return x;
 }
 
-a_float a_mf_tri(a_float x, a_float const a, a_float const b, a_float const c)
+a_float a_mf_tri(a_float x, a_float a, a_float b, a_float c)
 {
     if (x < b)
     {
@@ -101,7 +101,7 @@ a_float a_mf_tri(a_float x, a_float const a, a_float const b, a_float const c)
     return x;
 }
 
-a_float a_mf_lins(a_float x, a_float const a, a_float const b)
+a_float a_mf_lins(a_float x, a_float a, a_float b)
 {
     if (x < a)
     {
@@ -118,7 +118,7 @@ a_float a_mf_lins(a_float x, a_float const a, a_float const b)
     return x;
 }
 
-a_float a_mf_linz(a_float x, a_float const a, a_float const b)
+a_float a_mf_linz(a_float x, a_float a, a_float b)
 {
     if (x < a)
     {
@@ -135,7 +135,7 @@ a_float a_mf_linz(a_float x, a_float const a, a_float const b)
     return x;
 }
 
-a_float a_mf_s(a_float x, a_float const a, a_float const b)
+a_float a_mf_s(a_float x, a_float a, a_float b)
 {
     if (x > (a + b) / 2)
     {
@@ -162,7 +162,7 @@ a_float a_mf_s(a_float x, a_float const a, a_float const b)
     return x;
 }
 
-a_float a_mf_z(a_float x, a_float const a, a_float const b)
+a_float a_mf_z(a_float x, a_float a, a_float b)
 {
     if (x < (a + b) / 2)
     {
@@ -189,7 +189,7 @@ a_float a_mf_z(a_float x, a_float const a, a_float const b)
     return x;
 }
 
-a_float a_mf_pi(a_float x, a_float const a, a_float const b, a_float const c, a_float const d)
+a_float a_mf_pi(a_float x, a_float a, a_float b, a_float c, a_float d)
 {
     if (x < b)
     {
@@ -206,7 +206,7 @@ a_float a_mf_pi(a_float x, a_float const a, a_float const b, a_float const c, a_
     return x;
 }
 
-a_float a_mf(unsigned int const e, a_float const x, a_float const *const a)
+a_float a_mf(unsigned int e, a_float x, a_float const *a)
 {
     switch (e)
     {

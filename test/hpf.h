@@ -19,5 +19,8 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), x, x1, x2);
     }
     a_hpf_zero(&ctx);
+#if defined(__cplusplus) && (__cplusplus > 201100L)
+    A_ASSERT_BUILD(std::is_pod<a_hpf>::value);
+#endif /* __cplusplus */
     return 0;
 }

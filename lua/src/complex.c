@@ -13,7 +13,7 @@
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
 
-static int liba_complex_isok(lua_State *const L, int const idx)
+static int liba_complex_isok(lua_State *L, int idx)
 {
     int ok = 0;
     if (lua_getmetatable(L, idx))
@@ -25,7 +25,7 @@ static int liba_complex_isok(lua_State *const L, int const idx)
     return ok;
 }
 
-static a_complex liba_complex_from(lua_State *const L, int const idx)
+static a_complex liba_complex_from(lua_State *L, int idx)
 {
     a_complex z = A_COMPLEX_C(0.0, 0.0);
     switch (lua_type(L, idx))
@@ -45,7 +45,7 @@ static a_complex liba_complex_from(lua_State *const L, int const idx)
     return z;
 }
 
-static a_complex *liba_complex_new_(lua_State *const L)
+static a_complex *liba_complex_new_(lua_State *L)
 {
     a_complex *const ctx = lua_newclass(L, a_complex);
     lua_registry_get(L, liba_complex_new);
@@ -53,7 +53,7 @@ static a_complex *liba_complex_new_(lua_State *const L)
     return ctx;
 }
 
-static int liba_complex_tostring(lua_State *const L)
+static int liba_complex_tostring(lua_State *L)
 {
     a_complex const *const ctx = (a_complex const *)lua_touserdata(L, 1);
     if (ctx)
@@ -73,7 +73,7 @@ static int liba_complex_tostring(lua_State *const L)
  @treturn a.complex complex number userdata
  @function new
 */
-int liba_complex_new(lua_State *const L)
+int liba_complex_new(lua_State *L)
 {
     a_complex z = A_COMPLEX_C(0.0, 0.0);
     int const top = lua_gettop(L);
@@ -90,7 +90,7 @@ int liba_complex_new(lua_State *const L)
  @treturn a.complex complex number userdata
  @function polar
 */
-int liba_complex_polar(lua_State *const L)
+int liba_complex_polar(lua_State *L)
 {
     a_float theta = A_FLOAT_C(0.0);
     a_float rho = A_FLOAT_C(0.0);
@@ -108,7 +108,7 @@ int liba_complex_polar(lua_State *const L)
  @treturn bool result of comparison
  @function eq
 */
-int liba_complex_eq(lua_State *const L)
+int liba_complex_eq(lua_State *L)
 {
     if (lua_gettop(L) >= 2)
     {
@@ -127,7 +127,7 @@ int liba_complex_eq(lua_State *const L)
  @treturn bool result of comparison
  @function ne
 */
-int liba_complex_ne(lua_State *const L)
+int liba_complex_ne(lua_State *L)
 {
     if (lua_gettop(L) >= 2)
     {
@@ -141,7 +141,7 @@ int liba_complex_ne(lua_State *const L)
 
 #undef FUNC
 #define FUNC(func)                                       \
-    int liba_complex_##func(lua_State *const L)          \
+    int liba_complex_##func(lua_State *L)                \
     {                                                    \
         if (lua_gettop(L) >= 1)                          \
         {                                                \
@@ -182,7 +182,7 @@ FUNC(abs)
 FUNC(arg)
 #undef FUNC
 #define FUNC(func)                                       \
-    int liba_complex_##func(lua_State *const L)          \
+    int liba_complex_##func(lua_State *L)                \
     {                                                    \
         if (lua_gettop(L) >= 1)                          \
         {                                                \
@@ -222,7 +222,7 @@ FUNC(neg)
 FUNC(inv)
 #undef FUNC
 #define FUNC(func)                                          \
-    int liba_complex_##func(lua_State *const L)             \
+    int liba_complex_##func(lua_State *L)                   \
     {                                                       \
         if (lua_gettop(L) >= 2)                             \
         {                                                   \
@@ -283,7 +283,7 @@ FUNC(pow)
 FUNC(logb)
 #undef FUNC
 #define FUNC(func)                                       \
-    int liba_complex_##func(lua_State *const L)          \
+    int liba_complex_##func(lua_State *L)                \
     {                                                    \
         if (lua_gettop(L) >= 1)                          \
         {                                                \
@@ -499,7 +499,7 @@ FUNC(acoth)
 
 #include "a/math.h"
 
-static int liba_complexet(lua_State *const L)
+static int liba_complexet(lua_State *L)
 {
     a_complex *const ctx = (a_complex *)lua_touserdata(L, 1);
     switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
@@ -547,7 +547,7 @@ static int liba_complexet(lua_State *const L)
     return 0;
 }
 
-static int liba_complex_get(lua_State *const L)
+static int liba_complex_get(lua_State *L)
 {
     a_complex const *const ctx = (a_complex const *)lua_touserdata(L, 1);
     switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
@@ -579,7 +579,7 @@ static int liba_complex_get(lua_State *const L)
     return 1;
 }
 
-static int liba_complex_(lua_State *const L)
+static int liba_complex_(lua_State *L)
 {
     lua_pushcfunction(L, liba_complex_new);
     lua_replace(L, 1);
@@ -587,7 +587,7 @@ static int liba_complex_(lua_State *const L)
     return 1;
 }
 
-int luaopen_liba_complex(lua_State *const L)
+int luaopen_liba_complex(lua_State *L)
 {
     static lua_fun const funcs[] = {
         {"new", liba_complex_new},

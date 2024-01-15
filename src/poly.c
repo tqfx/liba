@@ -1,6 +1,6 @@
 #include "a/poly.h"
 
-a_float *a_poly_swap(a_float *const a, a_size const n)
+a_float *a_poly_swap(a_float *a, a_size n)
 {
     for (a_float m[1], *l = a, *r = a + n; l < --r; ++l)
     {
@@ -11,14 +11,14 @@ a_float *a_poly_swap(a_float *const a, a_size const n)
     return a;
 }
 
-a_float a_poly_eval(a_float const *a, a_size const n, a_float const x)
+a_float a_poly_eval(a_float const *a, a_size n, a_float x)
 {
     a_float y = 0;
     for (a_float const *p = --a + n; p > a; --p) { y = y * x + *p; }
     return y;
 }
 
-a_float *a_poly_evaln(a_float const *a, a_size const n, a_float const *ptr, a_size num, a_float *out)
+a_float *a_poly_evaln(a_float const *a, a_size n, a_float const *ptr, a_size num, a_float *out)
 {
     a_float x; /* when ptr == out, cache it */
     for (a_float const *p = --a + n; num; ++ptr, ++out, --num)
@@ -30,14 +30,14 @@ a_float *a_poly_evaln(a_float const *a, a_size const n, a_float const *ptr, a_si
     return out;
 }
 
-a_float a_poly_evar(a_float const *a, a_size const n, a_float const x)
+a_float a_poly_evar(a_float const *a, a_size n, a_float x)
 {
     a_float y = 0;
     for (a_float const *q = a + n; a < q; ++a) { y = y * x + *a; }
     return y;
 }
 
-a_float *a_poly_evarn(a_float const *const a, a_size const n, a_float const *ptr, a_size num, a_float *out)
+a_float *a_poly_evarn(a_float const *a, a_size n, a_float const *ptr, a_size num, a_float *out)
 {
     a_float x; /* when ptr == out, cache it */
     for (a_float const *q = a + n; num; ++ptr, ++out, --num)

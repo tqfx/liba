@@ -45,7 +45,7 @@ static int is_id(char const *str)
     }
     return 1;
 }
-static int match(char const *str, char const *sub, size_t const len)
+static int match(char const *str, char const *sub, size_t len)
 {
     char const *const suf = sub + len;
     if (str[0] == '_' && str[1] == '_')

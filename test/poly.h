@@ -2,7 +2,7 @@
 #include "test.h"
 #include "a/poly.h"
 
-static void print(a_float const *const a, a_size const n)
+static void print(a_float const *a, a_size n)
 {
     putchar('{');
     a_forenum(a_size, i, n)

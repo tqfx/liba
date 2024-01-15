@@ -3,14 +3,14 @@
 
 static JSClassID liba_polytraj5_class_id;
 
-static void liba_polytraj5_finalizer(JSRuntime *const rt, JSValue const val)
+static void liba_polytraj5_finalizer(JSRuntime *rt, JSValue val)
 {
     js_free_rt(rt, JS_GetOpaque(val, liba_polytraj5_class_id));
 }
 
 static JSClassDef liba_polytraj5_class = {"polytraj5", .finalizer = liba_polytraj5_finalizer};
 
-static JSValue liba_polytraj5_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
+static JSValue liba_polytraj5_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
     JSValue proto, clazz = JS_UNDEFINED;
     a_polytraj5 *const self = (a_polytraj5 *)js_mallocz(ctx, sizeof(a_polytraj5));
@@ -43,7 +43,7 @@ fail:
     return JS_EXCEPTION;
 }
 
-static JSValue liba_polytraj5_get(JSContext *const ctx, JSValueConst const this_val, int magic)
+static JSValue liba_polytraj5_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
     a_polytraj5 *const self = (a_polytraj5 *)JS_GetOpaque2(ctx, this_val, liba_polytraj5_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -56,7 +56,7 @@ static JSValue liba_polytraj5_get(JSContext *const ctx, JSValueConst const this_
     }
 }
 
-static JSValue liba_polytraj5_gen(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_polytraj5_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     a_polytraj5 *const self = (a_polytraj5 *)JS_GetOpaque2(ctx, this_val, liba_polytraj5_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -78,7 +78,7 @@ static JSValue liba_polytraj5_gen(JSContext *const ctx, JSValueConst const this_
     return JS_UNDEFINED;
 }
 
-static JSValue liba_polytraj5_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_polytraj5_pos(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_polytraj5 *const self = (a_polytraj5 *)JS_GetOpaque2(ctx, this_val, liba_polytraj5_class_id);
@@ -89,7 +89,7 @@ static JSValue liba_polytraj5_pos(JSContext *const ctx, JSValueConst const this_
     return JS_NewFloat64(ctx, (double)pos);
 }
 
-static JSValue liba_polytraj5_vel(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_polytraj5_vel(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_polytraj5 *const self = (a_polytraj5 *)JS_GetOpaque2(ctx, this_val, liba_polytraj5_class_id);
@@ -100,7 +100,7 @@ static JSValue liba_polytraj5_vel(JSContext *const ctx, JSValueConst const this_
     return JS_NewFloat64(ctx, (double)vel);
 }
 
-static JSValue liba_polytraj5_acc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_polytraj5_acc(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_polytraj5 *const self = (a_polytraj5 *)JS_GetOpaque2(ctx, this_val, liba_polytraj5_class_id);
@@ -122,7 +122,7 @@ static JSCFunctionListEntry const liba_polytraj5_proto[] = {
     JS_CFUNC_DEF("acc", 1, liba_polytraj5_acc),
 };
 
-int js_liba_polytraj5_init(JSContext *const ctx, JSModuleDef *const m)
+int js_liba_polytraj5_init(JSContext *ctx, JSModuleDef *m)
 {
     JS_NewClassID(&liba_polytraj5_class_id);
     JS_NewClass(JS_GetRuntime(ctx), liba_polytraj5_class_id, &liba_polytraj5_class);

@@ -2,7 +2,7 @@ function(QUICKJS_PIC)
   string(RANDOM RANDOM)
   set(CMAKETMP ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${RANDOM})
   file(WRITE ${CMAKETMP}/${RANDOM}.c "#include \"quickjs.h\"
-JSModuleDef *js_init_module(JSContext *const ctx, char const *const module_name)
+JSModuleDef *js_init_module(JSContext *ctx, char const *module_name)
 {\n\treturn JS_NewCModule(ctx, module_name, 0);\n}
 ")
   file(WRITE ${CMAKETMP}/CMakeLists.txt "cmake_minimum_required(VERSION ${CMAKE_VERSION})

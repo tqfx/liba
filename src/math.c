@@ -1,7 +1,7 @@
 #include "a/math.h"
 
 A_HIDDEN a_f64 a_f64_sq(a_f64 x, a_f64 *o);
-a_f64 a_f64_sq(a_f64 x, a_f64 *const o)
+a_f64 a_f64_sq(a_f64 x, a_f64 *o)
 {
 #undef U
 #if defined(_MSC_VER) && (_MSC_VER < 1914)
@@ -149,7 +149,7 @@ a_f64 a_f64_hypot(a_f64 x, a_f64 y)
 #undef MAX
 }
 
-a_f32 a_f32_rsqrt(a_f32 const x)
+a_f32 a_f32_rsqrt(a_f32 x)
 {
 #if 1
     return 1 / a_f32_sqrt(x);
@@ -179,7 +179,7 @@ a_f32 a_f32_rsqrt(a_f32 const x)
 #endif
 }
 
-a_f64 a_f64_rsqrt(a_f64 const x)
+a_f64 a_f64_rsqrt(a_f64 x)
 {
 #if 1
     return 1 / a_f64_sqrt(x);
@@ -266,10 +266,10 @@ a_u32 a_u64_sqrt(a_u64 x)
 }
 
 #undef a_float_log1p
-a_float a_float_log1p(a_float const x) { return a_float_log(x + 1); }
+a_float a_float_log1p(a_float x) { return a_float_log(x + 1); }
 
 #undef a_float_hypot
-a_float a_float_hypot(a_float const x, a_float const y)
+a_float a_float_hypot(a_float x, a_float y)
 {
 #if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
     return a_f32_hypot(x, y);
@@ -281,7 +281,7 @@ a_float a_float_hypot(a_float const x, a_float const y)
 }
 
 #undef a_float_atan2
-a_float a_float_atan2(a_float const x, a_float const y)
+a_float a_float_atan2(a_float x, a_float y)
 {
     if (x > 0) { return a_float_atan(y / x); }
     if (x < 0)

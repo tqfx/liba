@@ -49,13 +49,13 @@ typedef struct a_que
  @brief access size of a element for a pointer to queue structure
  @param[in] ctx points to an instance of queue structure
 */
-A_INTERN a_size a_que_siz(a_que const *const ctx) { return ctx->_siz; }
+A_INTERN a_size a_que_siz(a_que const *ctx) { return ctx->_siz; }
 
 /*!
  @brief access number of element for a pointer to queue structure
  @param[in] ctx points to an instance of queue structure
 */
-A_INTERN a_size a_que_num(a_que const *const ctx) { return ctx->_num; }
+A_INTERN a_size a_que_num(a_que const *ctx) { return ctx->_num; }
 
 /*!
  @brief access foremost element for a pointer to queue structure
@@ -63,7 +63,7 @@ A_INTERN a_size a_que_num(a_que const *const ctx) { return ctx->_num; }
  @note should check if queue is empty
  @return element pointer
 */
-A_INTERN void *a_que_fore_(a_que const *const ctx)
+A_INTERN void *a_que_fore_(a_que const *ctx)
 {
     return a_que_node_(*, ctx->_head.next)->_data;
 }
@@ -74,7 +74,7 @@ A_INTERN void *a_que_fore_(a_que const *const ctx)
  @note should check if queue is empty
  @return element pointer
 */
-A_INTERN void *a_que_back_(a_que const *const ctx)
+A_INTERN void *a_que_back_(a_que const *ctx)
 {
     return a_que_node_(*, ctx->_head.prev)->_data;
 }
@@ -85,7 +85,7 @@ A_INTERN void *a_que_back_(a_que const *const ctx)
  @return element pointer
   @retval 0 empty queue
 */
-A_INTERN void *a_que_fore(a_que const *const ctx)
+A_INTERN void *a_que_fore(a_que const *ctx)
 {
     return a_likely(ctx->_head.next != &ctx->_head) ? a_que_fore_(ctx) : A_NULL;
 }
@@ -96,7 +96,7 @@ A_INTERN void *a_que_fore(a_que const *const ctx)
  @return element pointer
   @retval 0 empty queue
 */
-A_INTERN void *a_que_back(a_que const *const ctx)
+A_INTERN void *a_que_back(a_que const *ctx)
 {
     return a_likely(ctx->_head.prev != &ctx->_head) ? a_que_back_(ctx) : A_NULL;
 }

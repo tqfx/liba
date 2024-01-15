@@ -49,7 +49,7 @@ typedef struct a_avl_node
  @return a pointer to the parent of the specified AVL tree node,
  or null if it is already the root of the tree.
 */
-A_INTERN a_avl_node *a_avl_parent(a_avl_node const *const node)
+A_INTERN a_avl_node *a_avl_parent(a_avl_node const *node)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
     return a_cast_r(a_avl_node *, node->_parent & ~a_uptr_c(3));
@@ -64,7 +64,7 @@ A_INTERN a_avl_node *a_avl_parent(a_avl_node const *const node)
  @param[in] parent node parent
  @return initialized node
 */
-A_INTERN a_avl_node *a_avl_init(a_avl_node *const node, a_avl_node *const parent)
+A_INTERN a_avl_node *a_avl_init(a_avl_node *node, a_avl_node *parent)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
     node->_parent = a_cast_r(a_uptr, parent) | 1;
@@ -89,7 +89,7 @@ typedef union a_avl
  @brief initialize for AVL binary search tree root
  @param[in,out] root AVL binary search tree root
 */
-A_INTERN void a_avl_root(a_avl *const root) { root->node = A_NULL; }
+A_INTERN void a_avl_root(a_avl *root) { root->node = A_NULL; }
 
 #if defined(__cplusplus)
 extern "C" {

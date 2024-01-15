@@ -13,7 +13,7 @@
  @treturn a.hpf High Pass Filter userdata
  @function new
 */
-int liba_hpf_new(lua_State *const L)
+int liba_hpf_new(lua_State *L)
 {
     int top = lua_gettop(L);
     if (top > 1)
@@ -46,7 +46,7 @@ int liba_hpf_new(lua_State *const L)
  @treturn a.hpf High Pass Filter userdata
  @function gen
 */
-int liba_hpf_gen(lua_State *const L)
+int liba_hpf_gen(lua_State *L)
 {
     int top = lua_gettop(L);
     if (top > 2)
@@ -77,7 +77,7 @@ int liba_hpf_gen(lua_State *const L)
  @treturn number output value
  @function iter
 */
-int liba_hpf_iter(lua_State *const L)
+int liba_hpf_iter(lua_State *L)
 {
     a_hpf *const ctx = (a_hpf *)lua_touserdata(L, 1);
     if (ctx)
@@ -95,7 +95,7 @@ int liba_hpf_iter(lua_State *const L)
  @treturn a.hpf High Pass Filter userdata
  @function zero
 */
-int liba_hpf_zero(lua_State *const L)
+int liba_hpf_zero(lua_State *L)
 {
     a_hpf *const ctx = (a_hpf *)lua_touserdata(L, 1);
     if (ctx)
@@ -106,7 +106,7 @@ int liba_hpf_zero(lua_State *const L)
     return 0;
 }
 
-static int liba_hpf_set(lua_State *const L)
+static int liba_hpf_set(lua_State *L)
 {
     switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
     {
@@ -123,7 +123,7 @@ static int liba_hpf_set(lua_State *const L)
     return 0;
 }
 
-static int liba_hpf_get(lua_State *const L)
+static int liba_hpf_get(lua_State *L)
 {
     a_hpf const *const ctx = (a_hpf const *)lua_touserdata(L, 1);
     switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
@@ -151,7 +151,7 @@ static int liba_hpf_get(lua_State *const L)
     return 1;
 }
 
-static int liba_hpf_(lua_State *const L)
+static int liba_hpf_(lua_State *L)
 {
     lua_pushcfunction(L, liba_hpf_new);
     lua_replace(L, 1);
@@ -159,7 +159,7 @@ static int liba_hpf_(lua_State *const L)
     return 1;
 }
 
-int luaopen_liba_hpf(lua_State *const L)
+int luaopen_liba_hpf(lua_State *L)
 {
     static lua_fun const funcs[] = {
         {"new", liba_hpf_new},

@@ -37,6 +37,8 @@
  @{
 */
 
+typedef struct a_pid a_pid;
+
 /*!
  @brief enumeration for PID controller
 */
@@ -47,40 +49,21 @@ enum
     A_PID_INC //!< incremental PID controller
 };
 
-/*!
- @brief instance structure for PID controller
-*/
-typedef struct a_pid
-{
-    a_float kp; //!< proportional constant
-    a_float ki; //!< integral constant
-    a_float kd; //!< derivative constant
-    a_float summax; //!< maximum integral output
-    a_float summin; //!< minimum integral output
-    a_float sum; //!< controller integral output
-    a_float outmax; //!< maximum final output
-    a_float outmin; //!< minimum final output
-    a_float out; //!< controller output
-    a_float fdb; //!< cache feedback
-    a_float var; //!< cache variable
-    a_float err; //!< cache error
-} a_pid;
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
-
-/*!
- @brief zeroing for PID controller
- @param[in,out] ctx points to an instance of PID controller
-*/
-A_EXTERN void a_pid_zero(a_pid *ctx);
 
 /*!
  @brief initialize for PID controller
  @param[in,out] ctx points to an instance of PID controller
 */
 A_EXTERN void a_pid_init(a_pid *ctx);
+
+/*!
+ @brief zeroing for PID controller
+ @param[in,out] ctx points to an instance of PID controller
+*/
+A_EXTERN void a_pid_zero(a_pid *ctx);
 
 /*!
  @brief set proportional integral derivative constant for PID controller
@@ -120,7 +103,50 @@ A_EXTERN a_float a_pid_inc(a_pid *ctx, a_float set, a_float fdb);
 
 #if defined(__cplusplus)
 } /* extern "C" */
+namespace a
+{
+typedef struct a_pid pid;
+} /* namespace a */
 #endif /* __cplusplus */
+
+/*!
+ @brief instance structure for PID controller
+*/
+struct a_pid
+{
+    a_float kp; //!< proportional constant
+    a_float ki; //!< integral constant
+    a_float kd; //!< derivative constant
+    a_float summax; //!< maximum integral output
+    a_float summin; //!< minimum integral output
+    a_float sum; //!< controller integral output
+    a_float outmax; //!< maximum final output
+    a_float outmin; //!< minimum final output
+    a_float out; //!< controller output
+    a_float fdb; //!< cache feedback
+    a_float var; //!< cache variable
+    a_float err; //!< cache error
+#if defined(__cplusplus)
+    A_INLINE void kpid(a_float _kp, a_float _ki, a_float _kd)
+    {
+        a_pid_kpid(this, _kp, _ki, _kd);
+    }
+    A_INLINE a_float run(a_float set, a_float _fdb)
+    {
+        return a_pid_run(this, set, _fdb);
+    }
+    A_INLINE a_float pos(a_float set, a_float _fdb)
+    {
+        return a_pid_pos(this, set, _fdb);
+    }
+    A_INLINE a_float inc(a_float set, a_float _fdb)
+    {
+        return a_pid_inc(this, set, _fdb);
+    }
+    A_INLINE void init() { a_pid_init(this); }
+    A_INLINE void zero() { a_pid_zero(this); }
+#endif /* __cplusplus */
+};
 
 /*! @} A_PID */
 

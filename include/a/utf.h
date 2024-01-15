@@ -49,12 +49,11 @@ A_EXTERN unsigned int a_utf_decode(void const *str, a_u32 *val);
  @return length of the UTF-8 string
 */
 A_EXTERN a_size a_utf_length(void const *str);
+#define a_utf_len(str) a_utf_length(str)
 
 #if defined(__cplusplus)
 } /* extern "C" */
 #endif /* __cplusplus */
-
-#define a_utf_len(str) a_utf_length(str)
 
 /*! @} A_UTF */
 

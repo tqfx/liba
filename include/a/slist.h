@@ -75,7 +75,7 @@ typedef struct a_slist
  @brief constructor for singly linked list head
  @param[in,out] ctx points to singly linked list head
 */
-A_INTERN void a_slist_ctor(a_slist *const ctx)
+A_INTERN void a_slist_ctor(a_slist *ctx)
 {
     ctx->head.next = A_NULL;
     ctx->tail = &ctx->head;
@@ -85,7 +85,7 @@ A_INTERN void a_slist_ctor(a_slist *const ctx)
  @brief initialize for singly linked list head
  @param[in,out] ctx points to singly linked list head
 */
-A_INTERN void a_slist_init(a_slist *const ctx)
+A_INTERN void a_slist_init(a_slist *ctx)
 {
     ctx->head.next = A_NULL;
     ctx->tail = &ctx->head;
@@ -95,7 +95,7 @@ A_INTERN void a_slist_init(a_slist *const ctx)
  @brief destructor for singly linked list head
  @param[in,out] ctx points to singly linked list head
 */
-A_INTERN void a_slist_dtor(a_slist *const ctx)
+A_INTERN void a_slist_dtor(a_slist *ctx)
 {
     ctx->head.next = A_NULL;
     ctx->tail = &ctx->head;
@@ -106,7 +106,7 @@ A_INTERN void a_slist_dtor(a_slist *const ctx)
  @param[in,out] head the head node of a list
  @param[in,out] tail the tail node of a list
 */
-A_INTERN void a_slist_link(a_slist_node *const head, a_slist_node *const tail) { head->next = tail; }
+A_INTERN void a_slist_link(a_slist_node *head, a_slist_node *tail) { head->next = tail; }
 
 /*!
  @brief insert a node to a list
@@ -114,7 +114,7 @@ A_INTERN void a_slist_link(a_slist_node *const head, a_slist_node *const tail) {
  @param[in] prev previous singly linked list node
  @param[in] node a singly linked list node
 */
-A_INTERN void a_slist_add(a_slist *const ctx, a_slist_node *const prev, a_slist_node *const node)
+A_INTERN void a_slist_add(a_slist *ctx, a_slist_node *prev, a_slist_node *node)
 {
     if (!prev->next) { ctx->tail = node; }
     a_slist_link(node, prev->next);
@@ -126,7 +126,7 @@ A_INTERN void a_slist_add(a_slist *const ctx, a_slist_node *const prev, a_slist_
  @param[in,out] ctx points to singly linked list head
  @param[in] node a singly linked list node
 */
-A_INTERN void a_slist_add_head(a_slist *const ctx, a_slist_node *const node)
+A_INTERN void a_slist_add_head(a_slist *ctx, a_slist_node *node)
 {
     a_slist_add(ctx, &ctx->head, node);
 }
@@ -136,7 +136,7 @@ A_INTERN void a_slist_add_head(a_slist *const ctx, a_slist_node *const node)
  @param[in,out] ctx points to singly linked list head
  @param[in] node a singly linked list node
 */
-A_INTERN void a_slist_add_tail(a_slist *const ctx, a_slist_node *const node)
+A_INTERN void a_slist_add_tail(a_slist *ctx, a_slist_node *node)
 {
     a_slist_link(ctx->tail, node);
     node->next = A_NULL;
@@ -148,7 +148,7 @@ A_INTERN void a_slist_add_tail(a_slist *const ctx, a_slist_node *const node)
  @param[in,out] ctx points to singly linked list head
  @param[in] prev previous singly linked list node
 */
-A_INTERN void a_slist_del(a_slist *const ctx, a_slist_node *const prev)
+A_INTERN void a_slist_del(a_slist *ctx, a_slist_node *prev)
 {
     a_slist_node *const node = prev->next;
     if (node)
@@ -162,7 +162,7 @@ A_INTERN void a_slist_del(a_slist *const ctx, a_slist_node *const prev)
  @brief delete a node from a list head
  @param[in,out] ctx points to singly linked list head
 */
-A_INTERN void a_slist_del_head(a_slist *const ctx)
+A_INTERN void a_slist_del_head(a_slist *ctx)
 {
     a_slist_node *const node = ctx->head.next;
     if (node)
@@ -178,7 +178,7 @@ A_INTERN void a_slist_del_head(a_slist *const ctx)
  @param[in,out] to another linked list to be inserted
  @param[in] at the previous &a_slist_node of the inserted node
 */
-A_INTERN void a_slist_mov(a_slist *const ctx, a_slist *const to, a_slist_node *const at)
+A_INTERN void a_slist_mov(a_slist *ctx, a_slist *to, a_slist_node *at)
 {
     a_slist_node *const node = ctx->head.next;
     if (node)
@@ -193,7 +193,7 @@ A_INTERN void a_slist_mov(a_slist *const ctx, a_slist *const to, a_slist_node *c
  @brief rotate a node in the list
  @param[in,out] ctx points to singly linked list head
 */
-A_INTERN void a_slist_rot(a_slist *const ctx)
+A_INTERN void a_slist_rot(a_slist *ctx)
 {
     a_slist_node *const node = ctx->head.next;
     if (node)

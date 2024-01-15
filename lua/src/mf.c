@@ -14,7 +14,7 @@
  @treturn number membership value.
  @function gauss
 */
-static int liba_mf_gauss_(lua_State *const L, int const arg)
+static int liba_mf_gauss_(lua_State *L, int arg)
 {
     a_float const x = (a_float)luaL_checknumber(L, arg + 1);
     a_float const sigma = (a_float)luaL_checknumber(L, arg + 2);
@@ -22,7 +22,7 @@ static int liba_mf_gauss_(lua_State *const L, int const arg)
     lua_pushnumber(L, (lua_Number)a_mf_gauss(x, sigma, c));
     return 1;
 }
-static int liba_mf_gauss(lua_State *const L)
+static int liba_mf_gauss(lua_State *L)
 {
     return liba_mf_gauss_(L, 0);
 }
@@ -37,7 +37,7 @@ static int liba_mf_gauss(lua_State *const L)
  @treturn number membership value.
  @function gauss2
 */
-static int liba_mf_gauss2_(lua_State *const L, int const arg)
+static int liba_mf_gauss2_(lua_State *L, int arg)
 {
     a_float const x = (a_float)luaL_checknumber(L, arg + 1);
     a_float const sigma1 = (a_float)luaL_checknumber(L, arg + 2);
@@ -47,7 +47,7 @@ static int liba_mf_gauss2_(lua_State *const L, int const arg)
     lua_pushnumber(L, (lua_Number)a_mf_gauss2(x, sigma1, c1, sigma2, c2));
     return 1;
 }
-static int liba_mf_gauss2(lua_State *const L)
+static int liba_mf_gauss2(lua_State *L)
 {
     return liba_mf_gauss2_(L, 0);
 }
@@ -61,7 +61,7 @@ static int liba_mf_gauss2(lua_State *const L)
  @treturn number membership value.
  @function gbell
 */
-static int liba_mf_gbell_(lua_State *const L, int const arg)
+static int liba_mf_gbell_(lua_State *L, int arg)
 {
     a_float const x = (a_float)luaL_checknumber(L, arg + 1);
     a_float const a = (a_float)luaL_checknumber(L, arg + 2);
@@ -70,7 +70,7 @@ static int liba_mf_gbell_(lua_State *const L, int const arg)
     lua_pushnumber(L, (lua_Number)a_mf_gbell(x, a, b, c));
     return 1;
 }
-static int liba_mf_gbell(lua_State *const L)
+static int liba_mf_gbell(lua_State *L)
 {
     return liba_mf_gbell_(L, 0);
 }
@@ -83,7 +83,7 @@ static int liba_mf_gbell(lua_State *const L)
  @treturn number membership value.
  @function sig
 */
-static int liba_mf_sig_(lua_State *const L, int const arg)
+static int liba_mf_sig_(lua_State *L, int arg)
 {
     a_float const x = (a_float)luaL_checknumber(L, arg + 1);
     a_float const a = (a_float)luaL_checknumber(L, arg + 2);
@@ -91,7 +91,7 @@ static int liba_mf_sig_(lua_State *const L, int const arg)
     lua_pushnumber(L, (lua_Number)a_mf_sig(x, a, c));
     return 1;
 }
-static int liba_mf_sig(lua_State *const L)
+static int liba_mf_sig(lua_State *L)
 {
     return liba_mf_sig_(L, 0);
 }
@@ -106,7 +106,7 @@ static int liba_mf_sig(lua_State *const L)
  @treturn number membership value.
  @function dsig
 */
-static int liba_mf_dsig_(lua_State *const L, int const arg)
+static int liba_mf_dsig_(lua_State *L, int arg)
 {
     a_float const x = (a_float)luaL_checknumber(L, arg + 1);
     a_float const a1 = (a_float)luaL_checknumber(L, arg + 2);
@@ -116,7 +116,7 @@ static int liba_mf_dsig_(lua_State *const L, int const arg)
     lua_pushnumber(L, (lua_Number)a_mf_dsig(x, a1, c1, a2, c2));
     return 1;
 }
-static int liba_mf_dsig(lua_State *const L)
+static int liba_mf_dsig(lua_State *L)
 {
     return liba_mf_dsig_(L, 0);
 }
@@ -131,7 +131,7 @@ static int liba_mf_dsig(lua_State *const L)
  @treturn number membership value.
  @function psig
 */
-static int liba_mf_psig_(lua_State *const L, int const arg)
+static int liba_mf_psig_(lua_State *L, int arg)
 {
     a_float const x = (a_float)luaL_checknumber(L, arg + 1);
     a_float const a1 = (a_float)luaL_checknumber(L, arg + 2);
@@ -141,7 +141,7 @@ static int liba_mf_psig_(lua_State *const L, int const arg)
     lua_pushnumber(L, (lua_Number)a_mf_psig(x, a1, c1, a2, c2));
     return 1;
 }
-static int liba_mf_psig(lua_State *const L)
+static int liba_mf_psig(lua_State *L)
 {
     return liba_mf_psig_(L, 0);
 }
@@ -156,7 +156,7 @@ static int liba_mf_psig(lua_State *const L)
  @treturn number membership value.
  @function trap
 */
-static int liba_mf_trap_(lua_State *const L, int const arg)
+static int liba_mf_trap_(lua_State *L, int arg)
 {
     a_float const x = (a_float)luaL_checknumber(L, arg + 1);
     a_float const a = (a_float)luaL_checknumber(L, arg + 2);
@@ -166,7 +166,7 @@ static int liba_mf_trap_(lua_State *const L, int const arg)
     lua_pushnumber(L, (lua_Number)a_mf_trap(x, a, b, c, d));
     return 1;
 }
-static int liba_mf_trap(lua_State *const L)
+static int liba_mf_trap(lua_State *L)
 {
     return liba_mf_trap_(L, 0);
 }
@@ -180,7 +180,7 @@ static int liba_mf_trap(lua_State *const L)
  @treturn number membership value.
  @function tri
 */
-static int liba_mf_tri_(lua_State *const L, int const arg)
+static int liba_mf_tri_(lua_State *L, int arg)
 {
     a_float const x = (a_float)luaL_checknumber(L, arg + 1);
     a_float const a = (a_float)luaL_checknumber(L, arg + 2);
@@ -189,7 +189,7 @@ static int liba_mf_tri_(lua_State *const L, int const arg)
     lua_pushnumber(L, (lua_Number)a_mf_tri(x, a, b, c));
     return 1;
 }
-static int liba_mf_tri(lua_State *const L)
+static int liba_mf_tri(lua_State *L)
 {
     return liba_mf_tri_(L, 0);
 }
@@ -202,7 +202,7 @@ static int liba_mf_tri(lua_State *const L)
  @treturn number membership value.
  @function lins
 */
-static int liba_mf_lins_(lua_State *const L, int const arg)
+static int liba_mf_lins_(lua_State *L, int arg)
 {
     a_float const x = (a_float)luaL_checknumber(L, arg + 1);
     a_float const a = (a_float)luaL_checknumber(L, arg + 2);
@@ -210,7 +210,7 @@ static int liba_mf_lins_(lua_State *const L, int const arg)
     lua_pushnumber(L, (lua_Number)a_mf_lins(x, a, b));
     return 1;
 }
-static int liba_mf_lins(lua_State *const L)
+static int liba_mf_lins(lua_State *L)
 {
     return liba_mf_lins_(L, 0);
 }
@@ -223,7 +223,7 @@ static int liba_mf_lins(lua_State *const L)
  @treturn number membership value.
  @function linz
 */
-static int liba_mf_linz_(lua_State *const L, int const arg)
+static int liba_mf_linz_(lua_State *L, int arg)
 {
     a_float const x = (a_float)luaL_checknumber(L, arg + 1);
     a_float const a = (a_float)luaL_checknumber(L, arg + 2);
@@ -231,7 +231,7 @@ static int liba_mf_linz_(lua_State *const L, int const arg)
     lua_pushnumber(L, (lua_Number)a_mf_linz(x, a, b));
     return 1;
 }
-static int liba_mf_linz(lua_State *const L)
+static int liba_mf_linz(lua_State *L)
 {
     return liba_mf_linz_(L, 0);
 }
@@ -244,7 +244,7 @@ static int liba_mf_linz(lua_State *const L)
  @treturn number membership value.
  @function s
 */
-static int liba_mf_s_(lua_State *const L, int const arg)
+static int liba_mf_s_(lua_State *L, int arg)
 {
     a_float const x = (a_float)luaL_checknumber(L, arg + 1);
     a_float const a = (a_float)luaL_checknumber(L, arg + 2);
@@ -252,7 +252,7 @@ static int liba_mf_s_(lua_State *const L, int const arg)
     lua_pushnumber(L, (lua_Number)a_mf_s(x, a, b));
     return 1;
 }
-static int liba_mf_s(lua_State *const L)
+static int liba_mf_s(lua_State *L)
 {
     return liba_mf_s_(L, 0);
 }
@@ -265,7 +265,7 @@ static int liba_mf_s(lua_State *const L)
  @treturn number membership value.
  @function z
 */
-static int liba_mf_z_(lua_State *const L, int const arg)
+static int liba_mf_z_(lua_State *L, int arg)
 {
     a_float const x = (a_float)luaL_checknumber(L, arg + 1);
     a_float const a = (a_float)luaL_checknumber(L, arg + 2);
@@ -273,7 +273,7 @@ static int liba_mf_z_(lua_State *const L, int const arg)
     lua_pushnumber(L, (lua_Number)a_mf_z(x, a, b));
     return 1;
 }
-static int liba_mf_z(lua_State *const L)
+static int liba_mf_z(lua_State *L)
 {
     return liba_mf_z_(L, 0);
 }
@@ -288,7 +288,7 @@ static int liba_mf_z(lua_State *const L)
  @treturn number membership value.
  @function pi
 */
-static int liba_mf_pi_(lua_State *const L, int const arg)
+static int liba_mf_pi_(lua_State *L, int arg)
 {
     a_float const x = (a_float)luaL_checknumber(L, arg + 1);
     a_float const a = (a_float)luaL_checknumber(L, arg + 2);
@@ -298,7 +298,7 @@ static int liba_mf_pi_(lua_State *const L, int const arg)
     lua_pushnumber(L, (lua_Number)a_mf_pi(x, a, b, c, d));
     return 1;
 }
-static int liba_mf_pi(lua_State *const L)
+static int liba_mf_pi(lua_State *L)
 {
     return liba_mf_pi_(L, 0);
 }
@@ -311,7 +311,7 @@ static int liba_mf_pi(lua_State *const L)
  @treturn number membership value.
  @function mf
 */
-static int liba_mf_mf(lua_State *const L)
+static int liba_mf_mf(lua_State *L)
 {
     lua_Integer const e = luaL_checkinteger(L, 1);
     switch (e)
@@ -348,7 +348,7 @@ static int liba_mf_mf(lua_State *const L)
     }
 }
 
-static int liba_mf_(lua_State *const L)
+static int liba_mf_(lua_State *L)
 {
     lua_pushcfunction(L, liba_mf_mf);
     lua_replace(L, 1);
@@ -356,7 +356,7 @@ static int liba_mf_(lua_State *const L)
     return 1;
 }
 
-int luaopen_liba_mf(lua_State *const L)
+int luaopen_liba_mf(lua_State *L)
 {
     /***
      enumeration for membership function

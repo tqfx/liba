@@ -1,11 +1,6 @@
 #include "a/version.h"
 
-namespace a
-{
-
-unsigned int const version::MAJOR = A_VERSION_MAJOR;
-unsigned int const version::MINOR = A_VERSION_MINOR;
-unsigned int const version::PATCH = A_VERSION_PATCH;
-a_u32 const version::TWEAK = A_VERSION_TWEAK;
-
-} /* namespace a */
+unsigned int const a_version::MAJOR = A_VERSION_MAJOR;
+unsigned int const a_version::MINOR = A_VERSION_MINOR;
+unsigned int const a_version::PATCH = A_VERSION_PATCH;
+a_u32 const a_version::TWEAK = A_VERSION_TWEAK;

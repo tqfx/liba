@@ -12,6 +12,9 @@
 #pragma warning(disable : 4127)
 #pragma warning(disable : 4820)
 #endif /* _MSC_VER */
+#if defined(__cplusplus) && (__cplusplus > 201100L)
+#include <type_traits>
+#endif /* __cplusplus */
 #if A_PREREQ_GNUC(2, 95) || __has_warning("-Winline")
 #pragma GCC diagnostic ignored "-Winline"
 #endif /* -Winline */

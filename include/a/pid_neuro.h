@@ -18,45 +18,34 @@
  \f]
 */
 
-#ifndef LIBA_PID_NEURON_H
-#define LIBA_PID_NEURON_H
+#ifndef LIBA_PID_NEURO_H
+#define LIBA_PID_NEURO_H
 
 #include "pid.h"
 
 /*!
  @ingroup A
- @addtogroup A_PID_NEURON single neuron proportional integral derivative controller
+ @addtogroup A_PID_NEURO single neuron proportional integral derivative controller
  @{
 */
 
-/*!
- @brief instance structure for single neuron PID controller
-*/
-typedef struct a_pid_neuro
-{
-    a_pid pid; //!< instance structure for PID controller
-    a_float k; //!< proportional output coefficient
-    a_float wp; //!< proportional weight
-    a_float wi; //!< integral weight
-    a_float wd; //!< derivative weight
-    a_float ec; //!< error change
-} a_pid_neuro;
+typedef struct a_pid_neuro a_pid_neuro;
 
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
 
 /*!
- @brief zeroing for single neuron PID controller
- @param[in,out] ctx points to an instance of single neuron PID controller
-*/
-A_EXTERN void a_pid_neuro_zero(a_pid_neuro *ctx);
-
-/*!
  @brief initialize for single neuron PID controller
  @param[in,out] ctx points to an instance of single neuron PID controller
 */
 A_EXTERN void a_pid_neuro_init(a_pid_neuro *ctx);
+
+/*!
+ @brief zeroing for single neuron PID controller
+ @param[in,out] ctx points to an instance of single neuron PID controller
+*/
+A_EXTERN void a_pid_neuro_zero(a_pid_neuro *ctx);
 
 /*!
  @brief set proportional integral derivative constant for single neuron PID controller
@@ -97,8 +86,45 @@ A_EXTERN a_float a_pid_neuro_inc(a_pid_neuro *ctx, a_float set, a_float fdb);
 
 #if defined(__cplusplus)
 } /* extern "C" */
+namespace a
+{
+typedef struct a_pid_neuro pid_neuro;
+} /* namespace a */
 #endif /* __cplusplus */
 
-/*! @} A_PID_NEURON */
+/*!
+ @brief instance structure for single neuron PID controller
+*/
+struct a_pid_neuro
+{
+    a_pid pid; //!< instance structure for PID controller
+    a_float k; //!< proportional output coefficient
+    a_float wp; //!< proportional weight
+    a_float wi; //!< integral weight
+    a_float wd; //!< derivative weight
+    a_float ec; //!< error change
+#if defined(__cplusplus)
+    A_INLINE void kpid(a_float _k, a_float kp, a_float ki, a_float kd)
+    {
+        a_pid_neuro_kpid(this, _k, kp, ki, kd);
+    }
+    A_INLINE void wpid(a_float _wp, a_float _wi, a_float _wd)
+    {
+        a_pid_neuro_wpid(this, _wp, _wi, _wd);
+    }
+    A_INLINE a_float run(a_float set, a_float fdb)
+    {
+        return a_pid_neuro_run(this, set, fdb);
+    }
+    A_INLINE a_float inc(a_float set, a_float fdb)
+    {
+        return a_pid_neuro_inc(this, set, fdb);
+    }
+    A_INLINE void init() { a_pid_neuro_init(this); }
+    A_INLINE void zero() { a_pid_neuro_zero(this); }
+#endif /* __cplusplus */
+};
+
+/*! @} A_PID_NEURO */
 
 #endif /* a/pid_neuro.h */

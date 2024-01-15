@@ -20,36 +20,23 @@
  @{
 */
 
-/*!
- @brief instance structure for expert PID controller
-*/
-typedef struct a_pid_expert
-{
-    a_pid pid; //!< instance structure for PID controller
-    a_float ec; //!< error change
-    a_float outmax; //!< maximum output
-    a_float epsilon; //!< precision
-    a_float max1; //!< first error bound
-    a_float gain; //!< gain coefficient
-    a_float max2; //!< second error bound
-    a_float loss; //!< loss coefficient
-} a_pid_expert;
+typedef struct a_pid_expert a_pid_expert;
 
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
 
 /*!
- @brief zeroing for expert PID controller
- @param[in,out] ctx points to an instance of expert PID controller
-*/
-A_EXTERN void a_pid_expert_zero(a_pid_expert *ctx);
-
-/*!
  @brief initialize for expert PID controller
  @param[in,out] ctx points to an instance of expert PID controller
 */
 A_EXTERN void a_pid_expert_init(a_pid_expert *ctx);
+
+/*!
+ @brief zeroing for expert PID controller
+ @param[in,out] ctx points to an instance of expert PID controller
+*/
+A_EXTERN void a_pid_expert_zero(a_pid_expert *ctx);
 
 /*!
  @brief set proportional integral derivative constant for expert PID controller
@@ -71,7 +58,38 @@ A_EXTERN a_float a_pid_expert_iter(a_pid_expert *ctx, a_float set, a_float fdb);
 
 #if defined(__cplusplus)
 } /* extern "C" */
+namespace a
+{
+struct pid_expert;
+} /* namespace a */
 #endif /* __cplusplus */
+
+/*!
+ @brief instance structure for expert PID controller
+*/
+struct a_pid_expert
+{
+    a_pid pid; //!< instance structure for PID controller
+    a_float ec; //!< error change
+    a_float outmax; //!< maximum output
+    a_float epsilon; //!< precision
+    a_float max1; //!< first error bound
+    a_float gain; //!< gain coefficient
+    a_float max2; //!< second error bound
+    a_float loss; //!< loss coefficient
+#if defined(__cplusplus)
+    A_INLINE void kpid(a_float kp, a_float ki, a_float kd)
+    {
+        a_pid_expert_kpid(this, kp, ki, kd);
+    }
+    A_INLINE a_float operator()(a_float set, a_float fdb)
+    {
+        return a_pid_expert_iter(this, set, fdb);
+    }
+    A_INLINE void init() { a_pid_expert_init(this); }
+    A_INLINE void zero() { a_pid_expert_zero(this); }
+#endif /* __cplusplus */
+};
 
 /*! @} A_PID_EXPERT */
 
@@ -122,6 +140,10 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     }
     a_pid_expert_zero(&ctx);
     a_tf_zero(&tf);
+
+#if defined(__cplusplus) && (__cplusplus > 201100L)
+    A_ASSERT_BUILD(std::is_pod<a_pid_expert>::value);
+#endif /* __cplusplus */
 
     return 0;
 }

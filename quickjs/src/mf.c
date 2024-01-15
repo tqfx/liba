@@ -1,6 +1,6 @@
 #include "mf.h"
 
-JSValue liba_mf_gauss(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+JSValue liba_mf_gauss(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)this_val;
@@ -13,7 +13,7 @@ JSValue liba_mf_gauss(JSContext *const ctx, JSValueConst const this_val, int arg
     return JS_NewFloat64(ctx, (double)x);
 }
 
-JSValue liba_mf_gauss2(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+JSValue liba_mf_gauss2(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)this_val;
@@ -26,7 +26,7 @@ JSValue liba_mf_gauss2(JSContext *const ctx, JSValueConst const this_val, int ar
     return JS_NewFloat64(ctx, (double)x);
 }
 
-JSValue liba_mf_gbell(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+JSValue liba_mf_gbell(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)this_val;
@@ -39,7 +39,7 @@ JSValue liba_mf_gbell(JSContext *const ctx, JSValueConst const this_val, int arg
     return JS_NewFloat64(ctx, (double)x);
 }
 
-JSValue liba_mf_sig(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+JSValue liba_mf_sig(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)this_val;
@@ -52,7 +52,7 @@ JSValue liba_mf_sig(JSContext *const ctx, JSValueConst const this_val, int argc,
     return JS_NewFloat64(ctx, (double)x);
 }
 
-JSValue liba_mf_dsig(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+JSValue liba_mf_dsig(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)this_val;
@@ -65,7 +65,7 @@ JSValue liba_mf_dsig(JSContext *const ctx, JSValueConst const this_val, int argc
     return JS_NewFloat64(ctx, (double)x);
 }
 
-JSValue liba_mf_psig(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+JSValue liba_mf_psig(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)this_val;
@@ -78,7 +78,7 @@ JSValue liba_mf_psig(JSContext *const ctx, JSValueConst const this_val, int argc
     return JS_NewFloat64(ctx, (double)x);
 }
 
-JSValue liba_mf_trap(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+JSValue liba_mf_trap(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)this_val;
@@ -91,7 +91,7 @@ JSValue liba_mf_trap(JSContext *const ctx, JSValueConst const this_val, int argc
     return JS_NewFloat64(ctx, (double)x);
 }
 
-JSValue liba_mf_tri(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+JSValue liba_mf_tri(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)this_val;
@@ -104,7 +104,7 @@ JSValue liba_mf_tri(JSContext *const ctx, JSValueConst const this_val, int argc,
     return JS_NewFloat64(ctx, (double)x);
 }
 
-JSValue liba_mf_lins(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+JSValue liba_mf_lins(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)this_val;
@@ -117,7 +117,7 @@ JSValue liba_mf_lins(JSContext *const ctx, JSValueConst const this_val, int argc
     return JS_NewFloat64(ctx, (double)x);
 }
 
-JSValue liba_mf_linz(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+JSValue liba_mf_linz(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)this_val;
@@ -130,7 +130,7 @@ JSValue liba_mf_linz(JSContext *const ctx, JSValueConst const this_val, int argc
     return JS_NewFloat64(ctx, (double)x);
 }
 
-JSValue liba_mf_s(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+JSValue liba_mf_s(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)this_val;
@@ -143,7 +143,7 @@ JSValue liba_mf_s(JSContext *const ctx, JSValueConst const this_val, int argc, J
     return JS_NewFloat64(ctx, (double)x);
 }
 
-JSValue liba_mf_z(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+JSValue liba_mf_z(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)this_val;
@@ -156,7 +156,7 @@ JSValue liba_mf_z(JSContext *const ctx, JSValueConst const this_val, int argc, J
     return JS_NewFloat64(ctx, (double)x);
 }
 
-JSValue liba_mf_pi(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+JSValue liba_mf_pi(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)this_val;

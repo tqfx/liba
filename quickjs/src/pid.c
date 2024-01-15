@@ -3,14 +3,14 @@
 
 static JSClassID liba_pid_class_id;
 
-static void liba_pid_finalizer(JSRuntime *const rt, JSValue const val)
+static void liba_pid_finalizer(JSRuntime *rt, JSValue val)
 {
     js_free_rt(rt, JS_GetOpaque(val, liba_pid_class_id));
 }
 
 static JSClassDef liba_pid_class = {"pid", .finalizer = liba_pid_finalizer};
 
-static JSValue liba_pid_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
+static JSValue liba_pid_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)argv;
@@ -36,7 +36,7 @@ fail:
     return JS_EXCEPTION;
 }
 
-static JSValue liba_pid_get(JSContext *const ctx, JSValueConst const this_val, int magic)
+static JSValue liba_pid_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
     a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -58,7 +58,7 @@ static JSValue liba_pid_get(JSContext *const ctx, JSValueConst const this_val, i
     return JS_NewFloat64(ctx, x);
 }
 
-static JSValue liba_pid_set(JSContext *const ctx, JSValueConst const this_val, JSValueConst const val, int magic)
+static JSValue liba_pid_set(JSContext *ctx, JSValueConst this_val, JSValueConst val, int magic)
 {
     a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -78,7 +78,7 @@ static JSValue liba_pid_set(JSContext *const ctx, JSValueConst const this_val, J
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_zero(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)argv;
@@ -88,7 +88,7 @@ static JSValue liba_pid_zero(JSContext *const ctx, JSValueConst const this_val, 
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_kpid(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_kpid(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
@@ -102,7 +102,7 @@ static JSValue liba_pid_kpid(JSContext *const ctx, JSValueConst const this_val, 
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_run(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_run(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
@@ -115,7 +115,7 @@ static JSValue liba_pid_run(JSContext *const ctx, JSValueConst const this_val, i
     return JS_NewFloat64(ctx, (double)a_pid_run(self, (a_float)args[0], (a_float)args[1]));
 }
 
-static JSValue liba_pid_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_pos(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
@@ -128,7 +128,7 @@ static JSValue liba_pid_pos(JSContext *const ctx, JSValueConst const this_val, i
     return JS_NewFloat64(ctx, (double)a_pid_pos(self, (a_float)args[0], (a_float)args[1]));
 }
 
-static JSValue liba_pid_inc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_inc(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
@@ -160,7 +160,7 @@ static JSCFunctionListEntry const liba_pid_proto[] = {
     JS_CFUNC_DEF("inc", 2, liba_pid_inc),
 };
 
-int js_liba_pid_init(JSContext *const ctx, JSModuleDef *const m)
+int js_liba_pid_init(JSContext *ctx, JSModuleDef *m)
 {
     JS_NewClassID(&liba_pid_class_id);
     JS_NewClass(JS_GetRuntime(ctx), liba_pid_class_id, &liba_pid_class);

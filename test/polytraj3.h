@@ -29,5 +29,9 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
               dt, a_polytraj3_pos(&ctx, dt), a_polytraj3_vel(&ctx, dt), a_polytraj3_acc(&ctx, dt));
     }
 
+#if defined(__cplusplus) && (__cplusplus > 201100L)
+    A_ASSERT_BUILD(std::is_pod<a_polytraj3>::value);
+#endif /* __cplusplus */
+
     return 0;
 }

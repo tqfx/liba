@@ -54,5 +54,9 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
               A_FLOAT_C(0.001) * a_float_c(i), in, *pos_tf.output, *inc_tf.output);
     }
 
+#if defined(__cplusplus) && (__cplusplus > 201100L)
+    A_ASSERT_BUILD(std::is_pod<a_pid>::value);
+#endif /* __cplusplus */
+
     return 0;
 }

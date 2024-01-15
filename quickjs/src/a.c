@@ -1,6 +1,6 @@
 #include "a.h"
 
-static JSValue liba_hash_bkdr(JSContext *const ctx, JSValueConst const this_val, int const argc, JSValueConst *const argv)
+static JSValue liba_hash_bkdr(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)this_val;
     a_umax x = 0;
@@ -15,7 +15,7 @@ static JSValue liba_hash_bkdr(JSContext *const ctx, JSValueConst const this_val,
 
 #include "a/math.h"
 
-static JSValue liba_isqrt(JSContext *const ctx, JSValueConst const this_val, int const argc, JSValueConst *const argv)
+static JSValue liba_isqrt(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)this_val;
     (void)argc;
@@ -24,7 +24,7 @@ static JSValue liba_isqrt(JSContext *const ctx, JSValueConst const this_val, int
     return JS_NewUint32(ctx, a_u64_sqrt(x));
 }
 
-static JSValue liba_rsqrt(JSContext *const ctx, JSValueConst const this_val, int const argc, JSValueConst *const argv)
+static JSValue liba_rsqrt(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)this_val;
     (void)argc;
@@ -35,7 +35,7 @@ static JSValue liba_rsqrt(JSContext *const ctx, JSValueConst const this_val, int
 
 #include "mf.h"
 
-static JSCFunctionListEntry const liba_mf_table[] = {
+static JSCFunctionListEntry const liba_mf_proto[] = {
     JS_PROP_INT32_DEF("NUL", A_MF_NUL, 0),
     JS_PROP_INT32_DEF("GAUSS", A_MF_GAUSS, 0),
     JS_PROP_INT32_DEF("GAUSS2", A_MF_GAUSS2, 0),
@@ -69,15 +69,15 @@ static JSCFunctionListEntry const liba_mf_table[] = {
 #include "a/version.h"
 #endif /* A_VERSION */
 
-static JSCFunctionListEntry const liba_table[] = {
-    JS_OBJECT_DEF("mf", liba_mf_table, A_LEN(liba_mf_table), 0),
+static JSCFunctionListEntry const liba_proto[] = {
+    JS_OBJECT_DEF("mf", liba_mf_proto, A_LEN(liba_mf_proto), 0),
     JS_PROP_STRING_DEF("VERSION", A_VERSION, 0),
     JS_CFUNC_DEF("hash_bkdr", 1, liba_hash_bkdr),
     JS_CFUNC_DEF("isqrt", 1, liba_isqrt),
     JS_CFUNC_DEF("rsqrt", 1, liba_rsqrt),
 };
 
-int js_liba_init(JSContext *const ctx, JSModuleDef *const m)
+int js_liba_init(JSContext *ctx, JSModuleDef *m)
 {
     js_liba_hpf_init(ctx, m);
     js_liba_lpf_init(ctx, m);
@@ -89,10 +89,10 @@ int js_liba_init(JSContext *const ctx, JSModuleDef *const m)
     js_liba_polytraj7_init(ctx, m);
     js_liba_tf_init(ctx, m);
     js_liba_version_init(ctx, m);
-    return JS_SetModuleExportList(ctx, m, liba_table, A_LEN(liba_table));
+    return JS_SetModuleExportList(ctx, m, liba_proto, A_LEN(liba_proto));
 }
 
-JSModuleDef *js_init_module(JSContext *const ctx, char const *const module_name)
+JSModuleDef *js_init_module(JSContext *ctx, char const *module_name)
 {
     JSModuleDef *m = JS_NewCModule(ctx, module_name, js_liba_init);
     if (m)
@@ -107,12 +107,12 @@ JSModuleDef *js_init_module(JSContext *const ctx, char const *const module_name)
         JS_AddModuleExport(ctx, m, "polytraj7");
         JS_AddModuleExport(ctx, m, "tf");
         JS_AddModuleExport(ctx, m, "version");
-        JS_AddModuleExportList(ctx, m, liba_table, A_LEN(liba_table));
+        JS_AddModuleExportList(ctx, m, liba_proto, A_LEN(liba_proto));
     }
     return m;
 }
 
-JSValue js_concat(JSContext *const ctx, JSValueConst const val)
+JSValue js_concat(JSContext *ctx, JSValueConst val)
 {
     JSValue this_val = JS_NewArray(ctx);
     JSValueConst argv[] = {this_val, val};
@@ -125,7 +125,7 @@ JSValue js_concat(JSContext *const ctx, JSValueConst const val)
     return res;
 }
 
-int js_array_length(JSContext *const ctx, JSValueConst const val, a_u32 *const plen)
+int js_array_length(JSContext *ctx, JSValueConst val, a_u32 *plen)
 {
     JSValue length = JS_GetPropertyStr(ctx, val, "length");
     if (JS_IsException(length)) { return ~0; }
@@ -134,7 +134,7 @@ int js_array_length(JSContext *const ctx, JSValueConst const val, a_u32 *const p
     return ret;
 }
 
-int js_array_num_get(JSContext *const ctx, JSValueConst const val, a_float *const ptr, a_u32 const len)
+int js_array_num_get(JSContext *ctx, JSValueConst val, a_float *ptr, a_u32 len)
 {
     for (unsigned int i = 0; i < len; ++i)
     {
@@ -149,7 +149,7 @@ int js_array_num_get(JSContext *const ctx, JSValueConst const val, a_float *cons
     return 0;
 }
 
-JSValue js_array_num_new(JSContext *const ctx, a_float const *const ptr, a_u32 const len)
+JSValue js_array_num_new(JSContext *ctx, a_float const *ptr, a_u32 len)
 {
     JSValue val = JS_NewArray(ctx);
     if (JS_IsException(val)) { return val; }

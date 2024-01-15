@@ -29,25 +29,25 @@ typedef struct a_buf
  @brief access address of buffer for a pointer to buffer structure
  @param[in] ctx points to an instance of buffer structure
 */
-A_INTERN void *a_buf_ptr(a_buf const *const ctx) { return ctx->_ptr; }
+A_INTERN void *a_buf_ptr(a_buf const *ctx) { return ctx->_ptr; }
 
 /*!
  @brief access number of element for a pointer to buffer structure
  @param[in] ctx points to an instance of buffer structure
 */
-A_INTERN a_size a_buf_num(a_buf const *const ctx) { return ctx->_num; }
+A_INTERN a_size a_buf_num(a_buf const *ctx) { return ctx->_num; }
 
 /*!
  @brief access memory of element for a pointer to buffer structure
  @param[in] ctx points to an instance of buffer structure
 */
-A_INTERN a_size a_buf_mem(a_buf const *const ctx) { return ctx->_mem; }
+A_INTERN a_size a_buf_mem(a_buf const *ctx) { return ctx->_mem; }
 
 /*!
  @brief access size of a element for a pointer to buffer structure
  @param[in] ctx points to an instance of buffer structure
 */
-A_INTERN a_size a_buf_siz(a_buf const *const ctx) { return ctx->_siz; }
+A_INTERN a_size a_buf_siz(a_buf const *ctx) { return ctx->_siz; }
 
 /*!
  @brief access specified element for a pointer to buffer structure
@@ -56,7 +56,7 @@ A_INTERN a_size a_buf_siz(a_buf const *const ctx) { return ctx->_siz; }
  @note should check for out of bounds
  @return specified element pointer
 */
-A_INTERN void *a_buf_at_(a_buf const *const ctx, a_size const idx)
+A_INTERN void *a_buf_at_(a_buf const *ctx, a_size idx)
 {
     return a_byte_(*, ctx->_ptr) + ctx->_siz * idx;
 }
@@ -68,7 +68,7 @@ A_INTERN void *a_buf_at_(a_buf const *const ctx, a_size const idx)
  @return specified element pointer
   @retval 0 out of bounds
 */
-A_INTERN void *a_buf_at(a_buf const *const ctx, a_size const idx)
+A_INTERN void *a_buf_at(a_buf const *ctx, a_size idx)
 {
     return a_likely(idx < ctx->_mem) ? a_buf_at_(ctx, idx) : A_NULL;
 }
@@ -80,7 +80,7 @@ A_INTERN void *a_buf_at(a_buf const *const ctx, a_size const idx)
  @return specified element pointer
   @retval 0 out of bounds
 */
-A_INTERN void *a_buf_idx(a_buf const *const ctx, a_diff const idx)
+A_INTERN void *a_buf_idx(a_buf const *ctx, a_diff idx)
 {
     a_size const num = idx < 0 ? a_size_c(idx) + ctx->_num : a_size_c(idx);
     return a_likely(num < ctx->_mem) ? a_buf_at_(ctx, num) : A_NULL;
@@ -92,7 +92,7 @@ A_INTERN void *a_buf_idx(a_buf const *const ctx, a_diff const idx)
  @note should check if buffer is empty
  @return specified element pointer
 */
-A_INTERN void *a_buf_top_(a_buf const *const ctx)
+A_INTERN void *a_buf_top_(a_buf const *ctx)
 {
     return a_byte_(*, ctx->_ptr) + ctx->_siz * (ctx->_num - 1);
 }
@@ -103,7 +103,7 @@ A_INTERN void *a_buf_top_(a_buf const *const ctx)
  @return specified element pointer
   @retval 0 empty buffer
 */
-A_INTERN void *a_buf_top(a_buf const *const ctx)
+A_INTERN void *a_buf_top(a_buf const *ctx)
 {
     return a_likely(ctx->_num) ? a_buf_top_(ctx) : A_NULL;
 }
@@ -113,7 +113,7 @@ A_INTERN void *a_buf_top(a_buf const *const ctx)
  @param[in] ctx points to an instance of buffer structure
  @return buffer end pointer
 */
-A_INTERN void *a_buf_end(a_buf const *const ctx)
+A_INTERN void *a_buf_end(a_buf const *ctx)
 {
     return a_byte_(*, ctx->_ptr) + ctx->_siz * ctx->_num;
 }

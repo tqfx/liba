@@ -11,7 +11,7 @@
  @tparam a.pid_fuzzy ctx fuzzy PID controller userdata
  @function die
 */
-int liba_pid_fuzzy_die(lua_State *const L)
+int liba_pid_fuzzy_die(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
@@ -38,7 +38,7 @@ int liba_pid_fuzzy_die(lua_State *const L)
  @treturn a.pid_fuzzy fuzzy PID controller userdata
  @function new
 */
-int liba_pid_fuzzy_new(lua_State *const L)
+int liba_pid_fuzzy_new(lua_State *L)
 {
     a_pid_fuzzy *const ctx = lua_newclass(L, a_pid_fuzzy);
     a_zero(ctx, sizeof(a_pid_fuzzy));
@@ -60,7 +60,7 @@ int liba_pid_fuzzy_new(lua_State *const L)
  @treturn a.pid_fuzzy fuzzy PID controller userdata
  @function init
 */
-int liba_pid_fuzzy_init(lua_State *const L)
+int liba_pid_fuzzy_init(lua_State *L)
 {
     luaL_checktype(L, 1, LUA_TUSERDATA);
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
@@ -80,7 +80,7 @@ int liba_pid_fuzzy_init(lua_State *const L)
  @treturn a.pid_fuzzy fuzzy PID controller userdata
  @function zero
 */
-int liba_pid_fuzzy_zero(lua_State *const L)
+int liba_pid_fuzzy_zero(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
@@ -98,7 +98,7 @@ int liba_pid_fuzzy_zero(lua_State *const L)
  @treturn a.pid_fuzzy fuzzy PID controller userdata
  @function op
 */
-int liba_pid_fuzzy_op(lua_State *const L)
+int liba_pid_fuzzy_op(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
@@ -121,7 +121,7 @@ int liba_pid_fuzzy_op(lua_State *const L)
  @treturn a.pid_fuzzy fuzzy PID controller userdata
  @function rule
 */
-int liba_pid_fuzzy_rule(lua_State *const L)
+int liba_pid_fuzzy_rule(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
@@ -146,7 +146,7 @@ int liba_pid_fuzzy_rule(lua_State *const L)
  @treturn a.pid_fuzzy fuzzy PID controller userdata
  @function set_joint
 */
-int liba_pid_fuzzy_joint(lua_State *const L)
+int liba_pid_fuzzy_joint(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
@@ -169,7 +169,7 @@ int liba_pid_fuzzy_joint(lua_State *const L)
  @treturn a.pid_fuzzy fuzzy PID controller userdata
  @function kpid
 */
-int liba_pid_fuzzy_kpid(lua_State *const L)
+int liba_pid_fuzzy_kpid(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
@@ -192,7 +192,7 @@ int liba_pid_fuzzy_kpid(lua_State *const L)
  @treturn number setpoint value
  @function run
 */
-int liba_pid_fuzzy_run(lua_State *const L)
+int liba_pid_fuzzy_run(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
@@ -213,7 +213,7 @@ int liba_pid_fuzzy_run(lua_State *const L)
  @treturn number output value
  @function pos
 */
-int liba_pid_fuzzy_pos(lua_State *const L)
+int liba_pid_fuzzy_pos(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
@@ -234,7 +234,7 @@ int liba_pid_fuzzy_pos(lua_State *const L)
  @treturn number output value
  @function inc
 */
-int liba_pid_fuzzy_inc(lua_State *const L)
+int liba_pid_fuzzy_inc(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
@@ -247,7 +247,7 @@ int liba_pid_fuzzy_inc(lua_State *const L)
     return 0;
 }
 
-static int liba_pid_fuzzy_set(lua_State *const L)
+static int liba_pid_fuzzy_set(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
@@ -293,7 +293,7 @@ static int liba_pid_fuzzy_set(lua_State *const L)
     return 0;
 }
 
-static int liba_pid_fuzzy_get(lua_State *const L)
+static int liba_pid_fuzzy_get(lua_State *L)
 {
     a_pid_fuzzy const *const ctx = (a_pid_fuzzy const *)lua_touserdata(L, 1);
     switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
@@ -357,7 +357,7 @@ static int liba_pid_fuzzy_get(lua_State *const L)
     return 1;
 }
 
-static int liba_pid_fuzzy_(lua_State *const L)
+static int liba_pid_fuzzy_(lua_State *L)
 {
     lua_pushcfunction(L, liba_pid_fuzzy_new);
     lua_replace(L, 1);
@@ -365,7 +365,7 @@ static int liba_pid_fuzzy_(lua_State *const L)
     return 1;
 }
 
-int luaopen_liba_pid_fuzzy(lua_State *const L)
+int luaopen_liba_pid_fuzzy(lua_State *L)
 {
     /***
      enumeration for fuzzy relational operator

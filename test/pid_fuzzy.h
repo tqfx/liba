@@ -187,5 +187,9 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_tf_zero(&pos_tf);
     a_tf_zero(&inc_tf);
 
+#if defined(__cplusplus) && (__cplusplus > 201100L)
+    A_ASSERT_BUILD(std::is_pod<a_pid_fuzzy>::value);
+#endif /* __cplusplus */
+
     return 0;
 }

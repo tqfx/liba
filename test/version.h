@@ -5,10 +5,11 @@
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
 #if defined(__cplusplus)
-    a::version v000 = a::version();
-    a::version v100 = a::version(1);
-    a::version v010 = a::version(".1");
-    a::version v001 = a::version(0, 0, 1);
+    a::version v000 = A_VERSION_C(0, 0, 0);
+    a::version v100 = A_VERSION_C(1, 0, 0);
+    a::version v010 = A_VERSION_C(0, 1, 0);
+    a::version v001 = A_VERSION_C(0, 0, 1);
+    v010.parse(".1");
 
     TEST_BUG(v000 == v000);
     TEST_BUG(v000 != v001);
@@ -34,6 +35,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     TEST_BUG(v010 >= v010);
     TEST_BUG(v100 >= v010);
     TEST_BUG(v100 >= v100);
+
 #else /* !__cplusplus */
     a_version v000 = A_VERSION_C(0, 0, 0);
     a_version v100 = A_VERSION_C(1, 0, 0);
@@ -72,6 +74,9 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     TEST_BUG(a_version_cmp(&v010, &v001) > 0);
     TEST_BUG(a_version_cmp(&v001, &v000) > 0);
     TEST_BUG(a_version_cmp(&v000, &v000) == 0);
+#endif /* __cplusplus */
+#if defined(__cplusplus) && (__cplusplus > 201100L)
+    A_ASSERT_BUILD(std::is_pod<a_version>::value);
 #endif /* __cplusplus */
     for (int i = 0; i < argc; ++i)
     {

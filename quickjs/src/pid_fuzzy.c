@@ -3,7 +3,7 @@
 
 static JSClassID liba_pid_fuzzy_class_id;
 
-static void liba_pid_fuzzy_finalizer(JSRuntime *const rt, JSValue const val)
+static void liba_pid_fuzzy_finalizer(JSRuntime *rt, JSValue val)
 {
     a_pid_fuzzy *self = (a_pid_fuzzy *)JS_GetOpaque(val, liba_pid_fuzzy_class_id);
     union
@@ -22,7 +22,7 @@ static void liba_pid_fuzzy_finalizer(JSRuntime *const rt, JSValue const val)
 
 static JSClassDef liba_pid_fuzzy_class = {"pid_fuzzy", .finalizer = liba_pid_fuzzy_finalizer};
 
-static JSValue liba_pid_fuzzy_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
+static JSValue liba_pid_fuzzy_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)argv;
@@ -50,7 +50,7 @@ fail:
     return JS_EXCEPTION;
 }
 
-static JSValue liba_pid_fuzzy_get(JSContext *const ctx, JSValueConst const this_val, int magic)
+static JSValue liba_pid_fuzzy_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -74,7 +74,7 @@ static JSValue liba_pid_fuzzy_get(JSContext *const ctx, JSValueConst const this_
     return JS_NewFloat64(ctx, x);
 }
 
-static int liba_pid_fuzzy_joint_(JSContext *const ctx, a_pid_fuzzy *const self, unsigned int joint)
+static int liba_pid_fuzzy_joint_(JSContext *ctx, a_pid_fuzzy *self, unsigned int joint)
 {
     void *ptr = a_pid_fuzzy_joint(self);
     if (joint > self->joint)
@@ -86,7 +86,7 @@ static int liba_pid_fuzzy_joint_(JSContext *const ctx, a_pid_fuzzy *const self, 
     return 0;
 }
 
-static JSValue liba_pid_fuzzy_set(JSContext *const ctx, JSValueConst const this_val, JSValueConst const val, int magic)
+static JSValue liba_pid_fuzzy_set(JSContext *ctx, JSValueConst this_val, JSValueConst val, int magic)
 {
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -113,7 +113,7 @@ static JSValue liba_pid_fuzzy_set(JSContext *const ctx, JSValueConst const this_
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_fuzzy_op(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_fuzzy_op(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
@@ -124,7 +124,7 @@ static JSValue liba_pid_fuzzy_op(JSContext *const ctx, JSValueConst const this_v
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_fuzzy_rule(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_fuzzy_rule(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
@@ -219,7 +219,7 @@ fail:
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_fuzzy_joint(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_fuzzy_joint(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
@@ -230,7 +230,7 @@ static JSValue liba_pid_fuzzy_joint(JSContext *const ctx, JSValueConst const thi
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_fuzzy_kpid(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_fuzzy_kpid(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
@@ -244,7 +244,7 @@ static JSValue liba_pid_fuzzy_kpid(JSContext *const ctx, JSValueConst const this
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_fuzzy_zero(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_fuzzy_zero(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     (void)argv;
@@ -254,7 +254,7 @@ static JSValue liba_pid_fuzzy_zero(JSContext *const ctx, JSValueConst const this
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_fuzzy_run(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_fuzzy_run(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
@@ -267,7 +267,7 @@ static JSValue liba_pid_fuzzy_run(JSContext *const ctx, JSValueConst const this_
     return JS_NewFloat64(ctx, (double)a_pid_fuzzy_run(self, (a_float)args[0], (a_float)args[1]));
 }
 
-static JSValue liba_pid_fuzzy_pos(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_fuzzy_pos(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
@@ -280,7 +280,7 @@ static JSValue liba_pid_fuzzy_pos(JSContext *const ctx, JSValueConst const this_
     return JS_NewFloat64(ctx, (double)a_pid_fuzzy_pos(self, (a_float)args[0], (a_float)args[1]));
 }
 
-static JSValue liba_pid_fuzzy_inc(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_pid_fuzzy_inc(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
@@ -317,7 +317,7 @@ static JSCFunctionListEntry const liba_pid_fuzzy_proto[] = {
     JS_CFUNC_DEF("inc", 2, liba_pid_fuzzy_inc),
 };
 
-int js_liba_pid_fuzzy_init(JSContext *const ctx, JSModuleDef *const m)
+int js_liba_pid_fuzzy_init(JSContext *ctx, JSModuleDef *m)
 {
     JS_NewClassID(&liba_pid_fuzzy_class_id);
     JS_NewClass(JS_GetRuntime(ctx), liba_pid_fuzzy_class_id, &liba_pid_fuzzy_class);

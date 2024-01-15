@@ -1,6 +1,6 @@
 #include "a/utf.h"
 
-unsigned int a_utf_encode(void *const _str, a_u32 const val)
+unsigned int a_utf_encode(void *_str, a_u32 val)
 {
     a_u32 mask = 0;
     unsigned int offset = 0;
@@ -81,7 +81,7 @@ unsigned int a_utf_encode(void *const _str, a_u32 const val)
     return offset;
 }
 
-unsigned int a_utf_decode(void const *const _str, a_u32 *const val)
+unsigned int a_utf_decode(void const *_str, a_u32 *val)
 {
     a_byte const *str = (a_byte const *)_str;
     unsigned int offset = 0;
@@ -107,10 +107,15 @@ unsigned int a_utf_decode(void const *const _str, a_u32 *const val)
     return offset + 1;
 }
 
-a_size a_utf_length(void const *const _str)
+a_size a_utf_length(void const *_str)
 {
     a_size length = 0;
     char const *str = (char const *)_str;
-    for (unsigned int offset; (void)(offset = a_utf_decode(str, A_NULL)), offset; str += offset) { ++length; }
+    unsigned int offset = a_utf_decode(str, A_NULL);
+    for (; offset; offset = a_utf_decode(str, A_NULL))
+    {
+        str += offset;
+        ++length;
+    }
     return length;
 }

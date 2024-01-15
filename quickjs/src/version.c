@@ -3,14 +3,14 @@
 
 static JSClassID liba_version_class_id;
 
-static void liba_version_finalizer(JSRuntime *const rt, JSValue const val)
+static void liba_version_finalizer(JSRuntime *rt, JSValue val)
 {
     js_free_rt(rt, JS_GetOpaque(val, liba_version_class_id));
 }
 
 static JSClassDef liba_version_class = {"version", .finalizer = liba_version_finalizer};
 
-static JSValue liba_version_ctor(JSContext *const ctx, JSValueConst const new_target, int argc, JSValueConst *const argv)
+static JSValue liba_version_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
     JSValue proto, clazz = JS_UNDEFINED;
     a_version *const self = (a_version *)js_mallocz(ctx, sizeof(a_version));
@@ -54,7 +54,7 @@ fail:
     return JS_EXCEPTION;
 }
 
-static JSValue liba_version_get(JSContext *const ctx, JSValueConst const this_val, int magic)
+static JSValue liba_version_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -70,7 +70,7 @@ static JSValue liba_version_get(JSContext *const ctx, JSValueConst const this_va
     return JS_NewUint32(ctx, ver);
 }
 
-static JSValue liba_version_set(JSContext *const ctx, JSValueConst const this_val, JSValueConst const val, int magic)
+static JSValue liba_version_set(JSContext *ctx, JSValueConst this_val, JSValueConst val, int magic)
 {
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -87,7 +87,7 @@ static JSValue liba_version_set(JSContext *const ctx, JSValueConst const this_va
     return JS_UNDEFINED;
 }
 
-static JSValue liba_version_check(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_version_check(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)this_val;
     a_u32 args[] = {0, 0, 0};
@@ -100,7 +100,7 @@ static JSValue liba_version_check(JSContext *const ctx, JSValueConst const this_
     return JS_NewInt32(ctx, a_version_check((unsigned int)args[0], (unsigned int)args[1], (unsigned int)args[2]));
 }
 
-static JSValue liba_version_parse(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_version_parse(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
@@ -112,7 +112,7 @@ static JSValue liba_version_parse(JSContext *const ctx, JSValueConst const this_
     return JS_UNDEFINED;
 }
 
-static JSValue liba_version_cmp(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_version_cmp(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
@@ -122,7 +122,7 @@ static JSValue liba_version_cmp(JSContext *const ctx, JSValueConst const this_va
     return JS_NewInt32(ctx, a_version_cmp(self, other));
 }
 
-static JSValue liba_version_lt(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_version_lt(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
@@ -132,7 +132,7 @@ static JSValue liba_version_lt(JSContext *const ctx, JSValueConst const this_val
     return JS_NewBool(ctx, a_version_lt(self, other));
 }
 
-static JSValue liba_version_gt(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_version_gt(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
@@ -142,7 +142,7 @@ static JSValue liba_version_gt(JSContext *const ctx, JSValueConst const this_val
     return JS_NewBool(ctx, a_version_gt(self, other));
 }
 
-static JSValue liba_version_le(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_version_le(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
@@ -152,7 +152,7 @@ static JSValue liba_version_le(JSContext *const ctx, JSValueConst const this_val
     return JS_NewBool(ctx, a_version_le(self, other));
 }
 
-static JSValue liba_version_ge(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_version_ge(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
@@ -162,7 +162,7 @@ static JSValue liba_version_ge(JSContext *const ctx, JSValueConst const this_val
     return JS_NewBool(ctx, a_version_ge(self, other));
 }
 
-static JSValue liba_version_eq(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_version_eq(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
@@ -172,7 +172,7 @@ static JSValue liba_version_eq(JSContext *const ctx, JSValueConst const this_val
     return JS_NewBool(ctx, a_version_eq(self, other));
 }
 
-static JSValue liba_version_ne(JSContext *const ctx, JSValueConst const this_val, int argc, JSValueConst *const argv)
+static JSValue liba_version_ne(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
@@ -198,7 +198,7 @@ static JSCFunctionListEntry const liba_version_proto[] = {
     JS_CFUNC_DEF("ne", 1, liba_version_ne),
 };
 
-int js_liba_version_init(JSContext *const ctx, JSModuleDef *const m)
+int js_liba_version_init(JSContext *ctx, JSModuleDef *m)
 {
     JS_NewClassID(&liba_version_class_id);
     JS_NewClass(JS_GetRuntime(ctx), liba_version_class_id, &liba_version_class);

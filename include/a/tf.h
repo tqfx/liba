@@ -14,20 +14,13 @@
  @{
 */
 
-/*!
- @brief instance structure for transfer function
-*/
-typedef struct a_tf
-{
-    a_float *input; //!< input
-    a_float *output; //!< output
-    a_float const *num_p; //!< numerator
-    a_float const *den_p; //!< denominator
-    unsigned int num_n; //!< numerator number
-    unsigned int den_n; //!< denominator number
-} a_tf;
+typedef struct a_tf a_tf;
 
 #if defined(__cplusplus)
+namespace a
+{
+typedef struct a_tf tf;
+} /* namespace a */
 extern "C" {
 #endif /* __cplusplus */
 
@@ -80,6 +73,39 @@ A_EXTERN void a_tf_zero(a_tf const *ctx);
 #if defined(__cplusplus)
 } /* extern "C" */
 #endif /* __cplusplus */
+
+/*!
+ @brief instance structure for transfer function
+*/
+struct a_tf
+{
+    a_float *input; //!< input
+    a_float *output; //!< output
+    a_float const *num_p; //!< numerator
+    a_float const *den_p; //!< denominator
+    unsigned int num_n; //!< numerator number
+    unsigned int den_n; //!< denominator number
+#if defined(__cplusplus)
+    A_INLINE void init(unsigned int _num_n, a_float const *_num_p, a_float *_input,
+                       unsigned int _den_n, a_float const *_den_p, a_float *_output)
+    {
+        a_tf_init(this, _num_n, _num_p, _input, _den_n, _den_p, _output);
+    }
+    A_INLINE void set_num(unsigned int _num_n, a_float const *_num_p, a_float *_input)
+    {
+        a_tf_set_num(this, _num_n, _num_p, _input);
+    }
+    A_INLINE void set_den(unsigned int _den_n, a_float const *_den_p, a_float *_output)
+    {
+        a_tf_set_den(this, _den_n, _den_p, _output);
+    }
+    A_INLINE a_float operator()(a_float x)
+    {
+        return a_tf_iter(this, x);
+    }
+    A_INLINE void zero() { a_tf_zero(this); }
+#endif /* __cplusplus */
+};
 
 /*! @} A_TF */
 

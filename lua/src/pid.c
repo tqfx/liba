@@ -11,7 +11,7 @@
  @treturn a.pid PID controller userdata
  @function new
 */
-int liba_pid_new(lua_State *const L)
+int liba_pid_new(lua_State *L)
 {
     a_pid *const ctx = lua_newclass(L, a_pid);
     a_zero(ctx, sizeof(a_pid));
@@ -32,7 +32,7 @@ int liba_pid_new(lua_State *const L)
  @treturn a.pid PID controller userdata
  @function init
 */
-int liba_pid_init(lua_State *const L)
+int liba_pid_init(lua_State *L)
 {
     luaL_checktype(L, 1, LUA_TUSERDATA);
     a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
@@ -51,7 +51,7 @@ int liba_pid_init(lua_State *const L)
  @treturn a.pid PID controller userdata
  @function zero
 */
-int liba_pid_zero(lua_State *const L)
+int liba_pid_zero(lua_State *L)
 {
     a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
     if (ctx)
@@ -71,7 +71,7 @@ int liba_pid_zero(lua_State *const L)
  @treturn a.pid PID controller userdata
  @function kpid
 */
-int liba_pid_kpid(lua_State *const L)
+int liba_pid_kpid(lua_State *L)
 {
     a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
     if (ctx)
@@ -94,7 +94,7 @@ int liba_pid_kpid(lua_State *const L)
  @treturn number setpoint value
  @function run
 */
-int liba_pid_run(lua_State *const L)
+int liba_pid_run(lua_State *L)
 {
     a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
     if (ctx)
@@ -115,7 +115,7 @@ int liba_pid_run(lua_State *const L)
  @treturn number output value
  @function pos
 */
-int liba_pid_pos(lua_State *const L)
+int liba_pid_pos(lua_State *L)
 {
     a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
     if (ctx)
@@ -136,7 +136,7 @@ int liba_pid_pos(lua_State *const L)
  @treturn number output value
  @function inc
 */
-int liba_pid_inc(lua_State *const L)
+int liba_pid_inc(lua_State *L)
 {
     a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
     if (ctx)
@@ -149,7 +149,7 @@ int liba_pid_inc(lua_State *const L)
     return 0;
 }
 
-static int liba_pid_set(lua_State *const L)
+static int liba_pid_set(lua_State *L)
 {
     a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
     switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
@@ -188,7 +188,7 @@ static int liba_pid_set(lua_State *const L)
     return 0;
 }
 
-static int liba_pid_get(lua_State *const L)
+static int liba_pid_get(lua_State *L)
 {
     a_pid const *const ctx = (a_pid const *)lua_touserdata(L, 1);
     switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
@@ -244,7 +244,7 @@ static int liba_pid_get(lua_State *const L)
     return 1;
 }
 
-static int liba_pid_(lua_State *const L)
+static int liba_pid_(lua_State *L)
 {
     lua_pushcfunction(L, liba_pid_new);
     lua_replace(L, 1);
@@ -252,7 +252,7 @@ static int liba_pid_(lua_State *const L)
     return 1;
 }
 
-int luaopen_liba_pid(lua_State *const L)
+int luaopen_liba_pid(lua_State *L)
 {
     /***
      enumeration for PID controller

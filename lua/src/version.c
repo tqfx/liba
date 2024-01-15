@@ -6,7 +6,7 @@
 #include "version.h"
 #include "a/version.h"
 
-static int liba_version_tostring(lua_State *const L)
+static int liba_version_tostring(lua_State *L)
 {
     a_version const *const ctx = (a_version const *)lua_touserdata(L, 1);
     if (ctx)
@@ -17,7 +17,7 @@ static int liba_version_tostring(lua_State *const L)
     return 0;
 }
 
-static int liba_version_init_(lua_State *const L, a_version *const ctx, int const arg, int const top)
+static int liba_version_init_(lua_State *L, a_version *ctx, int arg, int top)
 {
     switch (top)
     {
@@ -53,7 +53,7 @@ static int liba_version_init_(lua_State *const L, a_version *const ctx, int cons
  @treturn a.version algorithm library version userdata
  @function new
 */
-int liba_version_new(lua_State *const L)
+int liba_version_new(lua_State *L)
 {
     int const top = lua_gettop(L);
     a_version *const ctx = lua_newclass(L, a_version);
@@ -73,7 +73,7 @@ int liba_version_new(lua_State *const L)
  @treturn a.version algorithm library version userdata
  @function init
 */
-int liba_version_init(lua_State *const L)
+int liba_version_init(lua_State *L)
 {
     int const top = lua_gettop(L);
     luaL_checktype(L, 1, LUA_TUSERDATA);
@@ -89,7 +89,7 @@ int liba_version_init(lua_State *const L)
  @treturn a.version algorithm library version userdata
  @function parse
 */
-int liba_version_parse(lua_State *const L)
+int liba_version_parse(lua_State *L)
 {
     a_version *const ctx = (a_version *)lua_touserdata(L, 1);
     if (ctx)
@@ -111,7 +111,7 @@ int liba_version_parse(lua_State *const L)
  @treturn integer 0 library version is equal to required version
  @function check
 */
-static int liba_version_check(lua_State *const L)
+static int liba_version_check(lua_State *L)
 {
     a_version v = A_VERSION_C(0, 0, 0);
     switch (lua_gettop(L) & 0x3)
@@ -142,7 +142,7 @@ static int liba_version_check(lua_State *const L)
  @treturn integer 0 version lhs == version rhs
  @function cmp
 */
-int liba_version_cmp(lua_State *const L)
+int liba_version_cmp(lua_State *L)
 {
     luaL_checktype(L, 1, LUA_TUSERDATA);
     luaL_checktype(L, 2, LUA_TUSERDATA);
@@ -154,7 +154,7 @@ int liba_version_cmp(lua_State *const L)
 
 #undef FUNC
 #define FUNC(func)                                          \
-    int liba_version_##func(lua_State *const L)             \
+    int liba_version_##func(lua_State *L)                   \
     {                                                       \
         luaL_checktype(L, 1, LUA_TUSERDATA);                \
         luaL_checktype(L, 2, LUA_TUSERDATA);                \
@@ -212,7 +212,7 @@ FUNC(eq)
 */
 FUNC(ne)
 
-static int liba_version_set(lua_State *const L)
+static int liba_version_set(lua_State *L)
 {
     a_version *const ctx = (a_version *)lua_touserdata(L, 1);
     switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
@@ -246,7 +246,7 @@ static int liba_version_set(lua_State *const L)
     return 0;
 }
 
-static int liba_version_get(lua_State *const L)
+static int liba_version_get(lua_State *L)
 {
     a_version const *const ctx = (a_version const *)lua_touserdata(L, 1);
     switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
@@ -278,7 +278,7 @@ static int liba_version_get(lua_State *const L)
     return 1;
 }
 
-static int liba_version_(lua_State *const L)
+static int liba_version_(lua_State *L)
 {
     lua_pushcfunction(L, liba_version_new);
     lua_replace(L, 1);
@@ -286,7 +286,7 @@ static int liba_version_(lua_State *const L)
     return 1;
 }
 
-int luaopen_liba_version(lua_State *const L)
+int luaopen_liba_version(lua_State *L)
 {
     /***
      algorithm library version number

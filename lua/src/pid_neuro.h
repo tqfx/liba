@@ -3,8 +3,8 @@
  @classmod a.pid_neuro
 */
 
-#ifndef LUA_LIBA_PID_NEURON_H
-#define LUA_LIBA_PID_NEURON_H
+#ifndef LUA_LIBA_PID_NEURO_H
+#define LUA_LIBA_PID_NEURO_H
 
 #include "a.h"
 

@@ -124,5 +124,9 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
               A_FLOAT_C(0.001) * a_float_c(i), A_FLOAT_C(1.0), *ctx.output);
     }
 
+#if defined(__cplusplus) && (__cplusplus > 201100L)
+    A_ASSERT_BUILD(std::is_pod<a_tf>::value);
+#endif /* __cplusplus */
+
     return 0;
 }
