@@ -9,72 +9,72 @@ static struct
     jfieldID ctx;
 } L = {NULL};
 
-JNIEXPORT void JNICALL Java_liba_hpf_INIT(JNIEnv *jenv, jclass jcls)
+JNIEXPORT void JNICALL Java_liba_hpf_INIT(JNIEnv *_env, jclass _cls)
 {
-    L.ctx = (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B");
+    L.ctx = (*_env)->GetFieldID(_env, _cls, "ctx", "[B");
 }
 
-JNIEXPORT void JNICALL Java_liba_hpf_init(JNIEnv *jenv, jobject jobj, jdouble fc, jdouble ts)
+JNIEXPORT void JNICALL Java_liba_hpf_init(JNIEnv *_env, jobject _obj, jdouble fc, jdouble ts)
 {
     a_hpf ctx;
-    jbyteArray jctx = (*jenv)->NewByteArray(jenv, sizeof(a_hpf));
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->NewByteArray(_env, sizeof(a_hpf));
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
     a_hpf_init(&ctx, A_HPF_GEN(fc, ts));
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
-    (*jenv)->SetObjectField(jenv, jobj, L.ctx, jctx);
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
+    (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_hpf_alpha(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_hpf_alpha(JNIEnv *_env, jobject _obj)
 {
     a_hpf ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
     return ctx.alpha;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_hpf_output(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_hpf_output(JNIEnv *_env, jobject _obj)
 {
     a_hpf ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
     return ctx.output;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_hpf_input(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_hpf_input(JNIEnv *_env, jobject _obj)
 {
     a_hpf ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
     return ctx.input;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_hpf_gen(JNIEnv *jenv, jobject jobj, jdouble fc, jdouble ts)
+JNIEXPORT jobject JNICALL Java_liba_hpf_gen(JNIEnv *_env, jobject _obj, jdouble fc, jdouble ts)
 {
     a_hpf ctx;
-    jbyteArray jctx = (*jenv)->NewByteArray(jenv, sizeof(a_hpf));
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->NewByteArray(_env, sizeof(a_hpf));
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
     ctx.alpha = A_HPF_GEN(fc, ts);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
-    (*jenv)->SetObjectField(jenv, jobj, L.ctx, jctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
+    (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_hpf_iter(JNIEnv *jenv, jobject jobj, jdouble x)
+JNIEXPORT jdouble JNICALL Java_liba_hpf_iter(JNIEnv *_env, jobject _obj, jdouble x)
 {
     a_hpf ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
-    jdouble jres = a_hpf_iter(&ctx, x);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
-    return jres;
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
+    jdouble res = a_hpf_iter(&ctx, x);
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
+    return res;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_hpf_zero(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jobject JNICALL Java_liba_hpf_zero(JNIEnv *_env, jobject _obj)
 {
     a_hpf ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
     a_hpf_zero(&ctx);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_hpf), (jbyte *)&ctx);
+    return _obj;
 }

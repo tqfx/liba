@@ -18,29 +18,29 @@ static struct
     jfieldID joint;
 } L = {NULL, NULL, NULL, NULL, NULL, NULL, NULL};
 
-JNIEXPORT void JNICALL Java_liba_pid_1fuzzy_INIT(JNIEnv *jenv, jclass jcls)
+JNIEXPORT void JNICALL Java_liba_pid_1fuzzy_INIT(JNIEnv *_env, jclass _cls)
 {
-    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "CAP", "I"), A_PID_FUZZY_CAP);
-    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "CAP_ALGEBRA", "I"), A_PID_FUZZY_CAP_ALGEBRA);
-    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "CAP_BOUNDED", "I"), A_PID_FUZZY_CAP_BOUNDED);
-    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "CUP", "I"), A_PID_FUZZY_CUP);
-    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "CUP_ALGEBRA", "I"), A_PID_FUZZY_CUP_ALGEBRA);
-    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "CUP_BOUNDED", "I"), A_PID_FUZZY_CUP_BOUNDED);
-    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "EQU", "I"), A_PID_FUZZY_EQU);
-    L.ctx = (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B");
-    L.me = (*jenv)->GetFieldID(jenv, jcls, "me", "[D");
-    L.mec = (*jenv)->GetFieldID(jenv, jcls, "mec", "[D");
-    L.mkp = (*jenv)->GetFieldID(jenv, jcls, "mkp", "[D");
-    L.mki = (*jenv)->GetFieldID(jenv, jcls, "mki", "[D");
-    L.mkd = (*jenv)->GetFieldID(jenv, jcls, "mkd", "[D");
-    L.joint = (*jenv)->GetFieldID(jenv, jcls, "joint", "[B");
+    (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "CAP", "I"), A_PID_FUZZY_CAP);
+    (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "CAP_ALGEBRA", "I"), A_PID_FUZZY_CAP_ALGEBRA);
+    (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "CAP_BOUNDED", "I"), A_PID_FUZZY_CAP_BOUNDED);
+    (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "CUP", "I"), A_PID_FUZZY_CUP);
+    (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "CUP_ALGEBRA", "I"), A_PID_FUZZY_CUP_ALGEBRA);
+    (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "CUP_BOUNDED", "I"), A_PID_FUZZY_CUP_BOUNDED);
+    (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "EQU", "I"), A_PID_FUZZY_EQU);
+    L.ctx = (*_env)->GetFieldID(_env, _cls, "ctx", "[B");
+    L.me = (*_env)->GetFieldID(_env, _cls, "me", "[D");
+    L.mec = (*_env)->GetFieldID(_env, _cls, "mec", "[D");
+    L.mkp = (*_env)->GetFieldID(_env, _cls, "mkp", "[D");
+    L.mki = (*_env)->GetFieldID(_env, _cls, "mki", "[D");
+    L.mkd = (*_env)->GetFieldID(_env, _cls, "mkd", "[D");
+    L.joint = (*_env)->GetFieldID(_env, _cls, "joint", "[B");
 }
 
-JNIEXPORT void JNICALL Java_liba_pid_1fuzzy_init(JNIEnv *jenv, jobject jobj)
+JNIEXPORT void JNICALL Java_liba_pid_1fuzzy_init(JNIEnv *_env, jobject _obj)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->NewByteArray(jenv, sizeof(a_pid_fuzzy));
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->NewByteArray(_env, sizeof(a_pid_fuzzy));
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     ctx.pid.kp = 1;
     ctx.pid.summax = +A_FLOAT_INF;
     ctx.pid.summin = -A_FLOAT_INF;
@@ -49,250 +49,250 @@ JNIEXPORT void JNICALL Java_liba_pid_1fuzzy_init(JNIEnv *jenv, jobject jobj)
     ctx.kp = 1;
     ctx.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
     a_pid_fuzzy_init(&ctx);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    (*jenv)->SetObjectField(jenv, jobj, L.ctx, jctx);
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_kp__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_kp__(JNIEnv *_env, jobject _obj)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     return ctx.kp;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_kp__D(JNIEnv *jenv, jobject jobj, jdouble kp)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_kp__D(JNIEnv *_env, jobject _obj, jdouble kp)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     ctx.pid.kp = ctx.kp = kp;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_ki__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_ki__(JNIEnv *_env, jobject _obj)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     return ctx.ki;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_ki__D(JNIEnv *jenv, jobject jobj, jdouble ki)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_ki__D(JNIEnv *_env, jobject _obj, jdouble ki)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     ctx.pid.ki = ctx.ki = ki;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_kd__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_kd__(JNIEnv *_env, jobject _obj)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     return ctx.kd;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_kd__D(JNIEnv *jenv, jobject jobj, jdouble kd)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_kd__D(JNIEnv *_env, jobject _obj, jdouble kd)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     ctx.pid.kd = ctx.kd = kd;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_summax__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_summax__(JNIEnv *_env, jobject _obj)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     return ctx.pid.summax;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_summax__D(JNIEnv *jenv, jobject jobj, jdouble summax)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_summax__D(JNIEnv *_env, jobject _obj, jdouble summax)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     ctx.pid.summax = summax;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_summin__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_summin__(JNIEnv *_env, jobject _obj)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     return ctx.pid.summin;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_summin__D(JNIEnv *jenv, jobject jobj, jdouble summin)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_summin__D(JNIEnv *_env, jobject _obj, jdouble summin)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     ctx.pid.summin = summin;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_outmax__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_outmax__(JNIEnv *_env, jobject _obj)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     return ctx.pid.outmax;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_outmax__D(JNIEnv *jenv, jobject jobj, jdouble outmax)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_outmax__D(JNIEnv *_env, jobject _obj, jdouble outmax)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     ctx.pid.outmax = outmax;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_outmin__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_outmin__(JNIEnv *_env, jobject _obj)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     return ctx.pid.outmin;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_outmin__D(JNIEnv *jenv, jobject jobj, jdouble outmin)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_outmin__D(JNIEnv *_env, jobject _obj, jdouble outmin)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     ctx.pid.outmin = outmin;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_out(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_out(JNIEnv *_env, jobject _obj)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     return ctx.pid.out;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_fdb(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_fdb(JNIEnv *_env, jobject _obj)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     return ctx.pid.fdb;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_err(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_err(JNIEnv *_env, jobject _obj)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     return ctx.pid.err;
 }
 
-JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_order(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_order(JNIEnv *_env, jobject _obj)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     return (jint)ctx.order;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_op(JNIEnv *jenv, jobject jobj, jint op)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_op(JNIEnv *_env, jobject _obj, jint op)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     a_pid_fuzzy_set_op(&ctx, (unsigned int)op);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    return _obj;
 }
 
-static jobject concat(JNIEnv *jenv, jobjectArray jval)
+static jobject concat(JNIEnv *_env, jobjectArray _val)
 {
     jsize length = 0;
-    jsize num = (*jenv)->GetArrayLength(jenv, jval);
+    jsize num = (*_env)->GetArrayLength(_env, _val);
     for (jsize idx = 0; idx != num; ++idx)
     {
-        jobject o = (*jenv)->GetObjectArrayElement(jenv, jval, idx);
-        length += (*jenv)->GetArrayLength(jenv, o);
-        (*jenv)->DeleteLocalRef(jenv, o);
+        jobject o = (*_env)->GetObjectArrayElement(_env, _val, idx);
+        length += (*_env)->GetArrayLength(_env, o);
+        (*_env)->DeleteLocalRef(_env, o);
     }
-    jobject obj = (*jenv)->NewDoubleArray(jenv, length);
-    jdouble *val = (*jenv)->GetDoubleArrayElements(jenv, obj, NULL), *jptr = val;
-    for (jsize idx = 0, jnum = 0; idx != num; ++idx, jptr += jnum)
+    jobject obj = (*_env)->NewDoubleArray(_env, length);
+    jdouble *val = (*_env)->GetDoubleArrayElements(_env, obj, NULL), *_ptr = val;
+    for (jsize idx = 0, _num = 0; idx != num; ++idx, _ptr += _num)
     {
-        jobject o = (*jenv)->GetObjectArrayElement(jenv, jval, idx);
-        jnum = (*jenv)->GetArrayLength(jenv, o);
-        (*jenv)->GetDoubleArrayRegion(jenv, o, 0, jnum, jptr);
-        (*jenv)->DeleteLocalRef(jenv, o);
+        jobject o = (*_env)->GetObjectArrayElement(_env, _val, idx);
+        _num = (*_env)->GetArrayLength(_env, o);
+        (*_env)->GetDoubleArrayRegion(_env, o, 0, _num, _ptr);
+        (*_env)->DeleteLocalRef(_env, o);
     }
-    (*jenv)->ReleaseDoubleArrayElements(jenv, obj, val, 0);
+    (*_env)->ReleaseDoubleArrayElements(_env, obj, val, 0);
     return obj;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_rule(JNIEnv *jenv, jobject jobj, jobjectArray me, jobjectArray mec,
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_rule(JNIEnv *_env, jobject _obj, jobjectArray me, jobjectArray mec,
                                                     jobjectArray mkp, jobjectArray mki, jobjectArray mkd)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    ctx.order = (unsigned int)(*jenv)->GetArrayLength(jenv, me);
-    (*jenv)->SetObjectField(jenv, jobj, L.me, concat(jenv, me));
-    (*jenv)->SetObjectField(jenv, jobj, L.mec, concat(jenv, mec));
-    (*jenv)->SetObjectField(jenv, jobj, L.mkp, concat(jenv, mkp));
-    (*jenv)->SetObjectField(jenv, jobj, L.mki, concat(jenv, mki));
-    (*jenv)->SetObjectField(jenv, jobj, L.mkd, concat(jenv, mkd));
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    return jobj;
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    ctx.order = (unsigned int)(*_env)->GetArrayLength(_env, me);
+    (*_env)->SetObjectField(_env, _obj, L.me, concat(_env, me));
+    (*_env)->SetObjectField(_env, _obj, L.mec, concat(_env, mec));
+    (*_env)->SetObjectField(_env, _obj, L.mkp, concat(_env, mkp));
+    (*_env)->SetObjectField(_env, _obj, L.mki, concat(_env, mki));
+    (*_env)->SetObjectField(_env, _obj, L.mkd, concat(_env, mkd));
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_joint__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_joint__(JNIEnv *_env, jobject _obj)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     return (jint)ctx.joint;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_joint__I(JNIEnv *jenv, jobject jobj, jint num)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_joint__I(JNIEnv *_env, jobject _obj, jint num)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     if (ctx.joint != (unsigned int)num)
     {
         ctx.joint = (unsigned int)num;
-        (*jenv)->SetObjectField(jenv, jobj, L.joint, (*jenv)->NewByteArray(jenv, (jsize)A_PID_FUZZY_JOINT(ctx.joint)));
+        (*_env)->SetObjectField(_env, _obj, L.joint, (*_env)->NewByteArray(_env, (jsize)A_PID_FUZZY_JOINT(ctx.joint)));
     }
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_kpid(JNIEnv *jenv, jobject jobj, jdouble kp, jdouble ki, jdouble kd)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_kpid(JNIEnv *_env, jobject _obj, jdouble kp, jdouble ki, jdouble kd)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     a_pid_fuzzy_kpid(&ctx, kp, ki, kd);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_run(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_run(JNIEnv *_env, jobject _obj, jdouble set, jdouble fdb)
 {
     union
     {
@@ -300,38 +300,38 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_run(JNIEnv *jenv, jobject jobj, j
         a_float *o;
     } u;
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    jdoubleArray jme = (*jenv)->GetObjectField(jenv, jobj, L.me);
-    jdoubleArray jmec = (*jenv)->GetObjectField(jenv, jobj, L.mec);
-    jdoubleArray jmkp = (*jenv)->GetObjectField(jenv, jobj, L.mkp);
-    jdoubleArray jmki = (*jenv)->GetObjectField(jenv, jobj, L.mki);
-    jdoubleArray jmkd = (*jenv)->GetObjectField(jenv, jobj, L.mkd);
-    jdoubleArray jjoint = (*jenv)->GetObjectField(jenv, jobj, L.joint);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    ctx.me = (*jenv)->GetDoubleArrayElements(jenv, jme, NULL);
-    ctx.mec = (*jenv)->GetDoubleArrayElements(jenv, jmec, NULL);
-    ctx.mkp = (*jenv)->GetDoubleArrayElements(jenv, jmkp, NULL);
-    ctx.mki = (*jenv)->GetDoubleArrayElements(jenv, jmki, NULL);
-    ctx.mkd = (*jenv)->GetDoubleArrayElements(jenv, jmkd, NULL);
-    jbyte *joint = (*jenv)->GetByteArrayElements(jenv, jjoint, NULL);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    jdoubleArray _me = (*_env)->GetObjectField(_env, _obj, L.me);
+    jdoubleArray _mec = (*_env)->GetObjectField(_env, _obj, L.mec);
+    jdoubleArray _mkp = (*_env)->GetObjectField(_env, _obj, L.mkp);
+    jdoubleArray _mki = (*_env)->GetObjectField(_env, _obj, L.mki);
+    jdoubleArray _mkd = (*_env)->GetObjectField(_env, _obj, L.mkd);
+    jdoubleArray _joint = (*_env)->GetObjectField(_env, _obj, L.joint);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    ctx.me = (*_env)->GetDoubleArrayElements(_env, _me, NULL);
+    ctx.mec = (*_env)->GetDoubleArrayElements(_env, _mec, NULL);
+    ctx.mkp = (*_env)->GetDoubleArrayElements(_env, _mkp, NULL);
+    ctx.mki = (*_env)->GetDoubleArrayElements(_env, _mki, NULL);
+    ctx.mkd = (*_env)->GetDoubleArrayElements(_env, _mkd, NULL);
+    jbyte *joint = (*_env)->GetByteArrayElements(_env, _joint, NULL);
     a_pid_fuzzy_set_joint(&ctx, joint, ctx.joint);
-    jdouble jres = a_pid_fuzzy_run(&ctx, set, fdb);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jdouble res = a_pid_fuzzy_run(&ctx, set, fdb);
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     u.p = ctx.me;
-    (*jenv)->ReleaseDoubleArrayElements(jenv, jme, u.o, JNI_ABORT);
+    (*_env)->ReleaseDoubleArrayElements(_env, _me, u.o, JNI_ABORT);
     u.p = ctx.mec;
-    (*jenv)->ReleaseDoubleArrayElements(jenv, jmec, u.o, JNI_ABORT);
+    (*_env)->ReleaseDoubleArrayElements(_env, _mec, u.o, JNI_ABORT);
     u.p = ctx.mkp;
-    (*jenv)->ReleaseDoubleArrayElements(jenv, jmkp, u.o, JNI_ABORT);
+    (*_env)->ReleaseDoubleArrayElements(_env, _mkp, u.o, JNI_ABORT);
     u.p = ctx.mki;
-    (*jenv)->ReleaseDoubleArrayElements(jenv, jmki, u.o, JNI_ABORT);
+    (*_env)->ReleaseDoubleArrayElements(_env, _mki, u.o, JNI_ABORT);
     u.p = ctx.mkd;
-    (*jenv)->ReleaseDoubleArrayElements(jenv, jmkd, u.o, JNI_ABORT);
-    (*jenv)->ReleaseByteArrayElements(jenv, jjoint, joint, JNI_ABORT);
-    return jres;
+    (*_env)->ReleaseDoubleArrayElements(_env, _mkd, u.o, JNI_ABORT);
+    (*_env)->ReleaseByteArrayElements(_env, _joint, joint, JNI_ABORT);
+    return res;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_pos(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_pos(JNIEnv *_env, jobject _obj, jdouble set, jdouble fdb)
 {
     union
     {
@@ -339,38 +339,38 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_pos(JNIEnv *jenv, jobject jobj, j
         a_float *o;
     } u;
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    jdoubleArray jme = (*jenv)->GetObjectField(jenv, jobj, L.me);
-    jdoubleArray jmec = (*jenv)->GetObjectField(jenv, jobj, L.mec);
-    jdoubleArray jmkp = (*jenv)->GetObjectField(jenv, jobj, L.mkp);
-    jdoubleArray jmki = (*jenv)->GetObjectField(jenv, jobj, L.mki);
-    jdoubleArray jmkd = (*jenv)->GetObjectField(jenv, jobj, L.mkd);
-    jdoubleArray jjoint = (*jenv)->GetObjectField(jenv, jobj, L.joint);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    ctx.me = (*jenv)->GetDoubleArrayElements(jenv, jme, NULL);
-    ctx.mec = (*jenv)->GetDoubleArrayElements(jenv, jmec, NULL);
-    ctx.mkp = (*jenv)->GetDoubleArrayElements(jenv, jmkp, NULL);
-    ctx.mki = (*jenv)->GetDoubleArrayElements(jenv, jmki, NULL);
-    ctx.mkd = (*jenv)->GetDoubleArrayElements(jenv, jmkd, NULL);
-    jbyte *joint = (*jenv)->GetByteArrayElements(jenv, jjoint, NULL);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    jdoubleArray _me = (*_env)->GetObjectField(_env, _obj, L.me);
+    jdoubleArray _mec = (*_env)->GetObjectField(_env, _obj, L.mec);
+    jdoubleArray _mkp = (*_env)->GetObjectField(_env, _obj, L.mkp);
+    jdoubleArray _mki = (*_env)->GetObjectField(_env, _obj, L.mki);
+    jdoubleArray _mkd = (*_env)->GetObjectField(_env, _obj, L.mkd);
+    jdoubleArray _joint = (*_env)->GetObjectField(_env, _obj, L.joint);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    ctx.me = (*_env)->GetDoubleArrayElements(_env, _me, NULL);
+    ctx.mec = (*_env)->GetDoubleArrayElements(_env, _mec, NULL);
+    ctx.mkp = (*_env)->GetDoubleArrayElements(_env, _mkp, NULL);
+    ctx.mki = (*_env)->GetDoubleArrayElements(_env, _mki, NULL);
+    ctx.mkd = (*_env)->GetDoubleArrayElements(_env, _mkd, NULL);
+    jbyte *joint = (*_env)->GetByteArrayElements(_env, _joint, NULL);
     a_pid_fuzzy_set_joint(&ctx, joint, ctx.joint);
-    jdouble jres = a_pid_fuzzy_pos(&ctx, set, fdb);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jdouble res = a_pid_fuzzy_pos(&ctx, set, fdb);
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     u.p = ctx.me;
-    (*jenv)->ReleaseDoubleArrayElements(jenv, jme, u.o, JNI_ABORT);
+    (*_env)->ReleaseDoubleArrayElements(_env, _me, u.o, JNI_ABORT);
     u.p = ctx.mec;
-    (*jenv)->ReleaseDoubleArrayElements(jenv, jmec, u.o, JNI_ABORT);
+    (*_env)->ReleaseDoubleArrayElements(_env, _mec, u.o, JNI_ABORT);
     u.p = ctx.mkp;
-    (*jenv)->ReleaseDoubleArrayElements(jenv, jmkp, u.o, JNI_ABORT);
+    (*_env)->ReleaseDoubleArrayElements(_env, _mkp, u.o, JNI_ABORT);
     u.p = ctx.mki;
-    (*jenv)->ReleaseDoubleArrayElements(jenv, jmki, u.o, JNI_ABORT);
+    (*_env)->ReleaseDoubleArrayElements(_env, _mki, u.o, JNI_ABORT);
     u.p = ctx.mkd;
-    (*jenv)->ReleaseDoubleArrayElements(jenv, jmkd, u.o, JNI_ABORT);
-    (*jenv)->ReleaseByteArrayElements(jenv, jjoint, joint, JNI_ABORT);
-    return jres;
+    (*_env)->ReleaseDoubleArrayElements(_env, _mkd, u.o, JNI_ABORT);
+    (*_env)->ReleaseByteArrayElements(_env, _joint, joint, JNI_ABORT);
+    return res;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_inc(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_inc(JNIEnv *_env, jobject _obj, jdouble set, jdouble fdb)
 {
     union
     {
@@ -378,43 +378,43 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_inc(JNIEnv *jenv, jobject jobj, j
         a_float *o;
     } u;
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    jdoubleArray jme = (*jenv)->GetObjectField(jenv, jobj, L.me);
-    jdoubleArray jmec = (*jenv)->GetObjectField(jenv, jobj, L.mec);
-    jdoubleArray jmkp = (*jenv)->GetObjectField(jenv, jobj, L.mkp);
-    jdoubleArray jmki = (*jenv)->GetObjectField(jenv, jobj, L.mki);
-    jdoubleArray jmkd = (*jenv)->GetObjectField(jenv, jobj, L.mkd);
-    jdoubleArray jjoint = (*jenv)->GetObjectField(jenv, jobj, L.joint);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    ctx.me = (*jenv)->GetDoubleArrayElements(jenv, jme, NULL);
-    ctx.mec = (*jenv)->GetDoubleArrayElements(jenv, jmec, NULL);
-    ctx.mkp = (*jenv)->GetDoubleArrayElements(jenv, jmkp, NULL);
-    ctx.mki = (*jenv)->GetDoubleArrayElements(jenv, jmki, NULL);
-    ctx.mkd = (*jenv)->GetDoubleArrayElements(jenv, jmkd, NULL);
-    jbyte *joint = (*jenv)->GetByteArrayElements(jenv, jjoint, NULL);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    jdoubleArray _me = (*_env)->GetObjectField(_env, _obj, L.me);
+    jdoubleArray _mec = (*_env)->GetObjectField(_env, _obj, L.mec);
+    jdoubleArray _mkp = (*_env)->GetObjectField(_env, _obj, L.mkp);
+    jdoubleArray _mki = (*_env)->GetObjectField(_env, _obj, L.mki);
+    jdoubleArray _mkd = (*_env)->GetObjectField(_env, _obj, L.mkd);
+    jdoubleArray _joint = (*_env)->GetObjectField(_env, _obj, L.joint);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    ctx.me = (*_env)->GetDoubleArrayElements(_env, _me, NULL);
+    ctx.mec = (*_env)->GetDoubleArrayElements(_env, _mec, NULL);
+    ctx.mkp = (*_env)->GetDoubleArrayElements(_env, _mkp, NULL);
+    ctx.mki = (*_env)->GetDoubleArrayElements(_env, _mki, NULL);
+    ctx.mkd = (*_env)->GetDoubleArrayElements(_env, _mkd, NULL);
+    jbyte *joint = (*_env)->GetByteArrayElements(_env, _joint, NULL);
     a_pid_fuzzy_set_joint(&ctx, joint, ctx.joint);
-    jdouble jres = a_pid_fuzzy_inc(&ctx, set, fdb);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jdouble res = a_pid_fuzzy_inc(&ctx, set, fdb);
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     u.p = ctx.me;
-    (*jenv)->ReleaseDoubleArrayElements(jenv, jme, u.o, JNI_ABORT);
+    (*_env)->ReleaseDoubleArrayElements(_env, _me, u.o, JNI_ABORT);
     u.p = ctx.mec;
-    (*jenv)->ReleaseDoubleArrayElements(jenv, jmec, u.o, JNI_ABORT);
+    (*_env)->ReleaseDoubleArrayElements(_env, _mec, u.o, JNI_ABORT);
     u.p = ctx.mkp;
-    (*jenv)->ReleaseDoubleArrayElements(jenv, jmkp, u.o, JNI_ABORT);
+    (*_env)->ReleaseDoubleArrayElements(_env, _mkp, u.o, JNI_ABORT);
     u.p = ctx.mki;
-    (*jenv)->ReleaseDoubleArrayElements(jenv, jmki, u.o, JNI_ABORT);
+    (*_env)->ReleaseDoubleArrayElements(_env, _mki, u.o, JNI_ABORT);
     u.p = ctx.mkd;
-    (*jenv)->ReleaseDoubleArrayElements(jenv, jmkd, u.o, JNI_ABORT);
-    (*jenv)->ReleaseByteArrayElements(jenv, jjoint, joint, JNI_ABORT);
-    return jres;
+    (*_env)->ReleaseDoubleArrayElements(_env, _mkd, u.o, JNI_ABORT);
+    (*_env)->ReleaseByteArrayElements(_env, _joint, joint, JNI_ABORT);
+    return res;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_zero(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_zero(JNIEnv *_env, jobject _obj)
 {
     a_pid_fuzzy ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
     a_pid_fuzzy_zero(&ctx);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid_fuzzy), (jbyte *)&ctx);
+    return _obj;
 }

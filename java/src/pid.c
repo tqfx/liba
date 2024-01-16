@@ -12,223 +12,223 @@ static struct
     jfieldID ctx;
 } L = {NULL};
 
-JNIEXPORT void JNICALL Java_liba_pid_INIT(JNIEnv *jenv, jclass jcls)
+JNIEXPORT void JNICALL Java_liba_pid_INIT(JNIEnv *_env, jclass _cls)
 {
-    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "RUN", "I"), A_PID_RUN);
-    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "POS", "I"), A_PID_POS);
-    (*jenv)->SetStaticIntField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "INC", "I"), A_PID_INC);
-    L.ctx = (*jenv)->GetFieldID(jenv, jcls, "ctx", "[B");
+    (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "RUN", "I"), A_PID_RUN);
+    (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "POS", "I"), A_PID_POS);
+    (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "INC", "I"), A_PID_INC);
+    L.ctx = (*_env)->GetFieldID(_env, _cls, "ctx", "[B");
 }
 
-JNIEXPORT void JNICALL Java_liba_pid_init(JNIEnv *jenv, jobject jobj)
+JNIEXPORT void JNICALL Java_liba_pid_init(JNIEnv *_env, jobject _obj)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->NewByteArray(jenv, sizeof(a_pid));
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->NewByteArray(_env, sizeof(a_pid));
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     ctx.kp = 1;
     ctx.summax = +A_FLOAT_INF;
     ctx.summin = -A_FLOAT_INF;
     ctx.outmax = +A_FLOAT_INF;
     ctx.outmin = -A_FLOAT_INF;
     a_pid_init(&ctx);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
-    (*jenv)->SetObjectField(jenv, jobj, L.ctx, jctx);
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_kp__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_kp__(JNIEnv *_env, jobject _obj)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     return ctx.kp;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_kp__D(JNIEnv *jenv, jobject jobj, jdouble kp)
+JNIEXPORT jobject JNICALL Java_liba_pid_kp__D(JNIEnv *_env, jobject _obj, jdouble kp)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     ctx.kp = kp;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_ki__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_ki__(JNIEnv *_env, jobject _obj)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     return ctx.ki;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_ki__D(JNIEnv *jenv, jobject jobj, jdouble ki)
+JNIEXPORT jobject JNICALL Java_liba_pid_ki__D(JNIEnv *_env, jobject _obj, jdouble ki)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     ctx.ki = ki;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_kd__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_kd__(JNIEnv *_env, jobject _obj)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     return ctx.kd;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_kd__D(JNIEnv *jenv, jobject jobj, jdouble kd)
+JNIEXPORT jobject JNICALL Java_liba_pid_kd__D(JNIEnv *_env, jobject _obj, jdouble kd)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     ctx.kd = kd;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_summax__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_summax__(JNIEnv *_env, jobject _obj)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     return ctx.summax;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_summax__D(JNIEnv *jenv, jobject jobj, jdouble summax)
+JNIEXPORT jobject JNICALL Java_liba_pid_summax__D(JNIEnv *_env, jobject _obj, jdouble summax)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     ctx.summax = summax;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_summin__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_summin__(JNIEnv *_env, jobject _obj)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     return ctx.summin;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_summin__D(JNIEnv *jenv, jobject jobj, jdouble summin)
+JNIEXPORT jobject JNICALL Java_liba_pid_summin__D(JNIEnv *_env, jobject _obj, jdouble summin)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     ctx.summin = summin;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_outmax__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_outmax__(JNIEnv *_env, jobject _obj)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     return ctx.outmax;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_outmax__D(JNIEnv *jenv, jobject jobj, jdouble outmax)
+JNIEXPORT jobject JNICALL Java_liba_pid_outmax__D(JNIEnv *_env, jobject _obj, jdouble outmax)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     ctx.outmax = outmax;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_outmin__(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_outmin__(JNIEnv *_env, jobject _obj)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     return ctx.outmin;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_outmin__D(JNIEnv *jenv, jobject jobj, jdouble outmin)
+JNIEXPORT jobject JNICALL Java_liba_pid_outmin__D(JNIEnv *_env, jobject _obj, jdouble outmin)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     ctx.outmin = outmin;
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_out(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_out(JNIEnv *_env, jobject _obj)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     return ctx.out;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_fdb(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_fdb(JNIEnv *_env, jobject _obj)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     return ctx.fdb;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_err(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_err(JNIEnv *_env, jobject _obj)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     return ctx.err;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_kpid(JNIEnv *jenv, jobject jobj, jdouble kp, jdouble ki, jdouble kd)
+JNIEXPORT jobject JNICALL Java_liba_pid_kpid(JNIEnv *_env, jobject _obj, jdouble kp, jdouble ki, jdouble kd)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     a_pid_kpid(&ctx, kp, ki, kd);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    return _obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_run(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
+JNIEXPORT jdouble JNICALL Java_liba_pid_run(JNIEnv *_env, jobject _obj, jdouble set, jdouble fdb)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
-    jdouble jres = a_pid_run(&ctx, set, fdb);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
-    return jres;
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jdouble res = a_pid_run(&ctx, set, fdb);
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    return res;
 }
-JNIEXPORT jdouble JNICALL Java_liba_pid_pos(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
+JNIEXPORT jdouble JNICALL Java_liba_pid_pos(JNIEnv *_env, jobject _obj, jdouble set, jdouble fdb)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
-    jdouble jres = a_pid_pos(&ctx, set, fdb);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
-    return jres;
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jdouble res = a_pid_pos(&ctx, set, fdb);
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    return res;
 }
-JNIEXPORT jdouble JNICALL Java_liba_pid_inc(JNIEnv *jenv, jobject jobj, jdouble set, jdouble fdb)
+JNIEXPORT jdouble JNICALL Java_liba_pid_inc(JNIEnv *_env, jobject _obj, jdouble set, jdouble fdb)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
-    jdouble jres = a_pid_inc(&ctx, set, fdb);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
-    return jres;
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jdouble res = a_pid_inc(&ctx, set, fdb);
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    return res;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_zero(JNIEnv *jenv, jobject jobj)
+JNIEXPORT jobject JNICALL Java_liba_pid_zero(JNIEnv *_env, jobject _obj)
 {
     a_pid ctx;
-    jbyteArray jctx = (*jenv)->GetObjectField(jenv, jobj, L.ctx);
-    (*jenv)->GetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
     a_pid_zero(&ctx);
-    (*jenv)->SetByteArrayRegion(jenv, jctx, 0, sizeof(a_pid), (jbyte *)&ctx);
-    return jobj;
+    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_pid), (jbyte *)&ctx);
+    return _obj;
 }

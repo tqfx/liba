@@ -5,27 +5,27 @@
 #endif /* A_VERSION */
 #include "liba.h"
 
-JNIEXPORT void JNICALL Java_liba_INIT(JNIEnv *jenv, jclass jcls)
+JNIEXPORT void JNICALL Java_liba_INIT(JNIEnv *_env, jclass _cls)
 {
-    (*jenv)->SetStaticObjectField(jenv, jcls, (*jenv)->GetStaticFieldID(jenv, jcls, "VERSION", "Ljava/lang/String;"), (*jenv)->NewStringUTF(jenv, A_VERSION));
+    (*_env)->SetStaticObjectField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "VERSION", "Ljava/lang/String;"), (*_env)->NewStringUTF(_env, A_VERSION));
 }
 
-JNIEXPORT jint JNICALL Java_liba_isqrt__I(JNIEnv *jenv, jclass jcls, jint x)
+JNIEXPORT jint JNICALL Java_liba_isqrt__I(JNIEnv *_env, jclass _cls, jint x)
 {
-    return (void)(jenv), (void)(jcls), (jint)a_u32_sqrt((a_u32)x);
+    return (void)(_env), (void)(_cls), (jint)a_u32_sqrt((a_u32)x);
 }
 
-JNIEXPORT jint JNICALL Java_liba_isqrt__J(JNIEnv *jenv, jclass jcls, jlong x)
+JNIEXPORT jint JNICALL Java_liba_isqrt__J(JNIEnv *_env, jclass _cls, jlong x)
 {
-    return (void)(jenv), (void)(jcls), (jint)a_u64_sqrt((a_u64)x);
+    return (void)(_env), (void)(_cls), (jint)a_u64_sqrt((a_u64)x);
 }
 
-JNIEXPORT jfloat JNICALL Java_liba_rsqrt__F(JNIEnv *jenv, jclass jcls, jfloat x)
+JNIEXPORT jfloat JNICALL Java_liba_rsqrt__F(JNIEnv *_env, jclass _cls, jfloat x)
 {
-    return (void)(jenv), (void)(jcls), a_f32_rsqrt(x);
+    return (void)(_env), (void)(_cls), a_f32_rsqrt(x);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_rsqrt__D(JNIEnv *jenv, jclass jcls, jdouble x)
+JNIEXPORT jdouble JNICALL Java_liba_rsqrt__D(JNIEnv *_env, jclass _cls, jdouble x)
 {
-    return (void)(jenv), (void)(jcls), a_f64_rsqrt(x);
+    return (void)(_env), (void)(_cls), a_f64_rsqrt(x);
 }
