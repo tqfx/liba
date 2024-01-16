@@ -434,8 +434,8 @@ LUA_NUM *lua_table_num_get(lua_State *L, int idx, LUA_NUM const *ptr, size_t *nu
     LUA_NUM *ret = (LUA_NUM *)(intptr_t)ptr; // NOLINT(performance-no-int-to-ptr)
     if (lua_type(L, idx) == LUA_TTABLE)
     {
-        size_t tmp = 0;
-        num = num ? num : &tmp;
+        size_t _num = 0;
+        num = num ? num : &_num;
         *num = lua_table_num_len(L, idx);
         if (*num)
         {

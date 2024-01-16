@@ -138,11 +138,11 @@ int js_array_num_get(JSContext *ctx, JSValueConst val, a_float *ptr, a_u32 len)
 {
     for (unsigned int i = 0; i < len; ++i)
     {
-        JSValue tmp = JS_GetPropertyUint32(ctx, val, i);
-        if (JS_IsException(tmp)) { return ~0; }
+        JSValue _x = JS_GetPropertyUint32(ctx, val, i);
+        if (JS_IsException(_x)) { return ~0; }
         double x;
-        int ret = JS_ToFloat64(ctx, &x, tmp);
-        JS_FreeValue(ctx, tmp);
+        int ret = JS_ToFloat64(ctx, &x, _x);
+        JS_FreeValue(ctx, _x);
         if (ret) { return ret; }
         ptr[i] = (a_float)x;
     }
