@@ -11,7 +11,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         (void)strtonum(argv[1], &endptr);
         if (argv[1] == endptr)
         {
-            test_init(argc, argv, 1);
+            main_init(argc, argv, 1);
             ++start;
         }
     }

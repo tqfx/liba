@@ -4,7 +4,7 @@
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-    test_init(argc, argv, 1);
+    main_init(argc, argv, 1);
     a_hpf ctx = A_HPF_INIT(A_HPF_GEN(10, 0.01));
     a_hpf_init(&ctx, a_hpf_gen(10, A_FLOAT_C(0.01)));
     a_float Ts = A_FLOAT_C(1.0);

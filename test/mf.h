@@ -5,7 +5,7 @@
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-    test_init(argc, argv, 1);
+    main_init(argc, argv, 1);
     unsigned int e = A_MF_NUL;
     if (argc > 1)
     {

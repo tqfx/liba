@@ -88,40 +88,41 @@
 extern "C" {
 #endif /* __cplusplus */
 int MAIN_(c)(int argc, char *argv[]);
-int MAIN_(cpp)(int argc, char *argv[]);
-int test_init(int argc, char *argv[], int out);
+int MAIN_(x)(int argc, char *argv[]);
+int main_init(int argc, char *argv[], int arg1);
 int debug(char const *fmt, ...) A_FORMAT(printf, 1, 2);
 #if defined(__cplusplus)
 } /* extern "C" */
-#define MAIN(argc, argv) MAIN_(cpp)(argc, argv)
+#define MAIN(argc, argv) MAIN_(x)(argc, argv)
 #else /* !__cplusplus */
 #define MAIN(argc, argv) MAIN_(c)(argc, argv)
 #endif /* __cplusplus */
 #if !defined __cplusplus
-static void test_exit(void);
+static void main_exit(void);
 int debug(char const *fmt, ...)
 {
     return (void)fmt, 0;
 }
-int test_init(int argc, char *argv[], int out)
+int main_init(int argc, char *argv[], int arg1)
 {
-    static FILE *log = A_NULL;
-    if (!log && argc > out)
+    static FILE *out = A_NULL;
+    if (!out && argc > arg1)
     {
-        log = freopen(argv[out], "wb", stdout);
-        if (log) { out = atexit(test_exit); }
+        out = freopen(argv[arg1], "wb", stdout);
+        if (out) { arg1 = atexit(main_exit); }
     }
-    return out;
+    return arg1;
 }
 int main(int argc, char *argv[])
 {
+    int status = 0;
+    status += MAIN_(c)(argc, argv);
 #if defined(HAS_CXX)
-    return MAIN_(cpp)(argc, argv) + MAIN_(c)(argc, argv);
-#else /* !HAS_CXX */
-    return MAIN_(c)(argc, argv);
+    status += MAIN_(x)(argc, argv);
 #endif /* HAS_CXX */
+    return status;
 }
-static void test_exit(void)
+static void main_exit(void)
 {
     if (fclose(stdout)) {}
 }

@@ -107,7 +107,7 @@ static a_float u[] = {
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-    test_init(argc, argv, 1);
+    main_init(argc, argv, 1);
 
     a_float num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
     a_float den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};

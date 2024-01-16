@@ -2,11 +2,11 @@
 #include "test.h"
 #include "a/tf.h"
 #include "a/pid.h"
-#include "a/math.h"
+// #include "a/math.h"
 
 static A_INLINE a_float input(a_float const x)
 {
-#if 0
+#if defined(LIBA_MATH_H)
     return a_float_sin(4 * A_FLOAT_PI * x);
 #else
     return (void)x, 1;
@@ -15,7 +15,7 @@ static A_INLINE a_float input(a_float const x)
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-    test_init(argc, argv, 1);
+    main_init(argc, argv, 1);
 
     a_float num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
     a_float den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};

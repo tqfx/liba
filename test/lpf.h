@@ -17,7 +17,7 @@ static long rand_(void)
 
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-    test_init(argc, argv, 1);
+    main_init(argc, argv, 1);
     a_lpf ctx = A_LPF_INIT(A_LPF_GEN(10, 0.01));
     a_lpf_init(&ctx, a_lpf_gen(10, A_FLOAT_C(0.01)));
     srand_(a_cast_s(unsigned long, time(A_NULL)));
