@@ -294,7 +294,7 @@ A_EXTERN a_float a_float_atan2(a_float x, a_float y);
 
 #define a_float_sin A_FLOAT_F(sin)
 #define a_float_cos A_FLOAT_F(cos)
-#define a_floatan A_FLOAT_F(tan)
+#define a_float_tan A_FLOAT_F(tan)
 #define a_float_asin A_FLOAT_F(asin)
 #define a_float_acos A_FLOAT_F(acos)
 #define a_float_atan A_FLOAT_F(atan)
@@ -304,19 +304,19 @@ A_EXTERN a_float a_float_atan2(a_float x, a_float y);
 
 #define a_float_sinh A_FLOAT_F(sinh)
 #define a_float_cosh A_FLOAT_F(cosh)
-#define a_floatanh A_FLOAT_F(tanh)
+#define a_float_tanh A_FLOAT_F(tanh)
 #define a_float_asinh A_FLOAT_F(asinh)
 #define a_float_acosh A_FLOAT_F(acosh)
 #define a_float_atanh A_FLOAT_F(atanh)
 
 #define a_float_erf A_FLOAT_F(erf)
 #define a_float_erfc A_FLOAT_F(erfc)
-#define a_floatgamma A_FLOAT_F(tgamma)
+#define a_float_tgamma A_FLOAT_F(tgamma)
 #define a_float_lgamma A_FLOAT_F(lgamma)
 
 #define a_float_ceil A_FLOAT_F(ceil)
 #define a_float_floor A_FLOAT_F(floor)
-#define a_floatrunc A_FLOAT_F(trunc)
+#define a_float_trunc A_FLOAT_F(trunc)
 #define a_float_round A_FLOAT_F(round)
 #define a_float_lround A_FLOAT_F(lround)
 #define a_float_llround A_FLOAT_F(llround)

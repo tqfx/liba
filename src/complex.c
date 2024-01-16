@@ -1,17 +1,10 @@
-#define LIBA_COMPLEX_C
 #include "a/a.h"
-#if A_PREREQ_GNUC(2, 95) || __has_warning("-Waggregate-return")
-#pragma GCC diagnostic ignored "-Waggregate-return"
-#endif /* -Waggregate-return */
 #if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
 #include "a/complex.h"
 /* compiler built-in complex number type */
-#if defined(__GNUC__)
-#include <complex.h>
-#define A_COMPLEX _Complex A_FLOAT
-#elif A_PREREQ_MSVC(18, 0)
+#if A_PREREQ_MSVC(18, 0)
 #include <complex.h> // 12.0
 #if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
 #define A_COMPLEX _Fcomplex
@@ -19,10 +12,21 @@
 #define A_COMPLEX _Dcomplex
 #elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
 #define A_COMPLEX _Lcomplex
-#endif /* A_FLOAT_TYPE */
 #endif /* A_COMPLEX */
+#elif defined(__GNUC__) || defined(__clang__)
+#include <complex.h>
+#define A_COMPLEX _Complex A_FLOAT
+#endif /* A_FLOAT_TYPE */
 #include "a/math.h"
 
+void a_complex_polar(a_complex *_z, a_float rho, a_float theta)
+{
+    _z->real = rho * a_float_cos(theta);
+    _z->imag = rho * a_float_sin(theta);
+}
+
+unsigned int a_complex_parse(a_complex *_z, char const *str)
+{
 #if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
 #define strtonum(string, endptr) strtof(string, endptr)
 #elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
@@ -30,40 +34,30 @@
 #elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
 #define strtonum(string, endptr) strtold(string, endptr)
 #endif /* A_FLOAT_TYPE */
-
-unsigned int a_complex_parse(a_complex *ctx, char const *str)
-{
     union
     {
         char const *s;
         char *p;
-    } u = {str};
+    } u;
+    u.s = str;
     if (!str) { return 0; }
-    for (ctx->real = 0; *u.s; ++u.s)
+    for (_z->real = 0; *u.s; ++u.s)
     {
         if (*u.s == '+' || *u.s == '-' || ('0' <= *u.s && *u.s <= '9') || *u.s == '.')
         {
-            ctx->real = strtonum(u.s, &u.p);
+            _z->real = strtonum(u.s, &u.p);
             break;
         }
     }
-    for (ctx->imag = 0; *u.s; ++u.s)
+    for (_z->imag = 0; *u.s; ++u.s)
     {
         if (*u.s == '+' || *u.s == '-' || ('0' <= *u.s && *u.s <= '9') || *u.s == '.')
         {
-            ctx->imag = strtonum(u.s, &u.p);
+            _z->imag = strtonum(u.s, &u.p);
             break;
         }
     }
     return (unsigned int)(u.s - str);
-}
-
-a_complex a_complex_polar(a_float rho, a_float theta)
-{
-    a_complex z;
-    z.real = rho * a_float_cos(theta);
-    z.imag = rho * a_float_sin(theta);
-    return z;
 }
 
 a_bool a_complex_eq(a_complex x, a_complex y)
@@ -113,120 +107,117 @@ a_float a_complex_arg(a_complex z)
     return 0;
 }
 
-a_complex a_complex_proj(a_complex z)
+void a_complex_proj(a_complex *_z, a_complex z)
 {
+    *_z = z;
 #if defined(__MINGW32__) && A_PREREQ_GNUC(3, 0)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wfloat-conversion"
 #endif /* __MINGW32__ */
     if (isinf(z.real) || isinf(z.imag))
     {
-        z.imag = a_float_copysign(0, z.imag);
-        z.real = A_FLOAT_INF;
+        _z->real = A_FLOAT_INF;
+        _z->imag = a_float_copysign(0, z.imag);
     }
-    return z;
 #if defined(__MINGW32__) && A_PREREQ_GNUC(3, 0)
 #pragma GCC diagnostic pop
 #endif /* __MINGW32__ */
 }
 
-a_complex a_complex_add(a_complex x, a_complex y)
+void a_complex_conj(a_complex *_z, a_complex z)
 {
-    x.real += y.real;
-    x.imag += y.imag;
-    return x;
+    _z->real = +z.real;
+    _z->imag = -z.imag;
 }
 
-a_complex a_complex_add_real(a_complex x, a_float y)
+void a_complex_neg(a_complex *_z, a_complex z)
 {
-    x.real += y;
-    return x;
+    _z->real = -z.real;
+    _z->imag = -z.imag;
 }
 
-a_complex a_complex_add_imag(a_complex x, a_float y)
+void a_complex_add(a_complex *_z, a_complex x, a_complex y)
 {
-    x.imag += y;
-    return x;
+    _z->real = x.real + y.real;
+    _z->imag = x.imag + y.imag;
 }
 
-a_complex a_complex_sub(a_complex x, a_complex y)
+void a_complex_add_real(a_complex *_z, a_complex x, a_float y)
 {
-    x.real -= y.real;
-    x.imag -= y.imag;
-    return x;
+    _z->real = x.real + y;
+    _z->imag = x.imag;
 }
 
-a_complex a_complex_sub_real(a_complex x, a_float y)
+void a_complex_add_imag(a_complex *_z, a_complex x, a_float y)
 {
-    x.real -= y;
-    return x;
+    _z->real = x.real;
+    _z->imag = x.imag + y;
 }
 
-a_complex a_complex_sub_imag(a_complex x, a_float y)
+void a_complex_sub(a_complex *_z, a_complex x, a_complex y)
 {
-    x.imag -= y;
-    return x;
+    _z->real = x.real - y.real;
+    _z->imag = x.imag - y.imag;
 }
 
-a_complex a_complex_mul(a_complex x, a_complex y)
+void a_complex_sub_real(a_complex *_z, a_complex x, a_float y)
 {
-    a_complex z;
-    z.real = x.real * y.real - x.imag * y.imag;
-    z.imag = x.real * y.imag + x.imag * y.real;
-    return z;
+    _z->real = x.real - y;
+    _z->imag = x.imag;
 }
 
-a_complex a_complex_mul_real(a_complex x, a_float y)
+void a_complex_sub_imag(a_complex *_z, a_complex x, a_float y)
 {
-    x.real *= y;
-    x.imag *= y;
-    return x;
+    _z->real = x.real;
+    _z->imag = x.imag - y;
 }
 
-a_complex a_complex_mul_imag(a_complex x, a_float y)
+void a_complex_mul(a_complex *_z, a_complex x, a_complex y)
 {
-    a_complex z;
-    z.real = -x.imag * y;
-    z.imag = +x.real * y;
-    return z;
+    _z->real = x.real * y.real - x.imag * y.imag;
+    _z->imag = x.real * y.imag + x.imag * y.real;
 }
 
-a_complex a_complex_div(a_complex x, a_complex y)
+void a_complex_mul_real(a_complex *_z, a_complex x, a_float y)
 {
-    a_complex z;
+    _z->real = x.real * y;
+    _z->imag = x.imag * y;
+}
+
+void a_complex_mul_imag(a_complex *_z, a_complex x, a_float y)
+{
+    _z->real = -x.imag * y;
+    _z->imag = +x.real * y;
+}
+
+void a_complex_div(a_complex *_z, a_complex x, a_complex y)
+{
     a_float const inv = 1 / a_complex_abs(y);
     x.real *= inv;
     x.imag *= inv;
     y.real *= inv;
     y.imag *= inv;
-    z.real = x.real * y.real + x.imag * y.imag;
-    z.imag = x.imag * y.real - x.real * y.imag;
-    return z;
+    _z->real = x.real * y.real + x.imag * y.imag;
+    _z->imag = x.imag * y.real - x.real * y.imag;
 }
 
-a_complex a_complex_div_real(a_complex x, a_float y)
+void a_complex_div_real(a_complex *_z, a_complex x, a_float y)
 {
-    x.real /= y;
-    x.imag /= y;
-    return x;
+    _z->real = x.real / y;
+    _z->imag = x.imag / y;
 }
 
-a_complex a_complex_div_imag(a_complex x, a_float y)
+void a_complex_div_imag(a_complex *_z, a_complex x, a_float y)
 {
-    a_complex z;
-    z.real = +x.imag / y;
-    z.imag = -x.real / y;
-    return z;
+    _z->real = +x.imag / y;
+    _z->imag = -x.real / y;
 }
 
-a_complex a_complex_inv(a_complex z)
+void a_complex_inv(a_complex *_z, a_complex z)
 {
     a_float const inv = 1 / a_complex_abs(z);
-    z.real *= +inv;
-    z.imag *= -inv;
-    z.real *= inv;
-    z.imag *= inv;
-    return z;
+    _z->real = +inv * z.real * inv;
+    _z->imag = -inv * z.imag * inv;
 }
 
 #if A_PREREQ_GNUC(2, 95) || __has_warning("-Wimplicit-function-declaration")
@@ -245,57 +236,66 @@ a_complex a_complex_inv(a_complex z)
 #if defined(A_HAVE_CSQRT) && !defined A_COMPLEX
 a_complex A_FLOAT_F1(csqrt, a_complex);
 #endif /* A_HAVE_CSQRT */
-a_complex a_complex_sqrt(a_complex z)
+void a_complex_sqrt(a_complex *_z, a_complex z)
 {
 #if defined(A_HAVE_CSQRT) && defined(A_COMPLEX)
     union
     {
-        a_complex s;
-        A_COMPLEX z;
-    } u;
-    u.s = z;
-    u.z = A_FLOAT_F1(csqrt, u.z);
-    return u.s;
+        a_complex *_z;
+        A_COMPLEX *z;
+    } u, v;
+    u._z = &z;
+    v._z = _z;
+    *v.z = A_FLOAT_F1(csqrt, *u.z);
 #elif defined(A_HAVE_CSQRT)
-    return A_FLOAT_F1(csqrt, z);
+    *_z = A_FLOAT_F1(csqrt, z);
 #else /* !A_HAVE_CSQRT */
-    if (z.real == 0 && z.imag == 0) { return z; }
-    a_float const x = a_float_abs(z.real);
-    a_float const y = a_float_abs(z.imag);
-    a_float w;
-    if (x >= y)
+    if (z.real != 0 || z.imag != 0)
     {
-        a_float t = y / x;
-        w = A_FLOAT_SQRT1_2 * a_float_sqrt(x) * a_float_sqrt(a_float_sqrt(t * t + 1) + 1);
+        a_float const x = a_float_abs(z.real);
+        a_float const y = a_float_abs(z.imag);
+        a_float w;
+        if (x >= y)
+        {
+            a_float u = y / x;
+            w = A_FLOAT_SQRT1_2 * a_float_sqrt(x) * a_float_sqrt(a_float_sqrt(u * u + 1) + 1);
+        }
+        else
+        {
+            a_float u = x / y;
+            w = A_FLOAT_SQRT1_2 * a_float_sqrt(y) * a_float_sqrt(a_float_sqrt(u * u + 1) + u);
+        }
+        if (z.real >= 0)
+        {
+            _z->real = w;
+            _z->imag = z.imag / (2 * w);
+        }
+        else
+        {
+            _z->real = z.imag / (2 * w);
+            _z->imag = z.imag < 0 ? -w : w;
+        }
     }
     else
     {
-        a_float t = x / y;
-        w = A_FLOAT_SQRT1_2 * a_float_sqrt(y) * a_float_sqrt(a_float_sqrt(t * t + 1) + t);
+        _z->real = 0;
+        _z->imag = 0;
     }
-    if (z.real >= 0)
-    {
-        z.real = w;
-        z.imag = z.imag / (2 * w);
-        return z;
-    }
-    if (z.imag < 0) { w = -w; }
-    z.real = z.imag / (2 * w);
-    z.imag = w;
-    return z;
 #endif /* A_HAVE_CSQRT */
 }
 
-a_complex a_complex_sqrt_real(a_float x)
+void a_complex_sqrt_real(a_complex *_z, a_float x)
 {
-    a_complex z = A_COMPLEX_C(0.0, 0.0);
     if (x >= 0)
     {
-        z.real = a_float_sqrt(x);
-        return z;
+        _z->real = a_float_sqrt(x);
+        _z->imag = 0;
     }
-    z.imag = a_float_sqrt(-x);
-    return z;
+    else
+    {
+        _z->real = 0;
+        _z->imag = a_float_sqrt(-x);
+    }
 }
 
 #if defined(A_HAVE_CPOW) && (A_HAVE_CPOW + 0 < 1)
@@ -304,46 +304,52 @@ a_complex a_complex_sqrt_real(a_float x)
 #if defined(A_HAVE_CPOW) && !defined A_COMPLEX
 a_complex A_FLOAT_F2(cpow, a_complex, a_complex);
 #endif /* A_HAVE_CPOW */
-a_complex a_complex_pow(a_complex z, a_complex a)
+void a_complex_pow(a_complex *_z, a_complex z, a_complex a)
 {
 #if defined(A_HAVE_CPOW) && defined(A_COMPLEX)
     union
     {
-        a_complex s;
-        A_COMPLEX z;
-    } u, v;
-    u.s = z;
-    v.s = a;
-    u.z = A_FLOAT_F2(cpow, u.z, v.z);
-    return u.s;
+        a_complex *_z;
+        A_COMPLEX *z;
+    } u, v, w;
+    u._z = &z;
+    v._z = &a;
+    w._z = _z;
+    *w.z = A_FLOAT_F2(cpow, *u.z, *v.z);
 #elif defined(A_HAVE_CPOW)
-    return A_FLOAT_F2(cpow, z, a);
+    *_z = A_FLOAT_F2(cpow, z, a);
 #else /* !A_HAVE_CPOW */
-    if (z.real == 0 && z.imag == 0)
+    if (z.real != 0 || z.imag != 0)
     {
-        if (a.real == 0 && a.imag == 0) { z.real = 1; }
-        return z;
+        a_float const logr = a_complex_logabs(z);
+        a_float const theta = a_complex_arg(z);
+        a_float const rho = a_float_exp(logr * a.real - theta * a.imag);
+        a_float const beta = theta * a.real + logr * a.imag;
+        a_complex_polar(_z, rho, beta);
     }
-    a_float const logr = a_complex_logabs(z);
-    a_float const theta = a_complex_arg(z);
-    a_float const rho = a_float_exp(logr * a.real - theta * a.imag);
-    a_float const beta = theta * a.real + logr * a.imag;
-    return a_complex_polar(rho, beta);
+    else
+    {
+        _z->real = (a.real == 0 && a.imag == 0) ? 1 : 0;
+        _z->imag = 0;
+    }
 #endif /* A_HAVE_CPOW */
 }
 
-a_complex a_complex_pow_real(a_complex z, a_float a)
+void a_complex_pow_real(a_complex *_z, a_complex z, a_float a)
 {
-    if (z.real == 0 && z.imag == 0)
+    if (z.real != 0 || z.imag != 0)
     {
-        if (a == 0) { z.real = 1; }
-        return z;
+        a_float const logr = a_complex_logabs(z);
+        a_float const theta = a_complex_arg(z);
+        a_float const rho = a_float_exp(logr * a);
+        a_float const beta = theta * a;
+        a_complex_polar(_z, rho, beta);
     }
-    a_float const logr = a_complex_logabs(z);
-    a_float const theta = a_complex_arg(z);
-    a_float const rho = a_float_exp(logr * a);
-    a_float const beta = theta * a;
-    return a_complex_polar(rho, beta);
+    else
+    {
+        _z->real = (a == 0) ? 1 : 0;
+        _z->imag = 0;
+    }
 }
 
 #if defined(A_HAVE_CEXP) && (A_HAVE_CEXP + 0 < 1)
@@ -352,22 +358,21 @@ a_complex a_complex_pow_real(a_complex z, a_float a)
 #if defined(A_HAVE_CEXP) && !defined A_COMPLEX
 a_complex A_FLOAT_F1(cexp, a_complex);
 #endif /* A_HAVE_CEXP */
-a_complex a_complex_exp(a_complex z)
+void a_complex_exp(a_complex *_z, a_complex z)
 {
 #if defined(A_HAVE_CEXP) && defined(A_COMPLEX)
     union
     {
-        a_complex s;
-        A_COMPLEX z;
-    } u;
-    u.s = z;
-    u.z = A_FLOAT_F1(cexp, u.z);
-    return u.s;
+        a_complex *_z;
+        A_COMPLEX *z;
+    } u, v;
+    u._z = &z;
+    v._z = _z;
+    *v.z = A_FLOAT_F1(cexp, *u.z);
 #elif defined(A_HAVE_CEXP)
-    return A_FLOAT_F1(cexp, z);
+    *_z = A_FLOAT_F1(cexp, z);
 #else /* !A_HAVE_CEXP */
-    a_float const rho = a_float_exp(z.real);
-    return a_complex_polar(rho, z.imag);
+    a_complex_polar(_z, a_float_exp(z.real), z.imag);
 #endif /* A_HAVE_CEXP */
 }
 
@@ -377,41 +382,42 @@ a_complex a_complex_exp(a_complex z)
 #if defined(A_HAVE_CLOG) && !defined A_COMPLEX
 a_complex A_FLOAT_F1(clog, a_complex);
 #endif /* A_HAVE_CLOG */
-a_complex a_complex_log(a_complex z)
+void a_complex_log(a_complex *_z, a_complex z)
 {
 #if defined(A_HAVE_CLOG) && defined(A_COMPLEX)
     union
     {
-        a_complex s;
-        A_COMPLEX z;
-    } u;
-    u.s = z;
-    u.z = A_FLOAT_F1(clog, u.z);
-    return u.s;
+        a_complex *_z;
+        A_COMPLEX *z;
+    } u, v;
+    u._z = &z;
+    v._z = _z;
+    *v.z = A_FLOAT_F1(clog, *u.z);
 #elif defined(A_HAVE_CLOG)
-    return A_FLOAT_F1(clog, z);
+    *_z = A_FLOAT_F1(clog, z);
 #else /* !A_HAVE_CLOG */
-    a_float const logr = a_complex_logabs(z);
-    a_float const theta = a_complex_arg(z);
-    z.real = logr;
-    z.imag = theta;
-    return z;
+    _z->real = a_complex_logabs(z);
+    _z->imag = a_complex_arg(z);
 #endif /* A_HAVE_CLOG */
 }
 
-a_complex a_complex_log2(a_complex z)
+void a_complex_log2(a_complex *_z, a_complex z)
 {
-    return a_complex_mul_real(a_complex_log(z), 1 / A_FLOAT_LN2);
+    a_complex_log(&z, z);
+    a_complex_mul_real(_z, z, 1 / A_FLOAT_LN2);
 }
 
-a_complex a_complex_log10(a_complex z)
+void a_complex_log10(a_complex *_z, a_complex z)
 {
-    return a_complex_mul_real(a_complex_log(z), 1 / A_FLOAT_LN10);
+    a_complex_log(&z, z);
+    a_complex_mul_real(_z, z, 1 / A_FLOAT_LN10);
 }
 
-a_complex a_complex_logb(a_complex z, a_complex b)
+void a_complex_logb(a_complex *_z, a_complex z, a_complex b)
 {
-    return a_complex_div(a_complex_log(z), a_complex_log(b));
+    a_complex_log(&z, z);
+    a_complex_log(&b, b);
+    a_complex_div(_z, z, b);
 }
 
 #if defined(A_HAVE_CSIN) && (A_HAVE_CSIN + 0 < 1)
@@ -420,28 +426,30 @@ a_complex a_complex_logb(a_complex z, a_complex b)
 #if defined(A_HAVE_CSIN) && !defined A_COMPLEX
 a_complex A_FLOAT_F1(csin, a_complex);
 #endif /* A_HAVE_CSIN */
-a_complex a_complex_sin(a_complex z)
+void a_complex_sin(a_complex *_z, a_complex z)
 {
 #if defined(A_HAVE_CSIN) && defined(A_COMPLEX)
     union
     {
-        a_complex s;
-        A_COMPLEX z;
-    } u;
-    u.s = z;
-    u.z = A_FLOAT_F1(csin, u.z);
-    return u.s;
+        a_complex *_z;
+        A_COMPLEX *z;
+    } u, v;
+    u._z = &z;
+    v._z = _z;
+    *v.z = A_FLOAT_F1(csin, *u.z);
 #elif defined(A_HAVE_CSIN)
-    return A_FLOAT_F1(csin, z);
+    *_z = A_FLOAT_F1(csin, z);
 #else /* !A_HAVE_CSIN */
-    if (z.imag == 0)
+    if (z.imag != 0)
     {
-        z.real = a_float_sin(z.real);
-        return z;
+        _z->real = a_float_sin(z.real) * a_float_cosh(z.imag);
+        _z->imag = a_float_cos(z.real) * a_float_sinh(z.imag);
     }
-    z.real = a_float_sin(z.real) * a_float_cosh(z.imag);
-    z.imag = a_float_cos(z.real) * a_float_sinh(z.imag);
-    return z;
+    else
+    {
+        _z->real = a_float_sin(z.real);
+        _z->imag = 0;
+    }
 #endif /* A_HAVE_CSIN */
 }
 
@@ -451,28 +459,30 @@ a_complex a_complex_sin(a_complex z)
 #if defined(A_HAVE_CCOS) && !defined A_COMPLEX
 a_complex A_FLOAT_F1(ccos, a_complex);
 #endif /* A_HAVE_CCOS */
-a_complex a_complex_cos(a_complex z)
+void a_complex_cos(a_complex *_z, a_complex z)
 {
 #if defined(A_HAVE_CCOS) && defined(A_COMPLEX)
     union
     {
-        a_complex s;
-        A_COMPLEX z;
-    } u;
-    u.s = z;
-    u.z = A_FLOAT_F1(ccos, u.z);
-    return u.s;
+        a_complex *_z;
+        A_COMPLEX *z;
+    } u, v;
+    u._z = &z;
+    v._z = _z;
+    *v.z = A_FLOAT_F1(ccos, *u.z);
 #elif defined(A_HAVE_CCOS)
-    return A_FLOAT_F1(ccos, z);
+    *_z = A_FLOAT_F1(ccos, z);
 #else /* !A_HAVE_CCOS */
-    if (z.imag == 0)
+    if (z.imag != 0)
     {
-        z.real = a_float_cos(z.real);
-        return z;
+        _z->real = a_float_cos(z.real) * a_float_cosh(+z.imag);
+        _z->imag = a_float_sin(z.real) * a_float_sinh(-z.imag);
     }
-    z.real = a_float_cos(z.real) * a_float_cosh(z.imag);
-    z.imag = a_float_sin(z.real) * a_float_sinh(-z.imag);
-    return z;
+    else
+    {
+        _z->real = a_float_cos(z.real);
+        _z->imag = 0;
+    }
 #endif /* A_HAVE_CCOS */
 }
 
@@ -482,48 +492,52 @@ a_complex a_complex_cos(a_complex z)
 #if defined(A_HAVE_CTAN) && !defined A_COMPLEX
 a_complex A_FLOAT_F1(ctan, a_complex);
 #endif /* A_HAVE_CTAN */
-a_complex a_complex_tan(a_complex z)
+void a_complex_tan(a_complex *_z, a_complex z)
 {
 #if defined(A_HAVE_CTAN) && defined(A_COMPLEX)
     union
     {
-        a_complex s;
-        A_COMPLEX z;
-    } u;
-    u.s = z;
-    u.z = A_FLOAT_F1(ctan, u.z);
-    return u.s;
+        a_complex *_z;
+        A_COMPLEX *z;
+    } u, v;
+    u._z = &z;
+    v._z = _z;
+    *v.z = A_FLOAT_F1(ctan, *u.z);
 #elif defined(A_HAVE_CTAN)
-    return A_FLOAT_F1(ctan, z);
+    *_z = A_FLOAT_F1(ctan, z);
 #else /* !A_HAVE_CTAN */
     a_float const cr = a_float_cos(z.real);
     a_float const si = a_float_sinh(z.imag);
     a_float const inv = A_FLOAT_C(0.5) / (cr * cr + si * si);
-    z.real = a_float_sin(2 * z.real) * inv;
+    _z->real = a_float_sin(2 * z.real) * inv;
     if (a_float_abs(z.imag) < 1)
     {
-        z.imag = a_float_sinh(2 * z.imag) * inv;
-        return z;
+        _z->imag = a_float_sinh(2 * z.imag) * inv;
     }
-    a_float const den = a_float_pow(cr / si, 2) + 1;
-    z.imag = 1 / (a_floatanh(z.imag) * den);
-    return z;
+    else
+    {
+        a_float const den = a_float_pow(cr / si, 2) + 1;
+        _z->imag = 1 / (a_float_tanh(z.imag) * den);
+    }
 #endif /* A_HAVE_CTAN */
 }
 
-a_complex a_complex_sec(a_complex z)
+void a_complex_sec(a_complex *_z, a_complex z)
 {
-    return a_complex_inv(a_complex_cos(z));
+    a_complex_cos(&z, z);
+    a_complex_inv(_z, z);
 }
 
-a_complex a_complex_csc(a_complex z)
+void a_complex_csc(a_complex *_z, a_complex z)
 {
-    return a_complex_inv(a_complex_sin(z));
+    a_complex_sin(&z, z);
+    a_complex_inv(_z, z);
 }
 
-a_complex a_complex_cot(a_complex z)
+void a_complex_cot(a_complex *_z, a_complex z)
 {
-    return a_complex_inv(a_complex_tan(z));
+    a_complex_tan(&z, z);
+    a_complex_inv(_z, z);
 }
 
 #if defined(A_HAVE_CASIN) && (A_HAVE_CASIN + 0 < 1)
@@ -532,87 +546,95 @@ a_complex a_complex_cot(a_complex z)
 #if defined(A_HAVE_CASIN) && !defined A_COMPLEX
 a_complex A_FLOAT_F1(casin, a_complex);
 #endif /* A_HAVE_CASIN */
-a_complex a_complex_asin(a_complex z)
+void a_complex_asin(a_complex *_z, a_complex z)
 {
 #if defined(A_HAVE_CASIN) && defined(A_COMPLEX)
     union
     {
-        a_complex s;
-        A_COMPLEX z;
-    } u;
-    u.s = z;
-    u.z = A_FLOAT_F1(casin, u.z);
-    return u.s;
+        a_complex *_z;
+        A_COMPLEX *z;
+    } u, v;
+    u._z = &z;
+    v._z = _z;
+    *v.z = A_FLOAT_F1(casin, *u.z);
 #elif defined(A_HAVE_CASIN)
-    return A_FLOAT_F1(casin, z);
+    *_z = A_FLOAT_F1(casin, z);
 #else /* !A_HAVE_CASIN */
-    if (z.imag == 0) { return a_complex_asin_real(z.real); }
-    a_float const a_crossover = A_FLOAT_C(1.5);
-    a_float const b_crossover = A_FLOAT_C(0.6417);
-    a_float const x = a_float_abs(z.real);
-    a_float const y = a_float_abs(z.imag);
-    a_float const r = a_float_hypot(x + 1, y);
-    a_float const s = a_float_hypot(x - 1, y);
-    a_float const a = A_FLOAT_C(0.5) * (r + s);
-    a_float const b = x / a;
-    a_float const y2 = y * y;
-    a_float const real = z.real;
-    if (b <= b_crossover)
+    if (z.imag != 0)
     {
-        z.real = a_float_asin(b);
-    }
-    else if (x <= 1)
-    {
-        a_float const den = A_FLOAT_C(0.5) * (a + x) * (y2 / (r + x + 1) + (s + 1 - x));
-        z.real = a_float_atan(x / a_float_sqrt(den));
-    }
-    else
-    {
-        a_float const ax = a + x;
-        a_float const den = A_FLOAT_C(0.5) * (ax / (r + x + 1) + ax / (s + x - 1));
-        z.real = a_float_atan(x / (a_float_sqrt(den) * y));
-    }
-    if (real < 0) { z.real = -z.real; }
-    a_float const imag = z.imag;
-    if (a <= a_crossover)
-    {
-        a_float a1;
-        if (x < 1)
+        a_float const a_crossover = A_FLOAT_C(1.5);
+        a_float const b_crossover = A_FLOAT_C(0.6417);
+        a_float const x = a_float_abs(z.real);
+        a_float const y = a_float_abs(z.imag);
+        a_float const r = a_float_hypot(x + 1, y);
+        a_float const s = a_float_hypot(x - 1, y);
+        a_float const a = A_FLOAT_C(0.5) * (r + s);
+        a_float const b = x / a;
+        a_float const y2 = y * y;
+        a_float const real = z.real;
+        a_float const imag = z.imag;
+        if (b <= b_crossover)
         {
-            a1 = A_FLOAT_C(0.5) * (y2 / (r + x + 1) + y2 / (s + 1 - x));
+            _z->real = a_float_asin(b);
+        }
+        else if (x <= 1)
+        {
+            a_float const den = A_FLOAT_C(0.5) * (a + x) * (y2 / (r + x + 1) + (s + 1 - x));
+            _z->real = a_float_atan(x / a_float_sqrt(den));
         }
         else
         {
-            a1 = A_FLOAT_C(0.5) * (y2 / (r + x + 1) + (s + x - 1));
+            a_float const apx = a + x;
+            a_float const den = A_FLOAT_C(0.5) * (apx / (r + x + 1) + apx / (s + x - 1));
+            _z->real = a_float_atan(x / (a_float_sqrt(den) * y));
         }
-        z.imag = a_float_log1p(a1 + a_float_sqrt((a + 1) * a1));
+        if (a <= a_crossover)
+        {
+            a_float am1;
+            if (x < 1)
+            {
+                am1 = A_FLOAT_C(0.5) * (y2 / (r + x + 1) + y2 / (s + 1 - x));
+            }
+            else
+            {
+                am1 = A_FLOAT_C(0.5) * (y2 / (r + x + 1) + (s + x - 1));
+            }
+            _z->imag = a_float_log1p(am1 + a_float_sqrt((a + 1) * am1));
+        }
+        else
+        {
+            _z->imag = a_float_log(a + a_float_sqrt(a * a - 1));
+        }
+        if (real < 0) { _z->real = -_z->real; }
+        if (imag < 0) { _z->imag = -_z->imag; }
     }
     else
     {
-        z.imag = a_float_log(a + a_float_sqrt(a * a - 1));
+        a_complex_asin_real(_z, z.real);
     }
-    if (imag < 0) { z.imag = -z.imag; }
-    return z;
 #endif /* A_HAVE_CASIN */
 }
 
-a_complex a_complex_asin_real(a_float x)
+void a_complex_asin_real(a_complex *_z, a_float x)
 {
-    a_complex z = A_COMPLEX_C(0.0, 0.0);
     if (a_float_abs(x) <= 1)
     {
-        z.real = a_float_asin(x);
-        return z;
+        _z->real = a_float_asin(x);
+        _z->imag = 0;
     }
-    if (x < 0)
+    else
     {
-        z.real = -A_FLOAT_PI_2;
-        z.imag = a_float_acosh(-x);
-        return z;
+        if (x > 0)
+        {
+            _z->real = +A_FLOAT_PI_2;
+            _z->imag = -a_float_acosh(+x);
+        }
+        else
+        {
+            _z->real = -A_FLOAT_PI_2;
+            _z->imag = +a_float_acosh(-x);
+        }
     }
-    z.real = A_FLOAT_PI_2;
-    z.imag = -a_float_acosh(x);
-    return z;
 }
 
 #if defined(A_HAVE_CACOS) && (A_HAVE_CACOS + 0 < 1)
@@ -621,86 +643,95 @@ a_complex a_complex_asin_real(a_float x)
 #if defined(A_HAVE_CACOS) && !defined A_COMPLEX
 a_complex A_FLOAT_F1(cacos, a_complex);
 #endif /* A_HAVE_CACOS */
-a_complex a_complex_acos(a_complex z)
+void a_complex_acos(a_complex *_z, a_complex z)
 {
 #if defined(A_HAVE_CACOS) && defined(A_COMPLEX)
     union
     {
-        a_complex s;
-        A_COMPLEX z;
-    } u;
-    u.s = z;
-    u.z = A_FLOAT_F1(cacos, u.z);
-    return u.s;
+        a_complex *_z;
+        A_COMPLEX *z;
+    } u, v;
+    u._z = &z;
+    v._z = _z;
+    *v.z = A_FLOAT_F1(cacos, *u.z);
 #elif defined(A_HAVE_CACOS)
-    return A_FLOAT_F1(cacos, z);
+    *_z = A_FLOAT_F1(cacos, z);
 #else /* !A_HAVE_CACOS */
-    if (z.imag == 0) { return a_complex_acos_real(z.real); }
-    a_float const a_crossover = A_FLOAT_C(1.5);
-    a_float const b_crossover = A_FLOAT_C(0.6417);
-    a_float const x = a_float_abs(z.real);
-    a_float const y = a_float_abs(z.imag);
-    a_float const r = a_float_hypot(x + 1, y);
-    a_float const s = a_float_hypot(x - 1, y);
-    a_float const a = A_FLOAT_C(0.5) * (r + s);
-    a_float const b = x / a;
-    a_float const y2 = y * y;
-    a_float const real = z.real;
-    if (b <= b_crossover)
+    if (z.imag != 0)
     {
-        z.real = a_float_acos(b);
-    }
-    else if (x <= 1)
-    {
-        a_float const den = A_FLOAT_C(0.5) * (a + x) * (y2 / (r + x + 1) + (s + 1 - x));
-        z.real = a_float_atan(a_float_sqrt(den) / x);
-    }
-    else
-    {
-        a_float const ax = a + x;
-        a_float const den = A_FLOAT_C(0.5) * (ax / (r + x + 1) + ax / (s + x - 1));
-        z.real = a_float_atan(a_float_sqrt(den) * y / x);
-    }
-    if (real < 0) { z.real = A_FLOAT_PI - z.real; }
-    a_float const imag = z.imag;
-    if (a <= a_crossover)
-    {
-        a_float a1;
-        if (x < 1)
+        a_float const a_crossover = A_FLOAT_C(1.5);
+        a_float const b_crossover = A_FLOAT_C(0.6417);
+        a_float const x = a_float_abs(z.real);
+        a_float const y = a_float_abs(z.imag);
+        a_float const r = a_float_hypot(x + 1, y);
+        a_float const s = a_float_hypot(x - 1, y);
+        a_float const a = A_FLOAT_C(0.5) * (r + s);
+        a_float const b = x / a;
+        a_float const y2 = y * y;
+        a_float const real = z.real;
+        a_float const imag = z.imag;
+        if (b <= b_crossover)
         {
-            a1 = A_FLOAT_C(0.5) * (y2 / (r + x + 1) + y2 / (s + 1 - x));
+            _z->real = a_float_acos(b);
+        }
+        else if (x <= 1)
+        {
+            a_float const den = A_FLOAT_C(0.5) * (a + x) * (y2 / (r + x + 1) + (s + 1 - x));
+            _z->real = a_float_atan(a_float_sqrt(den) / x);
         }
         else
         {
-            a1 = A_FLOAT_C(0.5) * (y2 / (r + x + 1) + (s + x - 1));
+            a_float const apx = a + x;
+            a_float const den = A_FLOAT_C(0.5) * (apx / (r + x + 1) + apx / (s + x - 1));
+            _z->real = a_float_atan(a_float_sqrt(den) * y / x);
         }
-        z.imag = a_float_log1p(a1 + a_float_sqrt((a + 1) * a1));
+        if (a <= a_crossover)
+        {
+            a_float am1;
+            if (x < 1)
+            {
+                am1 = A_FLOAT_C(0.5) * (y2 / (r + x + 1) + y2 / (s + 1 - x));
+            }
+            else
+            {
+                am1 = A_FLOAT_C(0.5) * (y2 / (r + x + 1) + (s + x - 1));
+            }
+            _z->imag = a_float_log1p(am1 + a_float_sqrt((a + 1) * am1));
+        }
+        else
+        {
+            _z->imag = a_float_log(a + a_float_sqrt(a * a - 1));
+        }
+        if (real < 0) { _z->real = A_FLOAT_PI - _z->real; }
+        if (imag >= 0) { _z->imag = -_z->imag; }
     }
     else
     {
-        z.imag = a_float_log(a + a_float_sqrt(a * a - 1));
+        a_complex_acos_real(_z, z.real);
     }
-    if (imag >= 0) { z.imag = -z.imag; }
-    return z;
 #endif /* A_HAVE_CACOS */
 }
 
-a_complex a_complex_acos_real(a_float x)
+void a_complex_acos_real(a_complex *_z, a_float x)
 {
-    a_complex z = A_COMPLEX_C(0.0, 0.0);
     if (a_float_abs(x) <= 1)
     {
-        z.real = a_float_acos(x);
-        return z;
+        _z->real = a_float_acos(x);
+        _z->imag = 0;
     }
-    if (x < 0)
+    else
     {
-        z.real = A_FLOAT_PI;
-        z.imag = -a_float_acosh(-x);
-        return z;
+        if (x > 0)
+        {
+            _z->real = 0;
+            _z->imag = +a_float_acosh(+x);
+        }
+        else
+        {
+            _z->real = A_FLOAT_PI;
+            _z->imag = -a_float_acosh(-x);
+        }
     }
-    z.imag = a_float_acosh(x);
-    return z;
 }
 
 #if defined(A_HAVE_CATAN) && (A_HAVE_CATAN + 0 < 1)
@@ -709,110 +740,131 @@ a_complex a_complex_acos_real(a_float x)
 #if defined(A_HAVE_CATAN) && !defined A_COMPLEX
 a_complex A_FLOAT_F1(catan, a_complex);
 #endif /* A_HAVE_CATAN */
-a_complex a_complex_atan(a_complex z)
+void a_complex_atan(a_complex *_z, a_complex z)
 {
 #if defined(A_HAVE_CATAN) && defined(A_COMPLEX)
     union
     {
-        a_complex s;
-        A_COMPLEX z;
-    } u;
-    u.s = z;
-    u.z = A_FLOAT_F1(catan, u.z);
-    return u.s;
+        a_complex *_z;
+        A_COMPLEX *z;
+    } u, v;
+    u._z = &z;
+    v._z = _z;
+    *v.z = A_FLOAT_F1(catan, *u.z);
 #elif defined(A_HAVE_CATAN)
-    return A_FLOAT_F1(catan, z);
+    *_z = A_FLOAT_F1(catan, z);
 #else /* !A_HAVE_CATAN */
-    if (z.imag == 0)
+    if (z.imag != 0)
     {
-        z.real = a_float_atan(z.real);
-        return z;
-    }
-    a_float const r = a_float_hypot(z.real, z.imag);
-    a_float const u = 2 * z.imag / (r * r + 1);
-    a_float const imag = z.imag;
-    if (a_float_abs(u) < 0.1)
-    {
-        z.imag = A_FLOAT_C(0.25) * (a_float_log1p(u) - a_float_log1p(-u));
+        a_float const r = a_float_hypot(z.real, z.imag);
+        a_float const u = 2 * z.imag / (r * r + 1);
+        a_float const imag = z.imag;
+        if (a_float_abs(u) < 0.1)
+        {
+            _z->imag = A_FLOAT_C(0.25) * (a_float_log1p(u) - a_float_log1p(-u));
+        }
+        else
+        {
+            a_float const a = a_float_hypot(z.real, z.imag + 1);
+            a_float const b = a_float_hypot(z.real, z.imag - 1);
+            _z->imag = A_FLOAT_C(0.5) * a_float_log(a / b);
+        }
+        if (z.real != 0)
+        {
+            _z->real = A_FLOAT_C(0.5) * a_float_atan2(2 * z.real, (1 + r) * (1 - r));
+        }
+        else
+        {
+            if (imag > 1)
+            {
+                _z->real = +A_FLOAT_PI;
+            }
+            else if (imag < -1)
+            {
+                _z->real = -A_FLOAT_PI;
+            }
+            else
+            {
+                _z->real = 0;
+            }
+        }
     }
     else
     {
-        a_float const a = a_float_hypot(z.real, z.imag + 1);
-        a_float const b = a_float_hypot(z.real, z.imag - 1);
-        z.imag = A_FLOAT_C(0.5) * a_float_log(a / b);
+        _z->real = a_float_atan(z.real);
+        _z->imag = 0;
     }
-    if (z.real == 0)
-    {
-        if (imag > 1)
-        {
-            z.real = A_FLOAT_PI;
-        }
-        else if (imag < -1)
-        {
-            z.real = -A_FLOAT_PI;
-        }
-        return z;
-    }
-    z.real = A_FLOAT_C(0.5) * a_float_atan2(2 * z.real, (1 + r) * (1 - r));
-    return z;
 #endif /* A_HAVE_CATAN */
 }
 
-a_complex a_complex_asec(a_complex z)
+void a_complex_asec(a_complex *_z, a_complex z)
 {
-    return a_complex_acos(a_complex_inv(z));
+    a_complex_inv(&z, z);
+    a_complex_acos(_z, z);
 }
 
-a_complex a_complex_asec_real(a_float x)
+void a_complex_asec_real(a_complex *_z, a_float x)
 {
-    a_complex z = A_COMPLEX_C(0.0, 0.0);
     if (x <= -1 || x >= 1)
     {
-        z.real = a_float_acos(1 / x);
-        return z;
+        _z->real = a_float_acos(1 / x);
+        _z->imag = 0;
     }
-    if (x >= 0)
+    else
     {
-        z.imag = a_float_acosh(1 / x);
-        return z;
+        if (x >= 0)
+        {
+            _z->real = 0;
+            _z->imag = +a_float_acosh(+1 / x);
+        }
+        else
+        {
+            _z->real = A_FLOAT_PI;
+            _z->imag = -a_float_acosh(-1 / x);
+        }
     }
-    z.real = A_FLOAT_PI;
-    z.imag = -a_float_acosh(-1 / x);
-    return z;
 }
 
-a_complex a_complex_acsc(a_complex z)
+void a_complex_acsc(a_complex *_z, a_complex z)
 {
-    return a_complex_asin(a_complex_inv(z));
+    a_complex_inv(&z, z);
+    a_complex_asin(_z, z);
 }
 
-a_complex a_complex_acsc_real(a_float x)
+void a_complex_acsc_real(a_complex *_z, a_float x)
 {
-    a_complex z = A_COMPLEX_C(0.0, 0.0);
     if (x <= -1 || x >= 1)
     {
-        z.real = a_float_asin(1 / x);
-        return z;
+        _z->real = a_float_asin(1 / x);
+        _z->imag = 0;
     }
-    if (x >= 0)
+    else
     {
-        z.real = A_FLOAT_PI_2;
-        z.imag = -a_float_acosh(1 / x);
-        return z;
+        if (x >= 0)
+        {
+            _z->real = +A_FLOAT_PI_2;
+            _z->imag = -a_float_acosh(+1 / x);
+        }
+        else
+        {
+            _z->real = -A_FLOAT_PI_2;
+            _z->imag = +a_float_acosh(-1 / x);
+        }
     }
-    z.real = -A_FLOAT_PI_2;
-    z.imag = a_float_acosh(-1 / x);
-    return z;
 }
 
-a_complex a_complex_acot(a_complex z)
+void a_complex_acot(a_complex *_z, a_complex z)
 {
-    if (z.real == 0 && z.imag == 0)
+    if (z.real != 0 || z.imag != 0)
     {
-        z.real = A_FLOAT_PI_2;
-        return z;
+        a_complex_inv(&z, z);
+        a_complex_atan(_z, z);
     }
-    return a_complex_atan(a_complex_inv(z));
+    else
+    {
+        _z->real = A_FLOAT_PI_2;
+        _z->imag = 0;
+    }
 }
 
 #if defined(A_HAVE_CSINH) && (A_HAVE_CSINH + 0 < 1)
@@ -821,25 +873,24 @@ a_complex a_complex_acot(a_complex z)
 #if defined(A_HAVE_CSINH) && !defined A_COMPLEX
 a_complex A_FLOAT_F1(csinh, a_complex);
 #endif /* A_HAVE_CSINH */
-a_complex a_complex_sinh(a_complex z)
+void a_complex_sinh(a_complex *_z, a_complex z)
 {
 #if defined(A_HAVE_CSINH) && defined(A_COMPLEX)
     union
     {
-        a_complex s;
-        A_COMPLEX z;
-    } u;
-    u.s = z;
-    u.z = A_FLOAT_F1(csinh, u.z);
-    return u.s;
+        a_complex *_z;
+        A_COMPLEX *z;
+    } u, v;
+    u._z = &z;
+    v._z = _z;
+    *v.z = A_FLOAT_F1(csinh, *u.z);
 #elif defined(A_HAVE_CSINH)
-    return A_FLOAT_F1(csinh, z);
+    *_z = A_FLOAT_F1(csinh, z);
 #else /* !A_HAVE_CSINH */
     a_float const real = z.real;
     a_float const imag = z.imag;
-    z.real = a_float_sinh(real) * a_float_cos(imag);
-    z.imag = a_float_cosh(real) * a_float_sin(imag);
-    return z;
+    _z->real = a_float_sinh(real) * a_float_cos(imag);
+    _z->imag = a_float_cosh(real) * a_float_sin(imag);
 #endif /* A_HAVE_CSINH */
 }
 
@@ -849,25 +900,24 @@ a_complex a_complex_sinh(a_complex z)
 #if defined(A_HAVE_CCOSH) && !defined A_COMPLEX
 a_complex A_FLOAT_F1(ccosh, a_complex);
 #endif /* A_HAVE_CCOSH */
-a_complex a_complex_cosh(a_complex z)
+void a_complex_cosh(a_complex *_z, a_complex z)
 {
 #if defined(A_HAVE_CCOSH) && defined(A_COMPLEX)
     union
     {
-        a_complex s;
-        A_COMPLEX z;
-    } u;
-    u.s = z;
-    u.z = A_FLOAT_F1(ccosh, u.z);
-    return u.s;
+        a_complex *_z;
+        A_COMPLEX *z;
+    } u, v;
+    u._z = &z;
+    v._z = _z;
+    *v.z = A_FLOAT_F1(ccosh, *u.z);
 #elif defined(A_HAVE_CCOSH)
-    return A_FLOAT_F1(ccosh, z);
+    *_z = A_FLOAT_F1(ccosh, z);
 #else /* !A_HAVE_CCOSH */
     a_float const real = z.real;
     a_float const imag = z.imag;
-    z.real = a_float_cosh(real) * a_float_cos(imag);
-    z.imag = a_float_sinh(real) * a_float_sin(imag);
-    return z;
+    _z->real = a_float_cosh(real) * a_float_cos(imag);
+    _z->imag = a_float_sinh(real) * a_float_sin(imag);
 #endif /* A_HAVE_CCOSH */
 }
 
@@ -877,48 +927,52 @@ a_complex a_complex_cosh(a_complex z)
 #if defined(A_HAVE_CTANH) && !defined A_COMPLEX
 a_complex A_FLOAT_F1(ctanh, a_complex);
 #endif /* A_HAVE_CTANH */
-a_complex a_complex_tanh(a_complex z)
+void a_complex_tanh(a_complex *_z, a_complex z)
 {
 #if defined(A_HAVE_CTANH) && defined(A_COMPLEX)
     union
     {
-        a_complex s;
-        A_COMPLEX z;
-    } u;
-    u.s = z;
-    u.z = A_FLOAT_F1(ctanh, u.z);
-    return u.s;
+        a_complex *_z;
+        A_COMPLEX *z;
+    } u, v;
+    u._z = &z;
+    v._z = _z;
+    *v.z = A_FLOAT_F1(ctanh, *u.z);
 #elif defined(A_HAVE_CTANH)
-    return A_FLOAT_F1(ctanh, z);
+    *_z = A_FLOAT_F1(ctanh, z);
 #else /* !A_HAVE_CTANH */
     a_float const ci = a_float_cos(z.imag);
     a_float const sr = a_float_sinh(z.real);
     a_float const inv = 1 / (ci * ci + sr * sr);
-    z.imag = A_FLOAT_C(0.5) * a_float_sin(2 * z.imag) * inv;
+    _z->imag = A_FLOAT_C(0.5) * a_float_sin(2 * z.imag) * inv;
     if (a_float_abs(z.real) < 1)
     {
-        z.real = a_float_sinh(z.real) * a_float_cosh(z.real) * inv;
-        return z;
+        _z->real = a_float_sinh(z.real) * a_float_cosh(z.real) * inv;
     }
-    a_float const den = a_float_pow(ci / sr, 2) + 1;
-    z.real = 1 / (a_floatanh(z.real) * den);
-    return z;
+    else
+    {
+        a_float const den = a_float_pow(ci / sr, 2) + 1;
+        _z->real = 1 / (a_float_tanh(z.real) * den);
+    }
 #endif /* A_HAVE_CTANH */
 }
 
-a_complex a_complex_sech(a_complex z)
+void a_complex_sech(a_complex *_z, a_complex z)
 {
-    return a_complex_inv(a_complex_cosh(z));
+    a_complex_cosh(&z, z);
+    a_complex_inv(_z, z);
 }
 
-a_complex a_complex_csch(a_complex z)
+void a_complex_csch(a_complex *_z, a_complex z)
 {
-    return a_complex_inv(a_complex_sinh(z));
+    a_complex_sinh(&z, z);
+    a_complex_inv(_z, z);
 }
 
-a_complex a_complex_coth(a_complex z)
+void a_complex_coth(a_complex *_z, a_complex z)
 {
-    return a_complex_inv(a_complex_tanh(z));
+    a_complex_tanh(&z, z);
+    a_complex_inv(_z, z);
 }
 
 #if defined(A_HAVE_CASINH) && (A_HAVE_CASINH + 0 < 1)
@@ -927,23 +981,23 @@ a_complex a_complex_coth(a_complex z)
 #if defined(A_HAVE_CASINH) && !defined A_COMPLEX
 a_complex A_FLOAT_F1(casinh, a_complex);
 #endif /* A_HAVE_CASINH */
-a_complex a_complex_asinh(a_complex z)
+void a_complex_asinh(a_complex *_z, a_complex z)
 {
 #if defined(A_HAVE_CASINH) && defined(A_COMPLEX)
     union
     {
-        a_complex s;
-        A_COMPLEX z;
-    } u;
-    u.s = z;
-    u.z = A_FLOAT_F1(casinh, u.z);
-    return u.s;
+        a_complex *_z;
+        A_COMPLEX *z;
+    } u, v;
+    u._z = &z;
+    v._z = _z;
+    *v.z = A_FLOAT_F1(casinh, *u.z);
 #elif defined(A_HAVE_CASINH)
-    return A_FLOAT_F1(casinh, z);
+    *_z = A_FLOAT_F1(casinh, z);
 #else /* !A_HAVE_CASINH */
-    z = a_complex_mul_imag(z, 1);
-    z = a_complex_asin(z);
-    return a_complex_mul_imag(z, -1);
+    a_complex_mul_imag(&z, z, +1);
+    a_complex_asin(&z, z);
+    a_complex_mul_imag(_z, z, -1);
 #endif /* A_HAVE_CASINH */
 }
 
@@ -953,41 +1007,42 @@ a_complex a_complex_asinh(a_complex z)
 #if defined(A_HAVE_CACOSH) && !defined A_COMPLEX
 a_complex A_FLOAT_F1(cacosh, a_complex);
 #endif /* A_HAVE_CACOSH */
-a_complex a_complex_acosh(a_complex z)
+void a_complex_acosh(a_complex *_z, a_complex z)
 {
 #if defined(A_HAVE_CACOSH) && defined(A_COMPLEX)
     union
     {
-        a_complex s;
-        A_COMPLEX z;
-    } u;
-    u.s = z;
-    u.z = A_FLOAT_F1(cacosh, u.z);
-    return u.s;
+        a_complex *_z;
+        A_COMPLEX *z;
+    } u, v;
+    u._z = &z;
+    v._z = _z;
+    *v.z = A_FLOAT_F1(cacosh, *u.z);
 #elif defined(A_HAVE_CACOSH)
-    return A_FLOAT_F1(cacosh, z);
+    *_z = A_FLOAT_F1(cacosh, z);
 #else /* !A_HAVE_CACOSH */
-    z = a_complex_acsc(z);
-    return a_complex_mul_imag(z, z.imag > 0 ? -1 : 1);
+    a_complex_acsc(&z, z);
+    a_complex_mul_imag(_z, z, z.imag > 0 ? -1 : +1);
 #endif /* A_HAVE_CACOSH */
 }
 
-a_complex a_complex_acosh_real(a_float x)
+void a_complex_acosh_real(a_complex *_z, a_float x)
 {
-    a_complex z = A_COMPLEX_C(0.0, 0.0);
     if (x >= 1)
     {
-        z.real = a_float_acosh(x);
-        return z;
+        _z->real = a_float_acosh(+x);
+        _z->imag = 0;
     }
-    if (x >= -1)
+    else if (x >= -1)
     {
-        z.imag = a_float_acos(x);
-        return z;
+        _z->real = 0;
+        _z->imag = a_float_acos(x);
     }
-    z.real = a_float_acos(-x);
-    z.imag = A_FLOAT_PI;
-    return z;
+    else
+    {
+        _z->real = a_float_acosh(-x);
+        _z->imag = A_FLOAT_PI;
+    }
 }
 
 #if defined(A_HAVE_CATANH) && (A_HAVE_CATANH + 0 < 1)
@@ -996,59 +1051,58 @@ a_complex a_complex_acosh_real(a_float x)
 #if defined(A_HAVE_CATANH) && !defined A_COMPLEX
 a_complex A_FLOAT_F1(catanh, a_complex);
 #endif /* A_HAVE_CATANH */
-a_complex a_complex_atanh(a_complex z)
+void a_complex_atanh(a_complex *_z, a_complex z)
 {
 #if defined(A_HAVE_CATANH) && defined(A_COMPLEX)
     union
     {
-        a_complex s;
-        A_COMPLEX z;
-    } u;
-    u.s = z;
-    u.z = A_FLOAT_F1(catanh, u.z);
-    return u.s;
+        a_complex *_z;
+        A_COMPLEX *z;
+    } u, v;
+    u._z = &z;
+    v._z = _z;
+    *v.z = A_FLOAT_F1(catanh, *u.z);
 #elif defined(A_HAVE_CATANH)
-    return A_FLOAT_F1(catanh, z);
+    *_z = A_FLOAT_F1(catanh, z);
 #else /* !A_HAVE_CATANH */
-    if (z.imag == 0)
+    if (z.imag != 0)
     {
-        return a_complex_atanh_real(z.real);
+        a_complex_mul_imag(&z, z, +1);
+        a_complex_atan(&z, z);
+        a_complex_mul_imag(_z, z, -1);
     }
-    z = a_complex_mul_imag(z, 1);
-    z = a_complex_atan(z);
-    return a_complex_mul_imag(z, -1);
+    a_complex_atanh_real(_z, z.real);
 #endif /* A_HAVE_CATANH */
 }
 
-a_complex a_complex_atanh_real(a_float x)
+void a_complex_atanh_real(a_complex *_z, a_float x)
 {
-    a_complex z = A_COMPLEX_C(0.0, 0.0);
     if (x > -1 && x < 1)
     {
-        z.real = a_float_atanh(x);
-        return z;
+        _z->real = a_float_atanh(x);
+        _z->imag = 0;
     }
-    z.real = a_float_atanh(1 / x);
-    if (x < 0)
+    else
     {
-        z.imag = A_FLOAT_PI_2;
-        return z;
+        _z->real = a_float_atanh(1 / x);
+        _z->imag = (x < 0) ? +A_FLOAT_PI_2 : -A_FLOAT_PI_2;
     }
-    z.imag = -A_FLOAT_PI_2;
-    return z;
 }
 
-a_complex a_complex_asech(a_complex z)
+void a_complex_asech(a_complex *_z, a_complex z)
 {
-    return a_complex_acosh(a_complex_inv(z));
+    a_complex_inv(&z, z);
+    a_complex_acosh(_z, z);
 }
 
-a_complex a_complex_acsch(a_complex z)
+void a_complex_acsch(a_complex *_z, a_complex z)
 {
-    return a_complex_asinh(a_complex_inv(z));
+    a_complex_inv(&z, z);
+    a_complex_asinh(_z, z);
 }
 
-a_complex a_complex_acoth(a_complex z)
+void a_complex_acoth(a_complex *_z, a_complex z)
 {
-    return a_complex_atanh(a_complex_inv(z));
+    a_complex_inv(&z, z);
+    a_complex_atanh(_z, z);
 }
