@@ -592,6 +592,8 @@ if(NOT CMAKE_VERSION VERSION_LESS 3.9 AND DOXYGEN_FOUND)
   set(DOXYGEN_OPTIMIZE_OUTPUT_FOR_C YES)
 
   # Build related configuration options
+  set(DOXYGEN_EXTRACT_STATIC YES)
+
   # Configuration options related to warning and progress messages
   set(DOXYGEN_WARN_IF_UNDOCUMENTED NO)
   set(DOXYGEN_WARN_NO_PARAMDOC YES)
@@ -623,6 +625,7 @@ if(NOT CMAKE_VERSION VERSION_LESS 3.9 AND DOXYGEN_FOUND)
     "__cplusplus=201103L"
     "A_BYTE_ORDER=1234"
     "A_SIZE_POINTER=8"
+    "A_INLINE:=inline"
     "A_EXTERN:="
     "A_INTERN:="
     "A_PUBLIC:="
