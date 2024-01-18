@@ -136,8 +136,8 @@ static int liba_lpf_get(lua_State *L)
         break;
     case 0xA65758B2: // __index
         lua_registry_get(L, liba_lpf_new);
-        lua_num_set(L, -1, "alpha", (lua_Number)ctx->alpha);
-        lua_num_set(L, -1, "output", (lua_Number)ctx->output);
+        lua_num_set(L, -1, "alpha", ctx->alpha);
+        lua_num_set(L, -1, "output", ctx->output);
         break;
     default:
         lua_getmetatable(L, 1);

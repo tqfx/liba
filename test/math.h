@@ -2,6 +2,9 @@
 #include "test.h"
 #include "a/math.h"
 
+#if defined(__MINGW32__) && A_PREREQ_GNUC(3, 0)
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
+#endif /* __MINGW32__ */
 #if A_PREREQ_GNUC(4, 6) || __has_warning("-Wdouble-promotion")
 #pragma GCC diagnostic ignored "-Wdouble-promotion"
 #endif /* -Wdouble-promotion */
@@ -101,6 +104,14 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         a_float nan = A_FLOAT_NAN;
         debug("min = " A_FLOAT_PRI("-12", "g ") "max = " A_FLOAT_PRI("", "g\n"), min, max);
         debug("inf = " A_FLOAT_PRI("-12", "g ") "nan = " A_FLOAT_PRI("", "g\n"), inf, nan);
+    }
+    {
+#undef a_float_log1p
+        a_float A_VOLATILE x = A_FLOAT_EPSILON / 2;
+        TEST_BUG(isinf(a_float_log1p(A_FLOAT_INF)));
+        TEST_BUG(isnan(a_float_log1p(A_FLOAT_NAN)));
+        debug("log1p(" A_FLOAT_PRI(".15", "g") ")=" A_FLOAT_PRI(".15", "g\n"), x, a_float_log1p(x));
+        debug("log(1+" A_FLOAT_PRI(".15", "g") ")=" A_FLOAT_PRI(".15", "g\n"), x, a_float_log(x + 1));
     }
     return 0;
 }

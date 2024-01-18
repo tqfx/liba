@@ -25,7 +25,7 @@ static JSValue liba_hpf_ctor(JSContext *ctx, JSValueConst new_target, int argc, 
     else
     {
         if (JS_ToFloat64(ctx, &args[0], argv[0])) { goto fail; }
-        a_hpf_init(self, args[0]);
+        a_hpf_init(self, (a_float)args[0]);
     }
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
@@ -69,7 +69,7 @@ static JSValue liba_hpf_gen(JSContext *ctx, JSValueConst this_val, int argc, JSV
     else
     {
         if (JS_ToFloat64(ctx, &args[0], argv[0])) { return JS_EXCEPTION; }
-        self->alpha = args[0];
+        self->alpha = (a_float)args[0];
     }
     return JS_UNDEFINED;
 }

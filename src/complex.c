@@ -1,4 +1,7 @@
 #include "a/a.h"
+#if defined(__MINGW32__) && A_PREREQ_GNUC(3, 0)
+#pragma GCC diagnostic ignored "-Wfloat-conversion"
+#endif /* __MINGW32__ */
 #if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
@@ -114,18 +117,11 @@ a_float a_complex_arg(a_complex z)
 
 void a_complex_proj_(a_complex *_z)
 {
-#if defined(__MINGW32__) && A_PREREQ_GNUC(3, 0)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wfloat-conversion"
-#endif /* __MINGW32__ */
     if (isinf(_z->real) || isinf(_z->imag))
     {
         _z->real = A_FLOAT_INF;
         _z->imag = a_float_copysign(0, _z->imag);
     }
-#if defined(__MINGW32__) && A_PREREQ_GNUC(3, 0)
-#pragma GCC diagnostic pop
-#endif /* __MINGW32__ */
 }
 
 void a_complex_mul_(a_complex *_z, a_complex z)
@@ -675,7 +671,7 @@ void a_complex_atan_(a_complex *_z)
         a_float const r = a_float_hypot(_z->real, _z->imag);
         a_float const u = 2 * _z->imag / (r * r + 1);
         a_float const imag = _z->imag;
-        if (a_float_abs(u) < 0.1)
+        if (a_float_abs(u) < A_FLOAT_C(0.1))
         {
             _z->imag = A_FLOAT_C(0.25) * (a_float_log1p(u) - a_float_log1p(-u));
         }

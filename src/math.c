@@ -266,7 +266,17 @@ a_u32 a_u64_sqrt(a_u64 x)
 }
 
 #undef a_float_log1p
-a_float a_float_log1p(a_float x) { return a_float_log(x + 1); }
+a_float a_float_log1p(a_float x)
+{
+    a_float A_VOLATILE a = x + 1;
+    a_float y = a_float_log(a);
+    if (x < A_FLOAT_EPSILON && a > 0)
+    {
+        a_float A_VOLATILE b = a - 1;
+        y -= (b - x) / a;
+    }
+    return y;
+}
 
 #undef a_float_hypot
 a_float a_float_hypot(a_float x, a_float y)
