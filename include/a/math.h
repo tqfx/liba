@@ -23,8 +23,12 @@
 #define A_LOG10E 0.434294481903251827651
 /*! \f$ \ln{2} \f$ */
 #define A_LN2 0.693147180559945309417
+/*! \f$ \frac{1}{\ln{2}} \f$ */
+#define A_LN1_2 3.32192809488736218171
 /*! \f$ \ln{10} \f$ */
 #define A_LN10 2.30258509299404568402
+/*! \f$ \frac{1}{\ln{10}} \f$ */
+#define A_LN1_10 0.434294481903251827651
 /*! \f$ \pi \f$ */
 #define A_PI 3.14159265358979323846
 /*! \f$ \frac{\pi}{2} \f$ */
@@ -41,13 +45,14 @@
 #define A_SQRT2 1.41421356237309504880
 /*! \f$ \frac{1}{\sqrt{2}}=\frac{\sqrt{2}}{2} \f$ */
 #define A_SQRT1_2 0.707106781186547524401
+/*! \f$ \sqrt{3} \f$ */
+#define A_SQRT3 1.73205080756887729352
+/*! \f$ \frac{1}{\sqrt{3}}=\frac{\sqrt{3}}{3} \f$ */
+#define A_SQRT1_3 0.57735026918962576450
 
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
-
-A_EXTERN a_f32 a_f32_hypot(a_f32 x, a_f32 y);
-A_EXTERN a_f64 a_f64_hypot(a_f64 x, a_f64 y);
 
 /*!
  @brief reciprocal of square-root, \f$ \frac{1}{\sqrt{x}} \f$
@@ -103,13 +108,11 @@ A_EXTERN a_u32 a_u64_sqrt(a_u64 x);
 #define a_f32_pow A_F32_F(pow)
 #define a_f32_sqrt A_F32_F(sqrt)
 #define a_f32_cbrt A_F32_F(cbrt)
-#if defined(A_HAVE_HYPOT)
 #define a_f32_hypot A_F32_F(hypot)
-#endif /* A_HAVE_HYPOT */
 
 #define a_f32_sin A_F32_F(sin)
 #define a_f32_cos A_F32_F(cos)
-#define a_f32an A_F32_F(tan)
+#define a_f32_tan A_F32_F(tan)
 #define a_f32_asin A_F32_F(asin)
 #define a_f32_acos A_F32_F(acos)
 #define a_f32_atan A_F32_F(atan)
@@ -117,19 +120,19 @@ A_EXTERN a_u32 a_u64_sqrt(a_u64 x);
 
 #define a_f32_sinh A_F32_F(sinh)
 #define a_f32_cosh A_F32_F(cosh)
-#define a_f32anh A_F32_F(tanh)
+#define a_f32_tanh A_F32_F(tanh)
 #define a_f32_asinh A_F32_F(asinh)
 #define a_f32_acosh A_F32_F(acosh)
 #define a_f32_atanh A_F32_F(atanh)
 
 #define a_f32_erf A_F32_F(erf)
 #define a_f32_erfc A_F32_F(erfc)
-#define a_f32gamma A_F32_F(tgamma)
+#define a_f32_tgamma A_F32_F(tgamma)
 #define a_f32_lgamma A_F32_F(lgamma)
 
 #define a_f32_ceil A_F32_F(ceil)
 #define a_f32_floor A_F32_F(floor)
-#define a_f32runc A_F32_F(trunc)
+#define a_f32_trunc A_F32_F(trunc)
 #define a_f32_round A_F32_F(round)
 #define a_f32_lround A_F32_F(lround)
 #define a_f32_llround A_F32_F(llround)
@@ -171,13 +174,11 @@ A_EXTERN a_u32 a_u64_sqrt(a_u64 x);
 #define a_f64_pow A_F64_F(pow)
 #define a_f64_sqrt A_F64_F(sqrt)
 #define a_f64_cbrt A_F64_F(cbrt)
-#if defined(A_HAVE_HYPOT)
 #define a_f64_hypot A_F64_F(hypot)
-#endif /* A_HAVE_HYPOT */
 
 #define a_f64_sin A_F64_F(sin)
 #define a_f64_cos A_F64_F(cos)
-#define a_f64an A_F64_F(tan)
+#define a_f64_tan A_F64_F(tan)
 #define a_f64_asin A_F64_F(asin)
 #define a_f64_acos A_F64_F(acos)
 #define a_f64_atan A_F64_F(atan)
@@ -185,19 +186,19 @@ A_EXTERN a_u32 a_u64_sqrt(a_u64 x);
 
 #define a_f64_sinh A_F64_F(sinh)
 #define a_f64_cosh A_F64_F(cosh)
-#define a_f64anh A_F64_F(tanh)
+#define a_f64_tanh A_F64_F(tanh)
 #define a_f64_asinh A_F64_F(asinh)
 #define a_f64_acosh A_F64_F(acosh)
 #define a_f64_atanh A_F64_F(atanh)
 
 #define a_f64_erf A_F64_F(erf)
 #define a_f64_erfc A_F64_F(erfc)
-#define a_f64gamma A_F64_F(tgamma)
+#define a_f64_tgamma A_F64_F(tgamma)
 #define a_f64_lgamma A_F64_F(lgamma)
 
 #define a_f64_ceil A_F64_F(ceil)
 #define a_f64_floor A_F64_F(floor)
-#define a_f64runc A_F64_F(trunc)
+#define a_f64_trunc A_F64_F(trunc)
 #define a_f64_round A_F64_F(round)
 #define a_f64_lround A_F64_F(lround)
 #define a_f64_llround A_F64_F(llround)
@@ -222,8 +223,12 @@ A_EXTERN a_u32 a_u64_sqrt(a_u64 x);
 #define A_FLOAT_LOG10E A_FLOAT_C(A_LOG10E)
 /*! \f$ \ln{2} \f$ */
 #define A_FLOAT_LN2 A_FLOAT_C(A_LN2)
+/*! \f$ \frac{1}{\ln{2}} \f$ */
+#define A_FLOAT_LN1_2 A_FLOAT_C(A_LN1_2)
 /*! \f$ \ln{10} \f$ */
 #define A_FLOAT_LN10 A_FLOAT_C(A_LN10)
+/*! \f$ \frac{1}{\ln{10}} \f$ */
+#define A_FLOAT_LN1_10 A_FLOAT_C(A_LN1_10)
 /*! \f$ \pi \f$ */
 #define A_FLOAT_PI A_FLOAT_C(A_PI)
 /*! \f$ \frac{\pi}{2} \f$ */
@@ -240,14 +245,19 @@ A_EXTERN a_u32 a_u64_sqrt(a_u64 x);
 #define A_FLOAT_SQRT2 A_FLOAT_C(A_SQRT2)
 /*! \f$ \frac{1}{\sqrt{2}}=\frac{\sqrt{2}}{2} \f$ */
 #define A_FLOAT_SQRT1_2 A_FLOAT_C(A_SQRT1_2)
+/*! \f$ \sqrt{3} \f$ */
+#define A_FLOAT_SQRT3 A_FLOAT_C(A_SQRT3)
+/*! \f$ \frac{1}{\sqrt{3}}=\frac{\sqrt{3}}{3} \f$ */
+#define A_FLOAT_SQRT1_3 A_FLOAT_C(A_SQRT1_3)
 
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
 
 A_EXTERN a_float a_float_log1p(a_float x);
-A_EXTERN a_float a_float_hypot(a_float x, a_float y);
 A_EXTERN a_float a_float_atan2(a_float x, a_float y);
+A_EXTERN a_float a_float_hypot(a_float x, a_float y);
+A_EXTERN a_float a_float_hypot3(a_float x, a_float y, a_float z);
 
 #if defined(__cplusplus)
 } /* extern "C" */

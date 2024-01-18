@@ -55,22 +55,6 @@ static void test_f64_rsqrt(void)
     }
 }
 
-static void test_f32_hypot(void)
-{
-    a_f32 x = A_F32_C(1e38);
-    a_f32 y = A_F32_C(1e38);
-    a_f32 z = a_f32_hypot(x, y);
-    debug("hypot(%g,%g)=%g\n", x, y, z);
-}
-
-static void test_f64_hypot(void)
-{
-    a_f64 x = A_F64_C(1e308);
-    a_f64 y = A_F64_C(1e308);
-    a_f64 z = a_f64_hypot(x, y);
-    debug("hypot(%g,%g)=%g\n", x, y, z);
-}
-
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     (void)(argc);
@@ -79,8 +63,6 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     test_u64_sqrt();
     test_f32_rsqrt();
     test_f64_rsqrt();
-    test_f32_hypot();
-    test_f64_hypot();
     {
         a_f64 min = A_F64_MIN;
         a_f64 max = A_F64_MAX;
@@ -107,11 +89,30 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     }
     {
 #undef a_float_log1p
-        a_float A_VOLATILE x = A_FLOAT_EPSILON / 2;
+        a_float x = A_FLOAT_EPSILON / 2;
         TEST_BUG(isinf(a_float_log1p(A_FLOAT_INF)));
         TEST_BUG(isnan(a_float_log1p(A_FLOAT_NAN)));
         debug("log1p(" A_FLOAT_PRI(".15", "g") ")=" A_FLOAT_PRI(".15", "g\n"), x, a_float_log1p(x));
         debug("log(1+" A_FLOAT_PRI(".15", "g") ")=" A_FLOAT_PRI(".15", "g\n"), x, a_float_log(x + 1));
+    }
+    {
+#undef a_float_hypot
+        a_float x = A_FLOAT_MAX / A_FLOAT_SQRT2;
+        a_float y = A_FLOAT_MAX / A_FLOAT_SQRT2;
+        TEST_BUG(!isinf(a_float_hypot(x, y)));
+        TEST_BUG(isinf(a_float_hypot(A_FLOAT_INF, A_FLOAT_NAN)));
+        TEST_BUG(isinf(a_float_hypot(A_FLOAT_NAN, A_FLOAT_INF)));
+        TEST_BUG(isnan(a_float_hypot(A_FLOAT_NAN, A_FLOAT_NAN)));
+    }
+    {
+        a_float x = A_FLOAT_MAX / A_FLOAT_SQRT3;
+        a_float y = A_FLOAT_MAX / A_FLOAT_SQRT3;
+        a_float z = A_FLOAT_MAX / A_FLOAT_SQRT3;
+        TEST_BUG(!isinf(a_float_hypot3(x, y, z)));
+        TEST_BUG(isinf(a_float_hypot3(A_FLOAT_INF, A_FLOAT_NAN, A_FLOAT_NAN)));
+        TEST_BUG(isinf(a_float_hypot3(A_FLOAT_NAN, A_FLOAT_INF, A_FLOAT_NAN)));
+        TEST_BUG(isinf(a_float_hypot3(A_FLOAT_NAN, A_FLOAT_NAN, A_FLOAT_INF)));
+        TEST_BUG(isnan(a_float_hypot3(A_FLOAT_NAN, A_FLOAT_NAN, A_FLOAT_NAN)));
     }
     return 0;
 }

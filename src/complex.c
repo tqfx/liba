@@ -322,13 +322,13 @@ void a_complex_log_(a_complex *_z)
 void a_complex_log2_(a_complex *_z)
 {
     a_complex_log_(_z);
-    a_complex_mul_real_(_z, 1 / A_FLOAT_LN2);
+    a_complex_mul_real_(_z, A_FLOAT_LN1_2);
 }
 
 void a_complex_log10_(a_complex *_z)
 {
     a_complex_log_(_z);
-    a_complex_mul_real_(_z, 1 / A_FLOAT_LN10);
+    a_complex_mul_real_(_z, A_FLOAT_LN1_10);
 }
 
 void a_complex_logb_(a_complex *_z, a_complex b)
@@ -423,16 +423,16 @@ void a_complex_tan_(a_complex *_z)
 #else /* !A_HAVE_CTAN */
     a_float const cr = a_float_cos(_z->real);
     a_float const si = a_float_sinh(_z->imag);
-    a_float const inv = A_FLOAT_C(0.5) / (cr * cr + si * si);
-    _z->real = a_float_sin(2 * _z->real) * inv;
+    a_float const den = cr * cr + si * si;
+    _z->real = A_FLOAT_C(0.5) * a_float_sin(2 * _z->real) / den;
     if (a_float_abs(_z->imag) < 1)
     {
-        _z->imag = a_float_sinh(2 * _z->imag) * inv;
+        _z->imag = A_FLOAT_C(0.5) * a_float_sinh(2 * _z->imag) / den;
     }
     else
     {
-        a_float const den = a_float_pow(cr / si, 2) + 1;
-        _z->imag = 1 / (a_float_tanh(_z->imag) * den);
+        a_float const d = a_float_pow(cr / si, 2) + 1;
+        _z->imag = 1 / (a_float_tanh(_z->imag) * d);
     }
 #endif /* A_HAVE_CTAN */
 }
@@ -848,16 +848,16 @@ void a_complex_tanh_(a_complex *_z)
 #else /* !A_HAVE_CTANH */
     a_float const ci = a_float_cos(_z->imag);
     a_float const sr = a_float_sinh(_z->real);
-    a_float const inv = 1 / (ci * ci + sr * sr);
-    _z->imag = A_FLOAT_C(0.5) * a_float_sin(2 * _z->imag) * inv;
+    a_float const den = ci * ci + sr * sr;
+    _z->imag = A_FLOAT_C(0.5) * a_float_sin(2 * _z->imag) / den;
     if (a_float_abs(_z->real) < 1)
     {
-        _z->real = a_float_sinh(_z->real) * a_float_cosh(_z->real) * inv;
+        _z->real = a_float_sinh(_z->real) * a_float_cosh(_z->real) / den;
     }
     else
     {
-        a_float const den = a_float_pow(ci / sr, 2) + 1;
-        _z->real = 1 / (a_float_tanh(_z->real) * den);
+        a_float const d = a_float_pow(ci / sr, 2) + 1;
+        _z->real = 1 / (a_float_tanh(_z->real) * d);
     }
 #endif /* A_HAVE_CTANH */
 }

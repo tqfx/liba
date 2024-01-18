@@ -205,6 +205,9 @@
 #define A_PUBLIC
 #endif /* A_PUBLIC */
 
+#if !defined A_EXTERN
+#define A_EXTERN A_PUBLIC extern
+#endif /* A_EXTERN */
 #if !defined __cplusplus
 #define A_EXTERN_C
 #define A_EXTERN_C_ENTER
@@ -214,17 +217,6 @@
 #define A_EXTERN_C_ENTER extern "C" {
 #define A_EXTERN_C_LEAVE }
 #endif /* __cplusplus */
-#if !defined A_EXTERN
-#define A_EXTERN A_PUBLIC extern
-#endif /* A_EXTERN */
-
-#if defined(__cplusplus)
-#define A_REGISTER
-#else /* !__cplusplus */
-#define A_REGISTER __register
-#endif /* __cplusplus */
-#define A_VOLATILE __volatile
-#define A_RESTRICT __restrict
 
 /*! @endcond */
 
@@ -1094,7 +1086,7 @@ A_INTERN a_u64 a_f64_into(a_f64 x)
  @param[in] siz number of bytes to copy
  @return a copy of dest
 */
-A_EXTERN void *a_copy(void *A_RESTRICT dst, void const *A_RESTRICT src, a_size siz);
+A_EXTERN void *a_copy(void *__restrict dst, void const *__restrict src, a_size siz);
 
 /*!
  @brief move one buffer to another

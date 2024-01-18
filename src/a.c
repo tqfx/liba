@@ -2,7 +2,7 @@
 #include "a/a.h"
 #include <string.h>
 
-void *a_copy(void *A_RESTRICT dst, void const *A_RESTRICT src, a_size siz) { return memcpy(dst, src, siz); }
+void *a_copy(void *__restrict dst, void const *__restrict src, a_size siz) { return memcpy(dst, src, siz); }
 
 void *a_move(void *dst, void const *src, a_size siz) { return memmove(dst, src, siz); }
 
@@ -12,22 +12,22 @@ void *a_zero(void *ptr, a_size siz) { return memset(ptr, 0, siz); }
 
 void a_swap(void *_lhs, void *_rhs, a_size siz)
 {
-    a_byte buf[1];
-    for (a_byte *lhs = (a_byte *)_lhs,
-                *rhs = (a_byte *)_rhs;
-         siz; ++lhs, ++rhs, --siz)
+    a_byte *lhs = (a_byte *)_lhs;
+    a_byte *rhs = (a_byte *)_rhs;
+    for (a_byte buf; siz; --siz, ++lhs, ++rhs)
     {
-        *buf = *lhs;
+        buf = *lhs;
         *lhs = *rhs;
-        *rhs = *buf;
+        *rhs = buf;
     }
 }
 
 a_umax a_hash_bkdr(void const *_str, a_umax val)
 {
-    if (_str)
+    a_byte const *str = (a_byte const *)_str;
+    if (str)
     {
-        for (a_byte const *str = (a_byte const *)_str; *str; ++str)
+        for (; *str; ++str)
         {
             val = val * 131 + *str;
         }
@@ -37,9 +37,10 @@ a_umax a_hash_bkdr(void const *_str, a_umax val)
 
 a_umax a_hash_bkdrn(void const *_ptr, a_size siz, a_umax val)
 {
-    if (_ptr && siz)
+    a_byte const *ptr = (a_byte const *)_ptr;
+    if (ptr && siz)
     {
-        for (a_byte const *ptr = (a_byte const *)_ptr; siz; ++ptr, --siz)
+        for (; siz; --siz, ++ptr)
         {
             val = val * 131 + *ptr;
         }
