@@ -8,8 +8,9 @@ install(EXPORT ${PROJECT_NAME}-targets FILE ${PROJECT_NAME}-targets.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 include(CMakePackageConfigHelpers)
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake "\@PACKAGE_INIT\@\n"
-  "include(\"\${CMAKE_CURRENT_LIST_DIR}/\@PROJECT_NAME\@-targets.cmake\")\n"
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake "@PACKAGE_INIT@\n"
+  "include(\"\${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@-targets.cmake\")\n"
+  "set(LIBA_INCLUDE_DIR \"\${PACKAGE_PREFIX_DIR}/@CMAKE_INSTALL_INCLUDEDIR@\")\n"
 )
 configure_package_config_file(
   ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
