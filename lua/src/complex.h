@@ -21,13 +21,22 @@ extern "C" {
 #endif /* __cplusplus */
 
 /***
- constructor for complex number from rectangular Cartesian components
+ constructor for complex number from real and imaginary parts
  @tparam[opt] number|string|a.complex real real part of complex number
  @tparam[opt] number imag imaginary part of complex number
  @treturn a.complex complex number userdata
  @function new
 */
 int liba_complex_new(lua_State *L);
+
+/***
+ constructor for complex number from rectangular Cartesian components
+ @tparam[opt] number real real part of complex number
+ @tparam[opt] number imag imaginary part of complex number
+ @treturn a.complex complex number userdata
+ @function rect
+*/
+int liba_complex_rect(lua_State *L);
 
 /***
  constructor for complex number from polar form

@@ -64,7 +64,7 @@ static int liba_complex_tostring(lua_State *L)
 }
 
 /***
- constructor for complex number from rectangular Cartesian components
+ constructor for complex number from real and imaginary parts
  @tparam[opt] number|string|a.complex real real part of complex number
  @tparam[opt] number imag imaginary part of complex number
  @treturn a.complex complex number userdata
@@ -87,6 +87,23 @@ int liba_complex_new(lua_State *L)
 }
 
 /***
+ constructor for complex number from rectangular Cartesian components
+ @tparam[opt] number real real part of complex number
+ @tparam[opt] number imag imaginary part of complex number
+ @treturn a.complex complex number userdata
+ @function rect
+*/
+int liba_complex_rect(lua_State *L)
+{
+    a_float real = 0, imag = 0;
+    int const top = lua_gettop(L);
+    if (top >= 1) { real = (a_float)lua_tonumber(L, 1); }
+    if (top >= 2) { imag = (a_float)lua_tonumber(L, 2); }
+    a_complex_rect(liba_complex_new_(L), real, imag);
+    return 1;
+}
+
+/***
  constructor for complex number from polar form
  @tparam[opt] number rho a distance from a reference point
  @tparam[opt] number theta an angle from a reference direction
@@ -95,8 +112,7 @@ int liba_complex_new(lua_State *L)
 */
 int liba_complex_polar(lua_State *L)
 {
-    a_float theta = A_FLOAT_C(0.0);
-    a_float rho = A_FLOAT_C(0.0);
+    a_float rho = 0, theta = 0;
     int const top = lua_gettop(L);
     if (top >= 1) { rho = (a_float)lua_tonumber(L, 1); }
     if (top >= 2) { theta = (a_float)lua_tonumber(L, 2); }
@@ -637,6 +653,7 @@ int luaopen_liba_complex(lua_State *L)
 {
     static lua_fun const funcs[] = {
         {"new", liba_complex_new},
+        {"rect", liba_complex_rect},
         {"polar", liba_complex_polar},
         {"eq", liba_complex_eq},
         {"ne", liba_complex_ne},

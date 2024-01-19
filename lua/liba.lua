@@ -43,6 +43,16 @@ function liba.complex.new(real, imag) end
 ---@return a.complex
 function complex.new(real, imag) end
 
+---@param real? number
+---@param imag? number
+---@return a.complex
+function liba.complex.rect(real, imag) end
+
+---@param real? number
+---@param imag? number
+---@return a.complex
+function complex.rect(real, imag) end
+
 ---@param rho? number
 ---@param theta? number
 ---@return a.complex
@@ -368,8 +378,8 @@ function complex:acoth() end
 
 ---@class a.hpf
 ---@field alpha number
----@field output number
 ---@field input number
+---@field output number
 ---@overload fun(x: number): number
 local hpf = {}
 ---@class liba.hpf
