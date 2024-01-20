@@ -22,19 +22,19 @@
 
 /*! algorithm library version minor */
 #ifndef A_VERSION_MINOR
-#define A_VERSION_MINOR 0
+#define A_VERSION_MINOR 1
 #endif /* A_VERSION_MINOR */
 #undef minor
 
 /*! algorithm library version patch */
 #ifndef A_VERSION_PATCH
-#define A_VERSION_PATCH 0
+#define A_VERSION_PATCH 1
 #endif /* A_VERSION_PATCH */
 #undef patch
 
 /*! algorithm library version tweak */
 #ifndef A_VERSION_TWEAK
-#define A_VERSION_TWEAK 0
+#define A_VERSION_TWEAK 20240120
 #endif /* A_VERSION_TWEAK */
 
 #define A_VERSION_TOSTR(X) A_CAST_1(X)
