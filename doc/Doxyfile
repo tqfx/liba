@@ -1,11 +1,12 @@
 # Project related configuration options
 PROJECT_NAME           = liba
-PROJECT_NUMBER         = 0.1.1
+PROJECT_NUMBER         = 0.1.2
 PROJECT_BRIEF          = An algorithm library based on C/C++ language
 OUTPUT_DIRECTORY       = ../../build
 CREATE_SUBDIRS         = YES
 OPTIMIZE_OUTPUT_FOR_C  = YES
 # Build related configuration options
+EXTRACT_STATIC         = YES
 # Configuration options related to warning and progress messages
 WARN_IF_UNDOCUMENTED   = NO
 WARN_NO_PARAMDOC       = YES
@@ -30,8 +31,7 @@ GENERATE_XML           = YES
 # Configuration options related to the Perl module output
 # Configuration options related to the preprocessor
 MACRO_EXPANSION        = YES
-EXPAND_ONLY_PREDEF     = YES
-PREDEFINED             = __STDC_VERSION__=201112L __cplusplus=201103L A_EXTERN:= A_INTERN:= A_PUBLIC:= A_HIDDEN:=
+PREDEFINED             = __STDC_VERSION__=201112L __cplusplus=201103L A_BYTE_ORDER=1234 A_SIZE_POINTER=8 A_INLINE:=inline A_EXTERN:= A_INTERN:= A_PUBLIC:= A_HIDDEN:=
 # Configuration options related to external references
 # Configuration options related to the dot tool
 HAVE_DOT               = YES

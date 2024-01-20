@@ -7,7 +7,7 @@ project('liba', 'c', 'cpp',
             'buildtype=debugoptimized',
         ],
         license: 'MPL-2.0',
-        version: '0.1.1')
+        version: '0.1.2')
 
 a_have_h = configuration_data()
 a_have_h.set('version', meson.version())
