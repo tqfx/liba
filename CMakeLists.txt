@@ -511,26 +511,6 @@ if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/quickjs/CMakeLists.txt)
   endif()
 endif()
 
-if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/swig/CMakeLists.txt)
-  option(LIBA_SWIG "Enable/Disable swig" 0)
-
-  if(LIBA_SWIG)
-    if(POLICY CMP0078) # 3.13
-      cmake_policy(SET CMP0078 NEW)
-    endif() # UseSWIG_TARGET_NAME_PREFERENCE
-
-    if(POLICY CMP0086) # 3.14
-      cmake_policy(SET CMP0086 NEW)
-    endif() # SWIG_MODULE_NAME
-
-    find_package(SWIG)
-  endif()
-
-  if(LIBA_SWIG AND SWIG_FOUND)
-    add_subdirectory(swig)
-  endif()
-endif()
-
 if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt)
   if(PROJECT_IS_TOP_LEVEL AND BUILD_TESTING)
     add_subdirectory(test)
