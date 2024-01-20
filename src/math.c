@@ -7,6 +7,15 @@
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
 
+static A_INLINE a_float polevl(a_float const *p, a_size n, a_float x)
+{
+    a_float y = *p++;
+    do {
+        y = y * x + *p++;
+    } while (--n);
+    return y;
+}
+
 a_f32 a_f32_rsqrt(a_f32 x)
 {
 #if 1
@@ -134,6 +143,36 @@ a_float a_float_log1p(a_float x)
         y -= (b - x) / a;
     }
     return y;
+}
+
+#undef a_float_expm1
+a_float a_float_expm1(a_float x)
+{
+    static a_float const P[] = {
+        A_FLOAT_C(1.2617719307481059087798E-4),
+        A_FLOAT_C(3.0299440770744196129956E-2),
+        A_FLOAT_C(9.9999999999999999991025E-1),
+    };
+    static a_float const Q[] = {
+        A_FLOAT_C(3.0019850513866445504159E-6),
+        A_FLOAT_C(2.5244834034968410419224E-3),
+        A_FLOAT_C(2.2726554820815502876593E-1),
+        A_FLOAT_C(2.0000000000000000000897E-0),
+    };
+    a_float xx, y;
+    if (!isfinite(x))
+    {
+        if (isnan(x) || x > 0) { return x; }
+        else { return -1; }
+    }
+    if (x < -A_FLOAT_C(0.5) || x > A_FLOAT_C(0.5))
+    {
+        return a_float_exp(x) - 1;
+    }
+    xx = x * x;
+    y = polevl(P, A_LEN(P) - 1, xx) * x;
+    y /= polevl(Q, A_LEN(Q) - 1, xx) - y;
+    return y + y;
 }
 
 #undef a_float_atan2

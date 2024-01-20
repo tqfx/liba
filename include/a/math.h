@@ -254,6 +254,7 @@ A_EXTERN a_u32 a_u64_sqrt(a_u64 x);
 extern "C" {
 #endif /* __cplusplus */
 
+A_EXTERN a_float a_float_expm1(a_float x);
 A_EXTERN a_float a_float_log1p(a_float x);
 A_EXTERN a_float a_float_atan2(a_float x, a_float y);
 A_EXTERN a_float a_float_hypot(a_float x, a_float y);
@@ -284,7 +285,9 @@ A_EXTERN a_float a_float_hypot3(a_float x, a_float y, a_float z);
 
 #define a_float_exp A_FLOAT_F(exp)
 #define a_float_exp2 A_FLOAT_F(exp2)
+#if defined(A_HAVE_EXPM1) && (A_HAVE_EXPM1 + 0 > 0)
 #define a_float_expm1 A_FLOAT_F(expm1)
+#endif /* A_HAVE_EXPM1 */
 
 #define a_float_log A_FLOAT_F(log)
 #define a_float_logb A_FLOAT_F(logb)

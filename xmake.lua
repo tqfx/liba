@@ -104,11 +104,10 @@ function check_math(funcs, opt)
         configvar_check_cfuncs(have, func, opt)
     end
 end
-local funcs = { "hypot", "log1p", "atan2" }
+local funcs = { "expm1", "log1p", "hypot", "atan2" }
 check_math(funcs, { includes = "math.h" })
 -- stylua: ignore
-local funcs = {
-    "csqrt",
+local funcs = { "csqrt",
     "cpow", "cexp", "clog",
     "csin", "ccos", "ctan",
     "csinh", "ccosh", "ctanh",

@@ -66,6 +66,9 @@
 /* Define to 1 if you have `ctanh`, as a function or macro. */
 #undef A_HAVE_CTANH
 
+/* Define to 1 if you have `expm1`, as a function or macro. */
+#undef A_HAVE_EXPM1
+
 /* Define to 1 if you have `hypot`, as a function or macro. */
 #undef A_HAVE_HYPOT
 

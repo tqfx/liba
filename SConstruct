@@ -38,7 +38,7 @@ conf.Define('A_SIZE_FLOAT', A_SIZE_FLOAT, "The size of `a_float', as computed by
 conf.CheckLib('m')
 Undefine(conf)
 for func in (
-    'hypot', 'log1p', 'atan2',
+    'expm1', 'log1p', 'hypot', 'atan2',
     'csqrt', 'cpow', 'cexp', 'clog',
     'csin', 'ccos', 'ctan',
     'csinh', 'ccosh', 'ctanh',

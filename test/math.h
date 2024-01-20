@@ -88,6 +88,14 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         debug("inf = " A_FLOAT_PRI("-12", "g ") "nan = " A_FLOAT_PRI("", "g\n"), inf, nan);
     }
     {
+#undef a_float_expm1
+        a_float x = A_FLOAT_EPSILON / 2;
+        TEST_BUG(isinf(a_float_expm1(A_FLOAT_INF)));
+        TEST_BUG(isnan(a_float_expm1(A_FLOAT_NAN)));
+        debug("expm1(" A_FLOAT_PRI(".15", "g") ")=" A_FLOAT_PRI(".15", "g\n"), x, a_float_expm1(x));
+        debug("exp(" A_FLOAT_PRI(".15", "g") ")-1=" A_FLOAT_PRI(".15", "g\n"), x, a_float_exp(x) - 1);
+    }
+    {
 #undef a_float_log1p
         a_float x = A_FLOAT_EPSILON / 2;
         TEST_BUG(isinf(a_float_log1p(A_FLOAT_INF)));

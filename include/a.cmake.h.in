@@ -16,8 +16,9 @@
 #define A_SIZE_FLOAT @LIBA_FLOAT@
 #endif /* A_SIZE_FLOAT */
 
-#cmakedefine A_HAVE_HYPOT @A_HAVE_HYPOT@
+#cmakedefine A_HAVE_EXPM1 @A_HAVE_EXPM1@
 #cmakedefine A_HAVE_LOG1P @A_HAVE_LOG1P@
+#cmakedefine A_HAVE_HYPOT @A_HAVE_HYPOT@
 #cmakedefine A_HAVE_ATAN2 @A_HAVE_ATAN2@
 #cmakedefine A_HAVE_CSQRT @A_HAVE_CSQRT@
 #cmakedefine A_HAVE_CPOW @A_HAVE_CPOW@

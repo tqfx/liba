@@ -25,7 +25,7 @@ endif
 compiler = meson.get_compiler('c')
 a_have_h.set('A_SIZE_POINTER', compiler.sizeof('void *'))
 
-math = ['hypot', 'log1p', 'atan2',
+math = ['expm1', 'log1p', 'hypot', 'atan2',
         'csqrt', 'cpow', 'cexp', 'clog',
         'csin', 'ccos', 'ctan',
         'csinh', 'ccosh', 'ctanh',

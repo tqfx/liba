@@ -42,8 +42,9 @@ def check_math(define_macros=[], text=""):
             A_SIZE_FLOAT = int(define_macro[-1])
             break
     for func in (
-        "hypot",
+        "expm1",
         "log1p",
+        "hypot",
         "atan2",
         "csqrt",
         "cpow",

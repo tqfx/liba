@@ -15,8 +15,9 @@
 #mesondefine A_SIZE_FLOAT
 #endif /* A_SIZE_FLOAT */
 
-#mesondefine A_HAVE_HYPOT
+#mesondefine A_HAVE_EXPM1
 #mesondefine A_HAVE_LOG1P
+#mesondefine A_HAVE_HYPOT
 #mesondefine A_HAVE_ATAN2
 #mesondefine A_HAVE_CSQRT
 #mesondefine A_HAVE_CPOW
