@@ -63,25 +63,23 @@
 #define strtonum(string, endptr) strtold(string, endptr)
 #endif /* A_FLOAT_TYPE */
 
-#define TEST_IS_TRUE(expression, message)                   \
-    do {                                                    \
-        if (!(expression))                                  \
-        {                                                   \
-            (void)fprintf(stderr, "%s: file %s, line %i\n", \
-                          message, __FILE__, __LINE__);     \
-        }                                                   \
+#define TEST_IS1(expression, message)                                         \
+    do {                                                                      \
+        if (!(expression))                                                    \
+        {                                                                     \
+            (void)fprintf(stderr, "%s:%i:%s\n", __FILE__, __LINE__, message); \
+        }                                                                     \
     } while (0)
 
-#define TEST_IS_FASLE(expression, message)                  \
-    do {                                                    \
-        if (expression)                                     \
-        {                                                   \
-            (void)fprintf(stderr, "%s: file %s, line %i\n", \
-                          message, __FILE__, __LINE__);     \
-        }                                                   \
+#define TEST_IS0(expression, message)                                         \
+    do {                                                                      \
+        if (expression)                                                       \
+        {                                                                     \
+            (void)fprintf(stderr, "%s:%i:%s\n", __FILE__, __LINE__, message); \
+        }                                                                     \
     } while (0)
 
-#define TEST_BUG(expression) TEST_IS_TRUE(expression, "bug")
+#define TEST_BUG(expression) TEST_IS1(expression, #expression)
 
 #if defined(MAIN_)
 #if defined(__cplusplus)
