@@ -101,26 +101,26 @@ void a_polytraj7_gen3(a_polytraj7 *ctx)
 
 a_float a_polytraj7_pos(a_polytraj7 const *ctx, a_float dt)
 {
-    return a_poly_eval(ctx->q, A_LEN(ctx->q), dt);
+    return a_poly_eval_(ctx->q, ctx->q + A_LEN(ctx->q), dt);
 }
 
 #if defined(A_POLYTRAJ7) && (A_POLYTRAJ7 + 0 > 1)
 a_float a_polytraj7_vel(a_polytraj7 const *ctx, a_float dt)
 {
-    return a_poly_eval(ctx->v, A_LEN(ctx->v), dt);
+    return a_poly_eval_(ctx->v, ctx->v + A_LEN(ctx->v), dt);
 }
 #endif /* A_POLYTRAJ7 */
 
 #if defined(A_POLYTRAJ7) && (A_POLYTRAJ7 + 0 > 2)
 a_float a_polytraj7_acc(a_polytraj7 const *ctx, a_float dt)
 {
-    return a_poly_eval(ctx->a, A_LEN(ctx->a), dt);
+    return a_poly_eval_(ctx->a, ctx->a + A_LEN(ctx->a), dt);
 }
 #endif /* A_POLYTRAJ7 */
 
 #if defined(A_POLYTRAJ7) && (A_POLYTRAJ7 + 0 > 3)
 a_float a_polytraj7_jer(a_polytraj7 const *ctx, a_float dt)
 {
-    return a_poly_eval(ctx->j, A_LEN(ctx->j), dt);
+    return a_poly_eval_(ctx->j, ctx->j + A_LEN(ctx->j), dt);
 }
 #endif /* A_POLYTRAJ7 */
