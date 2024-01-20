@@ -748,7 +748,8 @@ a_avl_node *a_avl_pre_prev(a_avl_node *node)
 }
 
 #define A_AVL_POST(head, tail) \
-    do {                       \
+    for (;;)                   \
+    {                          \
         if (node->head)        \
         {                      \
             node = node->head; \
@@ -758,7 +759,8 @@ a_avl_node *a_avl_pre_prev(a_avl_node *node)
             node = node->tail; \
         }                      \
         else { break; }        \
-    } while (!0)
+    }                          \
+    (void)0
 
 a_avl_node *a_avl_post_head(a_avl const *root)
 {

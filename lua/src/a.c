@@ -156,35 +156,21 @@ int luaopen_liba(lua_State *L)
     return 1;
 }
 
-void *lua_alloc(lua_State *L, void const *ptr, size_t siz)
+void *lua_alloc(lua_State *L, void const *_ptr, size_t siz)
 {
-    union
-    {
-        void const *ptr;
-        void *p;
-    } u = {ptr};
-    void *ud = u.p;
-    return lua_getallocf(L, &ud)(ud, u.p, 0, siz);
+    void *ud = (void *)(a_uptr)_ptr; // NOLINT
+    void *ptr = (void *)(a_uptr)_ptr; // NOLINT
+    return lua_getallocf(L, &ud)(ud, ptr, 0, siz);
 }
 
 void lua_registry_get(lua_State *L, int (*fn)(lua_State *))
 {
-    union
-    {
-        int (*fn)(lua_State *);
-        void *p;
-    } u = {fn};
-    lua_rawgetp(L, LUA_REGISTRYINDEX, u.p);
+    lua_rawgetp(L, LUA_REGISTRYINDEX, (void *)(a_uptr)fn); // NOLINT
 }
 
 void lua_registry_set(lua_State *L, int (*fn)(lua_State *))
 {
-    union
-    {
-        int (*fn)(lua_State *);
-        void *p;
-    } u = {fn};
-    lua_rawsetp(L, LUA_REGISTRYINDEX, u.p);
+    lua_rawsetp(L, LUA_REGISTRYINDEX, (void *)(a_uptr)fn); // NOLINT
 }
 
 void lua_fun_set(lua_State *L, int idx, char const *name, lua_CFunction func)

@@ -78,10 +78,10 @@ static void test(void)
 
 static void null(void)
 {
-    a_slist_node node1 = A_SLIST_NODE;
-    a_slist_node node2 = A_SLIST_NODE;
-    a_slist list1 = A_SLIST_INIT(list1);
-    a_slist list2 = A_SLIST_INIT(list2);
+    static a_slist_node node1 = A_SLIST_NODE;
+    static a_slist_node node2 = A_SLIST_NODE;
+    static a_slist list1 = A_SLIST_INIT(list1);
+    static a_slist list2 = A_SLIST_INIT(list2);
 
     a_slist_rot(&list1);
     a_slist_rot(&list1);

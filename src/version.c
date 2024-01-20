@@ -8,8 +8,15 @@ a_u32 const a_version_tweak = A_VERSION_TWEAK;
 
 int a_version_check(unsigned int major, unsigned int minor, unsigned int patch)
 {
-    a_version inner = A_VERSION_C(a_version_major, a_version_minor, a_version_patch);
-    a_version outer = A_VERSION_C(major, minor, patch);
+    a_version inner, outer;
+    inner.major = a_version_major;
+    inner.minor = a_version_minor;
+    inner.patch = a_version_patch;
+    inner.extra = 0;
+    outer.major = major;
+    outer.minor = minor;
+    outer.patch = patch;
+    outer.extra = 0;
     return a_version_cmp(&inner, &outer);
 }
 
@@ -84,7 +91,8 @@ unsigned int a_version_parse(a_version *ctx, char const *ver)
     {
         char const *s;
         char *p;
-    } u = {ver};
+    } u;
+    u.s = ver;
     if (!ver) { return 0; }
     ctx->major = (unsigned int)strtoul(u.s, &u.p, 0);
     if (u.s[0] == '.' && u.s[1] >= '0' && u.s[1] <= '9') { ++u.s; }

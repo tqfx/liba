@@ -666,7 +666,8 @@ a_rbt_node *a_rbt_pre_prev(a_rbt_node *node)
 }
 
 #define A_RBT_POST(head, tail) \
-    do {                       \
+    for (;;)                   \
+    {                          \
         if (node->head)        \
         {                      \
             node = node->head; \
@@ -676,7 +677,8 @@ a_rbt_node *a_rbt_pre_prev(a_rbt_node *node)
             node = node->tail; \
         }                      \
         else { break; }        \
-    } while (!0)
+    }                          \
+    (void)0
 
 a_rbt_node *a_rbt_post_head(a_rbt const *root)
 {

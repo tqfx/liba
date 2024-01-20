@@ -194,8 +194,8 @@ static void test_func(void)
 
 static void test_null(void)
 {
-    a_list list1 = A_LIST_INIT(list1);
-    a_list list2 = A_LIST_INIT(list2);
+    static a_list list1 = A_LIST_INIT(list1);
+    static a_list list2 = A_LIST_INIT(list2);
     a_size len = a_list_len(&list1) + a_list_len(&list2);
 
     a_list_add_next(&list1, &list1);
