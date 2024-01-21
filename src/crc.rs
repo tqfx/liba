@@ -1,9 +1,5 @@
 //! Cyclic Redundancy Check
 
-/// polynomial value for 8 bits Cyclic Redundancy Check
-pub const POLY8: u8 = 0x31;
-/// initialize value for 8 bits Cyclic Redundancy Check
-pub const INIT8: u8 = 0x00;
 /// Cyclic Redundancy Check for 8 bits
 #[repr(C)]
 pub struct crc8 {
@@ -12,53 +8,49 @@ pub struct crc8 {
 }
 
 extern "C" {
-    fn a_crc8le_init(table: *mut u8, poly: u8);
-    fn a_crc8be_init(table: *mut u8, poly: u8);
+    fn a_crc8m_init(table: *mut u8, poly: u8);
+    fn a_crc8l_init(table: *mut u8, poly: u8);
     fn a_crc8(table: *const u8, pdate: *const u8, nbyte: usize, value: u8) -> u8;
 }
 
 impl crc8 {
-    /// initialize for little-endian 8 bits Cyclic Redundancy Check
-    pub fn new_le(poly: u8) -> Self {
+    /// initialize for MSB CRC-8
+    pub fn new_msb(poly: u8) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
-        unsafe { a_crc8le_init(ctx.table.as_mut_ptr(), poly) };
+        unsafe { a_crc8m_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
-
-    /// calculate for little-endian 8 bits Cyclic Redundancy Check
-    pub fn le(self, data: &[u8], value: u8) -> u8 {
+    /// initialize for LSB CRC-8
+    pub fn new_lsb(poly: u8) -> Self {
+        let mut ctx: Self = Self { table: [0; 0x100] };
+        unsafe { a_crc8l_init(ctx.table.as_mut_ptr(), poly) };
+        ctx
+    }
+    /// calculate for MSB CRC-8
+    pub fn msb(self, data: &[u8], value: u8) -> u8 {
         unsafe { a_crc8(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
-
-    /// initialize for big-endian 8 bits Cyclic Redundancy Check
-    pub fn new_be(poly: u8) -> Self {
-        let mut ctx: Self = Self { table: [0; 0x100] };
-        unsafe { a_crc8be_init(ctx.table.as_mut_ptr(), poly) };
-        ctx
-    }
-
-    /// calculate for big-endian 8 bits Cyclic Redundancy Check
-    pub fn be(self, data: &[u8], value: u8) -> u8 {
+    /// calculate for LSB CRC-8
+    pub fn lsb(self, data: &[u8], value: u8) -> u8 {
         unsafe { a_crc8(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
 }
 
 #[test]
 fn crc8() {
+    extern crate std;
     {
-        let ctx = crate::crc::crc8::new_le(POLY8);
-        ctx.le(b"", INIT8);
+        let ctx = crate::crc::crc16::new_msb(0x31);
+        let res = ctx.msb(b"123456789", 0xFFFF);
+        std::println!("0x{:X}", res ^ 0xFF);
     }
     {
-        let ctx = crate::crc::crc8::new_be(POLY8);
-        ctx.be(b"", INIT8);
+        let ctx = crate::crc::crc16::new_lsb(0x8C);
+        let res = ctx.lsb(b"123456789", 0xFFFF);
+        std::println!("0x{:X}", res ^ 0xFF);
     }
 }
 
-/// polynomial value for 16 bits Cyclic Redundancy Check
-pub const POLY16: u16 = 0xA001;
-/// initialize value for 16 bits Cyclic Redundancy Check
-pub const INIT16: u16 = 0x0000;
 /// Cyclic Redundancy Check for 16 bits
 #[repr(C)]
 pub struct crc16 {
@@ -67,54 +59,50 @@ pub struct crc16 {
 }
 
 extern "C" {
-    fn a_crc16le_init(table: *mut u16, poly: u16);
-    fn a_crc16be_init(table: *mut u16, poly: u16);
-    fn a_crc16le(table: *const u16, pdate: *const u8, nbyte: usize, value: u16) -> u16;
-    fn a_crc16be(table: *const u16, pdate: *const u8, nbyte: usize, value: u16) -> u16;
+    fn a_crc16m_init(table: *mut u16, poly: u16);
+    fn a_crc16l_init(table: *mut u16, poly: u16);
+    fn a_crc16m(table: *const u16, pdate: *const u8, nbyte: usize, value: u16) -> u16;
+    fn a_crc16l(table: *const u16, pdate: *const u8, nbyte: usize, value: u16) -> u16;
 }
 
 impl crc16 {
-    /// initialize for little-endian 16 bits Cyclic Redundancy Check
-    pub fn new_le(poly: u16) -> Self {
+    /// initialize for MSB CRC-16
+    pub fn new_msb(poly: u16) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
-        unsafe { a_crc16le_init(ctx.table.as_mut_ptr(), poly) };
+        unsafe { a_crc16m_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
-
-    /// calculate for little-endian 16 bits Cyclic Redundancy Check
-    pub fn le(self, data: &[u8], value: u16) -> u16 {
-        unsafe { a_crc16le(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
-    }
-
-    /// initialize for big-endian 16 bits Cyclic Redundancy Check
-    pub fn new_be(poly: u16) -> Self {
+    /// initialize for LSB CRC-16
+    pub fn new_lsb(poly: u16) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
-        unsafe { a_crc16be_init(ctx.table.as_mut_ptr(), poly) };
+        unsafe { a_crc16l_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
-
-    /// calculate for big-endian 16 bits Cyclic Redundancy Check
-    pub fn be(self, data: &[u8], value: u16) -> u16 {
-        unsafe { a_crc16be(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    /// calculate for MSB CRC-16
+    pub fn msb(self, data: &[u8], value: u16) -> u16 {
+        unsafe { a_crc16m(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    }
+    /// calculate for LSB CRC-16
+    pub fn lsb(self, data: &[u8], value: u16) -> u16 {
+        unsafe { a_crc16l(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
 }
 
 #[test]
 fn crc16() {
+    extern crate std;
     {
-        let ctx = crate::crc::crc16::new_le(POLY16);
-        ctx.le(b"", INIT16);
+        let ctx = crate::crc::crc16::new_msb(0x8005);
+        let res = ctx.msb(b"123456789", 0xFFFF);
+        std::println!("0x{:X}", res ^ 0xFFFF);
     }
     {
-        let ctx = crate::crc::crc16::new_be(POLY16);
-        ctx.be(b"", INIT16);
+        let ctx = crate::crc::crc16::new_lsb(0xA001);
+        let res = ctx.lsb(b"123456789", 0xFFFF);
+        std::println!("0x{:X}", res ^ 0xFFFF);
     }
 }
 
-/// polynomial value for 32 bits Cyclic Redundancy Check
-pub const POLY32: u32 = 0xEDB88320;
-/// initialize value for 32 bits Cyclic Redundancy Check
-pub const INIT32: u32 = 0xFFFFFFFF;
 /// Cyclic Redundancy Check for 32 bits
 #[repr(C)]
 pub struct crc32 {
@@ -123,54 +111,50 @@ pub struct crc32 {
 }
 
 extern "C" {
-    fn a_crc32le_init(table: *mut u32, poly: u32);
-    fn a_crc32be_init(table: *mut u32, poly: u32);
-    fn a_crc32le(table: *const u32, pdate: *const u8, nbyte: usize, value: u32) -> u32;
-    fn a_crc32be(table: *const u32, pdate: *const u8, nbyte: usize, value: u32) -> u32;
+    fn a_crc32m_init(table: *mut u32, poly: u32);
+    fn a_crc32l_init(table: *mut u32, poly: u32);
+    fn a_crc32m(table: *const u32, pdate: *const u8, nbyte: usize, value: u32) -> u32;
+    fn a_crc32l(table: *const u32, pdate: *const u8, nbyte: usize, value: u32) -> u32;
 }
 
 impl crc32 {
-    /// initialize for little-endian 32 bits Cyclic Redundancy Check
-    pub fn new_le(poly: u32) -> Self {
+    /// initialize for MSB CRC-32
+    pub fn new_msb(poly: u32) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
-        unsafe { a_crc32le_init(ctx.table.as_mut_ptr(), poly) };
+        unsafe { a_crc32m_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
-
-    /// calculate for little-endian 32 bits Cyclic Redundancy Check
-    pub fn le(self, data: &[u8], value: u32) -> u32 {
-        unsafe { a_crc32le(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
-    }
-
-    /// initialize for big-endian 32 bits Cyclic Redundancy Check
-    pub fn new_be(poly: u32) -> Self {
+    /// initialize for LSB CRC-32
+    pub fn new_lsb(poly: u32) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
-        unsafe { a_crc32be_init(ctx.table.as_mut_ptr(), poly) };
+        unsafe { a_crc32l_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
-
-    /// calculate for big-endian 32 bits Cyclic Redundancy Check
-    pub fn be(self, data: &[u8], value: u32) -> u32 {
-        unsafe { a_crc32be(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    /// calculate for MSB CRC-32
+    pub fn msb(self, data: &[u8], value: u32) -> u32 {
+        unsafe { a_crc32m(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    }
+    /// calculate for LSB CRC-32
+    pub fn lsb(self, data: &[u8], value: u32) -> u32 {
+        unsafe { a_crc32l(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
 }
 
 #[test]
 fn crc32() {
+    extern crate std;
     {
-        let ctx = crate::crc::crc32::new_le(POLY32);
-        ctx.le(b"", INIT32);
+        let ctx = crate::crc::crc32::new_msb(0x04C11DB7);
+        let res = ctx.msb(b"123456789", 0xFFFFFFFF);
+        std::println!("0x{:X}", res ^ 0xFFFFFFFF);
     }
     {
-        let ctx = crate::crc::crc32::new_be(POLY32);
-        ctx.be(b"", INIT32);
+        let ctx = crate::crc::crc32::new_lsb(0xEDB88320);
+        let res = ctx.lsb(b"123456789", 0xFFFFFFFF);
+        std::println!("0x{:X}", res ^ 0xFFFFFFFF);
     }
 }
 
-/// polynomial value for 64 bits Cyclic Redundancy Check
-pub const POLY64: u64 = 0x42F0E1EBA9EA3693;
-/// initialize value for 64 bits Cyclic Redundancy Check
-pub const INIT64: u64 = 0xFFFFFFFFFFFFFFFF;
 /// Cyclic Redundancy Check for 64 bits
 #[repr(C)]
 pub struct crc64 {
@@ -179,46 +163,46 @@ pub struct crc64 {
 }
 
 extern "C" {
-    fn a_crc64le_init(table: *mut u64, poly: u64);
-    fn a_crc64be_init(table: *mut u64, poly: u64);
-    fn a_crc64le(table: *const u64, pdate: *const u8, nbyte: usize, value: u64) -> u64;
-    fn a_crc64be(table: *const u64, pdate: *const u8, nbyte: usize, value: u64) -> u64;
+    fn a_crc64m_init(table: *mut u64, poly: u64);
+    fn a_crc64l_init(table: *mut u64, poly: u64);
+    fn a_crc64m(table: *const u64, pdate: *const u8, nbyte: usize, value: u64) -> u64;
+    fn a_crc64l(table: *const u64, pdate: *const u8, nbyte: usize, value: u64) -> u64;
 }
 
 impl crc64 {
-    /// initialize for little-endian 64 bits Cyclic Redundancy Check
-    pub fn new_le(poly: u64) -> Self {
+    /// initialize for MSB CRC-64
+    pub fn new_msb(poly: u64) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
-        unsafe { a_crc64le_init(ctx.table.as_mut_ptr(), poly) };
+        unsafe { a_crc64m_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
-
-    /// calculate for little-endian 64 bits Cyclic Redundancy Check
-    pub fn le(self, data: &[u8], value: u64) -> u64 {
-        unsafe { a_crc64le(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
-    }
-
-    /// initialize for big-endian 64 bits Cyclic Redundancy Check
-    pub fn new_be(poly: u64) -> Self {
+    /// initialize for LSB CRC-64
+    pub fn new_lsb(poly: u64) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
-        unsafe { a_crc64be_init(ctx.table.as_mut_ptr(), poly) };
+        unsafe { a_crc64l_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
-
-    /// calculate for big-endian 64 bits Cyclic Redundancy Check
-    pub fn be(self, data: &[u8], value: u64) -> u64 {
-        unsafe { a_crc64be(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    /// calculate for MSB CRC-64
+    pub fn msb(self, data: &[u8], value: u64) -> u64 {
+        unsafe { a_crc64m(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    }
+    /// calculate for LSB CRC-64
+    pub fn lsb(self, data: &[u8], value: u64) -> u64 {
+        unsafe { a_crc64l(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
 }
 
 #[test]
 fn crc64() {
+    extern crate std;
     {
-        let ctx = crate::crc::crc64::new_le(POLY64);
-        ctx.le(b"", INIT64);
+        let ctx = crate::crc::crc64::new_msb(0x42F0E1EBA9EA3693);
+        let res = ctx.msb(b"123456789", 0xFFFFFFFFFFFFFFFF);
+        std::println!("0x{:X}", res ^ 0xFFFFFFFFFFFFFFFF);
     }
     {
-        let ctx = crate::crc::crc64::new_be(POLY64);
-        ctx.be(b"", INIT64);
+        let ctx = crate::crc::crc64::new_lsb(0xC96C5795D7870F42);
+        let res = ctx.lsb(b"123456789", 0xFFFFFFFFFFFFFFFF);
+        std::println!("0x{:X}", res ^ 0xFFFFFFFFFFFFFFFF);
     }
 }
