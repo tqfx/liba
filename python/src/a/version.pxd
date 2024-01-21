@@ -10,9 +10,10 @@ cdef extern from "a/version.h":
     ctypedef struct a_version:
         unsigned int major
         unsigned int minor
-        unsigned int patch
+        unsigned int third
         unsigned int extra
     int a_version_check(unsigned int major, unsigned int minor, unsigned int patch)
+    int a_version_cmp(const a_version *lhs, const a_version *rhs)
     bint a_version_lt(const a_version *lhs, const a_version *rhs)
     bint a_version_gt(const a_version *lhs, const a_version *rhs)
     bint a_version_le(const a_version *lhs, const a_version *rhs)

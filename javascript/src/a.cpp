@@ -579,19 +579,24 @@ struct version: public a_version
     }
     A_INLINE std::string toString()
     {
-        return std::to_string(major) + "." +
-               std::to_string(minor) + "." +
-               std::to_string(patch);
+        std::string s = std::to_string(major) + "." +
+                        std::to_string(minor) + "." +
+                        std::to_string(third);
+        if (extra)
+        {
+            s += "." + std::to_string(extra);
+        }
+        return s;
     }
-    A_INLINE version(unsigned int maj = 0,
-                     unsigned int min = 0,
-                     unsigned int pat = 0,
-                     unsigned int ext = 0)
+    A_INLINE version(unsigned int _major = 0,
+                     unsigned int _minor = 0,
+                     unsigned int _third = 0,
+                     unsigned int _extra = 0)
     {
-        major = maj;
-        minor = min;
-        patch = pat;
-        extra = ext;
+        major = _major;
+        minor = _minor;
+        third = _third;
+        extra = _extra;
     }
 };
 
@@ -767,7 +772,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .constructor<a_uint, a_uint, a_uint, a_uint>()
         .property<a_uint, void>("major", &a_version::major)
         .property<a_uint, void>("minor", &a_version::minor)
-        .property<a_uint, void>("patch", &a_version::patch)
+        .property<a_uint, void>("third", &a_version::third)
         .property<a_uint, void>("extra", &a_version::extra)
         .function("toString", &version::toString)
         .function("parse", &version::parse, emscripten::allow_raw_pointers())

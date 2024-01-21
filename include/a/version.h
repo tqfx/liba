@@ -46,11 +46,11 @@
 typedef struct a_version a_version;
 // clang-format off
 #if defined(__cplusplus)
-#define A_VERSION_C(maj, min, pat) {maj, min, pat, 0}
-#define A_VERSION_EX(maj, min, pat, ext) {maj, min, pat, ext}
+#define A_VERSION_C(major, minor, third) {major, minor, third, 0}
+#define A_VERSION_EX(major, minor, third, extra) {major, minor, third, extra}
 #else /* !__cplusplus */
-#define A_VERSION_C(maj, min, pat) (a_version){maj, min, pat, 0}
-#define A_VERSION_EX(maj, min, pat, ext) (a_version){maj, min, pat, ext}
+#define A_VERSION_C(major, minor, third) (a_version){major, minor, third, 0}
+#define A_VERSION_EX(major, minor, third, extra) (a_version){major, minor, third, extra}
 #endif /* __cplusplus */
 // clang-format on
 
@@ -162,7 +162,7 @@ struct a_version
 {
     unsigned int major; //!< major number
     unsigned int minor; //!< minor number
-    unsigned int patch; //!< patch number
+    unsigned int third; //!< third number
     unsigned int extra; //!< extra number
 #if defined(__cplusplus)
     A_INLINE int cmp(a_version const &ver) const

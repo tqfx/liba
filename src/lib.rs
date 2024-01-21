@@ -15,7 +15,6 @@ liba = "0.1"
 #![allow(non_camel_case_types)]
 #![cfg_attr(not(features = "std"), no_std)]
 
-use core::ffi::c_char;
 /// Equivalent to C’s int type.
 pub type int = core::ffi::c_int;
 /// Equivalent to C’s unsigned int type.
@@ -35,27 +34,6 @@ pub mod pid;
 pub mod polytraj;
 pub mod tf;
 pub mod version;
-
-extern "C" {
-    static a_version: *const c_char;
-}
-
-/**
-algorithm library version
-
-## Examples
-
-```
-println!("version {}", liba::version());
-```
-*/
-pub fn version() -> &'static str {
-    unsafe {
-        core::ffi::CStr::from_ptr(a_version)
-            .to_str()
-            .unwrap_unchecked()
-    }
-}
 
 extern "C" {
     fn a_u32_sqrt(x: u32) -> u16;
@@ -87,10 +65,6 @@ pub fn f64_rsqrt(x: f64) -> f64 {
 #[cfg(test)]
 mod test {
     extern crate std;
-    #[test]
-    fn version() {
-        std::println!("version {}", crate::version());
-    }
     #[test]
     fn isqrt() {
         std::println!("{}", crate::u32_sqrt(u32::MAX));

@@ -26,7 +26,12 @@ public class version {
      * return string representation of version
      */
     public String toString() {
-        return major() + "." + minor() + "." + patch();
+        String s = major() + "." + minor() + "." + third();
+        int extra = extra();
+        if (extra > 0) {
+            s += "." + extra;
+        }
+        return s;
     }
 
     /**
@@ -39,34 +44,34 @@ public class version {
     /**
      * construct a new {@link version} object
      *
-     * @param maj major number
+     * @param major major number
      */
-    public version(int maj) {
-        init(maj, 0, 0);
+    public version(int major) {
+        init(major, 0, 0);
     }
 
     /**
      * construct a new {@link version} object
      *
-     * @param maj major number
-     * @param min minor number
+     * @param major major number
+     * @param minor minor number
      */
-    public version(int maj, int min) {
-        init(maj, min, 0);
+    public version(int major, int minor) {
+        init(major, minor, 0);
     }
 
     /**
      * construct a new {@link version} object
      *
-     * @param maj major number
-     * @param min minor number
-     * @param pat patch number
+     * @param major major number
+     * @param minor minor number
+     * @param third third number
      */
-    public version(int maj, int min, int pat) {
-        init(maj, min, pat);
+    public version(int major, int minor, int third) {
+        init(major, minor, third);
     }
 
-    final native void init(int maj, int min, int pat);
+    final native void init(int major, int minor, int third);
 
     /***
      * get major number for version
@@ -78,10 +83,10 @@ public class version {
     /***
      * set major number for version
      *
-     * @param maj major number
+     * @param major major number
      * @return {@link version}
      */
-    public final native version major(int maj);
+    public final native version major(int major);
 
     /***
      * get minor number for version
@@ -93,25 +98,25 @@ public class version {
     /***
      * set minor number for version
      *
-     * @param min minor number
+     * @param minor minor number
      * @return {@link version}
      */
-    public final native version minor(int min);
+    public final native version minor(int minor);
 
     /***
-     * get patch number for version
+     * get third number for version
      *
-     * @return patch number
+     * @return third number
      */
-    public final native int patch();
+    public final native int third();
 
     /***
-     * set patch number for version
+     * set third number for version
      *
-     * @param pat patch number
+     * @param third third number
      * @return {@link version}
      */
-    public final native version patch(int pat);
+    public final native version third(int third);
 
     /***
      * get extra number for version
@@ -123,10 +128,10 @@ public class version {
     /***
      * set extra number for version
      *
-     * @param pat extra number
+     * @param extra extra number
      * @return {@link version}
      */
-    public final native version extra(int pat);
+    public final native version extra(int extra);
 
     /**
      * parse for {@link version} object

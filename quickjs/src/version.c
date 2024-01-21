@@ -39,7 +39,7 @@ static JSValue liba_version_ctor(JSContext *ctx, JSValueConst new_target, int ar
     {
         self->major = (unsigned int)args[0];
         self->minor = (unsigned int)args[1];
-        self->patch = (unsigned int)args[2];
+        self->third = (unsigned int)args[2];
     }
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
@@ -63,7 +63,7 @@ static JSValue liba_version_get(JSContext *ctx, JSValueConst this_val, int magic
     {
     case 0: ver = self->major; break;
     case 1: ver = self->minor; break;
-    case 2: ver = self->patch; break;
+    case 2: ver = self->third; break;
     case 3: ver = self->extra; break;
     default: return JS_UNDEFINED;
     }
@@ -80,7 +80,7 @@ static JSValue liba_version_set(JSContext *ctx, JSValueConst this_val, JSValueCo
     {
     case 0: self->major = (unsigned int)ver; break;
     case 1: self->minor = (unsigned int)ver; break;
-    case 2: self->patch = (unsigned int)ver; break;
+    case 2: self->third = (unsigned int)ver; break;
     case 3: self->extra = (unsigned int)ver; break;
     default: break;
     }
@@ -186,7 +186,7 @@ static JSCFunctionListEntry const liba_version_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.version", 0),
     JS_CGETSET_MAGIC_DEF("major", liba_version_get, liba_version_set, 0),
     JS_CGETSET_MAGIC_DEF("minor", liba_version_get, liba_version_set, 1),
-    JS_CGETSET_MAGIC_DEF("patch", liba_version_get, liba_version_set, 2),
+    JS_CGETSET_MAGIC_DEF("third", liba_version_get, liba_version_set, 2),
     JS_CGETSET_MAGIC_DEF("extra", liba_version_get, liba_version_set, 3),
     JS_CFUNC_DEF("parse", 1, liba_version_parse),
     JS_CFUNC_DEF("cmp", 1, liba_version_cmp),

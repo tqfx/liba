@@ -21,23 +21,27 @@ cdef class version:
             return self.ctx.minor
         def __set__(self, minor):
             self.ctx.minor = minor
-    property patch:
+    property third:
         def __get__(self):
-            return self.ctx.patch
-        def __set__(self, patch):
-            self.ctx.patch = patch
+            return self.ctx.third
+        def __set__(self, third):
+            self.ctx.third = third
     property extra:
         def __get__(self):
             return self.ctx.extra
         def __set__(self, extra):
             self.ctx.extra = extra
-    def __init__(self, major = 0, minor = 0, patch = 0, extra = 0):
+    def __init__(self, major = 0, minor = 0, third = 0, extra = 0):
         self.ctx.major = major
         self.ctx.minor = minor
-        self.ctx.patch = patch
+        self.ctx.third = third
         self.ctx.extra = extra
     def __repr__(self):
-        return "%u.%u.%u" % (self.ctx.major, self.ctx.minor, self.ctx.patch)
+        if self.ctx.extra == 0:
+            return "%u.%u.%u" % (self.ctx.major, self.ctx.minor, self.ctx.third)
+        return "%u.%u.%u.%u" % (self.ctx.major, self.ctx.minor, self.ctx.third, self.ctx.extra)
+    def compare(self, other: version):
+        return a_version_cmp(&self.ctx, &other.ctx)
     def __lt__(self, other: version):
         return a_version_lt(&self.ctx, &other.ctx)
     def __gt__(self, other: version):

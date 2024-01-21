@@ -19,14 +19,14 @@ JNIEXPORT void JNICALL Java_liba_version_INIT(JNIEnv *_env, jclass _cls)
     L.ctx = (*_env)->GetFieldID(_env, _cls, "ctx", "[B");
 }
 
-JNIEXPORT void JNICALL Java_liba_version_init(JNIEnv *_env, jobject _obj, jint major, jint minor, jint patch)
+JNIEXPORT void JNICALL Java_liba_version_init(JNIEnv *_env, jobject _obj, jint major, jint minor, jint third)
 {
     a_version ctx;
     jbyteArray _ctx = (*_env)->NewByteArray(_env, sizeof(a_version));
     (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_version), (jbyte *)&ctx);
     ctx.major = (unsigned int)major;
     ctx.minor = (unsigned int)minor;
-    ctx.patch = (unsigned int)patch;
+    ctx.third = (unsigned int)third;
     (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_version), (jbyte *)&ctx);
     (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
 }
@@ -67,20 +67,20 @@ JNIEXPORT jobject JNICALL Java_liba_version_minor__I(JNIEnv *_env, jobject _obj,
     return _obj;
 }
 
-JNIEXPORT jint JNICALL Java_liba_version_patch__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jint JNICALL Java_liba_version_third__(JNIEnv *_env, jobject _obj)
 {
     a_version ctx;
     jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
     (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_version), (jbyte *)&ctx);
-    return (jint)ctx.patch;
+    return (jint)ctx.third;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_version_patch__I(JNIEnv *_env, jobject _obj, jint patch)
+JNIEXPORT jobject JNICALL Java_liba_version_third__I(JNIEnv *_env, jobject _obj, jint third)
 {
     a_version ctx;
     jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
     (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(a_version), (jbyte *)&ctx);
-    ctx.patch = (unsigned int)patch;
+    ctx.third = (unsigned int)third;
     (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(a_version), (jbyte *)&ctx);
     return _obj;
 }

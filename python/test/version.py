@@ -27,5 +27,5 @@ v = liba.version()
 v.parse(b"1.2.3")
 v.major = v.major
 v.minor = v.minor
-v.patch = v.patch
+v.third = v.third
 v.extra = v.extra

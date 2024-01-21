@@ -679,8 +679,8 @@ declare namespace liba {
     major: number;
     /** minor number */
     minor: number;
-    /** patch number */
-    patch: number;
+    /** third number */
+    third: number;
     /** extra number */
     extra: number;
     /** return string representation of version */
@@ -732,10 +732,10 @@ declare namespace liba {
     /**
      * @param major major number
      * @param minor minor number
-     * @param patch patch number
+     * @param third third number
      * @param extra extra number
      */
-    new(major?: number, minor?: number, patch?: number, extra?: number): version;
+    new(major?: number, minor?: number, third?: number, extra?: number): version;
     /**
      * algorithm library version check
      * @param major required major number

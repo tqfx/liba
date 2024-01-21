@@ -11,7 +11,8 @@ static int liba_version_tostring(lua_State *L)
     a_version const *const ctx = (a_version const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        lua_pushfstring(L, "%d.%d.%d", ctx->major, ctx->minor, ctx->patch);
+        if (!ctx->extra) { lua_pushfstring(L, "%d.%d.%d", ctx->major, ctx->minor, ctx->third); }
+        lua_pushfstring(L, "%d.%d.%d.%d", ctx->major, ctx->minor, ctx->third, ctx->extra);
         return 1;
     }
     return 0;
@@ -26,7 +27,7 @@ static int liba_version_init_(lua_State *L, a_version *ctx, int arg, int top)
         ctx->extra = (unsigned int)luaL_checkinteger(L, arg + 4);
         A_FALLTHROUGH;
     case 3:
-        ctx->patch = (unsigned int)luaL_checkinteger(L, arg + 3);
+        ctx->third = (unsigned int)luaL_checkinteger(L, arg + 3);
         A_FALLTHROUGH;
     case 2:
         ctx->minor = (unsigned int)luaL_checkinteger(L, arg + 2);
@@ -48,7 +49,7 @@ static int liba_version_init_(lua_State *L, a_version *ctx, int arg, int top)
  constructor for algorithm library version
  @tparam[opt] integer major version major number
  @tparam[opt] integer minor version minor number
- @tparam[opt] integer patch version patch number
+ @tparam[opt] integer third version third number
  @tparam[opt] integer extra version extra number
  @treturn a.version algorithm library version userdata
  @function new
@@ -68,7 +69,7 @@ int liba_version_new(lua_State *L)
  @tparam a.version ctx algorithm library version userdata
  @tparam[opt] integer major version major number
  @tparam[opt] integer minor version minor number
- @tparam[opt] integer patch version patch number
+ @tparam[opt] integer third version third number
  @tparam[opt] integer extra version extra number
  @treturn a.version algorithm library version userdata
  @function init
@@ -117,7 +118,7 @@ static int liba_version_check(lua_State *L)
     switch (lua_gettop(L) & 0x3)
     {
     case 3:
-        v.patch = (unsigned int)luaL_checkinteger(L, 3);
+        v.third = (unsigned int)luaL_checkinteger(L, 3);
         A_FALLTHROUGH;
     case 2:
         v.minor = (unsigned int)luaL_checkinteger(L, 2);
@@ -129,7 +130,7 @@ static int liba_version_check(lua_State *L)
         break;
     }
 #undef a_version_check
-    lua_pushinteger(L, a_version_check(v.major, v.minor, v.patch));
+    lua_pushinteger(L, a_version_check(v.major, v.minor, v.third));
     return 1;
 }
 
@@ -223,8 +224,8 @@ static int liba_version_set(lua_State *L)
     case 0x87857C2D: // minor
         ctx->minor = (unsigned int)luaL_checkinteger(L, 3);
         break;
-    case 0xBB1DBE50: // patch
-        ctx->patch = (unsigned int)luaL_checkinteger(L, 3);
+    case 0x0241DD17: // third
+        ctx->third = (unsigned int)luaL_checkinteger(L, 3);
         break;
     case 0xFD1BE968: // extra
         ctx->extra = (unsigned int)luaL_checkinteger(L, 3);
@@ -257,8 +258,8 @@ static int liba_version_get(lua_State *L)
     case 0x87857C2D: // minor
         lua_pushinteger(L, (lua_Integer)ctx->minor);
         break;
-    case 0xBB1DBE50: // patch
-        lua_pushinteger(L, (lua_Integer)ctx->patch);
+    case 0x0241DD17: // third
+        lua_pushinteger(L, (lua_Integer)ctx->third);
         break;
     case 0xFD1BE968: // extra
         lua_pushinteger(L, (lua_Integer)ctx->extra);
@@ -267,7 +268,7 @@ static int liba_version_get(lua_State *L)
         lua_registry_get(L, liba_version_new);
         lua_int_set(L, -1, "major", (lua_Integer)ctx->major);
         lua_int_set(L, -1, "minor", (lua_Integer)ctx->minor);
-        lua_int_set(L, -1, "patch", (lua_Integer)ctx->patch);
+        lua_int_set(L, -1, "third", (lua_Integer)ctx->third);
         lua_int_set(L, -1, "extra", (lua_Integer)ctx->extra);
         break;
     default:

@@ -82,7 +82,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     {
         a_version ctx;
         a_version_parse(&ctx, argv[i]);
-        debug("parse \"%s\" -> %u.%u.%u\n", argv[i], ctx.major, ctx.minor, ctx.patch);
+        debug("parse \"%s\" -> %u.%u.%u\n", argv[i], ctx.major, ctx.minor, ctx.third);
     }
     printf("%s\n", A_FUNC);
 #if defined(__cplusplus)

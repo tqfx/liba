@@ -158,7 +158,13 @@ liba = { git = "https://github.com/tqfx/liba.git" }
 ```rs
 use liba;
 fn main() {
-    println!("version {}", liba::version());
+    println!(
+        "version {}.{}.{}+{}",
+        liba::version::major(),
+        liba::version::minor(),
+        liba::version::patch(),
+        liba::version::tweak()
+    );
 }
 ```
 

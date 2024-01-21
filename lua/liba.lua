@@ -1213,13 +1213,13 @@ function tf:zero() end
 ---@class a.version
 ---@field major integer
 ---@field minor integer
----@field patch integer
+---@field third integer
 ---@field extra integer
----@overload fun(major?: integer, minor?: integer, patch?: integer, extra?: integer): a.version
+---@overload fun(major?: integer, minor?: integer, third?: integer, extra?: integer): a.version
 ---@overload fun(ver: string): a.version
 local version = {}
 ---@class liba.version
----@overload fun(major?: integer, minor?: integer, patch?: integer, extra?: integer): a.version
+---@overload fun(major?: integer, minor?: integer, third?: integer, extra?: integer): a.version
 ---@overload fun(ver: string): a.version
 liba.version = {}
 liba.version.MAJOR = 0
@@ -1235,36 +1235,36 @@ function liba.version.check(major, minor, patch) end
 
 ---@param major? integer
 ---@param minor? integer
----@param patch? integer
+---@param third? integer
 ---@param extra? integer
 ---@return a.version
 ---@overload fun(ver: string): a.version
-function liba.version.new(major, minor, patch, extra) end
+function liba.version.new(major, minor, third, extra) end
 
 ---@param major? integer
 ---@param minor? integer
----@param patch? integer
+---@param third? integer
 ---@param extra? integer
 ---@return a.version
 ---@overload fun(ver: string): a.version
-function version.new(major, minor, patch, extra) end
+function version.new(major, minor, third, extra) end
 
 ---@param ctx a.version
 ---@param major? integer
 ---@param minor? integer
----@param patch? integer
+---@param third? integer
 ---@param extra? integer
 ---@return a.version
 ---@overload fun(ctx: a.version, ver: string): a.version
-function liba.version.init(ctx, major, minor, patch, extra) end
+function liba.version.init(ctx, major, minor, third, extra) end
 
 ---@param major? integer
 ---@param minor? integer
----@param patch? integer
+---@param third? integer
 ---@param extra? integer
 ---@return a.version
 ---@overload fun(ver: string): a.version
-function version:init(major, minor, patch, extra) end
+function version:init(major, minor, third, extra) end
 
 ---@param ctx a.version
 ---@param ver string

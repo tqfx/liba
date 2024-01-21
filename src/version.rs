@@ -1,20 +1,19 @@
 //! version
+//!
+//! ## Examples
+//!
+//! ```
+//! println!(
+//!     "version {}.{}.{}+{}",
+//!     liba::version::major(),
+//!     liba::version::minor(),
+//!     liba::version::patch(),
+//!     liba::version::tweak()
+//! );
+//! ```
 
 use crate::int;
 use crate::uint;
-
-/// version
-#[repr(C)]
-pub struct version {
-    /// major number
-    pub major: uint,
-    /// minor number
-    pub minor: uint,
-    /// patch number
-    pub patch: uint,
-    /// extra number
-    pub extra: uint,
-}
 
 extern "C" {
     static a_version_major: uint;
@@ -28,6 +27,56 @@ extern "C" {
     fn a_version_le(lhs: *const version, rhs: *const version) -> bool;
     fn a_version_ge(lhs: *const version, rhs: *const version) -> bool;
     fn a_version_eq(lhs: *const version, rhs: *const version) -> bool;
+}
+
+/// algorithm library version check
+pub fn check(major: uint, minor: uint, patch: uint) -> int {
+    unsafe { a_version_check(major, minor, patch) }
+}
+
+/// algorithm library version major
+pub fn major() -> uint {
+    unsafe { a_version_major }
+}
+
+/// algorithm library version minor
+pub fn minor() -> uint {
+    unsafe { a_version_minor }
+}
+
+/// algorithm library version patch
+pub fn patch() -> uint {
+    unsafe { a_version_patch }
+}
+
+/// algorithm library version tweak
+pub fn tweak() -> u32 {
+    unsafe { a_version_tweak }
+}
+
+/// version
+#[repr(C)]
+pub struct version {
+    /// major number
+    pub major: uint,
+    /// minor number
+    pub minor: uint,
+    /// third number
+    pub third: uint,
+    /// extra number
+    pub extra: uint,
+}
+
+impl version {
+    /// initialize for version
+    pub fn new(major: uint, minor: uint, third: uint) -> Self {
+        Self {
+            major,
+            minor,
+            third,
+            extra: 0,
+        }
+    }
 }
 
 impl PartialOrd for version {
@@ -61,53 +110,16 @@ impl PartialEq for version {
     }
 }
 
-impl version {
-    /// initialize for version
-    pub fn new(major: uint, minor: uint, patch: uint) -> Self {
-        Self {
-            major,
-            minor,
-            patch,
-            extra: 0,
-        }
-    }
-}
-
-/// algorithm library version check
-pub fn check(major: uint, minor: uint, patch: uint) -> int {
-    unsafe { a_version_check(major, minor, patch) }
-}
-
-/// algorithm library version major
-pub fn major() -> uint {
-    unsafe { a_version_major }
-}
-
-/// algorithm library version minor
-pub fn minor() -> uint {
-    unsafe { a_version_minor }
-}
-
-/// algorithm library version patch
-pub fn patch() -> uint {
-    unsafe { a_version_patch }
-}
-
-/// algorithm library version tweak
-pub fn tweak() -> u32 {
-    unsafe { a_version_tweak }
-}
-
 #[test]
 fn version() {
     extern crate std;
     use crate::version::version;
-    impl std::fmt::Debug for version {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    impl core::fmt::Debug for version {
+        fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
             f.debug_struct("version")
                 .field("major", &self.major)
                 .field("minor", &self.minor)
-                .field("patch", &self.patch)
+                .field("third", &self.third)
                 .field("extra", &self.extra)
                 .finish()
         }

@@ -12,7 +12,7 @@
  algorithm library version
  @field major version major number
  @field minor version minor number
- @field patch version patch number
+ @field third version third number
  @field extra version extra number
  @table a.version
 */
@@ -24,7 +24,7 @@ extern "C" {
  constructor for algorithm library version
  @tparam[opt] integer major version major number
  @tparam[opt] integer minor version minor number
- @tparam[opt] integer patch version patch number
+ @tparam[opt] integer third version third number
  @tparam[opt] integer extra version extra number
  @treturn a.version algorithm library version userdata
  @function new
@@ -35,7 +35,7 @@ int liba_version_new(lua_State *L);
  initialize for algorithm library version
  @tparam[opt] integer major version major number
  @tparam[opt] integer minor version minor number
- @tparam[opt] integer patch version patch number
+ @tparam[opt] integer third version third number
  @tparam[opt] integer extra version extra number
  @treturn a.version algorithm library version userdata
  @function init

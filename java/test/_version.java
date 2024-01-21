@@ -36,15 +36,18 @@ class _version {
         if (v100.cmp(v001.parse("0.0.1")) != 3) {
             throw new RuntimeException("v100.cmp(v001) == 3");
         }
-        v000.major(1).minor(2).patch(3).extra(0);
+        v000.major(1).minor(2).third(3).extra(4);
         if (v000.major() != 1) {
             throw new RuntimeException("v000.major() != 1");
         }
         if (v000.minor() != 2) {
             throw new RuntimeException("v000.minor() != 2");
         }
-        if (v000.patch() != 3) {
-            throw new RuntimeException("v000.patch() != 3");
+        if (v000.third() != 3) {
+            throw new RuntimeException("v000.third() != 3");
+        }
+        if (v000.extra() != 4) {
+            throw new RuntimeException("v000.extra() != 4");
         }
     }
 }
