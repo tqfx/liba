@@ -97,10 +97,6 @@ int debug(char const *fmt, ...) A_FORMAT(printf, 1, 2);
 #endif /* __cplusplus */
 #if !defined __cplusplus
 static void main_exit(void);
-int debug(char const *fmt, ...)
-{
-    return (void)fmt, 0;
-}
 int main_init(int argc, char *argv[], int arg1)
 {
     static FILE *out = A_NULL;
@@ -114,18 +110,23 @@ int main_init(int argc, char *argv[], int arg1)
 int main(int argc, char *argv[])
 {
     int status = 0;
-    status += MAIN_(c)(argc, argv);
 #if defined(HAS_CXX)
     status += MAIN_(x)(argc, argv);
 #endif /* HAS_CXX */
+    status += MAIN_(c)(argc, argv);
     return status;
+}
+int debug(char const *fmt, ...)
+{
+    return (void)fmt, 0;
 }
 static void main_exit(void)
 {
     if (fclose(stdout)) {}
 }
 #endif /* __cplusplus */
-#if defined(__cplusplus) == defined(HAS_CXX)
+#if defined(HAS_CXX) == \
+    defined(__cplusplus)
 #define debug printf
 #endif /* __cplusplus */
 #endif /* MAIN_ */
