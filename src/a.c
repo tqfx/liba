@@ -22,7 +22,7 @@ void a_swap(void *_lhs, void *_rhs, a_size siz)
     }
 }
 
-a_umax a_hash_bkdr(void const *_str, a_umax val)
+a_u32 a_hash_bkdr(void const *_str, a_u32 val)
 {
     a_byte const *str = (a_byte const *)_str;
     if (str)
@@ -35,7 +35,7 @@ a_umax a_hash_bkdr(void const *_str, a_umax val)
     return val;
 }
 
-a_umax a_hash_bkdrn(void const *_ptr, a_size siz, a_umax val)
+a_u32 a_hash_bkdr_(void const *_ptr, a_size siz, a_u32 val)
 {
     a_byte const *ptr = (a_byte const *)_ptr;
     if (ptr && siz)
@@ -43,6 +43,32 @@ a_umax a_hash_bkdrn(void const *_ptr, a_size siz, a_umax val)
         for (; siz; --siz, ++ptr)
         {
             val = val * 131 + *ptr;
+        }
+    }
+    return val;
+}
+
+a_u32 a_hash_sdbm(void const *_str, a_u32 val)
+{
+    a_byte const *str = (a_byte const *)_str;
+    if (str)
+    {
+        for (; *str; ++str)
+        {
+            val = val * 65599 + *str;
+        }
+    }
+    return val;
+}
+
+a_u32 a_hash_sdbm_(void const *_ptr, a_size siz, a_u32 val)
+{
+    a_byte const *ptr = (a_byte const *)_ptr;
+    if (ptr && siz)
+    {
+        for (; siz; --siz, ++ptr)
+        {
+            val = val * 65599 + *ptr;
         }
     }
     return val;

@@ -7,7 +7,8 @@ if len(sys.argv) > 1:
 
 import liba
 
-print(liba.hash_bkdr(b"0", 0))
+print(liba.hash_bkdr(b"0123456789"))
+print(liba.hash_sdbm(b"0123456789"))
 print(liba.sqrt_u64(7), liba.sqrt_u32(7))
 print(liba.sqrt_u64([4, 8]), liba.sqrt_u32([4, 8]))
 print(liba.rsqrt_f64(4), liba.rsqrt_f32(4))

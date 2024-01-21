@@ -29,4 +29,5 @@ cdef extern from "a/a.h":
     const a_float A_FLOAT_INF
     const a_float A_FLOAT_NAN
 
-    a_umax a_hash_bkdr(const char *str, a_umax val);
+    a_u32 a_hash_bkdr(const char *str, a_u32 val);
+    a_u32 a_hash_sdbm(const char *str, a_u32 val);

@@ -29,3 +29,21 @@ JNIEXPORT jdouble JNICALL Java_liba_rsqrt__D(JNIEnv *_env, jclass _cls, jdouble 
 {
     return (void)(_env), (void)(_cls), a_f64_rsqrt(x);
 }
+
+JNIEXPORT jint JNICALL Java_liba_hash_1bkdr(JNIEnv *_env, jclass _cls, jbyteArray block, jint value)
+{
+    jbyte *pdata = (*_env)->GetByteArrayElements(_env, block, NULL);
+    jsize nbyte = (*_env)->GetArrayLength(_env, block);
+    value = (jint)a_hash_bkdr_(pdata, (a_size)nbyte, (a_u32)value);
+    (*_env)->ReleaseByteArrayElements(_env, block, pdata, JNI_ABORT);
+    return (void)(_cls), value & 0x7FFFFFFF;
+}
+
+JNIEXPORT jint JNICALL Java_liba_hash_1sdbm(JNIEnv *_env, jclass _cls, jbyteArray block, jint value)
+{
+    jbyte *pdata = (*_env)->GetByteArrayElements(_env, block, NULL);
+    jsize nbyte = (*_env)->GetArrayLength(_env, block);
+    value = (jint)a_hash_sdbm_(pdata, (a_size)nbyte, (a_u32)value);
+    (*_env)->ReleaseByteArrayElements(_env, block, pdata, JNI_ABORT);
+    return (void)(_cls), value & 0x7FFFFFFF;
+}

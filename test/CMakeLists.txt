@@ -149,8 +149,9 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
 endif()
 
 building(a a.c a.cpp)
-unittest(a NAME a_bkdr ARGS bkdr bkdr)
 unittest(a NAME a_for ARGS for 10)
+unittest(a NAME a_hash_bkdr ARGS hash_bkdr hash_bkdr)
+unittest(a NAME a_hash_sdbm ARGS hash_sdbm hash_sdbm)
 unittest(a)
 
 building(avl avl.c avl.cpp)

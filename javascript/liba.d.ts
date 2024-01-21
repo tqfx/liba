@@ -11,6 +11,20 @@ declare namespace liba {
    * @return calculated result
    */
   function rsqrt(x: number): number;
+  /**
+   * a hash function whose prime number is 131
+   * @param block block to be processed
+   * @param value initial value
+   * @return hash value
+   */
+  function hash_bkdr(block: string, value: number): number;
+  /**
+   * a hash function whose prime number is 65599
+   * @param block block to be processed
+   * @param value initial value
+   * @return hash value
+   */
+  function hash_sdbm(block: string, value: number): number;
 
   interface hpf {
     /** filter coefficient [0,1] */

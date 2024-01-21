@@ -1,20 +1,23 @@
 ---@meta liba
 local liba = {}
 
----@param str string
----@param ... string
----@return string
-function liba.hash_bkdr(str, ...) end
-
----@param x integer
 ---@param ... integer
 ---@return integer ...
-function liba.isqrt(x, ...) end
+function liba.isqrt(...) end
 
----@param x number
 ---@param ... number
 ---@return number ...
-function liba.rsqrt(x, ...) end
+function liba.rsqrt(...) end
+
+---@param str? string
+---@param val? integer|string
+---@return string
+function liba.hash_bkdr(str, val) end
+
+---@param str? string
+---@param val? integer|string
+---@return string
+function liba.hash_sdbm(str, val) end
 
 ---@class a.complex
 ---@field real number

@@ -43,4 +43,22 @@ public class liba {
      * @return calculated result
      */
     public static final native double rsqrt(double x);
+
+    /**
+     * a hash function whose prime number is 131
+     *
+     * @param block block to be processed
+     * @param value initial value
+     * @return hash value
+     */
+    public static final native int hash_bkdr(byte[] block, int value);
+
+    /**
+     * a hash function whose prime number is 65599
+     *
+     * @param block block to be processed
+     * @param value initial value
+     * @return hash value
+     */
+    public static final native int hash_sdbm(byte[] block, int value);
 }

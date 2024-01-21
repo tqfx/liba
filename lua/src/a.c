@@ -11,8 +11,9 @@
 #endif /* _MSC_VER */
 
 /***
- Brian Kernighan and Dennis Ritchie
- @tparam number str string to be processed
+ a hash function whose prime number is 131
+ @tparam string str string to be processed
+ @tparam[opt] integer initial value
  @treturn string hash value
  @function hash_bkdr
 */
@@ -20,10 +21,44 @@ static int liba_hash_bkdr(lua_State *L)
 {
     char str[11];
     a_u32 val = 0;
-    for (int Li = 1, Ln = lua_gettop(L); Li <= Ln; ++Li)
+    int top = lua_gettop(L);
+    if (top > 1)
     {
-        val = (a_u32)a_hash_bkdr(luaL_checklstring(L, Li, A_NULL), val);
+        switch (lua_type(L, 2))
+        {
+        default: luaL_checkinteger(L, 2); break;
+        case LUA_TNUMBER: val = (a_u32)lua_tointeger(L, 2); break;
+        case LUA_TSTRING: val = (a_u32)strtoul(lua_tostring(L, 2), NULL, 0); break;
+        }
     }
+    if (top > 0) { val = a_hash_bkdr(luaL_checklstring(L, 1, A_NULL), val); }
+    (void)snprintf(str, 11, "0x%08" PRIX32, val);
+    lua_pushstring(L, str);
+    return 1;
+}
+
+/***
+ a hash function whose prime number is 65599
+ @tparam string str string to be processed
+ @tparam[opt] integer initial value
+ @treturn string hash value
+ @function hash_sdbm
+*/
+static int liba_hash_sdbm(lua_State *L)
+{
+    char str[11];
+    a_u32 val = 0;
+    int top = lua_gettop(L);
+    if (top > 1)
+    {
+        switch (lua_type(L, 2))
+        {
+        default: luaL_checkinteger(L, 2); break;
+        case LUA_TNUMBER: val = (a_u32)lua_tointeger(L, 2); break;
+        case LUA_TSTRING: val = (a_u32)strtoul(lua_tostring(L, 2), NULL, 0); break;
+        }
+    }
+    if (top > 0) { val = a_hash_sdbm(luaL_checklstring(L, 1, A_NULL), val); }
     (void)snprintf(str, 11, "0x%08" PRIX32, val);
     lua_pushstring(L, str);
     return 1;
@@ -33,7 +68,6 @@ static int liba_hash_bkdr(lua_State *L)
 
 /***
  square root of an unsigned integer
- @tparam integer x independent variable
  @tparam integer ... independent variables
  @treturn integer calculated result
  @function isqrt
@@ -56,7 +90,6 @@ static int liba_isqrt(lua_State *L)
 
 /***
  reciprocal of square-root
- @tparam number x independent variable
  @tparam number ... independent variables
  @treturn number calculated result
  @function rsqrt
@@ -93,6 +126,7 @@ int luaopen_liba(lua_State *L)
     */
     static lua_fun const funcs[] = {
         {"hash_bkdr", liba_hash_bkdr},
+        {"hash_sdbm", liba_hash_sdbm},
         {"isqrt", liba_isqrt},
         {"rsqrt", liba_rsqrt},
     };

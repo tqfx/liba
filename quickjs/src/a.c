@@ -2,15 +2,36 @@
 
 static JSValue liba_hash_bkdr(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
+    a_u32 x = 0;
     (void)this_val;
-    a_umax x = 0;
-    for (int i = 0; i < argc; ++i)
+    if (argc > 1)
     {
-        char const *str = JS_ToCString(ctx, argv[i]);
+        if (JS_ToUint32(ctx, &x, argv[1])) { return JS_EXCEPTION; }
+    }
+    if (argc > 0)
+    {
+        char const *str = JS_ToCString(ctx, argv[0]);
         x = a_hash_bkdr(str, x);
         JS_FreeCString(ctx, str);
     }
-    return JS_NewUint32(ctx, (a_u32)x);
+    return JS_NewUint32(ctx, x);
+}
+
+static JSValue liba_hash_sdbm(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+{
+    a_u32 x = 0;
+    (void)this_val;
+    if (argc > 1)
+    {
+        if (JS_ToUint32(ctx, &x, argv[1])) { return JS_EXCEPTION; }
+    }
+    if (argc > 0)
+    {
+        char const *str = JS_ToCString(ctx, argv[0]);
+        x = a_hash_sdbm(str, x);
+        JS_FreeCString(ctx, str);
+    }
+    return JS_NewUint32(ctx, x);
 }
 
 #include "a/math.h"
@@ -72,6 +93,7 @@ static JSCFunctionListEntry const liba_mf_proto[] = {
 static JSCFunctionListEntry const liba_proto[] = {
     JS_OBJECT_DEF("mf", liba_mf_proto, A_LEN(liba_mf_proto), 0),
     JS_PROP_STRING_DEF("VERSION", A_VERSION, 0),
+    JS_CFUNC_DEF("hash_sdbm", 1, liba_hash_sdbm),
     JS_CFUNC_DEF("hash_bkdr", 1, liba_hash_bkdr),
     JS_CFUNC_DEF("isqrt", 1, liba_isqrt),
     JS_CFUNC_DEF("rsqrt", 1, liba_rsqrt),

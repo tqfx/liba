@@ -39,15 +39,6 @@ static void test_sat(void)
     A_ASSERT_BUILD(A_SAT(-100, -10, +10) >= -10);
 }
 
-static void test_bkdr(int argc, char *argv[])
-{
-    for (int idx = 1; idx < argc; ++idx)
-    {
-        a_u32 val = a_u32_c(a_hash_bkdr(argv[idx], 0));
-        debug("case 0x%08" PRIX32 ": // %s\n    break;\n", val, argv[idx]);
-    }
-}
-
 static void test_for(int argc, char *argv[])
 {
     unsigned int n = 10;
@@ -204,6 +195,22 @@ static void test_roll(int argc, char *argv[])
     (void)argv;
 }
 
+static void test_hash_bkdr(int argc, char *argv[])
+{
+    for (int idx = 1; idx < argc; ++idx)
+    {
+        debug("case 0x%08" PRIX32 ": // %s\n    break;\n", a_hash_bkdr(argv[idx], 0), argv[idx]);
+    }
+}
+
+static void test_hash_sdbm(int argc, char *argv[])
+{
+    for (int idx = 1; idx < argc; ++idx)
+    {
+        debug("case 0x%08" PRIX32 ": // %s\n    break;\n", a_hash_sdbm(argv[idx], 0), argv[idx]);
+    }
+}
+
 int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     test_sq();
@@ -215,20 +222,16 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     if (argc < 2)
     {
         test_for(argc, argv);
-        test_bkdr(argc, argv);
         test_swap(argc, argv);
         test_save(argc, argv);
         test_roll(argc, argv);
+        test_hash_bkdr(argc, argv);
         return 0;
     }
-    a_u32 bkdr = a_u32_c(a_hash_bkdr(argv[1], 0));
-    switch (bkdr)
+    switch (a_hash_bkdr(argv[1], 0))
     {
     case 0x001AEED5: // for
         test_for(argc - 1, argv + 1);
-        break;
-    case 0x0D3DEDB7: // bkdr
-        test_bkdr(argc - 1, argv + 1);
         break;
     case 0x0F8837E3: // swap
         test_swap(argc - 1, argv + 1);
@@ -239,12 +242,20 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     case 0x0F63D79D: // roll
         test_roll(argc - 1, argv + 1);
         break;
+    case 0x0E0928A2: // hash
+    case 0x23CAC2CA: // hash_bkdr
+        test_hash_bkdr(argc - 1, argv + 1);
+        break;
+    case 0x59A69D8D: // hash_sdbm
+        test_hash_sdbm(argc - 1, argv + 1);
+        break;
     default:
         debug("for\n");
-        debug("bkdr\n");
         debug("swap\n");
         debug("save\n");
         debug("roll\n");
+        debug("hash_bkdr\n");
+        debug("hash_sdbm\n");
     }
     return 0;
 }

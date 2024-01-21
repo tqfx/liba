@@ -124,7 +124,7 @@ int liba_tf_zero(lua_State *L)
 static int liba_tf_set(lua_State *L)
 {
     a_tf *const ctx = (a_tf *)lua_touserdata(L, 1);
-    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
+    switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x001D0A2A: // num
     {
@@ -160,7 +160,7 @@ static int liba_tf_set(lua_State *L)
 static int liba_tf_get(lua_State *L)
 {
     a_tf const *const ctx = (a_tf const *)lua_touserdata(L, 1);
-    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
+    switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x001D0A2A: // num
         lua_array_num_new(L, ctx->num_p, ctx->num_n);

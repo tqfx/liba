@@ -108,7 +108,7 @@ int liba_lpf_zero(lua_State *L)
 
 static int liba_lpf_set(lua_State *L)
 {
-    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
+    switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0xE8859EEB: // __name
     case 0xE70C48C6: // __call
@@ -126,7 +126,7 @@ static int liba_lpf_set(lua_State *L)
 static int liba_lpf_get(lua_State *L)
 {
     a_lpf const *const ctx = (a_lpf const *)lua_touserdata(L, 1);
-    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
+    switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0xB5485B9E: // alpha
         lua_pushnumber(L, (lua_Number)ctx->alpha);

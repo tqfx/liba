@@ -216,7 +216,7 @@ FUNC(ne)
 static int liba_version_set(lua_State *L)
 {
     a_version *const ctx = (a_version *)lua_touserdata(L, 1);
-    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
+    switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x86720331: // major
         ctx->major = (unsigned int)luaL_checkinteger(L, 3);
@@ -250,7 +250,7 @@ static int liba_version_set(lua_State *L)
 static int liba_version_get(lua_State *L)
 {
     a_version const *const ctx = (a_version const *)lua_touserdata(L, 1);
-    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
+    switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x86720331: // major
         lua_pushinteger(L, (lua_Integer)ctx->major);

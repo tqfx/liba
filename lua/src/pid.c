@@ -152,7 +152,7 @@ int liba_pid_inc(lua_State *L)
 static int liba_pid_set(lua_State *L)
 {
     a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
-    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
+    switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x00003731: // kp
         ctx->kp = (a_float)luaL_checknumber(L, 3);
@@ -191,7 +191,7 @@ static int liba_pid_set(lua_State *L)
 static int liba_pid_get(lua_State *L)
 {
     a_pid const *const ctx = (a_pid const *)lua_touserdata(L, 1);
-    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
+    switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x00003731: // kp
         lua_pushnumber(L, (lua_Number)ctx->kp);

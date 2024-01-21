@@ -228,7 +228,7 @@ int liba_polytraj7_jer(lua_State *L)
 
 static int liba_polytraj7_set(lua_State *L)
 {
-    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
+    switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0xE8859EEB: // __name
     case 0xA65758B2: // __index
@@ -245,7 +245,7 @@ static int liba_polytraj7_set(lua_State *L)
 static int liba_polytraj7_get(lua_State *L)
 {
     a_polytraj7 const *const ctx = (a_polytraj7 const *)lua_touserdata(L, 1);
-    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
+    switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x00000071: // q
         lua_array_num_new(L, ctx->q, A_LEN(ctx->q));

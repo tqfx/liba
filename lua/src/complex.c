@@ -566,7 +566,7 @@ F1(acoth)
 static int liba_complex_set(lua_State *L)
 {
     a_complex *const ctx = (a_complex *)lua_touserdata(L, 1);
-    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
+    switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x0F6133A2: // real
         ctx->real = (a_float)luaL_checknumber(L, 3);
@@ -612,7 +612,7 @@ static int liba_complex_set(lua_State *L)
 static int liba_complex_get(lua_State *L)
 {
     a_complex const *const ctx = (a_complex const *)lua_touserdata(L, 1);
-    switch ((a_u32)a_hash_bkdr(lua_tostring(L, 2), 0))
+    switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x0F6133A2: // real
         lua_pushnumber(L, (lua_Number)ctx->real);

@@ -1123,21 +1123,38 @@ A_EXTERN void *a_zero(void *ptr, a_size siz);
 A_EXTERN void a_swap(void *lhs, void *rhs, a_size siz);
 
 /*!
- @brief Brian Kernighan and Dennis Ritchie
+ @brief a hash function whose prime number is 131
  @param[in] str string to be processed
  @param[in] val initial value
  @return hash value
 */
-A_EXTERN a_umax a_hash_bkdr(void const *str, a_umax val);
+A_EXTERN a_u32 a_hash_bkdr(void const *str, a_u32 val);
 
 /*!
- @brief Brian Kernighan and Dennis Ritchie
+ @brief a hash function whose prime number is 131
  @param[in] ptr points to string to be processed
  @param[in] siz length of string to be processed
  @param[in] val initial value
  @return hash value
 */
-A_EXTERN a_umax a_hash_bkdrn(void const *ptr, a_size siz, a_umax val);
+A_EXTERN a_u32 a_hash_bkdr_(void const *ptr, a_size siz, a_u32 val);
+
+/*!
+ @brief a hash function whose prime number is 65599
+ @param[in] str string to be processed
+ @param[in] val initial value
+ @return hash value
+*/
+A_EXTERN a_u32 a_hash_sdbm(void const *str, a_u32 val);
+
+/*!
+ @brief a hash function whose prime number is 65599
+ @param[in] ptr points to string to be processed
+ @param[in] siz length of string to be processed
+ @param[in] val initial value
+ @return hash value
+*/
+A_EXTERN a_u32 a_hash_sdbm_(void const *ptr, a_size siz, a_u32 val);
 
 /*!
  @brief roll back the elements of a float array and save the cache array

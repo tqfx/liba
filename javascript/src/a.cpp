@@ -1,6 +1,9 @@
 #include "a/a.h"
 #include <emscripten/bind.h>
 
+namespace
+{
+
 static emscripten::val js_concat(emscripten::val x)
 {
     emscripten::val empty = emscripten::val::array();
@@ -22,6 +25,18 @@ static emscripten::val js_array_num_new(a_float const *p, a_size n)
 {
     return emscripten::val(emscripten::typed_memory_view(n, p));
 }
+
+static a_u32 hash_bkdr(std::string const &str, a_u32 val)
+{
+    return a_hash_bkdr_(str.c_str(), str.length(), val);
+}
+
+static a_u32 hash_sdbm(std::string const &str, a_u32 val)
+{
+    return a_hash_sdbm_(str.c_str(), str.length(), val);
+}
+
+} /* namespace */
 
 #include "a/hpf.h"
 
@@ -608,6 +623,8 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
 {
     emscripten::function("isqrt", a_u32_sqrt);
     emscripten::function("rsqrt", a_f64_rsqrt);
+    emscripten::function("hash_bkdr", hash_bkdr);
+    emscripten::function("hash_sdbm", hash_sdbm);
     emscripten::class_<mf>("mf")
         .class_property("NUL", &mf::NUL)
         .class_function("gauss", &mf::gauss)
