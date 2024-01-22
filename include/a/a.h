@@ -1018,64 +1018,81 @@ extern "C" {
 #define A_INTERN A_INLINE
 #endif /* LIBA_A_C */
 
+/*!
+ @brief reverse the bits in an 8-bit unsigned integer x
+ @param x an 8-bit unsigned integer to be reversed
+ @return reversed 8-bit unsigned integer
+*/
 #if !defined A_HAVE_INLINE || defined(LIBA_A_C)
-A_EXTERN a_f32 a_f32_from(a_u32 x);
+A_EXTERN a_u8 a_u8_rev(a_u8 x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
-A_INTERN a_f32 a_f32_from(a_u32 x)
+A_INTERN a_u8 a_u8_rev(a_u8 x)
 {
-    union
-    {
-        a_u32 u;
-        a_f32 x;
-    } u;
-    u.u = x;
-    return u.x;
+    x = a_cast_s(a_u8, (x >> 4) | (x << 4));
+    x = a_cast_s(a_u8, ((x & 0xCC) >> 2) | ((x & 0x33) << 2));
+    x = a_cast_s(a_u8, ((x & 0xAA) >> 1) | ((x & 0x55) << 1));
+    return x;
 }
 #endif /* A_HAVE_INLINE */
+
+/*!
+ @brief reverse the bits in a 16-bit unsigned integer x
+ @param x a 16-bit unsigned integer to be reversed
+ @return reversed 16-bit unsigned integer
+*/
 #if !defined A_HAVE_INLINE || defined(LIBA_A_C)
-A_EXTERN a_u32 a_f32_into(a_f32 x);
+A_EXTERN a_u16 a_u16_rev(a_u16 x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
-A_INTERN a_u32 a_f32_into(a_f32 x)
+A_INTERN a_u16 a_u16_rev(a_u16 x)
 {
-    union
-    {
-        a_f32 x;
-        a_u32 u;
-    } u;
-    u.x = x;
-    return u.u;
+    x = a_cast_s(a_u16, (x >> 8) | (x << 8));
+    x = a_cast_s(a_u16, ((x & 0xF0F0) >> 4) | ((x & 0x0F0F) << 4));
+    x = a_cast_s(a_u16, ((x & 0xCCCC) >> 2) | ((x & 0x3333) << 2));
+    x = a_cast_s(a_u16, ((x & 0xAAAA) >> 1) | ((x & 0x5555) << 1));
+    return x;
 }
 #endif /* A_HAVE_INLINE */
+
+/*!
+ @brief reverse the bits in a 32-bit unsigned integer x
+ @param x a 32-bit unsigned integer to be reversed
+ @return reversed 32-bit unsigned integer
+*/
 #if !defined A_HAVE_INLINE || defined(LIBA_A_C)
-A_EXTERN a_f64 a_f64_from(a_u64 x);
+A_EXTERN a_u32 a_u32_rev(a_u32 x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
-A_INTERN a_f64 a_f64_from(a_u64 x)
+A_INTERN a_u32 a_u32_rev(a_u32 x)
 {
-    union
-    {
-        a_u64 u;
-        a_f64 x;
-    } u;
-    u.u = x;
-    return u.x;
+    x = (x >> 16) | (x << 16);
+    x = ((x & 0xFF00FF00) >> 8) | ((x & 0x00FF00FF) << 8);
+    x = ((x & 0xF0F0F0F0) >> 4) | ((x & 0x0F0F0F0F) << 4);
+    x = ((x & 0xCCCCCCCC) >> 2) | ((x & 0x33333333) << 2);
+    x = ((x & 0xAAAAAAAA) >> 1) | ((x & 0x55555555) << 1);
+    return x;
 }
 #endif /* A_HAVE_INLINE */
+
+/*!
+ @brief reverse the bits in a 64-bit unsigned integer x
+ @param x a 64-bit unsigned integer to be reversed
+ @return reversed 64-bit unsigned integer
+*/
 #if !defined A_HAVE_INLINE || defined(LIBA_A_C)
-A_EXTERN a_u64 a_f64_into(a_f64 x);
+A_EXTERN a_u64 a_u64_rev(a_u64 x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
-A_INTERN a_u64 a_f64_into(a_f64 x)
+A_INTERN a_u64 a_u64_rev(a_u64 x)
 {
-    union
-    {
-        a_f64 x;
-        a_u64 u;
-    } u;
-    u.x = x;
-    return u.u;
+    x = (x >> 32) | (x << 32);
+    x = ((x & 0xFFFF0000FFFF0000) >> 0x10) | ((x & 0x0000FFFF0000FFFF) << 0x10);
+    x = ((x & 0xFF00FF00FF00FF00) >> 0x08) | ((x & 0x00FF00FF00FF00FF) << 0x08);
+    x = ((x & 0xF0F0F0F0F0F0F0F0) >> 0x04) | ((x & 0x0F0F0F0F0F0F0F0F) << 0x04);
+    x = ((x & 0xCCCCCCCCCCCCCCCC) >> 0x02) | ((x & 0x3333333333333333) << 0x02);
+    x = ((x & 0xAAAAAAAAAAAAAAAA) >> 0x01) | ((x & 0x5555555555555555) << 0x01);
+    return x;
 }
 #endif /* A_HAVE_INLINE */
 
