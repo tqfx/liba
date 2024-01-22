@@ -4,7 +4,7 @@
 #[repr(C)]
 pub struct crc8 {
     /// Cyclic Redundancy Check comparison table
-    table: [u8; 0x100],
+    pub table: [u8; 0x100],
 }
 
 extern "C" {
@@ -26,12 +26,18 @@ impl crc8 {
         unsafe { a_crc8l_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
-    /// calculate for MSB CRC-8
-    pub fn msb(self, data: &[u8], value: u8) -> u8 {
-        unsafe { a_crc8(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    /// generate for MSB CRC-8
+    pub fn gen_msb(&mut self, poly: u8) -> &mut Self {
+        unsafe { a_crc8m_init(self.table.as_mut_ptr(), poly) };
+        self
     }
-    /// calculate for LSB CRC-8
-    pub fn lsb(self, data: &[u8], value: u8) -> u8 {
+    /// generate for LSB CRC-8
+    pub fn gen_lsb(&mut self, poly: u8) -> &mut Self {
+        unsafe { a_crc8l_init(self.table.as_mut_ptr(), poly) };
+        self
+    }
+    /// calculate for CRC-8
+    pub fn eval(self, data: &[u8], value: u8) -> u8 {
         unsafe { a_crc8(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
 }
@@ -40,14 +46,14 @@ impl crc8 {
 fn crc8() {
     extern crate std;
     {
-        let ctx = crate::crc::crc16::new_msb(0x31);
-        let res = ctx.msb(b"123456789", 0xFFFF);
-        std::println!("0x{:X}", res ^ 0xFF);
+        let ctx = crate::crc::crc8::new_msb(0x31);
+        let res = ctx.eval(b"123456789", 0xFF);
+        std::println!("0x{:02X}", res ^ 0xFF);
     }
     {
-        let ctx = crate::crc::crc16::new_lsb(0x8C);
-        let res = ctx.lsb(b"123456789", 0xFFFF);
-        std::println!("0x{:X}", res ^ 0xFF);
+        let ctx = crate::crc::crc8::new_lsb(0x8C);
+        let res = ctx.eval(b"123456789", 0xFF);
+        std::println!("0x{:02X}", res ^ 0xFF);
     }
 }
 
@@ -55,7 +61,8 @@ fn crc8() {
 #[repr(C)]
 pub struct crc16 {
     /// Cyclic Redundancy Check comparison table
-    table: [u16; 0x100],
+    pub table: [u16; 0x100],
+    eval: unsafe extern "C" fn(*const u16, *const u8, usize, u16) -> u16,
 }
 
 extern "C" {
@@ -68,23 +75,37 @@ extern "C" {
 impl crc16 {
     /// initialize for MSB CRC-16
     pub fn new_msb(poly: u16) -> Self {
-        let mut ctx: Self = Self { table: [0; 0x100] };
+        let mut ctx: Self = Self {
+            table: [0; 0x100],
+            eval: a_crc16m,
+        };
         unsafe { a_crc16m_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
     /// initialize for LSB CRC-16
     pub fn new_lsb(poly: u16) -> Self {
-        let mut ctx: Self = Self { table: [0; 0x100] };
+        let mut ctx: Self = Self {
+            table: [0; 0x100],
+            eval: a_crc16l,
+        };
         unsafe { a_crc16l_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
-    /// calculate for MSB CRC-16
-    pub fn msb(self, data: &[u8], value: u16) -> u16 {
-        unsafe { a_crc16m(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    /// generate for MSB CRC-16
+    pub fn gen_msb(&mut self, poly: u16) -> &mut Self {
+        unsafe { a_crc16m_init(self.table.as_mut_ptr(), poly) };
+        self.eval = a_crc16m;
+        self
     }
-    /// calculate for LSB CRC-16
-    pub fn lsb(self, data: &[u8], value: u16) -> u16 {
-        unsafe { a_crc16l(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    /// generate for LSB CRC-16
+    pub fn gen_lsb(&mut self, poly: u16) -> &mut Self {
+        unsafe { a_crc16l_init(self.table.as_mut_ptr(), poly) };
+        self.eval = a_crc16l;
+        self
+    }
+    /// calculate for CRC-16
+    pub fn eval(self, data: &[u8], value: u16) -> u16 {
+        unsafe { (self.eval)(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
 }
 
@@ -93,12 +114,12 @@ fn crc16() {
     extern crate std;
     {
         let ctx = crate::crc::crc16::new_msb(0x8005);
-        let res = ctx.msb(b"123456789", 0xFFFF);
+        let res = ctx.eval(b"123456789", 0xFFFF);
         std::println!("0x{:X}", res ^ 0xFFFF);
     }
     {
         let ctx = crate::crc::crc16::new_lsb(0xA001);
-        let res = ctx.lsb(b"123456789", 0xFFFF);
+        let res = ctx.eval(b"123456789", 0xFFFF);
         std::println!("0x{:X}", res ^ 0xFFFF);
     }
 }
@@ -107,7 +128,8 @@ fn crc16() {
 #[repr(C)]
 pub struct crc32 {
     /// Cyclic Redundancy Check comparison table
-    table: [u32; 0x100],
+    pub table: [u32; 0x100],
+    eval: unsafe extern "C" fn(*const u32, *const u8, usize, u32) -> u32,
 }
 
 extern "C" {
@@ -120,23 +142,37 @@ extern "C" {
 impl crc32 {
     /// initialize for MSB CRC-32
     pub fn new_msb(poly: u32) -> Self {
-        let mut ctx: Self = Self { table: [0; 0x100] };
+        let mut ctx: Self = Self {
+            table: [0; 0x100],
+            eval: a_crc32m,
+        };
         unsafe { a_crc32m_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
     /// initialize for LSB CRC-32
     pub fn new_lsb(poly: u32) -> Self {
-        let mut ctx: Self = Self { table: [0; 0x100] };
+        let mut ctx: Self = Self {
+            table: [0; 0x100],
+            eval: a_crc32l,
+        };
         unsafe { a_crc32l_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
-    /// calculate for MSB CRC-32
-    pub fn msb(self, data: &[u8], value: u32) -> u32 {
-        unsafe { a_crc32m(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    /// generate for MSB CRC-32
+    pub fn gen_msb(&mut self, poly: u32) -> &mut Self {
+        unsafe { a_crc32m_init(self.table.as_mut_ptr(), poly) };
+        self.eval = a_crc32m;
+        self
     }
-    /// calculate for LSB CRC-32
-    pub fn lsb(self, data: &[u8], value: u32) -> u32 {
-        unsafe { a_crc32l(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    /// generate for LSB CRC-32
+    pub fn gen_lsb(&mut self, poly: u32) -> &mut Self {
+        unsafe { a_crc32l_init(self.table.as_mut_ptr(), poly) };
+        self.eval = a_crc32l;
+        self
+    }
+    /// calculate for CRC-32
+    pub fn eval(self, data: &[u8], value: u32) -> u32 {
+        unsafe { (self.eval)(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
 }
 
@@ -145,12 +181,12 @@ fn crc32() {
     extern crate std;
     {
         let ctx = crate::crc::crc32::new_msb(0x04C11DB7);
-        let res = ctx.msb(b"123456789", 0xFFFFFFFF);
+        let res = ctx.eval(b"123456789", 0xFFFFFFFF);
         std::println!("0x{:X}", res ^ 0xFFFFFFFF);
     }
     {
         let ctx = crate::crc::crc32::new_lsb(0xEDB88320);
-        let res = ctx.lsb(b"123456789", 0xFFFFFFFF);
+        let res = ctx.eval(b"123456789", 0xFFFFFFFF);
         std::println!("0x{:X}", res ^ 0xFFFFFFFF);
     }
 }
@@ -159,7 +195,8 @@ fn crc32() {
 #[repr(C)]
 pub struct crc64 {
     /// Cyclic Redundancy Check comparison table
-    table: [u64; 0x100],
+    pub table: [u64; 0x100],
+    eval: unsafe extern "C" fn(*const u64, *const u8, usize, u64) -> u64,
 }
 
 extern "C" {
@@ -172,23 +209,37 @@ extern "C" {
 impl crc64 {
     /// initialize for MSB CRC-64
     pub fn new_msb(poly: u64) -> Self {
-        let mut ctx: Self = Self { table: [0; 0x100] };
+        let mut ctx: Self = Self {
+            table: [0; 0x100],
+            eval: a_crc64m,
+        };
         unsafe { a_crc64m_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
     /// initialize for LSB CRC-64
     pub fn new_lsb(poly: u64) -> Self {
-        let mut ctx: Self = Self { table: [0; 0x100] };
+        let mut ctx: Self = Self {
+            table: [0; 0x100],
+            eval: a_crc64l,
+        };
         unsafe { a_crc64l_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
-    /// calculate for MSB CRC-64
-    pub fn msb(self, data: &[u8], value: u64) -> u64 {
-        unsafe { a_crc64m(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    /// generate for MSB CRC-64
+    pub fn gen_msb(&mut self, poly: u64) -> &mut Self {
+        unsafe { a_crc64m_init(self.table.as_mut_ptr(), poly) };
+        self.eval = a_crc64m;
+        self
     }
-    /// calculate for LSB CRC-64
-    pub fn lsb(self, data: &[u8], value: u64) -> u64 {
-        unsafe { a_crc64l(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    /// generate for LSB CRC-64
+    pub fn gen_lsb(&mut self, poly: u64) -> &mut Self {
+        unsafe { a_crc64l_init(self.table.as_mut_ptr(), poly) };
+        self.eval = a_crc64l;
+        self
+    }
+    /// calculate for CRC-64
+    pub fn eval(self, data: &[u8], value: u64) -> u64 {
+        unsafe { (self.eval)(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
     }
 }
 
@@ -197,12 +248,12 @@ fn crc64() {
     extern crate std;
     {
         let ctx = crate::crc::crc64::new_msb(0x42F0E1EBA9EA3693);
-        let res = ctx.msb(b"123456789", 0xFFFFFFFFFFFFFFFF);
+        let res = ctx.eval(b"123456789", 0xFFFFFFFFFFFFFFFF);
         std::println!("0x{:X}", res ^ 0xFFFFFFFFFFFFFFFF);
     }
     {
         let ctx = crate::crc::crc64::new_lsb(0xC96C5795D7870F42);
-        let res = ctx.lsb(b"123456789", 0xFFFFFFFFFFFFFFFF);
+        let res = ctx.eval(b"123456789", 0xFFFFFFFFFFFFFFFF);
         std::println!("0x{:X}", res ^ 0xFFFFFFFFFFFFFFFF);
     }
 }
