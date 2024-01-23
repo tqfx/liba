@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 var liba = require("../liba")
 function assert(b, str) {
-    if (b) {
-        return;
-    } else {
+    if (!b) {
         throw Error("assertion failed: " + str);
     }
 }

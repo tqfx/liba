@@ -37,8 +37,8 @@ impl crc8 {
         self
     }
     /// calculate for CRC-8
-    pub fn eval(self, data: &[u8], value: u8) -> u8 {
-        unsafe { a_crc8(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    pub fn eval(self, block: &[u8], value: u8) -> u8 {
+        unsafe { a_crc8(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
     }
 }
 
@@ -46,14 +46,12 @@ impl crc8 {
 fn crc8() {
     extern crate std;
     {
-        let ctx = crate::crc::crc8::new_msb(0x31);
-        let res = ctx.eval(b"123456789", 0xFF);
-        std::println!("0x{:02X}", res ^ 0xFF);
+        let ctx = crate::crc::crc8::new_msb(0x07);
+        assert_eq!(ctx.eval(b"0123456789", 0), 0x45);
     }
     {
-        let ctx = crate::crc::crc8::new_lsb(0x8C);
-        let res = ctx.eval(b"123456789", 0xFF);
-        std::println!("0x{:02X}", res ^ 0xFF);
+        let ctx = crate::crc::crc8::new_lsb(0x31);
+        assert_eq!(ctx.eval(b"0123456789", 0), 0x75);
     }
 }
 
@@ -104,8 +102,8 @@ impl crc16 {
         self
     }
     /// calculate for CRC-16
-    pub fn eval(self, data: &[u8], value: u16) -> u16 {
-        unsafe { (self.eval)(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    pub fn eval(self, block: &[u8], value: u16) -> u16 {
+        unsafe { (self.eval)(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
     }
 }
 
@@ -113,14 +111,12 @@ impl crc16 {
 fn crc16() {
     extern crate std;
     {
-        let ctx = crate::crc::crc16::new_msb(0x8005);
-        let res = ctx.eval(b"123456789", 0xFFFF);
-        std::println!("0x{:X}", res ^ 0xFFFF);
+        let ctx = crate::crc::crc16::new_msb(0x1021);
+        assert_eq!(ctx.eval(b"0123456789", 0), 0x9C58);
     }
     {
-        let ctx = crate::crc::crc16::new_lsb(0xA001);
-        let res = ctx.eval(b"123456789", 0xFFFF);
-        std::println!("0x{:X}", res ^ 0xFFFF);
+        let ctx = crate::crc::crc16::new_lsb(0x8005);
+        assert_eq!(ctx.eval(b"0123456789", 0), 0x443D);
     }
 }
 
@@ -171,8 +167,8 @@ impl crc32 {
         self
     }
     /// calculate for CRC-32
-    pub fn eval(self, data: &[u8], value: u32) -> u32 {
-        unsafe { (self.eval)(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    pub fn eval(self, block: &[u8], value: u32) -> u32 {
+        unsafe { (self.eval)(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
     }
 }
 
@@ -180,14 +176,12 @@ impl crc32 {
 fn crc32() {
     extern crate std;
     {
-        let ctx = crate::crc::crc32::new_msb(0x04C11DB7);
-        let res = ctx.eval(b"123456789", 0xFFFFFFFF);
-        std::println!("0x{:X}", res ^ 0xFFFFFFFF);
+        let ctx = crate::crc::crc32::new_msb(0x1EDC6F41);
+        assert_eq!(ctx.eval(b"0123456789", 0), 0x512B456E);
     }
     {
-        let ctx = crate::crc::crc32::new_lsb(0xEDB88320);
-        let res = ctx.eval(b"123456789", 0xFFFFFFFF);
-        std::println!("0x{:X}", res ^ 0xFFFFFFFF);
+        let ctx = crate::crc::crc32::new_lsb(0x04C11DB7);
+        assert_eq!(ctx.eval(b"0123456789", 0), 0x450EAFB0);
     }
 }
 
@@ -238,8 +232,8 @@ impl crc64 {
         self
     }
     /// calculate for CRC-64
-    pub fn eval(self, data: &[u8], value: u64) -> u64 {
-        unsafe { (self.eval)(self.table.as_ptr(), data.as_ptr(), data.len(), value) }
+    pub fn eval(self, block: &[u8], value: u64) -> u64 {
+        unsafe { (self.eval)(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
     }
 }
 
@@ -247,13 +241,11 @@ impl crc64 {
 fn crc64() {
     extern crate std;
     {
-        let ctx = crate::crc::crc64::new_msb(0x42F0E1EBA9EA3693);
-        let res = ctx.eval(b"123456789", 0xFFFFFFFFFFFFFFFF);
-        std::println!("0x{:X}", res ^ 0xFFFFFFFFFFFFFFFF);
+        let ctx = crate::crc::crc64::new_msb(0x000000000000001B);
+        assert_eq!(ctx.eval(b"0123456789", 0), 0xE4FFBEA588AFC790);
     }
     {
-        let ctx = crate::crc::crc64::new_lsb(0xC96C5795D7870F42);
-        let res = ctx.eval(b"123456789", 0xFFFFFFFFFFFFFFFF);
-        std::println!("0x{:X}", res ^ 0xFFFFFFFFFFFFFFFF);
+        let ctx = crate::crc::crc64::new_lsb(0x42F0E1EBA9EA3693);
+        assert_eq!(ctx.eval(b"0123456789", 0), 0xDA60676A5CDE0008);
     }
 }

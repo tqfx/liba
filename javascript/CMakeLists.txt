@@ -53,6 +53,7 @@ set(CMAKE_C_LINK_EXECUTABLE "<CMAKE_C_COMPILER> <FLAGS> <OBJECTS> -o <TARGET> <L
 set(CMAKE_CXX_LINK_EXECUTABLE "<CMAKE_CXX_COMPILER> <FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES> --bind")
 option(LIBA_JAVASCRIPT_TSGEN "Enable/Disable generation of TypeScript definition files" 1)
 option(LIBA_JAVASCRIPT_ASYNC "Enable/Disable compilation of wasm async" 0)
+option(LIBA_JAVASCRIPT_WASM "Enable/Disable JavaScript WebAssembly" 1)
 option(LIBA_JAVASCRIPT_BIGINT "Enable/Disable JavaScript BigInt" 0)
 
 if(LIBA_JAVASCRIPT_TSGEN)
@@ -68,6 +69,14 @@ endif()
 if(LIBA_JAVASCRIPT_BIGINT)
   string_append(CMAKE_C_LINK_EXECUTABLE -sWASM_BIGINT)
   string_append(CMAKE_CXX_LINK_EXECUTABLE -sWASM_BIGINT)
+  set_property(SOURCE ${SOURCES} APPEND PROPERTY
+    COMPILE_DEFINITIONS WASM_BIGINT
+  )
+endif()
+
+if(NOT LIBA_JAVASCRIPT_WASM)
+  string_append(CMAKE_C_LINK_EXECUTABLE -sWASM=0)
+  string_append(CMAKE_CXX_LINK_EXECUTABLE -sWASM=0)
 endif()
 
 string_append(CMAKE_C_LINK_EXECUTABLE ${LIBA_WASM_FLAGS})

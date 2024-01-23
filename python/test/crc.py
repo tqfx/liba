@@ -7,36 +7,36 @@ if len(sys.argv) > 1:
 
 import liba as a
 
-text = b"123456789"
+text = b"0123456789"
 
-crc = a.crc8(0x31)
-print(crc(text))
-crc.table
+crc = a.crc8(0x07)
+assert crc.table
+assert crc(text) == 0x45
 
-crc = a.crc8(0x8C, reversed=True)
-print(crc(text))
-crc.table
+crc = a.crc8(0x31, reversed=True)
+assert crc.table
+assert crc(text) == 0x75
 
-crc = a.crc16(0x8005)
-print(crc(text))
-crc.table
+crc = a.crc16(0x1021)
+assert crc.table
+assert crc(text) == 0x9C58
 
-crc = a.crc16(0xA001, reversed=True)
-print(crc(text))
-crc.table
+crc = a.crc16(0x8005, reversed=True)
+assert crc.table
+assert crc(text) == 0x443D
 
-crc = a.crc32(0x04C11DB7)
-print(crc(text))
-crc.table
+crc = a.crc32(0x1EDC6F41)
+assert crc.table
+assert crc(text) == 0x512B456E
 
-crc = a.crc32(0xEDB88320, reversed=True)
-print(crc(text))
-crc.table
+crc = a.crc32(0x04C11DB7, reversed=True)
+assert crc.table
+assert crc(text) == 0x450EAFB0
 
-crc = a.crc64(0x42F0E1EBA9EA3693)
-print(crc(text))
-crc.table
+crc = a.crc64(0x000000000000001B)
+assert crc.table
+assert crc(text) == 0xE4FFBEA588AFC790
 
-crc = a.crc64(0xC96C5795D7870F42, reversed=True)
-print(crc(text))
-crc.table
+crc = a.crc64(0x42F0E1EBA9EA3693, reversed=True)
+assert crc.table
+assert crc(text) == 0xDA60676A5CDE0008

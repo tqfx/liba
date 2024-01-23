@@ -38,6 +38,129 @@ static a_u32 hash_sdbm(std::string const &str, a_u32 val)
 
 } /* namespace */
 
+#include "a/crc.h"
+
+struct crc8
+{
+    a_u8 table[0x100];
+    A_INLINE emscripten::val get_table() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(0x100, table));
+    }
+    A_INLINE a_u8 operator()(std::string const &data, a_u8 init = 0)
+    {
+        return a_crc8(table, data.c_str(), data.length(), init);
+    }
+    A_INLINE crc8 *gen(a_u8 poly, bool reversed = false)
+    {
+        if (reversed) { a_crc8l_init(table, poly); }
+        else { a_crc8m_init(table, poly); }
+        return this;
+    }
+    A_INLINE crc8(a_u8 poly, bool reversed = false)
+    {
+        gen(poly, reversed);
+    }
+};
+
+struct crc16
+{
+    a_u16 table[0x100];
+    a_u16 (*eval)(a_u16 const[0x100], void const *, a_size, a_u16);
+    A_INLINE emscripten::val get_table() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(0x100, table));
+    }
+    A_INLINE a_u16 operator()(std::string const &data, a_u16 init = 0)
+    {
+        return eval(table, data.c_str(), data.length(), init);
+    }
+    A_INLINE crc16 *gen(a_u16 poly, bool reversed = false)
+    {
+        if (reversed)
+        {
+            a_crc16l_init(table, poly);
+            eval = a_crc16l;
+        }
+        else
+        {
+            a_crc16m_init(table, poly);
+            eval = a_crc16m;
+        }
+        return this;
+    }
+    A_INLINE crc16(a_u16 poly, bool reversed = false)
+    {
+        gen(poly, reversed);
+    }
+};
+
+struct crc32
+{
+    a_u32 table[0x100];
+    a_u32 (*eval)(a_u32 const[0x100], void const *, a_size, a_u32);
+    A_INLINE emscripten::val get_table() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(0x100, table));
+    }
+    A_INLINE a_u32 operator()(std::string const &data, a_u32 init = 0)
+    {
+        return eval(table, data.c_str(), data.length(), init);
+    }
+    A_INLINE crc32 *gen(a_u32 poly, bool reversed = false)
+    {
+        if (reversed)
+        {
+            a_crc32l_init(table, poly);
+            eval = a_crc32l;
+        }
+        else
+        {
+            a_crc32m_init(table, poly);
+            eval = a_crc32m;
+        }
+        return this;
+    }
+    A_INLINE crc32(a_u32 poly, bool reversed = false)
+    {
+        gen(poly, reversed);
+    }
+};
+
+#if defined(WASM_BIGINT)
+struct crc64
+{
+    a_u64 table[0x100];
+    a_u64 (*eval)(a_u64 const[0x100], void const *, a_size, a_u64);
+    A_INLINE emscripten::val get_table() const
+    {
+        return emscripten::val(emscripten::typed_memory_view(0x100, table));
+    }
+    A_INLINE a_u64 operator()(std::string const &data, a_u64 init = 0)
+    {
+        return eval(table, data.c_str(), data.length(), init);
+    }
+    A_INLINE crc64 *gen(a_u64 poly, bool reversed = false)
+    {
+        if (reversed)
+        {
+            a_crc64l_init(table, poly);
+            eval = a_crc64l;
+        }
+        else
+        {
+            a_crc64m_init(table, poly);
+            eval = a_crc64m;
+        }
+        return this;
+    }
+    A_INLINE crc64(a_u64 poly, bool reversed = false)
+    {
+        gen(poly, reversed);
+    }
+};
+#endif /* WASM_BIGINT */
+
 #include "a/hpf.h"
 
 struct hpf: public a_hpf
@@ -653,6 +776,32 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .class_property("Z", &mf::Z)
         .class_function("pi", &mf::pi)
         .class_property("PI", &mf::PI);
+    emscripten::class_<crc8>("crc8")
+        .constructor<a_u8>()
+        .constructor<a_u8, bool>()
+        .property("table", &crc8::get_table)
+        .function("eval", &crc8::operator())
+        .function("gen", &crc8::gen, emscripten::allow_raw_pointers());
+    emscripten::class_<crc16>("crc16")
+        .constructor<a_u16>()
+        .constructor<a_u16, bool>()
+        .property("table", &crc16::get_table)
+        .function("eval", &crc16::operator())
+        .function("gen", &crc16::gen, emscripten::allow_raw_pointers());
+    emscripten::class_<crc32>("crc32")
+        .constructor<a_u32>()
+        .constructor<a_u32, bool>()
+        .property("table", &crc32::get_table)
+        .function("eval", &crc32::operator())
+        .function("gen", &crc32::gen, emscripten::allow_raw_pointers());
+#if defined(WASM_BIGINT)
+    emscripten::class_<crc64>("crc64")
+        .constructor<a_u64>()
+        .constructor<a_u64, bool>()
+        .property("table", &crc64::get_table)
+        .function("eval", &crc64::operator())
+        .function("gen", &crc64::gen, emscripten::allow_raw_pointers());
+#endif /* WASM_BIGINT */
     emscripten::class_<hpf>("hpf")
         .constructor<a_float>()
         .constructor<a_float, a_float>()

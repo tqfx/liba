@@ -26,6 +26,118 @@ declare namespace liba {
    */
   function hash_sdbm(block: string, value: number): number;
 
+  interface crc8 {
+    /** Cyclic Redundancy Check comparison table */
+    readonly table: Uint8Array;
+    /**
+     * generate for 8-bit Cyclic Redundancy Check
+     * @param poly polynomial that is CRC's divisor
+     * @param reversed is reversed?
+     */
+    gen(poly: number, reversed?: boolean): crc8;
+    /**
+     * calculate for 8-bit Cyclic Redundancy Check
+     * @param block block to be processed
+     * @param value initial value
+     * @return output value
+     */
+    eval(block: string, value: number): number;
+    delete(): void;
+  }
+  /** constructor for 8-bit Cyclic Redundancy Check */
+  let crc8: {
+    /**
+     * @param poly polynomial that is CRC's divisor
+     * @param reversed is reversed?
+     */
+    new(poly: number, reversed?: boolean): crc8;
+    readonly prototype: crc8;
+  }
+
+  interface crc16 {
+    /** Cyclic Redundancy Check comparison table */
+    readonly table: Uint16Array;
+    /**
+     * generate for 16-bit Cyclic Redundancy Check
+     * @param poly polynomial that is CRC's divisor
+     * @param reversed is reversed?
+     */
+    gen(poly: number, reversed?: boolean): crc16;
+    /**
+     * calculate for 16-bit Cyclic Redundancy Check
+     * @param block block to be processed
+     * @param value initial value
+     * @return output value
+     */
+    eval(block: string, value: number): number;
+    delete(): void;
+  }
+  /** constructor for 16-bit Cyclic Redundancy Check */
+  let crc16: {
+    /**
+     * @param poly polynomial that is CRC's divisor
+     * @param reversed is reversed?
+     */
+    new(poly: number, reversed?: boolean): crc16;
+    readonly prototype: crc16;
+  }
+
+  interface crc32 {
+    /** Cyclic Redundancy Check comparison table */
+    readonly table: Uint32Array;
+    /**
+     * generate for 32-bit Cyclic Redundancy Check
+     * @param poly polynomial that is CRC's divisor
+     * @param reversed is reversed?
+     */
+    gen(poly: number, reversed?: boolean): crc32;
+    /**
+     * calculate for 32-bit Cyclic Redundancy Check
+     * @param block block to be processed
+     * @param value initial value
+     * @return output value
+     */
+    eval(block: string, value: number): number;
+    delete(): void;
+  }
+  /** constructor for 32-bit Cyclic Redundancy Check */
+  let crc32: {
+    /**
+     * @param poly polynomial that is CRC's divisor
+     * @param reversed is reversed?
+     */
+    new(poly: number, reversed?: boolean): crc32;
+    readonly prototype: crc32;
+  }
+
+  interface crc64 {
+    /** Cyclic Redundancy Check comparison table */
+    readonly table: BigUint64Array;
+    /**
+     * generate for 64-bit Cyclic Redundancy Check
+     * @param poly polynomial that is CRC's divisor
+     * @param reversed is reversed?
+     */
+    gen(poly: bigint, reversed?: boolean): crc64;
+    /**
+     * calculate for 64-bit Cyclic Redundancy Check
+     * @param block block to be processed
+     * @param value initial value
+     * @return output value
+     */
+    eval(block: string, value: bigint): bigint;
+    delete(): void;
+  }
+  /** constructor for 64-bit Cyclic Redundancy Check */
+  let crc64: {
+    /**
+     * @param poly polynomial that is CRC's divisor
+     * @param reversed is reversed?
+     */
+    new(poly: bigint, reversed?: boolean): crc64;
+    readonly prototype: crc64;
+  }
+
   interface hpf {
     /** filter coefficient [0,1] */
     readonly alpha: number;

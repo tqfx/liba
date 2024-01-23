@@ -8,6 +8,8 @@ unittest(a a)
 
 unittest(mf mf)
 
+unittest(crc crc)
+
 unittest(hpf hpf)
 
 unittest(lpf lpf)
