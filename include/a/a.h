@@ -1180,7 +1180,7 @@ A_EXTERN a_u32 a_hash_sdbm_(void const *ptr, a_size siz, a_u32 val);
  @param[in] cache_p points to a cache array
  @param[in] cache_n number of a cache array
 */
-A_EXTERN void a_float_save(a_float *array_p, a_size array_n,
+A_EXTERN void a_float_push(a_float *array_p, a_size array_n,
                            a_float const *cache_p, a_size cache_n);
 
 /*!

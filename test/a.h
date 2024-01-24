@@ -107,7 +107,7 @@ static void test_swap(int argc, char *argv[])
     (void)argv;
 }
 
-static void test_save(int argc, char *argv[])
+static void test_push(int argc, char *argv[])
 {
     a_float array[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     for (a_size i = 0; i < A_LEN(array); ++i)
@@ -116,7 +116,7 @@ static void test_save(int argc, char *argv[])
     }
     {
         a_float cache[] = {-1};
-        a_float_save(array, A_LEN(array), cache, A_LEN(cache));
+        a_float_push(array, A_LEN(array), cache, A_LEN(cache));
     }
     for (a_size i = 0; i < A_LEN(array); ++i)
     {
@@ -124,7 +124,7 @@ static void test_save(int argc, char *argv[])
     }
     {
         a_float cache[] = {-1, -2};
-        a_float_save(array, A_LEN(array), cache, A_LEN(cache));
+        a_float_push(array, A_LEN(array), cache, A_LEN(cache));
     }
     for (a_size i = 0; i < A_LEN(array); ++i)
     {
@@ -132,7 +132,7 @@ static void test_save(int argc, char *argv[])
     }
     {
         a_float cache[] = {-1, -2, -3, -4};
-        a_float_save(array, A_LEN(array), cache, A_LEN(cache));
+        a_float_push(array, A_LEN(array), cache, A_LEN(cache));
     }
     for (a_size i = 0; i < A_LEN(array); ++i)
     {
@@ -140,7 +140,7 @@ static void test_save(int argc, char *argv[])
     }
     {
         a_float cache[] = {-1, -2, -3, -4, -5, -6, -7, -8};
-        a_float_save(array, A_LEN(array), cache, A_LEN(cache));
+        a_float_push(array, A_LEN(array), cache, A_LEN(cache));
     }
     for (a_size i = 0; i < A_LEN(array); ++i)
     {
@@ -148,7 +148,7 @@ static void test_save(int argc, char *argv[])
     }
     {
         a_float cache[] = {-0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10};
-        a_float_save(array, A_LEN(array), cache, A_LEN(cache));
+        a_float_push(array, A_LEN(array), cache, A_LEN(cache));
     }
     for (a_size i = 0; i < A_LEN(array); ++i)
     {
@@ -223,7 +223,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     {
         test_for(argc, argv);
         test_swap(argc, argv);
-        test_save(argc, argv);
+        test_push(argc, argv);
         test_roll(argc, argv);
         test_hash_bkdr(argc, argv);
         return 0;
@@ -236,8 +236,8 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     case 0x0F8837E3: // swap
         test_swap(argc - 1, argv + 1);
         break;
-    case 0x0F827FD1: // save
-        test_save(argc - 1, argv + 1);
+    case 0x0F20D22E: // push
+        test_push(argc - 1, argv + 1);
         break;
     case 0x0F63D79D: // roll
         test_roll(argc - 1, argv + 1);

@@ -74,7 +74,7 @@ a_u32 a_hash_sdbm_(void const *_ptr, a_size siz, a_u32 val)
     return val;
 }
 
-void a_float_save(a_float *array_p, a_size array_n,
+void a_float_push(a_float *array_p, a_size array_n,
                   a_float const *cache_p, a_size cache_n)
 {
     a_size const n = A_MIN(cache_n, array_n);
