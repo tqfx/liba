@@ -1,5 +1,13 @@
 #!/usr/bin/env node
 var liba = require("../liba")
+function do_leak_check() {
+    for (const arg of arguments) {
+        arg.delete()
+    }
+    if (liba.do_leak_check) {
+        liba.do_leak_check()
+    }
+}
 var NL = -3
 var NM = -2
 var NS = -1
@@ -91,4 +99,4 @@ ctx.fdb
 ctx.err
 ctx.order
 ctx.joint = ctx.joint
-ctx.delete()
+do_leak_check(ctx)

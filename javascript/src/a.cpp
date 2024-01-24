@@ -1,19 +1,23 @@
 #include "a/a.h"
 #include <emscripten/bind.h>
+#if defined(__has_feature) && __has_feature(address_sanitizer)
+#include <sanitizer/lsan_interface.h>
+#endif /* -fsanitize=address */
 
 namespace
 {
 
 static emscripten::val js_concat(emscripten::val x)
 {
-    emscripten::val empty = emscripten::val::array();
-    return empty["concat"].call<emscripten::val>("apply", empty, x);
+    emscripten::val val = emscripten::val::array();
+    return val["concat"].call<emscripten::val>("apply", val, x);
 }
 
-static a_float *js_array_num_get(emscripten::val const &x, a_size n, a_float *p)
+static a_float *js_array_num_get(emscripten::val const &x, a_float *p, a_size n)
 {
-    p = a_float_(*, a_alloc(p, sizeof(a_float) * n));
     a_size length = x["length"].as<a_size>();
+    n = (n < length ? length : n) * sizeof(a_float);
+    p = a_cast_s(a_float *, a_alloc(p, n));
     for (a_size i = 0; i < length; ++i)
     {
         p[i] = x[i].as<a_float>();
@@ -28,12 +32,12 @@ static emscripten::val js_array_num_new(a_float const *p, a_size n)
 
 static a_u32 hash_bkdr(std::string const &str, a_u32 val)
 {
-    return a_hash_bkdr_(str.c_str(), str.length(), val);
+    return a_hash_bkdr_(str.data(), str.length(), val);
 }
 
 static a_u32 hash_sdbm(std::string const &str, a_u32 val)
 {
-    return a_hash_sdbm_(str.c_str(), str.length(), val);
+    return a_hash_sdbm_(str.data(), str.length(), val);
 }
 
 } /* namespace */
@@ -43,13 +47,23 @@ static a_u32 hash_sdbm(std::string const &str, a_u32 val)
 struct crc8
 {
     a_u8 table[0x100];
+    std::vector<a_byte> _pack;
     A_INLINE emscripten::val get_table() const
     {
         return emscripten::val(emscripten::typed_memory_view(0x100, table));
     }
-    A_INLINE a_u8 operator()(std::string const &data, a_u8 init = 0)
+    A_INLINE a_u8 operator()(std::string const &block, a_u8 value = 0)
     {
-        return a_crc8(table, data.c_str(), data.length(), init);
+        return a_crc8(table, block.data(), block.length(), value);
+    }
+    A_INLINE emscripten::val pack(std::string const &block, a_u8 value = 0)
+    {
+        size_t n = block.length();
+        size_t m = block.length() + sizeof(value);
+        if (_pack.size() < m) { _pack.resize(m); }
+        std::copy(block.data(), block.data() + n, _pack.data());
+        *(_pack.data() + n) = a_crc8(table, block.data(), n, value);
+        return emscripten::val(emscripten::typed_memory_view(m, _pack.data()));
     }
     A_INLINE crc8 *gen(a_u8 poly, bool reversed = false)
     {
@@ -66,14 +80,35 @@ struct crc8
 struct crc16
 {
     a_u16 table[0x100];
+    std::vector<a_byte> _pack;
     a_u16 (*eval)(a_u16 const[0x100], void const *, a_size, a_u16);
     A_INLINE emscripten::val get_table() const
     {
         return emscripten::val(emscripten::typed_memory_view(0x100, table));
     }
-    A_INLINE a_u16 operator()(std::string const &data, a_u16 init = 0)
+    A_INLINE a_u16 operator()(std::string const &block, a_u16 value = 0)
     {
-        return eval(table, data.c_str(), data.length(), init);
+        return eval(table, block.data(), block.length(), value);
+    }
+    A_INLINE emscripten::val pack(std::string const &block, a_u16 value = 0)
+    {
+        size_t n = block.length();
+        size_t m = block.length() + sizeof(value);
+        if (_pack.size() < m) { _pack.resize(m); }
+        std::copy(block.data(), block.data() + n, _pack.data());
+        value = eval(table, block.data(), n, value);
+        a_byte *p = _pack.data() + n;
+        if (eval == a_crc16m)
+        {
+            *p++ = a_cast_s(a_byte, value >> 8);
+            *p++ = a_cast_s(a_byte, value >> 0);
+        }
+        else
+        {
+            *p++ = a_cast_s(a_byte, value >> 0);
+            *p++ = a_cast_s(a_byte, value >> 8);
+        }
+        return emscripten::val(emscripten::typed_memory_view(m, _pack.data()));
     }
     A_INLINE crc16 *gen(a_u16 poly, bool reversed = false)
     {
@@ -98,14 +133,39 @@ struct crc16
 struct crc32
 {
     a_u32 table[0x100];
+    std::vector<a_byte> _pack;
     a_u32 (*eval)(a_u32 const[0x100], void const *, a_size, a_u32);
     A_INLINE emscripten::val get_table() const
     {
         return emscripten::val(emscripten::typed_memory_view(0x100, table));
     }
-    A_INLINE a_u32 operator()(std::string const &data, a_u32 init = 0)
+    A_INLINE a_u32 operator()(std::string const &block, a_u32 value = 0)
     {
-        return eval(table, data.c_str(), data.length(), init);
+        return eval(table, block.data(), block.length(), value);
+    }
+    A_INLINE emscripten::val pack(std::string const &block, a_u32 value = 0)
+    {
+        size_t n = block.length();
+        size_t m = block.length() + sizeof(value);
+        if (_pack.size() < m) { _pack.resize(m); }
+        std::copy(block.data(), block.data() + n, _pack.data());
+        value = eval(table, block.data(), n, value);
+        a_byte *p = _pack.data() + n;
+        if (eval == a_crc32m)
+        {
+            *p++ = a_cast_s(a_byte, value >> 0x18);
+            *p++ = a_cast_s(a_byte, value >> 0x10);
+            *p++ = a_cast_s(a_byte, value >> 0x08);
+            *p++ = a_cast_s(a_byte, value >> 0x00);
+        }
+        else
+        {
+            *p++ = a_cast_s(a_byte, value >> 0x00);
+            *p++ = a_cast_s(a_byte, value >> 0x08);
+            *p++ = a_cast_s(a_byte, value >> 0x10);
+            *p++ = a_cast_s(a_byte, value >> 0x18);
+        }
+        return emscripten::val(emscripten::typed_memory_view(m, _pack.data()));
     }
     A_INLINE crc32 *gen(a_u32 poly, bool reversed = false)
     {
@@ -131,14 +191,47 @@ struct crc32
 struct crc64
 {
     a_u64 table[0x100];
+    std::vector<a_byte> _pack;
     a_u64 (*eval)(a_u64 const[0x100], void const *, a_size, a_u64);
     A_INLINE emscripten::val get_table() const
     {
         return emscripten::val(emscripten::typed_memory_view(0x100, table));
     }
-    A_INLINE a_u64 operator()(std::string const &data, a_u64 init = 0)
+    A_INLINE emscripten::val operator()(std::string const &block, a_u64 value = 0)
     {
-        return eval(table, data.c_str(), data.length(), init);
+        return emscripten::val(eval(table, block.data(), block.length(), value));
+    }
+    A_INLINE emscripten::val pack(std::string const &block, a_u64 value = 0)
+    {
+        size_t n = block.length();
+        size_t m = block.length() + sizeof(value);
+        if (_pack.size() < m) { _pack.resize(m); }
+        std::copy(block.data(), block.data() + n, _pack.data());
+        value = eval(table, block.data(), n, value);
+        a_byte *p = _pack.data() + n;
+        if (eval == a_crc64m)
+        {
+            *p++ = a_cast_s(a_byte, value >> 0x38);
+            *p++ = a_cast_s(a_byte, value >> 0x30);
+            *p++ = a_cast_s(a_byte, value >> 0x28);
+            *p++ = a_cast_s(a_byte, value >> 0x20);
+            *p++ = a_cast_s(a_byte, value >> 0x18);
+            *p++ = a_cast_s(a_byte, value >> 0x10);
+            *p++ = a_cast_s(a_byte, value >> 0x08);
+            *p++ = a_cast_s(a_byte, value >> 0x00);
+        }
+        else
+        {
+            *p++ = a_cast_s(a_byte, value >> 0x00);
+            *p++ = a_cast_s(a_byte, value >> 0x08);
+            *p++ = a_cast_s(a_byte, value >> 0x10);
+            *p++ = a_cast_s(a_byte, value >> 0x18);
+            *p++ = a_cast_s(a_byte, value >> 0x20);
+            *p++ = a_cast_s(a_byte, value >> 0x28);
+            *p++ = a_cast_s(a_byte, value >> 0x30);
+            *p++ = a_cast_s(a_byte, value >> 0x38);
+        }
+        return emscripten::val(emscripten::typed_memory_view(m, _pack.data()));
     }
     A_INLINE crc64 *gen(a_u64 poly, bool reversed = false)
     {
@@ -369,6 +462,7 @@ struct pid_fuzzy: public a_pid_fuzzy
                              emscripten::val const &_mki,
                              emscripten::val const &_mkd)
     {
+        emscripten::val val;
         union
         {
             a_float const *p;
@@ -376,15 +470,25 @@ struct pid_fuzzy: public a_pid_fuzzy
         } u;
         order = _me["length"].as<unsigned int>();
         u.p = me;
-        me = js_array_num_get(js_concat(_me), _me["length"].as<a_size>(), u.o);
+        val = js_concat(_me);
+        me = js_array_num_get(val, u.o, 0);
+        val.delete_(val);
         u.p = mec;
-        mec = js_array_num_get(js_concat(_mec), _mec["length"].as<a_size>(), u.o);
+        val = js_concat(_mec);
+        mec = js_array_num_get(val, u.o, 0);
+        val.delete_(val);
         u.p = mkp;
-        mkp = js_array_num_get(js_concat(_mkp), _mkp["length"].as<a_size>(), u.o);
+        val = js_concat(_mkp);
+        mkp = js_array_num_get(val, u.o, 0);
+        val.delete_(val);
         u.p = mki;
-        mki = js_array_num_get(js_concat(_mki), _mki["length"].as<a_size>(), u.o);
+        val = js_concat(_mki);
+        mki = js_array_num_get(val, u.o, 0);
+        val.delete_(val);
         u.p = mkd;
-        mkd = js_array_num_get(js_concat(_mkd), _mkd["length"].as<a_size>(), u.o);
+        val = js_concat(_mkd);
+        mkd = js_array_num_get(val, u.o, 0);
+        val.delete_(val);
         return this;
     }
     A_INLINE pid_fuzzy *set_joint(unsigned int num)
@@ -616,13 +720,13 @@ struct tf: public a_tf
     void set_num_(emscripten::val const &_num, a_float *num)
     {
         a_uint num_n = _num["length"].as<a_uint>();
-        a_float *p = js_array_num_get(_num, a_size_c(num_n) * 2, num);
+        a_float *p = js_array_num_get(_num, num, a_size_c(num_n) * 2);
         a_tf_set_num(this, num_n, p, p + num_n);
     }
     void set_den_(emscripten::val const &_den, a_float *den)
     {
         a_uint den_n = _den["length"].as<a_uint>();
-        a_float *p = js_array_num_get(_den, a_size_c(den_n) * 2, den);
+        a_float *p = js_array_num_get(_den, den, a_size_c(den_n) * 2);
         a_tf_set_den(this, den_n, p, p + den_n);
     }
     A_INLINE tf(emscripten::val const &num, emscripten::val const &den)
@@ -781,18 +885,21 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .constructor<a_u8, bool>()
         .property("table", &crc8::get_table)
         .function("eval", &crc8::operator())
+        .function("pack", &crc8::pack)
         .function("gen", &crc8::gen, emscripten::allow_raw_pointers());
     emscripten::class_<crc16>("crc16")
         .constructor<a_u16>()
         .constructor<a_u16, bool>()
         .property("table", &crc16::get_table)
         .function("eval", &crc16::operator())
+        .function("pack", &crc16::pack)
         .function("gen", &crc16::gen, emscripten::allow_raw_pointers());
     emscripten::class_<crc32>("crc32")
         .constructor<a_u32>()
         .constructor<a_u32, bool>()
         .property("table", &crc32::get_table)
         .function("eval", &crc32::operator())
+        .function("pack", &crc32::pack)
         .function("gen", &crc32::gen, emscripten::allow_raw_pointers());
 #if defined(WASM_BIGINT)
     emscripten::class_<crc64>("crc64")
@@ -800,6 +907,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .constructor<a_u64, bool>()
         .property("table", &crc64::get_table)
         .function("eval", &crc64::operator())
+        .function("pack", &crc64::pack)
         .function("gen", &crc64::gen, emscripten::allow_raw_pointers());
 #endif /* WASM_BIGINT */
     emscripten::class_<hpf>("hpf")
@@ -955,4 +1063,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .class_property("PATCH", &a_version::PATCH)
         .class_property("TWEAK", &a_version::TWEAK);
     emscripten::constant("VERSION", std::string(A_VERSION));
+#if defined(__has_feature) && __has_feature(address_sanitizer)
+    emscripten::function("do_leak_check", &__lsan_do_recoverable_leak_check);
+#endif /* -fsanitize=address */
 }

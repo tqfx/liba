@@ -53,8 +53,14 @@ set(CMAKE_C_LINK_EXECUTABLE "<CMAKE_C_COMPILER> <FLAGS> <OBJECTS> -o <TARGET> <L
 set(CMAKE_CXX_LINK_EXECUTABLE "<CMAKE_CXX_COMPILER> <FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES> --bind")
 option(LIBA_JAVASCRIPT_TSGEN "Enable/Disable generation of TypeScript definition files" 1)
 option(LIBA_JAVASCRIPT_ASYNC "Enable/Disable compilation of wasm async" 0)
+option(LIBA_JAVASCRIPT_DEBUG "Enable/Disable debug with sanitizers" 0)
 option(LIBA_JAVASCRIPT_WASM "Enable/Disable JavaScript WebAssembly" 1)
 option(LIBA_JAVASCRIPT_BIGINT "Enable/Disable JavaScript BigInt" 0)
+
+if(LIBA_JAVASCRIPT_DEBUG)
+  string_append(CMAKE_C_LINK_EXECUTABLE -fsanitize=undefined,address,leak -sALLOW_MEMORY_GROWTH)
+  string_append(CMAKE_CXX_LINK_EXECUTABLE -fsanitize=undefined,address,leak -sALLOW_MEMORY_GROWTH)
+endif()
 
 if(LIBA_JAVASCRIPT_TSGEN)
   string_append(CMAKE_C_LINK_EXECUTABLE --embind-emit-tsd liba.gen.d.ts)
@@ -92,6 +98,10 @@ set_target_properties(ajs PROPERTIES OUTPUT_NAME ${PROJECT_NAME}
   RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_CURRENT_LIST_DIR}
   RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_LIST_DIR}
 )
+
+if(LIBA_JAVASCRIPT_DEBUG)
+  target_compile_options(ajs PRIVATE -fsanitize=undefined,address,leak)
+endif()
 
 if(NOT CMAKE_VERSION VERSION_LESS 3.3 AND LIBA_WARNINGS AND UNIX)
   target_compile_options(ajs PRIVATE -Weverything -Wno-documentation
