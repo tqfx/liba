@@ -17,8 +17,15 @@ cdef class crc8:
         self.table = array_u8([0] * 0x100)
         self.gen(poly, reversed)
     def __call__(self, block: bytes, value: a_u8 = 0) -> a_u8:
-        cdef const char *p = <const char *>block
+        cdef const unsigned char *p = <const unsigned char *>block
         return a_crc8(<a_u8 *>self.table.data.as_voidptr, <const void *>p, len(block), value)
+    def pack(self, block: bytes, value: a_u8 = 0) -> bytes:
+        cdef size_t n = len(block)
+        block = block + bytes(1)
+        cdef unsigned char *p = <unsigned char *>block
+        value = a_crc8(<a_u8 *>self.table.data.as_voidptr, <const void *>p, n, value)
+        p[n] = value
+        return block
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
@@ -40,8 +47,20 @@ cdef class crc16:
         self.table = array_u16([0] * 0x100)
         self.gen(poly, reversed)
     def __call__(self, block: bytes, value: a_u16 = 0) -> a_u16:
-        cdef const char *p = <const char *>block
+        cdef const unsigned char *p = <const unsigned char *>block
         return self.eval(<a_u16 *>self.table.data.as_voidptr, <const void *>p, len(block), value)
+    def pack(self, block: bytes, value: a_u16 = 0) -> bytes:
+        cdef size_t n = len(block)
+        block = block + bytes(2)
+        cdef unsigned char *p = <unsigned char *>block
+        value = self.eval(<a_u16 *>self.table.data.as_voidptr, <const void *>p, n, value)
+        if self.eval == a_crc16m:
+            p[n + 0] = (value >> 8) & 0xFF
+            p[n + 1] = (value >> 0) & 0xFF
+        else:
+            p[n + 0] = (value >> 0) & 0xFF
+            p[n + 1] = (value >> 8) & 0xFF
+        return block
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
@@ -63,8 +82,24 @@ cdef class crc32:
         self.table = array_u32([0] * 0x100)
         self.gen(poly, reversed)
     def __call__(self, block: bytes, value: a_u32 = 0) -> a_u32:
-        cdef const char *p = <const char *>block
+        cdef const unsigned char *p = <const unsigned char *>block
         return self.eval(<a_u32 *>self.table.data.as_voidptr, <const void *>p, len(block), value)
+    def pack(self, block: bytes, value: a_u32 = 0) -> bytes:
+        cdef size_t n = len(block)
+        block = block + bytes(4)
+        cdef unsigned char *p = <unsigned char *>block
+        value = self.eval(<a_u32 *>self.table.data.as_voidptr, <const void *>p, n, value)
+        if self.eval == a_crc32m:
+            p[n + 0] = (value >> 0x18) & 0xFF
+            p[n + 1] = (value >> 0x10) & 0xFF
+            p[n + 2] = (value >> 0x08) & 0xFF
+            p[n + 3] = (value >> 0x00) & 0xFF
+        else:
+            p[n + 0] = (value >> 0x00) & 0xFF
+            p[n + 1] = (value >> 0x08) & 0xFF
+            p[n + 2] = (value >> 0x10) & 0xFF
+            p[n + 3] = (value >> 0x18) & 0xFF
+        return block
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
@@ -86,5 +121,29 @@ cdef class crc64:
         self.table = array_u64([0] * 0x100)
         self.gen(poly, reversed)
     def __call__(self, block: bytes, value: a_u64 = 0) -> a_u64:
-        cdef const char *p = <const char *>block
+        cdef const unsigned char *p = <const unsigned char *>block
         return self.eval(<a_u64 *>self.table.data.as_voidptr, <const void *>p, len(block), value)
+    def pack(self, block: bytes, value: a_u64 = 0) -> bytes:
+        cdef size_t n = len(block)
+        block = block + bytes(8)
+        cdef unsigned char *p = <unsigned char *>block
+        value = self.eval(<a_u64 *>self.table.data.as_voidptr, <const void *>p, n, value)
+        if self.eval == a_crc64m:
+            p[n + 0] = (value >> 0x38) & 0xFF
+            p[n + 1] = (value >> 0x30) & 0xFF
+            p[n + 2] = (value >> 0x28) & 0xFF
+            p[n + 3] = (value >> 0x20) & 0xFF
+            p[n + 4] = (value >> 0x18) & 0xFF
+            p[n + 5] = (value >> 0x10) & 0xFF
+            p[n + 6] = (value >> 0x08) & 0xFF
+            p[n + 7] = (value >> 0x00) & 0xFF
+        else:
+            p[n + 0] = (value >> 0x00) & 0xFF
+            p[n + 1] = (value >> 0x08) & 0xFF
+            p[n + 2] = (value >> 0x10) & 0xFF
+            p[n + 3] = (value >> 0x18) & 0xFF
+            p[n + 4] = (value >> 0x20) & 0xFF
+            p[n + 5] = (value >> 0x28) & 0xFF
+            p[n + 6] = (value >> 0x30) & 0xFF
+            p[n + 7] = (value >> 0x38) & 0xFF
+        return block

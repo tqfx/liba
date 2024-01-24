@@ -42,6 +42,13 @@ declare namespace liba {
      * @return output value
      */
     eval(block: string, value: number): number;
+    /**
+     * pack a block and its CRC-8 value
+     * @param block block to be processed
+     * @param value initial value
+     * @return packed block
+     */
+    pack(block: string, value: number): Uint8Array;
     delete(): void;
   }
   /** constructor for 8-bit Cyclic Redundancy Check */
@@ -70,6 +77,13 @@ declare namespace liba {
      * @return output value
      */
     eval(block: string, value: number): number;
+    /**
+     * pack a block and its CRC-16 value
+     * @param block block to be processed
+     * @param value initial value
+     * @return packed block
+     */
+    pack(block: string, value: number): Uint8Array;
     delete(): void;
   }
   /** constructor for 16-bit Cyclic Redundancy Check */
@@ -98,6 +112,13 @@ declare namespace liba {
      * @return output value
      */
     eval(block: string, value: number): number;
+    /**
+     * pack a block and its CRC-32 value
+     * @param block block to be processed
+     * @param value initial value
+     * @return packed block
+     */
+    pack(block: string, value: number): Uint8Array;
     delete(): void;
   }
   /** constructor for 32-bit Cyclic Redundancy Check */
@@ -126,6 +147,13 @@ declare namespace liba {
      * @return output value
      */
     eval(block: string, value: bigint): bigint;
+    /**
+     * pack a block and its CRC-64 value
+     * @param block block to be processed
+     * @param value initial value
+     * @return packed block
+     */
+    pack(block: string, value: number): Uint8Array;
     delete(): void;
   }
   /** constructor for 64-bit Cyclic Redundancy Check */
