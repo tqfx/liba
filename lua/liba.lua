@@ -379,6 +379,210 @@ function liba.complex.acoth(z) end
 ---@return a.complex
 function complex:acoth() end
 
+---@class a.crc8
+---@field table table
+---@overload fun(block: string, value: integer|string): integer
+local crc8 = {}
+---@class liba.crc8
+---@overload fun(poly: integer|string, reversed?: boolean): a.crc8
+liba.crc8 = {}
+
+---@param poly integer|string
+---@param reversed? boolean
+---@return a.crc8
+function liba.crc8.new(poly, reversed) end
+
+---@param poly integer|string
+---@param reversed? boolean
+---@return a.crc8
+function crc8.new(poly, reversed) end
+
+---@param ctx a.crc8
+---@param poly integer|string
+---@param reversed? boolean
+---@return a.crc8
+function liba.crc8.gen(ctx, poly, reversed) end
+
+---@param poly integer|string
+---@param reversed? boolean
+---@return a.crc8
+function crc8:gen(poly, reversed) end
+
+---@param ctx a.crc8
+---@param block string
+---@param value? integer|string
+---@return integer
+function liba.crc8.eval(ctx, block, value) end
+
+---@param block string
+---@param value? integer|string
+---@return integer
+function crc8:eval(block, value) end
+
+---@param ctx a.crc8
+---@param block string
+---@param value? integer|string
+---@return string
+function liba.crc8.pack(ctx, block, value) end
+
+---@param block string
+---@param value? integer|string
+---@return string
+function crc8:pack(block, value) end
+
+---@class a.crc16
+---@field table table
+---@overload fun(block: string, value: integer|string): integer
+local crc16 = {}
+---@class liba.crc16
+---@overload fun(poly: integer|string, reversed?: boolean): a.crc16
+liba.crc16 = {}
+
+---@param poly integer|string
+---@param reversed? boolean
+---@return a.crc16
+function liba.crc16.new(poly, reversed) end
+
+---@param poly integer|string
+---@param reversed? boolean
+---@return a.crc16
+function crc16.new(poly, reversed) end
+
+---@param ctx a.crc16
+---@param poly integer|string
+---@param reversed? boolean
+---@return a.crc16
+function liba.crc16.gen(ctx, poly, reversed) end
+
+---@param poly integer|string
+---@param reversed? boolean
+---@return a.crc16
+function crc16:gen(poly, reversed) end
+
+---@param ctx a.crc16
+---@param block string
+---@param value? integer|string
+---@return integer
+function liba.crc16.eval(ctx, block, value) end
+
+---@param block string
+---@param value? integer|string
+---@return integer
+function crc16:eval(block, value) end
+
+---@param ctx a.crc16
+---@param block string
+---@param value? integer|string
+---@return string
+function liba.crc16.pack(ctx, block, value) end
+
+---@param block string
+---@param value? integer|string
+---@return string
+function crc16:pack(block, value) end
+
+---@class a.crc32
+---@field table table
+---@overload fun(block: string, value: integer|string): string
+local crc32 = {}
+---@class liba.crc32
+---@overload fun(poly: integer|string, reversed?: boolean): a.crc32
+liba.crc32 = {}
+
+---@param poly integer|string
+---@param reversed? boolean
+---@return a.crc32
+function liba.crc32.new(poly, reversed) end
+
+---@param poly integer|string
+---@param reversed? boolean
+---@return a.crc32
+function crc32.new(poly, reversed) end
+
+---@param ctx a.crc32
+---@param poly integer|string
+---@param reversed? boolean
+---@return a.crc32
+function liba.crc32.gen(ctx, poly, reversed) end
+
+---@param poly integer|string
+---@param reversed? boolean
+---@return a.crc32
+function crc32:gen(poly, reversed) end
+
+---@param ctx a.crc32
+---@param block string
+---@param value? integer|string
+---@return string
+function liba.crc32.eval(ctx, block, value) end
+
+---@param block string
+---@param value? integer|string
+---@return string
+function crc32:eval(block, value) end
+
+---@param ctx a.crc32
+---@param block string
+---@param value? integer|string
+---@return string
+function liba.crc32.pack(ctx, block, value) end
+
+---@param block string
+---@param value? integer|string
+---@return string
+function crc32:pack(block, value) end
+
+---@class a.crc64
+---@field table table
+---@overload fun(block: string, value: integer|string): string
+local crc64 = {}
+---@class liba.crc64
+---@overload fun(poly: integer|string, reversed?: boolean): a.crc64
+liba.crc64 = {}
+
+---@param poly integer|string
+---@param reversed? boolean
+---@return a.crc64
+function liba.crc64.new(poly, reversed) end
+
+---@param poly integer|string
+---@param reversed? boolean
+---@return a.crc64
+function crc64.new(poly, reversed) end
+
+---@param ctx a.crc64
+---@param poly integer|string
+---@param reversed? boolean
+---@return a.crc64
+function liba.crc64.gen(ctx, poly, reversed) end
+
+---@param poly integer|string
+---@param reversed? boolean
+---@return a.crc64
+function crc64:gen(poly, reversed) end
+
+---@param ctx a.crc64
+---@param block string
+---@param value? integer|string
+---@return string
+function liba.crc64.eval(ctx, block, value) end
+
+---@param block string
+---@param value? integer|string
+---@return string
+function crc64:eval(block, value) end
+
+---@param ctx a.crc64
+---@param block string
+---@param value? integer|string
+---@return string
+function liba.crc64.pack(ctx, block, value) end
+
+---@param block string
+---@param value? integer|string
+---@return string
+function crc64:pack(block, value) end
+
 ---@class a.hpf
 ---@field alpha number
 ---@field input number

@@ -20,6 +20,14 @@ unittest(a a a.log)
 
 unittest(complex complex)
 
+unittest(crc8 crc8)
+
+unittest(crc16 crc16)
+
+unittest(crc32 crc32)
+
+unittest(crc64 crc64)
+
 unittest(hpf hpf)
 
 unittest(lpf lpf)

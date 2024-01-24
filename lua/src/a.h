@@ -127,11 +127,29 @@ void lua_array_num_set(lua_State *L, int idx, LUA_NUM const *ptr, unsigned int n
 
 LUA_NUM *lua_table_num_get(lua_State *L, int idx, LUA_NUM const *ptr, size_t *num);
 
+void lua_u8_new(lua_State *L, a_u8 value);
+a_u8 lua_u8_get(lua_State *L, int idx);
+void lua_u16_new(lua_State *L, a_u16 value);
+a_u16 lua_u16_get(lua_State *L, int idx);
+void lua_u32_new(lua_State *L, a_u32 value);
+a_u32 lua_u32_get(lua_State *L, int idx);
+void lua_u64_new(lua_State *L, a_u64 value);
+a_u64 lua_u64_get(lua_State *L, int idx);
+
+void lua_array_u8_new(lua_State *L, a_u8 const *ptr, unsigned int num);
+void lua_array_u16_new(lua_State *L, a_u16 const *ptr, unsigned int num);
+void lua_array_u32_new(lua_State *L, a_u32 const *ptr, unsigned int num);
+void lua_array_u64_new(lua_State *L, a_u64 const *ptr, unsigned int num);
+
 void lua_stack_view(lua_State *L, unsigned int line);
 //#define LUA_STACK(L) lua_stack_view(L, __LINE__)
 
 A_PUBLIC int luaopen_liba(lua_State *L);
 A_PUBLIC int luaopen_liba_complex(lua_State *L);
+A_PUBLIC int luaopen_liba_crc16(lua_State *L);
+A_PUBLIC int luaopen_liba_crc32(lua_State *L);
+A_PUBLIC int luaopen_liba_crc64(lua_State *L);
+A_PUBLIC int luaopen_liba_crc8(lua_State *L);
 A_PUBLIC int luaopen_liba_hpf(lua_State *L);
 A_PUBLIC int luaopen_liba_lpf(lua_State *L);
 A_PUBLIC int luaopen_liba_mf(lua_State *L);

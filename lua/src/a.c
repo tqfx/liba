@@ -4,11 +4,6 @@
 */
 
 #include "a.h"
-#include <stdio.h>
-#include <inttypes.h>
-#if defined(_MSC_VER) && (_MSC_VER < 1900)
-#define snprintf sprintf_s
-#endif /* _MSC_VER */
 
 /***
  a hash function whose prime number is 131
@@ -19,21 +14,11 @@
 */
 static int liba_hash_bkdr(lua_State *L)
 {
-    char str[11];
     a_u32 val = 0;
     int top = lua_gettop(L);
-    if (top > 1)
-    {
-        switch (lua_type(L, 2))
-        {
-        default: luaL_checkinteger(L, 2); break;
-        case LUA_TNUMBER: val = (a_u32)lua_tointeger(L, 2); break;
-        case LUA_TSTRING: val = (a_u32)strtoul(lua_tostring(L, 2), NULL, 0); break;
-        }
-    }
+    if (top > 1) { val = lua_u32_get(L, 2); }
     if (top > 0) { val = a_hash_bkdr(luaL_checklstring(L, 1, A_NULL), val); }
-    (void)snprintf(str, 11, "0x%08" PRIX32, val);
-    lua_pushstring(L, str);
+    lua_u32_new(L, val);
     return 1;
 }
 
@@ -46,21 +31,11 @@ static int liba_hash_bkdr(lua_State *L)
 */
 static int liba_hash_sdbm(lua_State *L)
 {
-    char str[11];
     a_u32 val = 0;
     int top = lua_gettop(L);
-    if (top > 1)
-    {
-        switch (lua_type(L, 2))
-        {
-        default: luaL_checkinteger(L, 2); break;
-        case LUA_TNUMBER: val = (a_u32)lua_tointeger(L, 2); break;
-        case LUA_TSTRING: val = (a_u32)strtoul(lua_tostring(L, 2), NULL, 0); break;
-        }
-    }
+    if (top > 1) { val = lua_u32_get(L, 2); }
     if (top > 0) { val = a_hash_sdbm(luaL_checklstring(L, 1, A_NULL), val); }
-    (void)snprintf(str, 11, "0x%08" PRIX32, val);
-    lua_pushstring(L, str);
+    lua_u32_new(L, val);
     return 1;
 }
 
@@ -141,6 +116,22 @@ int luaopen_liba(lua_State *L)
 
     lua_pushstring(L, "complex");
     luaopen_liba_complex(L);
+    lua_rawset(L, -3);
+
+    lua_pushstring(L, "crc16");
+    luaopen_liba_crc16(L);
+    lua_rawset(L, -3);
+
+    lua_pushstring(L, "crc32");
+    luaopen_liba_crc32(L);
+    lua_rawset(L, -3);
+
+    lua_pushstring(L, "crc64");
+    luaopen_liba_crc64(L);
+    lua_rawset(L, -3);
+
+    lua_pushstring(L, "crc8");
+    luaopen_liba_crc8(L);
     lua_rawset(L, -3);
 
     lua_pushstring(L, "hpf");
@@ -464,6 +455,128 @@ LUA_NUM *lua_table_num_get(lua_State *L, int idx, LUA_NUM const *ptr, size_t *nu
         }
     }
     return ret;
+}
+
+#include <stdio.h>
+#include <inttypes.h>
+#if defined(_MSC_VER) && (_MSC_VER < 1900)
+#define snprintf sprintf_s
+#endif /* _MSC_VER */
+
+void lua_u8_new(lua_State *L, a_u8 value)
+{
+    lua_pushinteger(L, (lua_Integer)value);
+}
+
+a_u8 lua_u8_get(lua_State *L, int idx)
+{
+    a_u8 value = 0;
+    switch (lua_type(L, idx))
+    {
+    default: A_FALLTHROUGH;
+    case LUA_TNUMBER: value = (a_u8)luaL_checkinteger(L, idx); break;
+    case LUA_TSTRING: value = (a_u8)strtoul(lua_tostring(L, idx), NULL, 0);
+    }
+    return value;
+}
+
+void lua_u16_new(lua_State *L, a_u16 value)
+{
+    lua_pushinteger(L, (lua_Integer)value);
+}
+
+a_u16 lua_u16_get(lua_State *L, int idx)
+{
+    a_u16 value = 0;
+    switch (lua_type(L, idx))
+    {
+    default: A_FALLTHROUGH;
+    case LUA_TNUMBER: value = (a_u16)luaL_checkinteger(L, idx); break;
+    case LUA_TSTRING: value = (a_u16)strtoul(lua_tostring(L, idx), NULL, 0);
+    }
+    return value;
+}
+
+void lua_u32_new(lua_State *L, a_u32 value)
+{
+    char buf[8 + 3];
+    (void)snprintf(buf, sizeof(buf), "0x%08" PRIX32, value);
+    lua_pushstring(L, buf);
+}
+
+a_u32 lua_u32_get(lua_State *L, int idx)
+{
+    a_u32 value = 0;
+    switch (lua_type(L, idx))
+    {
+    default: A_FALLTHROUGH;
+    case LUA_TNUMBER: value = (a_u32)luaL_checkinteger(L, idx); break;
+    case LUA_TSTRING: value = (a_u32)strtoul(lua_tostring(L, idx), NULL, 0);
+    }
+    return value;
+}
+
+void lua_u64_new(lua_State *L, a_u64 value)
+{
+    char buf[16 + 3];
+    (void)snprintf(buf, sizeof(buf), "0x%016" PRIX64, value);
+    lua_pushstring(L, buf);
+}
+
+a_u64 lua_u64_get(lua_State *L, int idx)
+{
+    a_u64 value = 0;
+    switch (lua_type(L, idx))
+    {
+    default: A_FALLTHROUGH;
+    case LUA_TNUMBER: value = (a_u64)luaL_checkinteger(L, idx); break;
+#if ULONG_MAX > A_U32_MAX
+    case LUA_TSTRING: value = (a_u64)strtoul(lua_tostring(L, idx), NULL, 0);
+#else /* >long */
+    case LUA_TSTRING: value = (a_u64)strtoull(lua_tostring(L, idx), NULL, 0);
+#endif /* long */
+    }
+    return value;
+}
+
+void lua_array_u8_new(lua_State *L, a_u8 const *ptr, unsigned int num)
+{
+    lua_createtable(L, (int)num, 0);
+    for (unsigned int i = num; i--; num = i)
+    {
+        lua_u8_new(L, ptr[i]);
+        lua_rawseti(L, -2, (int)num);
+    }
+}
+
+void lua_array_u16_new(lua_State *L, a_u16 const *ptr, unsigned int num)
+{
+    lua_createtable(L, (int)num, 0);
+    for (unsigned int i = num; i--; num = i)
+    {
+        lua_u16_new(L, ptr[i]);
+        lua_rawseti(L, -2, (int)num);
+    }
+}
+
+void lua_array_u32_new(lua_State *L, a_u32 const *ptr, unsigned int num)
+{
+    lua_createtable(L, (int)num, 0);
+    for (unsigned int i = num; i--; num = i)
+    {
+        lua_u32_new(L, ptr[i]);
+        lua_rawseti(L, -2, (int)num);
+    }
+}
+
+void lua_array_u64_new(lua_State *L, a_u64 const *ptr, unsigned int num)
+{
+    lua_createtable(L, (int)num, 0);
+    for (unsigned int i = num; i--; num = i)
+    {
+        lua_u64_new(L, ptr[i]);
+        lua_rawseti(L, -2, (int)num);
+    }
 }
 
 #if defined(LUA_STACK)
