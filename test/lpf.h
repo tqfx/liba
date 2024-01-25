@@ -27,7 +27,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         a_float noise = (a_float_c(rand_()) / a_float_c(RAND_MAX_) - A_FLOAT_C(0.5));
         a_float x1 = a_float_sin(x) + A_FLOAT_C(0.2) * noise;
         a_float x2 = a_lpf_iter(&ctx, x1);
-        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), x, x1, x2);
+        debug(A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f\n"), x, x1, x2);
     }
     a_lpf_zero(&ctx);
 #if defined(__cplusplus) && (__cplusplus > 201100L)

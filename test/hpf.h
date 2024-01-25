@@ -16,7 +16,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     {
         a_float x1 = a_float_cos(2 * A_FLOAT_PI * (f_0 * x + A_FLOAT_C(0.5) * c * x * x) + 0);
         a_float x2 = a_hpf_iter(&ctx, x1);
-        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"), x, x1, x2);
+        debug(A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f\n"), x, x1, x2);
     }
     a_hpf_zero(&ctx);
 #if defined(__cplusplus) && (__cplusplus > 201100L)

@@ -120,7 +120,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     for (unsigned int i = 0; i < A_LEN(u); ++i)
     {
         a_tf_iter(&ctx, u[i]);
-        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
+        debug(A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f\n"),
               A_FLOAT_C(0.001) * a_float_c(i), A_FLOAT_C(1.0), *ctx.output);
     }
 

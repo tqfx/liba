@@ -25,7 +25,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_polytraj5_gen(&ctx, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7]);
     for (a_float dt = arg[0], delta = (arg[1] - arg[0]) / 1000; dt < arg[1]; dt += delta) // NOLINT
     {
-        debug(A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f ") A_FLOAT_PRI("+", "f\n"),
+        debug(A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f\n"),
               dt, a_polytraj5_pos(&ctx, dt), a_polytraj5_vel(&ctx, dt), a_polytraj5_acc(&ctx, dt));
     }
 
