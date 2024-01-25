@@ -90,8 +90,17 @@ LUALIB_API void luaL_checkstack(lua_State *L, int sz, char const *msg);
 LUALIB_API void luaL_checktype(lua_State *L, int narg, int t);
 LUALIB_API void luaL_checkany(lua_State *L, int narg);
 
-LUALIB_API void luaL_where(lua_State *L, int lvl);
 LUALIB_API int luaL_error(lua_State *L, char const *fmt, ...);
+LUALIB_API void luaL_where(lua_State *L, int lvl);
+
+void lua_u8_new(lua_State *L, a_u8 value);
+a_u8 lua_u8_get(lua_State *L, int idx);
+void lua_u16_new(lua_State *L, a_u16 value);
+a_u16 lua_u16_get(lua_State *L, int idx);
+void lua_u32_new(lua_State *L, a_u32 value);
+a_u32 lua_u32_get(lua_State *L, int idx);
+void lua_u64_new(lua_State *L, a_u64 value);
+a_u64 lua_u64_get(lua_State *L, int idx);
 
 void *lua_alloc(lua_State *L, void const *ptr, size_t siz);
 
@@ -113,6 +122,11 @@ void lua_num_reg(lua_State *L, int idx, lua_num const *tab, size_t len);
 void lua_num_set(lua_State *L, int idx, char const *name, LUA_NUM data);
 LUA_NUM lua_num_get(lua_State *L, int idx, char const *name);
 
+void lua_array_u8_new(lua_State *L, a_u8 const *ptr, unsigned int num);
+void lua_array_u16_new(lua_State *L, a_u16 const *ptr, unsigned int num);
+void lua_array_u32_new(lua_State *L, a_u32 const *ptr, unsigned int num);
+void lua_array_u64_new(lua_State *L, a_u64 const *ptr, unsigned int num);
+
 void lua_array_str_new(lua_State *L, char const *const *ptr, unsigned int num);
 void lua_array_str_get(lua_State *L, int idx, char const **ptr, unsigned int num);
 void lua_array_str_set(lua_State *L, int idx, char const *const *ptr, unsigned int num);
@@ -126,20 +140,6 @@ void lua_array_num_get(lua_State *L, int idx, LUA_NUM *ptr, unsigned int num);
 void lua_array_num_set(lua_State *L, int idx, LUA_NUM const *ptr, unsigned int num);
 
 LUA_NUM *lua_table_num_get(lua_State *L, int idx, LUA_NUM const *ptr, size_t *num);
-
-void lua_u8_new(lua_State *L, a_u8 value);
-a_u8 lua_u8_get(lua_State *L, int idx);
-void lua_u16_new(lua_State *L, a_u16 value);
-a_u16 lua_u16_get(lua_State *L, int idx);
-void lua_u32_new(lua_State *L, a_u32 value);
-a_u32 lua_u32_get(lua_State *L, int idx);
-void lua_u64_new(lua_State *L, a_u64 value);
-a_u64 lua_u64_get(lua_State *L, int idx);
-
-void lua_array_u8_new(lua_State *L, a_u8 const *ptr, unsigned int num);
-void lua_array_u16_new(lua_State *L, a_u16 const *ptr, unsigned int num);
-void lua_array_u32_new(lua_State *L, a_u32 const *ptr, unsigned int num);
-void lua_array_u64_new(lua_State *L, a_u64 const *ptr, unsigned int num);
 
 void lua_stack_view(lua_State *L, unsigned int line);
 //#define LUA_STACK(L) lua_stack_view(L, __LINE__)
