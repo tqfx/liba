@@ -129,16 +129,9 @@ int liba_crc16_pack(lua_State *L)
         if (lua_gettop(L) > 2) { value = lua_u16_get(L, 3); }
         value = ctx->eval(ctx->table, p, n, value);
         u.s = lua_pushfstring(L, "%s  ", p) + n;
-        if (ctx->eval == a_crc16m)
-        {
-            u.p[0] = (a_byte)(value >> 8);
-            u.p[1] = (a_byte)(value >> 0);
-        }
-        else
-        {
-            u.p[0] = (a_byte)(value >> 0);
-            u.p[1] = (a_byte)(value >> 8);
-        }
+        ctx->eval == a_crc16m
+            ? a_u16_setb(u.p, value)
+            : a_u16_setl(u.p, value);
         return 1;
     }
     return 0;

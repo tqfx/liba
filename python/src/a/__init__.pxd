@@ -29,5 +29,17 @@ cdef extern from "a/a.h":
     const a_float A_FLOAT_INF
     const a_float A_FLOAT_NAN
 
+    a_u16 a_u16_getl(const void *b)
+    a_u16 a_u16_getb(const void *b)
+    void a_u16_setl(void *b, a_u16 x)
+    void a_u16_setb(void *b, a_u16 x)
+    a_u32 a_u32_getl(const void *b)
+    a_u32 a_u32_getb(const void *b)
+    void a_u32_setl(void *b, a_u32 x)
+    void a_u32_setb(void *b, a_u32 x)
+    a_u64 a_u64_getl(const void *b)
+    a_u64 a_u64_getb(const void *b)
+    void a_u64_setl(void *b, a_u64 x)
+    void a_u64_setb(void *b, a_u64 x)
     a_u32 a_hash_bkdr(const char *str, a_u32 val);
     a_u32 a_hash_sdbm(const char *str, a_u32 val);

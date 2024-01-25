@@ -1054,6 +1054,48 @@ A_INTERN a_u16 a_u16_rev(a_u16 x)
     return x;
 }
 #endif /* A_HAVE_INLINE */
+#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
+A_EXTERN a_u16 a_u16_getl(void const *b);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
+A_INTERN a_u16 a_u16_getl(void const *b)
+{
+    a_byte const *p = a_cast_s(a_byte const *, b);
+    return a_cast_s(a_u16, (p[0] << 0) | (p[1] << 8));
+}
+#endif /* A_HAVE_INLINE */
+#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
+A_EXTERN a_u16 a_u16_getb(void const *b);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
+A_INTERN a_u16 a_u16_getb(void const *b)
+{
+    a_byte const *p = a_cast_s(a_byte const *, b);
+    return a_cast_s(a_u16, (p[1] << 0) | (p[0] << 8));
+}
+#endif /* A_HAVE_INLINE */
+#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
+A_EXTERN void a_u16_setl(void *b, a_u16 x);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
+A_INTERN void a_u16_setl(void *b, a_u16 x)
+{
+    a_byte *p = a_cast_s(a_byte *, b);
+    p[0] = a_cast_s(a_byte, x >> 0);
+    p[1] = a_cast_s(a_byte, x >> 8);
+}
+#endif /* A_HAVE_INLINE */
+#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
+A_EXTERN void a_u16_setb(void *b, a_u16 x);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
+A_INTERN void a_u16_setb(void *b, a_u16 x)
+{
+    a_byte *p = a_cast_s(a_byte *, b);
+    p[0] = a_cast_s(a_byte, x >> 8);
+    p[1] = a_cast_s(a_byte, x >> 0);
+}
+#endif /* A_HAVE_INLINE */
 
 /*!
  @brief reverse the bits in a 32-bit unsigned integer x
@@ -1072,6 +1114,58 @@ A_INTERN a_u32 a_u32_rev(a_u32 x)
     x = ((x & 0xCCCCCCCC) >> 2) | ((x & 0x33333333) << 2);
     x = ((x & 0xAAAAAAAA) >> 1) | ((x & 0x55555555) << 1);
     return x;
+}
+#endif /* A_HAVE_INLINE */
+#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
+A_EXTERN a_u32 a_u32_getl(void const *b);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
+A_INTERN a_u32 a_u32_getl(void const *b)
+{
+    a_byte const *p = a_cast_s(a_byte const *, b);
+    return (a_cast_s(a_u32, p[0]) << 0x00) |
+           (a_cast_s(a_u32, p[1]) << 0x08) |
+           (a_cast_s(a_u32, p[2]) << 0x10) |
+           (a_cast_s(a_u32, p[3]) << 0x18);
+}
+#endif /* A_HAVE_INLINE */
+#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
+A_EXTERN a_u32 a_u32_getb(void const *b);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
+A_INTERN a_u32 a_u32_getb(void const *b)
+{
+    a_byte const *p = a_cast_s(a_byte const *, b);
+    return (a_cast_s(a_u32, p[0]) << 0x18) |
+           (a_cast_s(a_u32, p[1]) << 0x10) |
+           (a_cast_s(a_u32, p[2]) << 0x08) |
+           (a_cast_s(a_u32, p[3]) << 0x00);
+}
+#endif /* A_HAVE_INLINE */
+#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
+A_EXTERN void a_u32_setl(void *b, a_u32 x);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
+A_INTERN void a_u32_setl(void *b, a_u32 x)
+{
+    a_byte *p = a_cast_s(a_byte *, b);
+    p[0] = a_cast_s(a_byte, x >> 0x00);
+    p[1] = a_cast_s(a_byte, x >> 0x08);
+    p[2] = a_cast_s(a_byte, x >> 0x10);
+    p[3] = a_cast_s(a_byte, x >> 0x18);
+}
+#endif /* A_HAVE_INLINE */
+#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
+A_EXTERN void a_u32_setb(void *b, a_u32 x);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
+A_INTERN void a_u32_setb(void *b, a_u32 x)
+{
+    a_byte *p = a_cast_s(a_byte *, b);
+    p[0] = a_cast_s(a_byte, x >> 0x18);
+    p[1] = a_cast_s(a_byte, x >> 0x10);
+    p[2] = a_cast_s(a_byte, x >> 0x08);
+    p[3] = a_cast_s(a_byte, x >> 0x00);
 }
 #endif /* A_HAVE_INLINE */
 
@@ -1093,6 +1187,74 @@ A_INTERN a_u64 a_u64_rev(a_u64 x)
     x = ((x & 0xCCCCCCCCCCCCCCCC) >> 0x02) | ((x & 0x3333333333333333) << 0x02);
     x = ((x & 0xAAAAAAAAAAAAAAAA) >> 0x01) | ((x & 0x5555555555555555) << 0x01);
     return x;
+}
+#endif /* A_HAVE_INLINE */
+#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
+A_EXTERN a_u64 a_u64_getl(void const *b);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
+A_INTERN a_u64 a_u64_getl(void const *b)
+{
+    a_byte const *p = a_cast_s(a_byte const *, b);
+    return (a_cast_s(a_u64, p[0]) << 0x00) |
+           (a_cast_s(a_u64, p[1]) << 0x08) |
+           (a_cast_s(a_u64, p[2]) << 0x10) |
+           (a_cast_s(a_u64, p[3]) << 0x18) |
+           (a_cast_s(a_u64, p[4]) << 0x20) |
+           (a_cast_s(a_u64, p[5]) << 0x28) |
+           (a_cast_s(a_u64, p[6]) << 0x30) |
+           (a_cast_s(a_u64, p[7]) << 0x38);
+}
+#endif /* A_HAVE_INLINE */
+#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
+A_EXTERN a_u64 a_u64_getb(void const *b);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
+A_INTERN a_u64 a_u64_getb(void const *b)
+{
+    a_byte const *p = a_cast_s(a_byte const *, b);
+    return (a_cast_s(a_u64, p[0]) << 0x38) |
+           (a_cast_s(a_u64, p[1]) << 0x30) |
+           (a_cast_s(a_u64, p[2]) << 0x28) |
+           (a_cast_s(a_u64, p[3]) << 0x20) |
+           (a_cast_s(a_u64, p[4]) << 0x18) |
+           (a_cast_s(a_u64, p[5]) << 0x10) |
+           (a_cast_s(a_u64, p[6]) << 0x08) |
+           (a_cast_s(a_u64, p[7]) << 0x00);
+}
+#endif /* A_HAVE_INLINE */
+#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
+A_EXTERN void a_u64_setl(void *b, a_u64 x);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
+A_INTERN void a_u64_setl(void *b, a_u64 x)
+{
+    a_byte *p = a_cast_s(a_byte *, b);
+    p[0] = a_cast_s(a_byte, x >> 0x00);
+    p[1] = a_cast_s(a_byte, x >> 0x08);
+    p[2] = a_cast_s(a_byte, x >> 0x10);
+    p[3] = a_cast_s(a_byte, x >> 0x18);
+    p[4] = a_cast_s(a_byte, x >> 0x20);
+    p[5] = a_cast_s(a_byte, x >> 0x28);
+    p[6] = a_cast_s(a_byte, x >> 0x30);
+    p[7] = a_cast_s(a_byte, x >> 0x38);
+}
+#endif /* A_HAVE_INLINE */
+#if !defined A_HAVE_INLINE || defined(LIBA_A_C)
+A_EXTERN void a_u64_setb(void *b, a_u64 x);
+#endif /* A_HAVE_INLINE */
+#if defined(A_HAVE_INLINE) || defined(LIBA_A_C)
+A_INTERN void a_u64_setb(void *b, a_u64 x)
+{
+    a_byte *p = a_cast_s(a_byte *, b);
+    p[0] = a_cast_s(a_byte, x >> 0x38);
+    p[1] = a_cast_s(a_byte, x >> 0x30);
+    p[2] = a_cast_s(a_byte, x >> 0x28);
+    p[3] = a_cast_s(a_byte, x >> 0x20);
+    p[4] = a_cast_s(a_byte, x >> 0x18);
+    p[5] = a_cast_s(a_byte, x >> 0x10);
+    p[6] = a_cast_s(a_byte, x >> 0x08);
+    p[7] = a_cast_s(a_byte, x >> 0x00);
 }
 #endif /* A_HAVE_INLINE */
 

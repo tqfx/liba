@@ -98,16 +98,7 @@ struct crc16
         std::copy(block.data(), block.data() + n, _pack.data());
         value = eval(table, block.data(), n, value);
         a_byte *p = _pack.data() + n;
-        if (eval == a_crc16m)
-        {
-            *p++ = a_cast_s(a_byte, value >> 8);
-            *p++ = a_cast_s(a_byte, value >> 0);
-        }
-        else
-        {
-            *p++ = a_cast_s(a_byte, value >> 0);
-            *p++ = a_cast_s(a_byte, value >> 8);
-        }
+        eval == a_crc16m ? a_u16_setb(p, value) : a_u16_setl(p, value);
         return emscripten::val(emscripten::typed_memory_view(m, _pack.data()));
     }
     A_INLINE crc16 *gen(a_u16 poly, bool reversed = false)
@@ -151,20 +142,7 @@ struct crc32
         std::copy(block.data(), block.data() + n, _pack.data());
         value = eval(table, block.data(), n, value);
         a_byte *p = _pack.data() + n;
-        if (eval == a_crc32m)
-        {
-            *p++ = a_cast_s(a_byte, value >> 0x18);
-            *p++ = a_cast_s(a_byte, value >> 0x10);
-            *p++ = a_cast_s(a_byte, value >> 0x08);
-            *p++ = a_cast_s(a_byte, value >> 0x00);
-        }
-        else
-        {
-            *p++ = a_cast_s(a_byte, value >> 0x00);
-            *p++ = a_cast_s(a_byte, value >> 0x08);
-            *p++ = a_cast_s(a_byte, value >> 0x10);
-            *p++ = a_cast_s(a_byte, value >> 0x18);
-        }
+        eval == a_crc32m ? a_u32_setb(p, value) : a_u32_setl(p, value);
         return emscripten::val(emscripten::typed_memory_view(m, _pack.data()));
     }
     A_INLINE crc32 *gen(a_u32 poly, bool reversed = false)
@@ -209,28 +187,7 @@ struct crc64
         std::copy(block.data(), block.data() + n, _pack.data());
         value = eval(table, block.data(), n, value);
         a_byte *p = _pack.data() + n;
-        if (eval == a_crc64m)
-        {
-            *p++ = a_cast_s(a_byte, value >> 0x38);
-            *p++ = a_cast_s(a_byte, value >> 0x30);
-            *p++ = a_cast_s(a_byte, value >> 0x28);
-            *p++ = a_cast_s(a_byte, value >> 0x20);
-            *p++ = a_cast_s(a_byte, value >> 0x18);
-            *p++ = a_cast_s(a_byte, value >> 0x10);
-            *p++ = a_cast_s(a_byte, value >> 0x08);
-            *p++ = a_cast_s(a_byte, value >> 0x00);
-        }
-        else
-        {
-            *p++ = a_cast_s(a_byte, value >> 0x00);
-            *p++ = a_cast_s(a_byte, value >> 0x08);
-            *p++ = a_cast_s(a_byte, value >> 0x10);
-            *p++ = a_cast_s(a_byte, value >> 0x18);
-            *p++ = a_cast_s(a_byte, value >> 0x20);
-            *p++ = a_cast_s(a_byte, value >> 0x28);
-            *p++ = a_cast_s(a_byte, value >> 0x30);
-            *p++ = a_cast_s(a_byte, value >> 0x38);
-        }
+        eval == a_crc64m ? a_u64_setb(p, value) : a_u64_setl(p, value);
         return emscripten::val(emscripten::typed_memory_view(m, _pack.data()));
     }
     A_INLINE crc64 *gen(a_u64 poly, bool reversed = false)

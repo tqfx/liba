@@ -129,20 +129,9 @@ int liba_crc32_pack(lua_State *L)
         if (lua_gettop(L) > 2) { value = lua_u32_get(L, 3); }
         value = ctx->eval(ctx->table, p, n, value);
         u.s = lua_pushfstring(L, "%s    ", p) + n;
-        if (ctx->eval == a_crc32m)
-        {
-            u.p[0] = (a_byte)(value >> 0x18);
-            u.p[1] = (a_byte)(value >> 0x10);
-            u.p[2] = (a_byte)(value >> 0x08);
-            u.p[3] = (a_byte)(value >> 0x00);
-        }
-        else
-        {
-            u.p[0] = (a_byte)(value >> 0x00);
-            u.p[1] = (a_byte)(value >> 0x08);
-            u.p[2] = (a_byte)(value >> 0x10);
-            u.p[3] = (a_byte)(value >> 0x18);
-        }
+        ctx->eval == a_crc32m
+            ? a_u32_setb(u.p, value)
+            : a_u32_setl(u.p, value);
         return 1;
     }
     return 0;
