@@ -33,8 +33,8 @@ int liba_crc8_new(lua_State *L)
     ctx = lua_newclass(L, struct CRC8);
     lua_registry_get(L, liba_crc8_new);
     lua_setmetatable(L, -2);
-    if (reversed) { a_crc8l_init(ctx->table, poly); }
-    else { a_crc8m_init(ctx->table, poly); }
+    reversed ? a_crc8l_init(ctx->table, poly)
+             : a_crc8m_init(ctx->table, poly);
     return 1;
 }
 
@@ -59,8 +59,8 @@ int liba_crc8_gen(lua_State *L)
     }
     poly = lua_u8_get(L, 2);
     ctx = (struct CRC8 *)lua_touserdata(L, 1);
-    if (reversed) { a_crc8l_init(ctx->table, poly); }
-    else { a_crc8m_init(ctx->table, poly); }
+    reversed ? a_crc8l_init(ctx->table, poly)
+             : a_crc8m_init(ctx->table, poly);
     lua_pushvalue(L, 1);
     return 1;
 }

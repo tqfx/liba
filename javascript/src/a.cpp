@@ -67,8 +67,7 @@ struct crc8
     }
     A_INLINE crc8 *gen(a_u8 poly, bool reversed = false)
     {
-        if (reversed) { a_crc8l_init(table, poly); }
-        else { a_crc8m_init(table, poly); }
+        reversed ? a_crc8l_init(table, poly) : a_crc8m_init(table, poly);
         return this;
     }
     A_INLINE crc8(a_u8 poly, bool reversed = false)

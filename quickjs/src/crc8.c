@@ -28,14 +28,9 @@ static JSValue liba_crc8_ctor(JSContext *ctx, JSValueConst new_target, int argc,
         reversed = JS_ToBool(ctx, argv[1]);
         if (reversed < 0) { goto fail; }
     }
-    if (reversed)
-    {
-        a_crc8l_init(self->table, (a_u8)poly);
-    }
-    else
-    {
-        a_crc8m_init(self->table, (a_u8)poly);
-    }
+    reversed
+        ? a_crc8l_init(self->table, (a_u8)poly)
+        : a_crc8m_init(self->table, (a_u8)poly);
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
     clazz = JS_NewObjectProtoClass(ctx, proto, liba_crc8_class_id);
@@ -72,14 +67,9 @@ static JSValue liba_crc8_gen(JSContext *ctx, JSValueConst this_val, int argc, JS
         reversed = JS_ToBool(ctx, argv[1]);
         if (reversed < 0) { return JS_EXCEPTION; }
     }
-    if (reversed)
-    {
-        a_crc8l_init(self->table, (a_u8)poly);
-    }
-    else
-    {
-        a_crc8m_init(self->table, (a_u8)poly);
-    }
+    reversed
+        ? a_crc8l_init(self->table, (a_u8)poly)
+        : a_crc8m_init(self->table, (a_u8)poly);
     return JS_UNDEFINED;
 }
 
