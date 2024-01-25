@@ -380,7 +380,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     {
         a_str *ctx = a_str_new();
         a_str_putn_(ctx, argv[i], strlen(argv[i]));
-        printf("%s %u\n", argv[i], a_cast_s(unsigned int, a_str_utflen(ctx)));
+        printf("%s %" PRIz "u\n", argv[i], a_str_utflen(ctx));
         a_str_die(ctx);
     }
     return 0;
