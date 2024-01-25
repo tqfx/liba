@@ -6,6 +6,8 @@ endfunction()
 
 unittest(a a)
 
+unittest(crc crc)
+
 unittest(hpf hpf)
 
 unittest(lpf lpf)

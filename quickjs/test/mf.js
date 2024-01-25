@@ -1,9 +1,7 @@
 import * as a from "liba.so";
-function assert(b, str) {
-    if (b) {
-        return;
-    } else {
-        throw Error("assertion failed: " + str);
+function assert(expr, info) {
+    if (!expr) {
+        throw Error("assertion failed: " + info);
     }
 }
 assert(a.mf.NUL == 0)

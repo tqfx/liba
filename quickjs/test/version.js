@@ -3,11 +3,9 @@ var v000 = new a.version()
 var v100 = new a.version(1)
 var v010 = new a.version(0, 1)
 var v001 = new a.version(0, 0, 1)
-function assert(b, str) {
-    if (b) {
-        return;
-    } else {
-        throw Error("assertion failed: " + str);
+function assert(expr, info) {
+    if (!expr) {
+        throw Error("assertion failed: " + info);
     }
 }
 assert(v000.lt(v010))
