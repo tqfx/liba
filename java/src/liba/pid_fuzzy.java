@@ -1,5 +1,7 @@
 package liba;
 
+import java.nio.ByteBuffer;
+
 /** fuzzy proportional integral derivative controller */
 public class pid_fuzzy {
     /** min(a,b) */
@@ -16,13 +18,13 @@ public class pid_fuzzy {
     public static final int CUP_BOUNDED;
     /** sqrt(a,b)*sqrt(1-(1-a)*(1-b)) */
     public static final int EQU;
-    byte[] ctx;
-    double[] me;
-    double[] mec;
-    double[] mkp;
-    double[] mki;
-    double[] mkd;
-    byte[] joint;
+    ByteBuffer ctx;
+    ByteBuffer me;
+    ByteBuffer mec;
+    ByteBuffer mkp;
+    ByteBuffer mki;
+    ByteBuffer mkd;
+    ByteBuffer joint;
     static {
         System.loadLibrary("a");
         CAP = 1;

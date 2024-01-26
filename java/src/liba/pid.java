@@ -1,5 +1,7 @@
 package liba;
 
+import java.nio.ByteBuffer;
+
 /** proportional integral derivative controller */
 public class pid {
     /** run and output setpoint */
@@ -8,7 +10,7 @@ public class pid {
     public static final int POS;
     /** incremental PID controller */
     public static final int INC;
-    byte[] ctx;
+    ByteBuffer ctx;
     static {
         System.loadLibrary("a");
         RUN = 0;

@@ -1,8 +1,10 @@
 package liba;
 
+import java.nio.ByteBuffer;
+
 /** Low Pass Filter */
 public class lpf {
-    byte[] ctx;
+    ByteBuffer ctx;
     static {
         System.loadLibrary("a");
         INIT();

@@ -1,8 +1,10 @@
 package liba;
 
+import java.nio.ByteBuffer;
+
 /** 8-bit Cyclic Redundancy Check */
 public class crc8 {
-    byte[] ctx;
+    ByteBuffer ctx;
     static {
         System.loadLibrary("a");
         INIT();

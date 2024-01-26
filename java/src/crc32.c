@@ -6,12 +6,15 @@
 #define L Java_liba_crc32
 static struct
 {
+    jmethodID alloc;
     jfieldID ctx;
-} L = {NULL};
+} L = {NULL, NULL};
 
 JNIEXPORT void JNICALL Java_liba_crc32_INIT(JNIEnv *_env, jclass _cls)
 {
-    L.ctx = (*_env)->GetFieldID(_env, _cls, "ctx", "[B");
+    jclass _bb = (*_env)->FindClass(_env, "Ljava/nio/ByteBuffer;");
+    L.ctx = (*_env)->GetFieldID(_env, _cls, "ctx", "Ljava/nio/ByteBuffer;");
+    L.alloc = (*_env)->GetStaticMethodID(_env, _bb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
 }
 
 struct CRC32
@@ -22,80 +25,69 @@ struct CRC32
 
 JNIEXPORT void JNICALL Java_liba_crc32_init(JNIEnv *_env, jobject _obj, jint poly, jboolean reversed)
 {
-    struct CRC32 ctx;
-    jbyteArray _ctx = (*_env)->NewByteArray(_env, sizeof(struct CRC32));
-    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(struct CRC32), (jbyte *)&ctx);
+    jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)sizeof(struct CRC32));
+    struct CRC32 *ctx = (struct CRC32 *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
     if (reversed)
     {
-        a_crc32l_init(ctx.table, (A_U32)poly);
-        ctx.eval = a_crc32l;
+        a_crc32l_init(ctx->table, (a_u32)poly);
+        ctx->eval = a_crc32l;
     }
     else
     {
-        a_crc32m_init(ctx.table, (A_U32)poly);
-        ctx.eval = a_crc32m;
+        a_crc32m_init(ctx->table, (a_u32)poly);
+        ctx->eval = a_crc32m;
     }
-    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(struct CRC32), (jbyte *)&ctx);
-    (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
 }
 
 JNIEXPORT jintArray JNICALL Java_liba_crc32_table(JNIEnv *_env, jobject _obj)
 {
-    struct CRC32 ctx;
-    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(struct CRC32), (jbyte *)&ctx);
-    jintArray table = (*_env)->NewIntArray(_env, A_LEN(ctx.table));
-    (*_env)->SetIntArrayRegion(_env, table, 0, A_LEN(ctx.table), (jint *)ctx.table);
+    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    struct CRC32 *ctx = (struct CRC32 *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jintArray table = (*_env)->NewIntArray(_env, A_LEN(ctx->table));
+    (*_env)->SetIntArrayRegion(_env, table, 0, A_LEN(ctx->table), (jint *)ctx->table);
     return table;
 }
 
 JNIEXPORT jobject JNICALL Java_liba_crc32_gen(JNIEnv *_env, jobject _obj, jint poly, jboolean reversed)
 {
-    struct CRC32 ctx;
-    jbyteArray _ctx = (*_env)->NewByteArray(_env, sizeof(struct CRC32));
-    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(struct CRC32), (jbyte *)&ctx);
+    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    struct CRC32 *ctx = (struct CRC32 *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     if (reversed)
     {
-        a_crc32l_init(ctx.table, (A_U32)poly);
-        ctx.eval = a_crc32l;
+        a_crc32l_init(ctx->table, (a_u32)poly);
+        ctx->eval = a_crc32l;
     }
     else
     {
-        a_crc32m_init(ctx.table, (A_U32)poly);
-        ctx.eval = a_crc32m;
+        a_crc32m_init(ctx->table, (a_u32)poly);
+        ctx->eval = a_crc32m;
     }
-    (*_env)->SetByteArrayRegion(_env, _ctx, 0, sizeof(struct CRC32), (jbyte *)&ctx);
-    (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
     return _obj;
 }
 
 JNIEXPORT jint JNICALL Java_liba_crc32_eval(JNIEnv *_env, jobject _obj, jbyteArray block, jint value)
 {
-    struct CRC32 ctx;
-    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(struct CRC32), (jbyte *)&ctx);
+    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    struct CRC32 *ctx = (struct CRC32 *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     jsize n = (*_env)->GetArrayLength(_env, block);
     jbyte *p = (*_env)->GetByteArrayElements(_env, block, NULL);
-    value = (jint)ctx.eval(ctx.table, p, (a_size)n, (a_u32)value);
+    value = (jint)ctx->eval(ctx->table, p, (a_size)n, (a_u32)value);
     (*_env)->ReleaseByteArrayElements(_env, block, p, JNI_ABORT);
     return value;
 }
 
 JNIEXPORT jbyteArray JNICALL Java_liba_crc32_pack(JNIEnv *_env, jobject _obj, jbyteArray block, jint value)
 {
-    struct CRC32 ctx;
-    jbyteArray _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    (*_env)->GetByteArrayRegion(_env, _ctx, 0, sizeof(struct CRC32), (jbyte *)&ctx);
+    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    struct CRC32 *ctx = (struct CRC32 *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     jsize block_n = (*_env)->GetArrayLength(_env, block);
     jbyteArray res = (*_env)->NewByteArray(_env, block_n + 4);
-    jbyte *res_p = (*_env)->GetByteArrayElements(_env, res, NULL);
     jbyte *block_p = (*_env)->GetByteArrayElements(_env, block, NULL);
-    a_copy(res_p, block_p, (a_size)block_n);
+    value = (jint)ctx->eval(ctx->table, block_p, (a_size)block_n, (a_u32)value);
+    ctx->eval == a_crc32m ? a_u32_setb(&value, (a_u32)value) : a_u32_setl(&value, (a_u32)value);
+    (*_env)->SetByteArrayRegion(_env, res, 0, block_n, block_p);
     (*_env)->ReleaseByteArrayElements(_env, block, block_p, JNI_ABORT);
-    value = (jint)ctx.eval(ctx.table, res_p, (a_size)block_n, (a_u32)value);
-    ctx.eval == a_crc32m
-        ? a_u32_setb(res_p + block_n, (a_u32)value)
-        : a_u32_setl(res_p + block_n, (a_u32)value);
-    (*_env)->ReleaseByteArrayElements(_env, res, res_p, 0);
+    (*_env)->SetByteArrayRegion(_env, res, block_n, 4, (jbyte *)&value);
     return res;
 }

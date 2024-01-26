@@ -1,10 +1,10 @@
 package liba;
 
+import java.nio.ByteBuffer;
+
 /** quintic polynomial trajectory */
 public class polytraj5 {
-    double[] q = new double[6];
-    double[] v = new double[5];
-    double[] a = new double[4];
+    ByteBuffer ctx;
     static {
         System.loadLibrary("a");
         INIT();
@@ -17,27 +17,21 @@ public class polytraj5 {
      *
      * @return coefficients of position
      */
-    public final double[] q() {
-        return q;
-    }
+    public final native double[] q();
 
     /**
      * get coefficients of velocity for quintic polynomial trajectory
      *
      * @return coefficients of velocity
      */
-    public final double[] v() {
-        return v;
-    }
+    public final native double[] v();
 
     /**
      * get coefficients of acceleration for quintic polynomial trajectory
      *
      * @return coefficients of acceleration
      */
-    public final double[] a() {
-        return a;
-    }
+    public final native double[] a();
 
     /**
      * construct a new {@link polytraj5} object

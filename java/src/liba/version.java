@@ -1,5 +1,7 @@
 package liba;
 
+import java.nio.ByteBuffer;
+
 /** version */
 public class version {
     /** algorithm library version major */
@@ -10,7 +12,7 @@ public class version {
     public static final int PATCH;
     /** algorithm library version tweak */
     public static final int TWEAK;
-    byte[] ctx;
+    ByteBuffer ctx;
     static {
         System.loadLibrary("a");
         MAJOR = 0;

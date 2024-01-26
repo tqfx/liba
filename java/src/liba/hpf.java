@@ -1,8 +1,10 @@
 package liba;
 
+import java.nio.ByteBuffer;
+
 /** High Pass Filter */
 public class hpf {
-    byte[] ctx;
+    ByteBuffer ctx;
     static {
         System.loadLibrary("a");
         INIT();

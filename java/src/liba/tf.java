@@ -1,12 +1,14 @@
 package liba;
 
+import java.nio.ByteBuffer;
+
 /** transfer function */
 public class tf {
-    byte[] ctx;
-    double[] num;
-    double[] den;
-    double[] input;
-    double[] output;
+    ByteBuffer ctx;
+    ByteBuffer num;
+    ByteBuffer den;
+    ByteBuffer input;
+    ByteBuffer output;
     static {
         System.loadLibrary("a");
         INIT();
@@ -31,9 +33,7 @@ public class tf {
      *
      * @return numerator
      */
-    public final double[] num() {
-        return num;
-    }
+    public final native double[] num();
 
     /**
      * set numerator for transfer function
@@ -48,9 +48,7 @@ public class tf {
      *
      * @return denominator
      */
-    public final double[] den() {
-        return den;
-    }
+    public final native double[] den();
 
     /**
      * set denominator for transfer function
@@ -65,18 +63,14 @@ public class tf {
      *
      * @return input
      */
-    public final double[] input() {
-        return input;
-    }
+    public final native double[] input();
 
     /**
      * get output for transfer function
      *
      * @return output
      */
-    public final double[] output() {
-        return output;
-    }
+    public final native double[] output();
 
     /**
      * calculate for transfer function

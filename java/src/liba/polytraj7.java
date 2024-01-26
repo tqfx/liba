@@ -1,11 +1,10 @@
 package liba;
 
+import java.nio.ByteBuffer;
+
 /** hepta polynomial trajectory */
 public class polytraj7 {
-    double[] q = new double[8];
-    double[] v = new double[7];
-    double[] a = new double[6];
-    double[] j = new double[5];
+    ByteBuffer ctx;
     static {
         System.loadLibrary("a");
         INIT();
@@ -18,36 +17,28 @@ public class polytraj7 {
      *
      * @return coefficients of position
      */
-    public final double[] q() {
-        return q;
-    }
+    public final native double[] q();
 
     /**
      * get coefficients of velocity for hepta polynomial trajectory
      *
      * @return coefficients of velocity
      */
-    public final double[] v() {
-        return v;
-    }
+    public final native double[] v();
 
     /**
      * get coefficients of acceleration for hepta polynomial trajectory
      *
      * @return coefficients of acceleration
      */
-    public final double[] a() {
-        return a;
-    }
+    public final native double[] a();
 
     /**
      * get coefficients of jerk for hepta polynomial trajectory
      *
      * @return coefficients of jerk
      */
-    public final double[] j() {
-        return j;
-    }
+    public final native double[] j();
 
     /**
      * construct a new {@link polytraj7} object
