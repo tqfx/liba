@@ -418,7 +418,6 @@ struct pid_fuzzy: public a_pid_fuzzy
                              emscripten::val const &_mki,
                              emscripten::val const &_mkd)
     {
-        emscripten::val val;
         union
         {
             a_float const *p;
@@ -426,7 +425,7 @@ struct pid_fuzzy: public a_pid_fuzzy
         } u;
         order = _me["length"].as<unsigned int>();
         u.p = me;
-        val = js_concat(_me);
+        emscripten::val val = js_concat(_me);
         me = js_array_num_get(val, u.o, 0);
         val.delete_(val);
         u.p = mec;

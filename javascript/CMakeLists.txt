@@ -51,7 +51,7 @@ set(LIBA_WASM_FLAGS "" CACHE STRING "Flags used by the linker")
 
 set(CMAKE_C_LINK_EXECUTABLE "<CMAKE_C_COMPILER> <FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES> --bind")
 set(CMAKE_CXX_LINK_EXECUTABLE "<CMAKE_CXX_COMPILER> <FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES> --bind")
-option(LIBA_JAVASCRIPT_TSGEN "Enable/Disable generation of TypeScript definition files" 1)
+option(LIBA_JAVASCRIPT_TSGEN "Enable/Disable generation of TypeScript definition files" 0)
 option(LIBA_JAVASCRIPT_ASYNC "Enable/Disable compilation of wasm async" 0)
 option(LIBA_JAVASCRIPT_DEBUG "Enable/Disable debug with sanitizers" 0)
 option(LIBA_JAVASCRIPT_WASM "Enable/Disable JavaScript WebAssembly" 1)
