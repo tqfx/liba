@@ -26,6 +26,7 @@
 #endif /* -Waggregate-return */
 #endif /* A_FLOAT_TYPE */
 #include "a/math.h"
+#include <stdlib.h>
 
 void a_complex_polar(a_complex *_z, a_float rho, a_float theta)
 {

@@ -277,6 +277,7 @@ LUA_NUM *lua_table_num_get(lua_State *L, int idx, LUA_NUM const *ptr, size_t *nu
 }
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <inttypes.h>
 #if defined(_MSC_VER) && (_MSC_VER < 1900)
 #define snprintf sprintf_s

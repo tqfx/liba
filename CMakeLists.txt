@@ -189,14 +189,17 @@ function(add_library_properties target scope source)
 endfunction()
 
 option(LIBA_MIMALLOC "Enable/Disable override using mimalloc" 0)
-set(A_HAVE_MIMALLOC_H)
 
 if(LIBA_MIMALLOC)
   find_package(mimalloc)
 endif()
 
 if(mimalloc_FOUND)
-  set(A_HAVE_MIMALLOC_H 1)
+  if(TARGET mimalloc-static)
+    set(MIMALLOC_LIBRARY mimalloc-static)
+  else()
+    set(MIMALLOC_LIBRARY mimalloc)
+  endif()
 endif()
 
 find_package(Git)
@@ -278,10 +281,16 @@ endif()
 add_library(a OBJECT ${SOURCES})
 set_library_compile(a)
 
-if(A_HAVE_MIMALLOC_H AND CMAKE_VERSION VERSION_LESS 3.12)
-  add_library_properties(a PUBLIC mimalloc-static INTERFACE_)
-elseif(A_HAVE_MIMALLOC_H)
-  target_link_libraries(a PUBLIC mimalloc-static)
+if(LIBA_MIMALLOC AND mimalloc_FOUND)
+  set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/src/a.c
+    APPEND PROPERTY COMPILE_DEFINITIONS A_HAVE_MIMALLOC_H
+  )
+
+  if(CMAKE_VERSION VERSION_LESS 3.12)
+    add_library_properties(a PUBLIC ${MIMALLOC_LIBRARY} INTERFACE_)
+  else()
+    target_link_libraries(a PUBLIC ${MIMALLOC_LIBRARY})
+  endif()
 endif()
 
 include(GNUInstallDirs)
@@ -295,8 +304,8 @@ endif()
 add_library(alib STATIC $<TARGET_OBJECTS:a>)
 set_library_compile(alib)
 
-if(A_HAVE_MIMALLOC_H)
-  target_link_libraries(alib PUBLIC mimalloc-static)
+if(LIBA_MIMALLOC AND mimalloc_FOUND)
+  target_link_libraries(alib PUBLIC ${MIMALLOC_LIBRARY})
 endif()
 
 if(TARGET_SUPPORTS_SHARED_LIBS)
@@ -307,8 +316,8 @@ if(TARGET_SUPPORTS_SHARED_LIBS)
   add_library(liba SHARED $<TARGET_OBJECTS:a>)
   set_library_compile(liba)
 
-  if(A_HAVE_MIMALLOC_H)
-    target_link_libraries(liba PUBLIC mimalloc-static)
+  if(LIBA_MIMALLOC AND mimalloc_FOUND)
+    target_link_libraries(liba PUBLIC ${MIMALLOC_LIBRARY})
   endif()
 
   if(CMAKE_STATIC_LIBRARY_SUFFIX STREQUAL .lib)
@@ -327,10 +336,12 @@ if(LIBA_SANITIZE)
   set_library_compile(asan)
   target_compile_sanitize(asan)
 
-  if(A_HAVE_MIMALLOC_H AND CMAKE_VERSION VERSION_LESS 3.12)
-    add_library_properties(asan PUBLIC mimalloc INTERFACE_)
-  elseif(A_HAVE_MIMALLOC_H)
-    target_link_libraries(asan PUBLIC mimalloc)
+  if(LIBA_MIMALLOC AND mimalloc_FOUND)
+    if(CMAKE_VERSION VERSION_LESS 3.12)
+      add_library_properties(asan PUBLIC ${MIMALLOC_LIBRARY} INTERFACE_)
+    else()
+      target_link_libraries(asan PUBLIC ${MIMALLOC_LIBRARY})
+    endif()
   endif()
 
   if(TARGET_SUPPORTS_SHARED_LIBS)
@@ -341,8 +352,8 @@ if(LIBA_SANITIZE)
     target_compile_definitions(libasan INTERFACE A_IMPORTS)
     target_link_sanitize(libasan)
 
-    if(A_HAVE_MIMALLOC_H)
-      target_link_libraries(libasan PUBLIC mimalloc)
+    if(LIBA_MIMALLOC AND mimalloc_FOUND)
+      target_link_libraries(libasan PUBLIC ${MIMALLOC_LIBRARY})
     endif()
 
     if(LIBA_STATIC)
@@ -369,10 +380,8 @@ set_library_compile(liba.o)\nadd_dependencies(liba.o a.o)
 set_target_properties(a.o PROPERTIES OUTPUT_NAME liba
 \tINTERPROCEDURAL_OPTIMIZATION \${LIBA_IPO}
 )
-if(A_HAVE_MIMALLOC_H AND CMAKE_VERSION VERSION_LESS 3.12)
-\tadd_library_properties(liba.o PUBLIC mimalloc-static INTERFACE_)
-elseif(A_HAVE_MIMALLOC_H)
-\ttarget_link_libraries(liba.o PUBLIC mimalloc-static)
+if(LIBA_MIMALLOC AND mimalloc_FOUND)
+\ttarget_link_libraries(liba.o PUBLIC ${MIMALLOC_LIBRARY})
 endif()
 if(NOT LIBA_INSTALL)
 \tinstall(TARGETS liba.o EXPORT \${PROJECT_NAME}-targets

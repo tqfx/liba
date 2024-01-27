@@ -6,6 +6,7 @@
 #endif /* _MSC_VER */
 #include "a/a.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 #include <inttypes.h>
 #if defined(_MSC_VER)

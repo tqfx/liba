@@ -1388,9 +1388,4 @@ A_EXTERN void *a_alloc_(void *addr, a_size size);
 
 /*! @} A */
 
-#include <stdlib.h>
-#if defined(A_HAVE_MIMALLOC_H)
-#include <mimalloc-override.h>
-#endif /* A_HAVE_MIMALLOC_H */
-
 #endif /* a/a.h */

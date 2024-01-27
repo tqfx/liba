@@ -85,6 +85,8 @@ a_bool a_version_ne(a_version const *lhs, a_version const *rhs)
     return (lhs->major != rhs->major) || (lhs->minor != rhs->minor) || (lhs->third != rhs->third);
 }
 
+#include <stdlib.h>
+
 unsigned int a_version_parse(a_version *ctx, char const *ver)
 {
     union

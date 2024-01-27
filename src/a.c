@@ -1,6 +1,10 @@
 #define LIBA_A_C
 #include "a/a.h"
 #include <string.h>
+#include <stdlib.h>
+#if defined(A_HAVE_MIMALLOC_H)
+#include <mimalloc-override.h>
+#endif /* A_HAVE_MIMALLOC_H */
 
 void *a_copy(void *__restrict dst, void const *__restrict src, a_size siz) { return memcpy(dst, src, siz); }
 

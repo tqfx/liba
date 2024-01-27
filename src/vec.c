@@ -1,4 +1,5 @@
 #include "a/vec.h"
+#include <stdlib.h>
 
 #undef a_vec_at
 #undef a_vec_at_
