@@ -1,10 +1,11 @@
 # https://cmake.org/cmake/help/latest/module/UseJava.html
 include(UseJava)
 
+set(CMAKE_JNI_TARGET TRUE)
 file(GLOB_RECURSE SOURCES src/*.java)
 add_jar(ajar GENERATE_NATIVE_HEADERS ajar_native
   DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include
-  SOURCES ${SOURCES} ENTRY_POINT a OUTPUT_NAME a
+  SOURCES ${SOURCES} OUTPUT_NAME liba
 )
 install_jar(ajar ${CMAKE_INSTALL_DATADIR}/java)
 
