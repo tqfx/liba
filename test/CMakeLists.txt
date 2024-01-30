@@ -180,7 +180,7 @@ building(lpf lpf.c lpf.cpp)
 unittest(lpf)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(lpf 2.gp lpf.csv)
+  unitplot(lpf 3.gp lpf.csv)
 endif()
 
 building(main main.c main.cpp)
