@@ -15,21 +15,20 @@ static JSValue liba_polytraj5_ctor(JSContext *ctx, JSValueConst new_target, int 
     JSValue proto, clazz = JS_UNDEFINED;
     a_polytraj5 *const self = (a_polytraj5 *)js_mallocz(ctx, sizeof(a_polytraj5));
     if (!self) { return JS_EXCEPTION; }
-    double args[] = {0, 0, 0, 0, 0, 0, 0, 0};
+    double args[] = {0, 0, 0, 0, 0, 0, 0};
     if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
-    for (int i = 0; i < 4; ++i)
+    for (int i = 0; i < 3; ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { goto fail; }
     }
-    for (int i = 4; i < argc; ++i)
+    for (int i = 3; i < argc; ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { goto fail; }
     }
-    a_polytraj5_gen(self,
-                    (a_float)args[0], (a_float)args[1],
-                    (a_float)args[2], (a_float)args[3],
-                    (a_float)args[4], (a_float)args[5],
-                    (a_float)args[6], (a_float)args[7]);
+    a_polytraj5_gen(self, (a_float)args[0],
+                    (a_float)args[1], (a_float)args[2],
+                    (a_float)args[3], (a_float)args[4],
+                    (a_float)args[5], (a_float)args[6]);
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
     clazz = JS_NewObjectProtoClass(ctx, proto, liba_polytraj5_class_id);
@@ -60,21 +59,20 @@ static JSValue liba_polytraj5_gen(JSContext *ctx, JSValueConst this_val, int arg
 {
     a_polytraj5 *const self = (a_polytraj5 *)JS_GetOpaque2(ctx, this_val, liba_polytraj5_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double args[] = {0, 0, 0, 0, 0, 0, 0, 0};
+    double args[] = {0, 0, 0, 0, 0, 0, 0};
     if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
-    for (int i = 0; i < 4; ++i)
+    for (int i = 0; i < 3; ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    for (int i = 4; i < argc; ++i)
+    for (int i = 3; i < argc; ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    a_polytraj5_gen(self,
-                    (a_float)args[0], (a_float)args[1],
-                    (a_float)args[2], (a_float)args[3],
-                    (a_float)args[4], (a_float)args[5],
-                    (a_float)args[6], (a_float)args[7]);
+    a_polytraj5_gen(self, (a_float)args[0],
+                    (a_float)args[1], (a_float)args[2],
+                    (a_float)args[3], (a_float)args[4],
+                    (a_float)args[5], (a_float)args[6]);
     return JS_UNDEFINED;
 }
 
@@ -116,7 +114,7 @@ static JSCFunctionListEntry const liba_polytraj5_proto[] = {
     JS_CGETSET_MAGIC_DEF("q", liba_polytraj5_get, NULL, 0),
     JS_CGETSET_MAGIC_DEF("v", liba_polytraj5_get, NULL, 1),
     JS_CGETSET_MAGIC_DEF("a", liba_polytraj5_get, NULL, 2),
-    JS_CFUNC_DEF("gen", 8, liba_polytraj5_gen),
+    JS_CFUNC_DEF("gen", 7, liba_polytraj5_gen),
     JS_CFUNC_DEF("pos", 1, liba_polytraj5_pos),
     JS_CFUNC_DEF("vel", 1, liba_polytraj5_vel),
     JS_CFUNC_DEF("acc", 1, liba_polytraj5_acc),
@@ -130,7 +128,7 @@ int js_liba_polytraj5_init(JSContext *ctx, JSModuleDef *m)
     JSValue const proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_polytraj5_proto, A_LEN(liba_polytraj5_proto));
 
-    JSValue const clazz = JS_NewCFunction2(ctx, liba_polytraj5_ctor, "polytraj5", 8, JS_CFUNC_constructor, 0);
+    JSValue const clazz = JS_NewCFunction2(ctx, liba_polytraj5_ctor, "polytraj5", 7, JS_CFUNC_constructor, 0);
     JS_SetConstructor(ctx, clazz, proto);
     JS_SetClassProto(ctx, liba_polytraj5_class_id, proto);
 

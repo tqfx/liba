@@ -21,8 +21,7 @@ extern "C" {
 
 /***
  constructor for cubic polynomial trajectory
- @tparam number t0 time for source
- @tparam number t1 time for target
+ @tparam number ts difference between final time and initial time
  @tparam number q0 position for source
  @tparam number q1 position for target
  @tparam[opt] number v0 velocity for source
@@ -36,8 +35,7 @@ int liba_polytraj3_new(lua_State *L);
 
 /***
  generate for cubic polynomial trajectory
- @tparam number t0 time for source
- @tparam number t1 time for target
+ @tparam number ts difference between final time and initial time
  @tparam number q0 position for source
  @tparam number q1 position for target
  @tparam[opt] number v0 velocity for source

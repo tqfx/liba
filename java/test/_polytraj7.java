@@ -3,7 +3,7 @@ import liba.polytraj7;
 
 class _polytraj7 {
     public static void main(String[] args) {
-        polytraj7 obj = new polytraj7(0, 1, 0, 1, 0, 1, 0, 1, 0, 1);
+        polytraj7 obj = new polytraj7(1, 0, 1, 0, 1, 0, 1, 0, 1);
         System.out.println(Arrays.toString(obj.q()));
         System.out.println(Arrays.toString(obj.v()));
         System.out.println(Arrays.toString(obj.a()));

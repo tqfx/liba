@@ -17,7 +17,7 @@ t = (0, 1)
 q = (0, 1)
 v = (0, 1)
 data = np.arange(t[0], t[1], 0.01)
-traj = a.polytraj5(t[0], t[1], q[0], q[1], v[0], v[1])
+traj = a.polytraj5(t[1] - t[0], q[0], q[1], v[0], v[1])
 text_p = "p="
 if traj.q[0]:
     text_p += "%g" % (traj.q[0])

@@ -43,8 +43,7 @@ public class polytraj7 {
     /**
      * construct a new {@link polytraj7} object
      *
-     * @param t0 time for source
-     * @param t1 time for target
+     * @param ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      * @param v0 velocity for source
@@ -54,16 +53,15 @@ public class polytraj7 {
      * @param j0 jerk for source
      * @param j1 jerk for target
      */
-    public polytraj7(double t0, double t1, double q0, double q1, double v0, double v1,
+    public polytraj7(double ts, double q0, double q1, double v0, double v1,
             double a0, double a1, double j0, double j1) {
-        gen(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1);
+        gen(ts, q0, q1, v0, v1, a0, a1, j0, j1);
     }
 
     /**
      * generate for hepta polynomial trajectory
      *
-     * @param t0 time for source
-     * @param t1 time for target
+     * @param ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      * @param v0 velocity for source
@@ -74,7 +72,7 @@ public class polytraj7 {
      * @param j1 jerk for target
      * @return {@link polytraj7}
      */
-    public final native polytraj7 gen(double t0, double t1, double q0, double q1, double v0, double v1,
+    public final native polytraj7 gen(double ts, double q0, double q1, double v0, double v1,
             double a0, double a1, double j0, double j1);
 
     /**

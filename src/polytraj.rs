@@ -14,15 +14,7 @@ pub struct polytraj3 {
 }
 
 extern "C" {
-    fn a_polytraj3_gen(
-        ctx: *mut polytraj3,
-        t0: float,
-        t1: float,
-        q0: float,
-        q1: float,
-        v0: float,
-        v1: float,
-    );
+    fn a_polytraj3_gen(ctx: *mut polytraj3, ts: float, q0: float, q1: float, v0: float, v1: float);
     fn a_polytraj3_pos(ctx: *const polytraj3, dt: float) -> float;
     fn a_polytraj3_vel(ctx: *const polytraj3, dt: float) -> float;
     fn a_polytraj3_acc(ctx: *const polytraj3, dt: float) -> float;
@@ -30,27 +22,19 @@ extern "C" {
 
 impl polytraj3 {
     /// initialize for cubic polynomial trajectory
-    pub fn new(t0: float, t1: float, q0: float, q1: float, v0: float, v1: float) -> Self {
+    pub fn new(ts: float, q0: float, q1: float, v0: float, v1: float) -> Self {
         let mut ctx: Self = Self {
             q: [0.0; 4],
             v: [0.0; 3],
             a: [0.0; 2],
         };
-        unsafe { a_polytraj3_gen(&mut ctx, t0, t1, q0, q1, v0, v1) };
+        unsafe { a_polytraj3_gen(&mut ctx, ts, q0, q1, v0, v1) };
         ctx
     }
 
     /// generate for cubic polynomial trajectory
-    pub fn gen(
-        &mut self,
-        t0: float,
-        t1: float,
-        q0: float,
-        q1: float,
-        v0: float,
-        v1: float,
-    ) -> &mut Self {
-        unsafe { a_polytraj3_gen(self, t0, t1, q0, q1, v0, v1) };
+    pub fn gen(&mut self, ts: float, q0: float, q1: float, v0: float, v1: float) -> &mut Self {
+        unsafe { a_polytraj3_gen(self, ts, q0, q1, v0, v1) };
         self
     }
 
@@ -75,7 +59,7 @@ fn polytraj3() {
     extern crate std;
     let dt = 0.5;
     {
-        let mut a = crate::polytraj::polytraj3::new(0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
+        let mut a = crate::polytraj::polytraj3::new(1.0, 0.0, 1.0, 0.0, 1.0);
         let pos = a.pos(dt);
         let vel = a.vel(dt);
         let acc = a.acc(dt);
@@ -97,8 +81,7 @@ pub struct polytraj5 {
 extern "C" {
     fn a_polytraj5_gen(
         ctx: *mut polytraj5,
-        t0: float,
-        t1: float,
+        ts: float,
         q0: float,
         q1: float,
         v0: float,
@@ -115,8 +98,7 @@ impl polytraj5 {
     /// initialize for quintic polynomial trajectory
     #[allow(clippy::too_many_arguments)]
     pub fn new(
-        t0: float,
-        t1: float,
+        ts: float,
         q0: float,
         q1: float,
         v0: float,
@@ -129,7 +111,7 @@ impl polytraj5 {
             v: [0.0; 5],
             a: [0.0; 4],
         };
-        unsafe { a_polytraj5_gen(&mut ctx, t0, t1, q0, q1, v0, v1, a0, a1) };
+        unsafe { a_polytraj5_gen(&mut ctx, ts, q0, q1, v0, v1, a0, a1) };
         ctx
     }
 
@@ -137,8 +119,7 @@ impl polytraj5 {
     #[allow(clippy::too_many_arguments)]
     pub fn gen(
         &mut self,
-        t0: float,
-        t1: float,
+        ts: float,
         q0: float,
         q1: float,
         v0: float,
@@ -146,7 +127,7 @@ impl polytraj5 {
         a0: float,
         a1: float,
     ) -> &mut Self {
-        unsafe { a_polytraj5_gen(self, t0, t1, q0, q1, v0, v1, a0, a1) };
+        unsafe { a_polytraj5_gen(self, ts, q0, q1, v0, v1, a0, a1) };
         self
     }
 
@@ -171,7 +152,7 @@ fn polytraj5() {
     extern crate std;
     let dt = 0.5;
     {
-        let mut a = crate::polytraj::polytraj5::new(0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
+        let mut a = crate::polytraj::polytraj5::new(1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
         let pos = a.pos(dt);
         let vel = a.vel(dt);
         let acc = a.acc(dt);
@@ -195,8 +176,7 @@ pub struct polytraj7 {
 extern "C" {
     fn a_polytraj7_gen(
         ctx: *mut polytraj7,
-        t0: float,
-        t1: float,
+        ts: float,
         q0: float,
         q1: float,
         v0: float,
@@ -216,8 +196,7 @@ impl polytraj7 {
     /// initialize for hepta polynomial trajectory
     #[allow(clippy::too_many_arguments)]
     pub fn new(
-        t0: float,
-        t1: float,
+        ts: float,
         q0: float,
         q1: float,
         v0: float,
@@ -233,7 +212,7 @@ impl polytraj7 {
             a: [0.0; 6],
             j: [0.0; 5],
         };
-        unsafe { a_polytraj7_gen(&mut ctx, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) };
+        unsafe { a_polytraj7_gen(&mut ctx, ts, q0, q1, v0, v1, a0, a1, j0, j1) };
         ctx
     }
 
@@ -241,8 +220,7 @@ impl polytraj7 {
     #[allow(clippy::too_many_arguments)]
     pub fn gen(
         &mut self,
-        t0: float,
-        t1: float,
+        ts: float,
         q0: float,
         q1: float,
         v0: float,
@@ -252,7 +230,7 @@ impl polytraj7 {
         j0: float,
         j1: float,
     ) -> &mut Self {
-        unsafe { a_polytraj7_gen(self, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) };
+        unsafe { a_polytraj7_gen(self, ts, q0, q1, v0, v1, a0, a1, j0, j1) };
         self
     }
 
@@ -282,8 +260,7 @@ fn polytraj7() {
     extern crate std;
     let dt = 0.5;
     {
-        let mut a =
-            crate::polytraj::polytraj7::new(0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
+        let mut a = crate::polytraj::polytraj7::new(1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
         let pos = a.pos(dt);
         let vel = a.vel(dt);
         let acc = a.acc(dt);

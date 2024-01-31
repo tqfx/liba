@@ -613,11 +613,10 @@ struct pid_neuro: public a_pid_neuro
 
 struct polytraj3: public a_polytraj3
 {
-    A_INLINE polytraj3(a_float t0, a_float t1,
-                       a_float q0, a_float q1,
+    A_INLINE polytraj3(a_float ts, a_float q0, a_float q1,
                        a_float v0 = 0, a_float v1 = 0)
     {
-        a_polytraj3_gen(this, t0, t1, q0, q1, v0, v1);
+        a_polytraj3_gen(this, ts, q0, q1, v0, v1);
     }
     A_INLINE a_float pos(a_float dt) { return a_polytraj3::pos(dt); }
     A_INLINE a_float vel(a_float dt) { return a_polytraj3::vel(dt); }
@@ -631,12 +630,11 @@ struct polytraj3: public a_polytraj3
 
 struct polytraj5: public a_polytraj5
 {
-    A_INLINE polytraj5(a_float t0, a_float t1,
-                       a_float q0, a_float q1,
+    A_INLINE polytraj5(a_float ts, a_float q0, a_float q1,
                        a_float v0 = 0, a_float v1 = 0,
                        a_float a0 = 0, a_float a1 = 0)
     {
-        a_polytraj5_gen(this, t0, t1, q0, q1, v0, v1, a0, a1);
+        a_polytraj5_gen(this, ts, q0, q1, v0, v1, a0, a1);
     }
     A_INLINE a_float pos(a_float dt) { return a_polytraj5::pos(dt); }
     A_INLINE a_float vel(a_float dt) { return a_polytraj5::vel(dt); }
@@ -650,13 +648,12 @@ struct polytraj5: public a_polytraj5
 
 struct polytraj7: public a_polytraj7
 {
-    A_INLINE polytraj7(a_float t0, a_float t1,
-                       a_float q0, a_float q1,
+    A_INLINE polytraj7(a_float ts, a_float q0, a_float q1,
                        a_float v0 = 0, a_float v1 = 0,
                        a_float a0 = 0, a_float a1 = 0,
                        a_float j0 = 0, a_float j1 = 0)
     {
-        a_polytraj7_gen(this, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1);
+        a_polytraj7_gen(this, ts, q0, q1, v0, v1, a0, a1, j0, j1);
     }
     A_INLINE a_float pos(a_float dt) { return a_polytraj7::pos(dt); }
     A_INLINE a_float vel(a_float dt) { return a_polytraj7::vel(dt); }
@@ -952,8 +949,8 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("err", &pid_neuro::get_err)
         .property("ec", &pid_neuro::get_ec);
     emscripten::class_<polytraj3>("polytraj3")
-        .constructor<a_float, a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float, a_float, a_float>()
         .function("pos", &polytraj3::pos)
         .function("vel", &polytraj3::vel)
         .function("acc", &polytraj3::acc)
@@ -961,9 +958,9 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("v", &polytraj3::get_v)
         .property("a", &polytraj3::get_a);
     emscripten::class_<polytraj5>("polytraj5")
-        .constructor<a_float, a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
         .function("pos", &polytraj5::pos)
         .function("vel", &polytraj5::vel)
         .function("acc", &polytraj5::acc)
@@ -971,10 +968,10 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("v", &polytraj5::get_v)
         .property("a", &polytraj5::get_a);
     emscripten::class_<polytraj7>("polytraj7")
-        .constructor<a_float, a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
         .function("pos", &polytraj7::pos)
         .function("vel", &polytraj7::vel)
         .function("acc", &polytraj7::acc)

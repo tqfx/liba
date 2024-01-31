@@ -36,29 +36,27 @@ public class polytraj3 {
     /**
      * construct a new {@link polytraj3} object
      *
-     * @param t0 time for source
-     * @param t1 time for target
+     * @param ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      * @param v0 velocity for source
      * @param v1 velocity for target
      */
-    public polytraj3(double t0, double t1, double q0, double q1, double v0, double v1) {
-        gen(t0, t1, q0, q1, v0, v1);
+    public polytraj3(double ts, double q0, double q1, double v0, double v1) {
+        gen(ts, q0, q1, v0, v1);
     }
 
     /**
      * generate for cubic polynomial trajectory
      *
-     * @param t0 time for source
-     * @param t1 time for target
+     * @param ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      * @param v0 velocity for source
      * @param v1 velocity for target
      * @return {@link polytraj3}
      */
-    public final native polytraj3 gen(double t0, double t1, double q0, double q1, double v0, double v1);
+    public final native polytraj3 gen(double ts, double q0, double q1, double v0, double v1);
 
     /**
      * calculate for cubic polynomial trajectory position

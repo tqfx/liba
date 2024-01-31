@@ -640,21 +640,19 @@ declare namespace liba {
   /** constructor for cubic polynomial trajectory */
   let polytraj3: {
     /**
-     * @param t0 time for source
-     * @param t1 time for target
+     * @oaram ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      */
-    new(t0: number, t1: number, q0: number, q1: number): polytraj3;
+    new(ts: number, q0: number, q1: number): polytraj3;
     /**
-     * @param t0 time for source
-     * @param t1 time for target
+     * @oaram ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      * @param v0 velocity for source
      * @param v1 velocity for target
      */
-    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number): polytraj3;
+    new(ts: number, q0: number, q1: number, v0: number, v1: number): polytraj3;
     readonly prototype: polytraj3;
   }
 
@@ -685,24 +683,21 @@ declare namespace liba {
   /** constructor for quintic polynomial trajectory */
   let polytraj5: {
     /**
-     * @param t0 time for source
-     * @param t1 time for target
+     * @oaram ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      */
-    new(t0: number, t1: number, q0: number, q1: number): polytraj5;
+    new(ts: number, q0: number, q1: number): polytraj5;
     /**
-     * @param t0 time for source
-     * @param t1 time for target
+     * @oaram ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      * @param v0 velocity for source
      * @param v1 velocity for target
      */
-    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number): polytraj5;
+    new(ts: number, q0: number, q1: number, v0: number, v1: number): polytraj5;
     /**
-     * @param t0 time for source
-     * @param t1 time for target
+     * @oaram ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      * @param v0 velocity for source
@@ -710,7 +705,7 @@ declare namespace liba {
      * @param a0 acceleration for source
      * @param a1 acceleration for target
      */
-    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): polytraj5;
+    new(ts: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): polytraj5;
     readonly prototype: polytraj5;
   }
 
@@ -748,24 +743,21 @@ declare namespace liba {
   /** constructor for hepta polynomial trajectory */
   let polytraj7: {
     /**
-     * @param t0 time for source
-     * @param t1 time for target
+     * @oaram ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      */
-    new(t0: number, t1: number, q0: number, q1: number): polytraj7;
+    new(ts: number, q0: number, q1: number): polytraj7;
     /**
-     * @param t0 time for source
-     * @param t1 time for target
+     * @oaram ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      * @param v0 velocity for source
      * @param v1 velocity for target
      */
-    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number): polytraj7;
+    new(ts: number, q0: number, q1: number, v0: number, v1: number): polytraj7;
     /**
-     * @param t0 time for source
-     * @param t1 time for target
+     * @oaram ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      * @param v0 velocity for source
@@ -773,10 +765,9 @@ declare namespace liba {
      * @param a0 acceleration for source
      * @param a1 acceleration for target
      */
-    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): polytraj7;
+    new(ts: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): polytraj7;
     /**
-     * @param t0 time for source
-     * @param t1 time for target
+     * @oaram ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      * @param v0 velocity for source
@@ -786,7 +777,7 @@ declare namespace liba {
      * @param j0 jerk for source
      * @param j1 jerk for target
      */
-    new(t0: number, t1: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number, j0: number, j1: number): polytraj7;
+    new(ts: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number, j0: number, j1: number): polytraj7;
     readonly prototype: polytraj7;
   }
 

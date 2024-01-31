@@ -374,8 +374,7 @@ def poly_evar(x: float, *a: float) -> float: ...
 class polytraj3:
     def __init__(
         self,
-        t0: float,
-        t1: float,
+        ts: float,
         q0: float,
         q1: float,
         v0: float = 0,
@@ -383,8 +382,7 @@ class polytraj3:
     ) -> None: ...
     def gen(
         self,
-        t0: float,
-        t1: float,
+        ts: float,
         q0: float,
         q1: float,
         v0: float = 0,
@@ -412,8 +410,7 @@ class polytraj3:
 class polytraj5:
     def __init__(
         self,
-        t0: float,
-        t1: float,
+        ts: float,
         q0: float,
         q1: float,
         v0: float = 0,
@@ -423,8 +420,7 @@ class polytraj5:
     ) -> None: ...
     def gen(
         self,
-        t0: float,
-        t1: float,
+        ts: float,
         q0: float,
         q1: float,
         v0: float = 0,
@@ -454,8 +450,7 @@ class polytraj5:
 class polytraj7:
     def __init__(
         self,
-        t0: float,
-        t1: float,
+        ts: float,
         q0: float,
         q1: float,
         v0: float = 0,
@@ -467,8 +462,7 @@ class polytraj7:
     ) -> None: ...
     def gen(
         self,
-        t0: float,
-        t1: float,
+        ts: float,
         q0: float,
         q1: float,
         v0: float = 0,

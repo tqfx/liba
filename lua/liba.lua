@@ -1102,50 +1102,46 @@ function pid_neuro:inc(set, fdb) end
 ---@field a table
 local polytraj3 = {}
 ---@class liba.polytraj3
----@overload fun(t0: number, t1: number, q0: number, q1: number, v0?: number, v1?: number): a.polytraj3
+---@overload fun(ts, q0: number, q1: number, v0?: number, v1?: number): a.polytraj3
 ---@overload fun(source: table, target: table): a.polytraj3
 liba.polytraj3 = {}
 
----@param t0 number
----@param t1 number
+---@param ts number
 ---@param q0 number
 ---@param q1 number
 ---@param v0? number
 ---@param v1? number
 ---@return a.polytraj3
 ---@overload fun(source: table, target: table): a.polytraj3
-function liba.polytraj3.new(t0, t1, q0, q1, v0, v1) end
+function liba.polytraj3.new(ts, q0, q1, v0, v1) end
 
----@param t0 number
----@param t1 number
+---@param ts number
 ---@param q0 number
 ---@param q1 number
 ---@param v0? number
 ---@param v1? number
 ---@return a.polytraj3
 ---@overload fun(source: table, target: table): a.polytraj3
-function polytraj3.new(t0, t1, q0, q1, v0, v1) end
+function polytraj3.new(ts, q0, q1, v0, v1) end
 
 ---@param ctx a.polytraj3
----@param t0 number
----@param t1 number
+---@param ts number
 ---@param q0 number
 ---@param q1 number
 ---@param v0? number
 ---@param v1? number
 ---@return a.polytraj3
 ---@overload fun(ctx: a.polytraj3, source: table, target: table): a.polytraj3
-function liba.polytraj3.gen(ctx, t0, t1, q0, q1, v0, v1) end
+function liba.polytraj3.gen(ctx, ts, q0, q1, v0, v1) end
 
----@param t0 number
----@param t1 number
+---@param ts number
 ---@param q0 number
 ---@param q1 number
 ---@param v0? number
 ---@param v1? number
 ---@return a.polytraj3
 ---@overload fun(source: table, target: table): a.polytraj3
-function polytraj3:gen(t0, t1, q0, q1, v0, v1) end
+function polytraj3:gen(ts, q0, q1, v0, v1) end
 
 ---@param ctx a.polytraj3
 ---@param dt number
@@ -1180,12 +1176,11 @@ function polytraj3:acc(dt) end
 ---@field a table
 local polytraj5 = {}
 ---@class liba.polytraj5
----@overload fun(t0: number, t1: number, q0: number, q1: number, v0?: number, v1?: number, a0?: number, a1?: number): a.polytraj5
+---@overload fun(ts, q0: number, q1: number, v0?: number, v1?: number, a0?: number, a1?: number): a.polytraj5
 ---@overload fun(source: table, target: table): a.polytraj5
 liba.polytraj5 = {}
 
----@param t0 number
----@param t1 number
+---@param ts number
 ---@param q0 number
 ---@param q1 number
 ---@param v0? number
@@ -1194,10 +1189,9 @@ liba.polytraj5 = {}
 ---@param a1? number
 ---@return a.polytraj5
 ---@overload fun(source: table, target: table): a.polytraj5
-function liba.polytraj5.new(t0, t1, q0, q1, v0, v1, a0, a1) end
+function liba.polytraj5.new(ts, q0, q1, v0, v1, a0, a1) end
 
----@param t0 number
----@param t1 number
+---@param ts number
 ---@param q0 number
 ---@param q1 number
 ---@param v0? number
@@ -1206,11 +1200,10 @@ function liba.polytraj5.new(t0, t1, q0, q1, v0, v1, a0, a1) end
 ---@param a1? number
 ---@return a.polytraj5
 ---@overload fun(source: table, target: table): a.polytraj5
-function polytraj5.new(t0, t1, q0, q1, v0, v1, a0, a1) end
+function polytraj5.new(ts, q0, q1, v0, v1, a0, a1) end
 
 ---@param ctx a.polytraj5
----@param t0 number
----@param t1 number
+---@param ts number
 ---@param q0 number
 ---@param q1 number
 ---@param v0? number
@@ -1219,10 +1212,9 @@ function polytraj5.new(t0, t1, q0, q1, v0, v1, a0, a1) end
 ---@param a1? number
 ---@return a.polytraj5
 ---@overload fun(ctx: a.polytraj5, source: table, target: table): a.polytraj5
-function liba.polytraj5.gen(ctx, t0, t1, q0, q1, v0, v1, a0, a1) end
+function liba.polytraj5.gen(ctx, ts, q0, q1, v0, v1, a0, a1) end
 
----@param t0 number
----@param t1 number
+---@param ts number
 ---@param q0 number
 ---@param q1 number
 ---@param v0? number
@@ -1231,7 +1223,7 @@ function liba.polytraj5.gen(ctx, t0, t1, q0, q1, v0, v1, a0, a1) end
 ---@param a1? number
 ---@return a.polytraj5
 ---@overload fun(source: table, target: table): a.polytraj5
-function polytraj5:gen(t0, t1, q0, q1, v0, v1, a0, a1) end
+function polytraj5:gen(ts, q0, q1, v0, v1, a0, a1) end
 
 ---@param ctx a.polytraj5
 ---@param dt number
@@ -1267,12 +1259,11 @@ function polytraj5:acc(dt) end
 ---@field j table
 local polytraj7 = {}
 ---@class liba.polytraj7
----@overload fun(t0: number, t1: number, q0: number, q1: number, v0?: number, v1?: number, a0?: number, a1?: number, j0?: number, j1?: number): a.polytraj7
+---@overload fun(ts, q0: number, q1: number, v0?: number, v1?: number, a0?: number, a1?: number, j0?: number, j1?: number): a.polytraj7
 ---@overload fun(source: table, target: table): a.polytraj7
 liba.polytraj7 = {}
 
----@param t0 number
----@param t1 number
+---@param ts number
 ---@param q0 number
 ---@param q1 number
 ---@param v0? number
@@ -1283,10 +1274,9 @@ liba.polytraj7 = {}
 ---@param j1? number
 ---@return a.polytraj7
 ---@overload fun(source: table, target: table): a.polytraj7
-function liba.polytraj7.new(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
+function liba.polytraj7.new(ts, q0, q1, v0, v1, a0, a1, j0, j1) end
 
----@param t0 number
----@param t1 number
+---@param ts number
 ---@param q0 number
 ---@param q1 number
 ---@param v0? number
@@ -1297,11 +1287,10 @@ function liba.polytraj7.new(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
 ---@param j1? number
 ---@return a.polytraj7
 ---@overload fun(source: table, target: table): a.polytraj7
-function polytraj7.new(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
+function polytraj7.new(ts, q0, q1, v0, v1, a0, a1, j0, j1) end
 
 ---@param ctx a.polytraj7
----@param t0 number
----@param t1 number
+---@param ts number
 ---@param q0 number
 ---@param q1 number
 ---@param v0? number
@@ -1312,10 +1301,9 @@ function polytraj7.new(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
 ---@param j1? number
 ---@return a.polytraj7
 ---@overload fun(ctx: a.polytraj7, source: table, target: table): a.polytraj7
-function liba.polytraj7.gen(ctx, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
+function liba.polytraj7.gen(ctx, ts, q0, q1, v0, v1, a0, a1, j0, j1) end
 
----@param t0 number
----@param t1 number
+---@param ts number
 ---@param q0 number
 ---@param q1 number
 ---@param v0? number
@@ -1326,7 +1314,7 @@ function liba.polytraj7.gen(ctx, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
 ---@param j1? number
 ---@return a.polytraj7
 ---@overload fun(source: table, target: table): a.polytraj7
-function polytraj7:gen(t0, t1, q0, q1, v0, v1, a0, a1, j0, j1) end
+function polytraj7:gen(ts, q0, q1, v0, v1, a0, a1, j0, j1) end
 
 ---@param ctx a.polytraj7
 ---@param dt number

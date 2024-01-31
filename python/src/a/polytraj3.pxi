@@ -5,11 +5,11 @@ from a.polytraj3 cimport *
 cdef class polytraj3:
     '''cubic polynomial trajectory'''
     cdef a_polytraj3 ctx
-    def __init__(self, a_float t0, a_float t1, a_float q0, a_float q1, a_float v0 = 0, a_float v1 = 0):
-        a_polytraj3_gen(&self.ctx, t0, t1, q0, q1, v0, v1)
-    def gen(self, a_float t0, a_float t1, a_float q0, a_float q1, a_float v0 = 0, a_float v1 = 0):
+    def __init__(self, a_float ts, a_float q0, a_float q1, a_float v0 = 0, a_float v1 = 0):
+        a_polytraj3_gen(&self.ctx, ts, q0, q1, v0, v1)
+    def gen(self, a_float ts, a_float q0, a_float q1, a_float v0 = 0, a_float v1 = 0):
         '''generation function'''
-        a_polytraj3_gen(&self.ctx, t0, t1, q0, q1, v0, v1)
+        a_polytraj3_gen(&self.ctx, ts, q0, q1, v0, v1)
         return self
     def pos(self, dt):
         '''calculate position'''

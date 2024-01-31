@@ -1,13 +1,12 @@
 #include "a/polytraj5.h"
 #include "a/poly.h"
 
-void a_polytraj5_gen(a_polytraj5 *ctx,
-                     a_float t0, a_float t1,
+void a_polytraj5_gen(a_polytraj5 *ctx, a_float ts,
                      a_float q0, a_float q1,
                      a_float v0, a_float v1,
                      a_float a0, a_float a1)
 {
-    a_polytraj5_gen0(ctx, t0, t1, q0, q1, v0, v1, a0, a1);
+    a_polytraj5_gen0(ctx, ts, q0, q1, v0, v1, a0, a1);
 #if defined(A_POLYTRAJ5) && (A_POLYTRAJ5 + 0 > 1)
     a_polytraj5_gen1(ctx);
 #endif /* A_POLYTRAJ5 */
@@ -16,15 +15,13 @@ void a_polytraj5_gen(a_polytraj5 *ctx,
 #endif /* A_POLYTRAJ5 */
 }
 
-void a_polytraj5_gen0(a_polytraj5 *ctx,
-                      a_float t0, a_float t1,
+void a_polytraj5_gen0(a_polytraj5 *ctx, a_float ts,
                       a_float q0, a_float q1,
                       a_float v0, a_float v1,
                       a_float a0, a_float a1)
 {
     a_float const q = q1 - q0;
-    a_float const t = t1 - t0;
-    a_float const inv_t1 = 1 / t;
+    a_float const inv_t1 = 1 / ts;
     a_float const inv_t2 = inv_t1 * inv_t1;
     a_float const inv_t3 = inv_t1 * inv_t2;
     a_float const inv_t4 = inv_t2 * inv_t2;

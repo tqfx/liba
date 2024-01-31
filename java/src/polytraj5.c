@@ -17,12 +17,12 @@ JNIEXPORT void JNICALL Java_liba_polytraj5_INIT(JNIEnv *_env, jclass _cls)
     L.alloc = (*_env)->GetStaticMethodID(_env, _bb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
 }
 
-JNIEXPORT jobject JNICALL Java_liba_polytraj5_gen(JNIEnv *_env, jobject _obj, jdouble t0, jdouble t1, jdouble q0, jdouble q1, jdouble v0, jdouble v1, jdouble a0, jdouble a1)
+JNIEXPORT jobject JNICALL Java_liba_polytraj5_gen(JNIEnv *_env, jobject _obj, jdouble ts, jdouble q0, jdouble q1, jdouble v0, jdouble v1, jdouble a0, jdouble a1)
 {
     jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)sizeof(a_polytraj5));
     a_polytraj5 *ctx = (a_polytraj5 *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
-    a_polytraj5_gen(ctx, t0, t1, q0, q1, v0, v1, a0, a1);
+    a_polytraj5_gen(ctx, ts, q0, q1, v0, v1, a0, a1);
     return _obj;
 }
 

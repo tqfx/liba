@@ -41,8 +41,7 @@ extern "C" {
   \end{array}\right.
  \f}
  @param[in,out] ctx points to an instance of hepta polynomial trajectory
- @param[in] t0 time for source
- @param[in] t1 time for target
+ @param[in] ts difference between final time and initial time
  @param[in] q0 position for source
  @param[in] q1 position for target
  @param[in] v0 velocity for source
@@ -52,14 +51,12 @@ extern "C" {
  @param[in] j0 jerk for source
  @param[in] j1 jerk for target
 */
-A_EXTERN void a_polytraj7_gen(a_polytraj7 *ctx,
-                              a_float t0, a_float t1,
+A_EXTERN void a_polytraj7_gen(a_polytraj7 *ctx, a_float ts,
                               a_float q0, a_float q1,
                               a_float v0, a_float v1,
                               a_float a0, a_float a1,
                               a_float j0, a_float j1);
-A_EXTERN void a_polytraj7_gen0(a_polytraj7 *ctx,
-                               a_float t0, a_float t1,
+A_EXTERN void a_polytraj7_gen0(a_polytraj7 *ctx, a_float ts,
                                a_float q0, a_float q1,
                                a_float v0, a_float v1,
                                a_float a0, a_float a1,
@@ -164,21 +161,19 @@ struct a_polytraj7
     a_float j[5]; //!< coefficients of jerk
 #endif /* A_POLYTRAJ7 */
 #if defined(__cplusplus)
-    A_INLINE void gen(a_float t0, a_float t1,
-                      a_float q0, a_float q1,
+    A_INLINE void gen(a_float ts, a_float q0, a_float q1,
                       a_float v0 = 0, a_float v1 = 0,
                       a_float a0 = 0, a_float a1 = 0,
                       a_float j0 = 0, a_float j1 = 0)
     {
-        a_polytraj7_gen(this, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1);
+        a_polytraj7_gen(this, ts, q0, q1, v0, v1, a0, a1, j0, j1);
     }
-    A_INLINE void gen0(a_float t0, a_float t1,
-                       a_float q0, a_float q1,
+    A_INLINE void gen0(a_float ts, a_float q0, a_float q1,
                        a_float v0 = 0, a_float v1 = 0,
                        a_float a0 = 0, a_float a1 = 0,
                        a_float j0 = 0, a_float j1 = 0)
     {
-        a_polytraj7_gen0(this, t0, t1, q0, q1, v0, v1, a0, a1, j0, j1);
+        a_polytraj7_gen0(this, ts, q0, q1, v0, v1, a0, a1, j0, j1);
     }
     A_INLINE a_float pos(a_float dt)
     {

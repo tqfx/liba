@@ -8,45 +8,42 @@
 
 static int liba_polytraj5_gen_(lua_State *L, a_polytraj5 *ctx, int arg, int top)
 {
-    a_float t0 = 0, q0 = 0, v0 = 0, a0 = 0;
-    a_float t1 = 0, q1 = 0, v1 = 0, a1 = 0;
+    a_float q0 = 0, v0 = 0, a0 = 0;
+    a_float q1 = 0, v1 = 0, a1 = 0;
+    a_float ts = 0;
     switch (top)
     {
     default:
-    case 8:
-        a1 = (a_float)luaL_checknumber(L, arg + 8);
-        A_FALLTHROUGH;
     case 7:
-        a0 = (a_float)luaL_checknumber(L, arg + 7);
+        a1 = (a_float)luaL_checknumber(L, arg + 7);
         A_FALLTHROUGH;
     case 6:
-        v1 = (a_float)luaL_checknumber(L, arg + 6);
+        a0 = (a_float)luaL_checknumber(L, arg + 6);
         A_FALLTHROUGH;
     case 5:
-        v0 = (a_float)luaL_checknumber(L, arg + 5);
+        v1 = (a_float)luaL_checknumber(L, arg + 5);
         A_FALLTHROUGH;
     case 4:
-        q1 = (a_float)luaL_checknumber(L, arg + 4);
+        v0 = (a_float)luaL_checknumber(L, arg + 4);
         A_FALLTHROUGH;
     case 3:
-        q0 = (a_float)luaL_checknumber(L, arg + 3);
+        q1 = (a_float)luaL_checknumber(L, arg + 3);
         A_FALLTHROUGH;
     case 2:
-        t1 = (a_float)luaL_checknumber(L, arg + 2);
+        q0 = (a_float)luaL_checknumber(L, arg + 2);
         A_FALLTHROUGH;
     case 1:
-        t0 = (a_float)luaL_checknumber(L, arg + 1);
+        ts = (a_float)luaL_checknumber(L, arg + 1);
         A_FALLTHROUGH;
     case 0:;
     }
-    a_polytraj5_gen(ctx, t0, t1, q0, q1, v0, v1, a0, a1);
+    a_polytraj5_gen(ctx, ts, q0, q1, v0, v1, a0, a1);
     return 1;
 }
 
 /***
  constructor for quintic polynomial trajectory
- @tparam number t0 time for source
- @tparam number t1 time for target
+ @tparam number ts difference between final time and initial time
  @tparam number q0 position for source
  @tparam number q1 position for target
  @tparam[opt] number v0 velocity for source
@@ -62,7 +59,7 @@ int liba_polytraj5_new(lua_State *L)
 {
     int const top = lua_gettop(L);
     int const type = lua_type(L, 1);
-    if (top > 3 && type == LUA_TNUMBER)
+    if (top > 2 && type == LUA_TNUMBER)
     {
         a_polytraj5 *const ctx = lua_newclass(L, a_polytraj5);
         lua_registry_get(L, liba_polytraj5_new);
@@ -80,8 +77,7 @@ int liba_polytraj5_new(lua_State *L)
         a_polytraj5 *const ctx = lua_newclass(L, a_polytraj5);
         lua_registry_get(L, liba_polytraj5_new);
         lua_setmetatable(L, -2);
-        a_polytraj5_gen(ctx,
-                        source[0], target[0],
+        a_polytraj5_gen(ctx, target[0] - source[0],
                         source[1], target[1],
                         source[2], target[2],
                         source[3], target[3]);
@@ -93,8 +89,7 @@ int liba_polytraj5_new(lua_State *L)
 /***
  generate for quintic polynomial trajectory
  @tparam a.polytraj5 ctx quintic polynomial trajectory userdata
- @tparam number t0 time for source
- @tparam number t1 time for target
+ @tparam number ts difference between final time and initial time
  @tparam number q0 position for source
  @tparam number q1 position for target
  @tparam[opt] number v0 velocity for source
@@ -110,7 +105,7 @@ int liba_polytraj5_gen(lua_State *L)
 {
     int const top = lua_gettop(L);
     int const type = lua_type(L, 2);
-    if (top > 4 && type == LUA_TNUMBER)
+    if (top > 3 && type == LUA_TNUMBER)
     {
         luaL_checktype(L, 1, LUA_TUSERDATA);
         a_polytraj5 *const ctx = (a_polytraj5 *)lua_touserdata(L, 1);
@@ -127,8 +122,7 @@ int liba_polytraj5_gen(lua_State *L)
         a_polytraj5 *const ctx = (a_polytraj5 *)lua_touserdata(L, 1);
         lua_array_num_get(L, 2, source, A_LEN(source));
         lua_array_num_get(L, 3, target, A_LEN(target));
-        a_polytraj5_gen(ctx,
-                        source[0], target[0],
+        a_polytraj5_gen(ctx, target[0] - source[0],
                         source[1], target[1],
                         source[2], target[2],
                         source[3], target[3]);

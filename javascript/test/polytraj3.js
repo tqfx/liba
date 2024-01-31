@@ -8,7 +8,7 @@ function do_leak_check() {
         liba.do_leak_check()
     }
 }
-var ctx = new liba.polytraj3(0, 1, 0, 1, 0, 1)
+var ctx = new liba.polytraj3(1, 0, 1, 0, 1)
 console.log(ctx.q)
 console.log(ctx.v)
 console.log(ctx.a)
