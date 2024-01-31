@@ -78,36 +78,36 @@ a_u32 a_hash_sdbm_(void const *_ptr, a_size siz, a_u32 val)
     return val;
 }
 
-void a_float_push(a_float *array_p, a_size array_n,
+void a_float_push(a_float *block_p, a_size block_n,
                   a_float const *cache_p, a_size cache_n)
 {
-    a_size const n = A_MIN(cache_n, array_n);
-    for (a_size i = array_n, j = array_n - n; j;)
+    a_size const n = A_MIN(cache_n, block_n);
+    for (a_size t = block_n, s = block_n - n; s;)
     {
-        array_p[--i] = array_p[--j];
+        block_p[--t] = block_p[--s];
     }
     for (a_size i = 0; i != n; ++i)
     {
-        array_p[i] = cache_p[i];
+        block_p[i] = cache_p[i];
     }
 }
 
-void a_float_roll(a_float *array_p, a_size array_n,
+void a_float_roll(a_float *block_p, a_size block_n,
                   a_float *shift_p, a_size shift_n)
 {
-    a_size const shift = shift_n % array_n;
-    a_size const start = array_n - shift;
-    for (a_size i = 0, j = start; i != shift; ++i, ++j)
+    a_size const shift = shift_n % block_n;
+    a_size const start = block_n - shift;
+    for (a_size t = 0, s = start; t != shift;)
     {
-        shift_p[i] = array_p[j];
+        shift_p[t++] = block_p[s++];
     }
-    for (a_size i = array_n, j = start; j;)
+    for (a_size t = block_n, s = start; s;)
     {
-        array_p[--i] = array_p[--j];
+        block_p[--t] = block_p[--s];
     }
     for (a_size i = 0; i != shift; ++i)
     {
-        array_p[i] = shift_p[i];
+        block_p[i] = shift_p[i];
     }
 }
 
