@@ -116,6 +116,10 @@ target("test/tf")
 building({ "tf.c", "tf.cpp" })
 target_end()
 
+target("test/traptraj")
+building({ "traptraj.c", "traptraj.cpp" })
+target_end()
+
 target("test/str")
 building({ "str.c", "str.cpp" })
 target_end()

@@ -48,4 +48,6 @@ unittest(polytraj7 polytraj7)
 
 unittest(tf tf)
 
+unittest(traptraj traptraj)
+
 unittest(version version)

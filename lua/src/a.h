@@ -160,6 +160,7 @@ A_PUBLIC int luaopen_liba_polytraj3(lua_State *L);
 A_PUBLIC int luaopen_liba_polytraj5(lua_State *L);
 A_PUBLIC int luaopen_liba_polytraj7(lua_State *L);
 A_PUBLIC int luaopen_liba_tf(lua_State *L);
+A_PUBLIC int luaopen_liba_traptraj(lua_State *L);
 A_PUBLIC int luaopen_liba_version(lua_State *L);
 
 #if defined(__cplusplus)

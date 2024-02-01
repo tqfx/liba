@@ -26,4 +26,8 @@ unittest(polytraj5 polytraj5)
 
 unittest(polytraj7 polytraj7)
 
+unittest(tf tf)
+
+unittest(traptraj traptraj)
+
 unittest(version version)

@@ -62,5 +62,8 @@ unittest(polytraj7)
 building(tf)
 unittest(tf)
 
+building(traptraj)
+unittest(traptraj)
+
 building(version)
 unittest(version)

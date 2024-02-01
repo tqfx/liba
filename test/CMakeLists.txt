@@ -253,21 +253,21 @@ building(polytraj3 polytraj3.c polytraj3.cpp)
 unittest(polytraj3 ARGS polytraj3.csv 0 10 0 10)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(polytraj3 polytraj3.gp polytraj3.csv 0 10 0 10)
+  unitplot(polytraj3 traj3.gp polytraj3.csv 0 10 0 10)
 endif()
 
 building(polytraj5 polytraj5.c polytraj5.cpp)
 unittest(polytraj5 ARGS polytraj5.csv 0 10 0 10)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(polytraj5 polytraj3.gp polytraj5.csv 0 10 0 10)
+  unitplot(polytraj5 traj3.gp polytraj5.csv 0 10 0 10)
 endif()
 
 building(polytraj7 polytraj7.c polytraj7.cpp)
 unittest(polytraj7 ARGS polytraj7.csv 0 10 0 10)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(polytraj7 polytraj7.gp polytraj7.csv 0 10 0 10)
+  unitplot(polytraj7 traj4.gp polytraj7.csv 0 10 0 10)
 endif()
 
 building(que que.c que.cpp)
@@ -294,6 +294,13 @@ unittest(tf)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(tf 2.gp tf.csv)
+endif()
+
+building(traptraj traptraj.c traptraj.cpp)
+unittest(traptraj ARGS traptraj.csv 10 2 2 -2)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(traptraj traj3.gp traptraj.csv 10 2 2 -2)
 endif()
 
 building(utf utf.c utf.cpp)

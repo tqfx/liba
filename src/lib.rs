@@ -33,6 +33,7 @@ pub mod mf;
 pub mod pid;
 pub mod polytraj;
 pub mod tf;
+pub mod traptraj;
 pub mod version;
 
 extern "C" {

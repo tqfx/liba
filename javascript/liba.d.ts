@@ -640,13 +640,13 @@ declare namespace liba {
   /** constructor for cubic polynomial trajectory */
   let polytraj3: {
     /**
-     * @oaram ts difference between final time and initial time
+     * @param ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      */
     new(ts: number, q0: number, q1: number): polytraj3;
     /**
-     * @oaram ts difference between final time and initial time
+     * @param ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      * @param v0 velocity for source
@@ -683,13 +683,13 @@ declare namespace liba {
   /** constructor for quintic polynomial trajectory */
   let polytraj5: {
     /**
-     * @oaram ts difference between final time and initial time
+     * @param ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      */
     new(ts: number, q0: number, q1: number): polytraj5;
     /**
-     * @oaram ts difference between final time and initial time
+     * @param ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      * @param v0 velocity for source
@@ -697,7 +697,7 @@ declare namespace liba {
      */
     new(ts: number, q0: number, q1: number, v0: number, v1: number): polytraj5;
     /**
-     * @oaram ts difference between final time and initial time
+     * @param ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      * @param v0 velocity for source
@@ -743,13 +743,13 @@ declare namespace liba {
   /** constructor for hepta polynomial trajectory */
   let polytraj7: {
     /**
-     * @oaram ts difference between final time and initial time
+     * @param ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      */
     new(ts: number, q0: number, q1: number): polytraj7;
     /**
-     * @oaram ts difference between final time and initial time
+     * @param ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      * @param v0 velocity for source
@@ -757,7 +757,7 @@ declare namespace liba {
      */
     new(ts: number, q0: number, q1: number, v0: number, v1: number): polytraj7;
     /**
-     * @oaram ts difference between final time and initial time
+     * @param ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      * @param v0 velocity for source
@@ -767,7 +767,7 @@ declare namespace liba {
      */
     new(ts: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): polytraj7;
     /**
-     * @oaram ts difference between final time and initial time
+     * @param ts difference between final time and initial time
      * @param q0 position for source
      * @param q1 position for target
      * @param v0 velocity for source
@@ -817,6 +817,67 @@ declare namespace liba {
      */
     new(num: number[], den: number[]): tf;
     readonly prototype: tf;
+  }
+
+  interface traptraj {
+    /** acceleration before constant velocity */
+    readonly ac: number;
+    /** acceleration after constant velocity */
+    readonly de: number;
+    /** time period of increased velocity */
+    readonly ta: number;
+    /** displacement as velocity increases */
+    readonly qa: number;
+    /** time period of constant velocity */
+    readonly tc: number;
+    /** displacement at constant velocity */
+    readonly qc: number;
+    /** time period of decreased velocity */
+    readonly td: number;
+    /** displacement as velocity decreases */
+    readonly qd: number;
+    /** initial velocity */
+    readonly vs: number;
+    /** constant velocity */
+    readonly vc: number;
+    /** final velocity */
+    readonly ve: number;
+    /**
+     * calculate for trapezoidal velocity profile trajectory position
+     * @param dt difference between current time and initial time
+     */
+    pos(dt: number): number;
+    /**
+     * calculate for trapezoidal velocity profile trajectory velocity
+     * @param dt difference between current time and initial time
+     */
+    vel(dt: number): number;
+    /**
+     * calculate for trapezoidal velocity profile trajectory acceleration
+     * @param dt difference between current time and initial time
+     */
+    acc(dt: number): number;
+    delete(): void;
+  }
+  /** constructor for trapezoidal velocity profile trajectory */
+  let traptraj: {
+    /**
+     * @param qm defines the distance from the start point to the end point
+     * @param vm defines the maximum velocity at which the system can work
+     * @param ac defines the acceleration before constant velocity
+     * @param de defines the acceleration after constant velocity
+     */
+    new(qm: number, vm: number, ac: number, de: number): traptraj;
+    /**
+     * @param qm defines the distance from the start point to the end point
+     * @param vm defines the maximum velocity at which the system can work
+     * @param ac defines the acceleration before constant velocity
+     * @param de defines the acceleration after constant velocity
+     * @param vs defines the starting velocity
+     * @param ve defines the ending velocity
+     */
+    new(qm: number, vm: number, ac: number, de: number, vs: number, ve: number): traptraj;
+    readonly prototype: traptraj;
   }
 
   interface version {

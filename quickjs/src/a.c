@@ -114,6 +114,7 @@ int js_liba_init(JSContext *ctx, JSModuleDef *m)
     js_liba_polytraj5_init(ctx, m);
     js_liba_polytraj7_init(ctx, m);
     js_liba_tf_init(ctx, m);
+    js_liba_traptraj_init(ctx, m);
     js_liba_version_init(ctx, m);
     return JS_SetModuleExportList(ctx, m, liba_proto, A_LEN(liba_proto));
 }
@@ -136,6 +137,7 @@ JSModuleDef *js_init_module(JSContext *ctx, char const *module_name)
         JS_AddModuleExport(ctx, m, "polytraj5");
         JS_AddModuleExport(ctx, m, "polytraj7");
         JS_AddModuleExport(ctx, m, "tf");
+        JS_AddModuleExport(ctx, m, "traptraj");
         JS_AddModuleExport(ctx, m, "version");
         JS_AddModuleExportList(ctx, m, liba_proto, A_LEN(liba_proto));
     }

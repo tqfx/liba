@@ -593,12 +593,6 @@ struct pid_neuro: public a_pid_neuro
     A_INLINE void set_ki(a_float ki) { pid.ki = ki; }
     A_INLINE a_float get_kd() const { return pid.kd; }
     A_INLINE void set_kd(a_float kd) { pid.kd = kd; }
-    A_INLINE a_float get_wp() const { return wp; }
-    A_INLINE void set_wp(a_float _wp) { wp = _wp; }
-    A_INLINE a_float get_wi() const { return wi; }
-    A_INLINE void set_wi(a_float _wi) { wi = _wi; }
-    A_INLINE a_float get_wd() const { return wd; }
-    A_INLINE void set_wd(a_float _wd) { wd = _wd; }
     A_INLINE a_float get_outmax() const { return pid.outmax; }
     A_INLINE void set_outmax(a_float outmax) { pid.outmax = outmax; }
     A_INLINE a_float get_outmin() const { return pid.outmin; }
@@ -606,7 +600,6 @@ struct pid_neuro: public a_pid_neuro
     A_INLINE a_float get_out() const { return pid.out; }
     A_INLINE a_float get_fdb() const { return pid.fdb; }
     A_INLINE a_float get_err() const { return pid.err; }
-    A_INLINE a_float get_ec() const { return ec; }
 };
 
 #include "a/polytraj3.h"
@@ -731,6 +724,21 @@ struct tf: public a_tf
         a_tf::zero();
         return this;
     }
+};
+
+#include "a/traptraj.h"
+
+struct traptraj: public a_traptraj
+{
+    A_INLINE traptraj(a_float qm, a_float vm,
+                      a_float _ac, a_float _de,
+                      a_float _vs = 0, a_float _ve = 0)
+    {
+        a_traptraj_gen(this, qm, vm, _ac, _de, _vs, _ve);
+    }
+    A_INLINE a_float pos(a_float dt) { return a_traptraj::pos(dt); }
+    A_INLINE a_float vel(a_float dt) { return a_traptraj::vel(dt); }
+    A_INLINE a_float acc(a_float dt) { return a_traptraj::acc(dt); }
 };
 
 #include "a/version.h"
@@ -939,15 +947,15 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("kp", &pid_neuro::get_kp, &pid_neuro::set_kp)
         .property("ki", &pid_neuro::get_ki, &pid_neuro::set_ki)
         .property("kd", &pid_neuro::get_kd, &pid_neuro::set_kd)
-        .property("wp", &pid_neuro::get_wp, &pid_neuro::set_wp)
-        .property("wi", &pid_neuro::get_wi, &pid_neuro::set_wi)
-        .property("wd", &pid_neuro::get_wd, &pid_neuro::set_wd)
+        .property<a_float, void>("wp", &pid_neuro::wp)
+        .property<a_float, void>("wi", &pid_neuro::wi)
+        .property<a_float, void>("wd", &pid_neuro::wd)
         .property("outmax", &pid_neuro::get_outmax, &pid_neuro::set_outmax)
         .property("outmin", &pid_neuro::get_outmin, &pid_neuro::set_outmin)
         .property("out", &pid_neuro::get_out)
         .property("fdb", &pid_neuro::get_fdb)
         .property("err", &pid_neuro::get_err)
-        .property("ec", &pid_neuro::get_ec);
+        .property<a_float const, void>("ec", &pid_neuro::ec);
     emscripten::class_<polytraj3>("polytraj3")
         .constructor<a_float, a_float, a_float>()
         .constructor<a_float, a_float, a_float, a_float, a_float>()
@@ -990,6 +998,23 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("output", &tf::get_output)
         .property("num", &tf::get_num, &tf::set_num)
         .property("den", &tf::get_den, &tf::set_den);
+    emscripten::class_<traptraj>("traptraj")
+        .constructor<a_float, a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float, a_float, a_float, a_float>()
+        .property<a_float const, void>("ac", &traptraj::ac)
+        .property<a_float const, void>("de", &traptraj::de)
+        .property<a_float const, void>("ta", &traptraj::ta)
+        .property<a_float const, void>("qa", &traptraj::qa)
+        .property<a_float const, void>("tc", &traptraj::tc)
+        .property<a_float const, void>("qc", &traptraj::qc)
+        .property<a_float const, void>("td", &traptraj::td)
+        .property<a_float const, void>("qd", &traptraj::qd)
+        .property<a_float const, void>("vs", &traptraj::vs)
+        .property<a_float const, void>("vc", &traptraj::vc)
+        .property<a_float const, void>("ve", &traptraj::ve)
+        .function("pos", &traptraj::pos)
+        .function("vel", &traptraj::vel)
+        .function("acc", &traptraj::acc);
     emscripten::class_<version>("version")
         .constructor<>()
         .constructor<a_uint>()

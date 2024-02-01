@@ -1102,7 +1102,7 @@ function pid_neuro:inc(set, fdb) end
 ---@field a table
 local polytraj3 = {}
 ---@class liba.polytraj3
----@overload fun(ts, q0: number, q1: number, v0?: number, v1?: number): a.polytraj3
+---@overload fun(ts: number, q0: number, q1: number, v0?: number, v1?: number): a.polytraj3
 ---@overload fun(source: table, target: table): a.polytraj3
 liba.polytraj3 = {}
 
@@ -1176,7 +1176,7 @@ function polytraj3:acc(dt) end
 ---@field a table
 local polytraj5 = {}
 ---@class liba.polytraj5
----@overload fun(ts, q0: number, q1: number, v0?: number, v1?: number, a0?: number, a1?: number): a.polytraj5
+---@overload fun(ts: number, q0: number, q1: number, v0?: number, v1?: number, a0?: number, a1?: number): a.polytraj5
 ---@overload fun(source: table, target: table): a.polytraj5
 liba.polytraj5 = {}
 
@@ -1259,7 +1259,7 @@ function polytraj5:acc(dt) end
 ---@field j table
 local polytraj7 = {}
 ---@class liba.polytraj7
----@overload fun(ts, q0: number, q1: number, v0?: number, v1?: number, a0?: number, a1?: number, j0?: number, j1?: number): a.polytraj7
+---@overload fun(ts: number, q0: number, q1: number, v0?: number, v1?: number, a0?: number, a1?: number, j0?: number, j1?: number): a.polytraj7
 ---@overload fun(source: table, target: table): a.polytraj7
 liba.polytraj7 = {}
 
@@ -1404,6 +1404,87 @@ function liba.tf.zero(ctx) end
 
 ---@return a.tf
 function tf:zero() end
+
+---@class a.traptraj
+---@field ac number
+---@field de number
+---@field ta number
+---@field qa number
+---@field tc number
+---@field qc number
+---@field td number
+---@field qd number
+---@field vs number
+---@field vc number
+---@field ve number
+local traptraj = {}
+---@class liba.traptraj
+---@overload fun(qm: number, vm: number, ac: number, de: number, vs?: number, ve?: number): a.traptraj
+liba.traptraj = {}
+
+---@param qm number
+---@param vm number
+---@param ac number
+---@param de number
+---@param vs? number
+---@param ve? number
+---@return a.traptraj
+function liba.traptraj.new(qm, vm, ac, de, vs, ve) end
+
+---@param qm number
+---@param vm number
+---@param ac number
+---@param de number
+---@param vs? number
+---@param ve? number
+---@return a.traptraj
+function traptraj.new(qm, vm, ac, de, vs, ve) end
+
+---@param ctx a.traptraj
+---@param qm number
+---@param vm number
+---@param ac number
+---@param de number
+---@param vs? number
+---@param ve? number
+---@return number
+function liba.traptraj.gen(ctx, qm, vm, ac, de, vs, ve) end
+
+---@param qm number
+---@param vm number
+---@param ac number
+---@param de number
+---@param vs? number
+---@param ve? number
+---@return number
+function traptraj:gen(qm, vm, ac, de, vs, ve) end
+
+---@param ctx a.traptraj
+---@param dt number
+---@return number
+function liba.traptraj.pos(ctx, dt) end
+
+---@param dt number
+---@return number
+function traptraj:pos(dt) end
+
+---@param ctx a.traptraj
+---@param dt number
+---@return number
+function liba.traptraj.vel(ctx, dt) end
+
+---@param dt number
+---@return number
+function traptraj:vel(dt) end
+
+---@param ctx a.traptraj
+---@param dt number
+---@return number
+function liba.traptraj.acc(ctx, dt) end
+
+---@param dt number
+---@return number
+function traptraj:acc(dt) end
 
 ---@class a.version
 ---@field major integer

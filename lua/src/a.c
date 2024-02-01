@@ -174,6 +174,10 @@ int luaopen_liba(lua_State *L)
     luaopen_liba_tf(L);
     lua_rawset(L, -3);
 
+    lua_pushstring(L, "traptraj");
+    luaopen_liba_traptraj(L);
+    lua_rawset(L, -3);
+
     lua_pushstring(L, "version");
     luaopen_liba_version(L);
     lua_rawset(L, -3);
