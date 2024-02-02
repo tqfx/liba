@@ -5,8 +5,6 @@ package.path = arg[0]:sub(0, -arg[0]:match("([^/\\]*)$"):len() - 1) .. "?.lua;" 
 local test = require("test")
 local a = require("liba")
 test.dir(getmetatable(a.polytraj7))
-local ctx = a.polytraj7.new({ 0, 0, 0, 0, 0 }, { 1, 1, 1, 1, 1 })
-assert(ctx)
 local ctx = a.polytraj7.new(1, 0, 1, 0, 1, 0, 1, 0, 1)
 assert(ctx)
 test.dir(getmetatable(ctx))

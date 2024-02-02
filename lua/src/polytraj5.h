@@ -28,8 +28,6 @@ extern "C" {
  @tparam[opt] number v1 velocity for target
  @tparam[opt] number a0 acceleration for source
  @tparam[opt] number a1 acceleration for target
- @tparam[opt] table source source for trajectory
- @tparam[opt] table target target for trajectory
  @treturn a.polytraj5 quintic polynomial trajectory userdata
  @function new
 */
@@ -44,8 +42,6 @@ int liba_polytraj5_new(lua_State *L);
  @tparam[opt] number v1 velocity for target
  @tparam[opt] number a0 acceleration for source
  @tparam[opt] number a1 acceleration for target
- @tparam[opt] table source source for trajectory
- @tparam[opt] table target target for trajectory
  @treturn a.polytraj5 quintic polynomial trajectory userdata
  @function gen
 */

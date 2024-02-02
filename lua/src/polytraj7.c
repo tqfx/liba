@@ -41,9 +41,9 @@ static int liba_polytraj7_gen_(lua_State *L, a_polytraj7 *ctx, int arg, int top)
     case 1:
         ts = (a_float)luaL_checknumber(L, arg + 1);
         A_FALLTHROUGH;
-    case 0:;
+    case 0:
+        a_polytraj7_gen(ctx, ts, q0, q1, v0, v1, a0, a1, j0, j1);
     }
-    a_polytraj7_gen(ctx, ts, q0, q1, v0, v1, a0, a1, j0, j1);
     return 1;
 }
 
@@ -58,39 +58,18 @@ static int liba_polytraj7_gen_(lua_State *L, a_polytraj7 *ctx, int arg, int top)
  @tparam[opt] number a1 acceleration for target
  @tparam[opt] number j0 jerk for source
  @tparam[opt] number j1 jerk for target
- @tparam[opt] table source source for trajectory
- @tparam[opt] table target target for trajectory
  @treturn a.polytraj7 hepta polynomial trajectory userdata
  @function new
 */
 int liba_polytraj7_new(lua_State *L)
 {
     int const top = lua_gettop(L);
-    int const type = lua_type(L, 1);
-    if (top > 2 && type == LUA_TNUMBER)
+    if (top > 2)
     {
         a_polytraj7 *const ctx = lua_newclass(L, a_polytraj7);
         lua_registry_get(L, liba_polytraj7_new);
         lua_setmetatable(L, -2);
         return liba_polytraj7_gen_(L, ctx, 0, top);
-    }
-    if (top > 1 && type == LUA_TTABLE)
-    {
-        a_float source[5] = {0};
-        a_float target[5] = {0};
-        luaL_checktype(L, 1, LUA_TTABLE);
-        luaL_checktype(L, 2, LUA_TTABLE);
-        lua_array_num_get(L, 1, source, A_LEN(source));
-        lua_array_num_get(L, 2, target, A_LEN(target));
-        a_polytraj7 *const ctx = lua_newclass(L, a_polytraj7);
-        lua_registry_get(L, liba_polytraj7_new);
-        lua_setmetatable(L, -2);
-        a_polytraj7_gen(ctx, target[0] - source[0],
-                        source[1], target[1],
-                        source[2], target[2],
-                        source[3], target[3],
-                        source[4], target[4]);
-        return 1;
     }
     return 0;
 }
@@ -107,39 +86,18 @@ int liba_polytraj7_new(lua_State *L)
  @tparam[opt] number a1 acceleration for target
  @tparam[opt] number j0 jerk for source
  @tparam[opt] number j1 jerk for target
- @tparam[opt] table source source for trajectory
- @tparam[opt] table target target for trajectory
  @treturn a.polytraj7 hepta polynomial trajectory userdata
  @function gen
 */
 int liba_polytraj7_gen(lua_State *L)
 {
     int const top = lua_gettop(L);
-    int const type = lua_type(L, 2);
-    if (top > 3 && type == LUA_TNUMBER)
+    if (top > 3)
     {
         luaL_checktype(L, 1, LUA_TUSERDATA);
         a_polytraj7 *const ctx = (a_polytraj7 *)lua_touserdata(L, 1);
         lua_pushvalue(L, 1);
         return liba_polytraj7_gen_(L, ctx, 1, top - 1);
-    }
-    if (top > 2 && type == LUA_TTABLE)
-    {
-        a_float source[5] = {0};
-        a_float target[5] = {0};
-        luaL_checktype(L, 1, LUA_TUSERDATA);
-        luaL_checktype(L, 2, LUA_TTABLE);
-        luaL_checktype(L, 3, LUA_TTABLE);
-        a_polytraj7 *const ctx = (a_polytraj7 *)lua_touserdata(L, 1);
-        lua_array_num_get(L, 2, source, A_LEN(source));
-        lua_array_num_get(L, 3, target, A_LEN(target));
-        a_polytraj7_gen(ctx, target[0] - source[0],
-                        source[1], target[1],
-                        source[2], target[2],
-                        source[3], target[3],
-                        source[4], target[4]);
-        lua_pushvalue(L, 1);
-        return 1;
     }
     return 0;
 }

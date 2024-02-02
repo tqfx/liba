@@ -26,8 +26,6 @@ extern "C" {
  @tparam number q1 position for target
  @tparam[opt] number v0 velocity for source
  @tparam[opt] number v1 velocity for target
- @tparam[opt] table source source for trajectory
- @tparam[opt] table target target for trajectory
  @treturn a.polytraj3 cubic polynomial trajectory userdata
  @function new
 */
@@ -40,8 +38,6 @@ int liba_polytraj3_new(lua_State *L);
  @tparam number q1 position for target
  @tparam[opt] number v0 velocity for source
  @tparam[opt] number v1 velocity for target
- @tparam[opt] table source source for trajectory
- @tparam[opt] table target target for trajectory
  @treturn a.polytraj3 cubic polynomial trajectory userdata
  @function gen
 */

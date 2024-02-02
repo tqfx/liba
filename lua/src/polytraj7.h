@@ -31,8 +31,6 @@ extern "C" {
  @tparam[opt] number a1 acceleration for target
  @tparam[opt] number j0 jerk for source
  @tparam[opt] number j1 jerk for target
- @tparam[opt] table source source for trajectory
- @tparam[opt] table target target for trajectory
  @treturn a.polytraj7 hepta polynomial trajectory userdata
  @function new
 */
@@ -49,8 +47,6 @@ int liba_polytraj7_new(lua_State *L);
  @tparam[opt] number a1 acceleration for target
  @tparam[opt] number j0 jerk for source
  @tparam[opt] number j1 jerk for target
- @tparam[opt] table source source for trajectory
- @tparam[opt] table target target for trajectory
  @treturn a.polytraj7 hepta polynomial trajectory userdata
  @function gen
 */

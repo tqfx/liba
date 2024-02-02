@@ -29,9 +29,9 @@ static int liba_polytraj3_gen_(lua_State *L, a_polytraj3 *ctx, int arg, int top)
     case 1:
         ts = (a_float)luaL_checknumber(L, arg + 1);
         A_FALLTHROUGH;
-    case 0:;
+    case 0:
+        a_polytraj3_gen(ctx, ts, q0, q1, v0, v1);
     }
-    a_polytraj3_gen(ctx, ts, q0, q1, v0, v1);
     return 1;
 }
 
@@ -42,37 +42,18 @@ static int liba_polytraj3_gen_(lua_State *L, a_polytraj3 *ctx, int arg, int top)
  @tparam number q1 position for target
  @tparam[opt] number v0 velocity for source
  @tparam[opt] number v1 velocity for target
- @tparam[opt] table source source for trajectory
- @tparam[opt] table target target for trajectory
  @treturn a.polytraj3 cubic polynomial trajectory userdata
  @function new
 */
 int liba_polytraj3_new(lua_State *L)
 {
     int const top = lua_gettop(L);
-    int const type = lua_type(L, 1);
-    if (top > 2 && type == LUA_TNUMBER)
+    if (top > 2)
     {
         a_polytraj3 *const ctx = lua_newclass(L, a_polytraj3);
         lua_registry_get(L, liba_polytraj3_new);
         lua_setmetatable(L, -2);
         return liba_polytraj3_gen_(L, ctx, 0, top);
-    }
-    if (top > 1 && type == LUA_TTABLE)
-    {
-        a_float source[3] = {0};
-        a_float target[3] = {0};
-        luaL_checktype(L, 1, LUA_TTABLE);
-        luaL_checktype(L, 2, LUA_TTABLE);
-        lua_array_num_get(L, 1, source, A_LEN(source));
-        lua_array_num_get(L, 2, target, A_LEN(target));
-        a_polytraj3 *const ctx = lua_newclass(L, a_polytraj3);
-        lua_registry_get(L, liba_polytraj3_new);
-        lua_setmetatable(L, -2);
-        a_polytraj3_gen(ctx, target[0] - source[0],
-                        source[1], target[1],
-                        source[2], target[2]);
-        return 1;
     }
     return 0;
 }
@@ -85,37 +66,18 @@ int liba_polytraj3_new(lua_State *L)
  @tparam number q1 position for target
  @tparam[opt] number v0 velocity for source
  @tparam[opt] number v1 velocity for target
- @tparam[opt] table source source for trajectory
- @tparam[opt] table target target for trajectory
  @treturn a.polytraj3 cubic polynomial trajectory userdata
  @function gen
 */
 int liba_polytraj3_gen(lua_State *L)
 {
     int const top = lua_gettop(L);
-    int const type = lua_type(L, 2);
-    if (top > 3 && type == LUA_TNUMBER)
+    if (top > 3)
     {
         luaL_checktype(L, 1, LUA_TUSERDATA);
         a_polytraj3 *const ctx = (a_polytraj3 *)lua_touserdata(L, 1);
         lua_pushvalue(L, 1);
         return liba_polytraj3_gen_(L, ctx, 1, top - 1);
-    }
-    if (top > 2 && type == LUA_TTABLE)
-    {
-        a_float source[3] = {0};
-        a_float target[3] = {0};
-        luaL_checktype(L, 1, LUA_TUSERDATA);
-        luaL_checktype(L, 2, LUA_TTABLE);
-        luaL_checktype(L, 3, LUA_TTABLE);
-        a_polytraj3 *const ctx = (a_polytraj3 *)lua_touserdata(L, 1);
-        lua_array_num_get(L, 2, source, A_LEN(source));
-        lua_array_num_get(L, 3, target, A_LEN(target));
-        a_polytraj3_gen(ctx, target[0] - source[0],
-                        source[1], target[1],
-                        source[2], target[2]);
-        lua_pushvalue(L, 1);
-        return 1;
     }
     return 0;
 }
