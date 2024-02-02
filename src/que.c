@@ -318,28 +318,30 @@ void *a_que_push_back(a_que *ctx)
 void *a_que_pull_fore(a_que *ctx)
 {
     void *data = A_NULL;
-    while (ctx->_head.next != &ctx->_head)
+    if (ctx->_head.next != &ctx->_head)
     {
         a_que_node *const node = (a_que_node *)ctx->_head.next;
-        if (a_unlikely(a_que_node_die(ctx, node))) { return data; }
+        if (a_unlikely(a_que_node_die(ctx, node))) { goto fail; }
         a_list_del_node(&node->_node);
         a_list_dtor(&node->_node);
         data = node->_data;
     }
+fail:
     return data;
 }
 
 void *a_que_pull_back(a_que *ctx)
 {
     void *data = A_NULL;
-    while (ctx->_head.prev != &ctx->_head)
+    if (ctx->_head.prev != &ctx->_head)
     {
         a_que_node *const node = (a_que_node *)ctx->_head.prev;
-        if (a_unlikely(a_que_node_die(ctx, node))) { return data; }
+        if (a_unlikely(a_que_node_die(ctx, node))) { goto fail; }
         a_list_del_node(&node->_node);
         a_list_dtor(&node->_node);
         data = node->_data;
     }
+fail:
     return data;
 }
 
