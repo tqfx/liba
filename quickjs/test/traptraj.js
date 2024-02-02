@@ -1,17 +1,22 @@
 import * as a from "liba.so";
-var ctx = new a.traptraj(10, 2, 0, 0, 2, 2)
-ctx.gen(10, 2, 0, 0, 2, -2)
-console.log(ctx.ac)
-console.log(ctx.de)
-console.log(ctx.ta)
-console.log(ctx.qa)
-console.log(ctx.tc)
-console.log(ctx.qc)
-console.log(ctx.td)
-console.log(ctx.qd)
-console.log(ctx.vs)
-console.log(ctx.vc)
-console.log(ctx.ve)
+function assert(expr, info) {
+    if (!expr) {
+        throw Error("assertion failed: " + info);
+    }
+}
+var ctx = new a.traptraj(10, 2, 2, -2)
+assert(ctx.gen(10, 2, 2, -2) != undefined)
+assert(ctx.ac != undefined)
+assert(ctx.de != undefined)
+assert(ctx.ta != undefined)
+assert(ctx.qa != undefined)
+assert(ctx.tc != undefined)
+assert(ctx.qc != undefined)
+assert(ctx.td != undefined)
+assert(ctx.qd != undefined)
+assert(ctx.vs != undefined)
+assert(ctx.vc != undefined)
+assert(ctx.ve != undefined)
 for (var i = 0; i < ctx.ta + ctx.tc + ctx.td; i += 0.1) {
     console.log(i, ctx.pos(i), ctx.vel(i), ctx.acc(i))
 }
