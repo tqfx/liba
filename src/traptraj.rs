@@ -2,7 +2,7 @@
 
 use crate::float;
 
-/// cubic trapezoidal velocity profile trajectory
+/// trapezoidal velocity profile trajectory
 #[repr(C)]
 pub struct traptraj {
     /// acceleration before constant velocity
@@ -45,7 +45,8 @@ extern "C" {
 }
 
 impl traptraj {
-    /// initialize for cubic trapezoidal velocity profile trajectory
+    /// initialize for trapezoidal velocity profile trajectory
+    #[inline(always)]
     pub fn new(qm: float, vm: float, ac: float, de: float, vs: float, ve: float) -> Self {
         let mut ctx: Self = Self {
             ac: 0.0,
@@ -64,7 +65,8 @@ impl traptraj {
         ctx
     }
 
-    /// generate for cubic trapezoidal velocity profile trajectory
+    /// generate for trapezoidal velocity profile trajectory
+    #[inline(always)]
     pub fn gen(
         &mut self,
         qm: float,
@@ -77,17 +79,20 @@ impl traptraj {
         unsafe { a_traptraj_gen(self, qm, vm, ac, de, vs, ve) }
     }
 
-    /// calculate for cubic trapezoidal velocity profile trajectory position
+    /// calculate for trapezoidal velocity profile trajectory position
+    #[inline(always)]
     pub fn pos(&mut self, dt: float) -> float {
         unsafe { a_traptraj_pos(self, dt) }
     }
 
-    /// calculate for cubic trapezoidal velocity profile trajectory velocity
+    /// calculate for trapezoidal velocity profile trajectory velocity
+    #[inline(always)]
     pub fn vel(&mut self, dt: float) -> float {
         unsafe { a_traptraj_vel(self, dt) }
     }
 
-    /// calculate for cubic trapezoidal velocity profile trajectory acceleration
+    /// calculate for trapezoidal velocity profile trajectory acceleration
+    #[inline(always)]
     pub fn acc(&mut self, dt: float) -> float {
         unsafe { a_traptraj_acc(self, dt) }
     }

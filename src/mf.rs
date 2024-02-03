@@ -49,66 +49,79 @@ extern "C" {
 }
 
 /// gaussian membership function
+#[inline(always)]
 pub fn gauss(x: float, sigma: float, c: float) -> float {
     unsafe { a_mf_gauss(x, sigma, c) }
 }
 
 /// gaussian combination membership function
+#[inline(always)]
 pub fn gauss2(x: float, sigma1: float, c1: float, sigma2: float, c2: float) -> float {
     unsafe { a_mf_gauss2(x, sigma1, c1, sigma2, c2) }
 }
 
 /// generalized bell-shaped membership function
+#[inline(always)]
 pub fn gbell(x: float, a: float, b: float, c: float) -> float {
     unsafe { a_mf_gbell(x, a, b, c) }
 }
 
 /// sigmoidal membership function
+#[inline(always)]
 pub fn sig(x: float, a: float, c: float) -> float {
     unsafe { a_mf_sig(x, a, c) }
 }
 
 /// difference between two sigmoidal membership functions
+#[inline(always)]
 pub fn dsig(x: float, a1: float, c1: float, a2: float, c2: float) -> float {
     unsafe { a_mf_dsig(x, a1, c1, a2, c2) }
 }
 
 /// product of two sigmoidal membership functions
+#[inline(always)]
 pub fn psig(x: float, a1: float, c1: float, a2: float, c2: float) -> float {
     unsafe { a_mf_psig(x, a1, c1, a2, c2) }
 }
 
 /// trapezoidal membership function
+#[inline(always)]
 pub fn trap(x: float, a: float, b: float, c: float, d: float) -> float {
     unsafe { a_mf_trap(x, a, b, c, d) }
 }
 
 /// triangular membership function
+#[inline(always)]
 pub fn tri(x: float, a: float, b: float, c: float) -> float {
     unsafe { a_mf_tri(x, a, b, c) }
 }
 
 /// linear s-shaped saturation membership function
+#[inline(always)]
 pub fn lins(x: float, a: float, b: float) -> float {
     unsafe { a_mf_lins(x, a, b) }
 }
 
 /// linear z-shaped saturation membership function
+#[inline(always)]
 pub fn linz(x: float, a: float, b: float) -> float {
     unsafe { a_mf_linz(x, a, b) }
 }
 
 /// s-shaped membership function
+#[inline(always)]
 pub fn s(x: float, a: float, b: float) -> float {
     unsafe { a_mf_s(x, a, b) }
 }
 
 /// z-shaped membership function
+#[inline(always)]
 pub fn z(x: float, a: float, b: float) -> float {
     unsafe { a_mf_z(x, a, b) }
 }
 
 /// pi-shaped membership function
+#[inline(always)]
 pub fn pi(x: float, a: float, b: float, c: float, d: float) -> float {
     unsafe { a_mf_pi(x, a, b, c, d) }
 }

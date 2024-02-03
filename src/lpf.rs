@@ -17,6 +17,7 @@ pub struct lpf {
 
 impl lpf {
     /// initialize for Low Pass Filter
+    #[inline(always)]
     pub fn new(fc: float, ts: float) -> Self {
         Self {
             alpha: ts / (0.5 * FRAC_1_PI / fc + ts),
@@ -24,17 +25,20 @@ impl lpf {
         }
     }
     /// generate for Low Pass Filter
+    #[inline(always)]
     pub fn gen(&mut self, fc: float, ts: float) -> &mut Self {
         self.alpha = ts / (0.5 * FRAC_1_PI / fc + ts);
         self
     }
     /// calculate for Low Pass Filter
+    #[inline(always)]
     pub fn iter(&mut self, x: float) -> float {
         self.output *= 1.0 - self.alpha;
         self.output += x * self.alpha;
         self.output
     }
     /// zeroing for Low Pass Filter
+    #[inline(always)]
     pub fn zero(&mut self) -> &mut Self {
         self.output = 0.0;
         self

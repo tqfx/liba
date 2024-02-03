@@ -22,6 +22,7 @@ extern "C" {
 
 impl polytraj3 {
     /// initialize for cubic polynomial trajectory
+    #[inline(always)]
     pub fn new(ts: float, q0: float, q1: float, v0: float, v1: float) -> Self {
         let mut ctx: Self = Self {
             q: [0.0; 4],
@@ -33,22 +34,26 @@ impl polytraj3 {
     }
 
     /// generate for cubic polynomial trajectory
+    #[inline(always)]
     pub fn gen(&mut self, ts: float, q0: float, q1: float, v0: float, v1: float) -> &mut Self {
         unsafe { a_polytraj3_gen(self, ts, q0, q1, v0, v1) };
         self
     }
 
     /// calculate for cubic polynomial trajectory position
+    #[inline(always)]
     pub fn pos(&mut self, dt: float) -> float {
         unsafe { a_polytraj3_pos(self, dt) }
     }
 
     /// calculate for cubic polynomial trajectory velocity
+    #[inline(always)]
     pub fn vel(&mut self, dt: float) -> float {
         unsafe { a_polytraj3_vel(self, dt) }
     }
 
     /// calculate for cubic polynomial trajectory acceleration
+    #[inline(always)]
     pub fn acc(&mut self, dt: float) -> float {
         unsafe { a_polytraj3_acc(self, dt) }
     }
@@ -97,6 +102,7 @@ extern "C" {
 impl polytraj5 {
     /// initialize for quintic polynomial trajectory
     #[allow(clippy::too_many_arguments)]
+    #[inline(always)]
     pub fn new(
         ts: float,
         q0: float,
@@ -117,6 +123,7 @@ impl polytraj5 {
 
     /// generate for quintic polynomial trajectory
     #[allow(clippy::too_many_arguments)]
+    #[inline(always)]
     pub fn gen(
         &mut self,
         ts: float,
@@ -132,16 +139,19 @@ impl polytraj5 {
     }
 
     /// calculate for quintic polynomial trajectory position
+    #[inline(always)]
     pub fn pos(&mut self, dt: float) -> float {
         unsafe { a_polytraj5_pos(self, dt) }
     }
 
     /// calculate for quintic polynomial trajectory velocity
+    #[inline(always)]
     pub fn vel(&mut self, dt: float) -> float {
         unsafe { a_polytraj5_vel(self, dt) }
     }
 
     /// calculate for quintic polynomial trajectory acceleration
+    #[inline(always)]
     pub fn acc(&mut self, dt: float) -> float {
         unsafe { a_polytraj5_acc(self, dt) }
     }
@@ -195,6 +205,7 @@ extern "C" {
 impl polytraj7 {
     /// initialize for hepta polynomial trajectory
     #[allow(clippy::too_many_arguments)]
+    #[inline(always)]
     pub fn new(
         ts: float,
         q0: float,
@@ -218,6 +229,7 @@ impl polytraj7 {
 
     /// generate for hepta polynomial trajectory
     #[allow(clippy::too_many_arguments)]
+    #[inline(always)]
     pub fn gen(
         &mut self,
         ts: float,
@@ -235,21 +247,25 @@ impl polytraj7 {
     }
 
     /// calculate for hepta polynomial trajectory position
+    #[inline(always)]
     pub fn pos(&mut self, dt: float) -> float {
         unsafe { a_polytraj7_pos(self, dt) }
     }
 
     /// calculate for hepta polynomial trajectory velocity
+    #[inline(always)]
     pub fn vel(&mut self, dt: float) -> float {
         unsafe { a_polytraj7_vel(self, dt) }
     }
 
     /// calculate for hepta polynomial trajectory acceleration
+    #[inline(always)]
     pub fn acc(&mut self, dt: float) -> float {
         unsafe { a_polytraj7_acc(self, dt) }
     }
 
     /// calculate for hepta polynomial trajectory jerk
+    #[inline(always)]
     pub fn jer(&mut self, dt: float) -> float {
         unsafe { a_polytraj7_jer(self, dt) }
     }

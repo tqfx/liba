@@ -38,6 +38,7 @@ extern "C" {
 
 impl tf {
     /// initialize for transfer function
+    #[inline(always)]
     pub fn new(num: &[float], input: &mut [float], den: &[float], output: &mut [float]) -> Self {
         let mut ctx: Self = Self {
             input: core::ptr::null_mut(),
@@ -62,43 +63,51 @@ impl tf {
     }
 
     /// calculate for transfer function
+    #[inline(always)]
     pub fn iter(&mut self, x: float) -> float {
         unsafe { a_tf_iter(self, x) }
     }
 
     /// zeroing for transfer function
+    #[inline(always)]
     pub fn zero(&mut self) -> &mut Self {
         unsafe { a_tf_zero(self) };
         self
     }
 
     /// get input for transfer function
+    #[inline(always)]
     pub fn input(&self) -> &[float] {
         unsafe { core::slice::from_raw_parts(self.input, self.num_n as usize) }
     }
 
     /// get numerator for transfer function
+    #[inline(always)]
     pub fn num(&self) -> &[float] {
         unsafe { core::slice::from_raw_parts(self.num_p, self.num_n as usize) }
     }
 
     /// set numerator for transfer function
+    #[inline(always)]
     pub fn set_num(&mut self, num: &[float], input: &mut [float]) -> &mut Self {
         unsafe { a_tf_set_num(self, num.len() as uint, num.as_ptr(), input.as_mut_ptr()) };
         self
     }
 
     /// get output for transfer function
+    #[inline(always)]
     pub fn output(&self) -> &[float] {
         unsafe { core::slice::from_raw_parts(self.output, self.den_n as usize) }
     }
 
     /// get denominator for transfer function
+    #[inline(always)]
     pub fn den(&self) -> &[float] {
         unsafe { core::slice::from_raw_parts(self.den_p, self.den_n as usize) }
     }
 
     /// set denominator for transfer function
+    #[inline(always)]
     pub fn set_den(&mut self, den: &[float], output: &mut [float]) -> &mut Self {
         unsafe { a_tf_set_den(self, den.len() as uint, den.as_ptr(), output.as_mut_ptr()) };
         self

@@ -15,28 +15,33 @@ extern "C" {
 
 impl crc8 {
     /// initialize for MSB CRC-8
+    #[inline(always)]
     pub fn new_msb(poly: u8) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
         unsafe { a_crc8m_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
     /// initialize for LSB CRC-8
+    #[inline(always)]
     pub fn new_lsb(poly: u8) -> Self {
         let mut ctx: Self = Self { table: [0; 0x100] };
         unsafe { a_crc8l_init(ctx.table.as_mut_ptr(), poly) };
         ctx
     }
     /// generate for MSB CRC-8
+    #[inline(always)]
     pub fn gen_msb(&mut self, poly: u8) -> &mut Self {
         unsafe { a_crc8m_init(self.table.as_mut_ptr(), poly) };
         self
     }
     /// generate for LSB CRC-8
+    #[inline(always)]
     pub fn gen_lsb(&mut self, poly: u8) -> &mut Self {
         unsafe { a_crc8l_init(self.table.as_mut_ptr(), poly) };
         self
     }
     /// calculate for CRC-8
+    #[inline(always)]
     pub fn eval(self, block: &[u8], value: u8) -> u8 {
         unsafe { a_crc8(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
     }
@@ -72,6 +77,7 @@ extern "C" {
 
 impl crc16 {
     /// initialize for MSB CRC-16
+    #[inline(always)]
     pub fn new_msb(poly: u16) -> Self {
         let mut ctx: Self = Self {
             table: [0; 0x100],
@@ -81,6 +87,7 @@ impl crc16 {
         ctx
     }
     /// initialize for LSB CRC-16
+    #[inline(always)]
     pub fn new_lsb(poly: u16) -> Self {
         let mut ctx: Self = Self {
             table: [0; 0x100],
@@ -90,18 +97,21 @@ impl crc16 {
         ctx
     }
     /// generate for MSB CRC-16
+    #[inline(always)]
     pub fn gen_msb(&mut self, poly: u16) -> &mut Self {
         unsafe { a_crc16m_init(self.table.as_mut_ptr(), poly) };
         self.eval = a_crc16m;
         self
     }
     /// generate for LSB CRC-16
+    #[inline(always)]
     pub fn gen_lsb(&mut self, poly: u16) -> &mut Self {
         unsafe { a_crc16l_init(self.table.as_mut_ptr(), poly) };
         self.eval = a_crc16l;
         self
     }
     /// calculate for CRC-16
+    #[inline(always)]
     pub fn eval(self, block: &[u8], value: u16) -> u16 {
         unsafe { (self.eval)(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
     }
@@ -137,6 +147,7 @@ extern "C" {
 
 impl crc32 {
     /// initialize for MSB CRC-32
+    #[inline(always)]
     pub fn new_msb(poly: u32) -> Self {
         let mut ctx: Self = Self {
             table: [0; 0x100],
@@ -146,6 +157,7 @@ impl crc32 {
         ctx
     }
     /// initialize for LSB CRC-32
+    #[inline(always)]
     pub fn new_lsb(poly: u32) -> Self {
         let mut ctx: Self = Self {
             table: [0; 0x100],
@@ -155,18 +167,21 @@ impl crc32 {
         ctx
     }
     /// generate for MSB CRC-32
+    #[inline(always)]
     pub fn gen_msb(&mut self, poly: u32) -> &mut Self {
         unsafe { a_crc32m_init(self.table.as_mut_ptr(), poly) };
         self.eval = a_crc32m;
         self
     }
     /// generate for LSB CRC-32
+    #[inline(always)]
     pub fn gen_lsb(&mut self, poly: u32) -> &mut Self {
         unsafe { a_crc32l_init(self.table.as_mut_ptr(), poly) };
         self.eval = a_crc32l;
         self
     }
     /// calculate for CRC-32
+    #[inline(always)]
     pub fn eval(self, block: &[u8], value: u32) -> u32 {
         unsafe { (self.eval)(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
     }
@@ -202,6 +217,7 @@ extern "C" {
 
 impl crc64 {
     /// initialize for MSB CRC-64
+    #[inline(always)]
     pub fn new_msb(poly: u64) -> Self {
         let mut ctx: Self = Self {
             table: [0; 0x100],
@@ -211,6 +227,7 @@ impl crc64 {
         ctx
     }
     /// initialize for LSB CRC-64
+    #[inline(always)]
     pub fn new_lsb(poly: u64) -> Self {
         let mut ctx: Self = Self {
             table: [0; 0x100],
@@ -220,18 +237,21 @@ impl crc64 {
         ctx
     }
     /// generate for MSB CRC-64
+    #[inline(always)]
     pub fn gen_msb(&mut self, poly: u64) -> &mut Self {
         unsafe { a_crc64m_init(self.table.as_mut_ptr(), poly) };
         self.eval = a_crc64m;
         self
     }
     /// generate for LSB CRC-64
+    #[inline(always)]
     pub fn gen_lsb(&mut self, poly: u64) -> &mut Self {
         unsafe { a_crc64l_init(self.table.as_mut_ptr(), poly) };
         self.eval = a_crc64l;
         self
     }
     /// calculate for CRC-64
+    #[inline(always)]
     pub fn eval(self, block: &[u8], value: u64) -> u64 {
         unsafe { (self.eval)(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
     }

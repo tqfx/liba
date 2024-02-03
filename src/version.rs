@@ -30,26 +30,31 @@ extern "C" {
 }
 
 /// algorithm library version check
+#[inline(always)]
 pub fn check(major: uint, minor: uint, patch: uint) -> int {
     unsafe { a_version_check(major, minor, patch) }
 }
 
 /// algorithm library version major
+#[inline(always)]
 pub fn major() -> uint {
     unsafe { a_version_major }
 }
 
 /// algorithm library version minor
+#[inline(always)]
 pub fn minor() -> uint {
     unsafe { a_version_minor }
 }
 
 /// algorithm library version patch
+#[inline(always)]
 pub fn patch() -> uint {
     unsafe { a_version_patch }
 }
 
 /// algorithm library version tweak
+#[inline(always)]
 pub fn tweak() -> u32 {
     unsafe { a_version_tweak }
 }
@@ -69,6 +74,7 @@ pub struct version {
 
 impl version {
     /// initialize for version
+    #[inline(always)]
     pub fn new(major: uint, minor: uint, third: uint) -> Self {
         Self {
             major,
@@ -80,6 +86,7 @@ impl version {
 }
 
 impl PartialOrd for version {
+    #[inline(always)]
     fn partial_cmp(&self, other: &version) -> Option<core::cmp::Ordering> {
         let ok: int = unsafe { a_version_cmp(self, other) };
         if ok > 0 {
@@ -90,21 +97,26 @@ impl PartialOrd for version {
         }
         Some(core::cmp::Ordering::Equal)
     }
+    #[inline(always)]
     fn lt(&self, other: &version) -> bool {
         unsafe { a_version_lt(self, other) }
     }
+    #[inline(always)]
     fn gt(&self, other: &version) -> bool {
         unsafe { a_version_gt(self, other) }
     }
+    #[inline(always)]
     fn le(&self, other: &version) -> bool {
         unsafe { a_version_le(self, other) }
     }
+    #[inline(always)]
     fn ge(&self, other: &version) -> bool {
         unsafe { a_version_ge(self, other) }
     }
 }
 
 impl PartialEq for version {
+    #[inline(always)]
     fn eq(&self, other: &version) -> bool {
         unsafe { a_version_eq(self, other) }
     }

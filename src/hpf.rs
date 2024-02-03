@@ -19,6 +19,7 @@ pub struct hpf {
 
 impl hpf {
     /// initialize for High Pass Filter
+    #[inline(always)]
     pub fn new(fc: float, ts: float) -> Self {
         Self {
             alpha: 1.0 / (2.0 * PI * fc * ts + 1.0),
@@ -27,17 +28,20 @@ impl hpf {
         }
     }
     /// generate for High Pass Filter
+    #[inline(always)]
     pub fn gen(&mut self, fc: float, ts: float) -> &mut Self {
         self.alpha = 1.0 / (2.0 * PI * fc * ts + 1.0);
         self
     }
     /// calculate for High Pass Filter
+    #[inline(always)]
     pub fn iter(&mut self, x: float) -> float {
         self.output = self.alpha * (self.output + x - self.input);
         self.input = x;
         self.output
     }
     /// zeroing for High Pass Filter
+    #[inline(always)]
     pub fn zero(&mut self) -> &mut Self {
         self.output = 0.0;
         self.input = 0.0;
