@@ -4,7 +4,6 @@ from a.pid_neuro cimport *
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef class pid_neuro:
-    '''single neuron proportional integral derivative controller'''
     cdef a_pid_neuro ctx
     def __init__(self):
         self.ctx.pid.summax = +A_FLOAT_INF
@@ -17,21 +16,16 @@ cdef class pid_neuro:
         self.ctx.wd = 0.1
         a_pid_neuro_init(&self.ctx)
     def kpid(self, k: a_float, kp: a_float, ki: a_float, kd: a_float):
-        '''set proportional integral derivative constant for single neuron PID controller'''
         a_pid_neuro_kpid(&self.ctx, k, kp, ki, kd)
         return self
     def wpid(self, wp: a_float, wi: a_float, wd: a_float):
-        '''set proportional integral derivative weight for single neuron PID controller'''
         a_pid_neuro_wpid(&self.ctx, wp, wi, wd)
         return self
     def run(self, set: a_float, fdb: a_float) -> a_float:
-        '''calculate for single neuron PID controller'''
         return a_pid_neuro_run(&self.ctx, set, fdb)
     def inc(self, set: a_float, fdb: a_float) -> a_float:
-        '''calculate for incremental single neuron PID controller'''
         return a_pid_neuro_inc(&self.ctx, set, fdb)
     def zero(self):
-        '''zeroing for single neuron PID controller'''
         a_pid_neuro_zero(&self.ctx)
         return self
     property k:

@@ -1,6 +1,5 @@
 from a.version cimport *
 
-'''algorithm library version'''
 if PY_MAJOR_VERSION >= 3:
     VERSION = A_VERSION.decode()
 else:
@@ -9,7 +8,6 @@ else:
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef class version:
-    '''version'''
     cdef a_version ctx
     property major:
         def __get__(self):
@@ -60,11 +58,7 @@ cdef class version:
     @staticmethod
     def check(unsigned int major = 0, unsigned int minor = 0, unsigned int patch = 0):
         return a_version_check(major, minor, patch)
-    '''algorithm library version major'''
     MAJOR = A_VERSION_MAJOR
-    '''algorithm library version minor'''
     MINOR = A_VERSION_MINOR
-    '''algorithm library version patch'''
     PATCH = A_VERSION_PATCH
-    '''algorithm library version tweak'''
     TWEAK = A_VERSION_TWEAK

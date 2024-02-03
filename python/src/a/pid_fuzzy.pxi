@@ -4,7 +4,6 @@ from a.pid_fuzzy cimport *
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef class pid_fuzzy:
-    '''fuzzy proportional integral derivative controller'''
     CAP = A_PID_FUZZY_CAP
     CAP_ALGEBRA = A_PID_FUZZY_CAP_ALGEBRA
     CAP_BOUNDED = A_PID_FUZZY_CAP_BOUNDED
@@ -27,11 +26,9 @@ cdef class pid_fuzzy:
         a_pid_fuzzy_set_op(&self.ctx, A_PID_FUZZY_EQU)
         a_pid_fuzzy_init(&self.ctx)
     def op(self, op: int):
-        '''set fuzzy relational operator for fuzzy PID controller'''
         a_pid_fuzzy_set_op(&self.ctx, op)
         return self
     def rule(self, me, mec, mkp, mki, mkd):
-        '''set rule base for fuzzy PID controller'''
         self.me = array_num((_2 for _1 in me for _2 in _1))
         self.mec = array_num((_2 for _1 in mec for _2 in _1))
         self.mkp = array_num((_2 for _1 in mkp for _2 in _1))
@@ -45,29 +42,22 @@ cdef class pid_fuzzy:
                          <a_float *>self.mkd.data.as_voidptr)
         return self
     def set_joint(self, num: int):
-        '''set joint buffer for fuzzy PID controller'''
         cdef void *ptr = a_pid_fuzzy_joint(&self.ctx);
         ptr = PyMem_Realloc(ptr, A_PID_FUZZY_JOINT(num))
         a_pid_fuzzy_set_joint(&self.ctx, ptr, num)
         return self
     def kpid(self, kp: a_float, ki: a_float, kd: a_float):
-        '''set proportional integral derivative constant for fuzzy PID controller'''
         a_pid_fuzzy_kpid(&self.ctx, kp, ki, kd)
         return self
     def run(self, set: a_float, fdb: a_float) -> a_float:
-        '''calculate for fuzzy PID controller'''
         return a_pid_fuzzy_run(&self.ctx, set, fdb)
     def pos(self, set: a_float, fdb: a_float) -> a_float:
-        '''calculate for positional fuzzy PID controller'''
         return a_pid_fuzzy_pos(&self.ctx, set, fdb)
     def inc(self, set: a_float, fdb: a_float) -> a_float:
-        '''calculate for incremental fuzzy PID controller'''
         return a_pid_fuzzy_inc(&self.ctx, set, fdb)
     def __dealloc__(self):
-        '''terminate for fuzzy PID controller'''
         PyMem_Free(a_pid_fuzzy_joint(&self.ctx))
     def zero(self):
-        '''zeroing for fuzzy PID controller'''
         a_pid_fuzzy_zero(&self.ctx)
         return self
     property joint:

@@ -35,7 +35,6 @@ def sqrt_u64(x):
 @cython.wraparound(False)
 @cython.boundscheck(False)
 def rsqrt_f32(x):
-    '''reciprocal of square-root'''
     if iterable(x):
         y = array_f32(x)
         for i, it in enumerate(x):
@@ -46,7 +45,6 @@ def rsqrt_f32(x):
 @cython.wraparound(False)
 @cython.boundscheck(False)
 def rsqrt_f64(x):
-    '''reciprocal of square-root'''
     if iterable(x):
         y = array_f64(x)
         for i, it in enumerate(x):

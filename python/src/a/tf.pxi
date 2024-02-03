@@ -3,13 +3,10 @@ from a.tf cimport *
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef class tf:
-    '''transfer function'''
     cdef a_tf ctx
     def __call__(self, x: a_float) -> a_float:
-        '''calculate for transfer function'''
         return a_tf_iter(&self.ctx, x)
     def zero(self):
-        '''zeroing for transfer function'''
         a_tf_zero(&self.ctx)
         return self
     cdef array input

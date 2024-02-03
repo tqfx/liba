@@ -3,16 +3,13 @@ from a.polytraj5 cimport *
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef class polytraj5:
-    '''quintic polynomial trajectory'''
     cdef a_polytraj5 ctx
     def __init__(self, a_float ts, a_float q0, a_float q1, a_float v0 = 0, a_float v1 = 0, a_float a0 = 0, a_float a1 = 0):
         a_polytraj5_gen(&self.ctx, ts, q0, q1, v0, v1, a0, a1)
     def gen(self, a_float ts, a_float q0, a_float q1, a_float v0 = 0, a_float v1 = 0, a_float a0 = 0, a_float a1 = 0):
-        '''generation function'''
         a_polytraj5_gen(&self.ctx, ts, q0, q1, v0, v1, a0, a1)
         return self
     def pos(self, dt):
-        '''calculate position'''
         if iterable(dt):
             out = array_num(dt)
             for i, it in enumerate(dt):
@@ -20,7 +17,6 @@ cdef class polytraj5:
             return out
         return a_polytraj5_pos(&self.ctx, dt)
     def vel(self, dt):
-        '''calculate velocity'''
         if iterable(dt):
             out = array_num(dt)
             for i, it in enumerate(dt):
@@ -28,7 +24,6 @@ cdef class polytraj5:
             return out
         return a_polytraj5_vel(&self.ctx, dt)
     def acc(self, dt):
-        '''calculate acceleration'''
         if iterable(dt):
             out = array_num(dt)
             for i, it in enumerate(dt):

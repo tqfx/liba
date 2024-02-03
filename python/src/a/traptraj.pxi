@@ -3,15 +3,12 @@ from a.traptraj cimport *
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef class traptraj:
-    '''trapezoidal velocity profile trajectory'''
     cdef a_traptraj ctx
     def __init__(self, a_float qm, a_float vm, a_float ac, a_float de, a_float vs = 0, a_float ve = 0):
         a_traptraj_gen(&self.ctx, qm, vm, ac, de, vs, ve)
     def gen(self, a_float qm, a_float vm, a_float ac, a_float de, a_float vs = 0, a_float ve = 0):
-        '''generation function'''
         return a_traptraj_gen(&self.ctx, qm, vm, ac, de, vs, ve)
     def pos(self, dt):
-        '''calculate position'''
         if iterable(dt):
             out = array_num(dt)
             for i, it in enumerate(dt):
@@ -19,7 +16,6 @@ cdef class traptraj:
             return out
         return a_traptraj_pos(&self.ctx, dt)
     def vel(self, dt):
-        '''calculate velocity'''
         if iterable(dt):
             out = array_num(dt)
             for i, it in enumerate(dt):
@@ -27,7 +23,6 @@ cdef class traptraj:
             return out
         return a_traptraj_vel(&self.ctx, dt)
     def acc(self, dt):
-        '''calculate acceleration'''
         if iterable(dt):
             out = array_num(dt)
             for i, it in enumerate(dt):

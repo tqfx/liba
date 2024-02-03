@@ -3,7 +3,6 @@ from a.pid cimport *
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef class pid:
-    '''proportional integral derivative controller'''
     RUN = A_PID_RUN
     POS = A_PID_POS
     INC = A_PID_INC
@@ -16,20 +15,15 @@ cdef class pid:
         self.ctx.outmin = -A_FLOAT_INF
         a_pid_init(&self.ctx)
     def kpid(self, kp: a_float, ki: a_float, kd: a_float):
-        '''set proportional integral derivative constant for PID controller'''
         a_pid_kpid(&self.ctx, kp, ki, kd)
         return self
     def run(self, set: a_float, fdb: a_float) -> a_float:
-        '''calculate for PID controller'''
         return a_pid_run(&self.ctx, set, fdb)
     def pos(self, set: a_float, fdb: a_float) -> a_float:
-        '''calculate for positional PID controller'''
         return a_pid_pos(&self.ctx, set, fdb)
     def inc(self, set: a_float, fdb: a_float) -> a_float:
-        '''calculate for incremental PID controller'''
         return a_pid_inc(&self.ctx, set, fdb)
     def zero(self):
-        '''zeroing for PID controller'''
         a_pid_zero(&self.ctx)
         return self
     property kp:
