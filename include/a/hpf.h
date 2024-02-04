@@ -44,7 +44,7 @@ typedef struct a_hpf
 #if defined(__cplusplus)
     A_INLINE void gen(a_float fc, a_float ts)
     {
-        alpha = 1 / (2 * A_FLOAT_PI * fc * ts + 1);
+        alpha = 1 / (A_FLOAT_TAU * fc * ts + 1);
     }
     A_INLINE a_float operator()(a_float x)
     {
@@ -73,7 +73,7 @@ typedef struct a_hpf hpf;
 #define A_HPF_INIT2(fc, ts) (a_hpf){A_HPF_GEN(fc, ts), 0, 0}
 #endif /* __cplusplus */
 // clang-format on
-#define A_HPF_GEN(fc, ts) (1 / (2 * A_FLOAT_PI * a_float_c(fc) * a_float_c(ts) + 1))
+#define A_HPF_GEN(fc, ts) (1 / (A_FLOAT_TAU * a_float_c(fc) * a_float_c(ts) + 1))
 
 /*!
  @brief generate for High Pass Filter
@@ -90,7 +90,7 @@ typedef struct a_hpf hpf;
 */
 A_INTERN a_float a_hpf_gen(a_float fc, a_float ts)
 {
-    return 1 / (2 * A_FLOAT_PI * fc * ts + 1);
+    return 1 / (A_FLOAT_TAU * fc * ts + 1);
 }
 
 /*!

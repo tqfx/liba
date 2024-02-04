@@ -1,10 +1,8 @@
 //! High Pass Filter
 
 use crate::float;
-#[cfg(feature = "float")]
-use core::f32::consts::PI;
-#[cfg(not(feature = "float"))]
-use core::f64::consts::PI;
+#[allow(clippy::excessive_precision)]
+const TAU: float = 6.28318530717958647692528676655900577;
 
 /// High Pass Filter
 #[repr(C)]
@@ -22,7 +20,7 @@ impl hpf {
     #[inline(always)]
     pub fn new(fc: float, ts: float) -> Self {
         Self {
-            alpha: 1.0 / (2.0 * PI * fc * ts + 1.0),
+            alpha: 1.0 / (TAU * fc * ts + 1.0),
             output: 0.0,
             input: 0.0,
         }
@@ -30,7 +28,7 @@ impl hpf {
     /// generate for High Pass Filter
     #[inline(always)]
     pub fn gen(&mut self, fc: float, ts: float) -> &mut Self {
-        self.alpha = 1.0 / (2.0 * PI * fc * ts + 1.0);
+        self.alpha = 1.0 / (TAU * fc * ts + 1.0);
         self
     }
     /// calculate for High Pass Filter

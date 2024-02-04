@@ -31,6 +31,8 @@
 #define A_LN1_10 0.434294481903251827651
 /*! \f$ \pi \f$ */
 #define A_PI 3.14159265358979323846
+/*! \f$ 2\pi \f$ */
+#define A_TAU 6.28318530717958647693
 /*! \f$ \frac{\pi}{2} \f$ */
 #define A_PI_2 1.57079632679489661923
 /*! \f$ \frac{\pi}{4} \f$ */
@@ -39,6 +41,8 @@
 #define A_1_PI 0.318309886183790671538
 /*! \f$ \frac{2}{\pi} \f$ */
 #define A_2_PI 0.636619772367581343076
+/*! \f$ \frac{1}{2\pi} \f$ */
+#define A_1_TAU 0.159154943091895335769
 /*! \f$ \frac{2}{\sqrt{\pi}} \f$ */
 #define A_2_SQRTPI 1.12837916709551257390
 /*! \f$ \sqrt{2} \f$ */
@@ -231,6 +235,8 @@ A_EXTERN a_u32 a_u64_sqrt(a_u64 x);
 #define A_FLOAT_LN1_10 A_FLOAT_C(A_LN1_10)
 /*! \f$ \pi \f$ */
 #define A_FLOAT_PI A_FLOAT_C(A_PI)
+/*! \f$ 2\pi \f$ */
+#define A_FLOAT_TAU A_FLOAT_C(A_TAU)
 /*! \f$ \frac{\pi}{2} \f$ */
 #define A_FLOAT_PI_2 A_FLOAT_C(A_PI_2)
 /*! \f$ \frac{\pi}{4} \f$ */
@@ -239,6 +245,8 @@ A_EXTERN a_u32 a_u64_sqrt(a_u64 x);
 #define A_FLOAT_1_PI A_FLOAT_C(A_1_PI)
 /*! \f$ \frac{2}{\pi} \f$ */
 #define A_FLOAT_2_PI A_FLOAT_C(A_2_PI)
+/*! \f$ \frac{1}{2\pi} \f$ */
+#define A_FLOAT_1_TAU A_FLOAT_C(A_1_TAU)
 /*! \f$ \frac{2}{\sqrt{\pi}} \f$ */
 #define A_FLOAT_2_SQRTPI A_FLOAT_C(A_2_SQRTPI)
 /*! \f$ \sqrt{2} \f$ */

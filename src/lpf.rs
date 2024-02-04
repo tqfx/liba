@@ -1,10 +1,8 @@
 //! Low Pass Filter
 
 use crate::float;
-#[cfg(feature = "float")]
-use core::f32::consts::FRAC_1_PI;
-#[cfg(not(feature = "float"))]
-use core::f64::consts::FRAC_1_PI;
+#[allow(clippy::excessive_precision)]
+const _1_TAU: float = 0.159154943091895335768883763372514362;
 
 /// Low Pass Filter
 #[repr(C)]
@@ -20,14 +18,14 @@ impl lpf {
     #[inline(always)]
     pub fn new(fc: float, ts: float) -> Self {
         Self {
-            alpha: ts / (0.5 * FRAC_1_PI / fc + ts),
+            alpha: ts / (_1_TAU / fc + ts),
             output: 0.0,
         }
     }
     /// generate for Low Pass Filter
     #[inline(always)]
     pub fn gen(&mut self, fc: float, ts: float) -> &mut Self {
-        self.alpha = ts / (0.5 * FRAC_1_PI / fc + ts);
+        self.alpha = ts / (_1_TAU / fc + ts);
         self
     }
     /// calculate for Low Pass Filter

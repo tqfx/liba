@@ -43,7 +43,7 @@ typedef struct a_lpf
 #if defined(__cplusplus)
     A_INLINE void gen(a_float fc, a_float ts)
     {
-        alpha = ts / (A_FLOAT_1_PI / 2 / fc + ts);
+        alpha = ts / (A_FLOAT_1_TAU / fc + ts);
     }
     A_INLINE a_float operator()(a_float x)
     {
@@ -69,7 +69,7 @@ typedef struct a_lpf lpf;
 #define A_LPF_INIT2(fc, ts) (a_lpf){A_LPF_GEN(fc, ts), 0}
 #endif /* __cplusplus */
 // clang-format on
-#define A_LPF_GEN(fc, ts) (a_float_c(ts) / (A_FLOAT_1_PI / 2 / a_float_c(fc) + a_float_c(ts)))
+#define A_LPF_GEN(fc, ts) (a_float_c(ts) / (A_FLOAT_1_TAU / a_float_c(fc) + a_float_c(ts)))
 
 /*!
  @brief generate for Low Pass Filter
@@ -86,7 +86,7 @@ typedef struct a_lpf lpf;
 */
 A_INTERN a_float a_lpf_gen(a_float fc, a_float ts)
 {
-    return ts / (A_FLOAT_1_PI / 2 / fc + ts);
+    return ts / (A_FLOAT_1_TAU / fc + ts);
 }
 
 /*!

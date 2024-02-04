@@ -14,7 +14,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_float T = A_FLOAT_C(1.0) / 10000;
     for (a_float x = 0; x < Ts; x += T) // NOLINT
     {
-        a_float x1 = a_float_cos(2 * A_FLOAT_PI * (f_0 * x + A_FLOAT_C(0.5) * c * x * x) + 0);
+        a_float x1 = a_float_cos(A_FLOAT_TAU * (f_0 * x + A_FLOAT_C(0.5) * c * x * x) + 0);
         a_float x2 = a_hpf_iter(&ctx, x1);
         debug(A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f\n"), x, x1, x2);
     }

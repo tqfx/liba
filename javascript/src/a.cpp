@@ -216,7 +216,7 @@ struct hpf: public a_hpf
 {
     A_INLINE hpf(a_float fc, a_float ts)
     {
-        alpha = 1 / (2 * A_FLOAT_PI * fc * ts + 1);
+        alpha = A_HPF_GEN(fc, ts);
         output = 0;
         input = 0;
     }
@@ -248,7 +248,7 @@ struct lpf: public a_lpf
 {
     A_INLINE lpf(a_float fc, a_float ts)
     {
-        alpha = ts / (A_FLOAT_1_PI / 2 / fc + ts);
+        alpha = A_LPF_GEN(fc, ts);
         output = 0;
     }
     A_INLINE lpf(a_float _alpha)
