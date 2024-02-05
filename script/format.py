@@ -2,7 +2,7 @@
 from subprocess import Popen
 from typing import Any, Iterable
 from glob import glob
-from sys import argv
+from sys import argv, executable
 import os
 
 
@@ -22,7 +22,7 @@ class format:
             Popen(script).wait()
         except Exception as e:
             print(e)
-        script = ("black", os.getcwd())
+        script = (executable, "-m", "black", os.getcwd())
         try:
             Popen(script).wait()
         except Exception as e:
