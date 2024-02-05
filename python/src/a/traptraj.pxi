@@ -35,24 +35,18 @@ cdef class traptraj:
     property de:
         def __get__(self):
             return self.ctx.de
-    property ta:
+    property q1:
         def __get__(self):
-            return self.ctx.ta
-    property qa:
+            return self.ctx.q1
+    property q2:
         def __get__(self):
-            return self.ctx.qa
-    property tc:
+            return self.ctx.q2
+    property t1:
         def __get__(self):
-            return self.ctx.tc
-    property qc:
+            return self.ctx.t1
+    property t2:
         def __get__(self):
-            return self.ctx.qc
-    property td:
-        def __get__(self):
-            return self.ctx.td
-    property qd:
-        def __get__(self):
-            return self.ctx.qd
+            return self.ctx.t2
     property vs:
         def __get__(self):
             return self.ctx.vs
@@ -62,3 +56,9 @@ cdef class traptraj:
     property ve:
         def __get__(self):
             return self.ctx.ve
+    property q:
+        def __get__(self):
+            return self.ctx.q
+    property t:
+        def __get__(self):
+            return self.ctx.t

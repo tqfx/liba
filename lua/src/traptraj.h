@@ -12,15 +12,15 @@
  trapezoidal velocity profile trajectory
  @field ac acceleration before constant velocity
  @field de acceleration after constant velocity
- @field ta time period of increased velocity
- @field qa displacement as velocity increases
- @field tc time period of constant velocity
- @field qc displacement at constant velocity
- @field td time period of decreased velocity
- @field qd displacement as velocity decreases
+ @field q1 position before constant velocity
+ @field q2 position after constant velocity
+ @field t1 time before constant velocity
+ @field t2 time after constant velocity
  @field vs initial velocity
  @field vc constant velocity
  @field ve final velocity
+ @field q final position
+ @field t total time
  @table a.traptraj
 */
 #if defined(__cplusplus)

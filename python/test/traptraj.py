@@ -14,7 +14,7 @@ except Exception as e:
     exit()
 
 traj = a.traptraj(10, 2, 2, -2)
-data = np.arange(0, traj.ta + traj.tc + traj.td, 0.01)
+data = np.arange(0, traj.t, 0.01)
 plt.figure("trapezoidal velocity profile trajectory")
 
 plt.subplot(311)

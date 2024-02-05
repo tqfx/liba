@@ -50,15 +50,15 @@ static JSValue liba_traptraj_get(JSContext *ctx, JSValueConst this_val, int magi
     {
     case 0: x = (double)self->ac; break;
     case 1: x = (double)self->de; break;
-    case 2: x = (double)self->ta; break;
-    case 3: x = (double)self->qa; break;
-    case 4: x = (double)self->tc; break;
-    case 5: x = (double)self->qc; break;
-    case 6: x = (double)self->td; break;
-    case 7: x = (double)self->qd; break;
-    case 8: x = (double)self->vs; break;
-    case 9: x = (double)self->vc; break;
-    case 10: x = (double)self->ve; break;
+    case 2: x = (double)self->q1; break;
+    case 3: x = (double)self->q2; break;
+    case 4: x = (double)self->t1; break;
+    case 5: x = (double)self->t2; break;
+    case 6: x = (double)self->vs; break;
+    case 7: x = (double)self->vc; break;
+    case 8: x = (double)self->ve; break;
+    case 9: x = (double)self->q; break;
+    case 10: x = (double)self->t; break;
     default: return JS_UNDEFINED;
     }
     return JS_NewFloat64(ctx, x);
@@ -120,15 +120,15 @@ static JSCFunctionListEntry const liba_traptraj_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.traptraj", 0),
     JS_CGETSET_MAGIC_DEF("ac", liba_traptraj_get, NULL, 0),
     JS_CGETSET_MAGIC_DEF("de", liba_traptraj_get, NULL, 1),
-    JS_CGETSET_MAGIC_DEF("ta", liba_traptraj_get, NULL, 2),
-    JS_CGETSET_MAGIC_DEF("qa", liba_traptraj_get, NULL, 3),
-    JS_CGETSET_MAGIC_DEF("tc", liba_traptraj_get, NULL, 4),
-    JS_CGETSET_MAGIC_DEF("qc", liba_traptraj_get, NULL, 5),
-    JS_CGETSET_MAGIC_DEF("td", liba_traptraj_get, NULL, 6),
-    JS_CGETSET_MAGIC_DEF("qd", liba_traptraj_get, NULL, 7),
-    JS_CGETSET_MAGIC_DEF("vs", liba_traptraj_get, NULL, 8),
-    JS_CGETSET_MAGIC_DEF("vc", liba_traptraj_get, NULL, 9),
-    JS_CGETSET_MAGIC_DEF("ve", liba_traptraj_get, NULL, 10),
+    JS_CGETSET_MAGIC_DEF("q1", liba_traptraj_get, NULL, 2),
+    JS_CGETSET_MAGIC_DEF("q2", liba_traptraj_get, NULL, 3),
+    JS_CGETSET_MAGIC_DEF("t1", liba_traptraj_get, NULL, 4),
+    JS_CGETSET_MAGIC_DEF("t2", liba_traptraj_get, NULL, 5),
+    JS_CGETSET_MAGIC_DEF("vs", liba_traptraj_get, NULL, 6),
+    JS_CGETSET_MAGIC_DEF("vc", liba_traptraj_get, NULL, 7),
+    JS_CGETSET_MAGIC_DEF("ve", liba_traptraj_get, NULL, 8),
+    JS_CGETSET_MAGIC_DEF("q", liba_traptraj_get, NULL, 9),
+    JS_CGETSET_MAGIC_DEF("t", liba_traptraj_get, NULL, 10),
     JS_CFUNC_DEF("gen", 6, liba_traptraj_gen),
     JS_CFUNC_DEF("pos", 1, liba_traptraj_pos),
     JS_CFUNC_DEF("vel", 1, liba_traptraj_vel),

@@ -37,7 +37,7 @@ extern "C" {
   \f[\begin{cases}t_a=0\\t_c=0\\t_d=\cfrac{v_e-v_s}{d}\end{cases}\f]
   c. If \f$|v|>|v_s|\f$, \f$|v|>|v_e|\f$, then there are acceleration and deceleration phases.
   \f[\begin{cases}t_a=\cfrac{v-v_s}{a}\\t_c=0\\t_d=\cfrac{v_e-v}{d}\end{cases}\f]
-  3. Finally, the displacement and velocity are calculated using the formula.
+  3. Finally, the position and velocity are calculated using the formula.
  @param[in,out] ctx points to an instance of trapezoidal velocity profile trajectory
  @param[in] qm defines the distance from the start point to the end point
  @param[in] vm defines the maximum velocity at which the system can work
@@ -53,8 +53,7 @@ A_EXTERN a_float a_traptraj_gen(a_traptraj *ctx, a_float qm, a_float vm, a_float
  @brief calculate for trapezoidal velocity profile trajectory position
  \f[
   q(t)=\begin{cases}
-  v_s+\frac{1}{2}at^2,&0\le t<t_a\\q_a+v_c(t-t_a),&t_a\le t<t_a+t_c\\
-  q_a+q_c+v_c(t-t_a-t_c)+\frac{1}{2}d(t-t_a-t_c)^2,&t_a+t_c\le t<t_a+t_c+t_d
+  v_s+\frac{1}{2}at^2,&0\le t<t_1\\q_1+v_c(t-t_1),&t_1\le t<t_2\\q_2+v_c(t-t_2)+\frac{1}{2}d(t-t_2)^2,&t_2\le t<t_3
   \end{cases}
  \f]
  @param[in] ctx points to an instance of trapezoidal velocity profile trajectory
@@ -67,8 +66,7 @@ A_EXTERN a_float a_traptraj_pos(a_traptraj const *ctx, a_float dt);
  @brief calculate for trapezoidal velocity profile trajectory velocity
  \f[
   v(t)=\begin{cases}
-  v_s+at,&0\le t<t_a\\v_c,&t_a\le t<t_a+t_c\\
-  v_c+d(t-t_a-t_c),&t_a+t_c\le t<t_a+t_c+t_d
+  v_s+at,&0\le t<t_1\\v_c,&t_1\le t<t_2\\v_c+d(t-t_2),&t_2\le t<t_3
   \end{cases}
  \f]
  @param[in] ctx points to an instance of trapezoidal velocity profile trajectory
@@ -81,7 +79,7 @@ A_EXTERN a_float a_traptraj_vel(a_traptraj const *ctx, a_float dt);
  @brief calculate for trapezoidal velocity profile trajectory acceleration
  \f[
   a(t)=\begin{cases}
-  a,&0\le t<t_a\\0,&t_a\le t<t_a+t_c\\d,&t_a+t_c\le t<t_a+t_c+t_d
+  a,&0\le t<t_1\\0,&t_1\le t<t_2\\d,&t_2\le t<t_3
   \end{cases}
  \f]
  @param[in] ctx points to an instance of trapezoidal velocity profile trajectory
@@ -105,15 +103,15 @@ struct a_traptraj
 {
     a_float ac; //!< acceleration before constant velocity
     a_float de; //!< acceleration after constant velocity
-    a_float ta; //!< time period of increased velocity
-    a_float qa; //!< displacement as velocity increases
-    a_float tc; //!< time period of constant velocity
-    a_float qc; //!< displacement at constant velocity
-    a_float td; //!< time period of decreased velocity
-    a_float qd; //!< displacement as velocity decreases
+    a_float q1; //!< position before constant velocity
+    a_float q2; //!< position after constant velocity
+    a_float t1; //!< time before constant velocity
+    a_float t2; //!< time after constant velocity
     a_float vs; //!< initial velocity
     a_float vc; //!< constant velocity
     a_float ve; //!< final velocity
+    a_float q; //!< final position
+    a_float t; //!< total time
 #if defined(__cplusplus)
     A_INLINE a_float gen(a_float qm, a_float vm,
                          a_float _ac, a_float _de,

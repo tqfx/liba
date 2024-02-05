@@ -29,52 +29,35 @@ public class traptraj {
     public final native double de();
 
     /**
-     * get time period of increased velocity for trapezoidal velocity profile
+     * get position before constant velocity for trapezoidal velocity profile
      * trajectory
      *
-     * @return time period of increased velocity
+     * @return position before constant velocity
      */
-    public final native double ta();
+    public final native double q1();
 
     /**
-     * get displacement as velocity increases for trapezoidal velocity profile
+     * get position after constant velocity for trapezoidal velocity profile
      * trajectory
      *
-     * @return displacement as velocity increases
+     * @return position after constant velocity
      */
-    public final native double qa();
+    public final native double q2();
 
     /**
-     * get time period of constant velocity for trapezoidal velocity profile
-     * trajectory
+     * get time before constant velocity for trapezoidal velocity profile trajectory
      *
-     * @return time period of constant velocity
+     * @return time before constant velocity
      */
-    public final native double tc();
+    public final native double t1();
 
     /**
-     * get displacement at constant velocity for trapezoidal velocity profile
+     * get time after constant velocity for trapezoidal velocity profile
      * trajectory
      *
-     * @return displacement at constant velocity
+     * @return time after constant velocity
      */
-    public final native double qc();
-
-    /**
-     * get time period of decreased velocity for trapezoidal velocity profile
-     * trajectory
-     *
-     * @return time period of decreased velocity
-     */
-    public final native double td();
-
-    /**
-     * get displacement as velocity decreases for trapezoidal velocity profile
-     * trajectory
-     *
-     * @return displacement as velocity decreases
-     */
-    public final native double qd();
+    public final native double t2();
 
     /**
      * get initial velocity for trapezoidal velocity profile trajectory
@@ -96,6 +79,21 @@ public class traptraj {
      * @return final velocity
      */
     public final native double ve();
+
+    /**
+     * get final position for trapezoidal velocity profile
+     * trajectory
+     *
+     * @return final position
+     */
+    public final native double q();
+
+    /**
+     * get total time for trapezoidal velocity profile trajectory
+     *
+     * @return total time
+     */
+    public final native double t();
 
     /**
      * construct a new {@link traptraj} object

@@ -156,23 +156,17 @@ static int liba_traptraj_get(lua_State *L)
     case 0x00003391: // de
         lua_pushnumber(L, (lua_Number)ctx->de);
         break;
-    case 0x00003BBD: // ta
-        lua_pushnumber(L, (lua_Number)ctx->ta);
+    case 0x00003A04: // q1
+        lua_pushnumber(L, (lua_Number)ctx->q1);
         break;
-    case 0x00003A34: // qa
-        lua_pushnumber(L, (lua_Number)ctx->qa);
+    case 0x00003A05: // q2
+        lua_pushnumber(L, (lua_Number)ctx->q2);
         break;
-    case 0x00003BBF: // tc
-        lua_pushnumber(L, (lua_Number)ctx->tc);
+    case 0x00003B8D: // t1
+        lua_pushnumber(L, (lua_Number)ctx->t1);
         break;
-    case 0x00003A36: // qc
-        lua_pushnumber(L, (lua_Number)ctx->qc);
-        break;
-    case 0x00003BC0: // td
-        lua_pushnumber(L, (lua_Number)ctx->td);
-        break;
-    case 0x00003A37: // qd
-        lua_pushnumber(L, (lua_Number)ctx->qd);
+    case 0x00003B8E: // t2
+        lua_pushnumber(L, (lua_Number)ctx->t2);
         break;
     case 0x00003CD5: // vs
         lua_pushnumber(L, (lua_Number)ctx->vs);
@@ -183,19 +177,25 @@ static int liba_traptraj_get(lua_State *L)
     case 0x00003CC7: // ve
         lua_pushnumber(L, (lua_Number)ctx->ve);
         break;
+    case 0x00000071: // q
+        lua_pushnumber(L, (lua_Number)ctx->q);
+        break;
+    case 0x00000074: // t
+        lua_pushnumber(L, (lua_Number)ctx->t);
+        break;
     case 0xA65758B2: // __index
         lua_registry_get(L, liba_traptraj_new);
         lua_num_set(L, -1, "ac", ctx->ac);
         lua_num_set(L, -1, "de", ctx->de);
-        lua_num_set(L, -1, "ta", ctx->ta);
-        lua_num_set(L, -1, "qa", ctx->qa);
-        lua_num_set(L, -1, "tc", ctx->tc);
-        lua_num_set(L, -1, "qc", ctx->qc);
-        lua_num_set(L, -1, "td", ctx->td);
-        lua_num_set(L, -1, "qd", ctx->qd);
+        lua_num_set(L, -1, "q1", ctx->q1);
+        lua_num_set(L, -1, "q2", ctx->q2);
+        lua_num_set(L, -1, "t1", ctx->t1);
+        lua_num_set(L, -1, "t2", ctx->t2);
         lua_num_set(L, -1, "vs", ctx->vs);
         lua_num_set(L, -1, "vc", ctx->vc);
         lua_num_set(L, -1, "ve", ctx->ve);
+        lua_num_set(L, -1, "q", ctx->q);
+        lua_num_set(L, -1, "t", ctx->t);
         break;
     default:
         lua_getmetatable(L, 1);

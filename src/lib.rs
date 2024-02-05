@@ -1523,24 +1523,24 @@ pub struct traptraj {
     pub ac: float,
     /// acceleration after constant velocity
     pub de: float,
-    /// time period of increased velocity
-    pub ta: float,
-    /// displacement as velocity increases
-    pub qa: float,
-    /// time period of constant velocity
-    pub tc: float,
-    /// displacement at constant velocity
-    pub qc: float,
-    /// time period of decreased velocity
-    pub td: float,
-    /// displacement as velocity decreases
-    pub qd: float,
+    /// position before constant velocity
+    pub q1: float,
+    /// position after constant velocity
+    pub q2: float,
+    /// time before constant velocity
+    pub t1: float,
+    /// time after constant velocity
+    pub t2: float,
     /// initial velocity
     pub vs: float,
     /// constant velocity
     pub vc: float,
     /// final velocity
     pub ve: float,
+    /// final position
+    pub q: float,
+    /// total time
+    pub t: float,
 }
 
 extern "C" {
@@ -1565,15 +1565,15 @@ impl traptraj {
         let mut ctx: Self = Self {
             ac: 0.0,
             de: 0.0,
-            ta: 0.0,
-            qa: 0.0,
-            tc: 0.0,
-            qc: 0.0,
-            td: 0.0,
-            qd: 0.0,
+            q1: 0.0,
+            q2: 0.0,
+            t1: 0.0,
+            t2: 0.0,
             vs: 0.0,
             vc: 0.0,
             ve: 0.0,
+            q: 0.0,
+            t: 0.0,
         };
         unsafe { a_traptraj_gen(&mut ctx, qm, vm, ac, de, vs, ve) };
         ctx

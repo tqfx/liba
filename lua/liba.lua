@@ -1393,15 +1393,15 @@ function tf:zero() end
 ---@class a.traptraj
 ---@field ac number
 ---@field de number
----@field ta number
----@field qa number
----@field tc number
----@field qc number
----@field td number
----@field qd number
+---@field q1 number
+---@field q2 number
+---@field t1 number
+---@field t2 number
 ---@field vs number
 ---@field vc number
 ---@field ve number
+---@field q number
+---@field t number
 local traptraj = {}
 ---@class liba.traptraj
 ---@overload fun(qm: number, vm: number, ac: number, de: number, vs?: number, ve?: number): a.traptraj

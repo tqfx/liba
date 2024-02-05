@@ -824,24 +824,24 @@ declare namespace liba {
     readonly ac: number;
     /** acceleration after constant velocity */
     readonly de: number;
-    /** time period of increased velocity */
-    readonly ta: number;
-    /** displacement as velocity increases */
-    readonly qa: number;
-    /** time period of constant velocity */
-    readonly tc: number;
-    /** displacement at constant velocity */
-    readonly qc: number;
-    /** time period of decreased velocity */
-    readonly td: number;
-    /** displacement as velocity decreases */
-    readonly qd: number;
+    /** position before constant velocity */
+    readonly q1: number;
+    /** position after constant velocity */
+    readonly q2: number;
+    /** time before constant velocity */
+    readonly t1: number;
+    /** time after constant velocity */
+    readonly t2: number;
     /** initial velocity */
     readonly vs: number;
     /** constant velocity */
     readonly vc: number;
     /** final velocity */
     readonly ve: number;
+    /** final position */
+    readonly q: number;
+    /** total time */
+    readonly t: number;
     /**
      * calculate for trapezoidal velocity profile trajectory position
      * @param dt difference between current time and initial time
