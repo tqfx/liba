@@ -15,11 +15,11 @@
  @{
 */
 
+typedef struct a_polytraj7 a_polytraj7;
+
 #if !defined A_POLYTRAJ7
 #define A_POLYTRAJ7 4
 #endif /* A_POLYTRAJ7 */
-typedef struct a_polytraj7 a_polytraj7;
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
@@ -42,14 +42,14 @@ extern "C" {
  \f}
  @param[in,out] ctx points to an instance of hepta polynomial trajectory
  @param[in] ts difference between final time and initial time
- @param[in] q0 position for source
- @param[in] q1 position for target
- @param[in] v0 velocity for source
- @param[in] v1 velocity for target
- @param[in] a0 acceleration for source
- @param[in] a1 acceleration for target
- @param[in] j0 jerk for source
- @param[in] j1 jerk for target
+ @param[in] q0 initial position
+ @param[in] q1 final position
+ @param[in] v0 initial velocity
+ @param[in] v1 final velocity
+ @param[in] a0 initial acceleration
+ @param[in] a1 final acceleration
+ @param[in] j0 initial jerk
+ @param[in] j1 final jerk
 */
 A_EXTERN void a_polytraj7_gen(a_polytraj7 *ctx, a_float ts,
                               a_float q0, a_float q1,

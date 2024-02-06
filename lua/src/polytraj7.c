@@ -50,14 +50,14 @@ static int liba_polytraj7_gen_(lua_State *L, a_polytraj7 *ctx, int arg, int top)
 /***
  constructor for hepta polynomial trajectory
  @tparam number ts difference between final time and initial time
- @tparam number q0 position for source
- @tparam number q1 position for target
- @tparam[opt] number v0 velocity for source
- @tparam[opt] number v1 velocity for target
- @tparam[opt] number a0 acceleration for source
- @tparam[opt] number a1 acceleration for target
- @tparam[opt] number j0 jerk for source
- @tparam[opt] number j1 jerk for target
+ @tparam number q0 initial position
+ @tparam number q1 final position
+ @tparam[opt] number v0 initial velocity
+ @tparam[opt] number v1 final velocity
+ @tparam[opt] number a0 initial acceleration
+ @tparam[opt] number a1 final acceleration
+ @tparam[opt] number j0 initial jerk
+ @tparam[opt] number j1 final jerk
  @treturn a.polytraj7 hepta polynomial trajectory userdata
  @function new
 */
@@ -78,14 +78,14 @@ int liba_polytraj7_new(lua_State *L)
  generate for hepta polynomial trajectory
  @tparam a.polytraj7 ctx hepta polynomial trajectory userdata
  @tparam number ts difference between final time and initial time
- @tparam number q0 position for source
- @tparam number q1 position for target
- @tparam[opt] number v0 velocity for source
- @tparam[opt] number v1 velocity for target
- @tparam[opt] number a0 acceleration for source
- @tparam[opt] number a1 acceleration for target
- @tparam[opt] number j0 jerk for source
- @tparam[opt] number j1 jerk for target
+ @tparam number q0 initial position
+ @tparam number q1 final position
+ @tparam[opt] number v0 initial velocity
+ @tparam[opt] number v1 final velocity
+ @tparam[opt] number a0 initial acceleration
+ @tparam[opt] number a1 final acceleration
+ @tparam[opt] number j0 initial jerk
+ @tparam[opt] number j1 final jerk
  @treturn a.polytraj7 hepta polynomial trajectory userdata
  @function gen
 */

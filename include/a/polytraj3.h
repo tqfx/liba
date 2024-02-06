@@ -15,11 +15,11 @@
  @{
 */
 
+typedef struct a_polytraj3 a_polytraj3;
+
 #if !defined A_POLYTRAJ3
 #define A_POLYTRAJ3 3
 #endif /* A_POLYTRAJ3 */
-typedef struct a_polytraj3 a_polytraj3;
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
@@ -38,10 +38,10 @@ extern "C" {
  \f}
  @param[in,out] ctx points to an instance of cubic polynomial trajectory
  @param[in] ts difference between final time and initial time
- @param[in] q0 position for source
- @param[in] q1 position for target
- @param[in] v0 velocity for source
- @param[in] v1 velocity for target
+ @param[in] q0 initial position
+ @param[in] q1 final position
+ @param[in] v0 initial velocity
+ @param[in] v1 final velocity
 */
 A_EXTERN void a_polytraj3_gen(a_polytraj3 *ctx, a_float ts,
                               a_float q0, a_float q1,

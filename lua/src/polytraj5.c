@@ -44,12 +44,12 @@ static int liba_polytraj5_gen_(lua_State *L, a_polytraj5 *ctx, int arg, int top)
 /***
  constructor for quintic polynomial trajectory
  @tparam number ts difference between final time and initial time
- @tparam number q0 position for source
- @tparam number q1 position for target
- @tparam[opt] number v0 velocity for source
- @tparam[opt] number v1 velocity for target
- @tparam[opt] number a0 acceleration for source
- @tparam[opt] number a1 acceleration for target
+ @tparam number q0 initial position
+ @tparam number q1 final position
+ @tparam[opt] number v0 initial velocity
+ @tparam[opt] number v1 final velocity
+ @tparam[opt] number a0 initial acceleration
+ @tparam[opt] number a1 final acceleration
  @treturn a.polytraj5 quintic polynomial trajectory userdata
  @function new
 */
@@ -70,12 +70,12 @@ int liba_polytraj5_new(lua_State *L)
  generate for quintic polynomial trajectory
  @tparam a.polytraj5 ctx quintic polynomial trajectory userdata
  @tparam number ts difference between final time and initial time
- @tparam number q0 position for source
- @tparam number q1 position for target
- @tparam[opt] number v0 velocity for source
- @tparam[opt] number v1 velocity for target
- @tparam[opt] number a0 acceleration for source
- @tparam[opt] number a1 acceleration for target
+ @tparam number q0 initial position
+ @tparam number q1 final position
+ @tparam[opt] number v0 initial velocity
+ @tparam[opt] number v1 final velocity
+ @tparam[opt] number a0 initial acceleration
+ @tparam[opt] number a1 final acceleration
  @treturn a.polytraj5 quintic polynomial trajectory userdata
  @function gen
 */

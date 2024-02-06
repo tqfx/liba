@@ -37,12 +37,12 @@ public class polytraj5 {
      * construct a new {@link polytraj5} object
      *
      * @param ts difference between final time and initial time
-     * @param q0 position for source
-     * @param q1 position for target
-     * @param v0 velocity for source
-     * @param v1 velocity for target
-     * @param a0 acceleration for source
-     * @param a1 acceleration for target
+     * @param q0 initial position
+     * @param q1 final position
+     * @param v0 initial velocity
+     * @param v1 final velocity
+     * @param a0 initial acceleration
+     * @param a1 final acceleration
      */
     public polytraj5(double ts, double q0, double q1, double v0, double v1,
             double a0, double a1) {
@@ -53,12 +53,12 @@ public class polytraj5 {
      * generate for quintic polynomial trajectory
      *
      * @param ts difference between final time and initial time
-     * @param q0 position for source
-     * @param q1 position for target
-     * @param v0 velocity for source
-     * @param v1 velocity for target
-     * @param a0 acceleration for source
-     * @param a1 acceleration for target
+     * @param q0 initial position
+     * @param q1 final position
+     * @param v0 initial velocity
+     * @param v1 final velocity
+     * @param a0 initial acceleration
+     * @param a1 final acceleration
      * @return {@link polytraj5}
      */
     public final native polytraj5 gen(double ts, double q0, double q1, double v0, double v1,

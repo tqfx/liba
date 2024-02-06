@@ -641,16 +641,16 @@ declare namespace liba {
   let polytraj3: {
     /**
      * @param ts difference between final time and initial time
-     * @param q0 position for source
-     * @param q1 position for target
+     * @param q0 initial position
+     * @param q1 final position
      */
     new(ts: number, q0: number, q1: number): polytraj3;
     /**
      * @param ts difference between final time and initial time
-     * @param q0 position for source
-     * @param q1 position for target
-     * @param v0 velocity for source
-     * @param v1 velocity for target
+     * @param q0 initial position
+     * @param q1 final position
+     * @param v0 initial velocity
+     * @param v1 final velocity
      */
     new(ts: number, q0: number, q1: number, v0: number, v1: number): polytraj3;
     readonly prototype: polytraj3;
@@ -684,26 +684,26 @@ declare namespace liba {
   let polytraj5: {
     /**
      * @param ts difference between final time and initial time
-     * @param q0 position for source
-     * @param q1 position for target
+     * @param q0 initial position
+     * @param q1 final position
      */
     new(ts: number, q0: number, q1: number): polytraj5;
     /**
      * @param ts difference between final time and initial time
-     * @param q0 position for source
-     * @param q1 position for target
-     * @param v0 velocity for source
-     * @param v1 velocity for target
+     * @param q0 initial position
+     * @param q1 final position
+     * @param v0 initial velocity
+     * @param v1 final velocity
      */
     new(ts: number, q0: number, q1: number, v0: number, v1: number): polytraj5;
     /**
      * @param ts difference between final time and initial time
-     * @param q0 position for source
-     * @param q1 position for target
-     * @param v0 velocity for source
-     * @param v1 velocity for target
-     * @param a0 acceleration for source
-     * @param a1 acceleration for target
+     * @param q0 initial position
+     * @param q1 final position
+     * @param v0 initial velocity
+     * @param v1 final velocity
+     * @param a0 initial acceleration
+     * @param a1 final acceleration
      */
     new(ts: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): polytraj5;
     readonly prototype: polytraj5;
@@ -744,38 +744,38 @@ declare namespace liba {
   let polytraj7: {
     /**
      * @param ts difference between final time and initial time
-     * @param q0 position for source
-     * @param q1 position for target
+     * @param q0 initial position
+     * @param q1 final position
      */
     new(ts: number, q0: number, q1: number): polytraj7;
     /**
      * @param ts difference between final time and initial time
-     * @param q0 position for source
-     * @param q1 position for target
-     * @param v0 velocity for source
-     * @param v1 velocity for target
+     * @param q0 initial position
+     * @param q1 final position
+     * @param v0 initial velocity
+     * @param v1 final velocity
      */
     new(ts: number, q0: number, q1: number, v0: number, v1: number): polytraj7;
     /**
      * @param ts difference between final time and initial time
-     * @param q0 position for source
-     * @param q1 position for target
-     * @param v0 velocity for source
-     * @param v1 velocity for target
-     * @param a0 acceleration for source
-     * @param a1 acceleration for target
+     * @param q0 initial position
+     * @param q1 final position
+     * @param v0 initial velocity
+     * @param v1 final velocity
+     * @param a0 initial acceleration
+     * @param a1 final acceleration
      */
     new(ts: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): polytraj7;
     /**
      * @param ts difference between final time and initial time
-     * @param q0 position for source
-     * @param q1 position for target
-     * @param v0 velocity for source
-     * @param v1 velocity for target
-     * @param a0 acceleration for source
-     * @param a1 acceleration for target
-     * @param j0 jerk for source
-     * @param j1 jerk for target
+     * @param q0 initial position
+     * @param q1 final position
+     * @param v0 initial velocity
+     * @param v1 final velocity
+     * @param a0 initial acceleration
+     * @param a1 final acceleration
+     * @param j0 initial jerk
+     * @param j1 final jerk
      */
     new(ts: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number, j0: number, j1: number): polytraj7;
     readonly prototype: polytraj7;

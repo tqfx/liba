@@ -22,10 +22,10 @@ extern "C" {
 /***
  constructor for cubic polynomial trajectory
  @tparam number ts difference between final time and initial time
- @tparam number q0 position for source
- @tparam number q1 position for target
- @tparam[opt] number v0 velocity for source
- @tparam[opt] number v1 velocity for target
+ @tparam number q0 initial position
+ @tparam number q1 final position
+ @tparam[opt] number v0 initial velocity
+ @tparam[opt] number v1 final velocity
  @treturn a.polytraj3 cubic polynomial trajectory userdata
  @function new
 */
@@ -34,10 +34,10 @@ int liba_polytraj3_new(lua_State *L);
 /***
  generate for cubic polynomial trajectory
  @tparam number ts difference between final time and initial time
- @tparam number q0 position for source
- @tparam number q1 position for target
- @tparam[opt] number v0 velocity for source
- @tparam[opt] number v1 velocity for target
+ @tparam number q0 initial position
+ @tparam number q1 final position
+ @tparam[opt] number v0 initial velocity
+ @tparam[opt] number v1 final velocity
  @treturn a.polytraj3 cubic polynomial trajectory userdata
  @function gen
 */

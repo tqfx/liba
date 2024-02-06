@@ -15,11 +15,11 @@
  @{
 */
 
+typedef struct a_polytraj5 a_polytraj5;
+
 #if !defined A_POLYTRAJ5
 #define A_POLYTRAJ5 3
 #endif /* A_POLYTRAJ5 */
-typedef struct a_polytraj5 a_polytraj5;
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
@@ -40,12 +40,12 @@ extern "C" {
  \f}
  @param[in,out] ctx points to an instance of quintic polynomial trajectory
  @param[in] ts difference between final time and initial time
- @param[in] q0 position for source
- @param[in] q1 position for target
- @param[in] v0 velocity for source
- @param[in] v1 velocity for target
- @param[in] a0 acceleration for source
- @param[in] a1 acceleration for target
+ @param[in] q0 initial position
+ @param[in] q1 final position
+ @param[in] v0 initial velocity
+ @param[in] v1 final velocity
+ @param[in] a0 initial acceleration
+ @param[in] a1 final acceleration
 */
 A_EXTERN void a_polytraj5_gen(a_polytraj5 *ctx, a_float ts,
                               a_float q0, a_float q1,
