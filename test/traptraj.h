@@ -16,13 +16,13 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         }
     }
 
-    a_float arg[6] = {0};
+    a_float arg[7] = {0};
     for (int i = start; i < argc; ++i)
     {
         arg[i - start] = strtonum(argv[i], A_NULL);
     }
     a_traptraj ctx;
-    a_float t = a_traptraj_gen(&ctx, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5]);
+    a_float t = a_traptraj_gen(&ctx, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6]);
     for (a_float dt = 0, delta = t / 1000; dt < t; dt += delta) // NOLINT
     {
         debug(A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f\n"),

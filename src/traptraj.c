@@ -5,137 +5,134 @@
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
 
-a_float a_traptraj_gen(a_traptraj *ctx, a_float qm, a_float vm, a_float ac, a_float de, a_float vs, a_float ve)
+a_float a_traptraj_gen(a_traptraj *ctx, a_float vm, a_float ac, a_float de,
+                       a_float q0, a_float q1, a_float v0, a_float v1)
 {
-    a_float vs2, ve2, vc2;
-    a_float const _2q = 2 * qm;
-    a_bool const reversed = qm < 0;
+    a_float v02, v12, vc2;
+    a_float const q = q1 - q0;
+    a_float const _2q = 2 * q;
+    a_bool const reversed = q < 0;
     if (vm < 0) { vm = -vm; }
-    if (vs > vm) { vs = vm; }
-    else if (vs < -vm) { vs = -vm; }
-    if (ve > vm) { ve = vm; }
-    else if (ve < -vm) { ve = -vm; }
+    if (v0 < -vm) { v0 = -vm; }
+    else if (v0 > vm) { v0 = vm; }
+    if (v1 < -vm) { v1 = -vm; }
+    else if (v1 > vm) { v1 = vm; }
     if (ac == de) { return 0; }
-    ctx->ac = ac;
-    ctx->de = de;
-    ctx->vs = vs;
-    ctx->ve = ve;
-    vs2 = vs * vs;
-    ve2 = ve * ve;
-    vc2 = (ve2 * ac - vs2 * de - _2q * ac * de) / (ac - de);
+    ctx->q0 = q0;
+    ctx->q1 = q1;
+    ctx->v0 = v0;
+    ctx->v1 = v1;
+    v02 = v0 * v0;
+    v12 = v1 * v1;
+    vc2 = (v12 * ac - v02 * de - _2q * ac * de) / (ac - de);
     if (vc2 <= 0) { return 0; }
     if (vc2 > vm * vm) /* acceleration, constant velocity, deceleration */
     {
         ctx->vc = reversed ? -vm : vm;
-        ctx->t1 = (ctx->vc - vs) / ac;
-        ctx->t = (ve - ctx->vc) / de;
-        ctx->q1 = ctx->vs * ctx->t1 + A_FLOAT_C(0.5) * ac * ctx->t1 * ctx->t1;
-        ctx->q = ctx->vc * ctx->t + A_FLOAT_C(0.5) * de * ctx->t * ctx->t;
-        ctx->q2 = qm - ctx->q;
-        ctx->t2 = (ctx->q2 - ctx->q1) / ctx->vc;
-        ctx->t2 += ctx->t1;
-        ctx->t += ctx->t2;
-        ctx->q = qm;
+        ctx->ta = (ctx->vc - v0) / ac;
+        ctx->t = (v1 - ctx->vc) / de;
+        ctx->qa = q0 + ctx->v0 * ctx->ta + A_FLOAT_C(0.5) * ac * ctx->ta * ctx->ta;
+        ctx->qd = q1 - ctx->vc * ctx->t - A_FLOAT_C(0.5) * de * ctx->t * ctx->t;
+        ctx->td = ctx->ta + (ctx->qd - ctx->qa) / ctx->vc;
+        ctx->t += ctx->td;
     }
-    else if (vc2 > vs2 && vc2 <= ve2) /* acceleration */
+    else if (vc2 > v02 && vc2 <= v12) /* acceleration */
     {
-        ve2 = vs2 + _2q * ac;
-        if (ve2 < 0) { return 0; }
-        ctx->ve = a_float_sqrt(ve2);
-        if (reversed) { ctx->ve = -ctx->ve; }
-        ctx->vc = ctx->ve;
-        ctx->t1 = (ctx->ve - vs) / ac;
-        ctx->t2 = ctx->t1;
-        ctx->t = ctx->t1;
-        ctx->q1 = ctx->vs * ctx->t1 + A_FLOAT_C(0.5) * ac * ctx->t1 * ctx->t1;
-        ctx->q2 = qm;
-        ctx->q = qm;
+        v12 = v02 + _2q * ac;
+        if (v12 < 0) { return 0; }
+        ctx->v1 = a_float_sqrt(v12);
+        if (reversed) { ctx->v1 = -ctx->v1; }
+        ctx->vc = ctx->v1;
+        ctx->t = (ctx->v1 - v0) / ac;
+        ctx->ta = ctx->t;
+        ctx->td = ctx->t;
+        ctx->qa = q0 + ctx->v0 * ctx->t + A_FLOAT_C(0.5) * ac * ctx->t * ctx->t;
+        ctx->qd = q1;
     }
-    else if (vc2 <= vs2 && vc2 > ve2) /* deceleration */
+    else if (vc2 <= v02 && vc2 > v12) /* deceleration */
     {
-        ve2 = vs2 + _2q * de;
-        if (ve2 < 0) { return 0; }
-        ctx->ve = a_float_sqrt(ve2);
-        if (reversed) { ctx->ve = -ctx->ve; }
-        ctx->vc = ctx->vs;
-        ctx->t1 = 0;
-        ctx->t2 = 0;
-        ctx->t = (ctx->ve - vs) / de;
-        ctx->q1 = 0;
-        ctx->q2 = 0;
-        ctx->q = ctx->vc * ctx->t + A_FLOAT_C(0.5) * de * ctx->t * ctx->t;
+        v12 = v02 + _2q * de;
+        if (v12 < 0) { return 0; }
+        ctx->v1 = a_float_sqrt(v12);
+        if (reversed) { ctx->v1 = -ctx->v1; }
+        ctx->vc = ctx->v0;
+        ctx->t = (ctx->v1 - v0) / de;
+        ctx->ta = 0;
+        ctx->td = 0;
+        ctx->qa = q0;
+        ctx->qd = q0;
     }
     else /* acceleration, deceleration */
     {
         ctx->vc = a_float_sqrt(vc2);
         if (reversed) { ctx->vc = -ctx->vc; }
-        ctx->t1 = (ctx->vc - vs) / ac;
-        ctx->t2 = ctx->t1;
-        ctx->t = (ve - ctx->vc) / de;
-        ctx->q1 = ctx->vs * ctx->t1 + A_FLOAT_C(0.5) * ac * ctx->t1 * ctx->t1;
-        ctx->q2 = ctx->q1;
-        ctx->q = ctx->vc * ctx->t + A_FLOAT_C(0.5) * de * ctx->t * ctx->t;
-        ctx->t += ctx->t1;
-        ctx->q += ctx->q1;
+        ctx->t = (ctx->vc - v0) / ac;
+        ctx->ta = ctx->t;
+        ctx->td = ctx->t;
+        ctx->qa = q0 + ctx->v0 * ctx->t + A_FLOAT_C(0.5) * ac * ctx->t * ctx->t;
+        ctx->t += (v1 - ctx->vc) / de;
+        ctx->qd = ctx->qa;
     }
+    ctx->ac = ac;
+    ctx->de = de;
     return ctx->t;
 }
 
 a_float a_traptraj_pos(a_traptraj const *ctx, a_float dt)
 {
-    if (dt >= ctx->t1)
+    if (dt >= ctx->ta)
     {
-        if (dt < ctx->t2) /* linear motion */
+        if (dt < ctx->td) /* linear motion */
         {
-            return ctx->q1 + ctx->vc * (dt - ctx->t1);
+            return ctx->qa + ctx->vc * (dt - ctx->ta);
         }
         if (dt < ctx->t) /* final blend */
         {
-            dt -= ctx->t2;
-            return ctx->q2 + ctx->vc * dt + A_FLOAT_C(0.5) * ctx->de * dt * dt;
+            dt -= ctx->td;
+            return ctx->qd + ctx->vc * dt + A_FLOAT_C(0.5) * ctx->de * dt * dt;
         }
-        return ctx->q;
+        return ctx->q1;
     }
     if (dt > 0) /* initial blend */
     {
-        return ctx->vs * dt + A_FLOAT_C(0.5) * ctx->ac * dt * dt;
+        return ctx->q0 + ctx->v0 * dt + A_FLOAT_C(0.5) * ctx->ac * dt * dt;
     }
-    return 0;
+    return ctx->q0;
 }
 
 a_float a_traptraj_vel(a_traptraj const *ctx, a_float dt)
 {
-    if (dt >= ctx->t1)
+    if (dt >= ctx->ta)
     {
-        if (dt < ctx->t2) /* linear motion */
+        if (dt < ctx->td) /* linear motion */
         {
             return ctx->vc;
         }
         if (dt < ctx->t) /* final blend */
         {
-            return ctx->vc + ctx->de * (dt - ctx->t2);
+            return ctx->vc + ctx->de * (dt - ctx->td);
         }
-        return ctx->ve;
+        return ctx->v1;
     }
     if (dt > 0) /* initial blend */
     {
-        return ctx->vs + ctx->ac * dt;
+        return ctx->v0 + ctx->ac * dt;
     }
-    return ctx->vs;
+    return ctx->v0;
 }
 
 a_float a_traptraj_acc(a_traptraj const *ctx, a_float dt)
 {
-    if (dt < ctx->t1)
+    if (dt < ctx->ta)
     {
         if (dt >= 0) /* initial blend */
         {
             return ctx->ac;
         }
     }
-    else if (dt >= ctx->t2)
+    else if (dt >= ctx->td)
     {
-        if (dt < ctx->t) /* final blend */
+        if (dt <= ctx->t) /* final blend */
         {
             return ctx->de;
         }

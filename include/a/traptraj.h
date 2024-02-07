@@ -39,15 +39,17 @@ extern "C" {
   \f[\begin{cases}t_a=\cfrac{v-v_s}{a}\\t_c=0\\t_d=\cfrac{v_e-v}{d}\end{cases}\f]
   3. Finally, the position and velocity are calculated using the formula.
  @param[in,out] ctx points to an instance of trapezoidal velocity profile trajectory
- @param[in] qm defines the distance from the start point to the end point
  @param[in] vm defines the maximum velocity at which the system can work
  @param[in] ac defines the acceleration before constant velocity
  @param[in] de defines the acceleration after constant velocity
- @param[in] vs defines the starting velocity
- @param[in] ve defines the ending velocity
+ @param[in] q0 defines the initial position
+ @param[in] q1 defines the final position
+ @param[in] v0 defines the initial velocity
+ @param[in] v1 defines the final velocity
  @return total time
 */
-A_EXTERN a_float a_traptraj_gen(a_traptraj *ctx, a_float qm, a_float vm, a_float ac, a_float de, a_float vs, a_float ve);
+A_EXTERN a_float a_traptraj_gen(a_traptraj *ctx, a_float vm, a_float ac, a_float de,
+                                a_float q0, a_float q1, a_float v0, a_float v1);
 
 /*!
  @brief calculate for trapezoidal velocity profile trajectory position
@@ -101,23 +103,23 @@ typedef struct a_traptraj traptraj;
 */
 struct a_traptraj
 {
+    a_float t; //!< total time
+    a_float q0; //!< initial position
+    a_float q1; //!< final position
+    a_float v0; //!< initial velocity
+    a_float v1; //!< final velocity
+    a_float vc; //!< constant velocity
+    a_float ta; //!< time before constant velocity
+    a_float td; //!< time after constant velocity
+    a_float qa; //!< position before constant velocity
+    a_float qd; //!< position after constant velocity
     a_float ac; //!< acceleration before constant velocity
     a_float de; //!< acceleration after constant velocity
-    a_float q1; //!< position before constant velocity
-    a_float q2; //!< position after constant velocity
-    a_float t1; //!< time before constant velocity
-    a_float t2; //!< time after constant velocity
-    a_float vs; //!< initial velocity
-    a_float vc; //!< constant velocity
-    a_float ve; //!< final velocity
-    a_float q; //!< final position
-    a_float t; //!< total time
 #if defined(__cplusplus)
-    A_INLINE a_float gen(a_float qm, a_float vm,
-                         a_float _ac, a_float _de,
-                         a_float _vs, a_float _ve)
+    A_INLINE a_float gen(a_float vm, a_float _ac, a_float _de, a_float _q0, a_float _q1,
+                         a_float _v0 = 0, a_float _v1 = 0)
     {
-        return a_traptraj_gen(this, qm, vm, _ac, _de, _vs, _ve);
+        return a_traptraj_gen(this, vm, _ac, _de, _q0, _q1, _v0, _v1);
     }
     A_INLINE a_float pos(a_float dt)
     {

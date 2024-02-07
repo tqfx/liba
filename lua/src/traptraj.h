@@ -10,17 +10,18 @@
 
 /***
  trapezoidal velocity profile trajectory
+ @field t total time
+ @field q0 initial position
+ @field q1 final position
+ @field v0 initial velocity
+ @field v1 final velocity
+ @field vc constant velocity
+ @field ta time before constant velocity
+ @field td time after constant velocity
+ @field qa position before constant velocity
+ @field qd position after constant velocity
  @field ac acceleration before constant velocity
  @field de acceleration after constant velocity
- @field q1 position before constant velocity
- @field q2 position after constant velocity
- @field t1 time before constant velocity
- @field t2 time after constant velocity
- @field vs initial velocity
- @field vc constant velocity
- @field ve final velocity
- @field q final position
- @field t total time
  @table a.traptraj
 */
 #if defined(__cplusplus)
@@ -29,12 +30,13 @@ extern "C" {
 
 /***
  constructor for trapezoidal velocity profile trajectory
- @tparam number qm defines the distance from the start point to the end point
  @tparam number vm defines the maximum velocity at which the system can work
  @tparam number ac defines the acceleration before constant velocity
  @tparam number de defines the acceleration after constant velocity
- @tparam[opt] number vs defines the starting velocity
- @tparam[opt] number ve defines the ending velocity
+ @tparam number q0 defines the initial position
+ @tparam number q1 defines the final position
+ @tparam[opt] number v0 defines the initial velocity
+ @tparam[opt] number v1 defines the final velocity
  @treturn a.traptraj trapezoidal velocity profile trajectory userdata
  @function new
 */
@@ -42,12 +44,13 @@ int liba_traptraj_new(lua_State *L);
 
 /***
  generate for trapezoidal velocity profile trajectory
- @tparam number qm defines the distance from the start point to the end point
  @tparam number vm defines the maximum velocity at which the system can work
  @tparam number ac defines the acceleration before constant velocity
  @tparam number de defines the acceleration after constant velocity
- @tparam[opt] number vs defines the starting velocity
- @tparam[opt] number ve defines the ending velocity
+ @tparam number q0 defines the initial position
+ @tparam number q1 defines the final position
+ @tparam[opt] number v0 defines the initial velocity
+ @tparam[opt] number v1 defines the final velocity
  @treturn number total time
  @function gen
 */

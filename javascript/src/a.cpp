@@ -730,11 +730,10 @@ struct tf: public a_tf
 
 struct traptraj: public a_traptraj
 {
-    A_INLINE traptraj(a_float qm, a_float vm,
-                      a_float _ac, a_float _de,
-                      a_float _vs = 0, a_float _ve = 0)
+    A_INLINE traptraj(a_float vm, a_float _ac, a_float _de, a_float _q0, a_float _q1,
+                      a_float _v0 = 0, a_float _v1 = 0)
     {
-        a_traptraj_gen(this, qm, vm, _ac, _de, _vs, _ve);
+        a_traptraj_gen(this, vm, _ac, _de, _q0, _q1, _v0, _v1);
     }
     A_INLINE a_float pos(a_float dt) { return a_traptraj::pos(dt); }
     A_INLINE a_float vel(a_float dt) { return a_traptraj::vel(dt); }
@@ -999,19 +998,20 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("num", &tf::get_num, &tf::set_num)
         .property("den", &tf::get_den, &tf::set_den);
     emscripten::class_<traptraj>("traptraj")
-        .constructor<a_float, a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
+        .property<a_float const, void>("t", &traptraj::t)
+        .property<a_float const, void>("q0", &traptraj::q0)
+        .property<a_float const, void>("q1", &traptraj::q1)
+        .property<a_float const, void>("v0", &traptraj::v0)
+        .property<a_float const, void>("v1", &traptraj::v1)
+        .property<a_float const, void>("vc", &traptraj::vc)
+        .property<a_float const, void>("ta", &traptraj::ta)
+        .property<a_float const, void>("td", &traptraj::td)
+        .property<a_float const, void>("qa", &traptraj::qa)
+        .property<a_float const, void>("qd", &traptraj::qd)
         .property<a_float const, void>("ac", &traptraj::ac)
         .property<a_float const, void>("de", &traptraj::de)
-        .property<a_float const, void>("q1", &traptraj::q1)
-        .property<a_float const, void>("q2", &traptraj::q2)
-        .property<a_float const, void>("t1", &traptraj::t1)
-        .property<a_float const, void>("t2", &traptraj::t2)
-        .property<a_float const, void>("vs", &traptraj::vs)
-        .property<a_float const, void>("vc", &traptraj::vc)
-        .property<a_float const, void>("ve", &traptraj::ve)
-        .property<a_float const, void>("q", &traptraj::q)
-        .property<a_float const, void>("t", &traptraj::t)
         .function("pos", &traptraj::pos)
         .function("vel", &traptraj::vel)
         .function("acc", &traptraj::acc);

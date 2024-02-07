@@ -297,10 +297,10 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
 endif()
 
 building(traptraj traptraj.c traptraj.cpp)
-unittest(traptraj ARGS traptraj.csv 10 2 2 -2)
+unittest(traptraj ARGS traptraj.csv 2 2 -2 0 4)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(traptraj traj3.gp traptraj.csv 10 2 2 -2)
+  unitplot(traptraj traj3.gp traptraj.csv 2 2 -2 0 4)
 endif()
 
 building(utf utf.c utf.cpp)

@@ -1519,39 +1519,42 @@ fn tf() {
 /// trapezoidal velocity profile trajectory
 #[repr(C)]
 pub struct traptraj {
+    /// total time
+    pub t: float,
+    /// initial position
+    pub q0: float,
+    /// final position
+    pub q1: float,
+    /// initial velocity
+    pub v0: float,
+    /// final velocity
+    pub v1: float,
+    /// constant velocity
+    pub vc: float,
+    /// time before constant velocity
+    pub ta: float,
+    /// time after constant velocity
+    pub td: float,
+    /// position before constant velocity
+    pub qa: float,
+    /// position after constant velocity
+    pub qd: float,
     /// acceleration before constant velocity
     pub ac: float,
     /// acceleration after constant velocity
     pub de: float,
-    /// position before constant velocity
-    pub q1: float,
-    /// position after constant velocity
-    pub q2: float,
-    /// time before constant velocity
-    pub t1: float,
-    /// time after constant velocity
-    pub t2: float,
-    /// initial velocity
-    pub vs: float,
-    /// constant velocity
-    pub vc: float,
-    /// final velocity
-    pub ve: float,
-    /// final position
-    pub q: float,
-    /// total time
-    pub t: float,
 }
 
 extern "C" {
     fn a_traptraj_gen(
         ctx: *mut traptraj,
-        qm: float,
         vm: float,
         ac: float,
         de: float,
-        vs: float,
-        ve: float,
+        q0: float,
+        q1: float,
+        v0: float,
+        v1: float,
     ) -> float;
     fn a_traptraj_pos(ctx: *const traptraj, dt: float) -> float;
     fn a_traptraj_vel(ctx: *const traptraj, dt: float) -> float;
@@ -1561,35 +1564,46 @@ extern "C" {
 impl traptraj {
     /// initialize for trapezoidal velocity profile trajectory
     #[inline(always)]
-    pub fn new(qm: float, vm: float, ac: float, de: float, vs: float, ve: float) -> Self {
-        let mut ctx: Self = Self {
-            ac: 0.0,
-            de: 0.0,
-            q1: 0.0,
-            q2: 0.0,
-            t1: 0.0,
-            t2: 0.0,
-            vs: 0.0,
-            vc: 0.0,
-            ve: 0.0,
-            q: 0.0,
-            t: 0.0,
-        };
-        unsafe { a_traptraj_gen(&mut ctx, qm, vm, ac, de, vs, ve) };
-        ctx
-    }
-    /// generate for trapezoidal velocity profile trajectory
-    #[inline(always)]
-    pub fn gen(
-        &mut self,
-        qm: float,
+    pub fn new(
         vm: float,
         ac: float,
         de: float,
-        vs: float,
-        ve: float,
+        q0: float,
+        q1: float,
+        v0: float,
+        v1: float,
+    ) -> Self {
+        let mut ctx: Self = Self {
+            t: 0.0,
+            q0: 0.0,
+            q1: 0.0,
+            v0: 0.0,
+            v1: 0.0,
+            vc: 0.0,
+            ta: 0.0,
+            td: 0.0,
+            qa: 0.0,
+            qd: 0.0,
+            ac: 0.0,
+            de: 0.0,
+        };
+        unsafe { a_traptraj_gen(&mut ctx, vm, ac, de, q0, q1, v0, v1) };
+        ctx
+    }
+    /// generate for trapezoidal velocity profile trajectory
+    #[allow(clippy::too_many_arguments)]
+    #[inline(always)]
+    pub fn gen(
+        &mut self,
+        vm: float,
+        ac: float,
+        de: float,
+        q0: float,
+        q1: float,
+        v0: float,
+        v1: float,
     ) -> float {
-        unsafe { a_traptraj_gen(self, qm, vm, ac, de, vs, ve) }
+        unsafe { a_traptraj_gen(self, vm, ac, de, q0, q1, v0, v1) }
     }
     /// calculate for trapezoidal velocity profile trajectory position
     #[inline(always)]
@@ -1613,7 +1627,7 @@ fn traptraj() {
     extern crate std;
     let dt = 0.5;
     {
-        let mut a = crate::traptraj::new(10.0, 2.0, 2.0, -2.0, 0.0, 0.0);
+        let mut a = crate::traptraj::new(2.0, 2.0, -2.0, 0.0, 2.0, 0.0, 0.0);
         let pos = a.pos(dt);
         let vel = a.vel(dt);
         let acc = a.acc(dt);

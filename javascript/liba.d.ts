@@ -820,28 +820,30 @@ declare namespace liba {
   }
 
   interface traptraj {
+    /** total time */
+    readonly t: number;
+    /** initial position */
+    readonly q0: number;
+    /** final position */
+    readonly q1: number;
+    /** initial velocity */
+    readonly v0: number;
+    /** final velocity */
+    readonly v1: number;
+    /** constant velocity */
+    readonly vc: number;
+    /** time before constant velocity */
+    readonly ta: number;
+    /** time after constant velocity */
+    readonly td: number;
+    /** position before constant velocity */
+    readonly qa: number;
+    /** position after constant velocity */
+    readonly qd: number;
     /** acceleration before constant velocity */
     readonly ac: number;
     /** acceleration after constant velocity */
     readonly de: number;
-    /** position before constant velocity */
-    readonly q1: number;
-    /** position after constant velocity */
-    readonly q2: number;
-    /** time before constant velocity */
-    readonly t1: number;
-    /** time after constant velocity */
-    readonly t2: number;
-    /** initial velocity */
-    readonly vs: number;
-    /** constant velocity */
-    readonly vc: number;
-    /** final velocity */
-    readonly ve: number;
-    /** final position */
-    readonly q: number;
-    /** total time */
-    readonly t: number;
     /**
      * calculate for trapezoidal velocity profile trajectory position
      * @param dt difference between current time and initial time
@@ -862,21 +864,23 @@ declare namespace liba {
   /** constructor for trapezoidal velocity profile trajectory */
   let traptraj: {
     /**
-     * @param qm defines the distance from the start point to the end point
      * @param vm defines the maximum velocity at which the system can work
      * @param ac defines the acceleration before constant velocity
      * @param de defines the acceleration after constant velocity
+     * @param q0 defines the initial position
+     * @param q1 defines the final position
      */
-    new(qm: number, vm: number, ac: number, de: number): traptraj;
+    new(vm: number, ac: number, de: number, q0: number, q1: number): traptraj;
     /**
-     * @param qm defines the distance from the start point to the end point
      * @param vm defines the maximum velocity at which the system can work
      * @param ac defines the acceleration before constant velocity
      * @param de defines the acceleration after constant velocity
-     * @param vs defines the starting velocity
-     * @param ve defines the ending velocity
+     * @param q0 defines the initial position
+     * @param q1 defines the final position
+     * @param v0 defines the initial velocity
+     * @param v1 defines the final velocity
      */
-    new(qm: number, vm: number, ac: number, de: number, vs: number, ve: number): traptraj;
+    new(vm: number, ac: number, de: number, q0: number, q1: number, v0: number, v1: number): traptraj;
     readonly prototype: traptraj;
   }
 

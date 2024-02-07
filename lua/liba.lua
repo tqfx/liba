@@ -1391,58 +1391,63 @@ function liba.tf.zero(ctx) end
 function tf:zero() end
 
 ---@class a.traptraj
+---@field t number
+---@field q0 number
+---@field q1 number
+---@field v0 number
+---@field v1 number
+---@field vc number
+---@field ta number
+---@field td number
+---@field qa number
+---@field qd number
 ---@field ac number
 ---@field de number
----@field q1 number
----@field q2 number
----@field t1 number
----@field t2 number
----@field vs number
----@field vc number
----@field ve number
----@field q number
----@field t number
 local traptraj = {}
 ---@class liba.traptraj
----@overload fun(qm: number, vm: number, ac: number, de: number, vs?: number, ve?: number): a.traptraj
+---@overload fun(vm: number, ac: number, de: number, q0: number, q1: number, v0?: number, v1?: number): a.traptraj
 liba.traptraj = {}
 
----@param qm number
 ---@param vm number
 ---@param ac number
 ---@param de number
----@param vs? number
----@param ve? number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
 ---@return a.traptraj
-function liba.traptraj.new(qm, vm, ac, de, vs, ve) end
+function liba.traptraj.new(vm, ac, de, q0, q1, v0, v1) end
 
----@param qm number
 ---@param vm number
 ---@param ac number
 ---@param de number
----@param vs? number
----@param ve? number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
 ---@return a.traptraj
-function traptraj.new(qm, vm, ac, de, vs, ve) end
+function traptraj.new(vm, ac, de, q0, q1, v0, v1) end
 
 ---@param ctx a.traptraj
----@param qm number
 ---@param vm number
 ---@param ac number
 ---@param de number
----@param vs? number
----@param ve? number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
 ---@return number
-function liba.traptraj.gen(ctx, qm, vm, ac, de, vs, ve) end
+function liba.traptraj.gen(ctx, vm, ac, de, q0, q1, v0, v1) end
 
----@param qm number
 ---@param vm number
 ---@param ac number
 ---@param de number
----@param vs? number
----@param ve? number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
 ---@return number
-function traptraj:gen(qm, vm, ac, de, vs, ve) end
+function traptraj:gen(vm, ac, de, q0, q1, v0, v1) end
 
 ---@param ctx a.traptraj
 ---@param dt number

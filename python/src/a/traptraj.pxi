@@ -4,10 +4,10 @@ from a.traptraj cimport *
 @cython.boundscheck(False)
 cdef class traptraj:
     cdef a_traptraj ctx
-    def __init__(self, a_float qm, a_float vm, a_float ac, a_float de, a_float vs = 0, a_float ve = 0):
-        a_traptraj_gen(&self.ctx, qm, vm, ac, de, vs, ve)
-    def gen(self, a_float qm, a_float vm, a_float ac, a_float de, a_float vs = 0, a_float ve = 0):
-        return a_traptraj_gen(&self.ctx, qm, vm, ac, de, vs, ve)
+    def __init__(self, a_float vm, a_float ac, a_float de, a_float q0, a_float q1, a_float v0 = 0, a_float v1 = 0):
+        a_traptraj_gen(&self.ctx, vm, ac, de, q0, q1, v0, v1)
+    def gen(self, a_float vm, a_float ac, a_float de, a_float q0, a_float q1, a_float v0 = 0, a_float v1 = 0):
+        return a_traptraj_gen(&self.ctx, vm, ac, de, q0, q1, v0, v1)
     def pos(self, dt):
         if iterable(dt):
             out = array_num(dt)
@@ -29,36 +29,39 @@ cdef class traptraj:
                 out[i] = a_traptraj_acc(&self.ctx, it)
             return out
         return a_traptraj_acc(&self.ctx, dt)
+    property t:
+        def __get__(self):
+            return self.ctx.t
+    property q0:
+        def __get__(self):
+            return self.ctx.q0
+    property q1:
+        def __get__(self):
+            return self.ctx.q1
+    property v0:
+        def __get__(self):
+            return self.ctx.v0
+    property v1:
+        def __get__(self):
+            return self.ctx.v1
+    property vc:
+        def __get__(self):
+            return self.ctx.vc
+    property ta:
+        def __get__(self):
+            return self.ctx.ta
+    property td:
+        def __get__(self):
+            return self.ctx.td
+    property qa:
+        def __get__(self):
+            return self.ctx.qa
+    property qd:
+        def __get__(self):
+            return self.ctx.qd
     property ac:
         def __get__(self):
             return self.ctx.ac
     property de:
         def __get__(self):
             return self.ctx.de
-    property q1:
-        def __get__(self):
-            return self.ctx.q1
-    property q2:
-        def __get__(self):
-            return self.ctx.q2
-    property t1:
-        def __get__(self):
-            return self.ctx.t1
-    property t2:
-        def __get__(self):
-            return self.ctx.t2
-    property vs:
-        def __get__(self):
-            return self.ctx.vs
-    property vc:
-        def __get__(self):
-            return self.ctx.vc
-    property ve:
-        def __get__(self):
-            return self.ctx.ve
-    property q:
-        def __get__(self):
-            return self.ctx.q
-    property t:
-        def __get__(self):
-            return self.ctx.t
