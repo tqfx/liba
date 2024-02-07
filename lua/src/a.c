@@ -158,24 +158,24 @@ int luaopen_liba(lua_State *L)
     luaopen_liba_pid_neuro(L);
     lua_rawset(L, -3);
 
-    lua_pushstring(L, "polytraj3");
-    luaopen_liba_polytraj3(L);
-    lua_rawset(L, -3);
-
-    lua_pushstring(L, "polytraj5");
-    luaopen_liba_polytraj5(L);
-    lua_rawset(L, -3);
-
-    lua_pushstring(L, "polytraj7");
-    luaopen_liba_polytraj7(L);
-    lua_rawset(L, -3);
-
     lua_pushstring(L, "tf");
     luaopen_liba_tf(L);
     lua_rawset(L, -3);
 
-    lua_pushstring(L, "traptraj");
-    luaopen_liba_traptraj(L);
+    lua_pushstring(L, "trajpoly3");
+    luaopen_liba_trajpoly3(L);
+    lua_rawset(L, -3);
+
+    lua_pushstring(L, "trajpoly5");
+    luaopen_liba_trajpoly5(L);
+    lua_rawset(L, -3);
+
+    lua_pushstring(L, "trajpoly7");
+    luaopen_liba_trajpoly7(L);
+    lua_rawset(L, -3);
+
+    lua_pushstring(L, "trajtrap");
+    luaopen_liba_trajtrap(L);
     lua_rawset(L, -3);
 
     lua_pushstring(L, "version");

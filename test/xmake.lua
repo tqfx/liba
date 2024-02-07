@@ -88,18 +88,6 @@ target("test/poly")
 building({ "poly.c", "poly.cpp" })
 target_end()
 
-target("test/polytraj3")
-building({ "polytraj3.c", "polytraj3.cpp" })
-target_end()
-
-target("test/polytraj5")
-building({ "polytraj5.c", "polytraj5.cpp" })
-target_end()
-
-target("test/polytraj7")
-building({ "polytraj7.c", "polytraj7.cpp" })
-target_end()
-
 target("test/que")
 building({ "que.c", "que.cpp" })
 target_end()
@@ -116,8 +104,20 @@ target("test/tf")
 building({ "tf.c", "tf.cpp" })
 target_end()
 
-target("test/traptraj")
-building({ "traptraj.c", "traptraj.cpp" })
+target("test/trajpoly3")
+building({ "trajpoly3.c", "trajpoly3.cpp" })
+target_end()
+
+target("test/trajpoly5")
+building({ "trajpoly5.c", "trajpoly5.cpp" })
+target_end()
+
+target("test/trajpoly7")
+building({ "trajpoly7.c", "trajpoly7.cpp" })
+target_end()
+
+target("test/trajtrap")
+building({ "trajtrap.c", "trajtrap.cpp" })
 target_end()
 
 target("test/str")

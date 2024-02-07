@@ -1128,276 +1128,6 @@ fn pid_neuro() {
     a.zero();
 }
 
-/// cubic polynomial trajectory
-#[repr(C)]
-pub struct polytraj3 {
-    /// coefficients of position
-    pub q: [float; 4],
-    /// coefficients of velocity
-    pub v: [float; 3],
-    /// coefficients of acceleration
-    pub a: [float; 2],
-}
-
-extern "C" {
-    fn a_polytraj3_gen(ctx: *mut polytraj3, ts: float, q0: float, q1: float, v0: float, v1: float);
-    fn a_polytraj3_pos(ctx: *const polytraj3, dt: float) -> float;
-    fn a_polytraj3_vel(ctx: *const polytraj3, dt: float) -> float;
-    fn a_polytraj3_acc(ctx: *const polytraj3, dt: float) -> float;
-}
-
-impl polytraj3 {
-    /// initialize for cubic polynomial trajectory
-    #[inline(always)]
-    pub fn new(ts: float, q0: float, q1: float, v0: float, v1: float) -> Self {
-        let mut ctx: Self = Self {
-            q: [0.0; 4],
-            v: [0.0; 3],
-            a: [0.0; 2],
-        };
-        unsafe { a_polytraj3_gen(&mut ctx, ts, q0, q1, v0, v1) };
-        ctx
-    }
-    /// generate for cubic polynomial trajectory
-    #[inline(always)]
-    pub fn gen(&mut self, ts: float, q0: float, q1: float, v0: float, v1: float) -> &mut Self {
-        unsafe { a_polytraj3_gen(self, ts, q0, q1, v0, v1) };
-        self
-    }
-    /// calculate for cubic polynomial trajectory position
-    #[inline(always)]
-    pub fn pos(&mut self, dt: float) -> float {
-        unsafe { a_polytraj3_pos(self, dt) }
-    }
-    /// calculate for cubic polynomial trajectory velocity
-    #[inline(always)]
-    pub fn vel(&mut self, dt: float) -> float {
-        unsafe { a_polytraj3_vel(self, dt) }
-    }
-    /// calculate for cubic polynomial trajectory acceleration
-    #[inline(always)]
-    pub fn acc(&mut self, dt: float) -> float {
-        unsafe { a_polytraj3_acc(self, dt) }
-    }
-}
-
-#[test]
-fn polytraj3() {
-    extern crate std;
-    let dt = 0.5;
-    {
-        let mut a = crate::polytraj3::new(1.0, 0.0, 1.0, 0.0, 1.0);
-        let pos = a.pos(dt);
-        let vel = a.vel(dt);
-        let acc = a.acc(dt);
-        std::println!("[{}, {}, {}]", pos, vel, acc);
-    }
-}
-
-/// quintic polynomial trajectory
-#[repr(C)]
-pub struct polytraj5 {
-    /// coefficients of position
-    pub q: [float; 6],
-    /// coefficients of velocity
-    pub v: [float; 5],
-    /// coefficients of acceleration
-    pub a: [float; 4],
-}
-
-extern "C" {
-    fn a_polytraj5_gen(
-        ctx: *mut polytraj5,
-        ts: float,
-        q0: float,
-        q1: float,
-        v0: float,
-        v1: float,
-        a0: float,
-        a1: float,
-    );
-    fn a_polytraj5_pos(ctx: *const polytraj5, dt: float) -> float;
-    fn a_polytraj5_vel(ctx: *const polytraj5, dt: float) -> float;
-    fn a_polytraj5_acc(ctx: *const polytraj5, dt: float) -> float;
-}
-
-impl polytraj5 {
-    /// initialize for quintic polynomial trajectory
-    #[allow(clippy::too_many_arguments)]
-    #[inline(always)]
-    pub fn new(
-        ts: float,
-        q0: float,
-        q1: float,
-        v0: float,
-        v1: float,
-        a0: float,
-        a1: float,
-    ) -> Self {
-        let mut ctx: Self = Self {
-            q: [0.0; 6],
-            v: [0.0; 5],
-            a: [0.0; 4],
-        };
-        unsafe { a_polytraj5_gen(&mut ctx, ts, q0, q1, v0, v1, a0, a1) };
-        ctx
-    }
-    /// generate for quintic polynomial trajectory
-    #[allow(clippy::too_many_arguments)]
-    #[inline(always)]
-    pub fn gen(
-        &mut self,
-        ts: float,
-        q0: float,
-        q1: float,
-        v0: float,
-        v1: float,
-        a0: float,
-        a1: float,
-    ) -> &mut Self {
-        unsafe { a_polytraj5_gen(self, ts, q0, q1, v0, v1, a0, a1) };
-        self
-    }
-    /// calculate for quintic polynomial trajectory position
-    #[inline(always)]
-    pub fn pos(&mut self, dt: float) -> float {
-        unsafe { a_polytraj5_pos(self, dt) }
-    }
-    /// calculate for quintic polynomial trajectory velocity
-    #[inline(always)]
-    pub fn vel(&mut self, dt: float) -> float {
-        unsafe { a_polytraj5_vel(self, dt) }
-    }
-    /// calculate for quintic polynomial trajectory acceleration
-    #[inline(always)]
-    pub fn acc(&mut self, dt: float) -> float {
-        unsafe { a_polytraj5_acc(self, dt) }
-    }
-}
-
-#[test]
-fn polytraj5() {
-    extern crate std;
-    let dt = 0.5;
-    {
-        let mut a = crate::polytraj5::new(1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
-        let pos = a.pos(dt);
-        let vel = a.vel(dt);
-        let acc = a.acc(dt);
-        std::println!("[{}, {}, {}]", pos, vel, acc);
-    }
-}
-
-/// hepta polynomial trajectory
-#[repr(C)]
-pub struct polytraj7 {
-    /// coefficients of position
-    pub q: [float; 8],
-    /// coefficients of velocity
-    pub v: [float; 7],
-    /// coefficients of acceleration
-    pub a: [float; 6],
-    /// coefficients of jerk
-    pub j: [float; 5],
-}
-
-extern "C" {
-    fn a_polytraj7_gen(
-        ctx: *mut polytraj7,
-        ts: float,
-        q0: float,
-        q1: float,
-        v0: float,
-        v1: float,
-        a0: float,
-        a1: float,
-        j0: float,
-        j1: float,
-    );
-    fn a_polytraj7_pos(ctx: *const polytraj7, dt: float) -> float;
-    fn a_polytraj7_vel(ctx: *const polytraj7, dt: float) -> float;
-    fn a_polytraj7_acc(ctx: *const polytraj7, dt: float) -> float;
-    fn a_polytraj7_jer(ctx: *const polytraj7, dt: float) -> float;
-}
-
-impl polytraj7 {
-    /// initialize for hepta polynomial trajectory
-    #[allow(clippy::too_many_arguments)]
-    #[inline(always)]
-    pub fn new(
-        ts: float,
-        q0: float,
-        q1: float,
-        v0: float,
-        v1: float,
-        a0: float,
-        a1: float,
-        j0: float,
-        j1: float,
-    ) -> Self {
-        let mut ctx: Self = Self {
-            q: [0.0; 8],
-            v: [0.0; 7],
-            a: [0.0; 6],
-            j: [0.0; 5],
-        };
-        unsafe { a_polytraj7_gen(&mut ctx, ts, q0, q1, v0, v1, a0, a1, j0, j1) };
-        ctx
-    }
-    /// generate for hepta polynomial trajectory
-    #[allow(clippy::too_many_arguments)]
-    #[inline(always)]
-    pub fn gen(
-        &mut self,
-        ts: float,
-        q0: float,
-        q1: float,
-        v0: float,
-        v1: float,
-        a0: float,
-        a1: float,
-        j0: float,
-        j1: float,
-    ) -> &mut Self {
-        unsafe { a_polytraj7_gen(self, ts, q0, q1, v0, v1, a0, a1, j0, j1) };
-        self
-    }
-    /// calculate for hepta polynomial trajectory position
-    #[inline(always)]
-    pub fn pos(&mut self, dt: float) -> float {
-        unsafe { a_polytraj7_pos(self, dt) }
-    }
-    /// calculate for hepta polynomial trajectory velocity
-    #[inline(always)]
-    pub fn vel(&mut self, dt: float) -> float {
-        unsafe { a_polytraj7_vel(self, dt) }
-    }
-    /// calculate for hepta polynomial trajectory acceleration
-    #[inline(always)]
-    pub fn acc(&mut self, dt: float) -> float {
-        unsafe { a_polytraj7_acc(self, dt) }
-    }
-    /// calculate for hepta polynomial trajectory jerk
-    #[inline(always)]
-    pub fn jer(&mut self, dt: float) -> float {
-        unsafe { a_polytraj7_jer(self, dt) }
-    }
-}
-
-#[test]
-fn polytraj7() {
-    extern crate std;
-    let dt = 0.5;
-    {
-        let mut a = crate::polytraj7::new(1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
-        let pos = a.pos(dt);
-        let vel = a.vel(dt);
-        let acc = a.acc(dt);
-        let jer = a.jer(dt);
-        std::println!("[{}, {}, {}, {}]", pos, vel, acc, jer);
-    }
-}
-
 /// transfer function
 #[repr(C)]
 pub struct tf {
@@ -1516,10 +1246,280 @@ fn tf() {
     a.zero();
 }
 
-/// trapezoidal velocity profile trajectory
+/// cubic polynomial trajectory
 #[repr(C)]
-pub struct traptraj {
-    /// total time
+pub struct trajpoly3 {
+    /// coefficients of position
+    pub q: [float; 4],
+    /// coefficients of velocity
+    pub v: [float; 3],
+    /// coefficients of acceleration
+    pub a: [float; 2],
+}
+
+extern "C" {
+    fn a_trajpoly3_gen(ctx: *mut trajpoly3, ts: float, q0: float, q1: float, v0: float, v1: float);
+    fn a_trajpoly3_pos(ctx: *const trajpoly3, dt: float) -> float;
+    fn a_trajpoly3_vel(ctx: *const trajpoly3, dt: float) -> float;
+    fn a_trajpoly3_acc(ctx: *const trajpoly3, dt: float) -> float;
+}
+
+impl trajpoly3 {
+    /// initialize for cubic polynomial trajectory
+    #[inline(always)]
+    pub fn new(ts: float, q0: float, q1: float, v0: float, v1: float) -> Self {
+        let mut ctx: Self = Self {
+            q: [0.0; 4],
+            v: [0.0; 3],
+            a: [0.0; 2],
+        };
+        unsafe { a_trajpoly3_gen(&mut ctx, ts, q0, q1, v0, v1) };
+        ctx
+    }
+    /// generate for cubic polynomial trajectory
+    #[inline(always)]
+    pub fn gen(&mut self, ts: float, q0: float, q1: float, v0: float, v1: float) -> &mut Self {
+        unsafe { a_trajpoly3_gen(self, ts, q0, q1, v0, v1) };
+        self
+    }
+    /// calculate position for cubic polynomial trajectory
+    #[inline(always)]
+    pub fn pos(&mut self, dt: float) -> float {
+        unsafe { a_trajpoly3_pos(self, dt) }
+    }
+    /// calculate velocity for cubic polynomial trajectory
+    #[inline(always)]
+    pub fn vel(&mut self, dt: float) -> float {
+        unsafe { a_trajpoly3_vel(self, dt) }
+    }
+    /// calculate acceleration for cubic polynomial trajectory
+    #[inline(always)]
+    pub fn acc(&mut self, dt: float) -> float {
+        unsafe { a_trajpoly3_acc(self, dt) }
+    }
+}
+
+#[test]
+fn trajpoly3() {
+    extern crate std;
+    let dt = 0.5;
+    {
+        let mut a = crate::trajpoly3::new(1.0, 0.0, 1.0, 0.0, 1.0);
+        let pos = a.pos(dt);
+        let vel = a.vel(dt);
+        let acc = a.acc(dt);
+        std::println!("[{}, {}, {}]", pos, vel, acc);
+    }
+}
+
+/// quintic polynomial trajectory
+#[repr(C)]
+pub struct trajpoly5 {
+    /// coefficients of position
+    pub q: [float; 6],
+    /// coefficients of velocity
+    pub v: [float; 5],
+    /// coefficients of acceleration
+    pub a: [float; 4],
+}
+
+extern "C" {
+    fn a_trajpoly5_gen(
+        ctx: *mut trajpoly5,
+        ts: float,
+        q0: float,
+        q1: float,
+        v0: float,
+        v1: float,
+        a0: float,
+        a1: float,
+    );
+    fn a_trajpoly5_pos(ctx: *const trajpoly5, dt: float) -> float;
+    fn a_trajpoly5_vel(ctx: *const trajpoly5, dt: float) -> float;
+    fn a_trajpoly5_acc(ctx: *const trajpoly5, dt: float) -> float;
+}
+
+impl trajpoly5 {
+    /// initialize for quintic polynomial trajectory
+    #[allow(clippy::too_many_arguments)]
+    #[inline(always)]
+    pub fn new(
+        ts: float,
+        q0: float,
+        q1: float,
+        v0: float,
+        v1: float,
+        a0: float,
+        a1: float,
+    ) -> Self {
+        let mut ctx: Self = Self {
+            q: [0.0; 6],
+            v: [0.0; 5],
+            a: [0.0; 4],
+        };
+        unsafe { a_trajpoly5_gen(&mut ctx, ts, q0, q1, v0, v1, a0, a1) };
+        ctx
+    }
+    /// generate for quintic polynomial trajectory
+    #[allow(clippy::too_many_arguments)]
+    #[inline(always)]
+    pub fn gen(
+        &mut self,
+        ts: float,
+        q0: float,
+        q1: float,
+        v0: float,
+        v1: float,
+        a0: float,
+        a1: float,
+    ) -> &mut Self {
+        unsafe { a_trajpoly5_gen(self, ts, q0, q1, v0, v1, a0, a1) };
+        self
+    }
+    /// calculate position for quintic polynomial trajectory
+    #[inline(always)]
+    pub fn pos(&mut self, dt: float) -> float {
+        unsafe { a_trajpoly5_pos(self, dt) }
+    }
+    /// calculate velocity for quintic polynomial trajectory
+    #[inline(always)]
+    pub fn vel(&mut self, dt: float) -> float {
+        unsafe { a_trajpoly5_vel(self, dt) }
+    }
+    /// calculate acceleration for quintic polynomial trajectory
+    #[inline(always)]
+    pub fn acc(&mut self, dt: float) -> float {
+        unsafe { a_trajpoly5_acc(self, dt) }
+    }
+}
+
+#[test]
+fn trajpoly5() {
+    extern crate std;
+    let dt = 0.5;
+    {
+        let mut a = crate::trajpoly5::new(1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
+        let pos = a.pos(dt);
+        let vel = a.vel(dt);
+        let acc = a.acc(dt);
+        std::println!("[{}, {}, {}]", pos, vel, acc);
+    }
+}
+
+/// hepta polynomial trajectory
+#[repr(C)]
+pub struct trajpoly7 {
+    /// coefficients of position
+    pub q: [float; 8],
+    /// coefficients of velocity
+    pub v: [float; 7],
+    /// coefficients of acceleration
+    pub a: [float; 6],
+    /// coefficients of jerk
+    pub j: [float; 5],
+}
+
+extern "C" {
+    fn a_trajpoly7_gen(
+        ctx: *mut trajpoly7,
+        ts: float,
+        q0: float,
+        q1: float,
+        v0: float,
+        v1: float,
+        a0: float,
+        a1: float,
+        j0: float,
+        j1: float,
+    );
+    fn a_trajpoly7_pos(ctx: *const trajpoly7, dt: float) -> float;
+    fn a_trajpoly7_vel(ctx: *const trajpoly7, dt: float) -> float;
+    fn a_trajpoly7_acc(ctx: *const trajpoly7, dt: float) -> float;
+    fn a_trajpoly7_jer(ctx: *const trajpoly7, dt: float) -> float;
+}
+
+impl trajpoly7 {
+    /// initialize for hepta polynomial trajectory
+    #[allow(clippy::too_many_arguments)]
+    #[inline(always)]
+    pub fn new(
+        ts: float,
+        q0: float,
+        q1: float,
+        v0: float,
+        v1: float,
+        a0: float,
+        a1: float,
+        j0: float,
+        j1: float,
+    ) -> Self {
+        let mut ctx: Self = Self {
+            q: [0.0; 8],
+            v: [0.0; 7],
+            a: [0.0; 6],
+            j: [0.0; 5],
+        };
+        unsafe { a_trajpoly7_gen(&mut ctx, ts, q0, q1, v0, v1, a0, a1, j0, j1) };
+        ctx
+    }
+    /// generate for hepta polynomial trajectory
+    #[allow(clippy::too_many_arguments)]
+    #[inline(always)]
+    pub fn gen(
+        &mut self,
+        ts: float,
+        q0: float,
+        q1: float,
+        v0: float,
+        v1: float,
+        a0: float,
+        a1: float,
+        j0: float,
+        j1: float,
+    ) -> &mut Self {
+        unsafe { a_trajpoly7_gen(self, ts, q0, q1, v0, v1, a0, a1, j0, j1) };
+        self
+    }
+    /// calculate position for hepta polynomial trajectory
+    #[inline(always)]
+    pub fn pos(&mut self, dt: float) -> float {
+        unsafe { a_trajpoly7_pos(self, dt) }
+    }
+    /// calculate velocity for hepta polynomial trajectory
+    #[inline(always)]
+    pub fn vel(&mut self, dt: float) -> float {
+        unsafe { a_trajpoly7_vel(self, dt) }
+    }
+    /// calculate acceleration for hepta polynomial trajectory
+    #[inline(always)]
+    pub fn acc(&mut self, dt: float) -> float {
+        unsafe { a_trajpoly7_acc(self, dt) }
+    }
+    /// calculate jerk for hepta polynomial trajectory
+    #[inline(always)]
+    pub fn jer(&mut self, dt: float) -> float {
+        unsafe { a_trajpoly7_jer(self, dt) }
+    }
+}
+
+#[test]
+fn trajpoly7() {
+    extern crate std;
+    let dt = 0.5;
+    {
+        let mut a = crate::trajpoly7::new(1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
+        let pos = a.pos(dt);
+        let vel = a.vel(dt);
+        let acc = a.acc(dt);
+        let jer = a.jer(dt);
+        std::println!("[{}, {}, {}, {}]", pos, vel, acc, jer);
+    }
+}
+
+/// trapezoidal velocity trajectory
+#[repr(C)]
+pub struct trajtrap {
+    /// total duration
     pub t: float,
     /// initial position
     pub q0: float,
@@ -1546,8 +1546,8 @@ pub struct traptraj {
 }
 
 extern "C" {
-    fn a_traptraj_gen(
-        ctx: *mut traptraj,
+    fn a_trajtrap_gen(
+        ctx: *mut trajtrap,
         vm: float,
         ac: float,
         de: float,
@@ -1556,13 +1556,13 @@ extern "C" {
         v0: float,
         v1: float,
     ) -> float;
-    fn a_traptraj_pos(ctx: *const traptraj, dt: float) -> float;
-    fn a_traptraj_vel(ctx: *const traptraj, dt: float) -> float;
-    fn a_traptraj_acc(ctx: *const traptraj, dt: float) -> float;
+    fn a_trajtrap_pos(ctx: *const trajtrap, dt: float) -> float;
+    fn a_trajtrap_vel(ctx: *const trajtrap, dt: float) -> float;
+    fn a_trajtrap_acc(ctx: *const trajtrap, dt: float) -> float;
 }
 
-impl traptraj {
-    /// initialize for trapezoidal velocity profile trajectory
+impl trajtrap {
+    /// initialize for trapezoidal velocity trajectory
     #[inline(always)]
     pub fn new(
         vm: float,
@@ -1587,10 +1587,10 @@ impl traptraj {
             ac: 0.0,
             de: 0.0,
         };
-        unsafe { a_traptraj_gen(&mut ctx, vm, ac, de, q0, q1, v0, v1) };
+        unsafe { a_trajtrap_gen(&mut ctx, vm, ac, de, q0, q1, v0, v1) };
         ctx
     }
-    /// generate for trapezoidal velocity profile trajectory
+    /// generate for trapezoidal velocity trajectory
     #[allow(clippy::too_many_arguments)]
     #[inline(always)]
     pub fn gen(
@@ -1603,31 +1603,31 @@ impl traptraj {
         v0: float,
         v1: float,
     ) -> float {
-        unsafe { a_traptraj_gen(self, vm, ac, de, q0, q1, v0, v1) }
+        unsafe { a_trajtrap_gen(self, vm, ac, de, q0, q1, v0, v1) }
     }
-    /// calculate for trapezoidal velocity profile trajectory position
+    /// calculate position for trapezoidal velocity trajectory
     #[inline(always)]
     pub fn pos(&mut self, dt: float) -> float {
-        unsafe { a_traptraj_pos(self, dt) }
+        unsafe { a_trajtrap_pos(self, dt) }
     }
-    /// calculate for trapezoidal velocity profile trajectory velocity
+    /// calculate velocity for trapezoidal velocity trajectory
     #[inline(always)]
     pub fn vel(&mut self, dt: float) -> float {
-        unsafe { a_traptraj_vel(self, dt) }
+        unsafe { a_trajtrap_vel(self, dt) }
     }
-    /// calculate for trapezoidal velocity profile trajectory acceleration
+    /// calculate acceleration for trapezoidal velocity trajectory
     #[inline(always)]
     pub fn acc(&mut self, dt: float) -> float {
-        unsafe { a_traptraj_acc(self, dt) }
+        unsafe { a_trajtrap_acc(self, dt) }
     }
 }
 
 #[test]
-fn traptraj() {
+fn trajtrap() {
     extern crate std;
     let dt = 0.5;
     {
-        let mut a = crate::traptraj::new(2.0, 2.0, -2.0, 0.0, 2.0, 0.0, 0.0);
+        let mut a = crate::trajtrap::new(2.0, 2.0, -2.0, 0.0, 2.0, 0.0, 0.0);
         let pos = a.pos(dt);
         let vel = a.vel(dt);
         let acc = a.acc(dt);

@@ -35,11 +35,11 @@ int js_liba_lpf_init(JSContext *ctx, JSModuleDef *m);
 int js_liba_pid_init(JSContext *ctx, JSModuleDef *m);
 int js_liba_pid_fuzzy_init(JSContext *ctx, JSModuleDef *m);
 int js_liba_pid_neuro_init(JSContext *ctx, JSModuleDef *m);
-int js_liba_polytraj3_init(JSContext *ctx, JSModuleDef *m);
-int js_liba_polytraj5_init(JSContext *ctx, JSModuleDef *m);
-int js_liba_polytraj7_init(JSContext *ctx, JSModuleDef *m);
 int js_liba_tf_init(JSContext *ctx, JSModuleDef *m);
-int js_liba_traptraj_init(JSContext *ctx, JSModuleDef *m);
+int js_liba_trajpoly3_init(JSContext *ctx, JSModuleDef *m);
+int js_liba_trajpoly5_init(JSContext *ctx, JSModuleDef *m);
+int js_liba_trajpoly7_init(JSContext *ctx, JSModuleDef *m);
+int js_liba_trajtrap_init(JSContext *ctx, JSModuleDef *m);
 int js_liba_version_init(JSContext *ctx, JSModuleDef *m);
 
 #if defined(__cplusplus)

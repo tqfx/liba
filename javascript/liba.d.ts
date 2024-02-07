@@ -613,174 +613,6 @@ declare namespace liba {
     readonly prototype: pid_neuro;
   }
 
-  interface polytraj3 {
-    /** coefficients of position */
-    readonly q: Float64Array | Float32Array;
-    /** coefficients of velocity */
-    readonly v: Float64Array | Float32Array;
-    /** coefficients of acceleration */
-    readonly a: Float64Array | Float32Array;
-    /**
-     * calculate for cubic polynomial trajectory position
-     * @param dt difference between current time and initial time
-     */
-    pos(dt: number): number;
-    /**
-     * calculate for cubic polynomial trajectory velocity
-     * @param dt difference between current time and initial time
-     */
-    vel(dt: number): number;
-    /**
-     * calculate for cubic polynomial trajectory acceleration
-     * @param dt difference between current time and initial time
-     */
-    acc(dt: number): number;
-    delete(): void;
-  }
-  /** constructor for cubic polynomial trajectory */
-  let polytraj3: {
-    /**
-     * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
-     */
-    new(ts: number, q0: number, q1: number): polytraj3;
-    /**
-     * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
-     * @param v0 initial velocity
-     * @param v1 final velocity
-     */
-    new(ts: number, q0: number, q1: number, v0: number, v1: number): polytraj3;
-    readonly prototype: polytraj3;
-  }
-
-  interface polytraj5 {
-    /** coefficients of position */
-    readonly q: Float64Array | Float32Array;
-    /** coefficients of velocity */
-    readonly v: Float64Array | Float32Array;
-    /** coefficients of acceleration */
-    readonly a: Float64Array | Float32Array;
-    /**
-     * calculate for quintic polynomial trajectory position
-     * @param dt difference between current time and initial time
-     */
-    pos(dt: number): number;
-    /**
-     * calculate for quintic polynomial trajectory velocity
-     * @param dt difference between current time and initial time
-     */
-    vel(dt: number): number;
-    /**
-     * calculate for quintic polynomial trajectory acceleration
-     * @param dt difference between current time and initial time
-     */
-    acc(dt: number): number;
-    delete(): void;
-  }
-  /** constructor for quintic polynomial trajectory */
-  let polytraj5: {
-    /**
-     * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
-     */
-    new(ts: number, q0: number, q1: number): polytraj5;
-    /**
-     * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
-     * @param v0 initial velocity
-     * @param v1 final velocity
-     */
-    new(ts: number, q0: number, q1: number, v0: number, v1: number): polytraj5;
-    /**
-     * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
-     * @param v0 initial velocity
-     * @param v1 final velocity
-     * @param a0 initial acceleration
-     * @param a1 final acceleration
-     */
-    new(ts: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): polytraj5;
-    readonly prototype: polytraj5;
-  }
-
-  interface polytraj7 {
-    /** coefficients of position */
-    readonly q: Float64Array | Float32Array;
-    /** coefficients of velocity */
-    readonly v: Float64Array | Float32Array;
-    /** coefficients of acceleration */
-    readonly a: Float64Array | Float32Array;
-    /** coefficients of jerk */
-    readonly j: Float64Array | Float32Array;
-    /**
-     * calculate for hepta polynomial trajectory position
-     * @param dt difference between current time and initial time
-     */
-    pos(dt: number): number;
-    /**
-     * calculate for hepta polynomial trajectory velocity
-     * @param dt difference between current time and initial time
-     */
-    vel(dt: number): number;
-    /**
-     * calculate for hepta polynomial trajectory acceleration
-     * @param dt difference between current time and initial time
-     */
-    acc(dt: number): number;
-    /**
-     * calculate for hepta polynomial trajectory jerk
-     * @param dt difference between current time and initial time
-     */
-    jer(dt: number): number;
-    delete(): void;
-  }
-  /** constructor for hepta polynomial trajectory */
-  let polytraj7: {
-    /**
-     * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
-     */
-    new(ts: number, q0: number, q1: number): polytraj7;
-    /**
-     * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
-     * @param v0 initial velocity
-     * @param v1 final velocity
-     */
-    new(ts: number, q0: number, q1: number, v0: number, v1: number): polytraj7;
-    /**
-     * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
-     * @param v0 initial velocity
-     * @param v1 final velocity
-     * @param a0 initial acceleration
-     * @param a1 final acceleration
-     */
-    new(ts: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): polytraj7;
-    /**
-     * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
-     * @param v0 initial velocity
-     * @param v1 final velocity
-     * @param a0 initial acceleration
-     * @param a1 final acceleration
-     * @param j0 initial jerk
-     * @param j1 final jerk
-     */
-    new(ts: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number, j0: number, j1: number): polytraj7;
-    readonly prototype: polytraj7;
-  }
-
   interface tf {
     /** input for transfer function */
     readonly input: Float64Array | Float32Array;
@@ -819,8 +651,176 @@ declare namespace liba {
     readonly prototype: tf;
   }
 
-  interface traptraj {
-    /** total time */
+  interface trajpoly3 {
+    /** coefficients of position */
+    readonly q: Float64Array | Float32Array;
+    /** coefficients of velocity */
+    readonly v: Float64Array | Float32Array;
+    /** coefficients of acceleration */
+    readonly a: Float64Array | Float32Array;
+    /**
+     * calculate position for cubic polynomial trajectory
+     * @param dt difference between current time and initial time
+     */
+    pos(dt: number): number;
+    /**
+     * calculate velocity for cubic polynomial trajectory
+     * @param dt difference between current time and initial time
+     */
+    vel(dt: number): number;
+    /**
+     * calculate acceleration for cubic polynomial trajectory
+     * @param dt difference between current time and initial time
+     */
+    acc(dt: number): number;
+    delete(): void;
+  }
+  /** constructor for cubic polynomial trajectory */
+  let trajpoly3: {
+    /**
+     * @param ts difference between final time and initial time
+     * @param q0 initial position
+     * @param q1 final position
+     */
+    new(ts: number, q0: number, q1: number): trajpoly3;
+    /**
+     * @param ts difference between final time and initial time
+     * @param q0 initial position
+     * @param q1 final position
+     * @param v0 initial velocity
+     * @param v1 final velocity
+     */
+    new(ts: number, q0: number, q1: number, v0: number, v1: number): trajpoly3;
+    readonly prototype: trajpoly3;
+  }
+
+  interface trajpoly5 {
+    /** coefficients of position */
+    readonly q: Float64Array | Float32Array;
+    /** coefficients of velocity */
+    readonly v: Float64Array | Float32Array;
+    /** coefficients of acceleration */
+    readonly a: Float64Array | Float32Array;
+    /**
+     * calculate position for quintic polynomial trajectory
+     * @param dt difference between current time and initial time
+     */
+    pos(dt: number): number;
+    /**
+     * calculate velocity for quintic polynomial trajectory
+     * @param dt difference between current time and initial time
+     */
+    vel(dt: number): number;
+    /**
+     * calculate acceleration for quintic polynomial trajectory
+     * @param dt difference between current time and initial time
+     */
+    acc(dt: number): number;
+    delete(): void;
+  }
+  /** constructor for quintic polynomial trajectory */
+  let trajpoly5: {
+    /**
+     * @param ts difference between final time and initial time
+     * @param q0 initial position
+     * @param q1 final position
+     */
+    new(ts: number, q0: number, q1: number): trajpoly5;
+    /**
+     * @param ts difference between final time and initial time
+     * @param q0 initial position
+     * @param q1 final position
+     * @param v0 initial velocity
+     * @param v1 final velocity
+     */
+    new(ts: number, q0: number, q1: number, v0: number, v1: number): trajpoly5;
+    /**
+     * @param ts difference between final time and initial time
+     * @param q0 initial position
+     * @param q1 final position
+     * @param v0 initial velocity
+     * @param v1 final velocity
+     * @param a0 initial acceleration
+     * @param a1 final acceleration
+     */
+    new(ts: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): trajpoly5;
+    readonly prototype: trajpoly5;
+  }
+
+  interface trajpoly7 {
+    /** coefficients of position */
+    readonly q: Float64Array | Float32Array;
+    /** coefficients of velocity */
+    readonly v: Float64Array | Float32Array;
+    /** coefficients of acceleration */
+    readonly a: Float64Array | Float32Array;
+    /** coefficients of jerk */
+    readonly j: Float64Array | Float32Array;
+    /**
+     * calculate position for hepta polynomial trajectory
+     * @param dt difference between current time and initial time
+     */
+    pos(dt: number): number;
+    /**
+     * calculate velocity for hepta polynomial trajectory
+     * @param dt difference between current time and initial time
+     */
+    vel(dt: number): number;
+    /**
+     * calculate acceleration for hepta polynomial trajectory
+     * @param dt difference between current time and initial time
+     */
+    acc(dt: number): number;
+    /**
+     * calculate jerk for hepta polynomial trajectory
+     * @param dt difference between current time and initial time
+     */
+    jer(dt: number): number;
+    delete(): void;
+  }
+  /** constructor for hepta polynomial trajectory */
+  let trajpoly7: {
+    /**
+     * @param ts difference between final time and initial time
+     * @param q0 initial position
+     * @param q1 final position
+     */
+    new(ts: number, q0: number, q1: number): trajpoly7;
+    /**
+     * @param ts difference between final time and initial time
+     * @param q0 initial position
+     * @param q1 final position
+     * @param v0 initial velocity
+     * @param v1 final velocity
+     */
+    new(ts: number, q0: number, q1: number, v0: number, v1: number): trajpoly7;
+    /**
+     * @param ts difference between final time and initial time
+     * @param q0 initial position
+     * @param q1 final position
+     * @param v0 initial velocity
+     * @param v1 final velocity
+     * @param a0 initial acceleration
+     * @param a1 final acceleration
+     */
+    new(ts: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): trajpoly7;
+    /**
+     * @param ts difference between final time and initial time
+     * @param q0 initial position
+     * @param q1 final position
+     * @param v0 initial velocity
+     * @param v1 final velocity
+     * @param a0 initial acceleration
+     * @param a1 final acceleration
+     * @param j0 initial jerk
+     * @param j1 final jerk
+     */
+    new(ts: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number, j0: number, j1: number): trajpoly7;
+    readonly prototype: trajpoly7;
+  }
+
+  interface trajtrap {
+    /** total duration */
     readonly t: number;
     /** initial position */
     readonly q0: number;
@@ -845,24 +845,35 @@ declare namespace liba {
     /** acceleration after constant velocity */
     readonly de: number;
     /**
-     * calculate for trapezoidal velocity profile trajectory position
+     * @param vm defines the maximum velocity during system operation
+     * @param ac defines the acceleration before constant velocity
+     * @param de defines the acceleration after constant velocity
+     * @param q0 defines the initial position
+     * @param q1 defines the final position
+     * @param v0 defines the initial velocity
+     * @param v1 defines the final velocity
+     * @return total duration
+     */
+    gen(vm: number, ac: number, de: number, q0: number, q1: number, v0: number, v1: number): number;
+    /**
+     * calculate position for trapezoidal velocity trajectory
      * @param dt difference between current time and initial time
      */
     pos(dt: number): number;
     /**
-     * calculate for trapezoidal velocity profile trajectory velocity
+     * calculate velocity for trapezoidal velocity trajectory
      * @param dt difference between current time and initial time
      */
     vel(dt: number): number;
     /**
-     * calculate for trapezoidal velocity profile trajectory acceleration
+     * calculate acceleration for trapezoidal velocity trajectory
      * @param dt difference between current time and initial time
      */
     acc(dt: number): number;
     delete(): void;
   }
-  /** constructor for trapezoidal velocity profile trajectory */
-  let traptraj: {
+  /** constructor for trapezoidal velocity trajectory */
+  let trajtrap: {
     /**
      * @param vm defines the maximum velocity at which the system can work
      * @param ac defines the acceleration before constant velocity
@@ -870,7 +881,7 @@ declare namespace liba {
      * @param q0 defines the initial position
      * @param q1 defines the final position
      */
-    new(vm: number, ac: number, de: number, q0: number, q1: number): traptraj;
+    new(vm: number, ac: number, de: number, q0: number, q1: number): trajtrap;
     /**
      * @param vm defines the maximum velocity at which the system can work
      * @param ac defines the acceleration before constant velocity
@@ -880,8 +891,8 @@ declare namespace liba {
      * @param v0 defines the initial velocity
      * @param v1 defines the final velocity
      */
-    new(vm: number, ac: number, de: number, q0: number, q1: number, v0: number, v1: number): traptraj;
-    readonly prototype: traptraj;
+    new(vm: number, ac: number, de: number, q0: number, q1: number, v0: number, v1: number): trajtrap;
+    readonly prototype: trajtrap;
   }
 
   interface version {

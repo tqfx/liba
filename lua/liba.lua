@@ -1096,247 +1096,6 @@ function liba.pid_neuro.inc(ctx, set, fdb) end
 ---@return number
 function pid_neuro:inc(set, fdb) end
 
----@class a.polytraj3
----@field q table
----@field v table
----@field a table
-local polytraj3 = {}
----@class liba.polytraj3
----@overload fun(ts: number, q0: number, q1: number, v0?: number, v1?: number): a.polytraj3
-liba.polytraj3 = {}
-
----@param ts number
----@param q0 number
----@param q1 number
----@param v0? number
----@param v1? number
----@return a.polytraj3
-function liba.polytraj3.new(ts, q0, q1, v0, v1) end
-
----@param ts number
----@param q0 number
----@param q1 number
----@param v0? number
----@param v1? number
----@return a.polytraj3
-function polytraj3.new(ts, q0, q1, v0, v1) end
-
----@param ctx a.polytraj3
----@param ts number
----@param q0 number
----@param q1 number
----@param v0? number
----@param v1? number
----@return a.polytraj3
-function liba.polytraj3.gen(ctx, ts, q0, q1, v0, v1) end
-
----@param ts number
----@param q0 number
----@param q1 number
----@param v0? number
----@param v1? number
----@return a.polytraj3
-function polytraj3:gen(ts, q0, q1, v0, v1) end
-
----@param ctx a.polytraj3
----@param dt number
----@return number
-function liba.polytraj3.pos(ctx, dt) end
-
----@param dt number
----@return number
-function polytraj3:pos(dt) end
-
----@param ctx a.polytraj3
----@param dt number
----@return number
-function liba.polytraj3.vel(ctx, dt) end
-
----@param dt number
----@return number
-function polytraj3:vel(dt) end
-
----@param ctx a.polytraj3
----@param dt number
----@return number
-function liba.polytraj3.acc(ctx, dt) end
-
----@param dt number
----@return number
-function polytraj3:acc(dt) end
-
----@class a.polytraj5
----@field q table
----@field v table
----@field a table
-local polytraj5 = {}
----@class liba.polytraj5
----@overload fun(ts: number, q0: number, q1: number, v0?: number, v1?: number, a0?: number, a1?: number): a.polytraj5
-liba.polytraj5 = {}
-
----@param ts number
----@param q0 number
----@param q1 number
----@param v0? number
----@param v1? number
----@param a0? number
----@param a1? number
----@return a.polytraj5
-function liba.polytraj5.new(ts, q0, q1, v0, v1, a0, a1) end
-
----@param ts number
----@param q0 number
----@param q1 number
----@param v0? number
----@param v1? number
----@param a0? number
----@param a1? number
----@return a.polytraj5
-function polytraj5.new(ts, q0, q1, v0, v1, a0, a1) end
-
----@param ctx a.polytraj5
----@param ts number
----@param q0 number
----@param q1 number
----@param v0? number
----@param v1? number
----@param a0? number
----@param a1? number
----@return a.polytraj5
-function liba.polytraj5.gen(ctx, ts, q0, q1, v0, v1, a0, a1) end
-
----@param ts number
----@param q0 number
----@param q1 number
----@param v0? number
----@param v1? number
----@param a0? number
----@param a1? number
----@return a.polytraj5
-function polytraj5:gen(ts, q0, q1, v0, v1, a0, a1) end
-
----@param ctx a.polytraj5
----@param dt number
----@return number
-function liba.polytraj5.pos(ctx, dt) end
-
----@param dt number
----@return number
-function polytraj5:pos(dt) end
-
----@param ctx a.polytraj5
----@param dt number
----@return number
-function liba.polytraj5.vel(ctx, dt) end
-
----@param dt number
----@return number
-function polytraj5:vel(dt) end
-
----@param ctx a.polytraj5
----@param dt number
----@return number
-function liba.polytraj5.acc(ctx, dt) end
-
----@param dt number
----@return number
-function polytraj5:acc(dt) end
-
----@class a.polytraj7
----@field q table
----@field v table
----@field a table
----@field j table
-local polytraj7 = {}
----@class liba.polytraj7
----@overload fun(ts: number, q0: number, q1: number, v0?: number, v1?: number, a0?: number, a1?: number, j0?: number, j1?: number): a.polytraj7
-liba.polytraj7 = {}
-
----@param ts number
----@param q0 number
----@param q1 number
----@param v0? number
----@param v1? number
----@param a0? number
----@param a1? number
----@param j0? number
----@param j1? number
----@return a.polytraj7
-function liba.polytraj7.new(ts, q0, q1, v0, v1, a0, a1, j0, j1) end
-
----@param ts number
----@param q0 number
----@param q1 number
----@param v0? number
----@param v1? number
----@param a0? number
----@param a1? number
----@param j0? number
----@param j1? number
----@return a.polytraj7
-function polytraj7.new(ts, q0, q1, v0, v1, a0, a1, j0, j1) end
-
----@param ctx a.polytraj7
----@param ts number
----@param q0 number
----@param q1 number
----@param v0? number
----@param v1? number
----@param a0? number
----@param a1? number
----@param j0? number
----@param j1? number
----@return a.polytraj7
-function liba.polytraj7.gen(ctx, ts, q0, q1, v0, v1, a0, a1, j0, j1) end
-
----@param ts number
----@param q0 number
----@param q1 number
----@param v0? number
----@param v1? number
----@param a0? number
----@param a1? number
----@param j0? number
----@param j1? number
----@return a.polytraj7
-function polytraj7:gen(ts, q0, q1, v0, v1, a0, a1, j0, j1) end
-
----@param ctx a.polytraj7
----@param dt number
----@return number
-function liba.polytraj7.pos(ctx, dt) end
-
----@param dt number
----@return number
-function polytraj7:pos(dt) end
-
----@param ctx a.polytraj7
----@param dt number
----@return number
-function liba.polytraj7.vel(ctx, dt) end
-
----@param dt number
----@return number
-function polytraj7:vel(dt) end
-
----@param ctx a.polytraj7
----@param dt number
----@return number
-function liba.polytraj7.acc(ctx, dt) end
-
----@param dt number
----@return number
-function polytraj7:acc(dt) end
-
----@param ctx a.polytraj7
----@param dt number
----@return number
-function liba.polytraj7.jer(ctx, dt) end
-
----@param dt number
----@return number
-function polytraj7:jer(dt) end
-
 ---@class a.tf
 ---@field num table
 ---@field den table
@@ -1390,7 +1149,248 @@ function liba.tf.zero(ctx) end
 ---@return a.tf
 function tf:zero() end
 
----@class a.traptraj
+---@class a.trajpoly3
+---@field q table
+---@field v table
+---@field a table
+local trajpoly3 = {}
+---@class liba.trajpoly3
+---@overload fun(ts: number, q0: number, q1: number, v0?: number, v1?: number): a.trajpoly3
+liba.trajpoly3 = {}
+
+---@param ts number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
+---@return a.trajpoly3
+function liba.trajpoly3.new(ts, q0, q1, v0, v1) end
+
+---@param ts number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
+---@return a.trajpoly3
+function trajpoly3.new(ts, q0, q1, v0, v1) end
+
+---@param ctx a.trajpoly3
+---@param ts number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
+---@return a.trajpoly3
+function liba.trajpoly3.gen(ctx, ts, q0, q1, v0, v1) end
+
+---@param ts number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
+---@return a.trajpoly3
+function trajpoly3:gen(ts, q0, q1, v0, v1) end
+
+---@param ctx a.trajpoly3
+---@param dt number
+---@return number
+function liba.trajpoly3.pos(ctx, dt) end
+
+---@param dt number
+---@return number
+function trajpoly3:pos(dt) end
+
+---@param ctx a.trajpoly3
+---@param dt number
+---@return number
+function liba.trajpoly3.vel(ctx, dt) end
+
+---@param dt number
+---@return number
+function trajpoly3:vel(dt) end
+
+---@param ctx a.trajpoly3
+---@param dt number
+---@return number
+function liba.trajpoly3.acc(ctx, dt) end
+
+---@param dt number
+---@return number
+function trajpoly3:acc(dt) end
+
+---@class a.trajpoly5
+---@field q table
+---@field v table
+---@field a table
+local trajpoly5 = {}
+---@class liba.trajpoly5
+---@overload fun(ts: number, q0: number, q1: number, v0?: number, v1?: number, a0?: number, a1?: number): a.trajpoly5
+liba.trajpoly5 = {}
+
+---@param ts number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
+---@param a0? number
+---@param a1? number
+---@return a.trajpoly5
+function liba.trajpoly5.new(ts, q0, q1, v0, v1, a0, a1) end
+
+---@param ts number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
+---@param a0? number
+---@param a1? number
+---@return a.trajpoly5
+function trajpoly5.new(ts, q0, q1, v0, v1, a0, a1) end
+
+---@param ctx a.trajpoly5
+---@param ts number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
+---@param a0? number
+---@param a1? number
+---@return a.trajpoly5
+function liba.trajpoly5.gen(ctx, ts, q0, q1, v0, v1, a0, a1) end
+
+---@param ts number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
+---@param a0? number
+---@param a1? number
+---@return a.trajpoly5
+function trajpoly5:gen(ts, q0, q1, v0, v1, a0, a1) end
+
+---@param ctx a.trajpoly5
+---@param dt number
+---@return number
+function liba.trajpoly5.pos(ctx, dt) end
+
+---@param dt number
+---@return number
+function trajpoly5:pos(dt) end
+
+---@param ctx a.trajpoly5
+---@param dt number
+---@return number
+function liba.trajpoly5.vel(ctx, dt) end
+
+---@param dt number
+---@return number
+function trajpoly5:vel(dt) end
+
+---@param ctx a.trajpoly5
+---@param dt number
+---@return number
+function liba.trajpoly5.acc(ctx, dt) end
+
+---@param dt number
+---@return number
+function trajpoly5:acc(dt) end
+
+---@class a.trajpoly7
+---@field q table
+---@field v table
+---@field a table
+---@field j table
+local trajpoly7 = {}
+---@class liba.trajpoly7
+---@overload fun(ts: number, q0: number, q1: number, v0?: number, v1?: number, a0?: number, a1?: number, j0?: number, j1?: number): a.trajpoly7
+liba.trajpoly7 = {}
+
+---@param ts number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
+---@param a0? number
+---@param a1? number
+---@param j0? number
+---@param j1? number
+---@return a.trajpoly7
+function liba.trajpoly7.new(ts, q0, q1, v0, v1, a0, a1, j0, j1) end
+
+---@param ts number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
+---@param a0? number
+---@param a1? number
+---@param j0? number
+---@param j1? number
+---@return a.trajpoly7
+function trajpoly7.new(ts, q0, q1, v0, v1, a0, a1, j0, j1) end
+
+---@param ctx a.trajpoly7
+---@param ts number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
+---@param a0? number
+---@param a1? number
+---@param j0? number
+---@param j1? number
+---@return a.trajpoly7
+function liba.trajpoly7.gen(ctx, ts, q0, q1, v0, v1, a0, a1, j0, j1) end
+
+---@param ts number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
+---@param a0? number
+---@param a1? number
+---@param j0? number
+---@param j1? number
+---@return a.trajpoly7
+function trajpoly7:gen(ts, q0, q1, v0, v1, a0, a1, j0, j1) end
+
+---@param ctx a.trajpoly7
+---@param dt number
+---@return number
+function liba.trajpoly7.pos(ctx, dt) end
+
+---@param dt number
+---@return number
+function trajpoly7:pos(dt) end
+
+---@param ctx a.trajpoly7
+---@param dt number
+---@return number
+function liba.trajpoly7.vel(ctx, dt) end
+
+---@param dt number
+---@return number
+function trajpoly7:vel(dt) end
+
+---@param ctx a.trajpoly7
+---@param dt number
+---@return number
+function liba.trajpoly7.acc(ctx, dt) end
+
+---@param dt number
+---@return number
+function trajpoly7:acc(dt) end
+
+---@param ctx a.trajpoly7
+---@param dt number
+---@return number
+function liba.trajpoly7.jer(ctx, dt) end
+
+---@param dt number
+---@return number
+function trajpoly7:jer(dt) end
+
+---@class a.trajtrap
 ---@field t number
 ---@field q0 number
 ---@field q1 number
@@ -1403,10 +1403,10 @@ function tf:zero() end
 ---@field qd number
 ---@field ac number
 ---@field de number
-local traptraj = {}
----@class liba.traptraj
----@overload fun(vm: number, ac: number, de: number, q0: number, q1: number, v0?: number, v1?: number): a.traptraj
-liba.traptraj = {}
+local trajtrap = {}
+---@class liba.trajtrap
+---@overload fun(vm: number, ac: number, de: number, q0: number, q1: number, v0?: number, v1?: number): a.trajtrap
+liba.trajtrap = {}
 
 ---@param vm number
 ---@param ac number
@@ -1415,8 +1415,8 @@ liba.traptraj = {}
 ---@param q1 number
 ---@param v0? number
 ---@param v1? number
----@return a.traptraj
-function liba.traptraj.new(vm, ac, de, q0, q1, v0, v1) end
+---@return a.trajtrap
+function liba.trajtrap.new(vm, ac, de, q0, q1, v0, v1) end
 
 ---@param vm number
 ---@param ac number
@@ -1425,10 +1425,10 @@ function liba.traptraj.new(vm, ac, de, q0, q1, v0, v1) end
 ---@param q1 number
 ---@param v0? number
 ---@param v1? number
----@return a.traptraj
-function traptraj.new(vm, ac, de, q0, q1, v0, v1) end
+---@return a.trajtrap
+function trajtrap.new(vm, ac, de, q0, q1, v0, v1) end
 
----@param ctx a.traptraj
+---@param ctx a.trajtrap
 ---@param vm number
 ---@param ac number
 ---@param de number
@@ -1437,7 +1437,7 @@ function traptraj.new(vm, ac, de, q0, q1, v0, v1) end
 ---@param v0? number
 ---@param v1? number
 ---@return number
-function liba.traptraj.gen(ctx, vm, ac, de, q0, q1, v0, v1) end
+function liba.trajtrap.gen(ctx, vm, ac, de, q0, q1, v0, v1) end
 
 ---@param vm number
 ---@param ac number
@@ -1447,34 +1447,34 @@ function liba.traptraj.gen(ctx, vm, ac, de, q0, q1, v0, v1) end
 ---@param v0? number
 ---@param v1? number
 ---@return number
-function traptraj:gen(vm, ac, de, q0, q1, v0, v1) end
+function trajtrap:gen(vm, ac, de, q0, q1, v0, v1) end
 
----@param ctx a.traptraj
+---@param ctx a.trajtrap
 ---@param dt number
 ---@return number
-function liba.traptraj.pos(ctx, dt) end
-
----@param dt number
----@return number
-function traptraj:pos(dt) end
-
----@param ctx a.traptraj
----@param dt number
----@return number
-function liba.traptraj.vel(ctx, dt) end
+function liba.trajtrap.pos(ctx, dt) end
 
 ---@param dt number
 ---@return number
-function traptraj:vel(dt) end
+function trajtrap:pos(dt) end
 
----@param ctx a.traptraj
+---@param ctx a.trajtrap
 ---@param dt number
 ---@return number
-function liba.traptraj.acc(ctx, dt) end
+function liba.trajtrap.vel(ctx, dt) end
 
 ---@param dt number
 ---@return number
-function traptraj:acc(dt) end
+function trajtrap:vel(dt) end
+
+---@param ctx a.trajtrap
+---@param dt number
+---@return number
+function liba.trajtrap.acc(ctx, dt) end
+
+---@param dt number
+---@return number
+function trajtrap:acc(dt) end
 
 ---@class a.version
 ---@field major integer

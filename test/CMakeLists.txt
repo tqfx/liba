@@ -249,27 +249,6 @@ endif()
 building(poly poly.c poly.cpp)
 unittest(poly)
 
-building(polytraj3 polytraj3.c polytraj3.cpp)
-unittest(polytraj3 ARGS polytraj3.csv 0 10 0 10)
-
-if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(polytraj3 traj3.gp polytraj3.csv 0 10 0 10)
-endif()
-
-building(polytraj5 polytraj5.c polytraj5.cpp)
-unittest(polytraj5 ARGS polytraj5.csv 0 10 0 10)
-
-if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(polytraj5 traj3.gp polytraj5.csv 0 10 0 10)
-endif()
-
-building(polytraj7 polytraj7.c polytraj7.cpp)
-unittest(polytraj7 ARGS polytraj7.csv 0 10 0 10)
-
-if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(polytraj7 traj4.gp polytraj7.csv 0 10 0 10)
-endif()
-
 building(que que.c que.cpp)
 unittest(que)
 
@@ -296,11 +275,32 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(tf 2.gp tf.csv)
 endif()
 
-building(traptraj traptraj.c traptraj.cpp)
-unittest(traptraj ARGS traptraj.csv 2 2 -2 0 4)
+building(trajpoly3 trajpoly3.c trajpoly3.cpp)
+unittest(trajpoly3 ARGS trajpoly3.csv 0 10 0 10)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(traptraj traj3.gp traptraj.csv 2 2 -2 0 4)
+  unitplot(trajpoly3 traj3.gp trajpoly3.csv 0 10 0 10)
+endif()
+
+building(trajpoly5 trajpoly5.c trajpoly5.cpp)
+unittest(trajpoly5 ARGS trajpoly5.csv 0 10 0 10)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(trajpoly5 traj3.gp trajpoly5.csv 0 10 0 10)
+endif()
+
+building(trajpoly7 trajpoly7.c trajpoly7.cpp)
+unittest(trajpoly7 ARGS trajpoly7.csv 0 10 0 10)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(trajpoly7 traj4.gp trajpoly7.csv 0 10 0 10)
+endif()
+
+building(trajtrap trajtrap.c trajtrap.cpp)
+unittest(trajtrap ARGS trajtrap.csv 2 2 -2 0 4)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(trajtrap traj3.gp trajtrap.csv 2 2 -2 0 4)
 endif()
 
 building(utf utf.c utf.cpp)

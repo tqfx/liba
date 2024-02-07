@@ -50,20 +50,20 @@ unittest(pid_fuzzy)
 building(pid_neuro)
 unittest(pid_neuro)
 
-building(polytraj3)
-unittest(polytraj3)
-
-building(polytraj5)
-unittest(polytraj5)
-
-building(polytraj7)
-unittest(polytraj7)
-
 building(tf)
 unittest(tf)
 
-building(traptraj)
-unittest(traptraj)
+building(trajpoly3)
+unittest(trajpoly3)
+
+building(trajpoly5)
+unittest(trajpoly5)
+
+building(trajpoly7)
+unittest(trajpoly7)
+
+building(trajtrap)
+unittest(trajtrap)
 
 building(version)
 unittest(version)

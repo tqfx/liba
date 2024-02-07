@@ -602,62 +602,6 @@ struct pid_neuro: public a_pid_neuro
     A_INLINE a_float get_err() const { return pid.err; }
 };
 
-#include "a/polytraj3.h"
-
-struct polytraj3: public a_polytraj3
-{
-    A_INLINE polytraj3(a_float ts, a_float q0, a_float q1,
-                       a_float v0 = 0, a_float v1 = 0)
-    {
-        a_polytraj3_gen(this, ts, q0, q1, v0, v1);
-    }
-    A_INLINE a_float pos(a_float dt) { return a_polytraj3::pos(dt); }
-    A_INLINE a_float vel(a_float dt) { return a_polytraj3::vel(dt); }
-    A_INLINE a_float acc(a_float dt) { return a_polytraj3::acc(dt); }
-    A_INLINE emscripten::val get_q() const { return js_array_num_new(q, A_LEN(q)); }
-    A_INLINE emscripten::val get_v() const { return js_array_num_new(v, A_LEN(v)); }
-    A_INLINE emscripten::val get_a() const { return js_array_num_new(a, A_LEN(a)); }
-};
-
-#include "a/polytraj5.h"
-
-struct polytraj5: public a_polytraj5
-{
-    A_INLINE polytraj5(a_float ts, a_float q0, a_float q1,
-                       a_float v0 = 0, a_float v1 = 0,
-                       a_float a0 = 0, a_float a1 = 0)
-    {
-        a_polytraj5_gen(this, ts, q0, q1, v0, v1, a0, a1);
-    }
-    A_INLINE a_float pos(a_float dt) { return a_polytraj5::pos(dt); }
-    A_INLINE a_float vel(a_float dt) { return a_polytraj5::vel(dt); }
-    A_INLINE a_float acc(a_float dt) { return a_polytraj5::acc(dt); }
-    A_INLINE emscripten::val get_q() const { return js_array_num_new(q, A_LEN(q)); }
-    A_INLINE emscripten::val get_v() const { return js_array_num_new(v, A_LEN(v)); }
-    A_INLINE emscripten::val get_a() const { return js_array_num_new(a, A_LEN(a)); }
-};
-
-#include "a/polytraj7.h"
-
-struct polytraj7: public a_polytraj7
-{
-    A_INLINE polytraj7(a_float ts, a_float q0, a_float q1,
-                       a_float v0 = 0, a_float v1 = 0,
-                       a_float a0 = 0, a_float a1 = 0,
-                       a_float j0 = 0, a_float j1 = 0)
-    {
-        a_polytraj7_gen(this, ts, q0, q1, v0, v1, a0, a1, j0, j1);
-    }
-    A_INLINE a_float pos(a_float dt) { return a_polytraj7::pos(dt); }
-    A_INLINE a_float vel(a_float dt) { return a_polytraj7::vel(dt); }
-    A_INLINE a_float acc(a_float dt) { return a_polytraj7::acc(dt); }
-    A_INLINE a_float jer(a_float dt) { return a_polytraj7::jer(dt); }
-    A_INLINE emscripten::val get_q() const { return js_array_num_new(q, A_LEN(q)); }
-    A_INLINE emscripten::val get_v() const { return js_array_num_new(v, A_LEN(v)); }
-    A_INLINE emscripten::val get_a() const { return js_array_num_new(a, A_LEN(a)); }
-    A_INLINE emscripten::val get_j() const { return js_array_num_new(j, A_LEN(j)); }
-};
-
 #include "a/tf.h"
 
 struct tf: public a_tf
@@ -726,18 +670,74 @@ struct tf: public a_tf
     }
 };
 
-#include "a/traptraj.h"
+#include "a/trajpoly3.h"
 
-struct traptraj: public a_traptraj
+struct trajpoly3: public a_trajpoly3
 {
-    A_INLINE traptraj(a_float vm, a_float _ac, a_float _de, a_float _q0, a_float _q1,
+    A_INLINE trajpoly3(a_float ts, a_float q0, a_float q1,
+                       a_float v0 = 0, a_float v1 = 0)
+    {
+        a_trajpoly3_gen(this, ts, q0, q1, v0, v1);
+    }
+    A_INLINE a_float pos(a_float dt) { return a_trajpoly3::pos(dt); }
+    A_INLINE a_float vel(a_float dt) { return a_trajpoly3::vel(dt); }
+    A_INLINE a_float acc(a_float dt) { return a_trajpoly3::acc(dt); }
+    A_INLINE emscripten::val get_q() const { return js_array_num_new(q, A_LEN(q)); }
+    A_INLINE emscripten::val get_v() const { return js_array_num_new(v, A_LEN(v)); }
+    A_INLINE emscripten::val get_a() const { return js_array_num_new(a, A_LEN(a)); }
+};
+
+#include "a/trajpoly5.h"
+
+struct trajpoly5: public a_trajpoly5
+{
+    A_INLINE trajpoly5(a_float ts, a_float q0, a_float q1,
+                       a_float v0 = 0, a_float v1 = 0,
+                       a_float a0 = 0, a_float a1 = 0)
+    {
+        a_trajpoly5_gen(this, ts, q0, q1, v0, v1, a0, a1);
+    }
+    A_INLINE a_float pos(a_float dt) { return a_trajpoly5::pos(dt); }
+    A_INLINE a_float vel(a_float dt) { return a_trajpoly5::vel(dt); }
+    A_INLINE a_float acc(a_float dt) { return a_trajpoly5::acc(dt); }
+    A_INLINE emscripten::val get_q() const { return js_array_num_new(q, A_LEN(q)); }
+    A_INLINE emscripten::val get_v() const { return js_array_num_new(v, A_LEN(v)); }
+    A_INLINE emscripten::val get_a() const { return js_array_num_new(a, A_LEN(a)); }
+};
+
+#include "a/trajpoly7.h"
+
+struct trajpoly7: public a_trajpoly7
+{
+    A_INLINE trajpoly7(a_float ts, a_float q0, a_float q1,
+                       a_float v0 = 0, a_float v1 = 0,
+                       a_float a0 = 0, a_float a1 = 0,
+                       a_float j0 = 0, a_float j1 = 0)
+    {
+        a_trajpoly7_gen(this, ts, q0, q1, v0, v1, a0, a1, j0, j1);
+    }
+    A_INLINE a_float pos(a_float dt) { return a_trajpoly7::pos(dt); }
+    A_INLINE a_float vel(a_float dt) { return a_trajpoly7::vel(dt); }
+    A_INLINE a_float acc(a_float dt) { return a_trajpoly7::acc(dt); }
+    A_INLINE a_float jer(a_float dt) { return a_trajpoly7::jer(dt); }
+    A_INLINE emscripten::val get_q() const { return js_array_num_new(q, A_LEN(q)); }
+    A_INLINE emscripten::val get_v() const { return js_array_num_new(v, A_LEN(v)); }
+    A_INLINE emscripten::val get_a() const { return js_array_num_new(a, A_LEN(a)); }
+    A_INLINE emscripten::val get_j() const { return js_array_num_new(j, A_LEN(j)); }
+};
+
+#include "a/trajtrap.h"
+
+struct trajtrap: public a_trajtrap
+{
+    A_INLINE trajtrap(a_float vm, a_float _ac, a_float _de, a_float _q0, a_float _q1,
                       a_float _v0 = 0, a_float _v1 = 0)
     {
-        a_traptraj_gen(this, vm, _ac, _de, _q0, _q1, _v0, _v1);
+        a_trajtrap_gen(this, vm, _ac, _de, _q0, _q1, _v0, _v1);
     }
-    A_INLINE a_float pos(a_float dt) { return a_traptraj::pos(dt); }
-    A_INLINE a_float vel(a_float dt) { return a_traptraj::vel(dt); }
-    A_INLINE a_float acc(a_float dt) { return a_traptraj::acc(dt); }
+    A_INLINE a_float pos(a_float dt) { return a_trajtrap::pos(dt); }
+    A_INLINE a_float vel(a_float dt) { return a_trajtrap::vel(dt); }
+    A_INLINE a_float acc(a_float dt) { return a_trajtrap::acc(dt); }
 };
 
 #include "a/version.h"
@@ -955,38 +955,6 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("fdb", &pid_neuro::get_fdb)
         .property("err", &pid_neuro::get_err)
         .property<a_float const, void>("ec", &pid_neuro::ec);
-    emscripten::class_<polytraj3>("polytraj3")
-        .constructor<a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float>()
-        .function("pos", &polytraj3::pos)
-        .function("vel", &polytraj3::vel)
-        .function("acc", &polytraj3::acc)
-        .property("q", &polytraj3::get_q)
-        .property("v", &polytraj3::get_v)
-        .property("a", &polytraj3::get_a);
-    emscripten::class_<polytraj5>("polytraj5")
-        .constructor<a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
-        .function("pos", &polytraj5::pos)
-        .function("vel", &polytraj5::vel)
-        .function("acc", &polytraj5::acc)
-        .property("q", &polytraj5::get_q)
-        .property("v", &polytraj5::get_v)
-        .property("a", &polytraj5::get_a);
-    emscripten::class_<polytraj7>("polytraj7")
-        .constructor<a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
-        .function("pos", &polytraj7::pos)
-        .function("vel", &polytraj7::vel)
-        .function("acc", &polytraj7::acc)
-        .function("jer", &polytraj7::jer)
-        .property("q", &polytraj7::get_q)
-        .property("v", &polytraj7::get_v)
-        .property("a", &polytraj7::get_a)
-        .property("j", &polytraj7::get_j);
     emscripten::class_<tf>("tf")
         .constructor<emscripten::val, emscripten::val>()
         .function("set_num", &tf::set_num, emscripten::allow_raw_pointers())
@@ -997,24 +965,56 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("output", &tf::get_output)
         .property("num", &tf::get_num, &tf::set_num)
         .property("den", &tf::get_den, &tf::set_den);
-    emscripten::class_<traptraj>("traptraj")
+    emscripten::class_<trajpoly3>("trajpoly3")
+        .constructor<a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float, a_float, a_float>()
+        .function("pos", &trajpoly3::pos)
+        .function("vel", &trajpoly3::vel)
+        .function("acc", &trajpoly3::acc)
+        .property("q", &trajpoly3::get_q)
+        .property("v", &trajpoly3::get_v)
+        .property("a", &trajpoly3::get_a);
+    emscripten::class_<trajpoly5>("trajpoly5")
+        .constructor<a_float, a_float, a_float>()
         .constructor<a_float, a_float, a_float, a_float, a_float>()
         .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
-        .property<a_float const, void>("t", &traptraj::t)
-        .property<a_float const, void>("q0", &traptraj::q0)
-        .property<a_float const, void>("q1", &traptraj::q1)
-        .property<a_float const, void>("v0", &traptraj::v0)
-        .property<a_float const, void>("v1", &traptraj::v1)
-        .property<a_float const, void>("vc", &traptraj::vc)
-        .property<a_float const, void>("ta", &traptraj::ta)
-        .property<a_float const, void>("td", &traptraj::td)
-        .property<a_float const, void>("qa", &traptraj::qa)
-        .property<a_float const, void>("qd", &traptraj::qd)
-        .property<a_float const, void>("ac", &traptraj::ac)
-        .property<a_float const, void>("de", &traptraj::de)
-        .function("pos", &traptraj::pos)
-        .function("vel", &traptraj::vel)
-        .function("acc", &traptraj::acc);
+        .function("pos", &trajpoly5::pos)
+        .function("vel", &trajpoly5::vel)
+        .function("acc", &trajpoly5::acc)
+        .property("q", &trajpoly5::get_q)
+        .property("v", &trajpoly5::get_v)
+        .property("a", &trajpoly5::get_a);
+    emscripten::class_<trajpoly7>("trajpoly7")
+        .constructor<a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
+        .function("pos", &trajpoly7::pos)
+        .function("vel", &trajpoly7::vel)
+        .function("acc", &trajpoly7::acc)
+        .function("jer", &trajpoly7::jer)
+        .property("q", &trajpoly7::get_q)
+        .property("v", &trajpoly7::get_v)
+        .property("a", &trajpoly7::get_a)
+        .property("j", &trajpoly7::get_j);
+    emscripten::class_<trajtrap>("trajtrap")
+        .constructor<a_float, a_float, a_float, a_float, a_float>()
+        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
+        .property<a_float const, void>("t", &trajtrap::t)
+        .property<a_float const, void>("q0", &trajtrap::q0)
+        .property<a_float const, void>("q1", &trajtrap::q1)
+        .property<a_float const, void>("v0", &trajtrap::v0)
+        .property<a_float const, void>("v1", &trajtrap::v1)
+        .property<a_float const, void>("vc", &trajtrap::vc)
+        .property<a_float const, void>("ta", &trajtrap::ta)
+        .property<a_float const, void>("td", &trajtrap::td)
+        .property<a_float const, void>("qa", &trajtrap::qa)
+        .property<a_float const, void>("qd", &trajtrap::qd)
+        .property<a_float const, void>("ac", &trajtrap::ac)
+        .property<a_float const, void>("de", &trajtrap::de)
+        .function("pos", &trajtrap::pos)
+        .function("vel", &trajtrap::vel)
+        .function("acc", &trajtrap::acc);
     emscripten::class_<version>("version")
         .constructor<>()
         .constructor<a_uint>()

@@ -110,11 +110,11 @@ int js_liba_init(JSContext *ctx, JSModuleDef *m)
     js_liba_pid_init(ctx, m);
     js_liba_pid_fuzzy_init(ctx, m);
     js_liba_pid_neuro_init(ctx, m);
-    js_liba_polytraj3_init(ctx, m);
-    js_liba_polytraj5_init(ctx, m);
-    js_liba_polytraj7_init(ctx, m);
     js_liba_tf_init(ctx, m);
-    js_liba_traptraj_init(ctx, m);
+    js_liba_trajpoly3_init(ctx, m);
+    js_liba_trajpoly5_init(ctx, m);
+    js_liba_trajpoly7_init(ctx, m);
+    js_liba_trajtrap_init(ctx, m);
     js_liba_version_init(ctx, m);
     return JS_SetModuleExportList(ctx, m, liba_proto, A_LEN(liba_proto));
 }
@@ -133,11 +133,11 @@ JSModuleDef *js_init_module(JSContext *ctx, char const *module_name)
         JS_AddModuleExport(ctx, m, "pid");
         JS_AddModuleExport(ctx, m, "pid_fuzzy");
         JS_AddModuleExport(ctx, m, "pid_neuro");
-        JS_AddModuleExport(ctx, m, "polytraj3");
-        JS_AddModuleExport(ctx, m, "polytraj5");
-        JS_AddModuleExport(ctx, m, "polytraj7");
         JS_AddModuleExport(ctx, m, "tf");
-        JS_AddModuleExport(ctx, m, "traptraj");
+        JS_AddModuleExport(ctx, m, "trajpoly3");
+        JS_AddModuleExport(ctx, m, "trajpoly5");
+        JS_AddModuleExport(ctx, m, "trajpoly7");
+        JS_AddModuleExport(ctx, m, "trajtrap");
         JS_AddModuleExport(ctx, m, "version");
         JS_AddModuleExportList(ctx, m, liba_proto, A_LEN(liba_proto));
     }

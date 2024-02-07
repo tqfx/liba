@@ -40,14 +40,14 @@ unittest(pid_fuzzy pid_fuzzy)
 
 unittest(pid_neuro pid_neuro)
 
-unittest(polytraj3 polytraj3)
-
-unittest(polytraj5 polytraj5)
-
-unittest(polytraj7 polytraj7)
-
 unittest(tf tf)
 
-unittest(traptraj traptraj)
+unittest(trajpoly3 trajpoly3)
+
+unittest(trajpoly5 trajpoly5)
+
+unittest(trajpoly7 trajpoly7)
+
+unittest(trajtrap trajtrap)
 
 unittest(version version)
