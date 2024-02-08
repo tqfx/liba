@@ -3,6 +3,7 @@ from a.pid_fuzzy cimport *
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
+@cython.auto_pickle(False)
 cdef class pid_fuzzy:
     CAP = A_PID_FUZZY_CAP
     CAP_ALGEBRA = A_PID_FUZZY_CAP_ALGEBRA

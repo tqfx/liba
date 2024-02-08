@@ -2,6 +2,7 @@ from a.mf cimport *
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
+@cython.auto_pickle(False)
 cdef class mf:
     NUL    = A_MF_NUL
     GAUSS  = A_MF_GAUSS

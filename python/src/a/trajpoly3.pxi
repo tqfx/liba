@@ -2,6 +2,7 @@ from a.trajpoly3 cimport *
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
+@cython.auto_pickle(False)
 cdef class trajpoly3:
     cdef a_trajpoly3 ctx
     def __init__(self, a_float ts, a_float q0, a_float q1, a_float v0 = 0, a_float v1 = 0):

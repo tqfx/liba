@@ -3,6 +3,7 @@ from a.pid_neuro cimport *
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
+@cython.auto_pickle(False)
 cdef class pid_neuro:
     cdef a_pid_neuro ctx
     def __init__(self):

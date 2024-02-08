@@ -2,6 +2,7 @@ from a.trajtrap cimport *
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
+@cython.auto_pickle(False)
 cdef class trajtrap:
     cdef a_trajtrap ctx
     def gen(self, a_float vm, a_float ac, a_float de, a_float q0, a_float q1, a_float v0 = 0, a_float v1 = 0):

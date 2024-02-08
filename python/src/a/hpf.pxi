@@ -2,6 +2,7 @@ from a.hpf cimport *
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
+@cython.auto_pickle(False)
 cdef class hpf:
     cdef a_hpf ctx
     def __init__(self, fc: a_float, ts: a_float):

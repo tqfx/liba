@@ -7,6 +7,7 @@ else:
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
+@cython.auto_pickle(False)
 cdef class version:
     cdef a_version ctx
     property major:

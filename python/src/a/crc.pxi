@@ -2,6 +2,7 @@ from a.crc cimport *
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
+@cython.auto_pickle(False)
 cdef class crc8:
     cdef array table
     property table:
@@ -29,6 +30,7 @@ cdef class crc8:
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
+@cython.auto_pickle(False)
 cdef class crc16:
     cdef array table
     property table:
@@ -62,6 +64,7 @@ cdef class crc16:
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
+@cython.auto_pickle(False)
 cdef class crc32:
     cdef array table
     property table:
@@ -95,6 +98,7 @@ cdef class crc32:
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
+@cython.auto_pickle(False)
 cdef class crc64:
     cdef array table
     property table:
