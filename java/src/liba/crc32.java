@@ -12,6 +12,8 @@ public class crc32 {
 
     static final native void INIT();
 
+    final native void init(int poly, boolean reversed);
+
     /**
      * construct a new {@link crc32} object
      *
@@ -30,8 +32,6 @@ public class crc32 {
     public crc32(int poly, boolean reversed) {
         init(poly, reversed);
     }
-
-    final native void init(int poly, boolean reversed);
 
     /**
      * get table for 32-bit Cyclic Redundancy Check

@@ -24,6 +24,8 @@ public class version {
 
     static final native void INIT();
 
+    final native void init(int major, int minor, int third);
+
     /**
      * return string representation of version
      */
@@ -72,8 +74,6 @@ public class version {
     public version(int major, int minor, int third) {
         init(major, minor, third);
     }
-
-    final native void init(int major, int minor, int third);
 
     /***
      * get major number for version

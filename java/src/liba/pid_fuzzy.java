@@ -39,6 +39,8 @@ public class pid_fuzzy {
 
     static final native void INIT();
 
+    final native void init();
+
     /**
      * construct a new {@link pid_fuzzy} object
      *
@@ -46,8 +48,6 @@ public class pid_fuzzy {
     public pid_fuzzy() {
         init();
     }
-
-    final native void init();
 
     /**
      * get proportional constant for fuzzy PID controller

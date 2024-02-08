@@ -21,14 +21,14 @@ public class pid {
 
     static final native void INIT();
 
+    final native void init();
+
     /**
      * construct a new {@link pid} object
      */
     public pid() {
         init();
     }
-
-    final native void init();
 
     /**
      * get proportional constant for PID controller

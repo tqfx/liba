@@ -12,6 +12,8 @@ public class crc64 {
 
     static final native void INIT();
 
+    final native void init(long poly, boolean reversed);
+
     /**
      * construct a new {@link crc64} object
      *
@@ -30,8 +32,6 @@ public class crc64 {
     public crc64(long poly, boolean reversed) {
         init(poly, reversed);
     }
-
-    final native void init(long poly, boolean reversed);
 
     /**
      * get table for 64-bit Cyclic Redundancy Check

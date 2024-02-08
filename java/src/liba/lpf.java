@@ -12,6 +12,8 @@ public class lpf {
 
     static final native void INIT();
 
+    final native void init(double fc, double ts);
+
     /**
      * construct a new {@link lpf} object
      *
@@ -21,8 +23,6 @@ public class lpf {
     public lpf(double fc, double ts) {
         init(fc, ts);
     }
-
-    final native void init(double fc, double ts);
 
     /**
      * get coefficient for Low Pass Filter

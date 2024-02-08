@@ -12,6 +12,8 @@ public class hpf {
 
     static final native void INIT();
 
+    final native void init(double fc, double ts);
+
     /**
      * construct a new {@link hpf} object
      *
@@ -21,8 +23,6 @@ public class hpf {
     public hpf(double fc, double ts) {
         init(fc, ts);
     }
-
-    final native void init(double fc, double ts);
 
     /**
      * get coefficient for High Pass Filter

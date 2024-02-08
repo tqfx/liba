@@ -12,6 +12,8 @@ public class crc8 {
 
     static final native void INIT();
 
+    final native void init(byte poly, boolean reversed);
+
     /**
      * construct a new {@link crc8} object
      *
@@ -30,8 +32,6 @@ public class crc8 {
     public crc8(byte poly, boolean reversed) {
         init(poly, reversed);
     }
-
-    final native void init(byte poly, boolean reversed);
 
     /**
      * get table for 8-bit Cyclic Redundancy Check

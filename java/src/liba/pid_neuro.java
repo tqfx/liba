@@ -12,6 +12,8 @@ public class pid_neuro {
 
     static final native void INIT();
 
+    final native void init();
+
     /**
      * construct a new {@link pid_neuro} object
      *
@@ -19,8 +21,6 @@ public class pid_neuro {
     public pid_neuro() {
         init();
     }
-
-    final native void init();
 
     /**
      * get proportional output coefficient for single neuron PID controller
