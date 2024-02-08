@@ -1149,6 +1149,89 @@ function liba.tf.zero(ctx) end
 ---@return a.tf
 function tf:zero() end
 
+---@class a.trajbell
+---@field t number
+---@field tv number
+---@field ta number
+---@field td number
+---@field taj number
+---@field tdj number
+---@field q0 number
+---@field q1 number
+---@field v0 number
+---@field v1 number
+---@field vm number
+---@field jm number
+---@field am number
+---@field dm number
+local trajbell = {}
+---@class liba.trajbell
+---@overload fun(): a.trajbell
+liba.trajbell = {}
+
+---@return a.trajbell
+function liba.trajbell.new() end
+
+---@return a.trajbell
+function trajbell.new() end
+
+---@param ctx a.trajbell
+---@param jm number
+---@param am number
+---@param vm number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
+---@return number
+function liba.trajbell.gen(ctx, jm, am, vm, q0, q1, v0, v1) end
+
+---@param jm number
+---@param am number
+---@param vm number
+---@param q0 number
+---@param q1 number
+---@param v0? number
+---@param v1? number
+---@return number
+function trajbell:gen(jm, am, vm, q0, q1, v0, v1) end
+
+---@param ctx a.trajbell
+---@param dt number
+---@return number
+function liba.trajbell.pos(ctx, dt) end
+
+---@param dt number
+---@return number
+function trajbell:pos(dt) end
+
+---@param ctx a.trajbell
+---@param dt number
+---@return number
+function liba.trajbell.vel(ctx, dt) end
+
+---@param dt number
+---@return number
+function trajbell:vel(dt) end
+
+---@param ctx a.trajbell
+---@param dt number
+---@return number
+function liba.trajbell.acc(ctx, dt) end
+
+---@param dt number
+---@return number
+function trajbell:acc(dt) end
+
+---@param ctx a.trajbell
+---@param dt number
+---@return number
+function liba.trajbell.jer(ctx, dt) end
+
+---@param dt number
+---@return number
+function trajbell:jer(dt) end
+
 ---@class a.trajpoly3
 ---@field q table
 ---@field v table

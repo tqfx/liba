@@ -36,6 +36,7 @@ int js_liba_pid_init(JSContext *ctx, JSModuleDef *m);
 int js_liba_pid_fuzzy_init(JSContext *ctx, JSModuleDef *m);
 int js_liba_pid_neuro_init(JSContext *ctx, JSModuleDef *m);
 int js_liba_tf_init(JSContext *ctx, JSModuleDef *m);
+int js_liba_trajbell_init(JSContext *ctx, JSModuleDef *m);
 int js_liba_trajpoly3_init(JSContext *ctx, JSModuleDef *m);
 int js_liba_trajpoly5_init(JSContext *ctx, JSModuleDef *m);
 int js_liba_trajpoly7_init(JSContext *ctx, JSModuleDef *m);

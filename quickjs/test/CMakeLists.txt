@@ -22,6 +22,8 @@ unittest(pid_neuro pid_neuro)
 
 unittest(tf tf)
 
+unittest(trajbell trajbell)
+
 unittest(trajpoly3 trajpoly3)
 
 unittest(trajpoly5 trajpoly5)

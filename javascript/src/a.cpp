@@ -670,6 +670,21 @@ struct tf: public a_tf
     }
 };
 
+#include "a/trajbell.h"
+
+struct trajbell: public a_trajbell
+{
+    A_INLINE a_float gen(a_float _jm, a_float _am, a_float _vm, a_float _q0, a_float _q1,
+                         a_float _v0 = 0, a_float _v1 = 0)
+    {
+        return a_trajbell::gen(_jm, _am, _vm, _q0, _q1, _v0, _v1);
+    }
+    A_INLINE a_float pos(a_float dt) { return a_trajbell::pos(dt); }
+    A_INLINE a_float vel(a_float dt) { return a_trajbell::vel(dt); }
+    A_INLINE a_float acc(a_float dt) { return a_trajbell::acc(dt); }
+    A_INLINE a_float jer(a_float dt) { return a_trajbell::jer(dt); }
+};
+
 #include "a/trajpoly3.h"
 
 struct trajpoly3: public a_trajpoly3
@@ -965,6 +980,27 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("output", &tf::get_output)
         .property("num", &tf::get_num, &tf::set_num)
         .property("den", &tf::get_den, &tf::set_den);
+    emscripten::class_<trajbell>("trajbell")
+        .constructor<>()
+        .function("gen", &trajbell::gen)
+        .function("pos", &trajbell::pos)
+        .function("vel", &trajbell::vel)
+        .function("acc", &trajbell::acc)
+        .function("jer", &trajbell::jer)
+        .property<a_float const, void>("t", &trajbell::t)
+        .property<a_float const, void>("tv", &trajbell::tv)
+        .property<a_float const, void>("ta", &trajbell::ta)
+        .property<a_float const, void>("td", &trajbell::td)
+        .property<a_float const, void>("taj", &trajbell::taj)
+        .property<a_float const, void>("tdj", &trajbell::tdj)
+        .property<a_float const, void>("q0", &trajbell::q0)
+        .property<a_float const, void>("q1", &trajbell::q1)
+        .property<a_float const, void>("v0", &trajbell::v0)
+        .property<a_float const, void>("v1", &trajbell::v1)
+        .property<a_float const, void>("vm", &trajbell::vm)
+        .property<a_float const, void>("jm", &trajbell::jm)
+        .property<a_float const, void>("am", &trajbell::am)
+        .property<a_float const, void>("dm", &trajbell::dm);
     emscripten::class_<trajpoly3>("trajpoly3")
         .constructor<a_float, a_float, a_float>()
         .constructor<a_float, a_float, a_float, a_float, a_float>()

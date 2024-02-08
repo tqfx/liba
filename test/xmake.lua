@@ -104,6 +104,10 @@ target("test/tf")
 building({ "tf.c", "tf.cpp" })
 target_end()
 
+target("test/trajbell")
+building({ "trajbell.c", "trajbell.cpp" })
+target_end()
+
 target("test/trajpoly3")
 building({ "trajpoly3.c", "trajpoly3.cpp" })
 target_end()

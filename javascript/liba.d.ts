@@ -651,6 +651,74 @@ declare namespace liba {
     readonly prototype: tf;
   }
 
+  interface trajbell {
+    /** total duration */
+    readonly t: number;
+    /** constant velocity phase */
+    readonly tv: number;
+    /** acceleration phase */
+    readonly ta: number;
+    /** deceleration phase */
+    readonly td: number;
+    /** time-interval in which the jerk is constant (j max or j min ) during the acceleration phase */
+    readonly taj: number;
+    /** time-interval in which the jerk is constant (j max or j min ) during the deceleration phase */
+    readonly tdj: number;
+    /** initial position */
+    readonly q0: number;
+    /** final position */
+    readonly q1: number;
+    /** initial velocity */
+    readonly v0: number;
+    /** final velocity */
+    readonly v1: number;
+    /** maximum velocity */
+    readonly vm: number;
+    /** maximum jerk */
+    readonly jm: number;
+    /** maximum acceleration */
+    readonly am: number;
+    /** maximum deceleration */
+    readonly dm: number;
+    /**
+     * @param jm defines the maximum jerk during system operation
+     * @param am defines the maximum acceleration during system operation
+     * @param vm defines the maximum velocity during system operation
+     * @param q0 defines the initial position
+     * @param q1 defines the final position
+     * @param v0 defines the initial velocity
+     * @param v1 defines the final velocity
+     * @return total duration
+     */
+    gen(jm: number, am: number, vm: number, q0: number, q1: number, v0: number, v1: number): number;
+    /**
+     * calculate position for bell-shaped velocity trajectory
+     * @param dt difference between current time and initial time
+     */
+    pos(dt: number): number;
+    /**
+     * calculate velocity for bell-shaped velocity trajectory
+     * @param dt difference between current time and initial time
+     */
+    vel(dt: number): number;
+    /**
+     * calculate acceleration for bell-shaped velocity trajectory
+     * @param dt difference between current time and initial time
+     */
+    acc(dt: number): number;
+    /**
+     * calculate jerk for bell-shaped velocity trajectory
+     * @param dt difference between current time and initial time
+     */
+    jer(dt: number): number;
+    delete(): void;
+  }
+  /** constructor for bell-shaped velocity trajectory */
+  let trajbell: {
+    new(): trajbell;
+    readonly prototype: trajbell;
+  }
+
   interface trajpoly3 {
     /** coefficients of position */
     readonly q: Float64Array | Float32Array;

@@ -732,7 +732,7 @@ impl pid {
     /// initialize for PID controller
     #[inline(always)]
     pub fn new() -> Self {
-        Self { ..Self::default() }
+        Self::default()
     }
     /// set proportional integral derivative constant for PID controller
     #[inline(always)]
@@ -872,7 +872,7 @@ impl pid_fuzzy {
     /// initialize for fuzzy PID controller
     #[inline(always)]
     pub fn new() -> Self {
-        Self { ..Self::default() }
+        Self::default()
     }
     /// set rule base for fuzzy PID controller
     #[inline(always)]
@@ -1087,7 +1087,7 @@ impl pid_neuro {
     /// initialize for single neuron PID controller
     #[inline(always)]
     pub fn new() -> Self {
-        Self { ..Self::default() }
+        Self::default()
     }
     /// set proportional integral derivative constant for single neuron PID controller
     #[inline(always)]
@@ -1244,6 +1244,138 @@ fn tf() {
     std::println!("{:?} {:?}", a.num(), a.input());
     std::println!("{:?} {:?}", a.den(), a.output());
     a.zero();
+}
+
+/// bell-shaped velocity trajectory
+#[repr(C)]
+pub struct trajbell {
+    /// total duration
+    pub t: float,
+    /// constant velocity phase
+    pub tv: float,
+    /// acceleration phase
+    pub ta: float,
+    /// deceleration phase
+    pub td: float,
+    /// time-interval in which the jerk is constant (j max or j min ) during the acceleration phase
+    pub taj: float,
+    /// time-interval in which the jerk is constant (j max or j min ) during the deceleration phase
+    pub tdj: float,
+    /// initial position
+    pub q0: float,
+    /// final position
+    pub q1: float,
+    /// initial velocity
+    pub v0: float,
+    /// final velocity
+    pub v1: float,
+    /// maximum velocity
+    pub vm: float,
+    /// maximum jerk
+    pub jm: float,
+    /// maximum acceleration
+    pub am: float,
+    /// maximum deceleration
+    pub dm: float,
+}
+
+impl Default for trajbell {
+    #[inline(always)]
+    fn default() -> Self {
+        Self {
+            t: 0.0,
+            tv: 0.0,
+            ta: 0.0,
+            td: 0.0,
+            taj: 0.0,
+            tdj: 0.0,
+            q0: 0.0,
+            q1: 0.0,
+            v0: 0.0,
+            v1: 0.0,
+            vm: 0.0,
+            jm: 0.0,
+            am: 0.0,
+            dm: 0.0,
+        }
+    }
+}
+
+extern "C" {
+    fn a_trajbell_gen(
+        ctx: *mut trajbell,
+        jm: float,
+        am: float,
+        vm: float,
+        q0: float,
+        q1: float,
+        v0: float,
+        v1: float,
+    ) -> float;
+    fn a_trajbell_pos(ctx: *const trajbell, dt: float) -> float;
+    fn a_trajbell_vel(ctx: *const trajbell, dt: float) -> float;
+    fn a_trajbell_acc(ctx: *const trajbell, dt: float) -> float;
+    fn a_trajbell_jer(ctx: *const trajbell, dt: float) -> float;
+}
+
+impl trajbell {
+    /// initialize for bell-shaped velocity trajectory
+    #[inline(always)]
+    pub fn new() -> Self {
+        Self::default()
+    }
+    /// generate for bell-shaped velocity trajectory
+    #[allow(clippy::too_many_arguments)]
+    #[inline(always)]
+    pub fn gen(
+        &mut self,
+        jm: float,
+        am: float,
+        vm: float,
+        q0: float,
+        q1: float,
+        v0: float,
+        v1: float,
+    ) -> float {
+        unsafe { a_trajbell_gen(self, jm, am, vm, q0, q1, v0, v1) }
+    }
+    /// calculate position for bell-shaped velocity trajectory
+    #[inline(always)]
+    pub fn pos(&mut self, dt: float) -> float {
+        unsafe { a_trajbell_pos(self, dt) }
+    }
+    /// calculate velocity for bell-shaped velocity trajectory
+    #[inline(always)]
+    pub fn vel(&mut self, dt: float) -> float {
+        unsafe { a_trajbell_vel(self, dt) }
+    }
+    /// calculate acceleration for bell-shaped velocity trajectory
+    #[inline(always)]
+    pub fn acc(&mut self, dt: float) -> float {
+        unsafe { a_trajbell_acc(self, dt) }
+    }
+    /// calculate jerk for bell-shaped velocity trajectory
+    #[inline(always)]
+    pub fn jer(&mut self, dt: float) -> float {
+        unsafe { a_trajbell_jer(self, dt) }
+    }
+}
+
+#[test]
+fn trajbell() {
+    extern crate std;
+    let dt = 0.5;
+    {
+        let mut a = crate::trajbell::new();
+        std::print!("{} ", a.gen(3.0, 2.0, 3.0, 0.0, 10.0, 0.0, 0.0));
+        std::println!(
+            "[{}, {}, {}, {}]",
+            a.pos(dt),
+            a.vel(dt),
+            a.acc(dt),
+            a.jer(dt)
+        );
+    }
 }
 
 /// cubic polynomial trajectory
@@ -1541,6 +1673,26 @@ pub struct trajtrap {
     pub de: float,
 }
 
+impl Default for trajtrap {
+    #[inline(always)]
+    fn default() -> Self {
+        Self {
+            t: 0.0,
+            q0: 0.0,
+            q1: 0.0,
+            v0: 0.0,
+            v1: 0.0,
+            vc: 0.0,
+            ta: 0.0,
+            td: 0.0,
+            qa: 0.0,
+            qd: 0.0,
+            ac: 0.0,
+            de: 0.0,
+        }
+    }
+}
+
 extern "C" {
     fn a_trajtrap_gen(
         ctx: *mut trajtrap,
@@ -1561,20 +1713,7 @@ impl trajtrap {
     /// initialize for trapezoidal velocity trajectory
     #[inline(always)]
     pub fn new() -> Self {
-        Self {
-            t: 0.0,
-            q0: 0.0,
-            q1: 0.0,
-            v0: 0.0,
-            v1: 0.0,
-            vc: 0.0,
-            ta: 0.0,
-            td: 0.0,
-            qa: 0.0,
-            qd: 0.0,
-            ac: 0.0,
-            de: 0.0,
-        }
+        Self::default()
     }
     /// generate for trapezoidal velocity trajectory
     #[allow(clippy::too_many_arguments)]

@@ -162,6 +162,10 @@ int luaopen_liba(lua_State *L)
     luaopen_liba_tf(L);
     lua_rawset(L, -3);
 
+    lua_pushstring(L, "trajbell");
+    luaopen_liba_trajbell(L);
+    lua_rawset(L, -3);
+
     lua_pushstring(L, "trajpoly3");
     luaopen_liba_trajpoly3(L);
     lua_rawset(L, -3);

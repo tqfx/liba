@@ -275,6 +275,13 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(tf 2.gp tf.csv)
 endif()
 
+building(trajbell trajbell.c trajbell.cpp)
+unittest(trajbell ARGS trajbell.csv 3 2 3 0 10)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(trajbell traj4.gp trajbell.csv 3 2 3 0 10)
+endif()
+
 building(trajpoly3 trajpoly3.c trajpoly3.cpp)
 unittest(trajpoly3 ARGS trajpoly3.csv 0 10 0 10)
 
