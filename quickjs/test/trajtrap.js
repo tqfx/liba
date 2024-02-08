@@ -4,8 +4,8 @@ function assert(expr, info) {
         throw Error("assertion failed: " + info);
     }
 }
-var ctx = new a.trajtrap(10, 2, 2, -2)
-assert(ctx.gen(10, 2, 2, -2) != undefined)
+var ctx = new a.trajtrap()
+assert(ctx.gen(2, 2, -2, 0, 4) != undefined)
 assert(ctx.t != undefined)
 assert(ctx.q0 != undefined)
 assert(ctx.q1 != undefined)

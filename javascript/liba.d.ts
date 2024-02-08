@@ -874,24 +874,7 @@ declare namespace liba {
   }
   /** constructor for trapezoidal velocity trajectory */
   let trajtrap: {
-    /**
-     * @param vm defines the maximum velocity at which the system can work
-     * @param ac defines the acceleration before constant velocity
-     * @param de defines the acceleration after constant velocity
-     * @param q0 defines the initial position
-     * @param q1 defines the final position
-     */
-    new(vm: number, ac: number, de: number, q0: number, q1: number): trajtrap;
-    /**
-     * @param vm defines the maximum velocity at which the system can work
-     * @param ac defines the acceleration before constant velocity
-     * @param de defines the acceleration after constant velocity
-     * @param q0 defines the initial position
-     * @param q1 defines the final position
-     * @param v0 defines the initial velocity
-     * @param v1 defines the final velocity
-     */
-    new(vm: number, ac: number, de: number, q0: number, q1: number, v0: number, v1: number): trajtrap;
+    new(): trajtrap;
     readonly prototype: trajtrap;
   }
 

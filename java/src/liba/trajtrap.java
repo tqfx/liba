@@ -12,6 +12,8 @@ public class trajtrap {
 
     static final native void INIT();
 
+    final native void init();
+
     /**
      * get total duration for trapezoidal velocity trajectory
      *
@@ -98,17 +100,9 @@ public class trajtrap {
 
     /**
      * construct a new {@link trajtrap} object
-     *
-     * @param vm defines the maximum velocity at which the system can work
-     * @param ac defines the acceleration before constant velocity
-     * @param de defines the acceleration after constant velocity
-     * @param q0 defines the initial position
-     * @param q1 defines the final position
-     * @param v0 defines the initial velocity
-     * @param v0 defines the final velocity
      */
-    public trajtrap(double vm, double ac, double de, double q0, double q1, double v0, double v1) {
-        gen(vm, ac, de, q0, q1, v0, v1);
+    public trajtrap() {
+        init();
     }
 
     /**

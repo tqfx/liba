@@ -17,11 +17,16 @@ JNIEXPORT void JNICALL Java_liba_trajtrap_INIT(JNIEnv *_env, jclass _cls)
     L.alloc = (*_env)->GetStaticMethodID(_env, _bb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_trajtrap_gen(JNIEnv *_env, jobject _obj, jdouble vm, jdouble ac, jdouble de, jdouble q0, jdouble q1, jdouble vs, jdouble ve)
+JNIEXPORT void JNICALL Java_liba_trajtrap_init(JNIEnv *_env, jobject _obj)
 {
     jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)sizeof(a_trajtrap));
-    a_trajtrap *ctx = (a_trajtrap *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
+}
+
+JNIEXPORT jdouble JNICALL Java_liba_trajtrap_gen(JNIEnv *_env, jobject _obj, jdouble vm, jdouble ac, jdouble de, jdouble q0, jdouble q1, jdouble vs, jdouble ve)
+{
+    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    a_trajtrap *ctx = (a_trajtrap *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     return a_trajtrap_gen(ctx, vm, ac, de, q0, q1, vs, ve);
 }
 

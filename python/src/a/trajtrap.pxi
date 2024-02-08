@@ -4,8 +4,6 @@ from a.trajtrap cimport *
 @cython.boundscheck(False)
 cdef class trajtrap:
     cdef a_trajtrap ctx
-    def __init__(self, a_float vm, a_float ac, a_float de, a_float q0, a_float q1, a_float v0 = 0, a_float v1 = 0):
-        a_trajtrap_gen(&self.ctx, vm, ac, de, q0, q1, v0, v1)
     def gen(self, a_float vm, a_float ac, a_float de, a_float q0, a_float q1, a_float v0 = 0, a_float v1 = 0):
         return a_trajtrap_gen(&self.ctx, vm, ac, de, q0, q1, v0, v1)
     def pos(self, dt):

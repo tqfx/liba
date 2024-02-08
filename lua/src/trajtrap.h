@@ -30,13 +30,6 @@ extern "C" {
 
 /***
  constructor for trapezoidal velocity trajectory
- @tparam number vm defines the maximum velocity at which the system can work
- @tparam number ac defines the acceleration before constant velocity
- @tparam number de defines the acceleration after constant velocity
- @tparam number q0 defines the initial position
- @tparam number q1 defines the final position
- @tparam[opt] number v0 defines the initial velocity
- @tparam[opt] number v1 defines the final velocity
  @treturn a.trajtrap trapezoidal velocity trajectory userdata
  @function new
 */

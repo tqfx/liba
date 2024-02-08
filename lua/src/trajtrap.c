@@ -6,47 +6,18 @@
 #include "trajtrap.h"
 #include "a/trajtrap.h"
 
-static lua_Number liba_trajtrap_gen_(lua_State *L, a_trajtrap *ctx, int arg, int top)
-{
-    a_float v0 = 0, v1 = 0;
-    a_float vm, ac, de, q0, q1;
-    vm = (a_float)luaL_checknumber(L, arg + 1);
-    ac = (a_float)luaL_checknumber(L, arg + 2);
-    de = (a_float)luaL_checknumber(L, arg + 3);
-    q0 = (a_float)luaL_checknumber(L, arg + 4);
-    q1 = (a_float)luaL_checknumber(L, arg + 5);
-    if (top >= 6) { v0 = (a_float)luaL_checknumber(L, arg + 6); }
-    if (top >= 7) { v1 = (a_float)luaL_checknumber(L, arg + 7); }
-    return (lua_Number)a_trajtrap_gen(ctx, vm, ac, de, q0, q1, v0, v1);
-}
-
 /***
  constructor for trapezoidal velocity trajectory
- @tparam number vm defines the maximum velocity at which the system can work
- @tparam number ac defines the acceleration before constant velocity
- @tparam number de defines the acceleration after constant velocity
- @tparam number q0 defines the initial position
- @tparam number q1 defines the final position
- @tparam[opt] number v0 defines the initial velocity
- @tparam[opt] number v1 defines the final velocity
  @treturn a.trajtrap trapezoidal velocity trajectory userdata
  @function new
 */
 int liba_trajtrap_new(lua_State *L)
 {
-    int const top = lua_gettop(L);
-    if (top > 4)
-    {
-        a_trajtrap *const ctx = lua_newclass(L, a_trajtrap);
-        lua_registry_get(L, liba_trajtrap_new);
-        lua_setmetatable(L, -2);
-        if (liba_trajtrap_gen_(L, ctx, 0, top) <= 0)
-        {
-            return 0;
-        }
-        return 1;
-    }
-    return 0;
+    a_trajtrap *const ctx = lua_newclass(L, a_trajtrap);
+    a_zero(ctx, sizeof(a_trajtrap));
+    lua_registry_get(L, liba_trajtrap_new);
+    lua_setmetatable(L, -2);
+    return 1;
 }
 
 /***
@@ -64,12 +35,21 @@ int liba_trajtrap_new(lua_State *L)
 */
 int liba_trajtrap_gen(lua_State *L)
 {
+    a_float v0 = 0, v1 = 0;
+    a_float vm, ac, de, q0, q1;
     int const top = lua_gettop(L);
-    if (top > 5)
+    a_trajtrap *const ctx = (a_trajtrap *)lua_touserdata(L, 1);
+    if (ctx)
     {
-        luaL_checktype(L, 1, LUA_TUSERDATA);
-        a_trajtrap *const ctx = (a_trajtrap *)lua_touserdata(L, 1);
-        lua_pushnumber(L, liba_trajtrap_gen_(L, ctx, 1, top - 1));
+        vm = (a_float)luaL_checknumber(L, 2);
+        ac = (a_float)luaL_checknumber(L, 3);
+        de = (a_float)luaL_checknumber(L, 4);
+        q0 = (a_float)luaL_checknumber(L, 5);
+        q1 = (a_float)luaL_checknumber(L, 6);
+        if (top >= 7) { v0 = (a_float)luaL_checknumber(L, 7); }
+        if (top >= 8) { v1 = (a_float)luaL_checknumber(L, 8); }
+        a_trajtrap_gen(ctx, vm, ac, de, q0, q1, v0, v1);
+        lua_pushnumber(L, (lua_Number)ctx->t);
         return 1;
     }
     return 0;

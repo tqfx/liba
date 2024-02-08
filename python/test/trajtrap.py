@@ -13,7 +13,8 @@ except Exception as e:
     print(e)
     exit()
 
-traj = a.trajtrap(2, 2, -2, 0, 4)
+traj = a.trajtrap()
+traj.gen(2, 2, -2, 0, 4)
 data = np.arange(0, traj.t, 0.01)
 plt.figure("trapezoidal velocity trajectory")
 

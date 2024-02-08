@@ -730,10 +730,10 @@ struct trajpoly7: public a_trajpoly7
 
 struct trajtrap: public a_trajtrap
 {
-    A_INLINE trajtrap(a_float vm, a_float _ac, a_float _de, a_float _q0, a_float _q1,
-                      a_float _v0 = 0, a_float _v1 = 0)
+    A_INLINE a_float gen(a_float vm, a_float _ac, a_float _de, a_float _q0, a_float _q1,
+                         a_float _v0 = 0, a_float _v1 = 0)
     {
-        a_trajtrap_gen(this, vm, _ac, _de, _q0, _q1, _v0, _v1);
+        return a_trajtrap::gen(vm, _ac, _de, _q0, _q1, _v0, _v1);
     }
     A_INLINE a_float pos(a_float dt) { return a_trajtrap::pos(dt); }
     A_INLINE a_float vel(a_float dt) { return a_trajtrap::vel(dt); }
@@ -998,8 +998,11 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("a", &trajpoly7::get_a)
         .property("j", &trajpoly7::get_j);
     emscripten::class_<trajtrap>("trajtrap")
-        .constructor<a_float, a_float, a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
+        .constructor<>()
+        .function("gen", &trajtrap::gen)
+        .function("pos", &trajtrap::pos)
+        .function("vel", &trajtrap::vel)
+        .function("acc", &trajtrap::acc)
         .property<a_float const, void>("t", &trajtrap::t)
         .property<a_float const, void>("q0", &trajtrap::q0)
         .property<a_float const, void>("q1", &trajtrap::q1)
@@ -1011,10 +1014,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property<a_float const, void>("qa", &trajtrap::qa)
         .property<a_float const, void>("qd", &trajtrap::qd)
         .property<a_float const, void>("ac", &trajtrap::ac)
-        .property<a_float const, void>("de", &trajtrap::de)
-        .function("pos", &trajtrap::pos)
-        .function("vel", &trajtrap::vel)
-        .function("acc", &trajtrap::acc);
+        .property<a_float const, void>("de", &trajtrap::de);
     emscripten::class_<version>("version")
         .constructor<>()
         .constructor<a_uint>()

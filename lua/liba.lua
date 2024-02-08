@@ -1405,28 +1405,14 @@ function trajpoly7:jer(dt) end
 ---@field de number
 local trajtrap = {}
 ---@class liba.trajtrap
----@overload fun(vm: number, ac: number, de: number, q0: number, q1: number, v0?: number, v1?: number): a.trajtrap
+---@overload fun(): a.trajtrap
 liba.trajtrap = {}
 
----@param vm number
----@param ac number
----@param de number
----@param q0 number
----@param q1 number
----@param v0? number
----@param v1? number
 ---@return a.trajtrap
-function liba.trajtrap.new(vm, ac, de, q0, q1, v0, v1) end
+function liba.trajtrap.new() end
 
----@param vm number
----@param ac number
----@param de number
----@param q0 number
----@param q1 number
----@param v0? number
----@param v1? number
 ---@return a.trajtrap
-function trajtrap.new(vm, ac, de, q0, q1, v0, v1) end
+function trajtrap.new() end
 
 ---@param ctx a.trajtrap
 ---@param vm number

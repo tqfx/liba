@@ -12,22 +12,11 @@ static JSClassDef liba_trajtrap_class = {"trajtrap", .finalizer = liba_trajtrap_
 
 static JSValue liba_trajtrap_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
+    (void)argc;
+    (void)argv;
     JSValue proto, clazz = JS_UNDEFINED;
     a_trajtrap *const self = (a_trajtrap *)js_mallocz(ctx, sizeof(a_trajtrap));
     if (!self) { return JS_EXCEPTION; }
-    double args[] = {0, 0, 0, 0, 0, 0, 0};
-    if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
-    for (int i = 0; i < 5; ++i)
-    {
-        if (JS_ToFloat64(ctx, &args[i], argv[i])) { goto fail; }
-    }
-    for (int i = 5; i < argc; ++i)
-    {
-        if (JS_ToFloat64(ctx, &args[i], argv[i])) { goto fail; }
-    }
-    args[0] = (double)a_trajtrap_gen(self, (a_float)args[0], (a_float)args[1], (a_float)args[2],
-                                     (a_float)args[3], (a_float)args[4], (a_float)args[5], (a_float)args[6]);
-    if (args[0] <= 0) { goto fail; }
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
     clazz = JS_NewObjectProtoClass(ctx, proto, liba_trajtrap_class_id);
@@ -131,7 +120,7 @@ static JSCFunctionListEntry const liba_trajtrap_proto[] = {
     JS_CGETSET_MAGIC_DEF("qd", liba_trajtrap_get, NULL, 9),
     JS_CGETSET_MAGIC_DEF("ac", liba_trajtrap_get, NULL, 10),
     JS_CGETSET_MAGIC_DEF("de", liba_trajtrap_get, NULL, 11),
-    JS_CFUNC_DEF("gen", 6, liba_trajtrap_gen),
+    JS_CFUNC_DEF("gen", 7, liba_trajtrap_gen),
     JS_CFUNC_DEF("pos", 1, liba_trajtrap_pos),
     JS_CFUNC_DEF("vel", 1, liba_trajtrap_vel),
     JS_CFUNC_DEF("acc", 1, liba_trajtrap_acc),
@@ -145,7 +134,7 @@ int js_liba_trajtrap_init(JSContext *ctx, JSModuleDef *m)
     JSValue const proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_trajtrap_proto, A_LEN(liba_trajtrap_proto));
 
-    JSValue const clazz = JS_NewCFunction2(ctx, liba_trajtrap_ctor, "trajtrap", 7, JS_CFUNC_constructor, 0);
+    JSValue const clazz = JS_NewCFunction2(ctx, liba_trajtrap_ctor, "trajtrap", 0, JS_CFUNC_constructor, 0);
     JS_SetConstructor(ctx, clazz, proto);
     JS_SetClassProto(ctx, liba_trajtrap_class_id, proto);
 

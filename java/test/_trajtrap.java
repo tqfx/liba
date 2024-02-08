@@ -2,7 +2,8 @@ import liba.trajtrap;
 
 class _trajtrap {
     public static void main(String[] args) {
-        trajtrap obj = new trajtrap(2, 2, -2, 0, 4, 0, 0);
+        trajtrap obj = new trajtrap();
+        obj.gen(2, 2, -2, 0, 4, 0, 0);
         System.out.println(obj.t());
         System.out.println(obj.q0());
         System.out.println(obj.q1());

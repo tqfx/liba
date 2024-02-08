@@ -1305,10 +1305,7 @@ fn trajpoly3() {
     let dt = 0.5;
     {
         let mut a = crate::trajpoly3::new(1.0, 0.0, 1.0, 0.0, 1.0);
-        let pos = a.pos(dt);
-        let vel = a.vel(dt);
-        let acc = a.acc(dt);
-        std::println!("[{}, {}, {}]", pos, vel, acc);
+        std::println!("[{}, {}, {}]", a.pos(dt), a.vel(dt), a.acc(dt));
     }
 }
 
@@ -1399,10 +1396,7 @@ fn trajpoly5() {
     let dt = 0.5;
     {
         let mut a = crate::trajpoly5::new(1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
-        let pos = a.pos(dt);
-        let vel = a.vel(dt);
-        let acc = a.acc(dt);
-        std::println!("[{}, {}, {}]", pos, vel, acc);
+        std::println!("[{}, {}, {}]", a.pos(dt), a.vel(dt), a.acc(dt));
     }
 }
 
@@ -1508,11 +1502,13 @@ fn trajpoly7() {
     let dt = 0.5;
     {
         let mut a = crate::trajpoly7::new(1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
-        let pos = a.pos(dt);
-        let vel = a.vel(dt);
-        let acc = a.acc(dt);
-        let jer = a.jer(dt);
-        std::println!("[{}, {}, {}, {}]", pos, vel, acc, jer);
+        std::println!(
+            "[{}, {}, {}, {}]",
+            a.pos(dt),
+            a.vel(dt),
+            a.acc(dt),
+            a.jer(dt)
+        );
     }
 }
 
@@ -1564,16 +1560,8 @@ extern "C" {
 impl trajtrap {
     /// initialize for trapezoidal velocity trajectory
     #[inline(always)]
-    pub fn new(
-        vm: float,
-        ac: float,
-        de: float,
-        q0: float,
-        q1: float,
-        v0: float,
-        v1: float,
-    ) -> Self {
-        let mut ctx: Self = Self {
+    pub fn new() -> Self {
+        Self {
             t: 0.0,
             q0: 0.0,
             q1: 0.0,
@@ -1586,9 +1574,7 @@ impl trajtrap {
             qd: 0.0,
             ac: 0.0,
             de: 0.0,
-        };
-        unsafe { a_trajtrap_gen(&mut ctx, vm, ac, de, q0, q1, v0, v1) };
-        ctx
+        }
     }
     /// generate for trapezoidal velocity trajectory
     #[allow(clippy::too_many_arguments)]
@@ -1627,11 +1613,9 @@ fn trajtrap() {
     extern crate std;
     let dt = 0.5;
     {
-        let mut a = crate::trajtrap::new(2.0, 2.0, -2.0, 0.0, 2.0, 0.0, 0.0);
-        let pos = a.pos(dt);
-        let vel = a.vel(dt);
-        let acc = a.acc(dt);
-        std::println!("[{}, {}, {}]", pos, vel, acc);
+        let mut a = crate::trajtrap::new();
+        std::print!("{} ", a.gen(2.0, 2.0, -2.0, 0.0, 2.0, 0.0, 0.0));
+        std::println!("[{}, {}, {}]", a.pos(dt), a.vel(dt), a.acc(dt));
     }
 }
 

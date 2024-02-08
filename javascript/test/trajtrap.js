@@ -8,9 +8,8 @@ function do_leak_check() {
         liba.do_leak_check()
     }
 }
-var ctx = new liba.trajtrap(2, 2, -2, 0, 4, 0, 0)
-do_leak_check(ctx)
-var ctx = new liba.trajtrap(2, 2, -2, 0, 4)
+var ctx = new liba.trajtrap()
+ctx.gen(2, 2, -2, 0, 4, 0, 0)
 console.log(ctx.t)
 console.log(ctx.q0)
 console.log(ctx.q1)

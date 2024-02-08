@@ -515,16 +515,6 @@ class trajpoly7:
     def j(self) -> array[float]: ...
 
 class trajtrap:
-    def __init__(
-        self,
-        vm: float,
-        ac: float,
-        de: float,
-        q0: float,
-        q1: float,
-        v0: float = 0,
-        v1: float = 0,
-    ) -> None: ...
     def gen(
         self,
         vm: float,
