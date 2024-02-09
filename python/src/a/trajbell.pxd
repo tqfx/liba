@@ -17,7 +17,7 @@ cdef extern from "a/trajbell.h":
         a_float am
         a_float dm
     a_float a_trajbell_gen(a_trajbell *ctx, a_float jm, a_float am, a_float vm, a_float q0, a_float q1, a_float v0, a_float v1)
-    a_float a_trajbell_pos(const a_trajbell *ctx, a_float dt)
-    a_float a_trajbell_vel(const a_trajbell *ctx, a_float dt)
-    a_float a_trajbell_acc(const a_trajbell *ctx, a_float dt)
-    a_float a_trajbell_jer(const a_trajbell *ctx, a_float dt)
+    a_float a_trajbell_pos(const a_trajbell *ctx, a_float dt) nogil
+    a_float a_trajbell_vel(const a_trajbell *ctx, a_float dt) nogil
+    a_float a_trajbell_acc(const a_trajbell *ctx, a_float dt) nogil
+    a_float a_trajbell_jer(const a_trajbell *ctx, a_float dt) nogil

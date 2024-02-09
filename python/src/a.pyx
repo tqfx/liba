@@ -2,6 +2,7 @@ cimport cython
 from a cimport *
 from cpython cimport *
 from cpython.array cimport array
+from cython.parallel import prange
 
 @cython.wraparound(False)
 @cython.boundscheck(False)

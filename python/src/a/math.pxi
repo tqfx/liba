@@ -15,39 +15,63 @@ def isqrt(x: int):
 @cython.wraparound(False)
 @cython.boundscheck(False)
 def sqrt_u32(x):
+    cdef array y
+    cdef a_u32 *p
+    cdef Py_ssize_t i
+    cdef Py_ssize_t n
     if iterable(x):
-        y = array_u16(x)
-        for i, it in enumerate(x):
-            y[i] = a_u32_sqrt(it)
-        return y
+        n = len(x)
+        y = array_u32(x)
+        p = <a_u32 *>y.data.as_voidptr
+        for i in prange(n, nogil=True):
+            p[i] = a_u32_sqrt(p[i])
+        return array_u16(y)
     return a_u32_sqrt(x)
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
 def sqrt_u64(x):
+    cdef array y
+    cdef a_u64 *p
+    cdef Py_ssize_t i
+    cdef Py_ssize_t n
     if iterable(x):
-        y = array_u32(x)
-        for i, it in enumerate(x):
-            y[i] = a_u64_sqrt(it)
-        return y
+        n = len(x)
+        y = array_u64(x)
+        p = <a_u64 *>y.data.as_voidptr
+        for i in prange(n, nogil=True):
+            p[i] = a_u64_sqrt(p[i])
+        return array_u32(y)
     return a_u64_sqrt(x)
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
 def rsqrt_f32(x):
+    cdef array y
+    cdef a_f32 *p
+    cdef Py_ssize_t i
+    cdef Py_ssize_t n
     if iterable(x):
+        n = len(x)
         y = array_f32(x)
-        for i, it in enumerate(x):
-            y[i] = a_f32_rsqrt(it)
+        p = <a_f32 *>y.data.as_voidptr
+        for i in prange(n, nogil=True):
+            p[i] = a_f32_rsqrt(p[i])
         return y
     return a_f32_rsqrt(x)
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
 def rsqrt_f64(x):
+    cdef array y
+    cdef a_f64 *p
+    cdef Py_ssize_t i
+    cdef Py_ssize_t n
     if iterable(x):
+        n = len(x)
         y = array_f64(x)
-        for i, it in enumerate(x):
-            y[i] = a_f64_rsqrt(it)
+        p = <a_f64 *>y.data.as_voidptr
+        for i in prange(n, nogil=True):
+            p[i] = a_f64_rsqrt(p[i])
         return y
     return a_f64_rsqrt(x)

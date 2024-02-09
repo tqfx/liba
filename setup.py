@@ -152,12 +152,15 @@ class Build(build_ext):  # type: ignore
             for e in self.extensions:
                 if e.language == "c":
                     e.extra_compile_args += ["/std:c11"]
+                e.extra_compile_args += ["/openmp"]
         if not self.compiler.compiler_type == "msvc":
             for e in self.extensions:
                 if e.language == "c++":
                     e.extra_compile_args += ["-std=c++11"]
                 elif e.language == "c":
                     e.extra_compile_args += ["-std=c11"]
+                e.extra_compile_args += ["-fopenmp"]
+                e.extra_link_args += ["-fopenmp"]
         if self.compiler.compiler_type == "mingw32":
             self.compiler.define_macro("__USE_MINGW_ANSI_STDIO", 1)
             for e in self.extensions:
