@@ -6,32 +6,32 @@ from cython.parallel import prange
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-cdef bint iterable(object o):
+cdef inline bint iterable(object o):
     return PyObject_HasAttrString(o, "__contains__")
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def array_i8(object o):
+cdef inline array_i8(object o):
     return array('b', o)
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def array_u8(object o):
+cdef inline array_u8(object o):
     return array('B', o)
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def array_i16(object o):
+cdef inline array_i16(object o):
     return array('h', o)
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def array_u16(object o):
+cdef inline array_u16(object o):
     return array('H', o)
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def array_i32(object o):
+cdef inline array_i32(object o):
     if INT32_MAX == INT_MAX:
         return array('i', o)
     if INT32_MAX == LONG_MAX:
@@ -39,7 +39,7 @@ def array_i32(object o):
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def array_u32(object o):
+cdef inline array_u32(object o):
     if UINT32_MAX == UINT_MAX:
         return array('I', o)
     if UINT32_MAX == ULONG_MAX:
@@ -47,7 +47,7 @@ def array_u32(object o):
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def array_i64(object o):
+cdef inline array_i64(object o):
     if INT64_MAX == LONG_MAX:
         return array('l', o)
     if INT64_MAX == LLONG_MAX:
@@ -55,7 +55,7 @@ def array_i64(object o):
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def array_u64(object o):
+cdef inline array_u64(object o):
     if UINT64_MAX == ULONG_MAX:
         return array('L', o)
     if UINT64_MAX == ULLONG_MAX:
@@ -63,17 +63,17 @@ def array_u64(object o):
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def array_f32(object o):
+cdef inline array_f32(object o):
     return array('f', o)
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def array_f64(object o):
+cdef inline array_f64(object o):
     return array('d', o)
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def array_num(object o):
+cdef inline array_num(object o):
     if A_FLOAT_TYPE == A_FLOAT_DOUBLE:
         return array('d', o)
     if A_FLOAT_TYPE == A_FLOAT_SINGLE:
