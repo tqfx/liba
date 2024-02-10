@@ -32,35 +32,3 @@ a_float a_poly_evar_(a_float const *a, a_float const *b, a_float x)
     }
     return y;
 }
-
-a_float *a_poly_evaln(a_float const *a, a_size n, a_float const *ptr, a_size num, a_float *out)
-{
-    if (n)
-    {
-        for (a_float const *b = a + n; num; --num, ++ptr, ++out)
-        {
-            *out = a_poly_eval_(a, b, *ptr);
-        }
-    }
-    else
-    {
-        for (; num; --num, ++out) { *out = 0; }
-    }
-    return out;
-}
-
-a_float *a_poly_evarn(a_float const *a, a_size n, a_float const *ptr, a_size num, a_float *out)
-{
-    if (n)
-    {
-        for (a_float const *b = a + n; num; --num, ++ptr, ++out)
-        {
-            *out = a_poly_evar_(a, b, *ptr);
-        }
-    }
-    else
-    {
-        for (; num; --num, ++out) { *out = 0; }
-    }
-    return out;
-}

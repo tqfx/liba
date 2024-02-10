@@ -69,9 +69,6 @@ A_INTERN a_float a_poly_evar(a_float const *a, a_size n, a_float x)
 }
 #endif /* A_HAVE_INLINE */
 
-A_EXTERN a_float *a_poly_evaln(a_float const *a, a_size n, a_float const *ptr, a_size num, a_float *out);
-A_EXTERN a_float *a_poly_evarn(a_float const *a, a_size n, a_float const *ptr, a_size num, a_float *out);
-
 #if defined(LIBA_POLY_C)
 #undef A_INTERN
 #define A_INTERN static A_INLINE
