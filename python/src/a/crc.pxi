@@ -5,6 +5,8 @@ from a.crc cimport *
 @cython.auto_pickle(False)
 cdef class crc8:
     cdef readonly array table
+    def __cinit__(self):
+        self.table = array_u8([0] * 0x100)
     def gen(self, poly: a_u8, reversed = False):
         if reversed:
             a_crc8l_init(<a_u8 *>self.table.data.as_voidptr, poly)
@@ -12,7 +14,6 @@ cdef class crc8:
             a_crc8m_init(<a_u8 *>self.table.data.as_voidptr, poly)
         return self
     def __init__(self, poly: a_u8, reversed = False):
-        self.table = array_u8([0] * 0x100)
         self.gen(poly, reversed)
     def __call__(self, block: bytes, value: a_u8 = 0) -> a_u8:
         cdef const unsigned char *p = <const unsigned char *>block
@@ -30,6 +31,8 @@ cdef class crc8:
 @cython.auto_pickle(False)
 cdef class crc16:
     cdef readonly array table
+    def __cinit__(self):
+        self.table = array_u16([0] * 0x100)
     cdef a_u16 (*eval)(const a_u16 *, const void *, a_size, a_u16)
     def gen(self, poly: a_u16, reversed = False):
         if reversed:
@@ -40,7 +43,6 @@ cdef class crc16:
             self.eval = a_crc16m
         return self
     def __init__(self, poly: a_u16, reversed = False):
-        self.table = array_u16([0] * 0x100)
         self.gen(poly, reversed)
     def __call__(self, block: bytes, value: a_u16 = 0) -> a_u16:
         cdef const unsigned char *p = <const unsigned char *>block
@@ -61,6 +63,8 @@ cdef class crc16:
 @cython.auto_pickle(False)
 cdef class crc32:
     cdef readonly array table
+    def __cinit__(self):
+        self.table = array_u32([0] * 0x100)
     cdef a_u32 (*eval)(const a_u32 *, const void *, a_size, a_u32)
     def gen(self, poly: a_u32, reversed = False):
         if reversed:
@@ -71,7 +75,6 @@ cdef class crc32:
             self.eval = a_crc32m
         return self
     def __init__(self, poly: a_u32, reversed = False):
-        self.table = array_u32([0] * 0x100)
         self.gen(poly, reversed)
     def __call__(self, block: bytes, value: a_u32 = 0) -> a_u32:
         cdef const unsigned char *p = <const unsigned char *>block
@@ -92,6 +95,8 @@ cdef class crc32:
 @cython.auto_pickle(False)
 cdef class crc64:
     cdef readonly array table
+    def __cinit__(self):
+        self.table = array_u64([0] * 0x100)
     cdef a_u64 (*eval)(const a_u64 *, const void *, a_size, a_u64)
     def gen(self, poly: a_u64, reversed = False):
         if reversed:
@@ -102,7 +107,6 @@ cdef class crc64:
             self.eval = a_crc64m
         return self
     def __init__(self, poly: a_u64, reversed = False):
-        self.table = array_u64([0] * 0x100)
         self.gen(poly, reversed)
     def __call__(self, block: bytes, value: a_u64 = 0) -> a_u64:
         cdef const unsigned char *p = <const unsigned char *>block
