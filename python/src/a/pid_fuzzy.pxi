@@ -13,11 +13,11 @@ cdef class pid_fuzzy:
     CUP_BOUNDED = A_PID_FUZZY_CUP_BOUNDED
     EQU = A_PID_FUZZY_EQU
     cdef a_pid_fuzzy ctx
-    cdef array me
-    cdef array mec
-    cdef array mkp
-    cdef array mki
-    cdef array mkd
+    cdef readonly array me
+    cdef readonly array mec
+    cdef readonly array mkp
+    cdef readonly array mki
+    cdef readonly array mkd
     def __init__(self):
         self.ctx.pid.summax = +A_FLOAT_INF
         self.ctx.pid.summin = -A_FLOAT_INF

@@ -13,15 +13,8 @@ cdef class tf:
     def zero(self):
         a_tf_zero(&self.ctx)
         return self
-    cdef array input
-    property input:
-        def __get__(self):
-            return self.input
-    cdef array output
-    property output:
-        def __get__(self):
-            return self.output
     cdef array _num
+    cdef readonly array input
     property num:
         def __get__(self):
             return self._num
@@ -30,6 +23,7 @@ cdef class tf:
             self.input = array_num(num)
             a_tf_set_num(&self.ctx, <unsigned int>len(num), <a_float *>self._num.data.as_voidptr, <a_float *>self.input.data.as_voidptr)
     cdef array _den
+    cdef readonly array output
     property den:
         def __get__(self):
             return self._den

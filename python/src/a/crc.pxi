@@ -4,10 +4,7 @@ from a.crc cimport *
 @cython.boundscheck(False)
 @cython.auto_pickle(False)
 cdef class crc8:
-    cdef array table
-    property table:
-        def __get__(self):
-            return self.table
+    cdef readonly array table
     def gen(self, poly: a_u8, reversed = False):
         if reversed:
             a_crc8l_init(<a_u8 *>self.table.data.as_voidptr, poly)
@@ -32,10 +29,7 @@ cdef class crc8:
 @cython.boundscheck(False)
 @cython.auto_pickle(False)
 cdef class crc16:
-    cdef array table
-    property table:
-        def __get__(self):
-            return self.table
+    cdef readonly array table
     cdef a_u16 (*eval)(const a_u16 *, const void *, a_size, a_u16)
     def gen(self, poly: a_u16, reversed = False):
         if reversed:
@@ -66,10 +60,7 @@ cdef class crc16:
 @cython.boundscheck(False)
 @cython.auto_pickle(False)
 cdef class crc32:
-    cdef array table
-    property table:
-        def __get__(self):
-            return self.table
+    cdef readonly array table
     cdef a_u32 (*eval)(const a_u32 *, const void *, a_size, a_u32)
     def gen(self, poly: a_u32, reversed = False):
         if reversed:
@@ -100,10 +91,7 @@ cdef class crc32:
 @cython.boundscheck(False)
 @cython.auto_pickle(False)
 cdef class crc64:
-    cdef array table
-    property table:
-        def __get__(self):
-            return self.table
+    cdef readonly array table
     cdef a_u64 (*eval)(const a_u64 *, const void *, a_size, a_u64)
     def gen(self, poly: a_u64, reversed = False):
         if reversed:
