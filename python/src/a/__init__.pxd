@@ -25,7 +25,7 @@ cdef extern from "a/a.h":
 
     ctypedef  float a_f32
     ctypedef double a_f64
-    ctypedef float a_float
+    ctypedef double a_float
     const a_float A_FLOAT_INF
     const a_float A_FLOAT_NAN
 

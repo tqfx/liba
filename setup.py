@@ -12,6 +12,8 @@ except ImportError:
     from distutils.command.build_ext import build_ext
     from distutils.extension import Extension
     from distutils.core import setup
+LIBA_OPENMP = os.environ.get("LIBA_OPENMP")
+LIBA_FLOAT = os.environ.get("LIBA_FLOAT")
 try:
     USE_CYTHON = True
     from sys import version_info
@@ -36,11 +38,10 @@ def check_math(define_macros=[], text=""):
         libm = ctypes.CDLL(path_libm)
     except:
         return text
-    A_SIZE_FLOAT = 0x08
-    for define_macro in define_macros:
-        if "A_SIZE_FLOAT" in define_macro:
-            A_SIZE_FLOAT = int(define_macro[-1])
-            break
+    if LIBA_FLOAT:
+        A_SIZE_FLOAT = int(LIBA_FLOAT)
+    else:
+        A_SIZE_FLOAT = 0x08
     for func in (
         "expm1",
         "log1p",
@@ -113,6 +114,8 @@ sources, objects = [], []
 config_h = os.path.join(base, "a.setup.h")
 a_have_h = os.path.relpath(config_h, "include/a")
 define_macros = [("A_HAVE_H", '"' + a_have_h + '"'), ("A_EXPORTS", None)]
+if LIBA_FLOAT:
+    define_macros += [("A_SIZE_FLOAT", LIBA_FLOAT)]
 if USE_CYTHON and os.path.exists("python/src/a.pyx"):
     sources += ["python/src/a.pyx"]
 elif os.path.exists("python/src/a.c"):
@@ -152,15 +155,17 @@ class Build(build_ext):  # type: ignore
             for e in self.extensions:
                 if e.language == "c":
                     e.extra_compile_args += ["/std:c11"]
-                e.extra_compile_args += ["/openmp"]
+                if LIBA_OPENMP:
+                    e.extra_compile_args += ["/openmp"]
         if not self.compiler.compiler_type == "msvc":
             for e in self.extensions:
                 if e.language == "c++":
                     e.extra_compile_args += ["-std=c++11"]
                 elif e.language == "c":
                     e.extra_compile_args += ["-std=c11"]
-                e.extra_compile_args += ["-fopenmp"]
-                e.extra_link_args += ["-fopenmp"]
+                if LIBA_OPENMP:
+                    e.extra_compile_args += ["-fopenmp"]
+                    e.extra_link_args += ["-fopenmp"]
         if self.compiler.compiler_type == "mingw32":
             self.compiler.define_macro("__USE_MINGW_ANSI_STDIO", 1)
             for e in self.extensions:
