@@ -34,32 +34,28 @@ cdef inline array_u16(object o):
 cdef inline array_i32(object o):
     if INT32_MAX == INT_MAX:
         return array('i', o)
-    if INT32_MAX == LONG_MAX:
-        return array('l', o)
+    return array('l', o)
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef inline array_u32(object o):
     if UINT32_MAX == UINT_MAX:
         return array('I', o)
-    if UINT32_MAX == ULONG_MAX:
-        return array('L', o)
+    return array('L', o)
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef inline array_i64(object o):
     if INT64_MAX == LONG_MAX:
         return array('l', o)
-    if INT64_MAX == LLONG_MAX:
-        return array('q', o)
+    return array('q', o)
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef inline array_u64(object o):
     if UINT64_MAX == ULONG_MAX:
         return array('L', o)
-    if UINT64_MAX == ULLONG_MAX:
-        return array('Q', o)
+    return array('Q', o)
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
@@ -74,10 +70,9 @@ cdef inline array_f64(object o):
 @cython.wraparound(False)
 @cython.boundscheck(False)
 cdef inline array_num(object o):
-    if A_FLOAT_TYPE == A_FLOAT_DOUBLE:
-        return array('d', o)
     if A_FLOAT_TYPE == A_FLOAT_SINGLE:
         return array('f', o)
+    return array('d', o)
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
