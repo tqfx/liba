@@ -4,7 +4,7 @@ from conan.tools.cmake import CMakeToolchain, CMake
 
 class aConan(ConanFile):
     name = "liba"
-    version = "0.1.3"
+    version = "0.1.4"
     license = "MPL-2.0"
     topics = ("algorithm",)
     author = "tqfx tqfx@tqfx.org"
