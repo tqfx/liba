@@ -153,16 +153,10 @@ class Build(build_ext):  # type: ignore
     def build_extensions(self):
         if self.compiler.compiler_type == "msvc":
             for e in self.extensions:
-                if e.language == "c":
-                    e.extra_compile_args += ["/std:c11"]
                 if LIBA_OPENMP:
                     e.extra_compile_args += ["/openmp"]
         if not self.compiler.compiler_type == "msvc":
             for e in self.extensions:
-                if e.language == "c++":
-                    e.extra_compile_args += ["-std=c++11"]
-                elif e.language == "c":
-                    e.extra_compile_args += ["-std=c11"]
                 if LIBA_OPENMP:
                     e.extra_compile_args += ["-fopenmp"]
                     e.extra_link_args += ["-fopenmp"]
