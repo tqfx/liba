@@ -114,7 +114,7 @@ public class trajtrap {
      * @param q0 defines the initial position
      * @param q1 defines the final position
      * @param v0 defines the initial velocity
-     * @param v0 defines the final velocity
+     * @param v1 defines the final velocity
      * @return total duration
      */
     public final native double gen(double vm, double ac, double de, double q0, double q1, double v0, double v1);
