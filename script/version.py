@@ -3,12 +3,11 @@ import time, os, re
 
 
 class version(object):
-    def __init__(self, version="0.0.0") -> None:
+    def __init__(self, release="0.0.0") -> None:
+        self.major, self.minor, self.patch = re.findall(r"(\d+)\.(\d+)\.(\d+)", release)[0]
+        self.version = self.major + "." + self.minor + "." + self.patch
         self.tweak = time.strftime("%Y%m%d")
-        self.major = version.split(".")[0]
-        self.minor = version.split(".")[1]
-        self.patch = version.split(".")[2]
-        self.version = version
+        self.release = release
 
     @staticmethod
     def load(file):
@@ -25,14 +24,15 @@ class version(object):
 
     def update_version(self, file, feild="version"):
         text = self.load(file)
-        res = re.findall(r"{}([^0-9A-Za-z]+)([0-9]+)\.([0-9]+)\.([0-9]+)".format(feild), text)
-        if not res:
-            return
-        version = "{}.{}.{}".format(res[0][-3], res[0][-2], res[0][-1])
-        if res and self.version != version:
-            line0 = "{}{}{}".format(feild, res[0][0], version)
-            line1 = "{}{}{}".format(feild, res[0][0], self.version)
-            self.save(file, text.replace(line0, line1))
+        res = re.findall(
+            r"{}([^0-9A-Za-z]+)([0-9]+)\.([0-9]+)\.([0-9]+)([.\w-]*)".format(feild), text
+        )
+        if res:
+            release = "{}.{}.{}{}".format(res[0][1], res[0][2], res[0][3], res[0][4])
+            if self.release != release:
+                line0 = "{}{}{}".format(feild, res[0][0], release)
+                line1 = "{}{}{}".format(feild, res[0][0], self.release)
+                self.save(file, text.replace(line0, line1))
 
     def update_version_h(self, file):
         text = self.load(file)
