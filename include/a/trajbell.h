@@ -35,7 +35,7 @@ extern "C" {
  If \f$T_v>0\f$, then there is a constant velocity phase and the phase calculation ends.
  4. If \f$T_v<=0\f$, then \f$T_v=0\f$, \f{aligned}{T_{aj}&=T_{dj}=T_{j}=\frac{a_m}{j_m}\\
  T_a&=\cfrac{\frac{a_m^2}{j_m}+\sqrt\Delta-2v_0}{2a_m}\\T_d&=\cfrac{\frac{a_m^2}{j_m}+\sqrt\Delta-2v_1}{2a_m}\\
- \Delta&=\frac{a_m^4}{j_m^2}+2(v_0^2+v_1^2)+a_m\left(4(q_1-q_0)-2(v_0+v_1)\frac{a_m}{ j_m}\right)\f}<br>
+ \Delta&=\frac{a_m^4}{j_m^2}+2(v_0^2+v_1^2)+a_m\left(4(q_1-q_0)-2\frac{a_m}{j_m}(v_0+v_1)\right)\f}<br>
  a. If \f$T_a<0\f$, there is only deceleration phase, then \f$T_a=0\f$,\f$T_{aj}=0\f$,
  \f{aligned}{T_d&=2\cfrac{q_1-q_0}{v_1+v_0}\\
  T_{dj}&=\frac{j_m(q_1-q_0)-\sqrt{j_m(j_m(q_1-q_0)^2+(v_1-v_0)(v_1+v_0)^2)}}{j_m(v_1+v_0 )}\f}

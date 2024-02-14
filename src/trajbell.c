@@ -1,10 +1,14 @@
 #include "a/trajbell.h"
 #include "a/math.h"
 
+#if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif /* -Wfloat-equal */
+
 a_float a_trajbell_gen(a_trajbell *ctx, a_float jm, a_float am, a_float vm,
                        a_float q0, a_float q1, a_float v0, a_float v1)
 {
-    a_float q, tj, v02, v12, _2v0, _2v1, _tmp, temp, v1pv0;
+    a_float q, ab, tj, _2tj, _2v0, _2v1, _tmp, temp, v0pv1, _2v02pv12;
     if (jm < 0) { jm = -jm; }
     if (am < 0) { am = -am; }
     if (vm < 0) { vm = -vm; }
@@ -56,59 +60,80 @@ a_float a_trajbell_gen(a_trajbell *ctx, a_float jm, a_float am, a_float vm,
     ctx->tv = q / vm - A_FLOAT_C(0.5) * ctx->ta * (1 + v0 / vm) - A_FLOAT_C(0.5) * ctx->td * (1 + v1 / vm);
     if (ctx->tv > 0) { goto out; }
     ctx->tv = 0;
-    v02 = v0 * v0;
-    v12 = v1 * v1;
     _2v0 = 2 * v0;
     _2v1 = 2 * v1;
-    v1pv0 = v1 + v0;
+    v0pv1 = v0 + v1;
+    _2v02pv12 = 2 * (v0 * v0 + v1 * v1);
+    ab = am;
+    ctx->am = am;
+    ctx->dm = am * A_FLOAT_C(0.0625);
     do {
         tj = am / jm;
+        _2tj = 2 * tj;
         ctx->taj = tj;
         ctx->tdj = tj;
         _tmp = am * tj;
-        temp = _tmp * _tmp + 2 * (v02 + v12) + (4 * q - 2 * v1pv0 * tj) * am;
+        temp = _tmp * _tmp + _2v02pv12 + (4 * q - _2tj * v0pv1) * am;
         _tmp += a_float_sqrt(temp);
         temp = 2 * am;
         ctx->ta = (_tmp - _2v0) / temp;
         if (ctx->ta < 0)
         {
-            ctx->ta = 0;
-            ctx->taj = 0;
-            ctx->td = 2 * q / v1pv0;
-            _tmp = jm * q;
-            temp = jm * (_tmp * q + (v1 - v0) * v1pv0 * v1pv0);
-            if (temp < 0) { goto fail; }
-            ctx->tdj = (_tmp - a_float_sqrt(temp)) / (jm * v1pv0);
-            ctx->am = 0;
-            ctx->dm = -jm * ctx->tdj;
-            ctx->vm = v0;
-            goto out;
+            if (ab < ctx->dm || am == ctx->am)
+            {
+                ctx->ta = 0;
+                ctx->taj = 0;
+                ctx->td = 2 * q / v0pv1;
+                _tmp = jm * q;
+                temp = jm * (_tmp * q + (v1 - v0) * v0pv1 * v0pv1);
+                if (temp < 0) { goto fail; }
+                ctx->tdj = (_tmp - a_float_sqrt(temp)) / (jm * v0pv1);
+                ctx->am = 0;
+                ctx->dm = -jm * ctx->tdj;
+                ctx->vm = v0;
+                goto out;
+            }
+            ab *= A_FLOAT_C(0.5);
+            am += ab;
+            continue;
         }
         ctx->td = (_tmp - _2v1) / temp;
         if (ctx->td < 0)
         {
-            ctx->td = 0;
-            ctx->tdj = 0;
-            ctx->ta = 2 * q / v1pv0;
-            _tmp = jm * q;
-            temp = jm * (_tmp * q + (v0 - v1) * v1pv0 * v1pv0);
-            if (temp < 0) { goto fail; }
-            ctx->taj = (_tmp - a_float_sqrt(temp)) / (jm * v1pv0);
-            ctx->am = +jm * ctx->taj;
-            ctx->dm = 0;
-            ctx->vm = v0 + ctx->am * (ctx->ta - ctx->taj);
-            goto out;
+            if (ab < ctx->dm || am == ctx->am)
+            {
+                ctx->td = 0;
+                ctx->tdj = 0;
+                ctx->ta = 2 * q / v0pv1;
+                _tmp = jm * q;
+                temp = jm * (_tmp * q + (v0 - v1) * v0pv1 * v0pv1);
+                if (temp < 0) { goto fail; }
+                ctx->taj = (_tmp - a_float_sqrt(temp)) / (jm * v0pv1);
+                ctx->am = +jm * ctx->taj;
+                ctx->dm = 0;
+                ctx->vm = v0 + ctx->am * (ctx->ta - ctx->taj);
+                goto out;
+            }
+            ab *= A_FLOAT_C(0.5);
+            am += ab;
+            continue;
         }
-        _tmp = 2 * tj;
-        if (ctx->ta >= _tmp && ctx->td >= _tmp)
+        if (ctx->ta >= _2tj && ctx->td >= _2tj)
         {
-            ctx->am = +am;
-            ctx->dm = -am;
-            ctx->vm = v0 + ctx->am * (ctx->ta - tj);
-            goto out;
+            if (ab < ctx->dm || am == ctx->am)
+            {
+                ctx->am = +am;
+                ctx->dm = -am;
+                ctx->vm = v0 + ctx->am * (ctx->ta - tj);
+                goto out;
+            }
+            ab *= A_FLOAT_C(0.5);
+            am += ab;
+            continue;
         }
-        am *= A_FLOAT_C(0.5);
-    } while (am > A_FLOAT_C(0.01));
+        ab *= A_FLOAT_C(0.5);
+        am -= ab;
+    } while (ab > A_FLOAT_EPSILON);
 fail:
     ctx->t = 0;
     return 0;
