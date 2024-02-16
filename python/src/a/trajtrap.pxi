@@ -7,38 +7,44 @@ cdef class trajtrap:
     cdef a_trajtrap ctx
     def gen(self, a_float vm, a_float ac, a_float de, a_float p0, a_float p1, a_float v0 = 0, a_float v1 = 0):
         return a_trajtrap_gen(&self.ctx, vm, ac, de, p0, p1, v0, v1)
-    cdef inline pos_n(self, array dt):
-        cdef Py_ssize_t i
-        cdef Py_ssize_t n = len(dt)
-        cdef a_float *p = <a_float *>dt.data.as_voidptr
-        for i in prange(n, nogil=True):
-            p[i] = a_trajtrap_pos(&self.ctx, p[i])
-        return dt
     def pos(self, dt):
+        cdef array x
+        cdef a_float *p
+        cdef Py_ssize_t i
+        cdef Py_ssize_t n
         if iterable(dt):
-            return self.pos_n(array_num(dt))
+            n = len(dt)
+            x = array_num(dt)
+            p = <a_float *>x.data.as_voidptr
+            for i in prange(n, nogil=True):
+                p[i] = a_trajtrap_pos(&self.ctx, p[i])
+            return x
         return a_trajtrap_pos(&self.ctx, dt)
-    cdef inline vel_n(self, array dt):
-        cdef Py_ssize_t i
-        cdef Py_ssize_t n = len(dt)
-        cdef a_float *p = <a_float *>dt.data.as_voidptr
-        for i in prange(n, nogil=True):
-            p[i] = a_trajtrap_vel(&self.ctx, p[i])
-        return dt
     def vel(self, dt):
-        if iterable(dt):
-            return self.vel_n(array_num(dt))
-        return a_trajtrap_vel(&self.ctx, dt)
-    cdef inline acc_n(self, array dt):
+        cdef array x
+        cdef a_float *p
         cdef Py_ssize_t i
-        cdef Py_ssize_t n = len(dt)
-        cdef a_float *p = <a_float *>dt.data.as_voidptr
-        for i in prange(n, nogil=True):
-            p[i] = a_trajtrap_acc(&self.ctx, p[i])
-        return dt
-    def acc(self, dt):
+        cdef Py_ssize_t n
         if iterable(dt):
-            return self.acc_n(array_num(dt))
+            n = len(dt)
+            x = array_num(dt)
+            p = <a_float *>x.data.as_voidptr
+            for i in prange(n, nogil=True):
+                p[i] = a_trajtrap_vel(&self.ctx, p[i])
+            return x
+        return a_trajtrap_vel(&self.ctx, dt)
+    def acc(self, dt):
+        cdef array x
+        cdef a_float *p
+        cdef Py_ssize_t i
+        cdef Py_ssize_t n
+        if iterable(dt):
+            n = len(dt)
+            x = array_num(dt)
+            p = <a_float *>x.data.as_voidptr
+            for i in prange(n, nogil=True):
+                p[i] = a_trajtrap_acc(&self.ctx, p[i])
+            return x
         return a_trajtrap_acc(&self.ctx, dt)
     property t:
         def __get__(self):

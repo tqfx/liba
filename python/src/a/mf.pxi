@@ -20,22 +20,21 @@ cdef class mf:
     PI     = A_MF_PI
     @staticmethod
     def __call__(e: int, x, a):
-        cdef int m
         cdef array y
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        cdef array f = array_num(a)
-        cdef a_float *v = <a_float *>f.data.as_voidptr
+        cdef array a_ = array_num(a)
+        cdef a_float *a_p = <a_float *>a_.data.as_voidptr
+        cdef int m = e
         if iterable(x):
-            m = e
             n = len(x)
             y = array_num(x)
             p = <a_float *>y.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_mf(m, p[i], v)
+                p[i] = a_mf(m, p[i], a_p)
             return y
-        return a_mf(e, x, v)
+        return a_mf(m, x, a_p)
     @staticmethod
     def gauss(x, sigma: a_float, c: a_float):
         cdef array y

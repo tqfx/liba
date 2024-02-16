@@ -3,41 +3,41 @@ from a.poly cimport *
 @cython.wraparound(False)
 @cython.boundscheck(False)
 def poly_eval(x, *a):
-    cdef array f, y
-    cdef a_float *q
+    cdef array y
+    cdef array a_
     cdef a_float *p
+    cdef a_float *a_p
     cdef Py_ssize_t i
     cdef Py_ssize_t n
-    cdef a_size b
-    b = len(a)
-    f = array_num(a)
-    p = <a_float *>f.data.as_voidptr
+    cdef a_size a_n = len(a)
+    a_ = array_num(a)
+    a_p = <a_float *>a_.data.as_voidptr
     if iterable(x):
         n = len(x)
         y = array_num(x)
-        q = <a_float *>y.data.as_voidptr
+        p = <a_float *>y.data.as_voidptr
         for i in prange(n, nogil=True):
-            q[i] = a_poly_eval(p, b, q[i])
+            p[i] = a_poly_eval(a_p, a_n, p[i])
         return y
-    return a_poly_eval(p, b, x)
+    return a_poly_eval(a_p, a_n, x)
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
 def poly_evar(x, *a):
-    cdef array f, y
-    cdef a_float *q
+    cdef array y
+    cdef array a_
     cdef a_float *p
+    cdef a_float *a_p
     cdef Py_ssize_t i
     cdef Py_ssize_t n
-    cdef a_size b
-    b = len(a)
-    f = array_num(a)
-    p = <a_float *>f.data.as_voidptr
+    cdef a_size a_n = len(a)
+    a_ = array_num(a)
+    a_p = <a_float *>a_.data.as_voidptr
     if iterable(x):
         n = len(x)
         y = array_num(x)
-        q = <a_float *>y.data.as_voidptr
+        p = <a_float *>y.data.as_voidptr
         for i in prange(n, nogil=True):
-            q[i] = a_poly_evar(p, b, q[i])
+            p[i] = a_poly_evar(a_p, a_n, p[i])
         return y
-    return a_poly_evar(p, b, x)
+    return a_poly_evar(a_p, a_n, x)
