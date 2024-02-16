@@ -10,7 +10,7 @@
 
 /***
  hepta polynomial trajectory
- @field q coefficients of position
+ @field p coefficients of position
  @field v coefficients of velocity
  @field a coefficients of acceleration
  @field j coefficients of jerk
@@ -23,8 +23,8 @@ extern "C" {
 /***
  constructor for hepta polynomial trajectory
  @tparam number ts difference between final time and initial time
- @tparam number q0 initial position
- @tparam number q1 final position
+ @tparam number p0 initial position
+ @tparam number p1 final position
  @tparam[opt] number v0 initial velocity
  @tparam[opt] number v1 final velocity
  @tparam[opt] number a0 initial acceleration
@@ -39,8 +39,8 @@ int liba_trajpoly7_new(lua_State *L);
 /***
  generate for hepta polynomial trajectory
  @tparam number ts difference between final time and initial time
- @tparam number q0 initial position
- @tparam number q1 final position
+ @tparam number p0 initial position
+ @tparam number p1 final position
  @tparam[opt] number v0 initial velocity
  @tparam[opt] number v1 final velocity
  @tparam[opt] number a0 initial acceleration

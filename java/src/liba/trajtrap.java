@@ -26,14 +26,14 @@ public class trajtrap {
      *
      * @return initial position
      */
-    public final native double q0();
+    public final native double p0();
 
     /**
      * get final position for trapezoidal velocity trajectory
      *
      * @return final position
      */
-    public final native double q1();
+    public final native double p1();
 
     /**
      * get initial velocity for trapezoidal velocity trajectory
@@ -75,14 +75,14 @@ public class trajtrap {
      *
      * @return position before constant velocity
      */
-    public final native double qa();
+    public final native double pa();
 
     /**
      * get position after constant velocity for trapezoidal velocity trajectory
      *
      * @return position after constant velocity
      */
-    public final native double qd();
+    public final native double pd();
 
     /**
      * get acceleration before constant velocity for trapezoidal velocity trajectory
@@ -111,13 +111,13 @@ public class trajtrap {
      * @param vm defines the maximum velocity during system operation
      * @param ac defines the acceleration before constant velocity
      * @param de defines the acceleration after constant velocity
-     * @param q0 defines the initial position
-     * @param q1 defines the final position
+     * @param p0 defines the initial position
+     * @param p1 defines the final position
      * @param v0 defines the initial velocity
      * @param v1 defines the final velocity
      * @return total duration
      */
-    public final native double gen(double vm, double ac, double de, double q0, double q1, double v0, double v1);
+    public final native double gen(double vm, double ac, double de, double p0, double p1, double v0, double v1);
 
     /**
      * calculate position for trapezoidal velocity trajectory

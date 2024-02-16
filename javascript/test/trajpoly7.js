@@ -9,7 +9,7 @@ function do_leak_check() {
     }
 }
 var ctx = new liba.trajpoly7(1, 0, 1, 0, 1, 0, 1, 0, 1)
-console.log(ctx.q)
+console.log(ctx.p)
 console.log(ctx.v)
 console.log(ctx.a)
 console.log(ctx.j)

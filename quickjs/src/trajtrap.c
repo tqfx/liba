@@ -38,15 +38,15 @@ static JSValue liba_trajtrap_get(JSContext *ctx, JSValueConst this_val, int magi
     switch (magic)
     {
     case 0: x = (double)self->t; break;
-    case 1: x = (double)self->q0; break;
-    case 2: x = (double)self->q1; break;
+    case 1: x = (double)self->p0; break;
+    case 2: x = (double)self->p1; break;
     case 3: x = (double)self->v0; break;
     case 4: x = (double)self->v1; break;
     case 5: x = (double)self->vc; break;
     case 6: x = (double)self->ta; break;
     case 7: x = (double)self->td; break;
-    case 8: x = (double)self->qa; break;
-    case 9: x = (double)self->qd; break;
+    case 8: x = (double)self->pa; break;
+    case 9: x = (double)self->pd; break;
     case 10: x = (double)self->ac; break;
     case 11: x = (double)self->de; break;
     default: return JS_UNDEFINED;
@@ -109,15 +109,15 @@ static JSValue liba_trajtrap_acc(JSContext *ctx, JSValueConst this_val, int argc
 static JSCFunctionListEntry const liba_trajtrap_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.trajtrap", 0),
     JS_CGETSET_MAGIC_DEF("t", liba_trajtrap_get, NULL, 0),
-    JS_CGETSET_MAGIC_DEF("q0", liba_trajtrap_get, NULL, 1),
-    JS_CGETSET_MAGIC_DEF("q1", liba_trajtrap_get, NULL, 2),
+    JS_CGETSET_MAGIC_DEF("p0", liba_trajtrap_get, NULL, 1),
+    JS_CGETSET_MAGIC_DEF("p1", liba_trajtrap_get, NULL, 2),
     JS_CGETSET_MAGIC_DEF("v0", liba_trajtrap_get, NULL, 3),
     JS_CGETSET_MAGIC_DEF("v1", liba_trajtrap_get, NULL, 4),
     JS_CGETSET_MAGIC_DEF("vc", liba_trajtrap_get, NULL, 5),
     JS_CGETSET_MAGIC_DEF("ta", liba_trajtrap_get, NULL, 6),
     JS_CGETSET_MAGIC_DEF("td", liba_trajtrap_get, NULL, 7),
-    JS_CGETSET_MAGIC_DEF("qa", liba_trajtrap_get, NULL, 8),
-    JS_CGETSET_MAGIC_DEF("qd", liba_trajtrap_get, NULL, 9),
+    JS_CGETSET_MAGIC_DEF("pa", liba_trajtrap_get, NULL, 8),
+    JS_CGETSET_MAGIC_DEF("pd", liba_trajtrap_get, NULL, 9),
     JS_CGETSET_MAGIC_DEF("ac", liba_trajtrap_get, NULL, 10),
     JS_CGETSET_MAGIC_DEF("de", liba_trajtrap_get, NULL, 11),
     JS_CFUNC_DEF("gen", 7, liba_trajtrap_gen),

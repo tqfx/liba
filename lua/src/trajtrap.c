@@ -26,8 +26,8 @@ int liba_trajtrap_new(lua_State *L)
  @tparam number vm defines the maximum velocity during system operation
  @tparam number ac defines the acceleration before constant velocity
  @tparam number de defines the acceleration after constant velocity
- @tparam number q0 defines the initial position
- @tparam number q1 defines the final position
+ @tparam number p0 defines the initial position
+ @tparam number p1 defines the final position
  @tparam[opt] number v0 defines the initial velocity
  @tparam[opt] number v1 defines the final velocity
  @treturn number total duration
@@ -36,7 +36,7 @@ int liba_trajtrap_new(lua_State *L)
 int liba_trajtrap_gen(lua_State *L)
 {
     a_float v0 = 0, v1 = 0;
-    a_float vm, ac, de, q0, q1;
+    a_float vm, ac, de, p0, p1;
     int const top = lua_gettop(L);
     a_trajtrap *const ctx = (a_trajtrap *)lua_touserdata(L, 1);
     if (ctx)
@@ -44,11 +44,11 @@ int liba_trajtrap_gen(lua_State *L)
         vm = (a_float)luaL_checknumber(L, 2);
         ac = (a_float)luaL_checknumber(L, 3);
         de = (a_float)luaL_checknumber(L, 4);
-        q0 = (a_float)luaL_checknumber(L, 5);
-        q1 = (a_float)luaL_checknumber(L, 6);
+        p0 = (a_float)luaL_checknumber(L, 5);
+        p1 = (a_float)luaL_checknumber(L, 6);
         if (top >= 7) { v0 = (a_float)luaL_checknumber(L, 7); }
         if (top >= 8) { v1 = (a_float)luaL_checknumber(L, 8); }
-        a_trajtrap_gen(ctx, vm, ac, de, q0, q1, v0, v1);
+        a_trajtrap_gen(ctx, vm, ac, de, p0, p1, v0, v1);
         lua_pushnumber(L, (lua_Number)ctx->t);
         return 1;
     }
@@ -136,11 +136,11 @@ static int liba_trajtrap_get(lua_State *L)
     case 0x00000074: // t
         lua_pushnumber(L, (lua_Number)ctx->t);
         break;
-    case 0x00003A03: // q0
-        lua_pushnumber(L, (lua_Number)ctx->q0);
+    case 0x00003980: // p0
+        lua_pushnumber(L, (lua_Number)ctx->p0);
         break;
-    case 0x00003A04: // q1
-        lua_pushnumber(L, (lua_Number)ctx->q1);
+    case 0x00003981: // p1
+        lua_pushnumber(L, (lua_Number)ctx->p1);
         break;
     case 0x00003C92: // v0
         lua_pushnumber(L, (lua_Number)ctx->v0);
@@ -157,11 +157,11 @@ static int liba_trajtrap_get(lua_State *L)
     case 0x00003BC0: // td
         lua_pushnumber(L, (lua_Number)ctx->td);
         break;
-    case 0x00003A34: // qa
-        lua_pushnumber(L, (lua_Number)ctx->qa);
+    case 0x000039B1: // pa
+        lua_pushnumber(L, (lua_Number)ctx->pa);
         break;
-    case 0x00003A37: // qd
-        lua_pushnumber(L, (lua_Number)ctx->qd);
+    case 0x000039B4: // pd
+        lua_pushnumber(L, (lua_Number)ctx->pd);
         break;
     case 0x00003206: // ac
         lua_pushnumber(L, (lua_Number)ctx->ac);
@@ -172,15 +172,15 @@ static int liba_trajtrap_get(lua_State *L)
     case 0xA65758B2: // __index
         lua_registry_get(L, liba_trajtrap_new);
         lua_num_set(L, -1, "t", ctx->t);
-        lua_num_set(L, -1, "q0", ctx->q0);
-        lua_num_set(L, -1, "q1", ctx->q1);
+        lua_num_set(L, -1, "p0", ctx->p0);
+        lua_num_set(L, -1, "p1", ctx->p1);
         lua_num_set(L, -1, "v0", ctx->v0);
         lua_num_set(L, -1, "v1", ctx->v1);
         lua_num_set(L, -1, "vc", ctx->vc);
         lua_num_set(L, -1, "ta", ctx->ta);
         lua_num_set(L, -1, "td", ctx->td);
-        lua_num_set(L, -1, "qa", ctx->qa);
-        lua_num_set(L, -1, "qd", ctx->qd);
+        lua_num_set(L, -1, "pa", ctx->pa);
+        lua_num_set(L, -1, "pd", ctx->pd);
         lua_num_set(L, -1, "ac", ctx->ac);
         lua_num_set(L, -1, "de", ctx->de);
         break;

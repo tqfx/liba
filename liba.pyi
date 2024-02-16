@@ -393,8 +393,8 @@ class trajbell:
         jm: float,
         am: float,
         vm: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float = 0,
         v1: float = 0,
     ) -> float: ...
@@ -427,9 +427,9 @@ class trajbell:
     @property
     def tdj(self) -> float: ...
     @property
-    def q0(self) -> float: ...
+    def p0(self) -> float: ...
     @property
-    def q1(self) -> float: ...
+    def p1(self) -> float: ...
     @property
     def v0(self) -> float: ...
     @property
@@ -447,16 +447,16 @@ class trajpoly3:
     def __init__(
         self,
         ts: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float = 0,
         v1: float = 0,
     ) -> None: ...
     def gen(
         self,
         ts: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float = 0,
         v1: float = 0,
     ) -> trajpoly3: ...
@@ -473,7 +473,7 @@ class trajpoly3:
     @overload
     def acc(self, dt: float) -> float: ...
     @property
-    def q(self) -> array[float]: ...
+    def p(self) -> array[float]: ...
     @property
     def v(self) -> array[float]: ...
     @property
@@ -483,8 +483,8 @@ class trajpoly5:
     def __init__(
         self,
         ts: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float = 0,
         v1: float = 0,
         a0: float = 0,
@@ -493,8 +493,8 @@ class trajpoly5:
     def gen(
         self,
         ts: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float = 0,
         v1: float = 0,
         a0: float = 0,
@@ -513,7 +513,7 @@ class trajpoly5:
     @overload
     def acc(self, dt: float) -> float: ...
     @property
-    def q(self) -> array[float]: ...
+    def p(self) -> array[float]: ...
     @property
     def v(self) -> array[float]: ...
     @property
@@ -523,8 +523,8 @@ class trajpoly7:
     def __init__(
         self,
         ts: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float = 0,
         v1: float = 0,
         a0: float = 0,
@@ -535,8 +535,8 @@ class trajpoly7:
     def gen(
         self,
         ts: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float = 0,
         v1: float = 0,
         a0: float = 0,
@@ -561,7 +561,7 @@ class trajpoly7:
     @overload
     def jer(self, dt: float) -> float: ...
     @property
-    def q(self) -> array[float]: ...
+    def p(self) -> array[float]: ...
     @property
     def v(self) -> array[float]: ...
     @property
@@ -575,8 +575,8 @@ class trajtrap:
         vm: float,
         ac: float,
         de: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float = 0,
         v1: float = 0,
     ) -> float: ...
@@ -595,9 +595,9 @@ class trajtrap:
     @property
     def t(self) -> float: ...
     @property
-    def q0(self) -> float: ...
+    def p0(self) -> float: ...
     @property
-    def q1(self) -> float: ...
+    def p1(self) -> float: ...
     @property
     def v0(self) -> float: ...
     @property
@@ -609,9 +609,9 @@ class trajtrap:
     @property
     def td(self) -> float: ...
     @property
-    def qa(self) -> float: ...
+    def pa(self) -> float: ...
     @property
-    def qd(self) -> float: ...
+    def pd(self) -> float: ...
     @property
     def ac(self) -> float: ...
     @property

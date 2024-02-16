@@ -10,8 +10,8 @@ class _trajbell {
         System.out.println(obj.td());
         System.out.println(obj.taj());
         System.out.println(obj.tdj());
-        System.out.println(obj.q0());
-        System.out.println(obj.q1());
+        System.out.println(obj.p0());
+        System.out.println(obj.p1());
         System.out.println(obj.v0());
         System.out.println(obj.v1());
         System.out.println(obj.vm());

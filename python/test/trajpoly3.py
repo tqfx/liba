@@ -14,19 +14,19 @@ except Exception as e:
     exit()
 
 t = (0, 1)
-q = (0, 1)
+p = (0, 1)
 v = (0, 1)
 data = np.arange(t[0], t[1], 0.01)
-traj = a.trajpoly3(t[1] - t[0], q[0], q[1], v[0], v[1])
+traj = a.trajpoly3(t[1] - t[0], p[0], p[1], v[0], v[1])
 text_p = "p="
-if traj.q[0]:
-    text_p += "%g" % (traj.q[0])
-if traj.q[1]:
-    text_p += "%+g%s" % (traj.q[1], "t")
-if traj.q[2]:
-    text_p += "%+g%s" % (traj.q[2], "t^2")
-if traj.q[3]:
-    text_p += "%+g%s" % (traj.q[3], "t^3")
+if traj.p[0]:
+    text_p += "%g" % (traj.p[0])
+if traj.p[1]:
+    text_p += "%+g%s" % (traj.p[1], "t")
+if traj.p[2]:
+    text_p += "%+g%s" % (traj.p[2], "t^2")
+if traj.p[3]:
+    text_p += "%+g%s" % (traj.p[3], "t^3")
 text_p = text_p.replace("=+", "=")
 text_v = "v="
 if traj.v[0]:

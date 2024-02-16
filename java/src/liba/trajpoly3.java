@@ -17,7 +17,7 @@ public class trajpoly3 {
      *
      * @return coefficients of position
      */
-    public final native double[] q();
+    public final native double[] p();
 
     /**
      * get coefficients of velocity for cubic polynomial trajectory
@@ -37,26 +37,26 @@ public class trajpoly3 {
      * construct a new {@link trajpoly3} object
      *
      * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
+     * @param p0 initial position
+     * @param p1 final position
      * @param v0 initial velocity
      * @param v1 final velocity
      */
-    public trajpoly3(double ts, double q0, double q1, double v0, double v1) {
-        gen(ts, q0, q1, v0, v1);
+    public trajpoly3(double ts, double p0, double p1, double v0, double v1) {
+        gen(ts, p0, p1, v0, v1);
     }
 
     /**
      * generate for cubic polynomial trajectory
      *
      * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
+     * @param p0 initial position
+     * @param p1 final position
      * @param v0 initial velocity
      * @param v1 final velocity
      * @return {@link trajpoly3}
      */
-    public final native trajpoly3 gen(double ts, double q0, double q1, double v0, double v1);
+    public final native trajpoly3 gen(double ts, double p0, double p1, double v0, double v1);
 
     /**
      * calculate position for cubic polynomial trajectory

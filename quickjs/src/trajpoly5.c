@@ -48,7 +48,7 @@ static JSValue liba_trajpoly5_get(JSContext *ctx, JSValueConst this_val, int mag
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case 0: return js_array_num_new(ctx, self->q, A_LEN(self->q));
+    case 0: return js_array_num_new(ctx, self->p, A_LEN(self->p));
     case 1: return js_array_num_new(ctx, self->v, A_LEN(self->v));
     case 2: return js_array_num_new(ctx, self->a, A_LEN(self->a));
     default: return JS_UNDEFINED;
@@ -111,7 +111,7 @@ static JSValue liba_trajpoly5_acc(JSContext *ctx, JSValueConst this_val, int arg
 
 static JSCFunctionListEntry const liba_trajpoly5_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.trajpoly5", 0),
-    JS_CGETSET_MAGIC_DEF("q", liba_trajpoly5_get, NULL, 0),
+    JS_CGETSET_MAGIC_DEF("p", liba_trajpoly5_get, NULL, 0),
     JS_CGETSET_MAGIC_DEF("v", liba_trajpoly5_get, NULL, 1),
     JS_CGETSET_MAGIC_DEF("a", liba_trajpoly5_get, NULL, 2),
     JS_CFUNC_DEF("gen", 7, liba_trajpoly5_gen),

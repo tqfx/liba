@@ -10,7 +10,7 @@
 
 /***
  cubic polynomial trajectory
- @field q coefficients of position
+ @field p coefficients of position
  @field v coefficients of velocity
  @field a coefficients of acceleration
  @table a.trajpoly3
@@ -22,8 +22,8 @@ extern "C" {
 /***
  constructor for cubic polynomial trajectory
  @tparam number ts difference between final time and initial time
- @tparam number q0 initial position
- @tparam number q1 final position
+ @tparam number p0 initial position
+ @tparam number p1 final position
  @tparam[opt] number v0 initial velocity
  @tparam[opt] number v1 final velocity
  @treturn a.trajpoly3 cubic polynomial trajectory userdata
@@ -34,8 +34,8 @@ int liba_trajpoly3_new(lua_State *L);
 /***
  generate for cubic polynomial trajectory
  @tparam number ts difference between final time and initial time
- @tparam number q0 initial position
- @tparam number q1 final position
+ @tparam number p0 initial position
+ @tparam number p1 final position
  @tparam[opt] number v0 initial velocity
  @tparam[opt] number v1 final velocity
  @treturn a.trajpoly3 cubic polynomial trajectory userdata

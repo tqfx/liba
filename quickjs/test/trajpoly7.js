@@ -6,7 +6,7 @@ function assert(expr, info) {
 }
 var ctx = new a.trajpoly7(1, 0, 0)
 ctx.gen(10, 0, 10, 0, 0)
-assert(ctx.q)
+assert(ctx.p)
 assert(ctx.v)
 assert(ctx.a)
 assert(ctx.j)

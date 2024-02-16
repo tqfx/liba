@@ -49,7 +49,7 @@ static JSValue liba_trajpoly7_get(JSContext *ctx, JSValueConst this_val, int mag
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case 0: return js_array_num_new(ctx, self->q, A_LEN(self->q));
+    case 0: return js_array_num_new(ctx, self->p, A_LEN(self->p));
     case 1: return js_array_num_new(ctx, self->v, A_LEN(self->v));
     case 2: return js_array_num_new(ctx, self->a, A_LEN(self->a));
     case 3: return js_array_num_new(ctx, self->j, A_LEN(self->j));
@@ -125,7 +125,7 @@ static JSValue liba_trajpoly7_jer(JSContext *ctx, JSValueConst this_val, int arg
 
 static JSCFunctionListEntry const liba_trajpoly7_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.trajpoly7", 0),
-    JS_CGETSET_MAGIC_DEF("q", liba_trajpoly7_get, NULL, 0),
+    JS_CGETSET_MAGIC_DEF("p", liba_trajpoly7_get, NULL, 0),
     JS_CGETSET_MAGIC_DEF("v", liba_trajpoly7_get, NULL, 1),
     JS_CGETSET_MAGIC_DEF("a", liba_trajpoly7_get, NULL, 2),
     JS_CGETSET_MAGIC_DEF("j", liba_trajpoly7_get, NULL, 3),

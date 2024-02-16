@@ -65,14 +65,14 @@ public class trajbell {
      *
      * @return initial position
      */
-    public final native double q0();
+    public final native double p0();
 
     /**
      * get final position for bell-shaped velocity trajectory
      *
      * @return final position
      */
-    public final native double q1();
+    public final native double p1();
 
     /**
      * get initial velocity for bell-shaped velocity trajectory
@@ -129,13 +129,13 @@ public class trajbell {
      * @param jm defines the maximum jerk during system operation
      * @param am defines the maximum acceleration during system operation
      * @param vm defines the maximum velocity during system operation
-     * @param q0 defines the initial position
-     * @param q1 defines the final position
+     * @param p0 defines the initial position
+     * @param p1 defines the final position
      * @param v0 defines the initial velocity
      * @param v1 defines the final velocity
      * @return total duration
      */
-    public final native double gen(double jm, double am, double vm, double q0, double q1, double v0, double v1);
+    public final native double gen(double jm, double am, double vm, double p0, double p1, double v0, double v1);
 
     /**
      * calculate position for bell-shaped velocity trajectory

@@ -17,22 +17,22 @@ JNIEXPORT void JNICALL Java_liba_trajpoly7_INIT(JNIEnv *_env, jclass _cls)
     L.alloc = (*_env)->GetStaticMethodID(_env, _bb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
 }
 
-JNIEXPORT jobject JNICALL Java_liba_trajpoly7_gen(JNIEnv *_env, jobject _obj, jdouble ts, jdouble q0, jdouble q1, jdouble v0, jdouble v1, jdouble a0, jdouble a1, jdouble j0, jdouble j1)
+JNIEXPORT jobject JNICALL Java_liba_trajpoly7_gen(JNIEnv *_env, jobject _obj, jdouble ts, jdouble p0, jdouble p1, jdouble v0, jdouble v1, jdouble a0, jdouble a1, jdouble j0, jdouble j1)
 {
     jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)sizeof(a_trajpoly7));
     a_trajpoly7 *ctx = (a_trajpoly7 *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
-    a_trajpoly7_gen(ctx, ts, q0, q1, v0, v1, a0, a1, j0, j1);
+    a_trajpoly7_gen(ctx, ts, p0, p1, v0, v1, a0, a1, j0, j1);
     return _obj;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_trajpoly7_q(JNIEnv *_env, jobject _obj)
+JNIEXPORT jobject JNICALL Java_liba_trajpoly7_p(JNIEnv *_env, jobject _obj)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
     a_trajpoly7 *ctx = (a_trajpoly7 *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    jobject q = (*_env)->NewDoubleArray(_env, A_LEN(ctx->q));
-    (*_env)->SetDoubleArrayRegion(_env, q, 0, A_LEN(ctx->q), ctx->q);
-    return q;
+    jobject p = (*_env)->NewDoubleArray(_env, A_LEN(ctx->p));
+    (*_env)->SetDoubleArrayRegion(_env, p, 0, A_LEN(ctx->p), ctx->p);
+    return p;
 }
 
 JNIEXPORT jobject JNICALL Java_liba_trajpoly7_v(JNIEnv *_env, jobject _obj)

@@ -29,25 +29,25 @@ extern "C" {
  \f{aligned}{
   \left\{\begin{array}{l}
   t=t_{1}-t_{0}\\
-  q=q_{1}-q_{0}\\
-  k_{0}=q_{0}\\
-  k_{1}=v_{0}\\
-  k_{2}=\cfrac{\left(-2\,v_{0}-v_{1}\right)\,t+3\,q}{t^2}\\
-  k_{3}=\cfrac{\left(v_{0}+v_{1}\right)\,t-2\,q}{t^3}
+  p=p_{1}-p_{0}\\
+  c_{0}=p_{0}\\
+  c_{1}=v_{0}\\
+  c_{2}=\cfrac{\left(-2\,v_{0}-v_{1}\right)\,t+3\,p}{t^2}\\
+  c_{3}=\cfrac{\left(v_{0}+v_{1}\right)\,t-2\,p}{t^3}
   \end{array}\right.
  \f}
  @param[in,out] ctx points to an instance of cubic polynomial trajectory
  @param[in] ts difference between final time and initial time
- @param[in] q0 initial position
- @param[in] q1 final position
+ @param[in] p0 initial position
+ @param[in] p1 final position
  @param[in] v0 initial velocity
  @param[in] v1 final velocity
 */
 A_EXTERN void a_trajpoly3_gen(a_trajpoly3 *ctx, a_float ts,
-                              a_float q0, a_float q1,
+                              a_float p0, a_float p1,
                               a_float v0, a_float v1);
 A_EXTERN void a_trajpoly3_gen0(a_trajpoly3 *ctx, a_float ts,
-                               a_float q0, a_float q1,
+                               a_float p0, a_float p1,
                                a_float v0, a_float v1);
 #if defined(A_TRAJPOLY3) && (A_TRAJPOLY3 + 0 > 1)
 A_EXTERN void a_trajpoly3_gen1(a_trajpoly3 *ctx);
@@ -60,7 +60,7 @@ A_EXTERN void a_trajpoly3_gen2(a_trajpoly3 *ctx);
  @brief calculate position for cubic polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
-  q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3} \\
+  p(t)=c_{0}+c_{1}\left(t-t_{0}\right)+c_{2}\left(t-t_{0}\right)^{2}+c_{3}\left(t-t_{0}\right)^{3} \\
   \end{array}
  \f}
  @param[in] ctx points to an instance of cubic polynomial trajectory
@@ -74,7 +74,7 @@ A_EXTERN a_float a_trajpoly3_pos(a_trajpoly3 const *ctx, a_float dt);
  @brief calculate velocity for cubic polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
-  \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2} \\
+  \dot{p}(t)=c_{1}+2 c_{2}\left(t-t_{0}\right)+3 c_{3}\left(t-t_{0}\right)^{2} \\
   \end{array}
  \f}
  @param[in] ctx points to an instance of cubic polynomial trajectory
@@ -89,7 +89,7 @@ A_EXTERN a_float a_trajpoly3_vel(a_trajpoly3 const *ctx, a_float dt);
  @brief calculate acceleration for cubic polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
-  \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)
+  \ddot{p}(t)=2 c_{2}+6 c_{3}\left(t-t_{0}\right)
   \end{array}
  \f}
  @param[in] ctx points to an instance of cubic polynomial trajectory
@@ -111,15 +111,15 @@ typedef struct a_trajpoly3 trajpoly3;
  @brief instance structure for cubic polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
-  q(t)=k_{0}+k_{1}\left(t-t_{0}\right)+k_{2}\left(t-t_{0}\right)^{2}+k_{3}\left(t-t_{0}\right)^{3} \\
-  \dot{q}(t)=k_{1}+2 k_{2}\left(t-t_{0}\right)+3 k_{3}\left(t-t_{0}\right)^{2} \\
-  \ddot{q}(t)=2 k_{2}+6 k_{3}\left(t-t_{0}\right)
+  p(t)=c_{0}+c_{1}\left(t-t_{0}\right)+c_{2}\left(t-t_{0}\right)^{2}+c_{3}\left(t-t_{0}\right)^{3} \\
+  \dot{p}(t)=c_{1}+2 c_{2}\left(t-t_{0}\right)+3 c_{3}\left(t-t_{0}\right)^{2} \\
+  \ddot{p}(t)=2 c_{2}+6 c_{3}\left(t-t_{0}\right)
   \end{array}
  \f}
 */
 struct a_trajpoly3
 {
-    a_float q[4]; //!< coefficients of position
+    a_float p[4]; //!< coefficients of position
 #if defined(A_TRAJPOLY3) && (A_TRAJPOLY3 + 0 > 1)
     a_float v[3]; //!< coefficients of velocity
 #endif /* A_TRAJPOLY3 */
@@ -127,15 +127,15 @@ struct a_trajpoly3
     a_float a[2]; //!< coefficients of acceleration
 #endif /* A_TRAJPOLY3 */
 #if defined(__cplusplus)
-    A_INLINE void gen(a_float ts, a_float q0, a_float q1,
+    A_INLINE void gen(a_float ts, a_float p0, a_float p1,
                       a_float v0 = 0, a_float v1 = 0)
     {
-        a_trajpoly3_gen(this, ts, q0, q1, v0, v1);
+        a_trajpoly3_gen(this, ts, p0, p1, v0, v1);
     }
-    A_INLINE void gen0(a_float ts, a_float q0, a_float q1,
+    A_INLINE void gen0(a_float ts, a_float p0, a_float p1,
                        a_float v0 = 0, a_float v1 = 0)
     {
-        a_trajpoly3_gen0(this, ts, q0, q1, v0, v1);
+        a_trajpoly3_gen0(this, ts, p0, p1, v0, v1);
     }
     A_INLINE a_float pos(a_float dt)
     {

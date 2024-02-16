@@ -5,10 +5,10 @@ from a.trajpoly7 cimport *
 @cython.auto_pickle(False)
 cdef class trajpoly7:
     cdef a_trajpoly7 ctx
-    def __init__(self, a_float ts, a_float q0, a_float q1, a_float v0 = 0, a_float v1 = 0, a_float a0 = 0, a_float a1 = 0, a_float j0 = 0, a_float j1 = 0):
-        a_trajpoly7_gen(&self.ctx, ts, q0, q1, v0, v1, a0, a1, j0, j1)
-    def gen(self, a_float ts, a_float q0, a_float q1, a_float v0 = 0, a_float v1 = 0, a_float a0 = 0, a_float a1 = 0, a_float j0 = 0, a_float j1 = 0):
-        a_trajpoly7_gen(&self.ctx, ts, q0, q1, v0, v1, a0, a1, j0, j1)
+    def __init__(self, a_float ts, a_float p0, a_float p1, a_float v0 = 0, a_float v1 = 0, a_float a0 = 0, a_float a1 = 0, a_float j0 = 0, a_float j1 = 0):
+        a_trajpoly7_gen(&self.ctx, ts, p0, p1, v0, v1, a0, a1, j0, j1)
+    def gen(self, a_float ts, a_float p0, a_float p1, a_float v0 = 0, a_float v1 = 0, a_float a0 = 0, a_float a1 = 0, a_float j0 = 0, a_float j1 = 0):
+        a_trajpoly7_gen(&self.ctx, ts, p0, p1, v0, v1, a0, a1, j0, j1)
         return self
     cdef inline pos_n(self, array dt):
         cdef Py_ssize_t i
@@ -54,9 +54,9 @@ cdef class trajpoly7:
         if iterable(dt):
             return self.jer_n(array_num(dt))
         return a_trajpoly7_jer(&self.ctx, dt)
-    property q:
+    property p:
         def __get__(self):
-            return self.ctx.q
+            return self.ctx.p
     property v:
         def __get__(self):
             return self.ctx.v

@@ -4,7 +4,7 @@ import liba.trajpoly7;
 class _trajpoly7 {
     public static void main(String[] args) {
         trajpoly7 obj = new trajpoly7(1, 0, 1, 0, 1, 0, 1, 0, 1);
-        System.out.println(Arrays.toString(obj.q()));
+        System.out.println(Arrays.toString(obj.p()));
         System.out.println(Arrays.toString(obj.v()));
         System.out.println(Arrays.toString(obj.a()));
         System.out.println(Arrays.toString(obj.j()));

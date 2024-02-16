@@ -1262,9 +1262,9 @@ pub struct trajbell {
     /// time-interval in which the jerk is constant (j max or j min ) during the deceleration phase
     pub tdj: float,
     /// initial position
-    pub q0: float,
+    pub p0: float,
     /// final position
-    pub q1: float,
+    pub p1: float,
     /// initial velocity
     pub v0: float,
     /// final velocity
@@ -1289,8 +1289,8 @@ impl Default for trajbell {
             td: 0.0,
             taj: 0.0,
             tdj: 0.0,
-            q0: 0.0,
-            q1: 0.0,
+            p0: 0.0,
+            p1: 0.0,
             v0: 0.0,
             v1: 0.0,
             vm: 0.0,
@@ -1307,8 +1307,8 @@ extern "C" {
         jm: float,
         am: float,
         vm: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float,
         v1: float,
     ) -> float;
@@ -1332,12 +1332,12 @@ impl trajbell {
         jm: float,
         am: float,
         vm: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float,
         v1: float,
     ) -> float {
-        unsafe { a_trajbell_gen(self, jm, am, vm, q0, q1, v0, v1) }
+        unsafe { a_trajbell_gen(self, jm, am, vm, p0, p1, v0, v1) }
     }
     /// calculate position for bell-shaped velocity trajectory
     #[inline(always)]
@@ -1382,7 +1382,7 @@ fn trajbell() {
 #[repr(C)]
 pub struct trajpoly3 {
     /// coefficients of position
-    pub q: [float; 4],
+    pub p: [float; 4],
     /// coefficients of velocity
     pub v: [float; 3],
     /// coefficients of acceleration
@@ -1390,7 +1390,7 @@ pub struct trajpoly3 {
 }
 
 extern "C" {
-    fn a_trajpoly3_gen(ctx: *mut trajpoly3, ts: float, q0: float, q1: float, v0: float, v1: float);
+    fn a_trajpoly3_gen(ctx: *mut trajpoly3, ts: float, p0: float, p1: float, v0: float, v1: float);
     fn a_trajpoly3_pos(ctx: *const trajpoly3, dt: float) -> float;
     fn a_trajpoly3_vel(ctx: *const trajpoly3, dt: float) -> float;
     fn a_trajpoly3_acc(ctx: *const trajpoly3, dt: float) -> float;
@@ -1399,19 +1399,19 @@ extern "C" {
 impl trajpoly3 {
     /// initialize for cubic polynomial trajectory
     #[inline(always)]
-    pub fn new(ts: float, q0: float, q1: float, v0: float, v1: float) -> Self {
+    pub fn new(ts: float, p0: float, p1: float, v0: float, v1: float) -> Self {
         let mut ctx: Self = Self {
-            q: [0.0; 4],
+            p: [0.0; 4],
             v: [0.0; 3],
             a: [0.0; 2],
         };
-        unsafe { a_trajpoly3_gen(&mut ctx, ts, q0, q1, v0, v1) };
+        unsafe { a_trajpoly3_gen(&mut ctx, ts, p0, p1, v0, v1) };
         ctx
     }
     /// generate for cubic polynomial trajectory
     #[inline(always)]
-    pub fn gen(&mut self, ts: float, q0: float, q1: float, v0: float, v1: float) -> &mut Self {
-        unsafe { a_trajpoly3_gen(self, ts, q0, q1, v0, v1) };
+    pub fn gen(&mut self, ts: float, p0: float, p1: float, v0: float, v1: float) -> &mut Self {
+        unsafe { a_trajpoly3_gen(self, ts, p0, p1, v0, v1) };
         self
     }
     /// calculate position for cubic polynomial trajectory
@@ -1445,7 +1445,7 @@ fn trajpoly3() {
 #[repr(C)]
 pub struct trajpoly5 {
     /// coefficients of position
-    pub q: [float; 6],
+    pub p: [float; 6],
     /// coefficients of velocity
     pub v: [float; 5],
     /// coefficients of acceleration
@@ -1456,8 +1456,8 @@ extern "C" {
     fn a_trajpoly5_gen(
         ctx: *mut trajpoly5,
         ts: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float,
         v1: float,
         a0: float,
@@ -1474,19 +1474,19 @@ impl trajpoly5 {
     #[inline(always)]
     pub fn new(
         ts: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float,
         v1: float,
         a0: float,
         a1: float,
     ) -> Self {
         let mut ctx: Self = Self {
-            q: [0.0; 6],
+            p: [0.0; 6],
             v: [0.0; 5],
             a: [0.0; 4],
         };
-        unsafe { a_trajpoly5_gen(&mut ctx, ts, q0, q1, v0, v1, a0, a1) };
+        unsafe { a_trajpoly5_gen(&mut ctx, ts, p0, p1, v0, v1, a0, a1) };
         ctx
     }
     /// generate for quintic polynomial trajectory
@@ -1495,14 +1495,14 @@ impl trajpoly5 {
     pub fn gen(
         &mut self,
         ts: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float,
         v1: float,
         a0: float,
         a1: float,
     ) -> &mut Self {
-        unsafe { a_trajpoly5_gen(self, ts, q0, q1, v0, v1, a0, a1) };
+        unsafe { a_trajpoly5_gen(self, ts, p0, p1, v0, v1, a0, a1) };
         self
     }
     /// calculate position for quintic polynomial trajectory
@@ -1536,7 +1536,7 @@ fn trajpoly5() {
 #[repr(C)]
 pub struct trajpoly7 {
     /// coefficients of position
-    pub q: [float; 8],
+    pub p: [float; 8],
     /// coefficients of velocity
     pub v: [float; 7],
     /// coefficients of acceleration
@@ -1549,8 +1549,8 @@ extern "C" {
     fn a_trajpoly7_gen(
         ctx: *mut trajpoly7,
         ts: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float,
         v1: float,
         a0: float,
@@ -1570,8 +1570,8 @@ impl trajpoly7 {
     #[inline(always)]
     pub fn new(
         ts: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float,
         v1: float,
         a0: float,
@@ -1580,12 +1580,12 @@ impl trajpoly7 {
         j1: float,
     ) -> Self {
         let mut ctx: Self = Self {
-            q: [0.0; 8],
+            p: [0.0; 8],
             v: [0.0; 7],
             a: [0.0; 6],
             j: [0.0; 5],
         };
-        unsafe { a_trajpoly7_gen(&mut ctx, ts, q0, q1, v0, v1, a0, a1, j0, j1) };
+        unsafe { a_trajpoly7_gen(&mut ctx, ts, p0, p1, v0, v1, a0, a1, j0, j1) };
         ctx
     }
     /// generate for hepta polynomial trajectory
@@ -1594,8 +1594,8 @@ impl trajpoly7 {
     pub fn gen(
         &mut self,
         ts: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float,
         v1: float,
         a0: float,
@@ -1603,7 +1603,7 @@ impl trajpoly7 {
         j0: float,
         j1: float,
     ) -> &mut Self {
-        unsafe { a_trajpoly7_gen(self, ts, q0, q1, v0, v1, a0, a1, j0, j1) };
+        unsafe { a_trajpoly7_gen(self, ts, p0, p1, v0, v1, a0, a1, j0, j1) };
         self
     }
     /// calculate position for hepta polynomial trajectory
@@ -1650,9 +1650,9 @@ pub struct trajtrap {
     /// total duration
     pub t: float,
     /// initial position
-    pub q0: float,
+    pub p0: float,
     /// final position
-    pub q1: float,
+    pub p1: float,
     /// initial velocity
     pub v0: float,
     /// final velocity
@@ -1664,9 +1664,9 @@ pub struct trajtrap {
     /// time after constant velocity
     pub td: float,
     /// position before constant velocity
-    pub qa: float,
+    pub pa: float,
     /// position after constant velocity
-    pub qd: float,
+    pub pd: float,
     /// acceleration before constant velocity
     pub ac: float,
     /// acceleration after constant velocity
@@ -1678,15 +1678,15 @@ impl Default for trajtrap {
     fn default() -> Self {
         Self {
             t: 0.0,
-            q0: 0.0,
-            q1: 0.0,
+            p0: 0.0,
+            p1: 0.0,
             v0: 0.0,
             v1: 0.0,
             vc: 0.0,
             ta: 0.0,
             td: 0.0,
-            qa: 0.0,
-            qd: 0.0,
+            pa: 0.0,
+            pd: 0.0,
             ac: 0.0,
             de: 0.0,
         }
@@ -1699,8 +1699,8 @@ extern "C" {
         vm: float,
         ac: float,
         de: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float,
         v1: float,
     ) -> float;
@@ -1723,12 +1723,12 @@ impl trajtrap {
         vm: float,
         ac: float,
         de: float,
-        q0: float,
-        q1: float,
+        p0: float,
+        p1: float,
         v0: float,
         v1: float,
     ) -> float {
-        unsafe { a_trajtrap_gen(self, vm, ac, de, q0, q1, v0, v1) }
+        unsafe { a_trajtrap_gen(self, vm, ac, de, p0, p1, v0, v1) }
     }
     /// calculate position for trapezoidal velocity trajectory
     #[inline(always)]

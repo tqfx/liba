@@ -16,8 +16,8 @@
  @field td deceleration phase
  @field taj time-interval in which the jerk is constant (j max or j min ) during the acceleration phase
  @field tdj time-interval in which the jerk is constant (j max or j min ) during the deceleration phase
- @field q0 initial position
- @field q1 final position
+ @field p0 initial position
+ @field p1 final position
  @field v0 initial velocity
  @field v1 final velocity
  @field vm maximum velocity
@@ -42,8 +42,8 @@ int liba_trajbell_new(lua_State *L);
  @tparam number jm defines the maximum jerk during system operation
  @tparam number am defines the maximum acceleration during system operation
  @tparam number vm defines the maximum velocity during system operation
- @tparam number q0 defines the initial position
- @tparam number q1 defines the final position
+ @tparam number p0 defines the initial position
+ @tparam number p1 defines the final position
  @tparam[opt] number v0 defines the initial velocity
  @tparam[opt] number v1 defines the final velocity
  @treturn number total duration

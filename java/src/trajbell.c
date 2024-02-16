@@ -23,11 +23,11 @@ JNIEXPORT void JNICALL Java_liba_trajbell_init(JNIEnv *_env, jobject _obj)
     (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_trajbell_gen(JNIEnv *_env, jobject _obj, jdouble jm, jdouble am, jdouble vm, jdouble q0, jdouble q1, jdouble vs, jdouble ve)
+JNIEXPORT jdouble JNICALL Java_liba_trajbell_gen(JNIEnv *_env, jobject _obj, jdouble jm, jdouble am, jdouble vm, jdouble p0, jdouble p1, jdouble vs, jdouble ve)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
     a_trajbell *ctx = (a_trajbell *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    return a_trajbell_gen(ctx, jm, am, vm, q0, q1, vs, ve);
+    return a_trajbell_gen(ctx, jm, am, vm, p0, p1, vs, ve);
 }
 
 JNIEXPORT jdouble JNICALL Java_liba_trajbell_t(JNIEnv *_env, jobject _obj)
@@ -72,18 +72,18 @@ JNIEXPORT jdouble JNICALL Java_liba_trajbell_tdj(JNIEnv *_env, jobject _obj)
     return ctx->tdj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_trajbell_q0(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_trajbell_p0(JNIEnv *_env, jobject _obj)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
     a_trajbell *ctx = (a_trajbell *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    return ctx->q0;
+    return ctx->p0;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_trajbell_q1(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_trajbell_p1(JNIEnv *_env, jobject _obj)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
     a_trajbell *ctx = (a_trajbell *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    return ctx->q1;
+    return ctx->p1;
 }
 
 JNIEXPORT jdouble JNICALL Java_liba_trajbell_v0(JNIEnv *_env, jobject _obj)

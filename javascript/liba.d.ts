@@ -665,9 +665,9 @@ declare namespace liba {
     /** time-interval in which the jerk is constant (j max or j min ) during the deceleration phase */
     readonly tdj: number;
     /** initial position */
-    readonly q0: number;
+    readonly p0: number;
     /** final position */
-    readonly q1: number;
+    readonly p1: number;
     /** initial velocity */
     readonly v0: number;
     /** final velocity */
@@ -684,13 +684,13 @@ declare namespace liba {
      * @param jm defines the maximum jerk during system operation
      * @param am defines the maximum acceleration during system operation
      * @param vm defines the maximum velocity during system operation
-     * @param q0 defines the initial position
-     * @param q1 defines the final position
+     * @param p0 defines the initial position
+     * @param p1 defines the final position
      * @param v0 defines the initial velocity
      * @param v1 defines the final velocity
      * @return total duration
      */
-    gen(jm: number, am: number, vm: number, q0: number, q1: number, v0: number, v1: number): number;
+    gen(jm: number, am: number, vm: number, p0: number, p1: number, v0: number, v1: number): number;
     /**
      * calculate position for bell-shaped velocity trajectory
      * @param dt difference between current time and initial time
@@ -721,7 +721,7 @@ declare namespace liba {
 
   interface trajpoly3 {
     /** coefficients of position */
-    readonly q: Float64Array | Float32Array;
+    readonly p: Float64Array | Float32Array;
     /** coefficients of velocity */
     readonly v: Float64Array | Float32Array;
     /** coefficients of acceleration */
@@ -747,24 +747,24 @@ declare namespace liba {
   let trajpoly3: {
     /**
      * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
+     * @param p0 initial position
+     * @param p1 final position
      */
-    new(ts: number, q0: number, q1: number): trajpoly3;
+    new(ts: number, p0: number, p1: number): trajpoly3;
     /**
      * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
+     * @param p0 initial position
+     * @param p1 final position
      * @param v0 initial velocity
      * @param v1 final velocity
      */
-    new(ts: number, q0: number, q1: number, v0: number, v1: number): trajpoly3;
+    new(ts: number, p0: number, p1: number, v0: number, v1: number): trajpoly3;
     readonly prototype: trajpoly3;
   }
 
   interface trajpoly5 {
     /** coefficients of position */
-    readonly q: Float64Array | Float32Array;
+    readonly p: Float64Array | Float32Array;
     /** coefficients of velocity */
     readonly v: Float64Array | Float32Array;
     /** coefficients of acceleration */
@@ -790,34 +790,34 @@ declare namespace liba {
   let trajpoly5: {
     /**
      * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
+     * @param p0 initial position
+     * @param p1 final position
      */
-    new(ts: number, q0: number, q1: number): trajpoly5;
+    new(ts: number, p0: number, p1: number): trajpoly5;
     /**
      * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
+     * @param p0 initial position
+     * @param p1 final position
      * @param v0 initial velocity
      * @param v1 final velocity
      */
-    new(ts: number, q0: number, q1: number, v0: number, v1: number): trajpoly5;
+    new(ts: number, p0: number, p1: number, v0: number, v1: number): trajpoly5;
     /**
      * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
+     * @param p0 initial position
+     * @param p1 final position
      * @param v0 initial velocity
      * @param v1 final velocity
      * @param a0 initial acceleration
      * @param a1 final acceleration
      */
-    new(ts: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): trajpoly5;
+    new(ts: number, p0: number, p1: number, v0: number, v1: number, a0: number, a1: number): trajpoly5;
     readonly prototype: trajpoly5;
   }
 
   interface trajpoly7 {
     /** coefficients of position */
-    readonly q: Float64Array | Float32Array;
+    readonly p: Float64Array | Float32Array;
     /** coefficients of velocity */
     readonly v: Float64Array | Float32Array;
     /** coefficients of acceleration */
@@ -850,32 +850,32 @@ declare namespace liba {
   let trajpoly7: {
     /**
      * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
+     * @param p0 initial position
+     * @param p1 final position
      */
-    new(ts: number, q0: number, q1: number): trajpoly7;
+    new(ts: number, p0: number, p1: number): trajpoly7;
     /**
      * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
+     * @param p0 initial position
+     * @param p1 final position
      * @param v0 initial velocity
      * @param v1 final velocity
      */
-    new(ts: number, q0: number, q1: number, v0: number, v1: number): trajpoly7;
+    new(ts: number, p0: number, p1: number, v0: number, v1: number): trajpoly7;
     /**
      * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
+     * @param p0 initial position
+     * @param p1 final position
      * @param v0 initial velocity
      * @param v1 final velocity
      * @param a0 initial acceleration
      * @param a1 final acceleration
      */
-    new(ts: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number): trajpoly7;
+    new(ts: number, p0: number, p1: number, v0: number, v1: number, a0: number, a1: number): trajpoly7;
     /**
      * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
+     * @param p0 initial position
+     * @param p1 final position
      * @param v0 initial velocity
      * @param v1 final velocity
      * @param a0 initial acceleration
@@ -883,7 +883,7 @@ declare namespace liba {
      * @param j0 initial jerk
      * @param j1 final jerk
      */
-    new(ts: number, q0: number, q1: number, v0: number, v1: number, a0: number, a1: number, j0: number, j1: number): trajpoly7;
+    new(ts: number, p0: number, p1: number, v0: number, v1: number, a0: number, a1: number, j0: number, j1: number): trajpoly7;
     readonly prototype: trajpoly7;
   }
 
@@ -891,9 +891,9 @@ declare namespace liba {
     /** total duration */
     readonly t: number;
     /** initial position */
-    readonly q0: number;
+    readonly p0: number;
     /** final position */
-    readonly q1: number;
+    readonly p1: number;
     /** initial velocity */
     readonly v0: number;
     /** final velocity */
@@ -905,9 +905,9 @@ declare namespace liba {
     /** time after constant velocity */
     readonly td: number;
     /** position before constant velocity */
-    readonly qa: number;
+    readonly pa: number;
     /** position after constant velocity */
-    readonly qd: number;
+    readonly pd: number;
     /** acceleration before constant velocity */
     readonly ac: number;
     /** acceleration after constant velocity */
@@ -916,13 +916,13 @@ declare namespace liba {
      * @param vm defines the maximum velocity during system operation
      * @param ac defines the acceleration before constant velocity
      * @param de defines the acceleration after constant velocity
-     * @param q0 defines the initial position
-     * @param q1 defines the final position
+     * @param p0 defines the initial position
+     * @param p1 defines the final position
      * @param v0 defines the initial velocity
      * @param v1 defines the final velocity
      * @return total duration
      */
-    gen(vm: number, ac: number, de: number, q0: number, q1: number, v0: number, v1: number): number;
+    gen(vm: number, ac: number, de: number, p0: number, p1: number, v0: number, v1: number): number;
     /**
      * calculate position for trapezoidal velocity trajectory
      * @param dt difference between current time and initial time

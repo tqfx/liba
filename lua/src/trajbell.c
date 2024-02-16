@@ -26,8 +26,8 @@ int liba_trajbell_new(lua_State *L)
  @tparam number jm defines the maximum jerk during system operation
  @tparam number am defines the maximum acceleration during system operation
  @tparam number vm defines the maximum velocity during system operation
- @tparam number q0 defines the initial position
- @tparam number q1 defines the final position
+ @tparam number p0 defines the initial position
+ @tparam number p1 defines the final position
  @tparam[opt] number v0 defines the initial velocity
  @tparam[opt] number v1 defines the final velocity
  @treturn number total duration
@@ -36,7 +36,7 @@ int liba_trajbell_new(lua_State *L)
 int liba_trajbell_gen(lua_State *L)
 {
     a_float v0 = 0, v1 = 0;
-    a_float jm, am, vm, q0, q1;
+    a_float jm, am, vm, p0, p1;
     int const top = lua_gettop(L);
     a_trajbell *const ctx = (a_trajbell *)lua_touserdata(L, 1);
     if (ctx)
@@ -44,11 +44,11 @@ int liba_trajbell_gen(lua_State *L)
         jm = (a_float)luaL_checknumber(L, 2);
         am = (a_float)luaL_checknumber(L, 3);
         vm = (a_float)luaL_checknumber(L, 4);
-        q0 = (a_float)luaL_checknumber(L, 5);
-        q1 = (a_float)luaL_checknumber(L, 6);
+        p0 = (a_float)luaL_checknumber(L, 5);
+        p1 = (a_float)luaL_checknumber(L, 6);
         if (top >= 7) { v0 = (a_float)luaL_checknumber(L, 7); }
         if (top >= 8) { v1 = (a_float)luaL_checknumber(L, 8); }
-        a_trajbell_gen(ctx, jm, am, vm, q0, q1, v0, v1);
+        a_trajbell_gen(ctx, jm, am, vm, p0, p1, v0, v1);
         lua_pushnumber(L, (lua_Number)ctx->t);
         return 1;
     }
@@ -170,11 +170,11 @@ static int liba_trajbell_get(lua_State *L)
     case 0x001E93AA: // tdj
         lua_pushnumber(L, (lua_Number)ctx->tdj);
         break;
-    case 0x00003A03: // q0
-        lua_pushnumber(L, (lua_Number)ctx->q0);
+    case 0x00003980: // p0
+        lua_pushnumber(L, (lua_Number)ctx->p0);
         break;
-    case 0x00003A04: // q1
-        lua_pushnumber(L, (lua_Number)ctx->q1);
+    case 0x00003981: // p0
+        lua_pushnumber(L, (lua_Number)ctx->p1);
         break;
     case 0x00003C92: // v0
         lua_pushnumber(L, (lua_Number)ctx->v0);
@@ -202,8 +202,8 @@ static int liba_trajbell_get(lua_State *L)
         lua_num_set(L, -1, "td", ctx->td);
         lua_num_set(L, -1, "taj", ctx->taj);
         lua_num_set(L, -1, "tdj", ctx->tdj);
-        lua_num_set(L, -1, "q0", ctx->q0);
-        lua_num_set(L, -1, "q1", ctx->q1);
+        lua_num_set(L, -1, "p0", ctx->p0);
+        lua_num_set(L, -1, "p1", ctx->p1);
         lua_num_set(L, -1, "v0", ctx->v0);
         lua_num_set(L, -1, "v1", ctx->v1);
         lua_num_set(L, -1, "vm", ctx->vm);

@@ -17,7 +17,7 @@ public class trajpoly5 {
      *
      * @return coefficients of position
      */
-    public final native double[] q();
+    public final native double[] p();
 
     /**
      * get coefficients of velocity for quintic polynomial trajectory
@@ -37,31 +37,31 @@ public class trajpoly5 {
      * construct a new {@link trajpoly5} object
      *
      * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
+     * @param p0 initial position
+     * @param p1 final position
      * @param v0 initial velocity
      * @param v1 final velocity
      * @param a0 initial acceleration
      * @param a1 final acceleration
      */
-    public trajpoly5(double ts, double q0, double q1, double v0, double v1,
+    public trajpoly5(double ts, double p0, double p1, double v0, double v1,
             double a0, double a1) {
-        gen(ts, q0, q1, v0, v1, a0, a1);
+        gen(ts, p0, p1, v0, v1, a0, a1);
     }
 
     /**
      * generate for quintic polynomial trajectory
      *
      * @param ts difference between final time and initial time
-     * @param q0 initial position
-     * @param q1 final position
+     * @param p0 initial position
+     * @param p1 final position
      * @param v0 initial velocity
      * @param v1 final velocity
      * @param a0 initial acceleration
      * @param a1 final acceleration
      * @return {@link trajpoly5}
      */
-    public final native trajpoly5 gen(double ts, double q0, double q1, double v0, double v1,
+    public final native trajpoly5 gen(double ts, double p0, double p1, double v0, double v1,
             double a0, double a1);
 
     /**

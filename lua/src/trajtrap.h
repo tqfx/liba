@@ -11,15 +11,15 @@
 /***
  trapezoidal velocity trajectory
  @field t total duration
- @field q0 initial position
- @field q1 final position
+ @field p0 initial position
+ @field p1 final position
  @field v0 initial velocity
  @field v1 final velocity
  @field vc constant velocity
  @field ta time before constant velocity
  @field td time after constant velocity
- @field qa position before constant velocity
- @field qd position after constant velocity
+ @field pa position before constant velocity
+ @field pd position after constant velocity
  @field ac acceleration before constant velocity
  @field de acceleration after constant velocity
  @table a.trajtrap
@@ -40,8 +40,8 @@ int liba_trajtrap_new(lua_State *L);
  @tparam number vm defines the maximum velocity during system operation
  @tparam number ac defines the acceleration before constant velocity
  @tparam number de defines the acceleration after constant velocity
- @tparam number q0 defines the initial position
- @tparam number q1 defines the final position
+ @tparam number p0 defines the initial position
+ @tparam number p1 defines the final position
  @tparam[opt] number v0 defines the initial velocity
  @tparam[opt] number v1 defines the final velocity
  @treturn number total duration

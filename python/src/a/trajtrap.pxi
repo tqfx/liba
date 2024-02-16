@@ -5,8 +5,8 @@ from a.trajtrap cimport *
 @cython.auto_pickle(False)
 cdef class trajtrap:
     cdef a_trajtrap ctx
-    def gen(self, a_float vm, a_float ac, a_float de, a_float q0, a_float q1, a_float v0 = 0, a_float v1 = 0):
-        return a_trajtrap_gen(&self.ctx, vm, ac, de, q0, q1, v0, v1)
+    def gen(self, a_float vm, a_float ac, a_float de, a_float p0, a_float p1, a_float v0 = 0, a_float v1 = 0):
+        return a_trajtrap_gen(&self.ctx, vm, ac, de, p0, p1, v0, v1)
     cdef inline pos_n(self, array dt):
         cdef Py_ssize_t i
         cdef Py_ssize_t n = len(dt)
@@ -43,12 +43,12 @@ cdef class trajtrap:
     property t:
         def __get__(self):
             return self.ctx.t
-    property q0:
+    property p0:
         def __get__(self):
-            return self.ctx.q0
-    property q1:
+            return self.ctx.p0
+    property p1:
         def __get__(self):
-            return self.ctx.q1
+            return self.ctx.p1
     property v0:
         def __get__(self):
             return self.ctx.v0
@@ -64,12 +64,12 @@ cdef class trajtrap:
     property td:
         def __get__(self):
             return self.ctx.td
-    property qa:
+    property pa:
         def __get__(self):
-            return self.ctx.qa
-    property qd:
+            return self.ctx.pa
+    property pd:
         def __get__(self):
-            return self.ctx.qd
+            return self.ctx.pd
     property ac:
         def __get__(self):
             return self.ctx.ac

@@ -8,8 +8,8 @@
 
 static int liba_trajpoly5_gen_(lua_State *L, a_trajpoly5 *ctx, int arg, int top)
 {
-    a_float q0 = 0, v0 = 0, a0 = 0;
-    a_float q1 = 0, v1 = 0, a1 = 0;
+    a_float p0 = 0, v0 = 0, a0 = 0;
+    a_float p1 = 0, v1 = 0, a1 = 0;
     a_float ts = 0;
     switch (top)
     {
@@ -27,16 +27,16 @@ static int liba_trajpoly5_gen_(lua_State *L, a_trajpoly5 *ctx, int arg, int top)
         v0 = (a_float)luaL_checknumber(L, arg + 4);
         A_FALLTHROUGH;
     case 3:
-        q1 = (a_float)luaL_checknumber(L, arg + 3);
+        p1 = (a_float)luaL_checknumber(L, arg + 3);
         A_FALLTHROUGH;
     case 2:
-        q0 = (a_float)luaL_checknumber(L, arg + 2);
+        p0 = (a_float)luaL_checknumber(L, arg + 2);
         A_FALLTHROUGH;
     case 1:
         ts = (a_float)luaL_checknumber(L, arg + 1);
         A_FALLTHROUGH;
     case 0:
-        a_trajpoly5_gen(ctx, ts, q0, q1, v0, v1, a0, a1);
+        a_trajpoly5_gen(ctx, ts, p0, p1, v0, v1, a0, a1);
     }
     return 1;
 }
@@ -44,8 +44,8 @@ static int liba_trajpoly5_gen_(lua_State *L, a_trajpoly5 *ctx, int arg, int top)
 /***
  constructor for quintic polynomial trajectory
  @tparam number ts difference between final time and initial time
- @tparam number q0 initial position
- @tparam number q1 final position
+ @tparam number p0 initial position
+ @tparam number p1 final position
  @tparam[opt] number v0 initial velocity
  @tparam[opt] number v1 final velocity
  @tparam[opt] number a0 initial acceleration
@@ -70,8 +70,8 @@ int liba_trajpoly5_new(lua_State *L)
  generate for quintic polynomial trajectory
  @tparam a.trajpoly5 ctx quintic polynomial trajectory userdata
  @tparam number ts difference between final time and initial time
- @tparam number q0 initial position
- @tparam number q1 final position
+ @tparam number p0 initial position
+ @tparam number p1 final position
  @tparam[opt] number v0 initial velocity
  @tparam[opt] number v1 final velocity
  @tparam[opt] number a0 initial acceleration
@@ -170,8 +170,8 @@ static int liba_trajpoly5_get(lua_State *L)
     a_trajpoly5 const *const ctx = (a_trajpoly5 const *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x00000071: // q
-        lua_array_num_new(L, ctx->q, A_LEN(ctx->q));
+    case 0x00000070: // p
+        lua_array_num_new(L, ctx->p, A_LEN(ctx->p));
         break;
     case 0x00000076: // v
         lua_array_num_new(L, ctx->v, A_LEN(ctx->v));
@@ -181,8 +181,8 @@ static int liba_trajpoly5_get(lua_State *L)
         break;
     case 0xA65758B2: // __index
         lua_registry_get(L, liba_trajpoly5_new);
-        lua_pushstring(L, "q");
-        lua_array_num_new(L, ctx->q, A_LEN(ctx->q));
+        lua_pushstring(L, "p");
+        lua_array_num_new(L, ctx->p, A_LEN(ctx->p));
         lua_rawset(L, -3);
         lua_pushstring(L, "v");
         lua_array_num_new(L, ctx->v, A_LEN(ctx->v));

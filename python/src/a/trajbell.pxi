@@ -5,8 +5,8 @@ from a.trajbell cimport *
 @cython.auto_pickle(False)
 cdef class trajbell:
     cdef a_trajbell ctx
-    def gen(self, a_float jm, a_float am, a_float vm, a_float q0, a_float q1, a_float v0 = 0, a_float v1 = 0):
-        return a_trajbell_gen(&self.ctx, jm, am, vm, q0, q1, v0, v1)
+    def gen(self, a_float jm, a_float am, a_float vm, a_float p0, a_float p1, a_float v0 = 0, a_float v1 = 0):
+        return a_trajbell_gen(&self.ctx, jm, am, vm, p0, p1, v0, v1)
     cdef inline pos_n(self, array dt):
         cdef Py_ssize_t i
         cdef Py_ssize_t n = len(dt)
@@ -69,12 +69,12 @@ cdef class trajbell:
     property tdj:
         def __get__(self):
             return self.ctx.tdj
-    property q0:
+    property p0:
         def __get__(self):
-            return self.ctx.q0
-    property q1:
+            return self.ctx.p0
+    property p1:
         def __get__(self):
-            return self.ctx.q1
+            return self.ctx.p1
     property v0:
         def __get__(self):
             return self.ctx.v0

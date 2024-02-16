@@ -43,8 +43,8 @@ static JSValue liba_trajbell_get(JSContext *ctx, JSValueConst this_val, int magi
     case 3: x = (double)self->td; break;
     case 4: x = (double)self->taj; break;
     case 5: x = (double)self->tdj; break;
-    case 6: x = (double)self->q0; break;
-    case 7: x = (double)self->q1; break;
+    case 6: x = (double)self->p0; break;
+    case 7: x = (double)self->p1; break;
     case 8: x = (double)self->v0; break;
     case 9: x = (double)self->v1; break;
     case 10: x = (double)self->vm; break;
@@ -127,8 +127,8 @@ static JSCFunctionListEntry const liba_trajbell_proto[] = {
     JS_CGETSET_MAGIC_DEF("td", liba_trajbell_get, NULL, 3),
     JS_CGETSET_MAGIC_DEF("taj", liba_trajbell_get, NULL, 4),
     JS_CGETSET_MAGIC_DEF("tdj", liba_trajbell_get, NULL, 5),
-    JS_CGETSET_MAGIC_DEF("q0", liba_trajbell_get, NULL, 6),
-    JS_CGETSET_MAGIC_DEF("q1", liba_trajbell_get, NULL, 7),
+    JS_CGETSET_MAGIC_DEF("p0", liba_trajbell_get, NULL, 6),
+    JS_CGETSET_MAGIC_DEF("p1", liba_trajbell_get, NULL, 7),
     JS_CGETSET_MAGIC_DEF("v0", liba_trajbell_get, NULL, 8),
     JS_CGETSET_MAGIC_DEF("v1", liba_trajbell_get, NULL, 9),
     JS_CGETSET_MAGIC_DEF("vm", liba_trajbell_get, NULL, 10),

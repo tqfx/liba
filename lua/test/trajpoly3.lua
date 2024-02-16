@@ -17,7 +17,7 @@ assert(type(ctx.acc(ctx, 0.5)) == "number")
 assert(type(ctx:pos(0.5)) == "number")
 assert(type(ctx:vel(0.5)) == "number")
 assert(type(ctx:acc(0.5)) == "number")
-assert(type(ctx.q) == "table")
+assert(type(ctx.p) == "table")
 assert(type(ctx.v) == "table")
 assert(type(ctx.a) == "table")
 ctx.__name = nil
