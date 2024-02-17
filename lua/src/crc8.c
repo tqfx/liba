@@ -6,7 +6,7 @@
 #include "crc8.h"
 #include "a/crc.h"
 
-struct CRC8
+struct crc8
 {
     a_u8 table[0x100];
 };
@@ -22,7 +22,7 @@ int liba_crc8_new(lua_State *L)
 {
     a_u8 poly = 0;
     int reversed = 0;
-    struct CRC8 *ctx;
+    struct crc8 *ctx;
     int top = lua_gettop(L);
     if (top > 1)
     {
@@ -30,7 +30,7 @@ int liba_crc8_new(lua_State *L)
         reversed = lua_toboolean(L, 2);
     }
     poly = lua_u8_get(L, 1);
-    ctx = lua_newclass(L, struct CRC8);
+    ctx = lua_newclass(L, struct crc8);
     lua_registry_get(L, liba_crc8_new);
     lua_setmetatable(L, -2);
     reversed ? a_crc8l_init(ctx->table, poly)
@@ -50,7 +50,7 @@ int liba_crc8_gen(lua_State *L)
 {
     a_u8 poly = 0;
     int reversed = 0;
-    struct CRC8 *ctx;
+    struct crc8 *ctx;
     int top = lua_gettop(L);
     if (top > 2)
     {
@@ -58,7 +58,7 @@ int liba_crc8_gen(lua_State *L)
         reversed = lua_toboolean(L, 3);
     }
     poly = lua_u8_get(L, 2);
-    ctx = (struct CRC8 *)lua_touserdata(L, 1);
+    ctx = (struct crc8 *)lua_touserdata(L, 1);
     reversed ? a_crc8l_init(ctx->table, poly)
              : a_crc8m_init(ctx->table, poly);
     lua_pushvalue(L, 1);
@@ -75,7 +75,7 @@ int liba_crc8_gen(lua_State *L)
 */
 int liba_crc8_eval(lua_State *L)
 {
-    struct CRC8 *const ctx = (struct CRC8 *)lua_touserdata(L, 1);
+    struct crc8 *const ctx = (struct crc8 *)lua_touserdata(L, 1);
     if (ctx)
     {
         size_t n = 0;
@@ -98,7 +98,7 @@ int liba_crc8_eval(lua_State *L)
 */
 int liba_crc8_pack(lua_State *L)
 {
-    struct CRC8 *const ctx = (struct CRC8 *)lua_touserdata(L, 1);
+    struct crc8 *const ctx = (struct crc8 *)lua_touserdata(L, 1);
     if (ctx)
     {
         union
@@ -136,7 +136,7 @@ static int liba_crc8_set(lua_State *L)
 
 static int liba_crc8_get(lua_State *L)
 {
-    struct CRC8 const *const ctx = (struct CRC8 const *)lua_touserdata(L, 1);
+    struct crc8 const *const ctx = (struct crc8 const *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x014FE58A: // table

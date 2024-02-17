@@ -1,7 +1,7 @@
 #include "a.h"
 #include "a/crc.h"
 
-struct CRC16
+struct crc16
 {
     a_u16 table[0x100];
     a_u16 (*eval)(a_u16 const table[0x100], void const *pdata, a_size nbyte, a_u16 value);
@@ -19,7 +19,7 @@ static JSClassDef liba_crc16_class = {"crc16", .finalizer = liba_crc16_finalizer
 static JSValue liba_crc16_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
     JSValue proto, clazz = JS_UNDEFINED;
-    struct CRC16 *const self = (struct CRC16 *)js_mallocz(ctx, sizeof(struct CRC16));
+    struct crc16 *const self = (struct crc16 *)js_mallocz(ctx, sizeof(struct crc16));
     if (!self) { return JS_EXCEPTION; }
     a_u32 poly = 0;
     if (JS_ToUint32(ctx, &poly, argv[0])) { goto fail; }
@@ -54,7 +54,7 @@ fail:
 
 static JSValue liba_crc16_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
-    struct CRC16 *const self = (struct CRC16 *)JS_GetOpaque2(ctx, this_val, liba_crc16_class_id);
+    struct crc16 *const self = (struct crc16 *)JS_GetOpaque2(ctx, this_val, liba_crc16_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (magic == 0)
     {
@@ -65,7 +65,7 @@ static JSValue liba_crc16_get(JSContext *ctx, JSValueConst this_val, int magic)
 
 static JSValue liba_crc16_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    struct CRC16 *const self = (struct CRC16 *)JS_GetOpaque2(ctx, this_val, liba_crc16_class_id);
+    struct crc16 *const self = (struct crc16 *)JS_GetOpaque2(ctx, this_val, liba_crc16_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_u32 poly = 0;
     if (JS_ToUint32(ctx, &poly, argv[0])) { return JS_EXCEPTION; }
@@ -90,7 +90,7 @@ static JSValue liba_crc16_gen(JSContext *ctx, JSValueConst this_val, int argc, J
 
 static JSValue liba_crc16_eval(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    struct CRC16 *const self = (struct CRC16 *)JS_GetOpaque2(ctx, this_val, liba_crc16_class_id);
+    struct crc16 *const self = (struct crc16 *)JS_GetOpaque2(ctx, this_val, liba_crc16_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_u16 value = 0;
     if (argc > 1)
@@ -117,7 +117,7 @@ static JSValue liba_crc16_eval(JSContext *ctx, JSValueConst this_val, int argc, 
 static JSValue liba_crc16_pack(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     JSValue val = JS_UNDEFINED;
-    struct CRC16 *const self = (struct CRC16 *)JS_GetOpaque2(ctx, this_val, liba_crc16_class_id);
+    struct crc16 *const self = (struct crc16 *)JS_GetOpaque2(ctx, this_val, liba_crc16_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_u16 value = 0;
     if (argc > 1)

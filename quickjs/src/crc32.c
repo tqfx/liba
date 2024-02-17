@@ -1,7 +1,7 @@
 #include "a.h"
 #include "a/crc.h"
 
-struct CRC32
+struct crc32
 {
     a_u32 table[0x100];
     a_u32 (*eval)(a_u32 const table[0x100], void const *pdata, a_size nbyte, a_u32 value);
@@ -19,7 +19,7 @@ static JSClassDef liba_crc32_class = {"crc32", .finalizer = liba_crc32_finalizer
 static JSValue liba_crc32_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
     JSValue proto, clazz = JS_UNDEFINED;
-    struct CRC32 *const self = (struct CRC32 *)js_mallocz(ctx, sizeof(struct CRC32));
+    struct crc32 *const self = (struct crc32 *)js_mallocz(ctx, sizeof(struct crc32));
     if (!self) { return JS_EXCEPTION; }
     a_u32 poly = 0;
     if (JS_ToUint32(ctx, &poly, argv[0])) { goto fail; }
@@ -54,7 +54,7 @@ fail:
 
 static JSValue liba_crc32_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
-    struct CRC32 *const self = (struct CRC32 *)JS_GetOpaque2(ctx, this_val, liba_crc32_class_id);
+    struct crc32 *const self = (struct crc32 *)JS_GetOpaque2(ctx, this_val, liba_crc32_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (magic == 0)
     {
@@ -65,7 +65,7 @@ static JSValue liba_crc32_get(JSContext *ctx, JSValueConst this_val, int magic)
 
 static JSValue liba_crc32_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    struct CRC32 *const self = (struct CRC32 *)JS_GetOpaque2(ctx, this_val, liba_crc32_class_id);
+    struct crc32 *const self = (struct crc32 *)JS_GetOpaque2(ctx, this_val, liba_crc32_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_u32 poly = 0;
     if (JS_ToUint32(ctx, &poly, argv[0])) { return JS_EXCEPTION; }
@@ -90,7 +90,7 @@ static JSValue liba_crc32_gen(JSContext *ctx, JSValueConst this_val, int argc, J
 
 static JSValue liba_crc32_eval(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    struct CRC32 *const self = (struct CRC32 *)JS_GetOpaque2(ctx, this_val, liba_crc32_class_id);
+    struct crc32 *const self = (struct crc32 *)JS_GetOpaque2(ctx, this_val, liba_crc32_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_u32 value = 0;
     if (argc > 1)
@@ -115,7 +115,7 @@ static JSValue liba_crc32_eval(JSContext *ctx, JSValueConst this_val, int argc, 
 static JSValue liba_crc32_pack(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     JSValue val = JS_UNDEFINED;
-    struct CRC32 *const self = (struct CRC32 *)JS_GetOpaque2(ctx, this_val, liba_crc32_class_id);
+    struct crc32 *const self = (struct crc32 *)JS_GetOpaque2(ctx, this_val, liba_crc32_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_u32 value = 0;
     if (argc > 1)

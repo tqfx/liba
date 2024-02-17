@@ -6,7 +6,7 @@
 #include "crc32.h"
 #include "a/crc.h"
 
-struct CRC32
+struct crc32
 {
     a_u32 table[0x100];
     a_u32 (*eval)(a_u32 const table[0x100], void const *pdata, a_size nbyte, a_u32 value);
@@ -23,7 +23,7 @@ int liba_crc32_new(lua_State *L)
 {
     a_u32 poly = 0;
     int reversed = 0;
-    struct CRC32 *ctx;
+    struct crc32 *ctx;
     int top = lua_gettop(L);
     if (top > 1)
     {
@@ -31,7 +31,7 @@ int liba_crc32_new(lua_State *L)
         reversed = lua_toboolean(L, 2);
     }
     poly = lua_u32_get(L, 1);
-    ctx = lua_newclass(L, struct CRC32);
+    ctx = lua_newclass(L, struct crc32);
     lua_registry_get(L, liba_crc32_new);
     lua_setmetatable(L, -2);
     if (reversed)
@@ -59,7 +59,7 @@ int liba_crc32_gen(lua_State *L)
 {
     a_u32 poly = 0;
     int reversed = 0;
-    struct CRC32 *ctx;
+    struct crc32 *ctx;
     int top = lua_gettop(L);
     if (top > 2)
     {
@@ -67,7 +67,7 @@ int liba_crc32_gen(lua_State *L)
         reversed = lua_toboolean(L, 3);
     }
     poly = lua_u32_get(L, 2);
-    ctx = (struct CRC32 *)lua_touserdata(L, 1);
+    ctx = (struct crc32 *)lua_touserdata(L, 1);
     if (reversed)
     {
         a_crc32l_init(ctx->table, poly);
@@ -92,7 +92,7 @@ int liba_crc32_gen(lua_State *L)
 */
 int liba_crc32_eval(lua_State *L)
 {
-    struct CRC32 *const ctx = (struct CRC32 *)lua_touserdata(L, 1);
+    struct crc32 *const ctx = (struct crc32 *)lua_touserdata(L, 1);
     if (ctx)
     {
         size_t n = 0;
@@ -115,7 +115,7 @@ int liba_crc32_eval(lua_State *L)
 */
 int liba_crc32_pack(lua_State *L)
 {
-    struct CRC32 *const ctx = (struct CRC32 *)lua_touserdata(L, 1);
+    struct crc32 *const ctx = (struct crc32 *)lua_touserdata(L, 1);
     if (ctx)
     {
         union
@@ -156,7 +156,7 @@ static int liba_crc32_set(lua_State *L)
 
 static int liba_crc32_get(lua_State *L)
 {
-    struct CRC32 const *const ctx = (struct CRC32 const *)lua_touserdata(L, 1);
+    struct crc32 const *const ctx = (struct crc32 const *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x014FE58A: // table

@@ -1,7 +1,7 @@
 #include "a.h"
 #include "a/crc.h"
 
-struct CRC64
+struct crc64
 {
     a_u64 table[0x100];
     a_u64 (*eval)(a_u64 const table[0x100], void const *pdata, a_size nbyte, a_u64 value);
@@ -19,7 +19,7 @@ static JSClassDef liba_crc64_class = {"crc64", .finalizer = liba_crc64_finalizer
 static JSValue liba_crc64_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
     JSValue proto, clazz = JS_UNDEFINED;
-    struct CRC64 *const self = (struct CRC64 *)js_mallocz(ctx, sizeof(struct CRC64));
+    struct crc64 *const self = (struct crc64 *)js_mallocz(ctx, sizeof(struct crc64));
     if (!self) { return JS_EXCEPTION; }
     a_i64 poly = 0;
     if (JS_ToInt64Ext(ctx, &poly, argv[0])) { goto fail; }
@@ -54,7 +54,7 @@ fail:
 
 static JSValue liba_crc64_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
-    struct CRC64 *const self = (struct CRC64 *)JS_GetOpaque2(ctx, this_val, liba_crc64_class_id);
+    struct crc64 *const self = (struct crc64 *)JS_GetOpaque2(ctx, this_val, liba_crc64_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (magic == 0)
     {
@@ -65,7 +65,7 @@ static JSValue liba_crc64_get(JSContext *ctx, JSValueConst this_val, int magic)
 
 static JSValue liba_crc64_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    struct CRC64 *const self = (struct CRC64 *)JS_GetOpaque2(ctx, this_val, liba_crc64_class_id);
+    struct crc64 *const self = (struct crc64 *)JS_GetOpaque2(ctx, this_val, liba_crc64_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_i64 poly = 0;
     if (JS_ToInt64Ext(ctx, &poly, argv[0])) { return JS_EXCEPTION; }
@@ -90,7 +90,7 @@ static JSValue liba_crc64_gen(JSContext *ctx, JSValueConst this_val, int argc, J
 
 static JSValue liba_crc64_eval(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    struct CRC64 *const self = (struct CRC64 *)JS_GetOpaque2(ctx, this_val, liba_crc64_class_id);
+    struct crc64 *const self = (struct crc64 *)JS_GetOpaque2(ctx, this_val, liba_crc64_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_u64 value = 0;
     if (argc > 1)
@@ -117,7 +117,7 @@ static JSValue liba_crc64_eval(JSContext *ctx, JSValueConst this_val, int argc, 
 static JSValue liba_crc64_pack(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     JSValue val = JS_UNDEFINED;
-    struct CRC64 *const self = (struct CRC64 *)JS_GetOpaque2(ctx, this_val, liba_crc64_class_id);
+    struct crc64 *const self = (struct crc64 *)JS_GetOpaque2(ctx, this_val, liba_crc64_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_u64 value = 0;
     if (argc > 1)

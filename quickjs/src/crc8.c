@@ -1,7 +1,7 @@
 #include "a.h"
 #include "a/crc.h"
 
-struct CRC8
+struct crc8
 {
     a_u8 table[0x100];
 };
@@ -18,7 +18,7 @@ static JSClassDef liba_crc8_class = {"crc8", .finalizer = liba_crc8_finalizer};
 static JSValue liba_crc8_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
     JSValue proto, clazz = JS_UNDEFINED;
-    struct CRC8 *const self = (struct CRC8 *)js_mallocz(ctx, sizeof(struct CRC8));
+    struct crc8 *const self = (struct crc8 *)js_mallocz(ctx, sizeof(struct crc8));
     if (!self) { return JS_EXCEPTION; }
     a_u32 poly = 0;
     if (JS_ToUint32(ctx, &poly, argv[0])) { goto fail; }
@@ -46,7 +46,7 @@ fail:
 
 static JSValue liba_crc8_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
-    struct CRC8 *const self = (struct CRC8 *)JS_GetOpaque2(ctx, this_val, liba_crc8_class_id);
+    struct crc8 *const self = (struct crc8 *)JS_GetOpaque2(ctx, this_val, liba_crc8_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (magic == 0)
     {
@@ -57,7 +57,7 @@ static JSValue liba_crc8_get(JSContext *ctx, JSValueConst this_val, int magic)
 
 static JSValue liba_crc8_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    struct CRC8 *const self = (struct CRC8 *)JS_GetOpaque2(ctx, this_val, liba_crc8_class_id);
+    struct crc8 *const self = (struct crc8 *)JS_GetOpaque2(ctx, this_val, liba_crc8_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_u32 poly = 0;
     if (JS_ToUint32(ctx, &poly, argv[0])) { return JS_EXCEPTION; }
@@ -75,7 +75,7 @@ static JSValue liba_crc8_gen(JSContext *ctx, JSValueConst this_val, int argc, JS
 
 static JSValue liba_crc8_eval(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    struct CRC8 *const self = (struct CRC8 *)JS_GetOpaque2(ctx, this_val, liba_crc8_class_id);
+    struct crc8 *const self = (struct crc8 *)JS_GetOpaque2(ctx, this_val, liba_crc8_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_u8 value = 0;
     if (argc > 1)
@@ -102,7 +102,7 @@ static JSValue liba_crc8_eval(JSContext *ctx, JSValueConst this_val, int argc, J
 static JSValue liba_crc8_pack(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     JSValue val = JS_UNDEFINED;
-    struct CRC8 *const self = (struct CRC8 *)JS_GetOpaque2(ctx, this_val, liba_crc8_class_id);
+    struct crc8 *const self = (struct crc8 *)JS_GetOpaque2(ctx, this_val, liba_crc8_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_u8 value = 0;
     if (argc > 1)
