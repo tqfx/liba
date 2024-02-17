@@ -19,7 +19,7 @@ def sqrt_u32(x):
     cdef a_u32 *p
     cdef Py_ssize_t i
     cdef Py_ssize_t n
-    if iterable(x):
+    if PyObject_HasAttrString(x, "__contains__"):
         n = len(x)
         y = array_u32(x)
         p = <a_u32 *>y.data.as_voidptr
@@ -35,7 +35,7 @@ def sqrt_u64(x):
     cdef a_u64 *p
     cdef Py_ssize_t i
     cdef Py_ssize_t n
-    if iterable(x):
+    if PyObject_HasAttrString(x, "__contains__"):
         n = len(x)
         y = array_u64(x)
         p = <a_u64 *>y.data.as_voidptr
@@ -51,7 +51,7 @@ def rsqrt_f32(x):
     cdef a_f32 *p
     cdef Py_ssize_t i
     cdef Py_ssize_t n
-    if iterable(x):
+    if PyObject_HasAttrString(x, "__contains__"):
         n = len(x)
         y = array_f32(x)
         p = <a_f32 *>y.data.as_voidptr
@@ -67,7 +67,7 @@ def rsqrt_f64(x):
     cdef a_f64 *p
     cdef Py_ssize_t i
     cdef Py_ssize_t n
-    if iterable(x):
+    if PyObject_HasAttrString(x, "__contains__"):
         n = len(x)
         y = array_f64(x)
         p = <a_f64 *>y.data.as_voidptr

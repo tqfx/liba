@@ -27,7 +27,7 @@ cdef class mf:
         cdef array a_ = array_num(a)
         cdef a_float *a_p = <a_float *>a_.data.as_voidptr
         cdef int m = e
-        if iterable(x):
+        if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             y = array_num(x)
             p = <a_float *>y.data.as_voidptr
@@ -41,7 +41,7 @@ cdef class mf:
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        if iterable(x):
+        if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             y = array_num(x)
             p = <a_float *>y.data.as_voidptr
@@ -55,7 +55,7 @@ cdef class mf:
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        if iterable(x):
+        if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             y = array_num(x)
             p = <a_float *>y.data.as_voidptr
@@ -69,7 +69,7 @@ cdef class mf:
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        if iterable(x):
+        if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             y = array_num(x)
             p = <a_float *>y.data.as_voidptr
@@ -83,7 +83,7 @@ cdef class mf:
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        if iterable(x):
+        if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             y = array_num(x)
             p = <a_float *>y.data.as_voidptr
@@ -97,7 +97,7 @@ cdef class mf:
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        if iterable(x):
+        if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             y = array_num(x)
             p = <a_float *>y.data.as_voidptr
@@ -111,7 +111,7 @@ cdef class mf:
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        if iterable(x):
+        if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             y = array_num(x)
             p = <a_float *>y.data.as_voidptr
@@ -125,7 +125,7 @@ cdef class mf:
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        if iterable(x):
+        if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             y = array_num(x)
             p = <a_float *>y.data.as_voidptr
@@ -139,7 +139,7 @@ cdef class mf:
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        if iterable(x):
+        if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             y = array_num(x)
             p = <a_float *>y.data.as_voidptr
@@ -153,7 +153,7 @@ cdef class mf:
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        if iterable(x):
+        if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             y = array_num(x)
             p = <a_float *>y.data.as_voidptr
@@ -167,7 +167,7 @@ cdef class mf:
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        if iterable(x):
+        if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             y = array_num(x)
             p = <a_float *>y.data.as_voidptr
@@ -181,7 +181,7 @@ cdef class mf:
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        if iterable(x):
+        if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             y = array_num(x)
             p = <a_float *>y.data.as_voidptr
@@ -195,7 +195,7 @@ cdef class mf:
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        if iterable(x):
+        if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             y = array_num(x)
             p = <a_float *>y.data.as_voidptr
@@ -209,7 +209,7 @@ cdef class mf:
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        if iterable(x):
+        if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             y = array_num(x)
             p = <a_float *>y.data.as_voidptr

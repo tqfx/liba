@@ -6,11 +6,6 @@ from cython.parallel import prange
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-cdef inline bint iterable(object o):
-    return PyObject_HasAttrString(o, "__contains__")
-
-@cython.wraparound(False)
-@cython.boundscheck(False)
 cdef inline array_i8(object o):
     return array('b', o)
 

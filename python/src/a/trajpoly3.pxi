@@ -15,7 +15,7 @@ cdef class trajpoly3:
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        if iterable(dt):
+        if PyObject_HasAttrString(dt, "__contains__"):
             n = len(dt)
             x = array_num(dt)
             p = <a_float *>x.data.as_voidptr
@@ -28,7 +28,7 @@ cdef class trajpoly3:
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        if iterable(dt):
+        if PyObject_HasAttrString(dt, "__contains__"):
             n = len(dt)
             x = array_num(dt)
             p = <a_float *>x.data.as_voidptr
@@ -41,7 +41,7 @@ cdef class trajpoly3:
         cdef a_float *p
         cdef Py_ssize_t i
         cdef Py_ssize_t n
-        if iterable(dt):
+        if PyObject_HasAttrString(dt, "__contains__"):
             n = len(dt)
             x = array_num(dt)
             p = <a_float *>x.data.as_voidptr

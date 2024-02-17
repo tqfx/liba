@@ -12,7 +12,7 @@ def poly_eval(x, *a):
     cdef a_size a_n = len(a)
     a_ = array_num(a)
     a_p = <a_float *>a_.data.as_voidptr
-    if iterable(x):
+    if PyObject_HasAttrString(x, "__contains__"):
         n = len(x)
         y = array_num(x)
         p = <a_float *>y.data.as_voidptr
@@ -33,7 +33,7 @@ def poly_evar(x, *a):
     cdef a_size a_n = len(a)
     a_ = array_num(a)
     a_p = <a_float *>a_.data.as_voidptr
-    if iterable(x):
+    if PyObject_HasAttrString(x, "__contains__"):
         n = len(x)
         y = array_num(x)
         p = <a_float *>y.data.as_voidptr
