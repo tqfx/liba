@@ -173,7 +173,7 @@ static int liba_trajbell_get(lua_State *L)
     case 0x00003980: // p0
         lua_pushnumber(L, (lua_Number)ctx->p0);
         break;
-    case 0x00003981: // p0
+    case 0x00003981: // p1
         lua_pushnumber(L, (lua_Number)ctx->p1);
         break;
     case 0x00003C92: // v0
