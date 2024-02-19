@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from subprocess import Popen
-from typing import Any, Iterable
 from glob import glob
 from sys import argv, executable
 import os
@@ -9,13 +8,13 @@ import os
 class format:
     SUFFIX = (".c", ".h", ".cc", ".hh", ".cpp", ".hpp", ".cxx", ".hxx")
 
-    def __init__(self, dirs: Any) -> None:
+    def __init__(self, dirs: [str]) -> None:
         self.sources = set()
-        if isinstance(dirs, Iterable):
+        if hasattr({}, "__contains__"):
             for path in dirs:
                 self.scan(path)
 
-    def __call__(self) -> Any:
+    def __call__(self) -> format:
         script = ("clang-format", "--verbose", "-style=file", "-i")
         script += tuple(sorted(self.sources))
         try:
@@ -29,7 +28,7 @@ class format:
             print(e)
         return self
 
-    def scan(self, path: str) -> Any:
+    def scan(self, path: str) -> format:
         for source in glob(os.path.join(path, "**"), recursive=True):
             if os.path.splitext(source)[-1] in self.SUFFIX:
                 self.sources.add(os.path.relpath(source))

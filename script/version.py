@@ -35,8 +35,7 @@ class version(object):
                 self.save(file, text.replace(line0, line1))
 
     def update_version_h(self, file):
-        text = self.load(file)
-        text_ = self.load(file)
+        text = text_ = self.load(file)
         res = re.findall(r"#define A_VERSION_MAJOR (\d+)", text)
         if res and self.major != res[0]:
             line0 = "#define A_VERSION_MAJOR {}".format(res[0])
@@ -61,8 +60,7 @@ class version(object):
             self.save(file, text)
 
     def update_version_ac(self, file):
-        text = self.load(file)
-        text_ = self.load(file)
+        text = text_ = self.load(file)
         res = re.findall(r"\[version_major\], \[(\d+)\]", text)
         if res and self.major != res[0]:
             line0 = "[version_major], [{}]".format(res[0])
