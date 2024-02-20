@@ -18,5 +18,5 @@ cmake = "0.1"
 
 [features]
 std = []
-# Real number are stored using C’s float type
+# floating-point number are stored using C’s float type
 float = []
