@@ -13,7 +13,13 @@ except ImportError:
     from distutils.extension import Extension
     from distutils.core import setup
 LIBA_OPENMP = os.environ.get("LIBA_OPENMP")
+if LIBA_OPENMP:
+    LIBA_OPENMP = int(LIBA_OPENMP)
 LIBA_FLOAT = os.environ.get("LIBA_FLOAT")
+if LIBA_FLOAT:
+    LIBA_FLOAT = int(LIBA_FLOAT)
+else:
+    LIBA_FLOAT = 8
 try:
     USE_CYTHON = True
     from sys import version_info
@@ -38,10 +44,6 @@ def check_math(text=""):
         libm = ctypes.CDLL(path_libm)
     except:
         return text
-    if LIBA_FLOAT:
-        A_SIZE_FLOAT = int(LIBA_FLOAT)
-    else:
-        A_SIZE_FLOAT = 0x08
     for func in (
         "expm1",
         "log1p",
@@ -65,9 +67,9 @@ def check_math(text=""):
         "catanh",
     ):
         name = "A_HAVE_" + func.upper()
-        if A_SIZE_FLOAT == 0x10:
+        if LIBA_FLOAT == 0x10:
             func += "l"
-        if A_SIZE_FLOAT == 0x04:
+        if LIBA_FLOAT == 0x04:
             func += "f"
         try:
             libm[func]
@@ -111,7 +113,7 @@ sources, objects = [], []
 config_h = os.path.join(base, "a.setup.h")
 a_have_h = os.path.relpath(config_h, "include/a")
 define_macros = [("A_HAVE_H", '"' + a_have_h + '"'), ("A_EXPORTS", None)]
-if LIBA_FLOAT:
+if LIBA_FLOAT != 8:
     define_macros += [("A_SIZE_FLOAT", LIBA_FLOAT)]
 if USE_CYTHON and os.path.exists("python/src/a.pyx"):
     sources += ["python/src/a.pyx"]
