@@ -1,8 +1,5 @@
 from a.lpf cimport *
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
-@cython.auto_pickle(False)
 cdef class lpf:
     cdef a_lpf ctx
     def __init__(self, fc: a_float, ts: a_float):

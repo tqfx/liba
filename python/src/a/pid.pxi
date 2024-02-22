@@ -1,8 +1,5 @@
 from a.pid cimport *
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
-@cython.auto_pickle(False)
 cdef class pid:
     RUN = A_PID_RUN
     POS = A_PID_POS

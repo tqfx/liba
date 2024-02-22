@@ -1,8 +1,5 @@
 from a.trajpoly5 cimport *
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
-@cython.auto_pickle(False)
 cdef class trajpoly5:
     cdef a_trajpoly5 ctx
     def __init__(self, a_float ts, a_float p0, a_float p1, a_float v0 = 0, a_float v1 = 0, a_float a0 = 0, a_float a1 = 0):

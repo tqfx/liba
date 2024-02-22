@@ -5,9 +5,6 @@ if PY_MAJOR_VERSION >= 3:
 else:
     VERSION = A_VERSION
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
-@cython.auto_pickle(False)
 cdef class version:
     cdef a_version ctx
     property major:

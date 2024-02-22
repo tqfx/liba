@@ -1,8 +1,5 @@
 from a.crc cimport *
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
-@cython.auto_pickle(False)
 cdef class crc8:
     cdef readonly array table
     def __cinit__(self):
@@ -26,9 +23,6 @@ cdef class crc8:
         p[n] = value
         return block
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
-@cython.auto_pickle(False)
 cdef class crc16:
     cdef readonly array table
     def __cinit__(self):
@@ -58,9 +52,6 @@ cdef class crc16:
             a_u16_setl(p + n, value)
         return block
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
-@cython.auto_pickle(False)
 cdef class crc32:
     cdef readonly array table
     def __cinit__(self):
@@ -90,9 +81,6 @@ cdef class crc32:
             a_u32_setl(p + n, value)
         return block
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
-@cython.auto_pickle(False)
 cdef class crc64:
     cdef readonly array table
     def __cinit__(self):

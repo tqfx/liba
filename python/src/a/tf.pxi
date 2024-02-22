@@ -1,8 +1,5 @@
 from a.tf cimport *
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
-@cython.auto_pickle(False)
 cdef class tf:
     cdef a_tf ctx
     def __init__(self, num, den):

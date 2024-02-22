@@ -1,7 +1,5 @@
 from a.poly cimport *
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
 def poly_eval(x, *a):
     cdef array y
     cdef array a_
@@ -21,8 +19,6 @@ def poly_eval(x, *a):
         return y
     return a_poly_eval(a_p, a_n, x)
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
 def poly_evar(x, *a):
     cdef array y
     cdef array a_

@@ -1,7 +1,5 @@
 from a.math cimport *
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
 def isqrt(x: int):
     if x <= 1:
         return x
@@ -12,8 +10,6 @@ def isqrt(x: int):
         x1 = (x0 + x // x0) >> 1
     return x0
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
 def sqrt_u32(x):
     cdef array y
     cdef a_u32 *p
@@ -28,8 +24,6 @@ def sqrt_u32(x):
         return array_u16(y)
     return a_u32_sqrt(x)
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
 def sqrt_u64(x):
     cdef array y
     cdef a_u64 *p
@@ -44,8 +38,6 @@ def sqrt_u64(x):
         return array_u32(y)
     return a_u64_sqrt(x)
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
 def rsqrt_f32(x):
     cdef array y
     cdef a_f32 *p
@@ -60,8 +52,6 @@ def rsqrt_f32(x):
         return y
     return a_f32_rsqrt(x)
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
 def rsqrt_f64(x):
     cdef array y
     cdef a_f64 *p

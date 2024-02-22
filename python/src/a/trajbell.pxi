@@ -1,8 +1,5 @@
 from a.trajbell cimport *
 
-@cython.wraparound(False)
-@cython.boundscheck(False)
-@cython.auto_pickle(False)
 cdef class trajbell:
     cdef a_trajbell ctx
     def gen(self, a_float jm, a_float am, a_float vm, a_float p0, a_float p1, a_float v0 = 0, a_float v1 = 0):
