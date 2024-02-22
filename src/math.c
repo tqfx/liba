@@ -76,12 +76,27 @@ a_f64 a_f64_rsqrt(a_f64 x)
 #endif
 }
 
+#if (__has_builtin(__builtin_clz) || A_PREREQ_GNUC(3, 4)) && (ULONG_MAX == A_U32_MAX)
+#define A_U32_BSR(x) (31 - __builtin_clzl(x))
+#elif __has_builtin(__builtin_clz) || A_PREREQ_GNUC(3, 4)
+#define A_U32_BSR(x) (31 - __builtin_clz(x))
+#elif defined(_MSC_VER)
+#pragma intrinsic(_BitScanReverse)
+#define A_U32_BSR(x) BitScanReverse(x)
+static A_INLINE int A_U32_BSR(a_u32 x)
+{
+    unsigned long i = 0;
+    _BitScanReverse(&i, x);
+    return (int)i;
+}
+#endif /* A_U32_BSR */
+
 a_u16 a_u32_sqrt(a_u32 x)
 {
-#if 0 /* Newton's method */
-    a_u32 x0, x1;
+#if defined(A_U32_BSR) /* Newton's method */
+    a_u32 x0, x1 = 1;
     if (x <= 1) { return (a_u16)x; }
-    x1 = x >> 1;
+    x1 <<= (A_U32_BSR(x) + 1) >> 1;
     do {
         x0 = x1;
         x1 = (x0 + x / x0) >> 1;
@@ -104,12 +119,39 @@ a_u16 a_u32_sqrt(a_u32 x)
 #endif
 }
 
+#if (__has_builtin(__builtin_clz) || A_PREREQ_GNUC(3, 4)) && (ULONG_MAX == A_U32_MAX)
+#define A_U64_BSR(x) (63 - __builtin_clzll(x))
+#elif __has_builtin(__builtin_clz) || A_PREREQ_GNUC(3, 4)
+#define A_U64_BSR(x) (63 - __builtin_clzl(x))
+#elif defined(_MSC_VER) && defined(_WIN64)
+#pragma intrinsic(_BitScanReverse64)
+#define A_U64_BSR(x) BitScanReverse64(x)
+static A_INLINE int A_U64_BSR(a_u64 x)
+{
+    unsigned long i = 0;
+    _BitScanReverse64(&i, x);
+    return (int)i;
+}
+#elif defined(_MSC_VER)
+#define A_U64_BSR(x) BitScanReverse64(x)
+static A_INLINE int A_U64_BSR(a_u64 x)
+{
+    unsigned long i = 0, hi = 0;
+    _BitScanReverse(&i, (a_u32)x);
+    if (_BitScanReverse(&hi, x >> 32))
+    {
+        i += hi + 1;
+    }
+    return (int)i;
+}
+#endif /* A_U64_BSR */
+
 a_u32 a_u64_sqrt(a_u64 x)
 {
-#if 0 /* Newton's method */
-    a_u64 x0, x1;
+#if defined(A_U64_BSR) /* Newton's method */
+    a_u64 x0, x1 = 1;
     if (x <= 1) { return (a_u32)x; }
-    x1 = x >> 1;
+    x1 <<= (A_U64_BSR(x) + 1) >> 1;
     do {
         x0 = x1;
         x1 = (x0 + x / x0) >> 1;
