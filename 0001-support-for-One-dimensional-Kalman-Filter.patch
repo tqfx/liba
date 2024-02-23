@@ -1,0 +1,258 @@
+From c930e145ef86ef13a6db56750611ecb59e7cee8c Mon Sep 17 00:00:00 2001
+From: tqfx <tqfx@tqfx.org>
+Date: Mon, 12 Feb 2024 23:33:35 +0800
+Subject: [PATCH] support for One-dimensional Kalman Filter
+
+
+diff --git a/include/a/kf1.h b/include/a/kf1.h
+new file mode 100644
+index 0000000..0301c56
+--- /dev/null
++++ b/include/a/kf1.h
+@@ -0,0 +1,62 @@
++/*!
++ @file kf1.h
++ @brief One-dimensional Kalman Filter
++ @details https://en.wikipedia.org/wiki/Kalman_filter
++*/
++
++#ifndef LIBA_KF1_H
++#define LIBA_KF1_H
++
++#include "a.h"
++
++/*!
++ @ingroup A
++ @addtogroup A_KF1 One-dimensional Kalman Filter
++ @{
++*/
++
++typedef struct a_kf1 a_kf1;
++
++#if defined(__cplusplus)
++extern "C" {
++#endif /* __cplusplus */
++
++/*!
++ @brief calculate for One-dimensional Kalman Filter
++ @param[in,out] ctx points to an instance of One-dimensional Kalman Filter
++ @param[in] z last measurement
++ @return output value
++*/
++A_EXTERN a_float a_kf1_iter(a_kf1 *ctx, a_float z);
++A_EXTERN a_float a_kf1_f1h1(a_kf1 *ctx, a_float z);
++
++/*!
++ @brief zeroing for One-dimensional Kalman Filter
++ @param[in,out] ctx points to an instance of One-dimensional Kalman Filter
++*/
++A_EXTERN void a_kf1_zero(a_kf1 *ctx);
++
++#if defined(__cplusplus)
++} /* extern "C" */
++namespace a
++{
++typedef struct a_kf1 kf1;
++} /* namespace a */
++#endif /* __cplusplus */
++
++/*!
++ @brief instance structure for One-dimensional Kalman Filter
++*/
++struct a_kf1
++{
++    a_float value; //!< the state estimate
++    a_float P; //!< the state estimate uncertainty (covariance)
++    a_float Q; //!< the covariance of the process noise
++    a_float R; //!< the covariance of the observation noise
++    a_float F; //!< the state-transition model
++    a_float H; //!< the observation model
++};
++
++/*! @} A_KF1 */
++
++#endif /* a/kf1.h */
+diff --git a/meson.build b/meson.build
+index 8b13ac7..adc1a7f 100644
+--- a/meson.build
++++ b/meson.build
+@@ -53,6 +53,7 @@ sources = [
+     'include/a/crc.h',
+     'include/a/fuzzy.h',
+     'include/a/hpf.h',
++    'include/a/kf1.h',
+     'include/a/list.h',
+     'include/a/lpf.h',
+     'include/a/math.h',
+@@ -83,6 +84,7 @@ sources = [
+     'src/complex.c',
+     'src/crc.c',
+     'src/fuzzy.c',
++    'src/kf1.c',
+     'src/math.c',
+     'src/mf.c',
+     'src/pid.c',
+diff --git a/src/kf1.c b/src/kf1.c
+new file mode 100644
+index 0000000..d0dac8a
+--- /dev/null
++++ b/src/kf1.c
+@@ -0,0 +1,36 @@
++#include "a/kf1.h"
++
++a_float a_kf1_iter(a_kf1 *ctx, a_float z)
++{
++    a_float K, x;
++    /* x=Fx */
++    x = ctx->F * ctx->value;
++    /* P=FPF'+Q */
++    ctx->P = ctx->F * ctx->P * ctx->F + ctx->Q;
++    /* K=PH'/(HPH'+R) */
++    K = ctx->P * ctx->H / (ctx->H * ctx->P * ctx->H + ctx->R);
++    /* x=x+K(z-Hx) */
++    ctx->value = x + K * (z - ctx->H * x);
++    /* P=(1-KH)P */
++    ctx->P *= 1 - K * ctx->H;
++    return ctx->value;
++}
++
++a_float a_kf1_f1h1(a_kf1 *ctx, a_float z)
++{
++    a_float K;
++    /* P=FPF'+Q */
++    ctx->P += ctx->Q;
++    /* K=PH'/(HPH'+R) */
++    K = ctx->P / (ctx->P + ctx->R);
++    /* x=x+K(z-Hx) */
++    ctx->value += K * (z - ctx->value);
++    /* P=(1-KH)P */
++    ctx->P *= 1 - K;
++    return ctx->value;
++}
++
++void a_kf1_zero(a_kf1 *ctx)
++{
++    ctx->value = 0;
++}
+diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
+index a3d15bc..18b1a75 100644
+--- a/test/CMakeLists.txt
++++ b/test/CMakeLists.txt
+@@ -173,6 +173,13 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+   unitplot(hpf 2.gp hpf.csv)
+ endif()
+ 
++building(kf1 kf1.c kf1.cpp)
++unittest(kf1)
++
++if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
++  unitplot(kf1 3.gp kf1.csv)
++endif()
++
+ building(list list.c list.cpp)
+ unittest(list)
+ 
+diff --git a/test/kf1.c b/test/kf1.c
+new file mode 100644
+index 0000000..7aa77e9
+--- /dev/null
++++ b/test/kf1.c
+@@ -0,0 +1 @@
++#include "kf1.h"
+diff --git a/test/kf1.cpp b/test/kf1.cpp
+new file mode 100644
+index 0000000..7aa77e9
+--- /dev/null
++++ b/test/kf1.cpp
+@@ -0,0 +1 @@
++#include "kf1.h"
+diff --git a/test/kf1.h b/test/kf1.h
+new file mode 100644
+index 0000000..376c085
+--- /dev/null
++++ b/test/kf1.h
+@@ -0,0 +1,42 @@
++#define MAIN_(x) A_CAST_2(x, _kf1)
++#include "test.h"
++#include "a/kf1.h"
++#include <time.h>
++
++#define RAND_MAX_ 2147483647
++static unsigned long rand_seed = 1;
++static void srand_(unsigned long seed)
++{
++    rand_seed = seed;
++}
++static long rand_(void)
++{
++    rand_seed = (rand_seed * 1103515245 + 12345) % 2147483648;
++    return a_cast_s(long, rand_seed);
++}
++
++int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
++{
++    main_init(argc, argv, 1);
++    srand_(a_cast_s(unsigned long, time(A_NULL)));
++    a_kf1 ctx;
++    ctx.F = 1;
++    ctx.H = 1;
++    ctx.P = 1;
++    ctx.Q = A_FLOAT_C(0.1);
++    ctx.R = A_FLOAT_C(2.0);
++    ctx.value = 0;
++    for (unsigned int i = 0; i < 100; ++i)
++    {
++        a_float x = a_float_c(i);
++        a_float x0 = x * A_FLOAT_C(0.01);
++        a_float x1 = x0 + (a_float_c(rand_()) / a_float_c(RAND_MAX_) - A_FLOAT_C(0.5));
++        a_float x2 = a_kf1_iter(&ctx, x1);
++        debug(A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f\n"), x, x0, x1, x2);
++    }
++    a_kf1_zero(&ctx);
++#if defined(__cplusplus) && (__cplusplus > 201100L)
++    A_ASSERT_BUILD(std::is_pod<a_kf1>::value);
++#endif /* __cplusplus */
++    return 0;
++}
+diff --git a/test/make.lua b/test/make.lua
+index 9a034ca..f80067f 100644
+--- a/test/make.lua
++++ b/test/make.lua
+@@ -18,6 +18,7 @@ executable("avl")
+ executable("buf")
+ executable("complex")
+ executable("crc")
++executable("kf1")
+ executable("hpf")
+ executable("list")
+ executable("lpf")
+diff --git a/test/test.lua b/test/test.lua
+index 8526b2f..508d9c4 100644
+--- a/test/test.lua
++++ b/test/test.lua
+@@ -6,6 +6,7 @@ assert(subprocess.spawn({ "build/bin/avl" .. ext })):wait()
+ assert(subprocess.spawn({ "build/bin/buf" .. ext })):wait()
+ assert(subprocess.spawn({ "build/bin/complex" .. ext })):wait()
+ assert(subprocess.spawn({ "build/bin/crc" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/kf1" .. ext })):wait()
+ assert(subprocess.spawn({ "build/bin/hpf" .. ext })):wait()
+ assert(subprocess.spawn({ "build/bin/list" .. ext })):wait()
+ assert(subprocess.spawn({ "build/bin/lpf" .. ext })):wait()
+diff --git a/test/xmake.lua b/test/xmake.lua
+index 436071c..2f0442c 100644
+--- a/test/xmake.lua
++++ b/test/xmake.lua
+@@ -40,6 +40,10 @@ target("test/hpf")
+ building({ "hpf.c", "hpf.cpp" })
+ target_end()
+ 
++target("test/kf1")
++building({ "kf1.c", "kf1.cpp" })
++target_end()
++
+ target("test/list")
+ building({ "list.c", "list.cpp" })
+ target_end()
+-- 
+2.43.1
+
