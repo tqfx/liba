@@ -1,0 +1,708 @@
+From 515b2edba8f2923c538391a17f281338bc1d45bb Mon Sep 17 00:00:00 2001
+From: tqfx <tqfx@tqfx.org>
+Date: Mon, 12 Feb 2024 23:09:28 +0800
+Subject: [PATCH] support for swig
+
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 59441bb..d017a9d 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -95,7 +95,7 @@ check_math(A_HAVE_CATANH catanh)
+ option(LIBA_PYTHON "Enable/Disable python" 0)
+ 
+ if(LIBA_PYTHON)
+-  find_package(Python COMPONENTS Interpreter)
++  find_package(Python COMPONENTS Interpreter OPTIONAL_COMPONENTS Development)
+   find_package(Cython)
+ endif()
+ 
+@@ -518,6 +518,26 @@ if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/quickjs/CMakeLists.txt)
+   endif()
+ endif()
+ 
++if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/swig/CMakeLists.txt)
++  option(LIBA_SWIG "Enable/Disable swig" 0)
++
++  if(LIBA_SWIG)
++    if(POLICY CMP0078) # 3.13
++      cmake_policy(SET CMP0078 NEW)
++    endif() # UseSWIG_TARGET_NAME_PREFERENCE
++
++    if(POLICY CMP0086) # 3.14
++      cmake_policy(SET CMP0086 NEW)
++    endif() # SWIG_MODULE_NAME
++
++    find_package(SWIG)
++  endif()
++
++  if(LIBA_SWIG AND SWIG_FOUND)
++    add_subdirectory(swig)
++  endif()
++endif()
++
+ if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt)
+   if(PROJECT_IS_TOP_LEVEL AND BUILD_TESTING)
+     add_subdirectory(test)
+diff --git a/swig/CMakeLists.txt b/swig/CMakeLists.txt
+new file mode 100644
+index 0000000..0c83c18
+--- /dev/null
++++ b/swig/CMakeLists.txt
+@@ -0,0 +1,7 @@
++# https://cmake.org/cmake/help/latest/module/UseSWIG.html
++include(UseSWIG)
++
++swig_add_library(aswg LANGUAGE Python SOURCES a.i $<TARGET_OBJECTS:a>)
++add_library_properties(aswg PRIVATE alib)
++target_link_libraries(aswg PRIVATE Python::Python)
++set_target_properties(aswg PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
+diff --git a/swig/a.i b/swig/a.i
+new file mode 100644
+index 0000000..ff87a22
+--- /dev/null
++++ b/swig/a.i
+@@ -0,0 +1,49 @@
++%module liba
++%{
++#include "a/a.h"
++#include <stdbool.h>
++%}
++%include <stdint.i>
++#define a_i8 int8_t
++#define a_u8 uint8_t
++#define a_i16 int16_t
++#define a_u16 uint16_t
++#define a_i32 int32_t
++#define a_u32 uint32_t
++#define a_i64 int64_t
++#define a_u64 uint64_t
++#define a_imax intmax_t
++#define a_umax uintmax_t
++#define a_iptr intptr_t
++#define a_uptr uintptr_t
++#define a_float double
++#define a_size size_t
++#define a_f64 double
++#define a_f32 float
++
++%rename(hash_bkdr) a_hash_bkdr;
++a_umax a_hash_bkdr(char const *, a_umax);
++%rename(hash_bkdr_) a_hash_bkdr_;
++a_umax a_hash_bkdr_(char const *STRING, a_size LENGTH, a_umax);
++
++%rename(hash_sdbm) a_hash_sdbm;
++a_umax a_hash_sdbm(char const *, a_umax);
++%rename(hash_sdbm_) a_hash_sdbm_;
++a_umax a_hash_sdbm_(char const *STRING, a_size LENGTH, a_umax);
++
++%include "crc16.i"
++%include "crc32.i"
++%include "crc64.i"
++%include "crc8.i"
++%include "hpf.i"
++%include "lpf.i"
++%include "math.i"
++%include "mf.i"
++%include "pid.i"
++%include "pid_neuro.i"
++%include "trajbell.i"
++%include "trajpoly3.i"
++%include "trajpoly5.i"
++%include "trajpoly7.i"
++%include "trajtrap.i"
++%include "version.i"
+diff --git a/swig/crc16.i b/swig/crc16.i
+new file mode 100644
+index 0000000..f63767e
+--- /dev/null
++++ b/swig/crc16.i
+@@ -0,0 +1,35 @@
++%{
++#include "a/crc.h"
++struct crc16
++{
++  a_u16 table[0x100];
++  a_u16 (*eval)(a_u16 const table[0x100], void const *pdata, a_size nbyte, a_u16 value);
++};
++%}
++struct crc16
++{
++  a_u16 const table[0x100];
++};
++%extend crc16
++{
++crc16(a_u16 poly, bool reversed = 0)
++{
++  struct crc16 *self = (struct crc16 *)malloc(sizeof(struct crc16));
++  if (reversed)
++  {
++    a_crc16l_init(self->table, poly);
++    self->eval = a_crc16l;
++  }
++  else
++  {
++    a_crc16m_init(self->table, poly);
++    self->eval = a_crc16m;
++  }
++  return self;
++}
++a_u16 eval(char const *STRING, a_size LENGTH, a_u16 value)
++{
++  return $self->eval($self->table, STRING, LENGTH, value);
++}
++~crc16() { free($self); }
++}
+diff --git a/swig/crc32.i b/swig/crc32.i
+new file mode 100644
+index 0000000..c5724a8
+--- /dev/null
++++ b/swig/crc32.i
+@@ -0,0 +1,35 @@
++%{
++#include "a/crc.h"
++struct crc32
++{
++  a_u32 table[0x100];
++  a_u32 (*eval)(a_u32 const table[0x100], void const *pdata, a_size nbyte, a_u32 value);
++};
++%}
++struct crc32
++{
++  a_u32 const table[0x100];
++};
++%extend crc32
++{
++crc32(a_u32 poly, bool reversed = 0)
++{
++  struct crc32 *self = (struct crc32 *)malloc(sizeof(struct crc32));
++  if (reversed)
++  {
++    a_crc32l_init(self->table, poly);
++    self->eval = a_crc32l;
++  }
++  else
++  {
++    a_crc32m_init(self->table, poly);
++    self->eval = a_crc32m;
++  }
++  return self;
++}
++a_u32 eval(char const *STRING, a_size LENGTH, a_u32 value)
++{
++  return $self->eval($self->table, STRING, LENGTH, value);
++}
++~crc32() { free($self); }
++}
+diff --git a/swig/crc64.i b/swig/crc64.i
+new file mode 100644
+index 0000000..81450b4
+--- /dev/null
++++ b/swig/crc64.i
+@@ -0,0 +1,35 @@
++%{
++#include "a/crc.h"
++struct crc64
++{
++  a_u64 table[0x100];
++  a_u64 (*eval)(a_u64 const table[0x100], void const *pdata, a_size nbyte, a_u64 value);
++};
++%}
++struct crc64
++{
++  a_u64 const table[0x100];
++};
++%extend crc64
++{
++crc64(a_u64 poly, bool reversed = 0)
++{
++  struct crc64 *self = (struct crc64 *)malloc(sizeof(struct crc64));
++  if (reversed)
++  {
++    a_crc64l_init(self->table, poly);
++    self->eval = a_crc64l;
++  }
++  else
++  {
++    a_crc64m_init(self->table, poly);
++    self->eval = a_crc64m;
++  }
++  return self;
++}
++a_u64 eval(char const *STRING, a_size LENGTH, a_u64 value)
++{
++  return $self->eval($self->table, STRING, LENGTH, value);
++}
++~crc64() { free($self); }
++}
+diff --git a/swig/crc8.i b/swig/crc8.i
+new file mode 100644
+index 0000000..cff9525
+--- /dev/null
++++ b/swig/crc8.i
+@@ -0,0 +1,32 @@
++%{
++#include "a/crc.h"
++struct crc8
++{
++  a_u8 table[0x100];
++};
++%}
++struct crc8
++{
++  a_u8 const table[0x100];
++};
++%extend crc8
++{
++crc8(a_u8 poly, bool reversed = 0)
++{
++  struct crc8 *self = (struct crc8 *)malloc(sizeof(struct crc8));
++  if (reversed)
++  {
++    a_crc8l_init(self->table, poly);
++  }
++  else
++  {
++    a_crc8m_init(self->table, poly);
++  }
++  return self;
++}
++a_u8 eval(char const *STRING, a_size LENGTH, a_u8 value)
++{
++  return a_crc8($self->table, STRING, LENGTH, value);
++}
++~crc8() { free($self); }
++}
+diff --git a/swig/hpf.i b/swig/hpf.i
+new file mode 100644
+index 0000000..8ac9fc7
+--- /dev/null
++++ b/swig/hpf.i
+@@ -0,0 +1,22 @@
++%{
++#include "a/hpf.h"
++%}
++%rename(hpf) a_hpf;
++typedef struct a_hpf
++{
++  a_float const alpha;
++  a_float const output;
++  a_float const input;
++} a_hpf;
++%extend a_hpf
++{
++a_hpf(a_float fc, a_float ts)
++{
++  a_hpf *self = (a_hpf *)malloc(sizeof(a_hpf));
++  a_hpf_init(self, a_hpf_gen(fc, ts));
++  return self;
++}
++extern a_float iter(a_float x);
++extern void zero();
++~a_hpf() { free($self); }
++}
+diff --git a/swig/lpf.i b/swig/lpf.i
+new file mode 100644
+index 0000000..582419d
+--- /dev/null
++++ b/swig/lpf.i
+@@ -0,0 +1,21 @@
++%{
++#include "a/lpf.h"
++%}
++%rename(lpf) a_lpf;
++typedef struct a_lpf
++{
++  a_float const alpha;
++  a_float const output;
++} a_lpf;
++%extend a_lpf
++{
++a_lpf(a_float fc, a_float ts)
++{
++  a_lpf *self = (a_lpf *)malloc(sizeof(a_lpf));
++  a_lpf_init(self, a_lpf_gen(fc, ts));
++  return self;
++}
++extern a_float iter(a_float x);
++extern void zero();
++~a_lpf() { free($self); }
++}
+diff --git a/swig/math.i b/swig/math.i
+new file mode 100644
+index 0000000..094f69a
+--- /dev/null
++++ b/swig/math.i
+@@ -0,0 +1,11 @@
++%{
++#include "a/math.h"
++%}
++%rename(f32_rsqrt) a_f32_rsqrt;
++a_f32 a_f32_rsqrt(a_f32);
++%rename(f64_rsqrt) a_f64_rsqrt;
++a_f64 a_f64_rsqrt(a_f64);
++%rename(u32_sqrt) a_u32_sqrt;
++a_u16 a_u32_sqrt(a_u32);
++%rename(u64_sqrt) a_u64_sqrt;
++a_u32 a_u64_sqrt(a_u64);
+diff --git a/swig/mf.i b/swig/mf.i
+new file mode 100644
+index 0000000..4a53717
+--- /dev/null
++++ b/swig/mf.i
+@@ -0,0 +1,61 @@
++%{
++#include "a/mf.h"
++%}
++typedef struct mf {} mf;
++%extend mf
++{
++mf() { return NULL; }
++static a_float gauss(a_float x, a_float sigma, a_float c)
++{
++  return a_mf_gauss(x, sigma, c);
++}
++static a_float gauss2(a_float x, a_float sigma1, a_float c1, a_float sigma2, a_float c2)
++{
++  return a_mf_gauss2(x, sigma1, c1, sigma2, c2);
++}
++static a_float gbell(a_float x, a_float a, a_float b, a_float c)
++{
++  return a_mf_gbell(x, a, b, c);
++}
++static a_float sig(a_float x, a_float a, a_float c)
++{
++  return a_mf_sig(x, a, c);
++}
++static a_float dsig(a_float x, a_float a1, a_float c1, a_float a2, a_float c2)
++{
++  return a_mf_dsig(x, a1, c1, a2, c2);
++}
++static a_float psig(a_float x, a_float a1, a_float c1, a_float a2, a_float c2)
++{
++  return a_mf_psig(x, a1, c1, a2, c2);
++}
++static a_float trap(a_float x, a_float a, a_float b, a_float c, a_float d)
++{
++  return a_mf_trap(x, a, b, c, d);
++}
++static a_float tri(a_float x, a_float a, a_float b, a_float c)
++{
++  return a_mf_tri(x, a, b, c);
++}
++static a_float lins(a_float x, a_float a, a_float b)
++{
++  return a_mf_lins(x, a, b);
++}
++static a_float linz(a_float x, a_float a, a_float b)
++{
++  return a_mf_linz(x, a, b);
++}
++static a_float s(a_float x, a_float a, a_float b)
++{
++  return a_mf_s(x, a, b);
++}
++static a_float z(a_float x, a_float a, a_float b)
++{
++  return a_mf_z(x, a, b);
++}
++static a_float pi(a_float x, a_float a, a_float b, a_float c, a_float d)
++{
++  return a_mf_pi(x, a, b, c, d);
++}
++~mf() { (void)$self; }
++}
+diff --git a/swig/pid.i b/swig/pid.i
+new file mode 100644
+index 0000000..b561fa5
+--- /dev/null
++++ b/swig/pid.i
+@@ -0,0 +1,37 @@
++%{
++#include "a/pid.h"
++%}
++%rename(pid) a_pid;
++typedef struct a_pid
++{
++  a_float kp;
++  a_float ki;
++  a_float kd;
++  a_float summax;
++  a_float summin;
++  a_float outmax;
++  a_float outmin;
++  a_float const out;
++  a_float const fdb;
++  a_float const err;
++} a_pid;
++%extend a_pid
++{
++a_pid()
++{
++  a_pid *self = (a_pid *)calloc(1, sizeof(a_pid));
++  self->kp = 1;
++  self->summax = +A_FLOAT_INF;
++  self->summin = -A_FLOAT_INF;
++  self->outmax = +A_FLOAT_INF;
++  self->outmin = -A_FLOAT_INF;
++  a_pid_init(self);
++  return self;
++}
++extern void kpid(a_float kp, a_float ki, a_float kd);
++extern a_float run(a_float set, a_float fdb);
++extern a_float pos(a_float set, a_float fdb);
++extern a_float inc(a_float set, a_float fdb);
++extern void zero();
++~a_pid() { free($self); }
++}
+diff --git a/swig/pid_neuro.i b/swig/pid_neuro.i
+new file mode 100644
+index 0000000..dbc2516
+--- /dev/null
++++ b/swig/pid_neuro.i
+@@ -0,0 +1,37 @@
++%{
++#include "a/pid_neuro.h"
++%}
++%include "pid.i"
++%rename(pid_neuro) a_pid_neuro;
++typedef struct a_pid_neuro
++{
++  a_pid pid;
++  a_float k;
++  a_float wp;
++  a_float wi;
++  a_float wd;
++  a_float const ec;
++} a_pid_neuro;
++%extend a_pid_neuro
++{
++a_pid_neuro()
++{
++  a_pid_neuro *self = (a_pid_neuro *)calloc(1, sizeof(a_pid_neuro));
++  self->pid.summax = +A_FLOAT_INF;
++  self->pid.summin = -A_FLOAT_INF;
++  self->pid.outmax = +A_FLOAT_INF;
++  self->pid.outmin = -A_FLOAT_INF;
++  self->k = 1;
++  self->wp = A_FLOAT_C(0.1);
++  self->wi = A_FLOAT_C(0.1);
++  self->wd = A_FLOAT_C(0.1);
++  a_pid_neuro_init(self);
++  return self;
++}
++extern void kpid(a_float k, a_float kp, a_float ki, a_float kd);
++extern void wpid(a_float wp, a_float wi, a_float wd);
++extern a_float run(a_float set, a_float fdb);
++extern a_float inc(a_float set, a_float fdb);
++extern void zero();
++~a_pid_neuro() { free($self); }
++}
+diff --git a/swig/trajbell.i b/swig/trajbell.i
+new file mode 100644
+index 0000000..abe7cda
+--- /dev/null
++++ b/swig/trajbell.i
+@@ -0,0 +1,30 @@
++%{
++#include "a/trajbell.h"
++%}
++%rename(trajbell) a_trajbell;
++typedef struct a_trajbell
++{
++  a_float const t;
++  a_float const tv;
++  a_float const ta;
++  a_float const td;
++  a_float const taj;
++  a_float const tdj;
++  a_float const p0;
++  a_float const p1;
++  a_float const v0;
++  a_float const v1;
++  a_float const vm;
++  a_float const jm;
++  a_float const am;
++  a_float const dm;
++} a_trajbell;
++%extend a_trajbell
++{
++extern a_float gen(a_float jm, a_float am, a_float vm, a_float p0, a_float p1,
++                   a_float v0 = 0, a_float v1 = 0);
++extern a_float pos(a_float dt);
++extern a_float vel(a_float dt);
++extern a_float acc(a_float dt);
++extern a_float jer(a_float dt);
++}
+diff --git a/swig/trajpoly3.i b/swig/trajpoly3.i
+new file mode 100644
+index 0000000..6aa3594
+--- /dev/null
++++ b/swig/trajpoly3.i
+@@ -0,0 +1,24 @@
++%{
++#include "a/trajpoly3.h"
++%}
++%rename(trajpoly3) a_trajpoly3;
++typedef struct a_trajpoly3
++{
++  a_float const p[4];
++  a_float const v[3];
++  a_float const a[2];
++} a_trajpoly3;
++%extend a_trajpoly3
++{
++a_trajpoly3(a_float ts, a_float p0, a_float p1,
++            a_float v0 = 0, a_float v1 = 0)
++{
++  a_trajpoly3 *self = (a_trajpoly3 *)malloc(sizeof(a_trajpoly3));
++  a_trajpoly3_gen(self, ts, p0, p1, v0, v1);
++  return self;
++}
++extern a_float pos(a_float dt);
++extern a_float vel(a_float dt);
++extern a_float acc(a_float dt);
++~a_trajpoly3() { free($self); }
++}
+diff --git a/swig/trajpoly5.i b/swig/trajpoly5.i
+new file mode 100644
+index 0000000..91f87fa
+--- /dev/null
++++ b/swig/trajpoly5.i
+@@ -0,0 +1,25 @@
++%{
++#include "a/trajpoly5.h"
++%}
++%rename(trajpoly5) a_trajpoly5;
++typedef struct a_trajpoly5
++{
++  a_float const p[6];
++  a_float const v[5];
++  a_float const a[4];
++} a_trajpoly5;
++%extend a_trajpoly5
++{
++a_trajpoly5(a_float ts, a_float p0, a_float p1,
++            a_float v0 = 0, a_float v1 = 0,
++            a_float a0 = 0, a_float a1 = 0)
++{
++  a_trajpoly5 *self = (a_trajpoly5 *)malloc(sizeof(a_trajpoly5));
++  a_trajpoly5_gen(self, ts, p0, p1, v0, v1, a0, a1);
++  return self;
++}
++extern a_float pos(a_float dt);
++extern a_float vel(a_float dt);
++extern a_float acc(a_float dt);
++~a_trajpoly5() { free($self); }
++}
+diff --git a/swig/trajpoly7.i b/swig/trajpoly7.i
+new file mode 100644
+index 0000000..934513d
+--- /dev/null
++++ b/swig/trajpoly7.i
+@@ -0,0 +1,27 @@
++%{
++#include "a/trajpoly7.h"
++%}
++%rename(trajpoly7) a_trajpoly7;
++typedef struct a_trajpoly7
++{
++  a_float const p[6];
++  a_float const v[5];
++  a_float const a[4];
++} a_trajpoly7;
++%extend a_trajpoly7
++{
++a_trajpoly7(a_float ts, a_float p0, a_float p1,
++            a_float v0 = 0, a_float v1 = 0,
++            a_float a0 = 0, a_float a1 = 0,
++            a_float j0 = 0, a_float j1 = 0)
++{
++  a_trajpoly7 *self = (a_trajpoly7 *)malloc(sizeof(a_trajpoly7));
++  a_trajpoly7_gen(self, ts, p0, p1, v0, v1, a0, a1, j0, j1);
++  return self;
++}
++extern a_float pos(a_float dt);
++extern a_float vel(a_float dt);
++extern a_float acc(a_float dt);
++extern a_float jer(a_float dt);
++~a_trajpoly7() { free($self); }
++}
+diff --git a/swig/trajtrap.i b/swig/trajtrap.i
+new file mode 100644
+index 0000000..42a4b2f
+--- /dev/null
++++ b/swig/trajtrap.i
+@@ -0,0 +1,27 @@
++%{
++#include "a/trajtrap.h"
++%}
++%rename(trajtrap) a_trajtrap;
++typedef struct a_trajtrap
++{
++  a_float const t;
++  a_float const p0;
++  a_float const p1;
++  a_float const v0;
++  a_float const v1;
++  a_float const vc;
++  a_float const ta;
++  a_float const td;
++  a_float const pa;
++  a_float const pd;
++  a_float const ac;
++  a_float const de;
++} a_trajtrap;
++%extend a_trajtrap
++{
++extern a_float gen(a_float vm, a_float ac, a_float de, a_float p0, a_float p1,
++                   a_float v0 = 0, a_float v1 = 0);
++extern a_float pos(a_float dt);
++extern a_float vel(a_float dt);
++extern a_float acc(a_float dt);
++}
+diff --git a/swig/version.i b/swig/version.i
+new file mode 100644
+index 0000000..2f5a617
+--- /dev/null
++++ b/swig/version.i
+@@ -0,0 +1,36 @@
++%{
++#include "a/version.h"
++#undef a_version_check
++%}
++%rename(VERSION) A_VERSION;
++char const *const A_VERSION;
++%rename(version) a_version;
++typedef struct a_version
++{
++  unsigned int major;
++  unsigned int minor;
++  unsigned int third;
++  unsigned int extra;
++} a_version;
++%extend a_version
++{
++a_version(unsigned int major = 0, unsigned int minor = 0, unsigned int third = 0, unsigned int extra = 0)
++{
++  a_version *self = (a_version *)malloc(sizeof(a_version));
++  self->major = major;
++  self->minor = minor;
++  self->third = third;
++  self->extra = extra;
++  return self;
++}
++static int check(unsigned int major = 0, unsigned int minor = 0, unsigned int patch = 0);
++extern unsigned parse(char const *ver);
++extern int cmp(a_version const *other);
++extern bool lt(a_version const *other);
++extern bool gt(a_version const *other);
++extern bool le(a_version const *other);
++extern bool ge(a_version const *other);
++extern bool eq(a_version const *other);
++extern bool ne(a_version const *other);
++~a_version() { free($self); }
++}
+-- 
+2.43.1
+
