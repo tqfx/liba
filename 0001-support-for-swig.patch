@@ -1,11 +1,11 @@
-From 515b2edba8f2923c538391a17f281338bc1d45bb Mon Sep 17 00:00:00 2001
+From b1516dc2c8be0f530ac296be9e9a8356ce9a606a Mon Sep 17 00:00:00 2001
 From: tqfx <tqfx@tqfx.org>
 Date: Mon, 12 Feb 2024 23:09:28 +0800
 Subject: [PATCH] support for swig
 
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 59441bb..d017a9d 100644
+index 59441bb7..d017a9d0 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -95,7 +95,7 @@ check_math(A_HAVE_CATANH catanh)
@@ -46,7 +46,7 @@ index 59441bb..d017a9d 100644
      add_subdirectory(test)
 diff --git a/swig/CMakeLists.txt b/swig/CMakeLists.txt
 new file mode 100644
-index 0000000..0c83c18
+index 00000000..0c83c189
 --- /dev/null
 +++ b/swig/CMakeLists.txt
 @@ -0,0 +1,7 @@
@@ -59,10 +59,10 @@ index 0000000..0c83c18
 +set_target_properties(aswg PROPERTIES OUTPUT_NAME ${PROJECT_NAME})
 diff --git a/swig/a.i b/swig/a.i
 new file mode 100644
-index 0000000..ff87a22
+index 00000000..101f824c
 --- /dev/null
 +++ b/swig/a.i
-@@ -0,0 +1,49 @@
+@@ -0,0 +1,53 @@
 +%module liba
 +%{
 +#include "a/a.h"
@@ -86,6 +86,9 @@ index 0000000..ff87a22
 +#define a_f64 double
 +#define a_f32 float
 +
++%include <carrays.i>
++%array_class(a_float, array_num);
++
 +%rename(hash_bkdr) a_hash_bkdr;
 +a_umax a_hash_bkdr(char const *, a_umax);
 +%rename(hash_bkdr_) a_hash_bkdr_;
@@ -106,6 +109,7 @@ index 0000000..ff87a22
 +%include "mf.i"
 +%include "pid.i"
 +%include "pid_neuro.i"
++%include "tf.i"
 +%include "trajbell.i"
 +%include "trajpoly3.i"
 +%include "trajpoly5.i"
@@ -114,7 +118,7 @@ index 0000000..ff87a22
 +%include "version.i"
 diff --git a/swig/crc16.i b/swig/crc16.i
 new file mode 100644
-index 0000000..f63767e
+index 00000000..f63767e9
 --- /dev/null
 +++ b/swig/crc16.i
 @@ -0,0 +1,35 @@
@@ -155,7 +159,7 @@ index 0000000..f63767e
 +}
 diff --git a/swig/crc32.i b/swig/crc32.i
 new file mode 100644
-index 0000000..c5724a8
+index 00000000..c5724a86
 --- /dev/null
 +++ b/swig/crc32.i
 @@ -0,0 +1,35 @@
@@ -196,7 +200,7 @@ index 0000000..c5724a8
 +}
 diff --git a/swig/crc64.i b/swig/crc64.i
 new file mode 100644
-index 0000000..81450b4
+index 00000000..81450b47
 --- /dev/null
 +++ b/swig/crc64.i
 @@ -0,0 +1,35 @@
@@ -237,7 +241,7 @@ index 0000000..81450b4
 +}
 diff --git a/swig/crc8.i b/swig/crc8.i
 new file mode 100644
-index 0000000..cff9525
+index 00000000..cff9525f
 --- /dev/null
 +++ b/swig/crc8.i
 @@ -0,0 +1,32 @@
@@ -275,7 +279,7 @@ index 0000000..cff9525
 +}
 diff --git a/swig/hpf.i b/swig/hpf.i
 new file mode 100644
-index 0000000..8ac9fc7
+index 00000000..8ac9fc70
 --- /dev/null
 +++ b/swig/hpf.i
 @@ -0,0 +1,22 @@
@@ -303,7 +307,7 @@ index 0000000..8ac9fc7
 +}
 diff --git a/swig/lpf.i b/swig/lpf.i
 new file mode 100644
-index 0000000..582419d
+index 00000000..582419d3
 --- /dev/null
 +++ b/swig/lpf.i
 @@ -0,0 +1,21 @@
@@ -330,7 +334,7 @@ index 0000000..582419d
 +}
 diff --git a/swig/math.i b/swig/math.i
 new file mode 100644
-index 0000000..094f69a
+index 00000000..094f69af
 --- /dev/null
 +++ b/swig/math.i
 @@ -0,0 +1,11 @@
@@ -347,7 +351,7 @@ index 0000000..094f69a
 +a_u32 a_u64_sqrt(a_u64);
 diff --git a/swig/mf.i b/swig/mf.i
 new file mode 100644
-index 0000000..4a53717
+index 00000000..4a537176
 --- /dev/null
 +++ b/swig/mf.i
 @@ -0,0 +1,61 @@
@@ -414,7 +418,7 @@ index 0000000..4a53717
 +}
 diff --git a/swig/pid.i b/swig/pid.i
 new file mode 100644
-index 0000000..b561fa5
+index 00000000..b561fa5f
 --- /dev/null
 +++ b/swig/pid.i
 @@ -0,0 +1,37 @@
@@ -457,7 +461,7 @@ index 0000000..b561fa5
 +}
 diff --git a/swig/pid_neuro.i b/swig/pid_neuro.i
 new file mode 100644
-index 0000000..dbc2516
+index 00000000..dbc25161
 --- /dev/null
 +++ b/swig/pid_neuro.i
 @@ -0,0 +1,37 @@
@@ -498,9 +502,41 @@ index 0000000..dbc2516
 +extern void zero();
 +~a_pid_neuro() { free($self); }
 +}
+diff --git a/swig/tf.i b/swig/tf.i
+new file mode 100644
+index 00000000..b41cfd6b
+--- /dev/null
++++ b/swig/tf.i
+@@ -0,0 +1,26 @@
++%{
++#include "a/tf.h"
++%}
++%rename(tf) a_tf;
++typedef struct a_tf
++{
++  %rename(num) num_p;
++  array_num const *const num_p;
++  %rename(den) den_p;
++  array_num const *const den_p;
++  array_num const *const input;
++  array_num const *const output;
++} a_tf;
++%extend a_tf
++{
++a_tf()
++{
++  a_tf *self = (a_tf *)calloc(1, sizeof(a_tf));
++  return self;
++}
++extern void set_num(unsigned int num_n, a_float const *num_p, a_float *input);
++extern void set_den(unsigned int den_n, a_float const *den_p, a_float *output);
++extern a_float iter(a_float x);
++extern void zero();
++~a_tf() { free($self); }
++}
 diff --git a/swig/trajbell.i b/swig/trajbell.i
 new file mode 100644
-index 0000000..abe7cda
+index 00000000..abe7cdaf
 --- /dev/null
 +++ b/swig/trajbell.i
 @@ -0,0 +1,30 @@
@@ -536,7 +572,7 @@ index 0000000..abe7cda
 +}
 diff --git a/swig/trajpoly3.i b/swig/trajpoly3.i
 new file mode 100644
-index 0000000..6aa3594
+index 00000000..6aa3594e
 --- /dev/null
 +++ b/swig/trajpoly3.i
 @@ -0,0 +1,24 @@
@@ -566,7 +602,7 @@ index 0000000..6aa3594
 +}
 diff --git a/swig/trajpoly5.i b/swig/trajpoly5.i
 new file mode 100644
-index 0000000..91f87fa
+index 00000000..91f87fac
 --- /dev/null
 +++ b/swig/trajpoly5.i
 @@ -0,0 +1,25 @@
@@ -597,7 +633,7 @@ index 0000000..91f87fa
 +}
 diff --git a/swig/trajpoly7.i b/swig/trajpoly7.i
 new file mode 100644
-index 0000000..934513d
+index 00000000..934513d2
 --- /dev/null
 +++ b/swig/trajpoly7.i
 @@ -0,0 +1,27 @@
@@ -630,7 +666,7 @@ index 0000000..934513d
 +}
 diff --git a/swig/trajtrap.i b/swig/trajtrap.i
 new file mode 100644
-index 0000000..42a4b2f
+index 00000000..42a4b2f0
 --- /dev/null
 +++ b/swig/trajtrap.i
 @@ -0,0 +1,27 @@
@@ -663,7 +699,7 @@ index 0000000..42a4b2f
 +}
 diff --git a/swig/version.i b/swig/version.i
 new file mode 100644
-index 0000000..2f5a617
+index 00000000..2f5a6174
 --- /dev/null
 +++ b/swig/version.i
 @@ -0,0 +1,36 @@
@@ -704,5 +740,5 @@ index 0000000..2f5a617
 +~a_version() { free($self); }
 +}
 -- 
-2.43.1
+2.43.2
 
