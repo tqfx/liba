@@ -792,8 +792,8 @@ pub mod fuzzy {
 }
 
 #[macro_export]
-/// compute size of joint buffer for fuzzy PID controller
-macro_rules! PID_FUZZY_JOINT {
+/// compute size of memory block for fuzzy PID controller
+macro_rules! PID_FUZZY_BLOCK {
     ($n:expr) => {{
         core::mem::size_of::<uint>() * $n * 2 + core::mem::size_of::<float>() * $n * (2 + $n)
     }};
@@ -822,7 +822,7 @@ pub struct pid_fuzzy {
     /// number of order in the square matrix
     pub(crate) order: uint,
     /// maximum number triggered by the rule
-    pub(crate) joint: uint,
+    pub(crate) block: uint,
 }
 
 impl Default for pid_fuzzy {
@@ -842,7 +842,7 @@ impl Default for pid_fuzzy {
             ki: 0.0,
             kd: 0.0,
             order: 0,
-            joint: 0,
+            block: 0,
         }
     }
 }
@@ -859,8 +859,8 @@ extern "C" {
         mki: *const float,
         mkd: *const float,
     );
-    fn a_pid_fuzzy_joint(ctx: *mut pid_fuzzy) -> *mut u8;
-    fn a_pid_fuzzy_set_joint(ctx: *mut pid_fuzzy, ptr: *mut u8, num: usize);
+    fn a_pid_fuzzy_block(ctx: *mut pid_fuzzy) -> *mut u8;
+    fn a_pid_fuzzy_set_block(ctx: *mut pid_fuzzy, ptr: *mut u8, num: usize);
     fn a_pid_fuzzy_kpid(ctx: *mut pid_fuzzy, kp: float, ki: float, kd: float);
     fn a_pid_fuzzy_run(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
     fn a_pid_fuzzy_pos(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
@@ -904,19 +904,19 @@ impl pid_fuzzy {
         unsafe { a_pid_fuzzy_kpid(self, kp, ki, kd) };
         self
     }
-    /// set joint buffer for fuzzy PID controller
+    /// set memory block for fuzzy PID controller
     #[inline(always)]
-    pub fn set_joint(&mut self, ptr: &mut [u8], num: usize) -> &mut Self {
-        unsafe { a_pid_fuzzy_set_joint(self, ptr.as_mut_ptr(), num) };
+    pub fn set_block(&mut self, ptr: &mut [u8], num: usize) -> &mut Self {
+        unsafe { a_pid_fuzzy_set_block(self, ptr.as_mut_ptr(), num) };
         self
     }
-    /// get joint buffer for fuzzy PID controller
+    /// get memory block for fuzzy PID controller
     #[inline(always)]
-    pub fn joint(&mut self) -> &mut [u8] {
+    pub fn block(&mut self) -> &mut [u8] {
         unsafe {
             core::slice::from_raw_parts_mut(
-                a_pid_fuzzy_joint(self),
-                PID_FUZZY_JOINT!(self.joint as usize),
+                a_pid_fuzzy_block(self),
+                PID_FUZZY_BLOCK!(self.block as usize),
             )
         }
     }
@@ -1026,7 +1026,7 @@ fn pid_fuzzy() {
         [NL, NS, NS, NS, NS, NS, NL],
         [NL, NM, NM, NM, NS, NS, NL],
     ];
-    let mut joint = [0u8; crate::PID_FUZZY_JOINT!(2)];
+    let mut block = [0u8; crate::PID_FUZZY_BLOCK!(2)];
     let mut a = pid_fuzzy::new();
     a.rule(
         me.len(),
@@ -1037,7 +1037,7 @@ fn pid_fuzzy() {
         &mkd.concat(),
     )
     .kpid(10.0, 0.1, 1.0)
-    .set_joint(&mut joint, 2);
+    .set_block(&mut block, 2);
     a.op(crate::fuzzy::EQU).zero();
     std::println!("{} {}", a.pos(1.0, 0.0), a.pos(1.0, 0.0));
     a.op(crate::fuzzy::EQU).zero();

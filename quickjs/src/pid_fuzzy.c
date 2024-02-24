@@ -16,7 +16,7 @@ static void liba_pid_fuzzy_finalizer(JSRuntime *rt, JSValue val)
     js_free_rt(rt, ((void)(u.p = self->mkp), u.o));
     js_free_rt(rt, ((void)(u.p = self->mki), u.o));
     js_free_rt(rt, ((void)(u.p = self->mkd), u.o));
-    js_free_rt(rt, a_pid_fuzzy_joint(self));
+    js_free_rt(rt, a_pid_fuzzy_block(self));
     js_free_rt(rt, self);
 }
 
@@ -57,7 +57,7 @@ static JSValue liba_pid_fuzzy_get(JSContext *ctx, JSValueConst this_val, int mag
     double x;
     switch (magic)
     {
-    case 0: return JS_NewUint32(ctx, self->joint);
+    case 0: return JS_NewUint32(ctx, self->block);
     case 1: x = (double)self->kp; break;
     case 2: x = (double)self->ki; break;
     case 3: x = (double)self->kd; break;
@@ -74,15 +74,15 @@ static JSValue liba_pid_fuzzy_get(JSContext *ctx, JSValueConst this_val, int mag
     return JS_NewFloat64(ctx, x);
 }
 
-static int liba_pid_fuzzy_joint_(JSContext *ctx, a_pid_fuzzy *self, unsigned int joint)
+static int liba_pid_fuzzy_block_(JSContext *ctx, a_pid_fuzzy *self, unsigned int block)
 {
-    void *ptr = a_pid_fuzzy_joint(self);
-    if (joint > self->joint)
+    void *ptr = a_pid_fuzzy_block(self);
+    if (block > self->block)
     {
-        ptr = js_realloc(ctx, ptr, A_PID_FUZZY_JOINT(joint));
+        ptr = js_realloc(ctx, ptr, A_PID_FUZZY_BLOCK(block));
         if (!ptr) { return ~0; }
     }
-    a_pid_fuzzy_set_joint(self, ptr, joint);
+    a_pid_fuzzy_set_block(self, ptr, block);
     return 0;
 }
 
@@ -94,7 +94,7 @@ static JSValue liba_pid_fuzzy_set(JSContext *ctx, JSValueConst this_val, JSValue
     if (magic == 0)
     {
         if (JS_ToUint32(ctx, &u, val)) { return JS_EXCEPTION; }
-        if (liba_pid_fuzzy_joint_(ctx, self, (unsigned int)u)) { return JS_EXCEPTION; }
+        if (liba_pid_fuzzy_block_(ctx, self, (unsigned int)u)) { return JS_EXCEPTION; }
         return JS_UNDEFINED;
     }
     double x;
@@ -219,14 +219,14 @@ fail:
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_fuzzy_joint(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+static JSValue liba_pid_fuzzy_block(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_u32 joint;
-    if (JS_ToUint32(ctx, &joint, argv[0])) { return JS_EXCEPTION; }
-    if (liba_pid_fuzzy_joint_(ctx, self, joint)) { return JS_EXCEPTION; }
+    a_u32 block;
+    if (JS_ToUint32(ctx, &block, argv[0])) { return JS_EXCEPTION; }
+    if (liba_pid_fuzzy_block_(ctx, self, block)) { return JS_EXCEPTION; }
     return JS_UNDEFINED;
 }
 
@@ -295,7 +295,7 @@ static JSValue liba_pid_fuzzy_inc(JSContext *ctx, JSValueConst this_val, int arg
 
 static JSCFunctionListEntry const liba_pid_fuzzy_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.pid.fuzzy", 0),
-    JS_CGETSET_MAGIC_DEF("joint", liba_pid_fuzzy_get, liba_pid_fuzzy_set, 0),
+    JS_CGETSET_MAGIC_DEF("block", liba_pid_fuzzy_get, liba_pid_fuzzy_set, 0),
     JS_CGETSET_MAGIC_DEF("kp", liba_pid_fuzzy_get, liba_pid_fuzzy_set, 1),
     JS_CGETSET_MAGIC_DEF("ki", liba_pid_fuzzy_get, liba_pid_fuzzy_set, 2),
     JS_CGETSET_MAGIC_DEF("kd", liba_pid_fuzzy_get, liba_pid_fuzzy_set, 3),
@@ -309,7 +309,7 @@ static JSCFunctionListEntry const liba_pid_fuzzy_proto[] = {
     JS_CGETSET_MAGIC_DEF("order", liba_pid_fuzzy_get, NULL, 11),
     JS_CFUNC_DEF("op", 1, liba_pid_fuzzy_op),
     JS_CFUNC_DEF("rule", 5, liba_pid_fuzzy_rule),
-    JS_CFUNC_DEF("set_joint", 1, liba_pid_fuzzy_joint),
+    JS_CFUNC_DEF("set_block", 1, liba_pid_fuzzy_block),
     JS_CFUNC_DEF("kpid", 3, liba_pid_fuzzy_kpid),
     JS_CFUNC_DEF("zero", 0, liba_pid_fuzzy_zero),
     JS_CFUNC_DEF("run", 2, liba_pid_fuzzy_run),

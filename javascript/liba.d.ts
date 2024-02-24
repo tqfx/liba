@@ -475,7 +475,7 @@ declare namespace liba {
     /** number of order in the square matrix */
     readonly order: number;
     /** maximum number triggered by the rule */
-    joint: number;
+    block: number;
     /**
      * set fuzzy relational operator for fuzzy PID controller
      * @param op enumeration for fuzzy PID controller operator
@@ -491,10 +491,10 @@ declare namespace liba {
      */
     rule(me: number[][], mec: number[][], mkp: number[][], mki: number[][], mkd: number[][]): pid_fuzzy;
     /**
-     * set joint buffer for fuzzy PID controller
+     * set memory block for fuzzy PID controller
      * @param num the maximum number triggered by the rule
      */
-    set_joint(num: number): pid_fuzzy;
+    set_block(num: number): pid_fuzzy;
     /**
      * set proportional integral derivative constant for fuzzy PID controller
      * @param kp proportional learning constant

@@ -21,7 +21,7 @@ int liba_pid_fuzzy_die(lua_State *L)
         lua_alloc(L, ctx->mkp, 0);
         lua_alloc(L, ctx->mki, 0);
         lua_alloc(L, ctx->mkd, 0);
-        lua_alloc(L, a_pid_fuzzy_joint(ctx), 0);
+        lua_alloc(L, a_pid_fuzzy_block(ctx), 0);
         ctx->me = 0;
         ctx->mec = 0;
         ctx->mkp = 0;
@@ -140,20 +140,20 @@ int liba_pid_fuzzy_rule(lua_State *L)
 }
 
 /***
- set joint buffer for fuzzy PID controller
+ set memory block for fuzzy PID controller
  @tparam a.pid_fuzzy ctx fuzzy PID controller userdata
  @tparam int num maximum number triggered by the rule
  @treturn a.pid_fuzzy fuzzy PID controller userdata
- @function set_joint
+ @function set_block
 */
-int liba_pid_fuzzy_joint(lua_State *L)
+int liba_pid_fuzzy_block(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
     {
         unsigned int const num = (unsigned int)luaL_checkinteger(L, 2);
-        void *ptr = lua_alloc(L, a_pid_fuzzy_joint(ctx), A_PID_FUZZY_JOINT(num));
-        a_pid_fuzzy_set_joint(ctx, ptr, num);
+        void *ptr = lua_alloc(L, a_pid_fuzzy_block(ctx), A_PID_FUZZY_BLOCK(num));
+        a_pid_fuzzy_set_block(ctx, ptr, num);
         lua_pushvalue(L, 1);
         return 1;
     }
@@ -273,11 +273,11 @@ static int liba_pid_fuzzy_set(lua_State *L)
     case 0x23C8F51C: // outmin
         ctx->pid.outmin = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x53A8DB2E: // joint
+    case 0xC6D5CC61: // block
     {
         unsigned int const num = (unsigned int)luaL_checkinteger(L, 3);
-        void *ptr = lua_alloc(L, a_pid_fuzzy_joint(ctx), A_PID_FUZZY_JOINT(num));
-        a_pid_fuzzy_set_joint(ctx, ptr, num);
+        void *ptr = lua_alloc(L, a_pid_fuzzy_block(ctx), A_PID_FUZZY_BLOCK(num));
+        a_pid_fuzzy_set_block(ctx, ptr, num);
         break;
     }
     case 0xE8859EEB: // __name
@@ -331,8 +331,8 @@ static int liba_pid_fuzzy_get(lua_State *L)
     case 0xABD2FFCA: // order
         lua_pushinteger(L, (lua_Integer)ctx->order);
         break;
-    case 0x53A8DB2E: // joint
-        lua_pushinteger(L, (lua_Integer)ctx->joint);
+    case 0xC6D5CC61: // block
+        lua_pushinteger(L, (lua_Integer)ctx->block);
         break;
     case 0xA65758B2: // __index
         lua_registry_get(L, liba_pid_fuzzy_new);
@@ -347,7 +347,7 @@ static int liba_pid_fuzzy_get(lua_State *L)
         lua_num_set(L, -1, "fdb", ctx->pid.fdb);
         lua_num_set(L, -1, "err", ctx->pid.err);
         lua_int_set(L, -1, "order", (lua_Integer)ctx->order);
-        lua_int_set(L, -1, "joint", (lua_Integer)ctx->joint);
+        lua_int_set(L, -1, "block", (lua_Integer)ctx->block);
         break;
     default:
         lua_getmetatable(L, 1);
@@ -393,7 +393,7 @@ int luaopen_liba_pid_fuzzy(lua_State *L)
         {"zero", liba_pid_fuzzy_zero},
         {"op", liba_pid_fuzzy_op},
         {"rule", liba_pid_fuzzy_rule},
-        {"set_joint", liba_pid_fuzzy_joint},
+        {"set_block", liba_pid_fuzzy_block},
         {"kpid", liba_pid_fuzzy_kpid},
         {"run", liba_pid_fuzzy_run},
         {"pos", liba_pid_fuzzy_pos},

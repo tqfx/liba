@@ -446,10 +446,10 @@ struct pid_fuzzy: public a_pid_fuzzy
         val.delete_(val);
         return this;
     }
-    A_INLINE pid_fuzzy *set_joint(unsigned int num)
+    A_INLINE pid_fuzzy *set_block(unsigned int num)
     {
-        void *ptr = a_alloc(a_pid_fuzzy_joint(this), A_PID_FUZZY_JOINT(num));
-        a_pid_fuzzy_set_joint(this, ptr, num);
+        void *ptr = a_alloc(a_pid_fuzzy_block(this), A_PID_FUZZY_BLOCK(num));
+        a_pid_fuzzy_set_block(this, ptr, num);
         return this;
     }
     A_INLINE pid_fuzzy *kpid(a_float _kp, a_float _ki, a_float _kd)
@@ -495,7 +495,7 @@ struct pid_fuzzy: public a_pid_fuzzy
         val = nullptr;
         op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
         order = 0;
-        joint = 0;
+        block = 0;
         a_pid_fuzzy_init(this);
     }
     A_INLINE ~pid_fuzzy()
@@ -505,7 +505,7 @@ struct pid_fuzzy: public a_pid_fuzzy
             a_float const *p;
             a_float *o;
         } u;
-        a_alloc(a_pid_fuzzy_joint(this), 0);
+        a_alloc(a_pid_fuzzy_block(this), 0);
         u.p = me;
         a_alloc(u.o, 0);
         u.p = mec;
@@ -517,7 +517,7 @@ struct pid_fuzzy: public a_pid_fuzzy
         u.p = mkd;
         a_alloc(u.o, 0);
     }
-    A_INLINE unsigned int get_joint() const { return joint; }
+    A_INLINE unsigned int get_block() const { return block; }
     A_INLINE a_float get_summax() const { return pid.summax; }
     A_INLINE void set_summax(a_float summax) { pid.summax = summax; }
     A_INLINE a_float get_summin() const { return pid.summin; }
@@ -925,7 +925,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .constructor<>()
         .function("op", &pid_fuzzy::set_op, emscripten::allow_raw_pointers())
         .function("rule", &pid_fuzzy::rule, emscripten::allow_raw_pointers())
-        .function("set_joint", &pid_fuzzy::set_joint, emscripten::allow_raw_pointers())
+        .function("set_block", &pid_fuzzy::set_block, emscripten::allow_raw_pointers())
         .function("kpid", &pid_fuzzy::kpid, emscripten::allow_raw_pointers())
         .function("zero", &pid_fuzzy::zero, emscripten::allow_raw_pointers())
         .function("run", &pid_fuzzy::run)
@@ -949,7 +949,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("fdb", &pid_fuzzy::get_fdb)
         .property("err", &pid_fuzzy::get_err)
         .property<unsigned int const, void>("order", &pid_fuzzy::order)
-        .property("joint", &pid_fuzzy::get_joint, &pid_fuzzy::set_joint);
+        .property("block", &pid_fuzzy::get_block, &pid_fuzzy::set_block);
     emscripten::class_<pid_neuro>("pid_neuro")
         .constructor<>()
         .function("kpid", &pid_neuro::kpid, emscripten::allow_raw_pointers())

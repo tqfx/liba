@@ -42,6 +42,8 @@ unsigned int a_pid_fuzzy_mf(a_float x, unsigned int n, a_float const *a, unsigne
         a_float y = 0;
         switch ((int)*a++)
         {
+        default:
+        case A_MF_NUL: goto out;
         case A_MF_GAUSS:
             y = a_mf_gauss(x, a[0], a[1]);
             a += 2;
@@ -94,9 +96,6 @@ unsigned int a_pid_fuzzy_mf(a_float x, unsigned int n, a_float const *a, unsigne
             y = a_mf_pi(x, a[0], a[1], a[2], a[3]);
             a += 4;
             break;
-        case A_MF_NUL:
-        default:
-            goto out;
         }
         if (y > A_FLOAT_EPSILON)
         {
@@ -124,15 +123,14 @@ void a_pid_fuzzy_rule(a_pid_fuzzy *ctx, unsigned int order, a_float const *me, a
     ctx->order = order;
 }
 
-void a_pid_fuzzy_set_joint(a_pid_fuzzy *ctx, void *ptr, a_size num)
+void *a_pid_fuzzy_block(a_pid_fuzzy *ctx) { return ctx->idx; }
+void a_pid_fuzzy_set_block(a_pid_fuzzy *ctx, void *ptr, a_size num)
 {
-    ctx->joint = (unsigned int)num;
+    ctx->block = (unsigned int)num;
     ctx->idx = (unsigned int *)ptr;
-    ptr = (a_byte *)ptr + sizeof(unsigned int) * 2 * num;
+    ptr = (a_byte *)ptr + 2 * sizeof(unsigned int) * num;
     ctx->val = (a_float *)ptr;
 }
-
-void *a_pid_fuzzy_joint(a_pid_fuzzy *ctx) { return ctx->idx; }
 
 void a_pid_fuzzy_kpid(a_pid_fuzzy *ctx, a_float kp, a_float ki, a_float kd)
 {

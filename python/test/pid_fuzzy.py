@@ -123,30 +123,30 @@ def fuzzy(e: float, ec: float):
         return 0, 0, 0
 
     inv = 0.0
-    joint = []
+    mat = []
     for e in vale:
         row = []
         for ec in valec:
             y = pow(e * ec, 0.5) * pow(1 - (1 - e) * (1 - ec), 0.5)
             row.append(y)
             inv += y
-        joint.append(row)
+        mat.append(row)
     inv = 1 / inv
 
     kp = 0.0
     for i in range(len(vale)):
         for j in range(len(valec)):
-            kp += joint[i][j] * mkp[idxe[i]][idxec[j]]
+            kp += mat[i][j] * mkp[idxe[i]][idxec[j]]
     kp *= inv
     ki = 0.0
     for i in range(len(vale)):
         for j in range(len(valec)):
-            ki += joint[i][j] * mki[idxe[i]][idxec[j]]
+            ki += mat[i][j] * mki[idxe[i]][idxec[j]]
     ki *= inv
     kd = 0.0
     for i in range(len(vale)):
         for j in range(len(valec)):
-            kd += joint[i][j] * mkd[idxe[i]][idxec[j]]
+            kd += mat[i][j] * mkd[idxe[i]][idxec[j]]
     kd *= inv
 
     return kp, ki, kd
@@ -177,7 +177,7 @@ except Exception as e:
 MIN = -10
 MAX = +10
 tf = a.tf(num, den[1:])
-pid_fuzzy = a.pid_fuzzy().rule(me, mec, mkp, mki, mkd).set_joint(2).op(a.pid_fuzzy.CAP_ALGEBRA)
+pid_fuzzy = a.pid_fuzzy().rule(me, mec, mkp, mki, mkd).set_block(2).op(a.pid_fuzzy.CAP_ALGEBRA)
 pid_fuzzy.outmax = MAX
 pid_fuzzy.outmin = MIN
 

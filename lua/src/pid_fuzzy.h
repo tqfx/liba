@@ -21,7 +21,7 @@
  @field fdb cache feedback
  @field err cache error
  @field order number of order in the square matrix
- @field joint maximum number triggered by the rule
+ @field block maximum number triggered by the rule
  @table a.pid_fuzzy
 */
 #if defined(__cplusplus)
@@ -76,12 +76,12 @@ int liba_pid_fuzzy_op(lua_State *L);
 int liba_pid_fuzzy_rule(lua_State *L);
 
 /***
- set joint buffer for fuzzy PID controller
+ set memory block for fuzzy PID controller
  @tparam int num maximum number triggered by the rule
  @treturn a.pid_fuzzy fuzzy PID controller userdata
- @function set_joint
+ @function set_block
 */
-int liba_pid_fuzzy_joint(lua_State *L);
+int liba_pid_fuzzy_block(lua_State *L);
 
 /***
  set proportional integral derivative constant for fuzzy PID controller

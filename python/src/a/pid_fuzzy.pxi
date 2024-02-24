@@ -39,10 +39,10 @@ cdef class pid_fuzzy:
                          <a_float *>self.mki.data.as_voidptr,
                          <a_float *>self.mkd.data.as_voidptr)
         return self
-    def set_joint(self, num: int):
-        cdef void *ptr = a_pid_fuzzy_joint(&self.ctx);
-        ptr = PyMem_Realloc(ptr, A_PID_FUZZY_JOINT(num))
-        a_pid_fuzzy_set_joint(&self.ctx, ptr, num)
+    def set_block(self, num: int):
+        cdef void *ptr = a_pid_fuzzy_block(&self.ctx);
+        ptr = PyMem_Realloc(ptr, A_PID_FUZZY_BLOCK(num))
+        a_pid_fuzzy_set_block(&self.ctx, ptr, num)
         return self
     def kpid(self, kp: a_float, ki: a_float, kd: a_float):
         a_pid_fuzzy_kpid(&self.ctx, kp, ki, kd)
@@ -54,15 +54,15 @@ cdef class pid_fuzzy:
     def inc(self, set: a_float, fdb: a_float) -> a_float:
         return a_pid_fuzzy_inc(&self.ctx, set, fdb)
     def __dealloc__(self):
-        PyMem_Free(a_pid_fuzzy_joint(&self.ctx))
+        PyMem_Free(a_pid_fuzzy_block(&self.ctx))
     def zero(self):
         a_pid_fuzzy_zero(&self.ctx)
         return self
-    property joint:
+    property block:
         def __get__(self) -> int:
-            return self.ctx.joint
-        def __set__(self, joint: int):
-            self.set_joint(joint)
+            return self.ctx.block
+        def __set__(self, block: int):
+            self.set_block(block)
     property kp:
         def __get__(self) -> a_float:
             return self.ctx.kp

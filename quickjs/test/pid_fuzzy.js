@@ -76,7 +76,7 @@ var mkd = [
 
 var ctx = new a.pid_fuzzy()
 ctx.rule(me, mec, mkp, mki, mkd)
-ctx.set_joint(2)
+ctx.set_block(2)
 ctx.kpid(10, 0.1, 1)
 ctx.op(a.pid_fuzzy.EQU)
 console.log(ctx.run(10, 0))
@@ -96,4 +96,4 @@ ctx.out
 ctx.fdb
 ctx.err
 ctx.order
-ctx.joint = ctx.joint
+ctx.block = ctx.block
