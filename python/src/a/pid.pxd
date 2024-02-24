@@ -1,10 +1,6 @@
 from a cimport *
 
 cdef extern from "a/pid.h":
-    enum:
-        A_PID_RUN
-        A_PID_POS
-        A_PID_INC
     ctypedef struct a_pid:
         a_float kp
         a_float ki

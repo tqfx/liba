@@ -4,18 +4,9 @@ import java.nio.ByteBuffer;
 
 /** proportional integral derivative controller */
 public class pid {
-    /** run and output setpoint */
-    public static final int RUN;
-    /** positional PID controller */
-    public static final int POS;
-    /** incremental PID controller */
-    public static final int INC;
     ByteBuffer ctx;
     static {
         System.loadLibrary("a");
-        RUN = 0;
-        POS = 1;
-        INC = 2;
         clinit();
     }
 

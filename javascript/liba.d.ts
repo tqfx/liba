@@ -442,12 +442,6 @@ declare namespace liba {
   /** constructor for proportional integral derivative controller */
   let pid: {
     new(): pid;
-    /** run and output setpoint */
-    RUN: number;
-    /** positional PID controller */
-    POS: number;
-    /** incremental PID controller */
-    INC: number;
     readonly prototype: pid;
   }
 

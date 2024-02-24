@@ -395,13 +395,7 @@ struct pid: public a_pid
         outmin = -A_FLOAT_INF;
         a_pid_init(this);
     }
-    static unsigned int const RUN;
-    static unsigned int const POS;
-    static unsigned int const INC;
 };
-unsigned int const pid::RUN = A_PID_RUN;
-unsigned int const pid::POS = A_PID_POS;
-unsigned int const pid::INC = A_PID_INC;
 
 #include "a/pid_fuzzy.h"
 
@@ -908,9 +902,6 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .function("run", &pid::run)
         .function("pos", &pid::pos)
         .function("inc", &pid::inc)
-        .class_property("RUN", &pid::RUN)
-        .class_property("POS", &pid::POS)
-        .class_property("INC", &pid::INC)
         .property<a_float, void>("kp", &pid::kp)
         .property<a_float, void>("ki", &pid::ki)
         .property<a_float, void>("kd", &pid::kd)

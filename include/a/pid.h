@@ -39,16 +39,6 @@
 
 typedef struct a_pid a_pid;
 
-/*!
- @brief enumeration for PID controller
-*/
-enum
-{
-    A_PID_RUN, //!< run and output setpoint
-    A_PID_POS, //!< positional PID controller
-    A_PID_INC //!< incremental PID controller
-};
-
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */

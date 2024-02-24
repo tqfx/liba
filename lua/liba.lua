@@ -811,9 +811,6 @@ local pid = {}
 ---@class liba.pid
 ---@overload fun(): a.pid
 liba.pid = {}
-liba.pid.RUN = 0
-liba.pid.POS = 1
-liba.pid.INC = 2
 
 ---@return a.pid
 function liba.pid.new() end

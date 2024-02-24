@@ -254,18 +254,6 @@ static int liba_pid_(lua_State *L)
 
 int luaopen_liba_pid(lua_State *L)
 {
-    /***
-     enumeration for PID controller
-     @field RUN run and output setpoint
-     @field POS positional PID controller
-     @field INC incremental PID controller
-     @table mode
-    */
-    static lua_int const enums[] = {
-        {"RUN", A_PID_RUN},
-        {"POS", A_PID_POS},
-        {"INC", A_PID_INC},
-    };
     static lua_fun const funcs[] = {
         {"new", liba_pid_new},
         {"init", liba_pid_init},
@@ -275,8 +263,7 @@ int luaopen_liba_pid(lua_State *L)
         {"pos", liba_pid_pos},
         {"inc", liba_pid_inc},
     };
-    lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs));
-    lua_int_reg(L, -1, enums, A_LEN(enums));
+    lua_createtable(L, 0, A_LEN(funcs));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_createtable(L, 0, 1);
     lua_fun_set(L, -1, "__call", liba_pid_);

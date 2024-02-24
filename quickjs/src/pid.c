@@ -172,9 +172,5 @@ int js_liba_pid_init(JSContext *ctx, JSModuleDef *m)
     JS_SetConstructor(ctx, clazz, proto);
     JS_SetClassProto(ctx, liba_pid_class_id, proto);
 
-    JS_DefinePropertyValueStr(ctx, clazz, "RUN", JS_NewUint32(ctx, A_PID_RUN), 0);
-    JS_DefinePropertyValueStr(ctx, clazz, "POS", JS_NewUint32(ctx, A_PID_POS), 0);
-    JS_DefinePropertyValueStr(ctx, clazz, "INC", JS_NewUint32(ctx, A_PID_INC), 0);
-
     return JS_SetModuleExport(ctx, m, "pid", clazz);
 }

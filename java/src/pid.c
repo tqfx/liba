@@ -18,9 +18,6 @@ JNIEXPORT void JNICALL Java_liba_pid_clinit(JNIEnv *_env, jclass _cls)
     jclass _bb = (*_env)->FindClass(_env, "Ljava/nio/ByteBuffer;");
     L.ctx = (*_env)->GetFieldID(_env, _cls, "ctx", "Ljava/nio/ByteBuffer;");
     L.alloc = (*_env)->GetStaticMethodID(_env, _bb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
-    (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "RUN", "I"), A_PID_RUN);
-    (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "POS", "I"), A_PID_POS);
-    (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "INC", "I"), A_PID_INC);
 }
 
 JNIEXPORT void JNICALL Java_liba_pid_init(JNIEnv *_env, jobject _obj)

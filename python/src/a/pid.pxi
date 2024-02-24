@@ -1,9 +1,6 @@
 from a.pid cimport *
 
 cdef class pid:
-    RUN = A_PID_RUN
-    POS = A_PID_POS
-    INC = A_PID_INC
     cdef a_pid ctx
     def __init__(self):
         self.ctx.kp = 1
