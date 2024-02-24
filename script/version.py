@@ -99,6 +99,8 @@ if __name__ == "__main__":
     v = version(args[0].version)
     v.update_version("doc/Doxyfile", "PROJECT_NUMBER")
     v.update_version("cmake/Project.cmake", "VERSION")
+    v.update_version("java/src/liba.java", "VERSION")
+    v.update_version("lua/liba.lua", "VERSION")
     v.update_version_h("include/a/version.h")
     v.update_version("javascript/package.json")
     v.update_version_ac("script/configure.ac")

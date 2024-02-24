@@ -6,7 +6,7 @@ public class liba {
     public static final String VERSION;
     static {
         System.loadLibrary("a");
-        VERSION = "0.0.0";
+        VERSION = "0.1.5";
         INIT();
     }
 
