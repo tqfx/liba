@@ -252,13 +252,6 @@ unittest(poly)
 building(que que.c que.cpp)
 unittest(que)
 
-building(rbf rbf.c rbf.cpp)
-unittest(rbf)
-
-if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(rbf 3.gp rbf.csv)
-endif()
-
 building(rbt rbt.c rbt.cpp)
 unittest(rbt)
 

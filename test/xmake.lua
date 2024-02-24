@@ -92,10 +92,6 @@ target("test/que")
 building({ "que.c", "que.cpp" })
 target_end()
 
-target("test/rbf")
-building({ "rbf.c", "rbf.cpp" })
-target_end()
-
 target("test/rbt")
 building({ "rbt.c", "rbt.cpp" })
 target_end()
