@@ -19,10 +19,10 @@ public class version {
         MINOR = 0;
         PATCH = 0;
         TWEAK = 0;
-        INIT();
+        clinit();
     }
 
-    static final native void INIT();
+    static final native void clinit();
 
     final native void init(int major, int minor, int third);
 

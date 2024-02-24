@@ -7,10 +7,10 @@ public class crc8 {
     ByteBuffer ctx;
     static {
         System.loadLibrary("a");
-        INIT();
+        clinit();
     }
 
-    static final native void INIT();
+    static final native void clinit();
 
     final native void init(byte poly, boolean reversed);
 

@@ -7,10 +7,10 @@ public class lpf {
     ByteBuffer ctx;
     static {
         System.loadLibrary("a");
-        INIT();
+        clinit();
     }
 
-    static final native void INIT();
+    static final native void clinit();
 
     final native void init(double fc, double ts);
 

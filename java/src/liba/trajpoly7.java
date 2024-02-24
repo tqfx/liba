@@ -7,10 +7,10 @@ public class trajpoly7 {
     ByteBuffer ctx;
     static {
         System.loadLibrary("a");
-        INIT();
+        clinit();
     }
 
-    static final native void INIT();
+    static final native void clinit();
 
     /**
      * get coefficients of position for hepta polynomial trajectory

@@ -2,7 +2,7 @@
 #include "a/mf.h"
 #include "liba_mf.h"
 
-JNIEXPORT void JNICALL Java_liba_mf_INIT(JNIEnv *_env, jclass _cls)
+JNIEXPORT void JNICALL Java_liba_mf_clinit(JNIEnv *_env, jclass _cls)
 {
     (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "NUL", "I"), A_MF_NUL);
     (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "GAUSS", "I"), A_MF_GAUSS);

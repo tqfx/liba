@@ -5,7 +5,7 @@
 #endif /* A_VERSION */
 #include "liba.h"
 
-JNIEXPORT void JNICALL Java_liba_INIT(JNIEnv *_env, jclass _cls)
+JNIEXPORT void JNICALL Java_liba_clinit(JNIEnv *_env, jclass _cls)
 {
     (*_env)->SetStaticObjectField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "VERSION", "Ljava/lang/String;"), (*_env)->NewStringUTF(_env, A_VERSION));
 }

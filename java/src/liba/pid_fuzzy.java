@@ -34,10 +34,10 @@ public class pid_fuzzy {
         CUP_ALGEBRA = 5;
         CUP_BOUNDED = 6;
         EQU = 0;
-        INIT();
+        clinit();
     }
 
-    static final native void INIT();
+    static final native void clinit();
 
     final native void init();
 

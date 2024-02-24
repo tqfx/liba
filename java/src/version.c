@@ -11,7 +11,7 @@ static struct
     jfieldID ctx;
 } L = {NULL, NULL};
 
-JNIEXPORT void JNICALL Java_liba_version_INIT(JNIEnv *_env, jclass _cls)
+JNIEXPORT void JNICALL Java_liba_version_clinit(JNIEnv *_env, jclass _cls)
 {
     jclass _bb = (*_env)->FindClass(_env, "Ljava/nio/ByteBuffer;");
     L.ctx = (*_env)->GetFieldID(_env, _cls, "ctx", "Ljava/nio/ByteBuffer;");

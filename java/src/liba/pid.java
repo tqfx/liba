@@ -16,10 +16,10 @@ public class pid {
         RUN = 0;
         POS = 1;
         INC = 2;
-        INIT();
+        clinit();
     }
 
-    static final native void INIT();
+    static final native void clinit();
 
     final native void init();
 

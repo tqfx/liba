@@ -7,10 +7,10 @@ public class liba {
     static {
         System.loadLibrary("a");
         VERSION = "0.1.5";
-        INIT();
+        clinit();
     }
 
-    static final native void INIT();
+    static final native void clinit();
 
     /**
      * square root of an unsigned integer

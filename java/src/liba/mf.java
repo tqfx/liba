@@ -46,10 +46,10 @@ public class mf {
         S = 11;
         Z = 12;
         PI = 13;
-        INIT();
+        clinit();
     }
 
-    static final native void INIT();
+    static final native void clinit();
 
     /**
      * gaussian membership function
