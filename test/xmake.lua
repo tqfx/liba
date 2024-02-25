@@ -48,10 +48,6 @@ target("test/lpf")
 building({ "lpf.c", "lpf.cpp" })
 target_end()
 
-target("test/main")
-building({ "main.c", "main.cpp" })
-target_end()
-
 target("test/math")
 building({ "math.c", "math.cpp" })
 target_end()
@@ -96,6 +92,18 @@ target("test/rbt")
 building({ "rbt.c", "rbt.cpp" })
 target_end()
 
+target("test/slist")
+building({ "slist.c", "slist.cpp" })
+target_end()
+
+target("test/str")
+building({ "str.c", "str.cpp" })
+target_end()
+
+target("test/test")
+building({ "test.c", "test.cpp" })
+target_end()
+
 target("test/tf")
 building({ "tf.c", "tf.cpp" })
 target_end()
@@ -118,14 +126,6 @@ target_end()
 
 target("test/trajtrap")
 building({ "trajtrap.c", "trajtrap.cpp" })
-target_end()
-
-target("test/str")
-building({ "str.c", "str.cpp" })
-target_end()
-
-target("test/slist")
-building({ "slist.c", "slist.cpp" })
 target_end()
 
 target("test/utf")

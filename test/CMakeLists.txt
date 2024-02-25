@@ -183,9 +183,6 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(lpf 3.gp lpf.csv)
 endif()
 
-building(main main.c main.cpp)
-unittest(main)
-
 building(math math.c math.cpp)
 unittest(math)
 
@@ -255,11 +252,14 @@ unittest(que)
 building(rbt rbt.c rbt.cpp)
 unittest(rbt)
 
+building(slist slist.c slist.cpp)
+unittest(slist)
+
 building(str str.c str.cpp)
 unittest(str)
 
-building(slist slist.c slist.cpp)
-unittest(slist)
+building(test test.c test.cpp)
+unittest(test)
 
 building(tf tf.c tf.cpp)
 unittest(tf)
