@@ -20,7 +20,7 @@ sources = sorted(sources)
 
 with open("meson.build", "r") as f:
     meson = f.read()
+cur = re.findall(r"sources = ([^\]]+)", meson)[0] + "]\n"
 new = "[\n    '" + "',\n    '".join(sources) + "',\n]\n"
-old = re.findall(r"sources = ([^\]]+)", meson)[0] + "]\n"
 with open("meson.build", "wb") as f:
-    meson = f.write(meson.replace(old, new).encode())
+    meson = f.write(meson.replace(cur, new).encode())

@@ -69,9 +69,9 @@ if env.GetOption('install_sandbox'):
         target = target[0].get_relpath() + '/a.h'
         with open(source, "r") as f:
             text = f.read()
-        old = "#if defined(A_HAVE_H)"
-        new = '#include "a.scons.h"\n' + old
-        text = text.replace(old, new)
+        cur = "#if defined(A_HAVE_H)"
+        new = '#include "a.scons.h"\n' + cur
+        text = text.replace(cur, new)
         with open(target, "wb") as f:
             f.write(text.encode())
     env.AddPostAction(include, install_fixup)

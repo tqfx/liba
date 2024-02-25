@@ -13,9 +13,9 @@ for source in glob(os.path.join("lua/src", "**.c"), recursive=True):
         new = "%08X" % value
         if item[0] != new:
             print("{} -> {} // {}".format(item[0], new, item[1]))
-            old = "0x{}: // {}".format(item[0], item[1])
+            cur = "0x{}: // {}".format(item[0], item[1])
             new = "0x{}: // {}".format(new, item[1])
-            text = text.replace(old, new)
+            text = text.replace(cur, new)
     if text != text_:
         with open(source, "wb") as f:
             f.write(text.encode("UTF-8"))

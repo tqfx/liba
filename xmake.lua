@@ -175,10 +175,10 @@ on_load(function(target)
 end)
 after_install(function(target)
     if target:installdir() then
-        local old = "#if defined(A_HAVE_H)"
-        local new = '#include "a.xmake.h"\n' .. old
+        local cur = "#if defined(A_HAVE_H)"
+        local new = '#include "a.xmake.h"\n' .. cur
         local includedir = path.join(target:installdir(), "include")
-        io.replace(path.join(includedir, "a", "a.h"), old, new, { plain = true })
+        io.replace(path.join(includedir, "a", "a.h"), cur, new, { plain = true })
     end
 end)
 -- add the dependent target

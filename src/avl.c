@@ -1,11 +1,11 @@
 #include "a/avl.h"
 
 /* Replaces the child of the specified AVL tree node. */
-static A_INLINE void a_avl_new_child(a_avl *root, a_avl_node *parent, a_avl_node *oldnode, a_avl_node *newnode)
+static A_INLINE void a_avl_new_child(a_avl *root, a_avl_node *parent, a_avl_node *node, a_avl_node *newnode)
 {
     if (parent)
     {
-        if (parent->left == oldnode)
+        if (parent->left == node)
         {
             parent->left = newnode;
         }
@@ -203,15 +203,15 @@ Indeed, a single node insertion cannot require that more than one (single or dou
 */
 static A_INLINE a_bool a_avl_handle_growth(a_avl *root, a_avl_node *parent, a_avl_node *node, int sign)
 {
-    int const old_factor = a_avl_factor(parent);
-    if (old_factor == 0)
+    int const cur_factor = a_avl_factor(parent);
+    if (cur_factor == 0)
     {
         /* $parent is still sufficiently balanced (-1 or +1 balance factor), but must have increased in height. Continue up the tree. */
         a_avl_set_factor(parent, sign);
         return A_FALSE;
     }
 
-    int const new_factor = old_factor + sign;
+    int const new_factor = cur_factor + sign;
     if (new_factor == 0)
     {
         /* $parent is now perfectly balanced (0 balance factor). It cannot have increased in height, so there is nothing more to do. */
@@ -372,8 +372,8 @@ Also in the latter case, *left will be set.
 */
 static A_INLINE a_avl_node *a_avl_handle_shrink(a_avl *root, a_avl_node *parent, int sign, a_bool *left)
 {
-    int const old_factor = a_avl_factor(parent);
-    if (old_factor == 0)
+    int const cur_factor = a_avl_factor(parent);
+    if (cur_factor == 0)
     {
         /*
         Prior to the deletion, the subtree rooted at $parent was perfectly balanced.
@@ -384,7 +384,7 @@ static A_INLINE a_avl_node *a_avl_handle_shrink(a_avl *root, a_avl_node *parent,
     }
 
     a_avl_node *node;
-    int const new_factor = old_factor + sign;
+    int const new_factor = cur_factor + sign;
     if (new_factor == 0)
     {
         /*
@@ -439,7 +439,7 @@ static A_INLINE a_avl_node *a_avl_handle_shrink(a_avl *root, a_avl_node *parent,
                     balance(B) = +1
 
                 A: -2 => -1 (sign < 0) or +2 => +1 (sign > 0)
-                No change needed --- that's the same as old_factor.
+                No change needed --- that's the same as cur_factor.
 
                 B: 0 => +1 (sign < 0) or 0 => -1 (sign > 0)
                 */

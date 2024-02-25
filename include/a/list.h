@@ -437,7 +437,7 @@ A_INTERN void a_list_shift_(a_list *head1, a_list *tail1, a_list *head2, a_list 
 
 /*!
  @brief shift the node rhs to the node lhs
- @param[in,out] lhs the old node
+ @param[in,out] lhs the current node
  @param[in,out] rhs the new node
 */
 A_INTERN void a_list_shift_node(a_list *lhs, a_list *rhs)

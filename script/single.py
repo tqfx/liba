@@ -52,13 +52,13 @@ class single(object):
         include_dirs = [os.path.dirname(name)] + self._include_dirs
         includes = re.findall(r"#include \"([^\"]+)\"", source)
         for include in includes:
-            old = '#include "{}"\n'.format(include)
+            cur = '#include "{}"\n'.format(include)
             for include_dir in include_dirs:
                 new = os.path.join(include_dir, include)
                 if not os.path.exists(new):
                     continue
                 new = self.__call__(new)
-                source = source.replace(old, new)
+                source = source.replace(cur, new)
         self._include_files.append(name)
         if name == self.name:
             for define_macro in self.define_macros:

@@ -20,11 +20,11 @@ red-black trees properties: https://en.wikipedia.org/wiki/Rbtree
 */
 
 /* Replaces the child of the specified red–black tree node. */
-static A_INLINE void a_rbt_new_child(a_rbt *root, a_rbt_node *parent, a_rbt_node *oldnode, a_rbt_node *newnode)
+static A_INLINE void a_rbt_new_child(a_rbt *root, a_rbt_node *parent, a_rbt_node *node, a_rbt_node *newnode)
 {
     if (parent)
     {
-        if (parent->left == oldnode)
+        if (parent->left == node)
         {
             parent->left = newnode;
         }
@@ -82,20 +82,20 @@ static A_INLINE void a_rbt_set_black(a_rbt_node *node)
 
 /*
 Helper function for rotations:
- - old's parent and color get assigned to new
- - old gets assigned new as a parent and 'color' as a color.
+ - node's parent and color get assigned to new
+ - node gets assigned new as a parent and 'color' as a color.
 */
-static A_INLINE void a_rbt_set_parents(a_rbt *root, a_rbt_node *oldnode, a_rbt_node *newnode, unsigned int color)
+static A_INLINE void a_rbt_set_parents(a_rbt *root, a_rbt_node *node, a_rbt_node *newnode, unsigned int color)
 {
-    a_rbt_node *const parent = a_rbt_parent(oldnode);
+    a_rbt_node *const parent = a_rbt_parent(node);
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    newnode->_parent = oldnode->_parent;
+    newnode->_parent = node->_parent;
 #else /* !A_SIZE_POINTER */
-    newnode->parent = oldnode->parent;
-    newnode->color = oldnode->color;
+    newnode->parent = node->parent;
+    newnode->color = node->color;
 #endif /* A_SIZE_POINTER */
-    a_rbt_set_parent_color(oldnode, newnode, color);
-    a_rbt_new_child(root, parent, oldnode, newnode);
+    a_rbt_set_parent_color(node, newnode, color);
+    a_rbt_new_child(root, parent, node, newnode);
 }
 
 void a_rbt_insert_adjust(a_rbt *root, a_rbt_node *node)
