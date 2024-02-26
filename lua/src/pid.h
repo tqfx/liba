@@ -41,13 +41,6 @@ int liba_pid_new(lua_State *L);
 int liba_pid_init(lua_State *L);
 
 /***
- zeroing for PID controller
- @treturn a.pid PID controller userdata
- @function zero
-*/
-int liba_pid_zero(lua_State *L);
-
-/***
  set proportional integral derivative constant for PID controller
  @tparam number kp proportional constant
  @tparam number ki integral constant
@@ -83,6 +76,13 @@ int liba_pid_pos(lua_State *L);
  @function inc
 */
 int liba_pid_inc(lua_State *L);
+
+/***
+ zeroing for PID controller
+ @treturn a.pid PID controller userdata
+ @function zero
+*/
+int liba_pid_zero(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

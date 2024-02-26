@@ -29,13 +29,12 @@ static JSValue liba_pid_fuzzy_ctor(JSContext *ctx, JSValueConst new_target, int 
     JSValue proto, clazz = JS_UNDEFINED;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)js_mallocz(ctx, sizeof(a_pid_fuzzy));
     if (!self) { return JS_EXCEPTION; }
-    self->pid.kp = 1;
     self->pid.summax = +A_FLOAT_INF;
     self->pid.summin = -A_FLOAT_INF;
     self->pid.outmax = +A_FLOAT_INF;
     self->pid.outmin = -A_FLOAT_INF;
-    self->kp = 1;
-    self->op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
+    self->kp = self->pid.kp = 1;
+    self->op = a_fuzzy_equ;
     a_pid_fuzzy_init(self);
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }

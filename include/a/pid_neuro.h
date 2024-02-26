@@ -39,13 +39,7 @@ extern "C" {
  @brief initialize for single neuron PID controller
  @param[in,out] ctx points to an instance of single neuron PID controller
 */
-A_EXTERN void a_pid_neuro_init(a_pid_neuro *ctx);
-
-/*!
- @brief zeroing for single neuron PID controller
- @param[in,out] ctx points to an instance of single neuron PID controller
-*/
-A_EXTERN void a_pid_neuro_zero(a_pid_neuro *ctx);
+#define a_pid_neuro_init(ctx) a_pid_neuro_zero(ctx)
 
 /*!
  @brief set proportional integral derivative constant for single neuron PID controller
@@ -83,6 +77,12 @@ A_EXTERN a_float a_pid_neuro_run(a_pid_neuro *ctx, a_float set, a_float fdb);
  @return output value
 */
 A_EXTERN a_float a_pid_neuro_inc(a_pid_neuro *ctx, a_float set, a_float fdb);
+
+/*!
+ @brief zeroing for single neuron PID controller
+ @param[in,out] ctx points to an instance of single neuron PID controller
+*/
+A_EXTERN void a_pid_neuro_zero(a_pid_neuro *ctx);
 
 #if defined(__cplusplus)
 } /* extern "C" */

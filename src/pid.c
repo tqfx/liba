@@ -1,16 +1,5 @@
 #include "a/pid.h"
 
-void a_pid_init(a_pid *ctx)
-{
-    ctx->sum = 0;
-    ctx->out = 0;
-    ctx->fdb = 0;
-    ctx->var = 0;
-    ctx->err = 0;
-}
-
-void a_pid_zero(a_pid *ctx) { a_pid_init(ctx); }
-
 void a_pid_kpid(a_pid *ctx, a_float kp, a_float ki, a_float kd)
 {
     ctx->kp = kp;
@@ -73,4 +62,13 @@ a_float a_pid_inc_(a_pid *ctx, a_float fdb, a_float err)
     ctx->var = var;
     ctx->err = err;
     return ctx->out;
+}
+
+void a_pid_zero(a_pid *ctx)
+{
+    ctx->sum = 0;
+    ctx->out = 0;
+    ctx->fdb = 0;
+    ctx->var = 0;
+    ctx->err = 0;
 }

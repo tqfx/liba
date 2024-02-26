@@ -30,13 +30,7 @@ extern "C" {
  @brief initialize for expert PID controller
  @param[in,out] ctx points to an instance of expert PID controller
 */
-A_EXTERN void a_pid_expert_init(a_pid_expert *ctx);
-
-/*!
- @brief zeroing for expert PID controller
- @param[in,out] ctx points to an instance of expert PID controller
-*/
-A_EXTERN void a_pid_expert_zero(a_pid_expert *ctx);
+#define a_pid_expert_init(ctx) a_pid_expert_zero(ctx)
 
 /*!
  @brief set proportional integral derivative constant for expert PID controller
@@ -55,6 +49,12 @@ A_EXTERN void a_pid_expert_kpid(a_pid_expert *ctx, a_float kp, a_float ki, a_flo
  @return output value
 */
 A_EXTERN a_float a_pid_expert_iter(a_pid_expert *ctx, a_float set, a_float fdb);
+
+/*!
+ @brief zeroing for expert PID controller
+ @param[in,out] ctx points to an instance of expert PID controller
+*/
+A_EXTERN void a_pid_expert_zero(a_pid_expert *ctx);
 
 #if defined(__cplusplus)
 } /* extern "C" */

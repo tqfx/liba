@@ -49,13 +49,6 @@ int liba_pid_fuzzy_new(lua_State *L);
 int liba_pid_fuzzy_init(lua_State *L);
 
 /***
- zeroing for fuzzy PID controller
- @treturn a.pid_fuzzy fuzzy PID controller userdata
- @function zero
-*/
-int liba_pid_fuzzy_zero(lua_State *L);
-
-/***
  set fuzzy relational operator for fuzzy PID controller
  @tparam int op enumeration for fuzzy PID controller operator
  @treturn a.pid_fuzzy fuzzy PID controller userdata
@@ -119,6 +112,13 @@ int liba_pid_fuzzy_pos(lua_State *L);
  @function inc
 */
 int liba_pid_fuzzy_inc(lua_State *L);
+
+/***
+ zeroing for fuzzy PID controller
+ @treturn a.pid_fuzzy fuzzy PID controller userdata
+ @function zero
+*/
+int liba_pid_fuzzy_zero(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

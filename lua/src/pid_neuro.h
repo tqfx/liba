@@ -44,13 +44,6 @@ int liba_pid_neuro_new(lua_State *L);
 int liba_pid_neuro_init(lua_State *L);
 
 /***
- zeroing for single neuron PID controller
- @treturn a.pid_neuro single neuron PID controller userdata
- @function zero
-*/
-int liba_pid_neuro_zero(lua_State *L);
-
-/***
  set proportional integral derivative constant for single neuron PID controller
  @tparam number k proportional output coefficient
  @tparam number kp proportional learning constant
@@ -88,6 +81,13 @@ int liba_pid_neuro_run(lua_State *L);
  @function inc
 */
 int liba_pid_neuro_inc(lua_State *L);
+
+/***
+ zeroing for single neuron PID controller
+ @treturn a.pid_neuro single neuron PID controller userdata
+ @function zero
+*/
+int liba_pid_neuro_zero(lua_State *L);
 
 #if defined(__cplusplus)
 } /* extern "C" */

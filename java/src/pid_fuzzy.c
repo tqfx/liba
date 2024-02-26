@@ -44,13 +44,12 @@ JNIEXPORT void JNICALL Java_liba_pid_1fuzzy_init(JNIEnv *_env, jobject _obj)
     jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)sizeof(a_pid_fuzzy));
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
-    ctx->pid.kp = 1;
     ctx->pid.summax = +A_FLOAT_INF;
     ctx->pid.summin = -A_FLOAT_INF;
     ctx->pid.outmax = +A_FLOAT_INF;
     ctx->pid.outmin = -A_FLOAT_INF;
-    ctx->kp = 1;
-    ctx->op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
+    ctx->kp = ctx->pid.kp = 1;
+    ctx->op = a_fuzzy_equ;
     a_pid_fuzzy_init(ctx);
 }
 

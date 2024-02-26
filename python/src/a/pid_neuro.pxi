@@ -8,7 +8,7 @@ cdef class pid_neuro:
         self.ctx.pid.summin = -A_FLOAT_INF
         self.ctx.pid.outmax = +A_FLOAT_INF
         self.ctx.pid.outmin = -A_FLOAT_INF
-        self.ctx.k = 1
+        self.ctx.k = self.ctx.pid.kp = 1
         self.ctx.wp = 0.1
         self.ctx.wi = 0.1
         self.ctx.wd = 0.1

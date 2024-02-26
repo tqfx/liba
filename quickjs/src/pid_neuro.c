@@ -21,7 +21,7 @@ static JSValue liba_pid_neuro_ctor(JSContext *ctx, JSValueConst new_target, int 
     self->pid.summin = -A_FLOAT_INF;
     self->pid.outmax = +A_FLOAT_INF;
     self->pid.outmin = -A_FLOAT_INF;
-    self->k = 1;
+    self->k = self->pid.kp = 1;
     self->wp = A_FLOAT_C(0.1);
     self->wi = A_FLOAT_C(0.1);
     self->wd = A_FLOAT_C(0.1);

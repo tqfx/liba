@@ -29,7 +29,7 @@ JNIEXPORT void JNICALL Java_liba_pid_1neuro_init(JNIEnv *_env, jobject _obj)
     ctx->pid.summin = -A_FLOAT_INF;
     ctx->pid.outmax = +A_FLOAT_INF;
     ctx->pid.outmin = -A_FLOAT_INF;
-    ctx->k = 1;
+    ctx->k = ctx->pid.kp = 1;
     ctx->wp = A_FLOAT_C(0.1);
     ctx->wi = A_FLOAT_C(0.1);
     ctx->wd = A_FLOAT_C(0.1);

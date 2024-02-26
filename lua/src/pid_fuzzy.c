@@ -41,15 +41,25 @@ int liba_pid_fuzzy_die(lua_State *L)
 int liba_pid_fuzzy_new(lua_State *L)
 {
     a_pid_fuzzy *const ctx = lua_newclass(L, a_pid_fuzzy);
-    a_zero(ctx, sizeof(a_pid_fuzzy));
     lua_registry_get(L, liba_pid_fuzzy_new);
     lua_setmetatable(L, -2);
+    ctx->pid.kp = ctx->kp = 1;
+    ctx->pid.ki = ctx->ki = 0;
+    ctx->pid.kd = ctx->kd = 0;
     ctx->pid.summax = +A_FLOAT_INF;
     ctx->pid.summin = -A_FLOAT_INF;
     ctx->pid.outmax = +A_FLOAT_INF;
     ctx->pid.outmin = -A_FLOAT_INF;
-    ctx->pid.kp = ctx->kp = 1;
-    ctx->op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
+    ctx->me = 0;
+    ctx->mec = 0;
+    ctx->mkp = 0;
+    ctx->mki = 0;
+    ctx->mkd = 0;
+    ctx->idx = 0;
+    ctx->val = 0;
+    ctx->order = 0;
+    ctx->block = 0;
+    ctx->op = a_fuzzy_equ;
     a_pid_fuzzy_init(ctx);
     return 1;
 }
@@ -64,31 +74,16 @@ int liba_pid_fuzzy_init(lua_State *L)
 {
     luaL_checktype(L, 1, LUA_TUSERDATA);
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
+    ctx->pid.kp = ctx->kp = 1;
+    ctx->pid.ki = ctx->ki = 0;
+    ctx->pid.kd = ctx->kd = 0;
     ctx->pid.summax = +A_FLOAT_INF;
     ctx->pid.summin = -A_FLOAT_INF;
     ctx->pid.outmax = +A_FLOAT_INF;
     ctx->pid.outmin = -A_FLOAT_INF;
-    ctx->pid.kp = ctx->kp = 1;
-    ctx->op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
+    ctx->op = a_fuzzy_equ;
     a_pid_fuzzy_init(ctx);
     return 1;
-}
-
-/***
- zeroing for fuzzy PID controller
- @tparam a.pid_fuzzy ctx fuzzy PID controller userdata
- @treturn a.pid_fuzzy fuzzy PID controller userdata
- @function zero
-*/
-int liba_pid_fuzzy_zero(lua_State *L)
-{
-    a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
-    if (ctx)
-    {
-        a_pid_fuzzy_zero(ctx);
-        return 1;
-    }
-    return 0;
 }
 
 /***
@@ -247,6 +242,23 @@ int liba_pid_fuzzy_inc(lua_State *L)
     return 0;
 }
 
+/***
+ zeroing for fuzzy PID controller
+ @tparam a.pid_fuzzy ctx fuzzy PID controller userdata
+ @treturn a.pid_fuzzy fuzzy PID controller userdata
+ @function zero
+*/
+int liba_pid_fuzzy_zero(lua_State *L)
+{
+    a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
+    if (ctx)
+    {
+        a_pid_fuzzy_zero(ctx);
+        return 1;
+    }
+    return 0;
+}
+
 static int liba_pid_fuzzy_set(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
@@ -390,7 +402,6 @@ int luaopen_liba_pid_fuzzy(lua_State *L)
     static lua_fun const funcs[] = {
         {"new", liba_pid_fuzzy_new},
         {"init", liba_pid_fuzzy_init},
-        {"zero", liba_pid_fuzzy_zero},
         {"op", liba_pid_fuzzy_op},
         {"rule", liba_pid_fuzzy_rule},
         {"set_block", liba_pid_fuzzy_block},
@@ -398,6 +409,7 @@ int luaopen_liba_pid_fuzzy(lua_State *L)
         {"run", liba_pid_fuzzy_run},
         {"pos", liba_pid_fuzzy_pos},
         {"inc", liba_pid_fuzzy_inc},
+        {"zero", liba_pid_fuzzy_zero},
     };
     lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs));
     lua_int_reg(L, -1, enums, A_LEN(enums));

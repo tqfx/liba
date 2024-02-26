@@ -14,14 +14,15 @@
 int liba_pid_neuro_new(lua_State *L)
 {
     a_pid_neuro *const ctx = lua_newclass(L, a_pid_neuro);
-    a_zero(ctx, sizeof(a_pid_neuro));
     lua_registry_get(L, liba_pid_neuro_new);
     lua_setmetatable(L, -2);
     ctx->pid.summax = +A_FLOAT_INF;
     ctx->pid.summin = -A_FLOAT_INF;
     ctx->pid.outmax = +A_FLOAT_INF;
     ctx->pid.outmin = -A_FLOAT_INF;
-    ctx->k = 1;
+    ctx->pid.kp = ctx->k = 1;
+    ctx->pid.ki = 0;
+    ctx->pid.kd = 0;
     ctx->wp = A_FLOAT_C(0.1);
     ctx->wi = A_FLOAT_C(0.1);
     ctx->wd = A_FLOAT_C(0.1);
@@ -39,6 +40,9 @@ int liba_pid_neuro_init(lua_State *L)
 {
     luaL_checktype(L, 1, LUA_TUSERDATA);
     a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
+    ctx->pid.kp = 1;
+    ctx->pid.ki = 0;
+    ctx->pid.kd = 0;
     ctx->pid.summax = +A_FLOAT_INF;
     ctx->pid.summin = -A_FLOAT_INF;
     ctx->pid.outmax = +A_FLOAT_INF;
@@ -49,23 +53,6 @@ int liba_pid_neuro_init(lua_State *L)
     ctx->wd = A_FLOAT_C(0.1);
     a_pid_neuro_init(ctx);
     return 1;
-}
-
-/***
- zeroing for single neuron PID controller
- @tparam a.pid_neuro ctx single neuron PID controller userdata
- @treturn a.pid_neuro single neuron PID controller userdata
- @function zero
-*/
-int liba_pid_neuro_zero(lua_State *L)
-{
-    a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
-    if (ctx)
-    {
-        a_pid_neuro_zero(ctx);
-        return 1;
-    }
-    return 0;
 }
 
 /***
@@ -155,6 +142,23 @@ int liba_pid_neuro_inc(lua_State *L)
         a_float const set = (a_float)luaL_checknumber(L, 2);
         a_float const fdb = (a_float)luaL_checknumber(L, 3);
         lua_pushnumber(L, (lua_Number)a_pid_neuro_inc(ctx, set, fdb));
+        return 1;
+    }
+    return 0;
+}
+
+/***
+ zeroing for single neuron PID controller
+ @tparam a.pid_neuro ctx single neuron PID controller userdata
+ @treturn a.pid_neuro single neuron PID controller userdata
+ @function zero
+*/
+int liba_pid_neuro_zero(lua_State *L)
+{
+    a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
+    if (ctx)
+    {
+        a_pid_neuro_zero(ctx);
         return 1;
     }
     return 0;
@@ -288,11 +292,11 @@ int luaopen_liba_pid_neuro(lua_State *L)
     static lua_fun const funcs[] = {
         {"new", liba_pid_neuro_new},
         {"init", liba_pid_neuro_init},
-        {"zero", liba_pid_neuro_zero},
         {"kpid", liba_pid_neuro_kpid},
         {"wpid", liba_pid_neuro_wpid},
         {"run", liba_pid_neuro_run},
         {"inc", liba_pid_neuro_inc},
+        {"zero", liba_pid_neuro_zero},
     };
     lua_createtable(L, 0, A_LEN(funcs));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));

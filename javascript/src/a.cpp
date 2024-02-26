@@ -401,11 +401,6 @@ struct pid: public a_pid
 
 struct pid_fuzzy: public a_pid_fuzzy
 {
-    A_INLINE pid_fuzzy *set_op(unsigned int _op)
-    {
-        a_pid_fuzzy::set_op(_op);
-        return this;
-    }
     A_INLINE pid_fuzzy *rule(emscripten::val const &_me,
                              emscripten::val const &_mec,
                              emscripten::val const &_mkp,
@@ -440,6 +435,11 @@ struct pid_fuzzy: public a_pid_fuzzy
         val.delete_(val);
         return this;
     }
+    A_INLINE pid_fuzzy *set_op(unsigned int _op)
+    {
+        a_pid_fuzzy::set_op(_op);
+        return this;
+    }
     A_INLINE pid_fuzzy *set_block(unsigned int num)
     {
         void *ptr = a_alloc(a_pid_fuzzy_block(this), A_PID_FUZZY_BLOCK(num));
@@ -470,16 +470,13 @@ struct pid_fuzzy: public a_pid_fuzzy
     }
     A_INLINE pid_fuzzy()
     {
-        pid.kp = 1;
-        pid.ki = 0;
-        pid.kd = 0;
+        pid.kp = kp = 1;
+        pid.ki = ki = 0;
+        pid.kd = kd = 0;
         pid.summax = +A_FLOAT_INF;
         pid.summin = -A_FLOAT_INF;
         pid.outmax = +A_FLOAT_INF;
         pid.outmin = -A_FLOAT_INF;
-        kp = 1;
-        ki = 0;
-        kd = 0;
         me = nullptr;
         mec = nullptr;
         mkp = nullptr;
@@ -487,9 +484,9 @@ struct pid_fuzzy: public a_pid_fuzzy
         mkd = nullptr;
         idx = nullptr;
         val = nullptr;
-        op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
         order = 0;
         block = 0;
+        op = a_fuzzy_equ;
         a_pid_fuzzy_init(this);
     }
     A_INLINE ~pid_fuzzy()
@@ -572,10 +569,9 @@ struct pid_neuro: public a_pid_neuro
         pid.summin = -A_FLOAT_INF;
         pid.outmax = +A_FLOAT_INF;
         pid.outmin = -A_FLOAT_INF;
-        pid.kp = 0;
+        pid.kp = k = 1;
         pid.ki = 0;
         pid.kd = 0;
-        k = 1;
         wp = A_FLOAT_C(0.1);
         wi = A_FLOAT_C(0.1);
         wd = A_FLOAT_C(0.1);

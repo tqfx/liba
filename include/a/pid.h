@@ -47,13 +47,7 @@ extern "C" {
  @brief initialize for PID controller
  @param[in,out] ctx points to an instance of PID controller
 */
-A_EXTERN void a_pid_init(a_pid *ctx);
-
-/*!
- @brief zeroing for PID controller
- @param[in,out] ctx points to an instance of PID controller
-*/
-A_EXTERN void a_pid_zero(a_pid *ctx);
+#define a_pid_init(ctx) a_pid_zero(ctx)
 
 /*!
  @brief set proportional integral derivative constant for PID controller
@@ -90,6 +84,12 @@ A_EXTERN a_float a_pid_pos(a_pid *ctx, a_float set, a_float fdb);
  @return output value
 */
 A_EXTERN a_float a_pid_inc(a_pid *ctx, a_float set, a_float fdb);
+
+/*!
+ @brief zeroing for PID controller
+ @param[in,out] ctx points to an instance of PID controller
+*/
+A_EXTERN void a_pid_zero(a_pid *ctx);
 
 #if defined(__cplusplus)
 } /* extern "C" */

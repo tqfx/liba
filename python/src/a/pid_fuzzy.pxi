@@ -1,4 +1,5 @@
 from a cimport *
+from a.fuzzy cimport *
 from a.pid_fuzzy cimport *
 
 cdef class pid_fuzzy:
@@ -20,8 +21,8 @@ cdef class pid_fuzzy:
         self.ctx.pid.summin = -A_FLOAT_INF
         self.ctx.pid.outmax = +A_FLOAT_INF
         self.ctx.pid.outmin = -A_FLOAT_INF
-        self.ctx.kp = 1
-        a_pid_fuzzy_set_op(&self.ctx, A_PID_FUZZY_EQU)
+        self.ctx.kp = self.ctx.pid.kp = 1
+        self.ctx.op = a_fuzzy_equ
         a_pid_fuzzy_init(&self.ctx)
     def op(self, op: int):
         a_pid_fuzzy_set_op(&self.ctx, op)

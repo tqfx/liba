@@ -14,10 +14,11 @@
 int liba_pid_new(lua_State *L)
 {
     a_pid *const ctx = lua_newclass(L, a_pid);
-    a_zero(ctx, sizeof(a_pid));
     lua_registry_get(L, liba_pid_new);
     lua_setmetatable(L, -2);
     ctx->kp = 1;
+    ctx->ki = 0;
+    ctx->kd = 0;
     ctx->summax = +A_FLOAT_INF;
     ctx->summin = -A_FLOAT_INF;
     ctx->outmax = +A_FLOAT_INF;
@@ -37,29 +38,14 @@ int liba_pid_init(lua_State *L)
     luaL_checktype(L, 1, LUA_TUSERDATA);
     a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
     ctx->kp = 1;
+    ctx->ki = 0;
+    ctx->kd = 0;
     ctx->summax = +A_FLOAT_INF;
     ctx->summin = -A_FLOAT_INF;
     ctx->outmax = +A_FLOAT_INF;
     ctx->outmin = -A_FLOAT_INF;
     a_pid_init(ctx);
     return 1;
-}
-
-/***
- zeroing for PID controller
- @tparam a.pid ctx PID controller userdata
- @treturn a.pid PID controller userdata
- @function zero
-*/
-int liba_pid_zero(lua_State *L)
-{
-    a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
-    if (ctx)
-    {
-        a_pid_zero(ctx);
-        return 1;
-    }
-    return 0;
 }
 
 /***
@@ -144,6 +130,23 @@ int liba_pid_inc(lua_State *L)
         a_float const set = (a_float)luaL_checknumber(L, 2);
         a_float const fdb = (a_float)luaL_checknumber(L, 3);
         lua_pushnumber(L, (lua_Number)a_pid_inc(ctx, set, fdb));
+        return 1;
+    }
+    return 0;
+}
+
+/***
+ zeroing for PID controller
+ @tparam a.pid ctx PID controller userdata
+ @treturn a.pid PID controller userdata
+ @function zero
+*/
+int liba_pid_zero(lua_State *L)
+{
+    a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
+    if (ctx)
+    {
+        a_pid_zero(ctx);
         return 1;
     }
     return 0;
@@ -257,11 +260,11 @@ int luaopen_liba_pid(lua_State *L)
     static lua_fun const funcs[] = {
         {"new", liba_pid_new},
         {"init", liba_pid_init},
-        {"zero", liba_pid_zero},
         {"kpid", liba_pid_kpid},
         {"run", liba_pid_run},
         {"pos", liba_pid_pos},
         {"inc", liba_pid_inc},
+        {"zero", liba_pid_zero},
     };
     lua_createtable(L, 0, A_LEN(funcs));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));

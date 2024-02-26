@@ -122,12 +122,20 @@ A_INTERN a_float a_fuzzy_cup_bounded(a_float a, a_float b)
 
 /*!
  @brief equilibrium operator
+ @param[in] a left-hand operand
+ @param[in] b right-hand operand
+ @return = \f$ \sqrt{ab}\sqrt{1-(1-a)(1-b)} \f$
+*/
+A_EXTERN a_float a_fuzzy_equ(a_float a, a_float b);
+
+/*!
+ @brief equilibrium operator
  @param[in] gamma gamma operator
  @param[in] a left-hand operand
  @param[in] b right-hand operand
  @return = \f$ (ab)^{1-\gamma}(1-(1-a)(1-b))^{\gamma} \f$
 */
-A_EXTERN a_float a_fuzzy_equ(a_float gamma, a_float a, a_float b);
+A_EXTERN a_float a_fuzzy_equ_(a_float gamma, a_float a, a_float b);
 
 #if defined(LIBA_FUZZY_C)
 #undef A_INTERN

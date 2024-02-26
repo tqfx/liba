@@ -7,6 +7,7 @@
 #define LIBA_PID_FUZZY_H
 
 #include "pid.h"
+#include "fuzzy.h"
 
 /*!
  @ingroup A
@@ -35,6 +36,12 @@ extern "C" {
 #endif /* __cplusplus */
 
 /*!
+ @brief initialize for fuzzy PID controller
+ @param[in,out] ctx points to an instance of fuzzy PID controller
+*/
+#define a_pid_fuzzy_init(ctx) a_pid_fuzzy_zero(ctx)
+
+/*!
  @brief get fuzzy relational operator for fuzzy PID controller
  @param[in] op enumeration for fuzzy PID controller operator
  @return fuzzy relational operator for fuzzy PID controller
@@ -47,18 +54,6 @@ A_EXTERN a_float (*a_pid_fuzzy_op(unsigned int op))(a_float, a_float);
  @param[in] op enumeration for fuzzy PID controller operator
 */
 A_EXTERN void a_pid_fuzzy_set_op(a_pid_fuzzy *ctx, unsigned int op);
-
-/*!
- @brief initialize for fuzzy PID controller
- @param[in,out] ctx points to an instance of fuzzy PID controller
-*/
-A_EXTERN void a_pid_fuzzy_init(a_pid_fuzzy *ctx);
-
-/*!
- @brief zeroing for fuzzy PID controller
- @param[in,out] ctx points to an instance of fuzzy PID controller
-*/
-A_EXTERN void a_pid_fuzzy_zero(a_pid_fuzzy *ctx);
 
 /*!
  @brief set rule base for fuzzy PID controller
@@ -75,7 +70,7 @@ A_EXTERN void a_pid_fuzzy_rule(a_pid_fuzzy *ctx, unsigned int order, a_float con
 
 /*!
  @brief compute size of memory block for fuzzy PID controller
- @param n the maximum number triggered by the rule
+ @param[in] n the maximum number triggered by the rule
 */
 #define A_PID_FUZZY_BLOCK(n) (sizeof(unsigned int) * (n) * 2 + sizeof(a_float) * (n) * (2 + (n)))
 
@@ -129,6 +124,12 @@ A_EXTERN a_float a_pid_fuzzy_pos(a_pid_fuzzy *ctx, a_float set, a_float fdb);
  @return output value
 */
 A_EXTERN a_float a_pid_fuzzy_inc(a_pid_fuzzy *ctx, a_float set, a_float fdb);
+
+/*!
+ @brief zeroing for fuzzy PID controller
+ @param[in,out] ctx points to an instance of fuzzy PID controller
+*/
+A_EXTERN void a_pid_fuzzy_zero(a_pid_fuzzy *ctx);
 
 #if defined(__cplusplus)
 } /* extern "C" */

@@ -3,18 +3,6 @@
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
 
-void a_pid_expert_init(a_pid_expert *ctx)
-{
-    a_pid_init(&ctx->pid);
-    ctx->ec = 0;
-}
-
-void a_pid_expert_zero(a_pid_expert *ctx)
-{
-    a_pid_zero(&ctx->pid);
-    ctx->ec = 0;
-}
-
 void a_pid_expert_kpid(a_pid_expert *ctx, a_float kp, a_float ki, a_float kd)
 {
     a_pid_kpid(&ctx->pid, kp, ki, kd);
@@ -60,4 +48,10 @@ out:
     ctx->pid.err = err;
     ctx->ec = ec;
     return ctx->pid.out;
+}
+
+void a_pid_expert_zero(a_pid_expert *ctx)
+{
+    a_pid_zero(&ctx->pid);
+    ctx->ec = 0;
 }

@@ -1,33 +1,25 @@
 #include "a/pid_fuzzy.h"
-#include "a/fuzzy.h"
-#include "a/math.h"
 #include "a/mf.h"
-
-A_HIDDEN a_float a_pid_fuzzy_equ(a_float a, a_float b);
-a_float a_pid_fuzzy_equ(a_float a, a_float b)
-{
-    return a_float_sqrt(a * b) * a_float_sqrt(1 - (1 - a) * (1 - b));
-}
 
 a_float (*a_pid_fuzzy_op(unsigned int op))(a_float, a_float)
 {
     switch (op)
     {
-    case A_PID_FUZZY_CUP_BOUNDED:
-        return a_fuzzy_cup_bounded;
-    case A_PID_FUZZY_CUP_ALGEBRA:
-        return a_fuzzy_cup_algebra;
-    case A_PID_FUZZY_CUP:
-        return a_fuzzy_cup;
-    case A_PID_FUZZY_CAP_BOUNDED:
-        return a_fuzzy_cap_bounded;
-    case A_PID_FUZZY_CAP_ALGEBRA:
-        return a_fuzzy_cap_algebra;
+    default:
+    case A_PID_FUZZY_EQU:
+        return a_fuzzy_equ;
     case A_PID_FUZZY_CAP:
         return a_fuzzy_cap;
-    case A_PID_FUZZY_EQU:
-    default:
-        return a_pid_fuzzy_equ;
+    case A_PID_FUZZY_CAP_ALGEBRA:
+        return a_fuzzy_cap_algebra;
+    case A_PID_FUZZY_CAP_BOUNDED:
+        return a_fuzzy_cap_bounded;
+    case A_PID_FUZZY_CUP:
+        return a_fuzzy_cup;
+    case A_PID_FUZZY_CUP_ALGEBRA:
+        return a_fuzzy_cup_algebra;
+    case A_PID_FUZZY_CUP_BOUNDED:
+        return a_fuzzy_cup_bounded;
     }
 }
 
@@ -107,10 +99,6 @@ unsigned int a_pid_fuzzy_mf(a_float x, unsigned int n, a_float const *a, unsigne
 out:
     return counter;
 }
-
-void a_pid_fuzzy_init(a_pid_fuzzy *ctx) { a_pid_init(&ctx->pid); }
-
-void a_pid_fuzzy_zero(a_pid_fuzzy *ctx) { a_pid_zero(&ctx->pid); }
 
 void a_pid_fuzzy_rule(a_pid_fuzzy *ctx, unsigned int order, a_float const *me, a_float const *mec,
                       a_float const *mkp, a_float const *mki, a_float const *mkd)
@@ -236,3 +224,5 @@ a_float a_pid_fuzzy_inc(a_pid_fuzzy *ctx, a_float set, a_float fdb)
     a_pid_fuzzy_out_(ctx, err - ctx->pid.err, err);
     return a_pid_inc_(&ctx->pid, fdb, err);
 }
+
+void a_pid_fuzzy_zero(a_pid_fuzzy *ctx) { a_pid_zero(&ctx->pid); }

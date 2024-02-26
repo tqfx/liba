@@ -1,17 +1,5 @@
 #include "a/pid_neuro.h"
 
-void a_pid_neuro_init(a_pid_neuro *ctx)
-{
-    a_pid_init(&ctx->pid);
-    ctx->ec = 0;
-}
-
-void a_pid_neuro_zero(a_pid_neuro *ctx)
-{
-    a_pid_zero(&ctx->pid);
-    ctx->ec = 0;
-}
-
 void a_pid_neuro_kpid(a_pid_neuro *ctx, a_float k, a_float kp, a_float ki, a_float kd)
 {
     a_pid_kpid(&ctx->pid, kp, ki, kd);
@@ -60,4 +48,10 @@ a_float a_pid_neuro_inc_(a_pid_neuro *ctx, a_float fdb, a_float err, a_float ec)
     ctx->pid.err = err;
     ctx->ec = ec;
     return ctx->pid.out;
+}
+
+void a_pid_neuro_zero(a_pid_neuro *ctx)
+{
+    a_pid_zero(&ctx->pid);
+    ctx->ec = 0;
 }
