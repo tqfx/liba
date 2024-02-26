@@ -43,16 +43,24 @@ fail:
     return JS_EXCEPTION;
 }
 
+enum
+{
+    self_p_,
+    self_v_,
+    self_a_,
+    self_j_,
+};
+
 static JSValue liba_trajpoly7_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
     a_trajpoly7 *const self = (a_trajpoly7 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly7_class_id);
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case 0: return js_array_num_new(ctx, self->p, A_LEN(self->p));
-    case 1: return js_array_num_new(ctx, self->v, A_LEN(self->v));
-    case 2: return js_array_num_new(ctx, self->a, A_LEN(self->a));
-    case 3: return js_array_num_new(ctx, self->j, A_LEN(self->j));
+    case self_p_: return js_array_num_new(ctx, self->p, A_LEN(self->p));
+    case self_v_: return js_array_num_new(ctx, self->v, A_LEN(self->v));
+    case self_a_: return js_array_num_new(ctx, self->a, A_LEN(self->a));
+    case self_j_: return js_array_num_new(ctx, self->j, A_LEN(self->j));
     default: return JS_UNDEFINED;
     }
 }
@@ -125,10 +133,10 @@ static JSValue liba_trajpoly7_jer(JSContext *ctx, JSValueConst this_val, int arg
 
 static JSCFunctionListEntry const liba_trajpoly7_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.trajpoly7", 0),
-    JS_CGETSET_MAGIC_DEF("p", liba_trajpoly7_get, NULL, 0),
-    JS_CGETSET_MAGIC_DEF("v", liba_trajpoly7_get, NULL, 1),
-    JS_CGETSET_MAGIC_DEF("a", liba_trajpoly7_get, NULL, 2),
-    JS_CGETSET_MAGIC_DEF("j", liba_trajpoly7_get, NULL, 3),
+    JS_CGETSET_MAGIC_DEF("p", liba_trajpoly7_get, NULL, self_p_),
+    JS_CGETSET_MAGIC_DEF("v", liba_trajpoly7_get, NULL, self_v_),
+    JS_CGETSET_MAGIC_DEF("a", liba_trajpoly7_get, NULL, self_a_),
+    JS_CGETSET_MAGIC_DEF("j", liba_trajpoly7_get, NULL, self_j_),
     JS_CFUNC_DEF("gen", 9, liba_trajpoly7_gen),
     JS_CFUNC_DEF("pos", 1, liba_trajpoly7_pos),
     JS_CFUNC_DEF("vel", 1, liba_trajpoly7_vel),

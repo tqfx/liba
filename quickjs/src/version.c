@@ -54,6 +54,14 @@ fail:
     return JS_EXCEPTION;
 }
 
+enum
+{
+    self_major_,
+    self_minor_,
+    self_third_,
+    self_extra_,
+};
+
 static JSValue liba_version_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
@@ -61,10 +69,10 @@ static JSValue liba_version_get(JSContext *ctx, JSValueConst this_val, int magic
     a_u32 ver;
     switch (magic)
     {
-    case 0: ver = self->major; break;
-    case 1: ver = self->minor; break;
-    case 2: ver = self->third; break;
-    case 3: ver = self->extra; break;
+    case self_major_: ver = self->major; break;
+    case self_minor_: ver = self->minor; break;
+    case self_third_: ver = self->third; break;
+    case self_extra_: ver = self->extra; break;
     default: return JS_UNDEFINED;
     }
     return JS_NewUint32(ctx, ver);
@@ -78,10 +86,10 @@ static JSValue liba_version_set(JSContext *ctx, JSValueConst this_val, JSValueCo
     if (JS_ToUint32(ctx, &ver, val)) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case 0: self->major = (unsigned int)ver; break;
-    case 1: self->minor = (unsigned int)ver; break;
-    case 2: self->third = (unsigned int)ver; break;
-    case 3: self->extra = (unsigned int)ver; break;
+    case self_major_: self->major = (unsigned int)ver; break;
+    case self_minor_: self->minor = (unsigned int)ver; break;
+    case self_third_: self->third = (unsigned int)ver; break;
+    case self_extra_: self->extra = (unsigned int)ver; break;
     default: break;
     }
     return JS_UNDEFINED;
@@ -184,10 +192,10 @@ static JSValue liba_version_ne(JSContext *ctx, JSValueConst this_val, int argc, 
 
 static JSCFunctionListEntry const liba_version_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.version", 0),
-    JS_CGETSET_MAGIC_DEF("major", liba_version_get, liba_version_set, 0),
-    JS_CGETSET_MAGIC_DEF("minor", liba_version_get, liba_version_set, 1),
-    JS_CGETSET_MAGIC_DEF("third", liba_version_get, liba_version_set, 2),
-    JS_CGETSET_MAGIC_DEF("extra", liba_version_get, liba_version_set, 3),
+    JS_CGETSET_MAGIC_DEF("major", liba_version_get, liba_version_set, self_major_),
+    JS_CGETSET_MAGIC_DEF("minor", liba_version_get, liba_version_set, self_minor_),
+    JS_CGETSET_MAGIC_DEF("third", liba_version_get, liba_version_set, self_third_),
+    JS_CGETSET_MAGIC_DEF("extra", liba_version_get, liba_version_set, self_extra_),
     JS_CFUNC_DEF("parse", 1, liba_version_parse),
     JS_CFUNC_DEF("cmp", 1, liba_version_cmp),
     JS_CFUNC_DEF("lt", 1, liba_version_lt),
