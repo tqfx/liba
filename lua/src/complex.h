@@ -48,16 +48,16 @@ int liba_complex_rect(lua_State *L);
 int liba_complex_polar(lua_State *L);
 
 /***
- complex number self is equal to complex number other
- @tparam a.complex other other complex number
+ complex number self is equal to complex number that
+ @tparam a.complex that complex number
  @treturn bool result of comparison
  @function eq
 */
 int liba_complex_eq(lua_State *L);
 
 /***
- complex number self is not equal to complex number other
- @tparam a.complex other other complex number
+ complex number self is not equal to complex number that
+ @tparam a.complex that complex number
  @treturn bool result of comparison
  @function ne
 */

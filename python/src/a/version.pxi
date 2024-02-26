@@ -36,20 +36,20 @@ cdef class version:
         if self.ctx.extra == 0:
             return "%u.%u.%u" % (self.ctx.major, self.ctx.minor, self.ctx.third)
         return "%u.%u.%u.%u" % (self.ctx.major, self.ctx.minor, self.ctx.third, self.ctx.extra)
-    def compare(self, other: version):
-        return a_version_cmp(&self.ctx, &other.ctx)
-    def __lt__(self, other: version):
-        return a_version_lt(&self.ctx, &other.ctx)
-    def __gt__(self, other: version):
-        return a_version_gt(&self.ctx, &other.ctx)
-    def __le__(self, other: version):
-        return a_version_le(&self.ctx, &other.ctx)
-    def __ge__(self, other: version):
-        return a_version_ge(&self.ctx, &other.ctx)
-    def __eq__(self, other: version):
-        return a_version_eq(&self.ctx, &other.ctx)
-    def __ne__(self, other: version):
-        return a_version_ne(&self.ctx, &other.ctx)
+    def compare(self, that: version):
+        return a_version_cmp(&self.ctx, &that.ctx)
+    def __lt__(self, that: version):
+        return a_version_lt(&self.ctx, &that.ctx)
+    def __gt__(self, that: version):
+        return a_version_gt(&self.ctx, &that.ctx)
+    def __le__(self, that: version):
+        return a_version_le(&self.ctx, &that.ctx)
+    def __ge__(self, that: version):
+        return a_version_ge(&self.ctx, &that.ctx)
+    def __eq__(self, that: version):
+        return a_version_eq(&self.ctx, &that.ctx)
+    def __ne__(self, that: version):
+        return a_version_ne(&self.ctx, &that.ctx)
     def parse(self, ver: bytes):
         a_version_parse(&self.ctx, ver)
         return self

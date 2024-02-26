@@ -144,57 +144,57 @@ public class version {
     public final native version parse(String ver);
 
     /**
-     * this version is less than other version
+     * this version is less than that version
      *
-     * @param ver other version to be compared
+     * @param ver version to be compared
      * @return result of comparison
      */
     public final native boolean lt(version ver);
 
     /**
-     * this version is greater than other version
+     * this version is greater than that version
      *
-     * @param ver other version to be compared
+     * @param ver version to be compared
      * @return result of comparison
      */
     public final native boolean gt(version ver);
 
     /**
-     * this version is less than or equal to other version
+     * this version is less than or equal to that version
      *
-     * @param ver other version to be compared
+     * @param ver version to be compared
      * @return result of comparison
      */
     public final native boolean le(version ver);
 
     /**
-     * this version is greater than or equal to other version
+     * this version is greater than or equal to that version
      *
-     * @param ver other version to be compared
+     * @param ver version to be compared
      * @return result of comparison
      */
     public final native boolean ge(version ver);
 
     /**
-     * this version is equal to other version
+     * this version is equal to that version
      *
-     * @param ver other version to be compared
+     * @param ver version to be compared
      * @return result of comparison
      */
     public final native boolean eq(version ver);
 
     /**
-     * this version is not equal to other version
+     * this version is not equal to that version
      *
-     * @param ver other version to be compared
+     * @param ver version to be compared
      * @return result of comparison
      */
     public final native boolean ne(version ver);
 
     /**
-     * compare this version with other versions
+     * compare this version with that version
      *
-     * @param ver other version to be compared
+     * @param ver version to be compared
      * @return relationship between the versions
      */
     public final native int cmp(version ver);

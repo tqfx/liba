@@ -957,38 +957,38 @@ declare namespace liba {
      */
     parse(ver: string): version;
     /**
-     * compare this version with other versions
-     * @param ver other version to be compared
+     * compare this version with that version
+     * @param ver version to be compared
      */
     cmp(ver: version): number;
     /**
-     * this version is less than other version
-     * @param ver other version to be compared
+     * this version is less than that version
+     * @param ver version to be compared
      */
     lt(ver: version): boolean;
     /**
-     * this version is greater than other version
-     * @param ver other version to be compared
+     * this version is greater than that version
+     * @param ver version to be compared
      */
     gt(ver: version): boolean;
     /**
-     * this version is less than or equal to other version
-     * @param ver other version to be compared
+     * this version is less than or equal to that version
+     * @param ver version to be compared
      */
     le(ver: version): boolean;
     /**
-     * this version is greater than or equal to other version
-     * @param ver other version to be compared
+     * this version is greater than or equal to that version
+     * @param ver version to be compared
      */
     ge(ver: version): boolean;
     /**
-     * this version is equal to other version
-     * @param ver other version to be compared
+     * this version is equal to that version
+     * @param ver version to be compared
      */
     eq(ver: version): boolean;
     /**
-     * this version is not equal to other version
-     * @param ver other version to be compared
+     * this version is not equal to that version
+     * @param ver version to be compared
      */
     ne(ver: version): boolean;
     delete(): void;

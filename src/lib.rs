@@ -1837,8 +1837,8 @@ impl version {
 
 impl PartialOrd for version {
     #[inline(always)]
-    fn partial_cmp(&self, other: &version) -> Option<core::cmp::Ordering> {
-        let ok: int = unsafe { a_version_cmp(self, other) };
+    fn partial_cmp(&self, that: &version) -> Option<core::cmp::Ordering> {
+        let ok: int = unsafe { a_version_cmp(self, that) };
         if ok > 0 {
             return Some(core::cmp::Ordering::Greater);
         }
@@ -1848,27 +1848,27 @@ impl PartialOrd for version {
         Some(core::cmp::Ordering::Equal)
     }
     #[inline(always)]
-    fn lt(&self, other: &version) -> bool {
-        unsafe { a_version_lt(self, other) }
+    fn lt(&self, that: &version) -> bool {
+        unsafe { a_version_lt(self, that) }
     }
     #[inline(always)]
-    fn gt(&self, other: &version) -> bool {
-        unsafe { a_version_gt(self, other) }
+    fn gt(&self, that: &version) -> bool {
+        unsafe { a_version_gt(self, that) }
     }
     #[inline(always)]
-    fn le(&self, other: &version) -> bool {
-        unsafe { a_version_le(self, other) }
+    fn le(&self, that: &version) -> bool {
+        unsafe { a_version_le(self, that) }
     }
     #[inline(always)]
-    fn ge(&self, other: &version) -> bool {
-        unsafe { a_version_ge(self, other) }
+    fn ge(&self, that: &version) -> bool {
+        unsafe { a_version_ge(self, that) }
     }
 }
 
 impl PartialEq for version {
     #[inline(always)]
-    fn eq(&self, other: &version) -> bool {
-        unsafe { a_version_eq(self, other) }
+    fn eq(&self, that: &version) -> bool {
+        unsafe { a_version_eq(self, that) }
     }
 }
 

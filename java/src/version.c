@@ -106,64 +106,64 @@ JNIEXPORT jobject JNICALL Java_liba_version_parse(JNIEnv *_env, jobject _obj, js
 JNIEXPORT jboolean JNICALL Java_liba_version_lt(JNIEnv *_env, jobject _obj, jobject _ver)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    jobject _other = (*_env)->GetObjectField(_env, _ver, L.ctx);
+    jobject _rhs = (*_env)->GetObjectField(_env, _ver, L.ctx);
     a_version *ctx = (a_version *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    a_version *other = (a_version *)(*_env)->GetDirectBufferAddress(_env, _other);
-    return a_version_lt(ctx, other);
+    a_version *rhs = (a_version *)(*_env)->GetDirectBufferAddress(_env, _rhs);
+    return a_version_lt(ctx, rhs);
 }
 
 JNIEXPORT jboolean JNICALL Java_liba_version_gt(JNIEnv *_env, jobject _obj, jobject _ver)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    jobject _other = (*_env)->GetObjectField(_env, _ver, L.ctx);
+    jobject _rhs = (*_env)->GetObjectField(_env, _ver, L.ctx);
     a_version *ctx = (a_version *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    a_version *other = (a_version *)(*_env)->GetDirectBufferAddress(_env, _other);
-    return a_version_gt(ctx, other);
+    a_version *rhs = (a_version *)(*_env)->GetDirectBufferAddress(_env, _rhs);
+    return a_version_gt(ctx, rhs);
 }
 
 JNIEXPORT jboolean JNICALL Java_liba_version_le(JNIEnv *_env, jobject _obj, jobject _ver)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    jobject _other = (*_env)->GetObjectField(_env, _ver, L.ctx);
+    jobject _rhs = (*_env)->GetObjectField(_env, _ver, L.ctx);
     a_version *ctx = (a_version *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    a_version *other = (a_version *)(*_env)->GetDirectBufferAddress(_env, _other);
-    return a_version_le(ctx, other);
+    a_version *rhs = (a_version *)(*_env)->GetDirectBufferAddress(_env, _rhs);
+    return a_version_le(ctx, rhs);
 }
 
 JNIEXPORT jboolean JNICALL Java_liba_version_ge(JNIEnv *_env, jobject _obj, jobject _ver)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    jobject _other = (*_env)->GetObjectField(_env, _ver, L.ctx);
+    jobject _rhs = (*_env)->GetObjectField(_env, _ver, L.ctx);
     a_version *ctx = (a_version *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    a_version *other = (a_version *)(*_env)->GetDirectBufferAddress(_env, _other);
-    return a_version_ge(ctx, other);
+    a_version *rhs = (a_version *)(*_env)->GetDirectBufferAddress(_env, _rhs);
+    return a_version_ge(ctx, rhs);
 }
 
 JNIEXPORT jboolean JNICALL Java_liba_version_eq(JNIEnv *_env, jobject _obj, jobject _ver)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    jobject _other = (*_env)->GetObjectField(_env, _ver, L.ctx);
+    jobject _rhs = (*_env)->GetObjectField(_env, _ver, L.ctx);
     a_version *ctx = (a_version *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    a_version *other = (a_version *)(*_env)->GetDirectBufferAddress(_env, _other);
-    return a_version_eq(ctx, other);
+    a_version *rhs = (a_version *)(*_env)->GetDirectBufferAddress(_env, _rhs);
+    return a_version_eq(ctx, rhs);
 }
 
 JNIEXPORT jboolean JNICALL Java_liba_version_ne(JNIEnv *_env, jobject _obj, jobject _ver)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    jobject _other = (*_env)->GetObjectField(_env, _ver, L.ctx);
+    jobject _rhs = (*_env)->GetObjectField(_env, _ver, L.ctx);
     a_version *ctx = (a_version *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    a_version *other = (a_version *)(*_env)->GetDirectBufferAddress(_env, _other);
-    return a_version_ne(ctx, other);
+    a_version *rhs = (a_version *)(*_env)->GetDirectBufferAddress(_env, _rhs);
+    return a_version_ne(ctx, rhs);
 }
 
 JNIEXPORT jint JNICALL Java_liba_version_cmp(JNIEnv *_env, jobject _obj, jobject _ver)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    jobject _other = (*_env)->GetObjectField(_env, _ver, L.ctx);
+    jobject _rhs = (*_env)->GetObjectField(_env, _ver, L.ctx);
     a_version *ctx = (a_version *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    a_version *other = (a_version *)(*_env)->GetDirectBufferAddress(_env, _other);
-    return a_version_cmp(ctx, other);
+    a_version *rhs = (a_version *)(*_env)->GetDirectBufferAddress(_env, _rhs);
+    return a_version_cmp(ctx, rhs);
 }
 
 JNIEXPORT jint JNICALL Java_liba_version_check(JNIEnv *_env, jclass _cls, jint major, jint minor, jint patch)
