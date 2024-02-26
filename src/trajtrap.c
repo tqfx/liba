@@ -12,12 +12,10 @@ a_float a_trajtrap_gen(a_trajtrap *ctx, a_float vm, a_float ac, a_float de,
     a_float const p = p1 - p0;
     a_float const _2p = 2 * p;
     a_bool const reversed = p < 0;
-    if (vm < 0) { vm = -vm; }
-    if (v0 < -vm) { v0 = -vm; }
-    else if (v0 > vm) { v0 = vm; }
-    if (v1 < -vm) { v1 = -vm; }
-    else if (v1 > vm) { v1 = vm; }
     if (ac == de) { return 0; }
+    if (vm < 0) { vm = -vm; }
+    v0 = A_SAT(v0, -vm, +vm);
+    v1 = A_SAT(v1, -vm, +vm);
     ctx->p0 = p0;
     ctx->p1 = p1;
     ctx->v0 = v0;

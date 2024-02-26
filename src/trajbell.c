@@ -12,10 +12,8 @@ a_float a_trajbell_gen(a_trajbell *ctx, a_float jm, a_float am, a_float vm,
     if (jm < 0) { jm = -jm; }
     if (am < 0) { am = -am; }
     if (vm < 0) { vm = -vm; }
-    if (v0 < -vm) { v0 = -vm; }
-    else if (v0 > vm) { v0 = vm; }
-    if (v1 < -vm) { v1 = -vm; }
-    else if (v1 > vm) { v1 = vm; }
+    v0 = A_SAT(v0, -vm, +vm);
+    v1 = A_SAT(v1, -vm, +vm);
     ctx->p0 = p0;
     ctx->p1 = p1;
     ctx->v0 = v0;
