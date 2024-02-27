@@ -47,10 +47,10 @@ cdef inline array_num(object o):
         return array('f', o)
     return array('d', o)
 
-def hash_bkdr(str: bytes, val: a_u32 = 0) -> a_u32:
+def hash_bkdr(bytes str, a_u32 val = 0) -> a_u32:
     return a_hash_bkdr(str, val)
 
-def hash_sdbm(str: bytes, val: a_u32 = 0) -> a_u32:
+def hash_sdbm(bytes str, a_u32 val = 0) -> a_u32:
     return a_hash_sdbm(str, val)
 
 include "a/crc.pxi"

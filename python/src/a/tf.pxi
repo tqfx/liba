@@ -5,7 +5,7 @@ cdef class tf:
     def __init__(self, num, den):
         tf.num.__set__(self, num)
         tf.den.__set__(self, den)
-    def __call__(self, x: a_float) -> a_float:
+    def __call__(self, a_float x):
         return a_tf_iter(&self.ctx, x)
     def zero(self):
         a_tf_zero(&self.ctx)

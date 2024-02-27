@@ -24,7 +24,7 @@ cdef class pid_fuzzy:
         self.ctx.kp = self.ctx.pid.kp = 1
         self.ctx.op = a_fuzzy_equ
         a_pid_fuzzy_init(&self.ctx)
-    def op(self, op: int):
+    def op(self, unsigned int op):
         a_pid_fuzzy_set_op(&self.ctx, op)
         return self
     def rule(self, me, mec, mkp, mki, mkd):
@@ -40,19 +40,19 @@ cdef class pid_fuzzy:
                          <a_float *>self.mki.data.as_voidptr,
                          <a_float *>self.mkd.data.as_voidptr)
         return self
-    def set_block(self, num: int):
-        cdef void *ptr = a_pid_fuzzy_block(&self.ctx);
+    def set_block(self, unsigned int num):
+        cdef void *ptr = a_pid_fuzzy_block(&self.ctx)
         ptr = PyMem_Realloc(ptr, A_PID_FUZZY_BLOCK(num))
         a_pid_fuzzy_set_block(&self.ctx, ptr, num)
         return self
-    def kpid(self, kp: a_float, ki: a_float, kd: a_float):
+    def kpid(self, a_float kp, a_float ki, a_float kd):
         a_pid_fuzzy_kpid(&self.ctx, kp, ki, kd)
         return self
-    def run(self, set: a_float, fdb: a_float) -> a_float:
+    def run(self, a_float set, a_float fdb):
         return a_pid_fuzzy_run(&self.ctx, set, fdb)
-    def pos(self, set: a_float, fdb: a_float) -> a_float:
+    def pos(self, a_float set, a_float fdb):
         return a_pid_fuzzy_pos(&self.ctx, set, fdb)
-    def inc(self, set: a_float, fdb: a_float) -> a_float:
+    def inc(self, a_float set, a_float fdb):
         return a_pid_fuzzy_inc(&self.ctx, set, fdb)
     def __dealloc__(self):
         PyMem_Free(a_pid_fuzzy_block(&self.ctx))
@@ -60,57 +60,57 @@ cdef class pid_fuzzy:
         a_pid_fuzzy_zero(&self.ctx)
         return self
     property block:
-        def __get__(self) -> int:
+        def __get__(self):
             return self.ctx.block
-        def __set__(self, block: int):
+        def __set__(self, unsigned int block):
             self.set_block(block)
     property kp:
-        def __get__(self) -> a_float:
+        def __get__(self):
             return self.ctx.kp
-        def __set__(self, kp: a_float):
+        def __set__(self, a_float kp):
             self.ctx.pid.kp = kp
             self.ctx.kp = kp
     property ki:
-        def __get__(self) -> a_float:
+        def __get__(self):
             return self.ctx.ki
-        def __set__(self, ki: a_float):
+        def __set__(self, a_float ki):
             self.ctx.pid.ki = ki
             self.ctx.ki = ki
     property kd:
-        def __get__(self) -> a_float:
+        def __get__(self):
             return self.ctx.kd
-        def __set__(self, kd: a_float):
+        def __set__(self, a_float kd):
             self.ctx.pid.kd = kd
             self.ctx.kd = kd
     property summax:
-        def __get__(self) -> a_float:
+        def __get__(self):
             return self.ctx.pid.summax
-        def __set__(self, summax: a_float):
+        def __set__(self, a_float summax):
             self.ctx.pid.summax = summax
     property summin:
-        def __get__(self) -> a_float:
+        def __get__(self):
             return self.ctx.pid.summin
-        def __set__(self, summin: a_float):
+        def __set__(self, a_float summin):
             self.ctx.pid.summin = summin
     property outmax:
-        def __get__(self) -> a_float:
+        def __get__(self):
             return self.ctx.pid.outmax
-        def __set__(self, outmax: a_float):
+        def __set__(self, a_float outmax):
             self.ctx.pid.outmax = outmax
     property outmin:
-        def __get__(self) -> a_float:
+        def __get__(self):
             return self.ctx.pid.outmin
-        def __set__(self, outmin: a_float):
+        def __set__(self, a_float outmin):
             self.ctx.pid.outmin = outmin
     property out:
-        def __get__(self) -> a_float:
-            return self.ctx.pid.out.f
+        def __get__(self):
+            return self.ctx.pid.out
     property fdb:
-        def __get__(self) -> a_float:
-            return self.ctx.pid.fdb.f
+        def __get__(self):
+            return self.ctx.pid.fdb
     property err:
-        def __get__(self) -> a_float:
-            return self.ctx.pid.err.f
+        def __get__(self):
+            return self.ctx.pid.err
     property order:
-        def __get__(self) -> int:
+        def __get__(self):
             return self.ctx.order
