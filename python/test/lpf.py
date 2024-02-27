@@ -1,24 +1,21 @@
 #!/usr/bin/env python
-import os, sys
+import os, sys, math, random
 
 sys.path.insert(0, os.getcwd())
-prefix = os.path.join(sys.path[0], "build")
-if not os.path.exists(prefix):
-    os.mkdir(prefix)
-try:
-    import liba as a
-    import numpy as np
-    import matplotlib.pyplot as plt
-except Exception as e:
-    print(e)
-    exit()
+if len(sys.argv) > 1:
+    sys.stdout = open(sys.argv[1], "w")
 
-x = np.arange(0, np.pi * 10, np.pi * 0.1)
-x1 = np.sin(x) + 0.2 * (np.random.random(len(x)) - 0.5)
-x2 = x1.copy()
-lpf = a.lpf(10, 0.01)
-for i in range(len(x2)):
-    x2[i] = lpf(x2[i])
-plt.figure("Low Pass Filter")
-plt.plot(x, x1, "b-", x, x2, "g-")
-plt.savefig(os.path.join(prefix, "lpf.png"))
+import liba  # type: ignore
+
+N = 100
+x = [0.0] * N
+T = math.pi * 0.1
+lpf = liba.lpf(10, 0.01)
+for i in range(N):
+    x[i] = i * T
+    x1 = math.sin(x[i]) + 0.2 * (random.random() - 0.5)
+    print("%g,%g,%g" % (x[i], x1, lpf(x1)))
+
+lpf.zero()
+lpf.alpha
+lpf.output

@@ -1,34 +1,28 @@
 #!/usr/bin/env python
-import os, sys
+import os, sys, math
 
 sys.path.insert(0, os.getcwd())
-prefix = os.path.join(sys.path[0], "build")
-if not os.path.exists(prefix):
-    os.mkdir(prefix)
-try:
-    import liba as a
-    import numpy as np
-    import matplotlib.pyplot as plt
-except Exception as e:
-    print(e)
-    exit()
+if len(sys.argv) > 1:
+    sys.stdout = open(sys.argv[1], "w")
+
+import liba  # type: ignore
 
 Ts = 1.0
 f_0 = 1.0
 f_e = 1000.0
 c = (f_e - f_0) / Ts
 T = 1.0 / 10000
+t = 0
 x = []
-x1 = 0
-while x1 < Ts:
-    x.append(x1)
-    x1 += T
-x1 = np.array(x)
-x1 = np.cos(2 * np.pi * (f_0 * x1 + 0.5 * c * x1 * x1))
-x2 = x1.copy()
-hpf = a.hpf(10, 0.01)
-for i in range(len(x2)):
-    x2[i] = hpf(x2[i])
-plt.figure("High Pass Filter")
-plt.plot(x, x1, "b-", x, x2, "g-")
-plt.savefig(os.path.join(prefix, "hpf.png"))
+while t <= Ts:
+    x.append(t)
+    t += T
+hpf = liba.hpf(10, 0.01)
+for i in range(len(x)):
+    x1 = math.cos(2 * math.pi * (f_0 * x[i] + 0.5 * c * x[i] * x[i]))
+    print("%g,%g,%g" % (x[i], x1, hpf(x1)))
+
+hpf.zero()
+hpf.alpha
+hpf.output
+hpf.input

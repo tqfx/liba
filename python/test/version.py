@@ -5,7 +5,7 @@ sys.path.insert(0, os.getcwd())
 if len(sys.argv) > 1:
     sys.stdout = open(sys.argv[1], "w")
 
-import liba
+import liba  # type: ignore
 
 print("version", liba.VERSION)
 print("major:", liba.version.MAJOR)

@@ -2,42 +2,39 @@
 import os, sys
 
 sys.path.insert(0, os.getcwd())
-prefix = os.path.join(sys.path[0], "build")
-if not os.path.exists(prefix):
-    os.mkdir(prefix)
-try:
-    import liba as a
-    import numpy as np
-    import matplotlib.pyplot as plt
-except Exception as e:
-    print(e)
-    exit()
+if len(sys.argv) > 1:
+    sys.stdout = open(sys.argv[1], "w")
 
-traj = a.trajbell()
+import liba  # type: ignore
+
+traj = liba.trajbell()
 traj.gen(3, 2, 3, 0, 10)
-data = np.arange(0, traj.t, 0.01)
-plt.figure("bell-shaped velocity trajectory")
 
-plt.subplot(411)
-plt.title("bell-shaped velocity trajectory")
-plt.ylabel("Position")
-plt.plot(data, traj.pos(data), "r-", label="q")
-plt.legend()
+N = 1000
+x = [0.0] * N
+T = traj.t / N
+for i in range(N):
+    x[i] = i * T
 
-plt.subplot(412)
-plt.ylabel("Velocity")
-plt.plot(data, traj.vel(data), "b-", label="v")
-plt.legend()
+p = traj.pos(x)
+v = traj.vel(x)
+a = traj.acc(x)
+j = traj.jer(x)
 
-plt.subplot(413)
-plt.ylabel("Acceleration")
-plt.plot(data, traj.acc(data), "g-", label="a")
-plt.legend()
+for i in range(N):
+    print("%g,%g,%g,%g,%g" % (x[i], p[i], v[i], a[i], j[i]))
 
-plt.subplot(414)
-plt.ylabel("Jerk")
-plt.plot(data, traj.jer(data), "k-", label="j")
-plt.legend()
-
-plt.xlabel("t")
-plt.savefig(os.path.join(prefix, "bell-shaped_trajectory.png"))
+traj.t
+traj.tv
+traj.ta
+traj.td
+traj.taj
+traj.tdj
+traj.p0
+traj.p1
+traj.v0
+traj.v1
+traj.vm
+traj.jm
+traj.am
+traj.dm

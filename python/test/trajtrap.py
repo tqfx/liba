@@ -2,37 +2,36 @@
 import os, sys
 
 sys.path.insert(0, os.getcwd())
-prefix = os.path.join(sys.path[0], "build")
-if not os.path.exists(prefix):
-    os.mkdir(prefix)
-try:
-    import liba as a
-    import numpy as np
-    import matplotlib.pyplot as plt
-except Exception as e:
-    print(e)
-    exit()
+if len(sys.argv) > 1:
+    sys.stdout = open(sys.argv[1], "w")
 
-traj = a.trajtrap()
+import liba  # type: ignore
+
+traj = liba.trajtrap()
 traj.gen(2, 2, -2, 0, 4)
-data = np.arange(0, traj.t, 0.01)
-plt.figure("trapezoidal velocity trajectory")
 
-plt.subplot(311)
-plt.title("trapezoidal velocity trajectory")
-plt.ylabel("Position")
-plt.plot(data, traj.pos(data), "r-", label="q")
-plt.legend()
+N = 1000
+x = [0.0] * N
+T = traj.t / N
+for i in range(N):
+    x[i] = i * T
 
-plt.subplot(312)
-plt.ylabel("Velocity")
-plt.plot(data, traj.vel(data), "b-", label="v")
-plt.legend()
+p = traj.pos(x)
+v = traj.vel(x)
+a = traj.acc(x)
 
-plt.subplot(313)
-plt.ylabel("Acceleration")
-plt.plot(data, traj.acc(data), "g-", label="a")
-plt.legend()
+for i in range(N):
+    print("%g,%g,%g,%g" % (x[i], p[i], v[i], a[i]))
 
-plt.xlabel("t")
-plt.savefig(os.path.join(prefix, "trapezoidal_trajectory.png"))
+traj.t
+traj.p0
+traj.p1
+traj.v0
+traj.v1
+traj.vc
+traj.ta
+traj.td
+traj.pa
+traj.pd
+traj.ac
+traj.de

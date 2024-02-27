@@ -59,11 +59,6 @@ cdef class pid_fuzzy:
     def zero(self):
         a_pid_fuzzy_zero(&self.ctx)
         return self
-    property block:
-        def __get__(self):
-            return self.ctx.block
-        def __set__(self, unsigned int block):
-            self.set_block(block)
     property kp:
         def __get__(self):
             return self.ctx.kp
@@ -114,3 +109,8 @@ cdef class pid_fuzzy:
     property order:
         def __get__(self):
             return self.ctx.order
+    property block:
+        def __get__(self):
+            return self.ctx.block
+        def __set__(self, unsigned int block):
+            self.set_block(block)

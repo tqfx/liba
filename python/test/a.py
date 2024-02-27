@@ -5,7 +5,7 @@ sys.path.insert(0, os.getcwd())
 if len(sys.argv) > 1:
     sys.stdout = open(sys.argv[1], "w")
 
-import liba
+import liba  # type: ignore
 
 print(liba.hash_bkdr(b"0123456789"))
 print(liba.hash_sdbm(b"0123456789"))

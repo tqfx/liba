@@ -20,6 +20,30 @@ unittest(a a a.log)
 
 unittest(crc crc)
 
+unittest(hpf hpf)
+
+unittest(lpf lpf)
+
+unittest(mf mf)
+
+unittest(pid pid)
+
+unittest(pid_fuzzy pid_fuzzy)
+
+unittest(pid_neuro pid_neuro)
+
 unittest(poly poly)
+
+unittest(tf tf)
+
+unittest(trajbell trajbell)
+
+unittest(trajpoly3 trajpoly3)
+
+unittest(trajpoly5 trajpoly5)
+
+unittest(trajpoly7 trajpoly7)
+
+unittest(trajtrap trajtrap)
 
 unittest(version version)

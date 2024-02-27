@@ -2,151 +2,40 @@
 import os, sys
 
 sys.path.insert(0, os.getcwd())
-prefix = os.path.join(sys.path[0], "build")
-if not os.path.exists(prefix):
-    os.mkdir(prefix)
-try:
-    import liba as a
-    import numpy as np
-    import matplotlib.pyplot as plt
-except Exception as e:
-    print(e)
-    exit()
+if len(sys.argv) > 1:
+    sys.stdout = open(sys.argv[1], "w")
 
-title = "Gaussian membership function"
-x = np.arange(-3, 3, 0.001)
-y = a.mf.gauss(x, 1, 0)
-plt.figure(title)
-plt.title(title)
-plt.plot(x, y)
-plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_gauss.png"))
+import liba  # type: ignore
 
-title = "Gaussian combination membership function"
-x = np.arange(-3, 3, 0.001)
-y = a.mf.gauss2(x, 1, -1, 1, +1)
-plt.figure(title)
-plt.title(title)
-plt.plot(x, y)
-plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_gauss2.png"))
+N = 1000
+T = 6 / N
+x = [0.0] * N
+for i in range(N):
+    x[i] = (i - N / 2) * T
 
-title = "Generalized bell-shaped membership function"
-x = np.arange(-3, 3, 0.001)
-y = a.mf.gbell(x, 2, 4, 0)
-plt.figure(title)
-plt.title(title)
-plt.plot(x, y)
-plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_gbell.png"))
-
-title = "Sigmoidal membership function"
-x = np.arange(-3, 3, 0.001)
-y = a.mf.sig(x, 2, 0)
-plt.figure(title)
-plt.title(title)
-plt.plot(x, y)
-plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_sig.png"))
-
-title = "Difference between two sigmoidal membership functions"
-x = np.arange(-3, 3, 0.001)
-y = a.mf.dsig(x, 5, -2, +5, 2)
-plt.figure(title)
-plt.title(title)
-plt.plot(x, y)
-plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_dsig.png"))
-
-title = "Product of two sigmoidal membership functions"
-x = np.arange(-3, 3, 0.001)
-y = a.mf.psig(x, 5, -2, -5, 2)
-plt.figure(title)
-plt.title(title)
-plt.plot(x, y)
-plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_psig.png"))
-
-title = "Triangular membership function"
-x = np.arange(0, 2, 0.001)
-y = a.mf.tri(x, 0, 1, 2)
-plt.figure(title)
-plt.title(title)
-plt.plot(x, y)
-plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_tri.png"))
-
-y = []
-title = "Trapezoidal membership function"
-x = np.arange(0, 3, 0.001)
-y = a.mf.trap(x, 0, 1, 2, 3)
-plt.figure(title)
-plt.title(title)
-plt.plot(x, y)
-plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_trap.png"))
-
-title = "Linear s-shaped saturation membership function"
-x = np.arange(0, 3, 0.001)
-y = a.mf.lins(x, 1, 2)
-plt.figure(title)
-plt.title(title)
-plt.plot(x, y)
-plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_lins.png"))
-
-title = "Linear z-shaped saturation membership function"
-x = np.arange(0, 3, 0.001)
-y = a.mf.linz(x, 1, 2)
-plt.figure(title)
-plt.title(title)
-plt.plot(x, y)
-plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_linz.png"))
-
-title = "S-shaped membership function"
-x = np.arange(0, 3, 0.001)
-y = a.mf.s(x, 1, 2)
-plt.figure(title)
-plt.title(title)
-plt.plot(x, y)
-plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_s.png"))
-
-title = "Z-shaped membership function"
-x = np.arange(0, 3, 0.001)
-y = a.mf.z(x, 1, 2)
-plt.figure(title)
-plt.title(title)
-plt.plot(x, y)
-plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_z.png"))
-
-y = []
-title = "Pi-shaped membership function"
-x = np.arange(0, 3, 0.001)
-y = a.mf.pi(x, 0, 1, 2, 3)
-plt.figure(title)
-plt.title(title)
-plt.plot(x, y)
-plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_pi.png"))
+liba.mf.gauss(x, 1, 0)
+liba.mf.gauss2(x, 1, -1, 1, +1)
+liba.mf.gbell(x, 2, 4, 0)
+liba.mf.sig(x, 2, 0)
+liba.mf.dsig(x, 5, -2, +5, 2)
+liba.mf.psig(x, 5, -2, -5, 2)
+liba.mf.tri(x, 0, 1, 2)
+liba.mf.trap(x, 0, 1, 2, 3)
+liba.mf.lins(x, 1, 2)
+liba.mf.linz(x, 1, 2)
+liba.mf.s(x, 1, 2)
+liba.mf.z(x, 1, 2)
+liba.mf.pi(x, 0, 1, 2, 3)
 
 S = 1
 params = [
-    (a.mf.TRI, -3 * S, -3 * S, -2 * S),
-    (a.mf.TRI, -3 * S, -2 * S, -1 * S),
-    (a.mf.TRI, -2 * S, -1 * S, +0 * S),
-    (a.mf.TRI, -1 * S, +0 * S, +1 * S),
-    (a.mf.TRI, +0 * S, +1 * S, +2 * S),
-    (a.mf.TRI, +1 * S, +2 * S, +3 * S),
-    (a.mf.TRI, +2 * S, +3 * S, +3 * S),
+    (liba.mf.TRI, -3 * S, -3 * S, -2 * S),
+    (liba.mf.TRI, -3 * S, -2 * S, -1 * S),
+    (liba.mf.TRI, -2 * S, -1 * S, +0 * S),
+    (liba.mf.TRI, -1 * S, +0 * S, +1 * S),
+    (liba.mf.TRI, +0 * S, +1 * S, +2 * S),
+    (liba.mf.TRI, +1 * S, +2 * S, +3 * S),
+    (liba.mf.TRI, +2 * S, +3 * S, +3 * S),
 ]
-
-title = "membership function"
-x = np.arange(-3 * S, +3 * S, 0.001)
-plt.figure(title)
-plt.title(title)
 for param in params:
-    plt.plot(x, a.mf()(param[0], x, param[1:]))
-plt.savefig(os.path.join(prefix, "mf.png"))
+    liba.mf()(param[0], x, param[1:])
