@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 var liba = require("../liba")
+function assert(expr, info) {
+    if (!expr) {
+        throw Error("assertion failed: " + info);
+    }
+}
 function do_leak_check() {
     for (const arg of arguments) {
         arg.delete()
@@ -87,17 +92,25 @@ ctx.kpid(10, 0.1, 1).op(liba.pid_fuzzy.EQU)
 console.log(ctx.zero().run(10, 0))
 console.log(ctx.zero().pos(10, 0))
 console.log(ctx.zero().inc(10, 0))
-ctx.kp = ctx.kp
-ctx.ki = ctx.ki
-ctx.kd = ctx.kd
-ctx.summax = ctx.summax
-ctx.summin = ctx.summin
-ctx.outmax = ctx.outmax
-ctx.outmin = ctx.outmin
-ctx.sum
-ctx.out
-ctx.fdb
-ctx.err
-ctx.order
-ctx.block = ctx.block
+assert(ctx.kp != undefined)
+assert(ctx.ki != undefined)
+assert(ctx.kd != undefined)
+assert(ctx.summax != undefined)
+assert(ctx.summin != undefined)
+assert(ctx.sum != undefined)
+assert(ctx.outmax != undefined)
+assert(ctx.outmin != undefined)
+assert(ctx.out != undefined)
+assert(ctx.fdb != undefined)
+assert(ctx.err != undefined)
+assert(ctx.order != undefined)
+assert(ctx.block != undefined)
+ctx.kp = 0
+ctx.ki = 0
+ctx.kd = 0
+ctx.summax = 0
+ctx.summin = 0
+ctx.outmax = 0
+ctx.outmin = 0
+ctx.block = 0
 do_leak_check(ctx)

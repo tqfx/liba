@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 var liba = require("../liba")
+function assert(expr, info) {
+    if (!expr) {
+        throw Error("assertion failed: " + info);
+    }
+}
 function do_leak_check() {
     for (const arg of arguments) {
         arg.delete()
     }
     if (liba.do_leak_check) {
         liba.do_leak_check()
-    }
-}
-function assert(expr, info) {
-    if (!expr) {
-        throw Error("assertion failed: " + info);
     }
 }
 var text = "0123456789"

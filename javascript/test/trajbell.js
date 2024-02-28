@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 var liba = require("../liba")
+function assert(expr, info) {
+    if (!expr) {
+        throw Error("assertion failed: " + info);
+    }
+}
 function do_leak_check() {
     for (const arg of arguments) {
         arg.delete()
@@ -10,19 +15,19 @@ function do_leak_check() {
 }
 var ctx = new liba.trajbell()
 ctx.gen(3, 2, 3, 0, 10, 0, 0)
-console.log(ctx.t)
-console.log(ctx.tv)
-console.log(ctx.ta)
-console.log(ctx.td)
-console.log(ctx.taj)
-console.log(ctx.tdj)
-console.log(ctx.p0)
-console.log(ctx.p1)
-console.log(ctx.v0)
-console.log(ctx.v1)
-console.log(ctx.vm)
-console.log(ctx.jm)
-console.log(ctx.am)
-console.log(ctx.dm)
+assert(ctx.t != undefined)
+assert(ctx.tv != undefined)
+assert(ctx.ta != undefined)
+assert(ctx.td != undefined)
+assert(ctx.taj != undefined)
+assert(ctx.tdj != undefined)
+assert(ctx.p0 != undefined)
+assert(ctx.p1 != undefined)
+assert(ctx.v0 != undefined)
+assert(ctx.v1 != undefined)
+assert(ctx.vm != undefined)
+assert(ctx.jm != undefined)
+assert(ctx.am != undefined)
+assert(ctx.dm != undefined)
 console.log(ctx.pos(0.5), ctx.vel(0.5), ctx.acc(0.5), ctx.jer(0.5))
 do_leak_check(ctx)

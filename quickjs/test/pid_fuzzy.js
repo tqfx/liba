@@ -1,5 +1,9 @@
 import * as a from "liba.so";
-
+function assert(expr, info) {
+    if (!expr) {
+        throw Error("assertion failed: " + info);
+    }
+}
 var NL = -3
 var NM = -2
 var NS = -1
@@ -73,7 +77,6 @@ var mkd = [
     [NL, NS, NS, NS, NS, NS, NL],
     [NL, NM, NM, NM, NS, NS, NL],
 ]
-
 var ctx = new a.pid_fuzzy()
 ctx.rule(me, mec, mkp, mki, mkd)
 ctx.set_block(2)
@@ -85,16 +88,24 @@ console.log(ctx.pos(10, 0))
 ctx.zero()
 console.log(ctx.inc(10, 0))
 ctx.zero()
-ctx.kp = ctx.kp
-ctx.ki = ctx.ki
-ctx.kd = ctx.kd
-ctx.summax = ctx.summax
-ctx.summin = ctx.summin
-ctx.sum
-ctx.outmax = ctx.outmax
-ctx.outmin = ctx.outmin
-ctx.out
-ctx.fdb
-ctx.err
-ctx.order
-ctx.block = ctx.block
+assert(ctx.kp != undefined)
+assert(ctx.ki != undefined)
+assert(ctx.kd != undefined)
+assert(ctx.summax != undefined)
+assert(ctx.summin != undefined)
+assert(ctx.sum != undefined)
+assert(ctx.outmax != undefined)
+assert(ctx.outmin != undefined)
+assert(ctx.out != undefined)
+assert(ctx.fdb != undefined)
+assert(ctx.err != undefined)
+assert(ctx.order != undefined)
+assert(ctx.block != undefined)
+ctx.kp = 0
+ctx.ki = 0
+ctx.kd = 0
+ctx.summax = 0
+ctx.summin = 0
+ctx.outmax = 0
+ctx.outmin = 0
+ctx.block = 0

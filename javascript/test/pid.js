@@ -1,5 +1,10 @@
 #!/usr/bin/env node
 var liba = require("../liba")
+function assert(expr, info) {
+    if (!expr) {
+        throw Error("assertion failed: " + info);
+    }
+}
 function do_leak_check() {
     for (const arg of arguments) {
         arg.delete()
@@ -17,15 +22,21 @@ console.log(ctx.zero().inc(1, 0))
 do_leak_check(ctx)
 
 var ctx = new liba.pid()
-ctx.kp = ctx.kp
-ctx.ki = ctx.ki
-ctx.kd = ctx.kd
-ctx.summax = ctx.summax
-ctx.summin = ctx.summin
-ctx.outmax = ctx.outmax
-ctx.outmin = ctx.outmin
-ctx.sum
-ctx.out
-ctx.fdb
-ctx.err
+assert(ctx.kp != undefined)
+assert(ctx.ki != undefined)
+assert(ctx.kd != undefined)
+assert(ctx.summax != undefined)
+assert(ctx.summin != undefined)
+assert(ctx.outmax != undefined)
+assert(ctx.outmin != undefined)
+assert(ctx.out != undefined)
+assert(ctx.fdb != undefined)
+assert(ctx.err != undefined)
+ctx.kp = 0
+ctx.ki = 0
+ctx.kd = 0
+ctx.summax = 0
+ctx.summin = 0
+ctx.outmax = 0
+ctx.outmin = 0
 do_leak_check(ctx)
