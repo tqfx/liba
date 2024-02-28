@@ -82,17 +82,18 @@ class _pid_fuzzy {
         System.out.print(obj.zero().pos(1, 0) + " ");
         System.out.print(obj.zero().inc(1, 0) + " ");
         System.out.println(obj.run(1, 0));
-        obj.block(obj.block());
         obj.kp(obj.kp());
         obj.ki(obj.ki());
         obj.kd(obj.kd());
         obj.summax(obj.summax());
         obj.summin(obj.summin());
+        obj.sum();
         obj.outmax(obj.outmax());
         obj.outmin(obj.outmin());
         obj.out();
         obj.fdb();
         obj.err();
         obj.order();
+        obj.block(obj.block());
     }
 }

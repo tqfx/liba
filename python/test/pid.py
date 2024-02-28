@@ -48,10 +48,11 @@ for i in range(len(x)):
 pid.kp = pid.kp
 pid.ki = pid.ki
 pid.kd = pid.kd
-pid.outmax = pid.outmax
-pid.outmin = pid.outmin
 pid.summax = pid.summax
 pid.summin = pid.summin
+pid.sum
+pid.outmax = pid.outmax
+pid.outmin = pid.outmin
 pid.out
 pid.fdb
 pid.err

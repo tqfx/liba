@@ -140,10 +140,11 @@ pid_fuzzy.mkd
 pid_fuzzy.kp = pid_fuzzy.kp
 pid_fuzzy.ki = pid_fuzzy.ki
 pid_fuzzy.kd = pid_fuzzy.kd
-pid_fuzzy.outmax = pid_fuzzy.outmax
-pid_fuzzy.outmin = pid_fuzzy.outmin
 pid_fuzzy.summax = pid_fuzzy.summax
 pid_fuzzy.summin = pid_fuzzy.summin
+pid_fuzzy.sum
+pid_fuzzy.outmax = pid_fuzzy.outmax
+pid_fuzzy.outmin = pid_fuzzy.outmin
 pid_fuzzy.out
 pid_fuzzy.fdb
 pid_fuzzy.err

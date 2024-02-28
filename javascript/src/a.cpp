@@ -517,6 +517,7 @@ struct pid_fuzzy: public a_pid_fuzzy
     A_INLINE void set_outmax(a_float outmax) { pid.outmax = outmax; }
     A_INLINE a_float get_outmin() const { return pid.outmin; }
     A_INLINE void set_outmin(a_float outmin) { pid.outmin = outmin; }
+    A_INLINE a_float get_sum() const { return pid.sum; }
     A_INLINE a_float get_out() const { return pid.out; }
     A_INLINE a_float get_fdb() const { return pid.fdb; }
     A_INLINE a_float get_err() const { return pid.err; }
@@ -905,6 +906,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property<a_float, void>("summin", &pid::summin)
         .property<a_float, void>("outmax", &pid::outmax)
         .property<a_float, void>("outmin", &pid::outmin)
+        .property<a_float const, void>("sum", &pid::sum)
         .property<a_float const, void>("out", &pid::out)
         .property<a_float const, void>("fdb", &pid::fdb)
         .property<a_float const, void>("err", &pid::err);
@@ -932,6 +934,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("summin", &pid_fuzzy::get_summin, &pid_fuzzy::set_summin)
         .property("outmax", &pid_fuzzy::get_outmax, &pid_fuzzy::set_outmax)
         .property("outmin", &pid_fuzzy::get_outmin, &pid_fuzzy::set_outmin)
+        .property("sum", &pid_fuzzy::get_sum)
         .property("out", &pid_fuzzy::get_out)
         .property("fdb", &pid_fuzzy::get_fdb)
         .property("err", &pid_fuzzy::get_err)

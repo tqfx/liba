@@ -90,6 +90,7 @@ ctx.ki = ctx.ki
 ctx.kd = ctx.kd
 ctx.summax = ctx.summax
 ctx.summin = ctx.summin
+ctx.sum
 ctx.outmax = ctx.outmax
 ctx.outmin = ctx.outmin
 ctx.out

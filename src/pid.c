@@ -16,8 +16,8 @@ a_float a_pid_run_(a_pid *ctx, a_float set, a_float fdb, a_float err)
 {
     a_float const var = ctx->fdb - fdb;
     ctx->out = A_SAT(set, ctx->outmin, ctx->outmax);
-    ctx->fdb = fdb;
     ctx->var = var;
+    ctx->fdb = fdb;
     ctx->err = err;
     return ctx->out;
 }
@@ -42,8 +42,8 @@ a_float a_pid_pos_(a_pid *ctx, a_float fdb, a_float err)
     // Avoid derivative kick, fdb[k-1]-fdb[k]. out = K_p[err(k)]+sum+K_d[fdb(k-1)-fdb(k)].
     ctx->out = ctx->kp * err + ctx->sum + ctx->kd * var;
     ctx->out = A_SAT(ctx->out, ctx->outmin, ctx->outmax);
-    ctx->fdb = fdb;
     ctx->var = var;
+    ctx->fdb = fdb;
     ctx->err = err;
     return ctx->out;
 }
@@ -58,8 +58,8 @@ a_float a_pid_inc_(a_pid *ctx, a_float fdb, a_float err)
     a_float const var = ctx->fdb - fdb;
     ctx->out += ctx->kp * (err - ctx->err) + ctx->ki * err + ctx->kd * (var - ctx->var);
     ctx->out = A_SAT(ctx->out, ctx->outmin, ctx->outmax);
-    ctx->fdb = fdb;
     ctx->var = var;
+    ctx->fdb = fdb;
     ctx->err = err;
     return ctx->out;
 }
@@ -68,7 +68,7 @@ void a_pid_zero(a_pid *ctx)
 {
     ctx->sum = 0;
     ctx->out = 0;
-    ctx->fdb = 0;
     ctx->var = 0;
+    ctx->fdb = 0;
     ctx->err = 0;
 }

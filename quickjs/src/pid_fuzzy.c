@@ -56,6 +56,7 @@ enum
     self_kd_,
     self_summax_,
     self_summin_,
+    self_sum_,
     self_outmax_,
     self_outmin_,
     self_out_,
@@ -77,6 +78,7 @@ static JSValue liba_pid_fuzzy_get(JSContext *ctx, JSValueConst this_val, int mag
     case self_kd_: x = (double)self->kd; break;
     case self_summax_: x = (double)self->pid.summax; break;
     case self_summin_: x = (double)self->pid.summin; break;
+    case self_sum_: x = (double)self->pid.sum; break;
     case self_outmax_: x = (double)self->pid.outmax; break;
     case self_outmin_: x = (double)self->pid.outmin; break;
     case self_out_: x = (double)self->pid.out; break;
@@ -315,6 +317,7 @@ static JSCFunctionListEntry const liba_pid_fuzzy_proto[] = {
     JS_CGETSET_MAGIC_DEF("kd", liba_pid_fuzzy_get, liba_pid_fuzzy_set, self_kd_),
     JS_CGETSET_MAGIC_DEF("summax", liba_pid_fuzzy_get, liba_pid_fuzzy_set, self_summax_),
     JS_CGETSET_MAGIC_DEF("summin", liba_pid_fuzzy_get, liba_pid_fuzzy_set, self_summin_),
+    JS_CGETSET_MAGIC_DEF("sum", liba_pid_fuzzy_get, NULL, self_sum_),
     JS_CGETSET_MAGIC_DEF("outmax", liba_pid_fuzzy_get, liba_pid_fuzzy_set, self_outmax_),
     JS_CGETSET_MAGIC_DEF("outmin", liba_pid_fuzzy_get, liba_pid_fuzzy_set, self_outmin_),
     JS_CGETSET_MAGIC_DEF("out", liba_pid_fuzzy_get, NULL, self_out_),

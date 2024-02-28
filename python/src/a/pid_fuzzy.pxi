@@ -1,5 +1,4 @@
 from a cimport *
-from a.fuzzy cimport *
 from a.pid_fuzzy cimport *
 
 cdef class pid_fuzzy:
@@ -87,6 +86,9 @@ cdef class pid_fuzzy:
             return self.ctx.pid.summin
         def __set__(self, a_float summin):
             self.ctx.pid.summin = summin
+    property sum:
+        def __get__(self):
+            return self.ctx.pid.sum
     property outmax:
         def __get__(self):
             return self.ctx.pid.outmax

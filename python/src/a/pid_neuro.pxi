@@ -61,16 +61,6 @@ cdef class pid_neuro:
             return self.ctx.wd
         def __set__(self, a_float wd):
             self.ctx.wd = wd
-    property summax:
-        def __get__(self):
-            return self.ctx.pid.summax
-        def __set__(self, a_float summax):
-            self.ctx.pid.summax = summax
-    property summin:
-        def __get__(self):
-            return self.ctx.pid.summin
-        def __set__(self, a_float summin):
-            self.ctx.pid.summin = summin
     property outmax:
         def __get__(self):
             return self.ctx.pid.outmax

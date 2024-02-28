@@ -19,7 +19,7 @@
  @field wd derivative weight
  @field outmax maximum final output
  @field outmin minimum final output
- @field out controller output
+ @field out controller final output
  @field fdb cache feedback
  @field err cache error
  @field ec error change

@@ -397,11 +397,13 @@ declare namespace liba {
     summax: number;
     /** minimum integral output */
     summin: number;
+    /** controller integral output */
+    readonly sum: number;
     /** maximum final output */
     outmax: number;
     /** minimum final output */
     outmin: number;
-    /** controller output */
+    /** controller final output */
     readonly out: number;
     /** cache feedback */
     readonly fdb: number;
@@ -456,11 +458,13 @@ declare namespace liba {
     summax: number;
     /** minimum integral output */
     summin: number;
+    /** controller integral output */
+    readonly sum: number;
     /** maximum final output */
     outmax: number;
     /** minimum final output */
     outmin: number;
-    /** controller output */
+    /** controller final output */
     readonly out: number;
     /** cache feedback */
     readonly fdb: number;
@@ -560,7 +564,7 @@ declare namespace liba {
     outmax: number;
     /** minimum final output */
     outmin: number;
-    /** controller output */
+    /** controller final output */
     readonly out: number;
     /** cache feedback */
     readonly fdb: number;

@@ -78,6 +78,7 @@ struct a_pid_expert
     a_float max2; //!< second error bound
     a_float loss; //!< loss coefficient
 #if defined(__cplusplus)
+    A_INLINE void init() { a_pid_expert_init(this); }
     A_INLINE void kpid(a_float kp, a_float ki, a_float kd)
     {
         a_pid_expert_kpid(this, kp, ki, kd);
@@ -86,7 +87,6 @@ struct a_pid_expert
     {
         return a_pid_expert_iter(this, set, fdb);
     }
-    A_INLINE void init() { a_pid_expert_init(this); }
     A_INLINE void zero() { a_pid_expert_zero(this); }
 #endif /* __cplusplus */
 };

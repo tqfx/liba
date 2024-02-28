@@ -46,6 +46,9 @@ cdef class pid:
             return self.ctx.summin
         def __set__(self, a_float summin):
             self.ctx.summin = summin
+    property sum:
+        def __get__(self):
+            return self.ctx.sum
     property outmax:
         def __get__(self):
             return self.ctx.outmax

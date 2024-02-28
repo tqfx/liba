@@ -164,6 +164,7 @@ struct a_pid_fuzzy
     unsigned int order; //!< number of order in the square matrix
     unsigned int block; //!< maximum number triggered by the rule
 #if defined(__cplusplus)
+    A_INLINE void init() { a_pid_fuzzy_init(this); }
     A_INLINE void set_op(unsigned int _op)
     {
         a_pid_fuzzy_set_op(this, _op);
@@ -193,7 +194,6 @@ struct a_pid_fuzzy
     {
         return a_pid_fuzzy_inc(this, set, fdb);
     }
-    A_INLINE void init() { a_pid_fuzzy_init(this); }
     A_INLINE void zero() { a_pid_fuzzy_zero(this); }
 #endif /* __cplusplus */
 };

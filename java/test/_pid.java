@@ -12,6 +12,7 @@ class _pid {
         obj.kd(obj.kd());
         obj.summax(obj.summax());
         obj.summin(obj.summin());
+        obj.sum();
         obj.outmax(obj.outmax());
         obj.outmin(obj.outmin());
         obj.out();

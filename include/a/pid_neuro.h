@@ -104,6 +104,7 @@ struct a_pid_neuro
     a_float wd; //!< derivative weight
     a_float ec; //!< error change
 #if defined(__cplusplus)
+    A_INLINE void init() { a_pid_neuro_init(this); }
     A_INLINE void kpid(a_float _k, a_float kp, a_float ki, a_float kd)
     {
         a_pid_neuro_kpid(this, _k, kp, ki, kd);
@@ -120,7 +121,6 @@ struct a_pid_neuro
     {
         return a_pid_neuro_inc(this, set, fdb);
     }
-    A_INLINE void init() { a_pid_neuro_init(this); }
     A_INLINE void zero() { a_pid_neuro_zero(this); }
 #endif /* __cplusplus */
 };

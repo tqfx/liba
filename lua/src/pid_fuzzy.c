@@ -325,6 +325,9 @@ static int liba_pid_fuzzy_get(lua_State *L)
     case 0x10EA03AB: // summin
         lua_pushnumber(L, (lua_Number)ctx->pid.summin);
         break;
+    case 0x001E5957: // sum
+        lua_pushnumber(L, (lua_Number)ctx->pid.sum);
+        break;
     case 0x23C8F10E: // outmax
         lua_pushnumber(L, (lua_Number)ctx->pid.outmax);
         break;
@@ -353,6 +356,7 @@ static int liba_pid_fuzzy_get(lua_State *L)
         lua_num_set(L, -1, "kd", ctx->kd);
         lua_num_set(L, -1, "summax", ctx->pid.summax);
         lua_num_set(L, -1, "summin", ctx->pid.summin);
+        lua_num_set(L, -1, "sum", ctx->pid.sum);
         lua_num_set(L, -1, "outmax", ctx->pid.outmax);
         lua_num_set(L, -1, "outmin", ctx->pid.outmin);
         lua_num_set(L, -1, "out", ctx->pid.out);

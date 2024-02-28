@@ -1,4 +1,5 @@
 from a.pid cimport *
+from a.fuzzy cimport *
 
 cdef extern from "a/pid_fuzzy.h":
     enum:

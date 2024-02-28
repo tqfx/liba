@@ -686,16 +686,16 @@ pub struct pid {
     pub summin: float,
     /// controller integral output
     pub sum: float,
-    /// maximum output
+    /// maximum final output
     pub outmax: float,
-    /// minimum output
+    /// minimum final output
     pub outmin: float,
-    /// controller output
+    /// controller final output
     pub out: float,
-    /// cache feedback
-    pub fdb: float,
     /// cache variable
     pub(crate) var: float,
+    /// cache feedback
+    pub fdb: float,
     /// cache error
     pub err: float,
 }
@@ -713,8 +713,8 @@ impl Default for pid {
             outmax: float::INFINITY,
             outmin: -float::INFINITY,
             out: 0.0,
-            fdb: 0.0,
             var: 0.0,
+            fdb: 0.0,
             err: 0.0,
         }
     }

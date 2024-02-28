@@ -44,8 +44,6 @@ pid_neuro.wi = pid_neuro.wi
 pid_neuro.wd = pid_neuro.wd
 pid_neuro.outmax = pid_neuro.outmax
 pid_neuro.outmin = pid_neuro.outmin
-pid_neuro.summax = pid_neuro.summax
-pid_neuro.summin = pid_neuro.summin
 pid_neuro.out
 pid_neuro.fdb
 pid_neuro.err

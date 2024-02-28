@@ -112,11 +112,12 @@ struct a_pid
     a_float sum; //!< controller integral output
     a_float outmax; //!< maximum final output
     a_float outmin; //!< minimum final output
-    a_float out; //!< controller output
-    a_float fdb; //!< cache feedback
+    a_float out; //!< controller final output
     a_float var; //!< cache variable
+    a_float fdb; //!< cache feedback
     a_float err; //!< cache error
 #if defined(__cplusplus)
+    A_INLINE void init() { a_pid_init(this); }
     A_INLINE void kpid(a_float _kp, a_float _ki, a_float _kd)
     {
         a_pid_kpid(this, _kp, _ki, _kd);
@@ -133,7 +134,6 @@ struct a_pid
     {
         return a_pid_inc(this, set, _fdb);
     }
-    A_INLINE void init() { a_pid_init(this); }
     A_INLINE void zero() { a_pid_zero(this); }
 #endif /* __cplusplus */
 };

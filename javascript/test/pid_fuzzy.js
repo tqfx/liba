@@ -94,6 +94,7 @@ ctx.summax = ctx.summax
 ctx.summin = ctx.summin
 ctx.outmax = ctx.outmax
 ctx.outmin = ctx.outmin
+ctx.sum
 ctx.out
 ctx.fdb
 ctx.err

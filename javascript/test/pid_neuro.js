@@ -19,7 +19,6 @@ ctx.kd = ctx.kd
 ctx.wp = ctx.wp
 ctx.wi = ctx.wi
 ctx.wd = ctx.wd
-ctx.summax = ctx.summax
 ctx.outmax = ctx.outmax
 ctx.outmin = ctx.outmin
 ctx.out

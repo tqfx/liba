@@ -40,11 +40,11 @@ a_float a_pid_neuro_inc_(a_pid_neuro *ctx, a_float fdb, a_float err, a_float ec)
     ctx->wp += ctx->pid.kp * out * ctx->ec;
     ctx->wi += ctx->pid.ki * out * ctx->pid.err;
     ctx->wd += ctx->pid.kd * out * ctx->pid.var;
-    a_float const abs = A_ABS(ctx->wp) + A_ABS(ctx->wi) + A_ABS(ctx->wd);
-    out = ctx->k * (ctx->wp * ec + ctx->wi * err + ctx->wd * var) / abs;
+    out = A_ABS(ctx->wp) + A_ABS(ctx->wi) + A_ABS(ctx->wd);
+    out = ctx->k * (ctx->wp * ec + ctx->wi * err + ctx->wd * var) / out;
     ctx->pid.out = A_SAT(out, ctx->pid.outmin, ctx->pid.outmax);
-    ctx->pid.fdb = fdb;
     ctx->pid.var = var;
+    ctx->pid.fdb = fdb;
     ctx->pid.err = err;
     ctx->ec = ec;
     return ctx->pid.out;

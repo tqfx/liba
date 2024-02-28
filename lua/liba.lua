@@ -802,6 +802,7 @@ function liba.mf.pi(x, a, b, c, d) end
 ---@field kd number
 ---@field summax number
 ---@field summin number
+---@field sum number
 ---@field outmax number
 ---@field outmin number
 ---@field out number
@@ -884,6 +885,7 @@ function pid:inc(set, fdb) end
 ---@field kd number
 ---@field summax number
 ---@field summin number
+---@field sum number
 ---@field outmax number
 ---@field outmin number
 ---@field out number

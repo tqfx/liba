@@ -125,6 +125,13 @@ public class pid_fuzzy {
     public final native pid summin(double min);
 
     /**
+     * get cached integral output for fuzzy PID controller
+     *
+     * @return cached integral output
+     */
+    public final native double sum();
+
+    /**
      * get maximum final output for fuzzy PID controller
      *
      * @return maximum final output

@@ -108,6 +108,13 @@ JNIEXPORT jobject JNICALL Java_liba_pid_summin__D(JNIEnv *_env, jobject _obj, jd
     return _obj;
 }
 
+JNIEXPORT jdouble JNICALL Java_liba_pid_sum(JNIEnv *_env, jobject _obj)
+{
+    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    return ctx->sum;
+}
+
 JNIEXPORT jdouble JNICALL Java_liba_pid_outmax__(JNIEnv *_env, jobject _obj)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);

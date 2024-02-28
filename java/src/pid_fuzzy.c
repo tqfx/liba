@@ -128,6 +128,13 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_summin__D(JNIEnv *_env, jobject _
     return _obj;
 }
 
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_sum(JNIEnv *_env, jobject _obj)
+{
+    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
+    a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    return ctx->pid.sum;
+}
+
 JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_outmax__(JNIEnv *_env, jobject _obj)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);

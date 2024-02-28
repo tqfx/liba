@@ -7,6 +7,7 @@ cdef extern from "a/pid.h":
         a_float kd
         a_float summax
         a_float summin
+        a_float sum
         a_float outmax
         a_float outmin
         a_float out

@@ -15,9 +15,10 @@
  @field kd derivative constant
  @field summax maximum integral output
  @field summin minimum integral output
+ @field sum controller integral output
  @field outmax maximum final output
  @field outmin minimum final output
- @field out controller output
+ @field out controller final output
  @field fdb cache feedback
  @field err cache error
  @field order number of order in the square matrix
