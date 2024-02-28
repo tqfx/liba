@@ -1,24 +1,24 @@
 #!/usr/bin/env node
-var liba = require("../liba")
+var liba = require("../liba");
 function assert(expr, info) {
     if (!expr) {
         throw Error("assertion failed: " + info);
     }
 }
-assert(liba.mf.NUL == 0)
-assert(liba.mf.GAUSS == 1)
-assert(liba.mf.GAUSS2 == 2)
-assert(liba.mf.GBELL == 3)
-assert(liba.mf.SIG == 4)
-assert(liba.mf.DSIG == 5)
-assert(liba.mf.PSIG == 6)
-assert(liba.mf.TRAP == 7)
-assert(liba.mf.TRI == 8)
-assert(liba.mf.LINS == 9)
-assert(liba.mf.LINZ == 10)
-assert(liba.mf.S == 11)
-assert(liba.mf.Z == 12)
-assert(liba.mf.PI == 13)
+assert(liba.mf.NUL == 0);
+assert(liba.mf.GAUSS == 1);
+assert(liba.mf.GAUSS2 == 2);
+assert(liba.mf.GBELL == 3);
+assert(liba.mf.SIG == 4);
+assert(liba.mf.DSIG == 5);
+assert(liba.mf.PSIG == 6);
+assert(liba.mf.TRAP == 7);
+assert(liba.mf.TRI == 8);
+assert(liba.mf.LINS == 9);
+assert(liba.mf.LINZ == 10);
+assert(liba.mf.S == 11);
+assert(liba.mf.Z == 12);
+assert(liba.mf.PI == 13);
 for (var i = -1; i < 1; i += 0.1) {
     console.log(
         liba.mf.gauss(i, 1, 0),
@@ -34,5 +34,5 @@ for (var i = -1; i < 1; i += 0.1) {
         liba.mf.s(i, -1, 1),
         liba.mf.z(i, -1, 1),
         liba.mf.pi(i, -2, -1, 1, 2)
-    )
+    );
 }

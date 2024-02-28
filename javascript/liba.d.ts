@@ -59,7 +59,7 @@ declare namespace liba {
      */
     new(poly: number, reversed?: boolean): crc8;
     readonly prototype: crc8;
-  }
+  };
 
   interface crc16 {
     /** Cyclic Redundancy Check comparison table */
@@ -94,7 +94,7 @@ declare namespace liba {
      */
     new(poly: number, reversed?: boolean): crc16;
     readonly prototype: crc16;
-  }
+  };
 
   interface crc32 {
     /** Cyclic Redundancy Check comparison table */
@@ -129,7 +129,7 @@ declare namespace liba {
      */
     new(poly: number, reversed?: boolean): crc32;
     readonly prototype: crc32;
-  }
+  };
 
   interface crc64 {
     /** Cyclic Redundancy Check comparison table */
@@ -164,7 +164,7 @@ declare namespace liba {
      */
     new(poly: bigint, reversed?: boolean): crc64;
     readonly prototype: crc64;
-  }
+  };
 
   interface hpf {
     /** filter coefficient [0,1] */
@@ -195,13 +195,13 @@ declare namespace liba {
      * @param fc cut-off frequency unit(hz)
      * @param ts sampling time unit(s)
      */
-    new(fc: number, ts: number): hpf
+    new(fc: number, ts: number): hpf;
     /**
      * @param alpha filter coefficient [0,1]
      */
-    new(alpha: number): hpf
+    new(alpha: number): hpf;
     readonly prototype: hpf;
-  }
+  };
 
   interface lpf {
     /** filter coefficient [0,1] */
@@ -230,13 +230,13 @@ declare namespace liba {
      * @param fc cut-off frequency unit(hz)
      * @param ts sampling time unit(s)
      */
-    new(fc: number, ts: number): lpf
+    new(fc: number, ts: number): lpf;
     /**
      * @param alpha filter coefficient [0,1]
      */
-    new(alpha: number): lpf
+    new(alpha: number): lpf;
     readonly prototype: lpf;
-  }
+  };
 
   /** membership function */
   let mf: {
@@ -267,7 +267,7 @@ declare namespace liba {
     /** z-shaped membership function */
     Z: number;
     /** pi-shaped membership function */
-    PI: number
+    PI: number;
     /**
      * gaussian membership function
      * @param x input value for which to compute membership value.
@@ -445,7 +445,7 @@ declare namespace liba {
   let pid: {
     new(): pid;
     readonly prototype: pid;
-  }
+  };
 
   interface pid_fuzzy {
     /** proportional constant */
@@ -543,7 +543,7 @@ declare namespace liba {
     /** sqrt(a,b)*sqrt(1-(1-a)*(1-b)) */
     EQU: number;
     readonly prototype: pid_fuzzy;
-  }
+  };
 
   interface pid_neuro {
     /** proportional output coefficient */
@@ -609,7 +609,7 @@ declare namespace liba {
   let pid_neuro: {
     new(): pid_neuro;
     readonly prototype: pid_neuro;
-  }
+  };
 
   interface tf {
     /** input for transfer function */
@@ -647,7 +647,7 @@ declare namespace liba {
      */
     new(num: number[], den: number[]): tf;
     readonly prototype: tf;
-  }
+  };
 
   interface trajbell {
     /** total duration */
@@ -715,7 +715,7 @@ declare namespace liba {
   let trajbell: {
     new(): trajbell;
     readonly prototype: trajbell;
-  }
+  };
 
   interface trajpoly3 {
     /** coefficients of position */
@@ -758,7 +758,7 @@ declare namespace liba {
      */
     new(ts: number, p0: number, p1: number, v0: number, v1: number): trajpoly3;
     readonly prototype: trajpoly3;
-  }
+  };
 
   interface trajpoly5 {
     /** coefficients of position */
@@ -811,7 +811,7 @@ declare namespace liba {
      */
     new(ts: number, p0: number, p1: number, v0: number, v1: number, a0: number, a1: number): trajpoly5;
     readonly prototype: trajpoly5;
-  }
+  };
 
   interface trajpoly7 {
     /** coefficients of position */
@@ -883,7 +883,7 @@ declare namespace liba {
      */
     new(ts: number, p0: number, p1: number, v0: number, v1: number, a0: number, a1: number, j0: number, j1: number): trajpoly7;
     readonly prototype: trajpoly7;
-  }
+  };
 
   interface trajtrap {
     /** total duration */
@@ -942,7 +942,7 @@ declare namespace liba {
   let trajtrap: {
     new(): trajtrap;
     readonly prototype: trajtrap;
-  }
+  };
 
   interface version {
     /** major number */
@@ -1023,7 +1023,7 @@ declare namespace liba {
     /** algorithm library version tweak */
     TWEAK: number;
     readonly prototype: version;
-  }
+  };
 
   /** algorithm library version string */
   const VERSION: string;

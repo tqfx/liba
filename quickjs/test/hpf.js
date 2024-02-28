@@ -4,16 +4,16 @@ function assert(expr, info) {
         throw Error("assertion failed: " + info);
     }
 }
-var ctx = new a.hpf(10, 0.01)
-ctx.gen(10, 0.01)
-ctx.iter(1)
-assert(ctx.alpha != undefined)
-assert(ctx.output != undefined)
-assert(ctx.input != undefined)
-var ctx = new a.hpf(0.1)
-ctx.gen(0.1)
-ctx.iter(1)
-assert(ctx.alpha != undefined)
-assert(ctx.output != undefined)
-assert(ctx.input != undefined)
-ctx.zero()
+var ctx = new a.hpf(10, 0.01);
+ctx.gen(10, 0.01);
+ctx.iter(1);
+assert(ctx.alpha != undefined);
+assert(ctx.output != undefined);
+assert(ctx.input != undefined);
+var ctx = new a.hpf(0.1);
+ctx.gen(0.1);
+ctx.iter(1);
+assert(ctx.alpha != undefined);
+assert(ctx.output != undefined);
+assert(ctx.input != undefined);
+ctx.zero();
