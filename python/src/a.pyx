@@ -1,4 +1,7 @@
-#cython: auto_pickle=False, boundscheck=False, wraparound=False
+#cython: autotestdict=False
+#cython: auto_pickle=False
+#cython: boundscheck=False
+#cython: wraparound=False
 from a cimport *
 from cpython cimport *
 from cpython.array cimport array
