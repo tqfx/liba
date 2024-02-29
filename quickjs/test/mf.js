@@ -1,23 +1,23 @@
 import * as a from "liba.so";
-function assert(expr, info) {
-    if (!expr) {
-        throw Error("assertion failed: " + info);
+function assert(expr) {
+    if (!eval(expr)) {
+        throw Error(expr);
     }
 }
-assert(a.mf.NUL == 0);
-assert(a.mf.GAUSS == 1);
-assert(a.mf.GAUSS2 == 2);
-assert(a.mf.GBELL == 3);
-assert(a.mf.SIG == 4);
-assert(a.mf.DSIG == 5);
-assert(a.mf.PSIG == 6);
-assert(a.mf.TRAP == 7);
-assert(a.mf.TRI == 8);
-assert(a.mf.LINS == 9);
-assert(a.mf.LINZ == 10);
-assert(a.mf.S == 11);
-assert(a.mf.Z == 12);
-assert(a.mf.PI == 13);
+assert("a.mf.NUL == 0");
+assert("a.mf.GAUSS == 1");
+assert("a.mf.GAUSS2 == 2");
+assert("a.mf.GBELL == 3");
+assert("a.mf.SIG == 4");
+assert("a.mf.DSIG == 5");
+assert("a.mf.PSIG == 6");
+assert("a.mf.TRAP == 7");
+assert("a.mf.TRI == 8");
+assert("a.mf.LINS == 9");
+assert("a.mf.LINZ == 10");
+assert("a.mf.S == 11");
+assert("a.mf.Z == 12");
+assert("a.mf.PI == 13");
 for (var i = -1; i < 1; i += 0.1) {
     console.log(
         a.mf.gauss(i, 1, 0),

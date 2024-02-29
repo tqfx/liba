@@ -1,19 +1,19 @@
 import * as a from "liba.so";
-function assert(expr, info) {
-    if (!expr) {
-        throw Error("assertion failed: " + info);
+function assert(expr) {
+    if (!eval(expr)) {
+        throw Error(expr);
     }
 }
 var ctx = new a.hpf(10, 0.01);
 ctx.gen(10, 0.01);
 ctx.iter(1);
-assert(ctx.alpha != undefined);
-assert(ctx.output != undefined);
-assert(ctx.input != undefined);
+assert("ctx.alpha != undefined");
+assert("ctx.output != undefined");
+assert("ctx.input != undefined");
 var ctx = new a.hpf(0.1);
 ctx.gen(0.1);
 ctx.iter(1);
-assert(ctx.alpha != undefined);
-assert(ctx.output != undefined);
-assert(ctx.input != undefined);
+assert("ctx.alpha != undefined");
+assert("ctx.output != undefined");
+assert("ctx.input != undefined");
 ctx.zero();

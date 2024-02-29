@@ -1,7 +1,7 @@
 import * as a from "liba.so";
-function assert(expr, info) {
-    if (!expr) {
-        throw Error("assertion failed: " + info);
+function assert(expr) {
+    if (!eval(expr)) {
+        throw Error(expr);
     }
 }
 var NL = -3;
@@ -88,19 +88,19 @@ console.log(ctx.pos(10, 0));
 ctx.zero();
 console.log(ctx.inc(10, 0));
 ctx.zero();
-assert(ctx.kp != undefined);
-assert(ctx.ki != undefined);
-assert(ctx.kd != undefined);
-assert(ctx.summax != undefined);
-assert(ctx.summin != undefined);
-assert(ctx.sum != undefined);
-assert(ctx.outmax != undefined);
-assert(ctx.outmin != undefined);
-assert(ctx.out != undefined);
-assert(ctx.fdb != undefined);
-assert(ctx.err != undefined);
-assert(ctx.order != undefined);
-assert(ctx.block != undefined);
+assert("ctx.kp != undefined");
+assert("ctx.ki != undefined");
+assert("ctx.kd != undefined");
+assert("ctx.summax != undefined");
+assert("ctx.summin != undefined");
+assert("ctx.sum != undefined");
+assert("ctx.outmax != undefined");
+assert("ctx.outmin != undefined");
+assert("ctx.out != undefined");
+assert("ctx.fdb != undefined");
+assert("ctx.err != undefined");
+assert("ctx.order != undefined");
+assert("ctx.block != undefined");
 ctx.kp = 0;
 ctx.ki = 0;
 ctx.kd = 0;

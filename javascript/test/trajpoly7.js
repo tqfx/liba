@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 var liba = require("../liba");
-function assert(expr, info) {
-    if (!expr) {
-        throw Error("assertion failed: " + info);
+function assert(expr) {
+    if (!eval(expr)) {
+        throw Error(expr);
     }
 }
 function do_leak_check() {
@@ -14,10 +14,10 @@ function do_leak_check() {
     }
 }
 var ctx = new liba.trajpoly7(1, 0, 1, 0, 1, 0, 1, 0, 1);
-assert(ctx.p);
-assert(ctx.v);
-assert(ctx.a);
-assert(ctx.j);
+assert("ctx.p");
+assert("ctx.v");
+assert("ctx.a");
+assert("ctx.j");
 for (var i = 0; i < 1; i += 0.1) {
     console.log(i, ctx.pos(i), ctx.vel(i), ctx.acc(i), ctx.jer(i));
 }

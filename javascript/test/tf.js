@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 var liba = require("../liba");
-function assert(expr, info) {
-    if (!expr) {
-        throw Error("assertion failed: " + info);
+function assert(expr) {
+    if (!eval(expr)) {
+        throw Error(expr);
     }
 }
 function do_leak_check() {
@@ -18,10 +18,10 @@ var den = [1.0, -1.97530991, 0.97530991];
 var ctx = new liba.tf(num, den);
 ctx.set_num(num).set_den(den).zero();
 console.log(ctx.iter(1.0), ctx.iter(1.0));
-assert(ctx.num);
-assert(ctx.den);
-assert(ctx.input);
-assert(ctx.output);
+assert("ctx.num");
+assert("ctx.den");
+assert("ctx.input");
+assert("ctx.output");
 ctx.num = ctx.num;
 ctx.den = ctx.den;
 do_leak_check(ctx);

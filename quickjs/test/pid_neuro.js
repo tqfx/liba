@@ -1,7 +1,7 @@
 import * as a from "liba.so";
-function assert(expr, info) {
-    if (!expr) {
-        throw Error("assertion failed: " + info);
+function assert(expr) {
+    if (!eval(expr)) {
+        throw Error(expr);
     }
 }
 var ctx = new a.pid_neuro();
@@ -11,19 +11,19 @@ console.log(ctx.run(10, 0));
 ctx.zero();
 console.log(ctx.inc(10, 0));
 ctx.zero();
-assert(ctx.k != undefined);
-assert(ctx.kp != undefined);
-assert(ctx.ki != undefined);
-assert(ctx.kd != undefined);
-assert(ctx.wp != undefined);
-assert(ctx.wi != undefined);
-assert(ctx.wd != undefined);
-assert(ctx.outmax != undefined);
-assert(ctx.outmin != undefined);
-assert(ctx.out != undefined);
-assert(ctx.fdb != undefined);
-assert(ctx.err != undefined);
-assert(ctx.ec != undefined);
+assert("ctx.k != undefined");
+assert("ctx.kp != undefined");
+assert("ctx.ki != undefined");
+assert("ctx.kd != undefined");
+assert("ctx.wp != undefined");
+assert("ctx.wi != undefined");
+assert("ctx.wd != undefined");
+assert("ctx.outmax != undefined");
+assert("ctx.outmin != undefined");
+assert("ctx.out != undefined");
+assert("ctx.fdb != undefined");
+assert("ctx.err != undefined");
+assert("ctx.ec != undefined");
 ctx.k = 0;
 ctx.kp = 0;
 ctx.ki = 0;
