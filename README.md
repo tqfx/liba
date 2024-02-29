@@ -104,7 +104,7 @@ add_requires("alib") -- static
 add_requires("liba") -- shared
 ```
 
-### CMakeLists.txt
+#### CMakeLists.txt
 
 ```cmake
 find_package(liba CONFIG REQUIRED)
@@ -129,12 +129,16 @@ luarocks install liba # release
 luarocks install --server=https://luarocks.org/dev liba # latest
 ```
 
+#### main.lua
+
 ```lua
 local liba = require("liba")
 print("version", liba.VERSION)
 ```
 
 ### Java
+
+#### Main.java
 
 ```java
 public class Main {
@@ -148,9 +152,12 @@ public class Main {
 
 #### Cargo.toml
 
-```toml
-[dependencies]
-liba = { git = "https://github.com/tqfx/liba.git" }
+```bash
+cargo add liba # release
+```
+
+```bash
+cargo add --git https://github.com/tqfx/liba.git # latest
 ```
 
 #### main.rs
@@ -195,7 +202,7 @@ npm i @tqfx/liba
 
 ```js
 import liba from "@tqfx/liba";
-console.log(liba.VERSION)
+console.log(liba.VERSION);
 ```
 
 ### QuickJS
@@ -204,7 +211,7 @@ console.log(liba.VERSION)
 
 ```js
 import * as liba from "liba.so";
-console.log("version", liba.VERSION)
+console.log("version", liba.VERSION);
 ```
 
 ## Copyright {#copyright}
