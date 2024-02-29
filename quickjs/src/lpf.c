@@ -40,26 +40,6 @@ fail:
     return JS_UNDEFINED;
 }
 
-enum
-{
-    self_alpha_,
-    self_output_,
-};
-
-static JSValue liba_lpf_get(JSContext *ctx, JSValueConst this_val, int magic)
-{
-    a_lpf *const self = (a_lpf *)JS_GetOpaque2(ctx, this_val, liba_lpf_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    double x;
-    switch (magic)
-    {
-    case self_alpha_: x = (double)self->alpha; break;
-    case self_output_: x = (double)self->output; break;
-    default: return JS_UNDEFINED;
-    }
-    return JS_NewFloat64(ctx, x);
-}
-
 static JSValue liba_lpf_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     a_lpf *const self = (a_lpf *)JS_GetOpaque2(ctx, this_val, liba_lpf_class_id);
@@ -97,6 +77,26 @@ static JSValue liba_lpf_zero(JSContext *ctx, JSValueConst this_val, int argc, JS
     if (!self) { return JS_EXCEPTION; }
     a_lpf_zero(self);
     return JS_UNDEFINED;
+}
+
+enum
+{
+    self_alpha_,
+    self_output_,
+};
+
+static JSValue liba_lpf_get(JSContext *ctx, JSValueConst this_val, int magic)
+{
+    a_lpf *const self = (a_lpf *)JS_GetOpaque2(ctx, this_val, liba_lpf_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    double x;
+    switch (magic)
+    {
+    case self_alpha_: x = (double)self->alpha; break;
+    case self_output_: x = (double)self->output; break;
+    default: return JS_UNDEFINED;
+    }
+    return JS_NewFloat64(ctx, x);
 }
 
 static JSCFunctionListEntry const liba_lpf_proto[] = {

@@ -52,22 +52,6 @@ fail:
     return JS_UNDEFINED;
 }
 
-enum
-{
-    self_table_,
-};
-
-static JSValue liba_crc64_get(JSContext *ctx, JSValueConst this_val, int magic)
-{
-    struct crc64 *const self = (struct crc64 *)JS_GetOpaque2(ctx, this_val, liba_crc64_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    if (magic == self_table_)
-    {
-        return js_array_u64_new(ctx, self->table, 0x100);
-    }
-    return JS_UNDEFINED;
-}
-
 static JSValue liba_crc64_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     struct crc64 *const self = (struct crc64 *)JS_GetOpaque2(ctx, this_val, liba_crc64_class_id);
@@ -145,6 +129,22 @@ fail:
     JS_FreeCString(ctx, s);
     js_free(ctx, p);
     return val;
+}
+
+enum
+{
+    self_table_,
+};
+
+static JSValue liba_crc64_get(JSContext *ctx, JSValueConst this_val, int magic)
+{
+    struct crc64 *const self = (struct crc64 *)JS_GetOpaque2(ctx, this_val, liba_crc64_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    if (magic == self_table_)
+    {
+        return js_array_u64_new(ctx, self->table, 0x100);
+    }
+    return JS_UNDEFINED;
 }
 
 static JSCFunctionListEntry const liba_crc64_proto[] = {

@@ -30,46 +30,6 @@ fail:
     return JS_EXCEPTION;
 }
 
-enum
-{
-    self_t_,
-    self_p0_,
-    self_p1_,
-    self_v0_,
-    self_v1_,
-    self_vc_,
-    self_ta_,
-    self_td_,
-    self_pa_,
-    self_pd_,
-    self_ac_,
-    self_de_,
-};
-
-static JSValue liba_trajtrap_get(JSContext *ctx, JSValueConst this_val, int magic)
-{
-    a_trajtrap *const self = (a_trajtrap *)JS_GetOpaque2(ctx, this_val, liba_trajtrap_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    double x;
-    switch (magic)
-    {
-    case self_t_: x = (double)self->t; break;
-    case self_p0_: x = (double)self->p0; break;
-    case self_p1_: x = (double)self->p1; break;
-    case self_v0_: x = (double)self->v0; break;
-    case self_v1_: x = (double)self->v1; break;
-    case self_vc_: x = (double)self->vc; break;
-    case self_ta_: x = (double)self->ta; break;
-    case self_td_: x = (double)self->td; break;
-    case self_pa_: x = (double)self->pa; break;
-    case self_pd_: x = (double)self->pd; break;
-    case self_ac_: x = (double)self->ac; break;
-    case self_de_: x = (double)self->de; break;
-    default: return JS_UNDEFINED;
-    }
-    return JS_NewFloat64(ctx, x);
-}
-
 static JSValue liba_trajtrap_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     a_trajtrap *const self = (a_trajtrap *)JS_GetOpaque2(ctx, this_val, liba_trajtrap_class_id);
@@ -120,6 +80,46 @@ static JSValue liba_trajtrap_acc(JSContext *ctx, JSValueConst this_val, int argc
     if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
     a_float acc = a_trajtrap_acc(self, (a_float)dt);
     return JS_NewFloat64(ctx, (double)acc);
+}
+
+enum
+{
+    self_t_,
+    self_p0_,
+    self_p1_,
+    self_v0_,
+    self_v1_,
+    self_vc_,
+    self_ta_,
+    self_td_,
+    self_pa_,
+    self_pd_,
+    self_ac_,
+    self_de_,
+};
+
+static JSValue liba_trajtrap_get(JSContext *ctx, JSValueConst this_val, int magic)
+{
+    a_trajtrap *const self = (a_trajtrap *)JS_GetOpaque2(ctx, this_val, liba_trajtrap_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    double x;
+    switch (magic)
+    {
+    case self_t_: x = (double)self->t; break;
+    case self_p0_: x = (double)self->p0; break;
+    case self_p1_: x = (double)self->p1; break;
+    case self_v0_: x = (double)self->v0; break;
+    case self_v1_: x = (double)self->v1; break;
+    case self_vc_: x = (double)self->vc; break;
+    case self_ta_: x = (double)self->ta; break;
+    case self_td_: x = (double)self->td; break;
+    case self_pa_: x = (double)self->pa; break;
+    case self_pd_: x = (double)self->pd; break;
+    case self_ac_: x = (double)self->ac; break;
+    case self_de_: x = (double)self->de; break;
+    default: return JS_UNDEFINED;
+    }
+    return JS_NewFloat64(ctx, x);
 }
 
 static JSCFunctionListEntry const liba_trajtrap_proto[] = {

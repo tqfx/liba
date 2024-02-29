@@ -43,28 +43,6 @@ fail:
     return JS_EXCEPTION;
 }
 
-enum
-{
-    self_p_,
-    self_v_,
-    self_a_,
-    self_j_,
-};
-
-static JSValue liba_trajpoly7_get(JSContext *ctx, JSValueConst this_val, int magic)
-{
-    a_trajpoly7 *const self = (a_trajpoly7 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly7_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    switch (magic)
-    {
-    case self_p_: return js_array_num_new(ctx, self->p, A_LEN(self->p));
-    case self_v_: return js_array_num_new(ctx, self->v, A_LEN(self->v));
-    case self_a_: return js_array_num_new(ctx, self->a, A_LEN(self->a));
-    case self_j_: return js_array_num_new(ctx, self->j, A_LEN(self->j));
-    default: return JS_UNDEFINED;
-    }
-}
-
 static JSValue liba_trajpoly7_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     a_trajpoly7 *const self = (a_trajpoly7 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly7_class_id);
@@ -129,6 +107,28 @@ static JSValue liba_trajpoly7_jer(JSContext *ctx, JSValueConst this_val, int arg
     if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
     a_float jer = a_trajpoly7_jer(self, (a_float)dt);
     return JS_NewFloat64(ctx, (double)jer);
+}
+
+enum
+{
+    self_p_,
+    self_v_,
+    self_a_,
+    self_j_,
+};
+
+static JSValue liba_trajpoly7_get(JSContext *ctx, JSValueConst this_val, int magic)
+{
+    a_trajpoly7 *const self = (a_trajpoly7 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly7_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    switch (magic)
+    {
+    case self_p_: return js_array_num_new(ctx, self->p, A_LEN(self->p));
+    case self_v_: return js_array_num_new(ctx, self->v, A_LEN(self->v));
+    case self_a_: return js_array_num_new(ctx, self->a, A_LEN(self->a));
+    case self_j_: return js_array_num_new(ctx, self->j, A_LEN(self->j));
+    default: return JS_UNDEFINED;
+    }
 }
 
 static JSCFunctionListEntry const liba_trajpoly7_proto[] = {

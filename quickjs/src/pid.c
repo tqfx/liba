@@ -36,6 +36,69 @@ fail:
     return JS_EXCEPTION;
 }
 
+static JSValue liba_pid_kpid(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+{
+    (void)argc;
+    a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    double args[] = {0, 0, 0};
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
+    }
+    a_pid_kpid(self, (a_float)args[0], (a_float)args[1], (a_float)args[2]);
+    return JS_UNDEFINED;
+}
+
+static JSValue liba_pid_zero(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+{
+    (void)argc;
+    (void)argv;
+    a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    a_pid_zero(self);
+    return JS_UNDEFINED;
+}
+
+static JSValue liba_pid_run(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+{
+    (void)argc;
+    a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    double args[] = {0, 0};
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
+    }
+    return JS_NewFloat64(ctx, (double)a_pid_run(self, (a_float)args[0], (a_float)args[1]));
+}
+
+static JSValue liba_pid_pos(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+{
+    (void)argc;
+    a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    double args[] = {0, 0};
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
+    }
+    return JS_NewFloat64(ctx, (double)a_pid_pos(self, (a_float)args[0], (a_float)args[1]));
+}
+
+static JSValue liba_pid_inc(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+{
+    (void)argc;
+    a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    double args[] = {0, 0};
+    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    {
+        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
+    }
+    return JS_NewFloat64(ctx, (double)a_pid_inc(self, (a_float)args[0], (a_float)args[1]));
+}
+
 enum
 {
     self_kp_,
@@ -92,69 +155,6 @@ static JSValue liba_pid_set(JSContext *ctx, JSValueConst this_val, JSValueConst 
     default: break;
     }
     return JS_UNDEFINED;
-}
-
-static JSValue liba_pid_zero(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
-{
-    (void)argc;
-    (void)argv;
-    a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    a_pid_zero(self);
-    return JS_UNDEFINED;
-}
-
-static JSValue liba_pid_kpid(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
-{
-    (void)argc;
-    a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    double args[] = {0, 0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
-    {
-        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
-    }
-    a_pid_kpid(self, (a_float)args[0], (a_float)args[1], (a_float)args[2]);
-    return JS_UNDEFINED;
-}
-
-static JSValue liba_pid_run(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
-{
-    (void)argc;
-    a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    double args[] = {0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
-    {
-        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
-    }
-    return JS_NewFloat64(ctx, (double)a_pid_run(self, (a_float)args[0], (a_float)args[1]));
-}
-
-static JSValue liba_pid_pos(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
-{
-    (void)argc;
-    a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    double args[] = {0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
-    {
-        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
-    }
-    return JS_NewFloat64(ctx, (double)a_pid_pos(self, (a_float)args[0], (a_float)args[1]));
-}
-
-static JSValue liba_pid_inc(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
-{
-    (void)argc;
-    a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    double args[] = {0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
-    {
-        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
-    }
-    return JS_NewFloat64(ctx, (double)a_pid_inc(self, (a_float)args[0], (a_float)args[1]));
 }
 
 static JSCFunctionListEntry const liba_pid_proto[] = {

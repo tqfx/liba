@@ -22,7 +22,7 @@ static JSValue liba_version_ctor(JSContext *ctx, JSValueConst new_target, int ar
     {
         if (JS_ToUint32(ctx, &args[i], argv[i]))
         {
-            if (!i)
+            if (i == 0)
             {
                 ver = JS_ToCString(ctx, argv[0]);
                 if (ver) { break; }
@@ -52,47 +52,6 @@ fail:
     js_free(ctx, self);
     JS_FreeValue(ctx, clazz);
     return JS_EXCEPTION;
-}
-
-enum
-{
-    self_major_,
-    self_minor_,
-    self_third_,
-    self_extra_,
-};
-
-static JSValue liba_version_get(JSContext *ctx, JSValueConst this_val, int magic)
-{
-    a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    a_u32 ver;
-    switch (magic)
-    {
-    case self_major_: ver = self->major; break;
-    case self_minor_: ver = self->minor; break;
-    case self_third_: ver = self->third; break;
-    case self_extra_: ver = self->extra; break;
-    default: return JS_UNDEFINED;
-    }
-    return JS_NewUint32(ctx, ver);
-}
-
-static JSValue liba_version_set(JSContext *ctx, JSValueConst this_val, JSValueConst val, int magic)
-{
-    a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    a_u32 ver;
-    if (JS_ToUint32(ctx, &ver, val)) { return JS_EXCEPTION; }
-    switch (magic)
-    {
-    case self_major_: self->major = (unsigned int)ver; break;
-    case self_minor_: self->minor = (unsigned int)ver; break;
-    case self_third_: self->third = (unsigned int)ver; break;
-    case self_extra_: self->extra = (unsigned int)ver; break;
-    default: break;
-    }
-    return JS_UNDEFINED;
 }
 
 static JSValue liba_version_check(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
@@ -188,6 +147,47 @@ static JSValue liba_version_ne(JSContext *ctx, JSValueConst this_val, int argc, 
     a_version *const that = (a_version *)JS_GetOpaque2(ctx, argv[0], liba_version_class_id);
     if (!that) { return JS_EXCEPTION; }
     return JS_NewBool(ctx, a_version_ne(self, that));
+}
+
+enum
+{
+    self_major_,
+    self_minor_,
+    self_third_,
+    self_extra_,
+};
+
+static JSValue liba_version_get(JSContext *ctx, JSValueConst this_val, int magic)
+{
+    a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    a_u32 ver;
+    switch (magic)
+    {
+    case self_major_: ver = self->major; break;
+    case self_minor_: ver = self->minor; break;
+    case self_third_: ver = self->third; break;
+    case self_extra_: ver = self->extra; break;
+    default: return JS_UNDEFINED;
+    }
+    return JS_NewUint32(ctx, ver);
+}
+
+static JSValue liba_version_set(JSContext *ctx, JSValueConst this_val, JSValueConst val, int magic)
+{
+    a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    a_u32 ver;
+    if (JS_ToUint32(ctx, &ver, val)) { return JS_EXCEPTION; }
+    switch (magic)
+    {
+    case self_major_: self->major = (unsigned int)ver; break;
+    case self_minor_: self->minor = (unsigned int)ver; break;
+    case self_third_: self->third = (unsigned int)ver; break;
+    case self_extra_: self->extra = (unsigned int)ver; break;
+    default: break;
+    }
+    return JS_UNDEFINED;
 }
 
 static JSCFunctionListEntry const liba_version_proto[] = {

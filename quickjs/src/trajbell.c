@@ -30,50 +30,6 @@ fail:
     return JS_EXCEPTION;
 }
 
-enum
-{
-    self_t_,
-    self_tv_,
-    self_ta_,
-    self_td_,
-    self_taj_,
-    self_tdj_,
-    self_p0_,
-    self_p1_,
-    self_v0_,
-    self_v1_,
-    self_vm_,
-    self_jm_,
-    self_am_,
-    self_dm_,
-};
-
-static JSValue liba_trajbell_get(JSContext *ctx, JSValueConst this_val, int magic)
-{
-    a_trajbell *const self = (a_trajbell *)JS_GetOpaque2(ctx, this_val, liba_trajbell_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    double x;
-    switch (magic)
-    {
-    case self_t_: x = (double)self->t; break;
-    case self_tv_: x = (double)self->tv; break;
-    case self_ta_: x = (double)self->ta; break;
-    case self_td_: x = (double)self->td; break;
-    case self_taj_: x = (double)self->taj; break;
-    case self_tdj_: x = (double)self->tdj; break;
-    case self_p0_: x = (double)self->p0; break;
-    case self_p1_: x = (double)self->p1; break;
-    case self_v0_: x = (double)self->v0; break;
-    case self_v1_: x = (double)self->v1; break;
-    case self_vm_: x = (double)self->vm; break;
-    case self_jm_: x = (double)self->jm; break;
-    case self_am_: x = (double)self->am; break;
-    case self_dm_: x = (double)self->dm; break;
-    default: return JS_UNDEFINED;
-    }
-    return JS_NewFloat64(ctx, x);
-}
-
 static JSValue liba_trajbell_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     a_trajbell *const self = (a_trajbell *)JS_GetOpaque2(ctx, this_val, liba_trajbell_class_id);
@@ -135,6 +91,50 @@ static JSValue liba_trajbell_jer(JSContext *ctx, JSValueConst this_val, int argc
     if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
     a_float acc = a_trajbell_jer(self, (a_float)dt);
     return JS_NewFloat64(ctx, (double)acc);
+}
+
+enum
+{
+    self_t_,
+    self_tv_,
+    self_ta_,
+    self_td_,
+    self_taj_,
+    self_tdj_,
+    self_p0_,
+    self_p1_,
+    self_v0_,
+    self_v1_,
+    self_vm_,
+    self_jm_,
+    self_am_,
+    self_dm_,
+};
+
+static JSValue liba_trajbell_get(JSContext *ctx, JSValueConst this_val, int magic)
+{
+    a_trajbell *const self = (a_trajbell *)JS_GetOpaque2(ctx, this_val, liba_trajbell_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    double x;
+    switch (magic)
+    {
+    case self_t_: x = (double)self->t; break;
+    case self_tv_: x = (double)self->tv; break;
+    case self_ta_: x = (double)self->ta; break;
+    case self_td_: x = (double)self->td; break;
+    case self_taj_: x = (double)self->taj; break;
+    case self_tdj_: x = (double)self->tdj; break;
+    case self_p0_: x = (double)self->p0; break;
+    case self_p1_: x = (double)self->p1; break;
+    case self_v0_: x = (double)self->v0; break;
+    case self_v1_: x = (double)self->v1; break;
+    case self_vm_: x = (double)self->vm; break;
+    case self_jm_: x = (double)self->jm; break;
+    case self_am_: x = (double)self->am; break;
+    case self_dm_: x = (double)self->dm; break;
+    default: return JS_UNDEFINED;
+    }
+    return JS_NewFloat64(ctx, x);
 }
 
 static JSCFunctionListEntry const liba_trajbell_proto[] = {

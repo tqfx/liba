@@ -1,6 +1,18 @@
 #include "a.h"
 #include "a/tf.h"
 
+static JSClassID liba_tf_class_id;
+
+static void liba_tf_finalizer(JSRuntime *rt, JSValue val)
+{
+    a_tf *const self = (a_tf *)JS_GetOpaque(val, liba_tf_class_id);
+    js_free_rt(rt, self->output);
+    js_free_rt(rt, self->input);
+    js_free_rt(rt, self);
+}
+
+static JSClassDef liba_tf_class = {"tf", .finalizer = liba_tf_finalizer};
+
 static int liba_tf_set_num_(JSContext *ctx, a_tf *self, JSValueConst num)
 {
     a_u32 num_n = 0;
@@ -41,18 +53,6 @@ static int liba_tf_set_den_(JSContext *ctx, a_tf *self, JSValueConst den)
     return js_array_num_get(ctx, den, den_p, den_n);
 }
 
-static JSClassID liba_tf_class_id;
-
-static void liba_tf_finalizer(JSRuntime *rt, JSValue val)
-{
-    a_tf *const self = (a_tf *)JS_GetOpaque(val, liba_tf_class_id);
-    js_free_rt(rt, self->output);
-    js_free_rt(rt, self->input);
-    js_free_rt(rt, self);
-}
-
-static JSClassDef liba_tf_class = {"tf", .finalizer = liba_tf_finalizer};
-
 static JSValue liba_tf_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
     (void)argc;
@@ -71,6 +71,26 @@ static JSValue liba_tf_ctor(JSContext *ctx, JSValueConst new_target, int argc, J
 fail:
     js_free(ctx, self);
     JS_FreeValue(ctx, clazz);
+    return JS_UNDEFINED;
+}
+
+static JSValue liba_tf_iter(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+{
+    (void)argc;
+    a_tf *const self = (a_tf *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    double x;
+    if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
+    return JS_NewFloat64(ctx, (double)a_tf_iter(self, (a_float)x));
+}
+
+static JSValue liba_tf_zero(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+{
+    (void)argc;
+    (void)argv;
+    a_tf *const self = (a_tf *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    a_tf_zero(self);
     return JS_UNDEFINED;
 }
 
@@ -111,26 +131,6 @@ static JSValue liba_tf_set(JSContext *ctx, JSValueConst this_val, JSValueConst v
     default:
         break;
     }
-    return JS_UNDEFINED;
-}
-
-static JSValue liba_tf_iter(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
-{
-    (void)argc;
-    a_tf *const self = (a_tf *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    double x;
-    if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    return JS_NewFloat64(ctx, (double)a_tf_iter(self, (a_float)x));
-}
-
-static JSValue liba_tf_zero(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
-{
-    (void)argc;
-    (void)argv;
-    a_tf *const self = (a_tf *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    a_tf_zero(self);
     return JS_UNDEFINED;
 }
 

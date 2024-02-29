@@ -49,87 +49,6 @@ fail:
     return JS_EXCEPTION;
 }
 
-enum
-{
-    self_kp_,
-    self_ki_,
-    self_kd_,
-    self_summax_,
-    self_summin_,
-    self_sum_,
-    self_outmax_,
-    self_outmin_,
-    self_out_,
-    self_fdb_,
-    self_err_,
-    self_order_,
-    self_block_,
-};
-
-static JSValue liba_pid_fuzzy_get(JSContext *ctx, JSValueConst this_val, int magic)
-{
-    a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    double x;
-    switch (magic)
-    {
-    case self_kp_: x = (double)self->kp; break;
-    case self_ki_: x = (double)self->ki; break;
-    case self_kd_: x = (double)self->kd; break;
-    case self_summax_: x = (double)self->pid.summax; break;
-    case self_summin_: x = (double)self->pid.summin; break;
-    case self_sum_: x = (double)self->pid.sum; break;
-    case self_outmax_: x = (double)self->pid.outmax; break;
-    case self_outmin_: x = (double)self->pid.outmin; break;
-    case self_out_: x = (double)self->pid.out; break;
-    case self_fdb_: x = (double)self->pid.fdb; break;
-    case self_err_: x = (double)self->pid.err; break;
-    case self_order_: return JS_NewUint32(ctx, self->order);
-    case self_block_: return JS_NewUint32(ctx, self->block);
-    default: return JS_UNDEFINED;
-    }
-    return JS_NewFloat64(ctx, x);
-}
-
-static int liba_pid_fuzzy_block_(JSContext *ctx, a_pid_fuzzy *self, unsigned int block)
-{
-    void *ptr = a_pid_fuzzy_block(self);
-    if (block > self->block)
-    {
-        ptr = js_realloc(ctx, ptr, A_PID_FUZZY_BLOCK(block));
-        if (!ptr) { return ~0; }
-    }
-    a_pid_fuzzy_set_block(self, ptr, block);
-    return 0;
-}
-
-static JSValue liba_pid_fuzzy_set(JSContext *ctx, JSValueConst this_val, JSValueConst val, int magic)
-{
-    a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    a_u32 u;
-    if (magic == self_block_)
-    {
-        if (JS_ToUint32(ctx, &u, val)) { return JS_EXCEPTION; }
-        if (liba_pid_fuzzy_block_(ctx, self, (unsigned int)u)) { return JS_EXCEPTION; }
-        return JS_UNDEFINED;
-    }
-    double x;
-    if (JS_ToFloat64(ctx, &x, val)) { return JS_EXCEPTION; }
-    switch (magic)
-    {
-    case self_kp_: self->pid.kp = self->kp = (a_float)x; break;
-    case self_ki_: self->pid.ki = self->ki = (a_float)x; break;
-    case self_kd_: self->pid.kd = self->kd = (a_float)x; break;
-    case self_summax_: self->pid.summax = (a_float)x; break;
-    case self_summin_: self->pid.summin = (a_float)x; break;
-    case self_outmax_: self->pid.outmax = (a_float)x; break;
-    case self_outmin_: self->pid.outmin = (a_float)x; break;
-    default: break;
-    }
-    return JS_UNDEFINED;
-}
-
 static JSValue liba_pid_fuzzy_op(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
@@ -236,14 +155,26 @@ fail:
     return JS_UNDEFINED;
 }
 
+static int liba_pid_fuzzy_block_(JSContext *ctx, a_pid_fuzzy *self, unsigned int num)
+{
+    void *ptr = a_pid_fuzzy_block(self);
+    if (num > self->block)
+    {
+        ptr = js_realloc(ctx, ptr, A_PID_FUZZY_BLOCK(num));
+        if (!ptr) { return ~0; }
+    }
+    a_pid_fuzzy_set_block(self, ptr, num);
+    return 0;
+}
+
 static JSValue liba_pid_fuzzy_block(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_u32 block;
-    if (JS_ToUint32(ctx, &block, argv[0])) { return JS_EXCEPTION; }
-    if (liba_pid_fuzzy_block_(ctx, self, block)) { return JS_EXCEPTION; }
+    a_u32 num;
+    if (JS_ToUint32(ctx, &num, argv[0])) { return JS_EXCEPTION; }
+    if (liba_pid_fuzzy_block_(ctx, self, num)) { return JS_EXCEPTION; }
     return JS_UNDEFINED;
 }
 
@@ -308,6 +239,75 @@ static JSValue liba_pid_fuzzy_inc(JSContext *ctx, JSValueConst this_val, int arg
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
     return JS_NewFloat64(ctx, (double)a_pid_fuzzy_inc(self, (a_float)args[0], (a_float)args[1]));
+}
+
+enum
+{
+    self_kp_,
+    self_ki_,
+    self_kd_,
+    self_summax_,
+    self_summin_,
+    self_sum_,
+    self_outmax_,
+    self_outmin_,
+    self_out_,
+    self_fdb_,
+    self_err_,
+    self_order_,
+    self_block_,
+};
+
+static JSValue liba_pid_fuzzy_get(JSContext *ctx, JSValueConst this_val, int magic)
+{
+    a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    double x;
+    switch (magic)
+    {
+    case self_kp_: x = (double)self->kp; break;
+    case self_ki_: x = (double)self->ki; break;
+    case self_kd_: x = (double)self->kd; break;
+    case self_summax_: x = (double)self->pid.summax; break;
+    case self_summin_: x = (double)self->pid.summin; break;
+    case self_sum_: x = (double)self->pid.sum; break;
+    case self_outmax_: x = (double)self->pid.outmax; break;
+    case self_outmin_: x = (double)self->pid.outmin; break;
+    case self_out_: x = (double)self->pid.out; break;
+    case self_fdb_: x = (double)self->pid.fdb; break;
+    case self_err_: x = (double)self->pid.err; break;
+    case self_order_: return JS_NewUint32(ctx, self->order);
+    case self_block_: return JS_NewUint32(ctx, self->block);
+    default: return JS_UNDEFINED;
+    }
+    return JS_NewFloat64(ctx, x);
+}
+
+static JSValue liba_pid_fuzzy_set(JSContext *ctx, JSValueConst this_val, JSValueConst val, int magic)
+{
+    a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    a_u32 u;
+    if (magic == self_block_)
+    {
+        if (JS_ToUint32(ctx, &u, val)) { return JS_EXCEPTION; }
+        if (liba_pid_fuzzy_block_(ctx, self, (unsigned int)u)) { return JS_EXCEPTION; }
+        return JS_UNDEFINED;
+    }
+    double x;
+    if (JS_ToFloat64(ctx, &x, val)) { return JS_EXCEPTION; }
+    switch (magic)
+    {
+    case self_kp_: self->pid.kp = self->kp = (a_float)x; break;
+    case self_ki_: self->pid.ki = self->ki = (a_float)x; break;
+    case self_kd_: self->pid.kd = self->kd = (a_float)x; break;
+    case self_summax_: self->pid.summax = (a_float)x; break;
+    case self_summin_: self->pid.summin = (a_float)x; break;
+    case self_outmax_: self->pid.outmax = (a_float)x; break;
+    case self_outmin_: self->pid.outmin = (a_float)x; break;
+    default: break;
+    }
+    return JS_UNDEFINED;
 }
 
 static JSCFunctionListEntry const liba_pid_fuzzy_proto[] = {
