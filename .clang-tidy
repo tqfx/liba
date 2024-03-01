@@ -1,4 +1,4 @@
 ---
-Checks: '-*,bugprone-*,-bugprone-easily-swappable-parameters,cert-*,clang-diagnostic-*,misc-*,-misc-misplaced-const,-misc-include-cleaner,performance-*,portability-*'
+Checks: '-*,bugprone-*,-bugprone-easily-swappable-parameters,cert-*,clang-diagnostic-*,misc-*,-misc-misplaced-const,-misc-include-cleaner,-misc-non-private-member-variables-in-classes,performance-*,portability-*'
 FormatStyle: file
 ...
