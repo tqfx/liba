@@ -40,6 +40,7 @@ static JSValue liba_version_ctor(JSContext *ctx, JSValueConst new_target, int ar
         self->major = (unsigned int)args[0];
         self->minor = (unsigned int)args[1];
         self->third = (unsigned int)args[2];
+        self->alpha[0] = '.';
     }
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
@@ -65,6 +66,17 @@ static JSValue liba_version_check(JSContext *ctx, JSValueConst this_val, int arg
     }
 #undef a_version_check
     return JS_NewInt32(ctx, a_version_check((unsigned int)args[0], (unsigned int)args[1], (unsigned int)args[2]));
+}
+
+static JSValue liba_version_tostring(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+{
+    (void)argc;
+    (void)argv;
+    char str[48];
+    a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    a_version_tostr(self, str, sizeof(str));
+    return JS_NewString(ctx, str);
 }
 
 static JSValue liba_version_parse(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
@@ -155,12 +167,19 @@ enum
     self_minor_,
     self_third_,
     self_extra_,
+    self_alpha_,
 };
 
 static JSValue liba_version_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
+    if (magic == self_alpha_)
+    {
+        char alpha[sizeof(self->alpha) + 1];
+        a_version_alpha(self, alpha);
+        return JS_NewString(ctx, alpha);
+    }
     a_u32 ver;
     switch (magic)
     {
@@ -178,6 +197,13 @@ static JSValue liba_version_set(JSContext *ctx, JSValueConst this_val, JSValueCo
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_u32 ver;
+    if (magic == self_alpha_)
+    {
+        char const *alpha = JS_ToCString(ctx, val);
+        a_version_set_alpha(self, alpha);
+        JS_FreeCString(ctx, alpha);
+        return JS_UNDEFINED;
+    }
     if (JS_ToUint32(ctx, &ver, val)) { return JS_EXCEPTION; }
     switch (magic)
     {
@@ -191,11 +217,12 @@ static JSValue liba_version_set(JSContext *ctx, JSValueConst this_val, JSValueCo
 }
 
 static JSCFunctionListEntry const liba_version_proto[] = {
-    JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.version", 0),
     JS_CGETSET_MAGIC_DEF("major", liba_version_get, liba_version_set, self_major_),
     JS_CGETSET_MAGIC_DEF("minor", liba_version_get, liba_version_set, self_minor_),
     JS_CGETSET_MAGIC_DEF("third", liba_version_get, liba_version_set, self_third_),
     JS_CGETSET_MAGIC_DEF("extra", liba_version_get, liba_version_set, self_extra_),
+    JS_CGETSET_MAGIC_DEF("alpha", liba_version_get, liba_version_set, self_alpha_),
+    JS_CFUNC_DEF("toString", 0, liba_version_tostring),
     JS_CFUNC_DEF("parse", 1, liba_version_parse),
     JS_CFUNC_DEF("cmp", 1, liba_version_cmp),
     JS_CFUNC_DEF("lt", 1, liba_version_lt),

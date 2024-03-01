@@ -14,6 +14,7 @@
  @field minor version minor number
  @field third version third number
  @field extra version extra number
+ @field alpha version alphabet
  @table a.version
 */
 #if defined(__cplusplus)
@@ -43,7 +44,7 @@ int liba_version_new(lua_State *L);
 int liba_version_init(lua_State *L);
 
 /***
- algorithm library version parse
+ parse version string to version
  @tparam string version string to be parsed
  @treturn a.version algorithm library version userdata
  @function parse

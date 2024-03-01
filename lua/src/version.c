@@ -5,14 +5,16 @@
 
 #include "version.h"
 #include "a/version.h"
+#undef a_version_check
 
 static int liba_version_tostring(lua_State *L)
 {
     a_version const *const ctx = (a_version const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        if (!ctx->extra) { lua_pushfstring(L, "%d.%d.%d", ctx->major, ctx->minor, ctx->third); }
-        lua_pushfstring(L, "%d.%d.%d.%d", ctx->major, ctx->minor, ctx->third, ctx->extra);
+        char str[48];
+        a_version_tostr(ctx, str, sizeof(str));
+        lua_pushstring(L, str);
         return 1;
     }
     return 0;
@@ -42,6 +44,10 @@ static int liba_version_init_(lua_State *L, a_version *ctx, int arg, int top)
         A_FALLTHROUGH;
     case 0:;
     }
+    ctx->alpha[0] = '.';
+    ctx->alpha[1] = 0;
+    ctx->alpha[2] = 0;
+    ctx->alpha[3] = 0;
     return 1;
 }
 
@@ -84,7 +90,7 @@ int liba_version_init(lua_State *L)
 }
 
 /***
- algorithm library version parse
+ parse version string to version
  @tparam a.version ctx algorithm library version userdata
  @tparam string version string to be parsed
  @treturn a.version algorithm library version userdata
@@ -129,7 +135,6 @@ static int liba_version_check(lua_State *L)
     default:
         break;
     }
-#undef a_version_check
     lua_pushinteger(L, a_version_check(v.major, v.minor, v.third));
     return 1;
 }
@@ -230,6 +235,12 @@ static int liba_version_set(lua_State *L)
     case 0xFD1BE968: // extra
         ctx->extra = (unsigned int)luaL_checkinteger(L, 3);
         break;
+    case 0xB5485B9E: // alpha
+    {
+        char const *alpha = luaL_checklstring(L, 3, 0);
+        a_version_set_alpha(ctx, alpha);
+        break;
+    }
     case 0x0CD3E494: // __lt
     case 0x0CD3E485: // __le
     case 0x0CD3E0FC: // __eq
@@ -264,12 +275,20 @@ static int liba_version_get(lua_State *L)
     case 0xFD1BE968: // extra
         lua_pushinteger(L, (lua_Integer)ctx->extra);
         break;
+    case 0xB5485B9E: // alpha
+    {
+        char alpha[sizeof(ctx->alpha) + 1];
+        a_version_alpha(ctx, alpha);
+        lua_pushstring(L, alpha);
+        break;
+    }
     case 0xA65758B2: // __index
         lua_registry_get(L, liba_version_new);
         lua_int_set(L, -1, "major", (lua_Integer)ctx->major);
         lua_int_set(L, -1, "minor", (lua_Integer)ctx->minor);
         lua_int_set(L, -1, "third", (lua_Integer)ctx->third);
         lua_int_set(L, -1, "extra", (lua_Integer)ctx->extra);
+        lua_str_set(L, -1, "alpha", "");
         break;
     default:
         lua_getmetatable(L, 1);

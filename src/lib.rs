@@ -15,9 +15,9 @@ liba = "0.1"
 #![allow(non_camel_case_types)]
 #![cfg_attr(not(features = "std"), no_std)]
 
-/// Equivalent to C’s int type.
+/// Equivalent to C's int type.
 pub type int = core::ffi::c_int;
-/// Equivalent to C’s unsigned int type.
+/// Equivalent to C's unsigned int type.
 pub type uint = core::ffi::c_uint;
 /// floating-point number stored using `f64`
 #[cfg(not(feature = "float"))]
@@ -1781,6 +1781,8 @@ pub struct version {
     pub third: uint,
     /// extra number
     pub extra: uint,
+    /// alphabet
+    pub alpha: [u8; 4],
 }
 
 extern "C" {
@@ -1788,13 +1790,17 @@ extern "C" {
     static a_version_minor: uint;
     static a_version_patch: uint;
     static a_version_tweak: u32;
+    fn a_version_set_alpha(ctx: *mut version, alpha: *const u8);
+    fn a_version_alpha(ctx: *const version, alpha: &mut [u8; 5]);
+    fn a_version_parse(ctx: *mut version, ver: *const u8) -> uint;
+    fn a_version_tostr(ctx: *const version, p: *mut u8, n: usize) -> int;
+    fn a_version_cmp(ctx: *const version, rhs: *const version) -> int;
+    fn a_version_lt(ctx: *const version, rhs: *const version) -> bool;
+    fn a_version_gt(ctx: *const version, rhs: *const version) -> bool;
+    fn a_version_le(ctx: *const version, rhs: *const version) -> bool;
+    fn a_version_ge(ctx: *const version, rhs: *const version) -> bool;
+    fn a_version_eq(ctx: *const version, rhs: *const version) -> bool;
     fn a_version_check(major: uint, minor: uint, patch: uint) -> int;
-    fn a_version_cmp(lhs: *const version, rhs: *const version) -> int;
-    fn a_version_lt(lhs: *const version, rhs: *const version) -> bool;
-    fn a_version_gt(lhs: *const version, rhs: *const version) -> bool;
-    fn a_version_le(lhs: *const version, rhs: *const version) -> bool;
-    fn a_version_ge(lhs: *const version, rhs: *const version) -> bool;
-    fn a_version_eq(lhs: *const version, rhs: *const version) -> bool;
 }
 
 impl version {
@@ -1806,7 +1812,28 @@ impl version {
             minor,
             third,
             extra: 0,
+            alpha: [b'.', 0, 0, 0],
         }
+    }
+    /// set alphabet for version
+    #[inline(always)]
+    pub fn set_alpha(&mut self, alpha: &[u8]) {
+        unsafe { a_version_set_alpha(self, alpha.as_ptr()) }
+    }
+    /// get alphabet for version
+    #[inline(always)]
+    pub fn alpha(&self, alpha: &mut [u8; 5]) {
+        unsafe { a_version_alpha(self, alpha) }
+    }
+    /// parse version string to version
+    #[inline(always)]
+    pub fn parse(&mut self, ver: &str) -> uint {
+        unsafe { a_version_parse(self, ver.as_ptr()) }
+    }
+    /// convert version to string
+    #[inline(always)]
+    pub fn tostr(&mut self, ver: &mut [u8]) -> int {
+        unsafe { a_version_tostr(self, ver.as_mut_ptr(), ver.len()) }
     }
     /// algorithm library version check
     #[inline(always)]
@@ -1877,11 +1904,14 @@ fn version() {
     extern crate std;
     impl core::fmt::Debug for version {
         fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+            let mut alpha = [0u8; 5];
+            self.alpha(&mut alpha);
             f.debug_struct("version")
                 .field("major", &self.major)
                 .field("minor", &self.minor)
                 .field("third", &self.third)
                 .field("extra", &self.extra)
+                .field("alpha", &std::str::from_utf8(&alpha).unwrap())
                 .finish()
         }
     }
@@ -1891,8 +1921,12 @@ fn version() {
     std::println!("patch {}", crate::version::patch());
     std::println!("tweak {}", crate::version::tweak());
     let v000 = version::new(0, 0, 0);
-    let v001 = version::new(0, 0, 1);
+    let mut v001 = version::new(0, 0, 0);
+    let mut ver = [0u8; 48];
+    v001.parse("0.0.1-a.1");
+    v001.tostr(&mut ver);
     std::println!("{:?}", v001);
+    std::println!("{}", std::str::from_utf8(&ver).unwrap());
     assert!(v001 > v000);
     assert!(v000 < v001);
     assert!(v000 >= v000);

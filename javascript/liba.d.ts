@@ -953,8 +953,8 @@ declare namespace liba {
     third: number;
     /** extra number */
     extra: number;
-    /** return string representation of version */
-    toString(): string;
+    /** alphabet */
+    alpha: string;
     /**
      * parse for version string
      * @param ver version string to be parsed
@@ -995,6 +995,8 @@ declare namespace liba {
      * @param ver version to be compared
      */
     ne(ver: version): boolean;
+    /** return string representation of version */
+    toString(): string;
     delete(): void;
   }
   /** constructor for version */

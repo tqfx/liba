@@ -46,11 +46,11 @@
 typedef struct a_version a_version;
 // clang-format off
 #if defined(__cplusplus)
-#define A_VERSION_C(major, minor, third) {major, minor, third, 0}
-#define A_VERSION_EX(major, minor, third, extra) {major, minor, third, extra}
+#define A_VERSION_C(major, minor, third) {major, minor, third, 0, {'.', 0, 0, 0}}
+#define A_VERSION_EX(major, minor, third, extra) {major, minor, third, extra, {'.', 0, 0, 0}}
 #else /* !__cplusplus */
-#define A_VERSION_C(major, minor, third) (a_version){major, minor, third, 0}
-#define A_VERSION_EX(major, minor, third, extra) (a_version){major, minor, third, extra}
+#define A_VERSION_C(major, minor, third) (a_version){major, minor, third, 0, {'.', 0, 0, 0}}
+#define A_VERSION_EX(major, minor, third, extra) (a_version){major, minor, third, extra, {'.', 0, 0, 0}}
 #endif /* __cplusplus */
 // clang-format on
 
@@ -83,6 +83,23 @@ A_EXTERN a_u32 const a_version_tweak;
 */
 A_EXTERN int a_version_check(unsigned int major, unsigned int minor, unsigned int patch);
 #define a_version_check() a_version_check(A_VERSION_MAJOR, A_VERSION_MINOR, A_VERSION_PATCH)
+
+/*!
+ @brief convert version to string
+ @param[in] ctx points to an instance structure for version
+ @param[in] pdata points to string buffer
+ @param[in] nbyte length of string buffer
+ @return number of used characters
+*/
+A_EXTERN int a_version_tostr(a_version const *ctx, void *pdata, a_size nbyte);
+
+/*!
+ @brief parse version string to version
+ @param[in,out] ctx points to an instance structure for version
+ @param[in] ver version string to be parsed
+ @return number of parsed characters
+*/
+A_EXTERN unsigned int a_version_parse(a_version *ctx, char const *ver);
 
 /*!
  @brief compare the version lhs with the version rhs
@@ -144,12 +161,18 @@ A_EXTERN a_bool a_version_eq(a_version const *lhs, a_version const *rhs);
 A_EXTERN a_bool a_version_ne(a_version const *lhs, a_version const *rhs);
 
 /*!
- @brief algorithm library version parse
+ @brief set alphabet for version
  @param[in,out] ctx points to an instance structure for version
- @param[in] ver version string to be parsed
- @return number of parsed characters
+ @param[in] alpha new alphabet
 */
-A_EXTERN unsigned int a_version_parse(a_version *ctx, char const *ver);
+A_EXTERN void a_version_set_alpha(a_version *ctx, char const *alpha);
+
+/*!
+ @brief get alphabet for version
+ @param[in] ctx points to an instance structure for version
+ @param[out] alpha string buffer, >sizeof(ctx->alpha)
+*/
+A_EXTERN void a_version_alpha(a_version const *ctx, char alpha[5]);
 
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -164,10 +187,23 @@ struct a_version
     unsigned int minor; //!< minor number
     unsigned int third; //!< third number
     unsigned int extra; //!< extra number
+    char alpha[4]; //!< alphabet
 #if defined(__cplusplus)
-    A_INLINE int cmp(a_version const &ver) const
+    A_INLINE void set_alpha(char const *str)
     {
-        return a_version_cmp(this, &ver);
+        a_version_set_alpha(this, str);
+    }
+    A_INLINE void get_alpha(char str[5]) const
+    {
+        a_version_alpha(this, str);
+    }
+    A_INLINE int tostr(void *p, a_size n) const
+    {
+        return a_version_tostr(this, p, n);
+    }
+    A_INLINE unsigned int parse(char const *ver)
+    {
+        return a_version_parse(this, ver);
     }
     A_INLINE bool operator<(a_version const &ver) const
     {
@@ -193,9 +229,9 @@ struct a_version
     {
         return a_version_ne(this, &ver);
     }
-    A_INLINE unsigned int parse(char const *ver)
+    A_INLINE int cmp(a_version const &ver) const
     {
-        return a_version_parse(this, ver);
+        return a_version_cmp(this, &ver);
     }
     /*! algorithm library version major */
     A_PUBLIC static unsigned int const MAJOR;

@@ -23,10 +23,11 @@ var v = new liba.version(1, 2);
 console.log(v.toString());
 do_leak_check(v);
 var v = new liba.version(1, 2, 3);
-console.log(v.major, v.minor, v.third, v.extra);
+console.log(v.major, v.minor, v.third, v.alpha, v.extra);
 console.log(v.parse("3.2.1").toString());
 console.log(liba.version.check(0, 0, 0));
 var w = new liba.version(1, 2, 0, 0);
 console.log(v.cmp(w));
 v.major = v.minor = v.third = v.extra = 0;
+v.alpha = v.alpha
 do_leak_check(v, w);

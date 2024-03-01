@@ -24,25 +24,23 @@ public class version {
 
     static final native void clinit();
 
-    final native void init(int major, int minor, int third);
+    final native void init(int major, int minor, int third, int extra);
 
     /**
-     * return string representation of version
+     * algorithm library version check
+     *
+     * @param major major number
+     * @param minor minor number
+     * @param patch patch number
+     * @return -3(&lt;major),-2(&lt;minor),-1(&lt;patch),0,+1(&gt;patch),+2(&gt;minor),+3(&gt;major)
      */
-    public String toString() {
-        String s = major() + "." + minor() + "." + third();
-        int extra = extra();
-        if (extra > 0) {
-            s += "." + extra;
-        }
-        return s;
-    }
+    public static final native int check(int major, int minor, int patch);
 
     /**
      * construct a new {@link version} object
      */
     public version() {
-        init(0, 0, 0);
+        init(0, 0, 0, 0);
     }
 
     /**
@@ -51,7 +49,7 @@ public class version {
      * @param major major number
      */
     public version(int major) {
-        init(major, 0, 0);
+        init(major, 0, 0, 0);
     }
 
     /**
@@ -61,7 +59,7 @@ public class version {
      * @param minor minor number
      */
     public version(int major, int minor) {
-        init(major, minor, 0);
+        init(major, minor, 0, 0);
     }
 
     /**
@@ -72,8 +70,25 @@ public class version {
      * @param third third number
      */
     public version(int major, int minor, int third) {
-        init(major, minor, third);
+        init(major, minor, third, 0);
     }
+
+    /**
+     * construct a new {@link version} object
+     *
+     * @param major major number
+     * @param minor minor number
+     * @param third third number
+     * @param extra extra number
+     */
+    public version(int major, int minor, int third, int extra) {
+        init(major, minor, third, extra);
+    }
+
+    /**
+     * return string representation of version
+     */
+    public final native String toString();
 
     /***
      * get major number for version
@@ -134,6 +149,21 @@ public class version {
      * @return {@link version}
      */
     public final native version extra(int extra);
+
+    /***
+     * get alphabet for version
+     *
+     * @return alphabet
+     */
+    public final native String alpha();
+
+    /***
+     * set alphabet for version
+     *
+     * @param alpha alphabet
+     * @return {@link version}
+     */
+    public final native version alpha(String alpha);
 
     /**
      * parse for {@link version} object
@@ -198,14 +228,4 @@ public class version {
      * @return relationship between the versions
      */
     public final native int cmp(version ver);
-
-    /**
-     * algorithm library version check
-     *
-     * @param major major number
-     * @param minor minor number
-     * @param patch patch number
-     * @return -3(&lt;major),-2(&lt;minor),-1(&lt;patch),0,+1(&gt;patch),+2(&gt;minor),+3(&gt;major)
-     */
-    public static final native int check(int major, int minor, int patch);
 }

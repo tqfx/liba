@@ -18,6 +18,7 @@ assert("v100.major");
 assert("v010.minor");
 assert("v001.third");
 assert("v000.extra == 0");
+assert("v000.alpha == '.'");
 console.log(a.version.MAJOR);
 console.log(a.version.MINOR);
 console.log(a.version.PATCH);

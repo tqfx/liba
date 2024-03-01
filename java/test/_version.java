@@ -49,5 +49,7 @@ class _version {
         if (v000.extra() != 4) {
             throw new RuntimeException("v000.extra() != 4");
         }
+        v000.alpha(v000.alpha());
+        System.out.println(v000);
     }
 }

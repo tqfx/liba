@@ -784,16 +784,21 @@ struct version: public a_version
         a_version::parse(ver.c_str());
         return this;
     }
-    A_INLINE std::string toString()
+    A_INLINE void set_alpha(std::string const &str)
     {
-        std::string s = std::to_string(major) + "." +
-                        std::to_string(minor) + "." +
-                        std::to_string(third);
-        if (extra)
-        {
-            s += "." + std::to_string(extra);
-        }
-        return s;
+        a_version::set_alpha(str.c_str());
+    }
+    A_INLINE std::string get_alpha() const
+    {
+        char str[sizeof(alpha) + 1];
+        a_version::get_alpha(str);
+        return std::string(str);
+    }
+    A_INLINE std::string toString() const
+    {
+        char str[48];
+        a_version::tostr(str, sizeof(str));
+        return std::string(str);
     }
     A_INLINE version(unsigned int _major = 0,
                      unsigned int _minor = 0,
@@ -804,6 +809,10 @@ struct version: public a_version
         minor = _minor;
         third = _third;
         extra = _extra;
+        alpha[0] = '.';
+        alpha[1] = 0;
+        alpha[2] = 0;
+        alpha[3] = 0;
     }
 };
 
@@ -1051,7 +1060,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property<a_uint, void>("minor", &a_version::minor)
         .property<a_uint, void>("third", &a_version::third)
         .property<a_uint, void>("extra", &a_version::extra)
-        .function("toString", &version::toString)
+        .property("alpha", &version::get_alpha, &version::set_alpha)
         .function("parse", &version::parse, emscripten::allow_raw_pointers())
         .function("cmp", &version::cmp)
         .function("lt", &version::operator<)
@@ -1060,6 +1069,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .function("ge", &version::operator>=)
         .function("eq", &version::operator==)
         .function("ne", &version::operator!=)
+        .function("toString", &version::toString)
         .class_function("check", &a_version_check)
         .class_property("MAJOR", &a_version::MAJOR)
         .class_property("MINOR", &a_version::MINOR)

@@ -1549,6 +1549,7 @@ function trajtrap:acc(dt) end
 ---@field minor integer
 ---@field third integer
 ---@field extra integer
+---@field alpha string
 ---@overload fun(major?: integer, minor?: integer, third?: integer, extra?: integer): a.version
 ---@overload fun(ver: string): a.version
 local version = {}

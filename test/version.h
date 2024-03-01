@@ -80,9 +80,11 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 #endif /* __cplusplus */
     for (int i = 0; i < argc; ++i)
     {
+        char str[48];
         a_version ctx;
         a_version_parse(&ctx, argv[i]);
-        debug("parse \"%s\" -> %u.%u.%u\n", argv[i], ctx.major, ctx.minor, ctx.third);
+        a_version_tostr(&ctx, str, sizeof(str));
+        debug("parse \"%s\" -> %s\n", argv[i], str);
     }
     printf("%s\n", A_FUNC);
 #if defined(__cplusplus)

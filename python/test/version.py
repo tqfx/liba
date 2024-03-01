@@ -29,3 +29,4 @@ v.major = v.major
 v.minor = v.minor
 v.third = v.third
 v.extra = v.extra
+v.alpha = v.alpha
