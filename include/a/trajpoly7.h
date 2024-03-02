@@ -175,27 +175,27 @@ struct a_trajpoly7
     {
         a_trajpoly7_gen0(this, ts, p0, p1, v0, v1, a0, a1, j0, j1);
     }
-    A_INLINE a_float pos(a_float dt)
+    A_INLINE a_float pos(a_float dt) const
     {
         return a_trajpoly7_pos(this, dt);
     }
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 1)
     A_INLINE void gen1() { a_trajpoly7_gen1(this); }
-    A_INLINE a_float vel(a_float dt)
+    A_INLINE a_float vel(a_float dt) const
     {
         return a_trajpoly7_vel(this, dt);
     }
 #endif /* A_TRAJPOLY7 */
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 2)
     A_INLINE void gen2() { a_trajpoly7_gen2(this); }
-    A_INLINE a_float acc(a_float dt)
+    A_INLINE a_float acc(a_float dt) const
     {
         return a_trajpoly7_acc(this, dt);
     }
 #endif /* A_TRAJPOLY7 */
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 3)
     A_INLINE void gen3() { a_trajpoly7_gen3(this); }
-    A_INLINE a_float jer(a_float dt)
+    A_INLINE a_float jer(a_float dt) const
     {
         return a_trajpoly7_jer(this, dt);
     }

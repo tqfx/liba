@@ -52,7 +52,7 @@ struct crc8
     {
         return emscripten::val(emscripten::typed_memory_view(0x100, table));
     }
-    A_INLINE a_u8 operator()(std::string const &block, a_u8 value = 0)
+    A_INLINE a_u8 operator()(std::string const &block, a_u8 value = 0) const
     {
         return a_crc8(table, block.data(), block.length(), value);
     }
@@ -85,7 +85,7 @@ struct crc16
     {
         return emscripten::val(emscripten::typed_memory_view(0x100, table));
     }
-    A_INLINE a_u16 operator()(std::string const &block, a_u16 value = 0)
+    A_INLINE a_u16 operator()(std::string const &block, a_u16 value = 0) const
     {
         return eval(table, block.data(), block.length(), value);
     }
@@ -129,7 +129,7 @@ struct crc32
     {
         return emscripten::val(emscripten::typed_memory_view(0x100, table));
     }
-    A_INLINE a_u32 operator()(std::string const &block, a_u32 value = 0)
+    A_INLINE a_u32 operator()(std::string const &block, a_u32 value = 0) const
     {
         return eval(table, block.data(), block.length(), value);
     }
@@ -174,7 +174,7 @@ struct crc64
     {
         return emscripten::val(emscripten::typed_memory_view(0x100, table));
     }
-    A_INLINE emscripten::val operator()(std::string const &block, a_u64 value = 0)
+    A_INLINE emscripten::val operator()(std::string const &block, a_u64 value = 0) const
     {
         return emscripten::val(eval(table, block.data(), block.length(), value));
     }
@@ -650,7 +650,7 @@ struct tf: public a_tf
         set_den_(den, u.o);
         return this;
     }
-    A_INLINE a_float operator()(a_float x)
+    A_INLINE a_float operator()(a_float x) const
     {
         return a_tf::operator()(x);
     }
@@ -670,10 +670,10 @@ struct trajbell: public a_trajbell
     {
         return a_trajbell::gen(_jm, _am, _vm, _p0, _p1, _v0, _v1);
     }
-    A_INLINE a_float pos(a_float dt) { return a_trajbell::pos(dt); }
-    A_INLINE a_float vel(a_float dt) { return a_trajbell::vel(dt); }
-    A_INLINE a_float acc(a_float dt) { return a_trajbell::acc(dt); }
-    A_INLINE a_float jer(a_float dt) { return a_trajbell::jer(dt); }
+    A_INLINE a_float pos(a_float dt) const { return a_trajbell::pos(dt); }
+    A_INLINE a_float vel(a_float dt) const { return a_trajbell::vel(dt); }
+    A_INLINE a_float acc(a_float dt) const { return a_trajbell::acc(dt); }
+    A_INLINE a_float jer(a_float dt) const { return a_trajbell::jer(dt); }
 };
 
 #include "a/trajpoly3.h"
@@ -685,9 +685,9 @@ struct trajpoly3: public a_trajpoly3
     {
         a_trajpoly3_gen(this, ts, p0, p1, v0, v1);
     }
-    A_INLINE a_float pos(a_float dt) { return a_trajpoly3::pos(dt); }
-    A_INLINE a_float vel(a_float dt) { return a_trajpoly3::vel(dt); }
-    A_INLINE a_float acc(a_float dt) { return a_trajpoly3::acc(dt); }
+    A_INLINE a_float pos(a_float dt) const { return a_trajpoly3::pos(dt); }
+    A_INLINE a_float vel(a_float dt) const { return a_trajpoly3::vel(dt); }
+    A_INLINE a_float acc(a_float dt) const { return a_trajpoly3::acc(dt); }
     A_INLINE emscripten::val get_p() const { return js_array_num_new(p, A_LEN(p)); }
     A_INLINE emscripten::val get_v() const { return js_array_num_new(v, A_LEN(v)); }
     A_INLINE emscripten::val get_a() const { return js_array_num_new(a, A_LEN(a)); }
@@ -703,9 +703,9 @@ struct trajpoly5: public a_trajpoly5
     {
         a_trajpoly5_gen(this, ts, p0, p1, v0, v1, a0, a1);
     }
-    A_INLINE a_float pos(a_float dt) { return a_trajpoly5::pos(dt); }
-    A_INLINE a_float vel(a_float dt) { return a_trajpoly5::vel(dt); }
-    A_INLINE a_float acc(a_float dt) { return a_trajpoly5::acc(dt); }
+    A_INLINE a_float pos(a_float dt) const { return a_trajpoly5::pos(dt); }
+    A_INLINE a_float vel(a_float dt) const { return a_trajpoly5::vel(dt); }
+    A_INLINE a_float acc(a_float dt) const { return a_trajpoly5::acc(dt); }
     A_INLINE emscripten::val get_p() const { return js_array_num_new(p, A_LEN(p)); }
     A_INLINE emscripten::val get_v() const { return js_array_num_new(v, A_LEN(v)); }
     A_INLINE emscripten::val get_a() const { return js_array_num_new(a, A_LEN(a)); }
@@ -722,10 +722,10 @@ struct trajpoly7: public a_trajpoly7
     {
         a_trajpoly7_gen(this, ts, p0, p1, v0, v1, a0, a1, j0, j1);
     }
-    A_INLINE a_float pos(a_float dt) { return a_trajpoly7::pos(dt); }
-    A_INLINE a_float vel(a_float dt) { return a_trajpoly7::vel(dt); }
-    A_INLINE a_float acc(a_float dt) { return a_trajpoly7::acc(dt); }
-    A_INLINE a_float jer(a_float dt) { return a_trajpoly7::jer(dt); }
+    A_INLINE a_float pos(a_float dt) const { return a_trajpoly7::pos(dt); }
+    A_INLINE a_float vel(a_float dt) const { return a_trajpoly7::vel(dt); }
+    A_INLINE a_float acc(a_float dt) const { return a_trajpoly7::acc(dt); }
+    A_INLINE a_float jer(a_float dt) const { return a_trajpoly7::jer(dt); }
     A_INLINE emscripten::val get_p() const { return js_array_num_new(p, A_LEN(p)); }
     A_INLINE emscripten::val get_v() const { return js_array_num_new(v, A_LEN(v)); }
     A_INLINE emscripten::val get_a() const { return js_array_num_new(a, A_LEN(a)); }
@@ -741,9 +741,9 @@ struct trajtrap: public a_trajtrap
     {
         return a_trajtrap::gen(vm, _ac, _de, _p0, _p1, _v0, _v1);
     }
-    A_INLINE a_float pos(a_float dt) { return a_trajtrap::pos(dt); }
-    A_INLINE a_float vel(a_float dt) { return a_trajtrap::vel(dt); }
-    A_INLINE a_float acc(a_float dt) { return a_trajtrap::acc(dt); }
+    A_INLINE a_float pos(a_float dt) const { return a_trajtrap::pos(dt); }
+    A_INLINE a_float vel(a_float dt) const { return a_trajtrap::vel(dt); }
+    A_INLINE a_float acc(a_float dt) const { return a_trajtrap::acc(dt); }
 };
 
 #include "a/version.h"

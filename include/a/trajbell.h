@@ -169,19 +169,19 @@ struct a_trajbell
     {
         return a_trajbell_gen(this, _jm, _am, _vm, _p0, _p1, _v0, _v1);
     }
-    A_INLINE a_float pos(a_float dt)
+    A_INLINE a_float pos(a_float dt) const
     {
         return a_trajbell_pos(this, dt);
     }
-    A_INLINE a_float vel(a_float dt)
+    A_INLINE a_float vel(a_float dt) const
     {
         return a_trajbell_vel(this, dt);
     }
-    A_INLINE a_float acc(a_float dt)
+    A_INLINE a_float acc(a_float dt) const
     {
         return a_trajbell_acc(this, dt);
     }
-    A_INLINE a_float jer(a_float dt)
+    A_INLINE a_float jer(a_float dt) const
     {
         return a_trajbell_jer(this, dt);
     }

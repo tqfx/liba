@@ -115,15 +115,15 @@ struct a_trajtrap
     {
         return a_trajtrap_gen(this, vm, _ac, _de, _p0, _p1, _v0, _v1);
     }
-    A_INLINE a_float pos(a_float dt)
+    A_INLINE a_float pos(a_float dt) const
     {
         return a_trajtrap_pos(this, dt);
     }
-    A_INLINE a_float vel(a_float dt)
+    A_INLINE a_float vel(a_float dt) const
     {
         return a_trajtrap_vel(this, dt);
     }
-    A_INLINE a_float acc(a_float dt)
+    A_INLINE a_float acc(a_float dt) const
     {
         return a_trajtrap_acc(this, dt);
     }

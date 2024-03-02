@@ -137,20 +137,20 @@ struct a_trajpoly3
     {
         a_trajpoly3_gen0(this, ts, p0, p1, v0, v1);
     }
-    A_INLINE a_float pos(a_float dt)
+    A_INLINE a_float pos(a_float dt) const
     {
         return a_trajpoly3_pos(this, dt);
     }
 #if defined(A_TRAJPOLY3) && (A_TRAJPOLY3 + 0 > 1)
     A_INLINE void gen1() { a_trajpoly3_gen1(this); }
-    A_INLINE a_float vel(a_float dt)
+    A_INLINE a_float vel(a_float dt) const
     {
         return a_trajpoly3_vel(this, dt);
     }
 #endif /* A_TRAJPOLY3 */
 #if defined(A_TRAJPOLY3) && (A_TRAJPOLY3 + 0 > 2)
     A_INLINE void gen2() { a_trajpoly3_gen2(this); }
-    A_INLINE a_float acc(a_float dt)
+    A_INLINE a_float acc(a_float dt) const
     {
         return a_trajpoly3_acc(this, dt);
     }

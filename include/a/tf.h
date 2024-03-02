@@ -99,11 +99,11 @@ struct a_tf
     {
         a_tf_set_den(this, _den_n, _den_p, _output);
     }
-    A_INLINE a_float operator()(a_float x)
+    A_INLINE a_float operator()(a_float x) const
     {
         return a_tf_iter(this, x);
     }
-    A_INLINE void zero() { a_tf_zero(this); }
+    A_INLINE void zero() const { a_tf_zero(this); }
 #endif /* __cplusplus */
 };
 
