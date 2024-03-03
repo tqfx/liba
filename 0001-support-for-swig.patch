@@ -1,4 +1,4 @@
-From b1516dc2c8be0f530ac296be9e9a8356ce9a606a Mon Sep 17 00:00:00 2001
+From 560c3f4cb5dd66bbe273a7d91709abec9c6d1f26 Mon Sep 17 00:00:00 2001
 From: tqfx <tqfx@tqfx.org>
 Date: Mon, 12 Feb 2024 23:09:28 +0800
 Subject: [PATCH] support for swig
@@ -699,10 +699,10 @@ index 00000000..42a4b2f0
 +}
 diff --git a/swig/version.i b/swig/version.i
 new file mode 100644
-index 00000000..2f5a6174
+index 00000000..a57ac722
 --- /dev/null
 +++ b/swig/version.i
-@@ -0,0 +1,36 @@
+@@ -0,0 +1,42 @@
 +%{
 +#include "a/version.h"
 +#undef a_version_check
@@ -716,6 +716,7 @@ index 00000000..2f5a6174
 +  unsigned int minor;
 +  unsigned int third;
 +  unsigned int extra;
++  char alpha[4];
 +} a_version;
 +%extend a_version
 +{
@@ -726,10 +727,15 @@ index 00000000..2f5a6174
 +  self->minor = minor;
 +  self->third = third;
 +  self->extra = extra;
++  self->alpha[0] = 46;
++  self->alpha[1] = 0;
++  self->alpha[2] = 0;
++  self->alpha[3] = 0;
 +  return self;
 +}
 +static int check(unsigned int major = 0, unsigned int minor = 0, unsigned int patch = 0);
-+extern unsigned parse(char const *ver);
++extern unsigned int tostr(void *pdata, a_size nbyte);
++extern unsigned int parse(char const *ver);
 +extern int cmp(a_version const *other);
 +extern bool lt(a_version const *other);
 +extern bool gt(a_version const *other);
@@ -740,5 +746,5 @@ index 00000000..2f5a6174
 +~a_version() { free($self); }
 +}
 -- 
-2.43.2
+2.44.0
 
