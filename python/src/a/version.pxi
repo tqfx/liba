@@ -37,6 +37,8 @@ cdef class version:
     def parse(self, bytes ver):
         a_version_parse(&self.ctx, ver)
         return self
+    def __hash__(self):
+        return object.__hash__(self)
     property major:
         def __get__(self):
             return self.ctx.major
