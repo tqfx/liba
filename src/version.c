@@ -157,15 +157,21 @@ void a_version_alpha(a_version const *ctx, char alpha[5])
     alpha[c] = 0;
 }
 
-int a_version_tostr(a_version const *ctx, void *pdata, a_size nbyte)
+unsigned int a_version_tostr(a_version const *ctx, void *pdata, a_size nbyte)
 {
+    int n;
     char *p = (char *)pdata;
     char alpha[sizeof(ctx->alpha) + 1];
     if (ctx->extra || isalpha(ctx->alpha[0]) || isalpha(ctx->alpha[1]))
     {
         a_version_alpha(ctx, alpha);
-        return snprintf(p, nbyte, "%u.%u.%u%s%u",
-                        ctx->major, ctx->minor, ctx->third, alpha, ctx->extra);
+        n = snprintf(p, nbyte, "%u.%u.%u%s%u",
+                     ctx->major, ctx->minor, ctx->third, alpha, ctx->extra);
     }
-    return snprintf(p, nbyte, "%u.%u.%u", ctx->major, ctx->minor, ctx->third);
+    else
+    {
+        n = snprintf(p, nbyte, "%u.%u.%u",
+                     ctx->major, ctx->minor, ctx->third);
+    }
+    return n > 0 ? (unsigned int)n : 0;
 }

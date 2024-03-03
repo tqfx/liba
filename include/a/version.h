@@ -91,7 +91,7 @@ A_EXTERN int a_version_check(unsigned int major, unsigned int minor, unsigned in
  @param[in] nbyte length of string buffer
  @return number of used characters
 */
-A_EXTERN int a_version_tostr(a_version const *ctx, void *pdata, a_size nbyte);
+A_EXTERN unsigned int a_version_tostr(a_version const *ctx, void *pdata, a_size nbyte);
 
 /*!
  @brief parse version string to version
@@ -197,13 +197,13 @@ struct a_version
     {
         a_version_alpha(this, str);
     }
-    A_INLINE int tostr(void *p, a_size n) const
-    {
-        return a_version_tostr(this, p, n);
-    }
     A_INLINE unsigned int parse(char const *ver)
     {
         return a_version_parse(this, ver);
+    }
+    A_INLINE unsigned int tostr(void *p, a_size n) const
+    {
+        return a_version_tostr(this, p, n);
     }
     A_INLINE bool operator<(a_version const &ver) const
     {
