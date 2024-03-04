@@ -58,16 +58,16 @@ if(PROJECT_IS_TOP_LEVEL)
     find_package(StyLua)
 
     if(STYLUA_FOUND)
-      add_stylua(astylua VERBOSE ${ARGN})
-      add_dependencies(afmt astylua)
+      add_stylua(afmt.lua VERBOSE ${ARGN})
+      add_dependencies(afmt afmt.lua)
       return()
     endif()
 
     find_package(LuaFormat)
 
     if(LUA_FORMAT_FOUND)
-      add_lua_format(aluaformat VERBOSE ${ARGN})
-      add_dependencies(afmt aluaformat)
+      add_lua_format(afmt.lua VERBOSE ${ARGN})
+      add_dependencies(afmt afmt.lua)
       return()
     endif()
   endfunction()
@@ -87,10 +87,10 @@ if(LIBA_LDOC AND LDOC_FOUND)
 description = '${PROJECT_DESCRIPTION}'
 format = 'markdown'
 ")
-  create_ldoc(aldoc CONFIG ${CMAKE_CURRENT_BINARY_DIR}/LDoc
+  create_ldoc(adoc.lua CONFIG ${CMAKE_CURRENT_BINARY_DIR}/LDoc
     OPTIONS --not_luadoc ${CMAKE_CURRENT_SOURCE_DIR}/src
   )
-  add_dependencies(adoc aldoc)
+  add_dependencies(adoc adoc.lua)
 endif()
 
 if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt AND LUA_EXECUTABLE)

@@ -540,18 +540,21 @@ include(CPack)
 
 if(PROJECT_IS_TOP_LEVEL)
   find_package(ClangFormat)
-  find_package(Black)
 endif()
 
 if(CLANG_FORMAT_FOUND)
   file_scaner(SOURCES RECURSE include src test java/src javascript/src lua/src quickjs/src EXT c h cc hh cpp hpp)
-  add_clang_format(aformat VERBOSE ${SOURCES})
-  add_dependencies(afmt aformat)
+  add_clang_format(afmt.c VERBOSE ${SOURCES})
+  add_dependencies(afmt afmt.c)
 endif()
 
-if(BLACK_FOUND)
-  add_black(ablack ${CMAKE_CURRENT_LIST_DIR})
-  add_dependencies(afmt ablack)
+if(PROJECT_IS_TOP_LEVEL AND LIBA_PYTHON)
+  find_package(Black)
+endif()
+
+if(PYTHON_FOUND AND BLACK_FOUND)
+  add_black(afmt.py ${CMAKE_CURRENT_LIST_DIR})
+  add_dependencies(afmt afmt.py)
 endif()
 
 if(PYTHON_FOUND AND CYTHON_FOUND)
@@ -636,10 +639,10 @@ if(NOT CMAKE_VERSION VERSION_LESS 3.9 AND DOXYGEN_FOUND)
   endif()
 
   # https://www.doxygen.nl/manual/config.html
-  doxygen_add_docs(adoxygen WORKING_DIRECTORY
+  doxygen_add_docs(adoc.c WORKING_DIRECTORY
     ${CMAKE_CURRENT_LIST_DIR}/include/a
     ${CMAKE_CURRENT_LIST_DIR}/include/a
     ${CMAKE_CURRENT_LIST_DIR}/README.md
   )
-  add_dependencies(adoc adoxygen)
+  add_dependencies(adoc adoc.c)
 endif()
