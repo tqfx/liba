@@ -194,4 +194,7 @@ public class mf {
      * @return membership value.
      */
     public static final native double pi(double x, double a, double b, double c, double d);
+
+    private mf() {
+    }
 }

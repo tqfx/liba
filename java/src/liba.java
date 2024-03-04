@@ -61,4 +61,7 @@ public class liba {
      * @return hash value
      */
     public static final native int hash_sdbm(byte[] block, int value);
+
+    private liba() {
+    }
 }
