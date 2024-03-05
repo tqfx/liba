@@ -22,6 +22,10 @@ static int liba_version_tostring(lua_State *L)
 
 static int liba_version_init_(lua_State *L, a_version *ctx, int arg, int top)
 {
+    ctx->alpha[0] = '.';
+    ctx->alpha[1] = 0;
+    ctx->alpha[2] = 0;
+    ctx->alpha[3] = 0;
     switch (top)
     {
     default:
@@ -44,10 +48,6 @@ static int liba_version_init_(lua_State *L, a_version *ctx, int arg, int top)
         A_FALLTHROUGH;
     case 0:;
     }
-    ctx->alpha[0] = '.';
-    ctx->alpha[1] = 0;
-    ctx->alpha[2] = 0;
-    ctx->alpha[3] = 0;
     return 1;
 }
 
@@ -288,7 +288,7 @@ static int liba_version_get(lua_State *L)
         lua_int_set(L, -1, "minor", (lua_Integer)ctx->minor);
         lua_int_set(L, -1, "third", (lua_Integer)ctx->third);
         lua_int_set(L, -1, "extra", (lua_Integer)ctx->extra);
-        lua_str_set(L, -1, "alpha", "");
+        lua_str_set(L, -1, "alpha", ".");
         break;
     default:
         lua_getmetatable(L, 1);

@@ -16,7 +16,7 @@ static JSValue liba_version_ctor(JSContext *ctx, JSValueConst new_target, int ar
     a_version *const self = (a_version *)js_mallocz(ctx, sizeof(a_version));
     if (!self) { return JS_EXCEPTION; }
     char const *ver = NULL;
-    a_u32 args[] = {0, 0, 0};
+    a_u32 args[] = {0, 0, 0, 0};
     if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
     for (int i = 0; i < argc; ++i)
     {
@@ -30,6 +30,7 @@ static JSValue liba_version_ctor(JSContext *ctx, JSValueConst new_target, int ar
             goto fail;
         }
     }
+    self->alpha[0] = '.';
     if (ver)
     {
         a_version_parse(self, ver);
@@ -40,7 +41,7 @@ static JSValue liba_version_ctor(JSContext *ctx, JSValueConst new_target, int ar
         self->major = (unsigned int)args[0];
         self->minor = (unsigned int)args[1];
         self->third = (unsigned int)args[2];
-        self->alpha[0] = '.';
+        self->extra = (unsigned int)args[3];
     }
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
@@ -241,7 +242,7 @@ int js_liba_version_init(JSContext *ctx, JSModuleDef *m)
     JSValue const proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_version_proto, A_LEN(liba_version_proto));
 
-    JSValue const clazz = JS_NewCFunction2(ctx, liba_version_ctor, "version", 3, JS_CFUNC_constructor, 0);
+    JSValue const clazz = JS_NewCFunction2(ctx, liba_version_ctor, "version", 4, JS_CFUNC_constructor, 0);
     JS_SetConstructor(ctx, clazz, proto);
     JS_SetClassProto(ctx, liba_version_class_id, proto);
 
