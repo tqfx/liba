@@ -24,6 +24,8 @@ public class version {
 
     static final native void clinit();
 
+    final native void initS(String ver);
+
     final native void init(int major, int minor, int third, int extra);
 
     /**
@@ -35,6 +37,15 @@ public class version {
      * @return -3(&lt;major),-2(&lt;minor),-1(&lt;patch),0,+1(&gt;patch),+2(&gt;minor),+3(&gt;major)
      */
     public static final native int check(int major, int minor, int patch);
+
+    /**
+     * construct a new {@link version} object
+     *
+     * @param ver version string
+     */
+    public version(String ver) {
+        initS(ver);
+    }
 
     /**
      * construct a new {@link version} object
