@@ -25,7 +25,7 @@ done
 echo "ACLOCAL_AMFLAGS = -I m4
 lib_LTLIBRARIES = liba.la
 liba_la_CPPFLAGS = -std=c11
-liba_la_LDFLAGS = -version-info 1:6:1
+liba_la_LDFLAGS = -version-info 1:7:1
 liba_la_SOURCES =$C_SOURCES autogen.sh
 liba_la_LIBADD = \$(liba__la_OBJECTS)
 noinst_LTLIBRARIES = liba+.la

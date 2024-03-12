@@ -1,4 +1,4 @@
-set(PROJECT_VERSION 0.1.6)
+set(PROJECT_VERSION 0.1.7)
 set(PROJECT_LICENSE MPL-2.0)
 set(PROJECT_CONTACT tqfx@tqfx.org)
 set(PROJECT_DESCRIPTION "An algorithm library based on C/C++ language")
