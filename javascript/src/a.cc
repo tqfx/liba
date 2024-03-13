@@ -814,7 +814,15 @@ struct version: public a_version
         alpha[2] = 0;
         alpha[3] = 0;
     }
+    static unsigned int const MAJOR;
+    static unsigned int const MINOR;
+    static unsigned int const PATCH;
+    static a_u32 const TWEAK;
 };
+unsigned int const version::MAJOR = A_VERSION_MAJOR;
+unsigned int const version::MINOR = A_VERSION_MINOR;
+unsigned int const version::PATCH = A_VERSION_PATCH;
+a_u32 const version::TWEAK = A_VERSION_TWEAK;
 
 #include "a/math.h"
 #if __has_warning("-Wglobal-constructors")
@@ -1070,11 +1078,11 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .function("eq", &version::operator==)
         .function("ne", &version::operator!=)
         .function("toString", &version::toString)
-        .class_function("check", &a_version_check)
-        .class_property("MAJOR", &a_version::MAJOR)
-        .class_property("MINOR", &a_version::MINOR)
-        .class_property("PATCH", &a_version::PATCH)
-        .class_property("TWEAK", &a_version::TWEAK);
+        .class_property("MAJOR", &version::MAJOR)
+        .class_property("MINOR", &version::MINOR)
+        .class_property("PATCH", &version::PATCH)
+        .class_property("TWEAK", &version::TWEAK)
+        .class_function("check", &a_version_check);
     emscripten::constant("VERSION", std::string(A_VERSION));
 #if defined(__has_feature) && __has_feature(address_sanitizer)
     emscripten::function("do_leak_check", &__lsan_do_recoverable_leak_check);

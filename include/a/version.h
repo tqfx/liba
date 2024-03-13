@@ -233,14 +233,6 @@ struct a_version
     {
         return a_version_cmp(this, &ver);
     }
-    /*! algorithm library version major */
-    A_PUBLIC static unsigned int const MAJOR;
-    /*! algorithm library version minor */
-    A_PUBLIC static unsigned int const MINOR;
-    /*! algorithm library version patch */
-    A_PUBLIC static unsigned int const PATCH;
-    /*! algorithm library version tweak */
-    A_PUBLIC static a_u32 const TWEAK;
 #endif /* __cplusplus */
 };
 

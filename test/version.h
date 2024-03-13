@@ -87,11 +87,7 @@ int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         debug("parse \"%s\" -> %s\n", argv[i], str);
     }
     printf("%s\n", A_FUNC);
-#if defined(__cplusplus)
-    printf("version %u.%u.%u+%" PRIu32 "\n", a::version::MAJOR, a::version::MINOR, a::version::PATCH, a::version::TWEAK);
-#else /* !__cplusplus */
-    printf("version %u.%u.%u+%" PRIu32 "\n", a_version_major, a_version_minor, a_version_patch, a_version_tweak);
-#endif /* __cplusplus */
+    debug("version %u.%u.%u+%" PRIu32 "\n", a_version_major, a_version_minor, a_version_patch, a_version_tweak);
     TEST_BUG(a_version_check() == 0);
     return 0;
 }
