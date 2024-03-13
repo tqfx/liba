@@ -7,19 +7,16 @@ cd ..
 cp -r src include/a build
 cd build
 
-for i in $(find a -regex ".*\.\(h\|hpp\)")
-do
+for i in $(find a -regex ".*\.\(h\|hh\)"); do
     HEADERS="$HEADERS $i"
 done
 
-for i in $(find src -regex ".*\.\(c\|h\)")
-do
+for i in $(find src -regex ".*\.\(c\|h\)"); do
     C_SOURCES="$C_SOURCES $i"
 done
 
-for i in $(find src -regex ".*\.\(cpp\|hpp\)")
-do
-    CPP_SOURCES="$CPP_SOURCES $i"
+for i in $(find src -regex ".*\.\(cc\|hh\)"); do
+    CXX_SOURCES="$CXX_SOURCES $i"
 done
 
 echo "ACLOCAL_AMFLAGS = -I m4
@@ -27,10 +24,10 @@ lib_LTLIBRARIES = liba.la
 liba_la_CPPFLAGS = -std=c11
 liba_la_LDFLAGS = -version-info 1:7:1
 liba_la_SOURCES =$C_SOURCES autogen.sh
-liba_la_LIBADD = \$(liba__la_OBJECTS)
-noinst_LTLIBRARIES = liba+.la
-liba__la_CPPFLAGS = -std=c++11
-liba__la_SOURCES =$CPP_SOURCES
+liba_la_LIBADD = \$(liba_cc_la_OBJECTS)
+noinst_LTLIBRARIES = liba.cc.la
+liba_cc_la_CPPFLAGS = -std=c++11
+liba_cc_la_SOURCES =$CXX_SOURCES
 nobase_include_HEADERS =$HEADERS
 install-data-hook:
 	\$(INSTALL_DATA) config.h \$(DESTDIR)\$(includedir)/a

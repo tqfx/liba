@@ -127,8 +127,8 @@ add_includedirs("include", { public = true })
 add_defines("A_EXPORTS")
 -- add the common source files
 add_files("src/**.c")
-if not table.empty(os.files("src/**.cpp")) and has_config("liba-cxx") then
-    add_files("src/**.cpp")
+if not table.empty(os.files("src/**.cc")) and has_config("liba-cxx") then
+    add_files("src/**.cc")
 end
 -- add the platform options
 rpath = get_config("liba-rpath")

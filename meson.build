@@ -100,7 +100,7 @@ sources = [
     'src/utf.c',
     'src/vec.c',
     'src/version.c',
-    'src/version.cpp',
+    'src/version.cc',
 ]
 
 python = import('python').find_installation()

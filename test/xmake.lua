@@ -10,132 +10,132 @@ function building(sources)
     if has_config("liba-cxx") then
         add_defines("HAS_CXX")
     else
-        del_files("*.cpp")
+        del_files("*.cc")
     end
     add_deps("a")
     add_tests("")
 end
 
 target("test/a")
-building({ "a.c", "a.cpp" })
+building({ "a.c", "a.cc" })
 target_end()
 
 target("test/avl")
-building({ "avl.c", "avl.cpp" })
+building({ "avl.c", "avl.cc" })
 target_end()
 
 target("test/buf")
-building({ "buf.c", "buf.cpp" })
+building({ "buf.c", "buf.cc" })
 target_end()
 
 target("test/complex")
-building({ "complex.c", "complex.cpp" })
+building({ "complex.c", "complex.cc" })
 target_end()
 
 target("test/crc")
-building({ "crc.c", "crc.cpp" })
+building({ "crc.c", "crc.cc" })
 target_end()
 
 target("test/hpf")
-building({ "hpf.c", "hpf.cpp" })
+building({ "hpf.c", "hpf.cc" })
 target_end()
 
 target("test/list")
-building({ "list.c", "list.cpp" })
+building({ "list.c", "list.cc" })
 target_end()
 
 target("test/lpf")
-building({ "lpf.c", "lpf.cpp" })
+building({ "lpf.c", "lpf.cc" })
 target_end()
 
 target("test/math")
-building({ "math.c", "math.cpp" })
+building({ "math.c", "math.cc" })
 target_end()
 
 target("test/mf")
-building({ "mf.c", "mf.cpp" })
+building({ "mf.c", "mf.cc" })
 target_end()
 
 target("test/notefreqs")
-building({ "notefreqs.c", "notefreqs.cpp" })
+building({ "notefreqs.c", "notefreqs.cc" })
 target_end()
 
 target("test/operator")
-building({ "operator.c", "operator.cpp" })
+building({ "operator.c", "operator.cc" })
 target_end()
 
 target("test/pid")
-building({ "pid.c", "pid.cpp" })
+building({ "pid.c", "pid.cc" })
 target_end()
 
 target("test/pid_expert")
-building({ "pid_expert.c", "pid_expert.cpp" })
+building({ "pid_expert.c", "pid_expert.cc" })
 target_end()
 
 target("test/pid_fuzzy")
-building({ "pid_fuzzy.c", "pid_fuzzy.cpp" })
+building({ "pid_fuzzy.c", "pid_fuzzy.cc" })
 target_end()
 
 target("test/pid_neuro")
-building({ "pid_neuro.c", "pid_neuro.cpp" })
+building({ "pid_neuro.c", "pid_neuro.cc" })
 target_end()
 
 target("test/poly")
-building({ "poly.c", "poly.cpp" })
+building({ "poly.c", "poly.cc" })
 target_end()
 
 target("test/que")
-building({ "que.c", "que.cpp" })
+building({ "que.c", "que.cc" })
 target_end()
 
 target("test/rbt")
-building({ "rbt.c", "rbt.cpp" })
+building({ "rbt.c", "rbt.cc" })
 target_end()
 
 target("test/slist")
-building({ "slist.c", "slist.cpp" })
+building({ "slist.c", "slist.cc" })
 target_end()
 
 target("test/str")
-building({ "str.c", "str.cpp" })
+building({ "str.c", "str.cc" })
 target_end()
 
 target("test/test")
-building({ "test.c", "test.cpp" })
+building({ "test.c", "test.cc" })
 target_end()
 
 target("test/tf")
-building({ "tf.c", "tf.cpp" })
+building({ "tf.c", "tf.cc" })
 target_end()
 
 target("test/trajbell")
-building({ "trajbell.c", "trajbell.cpp" })
+building({ "trajbell.c", "trajbell.cc" })
 target_end()
 
 target("test/trajpoly3")
-building({ "trajpoly3.c", "trajpoly3.cpp" })
+building({ "trajpoly3.c", "trajpoly3.cc" })
 target_end()
 
 target("test/trajpoly5")
-building({ "trajpoly5.c", "trajpoly5.cpp" })
+building({ "trajpoly5.c", "trajpoly5.cc" })
 target_end()
 
 target("test/trajpoly7")
-building({ "trajpoly7.c", "trajpoly7.cpp" })
+building({ "trajpoly7.c", "trajpoly7.cc" })
 target_end()
 
 target("test/trajtrap")
-building({ "trajtrap.c", "trajtrap.cpp" })
+building({ "trajtrap.c", "trajtrap.cc" })
 target_end()
 
 target("test/utf")
-building({ "utf.c", "utf.cpp" })
+building({ "utf.c", "utf.cc" })
 target_end()
 
 target("test/vec")
-building({ "vec.c", "vec.cpp" })
+building({ "vec.c", "vec.cc" })
 target_end()
 
 target("test/version")
-building({ "version.c", "version.cpp" })
+building({ "version.c", "version.cc" })
 target_end()

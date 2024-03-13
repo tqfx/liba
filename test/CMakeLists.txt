@@ -148,45 +148,45 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   endfunction()
 endif()
 
-building(a a.c a.cpp)
+building(a a.c a.cc)
 unittest(a NAME a_for ARGS for 10)
 unittest(a NAME a_hash_bkdr ARGS hash_bkdr hash_bkdr)
 unittest(a NAME a_hash_sdbm ARGS hash_sdbm hash_sdbm)
 unittest(a)
 
-building(avl avl.c avl.cpp)
+building(avl avl.c avl.cc)
 unittest(avl)
 
-building(buf buf.c buf.cpp)
+building(buf buf.c buf.cc)
 unittest(buf)
 
-building(complex complex.c complex.cpp)
+building(complex complex.c complex.cc)
 unittest(complex ARGS -4,3 -2,1)
 
-building(crc crc.c crc.cpp)
+building(crc crc.c crc.cc)
 unittest(crc ARGS crc.c)
 
-building(hpf hpf.c hpf.cpp)
+building(hpf hpf.c hpf.cc)
 unittest(hpf)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(hpf 2.gp hpf.csv)
 endif()
 
-building(list list.c list.cpp)
+building(list list.c list.cc)
 unittest(list)
 
-building(lpf lpf.c lpf.cpp)
+building(lpf lpf.c lpf.cc)
 unittest(lpf)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(lpf 3.gp lpf.csv)
 endif()
 
-building(math math.c math.cpp)
+building(math math.c math.cc)
 unittest(math)
 
-building(mf mf.c mf.cpp)
+building(mf mf.c mf.cc)
 unittest(mf)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
@@ -205,109 +205,109 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(mf mf.gp mf_pi.csv -3 3 -2 -1 1 2)
 endif()
 
-building(notefreqs notefreqs.c notefreqs.cpp)
+building(notefreqs notefreqs.c notefreqs.cc)
 unittest(notefreqs)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(notefreqs notefreqs.gp notefreqs.csv)
 endif()
 
-building(operator operator.c operator.cpp)
+building(operator operator.c operator.cc)
 unittest(operator)
 
-building(pid pid.c pid.cpp)
+building(pid pid.c pid.cc)
 unittest(pid)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(pid 3.gp pid.csv)
 endif()
 
-building(pid_expert pid_expert.c pid_expert.cpp)
+building(pid_expert pid_expert.c pid_expert.cc)
 unittest(pid_expert)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(pid_expert 3.gp pid_expert.csv)
 endif()
 
-building(pid_fuzzy pid_fuzzy.c pid_fuzzy.cpp)
+building(pid_fuzzy pid_fuzzy.c pid_fuzzy.cc)
 unittest(pid_fuzzy)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(pid_fuzzy 3.gp pid_fuzzy.csv)
 endif()
 
-building(pid_neuro pid_neuro.c pid_neuro.cpp)
+building(pid_neuro pid_neuro.c pid_neuro.cc)
 unittest(pid_neuro)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(pid_neuro 3.gp pid_neuro.csv)
 endif()
 
-building(poly poly.c poly.cpp)
+building(poly poly.c poly.cc)
 unittest(poly)
 
-building(que que.c que.cpp)
+building(que que.c que.cc)
 unittest(que)
 
-building(rbt rbt.c rbt.cpp)
+building(rbt rbt.c rbt.cc)
 unittest(rbt)
 
-building(slist slist.c slist.cpp)
+building(slist slist.c slist.cc)
 unittest(slist)
 
-building(str str.c str.cpp)
+building(str str.c str.cc)
 unittest(str)
 
-building(test test.c test.cpp)
+building(test test.c test.cc)
 unittest(test)
 
-building(tf tf.c tf.cpp)
+building(tf tf.c tf.cc)
 unittest(tf)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(tf 2.gp tf.csv)
 endif()
 
-building(trajbell trajbell.c trajbell.cpp)
+building(trajbell trajbell.c trajbell.cc)
 unittest(trajbell ARGS trajbell.csv 3 2 3 0 10)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(trajbell traj4.gp trajbell.csv 3 2 3 0 10)
 endif()
 
-building(trajpoly3 trajpoly3.c trajpoly3.cpp)
+building(trajpoly3 trajpoly3.c trajpoly3.cc)
 unittest(trajpoly3 ARGS trajpoly3.csv 0 10 0 10)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(trajpoly3 traj3.gp trajpoly3.csv 0 10 0 10)
 endif()
 
-building(trajpoly5 trajpoly5.c trajpoly5.cpp)
+building(trajpoly5 trajpoly5.c trajpoly5.cc)
 unittest(trajpoly5 ARGS trajpoly5.csv 0 10 0 10)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(trajpoly5 traj3.gp trajpoly5.csv 0 10 0 10)
 endif()
 
-building(trajpoly7 trajpoly7.c trajpoly7.cpp)
+building(trajpoly7 trajpoly7.c trajpoly7.cc)
 unittest(trajpoly7 ARGS trajpoly7.csv 0 10 0 10)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(trajpoly7 traj4.gp trajpoly7.csv 0 10 0 10)
 endif()
 
-building(trajtrap trajtrap.c trajtrap.cpp)
+building(trajtrap trajtrap.c trajtrap.cc)
 unittest(trajtrap ARGS trajtrap.csv 2 2 -2 0 4)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(trajtrap traj3.gp trajtrap.csv 2 2 -2 0 4)
 endif()
 
-building(utf utf.c utf.cpp)
+building(utf utf.c utf.cc)
 unittest(utf)
 
-building(vec vec.c vec.cpp)
+building(vec vec.c vec.cc)
 unittest(vec)
 
-building(version version.c version.cpp)
+building(version version.c version.cc)
 unittest(version)
