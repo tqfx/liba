@@ -2,6 +2,10 @@ set(LIBA_JAVASCRIPT_SUFFIX ".js" CACHE STRING "The suffix for JavaScript output 
 set_property(CACHE LIBA_JAVASCRIPT_SUFFIX PROPERTY STRINGS ".js" ".mjs" ".html" ".wasm")
 set(CMAKE_EXECUTABLE_SUFFIX ${LIBA_JAVASCRIPT_SUFFIX})
 
+if(NOT LIBA_CXX)
+  enable_language(CXX)
+endif()
+
 if(NOT EMSCRIPTEN)
   set(CMAKE_C_STANDARD_LIBRARIES "")
   set(CMAKE_CXX_STANDARD_LIBRARIES "")
@@ -41,6 +45,12 @@ endif()
 set(CMAKE_POSITION_INDEPENDENT_CODE ${LIBA_PIE})
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ${LIBA_IPO})
 file_scaner(SOURCES RECURSE src EXT c h cc hh cpp hpp)
+
+if(NOT LIBA_CXX)
+  file_scaner(source RECURSE ../src EXT cc hh cpp hpp)
+  list(APPEND SOURCES ${source})
+  set(source)
+endif()
 
 # https://emscripten.org/docs/tools_reference/emcc.html
 set(LIBA_EMCC_FLAGS "" CACHE STRING "Flags used by the emcc")
