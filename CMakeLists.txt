@@ -202,25 +202,28 @@ if(mimalloc_FOUND)
   endif()
 endif()
 
-find_package(Git)
+if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/.git)
+  find_package(Git)
 
-if(GIT_FOUND)
-  function(git_command output)
-    execute_process(ERROR_QUIET
-      COMMAND ${GIT_EXECUTABLE} ${ARGN}
-      OUTPUT_STRIP_TRAILING_WHITESPACE
-      OUTPUT_VARIABLE ${output}
-    )
-    set(${output} ${${output}} PARENT_SCOPE)
-  endfunction()
+  if(GIT_FOUND)
+    function(git_command output)
+      execute_process(ERROR_QUIET
+        COMMAND ${GIT_EXECUTABLE} ${ARGN}
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        OUTPUT_VARIABLE ${output}
+      )
+      set(${output} ${${output}} PARENT_SCOPE)
+    endfunction()
 
-  git_command(GIT_COMMIT_LONG log -1 --pretty=format:%H)
-  git_command(GIT_COMMIT_DATE log -1 --pretty=format:%cd --date=format:%Y%m%d)
-endif()
+    git_command(GIT_COMMIT_LONG log -1 --pretty=format:%H)
+    git_command(GIT_COMMIT_DATE log -1 --pretty=format:%cd --date=format:%Y%m%d)
+  endif()
 
-if(GIT_COMMIT_DATE)
-  set(PROJECT_VERSION_TWEAK ${GIT_COMMIT_DATE})
-  set(${PROJECT_NAME}_VERSION_TWEAK ${GIT_COMMIT_DATE})
+  if(GIT_COMMIT_DATE)
+    set(${PROJECT_NAME}_VERSION_TWEAK ${GIT_COMMIT_DATE})
+    set(PROJECT_VERSION_TWEAK ${GIT_COMMIT_DATE})
+    set(A_VERSION_TWEAK ${GIT_COMMIT_DATE})
+  endif()
 endif()
 
 if(NOT EXISTS "${A_HAVE_H}")
