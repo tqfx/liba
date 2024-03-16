@@ -51,7 +51,7 @@ else()
   )
 endif()
 
-if(PROJECT_IS_TOP_LEVEL)
+if(PROJECT_IS_TOP_LEVEL AND BUILD_TESTING)
   file(GLOB_RECURSE SOURCES test/*.lua)
 
   function(find_format)
