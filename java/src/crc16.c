@@ -6,15 +6,15 @@
 #define L Java_liba_crc16
 static struct
 {
-    jmethodID alloc;
+    jmethodID _new;
     jfieldID ctx;
 } L = {NULL, NULL};
 
 JNIEXPORT void JNICALL Java_liba_crc16_clinit(JNIEnv *_env, jclass _cls)
 {
-    jclass _bb = (*_env)->FindClass(_env, "Ljava/nio/ByteBuffer;");
+    jclass _nbb = (*_env)->FindClass(_env, "Ljava/nio/ByteBuffer;");
+    L._new = (*_env)->GetStaticMethodID(_env, _nbb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
     L.ctx = (*_env)->GetFieldID(_env, _cls, "ctx", "Ljava/nio/ByteBuffer;");
-    L.alloc = (*_env)->GetStaticMethodID(_env, _bb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
 }
 
 struct crc16
@@ -25,7 +25,7 @@ struct crc16
 
 JNIEXPORT void JNICALL Java_liba_crc16_init(JNIEnv *_env, jobject _obj, jshort poly, jboolean reversed)
 {
-    jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)sizeof(struct crc16));
+    jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)sizeof(struct crc16));
     struct crc16 *ctx = (struct crc16 *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
     if (reversed)

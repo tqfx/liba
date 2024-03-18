@@ -6,7 +6,7 @@
 #define L Java_liba_tf
 static struct
 {
-    jmethodID alloc;
+    jmethodID _new;
     jfieldID ctx;
     jfieldID num;
     jfieldID den;
@@ -16,13 +16,13 @@ static struct
 
 JNIEXPORT void JNICALL Java_liba_tf_clinit(JNIEnv *_env, jclass _cls)
 {
-    jclass _bb = (*_env)->FindClass(_env, "Ljava/nio/ByteBuffer;");
+    jclass _nbb = (*_env)->FindClass(_env, "Ljava/nio/ByteBuffer;");
+    L._new = (*_env)->GetStaticMethodID(_env, _nbb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
     L.ctx = (*_env)->GetFieldID(_env, _cls, "ctx", "Ljava/nio/ByteBuffer;");
     L.num = (*_env)->GetFieldID(_env, _cls, "num", "Ljava/nio/ByteBuffer;");
     L.den = (*_env)->GetFieldID(_env, _cls, "den", "Ljava/nio/ByteBuffer;");
     L.input = (*_env)->GetFieldID(_env, _cls, "input", "Ljava/nio/ByteBuffer;");
     L.output = (*_env)->GetFieldID(_env, _cls, "output", "Ljava/nio/ByteBuffer;");
-    L.alloc = (*_env)->GetStaticMethodID(_env, _bb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
 }
 
 JNIEXPORT void JNICALL Java_liba_tf_init(JNIEnv *_env, jobject _obj, jdoubleArray num, jdoubleArray den)
@@ -30,11 +30,11 @@ JNIEXPORT void JNICALL Java_liba_tf_init(JNIEnv *_env, jobject _obj, jdoubleArra
     jsize num_n = (*_env)->GetArrayLength(_env, num);
     jsize den_n = (*_env)->GetArrayLength(_env, den);
 
-    jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)sizeof(a_tf));
-    jobject _num = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)num_n * 8);
-    jobject _den = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)den_n * 8);
-    jobject _input = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)num_n * 8);
-    jobject _output = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)den_n * 8);
+    jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)sizeof(a_tf));
+    jobject _num = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)num_n * 8);
+    jobject _den = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)den_n * 8);
+    jobject _input = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)num_n * 8);
+    jobject _output = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)den_n * 8);
 
     a_tf *ctx = (a_tf *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     double *num_p = (double *)(*_env)->GetDirectBufferAddress(_env, _num);
@@ -79,8 +79,8 @@ JNIEXPORT jobject JNICALL Java_liba_tf_num___3D(JNIEnv *_env, jobject _obj, jdou
     a_tf *ctx = (a_tf *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     if (num_n > (jsize)ctx->num_n)
     {
-        jobject _num = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)num_n * 8);
-        jobject _input = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)num_n * 8);
+        jobject _num = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)num_n * 8);
+        jobject _input = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)num_n * 8);
         double *num_p = (double *)(*_env)->GetDirectBufferAddress(_env, _num);
         double *input = (double *)(*_env)->GetDirectBufferAddress(_env, _input);
         (*_env)->SetObjectField(_env, _obj, L.num, _num);
@@ -124,8 +124,8 @@ JNIEXPORT jobject JNICALL Java_liba_tf_den___3D(JNIEnv *_env, jobject _obj, jdou
     a_tf *ctx = (a_tf *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     if (den_n > (jsize)ctx->den_n)
     {
-        jobject _den = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)den_n * 8);
-        jobject _output = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)den_n * 8);
+        jobject _den = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)den_n * 8);
+        jobject _output = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)den_n * 8);
         double *den_p = (double *)(*_env)->GetDirectBufferAddress(_env, _den);
         double *output = (double *)(*_env)->GetDirectBufferAddress(_env, _output);
         (*_env)->SetObjectField(_env, _obj, L.den, _den);

@@ -7,15 +7,15 @@
 #define L Java_liba_version
 static struct
 {
-    jmethodID alloc;
+    jmethodID _new;
     jfieldID ctx;
 } L = {NULL, NULL};
 
 JNIEXPORT void JNICALL Java_liba_version_clinit(JNIEnv *_env, jclass _cls)
 {
-    jclass _bb = (*_env)->FindClass(_env, "Ljava/nio/ByteBuffer;");
+    jclass _nbb = (*_env)->FindClass(_env, "Ljava/nio/ByteBuffer;");
+    L._new = (*_env)->GetStaticMethodID(_env, _nbb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
     L.ctx = (*_env)->GetFieldID(_env, _cls, "ctx", "Ljava/nio/ByteBuffer;");
-    L.alloc = (*_env)->GetStaticMethodID(_env, _bb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
     (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "MAJOR", "I"), A_VERSION_MAJOR);
     (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "MINOR", "I"), A_VERSION_MINOR);
     (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "PATCH", "I"), A_VERSION_PATCH);
@@ -24,7 +24,7 @@ JNIEXPORT void JNICALL Java_liba_version_clinit(JNIEnv *_env, jclass _cls)
 
 JNIEXPORT void JNICALL Java_liba_version_initS(JNIEnv *_env, jobject _obj, jstring _ver)
 {
-    jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)sizeof(a_version));
+    jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)sizeof(a_version));
     a_version *ctx = (a_version *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     char const *ver = (*_env)->GetStringUTFChars(_env, _ver, NULL);
     ctx->alpha[0] = '.';
@@ -34,7 +34,7 @@ JNIEXPORT void JNICALL Java_liba_version_initS(JNIEnv *_env, jobject _obj, jstri
 
 JNIEXPORT void JNICALL Java_liba_version_init(JNIEnv *_env, jobject _obj, jint major, jint minor, jint third, jint extra)
 {
-    jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)sizeof(a_version));
+    jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)sizeof(a_version));
     a_version *ctx = (a_version *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
     ctx->major = (unsigned int)major;

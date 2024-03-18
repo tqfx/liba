@@ -9,7 +9,7 @@
 #define L Java_liba_pid_1fuzzy
 static struct
 {
-    jmethodID alloc;
+    jmethodID _new;
     jfieldID ctx;
     jfieldID me;
     jfieldID mec;
@@ -21,7 +21,8 @@ static struct
 
 JNIEXPORT void JNICALL Java_liba_pid_1fuzzy_clinit(JNIEnv *_env, jclass _cls)
 {
-    jclass _bb = (*_env)->FindClass(_env, "Ljava/nio/ByteBuffer;");
+    jclass _nbb = (*_env)->FindClass(_env, "Ljava/nio/ByteBuffer;");
+    L._new = (*_env)->GetStaticMethodID(_env, _nbb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
     L.ctx = (*_env)->GetFieldID(_env, _cls, "ctx", "Ljava/nio/ByteBuffer;");
     L.me = (*_env)->GetFieldID(_env, _cls, "me", "Ljava/nio/ByteBuffer;");
     L.mec = (*_env)->GetFieldID(_env, _cls, "mec", "Ljava/nio/ByteBuffer;");
@@ -29,7 +30,6 @@ JNIEXPORT void JNICALL Java_liba_pid_1fuzzy_clinit(JNIEnv *_env, jclass _cls)
     L.mki = (*_env)->GetFieldID(_env, _cls, "mki", "Ljava/nio/ByteBuffer;");
     L.mkd = (*_env)->GetFieldID(_env, _cls, "mkd", "Ljava/nio/ByteBuffer;");
     L.block = (*_env)->GetFieldID(_env, _cls, "block", "Ljava/nio/ByteBuffer;");
-    L.alloc = (*_env)->GetStaticMethodID(_env, _bb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
     (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "CAP", "I"), A_PID_FUZZY_CAP);
     (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "CAP_ALGEBRA", "I"), A_PID_FUZZY_CAP_ALGEBRA);
     (*_env)->SetStaticIntField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "CAP_BOUNDED", "I"), A_PID_FUZZY_CAP_BOUNDED);
@@ -41,7 +41,7 @@ JNIEXPORT void JNICALL Java_liba_pid_1fuzzy_clinit(JNIEnv *_env, jclass _cls)
 
 JNIEXPORT void JNICALL Java_liba_pid_1fuzzy_init(JNIEnv *_env, jobject _obj)
 {
-    jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)sizeof(a_pid_fuzzy));
+    jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)sizeof(a_pid_fuzzy));
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
     ctx->pid.summax = +A_FLOAT_INF;
@@ -211,7 +211,7 @@ static jobject concat(JNIEnv *_env, jobject _obj, jobjectArray _val, jdouble con
         length += (*_env)->GetArrayLength(_env, o);
         (*_env)->DeleteLocalRef(_env, o);
     }
-    jobject obj = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)length * 8);
+    jobject obj = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)length * 8);
     jdouble *ptr = (jdouble *)(*_env)->GetDirectBufferAddress(_env, obj);
     *out = ptr;
     for (jsize idx = 0, num = 0; idx != order; ++idx, ptr += num)
@@ -256,7 +256,7 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_block__I(JNIEnv *_env, jobject _o
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     if (num > (jint)ctx->block)
     {
-        jobject _block = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)A_PID_FUZZY_BLOCK((unsigned int)num));
+        jobject _block = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)A_PID_FUZZY_BLOCK((unsigned int)num));
         a_pid_fuzzy_set_block(ctx, (*_env)->GetDirectBufferAddress(_env, _block), (a_size)num);
         (*_env)->SetObjectField(_env, _obj, L.block, _block);
     }

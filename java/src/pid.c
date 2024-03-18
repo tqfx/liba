@@ -9,20 +9,20 @@
 #define L Java_liba_pid
 static struct
 {
-    jmethodID alloc;
+    jmethodID _new;
     jfieldID ctx;
 } L = {NULL, NULL};
 
 JNIEXPORT void JNICALL Java_liba_pid_clinit(JNIEnv *_env, jclass _cls)
 {
-    jclass _bb = (*_env)->FindClass(_env, "Ljava/nio/ByteBuffer;");
+    jclass _nbb = (*_env)->FindClass(_env, "Ljava/nio/ByteBuffer;");
+    L._new = (*_env)->GetStaticMethodID(_env, _nbb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
     L.ctx = (*_env)->GetFieldID(_env, _cls, "ctx", "Ljava/nio/ByteBuffer;");
-    L.alloc = (*_env)->GetStaticMethodID(_env, _bb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
 }
 
 JNIEXPORT void JNICALL Java_liba_pid_init(JNIEnv *_env, jobject _obj)
 {
-    jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L.alloc, (jint)sizeof(a_pid));
+    jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)sizeof(a_pid));
     a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
     (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
     ctx->kp = 1;
