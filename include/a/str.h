@@ -25,9 +25,9 @@
 */
 typedef struct a_str
 {
-    char *_ptr; /*!< string */
-    a_size _num; /*!< length */
-    a_size _mem; /*!< memory */
+    char *ptr_; /*!< string */
+    a_size num_; /*!< length */
+    a_size mem_; /*!< memory */
 } a_str;
 
 /*!
@@ -35,21 +35,21 @@ typedef struct a_str
  @param[in] ctx points to an instance of string structure
  @return string
 */
-A_INTERN char *a_str_ptr(a_str const *ctx) { return ctx->_ptr; }
+A_INTERN char *a_str_ptr(a_str const *ctx) { return ctx->ptr_; }
 
 /*!
  @brief length for a pointer to string structure
  @param[in] ctx points to an instance of string structure
  @return size of length
 */
-A_INTERN a_size a_str_len(a_str const *ctx) { return ctx->_num; }
+A_INTERN a_size a_str_len(a_str const *ctx) { return ctx->num_; }
 
 /*!
  @brief memory for a pointer to string structure
  @param[in] ctx points to an instance of string structure
  @return size of memory
 */
-A_INTERN a_size a_str_mem(a_str const *ctx) { return ctx->_mem; }
+A_INTERN a_size a_str_mem(a_str const *ctx) { return ctx->mem_; }
 
 /*!
  @brief access specified character for a pointer to string structure
@@ -58,7 +58,7 @@ A_INTERN a_size a_str_mem(a_str const *ctx) { return ctx->_mem; }
  @note should check if string is empty
  @return specified character
 */
-A_INTERN char a_str_at_(a_str const *ctx, a_size idx) { return ctx->_ptr[idx]; }
+A_INTERN char a_str_at_(a_str const *ctx, a_size idx) { return ctx->ptr_[idx]; }
 
 /*!
  @brief access specified character for a pointer to string structure
@@ -69,7 +69,7 @@ A_INTERN char a_str_at_(a_str const *ctx, a_size idx) { return ctx->_ptr[idx]; }
 */
 A_INTERN char a_str_at(a_str const *ctx, a_size idx)
 {
-    return a_likely(idx < ctx->_num) ? ctx->_ptr[idx] : 0;
+    return a_likely(idx < ctx->num_) ? ctx->ptr_[idx] : 0;
 }
 
 /*!
@@ -81,8 +81,8 @@ A_INTERN char a_str_at(a_str const *ctx, a_size idx)
 */
 A_INTERN char a_str_idx(a_str const *ctx, a_diff idx)
 {
-    a_size const num = idx < 0 ? a_size_c(idx) + ctx->_num : a_size_c(idx);
-    return a_likely(num < ctx->_num) ? ctx->_ptr[num] : 0;
+    a_size const num = idx < 0 ? a_size_c(idx) + ctx->num_ : a_size_c(idx);
+    return a_likely(num < ctx->num_) ? ctx->ptr_[num] : 0;
 }
 
 /*!
@@ -91,7 +91,7 @@ A_INTERN char a_str_idx(a_str const *ctx, a_diff idx)
  @param[in] len new length for a pointer to string structure
  @note length must less than memory
 */
-A_INTERN void a_str_set_len_(a_str *ctx, a_size len) { ctx->_num = len; }
+A_INTERN void a_str_set_len_(a_str *ctx, a_size len) { ctx->num_ = len; }
 
 /*!
  @brief set length for a pointer to string structure
@@ -103,14 +103,14 @@ A_INTERN void a_str_set_len_(a_str *ctx, a_size len) { ctx->_num = len; }
 */
 A_INTERN int a_str_set_len(a_str *ctx, a_size len)
 {
-    return a_likely(len < ctx->_mem) ? ((void)(ctx->_num = len), A_SUCCESS) : A_FAILURE;
+    return a_likely(len < ctx->mem_) ? ((void)(ctx->num_ = len), A_SUCCESS) : A_FAILURE;
 }
 
 /*!
  @brief drop all characters for a pointer to string structure
  @param[in] ctx points to an instance of string structure
 */
-A_INTERN void a_str_drop(a_str *ctx) { ctx->_num = 0; }
+A_INTERN void a_str_drop(a_str *ctx) { ctx->num_ = 0; }
 
 #if defined(__cplusplus)
 extern "C" {

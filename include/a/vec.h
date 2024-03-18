@@ -19,35 +19,35 @@
 */
 typedef struct a_vec
 {
-    void *_ptr; /*!< address of vector */
-    a_size _num; /*!< number of element */
-    a_size _mem; /*!< memory of element */
-    a_size _siz; /*!< size of a element */
+    void *ptr_; /*!< address of vector */
+    a_size siz_; /*!< size of a element */
+    a_size num_; /*!< number of element */
+    a_size mem_; /*!< memory of element */
 } a_vec;
 
 /*!
  @brief access address of vector for a pointer to vector structure
  @param[in] ctx points to an instance of vector structure
 */
-A_INTERN void *a_vec_ptr(a_vec const *ctx) { return ctx->_ptr; }
-
-/*!
- @brief access number of element for a pointer to vector structure
- @param[in] ctx points to an instance of vector structure
-*/
-A_INTERN a_size a_vec_num(a_vec const *ctx) { return ctx->_num; }
-
-/*!
- @brief access memory of element for a pointer to vector structure
- @param[in] ctx points to an instance of vector structure
-*/
-A_INTERN a_size a_vec_mem(a_vec const *ctx) { return ctx->_mem; }
+A_INTERN void *a_vec_ptr(a_vec const *ctx) { return ctx->ptr_; }
 
 /*!
  @brief access size of a element for a pointer to vector structure
  @param[in] ctx points to an instance of vector structure
 */
-A_INTERN a_size a_vec_siz(a_vec const *ctx) { return ctx->_siz; }
+A_INTERN a_size a_vec_siz(a_vec const *ctx) { return ctx->siz_; }
+
+/*!
+ @brief access number of element for a pointer to vector structure
+ @param[in] ctx points to an instance of vector structure
+*/
+A_INTERN a_size a_vec_num(a_vec const *ctx) { return ctx->num_; }
+
+/*!
+ @brief access memory of element for a pointer to vector structure
+ @param[in] ctx points to an instance of vector structure
+*/
+A_INTERN a_size a_vec_mem(a_vec const *ctx) { return ctx->mem_; }
 
 /*!
  @brief access specified element for a pointer to vector structure
@@ -58,7 +58,7 @@ A_INTERN a_size a_vec_siz(a_vec const *ctx) { return ctx->_siz; }
 */
 A_INTERN void *a_vec_at_(a_vec const *ctx, a_size idx)
 {
-    return a_byte_(*, ctx->_ptr) + ctx->_siz * idx;
+    return a_byte_(*, ctx->ptr_) + ctx->siz_ * idx;
 }
 
 /*!
@@ -70,7 +70,7 @@ A_INTERN void *a_vec_at_(a_vec const *ctx, a_size idx)
 */
 A_INTERN void *a_vec_at(a_vec const *ctx, a_size idx)
 {
-    return a_likely(idx < ctx->_mem) ? a_vec_at_(ctx, idx) : A_NULL;
+    return a_likely(idx < ctx->mem_) ? a_vec_at_(ctx, idx) : A_NULL;
 }
 
 /*!
@@ -82,8 +82,8 @@ A_INTERN void *a_vec_at(a_vec const *ctx, a_size idx)
 */
 A_INTERN void *a_vec_idx(a_vec const *ctx, a_diff idx)
 {
-    a_size const num = idx < 0 ? a_size_c(idx) + ctx->_num : a_size_c(idx);
-    return a_likely(num < ctx->_mem) ? a_vec_at_(ctx, num) : A_NULL;
+    a_size const num = idx < 0 ? a_size_c(idx) + ctx->num_ : a_size_c(idx);
+    return a_likely(num < ctx->mem_) ? a_vec_at_(ctx, num) : A_NULL;
 }
 
 /*!
@@ -94,7 +94,7 @@ A_INTERN void *a_vec_idx(a_vec const *ctx, a_diff idx)
 */
 A_INTERN void *a_vec_top_(a_vec const *ctx)
 {
-    return a_byte_(*, ctx->_ptr) + ctx->_siz * (ctx->_num - 1);
+    return a_byte_(*, ctx->ptr_) + ctx->siz_ * (ctx->num_ - 1);
 }
 
 /*!
@@ -105,7 +105,7 @@ A_INTERN void *a_vec_top_(a_vec const *ctx)
 */
 A_INTERN void *a_vec_top(a_vec const *ctx)
 {
-    return a_likely(ctx->_num) ? a_vec_top_(ctx) : A_NULL;
+    return a_likely(ctx->num_) ? a_vec_top_(ctx) : A_NULL;
 }
 
 /*!
@@ -115,7 +115,7 @@ A_INTERN void *a_vec_top(a_vec const *ctx)
 */
 A_INTERN void *a_vec_end_(a_vec const *ctx)
 {
-    return a_byte_(*, ctx->_ptr) + ctx->_siz * ctx->_num;
+    return a_byte_(*, ctx->ptr_) + ctx->siz_ * ctx->num_;
 }
 
 /*!
@@ -126,7 +126,7 @@ A_INTERN void *a_vec_end_(a_vec const *ctx)
 */
 A_INTERN void *a_vec_end(a_vec const *ctx)
 {
-    return a_likely(ctx->_ptr) ? a_vec_end_(ctx) : ctx->_ptr;
+    return a_likely(ctx->ptr_) ? a_vec_end_(ctx) : ctx->ptr_;
 }
 
 #if defined(__cplusplus)
@@ -360,7 +360,7 @@ A_INTERN void *a_vec_pull(a_vec *ctx) { return a_vec_pull_back(ctx); }
  @param i index of elements in the vector
  @param ctx points to an instance of vector structure
 */
-#define a_vec_forenum(i, ctx) a_forenum(a_size, i, (ctx)->_num)
+#define a_vec_forenum(i, ctx) a_forenum(a_size, i, (ctx)->num_)
 
 /*!
  @brief iterate over a vector in reverse
@@ -374,7 +374,7 @@ A_INTERN void *a_vec_pull(a_vec *ctx) { return a_vec_pull_back(ctx); }
  @param i index of elements in the vector
  @param ctx points to an instance of vector structure
 */
-#define a_vec_forenum_reverse(i, ctx) a_forenum_reverse(a_size, i, (ctx)->_num)
+#define a_vec_forenum_reverse(i, ctx) a_forenum_reverse(a_size, i, (ctx)->num_)
 
 /*!
  @brief iterate over a vector
@@ -388,7 +388,7 @@ A_INTERN void *a_vec_pull(a_vec *ctx) { return a_vec_pull_back(ctx); }
  @param it the &a_vec to use as a loop counter
  @param ctx points to an instance of vector structure
 */
-#define a_vec_foreach(T, it, ctx) a_foreach(T, it, (ctx)->_ptr, (ctx)->_num)
+#define a_vec_foreach(T, it, ctx) a_foreach(T, it, (ctx)->ptr_, (ctx)->num_)
 
 /*!
  @brief iterate over a vector in reverse
@@ -402,7 +402,7 @@ A_INTERN void *a_vec_pull(a_vec *ctx) { return a_vec_pull_back(ctx); }
  @param it the &a_vec to use as a loop counter
  @param ctx points to an instance of vector structure
 */
-#define a_vec_foreach_reverse(T, it, ctx) a_foreach_reverse(T, it, (ctx)->_ptr, (ctx)->_num)
+#define a_vec_foreach_reverse(T, it, ctx) a_foreach_reverse(T, it, (ctx)->ptr_, (ctx)->num_)
 
 #define a_vec_ptr(T, ctx) a_cast_s(T *, a_vec_ptr(ctx))
 #define a_vec_end(T, ctx) a_cast_s(T *, a_vec_end(ctx))

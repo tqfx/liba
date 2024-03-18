@@ -36,7 +36,7 @@ typedef struct a_avl_node
      and it will be null if this is the root node and therefore has no parent.
     */
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
-    a_uptr _parent;
+    a_uptr parent_;
 #else /* !A_SIZE_POINTER */
     struct a_avl_node *parent;
     int factor;
@@ -52,7 +52,7 @@ typedef struct a_avl_node
 A_INTERN a_avl_node *a_avl_parent(a_avl_node const *node)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
-    return a_cast_r(a_avl_node *, node->_parent & ~a_uptr_c(3));
+    return a_cast_r(a_avl_node *, node->parent_ & ~a_uptr_c(3));
 #else /* !A_SIZE_POINTER */
     return node->parent;
 #endif /* A_SIZE_POINTER */
@@ -67,7 +67,7 @@ A_INTERN a_avl_node *a_avl_parent(a_avl_node const *node)
 A_INTERN a_avl_node *a_avl_init(a_avl_node *node, a_avl_node *parent)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
-    node->_parent = a_cast_r(a_uptr, parent) | 1;
+    node->parent_ = a_cast_r(a_uptr, parent) | 1;
 #else /* !A_SIZE_POINTER */
     node->parent = parent;
     node->factor = 0;

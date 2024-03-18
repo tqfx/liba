@@ -33,7 +33,7 @@ typedef struct a_rbt_node
      and it will be null if this is the root node and therefore has no parent.
     */
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    a_uptr _parent;
+    a_uptr parent_;
 #else /* !A_SIZE_POINTER */
     struct a_rbt_node *parent;
     unsigned int color;
@@ -49,7 +49,7 @@ typedef struct a_rbt_node
 A_INTERN a_rbt_node *a_rbt_parent(a_rbt_node const *node)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    return a_cast_r(a_rbt_node *, node->_parent & ~a_uptr_c(1));
+    return a_cast_r(a_rbt_node *, node->parent_ & ~a_uptr_c(1));
 #else /* !A_SIZE_POINTER */
     return node->parent;
 #endif /* A_SIZE_POINTER */
@@ -64,7 +64,7 @@ A_INTERN a_rbt_node *a_rbt_parent(a_rbt_node const *node)
 A_INTERN a_rbt_node *a_rbt_init(a_rbt_node *node, a_rbt_node *parent)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    node->_parent = a_cast_r(a_uptr, parent);
+    node->parent_ = a_cast_r(a_uptr, parent);
 #else /* !A_SIZE_POINTER */
     node->parent = parent;
     node->color = A_RBT_R;

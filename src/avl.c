@@ -36,7 +36,7 @@ static A_INLINE void a_avl_set_child(a_avl_node *node, a_avl_node *child, int si
 static A_INLINE void a_avl_set_parent_factor(a_avl_node *node, a_avl_node *parent, int factor)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
-    node->_parent = (a_uptr)parent | (a_uptr)(factor + 1);
+    node->parent_ = (a_uptr)parent | (a_uptr)(factor + 1);
 #else /* !A_SIZE_POINTER */
     node->parent = parent;
     node->factor = factor;
@@ -47,7 +47,7 @@ static A_INLINE void a_avl_set_parent_factor(a_avl_node *node, a_avl_node *paren
 static A_INLINE void a_avl_set_parent(a_avl_node *node, a_avl_node *parent)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
-    node->_parent = (a_uptr)parent | (node->_parent & 3);
+    node->parent_ = (a_uptr)parent | (node->parent_ & 3);
 #else /* !A_SIZE_POINTER */
     node->parent = parent;
 #endif /* A_SIZE_POINTER */
@@ -60,7 +60,7 @@ the height of its right subtree minus the height of its left subtree.
 static A_INLINE int a_avl_factor(a_avl_node const *node)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
-    return (int)(node->_parent & 3) - 1;
+    return (int)(node->parent_ & 3) - 1;
 #else /* !A_SIZE_POINTER */
     return node->factor;
 #endif /* A_SIZE_POINTER */
@@ -73,7 +73,7 @@ The caller must ensure this still results in a valid balance factor (-1, 0, or 1
 static A_INLINE void a_avl_set_factor(a_avl_node *node, int amount)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
-    node->_parent += (a_uptr)amount;
+    node->parent_ += (a_uptr)amount;
 #else /* !A_SIZE_POINTER */
     node->factor += amount;
 #endif /* A_SIZE_POINTER */
@@ -526,7 +526,7 @@ static A_INLINE a_avl_node *a_avl_handle_remove(a_avl *root, a_avl_node *X, a_bo
     a_avl_set_parent(X->left, Y);
 
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
-    Y->_parent = X->_parent;
+    Y->parent_ = X->parent_;
 #else /* !A_SIZE_POINTER */
     Y->parent = X->parent;
     Y->factor = X->factor;

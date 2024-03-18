@@ -14,7 +14,7 @@ typedef struct
 static A_INLINE int int_factor(a_avl_node *node)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 3)
-    return a_cast_s(int, node->_parent & 3) - 1;
+    return a_cast_s(int, node->parent_ & 3) - 1;
 #else /* !A_SIZE_POINTER */
     return node->factor;
 #endif /* A_SIZE_POINTER */

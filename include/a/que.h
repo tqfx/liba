@@ -20,8 +20,8 @@
 */
 typedef struct a_que_node
 {
-    a_list _node; /*!< element node */
-    void *_data; /*!< element data */
+    a_list node_; /*!< element node */
+    void *data_; /*!< element data */
 } a_que_node;
 
 /*!
@@ -37,25 +37,25 @@ typedef struct a_que_node
 */
 typedef struct a_que
 {
-    a_que_node **_ptr; /*!< mempool block */
-    a_list _head; /*!< element head */
-    a_size _siz; /*!< element sizeof */
-    a_size _num; /*!< element number */
-    a_size _cur; /*!< mempool cursor */
-    a_size _mem; /*!< mempool memory */
+    a_que_node **ptr_; /*!< mempool block */
+    a_list head_; /*!< element head */
+    a_size siz_; /*!< element sizeof */
+    a_size num_; /*!< element number */
+    a_size cur_; /*!< mempool cursor */
+    a_size mem_; /*!< mempool memory */
 } a_que;
 
 /*!
  @brief access size of a element for a pointer to queue structure
  @param[in] ctx points to an instance of queue structure
 */
-A_INTERN a_size a_que_siz(a_que const *ctx) { return ctx->_siz; }
+A_INTERN a_size a_que_siz(a_que const *ctx) { return ctx->siz_; }
 
 /*!
  @brief access number of element for a pointer to queue structure
  @param[in] ctx points to an instance of queue structure
 */
-A_INTERN a_size a_que_num(a_que const *ctx) { return ctx->_num; }
+A_INTERN a_size a_que_num(a_que const *ctx) { return ctx->num_; }
 
 /*!
  @brief access foremost element for a pointer to queue structure
@@ -65,7 +65,7 @@ A_INTERN a_size a_que_num(a_que const *ctx) { return ctx->_num; }
 */
 A_INTERN void *a_que_fore_(a_que const *ctx)
 {
-    return a_que_node_(*, ctx->_head.next)->_data;
+    return a_que_node_(*, ctx->head_.next)->data_;
 }
 
 /*!
@@ -76,7 +76,7 @@ A_INTERN void *a_que_fore_(a_que const *ctx)
 */
 A_INTERN void *a_que_back_(a_que const *ctx)
 {
-    return a_que_node_(*, ctx->_head.prev)->_data;
+    return a_que_node_(*, ctx->head_.prev)->data_;
 }
 
 /*!
@@ -87,7 +87,7 @@ A_INTERN void *a_que_back_(a_que const *ctx)
 */
 A_INTERN void *a_que_fore(a_que const *ctx)
 {
-    return a_likely(ctx->_head.next != &ctx->_head) ? a_que_fore_(ctx) : A_NULL;
+    return a_likely(ctx->head_.next != &ctx->head_) ? a_que_fore_(ctx) : A_NULL;
 }
 
 /*!
@@ -98,7 +98,7 @@ A_INTERN void *a_que_fore(a_que const *ctx)
 */
 A_INTERN void *a_que_back(a_que const *ctx)
 {
-    return a_likely(ctx->_head.prev != &ctx->_head) ? a_que_back_(ctx) : A_NULL;
+    return a_likely(ctx->head_.prev != &ctx->head_) ? a_que_back_(ctx) : A_NULL;
 }
 
 #if defined(__cplusplus)
@@ -291,10 +291,10 @@ A_EXTERN void *a_que_remove(a_que *ctx, a_size idx);
  @param ctx points to an instance of queue structure
 */
 #define a_que_foreach(T, it, ctx)                                         \
-    for (T *it = a_cast_r(T *, (ctx)->_head.next),                        \
+    for (T *it = a_cast_r(T *, (ctx)->head_.next),                        \
            *it##_ = a_cast_r(T *, a_list_(*, it)->next);                  \
-         a_list_(*, it) != &(ctx)->_head                                  \
-             ? ((void)(it = a_cast_s(T *, a_que_node_(*, it)->_data)), 1) \
+         a_list_(*, it) != &(ctx)->head_                                  \
+             ? ((void)(it = a_cast_s(T *, a_que_node_(*, it)->data_)), 1) \
              : (0);                                                       \
          it = it##_, it##_ = a_cast_r(T *, a_list_(*, it)->next))
 
@@ -311,10 +311,10 @@ A_EXTERN void *a_que_remove(a_que *ctx, a_size idx);
  @param ctx points to an instance of queue structure
 */
 #define a_que_foreach_reverse(T, it, ctx)                                 \
-    for (T *it = a_cast_r(T *, (ctx)->_head.prev),                        \
+    for (T *it = a_cast_r(T *, (ctx)->head_.prev),                        \
            *it##_ = a_cast_r(T *, a_list_(*, it)->prev);                  \
-         a_list_(*, it) != &(ctx)->_head                                  \
-             ? ((void)(it = a_cast_s(T *, a_que_node_(*, it)->_data)), 1) \
+         a_list_(*, it) != &(ctx)->head_                                  \
+             ? ((void)(it = a_cast_s(T *, a_que_node_(*, it)->data_)), 1) \
              : (0);                                                       \
          it = it##_, it##_ = a_cast_r(T *, a_list_(*, it)->prev))
 

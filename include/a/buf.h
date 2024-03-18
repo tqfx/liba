@@ -19,35 +19,35 @@
 */
 typedef struct a_buf
 {
-    void *_ptr; /*!< address of memory */
-    a_size _num; /*!< number of element */
-    a_size _mem; /*!< memory of element */
-    a_size _siz; /*!< size of a element */
+    void *ptr_; /*!< address of memory */
+    a_size siz_; /*!< size of a element */
+    a_size num_; /*!< number of element */
+    a_size mem_; /*!< memory of element */
 } a_buf;
 
 /*!
  @brief access address of buffer for a pointer to buffer structure
  @param[in] ctx points to an instance of buffer structure
 */
-A_INTERN void *a_buf_ptr(a_buf const *ctx) { return ctx->_ptr; }
-
-/*!
- @brief access number of element for a pointer to buffer structure
- @param[in] ctx points to an instance of buffer structure
-*/
-A_INTERN a_size a_buf_num(a_buf const *ctx) { return ctx->_num; }
-
-/*!
- @brief access memory of element for a pointer to buffer structure
- @param[in] ctx points to an instance of buffer structure
-*/
-A_INTERN a_size a_buf_mem(a_buf const *ctx) { return ctx->_mem; }
+A_INTERN void *a_buf_ptr(a_buf const *ctx) { return ctx->ptr_; }
 
 /*!
  @brief access size of a element for a pointer to buffer structure
  @param[in] ctx points to an instance of buffer structure
 */
-A_INTERN a_size a_buf_siz(a_buf const *ctx) { return ctx->_siz; }
+A_INTERN a_size a_buf_siz(a_buf const *ctx) { return ctx->siz_; }
+
+/*!
+ @brief access number of element for a pointer to buffer structure
+ @param[in] ctx points to an instance of buffer structure
+*/
+A_INTERN a_size a_buf_num(a_buf const *ctx) { return ctx->num_; }
+
+/*!
+ @brief access memory of element for a pointer to buffer structure
+ @param[in] ctx points to an instance of buffer structure
+*/
+A_INTERN a_size a_buf_mem(a_buf const *ctx) { return ctx->mem_; }
 
 /*!
  @brief access specified element for a pointer to buffer structure
@@ -58,7 +58,7 @@ A_INTERN a_size a_buf_siz(a_buf const *ctx) { return ctx->_siz; }
 */
 A_INTERN void *a_buf_at_(a_buf const *ctx, a_size idx)
 {
-    return a_byte_(*, ctx->_ptr) + ctx->_siz * idx;
+    return a_byte_(*, ctx->ptr_) + ctx->siz_ * idx;
 }
 
 /*!
@@ -70,7 +70,7 @@ A_INTERN void *a_buf_at_(a_buf const *ctx, a_size idx)
 */
 A_INTERN void *a_buf_at(a_buf const *ctx, a_size idx)
 {
-    return a_likely(idx < ctx->_mem) ? a_buf_at_(ctx, idx) : A_NULL;
+    return a_likely(idx < ctx->mem_) ? a_buf_at_(ctx, idx) : A_NULL;
 }
 
 /*!
@@ -82,8 +82,8 @@ A_INTERN void *a_buf_at(a_buf const *ctx, a_size idx)
 */
 A_INTERN void *a_buf_idx(a_buf const *ctx, a_diff idx)
 {
-    a_size const num = idx < 0 ? a_size_c(idx) + ctx->_num : a_size_c(idx);
-    return a_likely(num < ctx->_mem) ? a_buf_at_(ctx, num) : A_NULL;
+    a_size const num = idx < 0 ? a_size_c(idx) + ctx->num_ : a_size_c(idx);
+    return a_likely(num < ctx->mem_) ? a_buf_at_(ctx, num) : A_NULL;
 }
 
 /*!
@@ -94,7 +94,7 @@ A_INTERN void *a_buf_idx(a_buf const *ctx, a_diff idx)
 */
 A_INTERN void *a_buf_top_(a_buf const *ctx)
 {
-    return a_byte_(*, ctx->_ptr) + ctx->_siz * (ctx->_num - 1);
+    return a_byte_(*, ctx->ptr_) + ctx->siz_ * (ctx->num_ - 1);
 }
 
 /*!
@@ -105,7 +105,7 @@ A_INTERN void *a_buf_top_(a_buf const *ctx)
 */
 A_INTERN void *a_buf_top(a_buf const *ctx)
 {
-    return a_likely(ctx->_num) ? a_buf_top_(ctx) : A_NULL;
+    return a_likely(ctx->num_) ? a_buf_top_(ctx) : A_NULL;
 }
 
 /*!
@@ -115,7 +115,7 @@ A_INTERN void *a_buf_top(a_buf const *ctx)
 */
 A_INTERN void *a_buf_end(a_buf const *ctx)
 {
-    return a_byte_(*, ctx->_ptr) + ctx->_siz * ctx->_num;
+    return a_byte_(*, ctx->ptr_) + ctx->siz_ * ctx->num_;
 }
 
 #if defined(__cplusplus)
@@ -307,7 +307,7 @@ A_INTERN void *a_buf_pull(a_buf *ctx) { return a_buf_pull_back(ctx); }
  @param i index of elements in the buffer
  @param ctx points to an instance of buffer structure
 */
-#define a_buf_forenum(i, ctx) a_forenum(a_size, i, (ctx)->_num)
+#define a_buf_forenum(i, ctx) a_forenum(a_size, i, (ctx)->num_)
 
 /*!
  @brief iterate over a buffer in reverse
@@ -321,7 +321,7 @@ A_INTERN void *a_buf_pull(a_buf *ctx) { return a_buf_pull_back(ctx); }
  @param i index of elements in the buffer
  @param ctx points to an instance of buffer structure
 */
-#define a_buf_forenum_reverse(i, ctx) a_forenum_reverse(a_size, i, (ctx)->_num)
+#define a_buf_forenum_reverse(i, ctx) a_forenum_reverse(a_size, i, (ctx)->num_)
 
 /*!
  @brief iterate over a buffer
@@ -335,7 +335,7 @@ A_INTERN void *a_buf_pull(a_buf *ctx) { return a_buf_pull_back(ctx); }
  @param it the &a_buf to use as a loop counter
  @param ctx points to an instance of buffer structure
 */
-#define a_buf_foreach(T, it, ctx) a_foreach(T, it, (ctx)->_ptr, (ctx)->_num)
+#define a_buf_foreach(T, it, ctx) a_foreach(T, it, (ctx)->ptr_, (ctx)->num_)
 
 /*!
  @brief iterate over a buffer in reverse
@@ -349,7 +349,7 @@ A_INTERN void *a_buf_pull(a_buf *ctx) { return a_buf_pull_back(ctx); }
  @param it the &a_buf to use as a loop counter
  @param ctx points to an instance of buffer structure
 */
-#define a_buf_foreach_reverse(T, it, ctx) a_foreach_reverse(T, it, (ctx)->_ptr, (ctx)->_num)
+#define a_buf_foreach_reverse(T, it, ctx) a_foreach_reverse(T, it, (ctx)->ptr_, (ctx)->num_)
 
 #define a_buf_ptr(T, ctx) a_cast_s(T *, a_buf_ptr(ctx))
 #define a_buf_end(T, ctx) a_cast_s(T *, a_buf_end(ctx))

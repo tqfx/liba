@@ -43,7 +43,7 @@ static A_INLINE void a_rbt_new_child(a_rbt *root, a_rbt_node *parent, a_rbt_node
 static A_INLINE void a_rbt_set_parent_color(a_rbt_node *node, a_rbt_node *parent, unsigned int color)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    node->_parent = (a_uptr)parent | color;
+    node->parent_ = (a_uptr)parent | color;
 #else /* !A_SIZE_POINTER */
     node->parent = parent;
     node->color = color;
@@ -54,7 +54,7 @@ static A_INLINE void a_rbt_set_parent_color(a_rbt_node *node, a_rbt_node *parent
 static A_INLINE void a_rbt_set_parent(a_rbt_node *node, a_rbt_node *parent)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    node->_parent = (a_uptr)parent | (node->_parent & 1);
+    node->parent_ = (a_uptr)parent | (node->parent_ & 1);
 #else /* !A_SIZE_POINTER */
     node->parent = parent;
 #endif /* A_SIZE_POINTER */
@@ -64,7 +64,7 @@ static A_INLINE void a_rbt_set_parent(a_rbt_node *node, a_rbt_node *parent)
 static A_INLINE unsigned int a_rbt_color(a_rbt_node const *node)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    return (unsigned int)(node->_parent & 1);
+    return (unsigned int)(node->parent_ & 1);
 #else /* !A_SIZE_POINTER */
     return node->color;
 #endif /* A_SIZE_POINTER */
@@ -74,7 +74,7 @@ static A_INLINE unsigned int a_rbt_color(a_rbt_node const *node)
 static A_INLINE void a_rbt_set_black(a_rbt_node *node)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    node->_parent |= A_RBT_B;
+    node->parent_ |= A_RBT_B;
 #else /* !A_SIZE_POINTER */
     node->color = A_RBT_B;
 #endif /* A_SIZE_POINTER */
@@ -89,7 +89,7 @@ static A_INLINE void a_rbt_set_parents(a_rbt *root, a_rbt_node *node, a_rbt_node
 {
     a_rbt_node *const parent = a_rbt_parent(node);
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    newnode->_parent = node->_parent;
+    newnode->parent_ = node->parent_;
 #else /* !A_SIZE_POINTER */
     newnode->parent = node->parent;
     newnode->color = node->color;
@@ -399,7 +399,7 @@ void a_rbt_remove(a_rbt *root, a_rbt_node *node)
         We adjust colors locally so as to bypass a_rbt_remove_adjust() later on.
         */
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-        pc = node->_parent;
+        pc = node->parent_;
 #else /* !A_SIZE_POINTER */
         color = node->color;
 #endif /* A_SIZE_POINTER */
@@ -408,7 +408,7 @@ void a_rbt_remove(a_rbt *root, a_rbt_node *node)
         if (child)
         {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-            child->_parent = pc;
+            child->parent_ = pc;
 #else /* !A_SIZE_POINTER */
             child->parent = parent;
             child->color = color;
@@ -428,7 +428,7 @@ void a_rbt_remove(a_rbt *root, a_rbt_node *node)
     {
         /* Still case 1, but this time the child is node->left */
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-        tmp->_parent = node->_parent;
+        tmp->parent_ = node->parent_;
 #else /* !A_SIZE_POINTER */
         tmp->parent = node->parent;
         tmp->color = node->color;
@@ -487,7 +487,7 @@ void a_rbt_remove(a_rbt *root, a_rbt_node *node)
         a_rbt_set_parent(tmp, successor);
 
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-        pc = node->_parent;
+        pc = node->parent_;
 #else /* !A_SIZE_POINTER */
         color = node->color;
 #endif /* A_SIZE_POINTER */
@@ -504,7 +504,7 @@ void a_rbt_remove(a_rbt *root, a_rbt_node *node)
             adjust = a_rbt_color(successor) == A_RBT_B ? parent : A_NULL;
         }
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-        successor->_parent = pc;
+        successor->parent_ = pc;
 #else /* !A_SIZE_POINTER */
         successor->parent = tmp;
         successor->color = color;
