@@ -1,4 +1,5 @@
 local lm = require("luamake")
+lm.workdir = WORKDIR
 lm:lua_library("liba")({
     defines = { "A_EXPORTS" },
     includes = { "../include" },
