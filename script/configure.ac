@@ -1,6 +1,6 @@
 m4_define([version_major], [0])
 m4_define([version_minor], [1])
-m4_define([version_patch], [7])
+m4_define([version_patch], [8])
 m4_define([version], [version_major.version_minor.version_patch])
 AC_INIT([liba], [version], [tqfx@tqfx.org])
 AC_CONFIG_MACRO_DIR([m4])

@@ -28,13 +28,13 @@
 
 /*! algorithm library version patch */
 #ifndef A_VERSION_PATCH
-#define A_VERSION_PATCH 7
+#define A_VERSION_PATCH 8
 #endif /* A_VERSION_PATCH */
 #undef patch
 
 /*! algorithm library version tweak */
 #ifndef A_VERSION_TWEAK
-#define A_VERSION_TWEAK 20240312
+#define A_VERSION_TWEAK 20240320
 #endif /* A_VERSION_TWEAK */
 
 #define A_VERSION_TOSTR(X) A_CAST_1(X)
