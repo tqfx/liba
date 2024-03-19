@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import os, sys
 
-sys.path.insert(0, os.getcwd())
-prefix = os.path.join(sys.path[0], "build")
-if not os.path.exists(prefix):
-    os.mkdir(prefix)
+base = os.path.dirname(__file__)
+path = os.path.dirname(base)
+path = os.path.dirname(path)
+sys.path.insert(0, path)
 try:
     import numpy as np
     import matplotlib.pyplot as plt
@@ -21,7 +21,7 @@ plt.figure(title)
 plt.title(title)
 plt.plot(x, y)
 plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_gauss.png"))
+plt.savefig(os.path.join(base, "mf_gauss.png"))
 
 title = "Gaussian combination membership function"
 x = np.arange(-3, 3, 0.001)
@@ -30,7 +30,7 @@ plt.figure(title)
 plt.title(title)
 plt.plot(x, y)
 plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_gauss2.png"))
+plt.savefig(os.path.join(base, "mf_gauss2.png"))
 
 title = "Generalized bell-shaped membership function"
 x = np.arange(-3, 3, 0.001)
@@ -39,7 +39,7 @@ plt.figure(title)
 plt.title(title)
 plt.plot(x, y)
 plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_gbell.png"))
+plt.savefig(os.path.join(base, "mf_gbell.png"))
 
 title = "Sigmoidal membership function"
 x = np.arange(-3, 3, 0.001)
@@ -48,7 +48,7 @@ plt.figure(title)
 plt.title(title)
 plt.plot(x, y)
 plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_sig.png"))
+plt.savefig(os.path.join(base, "mf_sig.png"))
 
 title = "Difference between two sigmoidal membership functions"
 x = np.arange(-3, 3, 0.001)
@@ -57,7 +57,7 @@ plt.figure(title)
 plt.title(title)
 plt.plot(x, y)
 plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_dsig.png"))
+plt.savefig(os.path.join(base, "mf_dsig.png"))
 
 title = "Product of two sigmoidal membership functions"
 x = np.arange(-3, 3, 0.001)
@@ -66,7 +66,7 @@ plt.figure(title)
 plt.title(title)
 plt.plot(x, y)
 plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_psig.png"))
+plt.savefig(os.path.join(base, "mf_psig.png"))
 
 title = "Triangular membership function"
 x = np.arange(0, 2, 0.001)
@@ -75,7 +75,7 @@ plt.figure(title)
 plt.title(title)
 plt.plot(x, y)
 plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_tri.png"))
+plt.savefig(os.path.join(base, "mf_tri.png"))
 
 y = []
 title = "Trapezoidal membership function"
@@ -85,7 +85,7 @@ plt.figure(title)
 plt.title(title)
 plt.plot(x, y)
 plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_trap.png"))
+plt.savefig(os.path.join(base, "mf_trap.png"))
 
 title = "Linear s-shaped saturation membership function"
 x = np.arange(0, 3, 0.001)
@@ -94,7 +94,7 @@ plt.figure(title)
 plt.title(title)
 plt.plot(x, y)
 plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_lins.png"))
+plt.savefig(os.path.join(base, "mf_lins.png"))
 
 title = "Linear z-shaped saturation membership function"
 x = np.arange(0, 3, 0.001)
@@ -103,7 +103,7 @@ plt.figure(title)
 plt.title(title)
 plt.plot(x, y)
 plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_linz.png"))
+plt.savefig(os.path.join(base, "mf_linz.png"))
 
 title = "S-shaped membership function"
 x = np.arange(0, 3, 0.001)
@@ -112,7 +112,7 @@ plt.figure(title)
 plt.title(title)
 plt.plot(x, y)
 plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_s.png"))
+plt.savefig(os.path.join(base, "mf_s.png"))
 
 title = "Z-shaped membership function"
 x = np.arange(0, 3, 0.001)
@@ -121,7 +121,7 @@ plt.figure(title)
 plt.title(title)
 plt.plot(x, y)
 plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_z.png"))
+plt.savefig(os.path.join(base, "mf_z.png"))
 
 y = []
 title = "Pi-shaped membership function"
@@ -131,7 +131,7 @@ plt.figure(title)
 plt.title(title)
 plt.plot(x, y)
 plt.grid(True)
-plt.savefig(os.path.join(prefix, "mf_pi.png"))
+plt.savefig(os.path.join(base, "mf_pi.png"))
 
 S = 1
 params = [
@@ -150,5 +150,5 @@ plt.figure(title)
 plt.title(title)
 for param in params:
     plt.plot(x, liba.mf()(param[0], x, param[1:]))
-plt.savefig(os.path.join(prefix, "mf.png"))
+plt.savefig(os.path.join(base, "mf.png"))
 plt.show()

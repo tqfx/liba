@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 import os, sys, math, random
 
-sys.path.insert(0, os.getcwd())
+base = os.path.dirname(__file__)
+path = os.path.dirname(base)
+sys.path.insert(0, path)
 if len(sys.argv) > 1:
     sys.stdout = open(sys.argv[1], "w")
 

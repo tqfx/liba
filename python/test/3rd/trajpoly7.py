@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import os, sys
 
-sys.path.insert(0, os.getcwd())
-prefix = os.path.join(sys.path[0], "build")
-if not os.path.exists(prefix):
-    os.mkdir(prefix)
+base = os.path.dirname(__file__)
+path = os.path.dirname(base)
+path = os.path.dirname(path)
+sys.path.insert(0, path)
 try:
     import numpy as np
     import matplotlib.pyplot as plt
@@ -108,5 +108,5 @@ plt.plot(data, traj.jer(data), "k-", label=text_j)
 plt.legend()
 
 plt.xlabel("t")
-plt.savefig(os.path.join(prefix, "trajectory_polynomial_7.png"))
+plt.savefig(os.path.join(base, "trajectory_polynomial_7.png"))
 plt.show()

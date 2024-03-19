@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import os, sys
 
-sys.path.insert(0, os.getcwd())
-prefix = os.path.join(sys.path[0], "build")
-if not os.path.exists(prefix):
-    os.mkdir(prefix)
+base = os.path.dirname(__file__)
+path = os.path.dirname(base)
+path = os.path.dirname(path)
+sys.path.insert(0, path)
 try:
     import numpy as np
     import matplotlib.pyplot as plt
@@ -73,6 +73,6 @@ for i in range(len(x)):
     z[i] = tf(x[i])
 
 plt.plot(x, y, "r-", x, z, "b-")
-plt.savefig(os.path.join(prefix, "tf.png"))
+plt.savefig(os.path.join(base, "tf.png"))
 plt.xlabel("t")
 plt.show()

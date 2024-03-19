@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import os, sys
 
-sys.path.insert(0, os.getcwd())
-prefix = os.path.join(sys.path[0], "build")
-if not os.path.exists(prefix):
-    os.mkdir(prefix)
+base = os.path.dirname(__file__)
+path = os.path.dirname(base)
+path = os.path.dirname(path)
+sys.path.insert(0, path)
 try:
     import numpy as np
     import matplotlib.pyplot as plt
@@ -29,8 +29,8 @@ x2 = np.array(x)
 hpf = liba.hpf(10, 0.01)
 x1 = np.cos(2 * np.pi * (f_0 * x1 + 0.5 * c * x1 * x1))
 for i in range(len(x2)):
-    x2[i] = hpf(x2[i])
+    x2[i] = hpf(x1[i])
 plt.figure("High Pass Filter")
 plt.plot(x, x1, "b-", x, x2, "g-")
-plt.savefig(os.path.join(prefix, "hpf.png"))
+plt.savefig(os.path.join(base, "hpf.png"))
 plt.show()

@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 import os, sys
 
-sys.path.insert(0, os.getcwd())
+base = os.path.dirname(__file__)
+path = os.path.dirname(base)
+sys.path.insert(0, path)
 
 import liba  # type: ignore
 

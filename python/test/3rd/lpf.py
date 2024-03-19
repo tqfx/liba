@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import os, sys
 
-sys.path.insert(0, os.getcwd())
-prefix = os.path.join(sys.path[0], "build")
-if not os.path.exists(prefix):
-    os.mkdir(prefix)
+base = os.path.dirname(__file__)
+path = os.path.dirname(base)
+path = os.path.dirname(path)
+sys.path.insert(0, path)
 try:
     import numpy as np
     import matplotlib.pyplot as plt
@@ -22,5 +22,5 @@ for i in range(len(x2)):
     x2[i] = lpf(x2[i])
 plt.figure("Low Pass Filter")
 plt.plot(x, x1, "b-", x, x2, "g-")
-plt.savefig(os.path.join(prefix, "lpf.png"))
+plt.savefig(os.path.join(base, "lpf.png"))
 plt.show()
