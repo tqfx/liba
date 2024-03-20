@@ -1,7 +1,8 @@
 package = "liba"
 version = "dev-1"
 source = {
-   url = "git+https://github.com/tqfx/liba"
+   url = "https://github.com/tqfx/liba/archive/main.tar.gz",
+   dir = "liba-main"
 }
 description = {
    summary = "An algorithm library based on C/C++ language",
