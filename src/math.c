@@ -136,12 +136,12 @@ static A_INLINE int A_U64_BSR(a_u64 x)
 #define A_U64_BSR(x) BitScanReverse64(x)
 static A_INLINE int A_U64_BSR(a_u64 x)
 {
-    unsigned long i = 0, hi = 0;
-    _BitScanReverse(&i, (a_u32)x);
+    unsigned long i = 0, hi;
     if (_BitScanReverse(&hi, x >> 32))
     {
-        i += hi + 1;
+        return (int)hi + 32;
     }
+    _BitScanReverse(&i, (a_u32)x);
     return (int)i;
 }
 #endif /* A_U64_BSR */

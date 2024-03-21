@@ -19,6 +19,8 @@ static void test_u32_sqrt(void)
 static void test_u64_sqrt(void)
 {
     TEST_BUG(a_u64_sqrt(A_U64_C(~0)) == A_U32_C(0xFFFFFFFF));
+    TEST_BUG(a_u64_sqrt(A_U64_C(0x10000)) == A_U32_C(0x100));
+    TEST_BUG(a_u64_sqrt(A_U64_C(0xFFFFFFFF)) == A_U32_C(0xFFFF));
     TEST_BUG(a_u64_sqrt(A_U64_C(0x100000000)) == A_U32_C(0x10000));
     TEST_BUG(a_u64_sqrt(A_U64_C(0xFFFFFFFFFFFFFFFF)) == A_U32_C(0xFFFFFFFF));
 }
