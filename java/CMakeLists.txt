@@ -1,5 +1,9 @@
-# https://cmake.org/cmake/help/latest/module/UseJava.html
-include(UseJava)
+include(UseJava) # https://cmake.org/cmake/help/latest/module/UseJava.html
+set(CMAKE_SHARED_MODULE_SUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX})
+
+if(WIN32)
+  set(CMAKE_SHARED_MODULE_PREFIX "")
+endif()
 
 set(CMAKE_JNI_TARGET TRUE)
 file(GLOB_RECURSE SOURCES src/*.java)
@@ -34,10 +38,6 @@ if(LIBA_JAVADOC)
   add_dependencies(adoc ${PROJECT_NAME}_javadoc)
 endif()
 
-if(WIN32)
-  set(CMAKE_SHARED_LIBRARY_PREFIX "")
-endif()
-
 if(LIBA_FLOAT EQUAL 8)
   set(OBJECTS $<TARGET_OBJECTS:a>)
 else()
@@ -50,7 +50,7 @@ else()
   file_scaner(SOURCES RECURSE src EXT c h)
 endif()
 
-add_library(ajni SHARED ${OBJECTS} ${SOURCES})
+add_library(ajni MODULE ${OBJECTS} ${SOURCES})
 set_target_properties(ajni PROPERTIES DEFINE_SYMBOL A_EXPORTS OUTPUT_NAME a)
 add_library_properties(ajni PRIVATE alib)
 set_library_options(ajni)
