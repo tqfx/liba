@@ -89,7 +89,7 @@ static A_INLINE char const *a_version_set_alpha_(a_version *ctx, char const *alp
 {
     unsigned int c = 1;
     ctx->alpha[0] = *alpha;
-    for (++alpha; isalpha(*alpha); ++alpha)
+    for (++alpha; isalpha((a_byte)*alpha); ++alpha)
     {
         if (c < sizeof(ctx->alpha)) { ctx->alpha[c++] = *alpha; }
     }
@@ -107,8 +107,8 @@ static A_INLINE char const *a_version_set_alpha_(a_version *ctx, char const *alp
 
 void a_version_set_alpha(a_version *ctx, char const *alpha)
 {
-    if ((*alpha == '.' || *alpha == '-' || *alpha == '+' || isalpha(*alpha)) &&
-        (isalpha(alpha[1]) || !alpha[1])) { a_version_set_alpha_(ctx, alpha); }
+    if ((*alpha == '.' || *alpha == '-' || *alpha == '+' || isalpha((a_byte)*alpha)) &&
+        (isalpha((a_byte)alpha[1]) || !alpha[1])) { a_version_set_alpha_(ctx, alpha); }
 }
 
 unsigned int a_version_parse(a_version *ctx, char const *ver)
@@ -127,8 +127,8 @@ unsigned int a_version_parse(a_version *ctx, char const *ver)
     if (u.s[0] == '.' && u.s[1] >= '0' && u.s[1] <= '9') { ++u.s; }
     else { goto minor; }
     ctx->third = (unsigned int)strtoul(u.s, &u.p, 0);
-    if ((u.s[0] == '.' || u.s[0] == '-' || u.s[0] == '+' || isalpha(u.s[0])) &&
-        (isalnum(u.s[1]) || !u.s[1])) { u.s = a_version_set_alpha_(ctx, u.s); }
+    if ((u.s[0] == '.' || u.s[0] == '-' || u.s[0] == '+' || isalpha((a_byte)u.s[0])) &&
+        (isalnum((a_byte)u.s[1]) || !u.s[1])) { u.s = a_version_set_alpha_(ctx, u.s); }
     else { goto third; }
     ctx->extra = (unsigned int)strtoul(u.s, &u.p, 0);
     goto extra;
@@ -162,7 +162,7 @@ unsigned int a_version_tostr(a_version const *ctx, void *pdata, a_size nbyte)
     int n;
     char *p = (char *)pdata;
     char alpha[sizeof(ctx->alpha) + 1];
-    if (ctx->extra || isalpha(ctx->alpha[0]) || isalpha(ctx->alpha[1]))
+    if (ctx->extra || isalpha((a_byte)ctx->alpha[0]) || isalpha((a_byte)ctx->alpha[1]))
     {
         a_version_alpha(ctx, alpha);
         n = snprintf(p, nbyte, "%u.%u.%u%s%u",
