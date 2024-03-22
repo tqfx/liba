@@ -14,6 +14,7 @@ function(unittest source name)
   add_test(NAME py_${name} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/test/${source}.py ${ARGS}
   )
+  set_tests_properties(py_${name} PROPERTIES TIMEOUT 30)
 endfunction()
 
 unittest(a a a.log)
