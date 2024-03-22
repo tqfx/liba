@@ -72,6 +72,8 @@ venv/
 .DS_Store/
 
 # clangd
+compile_commands.json
+compile_flags.txt
 .cache/
 
 # Xmake
