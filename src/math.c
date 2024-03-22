@@ -6,6 +6,9 @@
 #if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
+#if A_PREREQ_MSVC(19, 30)
+#pragma warning(disable : 5250)
+#endif /* msvc 17.0+ */
 
 static A_INLINE a_float polevl(a_float const *p, a_size n, a_float x)
 {
