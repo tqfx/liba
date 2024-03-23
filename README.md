@@ -126,7 +126,7 @@ luarocks install liba # release
 ```
 
 ```bash
-luarocks install --server=https://luarocks.org/dev liba # latest
+luarocks install liba --dev # latest
 ```
 
 #### main.lua
