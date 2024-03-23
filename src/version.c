@@ -120,17 +120,17 @@ unsigned int a_version_parse(a_version *ctx, char const *ver)
     } u;
     u.s = ver;
     if (!ver) { return 0; }
-    ctx->major = (unsigned int)strtoul(u.s, &u.p, 0);
+    ctx->major = (unsigned int)strtoul(u.s, &u.p, 10);
     if (u.s[0] == '.' && u.s[1] >= '0' && u.s[1] <= '9') { ++u.s; }
     else { goto major; }
-    ctx->minor = (unsigned int)strtoul(u.s, &u.p, 0);
+    ctx->minor = (unsigned int)strtoul(u.s, &u.p, 10);
     if (u.s[0] == '.' && u.s[1] >= '0' && u.s[1] <= '9') { ++u.s; }
     else { goto minor; }
-    ctx->third = (unsigned int)strtoul(u.s, &u.p, 0);
+    ctx->third = (unsigned int)strtoul(u.s, &u.p, 10);
     if ((u.s[0] == '.' || u.s[0] == '-' || u.s[0] == '+' || isalpha((a_byte)u.s[0])) &&
         (isalnum((a_byte)u.s[1]) || !u.s[1])) { u.s = a_version_set_alpha_(ctx, u.s); }
     else { goto third; }
-    ctx->extra = (unsigned int)strtoul(u.s, &u.p, 0);
+    ctx->extra = (unsigned int)strtoul(u.s, &u.p, 10);
     goto extra;
 major:
     ctx->minor = 0;
