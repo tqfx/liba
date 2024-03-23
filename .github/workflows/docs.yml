@@ -63,7 +63,6 @@ jobs:
       - uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          commit_message: ${{ github.event.head_commit.message }}
           external_repository: ${{ github.repository_owner }}/tqfx.github.io
           publish_dir: _/${{ github.repository_owner }}
       - name: Run autotools
