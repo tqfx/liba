@@ -321,12 +321,13 @@ void *a_que_pull_fore(a_que *ctx)
     if (ctx->head_.next != &ctx->head_)
     {
         a_que_node *const node = (a_que_node *)ctx->head_.next;
-        if (a_unlikely(a_que_node_die(ctx, node))) { goto fail; }
-        a_list_del_node(&node->node_);
-        a_list_dtor(&node->node_);
-        data = node->data_;
+        if (a_que_node_die(ctx, node) == A_SUCCESS)
+        {
+            a_list_del_node(&node->node_);
+            a_list_dtor(&node->node_);
+            data = node->data_;
+        }
     }
-fail:
     return data;
 }
 
@@ -336,12 +337,13 @@ void *a_que_pull_back(a_que *ctx)
     if (ctx->head_.prev != &ctx->head_)
     {
         a_que_node *const node = (a_que_node *)ctx->head_.prev;
-        if (a_unlikely(a_que_node_die(ctx, node))) { goto fail; }
-        a_list_del_node(&node->node_);
-        a_list_dtor(&node->node_);
-        data = node->data_;
+        if (a_que_node_die(ctx, node) == A_SUCCESS)
+        {
+            a_list_del_node(&node->node_);
+            a_list_dtor(&node->node_);
+            data = node->data_;
+        }
     }
-fail:
     return data;
 }
 
