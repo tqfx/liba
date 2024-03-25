@@ -63,8 +63,8 @@ static void test_next(void)
         a_list_del_prev(list2);
         a_die(node);
     }
-    a_list_mov_prev(list2, list1);
-    a_list_init(list2);
+    a_list *next = list2->next;
+    a_list_mov_prev(list1, list2);
     a_list_foreach_next(it, list1)
     {
         data *node = a_list_entry(it, data, node); // NOLINT(performance-no-int-to-ptr)
@@ -77,7 +77,7 @@ static void test_next(void)
         a_list_del_node(&node->node);
         a_die(node);
     }
-    if (list1->next == list1 && list2->next == list2)
+    if (list1->next == list1 && list2->next == next)
     {
         printf(" ok");
     }
@@ -110,8 +110,8 @@ static void test_prev(void)
         a_list_del_next(list2);
         a_die(node);
     }
-    a_list_mov_next(list2, list1);
-    a_list_init(list2);
+    a_list *prev = list2->prev;
+    a_list_mov_next(list1, list2);
     a_list_foreach_prev(it, list1)
     {
         data *node = a_list_entry(it, data, node); // NOLINT(performance-no-int-to-ptr)
@@ -124,7 +124,7 @@ static void test_prev(void)
         a_list_del_node(&node->node);
         a_die(node);
     }
-    if (list1->prev == list1 && list2->prev == list2)
+    if (list1->prev == list1 && list2->prev == prev)
     {
         printf(" ok");
     }
@@ -155,7 +155,7 @@ static void test_func(void)
     ctx->data.i = -1;
     {
         a_list *ptr = list2->prev;
-        a_list_shift_node(list2->prev, &ctx->node);
+        a_list_set_node(ptr, &ctx->node);
         ctx = a_list_entry(ptr, data, node); // NOLINT(performance-no-int-to-ptr)
     }
     a_list_swap_node(list2->prev, list2->next);
@@ -284,15 +284,15 @@ static void test_null(void)
         printf("failure in %s %i %" PRIz "u\n", __FILE__, __LINE__, len);
     }
 
-    a_list_shift_node(&list1, &list1);
-    a_list_shift_node(&list2, &list2);
+    a_list_set_node(&list1, &list1);
+    a_list_set_node(&list2, &list2);
     len = a_list_len(&list1) + a_list_len(&list2);
     if (len != 2)
     {
         printf("failure in %s %i %" PRIz "u\n", __FILE__, __LINE__, len);
     }
 
-    a_list_shift_node(&list2, &list1);
+    a_list_set_node(&list2, &list1);
     a_list_init(&list2);
     len = a_list_len(&list1) + a_list_len(&list2);
     if (len != 0)

@@ -245,10 +245,10 @@ A_INTERN void a_list_add_prev(a_list *ctx, a_list *node)
      tail:prev -> head:addr [color=green]
  }
  @enddot
- @param[in,out] head the head node of a list
- @param[in,out] tail the tail node of a list
+ @param[in] head the head node of a list
+ @param[in] tail the tail node of a list
 */
-A_INTERN void a_list_del_(a_list *head, a_list *tail)
+A_INTERN void a_list_del_(a_list const *head, a_list const *tail)
 {
     a_list_link(head->prev, tail->next);
 }
@@ -270,7 +270,7 @@ A_INTERN void a_list_del_(a_list *head, a_list *tail)
  @enddot
  @param[in] node a circular doubly linked list node
 */
-A_INTERN void a_list_del_node(a_list *node) { a_list_del_(node, node); }
+A_INTERN void a_list_del_node(a_list const *node) { a_list_del_(node, node); }
 
 /*!
  @brief remove a node from a list forward
@@ -289,7 +289,7 @@ A_INTERN void a_list_del_node(a_list *node) { a_list_del_(node, node); }
  @enddot
  @param[in] node a circular doubly linked list node
 */
-A_INTERN void a_list_del_next(a_list *node) { a_list_del_(node->next, node->next); }
+A_INTERN void a_list_del_next(a_list const *node) { a_list_del_(node->next, node->next); }
 
 /*!
  @brief remove a node from a list backward
@@ -308,10 +308,45 @@ A_INTERN void a_list_del_next(a_list *node) { a_list_del_(node->next, node->next
  @enddot
  @param[in] node a circular doubly linked list node
 */
-A_INTERN void a_list_del_prev(a_list *node) { a_list_del_(node->prev, node->prev); }
+A_INTERN void a_list_del_prev(a_list const *node) { a_list_del_(node->prev, node->prev); }
 
 /*!
- @brief moving a list to another list forward
+ @brief modify a section of a list
+ @dot
+ digraph a_list_set_ {
+     node[shape="record"]
+     subgraph cluster0 {
+         1[label="<prev>prev|<head>head|<tail>tail|<next>next"]
+     }
+     subgraph cluster1 {
+         2[label="<prev>prev|<head>head|<tail>tail|<next>next"]
+     }
+     1:prev -> 2:head [color=green]
+     2:tail -> 1:next [color=green]
+ }
+ @enddot
+ @param[in] head1 the head node of the list1
+ @param[in] tail1 the tail node of the list1
+ @param[in,out] head2 the head node of the list2
+ @param[in,out] tail2 the tail node of the list2
+*/
+A_INTERN void a_list_set_(a_list const *head1, a_list const *tail1, a_list *head2, a_list *tail2)
+{
+    a_list_add_(tail1->next, head1->prev, head2, tail2);
+}
+
+/*!
+ @brief modify a node of a list
+ @param[in] ctx the current node
+ @param[in,out] rhs the new node
+*/
+A_INTERN void a_list_set_node(a_list const *ctx, a_list *rhs)
+{
+    a_list_add_(ctx->next, ctx->prev, rhs, rhs);
+}
+
+/*!
+ @brief moving a list from another list forward
  @dot
  digraph a_list_mov_next {
      node[shape="record"]
@@ -326,15 +361,15 @@ A_INTERN void a_list_del_prev(a_list *node) { a_list_del_(node->prev, node->prev
  }
  @enddot
  @param[in,out] ctx points to circular doubly linked list
- @param[in,out] out another circular doubly linked list
+ @param[in] rhs another circular doubly linked list
 */
-A_INTERN void a_list_mov_next(a_list *ctx, a_list *out)
+A_INTERN void a_list_mov_next(a_list *ctx, a_list const *rhs)
 {
-    a_list_add_(out->next, out, ctx->next, ctx->prev);
+    a_list_add_(ctx->next, ctx, rhs->next, rhs->prev);
 }
 
 /*!
- @brief moving a list to another list backward
+ @brief moving a list from another list backward
  @dot
  digraph a_list_mov_prev {
      node[shape="record"]
@@ -349,11 +384,11 @@ A_INTERN void a_list_mov_next(a_list *ctx, a_list *out)
  }
  @enddot
  @param[in,out] ctx points to circular doubly linked list
- @param[in,out] out another circular doubly linked list
+ @param[in] rhs another circular doubly linked list
 */
-A_INTERN void a_list_mov_prev(a_list *ctx, a_list *out)
+A_INTERN void a_list_mov_prev(a_list *ctx, a_list const *rhs)
 {
-    a_list_add_(out, out->prev, ctx->next, ctx->prev);
+    a_list_add_(ctx, ctx->prev, rhs->next, rhs->prev);
 }
 
 /*!
@@ -408,41 +443,6 @@ A_INTERN void a_list_rot_prev(a_list *ctx)
     a_list *const node = ctx->next;
     a_list_del_(node, node);
     a_list_add_(ctx, ctx->prev, node, node);
-}
-
-/*!
- @brief shift a section of one list to a section of another list
- @dot
- digraph a_list_shift_ {
-     node[shape="record"]
-     subgraph cluster0 {
-         1[label="<prev>prev|<head>head|<tail>tail|<next>next"]
-     }
-     subgraph cluster1 {
-         2[label="<prev>prev|<head>head|<tail>tail|<next>next"]
-     }
-     1:prev -> 2:head [color=green]
-     2:tail -> 1:next [color=green]
- }
- @enddot
- @param[in,out] head1 the head node of the list1
- @param[in,out] tail1 the tail node of the list1
- @param[in,out] head2 the head node of the list2
- @param[in,out] tail2 the tail node of the list2
-*/
-A_INTERN void a_list_shift_(a_list *head1, a_list *tail1, a_list *head2, a_list *tail2)
-{
-    a_list_add_(tail1->next, head1->prev, head2, tail2);
-}
-
-/*!
- @brief shift the node rhs to the node lhs
- @param[in,out] lhs the current node
- @param[in,out] rhs the new node
-*/
-A_INTERN void a_list_shift_node(a_list *lhs, a_list *rhs)
-{
-    a_list_shift_(lhs, lhs, rhs, rhs);
 }
 
 /*!
