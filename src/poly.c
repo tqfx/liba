@@ -3,12 +3,12 @@
 
 a_float *a_poly_swap(a_float *a, a_size n)
 {
-    a_float *l = a, *r = a + n;
-    for (a_float x; l < --r; ++l)
+    a_float *b = a, *c = a + n;
+    for (a_float x; b < --c; ++b)
     {
-        x = *l;
-        *l = *r;
-        *r = x;
+        x = *b;
+        *b = *c;
+        *c = x;
     }
     return a;
 }

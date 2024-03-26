@@ -188,26 +188,25 @@ void a_que_edit(a_que *ctx, a_size size, void (*dtor)(void *))
 int a_que_swap_(a_que const *ctx, void *lhs, void *rhs)
 {
     int ok = A_FAILURE;
-    a_que_node *l = A_NULL;
-    a_que_node *r = A_NULL;
+    a_que_node *a = A_NULL, *b = A_NULL;
     if (lhs == rhs) { return A_SUCCESS; }
     a_list_foreach_next(it, &ctx->head_)
     {
         a_que_node *const node = (a_que_node *)it;
         if (node->data_ == lhs || node->data_ == rhs)
         {
-            if (!l)
+            if (!a)
             {
-                l = node;
+                a = node;
             }
             else
             {
-                r = node;
+                b = node;
             }
         }
-        if (r)
+        if (b)
         {
-            a_list_swap_node(&l->node_, &r->node_);
+            a_list_swap_node(&a->node_, &b->node_);
             ok = A_SUCCESS;
             break;
         }
@@ -223,27 +222,24 @@ void a_que_swap(a_que const *ctx, a_size lhs, a_size rhs)
     rhs = rhs < ctx->num_ ? rhs : num;
     if (lhs != rhs)
     {
-        a_que_node *l = A_NULL;
-        a_que_node *r = A_NULL;
+        a_que_node *a = A_NULL, *b = A_NULL;
         a_list_foreach_next(it, &ctx->head_)
         {
             if (cur == lhs || cur == rhs)
             {
-                // because lhs less than num
-                // it's never a null pointer
-                if (!l)
+                if (!a)
                 {
-                    l = (a_que_node *)it;
+                    a = (a_que_node *)it;
                 }
                 else
                 {
-                    r = (a_que_node *)it;
+                    b = (a_que_node *)it;
                 }
                 if (!it) { break; }
             }
-            if (r)
+            if (b)
             {
-                a_list_swap_node(&l->node_, &r->node_);
+                a_list_swap_node(&a->node_, &b->node_);
                 break;
             }
             ++cur;
@@ -255,22 +251,21 @@ void a_que_sort_fore(a_que const *ctx, int (*cmp)(void const *, void const *))
 {
     if (ctx->num_ > 1)
     {
-        a_list *pt = A_NULL;
+        a_list *p = A_NULL;
         a_list *const it = ctx->head_.next;
         for (a_list *at = it->next; at != &ctx->head_; at = at->next)
         {
             void *const lhs = ((a_que_node *)it)->data_;
             void *const rhs = ((a_que_node *)at)->data_;
-            if (cmp(lhs, rhs) > 0) { pt = at; }
+            if (cmp(lhs, rhs) > 0) { p = at; }
             else { break; }
         }
-        if (pt)
+        if (p)
         {
-            /* a<->it<->b<->pt<->a */
-            a_list_link(it->prev, it->next); // a<->b
-            a_list_link(it, pt->next); // it<->a
-            a_list_link(pt, it); // pt<->it
-            /* a<->b<->pt<->it<->a */
+            /* a-it-b-p-a => a-b-p-it-a */
+            a_list_link(it->prev, it->next); // a-b
+            a_list_link(it, p->next); // it-a
+            a_list_link(p, it); // p-it
         }
     }
 }
@@ -279,22 +274,21 @@ void a_que_sort_back(a_que const *ctx, int (*cmp)(void const *, void const *))
 {
     if (ctx->num_ > 1)
     {
-        a_list *pt = A_NULL;
+        a_list *p = A_NULL;
         a_list *const it = ctx->head_.prev;
         for (a_list *at = it->prev; at != &ctx->head_; at = at->prev)
         {
             void *const lhs = ((a_que_node *)at)->data_;
             void *const rhs = ((a_que_node *)it)->data_;
-            if (cmp(lhs, rhs) > 0) { pt = at; }
+            if (cmp(lhs, rhs) > 0) { p = at; }
             else { break; }
         }
-        if (pt)
+        if (p)
         {
-            /* a<->pt<->b<->it<->a */
-            a_list_link(it->prev, it->next); // b<->a
-            a_list_link(pt->prev, it); // a<->it
-            a_list_link(it, pt); // it<->pt
-            /* a<->it<->pt<->b<->a */
+            /* a-p-b-it-a => a-it-p-b-a */
+            a_list_link(it->prev, it->next); // b-a
+            a_list_link(p->prev, it); // a-it
+            a_list_link(it, p); // it-p
         }
     }
 }
@@ -377,16 +371,17 @@ void *a_que_remove(a_que *ctx, a_size idx)
         {
             if (cur++ == idx)
             {
-                // because idx less than num
-                // it's never a null pointer
                 node = (a_que_node *)it;
                 break;
             }
         }
-        if (a_unlikely(a_que_node_die(ctx, node))) { return A_NULL; }
-        a_list_del_node(&node->node_);
-        a_list_dtor(&node->node_);
-        return node->data_;
+        if (a_que_node_die(ctx, node) == A_SUCCESS)
+        {
+            a_list_del_node(&node->node_);
+            a_list_dtor(&node->node_);
+            return node->data_;
+        }
+        return A_NULL;
     }
     return a_que_pull_back(ctx);
 }
