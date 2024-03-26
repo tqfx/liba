@@ -39,13 +39,16 @@ jobs:
       - name: Install LDoc
         run: sudo luarocks install ldoc
       - name: Build docs
+        env:
+          CC: clang
+          CXX: clang++
         run: |
           set -x
           cmake -S . -B build -DLIBA_DOXYGEN=1 \
-                              -DLIBA_LUA=1 -DLIBA_LDOC=1 \
-                              -DLIBA_JAVA=1 -DLIBA_JAVADOC=1
+                     -DLIBA_LUA=1 -DLIBA_LDOC=1 \
+                     -DLIBA_JAVA=1 -DLIBA_JAVADOC=1
           cmake --build build --target adoc
-          cargo doc --release --no-deps
+          cargo doc --release --no-deps -vv
       - uses: actions/checkout@v4
         with:
           lfs: true
