@@ -4,8 +4,8 @@
 
 static void dtor(void *ptr)
 {
-    a_u32 *obj = a_u32_(*, ptr);
-    printf("%" PRIu32 " ", *obj);
+    a_u32 *p = a_u32_(*, ptr);
+    printf("%" PRIu32 " ", *p);
 }
 
 static void test(void)
@@ -66,7 +66,7 @@ static void test(void)
     {
         a_u32 *lhs = a_que_fore_(a_u32, ctx);
         a_u32 *rhs = a_que_back_(a_u32, ctx);
-        a_que_swap_(ctx, lhs, rhs);
+        a_que_swap_(lhs, rhs);
     }
     a_que_foreach(a_u32, it, ctx)
     {

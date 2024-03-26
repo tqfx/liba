@@ -16,29 +16,12 @@
 */
 
 /*!
- @brief instance structure for basic queue node
-*/
-typedef struct a_que_node
-{
-    a_list node_; /*!< element node */
-    void *data_; /*!< element data */
-} a_que_node;
-
-/*!
- @brief cast a list pointer from another type pointer
- @param[in] _ additional attributes of specified type
- @param[in] x points to basic queue node
- @return a pointer to basic queue node
-*/
-#define a_que_node_(_, x) a_cast_s(a_que_node _, a_cast_s(void _, x))
-
-/*!
  @brief instance structure for basic queue
 */
 typedef struct a_que
 {
-    a_que_node **ptr_; /*!< mempool block */
     a_list head_; /*!< element head */
+    a_list **ptr_; /*!< mempool block */
     a_size siz_; /*!< element sizeof */
     a_size num_; /*!< element number */
     a_size cur_; /*!< mempool cursor */
@@ -65,7 +48,7 @@ A_INTERN a_size a_que_num(a_que const *ctx) { return ctx->num_; }
 */
 A_INTERN void *a_que_fore_(a_que const *ctx)
 {
-    return a_que_node_(*, ctx->head_.next)->data_;
+    return a_cast_s(void *, ctx->head_.next + 1);
 }
 
 /*!
@@ -76,7 +59,7 @@ A_INTERN void *a_que_fore_(a_que const *ctx)
 */
 A_INTERN void *a_que_back_(a_que const *ctx)
 {
-    return a_que_node_(*, ctx->head_.prev)->data_;
+    return a_cast_s(void *, ctx->head_.prev + 1);
 }
 
 /*!
@@ -99,6 +82,16 @@ A_INTERN void *a_que_fore(a_que const *ctx)
 A_INTERN void *a_que_back(a_que const *ctx)
 {
     return a_likely(ctx->head_.prev != &ctx->head_) ? a_que_back_(ctx) : A_NULL;
+}
+
+/*!
+ @brief swap elements lhs and rhs for a pointer to queue structure
+ @param[in] lhs element pointer on the left
+ @param[in] rhs element pointer on the right
+*/
+A_INTERN void a_que_swap_(void *lhs, void *rhs)
+{
+    a_list_swap_node(a_cast_s(a_list *, lhs) - 1, a_cast_s(a_list *, rhs) - 1);
 }
 
 #if defined(__cplusplus)
@@ -160,27 +153,22 @@ A_EXTERN void a_que_drop(a_que *ctx, void (*dtor)(void *));
  @param[in] ctx points to an instance of queue structure
  @param[in] size the size of the new element
  @param[in] dtor previous element destructor
-*/
-A_EXTERN void a_que_edit(a_que *ctx, a_size size, void (*dtor)(void *));
-
-/*!
- @brief swap elements lhs and rhs for a pointer to queue structure
- @param[in] ctx points to an instance of queue structure
- @param[in] lhs element pointer on the left
- @param[in] rhs element pointer on the right
  @return the execution state of the function
   @retval 0 success
   @retval 1 failure
 */
-A_EXTERN int a_que_swap_(a_que const *ctx, void *lhs, void *rhs);
+A_EXTERN int a_que_edit(a_que *ctx, a_size size, void (*dtor)(void *));
 
 /*!
  @brief swap elements lhs and rhs for a pointer to queue structure
  @param[in] ctx points to an instance of queue structure
  @param[in] lhs element index on the left
  @param[in] rhs element index on the right
+ @return the execution state of the function
+  @retval 0 success
+  @retval 1 failure
 */
-A_EXTERN void a_que_swap(a_que const *ctx, a_size lhs, a_size rhs);
+A_EXTERN int a_que_swap(a_que const *ctx, a_size lhs, a_size rhs);
 
 /*!
  @brief insert sort foremost element for a pointer to queue structure
@@ -290,12 +278,12 @@ A_EXTERN void *a_que_remove(a_que *ctx, a_size idx);
  @param it the &a_que to use as a loop counter
  @param ctx points to an instance of queue structure
 */
-#define a_que_foreach(T, it, ctx)                                         \
-    for (T *it = a_cast_r(T *, (ctx)->head_.next),                        \
-           *it##_ = a_cast_r(T *, a_list_(*, it)->next);                  \
-         a_list_(*, it) != &(ctx)->head_                                  \
-             ? ((void)(it = a_cast_s(T *, a_que_node_(*, it)->data_)), 1) \
-             : (0);                                                       \
+#define a_que_foreach(T, it, ctx)                                  \
+    for (T *it = a_cast_r(T *, (ctx)->head_.next),                 \
+           *it##_ = a_cast_r(T *, a_list_(*, it)->next);           \
+         a_list_(*, it) != &(ctx)->head_                           \
+             ? ((void)(it = a_cast_r(T *, a_list_(*, it) + 1)), 1) \
+             : (0);                                                \
          it = it##_, it##_ = a_cast_r(T *, a_list_(*, it)->next))
 
 /*!
@@ -310,12 +298,12 @@ A_EXTERN void *a_que_remove(a_que *ctx, a_size idx);
  @param it the &a_que to use as a loop counter
  @param ctx points to an instance of queue structure
 */
-#define a_que_foreach_reverse(T, it, ctx)                                 \
-    for (T *it = a_cast_r(T *, (ctx)->head_.prev),                        \
-           *it##_ = a_cast_r(T *, a_list_(*, it)->prev);                  \
-         a_list_(*, it) != &(ctx)->head_                                  \
-             ? ((void)(it = a_cast_s(T *, a_que_node_(*, it)->data_)), 1) \
-             : (0);                                                       \
+#define a_que_foreach_reverse(T, it, ctx)                          \
+    for (T *it = a_cast_r(T *, (ctx)->head_.prev),                 \
+           *it##_ = a_cast_r(T *, a_list_(*, it)->prev);           \
+         a_list_(*, it) != &(ctx)->head_                           \
+             ? ((void)(it = a_cast_r(T *, a_list_(*, it) + 1)), 1) \
+             : (0);                                                \
          it = it##_, it##_ = a_cast_r(T *, a_list_(*, it)->prev))
 
 #define a_que_fore(T, ctx) a_cast_s(T *, a_que_fore(ctx))
