@@ -145,8 +145,11 @@ A_EXTERN void *a_que_at(a_que const *ctx, a_imax idx);
  @brief drop all the elements for a pointer to queue structure
  @param[in] ctx points to an instance of queue structure
  @param[in] dtor current element destructor
+ @return the execution state of the function
+  @retval 0 success
+  @retval 1 failure
 */
-A_EXTERN void a_que_drop(a_que *ctx, void (*dtor)(void *));
+A_EXTERN int a_que_drop(a_que *ctx, void (*dtor)(void *));
 
 /*!
  @brief edit size of a element for a pointer to queue structure
@@ -271,7 +274,7 @@ A_EXTERN void *a_que_remove(a_que *ctx, a_size idx);
  @code{.c}
  a_que_foreach(T, it, ctx)
  {
-     assert(a_que_siz(ctx) == sizeof(*it));
+     assert(a_que_siz(ctx) >= sizeof(*it));
  }
  @endcode
  @param T type of elements in the queue
@@ -291,7 +294,7 @@ A_EXTERN void *a_que_remove(a_que *ctx, a_size idx);
  @code{.c}
  a_que_foreach_reverse(T, it, ctx)
  {
-     assert(a_que_siz(ctx) == sizeof(*it));
+     assert(a_que_siz(ctx) >= sizeof(*it));
  }
  @endcode
  @param T type of elements in the queue

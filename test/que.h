@@ -4,8 +4,8 @@
 
 static void dtor(void *ptr)
 {
-    a_u32 *p = a_u32_(*, ptr);
-    printf("%" PRIu32 " ", *p);
+    a_u32 *u = a_u32_(*, ptr);
+    printf("%" PRIu32 " ", *u);
 }
 
 static void test(void)
@@ -41,7 +41,7 @@ static void test(void)
     {
         (void)(a_que_pull_fore(a_u64, ctx));
     }
-    a_que_edit(ctx, sizeof(a_u32), A_NULL);
+    a_que_edit(ctx, sizeof(a_u32) + 8, A_NULL);
     for (a_u32 i = 5; i--;)
     {
         a_u32 *obj = a_que_push_fore(a_u32, ctx);
@@ -70,13 +70,13 @@ static void test(void)
     }
     a_que_foreach(a_u32, it, ctx)
     {
-        TEST_BUG(a_que_siz(ctx) == sizeof(*it));
+        TEST_BUG(a_que_siz(ctx) >= sizeof(*it));
         printf("%" PRIu32 " ", *it);
     }
     putchar('\n');
     a_que_foreach_reverse(a_u32, it, ctx)
     {
-        TEST_BUG(a_que_siz(ctx) == sizeof(*it));
+        TEST_BUG(a_que_siz(ctx) >= sizeof(*it));
         printf("%" PRIu32 " ", *it);
     }
     putchar('\n');

@@ -73,8 +73,9 @@ void a_vec_die(a_vec *ctx, void (*dtor)(void *))
 
 void a_vec_ctor(a_vec *ctx, a_size size)
 {
-    ctx->siz_ = size ? size : sizeof(a_cast);
+    if (!size) { size = sizeof(a_cast); }
     ctx->ptr_ = A_NULL;
+    ctx->siz_ = size;
     ctx->num_ = 0;
     ctx->mem_ = 0;
 }
@@ -123,7 +124,7 @@ void a_vec_move(a_vec *ctx, a_vec *obj)
 
 void a_vec_edit(a_vec *ctx, a_size size, void (*dtor)(void *))
 {
-    size = size ? size : sizeof(a_cast);
+    if (!size) { size = sizeof(a_cast); }
     a_vec_drop_(ctx, 0, dtor);
     ctx->mem_ = ctx->mem_ * ctx->siz_ / size;
     ctx->siz_ = size;
