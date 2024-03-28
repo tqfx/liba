@@ -1,9 +1,9 @@
-#define MAIN_(x) A_CAST_2(x, _mf)
+#define MAIN(x) mf##x
 #include "test.h"
 #include "a/mf.h"
 #include <string.h>
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     main_init(argc, argv, 1);
     unsigned int e = A_MF_NUL;

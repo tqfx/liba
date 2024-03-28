@@ -1,4 +1,4 @@
-#define MAIN_(x) A_CAST_2(x, _vec)
+#define MAIN(x) vec##x
 #include "test.h"
 #include "a/vec.h"
 
@@ -257,7 +257,7 @@ static void test_sort(void)
     a_vec_die(ctx, A_NULL);
 }
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     (void)(argc);
     (void)(argv);

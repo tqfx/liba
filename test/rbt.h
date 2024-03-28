@@ -1,4 +1,4 @@
-#define MAIN_(x) A_CAST_2(x, _rbt)
+#define MAIN(x) rbt##x
 #include "test.h"
 #include "a/rbt.h"
 #include "a/str.h"
@@ -179,7 +179,7 @@ static int test(int argc, char *argv[])
     return 0;
 }
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     printf("%s\n", A_FUNC);
     test(argc, argv);

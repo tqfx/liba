@@ -1,4 +1,4 @@
-#define MAIN_(x) A_CAST_2(x, _math)
+#define MAIN(x) math##x
 #include "test.h"
 #include "a/math.h"
 
@@ -57,7 +57,7 @@ static void test_f64_rsqrt(void)
     }
 }
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     (void)(argc);
     (void)(argv);

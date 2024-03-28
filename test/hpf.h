@@ -1,8 +1,8 @@
-#define MAIN_(x) A_CAST_2(x, _hpf)
+#define MAIN(x) hpf##x
 #include "test.h"
 #include "a/hpf.h"
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     main_init(argc, argv, 1);
     a_hpf ctx = A_HPF_INIT(A_HPF_GEN(10, 0.01));

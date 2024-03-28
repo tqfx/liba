@@ -1,4 +1,4 @@
-#define MAIN_(x) A_CAST_2(x, _que)
+#define MAIN(x) que##x
 #include "test.h"
 #include "a/que.h"
 
@@ -152,7 +152,7 @@ static void test_sort(void)
     putchar('\n');
 }
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     (void)(argc);
     (void)(argv);

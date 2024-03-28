@@ -1,8 +1,8 @@
-#define MAIN_(x) A_CAST_2(x, _trajtrap)
+#define MAIN(x) trajtrap##x
 #include "test.h"
 #include "a/trajtrap.h"
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     int start = 1;
     if (argc > 1)

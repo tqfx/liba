@@ -1,4 +1,4 @@
-#define MAIN_(x) A_CAST_2(x, _list)
+#define MAIN(x) list##x
 #include "test.h"
 #include "a/list.h"
 
@@ -301,7 +301,7 @@ static void test_null(void)
     }
 }
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     (void)(argc);
     (void)(argv);

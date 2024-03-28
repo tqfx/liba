@@ -1,8 +1,8 @@
-#define MAIN_(x) A_CAST_2(x, _version)
+#define MAIN(x) version##x
 #include "test.h"
 #include "a/version.h"
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
 #if defined(__cplusplus)
     a::version v000 = A_VERSION_C(0, 0, 0);

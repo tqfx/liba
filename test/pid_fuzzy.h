@@ -1,4 +1,4 @@
-#define MAIN_(x) A_CAST_2(x, _pid_fuzzy)
+#define MAIN(x) pid_fuzzy##x
 #include "test.h"
 #include "a/tf.h"
 #include "a/mf.h"
@@ -115,7 +115,7 @@ static a_float const m7kd[] = {
     NL, NM, NM, NM, NS, NS, NL};
 #undef X
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     main_init(argc, argv, 1);
 

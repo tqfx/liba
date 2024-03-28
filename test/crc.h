@@ -1,4 +1,4 @@
-#define MAIN_(x) A_CAST_2(x, _crc)
+#define MAIN(x) crc##x
 #include "test.h"
 #include "a/crc.h"
 #if !defined __cplusplus
@@ -89,7 +89,7 @@ static void test(void)
 #undef SIZE
 }
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
 #if !defined __cplusplus
     FILE *out = stdout;

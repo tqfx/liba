@@ -1,7 +1,7 @@
-#define MAIN_(x) A_CAST_2(x, _test)
+#define MAIN(x) test##x
 #include "test.h"
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     printf("%s", A_FUNC);
     debug(" ok");

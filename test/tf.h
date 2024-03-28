@@ -1,4 +1,4 @@
-#define MAIN_(x) A_CAST_2(x, _tf)
+#define MAIN(x) tf##x
 #include "test.h"
 #include "a/tf.h"
 
@@ -105,7 +105,7 @@ static a_float u[] = {
     A_FLOAT_C(-0.0012074614),
 };
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     main_init(argc, argv, 1);
 

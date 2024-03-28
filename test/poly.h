@@ -1,4 +1,4 @@
-#define MAIN_(x) A_CAST_2(x, _poly)
+#define MAIN(x) poly##x
 #include "test.h"
 #include "a/poly.h"
 
@@ -13,7 +13,7 @@ static void print_(a_float const *a, a_size n)
     putchar('}');
 }
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     (void)(argc);
     (void)(argv);

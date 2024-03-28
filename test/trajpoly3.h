@@ -1,8 +1,8 @@
-#define MAIN_(x) A_CAST_2(x, _trajpoly3)
+#define MAIN(x) trajpoly3##x
 #include "test.h"
 #include "a/trajpoly3.h"
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     int start = 1;
     if (argc > 1)

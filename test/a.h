@@ -1,4 +1,4 @@
-#define MAIN_(x) A_CAST_2(x, _a)
+#define MAIN(x) a##x
 #include "test.h"
 #include <stdlib.h>
 
@@ -211,7 +211,7 @@ static void test_hash_sdbm(int argc, char *argv[])
     }
 }
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     test_sq();
     test_min();

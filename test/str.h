@@ -1,4 +1,4 @@
-#define MAIN_(x) A_CAST_2(x, _str)
+#define MAIN(x) str##x
 #include "test.h"
 #include "a/str.h"
 
@@ -354,7 +354,7 @@ static void test_str_putf(void)
     }
 }
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     printf("%s\n", A_FUNC);
     test_str_init();

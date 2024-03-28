@@ -1,4 +1,4 @@
-#define MAIN_(x) A_CAST_2(x, _buf)
+#define MAIN(x) buf##x
 #include "test.h"
 #include "a/buf.h"
 #include <stdlib.h>
@@ -181,7 +181,7 @@ static void test_sort(void)
     a_buf_dtor(&ctx, A_NULL);
 }
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     (void)(argc);
     (void)(argv);

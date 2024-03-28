@@ -1,4 +1,4 @@
-#define MAIN_(x) A_CAST_2(x, _operator)
+#define MAIN(x) operator##x
 #include "test.h"
 #include "a/operator.h"
 
@@ -192,7 +192,7 @@ static void test(void)
     }
 }
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     (void)(argc);
     (void)(argv);

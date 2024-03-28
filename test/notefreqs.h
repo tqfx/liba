@@ -1,4 +1,4 @@
-#define MAIN_(x) A_CAST_2(x, _notefreqs)
+#define MAIN(x) notefreqs##x
 #include "test.h"
 #define A_NOTEFREQ_T a_float
 #define A_NOTEFREQ_C(X) A_FLOAT_C(X)
@@ -64,7 +64,7 @@ static a_float const song[][2] = {
     /* clang-format on */
 };
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     main_init(argc, argv, 1);
     for (unsigned int i = 0; i != A_LEN(song); ++i)

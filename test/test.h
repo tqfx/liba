@@ -82,19 +82,16 @@
 
 #define TEST_BUG(expression) TEST_IS1(expression, #expression)
 
-#if defined(MAIN_)
+#if defined(MAIN)
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
-int MAIN_(c)(int argc, char *argv[]);
-int MAIN_(x)(int argc, char *argv[]);
+int MAIN(_c)(int argc, char *argv[]);
+int MAIN(_x)(int argc, char *argv[]);
 int main_init(int argc, char *argv[], int arg1);
 int debug(char const *fmt, ...) A_FORMAT(printf, 1, 2);
 #if defined(__cplusplus)
 } /* extern "C" */
-#define MAIN(argc, argv) MAIN_(x)(argc, argv)
-#else /* !__cplusplus */
-#define MAIN(argc, argv) MAIN_(c)(argc, argv)
 #endif /* __cplusplus */
 #if !defined __cplusplus
 static void main_exit(void);
@@ -112,9 +109,9 @@ int main(int argc, char *argv[])
 {
     int status = 0;
 #if defined(HAS_CXX)
-    status += MAIN_(x)(argc, argv);
+    status += MAIN(_x)(argc, argv);
 #endif /* HAS_CXX */
-    status += MAIN_(c)(argc, argv);
+    status += MAIN(_c)(argc, argv);
     return status;
 }
 int debug(char const *fmt, ...)
@@ -125,11 +122,14 @@ static void main_exit(void)
 {
     if (fclose(stdout)) {}
 }
+#define main MAIN(_c)
+#else /* !__cplusplus */
+#define main MAIN(_x)
 #endif /* __cplusplus */
 #if defined(HAS_CXX) == \
     defined(__cplusplus)
 #define debug printf
 #endif /* __cplusplus */
-#endif /* MAIN_ */
+#endif /* MAIN */
 
 #endif /* test/test.h */

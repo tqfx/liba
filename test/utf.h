@@ -1,8 +1,8 @@
-#define MAIN_(x) A_CAST_2(x, _utf)
+#define MAIN(x) utf##x
 #include "test.h"
 #include "a/utf.h"
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     for (int i = 1; i < argc; ++i)
     {

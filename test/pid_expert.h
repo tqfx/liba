@@ -1,4 +1,4 @@
-#define MAIN_(x) A_CAST_2(x, _pid_expert)
+#define MAIN(x) pid_expert##x
 #include "test.h"
 #include "a/tf.h"
 #undef A_EXTERN
@@ -106,7 +106,7 @@ static A_INLINE a_float input(a_float const x)
 #endif
 }
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     main_init(argc, argv, 1);
 

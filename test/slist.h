@@ -1,4 +1,4 @@
-#define MAIN_(x) A_CAST_2(x, _slist)
+#define MAIN(x) slist##x
 #include "test.h"
 #include "a/slist.h"
 
@@ -105,7 +105,7 @@ static void null(void)
     a_slist_mov(&list2, &list1, list1.tail);
 }
 
-int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     (void)(argc);
     (void)(argv);
