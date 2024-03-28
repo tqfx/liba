@@ -1,7 +1,7 @@
 set(JAVA_EXECUTABLE ${Java_JAVA_EXECUTABLE} -ea -Djava.library.path=.)
 
 function(building target)
-  add_jar(jar_${target} INCLUDE_JARS ajar
+  add_jar(java.test.${target} INCLUDE_JARS ajar
     SOURCES _${target}.java ${SOURCES}
     ENTRY_POINT _${target}
     OUTPUT_NAME ${target}
