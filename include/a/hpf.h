@@ -24,7 +24,6 @@
 #ifndef LIBA_HPF_H
 #define LIBA_HPF_H
 
-#include "a.h"
 #include "math.h"
 
 /*!

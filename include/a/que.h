@@ -6,7 +6,6 @@
 #ifndef LIBA_QUE_H
 #define LIBA_QUE_H
 
-#include "a.h"
 #include "list.h"
 
 /*!
