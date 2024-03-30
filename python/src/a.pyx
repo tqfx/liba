@@ -601,11 +601,11 @@ cdef class pid_fuzzy:
         a_pid_fuzzy_set_op(&self.ctx, op)
         return self
     def rule(self, me, mec, mkp, mki, mkd):
-        self.me = array_num((_2 for _1 in me for _2 in _1))
-        self.mec = array_num((_2 for _1 in mec for _2 in _1))
-        self.mkp = array_num((_2 for _1 in mkp for _2 in _1))
-        self.mki = array_num((_2 for _1 in mki for _2 in _1))
-        self.mkd = array_num((_2 for _1 in mkd for _2 in _1))
+        self.me = array_num([_2 for _1 in me for _2 in _1])
+        self.mec = array_num([_2 for _1 in mec for _2 in _1])
+        self.mkp = array_num([_2 for _1 in mkp for _2 in _1])
+        self.mki = array_num([_2 for _1 in mki for _2 in _1])
+        self.mkd = array_num([_2 for _1 in mkd for _2 in _1])
         a_pid_fuzzy_rule(&self.ctx, <unsigned int>len(me),
                          <a_float *>self.me.data.as_voidptr,
                          <a_float *>self.mec.data.as_voidptr,
