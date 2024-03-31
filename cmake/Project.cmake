@@ -1,7 +1,7 @@
 set(PROJECT_VERSION 0.1.9)
 set(PROJECT_LICENSE MPL-2.0)
 set(PROJECT_CONTACT tqfx@tqfx.org)
-set(PROJECT_DESCRIPTION "An algorithm library based on C/C++ language")
+set(PROJECT_DESCRIPTION "An algorithm library based on C/C++")
 set(PROJECT_HOMEPAGE_URL "https://github.com/tqfx/liba.git")
 string(REGEX MATCH "[^.]+\\.[^.]+\\.[0-9]+" PROJECT_VERSION_PATCH "${PROJECT_VERSION}")
 string(REGEX REPLACE "^[^.]+\\.[^.]+\\.([0-9]+).*" "\\1" PROJECT_VERSION_PATCH "${PROJECT_VERSION_PATCH}")

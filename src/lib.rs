@@ -1,5 +1,5 @@
 /*!
-An algorithm library based on C/C++ language
+An algorithm library based on C/C++
 
 ## Installation
 

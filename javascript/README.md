@@ -1,9 +1,9 @@
-# liba -- An algorithm library based on C/C++ language
+# liba -- An algorithm library based on C/C++
 
-## Sources
+## Source
 
 <https://github.com/tqfx/liba/tree/main/javascript/src>
 
-## Examples
+## Testing
 
 <https://github.com/tqfx/liba/tree/main/javascript/test>

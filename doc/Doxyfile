@@ -1,7 +1,7 @@
 # Project related configuration options
 PROJECT_NAME           = liba
 PROJECT_NUMBER         = 0.1.9
-PROJECT_BRIEF          = An algorithm library based on C/C++ language
+PROJECT_BRIEF          = An algorithm library based on C/C++
 OUTPUT_DIRECTORY       = ../../build
 CREATE_SUBDIRS         = YES
 OPTIMIZE_OUTPUT_FOR_C  = YES

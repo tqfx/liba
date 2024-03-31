@@ -5,7 +5,7 @@ source = {
    dir = "liba-main"
 }
 description = {
-   summary = "An algorithm library based on C/C++ language",
+   summary = "An algorithm library based on C/C++",
    homepage = "https://github.com/tqfx/liba",
    maintainer = "tqfx <tqfx@tqfx.org>",
    license = "MPL-2.0"

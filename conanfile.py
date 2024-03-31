@@ -9,7 +9,7 @@ class aConan(ConanFile):
     topics = ("algorithm",)
     author = "tqfx tqfx@tqfx.org"
     homepage = url = "https://github.com/tqfx/liba.git"
-    description = "An algorithm library based on C/C++ language"
+    description = "An algorithm library based on C/C++"
     settings = "os", "compiler", "build_type", "arch"
     options = {
         "shared": [0, 1],
