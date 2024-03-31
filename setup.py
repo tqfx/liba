@@ -81,7 +81,7 @@ def check_math(text=""):
 
 def configure(config):
     with open("setup.cfg", "r") as f:
-        version = findall(r"version = (.+)", f.read())[0]
+        version = findall(r"version = (\S+)", f.read())[0]
     major, minor, patch = findall(r"(\d+).(\d+).(\d+)", version)[0]
     order = {"little": 1234, "big": 4321}.get(byteorder)
     vsize = ctypes.sizeof(ctypes.c_void_p(0))
