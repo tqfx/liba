@@ -34,7 +34,7 @@ static int a_que_die_(a_que *ctx, a_list *node)
     if (ctx->mem_ <= ctx->cur_)
     {
         a_size const mem = ctx->mem_ + (ctx->mem_ >> 1) + 1;
-        a_list **const ptr = (a_list **)a_alloc(ctx->ptr_, sizeof(void *) * mem);
+        a_list **const ptr = (a_list **)a_alloc((void *)ctx->ptr_, sizeof(void *) * mem);
         if (a_unlikely(!ptr)) { return A_FAILURE; }
         ctx->ptr_ = ptr;
         ctx->mem_ = mem;
@@ -97,7 +97,7 @@ void a_que_dtor(a_que *ctx, void (*dtor)(void *))
             a_alloc(node, 0);
         }
     }
-    a_alloc(ctx->ptr_, 0);
+    a_alloc((void *)ctx->ptr_, 0);
     ctx->ptr_ = A_NULL;
     ctx->siz_ = 0;
     ctx->mem_ = 0;
