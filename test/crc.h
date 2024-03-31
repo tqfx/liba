@@ -13,7 +13,7 @@
             for (a_size j = 0; j != (row); ++j)                                     \
             {                                                                       \
                 (void)fprintf(out, "0x%0" #fmt PRIX##bit ",", ctx[(row) * i + j]);  \
-                if (j != (row)-1) { (void)fputc(' ', out); }                        \
+                if (j != (row) - 1) { (void)fputc(' ', out); }                      \
             }                                                                       \
             (void)fputc('\n', out);                                                 \
         }                                                                           \

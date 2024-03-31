@@ -921,22 +921,22 @@ typedef union a_cast
 /*!
  @brief round down size "n" to be a multiple of "a"
 */
-#define a_size_down(a, n) (a_cast_s(a_size, n) & ~a_cast_s(a_size, (a)-1))
+#define a_size_down(a, n) (a_cast_s(a_size, n) & ~a_cast_s(a_size, (a) - 1))
 
 /*!
  @brief round up size "n" to be a multiple of "a"
 */
-#define a_size_up(a, n) ((a_cast_s(a_size, n) + (a)-1) & ~a_cast_s(a_size, (a)-1))
+#define a_size_up(a, n) ((a_cast_s(a_size, n) + (a) - 1) & ~a_cast_s(a_size, (a) - 1))
 
 /*!
  @brief round pointer "p" down to the closest "a"-aligned address <= "p"
 */
-#define a_align_down(a, p) a_cast_r(void *, a_cast_r(a_uptr, p) & ~a_cast_s(a_uptr, (a)-1))
+#define a_align_down(a, p) a_cast_r(void *, a_cast_r(a_uptr, p) & ~a_cast_s(a_uptr, (a) - 1))
 
 /*!
  @brief round pointer "p" up to the closest "a"-aligned address >= "p"
 */
-#define a_align_up(a, p) a_cast_r(void *, (a_cast_r(a_uptr, p) + (a)-1) & ~a_cast_s(a_uptr, (a)-1))
+#define a_align_up(a, p) a_cast_r(void *, (a_cast_r(a_uptr, p) + (a) - 1) & ~a_cast_s(a_uptr, (a) - 1))
 
 /*!
  @brief iterate from 0 to n and not include n
