@@ -150,7 +150,7 @@ extra:
 void a_version_alpha(a_version const *ctx, char alpha[5])
 {
     unsigned int c;
-    for (c = 0; ctx->alpha[c] && c < sizeof(ctx->alpha); ++c)
+    for (c = 0; c < sizeof(ctx->alpha) && ctx->alpha[c]; ++c)
     {
         alpha[c] = ctx->alpha[c];
     }
