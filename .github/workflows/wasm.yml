@@ -1,0 +1,33 @@
+name: wasm
+on:
+  workflow_dispatch:
+jobs:
+  wasm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: mymindstorm/setup-emsdk@v13
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+          submodules: true
+      - name: Run cmake
+        run: |
+          set -x
+          emcmake cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_TESTING=0 \
+            -DLIBA_WARNINGS=1 \
+            -DLIBA_JAVASCRIPT=1 \
+            -DLIBA_JAVASCRIPT_BIGINT=1 \
+            -DLIBA_SYMLINK=0 \
+            -DLIBA_IPO=1
+          cmake --build build --config Release
+      - uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: ignore
+          name: wasm-${{ github.sha }}
+          path: |
+            javascript/README.md
+            javascript/liba.d.ts
+            javascript/liba.js
+            javascript/liba.wasm
+            javascript/package.json

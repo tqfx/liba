@@ -43,17 +43,18 @@ jobs:
       - name: Run cmake
         shell: msys2 {0}
         env:
+          LIBA_OPENMP: 1
           MSYS2_PATH_TYPE: strict
           MSYSTEM: ${{ matrix.sys }}
         run: |
           set -x
           cmake -S . -B build -G "MinGW Makefiles" -DPython_ROOT_DIR=D:/msys64/${{ matrix.sys }} \
+            -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_PYTHON=1 \
             -DLIBA_VCPKG=1 \
             -DLIBA_JAVA=1 \
-            -DLIBA_LUA=1 \
-            -DBUILD_TESTING=1
+            -DLIBA_LUA=1
           cmake --build build --target package
       - name: Run vcpkg
         shell: msys2 {0}

@@ -8,10 +8,11 @@ jobs:
       matrix:
         include: [
           { type: Debug },
-          { type: RelWithDebInfo },
+          { type: Release },
         ]
     runs-on: ubuntu-latest
     env:
+      LIBA_OPENMP: 1
       CTEST_OUTPUT_ON_FAILURE: 1
     steps:
       - uses: actions/checkout@v4
@@ -20,14 +21,11 @@ jobs:
           submodules: true
       - uses: vmactions/freebsd-vm@v1
         with:
-          envs: 'CTEST_OUTPUT_ON_FAILURE'
+          envs: 'LIBA_OPENMP CTEST_OUTPUT_ON_FAILURE'
           copyback: false
           prepare: |
-            pkg install -y cmake gmake curl
-            pkg install -y python && curl -sSL https://bootstrap.pypa.io/get-pip.py | python -
-            pkg install -y openjdk8
-            pkg install -y lua54
-            pkg install -y rust
+            pkg install -y curl gmake cmake rust python openjdk8
+            curl -sSL https://bootstrap.pypa.io/get-pip.py | python -
           run: |
             python -m venv venv
             . venv/bin/activate
@@ -36,10 +34,12 @@ jobs:
               -DBUILD_TESTING=1 \
               -DLIBA_WARNINGS=1 \
               -DLIBA_SANITIZE=1 \
+              -DLIBA_WITH_LUA=1 \
               -DLIBA_PYTHON=1 \
               -DLIBA_VCPKG=1 \
               -DLIBA_JAVA=1 \
-              -DLIBA_LUA=1
+              -DLIBA_LIBTOOL=1 \
+              -DLIBA_PKGCONFIG=1
             cmake --build build --config ${{ matrix.type }} --target package
             cmake --build build --target test
             cargo test

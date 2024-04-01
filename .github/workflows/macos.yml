@@ -9,11 +9,12 @@ jobs:
         include: [
           { cc: gcc, cxx: g++, type: Debug },
           { cc: clang, cxx: clang++, type: Debug },
-          { cc: gcc, cxx: g++, type: RelWithDebInfo },
-          { cc: clang, cxx: clang++, type: RelWithDebInfo },
+          { cc: gcc, cxx: g++, type: Release },
+          { cc: clang, cxx: clang++, type: Release },
         ]
     runs-on: macos-latest
     steps:
+      - uses: mymindstorm/setup-emsdk@v13
       - uses: actions/checkout@v4
         with:
           lfs: true
@@ -26,37 +27,45 @@ jobs:
           python3 -m venv venv
           source venv/bin/activate
           python3 -m pip install -r requirements.txt
+          curl https://bellard.org/quickjs/quickjs-2024-01-13.tar.xz | tar -xJf -
+          sudo make install -C quickjs-2024-01-13 && rm -rf quickjs-2024-01-13
           env
-      - uses: mymindstorm/setup-emsdk@v13
       - name: Run cmake
         env:
+          LIBA_OPENMP: 1
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
         run: |
           source venv/bin/activate
           set -x
-          cmake -S . -B build/${{ matrix.cc }} -DCMAKE_BUILD_TYPE=${{ matrix.type }} \
+          cmake -S . -B build.${{ matrix.cc }} -DCMAKE_BUILD_TYPE=${{ matrix.type }} \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_SANITIZE=1 \
             -DLIBA_JAVASCRIPT=1 \
+            -DLIBA_JAVASCRIPT_BIGINT=1 \
+            -DLIBA_JAVASCRIPT_DEBUG=1 \
+            -DLIBA_JAVASCRIPT_TSGEN=1 \
             -DLIBA_WITH_LUA=1 \
             -DLIBA_PYTHON=1 \
             -DLIBA_VCPKG=1 \
-            -DLIBA_JAVA=1
-          cmake --build build/${{ matrix.cc }} --config ${{ matrix.type }} --target package
+            -DLIBA_JAVA=1 \
+            -DLIBA_QUICKJS=1 \
+            -DLIBA_LIBTOOL=1 \
+            -DLIBA_PKGCONFIG=1
+          cmake --build build.${{ matrix.cc }} --config ${{ matrix.type }} --target package
       - name: Run vcpkg
-        if: ${{ matrix.type == 'Debug' }}
+        if: ${{ matrix.type == 'Release' }}
         env:
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
         run: |
           set -x
-          cp -r build/${{ matrix.cc }}/vcpkg/* $VCPKG_INSTALLATION_ROOT
+          cp -r build.${{ matrix.cc }}/vcpkg/* $VCPKG_INSTALLATION_ROOT
           vcpkg install liba[ipo,pkgconfig]
       - name: Run ctest
         env:
           CTEST_OUTPUT_ON_FAILURE: 1
         run: |
           set -x
-          cmake --build build/${{ matrix.cc }} --target test
+          cmake --build build.${{ matrix.cc }} --target test

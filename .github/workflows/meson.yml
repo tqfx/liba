@@ -20,9 +20,9 @@ jobs:
         run: |
           Set-PSDebug -Trace 1
           python -m pip install -U meson ninja
-          meson setup builddir --prefix ${pwd}/_ --backend ${{ matrix.backend }}
-          meson install -C builddir
-          meson test -C builddir
+          meson setup build --prefix ${pwd}/_ --backend ${{ matrix.backend }}
+          meson install -C build
+          meson test -C build
   MacOS:
     strategy:
       fail-fast: false
@@ -43,9 +43,9 @@ jobs:
         run: |
           set -x
           python3 -m pip install -U meson ninja
-          meson setup builddir --prefix `pwd`/_
-          meson install -C builddir
-          meson test -C builddir
+          meson setup build --prefix `pwd`/_
+          meson install -C build
+          meson test -C build
   Linux:
     strategy:
       fail-fast: false
@@ -67,6 +67,6 @@ jobs:
         run: |
           set -x
           python3 -m pip install -U meson ninja
-          meson setup builddir --prefix `pwd`/_
-          meson install -C builddir
-          meson test -C builddir
+          meson setup build --prefix `pwd`/_
+          meson install -C build
+          meson test -C build

@@ -9,8 +9,8 @@ jobs:
         include: [
           { arch: x86, type: Debug },
           { arch: x86_64, type: Debug },
-          { arch: x86, type: RelWithDebInfo },
-          { arch: x86_64, type: RelWithDebInfo },
+          { arch: x86, type: Release },
+          { arch: x86_64, type: Release },
         ]
     runs-on: windows-latest
     steps:
@@ -30,7 +30,7 @@ jobs:
       matrix:
         include: [
           { cc: clang, cxx: clang++, type: Debug },
-          { cc: clang, cxx: clang++, type: RelWithDebInfo },
+          { cc: clang, cxx: clang++, type: Release },
         ]
     runs-on: macos-latest
     steps:
@@ -54,8 +54,8 @@ jobs:
         include: [
           { cc: gcc, cxx: g++, type: Debug },
           { cc: clang, cxx: clang++, type: Debug },
-          { cc: gcc, cxx: g++, type: RelWithDebInfo },
-          { cc: clang, cxx: clang++, type: RelWithDebInfo },
+          { cc: gcc, cxx: g++, type: Release },
+          { cc: clang, cxx: clang++, type: Release },
         ]
     runs-on: ubuntu-latest
     steps:

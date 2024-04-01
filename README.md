@@ -4,6 +4,7 @@
 [![conan](https://github.com/tqfx/liba/actions/workflows/conan.yml/badge.svg)](https://github.com/tqfx/liba/actions/workflows/conan.yml)
 [![xmake](https://github.com/tqfx/liba/actions/workflows/xmake.yml/badge.svg)](https://github.com/tqfx/liba/actions/workflows/xmake.yml)
 [![meson](https://github.com/tqfx/liba/actions/workflows/meson.yml/badge.svg)](https://github.com/tqfx/liba/actions/workflows/meson.yml)
+[![wasm](https://github.com/tqfx/liba/actions/workflows/wasm.yml/badge.svg)](https://github.com/tqfx/liba/actions/workflows/wasm.yml)
 [![msvc](https://github.com/tqfx/liba/actions/workflows/msvc.yml/badge.svg)](https://github.com/tqfx/liba/actions/workflows/msvc.yml)
 [![linux](https://github.com/tqfx/liba/actions/workflows/linux.yml/badge.svg)](https://github.com/tqfx/liba/actions/workflows/linux.yml)
 [![macos](https://github.com/tqfx/liba/actions/workflows/macos.yml/badge.svg)](https://github.com/tqfx/liba/actions/workflows/macos.yml)
@@ -57,8 +58,8 @@ cmake --install build
 ### meson
 
 ```bash
-meson setup builddir
-meson install -C builddir
+meson setup build
+meson install -C build
 ```
 
 ### vcpkg

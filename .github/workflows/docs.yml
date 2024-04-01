@@ -2,8 +2,6 @@ name: docs
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
 jobs:
   docs:
@@ -23,8 +21,7 @@ jobs:
         run: |
           set -x
           curl https://www.doxygen.nl/files/doxygen-1.10.0.linux.bin.tar.gz | tar -xzf -
-          cd doxygen-1.10.0
-          sudo make install
+          sudo make install -C doxygen-1.10.0 && rm -rf doxygen-1.10.0
       - uses: actions/checkout@v4
         with:
           repository: luarocks/luarocks
@@ -33,9 +30,7 @@ jobs:
         working-directory: luarocks
         run: |
           set -x
-          ./configure
-          make
-          sudo make install
+          ./configure && make && sudo make install
       - name: Install LDoc
         run: sudo luarocks install ldoc
       - name: Build docs
