@@ -178,6 +178,7 @@ fn main() {
 ### Python
 
 ```bash
+export LIBA_OPENMP=1
 pip install liba # release
 ```
 
