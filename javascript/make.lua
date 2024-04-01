@@ -1,3 +1,4 @@
+---@diagnostic disable
 local lm = require("luamake")
 lm.rootdir = WORKDIR
 lm.workdir = WORKDIR

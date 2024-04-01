@@ -1,3 +1,4 @@
+---@diagnostic disable
 local lm = require("luamake")
 lm.workdir = WORKDIR
 lm:lua_library("liba")({

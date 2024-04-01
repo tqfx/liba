@@ -1,3 +1,4 @@
+---@diagnostic disable
 local lm = require("luamake")
 lm.workdir = WORKDIR
 lm:source_set("a.o")({
