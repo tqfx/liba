@@ -4,6 +4,6 @@
 
 <https://github.com/tqfx/liba/tree/main/javascript/src>
 
-## Testing
+## Sample
 
 <https://github.com/tqfx/liba/tree/main/javascript/test>
