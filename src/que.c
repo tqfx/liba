@@ -14,15 +14,15 @@
 
 static a_list *a_que_new_(a_que *ctx)
 {
-    a_list *node = A_NULL;
-    if (ctx->cur_)
-    {
-        node = ctx->ptr_[--ctx->cur_];
-    }
-    else
+    a_list *node;
+    if (ctx->cur_ == 0)
     {
         node = (a_list *)a_alloc(A_NULL, sizeof(a_list) + ctx->siz_);
         if (a_unlikely(!node)) { return node; }
+    }
+    else
+    {
+        node = ctx->ptr_[--ctx->cur_];
     }
     ++ctx->num_;
     return node;
@@ -62,7 +62,7 @@ void a_que_die(a_que *ctx, void (*dtor)(void *))
 
 void a_que_ctor(a_que *ctx, a_size size)
 {
-    if (!size) { size = sizeof(a_cast); }
+    if (!size) { size = sizeof(void *); }
     a_list_ctor(&ctx->head_);
     ctx->ptr_ = A_NULL;
     ctx->siz_ = size;
@@ -158,7 +158,7 @@ int a_que_edit(a_que *ctx, a_size size, void (*dtor)(void *))
     int ok = a_que_drop(ctx, dtor);
     if (ok == A_SUCCESS)
     {
-        if (!size) { size = sizeof(a_cast); }
+        if (!size) { size = sizeof(void *); }
         if (size > ctx->siz_)
         {
             a_size cur = ctx->cur_;
