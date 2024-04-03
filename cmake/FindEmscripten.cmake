@@ -26,8 +26,8 @@ mark_as_advanced(EMRANLIB_EXECUTABLE)
 
 if(EXISTS "${EMCC_EXECUTABLE}")
   execute_process(COMMAND ${EMCC_EXECUTABLE} -v ERROR_VARIABLE EMSCRIPTEN_VERSION OUTPUT_QUIET)
-  string(REGEX REPLACE ".+clang[^0-9]+([^ ]+).*" "\\1" EMSDK_COMPILER_VERSION "${EMSCRIPTEN_VERSION}")
-  string(REGEX REPLACE "emcc \\(.*\\) ([^ ]+).*" "\\1" EMSCRIPTEN_VERSION "${EMSCRIPTEN_VERSION}")
+  string(REGEX REPLACE ".+clang[^0-9]+([^\n ]+).*" "\\1" EMSDK_COMPILER_VERSION "${EMSCRIPTEN_VERSION}")
+  string(REGEX REPLACE "emcc \\(.*\\) ([^\n ]+).*" "\\1" EMSCRIPTEN_VERSION "${EMSCRIPTEN_VERSION}")
 endif()
 
 find_program(EM_CONFIG_EXECUTABLE NAMES em-config${EMCC_SUFFIX} HINTS ${EMSDK}/upstream/emscripten)

@@ -45,7 +45,7 @@ endif()
 
 if(NOT BLACK_VERSION AND EXISTS "${BLACK_EXECUTABLE}")
   execute_process(COMMAND ${BLACK_EXECUTABLE} --version ERROR_QUIET OUTPUT_VARIABLE BLACK_VERSION)
-  string(REGEX REPLACE "black[^0-9]+([^ ]+).*" "\\1" BLACK_VERSION "${BLACK_VERSION}")
+  string(REGEX REPLACE "black[^0-9]+([^\n ]+).*" "\\1" BLACK_VERSION "${BLACK_VERSION}")
 endif()
 
 find_package_handle_standard_args(Black

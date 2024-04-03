@@ -30,7 +30,7 @@ mark_as_advanced(IWYU_EXECUTABLE)
 
 if(EXISTS "${IWYU_EXECUTABLE}")
   execute_process(COMMAND ${IWYU_EXECUTABLE} --version OUTPUT_VARIABLE IWYU_VERSION)
-  string(REGEX REPLACE ".*use ([^ ]+).*" "\\1" IWYU_VERSION "${IWYU_VERSION}")
+  string(REGEX REPLACE ".*use ([^\n ]+).*" "\\1" IWYU_VERSION "${IWYU_VERSION}")
 endif()
 
 find_package_handle_standard_args(IWYU
