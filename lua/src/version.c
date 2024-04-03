@@ -120,7 +120,7 @@ int liba_version_parse(lua_State *L)
 */
 static int liba_version_check(lua_State *L)
 {
-    a_version v = A_VERSION_C(0, 0, 0);
+    a_version v = A_VERSION_0();
     switch (lua_gettop(L) & 0x3)
     {
     case 3:

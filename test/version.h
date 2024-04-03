@@ -5,10 +5,10 @@
 int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
 #if defined(__cplusplus)
-    a::version v000 = A_VERSION_C(0, 0, 0);
-    a::version v100 = A_VERSION_C(1, 0, 0);
-    a::version v010 = A_VERSION_C(0, 1, 0);
-    a::version v001 = A_VERSION_C(0, 0, 1);
+    a::version v000 = A_VERSION_0();
+    a::version v100 = A_VERSION_1(1);
+    a::version v010 = A_VERSION_2(0, 1);
+    a::version v001 = A_VERSION_3(0, 0, 1);
     v010.parse(".1");
 
     TEST_BUG(v000 == v000);
@@ -37,10 +37,10 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     TEST_BUG(v100 >= v100);
 
 #else /* !__cplusplus */
-    a_version v000 = A_VERSION_C(0, 0, 0);
-    a_version v100 = A_VERSION_C(1, 0, 0);
-    a_version v010 = A_VERSION_C(0, 1, 0);
-    a_version v001 = A_VERSION_C(0, 0, 1);
+    a_version v000 = A_VERSION_0();
+    a_version v100 = A_VERSION_1(1);
+    a_version v010 = A_VERSION_2(0, 1);
+    a_version v001 = A_VERSION_3(0, 0, 1);
 
     TEST_BUG(a_version_eq(&v000, &v000));
     TEST_BUG(a_version_ne(&v000, &v001));
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     for (int i = 0; i < argc; ++i)
     {
         char str[48];
-        a_version ctx;
+        a_version ctx = A_VERSION_0();
         a_version_parse(&ctx, argv[i]);
         a_version_tostr(&ctx, str, sizeof(str));
         debug("parse \"%s\" -> %s\n", argv[i], str);
