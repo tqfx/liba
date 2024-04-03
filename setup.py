@@ -22,9 +22,8 @@ else:
     LIBA_FLOAT = 8
 try:
     USE_CYTHON = True
-    from sys import version_info
     from Cython.Build import cythonize
-except:
+except Exception:
     USE_CYTHON = False
 from argparse import ArgumentParser
 from sys import byteorder
@@ -42,7 +41,7 @@ def check_math(text=""):
         path_libm = ctypes.util.find_library("m")
     try:
         libm = ctypes.CDLL(path_libm)
-    except:
+    except Exception:
         return text
     for func in (
         "expm1",
@@ -73,10 +72,29 @@ def check_math(text=""):
             func += "f"
         try:
             libm[func]
-        except:
+        except Exception:
             continue
         text += "#define %s 1\n" % (name)
     return text
+
+
+def update_pyx(source):
+    _P = "array import"
+    _C = "cpython.array cimport"
+    with open(source, "r") as f:
+        context = f.read()
+    try:
+        name = sys.implementation.name
+    except AttributeError:
+        name = "cpython"
+        if "PyPy" in sys.version:
+            name = "pypy"
+    if name == "cpython" and context.find(_P) > 0:
+        with open(source, "wb") as f:
+            f.write(context.replace(_P, _C).encode("UTF-8"))
+    if name != "cpython" and context.find(_C) > 0:
+        with open(source, "wb") as f:
+            f.write(context.replace(_C, _P).encode("UTF-8"))
 
 
 def configure(config):
@@ -117,6 +135,7 @@ if LIBA_FLOAT != 8:
     define_macros += [("A_SIZE_FLOAT", LIBA_FLOAT)]
 if USE_CYTHON and os.path.exists("python/src/a.pyx"):
     sources += ["python/src/a.pyx"]
+    update_pyx("python/src/a.pyx")
 elif os.path.exists("python/src/a.c"):
     sources += ["python/src/a.c"]
 if not os.path.exists(base):
@@ -143,7 +162,6 @@ ext_modules = [
 if USE_CYTHON:
     ext_modules = cythonize(  # type: ignore
         ext_modules,
-        language_level=version_info[0],  # type: ignore
         quiet=True,
     )
 

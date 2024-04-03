@@ -2,108 +2,116 @@
 #cython: auto_pickle=False
 #cython: boundscheck=False
 #cython: wraparound=False
-from a cimport *
-from cpython cimport *
-from cpython.array cimport array
+#cython: initializedcheck=False
+#cython: language_level=3str
+#cython: c_string_type=bytes
+#cython: c_string_encoding=utf-8
 from cython.parallel import prange
+from cpython.array cimport array
+from cpython cimport *
+from a cimport *
 
-cdef inline array_i8(object o):
+cdef inline object array_i8(object o):
     return array('b', o)
 
-cdef inline array_u8(object o):
+cdef inline object array_u8(object o):
     return array('B', o)
 
-cdef inline array_i16(object o):
+cdef inline object array_i16(object o):
     return array('h', o)
 
-cdef inline array_u16(object o):
+cdef inline object array_u16(object o):
     return array('H', o)
 
-cdef inline array_i32(object o):
+cdef inline object array_i32(object o):
     if INT32_MAX == INT_MAX:
         return array('i', o)
     return array('l', o)
 
-cdef inline array_u32(object o):
+cdef inline object array_u32(object o):
     if UINT32_MAX == UINT_MAX:
         return array('I', o)
     return array('L', o)
 
-cdef inline array_i64(object o):
+cdef inline object array_i64(object o):
     if INT64_MAX == LONG_MAX:
         return array('l', o)
     return array('q', o)
 
-cdef inline array_u64(object o):
+cdef inline object array_u64(object o):
     if UINT64_MAX == ULONG_MAX:
         return array('L', o)
     return array('Q', o)
 
-cdef inline array_f32(object o):
+cdef inline object array_f32(object o):
     return array('f', o)
 
-cdef inline array_f64(object o):
+cdef inline object array_f64(object o):
     return array('d', o)
 
-cdef inline array_num(object o):
+cdef inline object array_num(object o):
     if A_FLOAT_TYPE == A_FLOAT_SINGLE:
         return array('f', o)
     return array('d', o)
 
-def hash_bkdr(bytes str, a_u32 val=0) -> a_u32:
+def hash_bkdr(const char *str, a_u32 val=0) -> a_u32:
     return a_hash_bkdr(str, val)
 
-def hash_sdbm(bytes str, a_u32 val=0) -> a_u32:
+def hash_sdbm(const char *str, a_u32 val=0) -> a_u32:
     return a_hash_sdbm(str, val)
 
 from a.crc cimport *
 
 cdef class crc8:
-    cdef readonly array table
+    cdef readonly object table
     def __cinit__(self):
         self.table = array_u8((0,) * 0x100)
     def gen(self, a_u8 poly, bint reversed=0):
+        cdef a_u8[::1] table = self.table
         if reversed:
-            a_crc8l_init(<a_u8 *>self.table.data.as_voidptr, poly)
+            a_crc8l_init(&table[0], poly)
         else:
-            a_crc8m_init(<a_u8 *>self.table.data.as_voidptr, poly)
+            a_crc8m_init(&table[0], poly)
         return self
     def __init__(self, a_u8 poly, bint reversed=0):
         self.gen(poly, reversed)
-    def __call__(self, bytes block, a_u8 value=0):
-        cdef const unsigned char *p = <const unsigned char *>block
-        return a_crc8(<a_u8 *>self.table.data.as_voidptr, p, len(block), value)
+    def __call__(self, const char *block, a_u8 value=0):
+        cdef const a_u8[::1] table = self.table
+        return a_crc8(&table[0], block, len(block), value)
     def pack(self, bytes block, a_u8 value=0):
         cdef size_t n = len(block)
         block = block + bytes(1)
         cdef unsigned char *p = <unsigned char *>block
-        value = a_crc8(<a_u8 *>self.table.data.as_voidptr, p, n, value)
+        cdef const a_u8[::1] table = self.table
+        value = a_crc8(&table[0], p, n, value)
         p[n] = value
         return block
 
 cdef class crc16:
-    cdef readonly array table
+    cdef readonly object table
     def __cinit__(self):
         self.table = array_u16((0,) * 0x100)
     cdef a_u16 (*eval)(const a_u16 *, const void *, a_size, a_u16)
     def gen(self, a_u16 poly, bint reversed=0):
+        cdef a_u16[::1] table = self.table
         if reversed:
-            a_crc16l_init(<a_u16 *>self.table.data.as_voidptr, poly)
+            a_crc16l_init(&table[0], poly)
             self.eval = a_crc16l
         else:
-            a_crc16m_init(<a_u16 *>self.table.data.as_voidptr, poly)
+            a_crc16m_init(&table[0], poly)
             self.eval = a_crc16m
         return self
     def __init__(self, a_u16 poly, bint reversed=0):
         self.gen(poly, reversed)
-    def __call__(self, bytes block, a_u16 value=0):
-        cdef const unsigned char *p = <const unsigned char *>block
-        return self.eval(<a_u16 *>self.table.data.as_voidptr, p, len(block), value)
+    def __call__(self, const char *block, a_u16 value=0):
+        cdef const a_u16[::1] table = self.table
+        return self.eval(&table[0], block, len(block), value)
     def pack(self, bytes block, a_u16 value=0):
         cdef size_t n = len(block)
         block = block + bytes(2)
         cdef unsigned char *p = <unsigned char *>block
-        value = self.eval(<a_u16 *>self.table.data.as_voidptr, p, n, value)
+        cdef const a_u16[::1] table = self.table
+        value = self.eval(&table[0], p, n, value)
         if self.eval == a_crc16m:
             a_u16_setb(p + n, value)
         else:
@@ -111,28 +119,30 @@ cdef class crc16:
         return block
 
 cdef class crc32:
-    cdef readonly array table
+    cdef readonly object table
     def __cinit__(self):
         self.table = array_u32((0,) * 0x100)
     cdef a_u32 (*eval)(const a_u32 *, const void *, a_size, a_u32)
     def gen(self, a_u32 poly, bint reversed=0):
+        cdef a_u32[::1] table = self.table
         if reversed:
-            a_crc32l_init(<a_u32 *>self.table.data.as_voidptr, poly)
+            a_crc32l_init(&table[0], poly)
             self.eval = a_crc32l
         else:
-            a_crc32m_init(<a_u32 *>self.table.data.as_voidptr, poly)
+            a_crc32m_init(&table[0], poly)
             self.eval = a_crc32m
         return self
     def __init__(self, a_u32 poly, bint reversed=0):
         self.gen(poly, reversed)
-    def __call__(self, bytes block, a_u32 value=0):
-        cdef const unsigned char *p = <const unsigned char *>block
-        return self.eval(<a_u32 *>self.table.data.as_voidptr, p, len(block), value)
+    def __call__(self, const char *block, a_u32 value=0):
+        cdef const a_u32[::1] table = self.table
+        return self.eval(&table[0], block, len(block), value)
     def pack(self, bytes block, a_u32 value=0):
         cdef size_t n = len(block)
         block = block + bytes(4)
         cdef unsigned char *p = <unsigned char *>block
-        value = self.eval(<a_u32 *>self.table.data.as_voidptr, p, n, value)
+        cdef const a_u32[::1] table = self.table
+        value = self.eval(&table[0], p, n, value)
         if self.eval == a_crc32m:
             a_u32_setb(p + n, value)
         else:
@@ -140,28 +150,30 @@ cdef class crc32:
         return block
 
 cdef class crc64:
-    cdef readonly array table
+    cdef readonly object table
     def __cinit__(self):
         self.table = array_u64((0,) * 0x100)
     cdef a_u64 (*eval)(const a_u64 *, const void *, a_size, a_u64)
     def gen(self, a_u64 poly, bint reversed=0):
+        cdef a_u64[::1] table = self.table
         if reversed:
-            a_crc64l_init(<a_u64 *>self.table.data.as_voidptr, poly)
+            a_crc64l_init(&table[0], poly)
             self.eval = a_crc64l
         else:
-            a_crc64m_init(<a_u64 *>self.table.data.as_voidptr, poly)
+            a_crc64m_init(&table[0], poly)
             self.eval = a_crc64m
         return self
     def __init__(self, a_u64 poly, bint reversed=0):
         self.gen(poly, reversed)
-    def __call__(self, bytes block, a_u64 value=0):
-        cdef const unsigned char *p = <const unsigned char *>block
-        return self.eval(<a_u64 *>self.table.data.as_voidptr, p, len(block), value)
+    def __call__(self, const char *block, a_u64 value=0):
+        cdef const a_u64[::1] table = self.table
+        return self.eval(&table[0], block, len(block), value)
     def pack(self, bytes block, a_u64 value=0):
         cdef size_t n = len(block)
         block = block + bytes(8)
         cdef unsigned char *p = <unsigned char *>block
-        value = self.eval(<a_u64 *>self.table.data.as_voidptr, p, n, value)
+        cdef const a_u64[::1] table = self.table
+        value = self.eval(&table[0], p, n, value)
         if self.eval == a_crc64m:
             a_u64_setb(p + n, value)
         else:
@@ -230,55 +242,47 @@ def isqrt(x: int):
     return x0
 
 def sqrt_u32(x):
-    cdef array y
-    cdef a_u32 *p
+    cdef a_u32[::1] o
     cdef Py_ssize_t i, n
     if PyObject_HasAttrString(x, "__contains__"):
         n = len(x)
-        y = array_u32(x)
-        p = <a_u32 *>y.data.as_voidptr
+        o = array_u32(x)
         for i in prange(n, nogil=True):
-            p[i] = a_u32_sqrt(p[i])
-        return array_u16(y)
+            o[i] = a_u32_sqrt(o[i])
+        return array_u16(o)
     return a_u32_sqrt(x)
 
 def sqrt_u64(x):
-    cdef array y
-    cdef a_u64 *p
+    cdef a_u64[::1] o
     cdef Py_ssize_t i, n
     if PyObject_HasAttrString(x, "__contains__"):
         n = len(x)
-        y = array_u64(x)
-        p = <a_u64 *>y.data.as_voidptr
+        o = array_u64(x)
         for i in prange(n, nogil=True):
-            p[i] = a_u64_sqrt(p[i])
-        return array_u32(y)
+            o[i] = a_u64_sqrt(o[i])
+        return array_u32(o)
     return a_u64_sqrt(x)
 
 def rsqrt_f32(x):
-    cdef array y
-    cdef a_f32 *p
+    cdef a_f32[::1] o
     cdef Py_ssize_t i, n
     if PyObject_HasAttrString(x, "__contains__"):
         n = len(x)
-        y = array_f32(x)
-        p = <a_f32 *>y.data.as_voidptr
+        o = array_f32(x)
         for i in prange(n, nogil=True):
-            p[i] = a_f32_rsqrt(p[i])
-        return y
+            o[i] = a_f32_rsqrt(o[i])
+        return o.base
     return a_f32_rsqrt(x)
 
 def rsqrt_f64(x):
-    cdef array y
-    cdef a_f64 *p
+    cdef a_f64[::1] o
     cdef Py_ssize_t i, n
     if PyObject_HasAttrString(x, "__contains__"):
         n = len(x)
-        y = array_f64(x)
-        p = <a_f64 *>y.data.as_voidptr
+        o = array_f64(x)
         for i in prange(n, nogil=True):
-            p[i] = a_f64_rsqrt(p[i])
-        return y
+            o[i] = a_f64_rsqrt(o[i])
+        return o.base
     return a_f64_rsqrt(x)
 
 from a.mf cimport *
@@ -300,188 +304,159 @@ cdef class mf:
     PI     = A_MF_PI
     @staticmethod
     def __call__(unsigned int e, x, a):
-        cdef array y
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         cdef unsigned int m = e
-        cdef array a_ = array_num(a)
-        cdef a_float *a_p = <a_float *>a_.data.as_voidptr
+        cdef a_float[::1] a_ = array_num(a)
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
-            y = array_num(x)
-            p = <a_float *>y.data.as_voidptr
+            o = array_num(x)
             for i in prange(n, nogil=True):
-                p[i] = a_mf(m, p[i], a_p)
-            return y
-        return a_mf(m, x, a_p)
+                o[i] = a_mf(m, o[i], &a_[0])
+            return o.base
+        return a_mf(m, x, &a_[0])
     @staticmethod
     def gauss(x, a_float sigma, a_float c):
-        cdef array y
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
-            y = array_num(x)
-            p = <a_float *>y.data.as_voidptr
+            o = array_num(x)
             for i in prange(n, nogil=True):
-                p[i] = a_mf_gauss(p[i], sigma, c)
-            return y
+                o[i] = a_mf_gauss(o[i], sigma, c)
+            return o.base
         return a_mf_gauss(x, sigma, c)
     @staticmethod
     def gauss2(x, a_float sigma1, a_float c1, a_float sigma2, a_float c2):
-        cdef array y
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
-            y = array_num(x)
-            p = <a_float *>y.data.as_voidptr
+            o = array_num(x)
             for i in prange(n, nogil=True):
-                p[i] = a_mf_gauss2(p[i], sigma1, c1, sigma2, c2)
-            return y
+                o[i] = a_mf_gauss2(o[i], sigma1, c1, sigma2, c2)
+            return o.base
         return a_mf_gauss2(x, sigma1, c1, sigma2, c2)
     @staticmethod
     def gbell(x, a_float a, a_float b, a_float c):
-        cdef array y
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
-            y = array_num(x)
-            p = <a_float *>y.data.as_voidptr
+            o = array_num(x)
             for i in prange(n, nogil=True):
-                p[i] = a_mf_gbell(p[i], a, b, c)
-            return y
+                o[i] = a_mf_gbell(o[i], a, b, c)
+            return o.base
         return a_mf_gbell(x, a, b, c)
     @staticmethod
     def sig(x, a_float a, a_float c):
-        cdef array y
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
-            y = array_num(x)
-            p = <a_float *>y.data.as_voidptr
+            o = array_num(x)
             for i in prange(n, nogil=True):
-                p[i] = a_mf_sig(p[i], a, c)
-            return y
+                o[i] = a_mf_sig(o[i], a, c)
+            return o.base
         return a_mf_sig(x, a, c)
     @staticmethod
     def dsig(x, a_float a1, a_float c1, a_float a2, a_float c2):
-        cdef array y
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
-            y = array_num(x)
-            p = <a_float *>y.data.as_voidptr
+            o = array_num(x)
             for i in prange(n, nogil=True):
-                p[i] = a_mf_dsig(p[i], a1, c1, a2, c2)
-            return y
+                o[i] = a_mf_dsig(o[i], a1, c1, a2, c2)
+            return o.base
         return a_mf_dsig(x, a1, c1, a2, c2)
     @staticmethod
     def psig(x, a_float a1, a_float c1, a_float a2, a_float c2):
-        cdef array y
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
-            y = array_num(x)
-            p = <a_float *>y.data.as_voidptr
+            o = array_num(x)
             for i in prange(n, nogil=True):
-                p[i] = a_mf_psig(p[i], a1, c1, a2, c2)
-            return y
+                o[i] = a_mf_psig(o[i], a1, c1, a2, c2)
+            return o.base
         return a_mf_psig(x, a1, c1, a2, c2)
     @staticmethod
     def trap(x, a_float a, a_float b, a_float c, a_float d):
-        cdef array y
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
-            y = array_num(x)
-            p = <a_float *>y.data.as_voidptr
+            o = array_num(x)
             for i in prange(n, nogil=True):
-                p[i] = a_mf_trap(p[i], a, b, c, d)
-            return y
+                o[i] = a_mf_trap(o[i], a, b, c, d)
+            return o.base
         return a_mf_trap(x, a, b, c, d)
     @staticmethod
     def tri(x, a_float a, a_float b, a_float c):
-        cdef array y
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
-            y = array_num(x)
-            p = <a_float *>y.data.as_voidptr
+            o = array_num(x)
             for i in prange(n, nogil=True):
-                p[i] = a_mf_tri(p[i], a, b, c)
-            return y
+                o[i] = a_mf_tri(o[i], a, b, c)
+            return o.base
         return a_mf_tri(x, a, b, c)
     @staticmethod
     def lins(x, a_float a, a_float b):
-        cdef array y
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
-            y = array_num(x)
-            p = <a_float *>y.data.as_voidptr
+            o = array_num(x)
             for i in prange(n, nogil=True):
-                p[i] = a_mf_lins(p[i], a, b)
-            return y
+                o[i] = a_mf_lins(o[i], a, b)
+            return o.base
         return a_mf_lins(x, a, b)
     @staticmethod
     def linz(x, a_float a, a_float b):
-        cdef array y
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
-            y = array_num(x)
-            p = <a_float *>y.data.as_voidptr
+            o = array_num(x)
             for i in prange(n, nogil=True):
-                p[i] = a_mf_linz(p[i], a, b)
-            return y
+                o[i] = a_mf_linz(o[i], a, b)
+            return o.base
         return a_mf_linz(x, a, b)
     @staticmethod
     def s(x, a_float a, a_float b):
-        cdef array y
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
-            y = array_num(x)
-            p = <a_float *>y.data.as_voidptr
+            o = array_num(x)
             for i in prange(n, nogil=True):
-                p[i] = a_mf_s(p[i], a, b)
-            return y
+                o[i] = a_mf_s(o[i], a, b)
+            return o.base
         return a_mf_s(x, a, b)
     @staticmethod
     def z(x, a_float a, a_float b):
-        cdef array y
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
-            y = array_num(x)
-            p = <a_float *>y.data.as_voidptr
+            o = array_num(x)
             for i in prange(n, nogil=True):
-                p[i] = a_mf_z(p[i], a, b)
-            return y
+                o[i] = a_mf_z(o[i], a, b)
+            return o.base
         return a_mf_z(x, a, b)
     @staticmethod
     def pi(x, a_float a, a_float b, a_float c, a_float d):
-        cdef array y
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
-            y = array_num(x)
-            p = <a_float *>y.data.as_voidptr
+            o = array_num(x)
             for i in prange(n, nogil=True):
-                p[i] = a_mf_pi(p[i], a, b, c, d)
-            return y
+                o[i] = a_mf_pi(o[i], a, b, c, d)
+            return o.base
         return a_mf_pi(x, a, b, c, d)
 
 from a.pid cimport *
@@ -566,11 +541,11 @@ cdef class pid_fuzzy:
     CUP_BOUNDED = A_PID_FUZZY_CUP_BOUNDED
     EQU = A_PID_FUZZY_EQU
     cdef a_pid_fuzzy ctx
-    cdef readonly array me
-    cdef readonly array mec
-    cdef readonly array mkp
-    cdef readonly array mki
-    cdef readonly array mkd
+    cdef readonly object me
+    cdef readonly object mec
+    cdef readonly object mkp
+    cdef readonly object mki
+    cdef readonly object mkd
     def __init__(self):
         self.ctx.pid.summax = +A_FLOAT_INF
         self.ctx.pid.summin = -A_FLOAT_INF
@@ -588,12 +563,12 @@ cdef class pid_fuzzy:
         self.mkp = array_num([_2 for _1 in mkp for _2 in _1])
         self.mki = array_num([_2 for _1 in mki for _2 in _1])
         self.mkd = array_num([_2 for _1 in mkd for _2 in _1])
-        a_pid_fuzzy_rule(&self.ctx, <unsigned int>len(me),
-                         <a_float *>self.me.data.as_voidptr,
-                         <a_float *>self.mec.data.as_voidptr,
-                         <a_float *>self.mkp.data.as_voidptr,
-                         <a_float *>self.mki.data.as_voidptr,
-                         <a_float *>self.mkd.data.as_voidptr)
+        cdef const a_float[::1] e = self.me
+        cdef const a_float[::1] ec = self.mec
+        cdef const a_float[::1] kp = self.mkp
+        cdef const a_float[::1] ki = self.mki
+        cdef const a_float[::1] kd = self.mkd
+        a_pid_fuzzy_rule(&self.ctx, <unsigned int>len(me), &e[0], &ec[0], &kp[0], &ki[0], &kd[0])
         return self
     def set_block(self, unsigned int num):
         cdef void *ptr = a_pid_fuzzy_block(&self.ctx)
@@ -761,40 +736,30 @@ cdef class pid_neuro:
 from a.poly cimport *
 
 def poly_eval(x, *a):
-    cdef array y
-    cdef array a_
-    cdef a_float *p
-    cdef a_float *a_p
+    cdef a_float[::1] o
     cdef Py_ssize_t i, n
-    cdef a_size a_n = len(a)
-    a_ = array_num(a)
-    a_p = <a_float *>a_.data.as_voidptr
+    cdef a_size n_ = len(a)
+    cdef a_float[::1] a_ = array_num(a)
     if PyObject_HasAttrString(x, "__contains__"):
         n = len(x)
-        y = array_num(x)
-        p = <a_float *>y.data.as_voidptr
+        o = array_num(x)
         for i in prange(n, nogil=True):
-            p[i] = a_poly_eval(a_p, a_n, p[i])
-        return y
-    return a_poly_eval(a_p, a_n, x)
+            o[i] = a_poly_eval(&a_[0], n_, o[i])
+        return o.base
+    return a_poly_eval(&a_[0], n_, x)
 
 def poly_evar(x, *a):
-    cdef array y
-    cdef array a_
-    cdef a_float *p
-    cdef a_float *a_p
+    cdef a_float[::1] o
     cdef Py_ssize_t i, n
-    cdef a_size a_n = len(a)
-    a_ = array_num(a)
-    a_p = <a_float *>a_.data.as_voidptr
+    cdef a_size n_ = len(a)
+    cdef a_float[::1] a_ = array_num(a)
     if PyObject_HasAttrString(x, "__contains__"):
         n = len(x)
-        y = array_num(x)
-        p = <a_float *>y.data.as_voidptr
+        o = array_num(x)
         for i in prange(n, nogil=True):
-            p[i] = a_poly_evar(a_p, a_n, p[i])
-        return y
-    return a_poly_evar(a_p, a_n, x)
+            o[i] = a_poly_evar(&a_[0], n_, o[i])
+        return o.base
+    return a_poly_evar(&a_[0], n_, x)
 
 from a.tf cimport *
 
@@ -808,24 +773,28 @@ cdef class tf:
     def zero(self):
         a_tf_zero(&self.ctx)
         return self
-    cdef array _num
-    cdef readonly array input
+    cdef readonly object _num
+    cdef readonly object input
     property num:
         def __get__(self):
             return self._num
         def __set__(self, num):
             self._num = array_num(num)
             self.input = array_num(num)
-            a_tf_set_num(&self.ctx, <unsigned int>len(num), <a_float *>self._num.data.as_voidptr, <a_float *>self.input.data.as_voidptr)
-    cdef array _den
-    cdef readonly array output
+            cdef a_float[::1] _num = self._num
+            cdef a_float[::1] input = self.input
+            a_tf_set_num(&self.ctx, <unsigned int>len(num), &_num[0], &input[0])
+    cdef readonly object _den
+    cdef readonly object output
     property den:
         def __get__(self):
             return self._den
         def __set__(self, den):
             self._den = array_num(den)
             self.output = array_num(den)
-            a_tf_set_den(&self.ctx, <unsigned int>len(den), <a_float *>self._den.data.as_voidptr, <a_float *>self.output.data.as_voidptr)
+            cdef a_float[::1] _den = self._den
+            cdef a_float[::1] output = self.output
+            a_tf_set_den(&self.ctx, <unsigned int>len(den), &_den[0], &output[0])
 
 from a.trajbell cimport *
 
@@ -834,52 +803,44 @@ cdef class trajbell:
     def gen(self, a_float jm, a_float am, a_float vm, a_float p0, a_float p1, a_float v0=0, a_float v1=0):
         return a_trajbell_gen(&self.ctx, jm, am, vm, p0, p1, v0, v1)
     def pos(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajbell_pos(&self.ctx, p[i])
-            return o
+                o[i] = a_trajbell_pos(&self.ctx, o[i])
+            return o.base
         return a_trajbell_pos(&self.ctx, x)
     def vel(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajbell_vel(&self.ctx, p[i])
-            return o
+                o[i] = a_trajbell_vel(&self.ctx, o[i])
+            return o.base
         return a_trajbell_vel(&self.ctx, x)
     def acc(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajbell_acc(&self.ctx, p[i])
-            return o
+                o[i] = a_trajbell_acc(&self.ctx, o[i])
+            return o.base
         return a_trajbell_acc(&self.ctx, x)
     def jer(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajbell_jer(&self.ctx, p[i])
-            return o
+                o[i] = a_trajbell_jer(&self.ctx, o[i])
+            return o.base
         return a_trajbell_jer(&self.ctx, x)
     property t:
         def __get__(self):
@@ -934,40 +895,34 @@ cdef class trajpoly3:
         a_trajpoly3_gen(&self.ctx, ts, p0, p1, v0, v1)
         return self
     def pos(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajpoly3_pos(&self.ctx, p[i])
-            return o
+                o[i] = a_trajpoly3_pos(&self.ctx, o[i])
+            return o.base
         return a_trajpoly3_pos(&self.ctx, x)
     def vel(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajpoly3_vel(&self.ctx, p[i])
-            return o
+                o[i] = a_trajpoly3_vel(&self.ctx, o[i])
+            return o.base
         return a_trajpoly3_vel(&self.ctx, x)
     def acc(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajpoly3_acc(&self.ctx, p[i])
-            return o
+                o[i] = a_trajpoly3_acc(&self.ctx, o[i])
+            return o.base
         return a_trajpoly3_acc(&self.ctx, x)
     property p:
         def __get__(self):
@@ -989,40 +944,34 @@ cdef class trajpoly5:
         a_trajpoly5_gen(&self.ctx, ts, p0, p1, v0, v1, a0, a1)
         return self
     def pos(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajpoly5_pos(&self.ctx, p[i])
-            return o
+                o[i] = a_trajpoly5_pos(&self.ctx, o[i])
+            return o.base
         return a_trajpoly5_pos(&self.ctx, x)
     def vel(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajpoly5_vel(&self.ctx, p[i])
-            return o
+                o[i] = a_trajpoly5_vel(&self.ctx, o[i])
+            return o.base
         return a_trajpoly5_vel(&self.ctx, x)
     def acc(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajpoly5_acc(&self.ctx, p[i])
-            return o
+                o[i] = a_trajpoly5_acc(&self.ctx, o[i])
+            return o.base
         return a_trajpoly5_acc(&self.ctx, x)
     property p:
         def __get__(self):
@@ -1044,52 +993,44 @@ cdef class trajpoly7:
         a_trajpoly7_gen(&self.ctx, ts, p0, p1, v0, v1, a0, a1, j0, j1)
         return self
     def pos(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajpoly7_pos(&self.ctx, p[i])
-            return o
+                o[i] = a_trajpoly7_pos(&self.ctx, o[i])
+            return o.base
         return a_trajpoly7_pos(&self.ctx, x)
     def vel(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajpoly7_vel(&self.ctx, p[i])
-            return o
+                o[i] = a_trajpoly7_vel(&self.ctx, o[i])
+            return o.base
         return a_trajpoly7_vel(&self.ctx, x)
     def acc(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajpoly7_acc(&self.ctx, p[i])
-            return o
+                o[i] = a_trajpoly7_acc(&self.ctx, o[i])
+            return o.base
         return a_trajpoly7_acc(&self.ctx, x)
     def jer(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajpoly7_jer(&self.ctx, p[i])
-            return o
+                o[i] = a_trajpoly7_jer(&self.ctx, o[i])
+            return o.base
         return a_trajpoly7_jer(&self.ctx, x)
     property p:
         def __get__(self):
@@ -1111,40 +1052,34 @@ cdef class trajtrap:
     def gen(self, a_float vm, a_float ac, a_float de, a_float p0, a_float p1, a_float v0=0, a_float v1=0):
         return a_trajtrap_gen(&self.ctx, vm, ac, de, p0, p1, v0, v1)
     def pos(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajtrap_pos(&self.ctx, p[i])
-            return o
+                o[i] = a_trajtrap_pos(&self.ctx, o[i])
+            return o.base
         return a_trajtrap_pos(&self.ctx, x)
     def vel(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajtrap_vel(&self.ctx, p[i])
-            return o
+                o[i] = a_trajtrap_vel(&self.ctx, o[i])
+            return o.base
         return a_trajtrap_vel(&self.ctx, x)
     def acc(self, x):
-        cdef array o
-        cdef a_float *p
+        cdef a_float[::1] o
         cdef Py_ssize_t i, n
         if PyObject_HasAttrString(x, "__contains__"):
             n = len(x)
             o = array_num(x)
-            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
-                p[i] = a_trajtrap_acc(&self.ctx, p[i])
-            return o
+                o[i] = a_trajtrap_acc(&self.ctx, o[i])
+            return o.base
         return a_trajtrap_acc(&self.ctx, x)
     property t:
         def __get__(self):
@@ -1214,7 +1149,7 @@ cdef class version:
         return a_version_eq(&self.ctx, &that.ctx)
     def __ne__(self, version that):
         return a_version_ne(&self.ctx, &that.ctx)
-    def parse(self, bytes ver):
+    def parse(self, const char *ver):
         a_version_parse(&self.ctx, ver)
         return self
     def __hash__(self):
@@ -1244,7 +1179,7 @@ cdef class version:
             cdef char[5] alpha
             a_version_alpha(&self.ctx, alpha)
             return alpha
-        def __set__(self, bytes alpha):
+        def __set__(self, const char *alpha):
             a_version_set_alpha(&self.ctx, alpha)
     MAJOR = A_VERSION_MAJOR
     MINOR = A_VERSION_MINOR
