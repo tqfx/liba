@@ -43,9 +43,9 @@ jobs:
       - name: Run cmake
         shell: msys2 {0}
         env:
-          LIBA_OPENMP: 1
           MSYS2_PATH_TYPE: strict
           MSYSTEM: ${{ matrix.sys }}
+          LIBA_OPENMP: ${{ !startsWith(matrix.sys, 'CLANG') }}
         run: |
           set -x
           cmake -S . -B build -G "MinGW Makefiles" -DPython_ROOT_DIR=D:/msys64/${{ matrix.sys }} \

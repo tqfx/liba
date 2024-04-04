@@ -2,6 +2,13 @@
 from sys import argv
 import os, sys
 
+
+def strtobool(s):
+    if s.lower() in ("1", "y", "yes", "true"):
+        return 1
+    return 0
+
+
 os.chdir(os.path.dirname(os.path.abspath(argv[0])))
 if len(argv) < 2:
     sys.argv += ["--quiet", "build_ext", "--inplace"]
@@ -14,7 +21,7 @@ except ImportError:
     from distutils.core import setup
 LIBA_OPENMP = os.environ.get("LIBA_OPENMP")
 if LIBA_OPENMP:
-    LIBA_OPENMP = int(LIBA_OPENMP)
+    LIBA_OPENMP = strtobool(LIBA_OPENMP)
 LIBA_FLOAT = os.environ.get("LIBA_FLOAT")
 if LIBA_FLOAT:
     LIBA_FLOAT = int(LIBA_FLOAT)

@@ -7,9 +7,9 @@ jobs:
       fail-fast: false
       matrix:
         include: [
-          { cc: gcc, cxx: g++, type: Debug },
+          { cc: gcc-13, cxx: g++-13, type: Debug },
           { cc: clang, cxx: clang++, type: Debug },
-          { cc: gcc, cxx: g++, type: Release },
+          { cc: gcc-13, cxx: g++-13, type: Release },
           { cc: clang, cxx: clang++, type: Release },
         ]
     runs-on: macos-latest
@@ -28,13 +28,15 @@ jobs:
           source venv/bin/activate
           python3 -m pip install -r requirements.txt
           curl https://bellard.org/quickjs/quickjs-2024-01-13.tar.xz | tar -xJf -
-          make -C quickjs-2024-01-13 && sudo make install -C quickjs-2024-01-13
+          pushd quickjs-2024-01-13
+          make && sudo make install
+          popd
           env
       - name: Run cmake
         env:
-          LIBA_OPENMP: 1
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
+          LIBA_OPENMP: ${{ startsWith(matrix.cc, 'gcc') }}
         run: |
           source venv/bin/activate
           set -x
