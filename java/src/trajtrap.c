@@ -114,23 +114,23 @@ JNIEXPORT jdouble JNICALL Java_liba_trajtrap_de(JNIEnv *_env, jobject _obj)
     return ctx->de;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_trajtrap_pos(JNIEnv *_env, jobject _obj, jdouble dt)
+JNIEXPORT jdouble JNICALL Java_liba_trajtrap_pos(JNIEnv *_env, jobject _obj, jdouble x)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
     a_trajtrap *ctx = (a_trajtrap *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    return a_trajtrap_pos(ctx, dt);
+    return a_trajtrap_pos(ctx, x);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_trajtrap_vel(JNIEnv *_env, jobject _obj, jdouble dt)
+JNIEXPORT jdouble JNICALL Java_liba_trajtrap_vel(JNIEnv *_env, jobject _obj, jdouble x)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
     a_trajtrap *ctx = (a_trajtrap *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    return a_trajtrap_vel(ctx, dt);
+    return a_trajtrap_vel(ctx, x);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_trajtrap_acc(JNIEnv *_env, jobject _obj, jdouble dt)
+JNIEXPORT jdouble JNICALL Java_liba_trajtrap_acc(JNIEnv *_env, jobject _obj, jdouble x)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
     a_trajtrap *ctx = (a_trajtrap *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    return a_trajtrap_acc(ctx, dt);
+    return a_trajtrap_acc(ctx, x);
 }

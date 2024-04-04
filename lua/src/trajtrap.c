@@ -58,7 +58,7 @@ int liba_trajtrap_gen(lua_State *L)
 /***
  calculate position for trapezoidal velocity trajectory
  @tparam a.trajtrap ctx trapezoidal velocity trajectory userdata
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number position output
  @function pos
 */
@@ -67,8 +67,8 @@ int liba_trajtrap_pos(lua_State *L)
     a_trajtrap const *const ctx = (a_trajtrap const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const dt = (a_float)luaL_checknumber(L, 2);
-        lua_pushnumber(L, (lua_Number)a_trajtrap_pos(ctx, dt));
+        a_float const x = (a_float)luaL_checknumber(L, 2);
+        lua_pushnumber(L, (lua_Number)a_trajtrap_pos(ctx, x));
         return 1;
     }
     return 0;
@@ -77,7 +77,7 @@ int liba_trajtrap_pos(lua_State *L)
 /***
  calculate velocity for trapezoidal velocity trajectory
  @tparam a.trajtrap ctx trapezoidal velocity trajectory userdata
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number velocity output
  @function vel
 */
@@ -86,8 +86,8 @@ int liba_trajtrap_vel(lua_State *L)
     a_trajtrap const *const ctx = (a_trajtrap const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const dt = (a_float)luaL_checknumber(L, 2);
-        lua_pushnumber(L, (lua_Number)a_trajtrap_vel(ctx, dt));
+        a_float const x = (a_float)luaL_checknumber(L, 2);
+        lua_pushnumber(L, (lua_Number)a_trajtrap_vel(ctx, x));
         return 1;
     }
     return 0;
@@ -96,7 +96,7 @@ int liba_trajtrap_vel(lua_State *L)
 /***
  calculate acceleration for trapezoidal velocity trajectory
  @tparam a.trajtrap ctx trapezoidal velocity trajectory userdata
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number acceleration output
  @function acc
 */
@@ -105,8 +105,8 @@ int liba_trajtrap_acc(lua_State *L)
     a_trajtrap const *const ctx = (a_trajtrap const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const dt = (a_float)luaL_checknumber(L, 2);
-        lua_pushnumber(L, (lua_Number)a_trajtrap_acc(ctx, dt));
+        a_float const x = (a_float)luaL_checknumber(L, 2);
+        lua_pushnumber(L, (lua_Number)a_trajtrap_acc(ctx, x));
         return 1;
     }
     return 0;

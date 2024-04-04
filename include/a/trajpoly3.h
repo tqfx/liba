@@ -64,10 +64,10 @@ A_EXTERN void a_trajpoly3_gen2(a_trajpoly3 *ctx);
   \end{array}
  \f}
  @param[in] ctx points to an instance of cubic polynomial trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return position output
 */
-A_EXTERN a_float a_trajpoly3_pos(a_trajpoly3 const *ctx, a_float dt);
+A_EXTERN a_float a_trajpoly3_pos(a_trajpoly3 const *ctx, a_float x);
 
 #if defined(A_TRAJPOLY3) && (A_TRAJPOLY3 + 0 > 1)
 /*!
@@ -78,10 +78,10 @@ A_EXTERN a_float a_trajpoly3_pos(a_trajpoly3 const *ctx, a_float dt);
   \end{array}
  \f}
  @param[in] ctx points to an instance of cubic polynomial trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_float a_trajpoly3_vel(a_trajpoly3 const *ctx, a_float dt);
+A_EXTERN a_float a_trajpoly3_vel(a_trajpoly3 const *ctx, a_float x);
 #endif /* A_TRAJPOLY3 */
 
 #if defined(A_TRAJPOLY3) && (A_TRAJPOLY3 + 0 > 2)
@@ -93,10 +93,10 @@ A_EXTERN a_float a_trajpoly3_vel(a_trajpoly3 const *ctx, a_float dt);
   \end{array}
  \f}
  @param[in] ctx points to an instance of cubic polynomial trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return acceleration output
 */
-A_EXTERN a_float a_trajpoly3_acc(a_trajpoly3 const *ctx, a_float dt);
+A_EXTERN a_float a_trajpoly3_acc(a_trajpoly3 const *ctx, a_float x);
 #endif /* A_TRAJPOLY3 */
 
 #if defined(__cplusplus)
@@ -137,22 +137,22 @@ struct a_trajpoly3
     {
         a_trajpoly3_gen0(this, ts, p0, p1, v0, v1);
     }
-    A_INLINE a_float pos(a_float dt) const
+    A_INLINE a_float pos(a_float x) const
     {
-        return a_trajpoly3_pos(this, dt);
+        return a_trajpoly3_pos(this, x);
     }
 #if defined(A_TRAJPOLY3) && (A_TRAJPOLY3 + 0 > 1)
     A_INLINE void gen1() { a_trajpoly3_gen1(this); }
-    A_INLINE a_float vel(a_float dt) const
+    A_INLINE a_float vel(a_float x) const
     {
-        return a_trajpoly3_vel(this, dt);
+        return a_trajpoly3_vel(this, x);
     }
 #endif /* A_TRAJPOLY3 */
 #if defined(A_TRAJPOLY3) && (A_TRAJPOLY3 + 0 > 2)
     A_INLINE void gen2() { a_trajpoly3_gen2(this); }
-    A_INLINE a_float acc(a_float dt) const
+    A_INLINE a_float acc(a_float x) const
     {
-        return a_trajpoly3_acc(this, dt);
+        return a_trajpoly3_acc(this, x);
     }
 #endif /* A_TRAJPOLY3 */
 #endif /* __cplusplus */

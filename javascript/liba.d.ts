@@ -691,24 +691,24 @@ declare namespace liba {
     gen(jm: number, am: number, vm: number, p0: number, p1: number, v0: number, v1: number): number;
     /**
      * calculate position for bell-shaped velocity trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    pos(dt: number): number;
+    pos(x: number): number;
     /**
      * calculate velocity for bell-shaped velocity trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    vel(dt: number): number;
+    vel(x: number): number;
     /**
      * calculate acceleration for bell-shaped velocity trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    acc(dt: number): number;
+    acc(x: number): number;
     /**
      * calculate jerk for bell-shaped velocity trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    jer(dt: number): number;
+    jer(x: number): number;
     delete(): void;
   }
   /** constructor for bell-shaped velocity trajectory */
@@ -726,19 +726,19 @@ declare namespace liba {
     readonly a: Float64Array | Float32Array;
     /**
      * calculate position for cubic polynomial trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    pos(dt: number): number;
+    pos(x: number): number;
     /**
      * calculate velocity for cubic polynomial trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    vel(dt: number): number;
+    vel(x: number): number;
     /**
      * calculate acceleration for cubic polynomial trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    acc(dt: number): number;
+    acc(x: number): number;
     delete(): void;
   }
   /** constructor for cubic polynomial trajectory */
@@ -769,19 +769,19 @@ declare namespace liba {
     readonly a: Float64Array | Float32Array;
     /**
      * calculate position for quintic polynomial trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    pos(dt: number): number;
+    pos(x: number): number;
     /**
      * calculate velocity for quintic polynomial trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    vel(dt: number): number;
+    vel(x: number): number;
     /**
      * calculate acceleration for quintic polynomial trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    acc(dt: number): number;
+    acc(x: number): number;
     delete(): void;
   }
   /** constructor for quintic polynomial trajectory */
@@ -824,24 +824,24 @@ declare namespace liba {
     readonly j: Float64Array | Float32Array;
     /**
      * calculate position for hepta polynomial trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    pos(dt: number): number;
+    pos(x: number): number;
     /**
      * calculate velocity for hepta polynomial trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    vel(dt: number): number;
+    vel(x: number): number;
     /**
      * calculate acceleration for hepta polynomial trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    acc(dt: number): number;
+    acc(x: number): number;
     /**
      * calculate jerk for hepta polynomial trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    jer(dt: number): number;
+    jer(x: number): number;
     delete(): void;
   }
   /** constructor for hepta polynomial trajectory */
@@ -923,19 +923,19 @@ declare namespace liba {
     gen(vm: number, ac: number, de: number, p0: number, p1: number, v0: number, v1: number): number;
     /**
      * calculate position for trapezoidal velocity trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    pos(dt: number): number;
+    pos(x: number): number;
     /**
      * calculate velocity for trapezoidal velocity trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    vel(dt: number): number;
+    vel(x: number): number;
     /**
      * calculate acceleration for trapezoidal velocity trajectory
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      */
-    acc(dt: number): number;
+    acc(x: number): number;
     delete(): void;
   }
   /** constructor for trapezoidal velocity trajectory */

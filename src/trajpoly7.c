@@ -96,28 +96,28 @@ void a_trajpoly7_gen3(a_trajpoly7 *ctx)
 }
 #endif /* A_TRAJPOLY7 */
 
-a_float a_trajpoly7_pos(a_trajpoly7 const *ctx, a_float dt)
+a_float a_trajpoly7_pos(a_trajpoly7 const *ctx, a_float x)
 {
-    return a_poly_eval_(ctx->p, ctx->p + A_LEN(ctx->p), dt);
+    return a_poly_eval_(ctx->p, ctx->p + A_LEN(ctx->p), x);
 }
 
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 1)
-a_float a_trajpoly7_vel(a_trajpoly7 const *ctx, a_float dt)
+a_float a_trajpoly7_vel(a_trajpoly7 const *ctx, a_float x)
 {
-    return a_poly_eval_(ctx->v, ctx->v + A_LEN(ctx->v), dt);
+    return a_poly_eval_(ctx->v, ctx->v + A_LEN(ctx->v), x);
 }
 #endif /* A_TRAJPOLY7 */
 
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 2)
-a_float a_trajpoly7_acc(a_trajpoly7 const *ctx, a_float dt)
+a_float a_trajpoly7_acc(a_trajpoly7 const *ctx, a_float x)
 {
-    return a_poly_eval_(ctx->a, ctx->a + A_LEN(ctx->a), dt);
+    return a_poly_eval_(ctx->a, ctx->a + A_LEN(ctx->a), x);
 }
 #endif /* A_TRAJPOLY7 */
 
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 3)
-a_float a_trajpoly7_jer(a_trajpoly7 const *ctx, a_float dt)
+a_float a_trajpoly7_jer(a_trajpoly7 const *ctx, a_float x)
 {
-    return a_poly_eval_(ctx->j, ctx->j + A_LEN(ctx->j), dt);
+    return a_poly_eval_(ctx->j, ctx->j + A_LEN(ctx->j), x);
 }
 #endif /* A_TRAJPOLY7 */

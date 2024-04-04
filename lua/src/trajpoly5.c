@@ -95,7 +95,7 @@ int liba_trajpoly5_gen(lua_State *L)
 /***
  calculate position for quintic polynomial trajectory
  @tparam a.trajpoly5 ctx quintic polynomial trajectory userdata
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number position output
  @function pos
 */
@@ -104,8 +104,8 @@ int liba_trajpoly5_pos(lua_State *L)
     a_trajpoly5 const *const ctx = (a_trajpoly5 const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const dt = (a_float)luaL_checknumber(L, 2);
-        lua_pushnumber(L, (lua_Number)a_trajpoly5_pos(ctx, dt));
+        a_float const x = (a_float)luaL_checknumber(L, 2);
+        lua_pushnumber(L, (lua_Number)a_trajpoly5_pos(ctx, x));
         return 1;
     }
     return 0;
@@ -114,7 +114,7 @@ int liba_trajpoly5_pos(lua_State *L)
 /***
  calculate velocity for quintic polynomial trajectory
  @tparam a.trajpoly5 ctx quintic polynomial trajectory userdata
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number velocity output
  @function vel
 */
@@ -123,8 +123,8 @@ int liba_trajpoly5_vel(lua_State *L)
     a_trajpoly5 const *const ctx = (a_trajpoly5 const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const dt = (a_float)luaL_checknumber(L, 2);
-        lua_pushnumber(L, (lua_Number)a_trajpoly5_vel(ctx, dt));
+        a_float const x = (a_float)luaL_checknumber(L, 2);
+        lua_pushnumber(L, (lua_Number)a_trajpoly5_vel(ctx, x));
         return 1;
     }
     return 0;
@@ -133,7 +133,7 @@ int liba_trajpoly5_vel(lua_State *L)
 /***
  calculate acceleration for quintic polynomial trajectory
  @tparam a.trajpoly5 ctx quintic polynomial trajectory userdata
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number acceleration output
  @function acc
 */
@@ -142,8 +142,8 @@ int liba_trajpoly5_acc(lua_State *L)
     a_trajpoly5 const *const ctx = (a_trajpoly5 const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const dt = (a_float)luaL_checknumber(L, 2);
-        lua_pushnumber(L, (lua_Number)a_trajpoly5_acc(ctx, dt));
+        a_float const x = (a_float)luaL_checknumber(L, 2);
+        lua_pushnumber(L, (lua_Number)a_trajpoly5_acc(ctx, x));
         return 1;
     }
     return 0;

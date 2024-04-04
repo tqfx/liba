@@ -67,24 +67,24 @@ public class trajpoly5 {
     /**
      * calculate position for quintic polynomial trajectory
      *
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      * @return position output
      */
-    public final native double pos(double dt);
+    public final native double pos(double x);
 
     /**
      * calculate velocity for quintic polynomial trajectory
      *
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      * @return velocity output
      */
-    public final native double vel(double dt);
+    public final native double vel(double x);
 
     /**
      * calculate acceleration for quintic polynomial trajectory
      *
-     * @param dt difference between current time and initial time
+     * @param x difference between current time and initial time
      * @return acceleration output
      */
-    public final native double acc(double dt);
+    public final native double acc(double x);
 }

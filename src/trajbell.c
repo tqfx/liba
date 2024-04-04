@@ -139,7 +139,7 @@ out:
     return ctx->t;
 }
 
-a_float a_trajbell_pos(a_trajbell const *ctx, a_float dt)
+a_float a_trajbell_pos(a_trajbell const *ctx, a_float x)
 {
     a_float out;
     a_float p0 = ctx->p0;
@@ -154,45 +154,45 @@ a_float a_trajbell_pos(a_trajbell const *ctx, a_float dt)
         v0 = -v0;
         v1 = -v1;
     }
-    if (dt < ctx->ta)
+    if (x < ctx->ta)
     {
-        if (dt < ctx->taj)
+        if (x < ctx->taj)
         {
-            if (dt <= 0) { return ctx->p0; }
-            out = p0 + v0 * dt + ctx->jm * dt * dt * dt / 6;
+            if (x <= 0) { return ctx->p0; }
+            out = p0 + v0 * x + ctx->jm * x * x * x / 6;
             goto out;
         }
-        if (dt < ctx->ta - ctx->taj)
+        if (x < ctx->ta - ctx->taj)
         {
-            out = p0 + v0 * dt + ctx->am * (3 * dt * dt - 3 * dt * ctx->taj + ctx->taj * ctx->taj) / 6;
+            out = p0 + v0 * x + ctx->am * (3 * x * x - 3 * x * ctx->taj + ctx->taj * ctx->taj) / 6;
             goto out;
         }
-        dt = ctx->ta - dt;
-        out = p0 + A_FLOAT_C(0.5) * (ctx->vm + v0) * ctx->ta - ctx->vm * dt + ctx->jm * dt * dt * dt / 6;
+        x = ctx->ta - x;
+        out = p0 + A_FLOAT_C(0.5) * (ctx->vm + v0) * ctx->ta - ctx->vm * x + ctx->jm * x * x * x / 6;
         goto out;
     }
-    if (dt < ctx->t - ctx->td + ctx->tdj)
+    if (x < ctx->t - ctx->td + ctx->tdj)
     {
-        if (dt < ctx->ta + ctx->tv)
+        if (x < ctx->ta + ctx->tv)
         {
-            out = p0 + A_FLOAT_C(0.5) * (ctx->vm + v0) * ctx->ta + ctx->vm * (dt - ctx->ta);
+            out = p0 + A_FLOAT_C(0.5) * (ctx->vm + v0) * ctx->ta + ctx->vm * (x - ctx->ta);
             goto out;
         }
-        dt -= ctx->t - ctx->td;
-        out = p1 - A_FLOAT_C(0.5) * (ctx->vm + v1) * ctx->td + ctx->vm * dt - ctx->jm * dt * dt * dt / 6;
+        x -= ctx->t - ctx->td;
+        out = p1 - A_FLOAT_C(0.5) * (ctx->vm + v1) * ctx->td + ctx->vm * x - ctx->jm * x * x * x / 6;
         goto out;
     }
-    if (dt < ctx->t)
+    if (x < ctx->t)
     {
-        if (dt < ctx->t - ctx->tdj)
+        if (x < ctx->t - ctx->tdj)
         {
-            dt -= ctx->t - ctx->td;
-            out = p1 - A_FLOAT_C(0.5) * (ctx->vm + v1) * ctx->td + ctx->vm * dt +
-                  ctx->dm * (3 * dt * dt - 3 * dt * ctx->tdj + ctx->tdj * ctx->tdj) / 6;
+            x -= ctx->t - ctx->td;
+            out = p1 - A_FLOAT_C(0.5) * (ctx->vm + v1) * ctx->td + ctx->vm * x +
+                  ctx->dm * (3 * x * x - 3 * x * ctx->tdj + ctx->tdj * ctx->tdj) / 6;
             goto out;
         }
-        dt = ctx->t - dt;
-        out = p1 - v1 * dt - ctx->jm * dt * dt * dt / 6;
+        x = ctx->t - x;
+        out = p1 - v1 * x - ctx->jm * x * x * x / 6;
         goto out;
     }
     return ctx->p1;
@@ -200,7 +200,7 @@ out:
     return rev ? -out : out;
 }
 
-a_float a_trajbell_vel(a_trajbell const *ctx, a_float dt)
+a_float a_trajbell_vel(a_trajbell const *ctx, a_float x)
 {
     a_float out;
     a_float v0 = ctx->v0;
@@ -211,43 +211,43 @@ a_float a_trajbell_vel(a_trajbell const *ctx, a_float dt)
         v0 = -v0;
         v1 = -v1;
     }
-    if (dt < ctx->ta)
+    if (x < ctx->ta)
     {
-        if (dt < ctx->taj)
+        if (x < ctx->taj)
         {
-            if (dt <= 0) { return ctx->v0; }
-            out = v0 + A_FLOAT_C(0.5) * ctx->jm * dt * dt;
+            if (x <= 0) { return ctx->v0; }
+            out = v0 + A_FLOAT_C(0.5) * ctx->jm * x * x;
             goto out;
         }
-        if (dt < ctx->ta - ctx->taj)
+        if (x < ctx->ta - ctx->taj)
         {
-            out = v0 + ctx->am * (dt - A_FLOAT_C(0.5) * ctx->taj);
+            out = v0 + ctx->am * (x - A_FLOAT_C(0.5) * ctx->taj);
             goto out;
         }
-        dt = ctx->ta - dt;
-        out = ctx->vm - A_FLOAT_C(0.5) * ctx->jm * dt * dt;
+        x = ctx->ta - x;
+        out = ctx->vm - A_FLOAT_C(0.5) * ctx->jm * x * x;
         goto out;
     }
-    if (dt < ctx->t - ctx->td + ctx->tdj)
+    if (x < ctx->t - ctx->td + ctx->tdj)
     {
-        if (dt < ctx->ta + ctx->tv)
+        if (x < ctx->ta + ctx->tv)
         {
             out = ctx->vm;
             goto out;
         }
-        dt -= ctx->t - ctx->td;
-        out = ctx->vm - A_FLOAT_C(0.5) * ctx->jm * dt * dt;
+        x -= ctx->t - ctx->td;
+        out = ctx->vm - A_FLOAT_C(0.5) * ctx->jm * x * x;
         goto out;
     }
-    if (dt < ctx->t)
+    if (x < ctx->t)
     {
-        if (dt < ctx->t - ctx->tdj)
+        if (x < ctx->t - ctx->tdj)
         {
-            out = ctx->vm + ctx->dm * (dt - ctx->t + ctx->td - A_FLOAT_C(0.5) * ctx->tdj);
+            out = ctx->vm + ctx->dm * (x - ctx->t + ctx->td - A_FLOAT_C(0.5) * ctx->tdj);
             goto out;
         }
-        dt = ctx->t - dt;
-        out = v1 + A_FLOAT_C(0.5) * ctx->jm * dt * dt;
+        x = ctx->t - x;
+        out = v1 + A_FLOAT_C(0.5) * ctx->jm * x * x;
         goto out;
     }
     return ctx->v1;
@@ -255,43 +255,43 @@ out:
     return rev ? -out : out;
 }
 
-a_float a_trajbell_acc(a_trajbell const *ctx, a_float dt)
+a_float a_trajbell_acc(a_trajbell const *ctx, a_float x)
 {
     a_float out;
-    if (dt < ctx->ta)
+    if (x < ctx->ta)
     {
-        if (dt >= ctx->taj)
+        if (x >= ctx->taj)
         {
-            if (dt < ctx->ta - ctx->taj)
+            if (x < ctx->ta - ctx->taj)
             {
                 out = ctx->am;
                 goto out;
             }
-            out = ctx->jm * (ctx->ta - dt);
+            out = ctx->jm * (ctx->ta - x);
             goto out;
         }
-        if (dt > 0)
+        if (x > 0)
         {
-            out = ctx->jm * dt;
+            out = ctx->jm * x;
             goto out;
         }
     }
-    else if (dt < ctx->t - ctx->td + ctx->tdj)
+    else if (x < ctx->t - ctx->td + ctx->tdj)
     {
-        if (dt >= ctx->ta + ctx->tv)
+        if (x >= ctx->ta + ctx->tv)
         {
-            out = -ctx->jm * (dt - ctx->t + ctx->td);
+            out = -ctx->jm * (x - ctx->t + ctx->td);
             goto out;
         }
     }
-    else if (dt < ctx->t)
+    else if (x < ctx->t)
     {
-        if (dt < ctx->t - ctx->tdj)
+        if (x < ctx->t - ctx->tdj)
         {
             out = ctx->dm;
             goto out;
         }
-        out = -ctx->jm * (ctx->t - dt);
+        out = -ctx->jm * (ctx->t - x);
         goto out;
     }
     return 0;
@@ -303,33 +303,33 @@ out:
     return out;
 }
 
-a_float a_trajbell_jer(a_trajbell const *ctx, a_float dt)
+a_float a_trajbell_jer(a_trajbell const *ctx, a_float x)
 {
     a_float out;
-    if (dt < ctx->ta)
+    if (x < ctx->ta)
     {
-        if (dt >= ctx->ta - ctx->taj)
+        if (x >= ctx->ta - ctx->taj)
         {
             out = -ctx->jm;
             goto out;
         }
-        if (dt < ctx->taj && dt >= 0)
+        if (x < ctx->taj && x >= 0)
         {
             out = +ctx->jm;
             goto out;
         }
     }
-    else if (dt < ctx->t - ctx->td + ctx->tdj)
+    else if (x < ctx->t - ctx->td + ctx->tdj)
     {
-        if (dt >= ctx->ta + ctx->tv)
+        if (x >= ctx->ta + ctx->tv)
         {
             out = -ctx->jm;
             goto out;
         }
     }
-    else if (dt <= ctx->t)
+    else if (x <= ctx->t)
     {
-        if (dt >= ctx->t - ctx->tdj)
+        if (x >= ctx->t - ctx->tdj)
         {
             out = +ctx->jm;
             goto out;

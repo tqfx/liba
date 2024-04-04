@@ -1312,10 +1312,10 @@ extern "C" {
         v0: float,
         v1: float,
     ) -> float;
-    fn a_trajbell_pos(ctx: *const trajbell, dt: float) -> float;
-    fn a_trajbell_vel(ctx: *const trajbell, dt: float) -> float;
-    fn a_trajbell_acc(ctx: *const trajbell, dt: float) -> float;
-    fn a_trajbell_jer(ctx: *const trajbell, dt: float) -> float;
+    fn a_trajbell_pos(ctx: *const trajbell, x: float) -> float;
+    fn a_trajbell_vel(ctx: *const trajbell, x: float) -> float;
+    fn a_trajbell_acc(ctx: *const trajbell, x: float) -> float;
+    fn a_trajbell_jer(ctx: *const trajbell, x: float) -> float;
 }
 
 impl trajbell {
@@ -1341,40 +1341,34 @@ impl trajbell {
     }
     /// calculate position for bell-shaped velocity trajectory
     #[inline(always)]
-    pub fn pos(&mut self, dt: float) -> float {
-        unsafe { a_trajbell_pos(self, dt) }
+    pub fn pos(&mut self, x: float) -> float {
+        unsafe { a_trajbell_pos(self, x) }
     }
     /// calculate velocity for bell-shaped velocity trajectory
     #[inline(always)]
-    pub fn vel(&mut self, dt: float) -> float {
-        unsafe { a_trajbell_vel(self, dt) }
+    pub fn vel(&mut self, x: float) -> float {
+        unsafe { a_trajbell_vel(self, x) }
     }
     /// calculate acceleration for bell-shaped velocity trajectory
     #[inline(always)]
-    pub fn acc(&mut self, dt: float) -> float {
-        unsafe { a_trajbell_acc(self, dt) }
+    pub fn acc(&mut self, x: float) -> float {
+        unsafe { a_trajbell_acc(self, x) }
     }
     /// calculate jerk for bell-shaped velocity trajectory
     #[inline(always)]
-    pub fn jer(&mut self, dt: float) -> float {
-        unsafe { a_trajbell_jer(self, dt) }
+    pub fn jer(&mut self, x: float) -> float {
+        unsafe { a_trajbell_jer(self, x) }
     }
 }
 
 #[test]
 fn trajbell() {
     extern crate std;
-    let dt = 0.5;
+    let x = 0.5;
     {
         let mut a = crate::trajbell::new();
         std::print!("{} ", a.gen(3.0, 2.0, 3.0, 0.0, 10.0, 0.0, 0.0));
-        std::println!(
-            "[{}, {}, {}, {}]",
-            a.pos(dt),
-            a.vel(dt),
-            a.acc(dt),
-            a.jer(dt)
-        );
+        std::println!("[{}, {}, {}, {}]", a.pos(x), a.vel(x), a.acc(x), a.jer(x));
     }
 }
 
@@ -1391,9 +1385,9 @@ pub struct trajpoly3 {
 
 extern "C" {
     fn a_trajpoly3_gen(ctx: *mut trajpoly3, ts: float, p0: float, p1: float, v0: float, v1: float);
-    fn a_trajpoly3_pos(ctx: *const trajpoly3, dt: float) -> float;
-    fn a_trajpoly3_vel(ctx: *const trajpoly3, dt: float) -> float;
-    fn a_trajpoly3_acc(ctx: *const trajpoly3, dt: float) -> float;
+    fn a_trajpoly3_pos(ctx: *const trajpoly3, x: float) -> float;
+    fn a_trajpoly3_vel(ctx: *const trajpoly3, x: float) -> float;
+    fn a_trajpoly3_acc(ctx: *const trajpoly3, x: float) -> float;
 }
 
 impl trajpoly3 {
@@ -1416,28 +1410,28 @@ impl trajpoly3 {
     }
     /// calculate position for cubic polynomial trajectory
     #[inline(always)]
-    pub fn pos(&mut self, dt: float) -> float {
-        unsafe { a_trajpoly3_pos(self, dt) }
+    pub fn pos(&mut self, x: float) -> float {
+        unsafe { a_trajpoly3_pos(self, x) }
     }
     /// calculate velocity for cubic polynomial trajectory
     #[inline(always)]
-    pub fn vel(&mut self, dt: float) -> float {
-        unsafe { a_trajpoly3_vel(self, dt) }
+    pub fn vel(&mut self, x: float) -> float {
+        unsafe { a_trajpoly3_vel(self, x) }
     }
     /// calculate acceleration for cubic polynomial trajectory
     #[inline(always)]
-    pub fn acc(&mut self, dt: float) -> float {
-        unsafe { a_trajpoly3_acc(self, dt) }
+    pub fn acc(&mut self, x: float) -> float {
+        unsafe { a_trajpoly3_acc(self, x) }
     }
 }
 
 #[test]
 fn trajpoly3() {
     extern crate std;
-    let dt = 0.5;
+    let x = 0.5;
     {
         let mut a = crate::trajpoly3::new(1.0, 0.0, 1.0, 0.0, 1.0);
-        std::println!("[{}, {}, {}]", a.pos(dt), a.vel(dt), a.acc(dt));
+        std::println!("[{}, {}, {}]", a.pos(x), a.vel(x), a.acc(x));
     }
 }
 
@@ -1463,9 +1457,9 @@ extern "C" {
         a0: float,
         a1: float,
     );
-    fn a_trajpoly5_pos(ctx: *const trajpoly5, dt: float) -> float;
-    fn a_trajpoly5_vel(ctx: *const trajpoly5, dt: float) -> float;
-    fn a_trajpoly5_acc(ctx: *const trajpoly5, dt: float) -> float;
+    fn a_trajpoly5_pos(ctx: *const trajpoly5, x: float) -> float;
+    fn a_trajpoly5_vel(ctx: *const trajpoly5, x: float) -> float;
+    fn a_trajpoly5_acc(ctx: *const trajpoly5, x: float) -> float;
 }
 
 impl trajpoly5 {
@@ -1507,28 +1501,28 @@ impl trajpoly5 {
     }
     /// calculate position for quintic polynomial trajectory
     #[inline(always)]
-    pub fn pos(&mut self, dt: float) -> float {
-        unsafe { a_trajpoly5_pos(self, dt) }
+    pub fn pos(&mut self, x: float) -> float {
+        unsafe { a_trajpoly5_pos(self, x) }
     }
     /// calculate velocity for quintic polynomial trajectory
     #[inline(always)]
-    pub fn vel(&mut self, dt: float) -> float {
-        unsafe { a_trajpoly5_vel(self, dt) }
+    pub fn vel(&mut self, x: float) -> float {
+        unsafe { a_trajpoly5_vel(self, x) }
     }
     /// calculate acceleration for quintic polynomial trajectory
     #[inline(always)]
-    pub fn acc(&mut self, dt: float) -> float {
-        unsafe { a_trajpoly5_acc(self, dt) }
+    pub fn acc(&mut self, x: float) -> float {
+        unsafe { a_trajpoly5_acc(self, x) }
     }
 }
 
 #[test]
 fn trajpoly5() {
     extern crate std;
-    let dt = 0.5;
+    let x = 0.5;
     {
         let mut a = crate::trajpoly5::new(1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
-        std::println!("[{}, {}, {}]", a.pos(dt), a.vel(dt), a.acc(dt));
+        std::println!("[{}, {}, {}]", a.pos(x), a.vel(x), a.acc(x));
     }
 }
 
@@ -1558,10 +1552,10 @@ extern "C" {
         j0: float,
         j1: float,
     );
-    fn a_trajpoly7_pos(ctx: *const trajpoly7, dt: float) -> float;
-    fn a_trajpoly7_vel(ctx: *const trajpoly7, dt: float) -> float;
-    fn a_trajpoly7_acc(ctx: *const trajpoly7, dt: float) -> float;
-    fn a_trajpoly7_jer(ctx: *const trajpoly7, dt: float) -> float;
+    fn a_trajpoly7_pos(ctx: *const trajpoly7, x: float) -> float;
+    fn a_trajpoly7_vel(ctx: *const trajpoly7, x: float) -> float;
+    fn a_trajpoly7_acc(ctx: *const trajpoly7, x: float) -> float;
+    fn a_trajpoly7_jer(ctx: *const trajpoly7, x: float) -> float;
 }
 
 impl trajpoly7 {
@@ -1608,39 +1602,33 @@ impl trajpoly7 {
     }
     /// calculate position for hepta polynomial trajectory
     #[inline(always)]
-    pub fn pos(&mut self, dt: float) -> float {
-        unsafe { a_trajpoly7_pos(self, dt) }
+    pub fn pos(&mut self, x: float) -> float {
+        unsafe { a_trajpoly7_pos(self, x) }
     }
     /// calculate velocity for hepta polynomial trajectory
     #[inline(always)]
-    pub fn vel(&mut self, dt: float) -> float {
-        unsafe { a_trajpoly7_vel(self, dt) }
+    pub fn vel(&mut self, x: float) -> float {
+        unsafe { a_trajpoly7_vel(self, x) }
     }
     /// calculate acceleration for hepta polynomial trajectory
     #[inline(always)]
-    pub fn acc(&mut self, dt: float) -> float {
-        unsafe { a_trajpoly7_acc(self, dt) }
+    pub fn acc(&mut self, x: float) -> float {
+        unsafe { a_trajpoly7_acc(self, x) }
     }
     /// calculate jerk for hepta polynomial trajectory
     #[inline(always)]
-    pub fn jer(&mut self, dt: float) -> float {
-        unsafe { a_trajpoly7_jer(self, dt) }
+    pub fn jer(&mut self, x: float) -> float {
+        unsafe { a_trajpoly7_jer(self, x) }
     }
 }
 
 #[test]
 fn trajpoly7() {
     extern crate std;
-    let dt = 0.5;
+    let x = 0.5;
     {
         let mut a = crate::trajpoly7::new(1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
-        std::println!(
-            "[{}, {}, {}, {}]",
-            a.pos(dt),
-            a.vel(dt),
-            a.acc(dt),
-            a.jer(dt)
-        );
+        std::println!("[{}, {}, {}, {}]", a.pos(x), a.vel(x), a.acc(x), a.jer(x));
     }
 }
 
@@ -1704,9 +1692,9 @@ extern "C" {
         v0: float,
         v1: float,
     ) -> float;
-    fn a_trajtrap_pos(ctx: *const trajtrap, dt: float) -> float;
-    fn a_trajtrap_vel(ctx: *const trajtrap, dt: float) -> float;
-    fn a_trajtrap_acc(ctx: *const trajtrap, dt: float) -> float;
+    fn a_trajtrap_pos(ctx: *const trajtrap, x: float) -> float;
+    fn a_trajtrap_vel(ctx: *const trajtrap, x: float) -> float;
+    fn a_trajtrap_acc(ctx: *const trajtrap, x: float) -> float;
 }
 
 impl trajtrap {
@@ -1732,29 +1720,29 @@ impl trajtrap {
     }
     /// calculate position for trapezoidal velocity trajectory
     #[inline(always)]
-    pub fn pos(&mut self, dt: float) -> float {
-        unsafe { a_trajtrap_pos(self, dt) }
+    pub fn pos(&mut self, x: float) -> float {
+        unsafe { a_trajtrap_pos(self, x) }
     }
     /// calculate velocity for trapezoidal velocity trajectory
     #[inline(always)]
-    pub fn vel(&mut self, dt: float) -> float {
-        unsafe { a_trajtrap_vel(self, dt) }
+    pub fn vel(&mut self, x: float) -> float {
+        unsafe { a_trajtrap_vel(self, x) }
     }
     /// calculate acceleration for trapezoidal velocity trajectory
     #[inline(always)]
-    pub fn acc(&mut self, dt: float) -> float {
-        unsafe { a_trajtrap_acc(self, dt) }
+    pub fn acc(&mut self, x: float) -> float {
+        unsafe { a_trajtrap_acc(self, x) }
     }
 }
 
 #[test]
 fn trajtrap() {
     extern crate std;
-    let dt = 0.5;
+    let x = 0.5;
     {
         let mut a = crate::trajtrap::new();
         std::print!("{} ", a.gen(2.0, 2.0, -2.0, 0.0, 2.0, 0.0, 0.0));
-        std::println!("[{}, {}, {}]", a.pos(dt), a.vel(dt), a.acc(dt));
+        std::println!("[{}, {}, {}]", a.pos(x), a.vel(x), a.acc(x));
     }
 }
 

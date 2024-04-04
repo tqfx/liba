@@ -23,10 +23,10 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     }
     a_trajtrap ctx;
     a_float t = a_trajtrap_gen(&ctx, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6]);
-    for (a_float dt = 0, delta = t / 1000; dt < t; dt += delta) // NOLINT
+    for (a_float x = 0, delta = t / 1000; x < t; x += delta) // NOLINT
     {
         debug(A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f\n"),
-              dt, a_trajtrap_pos(&ctx, dt), a_trajtrap_vel(&ctx, dt), a_trajtrap_acc(&ctx, dt));
+              x, a_trajtrap_pos(&ctx, x), a_trajtrap_vel(&ctx, x), a_trajtrap_acc(&ctx, x));
     }
 
 #if defined(__cplusplus) && (__cplusplus > 201100L)

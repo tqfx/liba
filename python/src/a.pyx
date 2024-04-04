@@ -833,54 +833,54 @@ cdef class trajbell:
     cdef a_trajbell ctx
     def gen(self, a_float jm, a_float am, a_float vm, a_float p0, a_float p1, a_float v0=0, a_float v1=0):
         return a_trajbell_gen(&self.ctx, jm, am, vm, p0, p1, v0, v1)
-    def pos(self, dt):
-        cdef array x
+    def pos(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajbell_pos(&self.ctx, p[i])
-            return x
-        return a_trajbell_pos(&self.ctx, dt)
-    def vel(self, dt):
-        cdef array x
+            return o
+        return a_trajbell_pos(&self.ctx, x)
+    def vel(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajbell_vel(&self.ctx, p[i])
-            return x
-        return a_trajbell_vel(&self.ctx, dt)
-    def acc(self, dt):
-        cdef array x
+            return o
+        return a_trajbell_vel(&self.ctx, x)
+    def acc(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajbell_acc(&self.ctx, p[i])
-            return x
-        return a_trajbell_acc(&self.ctx, dt)
-    def jer(self, dt):
-        cdef array x
+            return o
+        return a_trajbell_acc(&self.ctx, x)
+    def jer(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajbell_jer(&self.ctx, p[i])
-            return x
-        return a_trajbell_jer(&self.ctx, dt)
+            return o
+        return a_trajbell_jer(&self.ctx, x)
     property t:
         def __get__(self):
             return self.ctx.t
@@ -933,42 +933,42 @@ cdef class trajpoly3:
     def gen(self, a_float ts, a_float p0, a_float p1, a_float v0=0, a_float v1=0):
         a_trajpoly3_gen(&self.ctx, ts, p0, p1, v0, v1)
         return self
-    def pos(self, dt):
-        cdef array x
+    def pos(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajpoly3_pos(&self.ctx, p[i])
-            return x
-        return a_trajpoly3_pos(&self.ctx, dt)
-    def vel(self, dt):
-        cdef array x
+            return o
+        return a_trajpoly3_pos(&self.ctx, x)
+    def vel(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajpoly3_vel(&self.ctx, p[i])
-            return x
-        return a_trajpoly3_vel(&self.ctx, dt)
-    def acc(self, dt):
-        cdef array x
+            return o
+        return a_trajpoly3_vel(&self.ctx, x)
+    def acc(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajpoly3_acc(&self.ctx, p[i])
-            return x
-        return a_trajpoly3_acc(&self.ctx, dt)
+            return o
+        return a_trajpoly3_acc(&self.ctx, x)
     property p:
         def __get__(self):
             return self.ctx.p
@@ -988,42 +988,42 @@ cdef class trajpoly5:
     def gen(self, a_float ts, a_float p0, a_float p1, a_float v0=0, a_float v1=0, a_float a0=0, a_float a1=0):
         a_trajpoly5_gen(&self.ctx, ts, p0, p1, v0, v1, a0, a1)
         return self
-    def pos(self, dt):
-        cdef array x
+    def pos(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajpoly5_pos(&self.ctx, p[i])
-            return x
-        return a_trajpoly5_pos(&self.ctx, dt)
-    def vel(self, dt):
-        cdef array x
+            return o
+        return a_trajpoly5_pos(&self.ctx, x)
+    def vel(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajpoly5_vel(&self.ctx, p[i])
-            return x
-        return a_trajpoly5_vel(&self.ctx, dt)
-    def acc(self, dt):
-        cdef array x
+            return o
+        return a_trajpoly5_vel(&self.ctx, x)
+    def acc(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajpoly5_acc(&self.ctx, p[i])
-            return x
-        return a_trajpoly5_acc(&self.ctx, dt)
+            return o
+        return a_trajpoly5_acc(&self.ctx, x)
     property p:
         def __get__(self):
             return self.ctx.p
@@ -1043,54 +1043,54 @@ cdef class trajpoly7:
     def gen(self, a_float ts, a_float p0, a_float p1, a_float v0=0, a_float v1=0, a_float a0=0, a_float a1=0, a_float j0=0, a_float j1=0):
         a_trajpoly7_gen(&self.ctx, ts, p0, p1, v0, v1, a0, a1, j0, j1)
         return self
-    def pos(self, dt):
-        cdef array x
+    def pos(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajpoly7_pos(&self.ctx, p[i])
-            return x
-        return a_trajpoly7_pos(&self.ctx, dt)
-    def vel(self, dt):
-        cdef array x
+            return o
+        return a_trajpoly7_pos(&self.ctx, x)
+    def vel(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajpoly7_vel(&self.ctx, p[i])
-            return x
-        return a_trajpoly7_vel(&self.ctx, dt)
-    def acc(self, dt):
-        cdef array x
+            return o
+        return a_trajpoly7_vel(&self.ctx, x)
+    def acc(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajpoly7_acc(&self.ctx, p[i])
-            return x
-        return a_trajpoly7_acc(&self.ctx, dt)
-    def jer(self, dt):
-        cdef array x
+            return o
+        return a_trajpoly7_acc(&self.ctx, x)
+    def jer(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajpoly7_jer(&self.ctx, p[i])
-            return x
-        return a_trajpoly7_jer(&self.ctx, dt)
+            return o
+        return a_trajpoly7_jer(&self.ctx, x)
     property p:
         def __get__(self):
             return self.ctx.p
@@ -1110,42 +1110,42 @@ cdef class trajtrap:
     cdef a_trajtrap ctx
     def gen(self, a_float vm, a_float ac, a_float de, a_float p0, a_float p1, a_float v0=0, a_float v1=0):
         return a_trajtrap_gen(&self.ctx, vm, ac, de, p0, p1, v0, v1)
-    def pos(self, dt):
-        cdef array x
+    def pos(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajtrap_pos(&self.ctx, p[i])
-            return x
-        return a_trajtrap_pos(&self.ctx, dt)
-    def vel(self, dt):
-        cdef array x
+            return o
+        return a_trajtrap_pos(&self.ctx, x)
+    def vel(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajtrap_vel(&self.ctx, p[i])
-            return x
-        return a_trajtrap_vel(&self.ctx, dt)
-    def acc(self, dt):
-        cdef array x
+            return o
+        return a_trajtrap_vel(&self.ctx, x)
+    def acc(self, x):
+        cdef array o
         cdef a_float *p
         cdef Py_ssize_t i, n
-        if PyObject_HasAttrString(dt, "__contains__"):
-            n = len(dt)
-            x = array_num(dt)
-            p = <a_float *>x.data.as_voidptr
+        if PyObject_HasAttrString(x, "__contains__"):
+            n = len(x)
+            o = array_num(x)
+            p = <a_float *>o.data.as_voidptr
             for i in prange(n, nogil=True):
                 p[i] = a_trajtrap_acc(&self.ctx, p[i])
-            return x
-        return a_trajtrap_acc(&self.ctx, dt)
+            return o
+        return a_trajtrap_acc(&self.ctx, x)
     property t:
         def __get__(self):
             return self.ctx.t

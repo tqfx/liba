@@ -54,9 +54,9 @@ static JSValue liba_trajbell_pos(JSContext *ctx, JSValueConst this_val, int argc
     (void)argc;
     a_trajbell *const self = (a_trajbell *)JS_GetOpaque2(ctx, this_val, liba_trajbell_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double dt;
-    if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
-    a_float pos = a_trajbell_pos(self, (a_float)dt);
+    double x;
+    if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
+    a_float pos = a_trajbell_pos(self, (a_float)x);
     return JS_NewFloat64(ctx, (double)pos);
 }
 
@@ -65,9 +65,9 @@ static JSValue liba_trajbell_vel(JSContext *ctx, JSValueConst this_val, int argc
     (void)argc;
     a_trajbell *const self = (a_trajbell *)JS_GetOpaque2(ctx, this_val, liba_trajbell_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double dt;
-    if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
-    a_float vel = a_trajbell_vel(self, (a_float)dt);
+    double x;
+    if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
+    a_float vel = a_trajbell_vel(self, (a_float)x);
     return JS_NewFloat64(ctx, (double)vel);
 }
 
@@ -76,9 +76,9 @@ static JSValue liba_trajbell_acc(JSContext *ctx, JSValueConst this_val, int argc
     (void)argc;
     a_trajbell *const self = (a_trajbell *)JS_GetOpaque2(ctx, this_val, liba_trajbell_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double dt;
-    if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
-    a_float acc = a_trajbell_acc(self, (a_float)dt);
+    double x;
+    if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
+    a_float acc = a_trajbell_acc(self, (a_float)x);
     return JS_NewFloat64(ctx, (double)acc);
 }
 
@@ -87,9 +87,9 @@ static JSValue liba_trajbell_jer(JSContext *ctx, JSValueConst this_val, int argc
     (void)argc;
     a_trajbell *const self = (a_trajbell *)JS_GetOpaque2(ctx, this_val, liba_trajbell_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double dt;
-    if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
-    a_float acc = a_trajbell_jer(self, (a_float)dt);
+    double x;
+    if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
+    a_float acc = a_trajbell_jer(self, (a_float)x);
     return JS_NewFloat64(ctx, (double)acc);
 }
 

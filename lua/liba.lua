@@ -1196,40 +1196,40 @@ function liba.trajbell.gen(ctx, jm, am, vm, p0, p1, v0, v1) end
 function trajbell:gen(jm, am, vm, p0, p1, v0, v1) end
 
 ---@param ctx a.trajbell
----@param dt number
+---@param x number
 ---@return number
-function liba.trajbell.pos(ctx, dt) end
+function liba.trajbell.pos(ctx, x) end
 
----@param dt number
+---@param x number
 ---@return number
-function trajbell:pos(dt) end
-
----@param ctx a.trajbell
----@param dt number
----@return number
-function liba.trajbell.vel(ctx, dt) end
-
----@param dt number
----@return number
-function trajbell:vel(dt) end
+function trajbell:pos(x) end
 
 ---@param ctx a.trajbell
----@param dt number
+---@param x number
 ---@return number
-function liba.trajbell.acc(ctx, dt) end
+function liba.trajbell.vel(ctx, x) end
 
----@param dt number
+---@param x number
 ---@return number
-function trajbell:acc(dt) end
+function trajbell:vel(x) end
 
 ---@param ctx a.trajbell
----@param dt number
+---@param x number
 ---@return number
-function liba.trajbell.jer(ctx, dt) end
+function liba.trajbell.acc(ctx, x) end
 
----@param dt number
+---@param x number
 ---@return number
-function trajbell:jer(dt) end
+function trajbell:acc(x) end
+
+---@param ctx a.trajbell
+---@param x number
+---@return number
+function liba.trajbell.jer(ctx, x) end
+
+---@param x number
+---@return number
+function trajbell:jer(x) end
 
 ---@class a.trajpoly3
 ---@field p table
@@ -1274,31 +1274,31 @@ function liba.trajpoly3.gen(ctx, ts, p0, p1, v0, v1) end
 function trajpoly3:gen(ts, p0, p1, v0, v1) end
 
 ---@param ctx a.trajpoly3
----@param dt number
+---@param x number
 ---@return number
-function liba.trajpoly3.pos(ctx, dt) end
+function liba.trajpoly3.pos(ctx, x) end
 
----@param dt number
+---@param x number
 ---@return number
-function trajpoly3:pos(dt) end
-
----@param ctx a.trajpoly3
----@param dt number
----@return number
-function liba.trajpoly3.vel(ctx, dt) end
-
----@param dt number
----@return number
-function trajpoly3:vel(dt) end
+function trajpoly3:pos(x) end
 
 ---@param ctx a.trajpoly3
----@param dt number
+---@param x number
 ---@return number
-function liba.trajpoly3.acc(ctx, dt) end
+function liba.trajpoly3.vel(ctx, x) end
 
----@param dt number
+---@param x number
 ---@return number
-function trajpoly3:acc(dt) end
+function trajpoly3:vel(x) end
+
+---@param ctx a.trajpoly3
+---@param x number
+---@return number
+function liba.trajpoly3.acc(ctx, x) end
+
+---@param x number
+---@return number
+function trajpoly3:acc(x) end
 
 ---@class a.trajpoly5
 ---@field p table
@@ -1351,31 +1351,31 @@ function liba.trajpoly5.gen(ctx, ts, p0, p1, v0, v1, a0, a1) end
 function trajpoly5:gen(ts, p0, p1, v0, v1, a0, a1) end
 
 ---@param ctx a.trajpoly5
----@param dt number
+---@param x number
 ---@return number
-function liba.trajpoly5.pos(ctx, dt) end
+function liba.trajpoly5.pos(ctx, x) end
 
----@param dt number
+---@param x number
 ---@return number
-function trajpoly5:pos(dt) end
-
----@param ctx a.trajpoly5
----@param dt number
----@return number
-function liba.trajpoly5.vel(ctx, dt) end
-
----@param dt number
----@return number
-function trajpoly5:vel(dt) end
+function trajpoly5:pos(x) end
 
 ---@param ctx a.trajpoly5
----@param dt number
+---@param x number
 ---@return number
-function liba.trajpoly5.acc(ctx, dt) end
+function liba.trajpoly5.vel(ctx, x) end
 
----@param dt number
+---@param x number
 ---@return number
-function trajpoly5:acc(dt) end
+function trajpoly5:vel(x) end
+
+---@param ctx a.trajpoly5
+---@param x number
+---@return number
+function liba.trajpoly5.acc(ctx, x) end
+
+---@param x number
+---@return number
+function trajpoly5:acc(x) end
 
 ---@class a.trajpoly7
 ---@field p table
@@ -1437,40 +1437,40 @@ function liba.trajpoly7.gen(ctx, ts, p0, p1, v0, v1, a0, a1, j0, j1) end
 function trajpoly7:gen(ts, p0, p1, v0, v1, a0, a1, j0, j1) end
 
 ---@param ctx a.trajpoly7
----@param dt number
+---@param x number
 ---@return number
-function liba.trajpoly7.pos(ctx, dt) end
+function liba.trajpoly7.pos(ctx, x) end
 
----@param dt number
+---@param x number
 ---@return number
-function trajpoly7:pos(dt) end
-
----@param ctx a.trajpoly7
----@param dt number
----@return number
-function liba.trajpoly7.vel(ctx, dt) end
-
----@param dt number
----@return number
-function trajpoly7:vel(dt) end
+function trajpoly7:pos(x) end
 
 ---@param ctx a.trajpoly7
----@param dt number
+---@param x number
 ---@return number
-function liba.trajpoly7.acc(ctx, dt) end
+function liba.trajpoly7.vel(ctx, x) end
 
----@param dt number
+---@param x number
 ---@return number
-function trajpoly7:acc(dt) end
+function trajpoly7:vel(x) end
 
 ---@param ctx a.trajpoly7
----@param dt number
+---@param x number
 ---@return number
-function liba.trajpoly7.jer(ctx, dt) end
+function liba.trajpoly7.acc(ctx, x) end
 
----@param dt number
+---@param x number
 ---@return number
-function trajpoly7:jer(dt) end
+function trajpoly7:acc(x) end
+
+---@param ctx a.trajpoly7
+---@param x number
+---@return number
+function liba.trajpoly7.jer(ctx, x) end
+
+---@param x number
+---@return number
+function trajpoly7:jer(x) end
 
 ---@class a.trajtrap
 ---@field t number
@@ -1518,31 +1518,31 @@ function liba.trajtrap.gen(ctx, vm, ac, de, p0, p1, v0, v1) end
 function trajtrap:gen(vm, ac, de, p0, p1, v0, v1) end
 
 ---@param ctx a.trajtrap
----@param dt number
+---@param x number
 ---@return number
-function liba.trajtrap.pos(ctx, dt) end
+function liba.trajtrap.pos(ctx, x) end
 
----@param dt number
+---@param x number
 ---@return number
-function trajtrap:pos(dt) end
-
----@param ctx a.trajtrap
----@param dt number
----@return number
-function liba.trajtrap.vel(ctx, dt) end
-
----@param dt number
----@return number
-function trajtrap:vel(dt) end
+function trajtrap:pos(x) end
 
 ---@param ctx a.trajtrap
----@param dt number
+---@param x number
 ---@return number
-function liba.trajtrap.acc(ctx, dt) end
+function liba.trajtrap.vel(ctx, x) end
 
----@param dt number
+---@param x number
 ---@return number
-function trajtrap:acc(dt) end
+function trajtrap:vel(x) end
+
+---@param ctx a.trajtrap
+---@param x number
+---@return number
+function liba.trajtrap.acc(ctx, x) end
+
+---@param x number
+---@return number
+function trajtrap:acc(x) end
 
 ---@class a.version
 ---@field major integer

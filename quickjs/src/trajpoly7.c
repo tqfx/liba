@@ -70,9 +70,9 @@ static JSValue liba_trajpoly7_pos(JSContext *ctx, JSValueConst this_val, int arg
     (void)argc;
     a_trajpoly7 *const self = (a_trajpoly7 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly7_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double dt;
-    if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
-    a_float pos = a_trajpoly7_pos(self, (a_float)dt);
+    double x;
+    if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
+    a_float pos = a_trajpoly7_pos(self, (a_float)x);
     return JS_NewFloat64(ctx, (double)pos);
 }
 
@@ -81,9 +81,9 @@ static JSValue liba_trajpoly7_vel(JSContext *ctx, JSValueConst this_val, int arg
     (void)argc;
     a_trajpoly7 *const self = (a_trajpoly7 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly7_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double dt;
-    if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
-    a_float vel = a_trajpoly7_vel(self, (a_float)dt);
+    double x;
+    if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
+    a_float vel = a_trajpoly7_vel(self, (a_float)x);
     return JS_NewFloat64(ctx, (double)vel);
 }
 
@@ -92,9 +92,9 @@ static JSValue liba_trajpoly7_acc(JSContext *ctx, JSValueConst this_val, int arg
     (void)argc;
     a_trajpoly7 *const self = (a_trajpoly7 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly7_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double dt;
-    if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
-    a_float acc = a_trajpoly7_acc(self, (a_float)dt);
+    double x;
+    if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
+    a_float acc = a_trajpoly7_acc(self, (a_float)x);
     return JS_NewFloat64(ctx, (double)acc);
 }
 
@@ -103,9 +103,9 @@ static JSValue liba_trajpoly7_jer(JSContext *ctx, JSValueConst this_val, int arg
     (void)argc;
     a_trajpoly7 *const self = (a_trajpoly7 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly7_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double dt;
-    if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
-    a_float jer = a_trajpoly7_jer(self, (a_float)dt);
+    double x;
+    if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
+    a_float jer = a_trajpoly7_jer(self, (a_float)x);
     return JS_NewFloat64(ctx, (double)jer);
 }
 

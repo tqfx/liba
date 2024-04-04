@@ -49,7 +49,7 @@ int liba_trajpoly5_gen(lua_State *L);
 
 /***
  calculate position for quintic polynomial trajectory
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number position output
  @function pos
 */
@@ -57,7 +57,7 @@ int liba_trajpoly5_pos(lua_State *L);
 
 /***
  calculate velocity for quintic polynomial trajectory
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number velocity output
  @function vel
 */
@@ -65,7 +65,7 @@ int liba_trajpoly5_vel(lua_State *L);
 
 /***
  calculate acceleration for quintic polynomial trajectory
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number acceleration output
  @function acc
 */

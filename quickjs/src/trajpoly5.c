@@ -68,9 +68,9 @@ static JSValue liba_trajpoly5_pos(JSContext *ctx, JSValueConst this_val, int arg
     (void)argc;
     a_trajpoly5 *const self = (a_trajpoly5 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly5_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double dt;
-    if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
-    a_float pos = a_trajpoly5_pos(self, (a_float)dt);
+    double x;
+    if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
+    a_float pos = a_trajpoly5_pos(self, (a_float)x);
     return JS_NewFloat64(ctx, (double)pos);
 }
 
@@ -79,9 +79,9 @@ static JSValue liba_trajpoly5_vel(JSContext *ctx, JSValueConst this_val, int arg
     (void)argc;
     a_trajpoly5 *const self = (a_trajpoly5 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly5_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double dt;
-    if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
-    a_float vel = a_trajpoly5_vel(self, (a_float)dt);
+    double x;
+    if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
+    a_float vel = a_trajpoly5_vel(self, (a_float)x);
     return JS_NewFloat64(ctx, (double)vel);
 }
 
@@ -90,9 +90,9 @@ static JSValue liba_trajpoly5_acc(JSContext *ctx, JSValueConst this_val, int arg
     (void)argc;
     a_trajpoly5 *const self = (a_trajpoly5 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly5_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double dt;
-    if (JS_ToFloat64(ctx, &dt, argv[0])) { return JS_EXCEPTION; }
-    a_float acc = a_trajpoly5_acc(self, (a_float)dt);
+    double x;
+    if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
+    a_float acc = a_trajpoly5_acc(self, (a_float)x);
     return JS_NewFloat64(ctx, (double)acc);
 }
 

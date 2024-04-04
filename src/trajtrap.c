@@ -76,61 +76,61 @@ a_float a_trajtrap_gen(a_trajtrap *ctx, a_float vm, a_float ac, a_float de,
     return ctx->t;
 }
 
-a_float a_trajtrap_pos(a_trajtrap const *ctx, a_float dt)
+a_float a_trajtrap_pos(a_trajtrap const *ctx, a_float x)
 {
-    if (dt >= ctx->ta)
+    if (x >= ctx->ta)
     {
-        if (dt < ctx->td) /* linear motion */
+        if (x < ctx->td) /* linear motion */
         {
-            return ctx->pa + ctx->vc * (dt - ctx->ta);
+            return ctx->pa + ctx->vc * (x - ctx->ta);
         }
-        if (dt < ctx->t) /* final blend */
+        if (x < ctx->t) /* final blend */
         {
-            dt -= ctx->td;
-            return ctx->pd + ctx->vc * dt + A_FLOAT_C(0.5) * ctx->de * dt * dt;
+            x -= ctx->td;
+            return ctx->pd + ctx->vc * x + A_FLOAT_C(0.5) * ctx->de * x * x;
         }
         return ctx->p1;
     }
-    if (dt > 0) /* initial blend */
+    if (x > 0) /* initial blend */
     {
-        return ctx->p0 + ctx->v0 * dt + A_FLOAT_C(0.5) * ctx->ac * dt * dt;
+        return ctx->p0 + ctx->v0 * x + A_FLOAT_C(0.5) * ctx->ac * x * x;
     }
     return ctx->p0;
 }
 
-a_float a_trajtrap_vel(a_trajtrap const *ctx, a_float dt)
+a_float a_trajtrap_vel(a_trajtrap const *ctx, a_float x)
 {
-    if (dt >= ctx->ta)
+    if (x >= ctx->ta)
     {
-        if (dt < ctx->td) /* linear motion */
+        if (x < ctx->td) /* linear motion */
         {
             return ctx->vc;
         }
-        if (dt < ctx->t) /* final blend */
+        if (x < ctx->t) /* final blend */
         {
-            return ctx->vc + ctx->de * (dt - ctx->td);
+            return ctx->vc + ctx->de * (x - ctx->td);
         }
         return ctx->v1;
     }
-    if (dt > 0) /* initial blend */
+    if (x > 0) /* initial blend */
     {
-        return ctx->v0 + ctx->ac * dt;
+        return ctx->v0 + ctx->ac * x;
     }
     return ctx->v0;
 }
 
-a_float a_trajtrap_acc(a_trajtrap const *ctx, a_float dt)
+a_float a_trajtrap_acc(a_trajtrap const *ctx, a_float x)
 {
-    if (dt < ctx->ta)
+    if (x < ctx->ta)
     {
-        if (dt >= 0) /* initial blend */
+        if (x >= 0) /* initial blend */
         {
             return ctx->ac;
         }
     }
-    else if (dt >= ctx->td)
+    else if (x >= ctx->td)
     {
-        if (dt <= ctx->t) /* final blend */
+        if (x <= ctx->t) /* final blend */
         {
             return ctx->de;
         }

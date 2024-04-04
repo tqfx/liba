@@ -51,7 +51,7 @@ int liba_trajtrap_gen(lua_State *L);
 
 /***
  calculate position for trapezoidal velocity trajectory
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number position output
  @function pos
 */
@@ -59,7 +59,7 @@ int liba_trajtrap_pos(lua_State *L);
 
 /***
  calculate velocity for trapezoidal velocity trajectory
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number velocity output
  @function vel
 */
@@ -67,7 +67,7 @@ int liba_trajtrap_vel(lua_State *L);
 
 /***
  calculate acceleration for trapezoidal velocity trajectory
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number acceleration output
  @function acc
 */

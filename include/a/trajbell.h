@@ -74,10 +74,10 @@ A_EXTERN a_float a_trajbell_gen(a_trajbell *ctx, a_float jm, a_float am, a_float
   \end{cases}
  \f]
  @param[in] ctx points to an instance of bell-shaped velocity trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return position output
 */
-A_EXTERN a_float a_trajbell_pos(a_trajbell const *ctx, a_float dt);
+A_EXTERN a_float a_trajbell_pos(a_trajbell const *ctx, a_float x);
 
 /*!
  @brief calculate velocity for bell-shaped velocity trajectory
@@ -93,10 +93,10 @@ A_EXTERN a_float a_trajbell_pos(a_trajbell const *ctx, a_float dt);
   \end{cases}
  \f]
  @param[in] ctx points to an instance of bell-shaped velocity trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_float a_trajbell_vel(a_trajbell const *ctx, a_float dt);
+A_EXTERN a_float a_trajbell_vel(a_trajbell const *ctx, a_float x);
 
 /*!
  @brief calculate acceleration for bell-shaped velocity trajectory
@@ -112,10 +112,10 @@ A_EXTERN a_float a_trajbell_vel(a_trajbell const *ctx, a_float dt);
   \end{cases}
  \f]
  @param[in] ctx points to an instance of bell-shaped velocity trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return acceleration output
 */
-A_EXTERN a_float a_trajbell_acc(a_trajbell const *ctx, a_float dt);
+A_EXTERN a_float a_trajbell_acc(a_trajbell const *ctx, a_float x);
 
 /*!
  @brief calculate jerk for bell-shaped velocity trajectory
@@ -131,10 +131,10 @@ A_EXTERN a_float a_trajbell_acc(a_trajbell const *ctx, a_float dt);
   \end{cases}
  \f]
  @param[in] ctx points to an instance of bell-shaped velocity trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return jerk output
 */
-A_EXTERN a_float a_trajbell_jer(a_trajbell const *ctx, a_float dt);
+A_EXTERN a_float a_trajbell_jer(a_trajbell const *ctx, a_float x);
 
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -169,21 +169,21 @@ struct a_trajbell
     {
         return a_trajbell_gen(this, _jm, _am, _vm, _p0, _p1, _v0, _v1);
     }
-    A_INLINE a_float pos(a_float dt) const
+    A_INLINE a_float pos(a_float x) const
     {
-        return a_trajbell_pos(this, dt);
+        return a_trajbell_pos(this, x);
     }
-    A_INLINE a_float vel(a_float dt) const
+    A_INLINE a_float vel(a_float x) const
     {
-        return a_trajbell_vel(this, dt);
+        return a_trajbell_vel(this, x);
     }
-    A_INLINE a_float acc(a_float dt) const
+    A_INLINE a_float acc(a_float x) const
     {
-        return a_trajbell_acc(this, dt);
+        return a_trajbell_acc(this, x);
     }
-    A_INLINE a_float jer(a_float dt) const
+    A_INLINE a_float jer(a_float x) const
     {
-        return a_trajbell_jer(this, dt);
+        return a_trajbell_jer(this, x);
     }
 #endif /* __cplusplus */
 };

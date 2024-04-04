@@ -62,30 +62,30 @@ JNIEXPORT jobject JNICALL Java_liba_trajpoly7_j(JNIEnv *_env, jobject _obj)
     return j;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_trajpoly7_pos(JNIEnv *_env, jobject _obj, jdouble dt)
+JNIEXPORT jdouble JNICALL Java_liba_trajpoly7_pos(JNIEnv *_env, jobject _obj, jdouble x)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
     a_trajpoly7 *ctx = (a_trajpoly7 *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    return a_trajpoly7_pos(ctx, dt);
+    return a_trajpoly7_pos(ctx, x);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_trajpoly7_vel(JNIEnv *_env, jobject _obj, jdouble dt)
+JNIEXPORT jdouble JNICALL Java_liba_trajpoly7_vel(JNIEnv *_env, jobject _obj, jdouble x)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
     a_trajpoly7 *ctx = (a_trajpoly7 *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    return a_trajpoly7_vel(ctx, dt);
+    return a_trajpoly7_vel(ctx, x);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_trajpoly7_acc(JNIEnv *_env, jobject _obj, jdouble dt)
+JNIEXPORT jdouble JNICALL Java_liba_trajpoly7_acc(JNIEnv *_env, jobject _obj, jdouble x)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
     a_trajpoly7 *ctx = (a_trajpoly7 *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    return a_trajpoly7_acc(ctx, dt);
+    return a_trajpoly7_acc(ctx, x);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_trajpoly7_jer(JNIEnv *_env, jobject _obj, jdouble dt)
+JNIEXPORT jdouble JNICALL Java_liba_trajpoly7_jer(JNIEnv *_env, jobject _obj, jdouble x)
 {
     jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
     a_trajpoly7 *ctx = (a_trajpoly7 *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    return a_trajpoly7_jer(ctx, dt);
+    return a_trajpoly7_jer(ctx, x);
 }

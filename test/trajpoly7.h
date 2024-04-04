@@ -23,10 +23,10 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     }
     a_trajpoly7 pt7;
     a_trajpoly7_gen(&pt7, arg[1] - arg[0], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7], arg[8], arg[9]);
-    for (a_float dt = arg[0], delta = (arg[1] - arg[0]) / 1000; dt < arg[1]; dt += delta) // NOLINT
+    for (a_float x = arg[0], delta = (arg[1] - arg[0]) / 1000; x < arg[1]; x += delta) // NOLINT
     {
         debug(A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f\n"),
-              dt, a_trajpoly7_pos(&pt7, dt), a_trajpoly7_vel(&pt7, dt), a_trajpoly7_acc(&pt7, dt), a_trajpoly7_jer(&pt7, dt));
+              x, a_trajpoly7_pos(&pt7, x), a_trajpoly7_vel(&pt7, x), a_trajpoly7_acc(&pt7, x), a_trajpoly7_jer(&pt7, x));
     }
 
 #if defined(__cplusplus) && (__cplusplus > 201100L)

@@ -57,10 +57,10 @@ A_EXTERN a_float a_trajtrap_gen(a_trajtrap *ctx, a_float vm, a_float ac, a_float
   p_d+v_c(t-t_d)+\frac{1}{2}d(t-t_d)^2,&t\in[t_d,T]\end{cases}
  \f]
  @param[in] ctx points to an instance of trapezoidal velocity trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return position output
 */
-A_EXTERN a_float a_trajtrap_pos(a_trajtrap const *ctx, a_float dt);
+A_EXTERN a_float a_trajtrap_pos(a_trajtrap const *ctx, a_float x);
 
 /*!
  @brief calculate velocity for trapezoidal velocity trajectory
@@ -68,10 +68,10 @@ A_EXTERN a_float a_trajtrap_pos(a_trajtrap const *ctx, a_float dt);
   \dot{p}(t)=\begin{cases}v_0+at,&t\in[0,t_a)\\v_c,&t\in[t_a,t_d)\\v_c+d(t-t_d),&t\in[t_d,T]\end{cases}
  \f]
  @param[in] ctx points to an instance of trapezoidal velocity trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_float a_trajtrap_vel(a_trajtrap const *ctx, a_float dt);
+A_EXTERN a_float a_trajtrap_vel(a_trajtrap const *ctx, a_float x);
 
 /*!
  @brief calculate acceleration for trapezoidal velocity trajectory
@@ -79,10 +79,10 @@ A_EXTERN a_float a_trajtrap_vel(a_trajtrap const *ctx, a_float dt);
   \ddot{p}(t)=\begin{cases}a,&t\in[0,t_a)\\0,&t\in[t_a,t_d)\\d,&t\in[t_d,T]\end{cases}
  \f]
  @param[in] ctx points to an instance of trapezoidal velocity trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return acceleration output
 */
-A_EXTERN a_float a_trajtrap_acc(a_trajtrap const *ctx, a_float dt);
+A_EXTERN a_float a_trajtrap_acc(a_trajtrap const *ctx, a_float x);
 
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -115,17 +115,17 @@ struct a_trajtrap
     {
         return a_trajtrap_gen(this, vm, _ac, _de, _p0, _p1, _v0, _v1);
     }
-    A_INLINE a_float pos(a_float dt) const
+    A_INLINE a_float pos(a_float x) const
     {
-        return a_trajtrap_pos(this, dt);
+        return a_trajtrap_pos(this, x);
     }
-    A_INLINE a_float vel(a_float dt) const
+    A_INLINE a_float vel(a_float x) const
     {
-        return a_trajtrap_vel(this, dt);
+        return a_trajtrap_vel(this, x);
     }
-    A_INLINE a_float acc(a_float dt) const
+    A_INLINE a_float acc(a_float x) const
     {
-        return a_trajtrap_acc(this, dt);
+        return a_trajtrap_acc(this, x);
     }
 #endif /* __cplusplus */
 };

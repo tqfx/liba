@@ -85,7 +85,7 @@ int liba_trajpoly3_gen(lua_State *L)
 /***
  calculate position for cubic polynomial trajectory
  @tparam a.trajpoly3 ctx cubic polynomial trajectory userdata
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number position output
  @function pos
 */
@@ -94,8 +94,8 @@ int liba_trajpoly3_pos(lua_State *L)
     a_trajpoly3 const *const ctx = (a_trajpoly3 const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const dt = (a_float)luaL_checknumber(L, 2);
-        lua_pushnumber(L, (lua_Number)a_trajpoly3_pos(ctx, dt));
+        a_float const x = (a_float)luaL_checknumber(L, 2);
+        lua_pushnumber(L, (lua_Number)a_trajpoly3_pos(ctx, x));
         return 1;
     }
     return 0;
@@ -104,7 +104,7 @@ int liba_trajpoly3_pos(lua_State *L)
 /***
  calculate velocity for cubic polynomial trajectory
  @tparam a.trajpoly3 ctx cubic polynomial trajectory userdata
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number velocity output
  @function vel
 */
@@ -113,8 +113,8 @@ int liba_trajpoly3_vel(lua_State *L)
     a_trajpoly3 const *const ctx = (a_trajpoly3 const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const dt = (a_float)luaL_checknumber(L, 2);
-        lua_pushnumber(L, (lua_Number)a_trajpoly3_vel(ctx, dt));
+        a_float const x = (a_float)luaL_checknumber(L, 2);
+        lua_pushnumber(L, (lua_Number)a_trajpoly3_vel(ctx, x));
         return 1;
     }
     return 0;
@@ -123,7 +123,7 @@ int liba_trajpoly3_vel(lua_State *L)
 /***
  calculate acceleration for cubic polynomial trajectory
  @tparam a.trajpoly3 ctx cubic polynomial trajectory userdata
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number acceleration output
  @function acc
 */
@@ -132,8 +132,8 @@ int liba_trajpoly3_acc(lua_State *L)
     a_trajpoly3 const *const ctx = (a_trajpoly3 const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const dt = (a_float)luaL_checknumber(L, 2);
-        lua_pushnumber(L, (lua_Number)a_trajpoly3_acc(ctx, dt));
+        a_float const x = (a_float)luaL_checknumber(L, 2);
+        lua_pushnumber(L, (lua_Number)a_trajpoly3_acc(ctx, x));
         return 1;
     }
     return 0;

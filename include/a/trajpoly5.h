@@ -70,10 +70,10 @@ A_EXTERN void a_trajpoly5_gen2(a_trajpoly5 *ctx);
   \end{array}
  \f}
  @param[in] ctx points to an instance of quintic polynomial trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return position output
 */
-A_EXTERN a_float a_trajpoly5_pos(a_trajpoly5 const *ctx, a_float dt);
+A_EXTERN a_float a_trajpoly5_pos(a_trajpoly5 const *ctx, a_float x);
 
 #if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 1)
 /*!
@@ -84,10 +84,10 @@ A_EXTERN a_float a_trajpoly5_pos(a_trajpoly5 const *ctx, a_float dt);
   \end{array}
  \f}
  @param[in] ctx points to an instance of quintic polynomial trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_float a_trajpoly5_vel(a_trajpoly5 const *ctx, a_float dt);
+A_EXTERN a_float a_trajpoly5_vel(a_trajpoly5 const *ctx, a_float x);
 #endif /* A_TRAJPOLY5 */
 
 #if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 2)
@@ -99,10 +99,10 @@ A_EXTERN a_float a_trajpoly5_vel(a_trajpoly5 const *ctx, a_float dt);
   \end{array}
  \f}
  @param[in] ctx points to an instance of quintic polynomial trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return acceleration output
 */
-A_EXTERN a_float a_trajpoly5_acc(a_trajpoly5 const *ctx, a_float dt);
+A_EXTERN a_float a_trajpoly5_acc(a_trajpoly5 const *ctx, a_float x);
 #endif /* A_TRAJPOLY5 */
 
 #if defined(__cplusplus)
@@ -145,22 +145,22 @@ struct a_trajpoly5
     {
         a_trajpoly5_gen0(this, ts, p0, p1, v0, v1, a0, a1);
     }
-    A_INLINE a_float pos(a_float dt) const
+    A_INLINE a_float pos(a_float x) const
     {
-        return a_trajpoly5_pos(this, dt);
+        return a_trajpoly5_pos(this, x);
     }
 #if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 1)
     A_INLINE void gen1() { a_trajpoly5_gen1(this); }
-    A_INLINE a_float vel(a_float dt) const
+    A_INLINE a_float vel(a_float x) const
     {
-        return a_trajpoly5_vel(this, dt);
+        return a_trajpoly5_vel(this, x);
     }
 #endif /* A_TRAJPOLY5 */
 #if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 2)
     A_INLINE void gen2() { a_trajpoly5_gen2(this); }
-    A_INLINE a_float acc(a_float dt) const
+    A_INLINE a_float acc(a_float x) const
     {
-        return a_trajpoly5_acc(this, dt);
+        return a_trajpoly5_acc(this, x);
     }
 #endif /* A_TRAJPOLY5 */
 #endif /* __cplusplus */

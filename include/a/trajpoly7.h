@@ -79,10 +79,10 @@ A_EXTERN void a_trajpoly7_gen3(a_trajpoly7 *ctx);
   \end{array}
  \f}
  @param[in] ctx points to an instance of hepta polynomial trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return position output
 */
-A_EXTERN a_float a_trajpoly7_pos(a_trajpoly7 const *ctx, a_float dt);
+A_EXTERN a_float a_trajpoly7_pos(a_trajpoly7 const *ctx, a_float x);
 
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 1)
 /*!
@@ -93,10 +93,10 @@ A_EXTERN a_float a_trajpoly7_pos(a_trajpoly7 const *ctx, a_float dt);
   \end{array}
  \f}
  @param[in] ctx points to an instance of hepta polynomial trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_float a_trajpoly7_vel(a_trajpoly7 const *ctx, a_float dt);
+A_EXTERN a_float a_trajpoly7_vel(a_trajpoly7 const *ctx, a_float x);
 #endif /* A_TRAJPOLY7 */
 
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 2)
@@ -108,10 +108,10 @@ A_EXTERN a_float a_trajpoly7_vel(a_trajpoly7 const *ctx, a_float dt);
   \end{array}
  \f}
  @param[in] ctx points to an instance of hepta polynomial trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return acceleration output
 */
-A_EXTERN a_float a_trajpoly7_acc(a_trajpoly7 const *ctx, a_float dt);
+A_EXTERN a_float a_trajpoly7_acc(a_trajpoly7 const *ctx, a_float x);
 #endif /* A_TRAJPOLY7 */
 
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 3)
@@ -123,10 +123,10 @@ A_EXTERN a_float a_trajpoly7_acc(a_trajpoly7 const *ctx, a_float dt);
   \end{array}
  \f}
  @param[in] ctx points to an instance of hepta polynomial trajectory
- @param[in] dt difference between current time and initial time
+ @param[in] x difference between current time and initial time
  @return jerk output
 */
-A_EXTERN a_float a_trajpoly7_jer(a_trajpoly7 const *ctx, a_float dt);
+A_EXTERN a_float a_trajpoly7_jer(a_trajpoly7 const *ctx, a_float x);
 #endif /* A_TRAJPOLY7 */
 
 #if defined(__cplusplus)
@@ -175,29 +175,29 @@ struct a_trajpoly7
     {
         a_trajpoly7_gen0(this, ts, p0, p1, v0, v1, a0, a1, j0, j1);
     }
-    A_INLINE a_float pos(a_float dt) const
+    A_INLINE a_float pos(a_float x) const
     {
-        return a_trajpoly7_pos(this, dt);
+        return a_trajpoly7_pos(this, x);
     }
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 1)
     A_INLINE void gen1() { a_trajpoly7_gen1(this); }
-    A_INLINE a_float vel(a_float dt) const
+    A_INLINE a_float vel(a_float x) const
     {
-        return a_trajpoly7_vel(this, dt);
+        return a_trajpoly7_vel(this, x);
     }
 #endif /* A_TRAJPOLY7 */
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 2)
     A_INLINE void gen2() { a_trajpoly7_gen2(this); }
-    A_INLINE a_float acc(a_float dt) const
+    A_INLINE a_float acc(a_float x) const
     {
-        return a_trajpoly7_acc(this, dt);
+        return a_trajpoly7_acc(this, x);
     }
 #endif /* A_TRAJPOLY7 */
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 3)
     A_INLINE void gen3() { a_trajpoly7_gen3(this); }
-    A_INLINE a_float jer(a_float dt) const
+    A_INLINE a_float jer(a_float x) const
     {
-        return a_trajpoly7_jer(this, dt);
+        return a_trajpoly7_jer(this, x);
     }
 #endif /* A_TRAJPOLY7 */
 #endif /* __cplusplus */

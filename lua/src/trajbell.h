@@ -53,7 +53,7 @@ int liba_trajbell_gen(lua_State *L);
 
 /***
  calculate position for bell-shaped velocity trajectory
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number position output
  @function pos
 */
@@ -61,7 +61,7 @@ int liba_trajbell_pos(lua_State *L);
 
 /***
  calculate velocity for bell-shaped velocity trajectory
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number velocity output
  @function vel
 */
@@ -69,7 +69,7 @@ int liba_trajbell_vel(lua_State *L);
 
 /***
  calculate acceleration for bell-shaped velocity trajectory
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number acceleration output
  @function acc
 */
@@ -77,7 +77,7 @@ int liba_trajbell_acc(lua_State *L);
 
 /***
  calculate jerk for bell-shaped velocity trajectory
- @tparam number dt difference between current time and initial time
+ @tparam number x difference between current time and initial time
  @treturn number jerk output
  @function jer
 */

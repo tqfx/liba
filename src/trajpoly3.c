@@ -48,21 +48,21 @@ void a_trajpoly3_gen2(a_trajpoly3 *ctx)
 }
 #endif /* A_TRAJPOLY3 */
 
-a_float a_trajpoly3_pos(a_trajpoly3 const *ctx, a_float dt)
+a_float a_trajpoly3_pos(a_trajpoly3 const *ctx, a_float x)
 {
-    return a_poly_eval_(ctx->p, ctx->p + A_LEN(ctx->p), dt);
+    return a_poly_eval_(ctx->p, ctx->p + A_LEN(ctx->p), x);
 }
 
 #if defined(A_TRAJPOLY3) && (A_TRAJPOLY3 + 0 > 1)
-a_float a_trajpoly3_vel(a_trajpoly3 const *ctx, a_float dt)
+a_float a_trajpoly3_vel(a_trajpoly3 const *ctx, a_float x)
 {
-    return a_poly_eval_(ctx->v, ctx->v + A_LEN(ctx->v), dt);
+    return a_poly_eval_(ctx->v, ctx->v + A_LEN(ctx->v), x);
 }
 #endif /* A_TRAJPOLY3 */
 
 #if defined(A_TRAJPOLY3) && (A_TRAJPOLY3 + 0 > 2)
-a_float a_trajpoly3_acc(a_trajpoly3 const *ctx, a_float dt)
+a_float a_trajpoly3_acc(a_trajpoly3 const *ctx, a_float x)
 {
-    return a_poly_eval_(ctx->a, ctx->a + A_LEN(ctx->a), dt);
+    return a_poly_eval_(ctx->a, ctx->a + A_LEN(ctx->a), x);
 }
 #endif /* A_TRAJPOLY3 */
