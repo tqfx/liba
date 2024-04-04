@@ -12,6 +12,6 @@ import liba  # type: ignore
 print(liba.hash_bkdr("0123456789"))
 print(liba.hash_sdbm("0123456789"))
 print(liba.sqrt_u64(7), liba.sqrt_u32(7))
-print(liba.sqrt_u64([4, 8]), liba.sqrt_u32([4, 8]))
+print(list(liba.sqrt_u64([4, 8])), list(liba.sqrt_u32([4, 8])))
 print(liba.rsqrt_f64(4), liba.rsqrt_f32(4))
-print(liba.rsqrt_f64([4, 8]), liba.rsqrt_f32([4, 8]))
+print(list(liba.rsqrt_f64([4, 8])), list(liba.rsqrt_f32([4, 8])))

@@ -78,25 +78,6 @@ def check_math(text=""):
     return text
 
 
-def update_pyx(source):
-    _P = "array import"
-    _C = "cpython.array cimport"
-    with open(source, "r") as f:
-        context = f.read()
-    try:
-        name = sys.implementation.name
-    except AttributeError:
-        name = "cpython"
-        if "PyPy" in sys.version:
-            name = "pypy"
-    if name == "cpython" and context.find(_P) > 0:
-        with open(source, "wb") as f:
-            f.write(context.replace(_P, _C).encode("UTF-8"))
-    if name != "cpython" and context.find(_C) > 0:
-        with open(source, "wb") as f:
-            f.write(context.replace(_C, _P).encode("UTF-8"))
-
-
 def configure(config):
     with open("setup.cfg", "r") as f:
         version = findall(r"version = (\S+)", f.read())[0]
@@ -135,7 +116,6 @@ if LIBA_FLOAT != 8:
     define_macros += [("A_SIZE_FLOAT", LIBA_FLOAT)]
 if USE_CYTHON and os.path.exists("python/src/a.pyx"):
     sources += ["python/src/a.pyx"]
-    update_pyx("python/src/a.pyx")
 elif os.path.exists("python/src/a.c"):
     sources += ["python/src/a.c"]
 if not os.path.exists(base):
