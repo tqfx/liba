@@ -28,7 +28,7 @@ jobs:
           source venv/bin/activate
           python3 -m pip install -r requirements.txt
           curl https://bellard.org/quickjs/quickjs-2024-01-13.tar.xz | tar -xJf -
-          sudo make install -C quickjs-2024-01-13 && rm -rf quickjs-2024-01-13
+          make -C quickjs-2024-01-13 && sudo make install -C quickjs-2024-01-13
           env
       - name: Run cmake
         env:
