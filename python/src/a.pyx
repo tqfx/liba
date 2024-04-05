@@ -1,3 +1,4 @@
+#cython: binding=True
 #cython: autotestdict=False
 #cython: auto_pickle=False
 #cython: boundscheck=False
