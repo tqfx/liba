@@ -97,13 +97,6 @@ cpdef array new_f64(object x):
         return r
     return f64_new(x)
 
-cdef array num_new(Py_ssize_t n):
-    cdef int z = 8
-    cdef str num = 'd'
-    if A_FLOAT_TYPE == A_FLOAT_SINGLE:
-        z, num = 4, 'f'
-    return array(shape=(n,), itemsize=z, format=num)
-
 cdef a_float *num_set(array o, object x, Py_ssize_t n):
     cdef a_float *r = <a_float *>o.data
     cdef Py_ssize_t i
@@ -111,15 +104,12 @@ cdef a_float *num_set(array o, object x, Py_ssize_t n):
         r[i] = x[i]
     return r
 
-cpdef array new_num(object x):
-    cdef array r
-    cdef Py_ssize_t n
-    if PyObject_HasAttrString(x, "__len__"):
-        n = len(x)
-        r = num_new(n)
-        num_set(r, x, n)
-        return r
-    return num_new(x)
+cdef array (*num_new)(Py_ssize_t n)
+num_new = f64_new
+new_num = new_f64
+if A_FLOAT_TYPE == A_FLOAT_SINGLE:
+    num_new = f32_new
+    new_num = new_f32
 
 cdef array num2_new(object x2):
     cdef Py_ssize_t n = 0
@@ -131,8 +121,8 @@ cdef array num2_new(object x2):
 cdef a_float *num2_set(array o, object x2):
     cdef a_float *r = <a_float *>o.data
     cdef Py_ssize_t n = 0
-    cdef object x1
     cdef a_float x
+    cdef object x1
     for x1 in x2:
         for x in x1:
             r[n] = x
@@ -1303,7 +1293,7 @@ from a.version cimport *
 
 cdef class version:
     cdef a_version ctx
-    def __init__(self, unsigned int major = 0, unsigned int minor = 0, unsigned int third = 0, unsigned int extra = 0):
+    def __init__(self, unsigned int major=0, unsigned int minor=0, unsigned int third=0, unsigned int extra=0):
         self.ctx.major = major
         self.ctx.minor = minor
         self.ctx.third = third
@@ -1314,7 +1304,7 @@ cdef class version:
         a_version_tostr(&self.ctx, str, sizeof(str))
         return str.decode()
     @staticmethod
-    def check(unsigned int major = 0, unsigned int minor = 0, unsigned int patch = 0):
+    def check(unsigned int major=0, unsigned int minor=0, unsigned int patch=0):
         return a_version_check(major, minor, patch)
     def cmp(self, version that):
         return a_version_cmp(&self.ctx, &that.ctx)
