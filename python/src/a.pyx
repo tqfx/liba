@@ -18,8 +18,8 @@ cdef array u32_new(Py_ssize_t n):
         u32 = 'L'
     return array(shape=(n,), itemsize=4, format=u32, mode='c')
 
-cdef a_u32 *u32_set(array o, object x, Py_ssize_t n):
-    cdef a_u32 *r = <a_u32 *>o.data
+cdef a_u32 *u32_set(void *p, Py_ssize_t n, object x):
+    cdef a_u32 *r = <a_u32 *>p
     cdef Py_ssize_t i
     for i in range(n):
         r[i] = x[i]
@@ -31,7 +31,7 @@ cpdef array new_u32(object x):
     if PyObject_HasAttrString(x, "__len__"):
         n = len(x)
         r = u32_new(n)
-        u32_set(r, x, n)
+        u32_set(r.data, n, x)
         return r
     return u32_new(x)
 
@@ -41,8 +41,8 @@ cdef array u64_new(Py_ssize_t n):
         u64 = 'Q'
     return array(shape=(n,), itemsize=8, format=u64, mode='c')
 
-cdef a_u64 *u64_set(array o, object x, Py_ssize_t n):
-    cdef a_u64 *r = <a_u64 *>o.data
+cdef a_u64 *u64_set(void *p, Py_ssize_t n, object x):
+    cdef a_u64 *r = <a_u64 *>p
     cdef Py_ssize_t i
     for i in range(n):
         r[i] = x[i]
@@ -54,15 +54,15 @@ cpdef array new_u64(object x):
     if PyObject_HasAttrString(x, "__len__"):
         n = len(x)
         r = u64_new(n)
-        u64_set(r, x, n)
+        u64_set(r.data, n, x)
         return r
     return u64_new(x)
 
 cdef array f32_new(Py_ssize_t n):
     return array(shape=(n,), itemsize=4, format='f', mode='c')
 
-cdef a_f32 *f32_set(array o, object x, Py_ssize_t n):
-    cdef a_f32 *r = <a_f32 *>o.data
+cdef a_f32 *f32_set(void *p, Py_ssize_t n, object x):
+    cdef a_f32 *r = <a_f32 *>p
     cdef Py_ssize_t i
     for i in range(n):
         r[i] = x[i]
@@ -74,15 +74,15 @@ cpdef array new_f32(object x):
     if PyObject_HasAttrString(x, "__len__"):
         n = len(x)
         r = f32_new(n)
-        f32_set(r, x, n)
+        f32_set(r.data, n, x)
         return r
     return f32_new(x)
 
 cdef array f64_new(Py_ssize_t n):
     return array(shape=(n,), itemsize=8, format='d', mode='c')
 
-cdef a_f64 *f64_set(array o, object x, Py_ssize_t n):
-    cdef a_f64 *r = <a_f64 *>o.data
+cdef a_f64 *f64_set(void *p, Py_ssize_t n, object x):
+    cdef a_f64 *r = <a_f64 *>p
     cdef Py_ssize_t i
     for i in range(n):
         r[i] = x[i]
@@ -94,12 +94,12 @@ cpdef array new_f64(object x):
     if PyObject_HasAttrString(x, "__len__"):
         n = len(x)
         r = f64_new(n)
-        f64_set(r, x, n)
+        f64_set(r.data, n, x)
         return r
     return f64_new(x)
 
-cdef a_float *num_set(array o, object x, Py_ssize_t n):
-    cdef a_float *r = <a_float *>o.data
+cdef a_float *num_set(void *p, Py_ssize_t n, object x):
+    cdef a_float *r = <a_float *>p
     cdef Py_ssize_t i
     for i in range(n):
         r[i] = x[i]
@@ -119,8 +119,8 @@ cdef array num2_new(object x2):
         n += len(x1)
     return num_new(n)
 
-cdef a_float *num2_set(array o, object x2):
-    cdef a_float *r = <a_float *>o.data
+cdef a_float *num2_set(void *o, object x2):
+    cdef a_float *r = <a_float *>o
     cdef Py_ssize_t n = 0
     cdef a_float x
     cdef object x1
@@ -142,7 +142,7 @@ cdef class crc8:
     cdef a_u8[0x100] table
     property table:
         def __get__(self):
-            return <a_u8[::1]>self.table
+            return <const a_u8[::1]>self.table
     def gen(self, a_u8 poly, bint reversed=0):
         if reversed:
             a_crc8l_init(self.table, poly)
@@ -165,7 +165,7 @@ cdef class crc16:
     cdef a_u16[0x100] table
     property table:
         def __get__(self):
-            return <a_u16[::1]>self.table
+            return <const a_u16[::1]>self.table
     cdef a_u16 (*eval)(const a_u16 *, const void *, a_size, a_u16)
     def gen(self, a_u16 poly, bint reversed=0):
         if reversed:
@@ -194,7 +194,7 @@ cdef class crc32:
     cdef a_u32[0x100] table
     property table:
         def __get__(self):
-            return <a_u32[::1]>self.table
+            return <const a_u32[::1]>self.table
     cdef a_u32 (*eval)(const a_u32 *, const void *, a_size, a_u32)
     def gen(self, a_u32 poly, bint reversed=0):
         if reversed:
@@ -223,7 +223,7 @@ cdef class crc64:
     cdef a_u64[0x100] table
     property table:
         def __get__(self):
-            return <a_u64[::1]>self.table
+            return <const a_u64[::1]>self.table
     cdef a_u64 (*eval)(const a_u64 *, const void *, a_size, a_u64)
     def gen(self, a_u64 poly, bint reversed=0):
         if reversed:
@@ -685,11 +685,11 @@ cdef class pid_fuzzy:
         self.mki = num2_new(mki)
         self.mkd = num2_new(mkd)
         a_pid_fuzzy_rule(&self.ctx, len(me),
-                         num2_set(self.me, me),
-                         num2_set(self.mec, mec),
-                         num2_set(self.mkp, mkp),
-                         num2_set(self.mki, mki),
-                         num2_set(self.mkd, mkd))
+                         num2_set(self.me.data, me),
+                         num2_set(self.mec.data, mec),
+                         num2_set(self.mkp.data, mkp),
+                         num2_set(self.mki.data, mki),
+                         num2_set(self.mkd.data, mkd))
         return self
     def set_block(self, unsigned int num):
         cdef void *ptr = a_pid_fuzzy_block(&self.ctx)
@@ -905,7 +905,7 @@ cdef class tf:
             cdef unsigned int n = len(num)
             self._num = num_new(n)
             self.input = num_new(n)
-            a_tf_set_num(&self.ctx, n, num_set(self._num, num, n), <a_float *>self.input.data)
+            a_tf_set_num(&self.ctx, n, num_set(self._num.data, n, num), <a_float *>self.input.data)
     cdef readonly array _den
     cdef readonly array output
     property den:
@@ -915,7 +915,7 @@ cdef class tf:
             cdef unsigned int n = len(den)
             self._den = num_new(n)
             self.output = num_new(n)
-            a_tf_set_den(&self.ctx, n, num_set(self._den, den, n), <a_float *>self.output.data)
+            a_tf_set_den(&self.ctx, n, num_set(self._den.data, n, den), <a_float *>self.output.data)
 
 from a.trajbell cimport *
 
