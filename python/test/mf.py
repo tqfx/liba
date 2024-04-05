@@ -40,4 +40,4 @@ params = [
     liba.new_num((liba.mf.TRI, +2 * S, +3 * S, +3 * S)),
 ]
 for param in params:
-    liba.mf()(param[0], x, param[1:])
+    liba.mf.mf(param[0], x, param[1:])

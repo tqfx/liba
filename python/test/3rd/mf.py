@@ -149,6 +149,6 @@ x = np.arange(-3 * S, +3 * S, 0.001)
 plt.figure(title)
 plt.title(title)
 for param in params:
-    plt.plot(x, np.array(liba.mf()(param[0], x, param[1:]), copy=False))
+    plt.plot(x, np.array(liba.mf.mf(param[0], x, param[1:]), copy=False))
 plt.savefig(os.path.join(base, "mf.png"))
 plt.show()

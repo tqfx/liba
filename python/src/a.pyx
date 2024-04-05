@@ -384,7 +384,7 @@ cdef class mf:
     Z      = A_MF_Z
     PI     = A_MF_PI
     @staticmethod
-    def __call__(unsigned int e, object x, const a_float[::1] a):
+    def mf(unsigned int e, object x, const a_float[::1] a):
         cdef array r
         cdef a_float *q
         cdef Py_ssize_t i

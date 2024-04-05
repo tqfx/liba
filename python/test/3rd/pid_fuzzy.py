@@ -101,12 +101,10 @@ mkd = [
 
 
 def fuzzy(e: float, ec: float):
-    mf = liba.mf()
-
     idx_e = []
     val_e = []
     for idx, param in enumerate(me):
-        ms = mf(param[0], e, param[1:])
+        ms = liba.mf.mf(param[0], e, param[1:])
         if ms > 0:
             idx_e.append(idx)
             val_e.append(ms)
@@ -116,7 +114,7 @@ def fuzzy(e: float, ec: float):
     idx_ec = []
     val_ec = []
     for idx, param in enumerate(mec):
-        ms = mf(param[0], ec, param[1:])
+        ms = liba.mf.mf(param[0], ec, param[1:])
         if ms > 0:
             idx_ec.append(idx)
             val_ec.append(ms)
