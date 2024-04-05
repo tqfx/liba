@@ -15,7 +15,7 @@ cdef array u32_new(Py_ssize_t n):
     cdef str u32 = 'I'
     if UINT32_MAX > UINT_MAX:
         u32 = 'L'
-    return array(shape=(n,), itemsize=4, format=u32)
+    return array(shape=(n,), itemsize=4, format=u32, mode='c')
 
 cdef a_u32 *u32_set(array o, object x, Py_ssize_t n):
     cdef a_u32 *r = <a_u32 *>o.data
@@ -38,7 +38,7 @@ cdef array u64_new(Py_ssize_t n):
     cdef str u64 = 'L'
     if UINT64_MAX > ULONG_MAX:
         u64 = 'Q'
-    return array(shape=(n,), itemsize=8, format=u64)
+    return array(shape=(n,), itemsize=8, format=u64, mode='c')
 
 cdef a_u64 *u64_set(array o, object x, Py_ssize_t n):
     cdef a_u64 *r = <a_u64 *>o.data
@@ -58,7 +58,7 @@ cpdef array new_u64(object x):
     return u64_new(x)
 
 cdef array f32_new(Py_ssize_t n):
-    return array(shape=(n,), itemsize=4, format='f')
+    return array(shape=(n,), itemsize=4, format='f', mode='c')
 
 cdef a_f32 *f32_set(array o, object x, Py_ssize_t n):
     cdef a_f32 *r = <a_f32 *>o.data
@@ -78,7 +78,7 @@ cpdef array new_f32(object x):
     return f32_new(x)
 
 cdef array f64_new(Py_ssize_t n):
-    return array(shape=(n,), itemsize=8, format='d')
+    return array(shape=(n,), itemsize=8, format='d', mode='c')
 
 cdef a_f64 *f64_set(array o, object x, Py_ssize_t n):
     cdef a_f64 *r = <a_f64 *>o.data
