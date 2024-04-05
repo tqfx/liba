@@ -824,7 +824,6 @@ unsigned int const version::MINOR = A_VERSION_MINOR;
 unsigned int const version::PATCH = A_VERSION_PATCH;
 a_u32 const version::TWEAK = A_VERSION_TWEAK;
 
-#include "a/math.h"
 #if __has_warning("-Wglobal-constructors")
 #pragma GCC diagnostic ignored "-Wglobal-constructors"
 #endif /* -Wglobal-constructors */
