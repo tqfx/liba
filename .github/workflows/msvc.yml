@@ -12,7 +12,6 @@ jobs:
           { triple: x64, arch: x64, type: Release },
           { triple: x86, arch: win32, type: Release },
           { triple: arm64, arch: ARM64, type: Release },
-          { triple: arm, arch: ARM, type: Release },
         ]
     runs-on: windows-latest
     steps:
