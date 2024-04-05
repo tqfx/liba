@@ -23,13 +23,13 @@ PS = +1 * X
 PM = +2 * X
 PL = +3 * X
 me = [
-    [liba.mf.TRI, NL, NL, NM],
-    [liba.mf.TRI, NL, NM, NS],
-    [liba.mf.TRI, NM, NS, ZO],
-    [liba.mf.TRI, NS, ZO, PS],
-    [liba.mf.TRI, ZO, PS, PM],
-    [liba.mf.TRI, PS, PM, PL],
-    [liba.mf.TRI, PM, PL, PL],
+    liba.new_num([liba.mf.TRI, NL, NL, NM]),
+    liba.new_num([liba.mf.TRI, NL, NM, NS]),
+    liba.new_num([liba.mf.TRI, NM, NS, ZO]),
+    liba.new_num([liba.mf.TRI, NS, ZO, PS]),
+    liba.new_num([liba.mf.TRI, ZO, PS, PM]),
+    liba.new_num([liba.mf.TRI, PS, PM, PL]),
+    liba.new_num([liba.mf.TRI, PM, PL, PL]),
 ]
 NL = -6 * X
 NM = -4 * X
@@ -39,13 +39,13 @@ PS = +2 * X
 PM = +4 * X
 PL = +6 * X
 mec = [
-    [liba.mf.TRI, NL, NL, NM],
-    [liba.mf.TRI, NL, NM, NS],
-    [liba.mf.TRI, NM, NS, ZO],
-    [liba.mf.TRI, NS, ZO, PS],
-    [liba.mf.TRI, ZO, PS, PM],
-    [liba.mf.TRI, PS, PM, PL],
-    [liba.mf.TRI, PM, PL, PL],
+    liba.new_num([liba.mf.TRI, NL, NL, NM]),
+    liba.new_num([liba.mf.TRI, NL, NM, NS]),
+    liba.new_num([liba.mf.TRI, NM, NS, ZO]),
+    liba.new_num([liba.mf.TRI, NS, ZO, PS]),
+    liba.new_num([liba.mf.TRI, ZO, PS, PM]),
+    liba.new_num([liba.mf.TRI, PS, PM, PL]),
+    liba.new_num([liba.mf.TRI, PM, PL, PL]),
 ]
 X = 10 / 3
 NL = -3 * X
@@ -105,7 +105,7 @@ def fuzzy(e: float, ec: float):
 
     idx_e = []
     val_e = []
-    for idx, param in enumerate(me[:-1]):
+    for idx, param in enumerate(me):
         ms = mf(param[0], e, param[1:])
         if ms > 0:
             idx_e.append(idx)
@@ -115,7 +115,7 @@ def fuzzy(e: float, ec: float):
 
     idx_ec = []
     val_ec = []
-    for idx, param in enumerate(me[:-1]):
+    for idx, param in enumerate(mec):
         ms = mf(param[0], ec, param[1:])
         if ms > 0:
             idx_ec.append(idx)

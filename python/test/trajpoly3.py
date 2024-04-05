@@ -15,8 +15,8 @@ v = (0, 1)
 traj = liba.trajpoly3(t[1] - t[0], p[0], p[1], v[0], v[1])
 
 N = 1000
-x = [0.0] * N
 T = (t[1] - t[0]) / N
+x = liba.new_num(N)
 for i in range(N):
     x[i] = i * T
 

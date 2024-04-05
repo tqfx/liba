@@ -1,17 +1,4 @@
 #!/usr/bin/env python
-from sys import argv
-import os, sys
-
-
-def strtobool(s):
-    if s.lower() in ("1", "y", "yes", "true"):
-        return 1
-    return 0
-
-
-os.chdir(os.path.dirname(os.path.abspath(argv[0])))
-if len(argv) < 2:
-    sys.argv += ["--quiet", "build_ext", "--inplace"]
 try:
     from setuptools.command.build_ext import build_ext
     from setuptools import setup, Extension
@@ -19,14 +6,6 @@ except ImportError:
     from distutils.command.build_ext import build_ext
     from distutils.extension import Extension
     from distutils.core import setup
-LIBA_OPENMP = os.environ.get("LIBA_OPENMP")
-if LIBA_OPENMP:
-    LIBA_OPENMP = strtobool(LIBA_OPENMP)
-LIBA_FLOAT = os.environ.get("LIBA_FLOAT")
-if LIBA_FLOAT:
-    LIBA_FLOAT = int(LIBA_FLOAT)
-else:
-    LIBA_FLOAT = 8
 try:
     USE_CYTHON = True
     from Cython.Build import cythonize
@@ -35,8 +14,27 @@ except Exception:
 from argparse import ArgumentParser
 from sys import byteorder
 from re import findall
+import os, sys, ctypes
 import ctypes.util
-import ctypes
+
+
+def strtobool(s):
+    if s.lower() in ("1", "y", "yes", "true"):
+        return 1
+    return 0
+
+
+os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
+if len(sys.argv) < 2:
+    sys.argv += ["--quiet", "build_ext", "--inplace"]
+LIBA_OPENMP = os.environ.get("LIBA_OPENMP")
+if LIBA_OPENMP:
+    LIBA_OPENMP = strtobool(LIBA_OPENMP)
+LIBA_FLOAT = os.environ.get("LIBA_FLOAT")
+if LIBA_FLOAT:
+    LIBA_FLOAT = int(LIBA_FLOAT)
+else:
+    LIBA_FLOAT = 8
 
 
 def check_math(text=""):
@@ -112,7 +110,7 @@ def configure(config):
 parser = ArgumentParser(add_help=False)
 parser.add_argument("-b", "--build-base", default="build")
 parser.add_argument("-O", "--link-objects")
-args = parser.parse_known_args(argv[1:])
+args = parser.parse_known_args(sys.argv[1:])
 base = args[0].build_base
 
 sources, objects = [], []
@@ -147,7 +145,7 @@ ext_modules = [
     )
 ]
 if USE_CYTHON:
-    ext_modules = cythonize(  # type: ignore
+    ext_modules = cythonize(
         ext_modules,
         quiet=True,
     )

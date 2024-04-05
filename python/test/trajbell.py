@@ -13,8 +13,8 @@ traj = liba.trajbell()
 traj.gen(3, 2, 3, 0, 10)
 
 N = 1000
-x = [0.0] * N
 T = traj.t / N
+x = liba.new_num(N)
 for i in range(N):
     x[i] = i * T
 

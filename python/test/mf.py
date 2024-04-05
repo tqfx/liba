@@ -11,7 +11,7 @@ import liba  # type: ignore
 
 N = 1000
 T = 6 / N
-x = [0.0] * N
+x = liba.new_num(N)
 for i in range(N):
     x[i] = (i - N / 2) * T
 
@@ -31,13 +31,13 @@ liba.mf.pi(x, 0, 1, 2, 3)
 
 S = 1
 params = [
-    (liba.mf.TRI, -3 * S, -3 * S, -2 * S),
-    (liba.mf.TRI, -3 * S, -2 * S, -1 * S),
-    (liba.mf.TRI, -2 * S, -1 * S, +0 * S),
-    (liba.mf.TRI, -1 * S, +0 * S, +1 * S),
-    (liba.mf.TRI, +0 * S, +1 * S, +2 * S),
-    (liba.mf.TRI, +1 * S, +2 * S, +3 * S),
-    (liba.mf.TRI, +2 * S, +3 * S, +3 * S),
+    liba.new_num((liba.mf.TRI, -3 * S, -3 * S, -2 * S)),
+    liba.new_num((liba.mf.TRI, -3 * S, -2 * S, -1 * S)),
+    liba.new_num((liba.mf.TRI, -2 * S, -1 * S, +0 * S)),
+    liba.new_num((liba.mf.TRI, -1 * S, +0 * S, +1 * S)),
+    liba.new_num((liba.mf.TRI, +0 * S, +1 * S, +2 * S)),
+    liba.new_num((liba.mf.TRI, +1 * S, +2 * S, +3 * S)),
+    liba.new_num((liba.mf.TRI, +2 * S, +3 * S, +3 * S)),
 ]
 for param in params:
     liba.mf()(param[0], x, param[1:])

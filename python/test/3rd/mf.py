@@ -135,13 +135,13 @@ plt.savefig(os.path.join(base, "mf_pi.png"))
 
 S = 1
 params = [
-    (liba.mf.TRI, -3 * S, -3 * S, -2 * S),
-    (liba.mf.TRI, -3 * S, -2 * S, -1 * S),
-    (liba.mf.TRI, -2 * S, -1 * S, +0 * S),
-    (liba.mf.TRI, -1 * S, +0 * S, +1 * S),
-    (liba.mf.TRI, +0 * S, +1 * S, +2 * S),
-    (liba.mf.TRI, +1 * S, +2 * S, +3 * S),
-    (liba.mf.TRI, +2 * S, +3 * S, +3 * S),
+    liba.new_num((liba.mf.TRI, -3 * S, -3 * S, -2 * S)),
+    liba.new_num((liba.mf.TRI, -3 * S, -2 * S, -1 * S)),
+    liba.new_num((liba.mf.TRI, -2 * S, -1 * S, +0 * S)),
+    liba.new_num((liba.mf.TRI, -1 * S, +0 * S, +1 * S)),
+    liba.new_num((liba.mf.TRI, +0 * S, +1 * S, +2 * S)),
+    liba.new_num((liba.mf.TRI, +1 * S, +2 * S, +3 * S)),
+    liba.new_num((liba.mf.TRI, +2 * S, +3 * S, +3 * S)),
 ]
 
 title = "membership function"

@@ -7,8 +7,8 @@ sys.path.insert(0, path)
 
 import liba  # type: ignore
 
-k = [1, 2, 3]
-print(k, liba.poly_eval(2, *k))
-print(k, list(liba.poly_eval(k, *k)))
-print(k, liba.poly_evar(2, *k))
-print(k, list(liba.poly_evar(k, *k)))
+a = liba.new_num([1, 2, 3])
+print(list(a), liba.poly_eval(2, a))
+print(list(a), list(liba.poly_eval(a, a)))
+print(list(a), liba.poly_evar(2, a))
+print(list(a), list(liba.poly_evar(a, a)))

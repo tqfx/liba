@@ -33,14 +33,14 @@ while t <= 0.2:
 N = len(x)
 r = 1
 
-y1 = [0.0] * N
+y1 = liba.new_num(N)
 for i in range(len(x)):
     y1[i] = tf(pid.pos(r, tf.output[0]))
 
 pid.zero()
 tf.zero()
 
-y2 = [0.0] * N
+y2 = liba.new_num(N)
 for i in range(len(x)):
     y2[i] = tf(pid.inc(r, tf.output[0]))
 
