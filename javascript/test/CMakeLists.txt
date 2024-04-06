@@ -2,7 +2,9 @@ function(unittest source name)
   add_test(NAME js_${name}
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} ${CMAKE_CURRENT_LIST_DIR}/${source}.js ${ARGN}
   )
-  set_tests_properties(js_${name} PROPERTIES TIMEOUT 30)
+  set_tests_properties(js_${name} PROPERTIES TIMEOUT 30
+    FAIL_REGULAR_EXPRESSION "ERROR;error"
+  )
 endfunction()
 
 unittest(a a)

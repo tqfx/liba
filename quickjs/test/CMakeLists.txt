@@ -2,7 +2,9 @@ function(unittest source name)
   add_test(NAME qjs_${name} WORKING_DIRECTORY ${WORKING_DIRECTORY}
     COMMAND ${QJS_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/${source}.js ${ARGN}
   )
-  set_tests_properties(qjs_${name} PROPERTIES TIMEOUT 30)
+  set_tests_properties(qjs_${name} PROPERTIES TIMEOUT 30
+    FAIL_REGULAR_EXPRESSION "ERROR;error"
+  )
 endfunction()
 
 unittest(a a)

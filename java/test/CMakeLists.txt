@@ -24,7 +24,9 @@ function(unittest target)
   add_test(NAME jar_${target} WORKING_DIRECTORY ${WORKING_DIRECTORY}
     COMMAND ${JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_BINARY_DIR}/${target}.jar ${ARGS}
   )
-  set_tests_properties(jar_${target} PROPERTIES TIMEOUT 30)
+  set_tests_properties(jar_${target} PROPERTIES TIMEOUT 30
+    FAIL_REGULAR_EXPRESSION "ERROR;error"
+  )
 endfunction()
 
 building(a)

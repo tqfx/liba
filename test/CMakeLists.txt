@@ -104,7 +104,9 @@ function(unittest target)
   add_test(NAME ${TEST_NAME} WORKING_DIRECTORY ${WORKING_DIRECTORY}
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${TARGET}> ${ARGS}
   )
-  set_tests_properties(${TEST_NAME} PROPERTIES TIMEOUT 30)
+  set_tests_properties(${TEST_NAME} PROPERTIES TIMEOUT 30
+    FAIL_REGULAR_EXPRESSION "ERROR;error;:[0-9]+:"
+  )
 endfunction()
 
 option(LIBA_GNUPLOT "Enable/Disable gnuplot" 0)
