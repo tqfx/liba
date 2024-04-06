@@ -29,8 +29,7 @@ int main()
     int const x = 1;
     printf("%s", *(char *)&x ? "1234" : "4321");
     return 0;
-}
-''', '.c')
+}\n''', '.c')
 if res[0]:
     conf.Define('A_BYTE_ORDER', res[1], 'The byte order of compiler target architecture.')
 A_SIZE_FLOAT = int(env.GetOption('float'))
