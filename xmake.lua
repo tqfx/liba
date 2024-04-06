@@ -13,7 +13,7 @@ option("liba-cxx")
 set_default(true)
 set_showmenu(true)
 set_category("liba")
-set_description("Enable/Disable c++")
+set_description("Enable/Disable C++")
 option_end()
 
 -- option: warning
@@ -212,18 +212,18 @@ option("liba-rust")
 set_default(false)
 set_showmenu(true)
 set_category("liba")
-set_description("Enable/Disable rust")
+set_description("Enable/Disable Rust")
 option_end()
 
 if has_config("liba-rust") then
     target("ars")
-    add_deps("a")
     set_kind("static")
     set_basename("liba")
     add_files("src/lib.rs")
     if get_config("liba-float") == "4" then
         add_rcflags('--cfg=feature="float"')
     end
+    add_deps("a")
     target_end()
 end
 
