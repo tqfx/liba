@@ -684,7 +684,7 @@ cdef class pid_fuzzy:
         self.mkp = num2_new(mkp)
         self.mki = num2_new(mki)
         self.mkd = num2_new(mkd)
-        a_pid_fuzzy_rule(&self.ctx, len(me),
+        a_pid_fuzzy_rule(&self.ctx, <unsigned int>len(me),
                          num2_set(self.me.data, me),
                          num2_set(self.mec.data, mec),
                          num2_set(self.mkp.data, mkp),
@@ -902,20 +902,20 @@ cdef class tf:
         def __get__(self):
             return self._num
         def __set__(self, object num):
-            cdef unsigned int n = len(num)
+            cdef Py_ssize_t n = len(num)
             self._num = num_new(n)
             self.input = num_new(n)
-            a_tf_set_num(&self.ctx, n, num_set(self._num.data, n, num), <a_float *>self.input.data)
+            a_tf_set_num(&self.ctx, <unsigned int>n, num_set(self._num.data, n, num), <a_float *>self.input.data)
     cdef readonly array _den
     cdef readonly array output
     property den:
         def __get__(self):
             return self._den
         def __set__(self, object den):
-            cdef unsigned int n = len(den)
+            cdef Py_ssize_t n = len(den)
             self._den = num_new(n)
             self.output = num_new(n)
-            a_tf_set_den(&self.ctx, n, num_set(self._den.data, n, den), <a_float *>self.output.data)
+            a_tf_set_den(&self.ctx, <unsigned int>n, num_set(self._den.data, n, den), <a_float *>self.output.data)
 
 from a.trajbell cimport *
 
