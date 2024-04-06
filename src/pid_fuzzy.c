@@ -116,7 +116,7 @@ void a_pid_fuzzy_set_block(a_pid_fuzzy *ctx, void *ptr, a_size num)
 {
     ctx->block = (unsigned int)num;
     ctx->idx = (unsigned int *)ptr;
-    ptr = (a_byte *)ptr + 2 * sizeof(unsigned int) * num;
+    if (ptr) { ptr = (a_byte *)ptr + 2 * sizeof(unsigned int) * num; }
     ctx->val = (a_float *)ptr;
 }
 
