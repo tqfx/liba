@@ -51,6 +51,7 @@ jobs:
           cmake -S . -B build -G "MinGW Makefiles" -DPython_ROOT_DIR=D:/msys64/${{ matrix.sys }} \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
+            -DLIBA_ANALYZER=1 \
             -DLIBA_PYTHON=1 \
             -DLIBA_VCPKG=1 \
             -DLIBA_JAVA=1 \

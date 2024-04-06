@@ -26,5 +26,6 @@ jobs:
           cmake -S . -B build --toolchain cmake/Use${{ matrix.mingw }}.cmake \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
+            -DLIBA_ANALYZER=1 \
             -DLIBA_STATIC=1
           cmake --build build --target package

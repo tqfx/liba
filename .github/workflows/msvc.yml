@@ -35,6 +35,7 @@ jobs:
           cmake -S . -B build -A ${{ matrix.arch }} `
             -DBUILD_TESTING=1 `
             -DLIBA_WARNINGS=1 `
+            -DLIBA_ANALYZER=1 `
             -DLIBA_SANITIZE=1 `
             -DLIBA_WITH_LUA=1 `
             -DLIBA_PYTHON=1 `

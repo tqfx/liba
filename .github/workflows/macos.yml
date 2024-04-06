@@ -43,6 +43,7 @@ jobs:
           cmake -S . -B build.${{ matrix.cc }} -DCMAKE_BUILD_TYPE=${{ matrix.type }} \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
+            -DLIBA_ANALYZER=1 \
             -DLIBA_SANITIZE=1 \
             -DLIBA_JAVASCRIPT=1 \
             -DLIBA_JAVASCRIPT_BIGINT=1 \
