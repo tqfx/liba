@@ -15,6 +15,12 @@ include(cmake/TargetSupportsExecutables.cmake)
 include(cmake/TargetSupportsRelocatable.cmake)
 include(cmake/TargetSupportsSymbolicLink.cmake)
 
+option(LIBA_STATIC "Enable/Disable finding and linking static libraries" 0)
+
+if(LIBA_STATIC)
+  include(cmake/CMakeFindLibraryStatic.cmake)
+endif()
+
 option(LIBA_WARNINGS "Enable/Disable warnings" 0)
 
 if(LIBA_WARNINGS)
@@ -33,10 +39,7 @@ if(LIBA_SANITIZE)
   include(cmake/TargetSanitize.cmake)
 endif()
 
-option(LIBA_STATIC "Enable/Disable finding and linking static libraries" 0)
-
 if(LIBA_STATIC)
-  include(cmake/CMakeFindLibraryStatic.cmake)
   include(cmake/TargetStatic.cmake)
 endif()
 

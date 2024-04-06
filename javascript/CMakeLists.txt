@@ -70,8 +70,12 @@ option(LIBA_JAVASCRIPT_WASM "Enable/Disable JavaScript WebAssembly" 1)
 option(LIBA_JAVASCRIPT_BIGINT "Enable/Disable JavaScript BigInt" 0)
 
 if(LIBA_JAVASCRIPT_DEBUG)
-  string_append(CMAKE_C_LINK_EXECUTABLE -fsanitize=undefined,address,leak -sALLOW_MEMORY_GROWTH)
-  string_append(CMAKE_CXX_LINK_EXECUTABLE -fsanitize=undefined,address,leak -sALLOW_MEMORY_GROWTH)
+  string_append(CMAKE_C_LINK_EXECUTABLE -fsanitize=address,leak,undefined
+    -fno-omit-frame-pointer -fsanitize-recover=all -sALLOW_MEMORY_GROWTH
+  )
+  string_append(CMAKE_CXX_LINK_EXECUTABLE -fsanitize=address,leak,undefined
+    -fno-omit-frame-pointer -fsanitize-recover=all -sALLOW_MEMORY_GROWTH
+  )
 endif()
 
 if(LIBA_JAVASCRIPT_TSGEN)
@@ -112,7 +116,9 @@ set_target_properties(ajs PROPERTIES OUTPUT_NAME ${PROJECT_NAME}
 )
 
 if(LIBA_JAVASCRIPT_DEBUG)
-  target_compile_options(ajs PRIVATE -fsanitize=undefined,address,leak)
+  target_compile_options(ajs PRIVATE -fsanitize=address,leak,undefined
+    -fno-omit-frame-pointer -fsanitize-recover=all
+  )
 endif()
 
 if(NOT CMAKE_VERSION VERSION_LESS 3.3 AND LIBA_WARNINGS AND UNIX)

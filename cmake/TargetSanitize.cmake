@@ -12,17 +12,11 @@ function(list_append var)
   set(${var} ${${var}} PARENT_SCOPE)
 endfunction()
 
-macro(sanitize_flag)
-  foreach(arg ${ARGN})
-    list_append(SANITIZE_CC ${arg})
-    list_append(SANITIZE_XX ${arg})
-  endforeach()
-endmacro()
-
 macro(sanitize_flag_cx)
   foreach(arg ${ARGN})
     string(REPLACE "+" "x" var ${arg})
     string(REGEX REPLACE "[^A-Za-z0-9_-]+" "-" var ${var})
+    set(CMAKE_REQUIRED_FLAGS "${REQUIRED_FLAGS} ${arg}")
     list(FIND ENABLED_LANGUAGES C index)
     if(${index} GREATER -1)
       check_c_compiler_flag(${arg} cc${var})
@@ -37,22 +31,17 @@ macro(sanitize_flag_cx)
         list_append(SANITIZE_XX ${arg})
       endif()
     endif()
-    set(var)
   endforeach()
+  set(CMAKE_REQUIRED_FLAGS)
   set(index)
+  set(var)
 endmacro()
 
 macro(sanitize_flag_ld)
   foreach(arg ${ARGN})
     string(REPLACE "+" "x" var ${arg})
     string(REGEX REPLACE "[^A-Za-z0-9_-]+" "-" var ${var})
-    list(FIND ENABLED_LANGUAGES CXX index)
-    if(${index} GREATER -1)
-      check_cxx_compiler_flag(${arg} ld${var})
-      if(ld${var})
-        list_append(SANITIZE_LD ${arg})
-      endif()
-    endif()
+    set(CMAKE_REQUIRED_FLAGS "${REQUIRED_FLAGS} ${arg}")
     list(FIND ENABLED_LANGUAGES C index)
     if(${index} GREATER -1)
       check_c_compiler_flag(${arg} ld${var})
@@ -60,9 +49,17 @@ macro(sanitize_flag_ld)
         list_append(SANITIZE_LD ${arg})
       endif()
     endif()
-    set(var)
+    list(FIND ENABLED_LANGUAGES CXX index)
+    if(${index} GREATER -1)
+      check_cxx_compiler_flag(${arg} ld${var})
+      if(ld${var})
+        list_append(SANITIZE_LD ${arg})
+      endif()
+    endif()
   endforeach()
+  set(CMAKE_REQUIRED_FLAGS)
   set(index)
+  set(var)
 endmacro()
 
 if(
@@ -73,24 +70,23 @@ if(
   CMAKE_CXX_COMPILER_ID MATCHES "IntelLLVM" OR
   CMAKE_CXX_COMPILER_ID MATCHES "GNU"
 )
-  sanitize_flag(-fsanitize=address)
+  set(REQUIRED_FLAGS -fsanitize=address)
+  sanitize_flag_cx(-fsanitize=address)
+  sanitize_flag_cx(-fsanitize=leak)
   sanitize_flag_cx(-fsanitize=undefined)
+  sanitize_flag_cx(-fsanitize-recover=all)
   sanitize_flag_cx(-fno-omit-frame-pointer)
-  sanitize_flag_cx(-fsanitize-recover=address)
-  if(NOT(
-    CMAKE_C_COMPILER_ID MATCHES "Apple[Cc]lang" OR
-    CMAKE_CXX_COMPILER_ID MATCHES "Apple[Cc]lang"
-    ))
-    sanitize_flag_cx(-fsanitize=leak)
-  endif()
   if(
-    CMAKE_C_COMPILER_ID MATCHES "(Apple)?[Cc]lang" OR
-    CMAKE_C_COMPILER_ID MATCHES "IntelLLVM" OR
-    CMAKE_CXX_COMPILER_ID MATCHES "(Apple)?[Cc]lang" OR
-    CMAKE_CXX_COMPILER_ID MATCHES "IntelLLVM"
+    CMAKE_C_COMPILER_ID MATCHES "GNU" OR
+    CMAKE_CXX_COMPILER_ID MATCHES "GNU"
   )
+    sanitize_flag_ld(-static-libasan)
+    sanitize_flag_ld(-static-liblsan)
+    sanitize_flag_ld(-static-libubsan)
+  else()
     sanitize_flag_ld(-static-libsan)
   endif()
+  set(REQUIRED_FLAGS)
 elseif(
   CMAKE_C_COMPILER_ID MATCHES "MSVC" OR
   CMAKE_CXX_COMPILER_ID MATCHES "MSVC"
