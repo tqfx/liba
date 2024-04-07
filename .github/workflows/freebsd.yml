@@ -8,7 +8,7 @@ jobs:
       matrix:
         include: [
           { type: Debug },
-          { type: Release },
+          { type: RelWithDebInfo },
         ]
     runs-on: ubuntu-latest
     env:

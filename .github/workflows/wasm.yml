@@ -18,8 +18,7 @@ jobs:
             -DLIBA_WARNINGS=1 \
             -DLIBA_JAVASCRIPT=1 \
             -DLIBA_JAVASCRIPT_BIGINT=1 \
-            -DLIBA_SYMLINK=0 \
-            -DLIBA_IPO=1
+            -DLIBA_SYMLINK=0 -DLIBA_IPO=1
           cmake --build build --config Release
       - uses: actions/upload-artifact@v4
         with:

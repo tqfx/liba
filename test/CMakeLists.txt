@@ -67,6 +67,12 @@ function(building target)
     target_link_libraries(${TARGET} PRIVATE liba.o)
   endif()
 
+  if(LIBA_SANITIZE AND MSVC)
+    set_property(TARGET ${TARGET} APPEND PROPERTY
+      LINK_FLAGS /INCREMENTAL:NO
+    )
+  endif()
+
   set_executable_options(${TARGET})
 endfunction()
 

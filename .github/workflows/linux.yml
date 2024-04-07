@@ -9,8 +9,8 @@ jobs:
         include: [
           { cc: gcc, cxx: g++, type: Debug },
           { cc: clang, cxx: clang++, type: Debug },
-          { cc: gcc, cxx: g++, type: Release },
-          { cc: clang, cxx: clang++, type: Release },
+          { cc: gcc, cxx: g++, type: RelWithDebInfo },
+          { cc: clang, cxx: clang++, type: RelWithDebInfo },
         ]
     runs-on: ubuntu-latest
     steps:
@@ -58,7 +58,7 @@ jobs:
             -DLIBA_PKGCONFIG=1
           cmake --build build.${{ matrix.cc }} --config ${{ matrix.type }} --target package
       - name: Run vcpkg
-        if: ${{ matrix.type == 'Release' }}
+        if: ${{ matrix.type != 'Debug' }}
         env:
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}

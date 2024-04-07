@@ -9,9 +9,9 @@ jobs:
         include: [
           { triple: x64, arch: x64, type: Debug },
           { triple: x86, arch: win32, type: Debug },
-          { triple: x64, arch: x64, type: Release },
-          { triple: x86, arch: win32, type: Release },
-          { triple: arm64, arch: ARM64, type: Release },
+          { triple: x64, arch: x64, type: RelWithDebInfo },
+          { triple: x86, arch: win32, type: RelWithDebInfo },
+          { triple: arm64, arch: ARM64, type: RelWithDebInfo },
         ]
     runs-on: windows-latest
     steps:
@@ -43,7 +43,7 @@ jobs:
             -DLIBA_JAVA=1
           cmake --build build --config ${{ matrix.type }} --target package -- -noLogo
       - name: Run vcpkg
-        if: ${{ matrix.type == 'Release' }}
+        if: ${{ matrix.type != 'Debug' }}
         run: |
           Set-PSDebug -Trace 1
           cp -r -Force build/vcpkg/* $ENV:VCPKG_INSTALLATION_ROOT
