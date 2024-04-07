@@ -68,32 +68,32 @@ static void test(void)
     {
         int a = 2;
         int b = 2;
-        printf("eq(%i, %i) = %i\n", a, b, a_eq(a, b));
+        printf("eq(%i, %i) = %i\n", a, b, a_cast_s(int, a_eq(a, b)));
     }
     {
         int a = 2;
         int b = 2;
-        printf("ne(%i, %i) = %i\n", a, b, a_ne(a, b));
+        printf("ne(%i, %i) = %i\n", a, b, a_cast_s(int, a_ne(a, b)));
     }
     {
         int a = 1;
         int b = 2;
-        printf("lt(%i, %i) = %i\n", a, b, a_lt(a, b));
+        printf("lt(%i, %i) = %i\n", a, b, a_cast_s(int, a_lt(a, b)));
     }
     {
         int a = 2;
         int b = 1;
-        printf("gt(%i, %i) = %i\n", a, b, a_gt(a, b));
+        printf("gt(%i, %i) = %i\n", a, b, a_cast_s(int, a_gt(a, b)));
     }
     {
         int a = 1;
         int b = 2;
-        printf("le(%i, %i) = %i\n", a, b, a_le(a, b));
+        printf("le(%i, %i) = %i\n", a, b, a_cast_s(int, a_le(a, b)));
     }
     {
         int a = 2;
         int b = 1;
-        printf("ge(%i, %i) = %i\n", a, b, a_ge(a, b));
+        printf("ge(%i, %i) = %i\n", a, b, a_cast_s(int, a_ge(a, b)));
     }
     {
         int a = 2;
@@ -113,12 +113,12 @@ static void test(void)
     {
         int a = 2;
         int b = 0;
-        printf("and(%i, %i) = %i\n", a, b, a_and(a, b));
+        printf("and(%i, %i) = %i\n", a, b, a_cast_s(int, a_and(a, b)));
     }
     {
         int a = 0;
         int b = 2;
-        printf("or(%i, %i) = %i\n", a, b, a_or(a, b));
+        printf("or(%i, %i) = %i\n", a, b, a_cast_s(int, a_or(a, b)));
     }
     {
         int a = 1;
@@ -194,8 +194,8 @@ static void test(void)
 
 int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-    (void)(argc);
-    (void)(argv);
+    (void)argc;
+    (void)argv;
     printf("%s\n", A_FUNC);
     test();
     return 0;

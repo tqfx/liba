@@ -303,8 +303,8 @@ static void test_null(void)
 
 int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-    (void)(argc);
-    (void)(argv);
+    (void)argc;
+    (void)argv;
     printf("%s\n", A_FUNC);
     test_next();
     test_prev();

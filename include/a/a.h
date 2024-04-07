@@ -131,10 +131,10 @@
 #if A_PREREQ_GNUC(2, 96) || __has_builtin(__builtin_expect)
 #define a_unlikely(x) __builtin_expect(!!(x), 0)
 #define a_likely(x) __builtin_expect(!!(x), 1)
-#else /* !__GNUC__ */
+#else /* !likely */
 #define a_unlikely(x) (x)
 #define a_likely(x) (x)
-#endif /* __GNUC__ */
+#endif /* likely */
 
 #if defined(_WIN32) || defined(__CYGWIN__)
 #define A_DECLSPEC(x) __declspec(x)
@@ -148,23 +148,38 @@
 #define A_ATTRIBUTE(x)
 #endif /* __attribute__ */
 
+#if __has_builtin(__builtin_assume)
+#define a_assume(x) __builtin_assume(x)
+#elif A_PREREQ_GNUC(13, 1)
+#define a_assume(x) __attribute__((__assume__(x)))
+#elif defined(__GNUC__)
+#define a_assume(x)                            \
+    do {                                       \
+        if (!(x)) { __builtin_unreachable(); } \
+    } while (0)
+#elif defined(_MSC_VER)
+#define a_assume(x) __assume(x)
+#else /* !assume */
+#define a_assume(x) (void)0
+#endif /* assume */
+
 /* attribute format */
 #if A_PREREQ_GNUC(2, 4) || __has_attribute(format)
-#define A_FORMAT(_, a, b) __attribute__((format(_, a, b)))
+#define A_FORMAT(_, a, b) __attribute__((__format__(_, a, b)))
 #else /* !format */
 #define A_FORMAT(_, a, b)
 #endif /* format */
 
 /* attribute fallthrough */
 #if A_PREREQ_GNUC(7, 1) || __has_attribute(fallthrough)
-#define A_FALLTHROUGH __attribute__((fallthrough))
+#define A_FALLTHROUGH __attribute__((__fallthrough__))
 #else /* !fallthrough */
-#define A_FALLTHROUGH ((void)(0))
+#define A_FALLTHROUGH (void)0
 #endif /* fallthrough */
 
 /* attribute deprecated */
 #if A_PREREQ_GNUC(3, 2) || __has_attribute(deprecated)
-#define A_DEPRECATED __attribute__((deprecated))
+#define A_DEPRECATED __attribute__((__deprecated__))
 #elif defined(_WIN32) || defined(__CYGWIN__)
 #define A_DEPRECATED __declspec(deprecated)
 #else /* !deprecated */
@@ -173,7 +188,7 @@
 
 /* attribute always inline */
 #if A_PREREQ_GNUC(3, 2) || __has_attribute(always_inline)
-#define A_INLINE __inline __attribute__((always_inline))
+#define A_INLINE __inline __attribute__((__always_inline__))
 #elif defined(_MSC_VER)
 #define A_INLINE __inline __forceinline
 #else /* !_MSC_VER */
@@ -189,9 +204,9 @@
 #define A_IMPORT __declspec(dllimport)
 #define A_HIDDEN
 #elif A_PREREQ_GNUC(4, 0) || __has_attribute(visibility)
-#define A_EXPORT __attribute__((visibility("default")))
-#define A_IMPORT __attribute__((visibility("default")))
-#define A_HIDDEN __attribute__((visibility("hidden")))
+#define A_EXPORT __attribute__((__visibility__("default")))
+#define A_IMPORT __attribute__((__visibility__("default")))
+#define A_HIDDEN __attribute__((__visibility__("hidden")))
 #else /* !visibility */
 #define A_EXPORT
 #define A_IMPORT
@@ -261,7 +276,7 @@
 */
 
 /*! assert a build-time dependency, as an expression */
-#define A_ASSERT_BUILD(x) ((void)(sizeof(char[1 - 2 * !(x)]) - 1))
+#define A_ASSERT_BUILD(x) (void)(sizeof(char[1 - 2 * !(x)]) - 1)
 
 #if defined(__cplusplus)
 #define a_cast_r(T, x) reinterpret_cast<T>(x)

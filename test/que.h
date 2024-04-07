@@ -154,8 +154,8 @@ static void test_sort(void)
 
 int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-    (void)(argc);
-    (void)(argv);
+    (void)argc;
+    (void)argv;
     printf("%s\n", A_FUNC);
     test();
     test_sort();

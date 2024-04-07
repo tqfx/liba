@@ -27,8 +27,8 @@ static int intcmp(void const *lhs, void const *rhs)
 
 static int test(int argc, char *argv[])
 {
-    (void)(argc);
-    (void)(argv);
+    (void)argc;
+    (void)argv;
 
     unsigned int const n = 0x1000;
 

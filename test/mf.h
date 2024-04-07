@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         else if (strstr(argv[1], "z.")) { e = A_MF_Z; }
         else if (strstr(argv[1], "pi.")) { e = A_MF_PI; }
     }
-    a_float params[6];
+    a_float params[6] = {0, 0, 0, 0, 0, 0};
     for (int i = 2; i < argc && i < 8; ++i)
     {
         params[i - 2] = strtonum(argv[i], A_NULL);

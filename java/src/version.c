@@ -46,7 +46,7 @@ JNIEXPORT void JNICALL Java_liba_version_init(JNIEnv *_env, jobject _obj, jint m
 
 JNIEXPORT jint JNICALL Java_liba_version_check(JNIEnv *_env, jclass _cls, jint major, jint minor, jint patch)
 {
-    return (void)(_env), (void)(_cls), a_version_check((unsigned int)major, (unsigned int)minor, (unsigned int)patch);
+    return (void)_env, (void)_cls, a_version_check((unsigned int)major, (unsigned int)minor, (unsigned int)patch);
 }
 
 JNIEXPORT jstring JNICALL Java_liba_version_toString(JNIEnv *_env, jobject _obj)

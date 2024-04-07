@@ -15,8 +15,8 @@ static void print_(a_float const *a, a_size n)
 
 int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-    (void)(argc);
-    (void)(argv);
+    (void)argc;
+    (void)argv;
     a_float x = 2;
     a_float x4[] = {A_FLOAT_C(1.0), A_FLOAT_C(2.0), A_FLOAT_C(3.0), A_FLOAT_C(4.0)};
     print_(x4, 4);

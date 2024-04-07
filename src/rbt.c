@@ -245,6 +245,7 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
                 a_rbt_set_parent_color(tmp1, parent, A_RBT_B);
                 a_rbt_set_parents(root, parent, sibling, A_RBT_R);
                 sibling = tmp1;
+                a_assume(tmp1);
             }
             tmp1 = sibling->right;
             if (!tmp1 || a_rbt_color(tmp1) == A_RBT_B)
@@ -325,8 +326,9 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
             a_rbt_set_parents(root, parent, sibling, A_RBT_B);
             break;
         }
-        else if (parent->left)
+        else
         {
+            a_assume(parent->left);
             sibling = parent->left;
             if (a_rbt_color(sibling) == A_RBT_R)
             {
@@ -337,6 +339,7 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
                 a_rbt_set_parent_color(tmp1, parent, A_RBT_B);
                 a_rbt_set_parents(root, parent, sibling, A_RBT_R);
                 sibling = tmp1;
+                a_assume(tmp1);
             }
             tmp1 = sibling->left;
             if (!tmp1 || a_rbt_color(tmp1) == A_RBT_B)
@@ -376,7 +379,6 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
             a_rbt_set_parents(root, parent, sibling, A_RBT_B);
             break;
         }
-        else { break; }
     }
 }
 

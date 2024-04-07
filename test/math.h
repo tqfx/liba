@@ -59,8 +59,8 @@ static void test_f64_rsqrt(void)
 
 int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
-    (void)(argc);
-    (void)(argv);
+    (void)argc;
+    (void)argv;
     test_u32_sqrt();
     test_u64_sqrt();
     test_f32_rsqrt();

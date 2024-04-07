@@ -73,8 +73,8 @@ static int intcmp(void const *lhs, void const *rhs)
 
 static int test(int argc, char *argv[])
 {
-    (void)(argc);
-    (void)(argv);
+    (void)argc;
+    (void)argv;
 
     a_str str = A_STR_NUL;
     a_avl root = A_AVL_ROOT;

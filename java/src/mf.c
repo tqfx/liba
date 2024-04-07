@@ -22,65 +22,65 @@ JNIEXPORT void JNICALL Java_liba_mf_clinit(JNIEnv *_env, jclass _cls)
 
 JNIEXPORT jdouble JNICALL Java_liba_mf_gauss(JNIEnv *_env, jclass _cls, jdouble x, jdouble sigma, jdouble c)
 {
-    return (void)(_env), (void)(_cls), a_mf_gauss(x, sigma, c);
+    return (void)_env, (void)_cls, a_mf_gauss(x, sigma, c);
 }
 
 JNIEXPORT jdouble JNICALL Java_liba_mf_gauss2(JNIEnv *_env, jclass _cls, jdouble x, jdouble sigma1, jdouble c1, jdouble sigma2, jdouble c2)
 {
-    return (void)(_env), (void)(_cls), a_mf_gauss2(x, sigma1, c1, sigma2, c2);
+    return (void)_env, (void)_cls, a_mf_gauss2(x, sigma1, c1, sigma2, c2);
 }
 
 JNIEXPORT jdouble JNICALL Java_liba_mf_gbell(JNIEnv *_env, jclass _cls, jdouble x, jdouble a, jdouble b, jdouble c)
 {
-    return (void)(_env), (void)(_cls), a_mf_gbell(x, a, b, c);
+    return (void)_env, (void)_cls, a_mf_gbell(x, a, b, c);
 }
 
 JNIEXPORT jdouble JNICALL Java_liba_mf_sig(JNIEnv *_env, jclass _cls, jdouble x, jdouble a, jdouble c)
 {
-    return (void)(_env), (void)(_cls), a_mf_sig(x, a, c);
+    return (void)_env, (void)_cls, a_mf_sig(x, a, c);
 }
 
 JNIEXPORT jdouble JNICALL Java_liba_mf_dsig(JNIEnv *_env, jclass _cls, jdouble x, jdouble a1, jdouble c1, jdouble a2, jdouble c2)
 {
-    return (void)(_env), (void)(_cls), a_mf_dsig(x, a1, c1, a2, c2);
+    return (void)_env, (void)_cls, a_mf_dsig(x, a1, c1, a2, c2);
 }
 
 JNIEXPORT jdouble JNICALL Java_liba_mf_psig(JNIEnv *_env, jclass _cls, jdouble x, jdouble a1, jdouble c1, jdouble a2, jdouble c2)
 {
-    return (void)(_env), (void)(_cls), a_mf_psig(x, a1, c1, a2, c2);
+    return (void)_env, (void)_cls, a_mf_psig(x, a1, c1, a2, c2);
 }
 
 JNIEXPORT jdouble JNICALL Java_liba_mf_trap(JNIEnv *_env, jclass _cls, jdouble x, jdouble a, jdouble b, jdouble c, jdouble d)
 {
-    return (void)(_env), (void)(_cls), a_mf_trap(x, a, b, c, d);
+    return (void)_env, (void)_cls, a_mf_trap(x, a, b, c, d);
 }
 
 JNIEXPORT jdouble JNICALL Java_liba_mf_tri(JNIEnv *_env, jclass _cls, jdouble x, jdouble a, jdouble b, jdouble c)
 {
-    return (void)(_env), (void)(_cls), a_mf_tri(x, a, b, c);
+    return (void)_env, (void)_cls, a_mf_tri(x, a, b, c);
 }
 
 JNIEXPORT jdouble JNICALL Java_liba_mf_lins(JNIEnv *_env, jclass _cls, jdouble x, jdouble a, jdouble b)
 {
-    return (void)(_env), (void)(_cls), a_mf_lins(x, a, b);
+    return (void)_env, (void)_cls, a_mf_lins(x, a, b);
 }
 
 JNIEXPORT jdouble JNICALL Java_liba_mf_linz(JNIEnv *_env, jclass _cls, jdouble x, jdouble a, jdouble b)
 {
-    return (void)(_env), (void)(_cls), a_mf_linz(x, a, b);
+    return (void)_env, (void)_cls, a_mf_linz(x, a, b);
 }
 
 JNIEXPORT jdouble JNICALL Java_liba_mf_s(JNIEnv *_env, jclass _cls, jdouble x, jdouble a, jdouble b)
 {
-    return (void)(_env), (void)(_cls), a_mf_s(x, a, b);
+    return (void)_env, (void)_cls, a_mf_s(x, a, b);
 }
 
 JNIEXPORT jdouble JNICALL Java_liba_mf_z(JNIEnv *_env, jclass _cls, jdouble x, jdouble a, jdouble b)
 {
-    return (void)(_env), (void)(_cls), a_mf_z(x, a, b);
+    return (void)_env, (void)_cls, a_mf_z(x, a, b);
 }
 
 JNIEXPORT jdouble JNICALL Java_liba_mf_pi(JNIEnv *_env, jclass _cls, jdouble x, jdouble a, jdouble b, jdouble c, jdouble d)
 {
-    return (void)(_env), (void)(_cls), a_mf_pi(x, a, b, c, d);
+    return (void)_env, (void)_cls, a_mf_pi(x, a, b, c, d);
 }
