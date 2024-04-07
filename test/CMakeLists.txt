@@ -45,6 +45,10 @@ function(building target)
     file_filter(ARGN ${ARGN} EXT c h)
   endif()
 
+  if(LIBA_SANITIZE AND CMAKE_VERSION VERSION_LESS 3.12)
+    list(APPEND ARGN $<TARGET_OBJECTS:asan>)
+  endif()
+
   if(NOT TARGET_SUPPORTS_EXECUTABLES)
     add_library(${TARGET} STATIC ${ARGN})
   else()
@@ -53,9 +57,9 @@ function(building target)
 
   set_property(TARGET ${TARGET} PROPERTY OUTPUT_NAME ${target})
 
-  if(TARGET_SUPPORTS_SHARED_LIBS AND LIBA_SANITIZE)
-    target_link_libraries(${TARGET} PRIVATE libasan)
-  elseif(NOT CMAKE_VERSION VERSION_LESS 3.12 AND LIBA_SANITIZE)
+  if(LIBA_SANITIZE AND CMAKE_VERSION VERSION_LESS 3.12)
+    add_library_properties(${TARGET} PRIVATE asan)
+  elseif(LIBA_SANITIZE)
     target_link_libraries(${TARGET} PRIVATE asan)
   elseif(BUILD_SHARED_LIBS)
     target_link_libraries(${TARGET} PRIVATE liba)

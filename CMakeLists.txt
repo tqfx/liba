@@ -346,27 +346,11 @@ if(LIBA_SANITIZE)
       target_link_libraries(asan PUBLIC ${MIMALLOC_LIBRARY})
     endif()
   endif()
-
-  if(TARGET_SUPPORTS_SHARED_LIBS)
-    add_library(libasan SHARED $<TARGET_OBJECTS:asan>)
-    set_library_compile(libasan)
-
-    set_property(TARGET libasan PROPERTY OUTPUT_NAME a.san)
-    target_compile_definitions(libasan INTERFACE A_IMPORTS)
-    target_link_sanitize(libasan)
-
-    if(LIBA_MIMALLOC AND mimalloc_FOUND)
-      target_link_libraries(libasan PUBLIC ${MIMALLOC_LIBRARY})
-    endif()
-
-    if(LIBA_STATIC)
-      target_link_static(libasan)
-    endif()
-  endif()
 endif()
 
 if(TARGET_SUPPORTS_RELOCATABLE)
-  file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/lib/CMakeLists.txt "get_cmake_property(ENABLED_LANGUAGES ENABLED_LANGUAGES)
+  file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/lib/CMakeLists.txt
+    "get_cmake_property(ENABLED_LANGUAGES ENABLED_LANGUAGES)
 foreach(LANG \${ENABLED_LANGUAGES})
 \tset(CMAKE_\${LANG}_CREATE_STATIC_LIBRARY \"\")
 \tset(CMAKE_\${LANG}_LINK_EXECUTABLE
@@ -549,7 +533,9 @@ if(PROJECT_IS_TOP_LEVEL AND BUILD_TESTING)
 endif()
 
 if(CLANG_FORMAT_FOUND)
-  file_scaner(SOURCES RECURSE include src test java/src javascript/src lua/src quickjs/src EXT c h cc hh cpp hpp)
+  file_scaner(SOURCES EXT c h cc hh cpp hpp RECURSE include src test
+    java/src javascript/src lua/src quickjs/src
+  )
   add_clang_format(afmt.c VERBOSE ${SOURCES})
   add_dependencies(afmt afmt.c)
 endif()
