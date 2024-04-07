@@ -46,9 +46,8 @@ jobs:
             -DLIBA_ANALYZER=1 \
             -DLIBA_SANITIZE=1 \
             -DLIBA_JAVASCRIPT=1 \
-            -DLIBA_JAVASCRIPT_BIGINT=1 \
-            -DLIBA_JAVASCRIPT_DEBUG=1 \
             -DLIBA_JAVASCRIPT_TSGEN=1 \
+            -DLIBA_JAVASCRIPT_BIGINT=1 \
             -DLIBA_WITH_LUA=1 \
             -DLIBA_PYTHON=1 \
             -DLIBA_VCPKG=1 \

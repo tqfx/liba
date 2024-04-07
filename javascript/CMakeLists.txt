@@ -32,16 +32,12 @@ if(NOT EMSCRIPTEN)
     unset(CMAKE_CXX_COMPILER_ARG${emxx} CACHE)
     unset(CMAKE_CXX_COMPILER_ARG${emxx})
   endif()
-endif()
 
-if(NOT DEFINED EMSDK_COMPILER_VERSION)
-  set(EMSDK_COMPILER_VERSION ${CMAKE_C_COMPILER_VERSION})
-endif()
-
-if(EMSCRIPTEN)
-  set(OBJECTS $<TARGET_OBJECTS:a>)
-else()
   get_property(OBJECTS TARGET a PROPERTY SOURCES)
+elseif(LIBA_SANITIZE)
+  set(OBJECTS $<TARGET_OBJECTS:asan>)
+else()
+  set(OBJECTS $<TARGET_OBJECTS:a>)
 endif()
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ${LIBA_PIE})
@@ -54,6 +50,10 @@ if(NOT LIBA_CXX)
   set(source)
 endif()
 
+if(NOT DEFINED EMSDK_COMPILER_VERSION)
+  set(EMSDK_COMPILER_VERSION ${CMAKE_CXX_COMPILER_VERSION})
+endif()
+
 # https://emscripten.org/docs/tools_reference/emcc.html
 set(LIBA_EMCC_FLAGS "" CACHE STRING "Flags used by the emcc")
 string_append(CMAKE_C_FLAGS ${LIBA_EMCC_FLAGS})
@@ -61,15 +61,14 @@ set(LIBA_EMXX_FLAGS "" CACHE STRING "Flags used by the em++")
 string_append(CMAKE_CXX_FLAGS ${LIBA_EMXX_FLAGS})
 set(LIBA_WASM_FLAGS "" CACHE STRING "Flags used by the linker")
 
-set(CMAKE_C_LINK_EXECUTABLE "<CMAKE_C_COMPILER> <FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES> --bind")
-set(CMAKE_CXX_LINK_EXECUTABLE "<CMAKE_CXX_COMPILER> <FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES> --bind")
+set(CMAKE_C_LINK_EXECUTABLE "<CMAKE_C_COMPILER> <FLAGS> <OBJECTS> -o <TARGET> --bind <LINK_LIBRARIES>")
+set(CMAKE_CXX_LINK_EXECUTABLE "<CMAKE_CXX_COMPILER> <FLAGS> <OBJECTS> -o <TARGET> --bind <LINK_LIBRARIES>")
 option(LIBA_JAVASCRIPT_TSGEN "Enable/Disable generation of TypeScript definition files" 0)
 option(LIBA_JAVASCRIPT_ASYNC "Enable/Disable compilation of wasm async" 0)
-option(LIBA_JAVASCRIPT_DEBUG "Enable/Disable debug with sanitizers" 0)
 option(LIBA_JAVASCRIPT_WASM "Enable/Disable JavaScript WebAssembly" 1)
 option(LIBA_JAVASCRIPT_BIGINT "Enable/Disable JavaScript BigInt" 0)
 
-if(LIBA_JAVASCRIPT_DEBUG)
+if(LIBA_SANITIZE)
   string_append(CMAKE_C_LINK_EXECUTABLE -fsanitize=address,leak,undefined
     -fno-omit-frame-pointer -fsanitize-recover=all -sALLOW_MEMORY_GROWTH
   )
@@ -115,12 +114,6 @@ set_target_properties(ajs PROPERTIES OUTPUT_NAME ${PROJECT_NAME}
   RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_CURRENT_LIST_DIR}
 )
 
-if(LIBA_JAVASCRIPT_DEBUG)
-  target_compile_options(ajs PRIVATE -fsanitize=address,leak,undefined
-    -fno-omit-frame-pointer -fsanitize-recover=all
-  )
-endif()
-
 if(NOT CMAKE_VERSION VERSION_LESS 3.3 AND LIBA_WARNINGS AND UNIX)
   target_compile_options(ajs PRIVATE -Weverything -Wno-documentation
     -Wno-documentation-unknown-command -Wno-used-but-marked-unused
@@ -131,6 +124,12 @@ if(NOT CMAKE_VERSION VERSION_LESS 3.3 AND LIBA_WARNINGS AND UNIX)
   if(NOT EMSDK_COMPILER_VERSION VERSION_LESS 16)
     target_compile_options(ajs PRIVATE -Wno-unsafe-buffer-usage)
   endif()
+endif()
+
+if(LIBA_SANITIZE)
+  target_compile_options(ajs PRIVATE -fsanitize=address,leak,undefined
+    -fno-omit-frame-pointer -fsanitize-recover=all
+  )
 endif()
 
 if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt AND CMAKE_CROSSCOMPILING_EMULATOR)

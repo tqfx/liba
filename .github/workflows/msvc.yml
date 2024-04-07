@@ -69,9 +69,8 @@ jobs:
             -DBUILD_TESTING=1 `
             -DLIBA_WARNINGS=1 `
             -DLIBA_JAVASCRIPT=1 `
-            -DLIBA_JAVASCRIPT_BIGINT=1 `
-            -DLIBA_JAVASCRIPT_DEBUG=1 `
             -DLIBA_JAVASCRIPT_TSGEN=1 `
+            -DLIBA_JAVASCRIPT_BIGINT=1 `
             -DLIBA_WITH_LUA=1 `
             -DLIBA_PYTHON=1 `
             -DLIBA_VCPKG=1 `
