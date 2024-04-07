@@ -91,6 +91,7 @@ elseif(
   CMAKE_C_COMPILER_ID MATCHES "MSVC" OR
   CMAKE_CXX_COMPILER_ID MATCHES "MSVC"
 )
+  list_append(SANITIZE_LD /INCREMENTAL:NO)
   sanitize_flag_cx(/fsanitize=address)
 endif()
 

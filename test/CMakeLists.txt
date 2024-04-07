@@ -55,8 +55,6 @@ function(building target)
     add_executable(${TARGET} ${ARGN})
   endif()
 
-  set_property(TARGET ${TARGET} PROPERTY OUTPUT_NAME ${target})
-
   if(LIBA_SANITIZE AND CMAKE_VERSION VERSION_LESS 3.12)
     add_library_properties(${TARGET} PRIVATE asan)
   elseif(LIBA_SANITIZE)
