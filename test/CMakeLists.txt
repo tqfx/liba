@@ -1,7 +1,4 @@
 get_property(IS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
-string_append(CMAKE_CXX_FLAGS ${WARNINGS_XX} ${SANITIZE_XX})
-string_append(CMAKE_C_FLAGS ${WARNINGS_CC} ${SANITIZE_CC})
-string_append(CMAKE_EXE_LINKER_FLAGS ${SANITIZE_LD})
 
 function(set_executable_options)
   list(FIND ENABLED_LANGUAGES CXX HAS_CXX)
@@ -26,8 +23,17 @@ function(set_executable_options)
     add_cppcheck(TARGETS ${ARGN} OPTIONS --enable=warning,performance)
   endif()
 
+  if(LIBA_WARNINGS)
+    target_compile_warnings(${ARGN})
+  endif()
+
   if(LIBA_ANALYZER)
     target_compile_analyzer(${ARGN})
+  endif()
+
+  if(LIBA_SANITIZE)
+    target_compile_sanitize(${ARGN})
+    target_link_sanitize(${ARGN})
   endif()
 
   if(LIBA_STATIC)
@@ -63,12 +69,6 @@ function(building target)
     target_link_libraries(${TARGET} PRIVATE liba)
   else()
     target_link_libraries(${TARGET} PRIVATE liba.o)
-  endif()
-
-  if(LIBA_SANITIZE AND MSVC)
-    set_property(TARGET ${TARGET} APPEND PROPERTY
-      LINK_FLAGS /INCREMENTAL:NO
-    )
   endif()
 
   set_executable_options(${TARGET})
