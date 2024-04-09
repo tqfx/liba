@@ -124,7 +124,9 @@ elseif(CMAKE_C_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   warnings_flag_cx(-Wzero-length-bounds) # 10.1+
   warnings_flag_cx(-Wtrampolines) # 4.6+
   warnings_flag_cx(-Wunsafe-loop-optimizations) # 4.1+
-  warnings_flag_cx(-Wno-pedantic-ms-format) # 4.4+
+  if(MINGW)
+    warnings_flag_cx(-Wno-pedantic-ms-format) # 4.4+
+  endif()
   warnings_flag_cx(-Wlogical-op) # 4.3+
 elseif(CMAKE_C_COMPILER_ID MATCHES "MSVC" OR CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   # https://learn.microsoft.com/cpp/error-messages/compiler-warnings
