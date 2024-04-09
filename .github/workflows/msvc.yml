@@ -7,11 +7,9 @@ jobs:
       fail-fast: false
       matrix:
         include: [
-          { triple: x64, arch: x64, type: Debug },
-          { triple: x86, arch: win32, type: Debug },
-          { triple: x64, arch: x64, type: RelWithDebInfo },
-          { triple: x86, arch: win32, type: RelWithDebInfo },
-          { triple: arm64, arch: ARM64, type: RelWithDebInfo },
+          { triple: x64, arch: x64 },
+          { triple: x86, arch: win32 },
+          { triple: arm64, arch: ARM64 },
         ]
     runs-on: windows-latest
     steps:
@@ -27,8 +25,6 @@ jobs:
           python -m pip install -r requirements.txt
           Get-ChildItem Env: | Sort Name
       - name: Run cmake
-        env:
-          LIBA_OPENMP: 1
         run: |
           venv/Scripts/Activate.ps1
           Set-PSDebug -Trace 1
@@ -41,21 +37,38 @@ jobs:
             -DLIBA_PYTHON=1 `
             -DLIBA_VCPKG=1 `
             -DLIBA_JAVA=1
-          cmake --build build --config ${{ matrix.type }} --target package -- -noLogo
-      - name: Run vcpkg
-        if: ${{ matrix.type != 'Debug' }}
+      - name: Run build
+        env:
+          LIBA_OPENMP: 1
         run: |
           Set-PSDebug -Trace 1
-          cp -r -Force build/vcpkg/* $ENV:VCPKG_INSTALLATION_ROOT
-          vcpkg install liba[ipo,pkgconfig]:${{ matrix.triple }}-windows
-          vcpkg install liba[ipo,pkgconfig]:${{ matrix.triple }}-windows-static
+          cmake --build build --config Debug --target package -- -noLogo
       - name: Run ctest
         if: ${{ startsWith(matrix.triple, 'x') }}
         env:
           CTEST_OUTPUT_ON_FAILURE: 1
         run: |
           Set-PSDebug -Trace 1
-          cmake --build build --config ${{ matrix.type }} --target run_tests -- -noLogo
+          cmake --build build --config Debug --target run_tests -- -noLogo
+      - name: Run build
+        env:
+          LIBA_OPENMP: 1
+        run: |
+          Set-PSDebug -Trace 1
+          cmake --build build --config RelWithDebInfo --target package -- -noLogo
+      - name: Run ctest
+        if: ${{ startsWith(matrix.triple, 'x') }}
+        env:
+          CTEST_OUTPUT_ON_FAILURE: 1
+        run: |
+          Set-PSDebug -Trace 1
+          cmake --build build --config RelWithDebInfo --target run_tests -- -noLogo
+      - name: Run vcpkg
+        run: |
+          Set-PSDebug -Trace 1
+          cp -r -Force build/vcpkg/* $ENV:VCPKG_INSTALLATION_ROOT
+          vcpkg install liba[ipo,pkgconfig]:${{ matrix.triple }}-windows
+          vcpkg install liba[ipo,pkgconfig]:${{ matrix.triple }}-windows-static
       - uses: mymindstorm/setup-emsdk@v13
         if: ${{ matrix.arch == 'x64' }}
       - name: Run cmake
@@ -75,11 +88,31 @@ jobs:
             -DLIBA_PYTHON=1 `
             -DLIBA_VCPKG=1 `
             -DLIBA_JAVA=1
-          cmake --build build.llvm --config ${{ matrix.type }} --target package
+      - name: Run build
+        if: ${{ matrix.arch == 'x64' }}
+        env:
+          LIBA_OPENMP: 1
+        run: |
+          Set-PSDebug -Trace 1
+          cmake --build build.llvm --config Debug --target package
       - name: Run ctest
         if: ${{ matrix.arch == 'x64' }}
         env:
           CTEST_OUTPUT_ON_FAILURE: 1
         run: |
           Set-PSDebug -Trace 1
-          cmake --build build.llvm --config ${{ matrix.type }} --target test
+          cmake --build build.llvm --config Debug --target test
+      - name: Run build
+        if: ${{ matrix.arch == 'x64' }}
+        env:
+          LIBA_OPENMP: 1
+        run: |
+          Set-PSDebug -Trace 1
+          cmake --build build.llvm --config RelWithDebInfo --target package
+      - name: Run ctest
+        if: ${{ matrix.arch == 'x64' }}
+        env:
+          CTEST_OUTPUT_ON_FAILURE: 1
+        run: |
+          Set-PSDebug -Trace 1
+          cmake --build build.llvm --config RelWithDebInfo --target test

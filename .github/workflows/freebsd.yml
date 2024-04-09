@@ -5,15 +5,10 @@ jobs:
   FreeBSD:
     strategy:
       fail-fast: false
-      matrix:
-        include: [
-          { type: Debug },
-          { type: RelWithDebInfo },
-        ]
     runs-on: ubuntu-latest
     env:
-      LIBA_OPENMP: 1
       CTEST_OUTPUT_ON_FAILURE: 1
+      LIBA_OPENMP: 1
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,16 +16,16 @@ jobs:
           submodules: true
       - uses: vmactions/freebsd-vm@v1
         with:
-          envs: 'LIBA_OPENMP CTEST_OUTPUT_ON_FAILURE'
+          envs: 'CTEST_OUTPUT_ON_FAILURE LIBA_OPENMP'
           copyback: false
           prepare: |
-            pkg install -y curl gmake cmake rust python openjdk8
+            pkg install -y curl ninja cmake rust python openjdk8
             curl -sSL https://bootstrap.pypa.io/get-pip.py | python -
           run: |
             python -m venv venv
             . venv/bin/activate
             python -m pip install -r requirements.txt
-            cmake -S . -B build -DCMAKE_BUILD_TYPE=${{ matrix.type }} \
+            cmake -S . -B build -G "Ninja Multi-Config" \
               -DBUILD_TESTING=1 \
               -DLIBA_WARNINGS=1 \
               -DLIBA_ANALYZER=1 \
@@ -41,6 +36,9 @@ jobs:
               -DLIBA_JAVA=1 \
               -DLIBA_LIBTOOL=1 \
               -DLIBA_PKGCONFIG=1
-            cmake --build build --config ${{ matrix.type }} --target package
-            cmake --build build --target test
-            cargo test
+            cmake --build build --config Debug --target package
+            cmake --build build --config Debug --target test
+            cmake --build build --config RelWithDebInfo --target package
+            cmake --build build --config RelWithDebInfo --target test
+            cargo test --all-features
+            cargo test --all-features --release
