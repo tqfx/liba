@@ -1,3 +1,5 @@
+set(VCPKG_POLICY_ALLOW_OBSOLETE_MSVCRT enabled)
+
 vcpkg_from_git(OUT_SOURCE_PATH SOURCE_PATH
   URL https://github.com/tqfx/${PORT}.git
   REF @GIT_COMMIT_LONG@
