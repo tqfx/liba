@@ -972,10 +972,8 @@ typedef union a_cast
  @param ptr starting address of this array
  @param num number of elements in this array
 */
-#define a_foreach(T, it, ptr, num)                      \
-    for (T *it = a_cast_s(T *, ptr),                    \
-           *it##_ = a_likely(it) ? it + (num) : A_NULL; \
-         it < it##_; ++it)
+#define a_foreach(T, it, ptr, num) \
+    for (T *it = a_cast_s(T *, ptr), *it##_ = it + (num); it < it##_; ++it)
 
 /*!
  @brief iterate over an array in reverse
@@ -984,10 +982,8 @@ typedef union a_cast
  @param ptr starting address of this array
  @param num number of elements in this array
 */
-#define a_foreach_reverse(T, it, ptr, num)                           \
-    for (T *it##_ = a_likely(ptr) ? a_cast_s(T *, ptr) - 1 : A_NULL, \
-           *it = a_likely(it##_) ? it##_ + (num) : A_NULL;           \
-         it > it##_; --it)
+#define a_foreach_reverse(T, it, ptr, num) \
+    for (T *it##_ = a_cast_s(T *, ptr) - 1, *it = it##_ + (num); it > it##_; --it)
 
 /*!
  @brief iterate over an array
@@ -1006,10 +1002,8 @@ typedef union a_cast
  @param ptr starting address of this array
  @param end the end address of this array
 */
-#define a_iterate_reverse(T, it, ptr, end)                          \
-    for (T *it = a_likely(end) ? a_cast_s(T *, end) - 1 : A_NULL,   \
-           *it##_ = a_likely(it) ? a_cast_s(T *, ptr) - 1 : A_NULL; \
-         it > it##_; --it)
+#define a_iterate_reverse(T, it, ptr, end) \
+    for (T *it = a_cast_s(T *, end) - 1, *it##_ = a_cast_s(T *, ptr) - 1; it > it##_; --it)
 
 /*!
  @brief enumeration for return values

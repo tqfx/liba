@@ -18,8 +18,7 @@ static int u32dup(void *dst, void const *src)
 static void test(void)
 {
     a_vec *ctx = a_vec_new(sizeof(a_u64));
-    a_vec_foreach(a_u64, it, ctx);
-    a_vec_foreach_reverse(a_u64, it, ctx);
+
     for (a_u64 i = 0; i != 10; ++i)
     {
         a_u64 *obj = A_VEC_PUSH(a_u64, ctx);
