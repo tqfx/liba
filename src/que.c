@@ -1,17 +1,5 @@
 #include "a/que.h"
 
-#undef a_que_at
-#undef a_que_fore
-#undef a_que_back
-#undef a_que_fore_
-#undef a_que_back_
-#undef a_que_insert
-#undef a_que_remove
-#undef a_que_push_fore
-#undef a_que_push_back
-#undef a_que_pull_fore
-#undef a_que_pull_back
-
 static a_list *a_que_new_(a_que *ctx)
 {
     a_list *node;

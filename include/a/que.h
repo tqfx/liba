@@ -49,6 +49,7 @@ A_INTERN void *a_que_fore_(a_que const *ctx)
 {
     return a_cast_s(void *, ctx->head_.next + 1);
 }
+#define A_QUE_FORE_(T, ctx) a_cast_s(T *, a_que_fore_(ctx))
 
 /*!
  @brief access backmost element for a pointer to queue structure
@@ -60,6 +61,7 @@ A_INTERN void *a_que_back_(a_que const *ctx)
 {
     return a_cast_s(void *, ctx->head_.prev + 1);
 }
+#define A_QUE_BACK_(T, ctx) a_cast_s(T *, a_que_back_(ctx))
 
 /*!
  @brief access foremost element for a pointer to queue structure
@@ -71,6 +73,7 @@ A_INTERN void *a_que_fore(a_que const *ctx)
 {
     return a_likely(ctx->head_.next != &ctx->head_) ? a_que_fore_(ctx) : A_NULL;
 }
+#define A_QUE_FORE(T, ctx) a_cast_s(T *, a_que_fore(ctx))
 
 /*!
  @brief access backmost element for a pointer to queue structure
@@ -82,6 +85,7 @@ A_INTERN void *a_que_back(a_que const *ctx)
 {
     return a_likely(ctx->head_.prev != &ctx->head_) ? a_que_back_(ctx) : A_NULL;
 }
+#define A_QUE_BACK(T, ctx) a_cast_s(T *, a_que_back(ctx))
 
 /*!
  @brief swap elements lhs and rhs for a pointer to queue structure
@@ -139,6 +143,7 @@ A_EXTERN void a_que_move(a_que *ctx, a_que *obj);
   @retval 0 out of bounds
 */
 A_EXTERN void *a_que_at(a_que const *ctx, a_imax idx);
+#define A_QUE_AT(T, ctx, idx) a_cast_s(T *, a_que_at(ctx, idx))
 
 /*!
  @brief drop all the elements for a pointer to queue structure
@@ -217,6 +222,7 @@ A_EXTERN void a_que_sort_back(a_que const *ctx, int (*cmp)(void const *, void co
   @retval 0 failure
 */
 A_EXTERN void *a_que_push_fore(a_que *ctx);
+#define A_QUE_PUSH_FORE(T, ctx) a_cast_s(T *, a_que_push_fore(ctx))
 
 /*!
  @brief push an element into the queue backward
@@ -225,6 +231,7 @@ A_EXTERN void *a_que_push_fore(a_que *ctx);
   @retval 0 failure
 */
 A_EXTERN void *a_que_push_back(a_que *ctx);
+#define A_QUE_PUSH_BACK(T, ctx) a_cast_s(T *, a_que_push_back(ctx))
 
 /*!
  @brief pull an element from the queue forward
@@ -233,6 +240,7 @@ A_EXTERN void *a_que_push_back(a_que *ctx);
   @retval 0 failure
 */
 A_EXTERN void *a_que_pull_fore(a_que *ctx);
+#define A_QUE_PULL_FORE(T, ctx) a_cast_s(T *, a_que_pull_fore(ctx))
 
 /*!
  @brief pull an element from the queue backward
@@ -241,6 +249,7 @@ A_EXTERN void *a_que_pull_fore(a_que *ctx);
   @retval 0 failure
 */
 A_EXTERN void *a_que_pull_back(a_que *ctx);
+#define A_QUE_PULL_BACK(T, ctx) a_cast_s(T *, a_que_pull_back(ctx))
 
 /*!
  @brief insert an element into the queue
@@ -252,6 +261,7 @@ A_EXTERN void *a_que_pull_back(a_que *ctx);
   @retval 0 failure
 */
 A_EXTERN void *a_que_insert(a_que *ctx, a_size idx);
+#define A_QUE_INSERT(T, ctx, idx) a_cast_s(T *, a_que_insert(ctx, idx))
 
 /*!
  @brief remove an element from the queue
@@ -263,6 +273,7 @@ A_EXTERN void *a_que_insert(a_que *ctx, a_size idx);
   @retval 0 failure
 */
 A_EXTERN void *a_que_remove(a_que *ctx, a_size idx);
+#define A_QUE_REMOVE(T, ctx, idx) a_cast_s(T *, a_que_remove(ctx, idx))
 
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -307,18 +318,6 @@ A_EXTERN void *a_que_remove(a_que *ctx, a_size idx);
              ? ((void)(it = a_cast_r(T *, a_list_(*, it) + 1)), 1) \
              : (0);                                                \
          it = it##_, it##_ = a_cast_r(T *, a_list_(*, it)->prev))
-
-#define a_que_fore(T, ctx) a_cast_s(T *, a_que_fore(ctx))
-#define a_que_back(T, ctx) a_cast_s(T *, a_que_back(ctx))
-#define a_que_fore_(T, ctx) a_cast_s(T *, a_que_fore_(ctx))
-#define a_que_back_(T, ctx) a_cast_s(T *, a_que_back_(ctx))
-#define a_que_at(T, ctx, idx) a_cast_s(T *, a_que_at(ctx, idx))
-#define a_que_push_fore(T, ctx) a_cast_s(T *, a_que_push_fore(ctx))
-#define a_que_push_back(T, ctx) a_cast_s(T *, a_que_push_back(ctx))
-#define a_que_pull_fore(T, ctx) a_cast_s(T *, a_que_pull_fore(ctx))
-#define a_que_pull_back(T, ctx) a_cast_s(T *, a_que_pull_back(ctx))
-#define a_que_insert(T, ctx, idx) a_cast_s(T *, a_que_insert(ctx, idx))
-#define a_que_remove(T, ctx, idx) a_cast_s(T *, a_que_remove(ctx, idx))
 
 /*! @} A_QUE */
 

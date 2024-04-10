@@ -22,23 +22,23 @@ static void test(void)
     a_vec_foreach_reverse(a_u64, it, ctx);
     for (a_u64 i = 0; i != 10; ++i)
     {
-        a_u64 *obj = a_vec_push(a_u64, ctx);
+        a_u64 *obj = A_VEC_PUSH(a_u64, ctx);
         if (obj) { *obj = i; }
     }
     a_vec_edit(ctx, sizeof(a_u32), A_NULL);
     for (a_u32 i = 0; i != 20; ++i)
     {
-        a_u32 *obj = a_vec_push(a_u32, ctx);
+        a_u32 *obj = A_VEC_PUSH(a_u32, ctx);
         if (obj) { *obj = i; }
     }
     for (a_u32 i = 0; i != 10; ++i)
     {
-        (void)(a_vec_pull(a_u32, ctx));
+        a_vec_pull(ctx);
     }
 
     {
-        a_u8 *end = a_vec_end(a_u8, ctx);
-        a_u8 *top = a_vec_top(a_u8, ctx);
+        a_u8 *end = A_VEC_END(a_u8, ctx);
+        a_u8 *top = A_VEC_TOP(a_u8, ctx);
         TEST_BUG(a_vec_siz(ctx) == a_size_c(end - top));
     }
 
@@ -50,14 +50,14 @@ static void test(void)
 
     a_vec_forenum(i, ctx)
     {
-        a_u32 *it = a_vec_at(a_u32, ctx, i);
+        a_u32 *it = A_VEC_AT(a_u32, ctx, i);
         TEST_BUG(a_vec_siz(ctx) == sizeof(*it));
         if (it) { printf("%" PRIu32 " ", *it); }
     }
     putchar('\n');
     a_vec_forenum_reverse(i, ctx)
     {
-        a_u32 *it = a_vec_at(a_u32, ctx, i);
+        a_u32 *it = A_VEC_AT(a_u32, ctx, i);
         TEST_BUG(a_vec_siz(ctx) == sizeof(*it));
         if (it) { printf("%" PRIu32 " ", *it); }
     }
@@ -93,12 +93,12 @@ static void test(void)
         ctx = a_vec_new(sizeof(a_u32));
         for (a_u32 i = 5; i != 10; ++i)
         {
-            a_u32 *obj = a_vec_insert(a_u32, ctx, i);
+            a_u32 *obj = A_VEC_INSERT(a_u32, ctx, i);
             if (obj) { *obj = i; }
         }
         for (a_u32 i = 0; i != 5; ++i)
         {
-            a_u32 *obj = a_vec_insert(a_u32, ctx, i);
+            a_u32 *obj = A_VEC_INSERT(a_u32, ctx, i);
             if (obj) { *obj = i; }
         }
         a_vec_foreach(a_u32, it, ctx)
@@ -108,12 +108,12 @@ static void test(void)
         putchar('\n');
         for (a_u32 i = 0; i != 5; ++i)
         {
-            a_u32 *obj = a_vec_remove(a_u32, ctx, i);
+            a_u32 *obj = A_VEC_REMOVE(a_u32, ctx, i);
             if (obj) { printf("%" PRIu32 " ", *obj); }
         }
         for (a_u32 i = 0; i != 5; ++i)
         {
-            a_u32 *obj = a_vec_remove(a_u32, ctx, 0);
+            a_u32 *obj = A_VEC_REMOVE(a_u32, ctx, 0);
             if (obj) { printf("%" PRIu32 " ", *obj); }
         }
         putchar('\n');
@@ -123,22 +123,22 @@ static void test(void)
         ctx = a_vec_new(sizeof(a_u32));
         for (a_u32 i = 5; i != 10; ++i)
         {
-            a_u32 *obj = a_vec_push_back(a_u32, ctx);
+            a_u32 *obj = A_VEC_PUSH_BACK(a_u32, ctx);
             if (obj) { *obj = i; }
         }
         for (a_u32 i = 5; i != 10; ++i)
         {
-            a_u32 *obj = a_vec_pull_back(a_u32, ctx);
+            a_u32 *obj = A_VEC_PULL_BACK(a_u32, ctx);
             if (obj) { printf("%" PRIu32 " ", *obj); }
         }
         for (a_u32 i = 0; i != 5; ++i)
         {
-            a_u32 *obj = a_vec_push_fore(a_u32, ctx);
+            a_u32 *obj = A_VEC_PUSH_FORE(a_u32, ctx);
             if (obj) { *obj = i; }
         }
         for (a_u32 i = 0; i != 5; ++i)
         {
-            a_u32 *obj = a_vec_pull_fore(a_u32, ctx);
+            a_u32 *obj = A_VEC_PULL_FORE(a_u32, ctx);
             if (obj) { printf("%" PRIu32 " ", *obj); }
         }
         putchar('\n');
@@ -198,7 +198,7 @@ static void test_sort(void)
     a_vec_drop(ctx, A_NULL);
     for (int i = 0; i != 10; ++i)
     {
-        int *obj = a_vec_push_fore(int, ctx);
+        int *obj = A_VEC_PUSH_FORE(int, ctx);
         if (obj)
         {
             *obj = rand() % 10; // NOLINT
@@ -217,7 +217,7 @@ static void test_sort(void)
     a_vec_drop(ctx, A_NULL);
     for (int i = 0; i != 10; ++i)
     {
-        int *obj = a_vec_push_back(int, ctx);
+        int *obj = A_VEC_PUSH_BACK(int, ctx);
         if (obj)
         {
             *obj = rand() % 10; // NOLINT
@@ -239,7 +239,7 @@ static void test_sort(void)
         a_str_puts(no, "missing ");
         for (int i = 0; i != 10; ++i)
         {
-            int *obj = a_vec_search(int, ctx, &i, cmp);
+            int *obj = A_VEC_SEARCH(int, ctx, &i, cmp);
             if (obj)
             {
                 a_str_putf(ok, "%i ", *obj);

@@ -1,7 +1,6 @@
 from a cimport *
 
 cdef extern from "a/version.h":
-    """#undef a_version_check"""
     const unsigned int A_VERSION_MAJOR
     const unsigned int A_VERSION_MINOR
     const unsigned int A_VERSION_PATCH

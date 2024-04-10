@@ -17,7 +17,7 @@ static void back(void)
 
     for (a_u32 i = 0; i != 20; ++i)
     {
-        a_u32 *obj = a_buf_push_back(a_u32, &ctx);
+        a_u32 *obj = A_BUF_PUSH_BACK(a_u32, &ctx);
         if (obj) { *obj = i; }
     }
 
@@ -29,7 +29,7 @@ static void back(void)
 
     for (a_u32 i = 0; i != 20; ++i)
     {
-        a_u32 *obj = a_buf_pull_back(a_u32, &ctx);
+        a_u32 *obj = A_BUF_PULL_BACK(a_u32, &ctx);
         if (obj) { printf("%" PRIu32 " ", *obj); }
     }
     putchar('\n');
@@ -45,7 +45,7 @@ static void fore(void)
 
     for (a_u32 i = 0; i != 20; ++i)
     {
-        a_u32 *obj = a_buf_push_fore(a_u32, &ctx);
+        a_u32 *obj = A_BUF_PUSH_FORE(a_u32, &ctx);
         if (obj) { *obj = i; }
     }
 
@@ -57,7 +57,7 @@ static void fore(void)
 
     for (a_u32 i = 0; i != 20; ++i)
     {
-        a_u32 *obj = a_buf_pull_fore(a_u32, &ctx);
+        a_u32 *obj = A_BUF_PULL_FORE(a_u32, &ctx);
         if (obj) { printf("%" PRIu32 " ", *obj); }
     }
     putchar('\n');
@@ -94,7 +94,7 @@ static void test_sort(void)
     a_buf_drop(&ctx, A_NULL);
     for (int i = 0; i != 10; ++i)
     {
-        int *obj = a_buf_push_fore(int, &ctx);
+        int *obj = A_BUF_PUSH_FORE(int, &ctx);
         if (obj)
         {
             *obj = rand10();
@@ -113,7 +113,7 @@ static void test_sort(void)
     a_buf_drop(&ctx, A_NULL);
     for (int i = 0; i != 10; ++i)
     {
-        int *obj = a_buf_push_back(int, &ctx);
+        int *obj = A_BUF_PUSH_BACK(int, &ctx);
         if (obj)
         {
             *obj = rand10();
@@ -163,7 +163,7 @@ static void test_sort(void)
         a_str_puts(no, "missing ");
         for (int i = 0; i != 10; ++i)
         {
-            int *obj = a_buf_search(int, &ctx, &i, cmp);
+            int *obj = A_BUF_SEARCH(int, &ctx, &i, cmp);
             if (obj)
             {
                 a_str_putf(ok, "%i ", *obj);

@@ -1,6 +1,5 @@
 #include "a.h"
 #include "a/version.h"
-#undef a_version_check
 #include "liba_version.h"
 
 #undef L

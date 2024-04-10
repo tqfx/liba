@@ -88,6 +88,6 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     }
     printf("%s\n", A_FUNC);
     debug("version %u.%u.%u+%" PRIu32 "\n", a_version_major, a_version_minor, a_version_patch, a_version_tweak);
-    TEST_BUG(a_version_check() == 0);
+    TEST_BUG(A_VERSION_CHECK() == 0);
     return 0;
 }

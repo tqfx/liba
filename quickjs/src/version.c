@@ -65,7 +65,6 @@ static JSValue liba_version_check(JSContext *ctx, JSValueConst this_val, int arg
     {
         if (JS_ToUint32(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-#undef a_version_check
     return JS_NewInt32(ctx, a_version_check((unsigned int)args[0], (unsigned int)args[1], (unsigned int)args[2]));
 }
 
@@ -246,12 +245,12 @@ int js_liba_version_init(JSContext *ctx, JSModuleDef *m)
     JS_SetConstructor(ctx, clazz, proto);
     JS_SetClassProto(ctx, liba_version_class_id, proto);
 
-    JSValue const version_check = JS_NewCFunction2(ctx, liba_version_check, "check", 3, JS_CFUNC_generic, 0);
+    JSValue const check = JS_NewCFunction2(ctx, liba_version_check, "check", 3, JS_CFUNC_generic, 0);
     JS_DefinePropertyValueStr(ctx, clazz, "MAJOR", JS_NewUint32(ctx, A_VERSION_MAJOR), 0);
     JS_DefinePropertyValueStr(ctx, clazz, "MINOR", JS_NewUint32(ctx, A_VERSION_MINOR), 0);
     JS_DefinePropertyValueStr(ctx, clazz, "PATCH", JS_NewUint32(ctx, A_VERSION_PATCH), 0);
     JS_DefinePropertyValueStr(ctx, clazz, "TWEAK", JS_NewUint32(ctx, A_VERSION_TWEAK), 0);
-    JS_DefinePropertyValueStr(ctx, clazz, "check", version_check, 0);
+    JS_DefinePropertyValueStr(ctx, clazz, "check", check, 0);
 
     return JS_SetModuleExport(ctx, m, "version", clazz);
 }

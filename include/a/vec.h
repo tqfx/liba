@@ -30,6 +30,7 @@ typedef struct a_vec
  @param[in] ctx points to an instance of vector structure
 */
 A_INTERN void *a_vec_ptr(a_vec const *ctx) { return ctx->ptr_; }
+#define A_VEC_PTR(T, ctx) a_cast_s(T *, a_vec_ptr(ctx))
 
 /*!
  @brief access size of a element for a pointer to vector structure
@@ -60,6 +61,7 @@ A_INTERN void *a_vec_at_(a_vec const *ctx, a_size idx)
 {
     return a_byte_(*, ctx->ptr_) + ctx->siz_ * idx;
 }
+#define A_VEC_AT_(T, ctx, idx) a_cast_s(T *, a_vec_at_(ctx, idx))
 
 /*!
  @brief access specified element for a pointer to vector structure
@@ -72,6 +74,7 @@ A_INTERN void *a_vec_at(a_vec const *ctx, a_size idx)
 {
     return a_likely(idx < ctx->mem_) ? a_vec_at_(ctx, idx) : A_NULL;
 }
+#define A_VEC_AT(T, ctx, idx) a_cast_s(T *, a_vec_at(ctx, idx))
 
 /*!
  @brief access specified element for a pointer to vector structure
@@ -85,6 +88,7 @@ A_INTERN void *a_vec_idx(a_vec const *ctx, a_diff idx)
     a_size const num = idx < 0 ? a_size_c(idx) + ctx->num_ : a_size_c(idx);
     return a_likely(num < ctx->mem_) ? a_vec_at_(ctx, num) : A_NULL;
 }
+#define A_VEC_IDX(T, ctx, idx) a_cast_s(T *, a_vec_idx(ctx, idx))
 
 /*!
  @brief access top element for a pointer to vector structure
@@ -96,6 +100,7 @@ A_INTERN void *a_vec_top_(a_vec const *ctx)
 {
     return a_byte_(*, ctx->ptr_) + ctx->siz_ * (ctx->num_ - 1);
 }
+#define A_VEC_TOP_(T, ctx) a_cast_s(T *, a_vec_top_(ctx))
 
 /*!
  @brief access top element for a pointer to vector structure
@@ -107,6 +112,7 @@ A_INTERN void *a_vec_top(a_vec const *ctx)
 {
     return a_likely(ctx->num_) ? a_vec_top_(ctx) : A_NULL;
 }
+#define A_VEC_TOP(T, ctx) a_cast_s(T *, a_vec_top(ctx))
 
 /*!
  @brief access end pointer for a pointer to vector structure
@@ -117,6 +123,7 @@ A_INTERN void *a_vec_end_(a_vec const *ctx)
 {
     return a_byte_(*, ctx->ptr_) + ctx->siz_ * ctx->num_;
 }
+#define A_VEC_END_(T, ctx) a_cast_s(T *, a_vec_end_(ctx))
 
 /*!
  @brief access end pointer for a pointer to vector structure
@@ -128,6 +135,7 @@ A_INTERN void *a_vec_end(a_vec const *ctx)
 {
     return a_likely(ctx->ptr_) ? a_vec_end_(ctx) : ctx->ptr_;
 }
+#define A_VEC_END(T, ctx) a_cast_s(T *, a_vec_end(ctx))
 
 #if defined(__cplusplus)
 extern "C" {
@@ -273,6 +281,7 @@ A_EXTERN void a_vec_sort_back(a_vec const *ctx, int (*cmp)(void const *, void co
   @retval 0 failure
 */
 A_EXTERN void *a_vec_search(a_vec const *ctx, void const *obj, int (*cmp)(void const *, void const *));
+#define A_VEC_SEARCH(T, ctx, obj, cmp) a_cast_s(T *, a_vec_search(ctx, obj, cmp))
 
 /*!
  @brief insert an element into the vector
@@ -284,6 +293,7 @@ A_EXTERN void *a_vec_search(a_vec const *ctx, void const *obj, int (*cmp)(void c
   @retval 0 failure
 */
 A_EXTERN void *a_vec_insert(a_vec *ctx, a_size idx);
+#define A_VEC_INSERT(T, ctx, idx) a_cast_s(T *, a_vec_insert(ctx, idx))
 
 /*!
  @brief remove an element from the vector
@@ -295,6 +305,7 @@ A_EXTERN void *a_vec_insert(a_vec *ctx, a_size idx);
   @retval 0 failure
 */
 A_EXTERN void *a_vec_remove(a_vec *ctx, a_size idx);
+#define A_VEC_REMOVE(T, ctx, idx) a_cast_s(T *, a_vec_remove(ctx, idx))
 
 /*!
  @brief push an element into the vector forward
@@ -303,6 +314,7 @@ A_EXTERN void *a_vec_remove(a_vec *ctx, a_size idx);
   @retval 0 failure
 */
 A_EXTERN void *a_vec_push_fore(a_vec *ctx);
+#define A_VEC_PUSH_FORE(T, ctx) a_cast_s(T *, a_vec_push_fore(ctx))
 
 /*!
  @brief push an element into the vector backward
@@ -311,6 +323,7 @@ A_EXTERN void *a_vec_push_fore(a_vec *ctx);
   @retval 0 failure
 */
 A_EXTERN void *a_vec_push_back(a_vec *ctx);
+#define A_VEC_PUSH_BACK(T, ctx) a_cast_s(T *, a_vec_push_back(ctx))
 
 /*!
  @brief pull an element from the vector forward
@@ -319,6 +332,7 @@ A_EXTERN void *a_vec_push_back(a_vec *ctx);
   @retval 0 failure
 */
 A_EXTERN void *a_vec_pull_fore(a_vec *ctx);
+#define A_VEC_PULL_FORE(T, ctx) a_cast_s(T *, a_vec_pull_fore(ctx))
 
 /*!
  @brief pull an element from the vector backward
@@ -327,6 +341,7 @@ A_EXTERN void *a_vec_pull_fore(a_vec *ctx);
   @retval 0 failure
 */
 A_EXTERN void *a_vec_pull_back(a_vec *ctx);
+#define A_VEC_PULL_BACK(T, ctx) a_cast_s(T *, a_vec_pull_back(ctx))
 
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -339,6 +354,7 @@ A_EXTERN void *a_vec_pull_back(a_vec *ctx);
   @retval 0 failure
 */
 A_INTERN void *a_vec_push(a_vec *ctx) { return a_vec_push_back(ctx); }
+#define A_VEC_PUSH(T, ctx) a_cast_s(T *, a_vec_push(ctx))
 
 /*!
  @brief pull an element from the vector
@@ -347,6 +363,7 @@ A_INTERN void *a_vec_push(a_vec *ctx) { return a_vec_push_back(ctx); }
   @retval 0 failure
 */
 A_INTERN void *a_vec_pull(a_vec *ctx) { return a_vec_pull_back(ctx); }
+#define A_VEC_PULL(T, ctx) a_cast_s(T *, a_vec_pull(ctx))
 
 /*!
  @brief iterate over a vector
@@ -403,24 +420,6 @@ A_INTERN void *a_vec_pull(a_vec *ctx) { return a_vec_pull_back(ctx); }
  @param ctx points to an instance of vector structure
 */
 #define a_vec_foreach_reverse(T, it, ctx) a_foreach_reverse(T, it, (ctx)->ptr_, (ctx)->num_)
-
-#define a_vec_ptr(T, ctx) a_cast_s(T *, a_vec_ptr(ctx))
-#define a_vec_end(T, ctx) a_cast_s(T *, a_vec_end(ctx))
-#define a_vec_top(T, ctx) a_cast_s(T *, a_vec_top(ctx))
-#define a_vec_end_(T, ctx) a_cast_s(T *, a_vec_end_(ctx))
-#define a_vec_top_(T, ctx) a_cast_s(T *, a_vec_top_(ctx))
-#define a_vec_at(T, ctx, idx) a_cast_s(T *, a_vec_at(ctx, idx))
-#define a_vec_at_(T, ctx, idx) a_cast_s(T *, a_vec_at_(ctx, idx))
-#define a_vec_idx(T, ctx, idx) a_cast_s(T *, a_vec_idx(ctx, idx))
-#define a_vec_search(T, ctx, obj, cmp) a_cast_s(T *, a_vec_search(ctx, obj, cmp))
-#define a_vec_insert(T, ctx, idx) a_cast_s(T *, a_vec_insert(ctx, idx))
-#define a_vec_remove(T, ctx, idx) a_cast_s(T *, a_vec_remove(ctx, idx))
-#define a_vec_push_fore(T, ctx) a_cast_s(T *, a_vec_push_fore(ctx))
-#define a_vec_push_back(T, ctx) a_cast_s(T *, a_vec_push_back(ctx))
-#define a_vec_pull_fore(T, ctx) a_cast_s(T *, a_vec_pull_fore(ctx))
-#define a_vec_pull_back(T, ctx) a_cast_s(T *, a_vec_pull_back(ctx))
-#define a_vec_push(T, ctx) a_cast_s(T *, a_vec_push(ctx))
-#define a_vec_pull(T, ctx) a_cast_s(T *, a_vec_pull(ctx))
 
 /*! @} A_VEC */
 

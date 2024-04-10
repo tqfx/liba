@@ -5,7 +5,6 @@
 
 #include "version.h"
 #include "a/version.h"
-#undef a_version_check
 
 static int liba_version_tostring(lua_State *L)
 {
@@ -158,8 +157,8 @@ int liba_version_cmp(lua_State *L)
     return 1;
 }
 
-#undef FUNC
-#define FUNC(func)                                          \
+#undef F2
+#define F2(func)                                            \
     int liba_version_##func(lua_State *L)                   \
     {                                                       \
         luaL_checktype(L, 1, LUA_TUSERDATA);                \
@@ -176,7 +175,7 @@ int liba_version_cmp(lua_State *L)
  @treturn bool result of comparison
  @function lt
 */
-FUNC(lt)
+F2(lt)
 /***
  version lhs is greater than version rhs
  @tparam a.version lhs version userdata on the left
@@ -184,7 +183,7 @@ FUNC(lt)
  @treturn bool result of comparison
  @function gt
 */
-FUNC(gt)
+F2(gt)
 /***
  version lhs is less than or equal to version rhs
  @tparam a.version lhs version userdata on the left
@@ -192,7 +191,7 @@ FUNC(gt)
  @treturn bool result of comparison
  @function le
 */
-FUNC(le)
+F2(le)
 /***
  version lhs is greater than or equal to version rhs
  @tparam a.version lhs version userdata on the left
@@ -200,7 +199,7 @@ FUNC(le)
  @treturn bool result of comparison
  @function ge
 */
-FUNC(ge)
+F2(ge)
 /***
  version lhs is equal to version rhs
  @tparam a.version lhs version userdata on the left
@@ -208,7 +207,7 @@ FUNC(ge)
  @treturn bool result of comparison
  @function eq
 */
-FUNC(eq)
+F2(eq)
 /***
  version lhs is not equal to version rhs
  @tparam a.version lhs version userdata on the left
@@ -216,7 +215,7 @@ FUNC(eq)
  @treturn bool result of comparison
  @function ne
 */
-FUNC(ne)
+F2(ne)
 
 static int liba_version_set(lua_State *L)
 {

@@ -84,7 +84,7 @@ A_EXTERN a_u32 const a_version_tweak;
   @retval 0 library version is equal to required version
 */
 A_EXTERN int a_version_check(unsigned int major, unsigned int minor, unsigned int patch);
-#define a_version_check() a_version_check(A_VERSION_MAJOR, A_VERSION_MINOR, A_VERSION_PATCH)
+#define A_VERSION_CHECK() a_version_check(A_VERSION_MAJOR, A_VERSION_MINOR, A_VERSION_PATCH)
 
 /*!
  @brief convert version to string

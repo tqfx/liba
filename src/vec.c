@@ -1,24 +1,6 @@
 #include "a/vec.h"
 #include <stdlib.h>
 
-#undef a_vec_at
-#undef a_vec_at_
-#undef a_vec_idx
-#undef a_vec_ptr
-#undef a_vec_end
-#undef a_vec_top
-#undef a_vec_end_
-#undef a_vec_top_
-#undef a_vec_push
-#undef a_vec_pull
-#undef a_vec_search
-#undef a_vec_insert
-#undef a_vec_remove
-#undef a_vec_push_fore
-#undef a_vec_push_back
-#undef a_vec_pull_fore
-#undef a_vec_pull_back
-
 static A_INLINE void *a_vec_inc_(a_vec *ctx)
 {
     return (a_byte *)ctx->ptr_ + ctx->siz_ * ctx->num_++;

@@ -1,23 +1,6 @@
 #include "a/buf.h"
 #include <stdlib.h>
 
-#undef a_buf_at
-#undef a_buf_at_
-#undef a_buf_idx
-#undef a_buf_ptr
-#undef a_buf_end
-#undef a_buf_top
-#undef a_buf_top_
-#undef a_buf_push
-#undef a_buf_pull
-#undef a_buf_search
-#undef a_buf_insert
-#undef a_buf_remove
-#undef a_buf_push_fore
-#undef a_buf_push_back
-#undef a_buf_pull_fore
-#undef a_buf_pull_back
-
 static A_INLINE void *a_buf_inc_(a_buf *ctx)
 {
     return (a_byte *)ctx->ptr_ + ctx->siz_ * ctx->num_++;

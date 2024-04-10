@@ -13,25 +13,25 @@ static void test(void)
     a_que *ctx = a_que_new(sizeof(a_u64));
     for (a_u64 i = 0; i != 10; ++i)
     {
-        a_u64 *obj = a_que_push_back(a_u64, ctx);
+        a_u64 *obj = A_QUE_PUSH_BACK(a_u64, ctx);
         if (obj) { *obj = i; }
     }
     {
-        a_u64 *fore = a_que_fore_(a_u64, ctx);
-        a_u64 *back = a_que_back_(a_u64, ctx);
+        a_u64 *fore = A_QUE_FORE_(a_u64, ctx);
+        a_u64 *back = A_QUE_BACK_(a_u64, ctx);
         printf("%" PRIu64 " %" PRIu64 " ", *fore, *back);
     }
     {
-        a_u64 *fore = a_que_fore(a_u64, ctx);
-        a_u64 *back = a_que_back(a_u64, ctx);
+        a_u64 *fore = A_QUE_FORE(a_u64, ctx);
+        a_u64 *back = A_QUE_BACK(a_u64, ctx);
         if (fore && back)
         {
             printf("%" PRIu64 " %" PRIu64 " ", *fore, *back);
         }
     }
     {
-        a_u64 *fore = a_que_at(a_u64, ctx, 0);
-        a_u64 *back = a_que_at(a_u64, ctx, ~0);
+        a_u64 *fore = A_QUE_AT(a_u64, ctx, 0);
+        a_u64 *back = A_QUE_AT(a_u64, ctx, ~0);
         if (fore && back)
         {
             printf("%" PRIu64 " %" PRIu64 "\n", *fore, *back);
@@ -39,33 +39,33 @@ static void test(void)
     }
     for (a_u64 i = 0; i != 5; ++i)
     {
-        (void)(a_que_pull_fore(a_u64, ctx));
+        a_que_pull_fore(ctx);
     }
     a_que_edit(ctx, sizeof(a_u32) + 8, A_NULL);
     for (a_u32 i = 5; i--;)
     {
-        a_u32 *obj = a_que_push_fore(a_u32, ctx);
+        a_u32 *obj = A_QUE_PUSH_FORE(a_u32, ctx);
         if (obj) { *obj = i; }
     }
     for (a_u32 i = 5; i != 10; ++i)
     {
-        a_u32 *obj = a_que_push_back(a_u32, ctx);
+        a_u32 *obj = A_QUE_PUSH_BACK(a_u32, ctx);
         if (obj) { *obj = i; }
     }
     {
-        a_u32 *obj = a_que_insert(a_u32, ctx, 0);
+        a_u32 *obj = A_QUE_INSERT(a_u32, ctx, 0);
         if (obj) { *obj = A_U32_MAX; }
     }
     {
-        a_u32 *obj = a_que_insert(a_u32, ctx, A_SIZE_MAX);
+        a_u32 *obj = A_QUE_INSERT(a_u32, ctx, A_SIZE_MAX);
         if (obj) { *obj = A_U32_MAX; }
     }
-    (void)(a_que_remove(a_u32, ctx, 0));
-    (void)(a_que_remove(a_u32, ctx, A_SIZE_MAX));
+    a_que_remove(ctx, 0);
+    a_que_remove(ctx, A_SIZE_MAX);
     a_que_swap(ctx, 0, A_SIZE_MAX);
     {
-        a_u32 *lhs = a_que_fore_(a_u32, ctx);
-        a_u32 *rhs = a_que_back_(a_u32, ctx);
+        a_u32 *lhs = A_QUE_FORE_(a_u32, ctx);
+        a_u32 *rhs = A_QUE_BACK_(a_u32, ctx);
         a_que_swap_(lhs, rhs);
     }
     a_que_foreach(a_u32, it, ctx)
@@ -82,11 +82,11 @@ static void test(void)
     putchar('\n');
     for (a_u32 i = 0; i != 5; ++i)
     {
-        (void)(a_que_pull_back(a_u32, ctx));
+        a_que_push_back(ctx);
     }
     for (a_u32 i = 0; i != 5; ++i)
     {
-        (void)(a_que_pull_fore(a_u32, ctx));
+        a_que_push_fore(ctx);
     }
     a_que_die(ctx, dtor);
     putchar('\n');
@@ -113,7 +113,7 @@ static void test_sort(void)
     a_que_drop(ctx, A_NULL);
     for (int i = 0; i != 10; ++i)
     {
-        int *obj = a_que_push_fore(int, ctx);
+        int *obj = A_QUE_PUSH_FORE(int, ctx);
         if (obj)
         {
             *obj = rand() % 10; // NOLINT
@@ -133,7 +133,7 @@ static void test_sort(void)
     putchar('\n');
     for (int i = 0; i != 10; ++i)
     {
-        int *obj = a_que_push_back(int, ctx);
+        int *obj = A_QUE_PUSH_BACK(int, ctx);
         if (obj)
         {
             *obj = rand() % 10; // NOLINT

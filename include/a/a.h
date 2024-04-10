@@ -69,10 +69,6 @@
 #define A_PREREQ_LLVM(maj, min) 0
 #endif /* __clang__ */
 
-#if __has_warning("-Wdisabled-macro-expansion")
-#pragma clang diagnostic ignored "-Wdisabled-macro-expansion"
-#endif /* -Wdisabled-macro-expansion */
-
 #if !defined A_FUNC
 #if defined(_MSC_VER)
 #define A_FUNC __FUNCTION__

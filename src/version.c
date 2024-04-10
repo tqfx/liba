@@ -1,5 +1,4 @@
 #include "a/version.h"
-#undef a_version_check
 
 unsigned int const a_version_major = A_VERSION_MAJOR;
 unsigned int const a_version_minor = A_VERSION_MINOR;

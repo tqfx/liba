@@ -747,7 +747,6 @@ struct trajtrap: public a_trajtrap
 };
 
 #include "a/version.h"
-#undef a_version_check
 
 struct version: public a_version
 {
