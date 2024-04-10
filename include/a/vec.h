@@ -72,7 +72,7 @@ A_INTERN void *a_vec_at_(a_vec const *ctx, a_size idx)
 */
 A_INTERN void *a_vec_at(a_vec const *ctx, a_size idx)
 {
-    return a_likely(idx < ctx->mem_) ? a_vec_at_(ctx, idx) : A_NULL;
+    return idx < ctx->mem_ ? a_vec_at_(ctx, idx) : A_NULL;
 }
 #define A_VEC_AT(T, ctx, idx) a_cast_s(T *, a_vec_at(ctx, idx))
 
@@ -85,8 +85,8 @@ A_INTERN void *a_vec_at(a_vec const *ctx, a_size idx)
 */
 A_INTERN void *a_vec_idx(a_vec const *ctx, a_diff idx)
 {
-    a_size const num = idx < 0 ? a_size_c(idx) + ctx->num_ : a_size_c(idx);
-    return a_likely(num < ctx->mem_) ? a_vec_at_(ctx, num) : A_NULL;
+    a_size const num = idx >= 0 ? a_size_c(idx) : a_size_c(idx) + ctx->num_;
+    return num < ctx->mem_ ? a_vec_at_(ctx, num) : A_NULL;
 }
 #define A_VEC_IDX(T, ctx, idx) a_cast_s(T *, a_vec_idx(ctx, idx))
 
@@ -110,7 +110,7 @@ A_INTERN void *a_vec_top_(a_vec const *ctx)
 */
 A_INTERN void *a_vec_top(a_vec const *ctx)
 {
-    return a_likely(ctx->num_) ? a_vec_top_(ctx) : A_NULL;
+    return ctx->num_ ? a_vec_top_(ctx) : A_NULL;
 }
 #define A_VEC_TOP(T, ctx) a_cast_s(T *, a_vec_top(ctx))
 
@@ -133,7 +133,7 @@ A_INTERN void *a_vec_end_(a_vec const *ctx)
 */
 A_INTERN void *a_vec_end(a_vec const *ctx)
 {
-    return a_likely(ctx->ptr_) ? a_vec_end_(ctx) : ctx->ptr_;
+    return ctx->ptr_ ? a_vec_end_(ctx) : ctx->ptr_;
 }
 #define A_VEC_END(T, ctx) a_cast_s(T *, a_vec_end(ctx))
 

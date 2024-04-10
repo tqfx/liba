@@ -71,7 +71,7 @@ A_INTERN void *a_que_back_(a_que const *ctx)
 */
 A_INTERN void *a_que_fore(a_que const *ctx)
 {
-    return a_likely(ctx->head_.next != &ctx->head_) ? a_que_fore_(ctx) : A_NULL;
+    return ctx->head_.next != &ctx->head_ ? a_que_fore_(ctx) : A_NULL;
 }
 #define A_QUE_FORE(T, ctx) a_cast_s(T *, a_que_fore(ctx))
 
@@ -83,7 +83,7 @@ A_INTERN void *a_que_fore(a_que const *ctx)
 */
 A_INTERN void *a_que_back(a_que const *ctx)
 {
-    return a_likely(ctx->head_.prev != &ctx->head_) ? a_que_back_(ctx) : A_NULL;
+    return ctx->head_.prev != &ctx->head_ ? a_que_back_(ctx) : A_NULL;
 }
 #define A_QUE_BACK(T, ctx) a_cast_s(T *, a_que_back(ctx))
 

@@ -69,7 +69,7 @@ A_INTERN char a_str_at_(a_str const *ctx, a_size idx) { return ctx->ptr_[idx]; }
 */
 A_INTERN char a_str_at(a_str const *ctx, a_size idx)
 {
-    return a_likely(idx < ctx->num_) ? ctx->ptr_[idx] : 0;
+    return idx < ctx->num_ ? ctx->ptr_[idx] : 0;
 }
 
 /*!
@@ -81,8 +81,8 @@ A_INTERN char a_str_at(a_str const *ctx, a_size idx)
 */
 A_INTERN char a_str_idx(a_str const *ctx, a_diff idx)
 {
-    a_size const num = idx < 0 ? a_size_c(idx) + ctx->num_ : a_size_c(idx);
-    return a_likely(num < ctx->num_) ? ctx->ptr_[num] : 0;
+    a_size const num = idx >= 0 ? a_size_c(idx) : a_size_c(idx) + ctx->num_;
+    return num < ctx->num_ ? ctx->ptr_[num] : 0;
 }
 
 /*!
@@ -103,7 +103,7 @@ A_INTERN void a_str_set_len_(a_str *ctx, a_size len) { ctx->num_ = len; }
 */
 A_INTERN int a_str_set_len(a_str *ctx, a_size len)
 {
-    return a_likely(len < ctx->mem_) ? ((void)(ctx->num_ = len), A_SUCCESS) : A_FAILURE;
+    return len < ctx->mem_ ? ((void)(ctx->num_ = len), A_SUCCESS) : A_FAILURE;
 }
 
 /*!

@@ -30,7 +30,7 @@ a_f32 a_f32_rsqrt(a_f32 x)
         a_u32 u;
     } u;
     u.x = x;
-    if (a_likely(x > 0))
+    if (x > 0)
     {
         a_f32 xh = A_F32_C(0.5) * x;
         u.u = A_U32_C(0x5F375A86) - (u.u >> 1);
@@ -60,7 +60,7 @@ a_f64 a_f64_rsqrt(a_f64 x)
         a_u64 u;
     } u;
     u.x = x;
-    if (a_likely(x > 0))
+    if (x > 0)
     {
         a_f64 xh = A_F64_C(0.5) * x;
         u.u = A_U64_C(0x5FE6EC85E7DE30DA) - (u.u >> 1);

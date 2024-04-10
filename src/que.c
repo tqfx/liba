@@ -6,7 +6,7 @@ static a_list *a_que_new_(a_que *ctx)
     if (ctx->cur_ == 0)
     {
         node = (a_list *)a_alloc(A_NULL, sizeof(a_list) + ctx->siz_);
-        if (a_unlikely(!node)) { return node; }
+        if (A_UNLIKELY(!node)) { return node; }
     }
     else
     {
@@ -18,12 +18,12 @@ static a_list *a_que_new_(a_que *ctx)
 
 static int a_que_die_(a_que *ctx, a_list *node)
 {
-    if (a_unlikely(!node)) { return A_INVALID; }
+    if (A_UNLIKELY(!node)) { return A_INVALID; }
     if (ctx->mem_ <= ctx->cur_)
     {
         a_size const mem = ctx->mem_ + (ctx->mem_ >> 1) + 1;
         a_list **const ptr = (a_list **)a_alloc((void *)ctx->ptr_, sizeof(void *) * mem);
-        if (a_unlikely(!ptr)) { return A_FAILURE; }
+        if (A_UNLIKELY(!ptr)) { return A_FAILURE; }
         ctx->ptr_ = ptr;
         ctx->mem_ = mem;
     }
@@ -154,7 +154,7 @@ int a_que_edit(a_que *ctx, a_size size, void (*dtor)(void *))
             for (; cur; ++node, --cur)
             {
                 void *const ptr = a_alloc(*node, sizeof(a_list) + size);
-                if (a_unlikely(!ptr)) { return A_FAILURE; }
+                if (A_UNLIKELY(!ptr)) { return A_FAILURE; }
                 *node = (a_list *)ptr;
             }
         }
@@ -234,7 +234,7 @@ void a_que_sort_back(a_que const *ctx, int (*cmp)(void const *, void const *))
 void *a_que_push_fore(a_que *ctx)
 {
     a_list *const node = a_que_new_(ctx);
-    if (a_unlikely(!node)) { return node; }
+    if (A_UNLIKELY(!node)) { return node; }
     a_list_add_next(&ctx->head_, node);
     return node + 1;
 }
@@ -242,7 +242,7 @@ void *a_que_push_fore(a_que *ctx)
 void *a_que_push_back(a_que *ctx)
 {
     a_list *const node = a_que_new_(ctx);
-    if (a_unlikely(!node)) { return node; }
+    if (A_UNLIKELY(!node)) { return node; }
     a_list_add_prev(&ctx->head_, node);
     return node + 1;
 }

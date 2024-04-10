@@ -110,7 +110,7 @@ void *a_buf_search(a_buf const *ctx, void const *obj, int (*cmp)(void const *, v
 
 void *a_buf_insert(a_buf *ctx, a_size idx)
 {
-    if (a_likely(ctx->num_ < ctx->mem_))
+    if (ctx->num_ < ctx->mem_)
     {
         if (idx < ctx->num_)
         {
@@ -129,7 +129,7 @@ void *a_buf_push_fore(a_buf *ctx) { return a_buf_insert(ctx, 0); }
 
 void *a_buf_push_back(a_buf *ctx)
 {
-    return a_likely(ctx->num_ < ctx->mem_) ? a_buf_inc_(ctx) : A_NULL;
+    return ctx->num_ < ctx->mem_ ? a_buf_inc_(ctx) : A_NULL;
 }
 
 void *a_buf_remove(a_buf *ctx, a_size idx)
@@ -144,12 +144,12 @@ void *a_buf_remove(a_buf *ctx, a_size idx)
         --ctx->num_;
         return ptr;
     }
-    return a_likely(ctx->num_) ? a_buf_dec_(ctx) : A_NULL;
+    return ctx->num_ ? a_buf_dec_(ctx) : A_NULL;
 }
 
 void *a_buf_pull_fore(a_buf *ctx) { return a_buf_remove(ctx, 0); }
 
 void *a_buf_pull_back(a_buf *ctx)
 {
-    return a_likely(ctx->num_) ? a_buf_dec_(ctx) : A_NULL;
+    return ctx->num_ ? a_buf_dec_(ctx) : A_NULL;
 }

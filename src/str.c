@@ -45,7 +45,7 @@ int a_str_init(a_str *ctx, void const *pdata, a_size nbyte)
     ctx->mem_ = ctx->num_ + 1;
     ctx->mem_ = a_size_up(sizeof(void *), ctx->mem_);
     ctx->ptr_ = (char *)a_alloc(A_NULL, ctx->mem_);
-    if (a_unlikely(!ctx->ptr_)) { return A_FAILURE; }
+    if (A_UNLIKELY(!ctx->ptr_)) { return A_FAILURE; }
     if (pdata && nbyte)
     {
         a_copy(ctx->ptr_, pdata, nbyte);
@@ -95,7 +95,7 @@ int a_str_alloc_(a_str *ctx, a_size mem)
     char *ptr;
     mem = a_size_up(sizeof(void *), mem);
     ptr = (char *)a_alloc(ctx->ptr_, mem);
-    if (a_unlikely(!ptr && mem)) { return A_FAILURE; }
+    if (A_UNLIKELY(!ptr && mem)) { return A_FAILURE; }
     ctx->ptr_ = ptr;
     ctx->mem_ = mem;
     return A_SUCCESS;
@@ -129,14 +129,14 @@ int a_str_getc(a_str *ctx)
 
 int a_str_putc_(a_str *ctx, int c)
 {
-    if (a_unlikely(a_str_alloc(ctx, ctx->num_ + 1))) { return ~0; }
+    if (A_UNLIKELY(a_str_alloc(ctx, ctx->num_ + 1))) { return ~0; }
     ctx->ptr_[ctx->num_++] = (char)c;
     return c;
 }
 
 int a_str_putc(a_str *ctx, int c)
 {
-    if (a_unlikely(a_str_alloc(ctx, ctx->num_ + 2))) { return ~0; }
+    if (A_UNLIKELY(a_str_alloc(ctx, ctx->num_ + 2))) { return ~0; }
     ctx->ptr_[ctx->num_++] = (char)c;
     ctx->ptr_[ctx->num_] = 0;
     return c;
@@ -169,7 +169,7 @@ int a_str_putn_(a_str *ctx, void const *pdata, a_size nbyte)
 {
     if (pdata && nbyte)
     {
-        if (a_unlikely(a_str_alloc(ctx, ctx->num_ + nbyte))) { return A_FAILURE; }
+        if (A_UNLIKELY(a_str_alloc(ctx, ctx->num_ + nbyte))) { return A_FAILURE; }
         a_copy(ctx->ptr_ + ctx->num_, pdata, nbyte);
         ctx->num_ += nbyte;
     }
@@ -180,7 +180,7 @@ int a_str_putn(a_str *ctx, void const *pdata, a_size nbyte)
 {
     if (pdata && nbyte)
     {
-        if (a_unlikely(a_str_alloc(ctx, ctx->num_ + nbyte + 1))) { return A_FAILURE; }
+        if (A_UNLIKELY(a_str_alloc(ctx, ctx->num_ + nbyte + 1))) { return A_FAILURE; }
         a_copy(ctx->ptr_ + ctx->num_, pdata, nbyte);
         ctx->num_ += nbyte;
         ctx->ptr_[ctx->num_] = 0;
@@ -223,7 +223,7 @@ int a_str_putf_(a_str *ctx, char const *fmt, va_list va)
     va_end(ap);
     if (mem > ctx->mem_)
     {
-        if (a_unlikely(a_str_alloc_(ctx, mem))) { return 0; }
+        if (A_UNLIKELY(a_str_alloc_(ctx, mem))) { return 0; }
         va_copy(ap, va);
         ptr = ctx->ptr_ + ctx->num_;
         mem = ctx->mem_ - ctx->num_;

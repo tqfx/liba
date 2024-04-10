@@ -103,7 +103,7 @@ void a_rbt_insert_adjust(a_rbt *root, a_rbt_node *node)
     for (a_rbt_node *parent = a_rbt_parent(node), *gparent, *tmp;;)
     {
         /* Loop invariant: node is red. */
-        if (a_unlikely(!parent))
+        if (A_UNLIKELY(!parent))
         {
             /*
             The inserted node is root. Either this is the first node,
@@ -245,7 +245,7 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
                 a_rbt_set_parent_color(tmp1, parent, A_RBT_B);
                 a_rbt_set_parents(root, parent, sibling, A_RBT_R);
                 sibling = tmp1;
-                a_assume(tmp1);
+                A_ASSUME(tmp1);
             }
             tmp1 = sibling->right;
             if (!tmp1 || a_rbt_color(tmp1) == A_RBT_B)
@@ -328,7 +328,7 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
         }
         else
         {
-            a_assume(parent->left);
+            A_ASSUME(parent->left);
             sibling = parent->left;
             if (a_rbt_color(sibling) == A_RBT_R)
             {
@@ -339,7 +339,7 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
                 a_rbt_set_parent_color(tmp1, parent, A_RBT_B);
                 a_rbt_set_parents(root, parent, sibling, A_RBT_R);
                 sibling = tmp1;
-                a_assume(tmp1);
+                A_ASSUME(tmp1);
             }
             tmp1 = sibling->left;
             if (!tmp1 || a_rbt_color(tmp1) == A_RBT_B)

@@ -51,7 +51,7 @@ static void test_for(int argc, char *argv[])
 
     int *p = a_new(int, A_NULL, n);
     int *d = p + n;
-    a_assume(p);
+    A_ASSUME(p);
 
     a_forenum(unsigned int, i, n)
     {

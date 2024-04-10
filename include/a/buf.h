@@ -72,7 +72,7 @@ A_INTERN void *a_buf_at_(a_buf const *ctx, a_size idx)
 */
 A_INTERN void *a_buf_at(a_buf const *ctx, a_size idx)
 {
-    return a_likely(idx < ctx->mem_) ? a_buf_at_(ctx, idx) : A_NULL;
+    return idx < ctx->mem_ ? a_buf_at_(ctx, idx) : A_NULL;
 }
 #define A_BUF_AT(T, ctx, idx) a_cast_s(T *, a_buf_at(ctx, idx))
 
@@ -85,8 +85,8 @@ A_INTERN void *a_buf_at(a_buf const *ctx, a_size idx)
 */
 A_INTERN void *a_buf_idx(a_buf const *ctx, a_diff idx)
 {
-    a_size const num = idx < 0 ? a_size_c(idx) + ctx->num_ : a_size_c(idx);
-    return a_likely(num < ctx->mem_) ? a_buf_at_(ctx, num) : A_NULL;
+    a_size const num = idx >= 0 ? a_size_c(idx) : a_size_c(idx) + ctx->num_;
+    return num < ctx->mem_ ? a_buf_at_(ctx, num) : A_NULL;
 }
 #define A_BUF_IDX(T, ctx, idx) a_cast_s(T *, a_buf_idx(ctx, idx))
 
@@ -110,7 +110,7 @@ A_INTERN void *a_buf_top_(a_buf const *ctx)
 */
 A_INTERN void *a_buf_top(a_buf const *ctx)
 {
-    return a_likely(ctx->num_) ? a_buf_top_(ctx) : A_NULL;
+    return ctx->num_ ? a_buf_top_(ctx) : A_NULL;
 }
 #define A_BUF_TOP(T, ctx) a_cast_s(T *, a_buf_top(ctx))
 

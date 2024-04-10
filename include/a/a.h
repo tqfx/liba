@@ -125,11 +125,11 @@
 #endif /* A_HAVE_NULLPTR */
 
 #if A_PREREQ_GNUC(2, 96) || __has_builtin(__builtin_expect)
-#define a_unlikely(x) __builtin_expect(!!(x), 0)
-#define a_likely(x) __builtin_expect(!!(x), 1)
+#define A_UNLIKELY(x) __builtin_expect(!!(x), 0)
+#define A_LIKELY(x) __builtin_expect(!!(x), 1)
 #else /* !likely */
-#define a_unlikely(x) (x)
-#define a_likely(x) (x)
+#define A_UNLIKELY(x) (x)
+#define A_LIKELY(x) (x)
 #endif /* likely */
 
 #if defined(_WIN32) || defined(__CYGWIN__)
@@ -145,18 +145,18 @@
 #endif /* __attribute__ */
 
 #if __has_builtin(__builtin_assume)
-#define a_assume(x) __builtin_assume(x)
+#define A_ASSUME(x) __builtin_assume(x)
 #elif A_PREREQ_GNUC(13, 0)
-#define a_assume(x) __attribute__((__assume__(x)))
+#define A_ASSUME(x) __attribute__((__assume__(x)))
 #elif defined(__GNUC__)
-#define a_assume(x)                            \
+#define A_ASSUME(x)                            \
     do {                                       \
         if (!(x)) { __builtin_unreachable(); } \
     } while (0)
 #elif defined(_MSC_VER)
-#define a_assume(x) __assume(x)
+#define A_ASSUME(x) __assume(x)
 #else /* !assume */
-#define a_assume(x) (void)0
+#define A_ASSUME(x) (void)0
 #endif /* assume */
 
 /* attribute format */
