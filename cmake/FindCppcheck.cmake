@@ -33,7 +33,7 @@ if(EXISTS "${CPPCHECK_EXECUTABLE}")
   string(REGEX REPLACE ".*check ([^\n ]+).*" "\\1" CPPCHECK_VERSION "${CPPCHECK_VERSION}")
 endif()
 
-find_package_handle_standard_args(cppcheck
+find_package_handle_standard_args(Cppcheck
   FOUND_VAR
     CPPCHECK_FOUND
   REQUIRED_VARS

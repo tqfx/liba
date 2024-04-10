@@ -111,7 +111,7 @@ endif()
 option(LIBA_CPPCHECK "Enable/Disable cppcheck" 0)
 
 if(LIBA_CPPCHECK)
-  find_package(cppcheck)
+  find_package(Cppcheck)
 endif()
 
 option(LIBA_CLANG_TIDY "Enable/Disable clang-tidy" 0)
