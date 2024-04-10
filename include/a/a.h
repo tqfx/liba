@@ -146,7 +146,7 @@
 
 #if __has_builtin(__builtin_assume)
 #define a_assume(x) __builtin_assume(x)
-#elif A_PREREQ_GNUC(13, 1)
+#elif A_PREREQ_GNUC(13, 0)
 #define a_assume(x) __attribute__((__assume__(x)))
 #elif defined(__GNUC__)
 #define a_assume(x)                            \
@@ -167,7 +167,7 @@
 #endif /* format */
 
 /* attribute fallthrough */
-#if A_PREREQ_GNUC(7, 1) || __has_attribute(fallthrough)
+#if A_PREREQ_GNUC(7, 0) || __has_attribute(fallthrough)
 #define A_FALLTHROUGH __attribute__((__fallthrough__))
 #else /* !fallthrough */
 #define A_FALLTHROUGH (void)0

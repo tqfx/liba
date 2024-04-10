@@ -156,9 +156,9 @@ void a_complex_inv_(a_complex *_z)
 #if __has_warning("-Wincompatible-library-redeclaration")
 #pragma clang diagnostic ignored "-Wincompatible-library-redeclaration"
 #endif /* clang 4.0+ */
-#if A_PREREQ_GNUC(10, 1)
+#if A_PREREQ_GNUC(10, 0)
 #pragma GCC diagnostic ignored "-Wbuiltin-declaration-mismatch"
-#endif /* gcc 10.1+ */
+#endif /* gcc 10.0+ */
 
 #if defined(A_HAVE_CSQRT) && (A_HAVE_CSQRT + 0 < 1)
 #undef A_HAVE_CSQRT
