@@ -22,10 +22,11 @@ jobs:
             pkg install -y curl ninja cmake rust python openjdk8
             curl -sSL https://bootstrap.pypa.io/get-pip.py | python -
           run: |
-            python -m venv venv
-            . venv/bin/activate
+            python -m venv _
+            . _/bin/activate
             python -m pip install -r requirements.txt
             cmake -S . -B build -G "Ninja Multi-Config" \
+              -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/_ \
               -DBUILD_TESTING=1 \
               -DLIBA_WARNINGS=1 \
               -DLIBA_ANALYZER=1 \
@@ -42,3 +43,6 @@ jobs:
             cmake --build build --config RelWithDebInfo --target test
             cargo test --all-features
             cargo test --all-features --release
+            cmake --build build --config RelWithDebInfo --target install
+            cmake -S demo -B demo/build
+            cmake --build demo/build

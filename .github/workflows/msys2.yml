@@ -49,6 +49,7 @@ jobs:
         run: |
           set -x
           cmake -S . -B build -G Ninja -DPython_ROOT_DIR=D:/msys64/${{ matrix.sys }} \
+            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/_ \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_ANALYZER=1 \
@@ -84,3 +85,14 @@ jobs:
           cp -r build/vcpkg/* $VCPKG_INSTALLATION_ROOT
           $VCPKG_INSTALLATION_ROOT/vcpkg install liba[ipo,pkgconfig]:${{ matrix.triple }}-mingw-static
           $VCPKG_INSTALLATION_ROOT/vcpkg install liba[ipo,pkgconfig]:${{ matrix.triple }}-mingw-dynamic
+      - name: Run demo
+        shell: msys2 {0}
+        env:
+          MSYS2_PATH_TYPE: strict
+          MSYSTEM: ${{ matrix.sys }}
+          CMAKE_PREFIX_PATH: ${{ github.workspace }}/_
+        run: |
+          set -x
+          cmake --build build --config RelWithDebInfo --target install
+          cmake -S demo -B demo/build
+          cmake --build demo/build

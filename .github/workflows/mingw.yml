@@ -24,8 +24,12 @@ jobs:
         run: |
           set -x
           cmake -S . -B build --toolchain cmake/Use${{ matrix.mingw }}.cmake \
+            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/_ \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_ANALYZER=1 \
             -DLIBA_STATIC=1
           cmake --build build --target package
+          cmake --build build --target install
+          cmake -S demo -B demo/build
+          cmake --build demo/build

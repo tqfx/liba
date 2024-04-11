@@ -17,40 +17,42 @@ jobs:
         with:
           lfs: true
           submodules: true
-      - uses: actions/cache@v4
-        id: cache-quickjs
-        with:
-          path: |
-            bin/qjs
-            bin/qjsc
-            lib/quickjs/libquickjs.a
-            lib/quickjs/libquickjs.lto.a
-            include/quickjs/quickjs.h
-            include/quickjs/quickjs-libc.h
-          key: quickjs-linux
-      - if: steps.cache-quickjs.outputs.cache-hit != 'true'
-        run: |
-          curl https://bellard.org/quickjs/quickjs-2024-01-13.tar.xz | tar -xJf -
-          make install PREFIX=$(pwd) -C quickjs-2024-01-13
       - name: Run setup
         env:
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
         run: |
-          python3 -m venv venv
-          source venv/bin/activate
+          python3 -m venv _
+          source _/bin/activate
           python3 -m pip install -r requirements.txt
           python3 -m pip install ninja
           env
+      - uses: actions/cache@v4
+        id: cache-quickjs
+        with:
+          path: |
+            _/bin/qjs
+            _/bin/qjsc
+            _/lib/quickjs/libquickjs.a
+            _/lib/quickjs/libquickjs.lto.a
+            _/include/quickjs/quickjs.h
+            _/include/quickjs/quickjs-libc.h
+          key: quickjs-linux
+      - if: steps.cache-quickjs.outputs.cache-hit != 'true'
+        run: |
+          curl https://bellard.org/quickjs/quickjs-2024-01-13.tar.xz | tar -xJf -
+          make install PREFIX=${{ github.workspace }}/_ -C quickjs-2024-01-13
+          rm -rf quickjs-2024-01-13
       - name: Run cmake
         env:
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
+          CMAKE_PREFIX_PATH: ${{ github.workspace }}/_
         run: |
-          source venv/bin/activate
+          source _/bin/activate
           set -x
           cmake -S . -B build -G "Ninja Multi-Config" \
-            -DCMAKE_PREFIX_PATH=$(pwd) \
+            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/_ \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_ANALYZER=1 \
@@ -101,3 +103,13 @@ jobs:
           set -x
           cp -r build/vcpkg/* $VCPKG_INSTALLATION_ROOT
           vcpkg install liba[ipo,pkgconfig]
+      - name: Run demo
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+          CMAKE_PREFIX_PATH: ${{ github.workspace }}/_
+        run: |
+          set -x
+          cmake --build build --config RelWithDebInfo --target install
+          cmake -S demo -B demo/build
+          cmake --build demo/build
