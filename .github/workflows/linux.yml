@@ -12,18 +12,28 @@ jobs:
         ]
     runs-on: ubuntu-latest
     steps:
-      - uses: mymindstorm/setup-emsdk@v13
       - uses: actions/checkout@v4
         with:
           lfs: true
           submodules: true
+      - uses: actions/checkout@v4
+        with:
+          repository: emscripten-core/emsdk
+          path: _/emsdk
+      - name: Run emsdk
+        run: |
+          _/emsdk/emsdk install latest
+          _/emsdk/emsdk activate latest
+          . _/emsdk/emsdk_env.sh
+          pushd _/emsdk/upstream/emscripten
+          $(dirname $EMSDK_NODE)/npm install
       - name: Run setup
         env:
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
         run: |
           python3 -m venv _
-          source _/bin/activate
+          . _/bin/activate
           python3 -m pip install -r requirements.txt
           python3 -m pip install ninja
           env
@@ -45,11 +55,13 @@ jobs:
           rm -rf quickjs-2024-01-13
       - name: Run cmake
         env:
+          EMSDK_QUIET: 1
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
           CMAKE_PREFIX_PATH: ${{ github.workspace }}/_
         run: |
-          source _/bin/activate
+          . _/bin/activate
+          . _/emsdk/emsdk_env.sh
           set -x
           cmake -S . -B build -G "Ninja Multi-Config" \
             -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/_ \
@@ -95,14 +107,6 @@ jobs:
         run: |
           set -x
           cmake --build build --config RelWithDebInfo --target test
-      - name: Run vcpkg
-        env:
-          CC: ${{ matrix.cc }}
-          CXX: ${{ matrix.cxx }}
-        run: |
-          set -x
-          cp -r build/vcpkg/* $VCPKG_INSTALLATION_ROOT
-          vcpkg install liba[ipo,pkgconfig]
       - name: Run demo
         env:
           CC: ${{ matrix.cc }}
@@ -113,3 +117,11 @@ jobs:
           cmake --build build --config RelWithDebInfo --target install
           cmake -S demo -B demo/build
           cmake --build demo/build
+      - name: Run vcpkg
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        run: |
+          set -x
+          cp -r build/vcpkg/* $VCPKG_INSTALLATION_ROOT
+          vcpkg install liba[ipo,pkgconfig]

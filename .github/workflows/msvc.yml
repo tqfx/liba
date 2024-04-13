@@ -64,28 +64,41 @@ jobs:
         run: |
           Set-PSDebug -Trace 1
           cmake --build build --config RelWithDebInfo --target run_tests -- -noLogo
+      - name: Run demo
+        env:
+          CMAKE_PREFIX_PATH: ${{ github.workspace }}/_
+        run: |
+          Set-PSDebug -Trace 1
+          cmake --build build --config RelWithDebInfo --target install -- -noLogo
+          cmake -S demo -B demo/build -A ${{ matrix.arch }}
+          cmake --build demo/build
       - name: Run vcpkg
         run: |
           Set-PSDebug -Trace 1
           cp -r -Force build/vcpkg/* $ENV:VCPKG_INSTALLATION_ROOT
           vcpkg install liba[ipo,pkgconfig]:${{ matrix.triple }}-windows
           vcpkg install liba[ipo,pkgconfig]:${{ matrix.triple }}-windows-static
-      - name: Run demo
-        env:
-          CMAKE_PREFIX_PATH: ${{ github.workspace }}/_
-        run: |
-          set -x
-          cmake --build build --config RelWithDebInfo --target install -- -noLogo
-          cmake -S demo -B demo/build
-          cmake --build demo/build
-      - uses: mymindstorm/setup-emsdk@v13
+      - uses: actions/checkout@v4
         if: ${{ matrix.arch == 'x64' }}
+        with:
+          repository: emscripten-core/emsdk
+          path: _/emsdk
+      - name: Run emsdk
+        if: ${{ matrix.arch == 'x64' }}
+        run: |
+          _/emsdk/emsdk install latest
+          _/emsdk/emsdk activate latest
+          _/emsdk/emsdk_env.ps1
+          pushd _/emsdk/upstream/emscripten
+          & $ENV:EMSDK_NODE.Replace('node.exe', 'npm') install
       - name: Run cmake
         if: ${{ matrix.arch == 'x64' }}
         env:
+          EMSDK_QUIET: 1
           LIBA_OPENMP: 1
         run: |
           _/Scripts/Activate.ps1
+          _/emsdk/emsdk_env.ps1
           Set-PSDebug -Trace 1
           cmake -S . -B build.llvm -G "Ninja Multi-Config" --toolchain cmake/UseClang.cmake `
             -DBUILD_TESTING=1 `

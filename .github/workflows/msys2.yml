@@ -22,15 +22,14 @@ jobs:
       - uses: msys2/setup-msys2@v2
         with:
           cache: false
+          update: true
           location: D:\
-          path-type: strict
           msystem: ${{ matrix.sys }}
           pacboy: >-
             toolchain:p
             cmake:p
             ninja:p
             lua:p
-            rust:p
             cython:p
             python:p
             python-pip:p
@@ -38,18 +37,16 @@ jobs:
       - name: Run debug
         shell: msys2 {0}
         env:
-          MSYS2_PATH_TYPE: strict
           MSYSTEM: ${{ matrix.sys }}
         run: env
       - name: Run cmake
         shell: msys2 {0}
         env:
-          MSYS2_PATH_TYPE: strict
           MSYSTEM: ${{ matrix.sys }}
         run: |
           set -x
           cmake -S . -B build -G Ninja -DPython_ROOT_DIR=D:/msys64/${{ matrix.sys }} \
-            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/_ \
+            -DCMAKE_INSTALL_PREFIX=$(pwd)/_ \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_ANALYZER=1 \
@@ -60,7 +57,6 @@ jobs:
       - name: Run ninja
         shell: msys2 {0}
         env:
-          MSYS2_PATH_TYPE: strict
           MSYSTEM: ${{ matrix.sys }}
           LIBA_OPENMP: ${{ !startsWith(matrix.sys, 'CLANG') }}
         run: |
@@ -69,30 +65,26 @@ jobs:
       - name: Run ctest
         shell: msys2 {0}
         env:
-          MSYS2_PATH_TYPE: strict
           MSYSTEM: ${{ matrix.sys }}
           CTEST_OUTPUT_ON_FAILURE: 1
         run: |
           set -x
           cmake --build build --target test
+      - name: Run demo
+        shell: msys2 {0}
+        env:
+          MSYSTEM: ${{ matrix.sys }}
+        run: |
+          set -x
+          cmake --build build --config RelWithDebInfo --target install
+          cmake -S demo -B demo/build -DCMAKE_PREFIX_PATH=$(pwd)/_
+          cmake --build demo/build
       - name: Run vcpkg
         shell: msys2 {0}
         env:
-          MSYS2_PATH_TYPE: strict
           MSYSTEM: ${{ matrix.sys }}
         run: |
           set -x
           cp -r build/vcpkg/* $VCPKG_INSTALLATION_ROOT
           $VCPKG_INSTALLATION_ROOT/vcpkg install liba[ipo,pkgconfig]:${{ matrix.triple }}-mingw-static
           $VCPKG_INSTALLATION_ROOT/vcpkg install liba[ipo,pkgconfig]:${{ matrix.triple }}-mingw-dynamic
-      - name: Run demo
-        shell: msys2 {0}
-        env:
-          MSYS2_PATH_TYPE: strict
-          MSYSTEM: ${{ matrix.sys }}
-          CMAKE_PREFIX_PATH: ${{ github.workspace }}/_
-        run: |
-          set -x
-          cmake --build build --config RelWithDebInfo --target install
-          cmake -S demo -B demo/build
-          cmake --build demo/build

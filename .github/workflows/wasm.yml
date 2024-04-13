@@ -5,13 +5,26 @@ jobs:
   wasm:
     runs-on: ubuntu-latest
     steps:
-      - uses: mymindstorm/setup-emsdk@v13
       - uses: actions/checkout@v4
         with:
           lfs: true
           submodules: true
-      - name: Run cmake
+      - uses: actions/checkout@v4
+        with:
+          repository: emscripten-core/emsdk
+          path: _/emsdk
+      - name: Run emsdk
         run: |
+          _/emsdk/emsdk install latest
+          _/emsdk/emsdk activate latest
+          . _/emsdk/emsdk_env.sh
+          pushd _/emsdk/upstream/emscripten
+          $(dirname $EMSDK_NODE)/npm install
+      - name: Run cmake
+        env:
+          EMSDK_QUIET: 1
+        run: |
+          . _/emsdk/emsdk_env.sh
           set -x
           emcmake cmake -S . -B build -DCMAKE_BUILD_TYPE=Release \
             -DBUILD_TESTING=0 \
