@@ -27,7 +27,6 @@ if is_plat("wasm") then
     target("ajs")
     set_kind("binary")
     add_files("src/**.cc")
-    add_ldflags("--bind")
     if not has_config("liba-wasm") then
         add_ldflags("-sWASM=0")
     end
@@ -39,6 +38,7 @@ if is_plat("wasm") then
         add_defines("WASM_BIGINT")
     end
     set_filename("liba.js")
+    add_syslinks("embind")
     add_deps("a")
     target_end()
 end
