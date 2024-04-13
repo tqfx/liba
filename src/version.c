@@ -83,6 +83,9 @@ a_bool a_version_ne(a_version const *lhs, a_version const *rhs)
 }
 
 #include <ctype.h>
+#if __has_warning("-Wdisabled-macro-expansion")
+#pragma clang diagnostic ignored "-Wdisabled-macro-expansion"
+#endif /* -Wdisabled-macro-expansion */
 
 static A_INLINE char const *a_version_set_alpha_(a_version *ctx, char const *alpha)
 {
@@ -102,13 +105,13 @@ static A_INLINE char const *a_version_set_alpha_(a_version *ctx, char const *alp
     return alpha;
 }
 
-#include <stdlib.h>
-
 void a_version_set_alpha(a_version *ctx, char const *alpha)
 {
     if ((*alpha == '.' || *alpha == '-' || *alpha == '+' || isalpha((a_byte)*alpha)) &&
         (isalpha((a_byte)alpha[1]) || !alpha[1])) { a_version_set_alpha_(ctx, alpha); }
 }
+
+#include <stdlib.h>
 
 unsigned int a_version_parse(a_version *ctx, char const *ver)
 {
