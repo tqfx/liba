@@ -128,8 +128,8 @@
 #define A_UNLIKELY(x) __builtin_expect(!!(x), 0)
 #define A_LIKELY(x) __builtin_expect(!!(x), 1)
 #else /* !likely */
-#define A_UNLIKELY(x) (x)
-#define A_LIKELY(x) (x)
+#define A_UNLIKELY(x) (!!(x))
+#define A_LIKELY(x) (!!(x))
 #endif /* likely */
 
 #if defined(_WIN32) || defined(__CYGWIN__)
