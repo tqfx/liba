@@ -92,24 +92,21 @@ static void test(void)
 int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
 #if !defined __cplusplus
-    FILE *out = stdout;
     if (argc > 1)
     {
-        char const *name = argv[argc - 1];
-        int file = a_cast_s(int, *name);
-        if (file)
+        char c = argv[argc - 1][0];
+        if (c)
         {
-            out = fopen(name, "wb");
-            if (!out)
+            FILE *out = fopen(argv[argc - 1], "wb");
+            if (out)
             {
-                perror(name);
-                exit(EXIT_FAILURE);
+                create_table(out);
+                (void)fclose(out);
             }
         }
-        create_table(out);
-        if (file && fclose(out) == EOF)
+        else
         {
-            perror(name);
+            create_table(stdout);
         }
     }
 #else /* !__cplusplus */
