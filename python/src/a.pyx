@@ -112,14 +112,14 @@ if A_FLOAT_TYPE == A_FLOAT_SINGLE:
     num_new = f32_new
     new_num = new_f32
 
-cdef array num2_new(object x2):
+cdef array num_new2(object x2):
     cdef Py_ssize_t n = 0
     cdef object x1
     for x1 in x2:
         n += len(x1)
     return num_new(n)
 
-cdef a_float *num2_set(void *o, object x2):
+cdef a_float *num_set2(void *o, object x2):
     cdef a_float *r = <a_float *>o
     cdef Py_ssize_t n = 0
     cdef a_float x
@@ -679,17 +679,17 @@ cdef class pid_fuzzy:
         a_pid_fuzzy_set_op(&self.ctx, op)
         return self
     def rule(self, me, mec, mkp, mki, mkd):
-        self.me = num2_new(me)
-        self.mec = num2_new(mec)
-        self.mkp = num2_new(mkp)
-        self.mki = num2_new(mki)
-        self.mkd = num2_new(mkd)
+        self.me = num_new2(me)
+        self.mec = num_new2(mec)
+        self.mkp = num_new2(mkp)
+        self.mki = num_new2(mki)
+        self.mkd = num_new2(mkd)
         a_pid_fuzzy_rule(&self.ctx, <unsigned int>len(me),
-                         num2_set(self.me.data, me),
-                         num2_set(self.mec.data, mec),
-                         num2_set(self.mkp.data, mkp),
-                         num2_set(self.mki.data, mki),
-                         num2_set(self.mkd.data, mkd))
+                         num_set2(self.me.data, me),
+                         num_set2(self.mec.data, mec),
+                         num_set2(self.mkp.data, mkp),
+                         num_set2(self.mki.data, mki),
+                         num_set2(self.mkd.data, mkd))
         return self
     def set_block(self, unsigned int num):
         cdef void *ptr = a_pid_fuzzy_block(&self.ctx)
