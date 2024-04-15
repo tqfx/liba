@@ -30,6 +30,7 @@ jobs:
           Set-PSDebug -Trace 1
           cmake -S . -B build -A ${{ matrix.arch }} `
             -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/_ `
+            -DBUILD_SHARED_LIBS=1 `
             -DBUILD_TESTING=1 `
             -DLIBA_WARNINGS=1 `
             -DLIBA_ANALYZER=1 `
@@ -71,7 +72,7 @@ jobs:
           Set-PSDebug -Trace 1
           cmake --build build --config RelWithDebInfo --target install -- -noLogo
           cmake -S demo -B demo/build -A ${{ matrix.arch }}
-          cmake --build demo/build
+          cmake --build demo/build -v
       - name: Run vcpkg
         run: |
           Set-PSDebug -Trace 1
@@ -102,6 +103,7 @@ jobs:
           _/emsdk/emsdk_env.ps1
           Set-PSDebug -Trace 1
           cmake -S . -B build.llvm -G "Ninja Multi-Config" `
+            -DBUILD_SHARED_LIBS=1 `
             -DBUILD_TESTING=1 `
             -DLIBA_WARNINGS=1 `
             -DLIBA_JAVASCRIPT=1 `

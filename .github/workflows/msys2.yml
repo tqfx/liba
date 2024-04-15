@@ -47,6 +47,7 @@ jobs:
           set -x
           cmake -S . -B build -G Ninja -DPython_ROOT_DIR=D:/msys64/${{ matrix.sys }} \
             -DCMAKE_INSTALL_PREFIX=$(pwd)/_ \
+            -DBUILD_SHARED_LIBS=1 \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_ANALYZER=1 \
@@ -78,7 +79,7 @@ jobs:
           set -x
           cmake --build build --config RelWithDebInfo --target install
           cmake -S demo -B demo/build -DCMAKE_PREFIX_PATH=$(pwd)/_
-          cmake --build demo/build
+          cmake --build demo/build -v
       - name: Run vcpkg
         shell: msys2 {0}
         env:

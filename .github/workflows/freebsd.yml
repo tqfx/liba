@@ -27,6 +27,7 @@ jobs:
             python -m pip install -r requirements.txt
             cmake -S . -B build -G "Ninja Multi-Config" \
               -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/_ \
+              -DBUILD_SHARED_LIBS=1 \
               -DBUILD_TESTING=1 \
               -DLIBA_WARNINGS=1 \
               -DLIBA_ANALYZER=1 \
@@ -45,4 +46,4 @@ jobs:
             cargo test --all-features --release
             cmake --build build --config RelWithDebInfo --target install
             cmake -S demo -B demo/build
-            cmake --build demo/build
+            cmake --build demo/build -v

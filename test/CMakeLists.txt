@@ -68,7 +68,7 @@ function(building target)
   elseif(BUILD_SHARED_LIBS)
     target_link_libraries(${TARGET} PRIVATE liba)
   else()
-    target_link_libraries(${TARGET} PRIVATE liba.o)
+    target_link_libraries(${TARGET} PRIVATE alib)
   endif()
 
   set_executable_options(${TARGET})

@@ -26,7 +26,7 @@ jobs:
           CMAKE_PREFIX_PATH: ${{ github.workspace }}/_
         run: |
           set -x
-          cmake -S . -B build \
+          cmake -S . -B build -DBUILD_SHARED_LIBS=1 \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_ANALYZER=1 \
@@ -34,7 +34,7 @@ jobs:
           cmake --build build --target package
           sudo cmake --build build --target install
           cmake -S demo -B demo/build
-          cmake --build demo/build
+          cmake --build demo/build -v
   LLVM-MinGW:
     strategy:
       fail-fast: false
@@ -67,10 +67,11 @@ jobs:
         run: |
           set -x
           cmake -S . -B build -DCMAKE_SYSTEM_PROCESSOR=${{ matrix.arch }} \
+            -DBUILD_SHARED_LIBS=1 \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_STATIC=1
           cmake --build build --target package
           cmake --build build --target install
           cmake -S demo -B demo/build -DCMAKE_SYSTEM_PROCESSOR=${{ matrix.arch }}
-          cmake --build demo/build
+          cmake --build demo/build -v

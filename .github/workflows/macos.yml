@@ -65,6 +65,7 @@ jobs:
           set -x
           cmake -S . -B build -G "Ninja Multi-Config" \
             -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/_ \
+            -DBUILD_SHARED_LIBS=1 \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_ANALYZER=1 \
@@ -116,7 +117,7 @@ jobs:
           set -x
           cmake --build build --config RelWithDebInfo --target install
           cmake -S demo -B demo/build
-          cmake --build demo/build
+          cmake --build demo/build -v
       - name: Run vcpkg
         env:
           CC: ${{ matrix.cc }}
