@@ -105,12 +105,13 @@ cdef a_float *num_set(void *p, Py_ssize_t n, object x):
         r[i] = x[i]
     return r
 
-cdef array (*num_new)(Py_ssize_t n)
-num_new = f64_new
-new_num = new_f64
+cdef array (*num_new)(Py_ssize_t)
 if A_FLOAT_TYPE == A_FLOAT_SINGLE:
     num_new = f32_new
     new_num = new_f32
+else:
+    num_new = f64_new
+    new_num = new_f64
 
 cdef array num_new2(object x2):
     cdef Py_ssize_t n = 0
