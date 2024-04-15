@@ -6,7 +6,7 @@ set_project("liba")
 set_xmakever("2.5.0")
 
 -- set project version
-set_version("0.1.10", { build = "%Y%m%d" })
+set_version("0.1.11", { build = "%Y%m%d" })
 
 -- option: liba-cxx
 option("liba-cxx")
