@@ -35,16 +35,16 @@ class aConan(ConanFile):
     )
 
     def config_options(self):
-        if self.settings.os == "Windows":  # type: ignore
-            del self.options.fPIC  # type: ignore
+        if self.settings.os == "Windows":
+            del self.options.fPIC
 
     def generate(self):
         cmake = CMakeToolchain(self)
         cmake.variables["BUILD_TESTING"] = 0
-        cmake.variables["LIBA_SYMLINK"] = self.options.symlink  # type: ignore
-        cmake.variables["LIBA_PKGCONFIG"] = self.options.pkgconfig  # type: ignore
-        if self.settings.build_type != "Debug":  # type: ignore
-            cmake.variables["LIBA_IPO"] = self.options.ipo  # type: ignore
+        cmake.variables["LIBA_SYMLINK"] = self.options.symlink
+        cmake.variables["LIBA_PKGCONFIG"] = self.options.pkgconfig
+        if self.settings.build_type != "Debug":
+            cmake.variables["LIBA_IPO"] = self.options.ipo
         else:
             cmake.variables["LIBA_IPO"] = 0
         cmake.generate()
@@ -57,3 +57,17 @@ class aConan(ConanFile):
     def package(self):
         cmake = CMake(self)
         cmake.install()
+
+    def package_info(self):
+        self.cpp_info.libs = ["a"]
+        if self.settings.os != "Windows":
+            self.cpp_info.system_libs = ["m"]
+        if self.options.shared:
+            if self.settings.os == "Windows":
+                self.cpp_info.libs = ["liba"]
+            self.cpp_info.defines = ["A_IMPORTS"]
+            self.cpp_info.set_property("cmake_target_name", "liba")
+        else:
+            self.cpp_info.set_property("cmake_target_name", "alib")
+        if self.options.pkgconfig:
+            self.cpp_info.set_property("pkg_config_name", "liba")

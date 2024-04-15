@@ -5,32 +5,43 @@ jobs:
   MSVC:
     strategy:
       fail-fast: false
-      matrix:
-        include: [
-          { arch: x86, type: Debug },
-          { arch: x86_64, type: Debug },
-          { arch: x86, type: Release },
-          { arch: x86_64, type: Release },
-        ]
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
         with:
           lfs: true
           submodules: true
-      - name: Run conan
+      - name: Run setup
         run: |
           Set-PSDebug -Trace 1
+          python -m venv demo/_
+          demo/_/Scripts/Activate.ps1
           python -m pip install -U conan
           conan profile detect --force
-          conan create . -s arch=${{ matrix.arch }} -s build_type=${{ matrix.type }}
+          conan export .
+      - name: Run conan static
+        working-directory: demo
+        run: |
+          _/Scripts/Activate.ps1
+          Set-PSDebug -Trace 1
+          conan install . -of build -b missing -o liba/*:shared=0
+          cmake --preset conan-default
+          cmake --build --preset conan-release -- -nologo
+      - name: Run conan shared
+        working-directory: demo
+        run: |
+          _/Scripts/Activate.ps1
+          Set-PSDebug -Trace 1
+          conan install . -of build -b missing  -o liba/*:shared=1
+          cmake --preset conan-default
+          cmake --build --preset conan-release -- -nologo
   MacOS:
     strategy:
       fail-fast: false
       matrix:
         include: [
-          { cc: clang, cxx: clang++, type: Debug },
-          { cc: clang, cxx: clang++, type: Release },
+          { cc: gcc-13, cxx: g++-13 },
+          { cc: clang, cxx: clang++ },
         ]
     runs-on: macos-latest
     steps:
@@ -38,24 +49,46 @@ jobs:
         with:
           lfs: true
           submodules: true
-      - name: Run conan clang
+      - name: Run setup
         env:
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
         run: |
           set -x
-          python3 -m pip install -U conan
+          python -m venv demo/_
+          . demo/_/bin/activate
+          python -m pip install -U conan
           conan profile detect --force
-          conan create . -s build_type=${{ matrix.type }}
+          conan export .
+      - name: Run conan static
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        working-directory: demo
+        run: |
+          . _/bin/activate
+          set -x
+          conan install . -of build -b missing -o liba/*:shared=0
+          cmake --preset conan-release
+          cmake --build --preset conan-release
+      - name: Run conan shared
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        working-directory: demo
+        run: |
+          . _/bin/activate
+          set -x
+          conan install . -of build -b missing -o liba/*:shared=1
+          cmake --preset conan-release
+          cmake --build --preset conan-release
   Linux:
     strategy:
       fail-fast: false
       matrix:
         include: [
-          { cc: gcc, cxx: g++, type: Debug },
-          { cc: clang, cxx: clang++, type: Debug },
-          { cc: gcc, cxx: g++, type: Release },
-          { cc: clang, cxx: clang++, type: Release },
+          { cc: gcc-13, cxx: g++-13 },
+          { cc: clang, cxx: clang++ },
         ]
     runs-on: ubuntu-latest
     steps:
@@ -63,12 +96,36 @@ jobs:
         with:
           lfs: true
           submodules: true
-      - name: Run conan
+      - name: Run setup
         env:
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
         run: |
           set -x
-          python3 -m pip install -U conan
+          python -m venv demo/_
+          . demo/_/bin/activate
+          python -m pip install -U conan
           conan profile detect --force
-          conan create . -s build_type=${{ matrix.type }}
+          conan export .
+      - name: Run conan static
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        working-directory: demo
+        run: |
+          . _/bin/activate
+          set -x
+          conan install . -of build -b missing -o liba/*:shared=0
+          cmake --preset conan-release
+          cmake --build --preset conan-release
+      - name: Run conan shared
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        working-directory: demo
+        run: |
+          . _/bin/activate
+          set -x
+          conan install . -of build -b missing -o liba/*:shared=1
+          cmake --preset conan-release
+          cmake --build --preset conan-release

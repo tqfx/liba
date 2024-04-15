@@ -1,0 +1,6 @@
+[requires]
+liba/[~0.1]
+
+[generators]
+CMakeDeps
+CMakeToolchain
