@@ -10,8 +10,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_TRAJTRAP trapezoidal velocity trajectory
+ @ingroup liba
+ @addtogroup a_trajtrap trapezoidal velocity trajectory
  @{
 */
 
@@ -130,6 +130,6 @@ struct a_trajtrap
 #endif /* __cplusplus */
 };
 
-/*! @} A_TRAJTRAP */
+/*! @} a_trajtrap */
 
 #endif /* a/trajtrap.h */

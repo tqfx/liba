@@ -32,8 +32,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_PID proportional integral derivative controller
+ @ingroup liba
+ @addtogroup a_pid proportional integral derivative controller
  @{
 */
 
@@ -138,6 +138,6 @@ struct a_pid
 #endif /* __cplusplus */
 };
 
-/*! @} A_PID */
+/*! @} a_pid */
 
 #endif /* a/pid.h */

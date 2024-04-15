@@ -9,8 +9,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_LIST circular doubly linked list
+ @ingroup liba
+ @addtogroup a_list circular doubly linked list
  @{
 */
 
@@ -484,6 +484,6 @@ A_INTERN void a_list_swap_node(a_list *lhs, a_list *rhs)
     a_list_swap_(lhs, lhs, rhs, rhs);
 }
 
-/*! @} A_LIST */
+/*! @} a_list */
 
 #endif /* a/list.h */

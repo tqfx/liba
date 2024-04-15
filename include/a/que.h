@@ -9,8 +9,8 @@
 #include "list.h"
 
 /*!
- @ingroup A
- @addtogroup A_QUE basic queue library
+ @ingroup liba
+ @addtogroup a_que basic queue library
  @{
 */
 
@@ -319,6 +319,6 @@ A_EXTERN void *a_que_remove(a_que *ctx, a_size idx);
              : (0);                                                \
          it = it##_, it##_ = a_cast_r(T *, a_list_(*, it)->prev))
 
-/*! @} A_QUE */
+/*! @} a_que */
 
 #endif /* a/que.h */

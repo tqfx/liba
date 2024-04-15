@@ -29,8 +29,8 @@
 #define LIBA_NOTEFREQS_H
 
 /*!
- @ingroup A
- @addtogroup A_NOTEFREQ note frequency table
+ @ingroup liba
+ @addtogroup a_notefreq note frequency table
  @{
 */
 
@@ -1482,6 +1482,6 @@
 
 // clang-format on
 
-/*! @} A_NOTEFREQ */
+/*! @} a_notefreq */
 
 #endif /* a/notefreqs.h */

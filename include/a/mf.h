@@ -9,8 +9,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_MF membership function
+ @ingroup liba
+ @addtogroup a_mf membership function
  @{
 */
 
@@ -279,6 +279,6 @@ A_EXTERN a_float a_mf(unsigned int e, a_float x, a_float const *a);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-/*! @} A_MF */
+/*! @} a_mf */
 
 #endif /* a/mf.h */

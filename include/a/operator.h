@@ -7,8 +7,8 @@
 #define LIBA_OPERATOR_H
 
 /*!
- @ingroup A
- @addtogroup A_OPERATOR algorithm library operators
+ @ingroup liba
+ @addtogroup a_operator algorithm library operators
  @{
 */
 
@@ -62,6 +62,6 @@
 
 // clang-format on
 
-/*! @} A_OPERATOR */
+/*! @} a_operator */
 
 #endif /* a/operator.h */

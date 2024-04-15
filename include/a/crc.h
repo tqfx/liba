@@ -9,6 +9,12 @@
 
 #include "a.h"
 
+/*!
+ @ingroup liba
+ @addtogroup a_crc Cyclic Redundancy Check
+ @{
+*/
+
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
@@ -35,5 +41,7 @@ A_EXTERN a_u64 a_crc64m(a_u64 const table[0x100], void const *pdata, a_size nbyt
 #if defined(__cplusplus)
 } /* extern "C" */
 #endif /* __cplusplus */
+
+/*! @} a_crc */
 
 #endif /* a/crc.h */

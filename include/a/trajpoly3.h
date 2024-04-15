@@ -10,8 +10,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_TRAJPOLY3 cubic polynomial trajectory
+ @ingroup liba
+ @addtogroup a_trajpoly3 cubic polynomial trajectory
  @{
 */
 
@@ -158,6 +158,6 @@ struct a_trajpoly3
 #endif /* __cplusplus */
 };
 
-/*! @} A_TRAJPOLY3 */
+/*! @} a_trajpoly3 */
 
 #endif /* a/trajpoly3.h */

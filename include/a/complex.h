@@ -9,8 +9,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_COMPLEX complex number
+ @ingroup liba
+ @addtogroup a_complex complex number
  @{
 */
 
@@ -1029,6 +1029,6 @@ A_INTERN void a_complex_acoth(a_complex *_z, a_complex z)
 } /* extern "C" */
 #endif /* __cplusplus */
 
-/*! @} A_COMPLEX */
+/*! @} a_complex */
 
 #endif /* a/complex.h */

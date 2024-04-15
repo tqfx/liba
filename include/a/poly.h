@@ -9,8 +9,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_POLY polynomial
+ @ingroup liba
+ @addtogroup a_poly polynomial
  @{
 */
 
@@ -77,6 +77,6 @@ A_INTERN a_float a_poly_evar(a_float const *a, a_size n, a_float x)
 } /* extern "C" */
 #endif /* __cplusplus */
 
-/*! @} A_POLY */
+/*! @} a_poly */
 
 #endif /* a/poly.h */

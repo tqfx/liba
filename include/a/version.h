@@ -9,8 +9,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_VERSION algorithm library version
+ @ingroup liba
+ @addtogroup a_version algorithm library version
  @{
 */
 
@@ -238,6 +238,6 @@ struct a_version
 #endif /* __cplusplus */
 };
 
-/*! @} A_VERSION */
+/*! @} a_version */
 
 #endif /* a/version.h */

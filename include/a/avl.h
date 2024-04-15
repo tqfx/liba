@@ -9,8 +9,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_AVL AVL binary search tree
+ @ingroup liba
+ @addtogroup a_avl AVL binary search tree
  @{
 */
 
@@ -358,6 +358,6 @@ A_EXTERN void a_avl_remove(a_avl *root, a_avl_node *node);
 #define a_avl_fortear(cur, next, root) \
     for (a_avl_node *next = A_NULL, *cur = a_avl_tear(root, &next); cur; cur = a_avl_tear(root, &next))
 
-/*! @} A_AVL */
+/*! @} a_avl */
 
 #endif /* a/avl.h */

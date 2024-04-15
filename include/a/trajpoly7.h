@@ -10,8 +10,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_TRAJPOLY7 hepta polynomial trajectory
+ @ingroup liba
+ @addtogroup a_trajpoly7 hepta polynomial trajectory
  @{
 */
 
@@ -203,6 +203,6 @@ struct a_trajpoly7
 #endif /* __cplusplus */
 };
 
-/*! @} A_TRAJPOLY7 */
+/*! @} a_trajpoly7 */
 
 #endif /* a/trajpoly7.h */

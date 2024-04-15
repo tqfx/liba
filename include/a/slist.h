@@ -9,8 +9,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_SLIST singly linked list
+ @ingroup liba
+ @addtogroup a_slist singly linked list
  @{
 */
 
@@ -205,6 +205,6 @@ A_INTERN void a_slist_rot(a_slist *ctx)
     }
 }
 
-/*! @} A_SLIST */
+/*! @} a_slist */
 
 #endif /* a/slist.h */

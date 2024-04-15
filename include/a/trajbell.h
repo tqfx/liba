@@ -10,8 +10,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_TRAJBELL bell-shaped velocity trajectory
+ @ingroup liba
+ @addtogroup a_trajbell bell-shaped velocity trajectory
  @{
 */
 
@@ -188,6 +188,6 @@ struct a_trajbell
 #endif /* __cplusplus */
 };
 
-/*! @} A_TRAJBELL */
+/*! @} a_trajbell */
 
 #endif /* a/trajbell.h */

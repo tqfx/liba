@@ -11,8 +11,8 @@
 #include <string.h>
 
 /*!
- @ingroup A
- @addtogroup A_STR basic string library
+ @ingroup liba
+ @addtogroup a_str basic string library
  @{
 */
 
@@ -288,6 +288,6 @@ A_EXTERN a_size a_str_utflen(a_str const *ctx);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-/*! @} A_STR */
+/*! @} a_str */
 
 #endif /* a/str.h */

@@ -267,7 +267,7 @@
 #include <float.h>
 
 /*!
- @addtogroup A algorithm library
+ @addtogroup liba algorithm library
  @{
 */
 
@@ -703,7 +703,7 @@
 #define a_f64 A_F64
 
 /*!
- @addtogroup A_FLOAT floating-point number
+ @addtogroup a_float floating-point number
  @{
 */
 
@@ -834,7 +834,7 @@
 /*! compiler built-in floating-point number type */
 #define a_float A_FLOAT
 
-/*! @} A_FLOAT */
+/*! @} a_float */
 
 typedef union a_cast
 {
@@ -1391,6 +1391,6 @@ A_EXTERN void *a_alloc_(void *addr, a_size size);
 #define a_new(T, ptr, num) a_cast_s(T *, a_alloc(ptr, sizeof(T) * (num)))
 #define a_die(ptr) a_alloc(ptr, 0)
 
-/*! @} A */
+/*! @} liba */
 
 #endif /* a/a.h */

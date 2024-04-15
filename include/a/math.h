@@ -10,8 +10,8 @@
 #include <math.h>
 
 /*!
- @ingroup A
- @addtogroup A_MATH mathematical algorithm library
+ @ingroup liba
+ @addtogroup a_math mathematical algorithm library
  @{
 */
 
@@ -211,11 +211,11 @@ A_EXTERN a_u32 a_u64_sqrt(a_u64 x);
 #define a_f64_lrintt A_F64_F(lrint)
 #define a_f64_llrintt A_F64_F(llrint)
 
-/*! @} A_MATH */
+/*! @} a_math */
 
 /*!
- @ingroup A
- @addtogroup A_FLOAT floating-point number
+ @ingroup liba
+ @addtogroup a_float floating-point number
  @{
 */
 
@@ -346,6 +346,6 @@ A_EXTERN a_float a_float_hypot3(a_float x, a_float y, a_float z);
 #define a_float_lrintt A_FLOAT_F(lrint)
 #define a_float_llrintt A_FLOAT_F(llrint)
 
-/*! @} A_FLOAT */
+/*! @} a_float */
 
 #endif /* a/math.h */

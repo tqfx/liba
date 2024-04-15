@@ -9,8 +9,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_BUF basic buffer library
+ @ingroup liba
+ @addtogroup a_buf basic buffer library
  @{
 */
 
@@ -367,6 +367,6 @@ A_INTERN void *a_buf_pull(a_buf *ctx) { return a_buf_pull_back(ctx); }
 */
 #define a_buf_foreach_reverse(T, it, ctx) a_foreach_reverse(T, it, (ctx)->ptr_, (ctx)->num_)
 
-/*! @} A_BUF */
+/*! @} a_buf */
 
 #endif /* a/buf.h */

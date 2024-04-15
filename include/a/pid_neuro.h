@@ -24,8 +24,8 @@
 #include "pid.h"
 
 /*!
- @ingroup A
- @addtogroup A_PID_NEURO single neuron proportional integral derivative controller
+ @ingroup liba
+ @addtogroup a_pid_neuro single neuron proportional integral derivative controller
  @{
 */
 
@@ -125,6 +125,6 @@ struct a_pid_neuro
 #endif /* __cplusplus */
 };
 
-/*! @} A_PID_NEURO */
+/*! @} a_pid_neuro */
 
 #endif /* a/pid_neuro.h */

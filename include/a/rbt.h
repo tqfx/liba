@@ -9,8 +9,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_RBT red–black binary search tree
+ @ingroup liba
+ @addtogroup a_rbt red–black binary search tree
  @{
 */
 
@@ -355,6 +355,6 @@ A_EXTERN void a_rbt_remove(a_rbt *root, a_rbt_node *node);
 #define a_rbt_fortear(cur, next, root) \
     for (a_rbt_node *next = A_NULL, *cur = a_rbt_tear(root, &next); cur; cur = a_rbt_tear(root, &next))
 
-/*! @} A_RBT */
+/*! @} a_rbt */
 
 #endif /* a/rbt.h */

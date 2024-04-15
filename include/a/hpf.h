@@ -27,8 +27,8 @@
 #include "math.h"
 
 /*!
- @ingroup A
- @addtogroup A_HPF High Pass Filter
+ @ingroup liba
+ @addtogroup a_hpf High Pass Filter
  @{
 */
 
@@ -129,6 +129,6 @@ A_INTERN void a_hpf_zero(a_hpf *ctx)
     ctx->input = 0;
 }
 
-/*! @} A_HPF */
+/*! @} a_hpf */
 
 #endif /* a/hpf.h */

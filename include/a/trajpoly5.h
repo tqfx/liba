@@ -10,8 +10,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_TRAJPOLY5 quintic polynomial trajectory
+ @ingroup liba
+ @addtogroup a_trajpoly5 quintic polynomial trajectory
  @{
 */
 
@@ -166,6 +166,6 @@ struct a_trajpoly5
 #endif /* __cplusplus */
 };
 
-/*! @} A_TRAJPOLY5 */
+/*! @} a_trajpoly5 */
 
 #endif /* a/trajpoly5.h */

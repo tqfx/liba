@@ -9,8 +9,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_FUZZY fuzzy operator
+ @ingroup liba
+ @addtogroup a_fuzzy fuzzy operator
  @{
 */
 
@@ -145,6 +145,6 @@ A_EXTERN a_float a_fuzzy_equ_(a_float gamma, a_float a, a_float b);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-/*! @} A_FUZZY */
+/*! @} a_fuzzy */
 
 #endif /* a/fuzzy.h */

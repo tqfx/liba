@@ -27,8 +27,8 @@
 #include "math.h"
 
 /*!
- @ingroup A
- @addtogroup A_LPF Low Pass Filter
+ @ingroup liba
+ @addtogroup a_lpf Low Pass Filter
  @{
 */
 
@@ -121,6 +121,6 @@ A_INTERN a_float a_lpf_iter(a_lpf *ctx, a_float x)
 */
 A_INTERN void a_lpf_zero(a_lpf *ctx) { ctx->output = 0; }
 
-/*! @} A_LPF */
+/*! @} a_lpf */
 
 #endif /* a/lpf.h */

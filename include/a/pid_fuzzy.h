@@ -10,8 +10,8 @@
 #include "fuzzy.h"
 
 /*!
- @ingroup A
- @addtogroup A_PID_FUZZY fuzzy proportional integral derivative controller
+ @ingroup liba
+ @addtogroup a_pid_fuzzy fuzzy proportional integral derivative controller
  @{
 */
 
@@ -198,6 +198,6 @@ struct a_pid_fuzzy
 #endif /* __cplusplus */
 };
 
-/*! @} A_PID_FUZZY */
+/*! @} a_pid_fuzzy */
 
 #endif /* a/pid_fuzzy.h */

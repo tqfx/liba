@@ -17,8 +17,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_UTF Unicode Transformation Format
+ @ingroup liba
+ @addtogroup a_utf Unicode Transformation Format
  @{
 */
 
@@ -55,6 +55,6 @@ A_EXTERN a_size a_utf_length(void const *str);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-/*! @} A_UTF */
+/*! @} a_utf */
 
 #endif /* a/utf.h */

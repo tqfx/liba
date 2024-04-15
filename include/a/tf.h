@@ -9,8 +9,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_TF transfer function
+ @ingroup liba
+ @addtogroup a_tf transfer function
  @{
 */
 
@@ -107,6 +107,6 @@ struct a_tf
 #endif /* __cplusplus */
 };
 
-/*! @} A_TF */
+/*! @} a_tf */
 
 #endif /* a/tf.h */

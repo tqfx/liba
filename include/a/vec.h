@@ -9,8 +9,8 @@
 #include "a.h"
 
 /*!
- @ingroup A
- @addtogroup A_VEC basic vector library
+ @ingroup liba
+ @addtogroup a_vec basic vector library
  @{
 */
 
@@ -421,6 +421,6 @@ A_INTERN void *a_vec_pull(a_vec *ctx) { return a_vec_pull_back(ctx); }
 */
 #define a_vec_foreach_reverse(T, it, ctx) a_foreach_reverse(T, it, (ctx)->ptr_, (ctx)->num_)
 
-/*! @} A_VEC */
+/*! @} a_vec */
 
 #endif /* a/vec.h */
