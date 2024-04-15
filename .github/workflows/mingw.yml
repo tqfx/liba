@@ -21,15 +21,56 @@ jobs:
           set -x
           sudo apt-get -y install nsis mingw-w64
       - name: Run cmake
+        env:
+          CMAKE_TOOLCHAIN_FILE: ${{ github.workspace }}/cmake/Use${{ matrix.mingw }}.cmake
+          CMAKE_PREFIX_PATH: ${{ github.workspace }}/_
         run: |
           set -x
-          cmake -S . -B build --toolchain cmake/Use${{ matrix.mingw }}.cmake \
-            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/_ \
+          cmake -S . -B build \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_ANALYZER=1 \
             -DLIBA_STATIC=1
           cmake --build build --target package
-          cmake --build build --target install
+          sudo cmake --build build --target install
           cmake -S demo -B demo/build
+          cmake --build demo/build
+  LLVM-MinGW:
+    strategy:
+      fail-fast: false
+      matrix:
+        include: [
+          { arch: x86_64 },
+          { arch: i686 },
+          { arch: aarch64 },
+          { arch: armv7 },
+        ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+          submodules: true
+      - name: Run setup
+        run: |
+          for item in $(curl -s https://api.github.com/repos/mstorsjo/llvm-mingw/releases/latest | jq -c .assets[] -r); do
+              if [[ $(echo $item | jq .name) == *ucrt-ubuntu*x86_64* ]]; then
+                  mkdir -p _
+                  curl -L $(echo $item | jq .browser_download_url -r) | tar --strip-components=1 -xJC _
+              fi
+          done
+          sudo apt-get -y install nsis
+      - name: Run cmake
+        env:
+          CMAKE_TOOLCHAIN_FILE: ${{ github.workspace }}/cmake/UseMinGW.cmake
+          CMAKE_PREFIX_PATH: ${{ github.workspace }}/_
+        run: |
+          set -x
+          cmake -S . -B build -DCMAKE_SYSTEM_PROCESSOR=${{ matrix.arch }} \
+            -DBUILD_TESTING=1 \
+            -DLIBA_WARNINGS=1 \
+            -DLIBA_STATIC=1
+          cmake --build build --target package
+          cmake --build build --target install
+          cmake -S demo -B demo/build -DCMAKE_SYSTEM_PROCESSOR=${{ matrix.arch }}
           cmake --build demo/build
