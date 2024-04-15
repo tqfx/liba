@@ -12,7 +12,6 @@ include(cmake/CMakeBuildType.cmake)
 include(cmake/EnabledLanguages.cmake)
 include(cmake/TargetSupportsSharedLibs.cmake)
 include(cmake/TargetSupportsExecutables.cmake)
-include(cmake/TargetSupportsRelocatable.cmake)
 include(cmake/TargetSupportsSymbolicLink.cmake)
 
 option(LIBA_STATIC "Enable/Disable finding and linking static libraries" 0)
@@ -346,38 +345,6 @@ if(LIBA_SANITIZE)
       target_link_libraries(asan PUBLIC ${MIMALLOC_LIBRARY})
     endif()
   endif()
-endif()
-
-if(TARGET_SUPPORTS_RELOCATABLE)
-  file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/lib/CMakeLists.txt
-    "get_cmake_property(ENABLED_LANGUAGES ENABLED_LANGUAGES)
-foreach(LANG \${ENABLED_LANGUAGES})
-\tset(CMAKE_\${LANG}_CREATE_STATIC_LIBRARY \"\")
-\tset(CMAKE_\${LANG}_LINK_EXECUTABLE
-\t\t\"<CMAKE_\${LANG}_COMPILER> <FLAGS> -nostdlib -o <TARGET>.o -r <OBJECTS>\"
-\t\t\"\${CMAKE_COMMAND} -E copy <TARGET>.o <TARGET>\"
-\t)
-endforeach()
-set(CMAKE_EXECUTABLE_SUFFIX \"\")
-set(CMAKE_STATIC_LIBRARY_SUFFIX .o)
-set(CMAKE_STATIC_LIBRARY_PREFIX lib)
-add_executable(a.o \$<TARGET_OBJECTS:a>)
-add_library(liba.o STATIC \$<TARGET_OBJECTS:a>)
-set_library_compile(liba.o)\nadd_dependencies(liba.o a.o)
-set_target_properties(a.o PROPERTIES OUTPUT_NAME liba
-\tINTERPROCEDURAL_OPTIMIZATION \${LIBA_IPO}
-)
-if(LIBA_MIMALLOC AND mimalloc_FOUND)
-\ttarget_link_libraries(liba.o PUBLIC ${MIMALLOC_LIBRARY})
-endif()
-if(NOT LIBA_INSTALL)
-\tinstall(TARGETS liba.o EXPORT \${PROJECT_NAME}-targets
-\t\tARCHIVE DESTINATION \${CMAKE_INSTALL_LIBDIR}
-\t\tLIBRARY DESTINATION \${CMAKE_INSTALL_LIBDIR}
-\t)\nendif()")
-  add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/lib lib)
-else()
-  add_library(liba.o ALIAS alib)
 endif()
 
 if(INSTALL_TARGETS)
