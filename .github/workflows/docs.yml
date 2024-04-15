@@ -17,26 +17,29 @@ jobs:
           sudo apt-get -y update
           sudo apt-get -y install graphviz mscgen dia
           sudo apt-get -y install lua5.4 liblua5.4-dev
-      - name: Install doxygen
-        run: |
-          set -x
-          curl https://www.doxygen.nl/files/doxygen-1.10.0.linux.bin.tar.gz | tar -xzf -
-          sudo make install -C doxygen-1.10.0 && rm -rf doxygen-1.10.0
       - uses: actions/checkout@v4
         with:
           repository: luarocks/luarocks
-          path: luarocks
+          path: _/luarocks
       - name: Install luarocks
-        working-directory: luarocks
+        working-directory: _/luarocks
         run: |
           set -x
           ./configure && make && sudo make install
       - name: Install LDoc
         run: sudo luarocks install ldoc
+      - name: Install doxygen
+        run: |
+          for item in $(curl -s https://api.github.com/repos/doxygen/doxygen/releases/latest | jq -c .assets[] -r); do
+              if [[ $(echo $item | jq .name) == *linux* ]]; then
+                  curl -L $(echo $item | jq .browser_download_url -r) | tar --strip-components=1 -xzC _
+              fi
+          done
       - name: Build docs
         env:
           CC: clang
           CXX: clang++
+          CMAKE_PREFIX_PATH: ${{ github.workspace }}/_
         run: |
           set -x
           cmake -S . -B build -DLIBA_DOXYGEN=1 \
