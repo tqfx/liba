@@ -12,22 +12,22 @@ from cython.view cimport array
 from cpython cimport *
 from a cimport *
 
-cdef array u32_new(Py_ssize_t n):
+cdef array u32_new(a_diff n):
     cdef str u32 = 'I'
     if UINT32_MAX > UINT_MAX:
         u32 = 'L'
     return array(shape=(n,), itemsize=4, format=u32, mode='c')
 
-cdef a_u32 *u32_set(void *p, Py_ssize_t n, object x):
+cdef a_u32 *u32_set(void *p, a_diff n, object x):
     cdef a_u32 *r = <a_u32 *>p
-    cdef Py_ssize_t i
+    cdef a_diff i
     for i in range(n):
         r[i] = x[i]
     return r
 
 cpdef array new_u32(object x):
     cdef array r
-    cdef Py_ssize_t n
+    cdef a_diff n
     if PyObject_HasAttrString(x, "__len__"):
         n = len(x)
         r = u32_new(n)
@@ -35,22 +35,22 @@ cpdef array new_u32(object x):
         return r
     return u32_new(x)
 
-cdef array u64_new(Py_ssize_t n):
+cdef array u64_new(a_diff n):
     cdef str u64 = 'L'
     if UINT64_MAX > ULONG_MAX:
         u64 = 'Q'
     return array(shape=(n,), itemsize=8, format=u64, mode='c')
 
-cdef a_u64 *u64_set(void *p, Py_ssize_t n, object x):
+cdef a_u64 *u64_set(void *p, a_diff n, object x):
     cdef a_u64 *r = <a_u64 *>p
-    cdef Py_ssize_t i
+    cdef a_diff i
     for i in range(n):
         r[i] = x[i]
     return r
 
 cpdef array new_u64(object x):
     cdef array r
-    cdef Py_ssize_t n
+    cdef a_diff n
     if PyObject_HasAttrString(x, "__len__"):
         n = len(x)
         r = u64_new(n)
@@ -58,19 +58,19 @@ cpdef array new_u64(object x):
         return r
     return u64_new(x)
 
-cdef array f32_new(Py_ssize_t n):
+cdef array f32_new(a_diff n):
     return array(shape=(n,), itemsize=4, format='f', mode='c')
 
-cdef a_f32 *f32_set(void *p, Py_ssize_t n, object x):
+cdef a_f32 *f32_set(void *p, a_diff n, object x):
     cdef a_f32 *r = <a_f32 *>p
-    cdef Py_ssize_t i
+    cdef a_diff i
     for i in range(n):
         r[i] = x[i]
     return r
 
 cpdef array new_f32(object x):
     cdef array r
-    cdef Py_ssize_t n
+    cdef a_diff n
     if PyObject_HasAttrString(x, "__len__"):
         n = len(x)
         r = f32_new(n)
@@ -78,19 +78,19 @@ cpdef array new_f32(object x):
         return r
     return f32_new(x)
 
-cdef array f64_new(Py_ssize_t n):
+cdef array f64_new(a_diff n):
     return array(shape=(n,), itemsize=8, format='d', mode='c')
 
-cdef a_f64 *f64_set(void *p, Py_ssize_t n, object x):
+cdef a_f64 *f64_set(void *p, a_diff n, object x):
     cdef a_f64 *r = <a_f64 *>p
-    cdef Py_ssize_t i
+    cdef a_diff i
     for i in range(n):
         r[i] = x[i]
     return r
 
 cpdef array new_f64(object x):
     cdef array r
-    cdef Py_ssize_t n
+    cdef a_diff n
     if PyObject_HasAttrString(x, "__len__"):
         n = len(x)
         r = f64_new(n)
@@ -98,14 +98,14 @@ cpdef array new_f64(object x):
         return r
     return f64_new(x)
 
-cdef a_float *num_set(void *p, Py_ssize_t n, object x):
+cdef a_float *num_set(void *p, a_diff n, object x):
     cdef a_float *r = <a_float *>p
-    cdef Py_ssize_t i
+    cdef a_diff i
     for i in range(n):
         r[i] = x[i]
     return r
 
-cdef array (*num_new)(Py_ssize_t)
+cdef array (*num_new)(a_diff)
 if A_FLOAT_TYPE == A_FLOAT_SINGLE:
     num_new = f32_new
     new_num = new_f32
@@ -114,7 +114,7 @@ else:
     new_num = new_f64
 
 cdef array num_new2(object x2):
-    cdef Py_ssize_t n = 0
+    cdef a_diff n = 0
     cdef object x1
     for x1 in x2:
         n += len(x1)
@@ -122,9 +122,9 @@ cdef array num_new2(object x2):
 
 cdef a_float *num_set2(void *o, object x2):
     cdef a_float *r = <a_float *>o
-    cdef Py_ssize_t n = 0
-    cdef a_float x
+    cdef a_diff n = 0
     cdef object x1
+    cdef a_float x
     for x1 in x2:
         for x in x1:
             r[n] = x
@@ -313,8 +313,8 @@ def isqrt(x: int):
 
 def sqrt_u32(object x):
     cdef array r
+    cdef a_diff i
     cdef a_u16 *q
-    cdef Py_ssize_t i
     cdef const a_u32[::1] p
     if PyObject_HasAttrString(x, "__len__"):
         p = x
@@ -327,8 +327,8 @@ def sqrt_u32(object x):
 
 def sqrt_u64(object x):
     cdef array r
+    cdef a_diff i
     cdef a_u32 *q
-    cdef Py_ssize_t i
     cdef const a_u64[::1] p
     if PyObject_HasAttrString(x, "__len__"):
         p = x
@@ -341,8 +341,8 @@ def sqrt_u64(object x):
 
 def rsqrt_f32(object x):
     cdef array r
+    cdef a_diff i
     cdef a_f32 *q
-    cdef Py_ssize_t i
     cdef const a_f32[::1] p
     if PyObject_HasAttrString(x, "__len__"):
         p = x
@@ -355,8 +355,8 @@ def rsqrt_f32(object x):
 
 def rsqrt_f64(object x):
     cdef array r
+    cdef a_diff i
     cdef a_f64 *q
-    cdef Py_ssize_t i
     cdef const a_f64[::1] p
     if PyObject_HasAttrString(x, "__len__"):
         p = x
@@ -387,8 +387,8 @@ cdef class mf:
     @staticmethod
     def mf(unsigned int e, object x, const a_float[::1] a):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -401,8 +401,8 @@ cdef class mf:
     @staticmethod
     def gauss(object x, a_float sigma, a_float c):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -415,8 +415,8 @@ cdef class mf:
     @staticmethod
     def gauss2(object x, a_float sigma1, a_float c1, a_float sigma2, a_float c2):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -429,8 +429,8 @@ cdef class mf:
     @staticmethod
     def gbell(object x, a_float a, a_float b, a_float c):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -443,8 +443,8 @@ cdef class mf:
     @staticmethod
     def sig(object x, a_float a, a_float c):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -457,8 +457,8 @@ cdef class mf:
     @staticmethod
     def dsig(object x, a_float a1, a_float c1, a_float a2, a_float c2):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -471,8 +471,8 @@ cdef class mf:
     @staticmethod
     def psig(object x, a_float a1, a_float c1, a_float a2, a_float c2):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -485,8 +485,8 @@ cdef class mf:
     @staticmethod
     def trap(object x, a_float a, a_float b, a_float c, a_float d):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -499,8 +499,8 @@ cdef class mf:
     @staticmethod
     def tri(object x, a_float a, a_float b, a_float c):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -513,8 +513,8 @@ cdef class mf:
     @staticmethod
     def lins(object x, a_float a, a_float b):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -527,8 +527,8 @@ cdef class mf:
     @staticmethod
     def linz(object x, a_float a, a_float b):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -541,8 +541,8 @@ cdef class mf:
     @staticmethod
     def s(object x, a_float a, a_float b):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -555,8 +555,8 @@ cdef class mf:
     @staticmethod
     def z(object x, a_float a, a_float b):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -569,8 +569,8 @@ cdef class mf:
     @staticmethod
     def pi(object x, a_float a, a_float b, a_float c, a_float d):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -859,8 +859,8 @@ from a.poly cimport *
 
 def poly_eval(object x, const a_float[::1] a):
     cdef array r
+    cdef a_diff i
     cdef a_float *q
-    cdef Py_ssize_t i
     cdef const a_float[::1] p
     if PyObject_HasAttrString(x, "__len__"):
         p = x
@@ -873,8 +873,8 @@ def poly_eval(object x, const a_float[::1] a):
 
 def poly_evar(object x, const a_float[::1] a):
     cdef array r
+    cdef a_diff i
     cdef a_float *q
-    cdef Py_ssize_t i
     cdef const a_float[::1] p
     if PyObject_HasAttrString(x, "__len__"):
         p = x
@@ -903,7 +903,7 @@ cdef class tf:
         def __get__(self):
             return self._num
         def __set__(self, object num):
-            cdef Py_ssize_t n = len(num)
+            cdef a_diff n = len(num)
             self._num = num_new(n)
             self.input = num_new(n)
             a_tf_set_num(&self.ctx, <unsigned int>n, num_set(self._num.data, n, num), <a_float *>self.input.data)
@@ -913,7 +913,7 @@ cdef class tf:
         def __get__(self):
             return self._den
         def __set__(self, object den):
-            cdef Py_ssize_t n = len(den)
+            cdef a_diff n = len(den)
             self._den = num_new(n)
             self.output = num_new(n)
             a_tf_set_den(&self.ctx, <unsigned int>n, num_set(self._den.data, n, den), <a_float *>self.output.data)
@@ -926,8 +926,8 @@ cdef class trajbell:
         return a_trajbell_gen(&self.ctx, jm, am, vm, p0, p1, v0, v1)
     def pos(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -939,8 +939,8 @@ cdef class trajbell:
         return a_trajbell_pos(&self.ctx, x)
     def vel(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -952,8 +952,8 @@ cdef class trajbell:
         return a_trajbell_vel(&self.ctx, x)
     def acc(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -965,8 +965,8 @@ cdef class trajbell:
         return a_trajbell_acc(&self.ctx, x)
     def jer(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -1030,8 +1030,8 @@ cdef class trajpoly3:
         return self
     def pos(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -1043,8 +1043,8 @@ cdef class trajpoly3:
         return a_trajpoly3_pos(&self.ctx, x)
     def vel(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -1056,8 +1056,8 @@ cdef class trajpoly3:
         return a_trajpoly3_vel(&self.ctx, x)
     def acc(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -1088,8 +1088,8 @@ cdef class trajpoly5:
         return self
     def pos(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -1101,8 +1101,8 @@ cdef class trajpoly5:
         return a_trajpoly5_pos(&self.ctx, x)
     def vel(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -1114,8 +1114,8 @@ cdef class trajpoly5:
         return a_trajpoly5_vel(&self.ctx, x)
     def acc(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -1146,8 +1146,8 @@ cdef class trajpoly7:
         return self
     def pos(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -1159,8 +1159,8 @@ cdef class trajpoly7:
         return a_trajpoly7_pos(&self.ctx, x)
     def vel(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -1172,8 +1172,8 @@ cdef class trajpoly7:
         return a_trajpoly7_vel(&self.ctx, x)
     def acc(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -1185,8 +1185,8 @@ cdef class trajpoly7:
         return a_trajpoly7_acc(&self.ctx, x)
     def jer(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -1217,8 +1217,8 @@ cdef class trajtrap:
         return a_trajtrap_gen(&self.ctx, vm, ac, de, p0, p1, v0, v1)
     def pos(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -1230,8 +1230,8 @@ cdef class trajtrap:
         return a_trajtrap_pos(&self.ctx, x)
     def vel(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
@@ -1243,8 +1243,8 @@ cdef class trajtrap:
         return a_trajtrap_vel(&self.ctx, x)
     def acc(self, object x):
         cdef array r
+        cdef a_diff i
         cdef a_float *q
-        cdef Py_ssize_t i
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
