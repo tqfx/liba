@@ -5,45 +5,45 @@
 #endif /* A_VERSION */
 #include "liba.h"
 
-JNIEXPORT void JNICALL Java_liba_clinit(JNIEnv *_env, jclass _cls)
+JNIEXPORT void JNICALL Java_liba_clinit(JNIEnv *Env, jclass Cls)
 {
-    (*_env)->SetStaticObjectField(_env, _cls, (*_env)->GetStaticFieldID(_env, _cls, "VERSION", "Ljava/lang/String;"), (*_env)->NewStringUTF(_env, A_VERSION));
+    (*Env)->SetStaticObjectField(Env, Cls, (*Env)->GetStaticFieldID(Env, Cls, "VERSION", "Ljava/lang/String;"), (*Env)->NewStringUTF(Env, A_VERSION));
 }
 
-JNIEXPORT jint JNICALL Java_liba_isqrt__I(JNIEnv *_env, jclass _cls, jint x)
+JNIEXPORT jint JNICALL Java_liba_isqrt__I(JNIEnv *Env, jclass Cls, jint x)
 {
-    return (void)_env, (void)_cls, (jint)a_u32_sqrt((a_u32)x);
+    return (void)Env, (void)Cls, (jint)a_u32_sqrt((a_u32)x);
 }
 
-JNIEXPORT jint JNICALL Java_liba_isqrt__J(JNIEnv *_env, jclass _cls, jlong x)
+JNIEXPORT jint JNICALL Java_liba_isqrt__J(JNIEnv *Env, jclass Cls, jlong x)
 {
-    return (void)_env, (void)_cls, (jint)a_u64_sqrt((a_u64)x);
+    return (void)Env, (void)Cls, (jint)a_u64_sqrt((a_u64)x);
 }
 
-JNIEXPORT jfloat JNICALL Java_liba_rsqrt__F(JNIEnv *_env, jclass _cls, jfloat x)
+JNIEXPORT jfloat JNICALL Java_liba_rsqrt__F(JNIEnv *Env, jclass Cls, jfloat x)
 {
-    return (void)_env, (void)_cls, a_f32_rsqrt(x);
+    return (void)Env, (void)Cls, a_f32_rsqrt(x);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_rsqrt__D(JNIEnv *_env, jclass _cls, jdouble x)
+JNIEXPORT jdouble JNICALL Java_liba_rsqrt__D(JNIEnv *Env, jclass Cls, jdouble x)
 {
-    return (void)_env, (void)_cls, a_f64_rsqrt(x);
+    return (void)Env, (void)Cls, a_f64_rsqrt(x);
 }
 
-JNIEXPORT jint JNICALL Java_liba_hash_1bkdr(JNIEnv *_env, jclass _cls, jbyteArray block, jint value)
+JNIEXPORT jint JNICALL Java_liba_hash_1bkdr(JNIEnv *Env, jclass Cls, jbyteArray block, jint value)
 {
-    jsize nbyte = (*_env)->GetArrayLength(_env, block);
-    jbyte *pdata = (*_env)->GetByteArrayElements(_env, block, NULL);
+    jsize nbyte = (*Env)->GetArrayLength(Env, block);
+    jbyte *pdata = (*Env)->GetByteArrayElements(Env, block, NULL);
     value = (jint)a_hash_bkdr_(pdata, (a_size)nbyte, (a_u32)value);
-    (*_env)->ReleaseByteArrayElements(_env, block, pdata, JNI_ABORT);
-    return (void)_cls, value & 0x7FFFFFFF;
+    (*Env)->ReleaseByteArrayElements(Env, block, pdata, JNI_ABORT);
+    return (void)Cls, value & 0x7FFFFFFF;
 }
 
-JNIEXPORT jint JNICALL Java_liba_hash_1sdbm(JNIEnv *_env, jclass _cls, jbyteArray block, jint value)
+JNIEXPORT jint JNICALL Java_liba_hash_1sdbm(JNIEnv *Env, jclass Cls, jbyteArray block, jint value)
 {
-    jsize nbyte = (*_env)->GetArrayLength(_env, block);
-    jbyte *pdata = (*_env)->GetByteArrayElements(_env, block, NULL);
+    jsize nbyte = (*Env)->GetArrayLength(Env, block);
+    jbyte *pdata = (*Env)->GetByteArrayElements(Env, block, NULL);
     value = (jint)a_hash_sdbm_(pdata, (a_size)nbyte, (a_u32)value);
-    (*_env)->ReleaseByteArrayElements(_env, block, pdata, JNI_ABORT);
-    return (void)_cls, value & 0x7FFFFFFF;
+    (*Env)->ReleaseByteArrayElements(Env, block, pdata, JNI_ABORT);
+    return (void)Cls, value & 0x7FFFFFFF;
 }

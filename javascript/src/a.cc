@@ -47,7 +47,7 @@ static a_u32 hash_sdbm(std::string const &str, a_u32 val)
 struct crc8
 {
     a_u8 table[0x100];
-    std::vector<a_byte> _pack;
+    std::vector<a_byte> pack_;
     A_INLINE emscripten::val get_table() const
     {
         return emscripten::val(emscripten::typed_memory_view(0x100, table));
@@ -60,10 +60,10 @@ struct crc8
     {
         size_t n = block.length();
         size_t m = block.length() + sizeof(value);
-        if (_pack.size() < m) { _pack.resize(m); }
-        std::copy(block.data(), block.data() + n, _pack.data());
-        *(_pack.data() + n) = a_crc8(table, block.data(), n, value);
-        return emscripten::val(emscripten::typed_memory_view(m, _pack.data()));
+        if (pack_.size() < m) { pack_.resize(m); }
+        std::copy(block.data(), block.data() + n, pack_.data());
+        *(pack_.data() + n) = a_crc8(table, block.data(), n, value);
+        return emscripten::val(emscripten::typed_memory_view(m, pack_.data()));
     }
     A_INLINE crc8 *gen(a_u8 poly, bool reversed = false)
     {
@@ -79,7 +79,7 @@ struct crc8
 struct crc16
 {
     a_u16 table[0x100];
-    std::vector<a_byte> _pack;
+    std::vector<a_byte> pack_;
     a_u16 (*eval)(a_u16 const[0x100], void const *, a_size, a_u16);
     A_INLINE emscripten::val get_table() const
     {
@@ -93,12 +93,12 @@ struct crc16
     {
         size_t n = block.length();
         size_t m = block.length() + sizeof(value);
-        if (_pack.size() < m) { _pack.resize(m); }
-        std::copy(block.data(), block.data() + n, _pack.data());
+        if (pack_.size() < m) { pack_.resize(m); }
+        std::copy(block.data(), block.data() + n, pack_.data());
         value = eval(table, block.data(), n, value);
-        a_byte *p = _pack.data() + n;
+        a_byte *p = pack_.data() + n;
         eval == a_crc16m ? a_u16_setb(p, value) : a_u16_setl(p, value);
-        return emscripten::val(emscripten::typed_memory_view(m, _pack.data()));
+        return emscripten::val(emscripten::typed_memory_view(m, pack_.data()));
     }
     A_INLINE crc16 *gen(a_u16 poly, bool reversed = false)
     {
@@ -123,7 +123,7 @@ struct crc16
 struct crc32
 {
     a_u32 table[0x100];
-    std::vector<a_byte> _pack;
+    std::vector<a_byte> pack_;
     a_u32 (*eval)(a_u32 const[0x100], void const *, a_size, a_u32);
     A_INLINE emscripten::val get_table() const
     {
@@ -137,12 +137,12 @@ struct crc32
     {
         size_t n = block.length();
         size_t m = block.length() + sizeof(value);
-        if (_pack.size() < m) { _pack.resize(m); }
-        std::copy(block.data(), block.data() + n, _pack.data());
+        if (pack_.size() < m) { pack_.resize(m); }
+        std::copy(block.data(), block.data() + n, pack_.data());
         value = eval(table, block.data(), n, value);
-        a_byte *p = _pack.data() + n;
+        a_byte *p = pack_.data() + n;
         eval == a_crc32m ? a_u32_setb(p, value) : a_u32_setl(p, value);
-        return emscripten::val(emscripten::typed_memory_view(m, _pack.data()));
+        return emscripten::val(emscripten::typed_memory_view(m, pack_.data()));
     }
     A_INLINE crc32 *gen(a_u32 poly, bool reversed = false)
     {
@@ -168,7 +168,7 @@ struct crc32
 struct crc64
 {
     a_u64 table[0x100];
-    std::vector<a_byte> _pack;
+    std::vector<a_byte> pack_;
     a_u64 (*eval)(a_u64 const[0x100], void const *, a_size, a_u64);
     A_INLINE emscripten::val get_table() const
     {
@@ -182,12 +182,12 @@ struct crc64
     {
         size_t n = block.length();
         size_t m = block.length() + sizeof(value);
-        if (_pack.size() < m) { _pack.resize(m); }
-        std::copy(block.data(), block.data() + n, _pack.data());
+        if (pack_.size() < m) { pack_.resize(m); }
+        std::copy(block.data(), block.data() + n, pack_.data());
         value = eval(table, block.data(), n, value);
-        a_byte *p = _pack.data() + n;
+        a_byte *p = pack_.data() + n;
         eval == a_crc64m ? a_u64_setb(p, value) : a_u64_setl(p, value);
-        return emscripten::val(emscripten::typed_memory_view(m, _pack.data()));
+        return emscripten::val(emscripten::typed_memory_view(m, pack_.data()));
     }
     A_INLINE crc64 *gen(a_u64 poly, bool reversed = false)
     {
@@ -220,9 +220,9 @@ struct hpf: public a_hpf
         output = 0;
         input = 0;
     }
-    A_INLINE hpf(a_float _alpha)
+    A_INLINE hpf(a_float alpha_)
     {
-        alpha = _alpha;
+        alpha = alpha_;
         output = 0;
         input = 0;
     }
@@ -251,9 +251,9 @@ struct lpf: public a_lpf
         alpha = A_LPF_GEN(fc, ts);
         output = 0;
     }
-    A_INLINE lpf(a_float _alpha)
+    A_INLINE lpf(a_float alpha_)
     {
-        alpha = _alpha;
+        alpha = alpha_;
         output = 0;
     }
     A_INLINE lpf *gen(a_float fc, a_float ts)
@@ -362,22 +362,22 @@ unsigned int const mf::PI = A_MF_PI;
 
 struct pid: public a_pid
 {
-    A_INLINE pid *kpid(a_float _kp, a_float _ki, a_float _kd)
+    A_INLINE pid *kpid(a_float kp_, a_float ki_, a_float kd_)
     {
-        a_pid::kpid(_kp, _ki, _kd);
+        a_pid::kpid(kp_, ki_, kd_);
         return this;
     }
-    A_INLINE a_float run(a_float set, a_float _fdb)
+    A_INLINE a_float run(a_float set, a_float fdb_)
     {
-        return a_pid::run(set, _fdb);
+        return a_pid::run(set, fdb_);
     }
-    A_INLINE a_float pos(a_float set, a_float _fdb)
+    A_INLINE a_float pos(a_float set, a_float fdb_)
     {
-        return a_pid::pos(set, _fdb);
+        return a_pid::pos(set, fdb_);
     }
-    A_INLINE a_float inc(a_float set, a_float _fdb)
+    A_INLINE a_float inc(a_float set, a_float fdb_)
     {
-        return a_pid::inc(set, _fdb);
+        return a_pid::inc(set, fdb_);
     }
     A_INLINE pid *zero()
     {
@@ -401,43 +401,43 @@ struct pid: public a_pid
 
 struct pid_fuzzy: public a_pid_fuzzy
 {
-    A_INLINE pid_fuzzy *rule(emscripten::val const &_me,
-                             emscripten::val const &_mec,
-                             emscripten::val const &_mkp,
-                             emscripten::val const &_mki,
-                             emscripten::val const &_mkd)
+    A_INLINE pid_fuzzy *rule(emscripten::val const &me_,
+                             emscripten::val const &mec_,
+                             emscripten::val const &mkp_,
+                             emscripten::val const &mki_,
+                             emscripten::val const &mkd_)
     {
         union
         {
             a_float const *p;
             a_float *o;
         } u;
-        order = _me["length"].as<unsigned int>();
+        order = me_["length"].as<unsigned int>();
         u.p = me;
-        emscripten::val val = js_concat(_me);
+        emscripten::val val = js_concat(me_);
         me = js_array_num_get(val, u.o, 0);
         val.delete_(val);
         u.p = mec;
-        val = js_concat(_mec);
+        val = js_concat(mec_);
         mec = js_array_num_get(val, u.o, 0);
         val.delete_(val);
         u.p = mkp;
-        val = js_concat(_mkp);
+        val = js_concat(mkp_);
         mkp = js_array_num_get(val, u.o, 0);
         val.delete_(val);
         u.p = mki;
-        val = js_concat(_mki);
+        val = js_concat(mki_);
         mki = js_array_num_get(val, u.o, 0);
         val.delete_(val);
         u.p = mkd;
-        val = js_concat(_mkd);
+        val = js_concat(mkd_);
         mkd = js_array_num_get(val, u.o, 0);
         val.delete_(val);
         return this;
     }
-    A_INLINE pid_fuzzy *set_op(unsigned int _op)
+    A_INLINE pid_fuzzy *set_op(unsigned int op_)
     {
-        a_pid_fuzzy::set_op(_op);
+        a_pid_fuzzy::set_op(op_);
         return this;
     }
     A_INLINE pid_fuzzy *set_block(unsigned int num)
@@ -446,9 +446,9 @@ struct pid_fuzzy: public a_pid_fuzzy
         a_pid_fuzzy_set_block(this, ptr, num);
         return this;
     }
-    A_INLINE pid_fuzzy *kpid(a_float _kp, a_float _ki, a_float _kd)
+    A_INLINE pid_fuzzy *kpid(a_float kp_, a_float ki_, a_float kd_)
     {
-        a_pid_fuzzy::kpid(_kp, _ki, _kd);
+        a_pid_fuzzy::kpid(kp_, ki_, kd_);
         return this;
     }
     A_INLINE a_float run(a_float set, a_float fdb)
@@ -541,14 +541,14 @@ unsigned int const pid_fuzzy::EQU = A_PID_FUZZY_EQU;
 
 struct pid_neuro: public a_pid_neuro
 {
-    A_INLINE pid_neuro *kpid(a_float _k, a_float kp, a_float ki, a_float kd)
+    A_INLINE pid_neuro *kpid(a_float k_, a_float kp, a_float ki, a_float kd)
     {
-        a_pid_neuro::kpid(_k, kp, ki, kd);
+        a_pid_neuro::kpid(k_, kp, ki, kd);
         return this;
     }
-    A_INLINE pid_neuro *wpid(a_float _wp, a_float _wi, a_float _wd)
+    A_INLINE pid_neuro *wpid(a_float wp_, a_float wi_, a_float wd_)
     {
-        a_pid_neuro::wpid(_wp, _wi, _wd);
+        a_pid_neuro::wpid(wp_, wi_, wd_);
         return this;
     }
     A_INLINE a_float run(a_float set, a_float fdb)
@@ -597,16 +597,16 @@ struct pid_neuro: public a_pid_neuro
 
 struct tf: public a_tf
 {
-    void set_num_(emscripten::val const &_num, a_float *num)
+    void set_num_(emscripten::val const &num_, a_float *num)
     {
-        a_uint num_n = _num["length"].as<a_uint>();
-        a_float *p = js_array_num_get(_num, num, a_size_c(num_n) * 2);
+        a_uint num_n = num_["length"].as<a_uint>();
+        a_float *p = js_array_num_get(num_, num, a_size_c(num_n) * 2);
         a_tf_set_num(this, num_n, p, p + num_n);
     }
-    void set_den_(emscripten::val const &_den, a_float *den)
+    void set_den_(emscripten::val const &den_, a_float *den)
     {
-        a_uint den_n = _den["length"].as<a_uint>();
-        a_float *p = js_array_num_get(_den, den, a_size_c(den_n) * 2);
+        a_uint den_n = den_["length"].as<a_uint>();
+        a_float *p = js_array_num_get(den_, den, a_size_c(den_n) * 2);
         a_tf_set_den(this, den_n, p, p + den_n);
     }
     A_INLINE tf(emscripten::val const &num, emscripten::val const &den)
@@ -665,10 +665,10 @@ struct tf: public a_tf
 
 struct trajbell: public a_trajbell
 {
-    A_INLINE a_float gen(a_float _jm, a_float _am, a_float _vm, a_float _p0, a_float _p1,
-                         a_float _v0 = 0, a_float _v1 = 0)
+    A_INLINE a_float gen(a_float jm_, a_float am_, a_float vm_, a_float p0_, a_float p1_,
+                         a_float v0_ = 0, a_float v1_ = 0)
     {
-        return a_trajbell::gen(_jm, _am, _vm, _p0, _p1, _v0, _v1);
+        return a_trajbell::gen(jm_, am_, vm_, p0_, p1_, v0_, v1_);
     }
     A_INLINE a_float pos(a_float x) const { return a_trajbell::pos(x); }
     A_INLINE a_float vel(a_float x) const { return a_trajbell::vel(x); }
@@ -736,10 +736,10 @@ struct trajpoly7: public a_trajpoly7
 
 struct trajtrap: public a_trajtrap
 {
-    A_INLINE a_float gen(a_float vm, a_float _ac, a_float _de, a_float _p0, a_float _p1,
-                         a_float _v0 = 0, a_float _v1 = 0)
+    A_INLINE a_float gen(a_float vm, a_float ac_, a_float de_, a_float p0_, a_float p1_,
+                         a_float v0_ = 0, a_float v1_ = 0)
     {
-        return a_trajtrap::gen(vm, _ac, _de, _p0, _p1, _v0, _v1);
+        return a_trajtrap::gen(vm, ac_, de_, p0_, p1_, v0_, v1_);
     }
     A_INLINE a_float pos(a_float x) const { return a_trajtrap::pos(x); }
     A_INLINE a_float vel(a_float x) const { return a_trajtrap::vel(x); }
@@ -799,15 +799,15 @@ struct version: public a_version
         a_version::tostr(str, sizeof(str));
         return std::string(str);
     }
-    A_INLINE version(unsigned int _major = 0,
-                     unsigned int _minor = 0,
-                     unsigned int _third = 0,
-                     unsigned int _extra = 0)
+    A_INLINE version(unsigned int major_ = 0,
+                     unsigned int minor_ = 0,
+                     unsigned int third_ = 0,
+                     unsigned int extra_ = 0)
     {
-        major = _major;
-        minor = _minor;
-        third = _third;
-        extra = _extra;
+        major = major_;
+        minor = minor_;
+        third = third_;
+        extra = extra_;
         alpha[0] = '.';
         alpha[1] = 0;
         alpha[2] = 0;
@@ -824,7 +824,7 @@ unsigned int const version::PATCH = A_VERSION_PATCH;
 a_u32 const version::TWEAK = A_VERSION_TWEAK;
 
 #if __has_warning("-Wglobal-constructors")
-#pragma GCC diagnostic ignored "-Wglobal-constructors"
+#pragma clang diagnostic ignored "-Wglobal-constructors"
 #endif /* -Wglobal-constructors */
 EMSCRIPTEN_BINDINGS(liba) // NOLINT
 {

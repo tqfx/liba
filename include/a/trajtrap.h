@@ -110,10 +110,10 @@ struct a_trajtrap
     a_float ac; //!< acceleration before constant velocity
     a_float de; //!< acceleration after constant velocity
 #if defined(__cplusplus)
-    A_INLINE a_float gen(a_float vm, a_float _ac, a_float _de, a_float _p0, a_float _p1,
-                         a_float _v0 = 0, a_float _v1 = 0)
+    A_INLINE a_float gen(a_float vm, a_float ac_, a_float de_, a_float p0_, a_float p1_,
+                         a_float v0_ = 0, a_float v1_ = 0)
     {
-        return a_trajtrap_gen(this, vm, _ac, _de, _p0, _p1, _v0, _v1);
+        return a_trajtrap_gen(this, vm, ac_, de_, p0_, p1_, v0_, v1_);
     }
     A_INLINE a_float pos(a_float x) const
     {

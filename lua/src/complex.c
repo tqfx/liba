@@ -208,10 +208,10 @@ F1(arg)
     {                                     \
         if (lua_gettop(L) >= 1)           \
         {                                 \
-            a_complex z, *_z;             \
+            a_complex z, *ctx;            \
+            ctx = liba_complex_new_(L);   \
             liba_complex_from(L, &z, 1);  \
-            _z = liba_complex_new_(L);    \
-            a_complex_##func(_z, z);      \
+            a_complex_##func(ctx, z);     \
             return 1;                     \
         }                                 \
         return 0;                         \
@@ -250,34 +250,31 @@ F1(inv)
     {                                     \
         if (lua_gettop(L) >= 2)           \
         {                                 \
-            a_complex x, y, *z;           \
+            a_complex x, y, *ctx;         \
+            ctx = liba_complex_new_(L);   \
             liba_complex_from(L, &x, 1);  \
             liba_complex_from(L, &y, 2);  \
-            z = liba_complex_new_(L);     \
-            a_complex_##func(z, x, y);    \
+            a_complex_##func(ctx, x, y);  \
             return 1;                     \
         }                                 \
         return 0;                         \
     }
 #undef F2
-#define F2(func)                                       \
-    int liba_complex_##func(lua_State *L)              \
-    {                                                  \
-        if (lua_gettop(L) >= 2)                        \
-        {                                              \
-            int t;                                     \
-            a_complex x, y, *z;                        \
-            liba_complex_from(L, &x, 1);               \
-            t = liba_complex_from(L, &y, 2);           \
-            z = liba_complex_new_(L);                  \
-            if (t == LUA_TNUMBER)                      \
-            {                                          \
-                a_complex_##func##_real(z, x, y.real); \
-            }                                          \
-            else { a_complex_##func(z, x, y); }        \
-            return 1;                                  \
-        }                                              \
-        return 0;                                      \
+#define F2(func)                                            \
+    int liba_complex_##func(lua_State *L)                   \
+    {                                                       \
+        if (lua_gettop(L) >= 2)                             \
+        {                                                   \
+            a_complex x, y, *ctx = liba_complex_new_(L);    \
+            liba_complex_from(L, &x, 1);                    \
+            if (liba_complex_from(L, &y, 2) == LUA_TNUMBER) \
+            {                                               \
+                a_complex_##func##_real(ctx, x, y.real);    \
+            }                                               \
+            else { a_complex_##func(ctx, x, y); }           \
+            return 1;                                       \
+        }                                                   \
+        return 0;                                           \
     }
 /***
  addition of complex numbers
@@ -333,31 +330,30 @@ F1(logb)
     {                                     \
         if (lua_gettop(L) >= 1)           \
         {                                 \
-            a_complex z, *_z;             \
+            a_complex z, *ctx;            \
+            ctx = liba_complex_new_(L);   \
             liba_complex_from(L, &z, 1);  \
-            _z = liba_complex_new_(L);    \
-            a_complex_##func(_z, z);      \
+            a_complex_##func(ctx, z);     \
             return 1;                     \
         }                                 \
         return 0;                         \
     }
 #undef F2
-#define F2(func)                                     \
-    int liba_complex_##func(lua_State *L)            \
-    {                                                \
-        if (lua_gettop(L) >= 1)                      \
-        {                                            \
-            a_complex z, *_z;                        \
-            int t = liba_complex_from(L, &z, 1);     \
-            _z = liba_complex_new_(L);               \
-            if (t == LUA_TNUMBER)                    \
-            {                                        \
-                a_complex_##func##_real(_z, z.real); \
-            }                                        \
-            else { a_complex_##func(_z, z); }        \
-            return 1;                                \
-        }                                            \
-        return 0;                                    \
+#define F2(func)                                      \
+    int liba_complex_##func(lua_State *L)             \
+    {                                                 \
+        if (lua_gettop(L) >= 1)                       \
+        {                                             \
+            a_complex z, *ctx = liba_complex_new_(L); \
+            int type = liba_complex_from(L, &z, 1);   \
+            if (type == LUA_TNUMBER)                  \
+            {                                         \
+                a_complex_##func##_real(ctx, z.real); \
+            }                                         \
+            else { a_complex_##func(ctx, z); }        \
+            return 1;                                 \
+        }                                             \
+        return 0;                                     \
     }
 /***
  computes the complex base-e exponential

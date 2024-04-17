@@ -86,18 +86,18 @@ struct a_tf
     unsigned int num_n; //!< numerator number
     unsigned int den_n; //!< denominator number
 #if defined(__cplusplus)
-    A_INLINE void init(unsigned int _num_n, a_float const *_num_p, a_float *_input,
-                       unsigned int _den_n, a_float const *_den_p, a_float *_output)
+    A_INLINE void init(unsigned int num_n_, a_float const *num_p_, a_float *input_,
+                       unsigned int den_n_, a_float const *den_p_, a_float *output_)
     {
-        a_tf_init(this, _num_n, _num_p, _input, _den_n, _den_p, _output);
+        a_tf_init(this, num_n_, num_p_, input_, den_n_, den_p_, output_);
     }
-    A_INLINE void set_num(unsigned int _num_n, a_float const *_num_p, a_float *_input)
+    A_INLINE void set_num(unsigned int num_n_, a_float const *num_p_, a_float *input_)
     {
-        a_tf_set_num(this, _num_n, _num_p, _input);
+        a_tf_set_num(this, num_n_, num_p_, input_);
     }
-    A_INLINE void set_den(unsigned int _den_n, a_float const *_den_p, a_float *_output)
+    A_INLINE void set_den(unsigned int den_n_, a_float const *den_p_, a_float *output_)
     {
-        a_tf_set_den(this, _den_n, _den_p, _output);
+        a_tf_set_den(this, den_n_, den_p_, output_);
     }
     A_INLINE a_float operator()(a_float x) const
     {

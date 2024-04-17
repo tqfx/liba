@@ -165,22 +165,22 @@ struct a_pid_fuzzy
     unsigned int block; //!< maximum number triggered by the rule
 #if defined(__cplusplus)
     A_INLINE void init() { a_pid_fuzzy_init(this); }
-    A_INLINE void set_op(unsigned int _op)
+    A_INLINE void set_op(unsigned int op_)
     {
-        a_pid_fuzzy_set_op(this, _op);
+        a_pid_fuzzy_set_op(this, op_);
     }
     A_INLINE void set_block(void *ptr, a_size num)
     {
         a_pid_fuzzy_set_block(this, ptr, num);
     }
-    A_INLINE void rule(unsigned int _order, a_float const *_me, a_float const *_mec,
-                       a_float const *_mkp, a_float const *_mki, a_float const *_mkd)
+    A_INLINE void rule(unsigned int order_, a_float const *me_, a_float const *mec_,
+                       a_float const *mkp_, a_float const *mki_, a_float const *mkd_)
     {
-        a_pid_fuzzy_rule(this, _order, _me, _mec, _mkp, _mki, _mkd);
+        a_pid_fuzzy_rule(this, order_, me_, mec_, mkp_, mki_, mkd_);
     }
-    A_INLINE void kpid(a_float _kp, a_float _ki, a_float _kd)
+    A_INLINE void kpid(a_float kp_, a_float ki_, a_float kd_)
     {
-        a_pid_fuzzy_kpid(this, _kp, _ki, _kd);
+        a_pid_fuzzy_kpid(this, kp_, ki_, kd_);
     }
     A_INLINE a_float run(a_float set, a_float fdb)
     {

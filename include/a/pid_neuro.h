@@ -105,13 +105,13 @@ struct a_pid_neuro
     a_float ec; //!< error change
 #if defined(__cplusplus)
     A_INLINE void init() { a_pid_neuro_init(this); }
-    A_INLINE void kpid(a_float _k, a_float kp, a_float ki, a_float kd)
+    A_INLINE void kpid(a_float k_, a_float kp, a_float ki, a_float kd)
     {
-        a_pid_neuro_kpid(this, _k, kp, ki, kd);
+        a_pid_neuro_kpid(this, k_, kp, ki, kd);
     }
-    A_INLINE void wpid(a_float _wp, a_float _wi, a_float _wd)
+    A_INLINE void wpid(a_float wp_, a_float wi_, a_float wd_)
     {
-        a_pid_neuro_wpid(this, _wp, _wi, _wd);
+        a_pid_neuro_wpid(this, wp_, wi_, wd_);
     }
     A_INLINE a_float run(a_float set, a_float fdb)
     {

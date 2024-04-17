@@ -118,21 +118,21 @@ struct a_pid
     a_float err; //!< cache error
 #if defined(__cplusplus)
     A_INLINE void init() { a_pid_init(this); }
-    A_INLINE void kpid(a_float _kp, a_float _ki, a_float _kd)
+    A_INLINE void kpid(a_float kp_, a_float ki_, a_float kd_)
     {
-        a_pid_kpid(this, _kp, _ki, _kd);
+        a_pid_kpid(this, kp_, ki_, kd_);
     }
-    A_INLINE a_float run(a_float set, a_float _fdb)
+    A_INLINE a_float run(a_float set, a_float fdb_)
     {
-        return a_pid_run(this, set, _fdb);
+        return a_pid_run(this, set, fdb_);
     }
-    A_INLINE a_float pos(a_float set, a_float _fdb)
+    A_INLINE a_float pos(a_float set, a_float fdb_)
     {
-        return a_pid_pos(this, set, _fdb);
+        return a_pid_pos(this, set, fdb_);
     }
-    A_INLINE a_float inc(a_float set, a_float _fdb)
+    A_INLINE a_float inc(a_float set, a_float fdb_)
     {
-        return a_pid_inc(this, set, _fdb);
+        return a_pid_inc(this, set, fdb_);
     }
     A_INLINE void zero() { a_pid_zero(this); }
 #endif /* __cplusplus */

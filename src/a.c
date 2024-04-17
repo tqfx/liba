@@ -14,10 +14,10 @@ void *a_fill(void *ptr, a_size siz, int val) { return memset(ptr, val, siz); }
 
 void *a_zero(void *ptr, a_size siz) { return memset(ptr, 0, siz); }
 
-void a_swap(void *_lhs, void *_rhs, a_size siz)
+void a_swap(void *lhs_, void *rhs_, a_size siz)
 {
-    a_byte *lhs = (a_byte *)_lhs;
-    a_byte *rhs = (a_byte *)_rhs;
+    a_byte *lhs = (a_byte *)lhs_;
+    a_byte *rhs = (a_byte *)rhs_;
     for (a_byte buf; siz; --siz, ++lhs, ++rhs)
     {
         buf = *lhs;
@@ -26,9 +26,9 @@ void a_swap(void *_lhs, void *_rhs, a_size siz)
     }
 }
 
-a_u32 a_hash_bkdr(void const *_str, a_u32 val)
+a_u32 a_hash_bkdr(void const *str_, a_u32 val)
 {
-    a_byte const *str = (a_byte const *)_str;
+    a_byte const *str = (a_byte const *)str_;
     if (str)
     {
         for (; *str; ++str)
@@ -39,9 +39,9 @@ a_u32 a_hash_bkdr(void const *_str, a_u32 val)
     return val;
 }
 
-a_u32 a_hash_bkdr_(void const *_ptr, a_size siz, a_u32 val)
+a_u32 a_hash_bkdr_(void const *ptr_, a_size siz, a_u32 val)
 {
-    a_byte const *ptr = (a_byte const *)_ptr;
+    a_byte const *ptr = (a_byte const *)ptr_;
     if (ptr && siz)
     {
         for (; siz; --siz, ++ptr)
@@ -52,9 +52,9 @@ a_u32 a_hash_bkdr_(void const *_ptr, a_size siz, a_u32 val)
     return val;
 }
 
-a_u32 a_hash_sdbm(void const *_str, a_u32 val)
+a_u32 a_hash_sdbm(void const *str_, a_u32 val)
 {
-    a_byte const *str = (a_byte const *)_str;
+    a_byte const *str = (a_byte const *)str_;
     if (str)
     {
         for (; *str; ++str)
@@ -65,9 +65,9 @@ a_u32 a_hash_sdbm(void const *_str, a_u32 val)
     return val;
 }
 
-a_u32 a_hash_sdbm_(void const *_ptr, a_size siz, a_u32 val)
+a_u32 a_hash_sdbm_(void const *ptr_, a_size siz, a_u32 val)
 {
-    a_byte const *ptr = (a_byte const *)_ptr;
+    a_byte const *ptr = (a_byte const *)ptr_;
     if (ptr && siz)
     {
         for (; siz; --siz, ++ptr)

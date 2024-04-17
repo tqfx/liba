@@ -164,10 +164,10 @@ struct a_trajbell
     a_float am; //!< maximum acceleration
     a_float dm; //!< maximum deceleration
 #if defined(__cplusplus)
-    A_INLINE a_float gen(a_float _jm, a_float _am, a_float _vm, a_float _p0, a_float _p1,
-                         a_float _v0 = 0, a_float _v1 = 0)
+    A_INLINE a_float gen(a_float jm_, a_float am_, a_float vm_, a_float p0_, a_float p1_,
+                         a_float v0_ = 0, a_float v1_ = 0)
     {
-        return a_trajbell_gen(this, _jm, _am, _vm, _p0, _p1, _v0, _v1);
+        return a_trajbell_gen(this, jm_, am_, vm_, p0_, p1_, v0_, v1_);
     }
     A_INLINE a_float pos(a_float x) const
     {

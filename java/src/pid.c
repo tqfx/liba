@@ -9,22 +9,22 @@
 #define L Java_liba_pid
 static struct
 {
-    jmethodID _new;
+    jmethodID New;
     jfieldID ctx;
 } L = {NULL, NULL};
 
-JNIEXPORT void JNICALL Java_liba_pid_clinit(JNIEnv *_env, jclass _cls)
+JNIEXPORT void JNICALL Java_liba_pid_clinit(JNIEnv *Env, jclass Cls)
 {
-    jclass _nbb = (*_env)->FindClass(_env, "Ljava/nio/ByteBuffer;");
-    L._new = (*_env)->GetStaticMethodID(_env, _nbb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
-    L.ctx = (*_env)->GetFieldID(_env, _cls, "ctx", "Ljava/nio/ByteBuffer;");
+    jclass Nbb = (*Env)->FindClass(Env, "Ljava/nio/ByteBuffer;");
+    L.New = (*Env)->GetStaticMethodID(Env, Nbb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
+    L.ctx = (*Env)->GetFieldID(Env, Cls, "ctx", "Ljava/nio/ByteBuffer;");
 }
 
-JNIEXPORT void JNICALL Java_liba_pid_init(JNIEnv *_env, jobject _obj)
+JNIEXPORT void JNICALL Java_liba_pid_init(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)sizeof(a_pid));
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
+    jobject Ctx = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)sizeof(a_pid));
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
+    (*Env)->SetObjectField(Env, Obj, L.ctx, Ctx);
     ctx->kp = 1;
     ctx->summax = +A_FLOAT_INF;
     ctx->summin = -A_FLOAT_INF;
@@ -33,171 +33,171 @@ JNIEXPORT void JNICALL Java_liba_pid_init(JNIEnv *_env, jobject _obj)
     a_pid_init(ctx);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_kp__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_kp__(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->kp;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_kp__D(JNIEnv *_env, jobject _obj, jdouble kp)
+JNIEXPORT jobject JNICALL Java_liba_pid_kp__D(JNIEnv *Env, jobject Obj, jdouble kp)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->kp = kp;
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_ki__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_ki__(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->ki;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_ki__D(JNIEnv *_env, jobject _obj, jdouble ki)
+JNIEXPORT jobject JNICALL Java_liba_pid_ki__D(JNIEnv *Env, jobject Obj, jdouble ki)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->ki = ki;
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_kd__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_kd__(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->kd;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_kd__D(JNIEnv *_env, jobject _obj, jdouble kd)
+JNIEXPORT jobject JNICALL Java_liba_pid_kd__D(JNIEnv *Env, jobject Obj, jdouble kd)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->kd = kd;
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_summax__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_summax__(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->summax;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_summax__D(JNIEnv *_env, jobject _obj, jdouble summax)
+JNIEXPORT jobject JNICALL Java_liba_pid_summax__D(JNIEnv *Env, jobject Obj, jdouble summax)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->summax = summax;
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_summin__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_summin__(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->summin;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_summin__D(JNIEnv *_env, jobject _obj, jdouble summin)
+JNIEXPORT jobject JNICALL Java_liba_pid_summin__D(JNIEnv *Env, jobject Obj, jdouble summin)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->summin = summin;
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_sum(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_sum(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->sum;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_outmax__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_outmax__(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->outmax;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_outmax__D(JNIEnv *_env, jobject _obj, jdouble outmax)
+JNIEXPORT jobject JNICALL Java_liba_pid_outmax__D(JNIEnv *Env, jobject Obj, jdouble outmax)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->outmax = outmax;
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_outmin__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_outmin__(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->outmin;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_outmin__D(JNIEnv *_env, jobject _obj, jdouble outmin)
+JNIEXPORT jobject JNICALL Java_liba_pid_outmin__D(JNIEnv *Env, jobject Obj, jdouble outmin)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->outmin = outmin;
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_out(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_out(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->out;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_fdb(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_fdb(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->fdb;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_err(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_err(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->err;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_kpid(JNIEnv *_env, jobject _obj, jdouble kp, jdouble ki, jdouble kd)
+JNIEXPORT jobject JNICALL Java_liba_pid_kpid(JNIEnv *Env, jobject Obj, jdouble kp, jdouble ki, jdouble kd)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     a_pid_kpid(ctx, kp, ki, kd);
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_run(JNIEnv *_env, jobject _obj, jdouble set, jdouble fdb)
+JNIEXPORT jdouble JNICALL Java_liba_pid_run(JNIEnv *Env, jobject Obj, jdouble set, jdouble fdb)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return a_pid_run(ctx, set, fdb);
 }
-JNIEXPORT jdouble JNICALL Java_liba_pid_pos(JNIEnv *_env, jobject _obj, jdouble set, jdouble fdb)
+JNIEXPORT jdouble JNICALL Java_liba_pid_pos(JNIEnv *Env, jobject Obj, jdouble set, jdouble fdb)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return a_pid_pos(ctx, set, fdb);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_inc(JNIEnv *_env, jobject _obj, jdouble set, jdouble fdb)
+JNIEXPORT jdouble JNICALL Java_liba_pid_inc(JNIEnv *Env, jobject Obj, jdouble set, jdouble fdb)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return a_pid_inc(ctx, set, fdb);
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_zero(JNIEnv *_env, jobject _obj)
+JNIEXPORT jobject JNICALL Java_liba_pid_zero(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid *ctx = (a_pid *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     a_pid_zero(ctx);
-    return _obj;
+    return Obj;
 }

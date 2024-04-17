@@ -9,22 +9,22 @@
 #define L Java_liba_pid_1neuro
 static struct
 {
-    jmethodID _new;
+    jmethodID New;
     jfieldID ctx;
 } L = {NULL, NULL};
 
-JNIEXPORT void JNICALL Java_liba_pid_1neuro_clinit(JNIEnv *_env, jclass _cls)
+JNIEXPORT void JNICALL Java_liba_pid_1neuro_clinit(JNIEnv *Env, jclass Cls)
 {
-    jclass _nbb = (*_env)->FindClass(_env, "Ljava/nio/ByteBuffer;");
-    L._new = (*_env)->GetStaticMethodID(_env, _nbb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
-    L.ctx = (*_env)->GetFieldID(_env, _cls, "ctx", "Ljava/nio/ByteBuffer;");
+    jclass Nbb = (*Env)->FindClass(Env, "Ljava/nio/ByteBuffer;");
+    L.New = (*Env)->GetStaticMethodID(Env, Nbb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
+    L.ctx = (*Env)->GetFieldID(Env, Cls, "ctx", "Ljava/nio/ByteBuffer;");
 }
 
-JNIEXPORT void JNICALL Java_liba_pid_1neuro_init(JNIEnv *_env, jobject _obj)
+JNIEXPORT void JNICALL Java_liba_pid_1neuro_init(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)sizeof(a_pid_neuro));
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
+    jobject Ctx = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)sizeof(a_pid_neuro));
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
+    (*Env)->SetObjectField(Env, Obj, L.ctx, Ctx);
     ctx->pid.summax = +A_FLOAT_INF;
     ctx->pid.summin = -A_FLOAT_INF;
     ctx->pid.outmax = +A_FLOAT_INF;
@@ -36,203 +36,203 @@ JNIEXPORT void JNICALL Java_liba_pid_1neuro_init(JNIEnv *_env, jobject _obj)
     a_pid_neuro_init(ctx);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_k__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_k__(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->k;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_k__D(JNIEnv *_env, jobject _obj, jdouble k)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_k__D(JNIEnv *Env, jobject Obj, jdouble k)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->k = k;
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_kp__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_kp__(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->pid.kp;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_kp__D(JNIEnv *_env, jobject _obj, jdouble kp)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_kp__D(JNIEnv *Env, jobject Obj, jdouble kp)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->pid.kp = kp;
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_ki__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_ki__(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->pid.ki;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_ki__D(JNIEnv *_env, jobject _obj, jdouble ki)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_ki__D(JNIEnv *Env, jobject Obj, jdouble ki)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->pid.ki = ki;
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_kd__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_kd__(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->pid.kd;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_kd__D(JNIEnv *_env, jobject _obj, jdouble kd)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_kd__D(JNIEnv *Env, jobject Obj, jdouble kd)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->pid.kd = kd;
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_wp__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_wp__(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->wp;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wp__D(JNIEnv *_env, jobject _obj, jdouble wp)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wp__D(JNIEnv *Env, jobject Obj, jdouble wp)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->wp = wp;
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_wi__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_wi__(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->wi;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wi__D(JNIEnv *_env, jobject _obj, jdouble wi)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wi__D(JNIEnv *Env, jobject Obj, jdouble wi)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->wi = wi;
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_wd__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_wd__(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->wd;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wd__D(JNIEnv *_env, jobject _obj, jdouble wd)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wd__D(JNIEnv *Env, jobject Obj, jdouble wd)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->wd = wd;
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_outmax__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_outmax__(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->pid.outmax;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_outmax__D(JNIEnv *_env, jobject _obj, jdouble outmax)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_outmax__D(JNIEnv *Env, jobject Obj, jdouble outmax)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->pid.outmax = outmax;
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_outmin__(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_outmin__(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->pid.outmin;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_outmin__D(JNIEnv *_env, jobject _obj, jdouble outmin)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_outmin__D(JNIEnv *Env, jobject Obj, jdouble outmin)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->pid.outmin = outmin;
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_out(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_out(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->pid.out;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_fdb(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_fdb(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->pid.fdb;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_err(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_err(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->pid.err;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_ec(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_ec(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->ec;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_kpid(JNIEnv *_env, jobject _obj, jdouble k, jdouble kp, jdouble ki, jdouble kd)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_kpid(JNIEnv *Env, jobject Obj, jdouble k, jdouble kp, jdouble ki, jdouble kd)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     a_pid_neuro_kpid(ctx, k, kp, ki, kd);
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wpid(JNIEnv *_env, jobject _obj, jdouble wp, jdouble wi, jdouble wd)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wpid(JNIEnv *Env, jobject Obj, jdouble wp, jdouble wi, jdouble wd)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     a_pid_neuro_wpid(ctx, wp, wi, wd);
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_run(JNIEnv *_env, jobject _obj, jdouble set, jdouble fdb)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_run(JNIEnv *Env, jobject Obj, jdouble set, jdouble fdb)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return a_pid_neuro_run(ctx, set, fdb);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_inc(JNIEnv *_env, jobject _obj, jdouble set, jdouble fdb)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_inc(JNIEnv *Env, jobject Obj, jdouble set, jdouble fdb)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return a_pid_neuro_inc(ctx, set, fdb);
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_zero(JNIEnv *_env, jobject _obj)
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_zero(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_pid_neuro *ctx = (a_pid_neuro *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     a_pid_neuro_zero(ctx);
-    return _obj;
+    return Obj;
 }

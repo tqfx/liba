@@ -291,10 +291,10 @@ static void completer(ic_completion_env_t *cenv, char const *buffer)
     }
 }
 
-static long match_string(void const *_s, long i)
+static long match_string(void const *s_, long i)
 {
     int quote = 0;
-    char const *s = (char const *)_s + i;
+    char const *s = (char const *)s_ + i;
     if (*s == '\'') { quote = '\''; }
     if (*s == '\"') { quote = '\"'; }
     if (quote)
@@ -305,12 +305,12 @@ static long match_string(void const *_s, long i)
         }
         if (*s == quote) { ++s; }
     }
-    return (long)(s - (char const *)_s - i);
+    return (long)(s - (char const *)s_ - i);
 }
 
-static long match_number(void const *_s, long i)
+static long match_number(void const *s_, long i)
 {
-    char const *s = (char const *)_s + i;
+    char const *s = (char const *)s_ + i;
     if (i && (isalnum(s[-1]) || s[-1] == '_')) { return 0; }
     if (s[0] == '0' && (s[1] == 'X' || s[1] == 'x'))
     {
@@ -339,7 +339,7 @@ static long match_number(void const *_s, long i)
         }
         for (; isdigit(*s); ++s) {}
     }
-    return (long)(s - (char const *)_s - i);
+    return (long)(s - (char const *)s_ - i);
 }
 
 static void highlighter(ic_highlight_env_t *henv, char const *input, void *arg)

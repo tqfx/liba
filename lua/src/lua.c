@@ -1,9 +1,9 @@
 #include "a.h"
 
-void *lua_alloc(lua_State *L, void const *_ptr, size_t siz)
+void *lua_alloc(lua_State *L, void const *ptr_, size_t siz)
 {
-    void *ud = (void *)(a_uptr)_ptr; // NOLINT
-    void *ptr = (void *)(a_uptr)_ptr; // NOLINT
+    void *ud = (void *)(a_uptr)ptr_; // NOLINT
+    void *ptr = (void *)(a_uptr)ptr_; // NOLINT
     return lua_getallocf(L, &ud)(ud, ptr, 0, siz);
 }
 
@@ -264,8 +264,8 @@ LUA_NUM *lua_table_num_get(lua_State *L, int idx, LUA_NUM const *ptr, size_t *nu
     LUA_NUM *ret = (LUA_NUM *)(intptr_t)ptr; // NOLINT(performance-no-int-to-ptr)
     if (lua_type(L, idx) == LUA_TTABLE)
     {
-        size_t _num = 0;
-        num = num ? num : &_num;
+        size_t num_ = 0;
+        num = num ? num : &num_;
         *num = lua_table_num_len(L, idx);
         if (*num)
         {

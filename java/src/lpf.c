@@ -6,58 +6,58 @@
 #define L Java_liba_lpf
 static struct
 {
-    jmethodID _new;
+    jmethodID New;
     jfieldID ctx;
 } L = {NULL, NULL};
 
-JNIEXPORT void JNICALL Java_liba_lpf_clinit(JNIEnv *_env, jclass _cls)
+JNIEXPORT void JNICALL Java_liba_lpf_clinit(JNIEnv *Env, jclass Cls)
 {
-    jclass _nbb = (*_env)->FindClass(_env, "Ljava/nio/ByteBuffer;");
-    L._new = (*_env)->GetStaticMethodID(_env, _nbb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
-    L.ctx = (*_env)->GetFieldID(_env, _cls, "ctx", "Ljava/nio/ByteBuffer;");
+    jclass Nbb = (*Env)->FindClass(Env, "Ljava/nio/ByteBuffer;");
+    L.New = (*Env)->GetStaticMethodID(Env, Nbb, "allocateDirect", "(I)Ljava/nio/ByteBuffer;");
+    L.ctx = (*Env)->GetFieldID(Env, Cls, "ctx", "Ljava/nio/ByteBuffer;");
 }
 
-JNIEXPORT void JNICALL Java_liba_lpf_init(JNIEnv *_env, jobject _obj, jdouble fc, jdouble ts)
+JNIEXPORT void JNICALL Java_liba_lpf_init(JNIEnv *Env, jobject Obj, jdouble fc, jdouble ts)
 {
-    jobject _ctx = (*_env)->CallObjectMethod(_env, _obj, L._new, (jint)sizeof(a_lpf));
-    a_lpf *ctx = (a_lpf *)(*_env)->GetDirectBufferAddress(_env, _ctx);
-    (*_env)->SetObjectField(_env, _obj, L.ctx, _ctx);
+    jobject Ctx = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)sizeof(a_lpf));
+    a_lpf *ctx = (a_lpf *)(*Env)->GetDirectBufferAddress(Env, Ctx);
+    (*Env)->SetObjectField(Env, Obj, L.ctx, Ctx);
     a_lpf_init(ctx, A_LPF_GEN(fc, ts));
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_lpf_alpha(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_lpf_alpha(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_lpf *ctx = (a_lpf *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_lpf *ctx = (a_lpf *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->alpha;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_lpf_output(JNIEnv *_env, jobject _obj)
+JNIEXPORT jdouble JNICALL Java_liba_lpf_output(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_lpf *ctx = (a_lpf *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_lpf *ctx = (a_lpf *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->output;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_lpf_gen(JNIEnv *_env, jobject _obj, jdouble fc, jdouble ts)
+JNIEXPORT jobject JNICALL Java_liba_lpf_gen(JNIEnv *Env, jobject Obj, jdouble fc, jdouble ts)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_lpf *ctx = (a_lpf *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_lpf *ctx = (a_lpf *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     ctx->alpha = A_LPF_GEN(fc, ts);
-    return _obj;
+    return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_lpf_iter(JNIEnv *_env, jobject _obj, jdouble x)
+JNIEXPORT jdouble JNICALL Java_liba_lpf_iter(JNIEnv *Env, jobject Obj, jdouble x)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_lpf *ctx = (a_lpf *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_lpf *ctx = (a_lpf *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return a_lpf_iter(ctx, x);
 }
 
-JNIEXPORT jobject JNICALL Java_liba_lpf_zero(JNIEnv *_env, jobject _obj)
+JNIEXPORT jobject JNICALL Java_liba_lpf_zero(JNIEnv *Env, jobject Obj)
 {
-    jobject _ctx = (*_env)->GetObjectField(_env, _obj, L.ctx);
-    a_lpf *ctx = (a_lpf *)(*_env)->GetDirectBufferAddress(_env, _ctx);
+    jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
+    a_lpf *ctx = (a_lpf *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     a_lpf_zero(ctx);
-    return _obj;
+    return Obj;
 }
