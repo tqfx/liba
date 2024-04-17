@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     }
 
 #if defined(__cplusplus) && (__cplusplus > 201100L)
-    A_ASSERT_BUILD(std::is_pod<a_tf>::value);
+    A_BUILD_ASSERT(std::is_pod<a_tf>::value);
 #endif /* __cplusplus */
 
     return 0;

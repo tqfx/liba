@@ -272,7 +272,8 @@
 */
 
 /*! assert a build-time dependency, as an expression */
-#define A_ASSERT_BUILD(x) (void)(sizeof(char[1 - 2 * !(x)]) - 1)
+#define A_BUILD_ASSERT(x) (void)(sizeof(char[1 - 2 * !(x)]))
+#define A_BUILD_BUG_ON(x) (void)(sizeof(char[1 - 2 * !!(x)]))
 
 #if defined(__cplusplus)
 #define a_cast_r(T, x) reinterpret_cast<T>(x)

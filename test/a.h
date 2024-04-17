@@ -4,39 +4,39 @@
 
 static void test_sq(void)
 {
-    A_ASSERT_BUILD(A_SQ(+2) == 4);
-    A_ASSERT_BUILD(A_SQ(-2) == 4);
+    A_BUILD_ASSERT(A_SQ(+2) == 4);
+    A_BUILD_ASSERT(A_SQ(-2) == 4);
 }
 
 static void test_abs(void)
 {
-    A_ASSERT_BUILD(A_ABS(~0) > 0);
+    A_BUILD_ASSERT(A_ABS(~0) > 0);
 }
 
 static void test_min(void)
 {
-    A_ASSERT_BUILD(A_MIN(0, 1) == 0);
-    A_ASSERT_BUILD(A_MIN(1, 0) == 0);
+    A_BUILD_ASSERT(A_MIN(0, 1) == 0);
+    A_BUILD_ASSERT(A_MIN(1, 0) == 0);
 }
 
 static void test_max(void)
 {
-    A_ASSERT_BUILD(A_MAX(0, 1) == 1);
-    A_ASSERT_BUILD(A_MAX(1, 0) == 1);
+    A_BUILD_ASSERT(A_MAX(0, 1) == 1);
+    A_BUILD_ASSERT(A_MAX(1, 0) == 1);
 }
 
 static void test_sgn(void)
 {
-    A_ASSERT_BUILD(A_SGN(0) == 0);
-    A_ASSERT_BUILD(A_SGN(+10) == +1);
-    A_ASSERT_BUILD(A_SGN(-10) == -1);
+    A_BUILD_ASSERT(A_SGN(0) == 0);
+    A_BUILD_ASSERT(A_SGN(+10) == +1);
+    A_BUILD_ASSERT(A_SGN(-10) == -1);
 }
 
 static void test_sat(void)
 {
-    A_ASSERT_BUILD(A_SAT(0, -10, +10) == 0);
-    A_ASSERT_BUILD(A_SAT(+100, -10, +10) <= +10);
-    A_ASSERT_BUILD(A_SAT(-100, -10, +10) >= -10);
+    A_BUILD_ASSERT(A_SAT(0, -10, +10) == 0);
+    A_BUILD_ASSERT(A_SAT(+100, -10, +10) <= +10);
+    A_BUILD_ASSERT(A_SAT(-100, -10, +10) >= -10);
 }
 
 static void test_for(int argc, char *argv[])

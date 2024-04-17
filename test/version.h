@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     TEST_BUG(a_version_cmp(&v000, &v000) == 0);
 #endif /* __cplusplus */
 #if defined(__cplusplus) && (__cplusplus > 201100L)
-    A_ASSERT_BUILD(std::is_pod<a_version>::value);
+    A_BUILD_ASSERT(std::is_pod<a_version>::value);
 #endif /* __cplusplus */
     for (int i = 0; i < argc; ++i)
     {

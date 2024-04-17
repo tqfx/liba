@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     }
     a_hpf_zero(&ctx);
 #if defined(__cplusplus) && (__cplusplus > 201100L)
-    A_ASSERT_BUILD(std::is_pod<a_hpf>::value);
+    A_BUILD_ASSERT(std::is_pod<a_hpf>::value);
 #endif /* __cplusplus */
     return 0;
 }
