@@ -13,8 +13,3 @@ if(TARGET liba)
   add_executable(main-shared main.c)
   target_link_libraries(main-shared PRIVATE liba)
 endif()
-
-if(TARGET liba.o)
-  add_executable(main-object main.c)
-  target_link_libraries(main-object PRIVATE liba.o)
-endif()
