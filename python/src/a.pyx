@@ -897,26 +897,26 @@ cdef class tf:
     def zero(self):
         a_tf_zero(&self.ctx)
         return self
-    cdef readonly array _num
     cdef readonly array input
+    cdef array num_
     property num:
         def __get__(self):
-            return self._num
+            return self.num_
         def __set__(self, object num):
             cdef a_diff n = len(num)
-            self._num = num_new(n)
             self.input = num_new(n)
-            a_tf_set_num(&self.ctx, <unsigned int>n, num_set(self._num.data, n, num), <a_float *>self.input.data)
-    cdef readonly array _den
+            self.num_ = num_new(n)
+            a_tf_set_num(&self.ctx, <unsigned int>n, num_set(self.num_.data, n, num), <a_float *>self.input.data)
     cdef readonly array output
+    cdef array den_
     property den:
         def __get__(self):
-            return self._den
+            return self.den_
         def __set__(self, object den):
             cdef a_diff n = len(den)
-            self._den = num_new(n)
             self.output = num_new(n)
-            a_tf_set_den(&self.ctx, <unsigned int>n, num_set(self._den.data, n, den), <a_float *>self.output.data)
+            self.den_ = num_new(n)
+            a_tf_set_den(&self.ctx, <unsigned int>n, num_set(self.den_.data, n, den), <a_float *>self.output.data)
 
 from a.trajbell cimport *
 

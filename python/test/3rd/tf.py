@@ -15,11 +15,11 @@ except Exception as e:
 
 class TF:
     def num_get(self):
-        return self._num
+        return self.num_
 
     def num_set(self, num):
-        self._num = np.array(num, dtype=float)
-        self.input = np.array(len(num) * [0.0], dtype=float)
+        self.num_ = np.array(num, dtype=float)
+        self.input = np.zeros(len(num), dtype=float)
 
     num = property(num_get, num_set, None, None)
 
@@ -27,8 +27,8 @@ class TF:
         return den
 
     def den_set(self, den):
-        self._den = np.array(den, dtype=float)
-        self.output = np.array(len(den) * [0.0], dtype=float)
+        self.den_ = np.array(den, dtype=float)
+        self.output = np.zeros(len(den), dtype=float)
 
     den = property(den_get, den_set, None, None)
 
@@ -39,7 +39,7 @@ class TF:
     def __call__(self, input: float) -> float:
         self.input = np.roll(self.input, 1)
         self.input[0] = input  # type: ignore
-        output = self._num @ self.input - self._den @ self.output  # type: ignore
+        output = self.num_ @ self.input - self.den_ @ self.output  # type: ignore
         self.output = np.roll(self.output, 1)
         self.output[0] = output  # type: ignore
         return output
