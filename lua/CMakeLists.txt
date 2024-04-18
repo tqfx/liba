@@ -20,7 +20,7 @@ if(LIBA_WITH_LUA)
 
   if(LIBA_SANITIZE)
     target_compile_sanitize(PUBLIC liblua lualib lua.o)
-    target_link_sanitize(PUBLIC liblua lualib)
+    target_link_sanitize(PUBLIC liblua lualib lua luac)
     set(OBJECTS $<TARGET_OBJECTS:asan>)
   endif()
 endif()
