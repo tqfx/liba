@@ -21,50 +21,42 @@ static A_INLINE a_float polevl(a_float const *p, a_size n, a_float x)
 
 a_f32 a_f32_rsqrt(a_f32 x)
 {
+    a_u32 *const u = (a_u32 *)&x;
 #if 1
     if (x > 0) { return 1 / a_f32_sqrt(x); }
 #else
-    union
-    {
-        a_f32 x;
-        a_u32 u;
-    } u;
-    u.x = x;
     if (x > 0)
     {
         a_f32 xh = A_F32_C(0.5) * x;
-        u.u = A_U32_C(0x5F375A86) - (u.u >> 1);
-        u.x *= A_F32_C(1.5) - u.x * u.x * xh;
-        u.x *= A_F32_C(1.5) - u.x * u.x * xh;
-        return u.x;
+        *u = A_U32_C(0x5F375A86) - (*u >> 1);
+        x *= A_F32_C(1.5) - x * x * xh;
+        x *= A_F32_C(1.5) - x * x * xh;
+        return x;
     }
 #endif
     if (x < 0) { return A_F32_NAN; }
-    return A_F32_INF;
+    *u |= A_F32_PINF;
+    return x;
 }
 
 a_f64 a_f64_rsqrt(a_f64 x)
 {
+    a_u64 *const u = (a_u64 *)&x;
 #if 1
     if (x > 0) { return 1 / a_f64_sqrt(x); }
 #else
-    union
-    {
-        a_f64 x;
-        a_u64 u;
-    } u;
-    u.x = x;
     if (x > 0)
     {
         a_f64 xh = A_F64_C(0.5) * x;
-        u.u = A_U64_C(0x5FE6EC85E7DE30DA) - (u.u >> 1);
-        u.x *= A_F64_C(1.5) - u.x * u.x * xh;
-        u.x *= A_F64_C(1.5) - u.x * u.x * xh;
-        return u.x;
+        *u = A_U64_C(0x5FE6EC85E7DE30DA) - (*u >> 1);
+        x *= A_F64_C(1.5) - x * x * xh;
+        x *= A_F64_C(1.5) - x * x * xh;
+        return x;
     }
 #endif
     if (x < 0) { return A_F64_NAN; }
-    return A_F64_INF;
+    *u |= A_F64_PINF;
+    return x;
 }
 
 #if (__has_builtin(__builtin_clz) || A_PREREQ_GNUC(3, 4)) && (ULONG_MAX == A_U32_MAX)

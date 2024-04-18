@@ -28,8 +28,9 @@ static void test_u64_sqrt(void)
 static void test_f32_rsqrt(void)
 {
     a_f32 data[] = {
-        A_F32_C(-1.0),
+        A_F32_C(0.0),
         A_F32_C(-0.0),
+        A_F32_C(-1.0),
         A_F32_C(1e-10),
         A_F32_C(1.0),
         A_F32_C(4.0),
@@ -44,8 +45,9 @@ static void test_f32_rsqrt(void)
 static void test_f64_rsqrt(void)
 {
     a_f64 data[] = {
-        A_F64_C(-1.0),
+        A_F64_C(0.0),
         A_F64_C(-0.0),
+        A_F64_C(-1.0),
         A_F64_C(1e-10),
         A_F64_C(1.0),
         A_F64_C(4.0),
