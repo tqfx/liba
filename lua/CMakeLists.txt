@@ -37,7 +37,7 @@ target_link_libraries(alua PRIVATE ${LUA_LIBRARIES})
 add_library_properties(alua PRIVATE alib)
 set_library_options(alua)
 
-if("${LIBA_INSTALL}" MATCHES "[Ll]ua")
+if("${LIBA_INSTALL}" MATCHES "^[Ll]ua$")
   install(TARGETS alua
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
