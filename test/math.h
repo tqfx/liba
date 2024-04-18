@@ -2,9 +2,9 @@
 #include "test.h"
 #include "a/math.h"
 
-#if defined(__MINGW32__) && A_PREREQ_GNUC(3, 0)
+#if A_PREREQ_GNUC(3, 0)
 #pragma GCC diagnostic ignored "-Wfloat-conversion"
-#endif /* __MINGW32__ */
+#endif /* -Wfloat-conversion */
 #if A_PREREQ_GNUC(4, 6) || __has_warning("-Wdouble-promotion")
 #pragma GCC diagnostic ignored "-Wdouble-promotion"
 #endif /* -Wdouble-promotion */

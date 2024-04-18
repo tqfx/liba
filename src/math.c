@@ -1,8 +1,8 @@
 #include "a/math.h"
 
-#if defined(__MINGW32__) && A_PREREQ_GNUC(3, 0)
+#if A_PREREQ_GNUC(3, 0)
 #pragma GCC diagnostic ignored "-Wfloat-conversion"
-#endif /* __MINGW32__ */
+#endif /* -Wfloat-conversion */
 #if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
@@ -22,7 +22,7 @@ static A_INLINE a_float polevl(a_float const *p, a_size n, a_float x)
 a_f32 a_f32_rsqrt(a_f32 x)
 {
 #if 1
-    return 1 / a_f32_sqrt(x);
+    if (x > 0) { return 1 / a_f32_sqrt(x); }
 #else
     union
     {
@@ -36,23 +36,17 @@ a_f32 a_f32_rsqrt(a_f32 x)
         u.u = A_U32_C(0x5F375A86) - (u.u >> 1);
         u.x *= A_F32_C(1.5) - u.x * u.x * xh;
         u.x *= A_F32_C(1.5) - u.x * u.x * xh;
+        return u.x;
     }
-    else if (x < 0)
-    {
-        u.u = A_F32_NNAN;
-    }
-    else
-    {
-        u.u |= A_F32_PINF;
-    }
-    return u.x;
 #endif
+    if (x < 0) { return A_F32_NAN; }
+    return A_F32_INF;
 }
 
 a_f64 a_f64_rsqrt(a_f64 x)
 {
 #if 1
-    return 1 / a_f64_sqrt(x);
+    if (x > 0) { return 1 / a_f64_sqrt(x); }
 #else
     union
     {
@@ -66,17 +60,11 @@ a_f64 a_f64_rsqrt(a_f64 x)
         u.u = A_U64_C(0x5FE6EC85E7DE30DA) - (u.u >> 1);
         u.x *= A_F64_C(1.5) - u.x * u.x * xh;
         u.x *= A_F64_C(1.5) - u.x * u.x * xh;
+        return u.x;
     }
-    else if (x < 0)
-    {
-        u.u = A_F64_NNAN;
-    }
-    else
-    {
-        u.u |= A_F64_PINF;
-    }
-    return u.x;
 #endif
+    if (x < 0) { return A_F64_NAN; }
+    return A_F64_INF;
 }
 
 #if (__has_builtin(__builtin_clz) || A_PREREQ_GNUC(3, 4)) && (ULONG_MAX == A_U32_MAX)

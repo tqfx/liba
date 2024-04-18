@@ -1,7 +1,7 @@
 #include "a/a.h"
-#if defined(__MINGW32__) && A_PREREQ_GNUC(3, 0)
+#if A_PREREQ_GNUC(3, 0)
 #pragma GCC diagnostic ignored "-Wfloat-conversion"
-#endif /* __MINGW32__ */
+#endif /* -Wfloat-conversion */
 #if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
