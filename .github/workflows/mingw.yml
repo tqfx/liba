@@ -26,7 +26,7 @@ jobs:
           CMAKE_PREFIX_PATH: ${{ github.workspace }}/_
         run: |
           set -x
-          cmake -S . -B build -DBUILD_SHARED_LIBS=1 \
+          cmake -S . -B build \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_ANALYZER=1 \
@@ -67,7 +67,6 @@ jobs:
         run: |
           set -x
           cmake -S . -B build -DCMAKE_SYSTEM_PROCESSOR=${{ matrix.arch }} \
-            -DBUILD_SHARED_LIBS=1 \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_STATIC=1

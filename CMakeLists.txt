@@ -54,9 +54,10 @@ else()
   set(LIBA_MATH "" CACHE FILEPATH "system math library")
 endif()
 
-include(CheckLibraryExists)
+set(LIBA_INSTALL "" CACHE STRING "Specify installation behavior")
 set(LIBA_FLOAT 8 CACHE STRING "floating-point number bytes")
 set_property(CACHE LIBA_FLOAT PROPERTY STRINGS 4 8 16)
+include(CheckLibraryExists)
 
 function(check_math VARIABLE FUNCTION)
   get_filename_component(LOCATION "${LIBA_MATH}" DIRECTORY)
@@ -297,9 +298,8 @@ endif()
 
 include(GNUInstallDirs)
 set(INSTALL_TARGETS "")
-set(LIBA_INSTALL "" CACHE STRING "Specify the installation")
 
-if(NOT LIBA_INSTALL)
+if("${LIBA_INSTALL}" MATCHES "^$|static")
   list(APPEND INSTALL_TARGETS alib)
 endif()
 
@@ -310,8 +310,8 @@ if(LIBA_MIMALLOC AND mimalloc_FOUND)
   target_link_libraries(alib PUBLIC ${MIMALLOC_LIBRARY})
 endif()
 
-if(TARGET_SUPPORTS_SHARED_LIBS AND BUILD_SHARED_LIBS)
-  if(NOT LIBA_INSTALL)
+if(TARGET_SUPPORTS_SHARED_LIBS)
+  if("${LIBA_INSTALL}" MATCHES "^$|shared")
     list(APPEND INSTALL_TARGETS liba)
   endif()
 

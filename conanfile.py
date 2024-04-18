@@ -41,6 +41,10 @@ class aConan(ConanFile):
     def generate(self):
         cmake = CMakeToolchain(self)
         cmake.variables["BUILD_TESTING"] = 0
+        if self.options.shared:
+            cmake.variables["LIBA_INSTALL"] = "shared"
+        else:
+            cmake.variables["LIBA_INSTALL"] = "static"
         cmake.variables["LIBA_SYMLINK"] = self.options.symlink
         cmake.variables["LIBA_PKGCONFIG"] = self.options.pkgconfig
         if self.settings.build_type != "Debug":

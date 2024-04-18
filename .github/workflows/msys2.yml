@@ -47,7 +47,6 @@ jobs:
           set -x
           cmake -S . -B build -G Ninja -DPython_ROOT_DIR=D:/msys64/${{ matrix.sys }} \
             -DCMAKE_INSTALL_PREFIX=$(pwd)/_ \
-            -DBUILD_SHARED_LIBS=1 \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_ANALYZER=1 \
