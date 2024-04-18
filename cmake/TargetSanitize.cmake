@@ -63,12 +63,8 @@ macro(sanitize_flag_ld)
 endmacro()
 
 if(
-  CMAKE_C_COMPILER_ID MATCHES "(Apple)?[Cc]lang" OR
-  CMAKE_C_COMPILER_ID MATCHES "IntelLLVM" OR
-  CMAKE_C_COMPILER_ID MATCHES "GNU" OR
-  CMAKE_CXX_COMPILER_ID MATCHES "(Apple)?[Cc]lang" OR
-  CMAKE_CXX_COMPILER_ID MATCHES "IntelLLVM" OR
-  CMAKE_CXX_COMPILER_ID MATCHES "GNU"
+  CMAKE_C_COMPILER_ID MATCHES "GNU|.*[Cc]lang|.*LLVM" OR
+  CMAKE_CXX_COMPILER_ID MATCHES "GNU|.*[Cc]lang|.*LLVM"
 )
   set(REQUIRED_FLAGS -fsanitize=address)
   sanitize_flag_cx(-fsanitize=address)
