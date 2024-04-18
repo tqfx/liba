@@ -67,7 +67,7 @@ macro(warnings_flag_cx)
   set(var)
 endmacro()
 
-if(CMAKE_C_COMPILER_ID MATCHES ".*[Cc]lang|.*LLVM" OR CMAKE_CXX_COMPILER_ID MATCHES ".*[Cc]lang|.*LLVM")
+if(CMAKE_C_COMPILER_ID MATCHES "[Cc]lang|LLVM" OR CMAKE_CXX_COMPILER_ID MATCHES "[Cc]lang|LLVM")
   # https://releases.llvm.org/4.0.1/tools/clang/DiagnosticsReference.html
   # https://clang.llvm.org/docs/DiagnosticsReference.html
   warnings_flag_cx(-Weverything)
