@@ -8,7 +8,7 @@ class aConan(ConanFile):
     license = "MPL-2.0"
     topics = ("algorithm",)
     author = "tqfx tqfx@tqfx.org"
-    homepage = url = "https://github.com/tqfx/liba.git"
+    homepage = url = "https://github.com/tqfx/liba"
     description = "An algorithm library based on C/C++"
     settings = "os", "compiler", "build_type", "arch"
     options = {

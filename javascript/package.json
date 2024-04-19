@@ -6,7 +6,7 @@
   "types": "liba.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tqfx/liba.git"
+    "url": "git+https://github.com/tqfx/liba"
   },
   "keywords": [
     "algorithm",

@@ -158,7 +158,7 @@ cargo add liba # release
 ```
 
 ```bash
-cargo add --git https://github.com/tqfx/liba.git # latest
+cargo add --git https://github.com/tqfx/liba # latest
 ```
 
 #### main.rs
@@ -184,7 +184,7 @@ pip install liba # release
 ```
 
 ```bash
-pip install git+https://github.com/tqfx/liba.git # latest
+pip install git+https://github.com/tqfx/liba # latest
 ```
 
 #### main.py
