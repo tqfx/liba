@@ -2,6 +2,13 @@ name: docs
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'java/src/**.java'
+      - 'lua/src/**.[ch]*'
+      - 'include/**.h*'
+      - 'Cargo.toml'
+      - 'src/**.rs'
+      - 'README.md'
   workflow_dispatch:
 jobs:
   docs:
@@ -26,8 +33,7 @@ jobs:
         run: |
           set -x
           ./configure && make && sudo make install
-      - name: Install LDoc
-        run: sudo luarocks install ldoc
+          sudo luarocks install ldoc
       - name: Install doxygen
         run: |
           for item in $(curl -s https://api.github.com/repos/doxygen/doxygen/releases/latest | jq -c .assets[] -r); do
