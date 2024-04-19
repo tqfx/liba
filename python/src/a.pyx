@@ -320,6 +320,7 @@ def sqrt_u32(object x):
         p = x
         r = u32_new(p.shape[0])
         q = <a_u16 *>r.data
+        A_ASSUME(p.shape[0])
         for i in prange(p.shape[0], nogil=True):
             q[i] = a_u32_sqrt(p[i])
         return r
@@ -334,6 +335,7 @@ def sqrt_u64(object x):
         p = x
         r = u64_new(p.shape[0])
         q = <a_u32 *>r.data
+        A_ASSUME(p.shape[0])
         for i in prange(p.shape[0], nogil=True):
             q[i] = a_u64_sqrt(p[i])
         return r
@@ -348,6 +350,7 @@ def rsqrt_f32(object x):
         p = x
         r = f32_new(p.shape[0])
         q = <a_f32 *>r.data
+        A_ASSUME(p.shape[0])
         for i in prange(p.shape[0], nogil=True):
             q[i] = a_f32_rsqrt(p[i])
         return r
@@ -362,6 +365,7 @@ def rsqrt_f64(object x):
         p = x
         r = f64_new(p.shape[0])
         q = <a_f64 *>r.data
+        A_ASSUME(p.shape[0])
         for i in prange(p.shape[0], nogil=True):
             q[i] = a_f64_rsqrt(p[i])
         return r
@@ -394,6 +398,7 @@ cdef class mf:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_mf(e, p[i], &a[0])
             return r
@@ -408,6 +413,7 @@ cdef class mf:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_mf_gauss(p[i], sigma, c)
             return r
@@ -422,6 +428,7 @@ cdef class mf:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_mf_gauss2(p[i], sigma1, c1, sigma2, c2)
             return r
@@ -436,6 +443,7 @@ cdef class mf:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_mf_gbell(p[i], a, b, c)
             return r
@@ -450,6 +458,7 @@ cdef class mf:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_mf_sig(p[i], a, c)
             return r
@@ -464,6 +473,7 @@ cdef class mf:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_mf_dsig(p[i], a1, c1, a2, c2)
             return r
@@ -478,6 +488,7 @@ cdef class mf:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_mf_psig(p[i], a1, c1, a2, c2)
             return r
@@ -492,6 +503,7 @@ cdef class mf:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_mf_trap(p[i], a, b, c, d)
             return r
@@ -506,6 +518,7 @@ cdef class mf:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_mf_tri(p[i], a, b, c)
             return r
@@ -520,6 +533,7 @@ cdef class mf:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_mf_lins(p[i], a, b)
             return r
@@ -534,6 +548,7 @@ cdef class mf:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_mf_linz(p[i], a, b)
             return r
@@ -548,6 +563,7 @@ cdef class mf:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_mf_s(p[i], a, b)
             return r
@@ -562,6 +578,7 @@ cdef class mf:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_mf_z(p[i], a, b)
             return r
@@ -576,6 +593,7 @@ cdef class mf:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_mf_pi(p[i], a, b, c, d)
             return r
@@ -866,6 +884,7 @@ def poly_eval(object x, const a_float[::1] a):
         p = x
         r = num_new(p.shape[0])
         q = <a_float *>r.data
+        A_ASSUME(p.shape[0])
         for i in prange(p.shape[0], nogil=True):
             q[i] = a_poly_eval(&a[0], a.shape[0], p[i])
         return r
@@ -880,6 +899,7 @@ def poly_evar(object x, const a_float[::1] a):
         p = x
         r = num_new(p.shape[0])
         q = <a_float *>r.data
+        A_ASSUME(p.shape[0])
         for i in prange(p.shape[0], nogil=True):
             q[i] = a_poly_evar(&a[0], a.shape[0], p[i])
         return r
@@ -933,6 +953,7 @@ cdef class trajbell:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajbell_pos(&self.ctx, p[i])
             return r
@@ -946,6 +967,7 @@ cdef class trajbell:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajbell_vel(&self.ctx, p[i])
             return r
@@ -959,6 +981,7 @@ cdef class trajbell:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajbell_acc(&self.ctx, p[i])
             return r
@@ -972,6 +995,7 @@ cdef class trajbell:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajbell_jer(&self.ctx, p[i])
             return r
@@ -1037,6 +1061,7 @@ cdef class trajpoly3:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajpoly3_pos(&self.ctx, p[i])
             return r
@@ -1050,6 +1075,7 @@ cdef class trajpoly3:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajpoly3_vel(&self.ctx, p[i])
             return r
@@ -1063,6 +1089,7 @@ cdef class trajpoly3:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajpoly3_acc(&self.ctx, p[i])
             return r
@@ -1095,6 +1122,7 @@ cdef class trajpoly5:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajpoly5_pos(&self.ctx, p[i])
             return r
@@ -1108,6 +1136,7 @@ cdef class trajpoly5:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajpoly5_vel(&self.ctx, p[i])
             return r
@@ -1121,6 +1150,7 @@ cdef class trajpoly5:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajpoly5_acc(&self.ctx, p[i])
             return r
@@ -1153,6 +1183,7 @@ cdef class trajpoly7:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajpoly7_pos(&self.ctx, p[i])
             return r
@@ -1166,6 +1197,7 @@ cdef class trajpoly7:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajpoly7_vel(&self.ctx, p[i])
             return r
@@ -1179,6 +1211,7 @@ cdef class trajpoly7:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajpoly7_acc(&self.ctx, p[i])
             return r
@@ -1192,6 +1225,7 @@ cdef class trajpoly7:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajpoly7_jer(&self.ctx, p[i])
             return r
@@ -1224,6 +1258,7 @@ cdef class trajtrap:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajtrap_pos(&self.ctx, p[i])
             return r
@@ -1237,6 +1272,7 @@ cdef class trajtrap:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajtrap_vel(&self.ctx, p[i])
             return r
@@ -1250,6 +1286,7 @@ cdef class trajtrap:
             p = x
             r = num_new(p.shape[0])
             q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
                 q[i] = a_trajtrap_acc(&self.ctx, p[i])
             return r

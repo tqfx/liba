@@ -4,9 +4,7 @@ from libc.stdint cimport *
 from libc.float cimport *
 
 cdef extern from "a/a.h":
-    const int A_FLOAT_TYPE
-    const int A_FLOAT_SINGLE
-    const int A_FLOAT_DOUBLE
+    void A_ASSUME(bint)
 
     ctypedef  int8_t a_i8
     ctypedef uint8_t a_u8
@@ -28,6 +26,9 @@ cdef extern from "a/a.h":
     ctypedef double a_float
     const a_float A_FLOAT_INF
     const a_float A_FLOAT_NAN
+    const int A_FLOAT_SINGLE
+    const int A_FLOAT_DOUBLE
+    const int A_FLOAT_TYPE
 
     a_u16 a_u16_getl(const void *b)
     a_u16 a_u16_getb(const void *b)
