@@ -1,6 +1,6 @@
 [package]
 name = "liba"
-version = "0.1.11"
+version = "0.1.12"
 authors = ["tqfx <tqfx@tqfx.org>"]
 description = "An algorithm library based on C/C++"
 documentation = "https://docs.rs/liba"
