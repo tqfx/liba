@@ -126,9 +126,10 @@ add_includedirs("include", { public = true })
 -- set export library symbols
 add_defines("A_EXPORTS")
 -- add the common source files
-add_files("src/**.c")
-if not table.empty(os.files("src/**.cc")) and has_config("liba-cxx") then
-    add_files("src/**.cc")
+if has_config("liba-cxx") then
+    add_files(os.files("src/**.c*"))
+else
+    add_files("src/**.c")
 end
 -- add the platform options
 rpath = get_config("liba-rpath")
@@ -140,24 +141,6 @@ if not is_plat("windows", "mingw") then
     add_syslinks("m", { public = true })
     add_cxflags("-fPIC")
 end
-after_build(function(target)
-    import("core.tool.linker")
-    local object = target:objectfiles()
-    local output = path.join(target:targetdir(), "liba.o")
-    local program = linker.linkargv("binary", "cc", object, output, { target = target })
-    try({
-        function()
-            os.runv(program, table.join("-nostdlib", "-o", output, "-r", object))
-        end,
-    })
-end)
-after_install(function(target)
-    local output = path.join(target:installdir(), "lib", "liba.o")
-    os.trycp(path.join(target:targetdir(), "liba.o"), output)
-end)
-after_clean(function(target)
-    os.tryrm(path.join(target:targetdir(), "liba.o"))
-end)
 target_end()
 
 target("alib")
@@ -165,10 +148,11 @@ set_basename("a")
 -- make as a static library
 set_kind("static")
 -- add the header files for installing
-add_headerfiles("include/(**.h)")
 add_headerfiles("$(buildir)/a.xmake.h", { prefixdir = "a" })
-if not table.empty(os.files("include/**.hpp")) and has_config("liba-cxx") then
-    add_headerfiles("include/(**.hpp)")
+if has_config("liba-cxx") then
+    add_headerfiles("include/(a/**.h*)")
+else
+    add_headerfiles("include/(a/**.h)")
 end
 on_load(function(target)
     target:set("links", target:targetfile(), { interface = true })
