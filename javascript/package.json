@@ -1,12 +1,12 @@
 {
   "name": "@tqfx/liba",
   "version": "0.1.12",
-  "description": "An algorithm library based on C/C++.",
+  "description": "An algorithm library based on C/C++",
   "main": "liba.js",
   "types": "liba.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tqfx/liba"
+    "url": "git+https://github.com/tqfx/liba.git"
   },
   "keywords": [
     "algorithm",
