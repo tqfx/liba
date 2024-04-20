@@ -36,7 +36,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           if-no-files-found: ignore
-          name: wasm-${{ github.sha }}
+          name: ${{ github.sha }}-wasm
           path: |
             javascript/README.md
             javascript/liba.d.ts
