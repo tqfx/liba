@@ -1,4 +1,4 @@
-From c930e145ef86ef13a6db56750611ecb59e7cee8c Mon Sep 17 00:00:00 2001
+From 4a62c80e04cb9ceea2d0e2edabc8aa56be0f5e2f Mon Sep 17 00:00:00 2001
 From: tqfx <tqfx@tqfx.org>
 Date: Mon, 12 Feb 2024 23:33:35 +0800
 Subject: [PATCH] support for One-dimensional Kalman Filter
@@ -73,7 +73,7 @@ index 0000000..0301c56
 +
 +#endif /* a/kf1.h */
 diff --git a/meson.build b/meson.build
-index 8b13ac7..adc1a7f 100644
+index 398b478..f3867eb 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -53,6 +53,7 @@ sources = [
@@ -84,7 +84,7 @@ index 8b13ac7..adc1a7f 100644
      'include/a/list.h',
      'include/a/lpf.h',
      'include/a/math.h',
-@@ -83,6 +84,7 @@ sources = [
+@@ -82,6 +83,7 @@ sources = [
      'src/complex.c',
      'src/crc.c',
      'src/fuzzy.c',
@@ -135,21 +135,21 @@ index 0000000..d0dac8a
 +    ctx->value = 0;
 +}
 diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
-index a3d15bc..18b1a75 100644
+index fac96b4..69eed2a 100644
 --- a/test/CMakeLists.txt
 +++ b/test/CMakeLists.txt
-@@ -173,6 +173,13 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+@@ -174,6 +174,13 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
    unitplot(hpf 2.gp hpf.csv)
  endif()
  
-+building(kf1 kf1.c kf1.cpp)
++building(kf1 kf1.c kf1.cc)
 +unittest(kf1)
 +
 +if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
 +  unitplot(kf1 3.gp kf1.csv)
 +endif()
 +
- building(list list.c list.cpp)
+ building(list list.c list.cc)
  unittest(list)
  
 diff --git a/test/kf1.c b/test/kf1.c
@@ -159,20 +159,20 @@ index 0000000..7aa77e9
 +++ b/test/kf1.c
 @@ -0,0 +1 @@
 +#include "kf1.h"
-diff --git a/test/kf1.cpp b/test/kf1.cpp
+diff --git a/test/kf1.cc b/test/kf1.cc
 new file mode 100644
 index 0000000..7aa77e9
 --- /dev/null
-+++ b/test/kf1.cpp
++++ b/test/kf1.cc
 @@ -0,0 +1 @@
 +#include "kf1.h"
 diff --git a/test/kf1.h b/test/kf1.h
 new file mode 100644
-index 0000000..376c085
+index 0000000..1ed1e5b
 --- /dev/null
 +++ b/test/kf1.h
 @@ -0,0 +1,42 @@
-+#define MAIN_(x) A_CAST_2(x, _kf1)
++#define MAIN(x) kf1##x
 +#include "test.h"
 +#include "a/kf1.h"
 +#include <time.h>
@@ -189,7 +189,7 @@ index 0000000..376c085
 +    return a_cast_s(long, rand_seed);
 +}
 +
-+int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
++int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 +{
 +    main_init(argc, argv, 1);
 +    srand_(a_cast_s(unsigned long, time(A_NULL)));
@@ -215,10 +215,10 @@ index 0000000..376c085
 +    return 0;
 +}
 diff --git a/test/make.lua b/test/make.lua
-index 9a034ca..f80067f 100644
+index 3ec6deb..252176e 100644
 --- a/test/make.lua
 +++ b/test/make.lua
-@@ -18,6 +18,7 @@ executable("avl")
+@@ -19,6 +19,7 @@ executable("avl")
  executable("buf")
  executable("complex")
  executable("crc")
@@ -227,7 +227,7 @@ index 9a034ca..f80067f 100644
  executable("list")
  executable("lpf")
 diff --git a/test/test.lua b/test/test.lua
-index 8526b2f..508d9c4 100644
+index ff0fc76..ce0707e 100644
 --- a/test/test.lua
 +++ b/test/test.lua
 @@ -6,6 +6,7 @@ assert(subprocess.spawn({ "build/bin/avl" .. ext })):wait()
@@ -239,20 +239,20 @@ index 8526b2f..508d9c4 100644
  assert(subprocess.spawn({ "build/bin/list" .. ext })):wait()
  assert(subprocess.spawn({ "build/bin/lpf" .. ext })):wait()
 diff --git a/test/xmake.lua b/test/xmake.lua
-index 436071c..2f0442c 100644
+index e87ddeb..86794ed 100644
 --- a/test/xmake.lua
 +++ b/test/xmake.lua
 @@ -40,6 +40,10 @@ target("test/hpf")
- building({ "hpf.c", "hpf.cpp" })
+ building({ "hpf.c", "hpf.cc" })
  target_end()
  
 +target("test/kf1")
-+building({ "kf1.c", "kf1.cpp" })
++building({ "kf1.c", "kf1.cc" })
 +target_end()
 +
  target("test/list")
- building({ "list.c", "list.cpp" })
+ building({ "list.c", "list.cc" })
  target_end()
 -- 
-2.43.1
+2.44.0
 

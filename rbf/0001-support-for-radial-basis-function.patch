@@ -1,4 +1,4 @@
-From ffc82b6b519042120b457b3aacbea538d47a883f Mon Sep 17 00:00:00 2001
+From 51bae2a9af9648b9e0d4bf4dddcb935bf5418373 Mon Sep 17 00:00:00 2001
 From: tqfx <tqfx@tqfx.org>
 Date: Sat, 24 Feb 2024 22:36:40 +0800
 Subject: [PATCH] support for radial basis function
@@ -6,7 +6,7 @@ Subject: [PATCH] support for radial basis function
 
 diff --git a/include/a/rbf.h b/include/a/rbf.h
 new file mode 100644
-index 00000000..4ba6dd3f
+index 0000000..4ba6dd3
 --- /dev/null
 +++ b/include/a/rbf.h
 @@ -0,0 +1,85 @@
@@ -96,7 +96,7 @@ index 00000000..4ba6dd3f
 +
 +#endif /* a/rbf.h */
 diff --git a/meson.build b/meson.build
-index 41945c08..97b16728 100644
+index 398b478..82111dd 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -64,6 +64,7 @@ sources = [
@@ -117,7 +117,7 @@ index 41945c08..97b16728 100644
      'src/tf.c',
 diff --git a/src/rbf.c b/src/rbf.c
 new file mode 100644
-index 00000000..4f3c7e27
+index 0000000..4f3c7e2
 --- /dev/null
 +++ b/src/rbf.c
 @@ -0,0 +1,81 @@
@@ -203,25 +203,25 @@ index 00000000..4f3c7e27
 +    a_zero(ctx->deltaw, sizeof(a_float) * hidden_output_n);
 +}
 diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
-index 6e94de5d..a3d15bc2 100644
+index fac96b4..4e305b7 100644
 --- a/test/CMakeLists.txt
 +++ b/test/CMakeLists.txt
-@@ -252,6 +252,13 @@ unittest(poly)
- building(que que.c que.cpp)
+@@ -250,6 +250,13 @@ unittest(poly)
+ building(que que.c que.cc)
  unittest(que)
  
-+building(rbf rbf.c rbf.cpp)
++building(rbf rbf.c rbf.cc)
 +unittest(rbf)
 +
 +if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
 +  unitplot(rbf 3.gp rbf.csv)
 +endif()
 +
- building(rbt rbt.c rbt.cpp)
+ building(rbt rbt.c rbt.cc)
  unittest(rbt)
  
 diff --git a/test/make.lua b/test/make.lua
-index db7ab583..9a034ca4 100644
+index 3ec6deb..4f99e24 100644
 --- a/test/make.lua
 +++ b/test/make.lua
 @@ -32,6 +32,7 @@ executable("pid_fuzzy")
@@ -230,35 +230,35 @@ index db7ab583..9a034ca4 100644
  executable("que")
 +executable("rbf")
  executable("rbt")
- executable("tf")
- executable("trajbell")
+ executable("slist")
+ executable("str")
 diff --git a/test/rbf.c b/test/rbf.c
 new file mode 100644
-index 00000000..988fa26d
+index 0000000..988fa26
 --- /dev/null
 +++ b/test/rbf.c
 @@ -0,0 +1 @@
 +#include "rbf.h"
-diff --git a/test/rbf.cpp b/test/rbf.cpp
+diff --git a/test/rbf.cc b/test/rbf.cc
 new file mode 100644
-index 00000000..988fa26d
+index 0000000..988fa26
 --- /dev/null
-+++ b/test/rbf.cpp
++++ b/test/rbf.cc
 @@ -0,0 +1 @@
 +#include "rbf.h"
 diff --git a/test/rbf.h b/test/rbf.h
 new file mode 100644
-index 00000000..dd4653a3
+index 0000000..88b804d
 --- /dev/null
 +++ b/test/rbf.h
 @@ -0,0 +1,56 @@
-+#define MAIN_(x) A_CAST_2(x, _rbf)
++#define MAIN(x) rbf##x
 +#include "test.h"
 +#include "a/tf.h"
 +#include "a/rbf.h"
 +#include "a/math.h"
 +
-+int MAIN(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
++int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 +{
 +    main_init(argc, argv, 1);
 +
@@ -309,32 +309,32 @@ index 00000000..dd4653a3
 +    return 0;
 +}
 diff --git a/test/test.lua b/test/test.lua
-index ffe599a0..8526b2f3 100644
+index ff0fc76..b77d8d2 100644
 --- a/test/test.lua
 +++ b/test/test.lua
-@@ -20,6 +20,7 @@ assert(subprocess.spawn({ "build/bin/pid_fuzzy" .. ext })):wait()
+@@ -19,6 +19,7 @@ assert(subprocess.spawn({ "build/bin/pid_fuzzy" .. ext })):wait()
  assert(subprocess.spawn({ "build/bin/pid_neuro" .. ext })):wait()
  assert(subprocess.spawn({ "build/bin/poly" .. ext })):wait()
  assert(subprocess.spawn({ "build/bin/que" .. ext })):wait()
 +assert(subprocess.spawn({ "build/bin/rbf" .. ext })):wait()
  assert(subprocess.spawn({ "build/bin/rbt" .. ext })):wait()
- assert(subprocess.spawn({ "build/bin/tf" .. ext })):wait()
- assert(subprocess.spawn({ "build/bin/trajbell" .. ext })):wait()
+ assert(subprocess.spawn({ "build/bin/slist" .. ext })):wait()
+ assert(subprocess.spawn({ "build/bin/str" .. ext })):wait()
 diff --git a/test/xmake.lua b/test/xmake.lua
-index c8012694..436071cd 100644
+index e87ddeb..848b115 100644
 --- a/test/xmake.lua
 +++ b/test/xmake.lua
-@@ -92,6 +92,10 @@ target("test/que")
- building({ "que.c", "que.cpp" })
+@@ -88,6 +88,10 @@ target("test/que")
+ building({ "que.c", "que.cc" })
  target_end()
  
 +target("test/rbf")
-+building({ "rbf.c", "rbf.cpp" })
++building({ "rbf.c", "rbf.cc" })
 +target_end()
 +
  target("test/rbt")
- building({ "rbt.c", "rbt.cpp" })
+ building({ "rbt.c", "rbt.cc" })
  target_end()
 -- 
-2.43.2
+2.44.0
 
