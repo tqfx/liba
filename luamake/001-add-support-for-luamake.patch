@@ -1,0 +1,156 @@
+From 605732ba5711edf39e8773ed81e5104344482aa7 Mon Sep 17 00:00:00 2001
+From: tqfx <tqfx@tqfx.org>
+Date: Sat, 6 Apr 2024 20:05:12 +0800
+Subject: [PATCH] add support for luamake
+
+
+diff --git a/javascript/make.lua b/javascript/make.lua
+new file mode 100644
+index 0000000..2d38187
+--- /dev/null
++++ b/javascript/make.lua
+@@ -0,0 +1,9 @@
++---@diagnostic disable
++local lm = require("luamake")
++lm.workdir = WORKDIR
++lm:executable("liba")({
++    defines = { "A_EXPORTS" },
++    includes = { "../include" },
++    sources = { "../src/*.c*", "src/*.c*" },
++    ldflags = { "--bind", "-sWASM_ASYNC_COMPILATION=0" },
++})
+diff --git a/lua/make.lua b/lua/make.lua
+new file mode 100644
+index 0000000..4048178
+--- /dev/null
++++ b/lua/make.lua
+@@ -0,0 +1,9 @@
++---@diagnostic disable
++local lm = require("luamake")
++lm.workdir = WORKDIR
++lm:lua_library("liba")({
++    defines = { "A_EXPORTS" },
++    includes = { "../include" },
++    sources = { "../src/*.c*", "src/*.c*" },
++    links = lm.os ~= "windows" and { "m" } or {},
++})
+diff --git a/make.lua b/make.lua
+new file mode 100644
+index 0000000..1a64f42
+--- /dev/null
++++ b/make.lua
+@@ -0,0 +1,17 @@
++---@diagnostic disable
++local lm = require("luamake")
++lm.workdir = WORKDIR
++lm:source_set("a")({
++    defines = { "A_EXPORTS" },
++    includes = { "include" },
++    sources = { "src/*.c*" },
++    flags = lm.os ~= "windows" and { "-fPIC" } or {},
++    links = lm.os ~= "windows" and { "m" } or {},
++})
++lm:static_library("alib")({
++    basename = "a",
++    deps = { "a" },
++})
++lm:shared_library("liba")({
++    deps = { "a" },
++})
+diff --git a/test/make.lua b/test/make.lua
+new file mode 100644
+index 0000000..20db4e7
+--- /dev/null
++++ b/test/make.lua
+@@ -0,0 +1,48 @@
++---@diagnostic disable
++local lm = require("luamake")
++lm.workdir = WORKDIR
++lm:source_set("a.o")({
++    defines = { "A_EXPORTS" },
++    includes = { "../include" },
++    sources = { "../src/*.c*" },
++    links = lm.os ~= "windows" and { "m" } or {},
++})
++local executable = function(target)
++    lm:executable(target)({
++        defines = { "HAS_CXX" },
++        includes = { "../include" },
++        sources = { target .. ".c*" },
++        deps = { "a.o" },
++    })
++end
++executable("a")
++executable("avl")
++executable("buf")
++executable("complex")
++executable("crc")
++executable("hpf")
++executable("list")
++executable("lpf")
++executable("math")
++executable("mf")
++executable("notefreqs")
++executable("operator")
++executable("pid")
++executable("pid_expert")
++executable("pid_fuzzy")
++executable("pid_neuro")
++executable("poly")
++executable("que")
++executable("rbt")
++executable("slist")
++executable("str")
++executable("test")
++executable("tf")
++executable("trajbell")
++executable("trajpoly3")
++executable("trajpoly5")
++executable("trajpoly7")
++executable("trajtrap")
++executable("utf")
++executable("vec")
++executable("version")
+diff --git a/test/test.lua b/test/test.lua
+new file mode 100644
+index 0000000..ff0fc76
+--- /dev/null
++++ b/test/test.lua
+@@ -0,0 +1,34 @@
++local platform = require("bee.platform")
++local subprocess = require("bee.subprocess")
++local ext = platform.os == "windows" and ".exe" or ""
++assert(subprocess.spawn({ "build/bin/a" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/avl" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/buf" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/complex" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/crc" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/hpf" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/list" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/lpf" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/math" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/mf" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/notefreqs" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/operator" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/pid" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/pid_expert" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/pid_fuzzy" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/pid_neuro" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/poly" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/que" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/rbt" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/slist" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/str" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/test" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/tf" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/trajbell" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/trajpoly3" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/trajpoly5" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/trajpoly7" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/trajtrap" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/utf" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/vec" .. ext })):wait()
++assert(subprocess.spawn({ "build/bin/version" .. ext })):wait()
+-- 
+2.44.0.windows.1
+
