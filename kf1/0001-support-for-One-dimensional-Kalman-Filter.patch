@@ -22,8 +22,8 @@ index 0000000..0301c56
 +#include "a.h"
 +
 +/*!
-+ @ingroup A
-+ @addtogroup A_KF1 One-dimensional Kalman Filter
++ @ingroup liba
++ @addtogroup a_kf1 One-dimensional Kalman Filter
 + @{
 +*/
 +
@@ -69,7 +69,7 @@ index 0000000..0301c56
 +    a_float H; //!< the observation model
 +};
 +
-+/*! @} A_KF1 */
++/*! @} a_kf1 */
 +
 +#endif /* a/kf1.h */
 diff --git a/meson.build b/meson.build
@@ -210,34 +210,10 @@ index 0000000..1ed1e5b
 +    }
 +    a_kf1_zero(&ctx);
 +#if defined(__cplusplus) && (__cplusplus > 201100L)
-+    A_ASSERT_BUILD(std::is_pod<a_kf1>::value);
++    A_BUILD_ASSERT(std::is_pod<a_kf1>::value);
 +#endif /* __cplusplus */
 +    return 0;
 +}
-diff --git a/test/make.lua b/test/make.lua
-index 3ec6deb..252176e 100644
---- a/test/make.lua
-+++ b/test/make.lua
-@@ -19,6 +19,7 @@ executable("avl")
- executable("buf")
- executable("complex")
- executable("crc")
-+executable("kf1")
- executable("hpf")
- executable("list")
- executable("lpf")
-diff --git a/test/test.lua b/test/test.lua
-index ff0fc76..ce0707e 100644
---- a/test/test.lua
-+++ b/test/test.lua
-@@ -6,6 +6,7 @@ assert(subprocess.spawn({ "build/bin/avl" .. ext })):wait()
- assert(subprocess.spawn({ "build/bin/buf" .. ext })):wait()
- assert(subprocess.spawn({ "build/bin/complex" .. ext })):wait()
- assert(subprocess.spawn({ "build/bin/crc" .. ext })):wait()
-+assert(subprocess.spawn({ "build/bin/kf1" .. ext })):wait()
- assert(subprocess.spawn({ "build/bin/hpf" .. ext })):wait()
- assert(subprocess.spawn({ "build/bin/list" .. ext })):wait()
- assert(subprocess.spawn({ "build/bin/lpf" .. ext })):wait()
 diff --git a/test/xmake.lua b/test/xmake.lua
 index e87ddeb..86794ed 100644
 --- a/test/xmake.lua

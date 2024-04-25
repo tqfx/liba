@@ -21,8 +21,8 @@ index 0000000..4ba6dd3
 +#include "a.h"
 +
 +/*!
-+ @ingroup A
-+ @addtogroup A_RBF radial basis function
++ @ingroup liba
++ @addtogroup a_rbf radial basis function
 + @{
 +*/
 +
@@ -92,7 +92,7 @@ index 0000000..4ba6dd3
 +#endif /* __cplusplus */
 +};
 +
-+/*! @} A_RBF */
++/*! @} a_rbf */
 +
 +#endif /* a/rbf.h */
 diff --git a/meson.build b/meson.build
@@ -220,18 +220,6 @@ index fac96b4..4e305b7 100644
  building(rbt rbt.c rbt.cc)
  unittest(rbt)
  
-diff --git a/test/make.lua b/test/make.lua
-index 3ec6deb..4f99e24 100644
---- a/test/make.lua
-+++ b/test/make.lua
-@@ -32,6 +32,7 @@ executable("pid_fuzzy")
- executable("pid_neuro")
- executable("poly")
- executable("que")
-+executable("rbf")
- executable("rbt")
- executable("slist")
- executable("str")
 diff --git a/test/rbf.c b/test/rbf.c
 new file mode 100644
 index 0000000..988fa26
@@ -251,7 +239,7 @@ new file mode 100644
 index 0000000..88b804d
 --- /dev/null
 +++ b/test/rbf.h
-@@ -0,0 +1,56 @@
+@@ -0,0 +1,60 @@
 +#define MAIN(x) rbf##x
 +#include "test.h"
 +#include "a/tf.h"
@@ -306,20 +294,12 @@ index 0000000..88b804d
 +              A_FLOAT_C(0.002) * A_FLOAT_PI * a_float_c(i), *ctx.input_p, *ctx.output_p, *tf.output);
 +    }
 +
++#if defined(__cplusplus) && (__cplusplus > 201100L)
++    A_BUILD_ASSERT(std::is_pod<a_rbf>::value);
++#endif /* __cplusplus */
++
 +    return 0;
 +}
-diff --git a/test/test.lua b/test/test.lua
-index ff0fc76..b77d8d2 100644
---- a/test/test.lua
-+++ b/test/test.lua
-@@ -19,6 +19,7 @@ assert(subprocess.spawn({ "build/bin/pid_fuzzy" .. ext })):wait()
- assert(subprocess.spawn({ "build/bin/pid_neuro" .. ext })):wait()
- assert(subprocess.spawn({ "build/bin/poly" .. ext })):wait()
- assert(subprocess.spawn({ "build/bin/que" .. ext })):wait()
-+assert(subprocess.spawn({ "build/bin/rbf" .. ext })):wait()
- assert(subprocess.spawn({ "build/bin/rbt" .. ext })):wait()
- assert(subprocess.spawn({ "build/bin/slist" .. ext })):wait()
- assert(subprocess.spawn({ "build/bin/str" .. ext })):wait()
 diff --git a/test/xmake.lua b/test/xmake.lua
 index e87ddeb..848b115 100644
 --- a/test/xmake.lua
