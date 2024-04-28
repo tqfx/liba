@@ -27,7 +27,7 @@ install(FILES
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 
-function(install_fixup target define config)
+function(install_hook target define config)
   get_filename_component(config "${config}" NAME)
   install(CODE "file(READ \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${target}\" text)
   string(REGEX REPLACE \"#if([defin\\t (]+)${define}([) \\t\\r\\n]*)\\n\" \"#include \\\"${config}\\\"\\n#if\\\\1${define}\\\\2\\n\" text \"\${text}\")

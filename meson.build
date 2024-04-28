@@ -103,10 +103,10 @@ sources = [
 ]
 
 python = import('python').find_installation()
-fixup_py = join_paths(meson.current_source_dir(), 'meson', 'fixup.py')
+patch_py = join_paths(meson.current_source_dir(), 'meson', 'patch.py')
 a_meson_h = join_paths(meson.current_build_dir(), 'a.meson.h')
 a_h = configure_file(output: 'a.h', input: 'include/a/a.h',
-    command: [python, fixup_py, a_meson_h, '@INPUT@']
+    command: [python, patch_py, a_meson_h, '@INPUT@']
 )
 
 configure_file(input: 'include/a.meson.h.in', output: 'a.meson.h', configuration: a_have_h)

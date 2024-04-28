@@ -11,10 +11,11 @@ if args[0].dst:
         text = f.read()
 
     cur = "#if defined(A_HAVE_H)"
-    dst = os.path.dirname(args[0].src)
+    dir = os.path.dirname(args[0].src)
     src = os.path.basename(args[0].src)
+    dst = os.path.basename(args[0].dst)
     new = '#include "{}"\n{}'.format(src, cur)
     text = text.replace(cur, new)
 
-    with open(os.path.join(dst, os.path.basename(args[0].dst)), "wb") as f:
+    with open(os.path.join(dir, dst), "wb") as f:
         f.write(text.encode())

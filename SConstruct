@@ -63,7 +63,7 @@ alib = env.StaticLibrary('a', a)
 env.Install()
 if env.GetOption('install_sandbox'):
     include = env.Install('include', source='include/a')
-    def install_fixup(source, target, env):
+    def install(source, target, env):
         source = source[0].get_relpath() + '/a.h'
         target = target[0].get_relpath() + '/a.h'
         with open(source, "r") as f:
@@ -73,5 +73,5 @@ if env.GetOption('install_sandbox'):
         text = text.replace(cur, new)
         with open(target, "wb") as f:
             f.write(text.encode())
-    env.AddPostAction(include, install_fixup)
+    env.AddPostAction(include, install)
     env.Install('lib', source=[alib, liba])

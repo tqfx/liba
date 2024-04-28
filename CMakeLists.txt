@@ -353,7 +353,7 @@ if(INSTALL_TARGETS)
 
   if(EXISTS "${A_HAVE_H}")
     install(FILES ${A_HAVE_H} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/a)
-    install_fixup(${CMAKE_INSTALL_INCLUDEDIR}/a/a.h A_HAVE_H ${A_HAVE_H})
+    install_hook(${CMAKE_INSTALL_INCLUDEDIR}/a/a.h A_HAVE_H ${A_HAVE_H})
   endif()
 endif()
 
