@@ -3,7 +3,6 @@ project('liba', 'c', 'cpp',
             'c_std=c11',
             'cpp_std=c++11',
             'b_ndebug=if-release',
-            'default_library=both',
             'buildtype=debugoptimized',
         ],
         license: 'MPL-2.0',
@@ -103,6 +102,8 @@ sources = [
 ]
 
 python = import('python').find_installation()
+a_args = ['-DA_EXPORTS', '-DA_HAVE_H="a.meson.h"']
+a_include = [include_directories('include'), include_directories('.')]
 patch_py = join_paths(meson.current_source_dir(), 'meson', 'patch.py')
 a_meson_h = join_paths(meson.current_build_dir(), 'a.meson.h')
 a_h = configure_file(output: 'a.h', input: 'include/a/a.h',
@@ -110,15 +111,20 @@ a_h = configure_file(output: 'a.h', input: 'include/a/a.h',
 )
 
 configure_file(input: 'include/a.meson.h.in', output: 'a.meson.h', configuration: a_have_h)
-add_project_arguments('-DA_EXPORTS', '-DA_HAVE_H="a.meson.h"', language: ['c', 'cpp'])
-library('a', sources,
-        dependencies: compiler.find_library('m', required: false),
-        include_directories: include_directories('include'),
-        soversion: meson.project_version().split('.')[0],
-        version: meson.project_version(),
-        link_args: get_option('math'),
-        install: true)
+a = both_libraries('a', sources, c_args: a_args, cpp_args: a_args,
+    dependencies: compiler.find_library('m', required: false),
+    implicit_include_directories: false,
+    include_directories: a_include,
+    install: true,
+    link_args: get_option('math'),
+    name_prefix: 'lib',
+    pic: true,
+    version: meson.project_version(),
+)
 
 install_headers(a_h, subdir: 'a')
 install_headers(a_meson_h, subdir: 'a')
 install_subdir('include/a', install_dir: get_option('includedir'))
+
+subdir('lua')
+subdir('quickjs')

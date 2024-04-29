@@ -1,2 +1,16 @@
-option('float', type: 'combo', choices: ['4', '8', '16'], value: '8')
-option('math', type: 'string', value: '', description: '')
+option('float',
+        type: 'combo',
+        choices: ['4', '8', '16'],
+        value: '8')
+
+option('math',
+        type: 'string',
+        value: '')
+
+option('lua',
+        type: 'string',
+        value: '')
+
+option('quickjs',
+        type: 'string',
+        value: '')
