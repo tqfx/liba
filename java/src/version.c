@@ -21,7 +21,7 @@ JNIEXPORT void JNICALL Java_liba_version_clinit(JNIEnv *Env, jclass Cls)
     (*Env)->SetStaticIntField(Env, Cls, (*Env)->GetStaticFieldID(Env, Cls, "TWEAK", "I"), A_VERSION_TWEAK);
 }
 
-JNIEXPORT void JNICALL Java_liba_version_initS(JNIEnv *Env, jobject Obj, jstring Ver)
+JNIEXPORT void JNICALL Java_liba_version_init__Ljava_lang_String_2(JNIEnv *Env, jobject Obj, jstring Ver)
 {
     jobject Ctx = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)sizeof(a_version));
     a_version *ctx = (a_version *)(*Env)->GetDirectBufferAddress(Env, Ctx);
@@ -31,7 +31,7 @@ JNIEXPORT void JNICALL Java_liba_version_initS(JNIEnv *Env, jobject Obj, jstring
     (*Env)->ReleaseStringUTFChars(Env, Ver, ver);
 }
 
-JNIEXPORT void JNICALL Java_liba_version_init(JNIEnv *Env, jobject Obj, jint major, jint minor, jint third, jint extra)
+JNIEXPORT void JNICALL Java_liba_version_init__IIII(JNIEnv *Env, jobject Obj, jint major, jint minor, jint third, jint extra)
 {
     jobject Ctx = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)sizeof(a_version));
     a_version *ctx = (a_version *)(*Env)->GetDirectBufferAddress(Env, Ctx);

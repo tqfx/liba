@@ -24,7 +24,7 @@ public class version {
 
     static final native void clinit();
 
-    final native void initS(String ver);
+    final native void init(String ver);
 
     final native void init(int major, int minor, int third, int extra);
 
@@ -44,7 +44,7 @@ public class version {
      * @param ver version string
      */
     public version(String ver) {
-        initS(ver);
+        init(ver);
     }
 
     /**
