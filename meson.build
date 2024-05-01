@@ -33,7 +33,7 @@ math = ['expm1', 'log1p', 'hypot', 'atan2',
 
 foreach func: math
     float = get_option('float').to_int()
-    have = 'A_HAVE_@0@'.format(func.to_upper())
+    have = 'A_HAVE_' + func.to_upper()
     if  float == 4
         func = func + 'f'
     elif float > 8
@@ -43,6 +43,12 @@ foreach func: math
         a_have_h.set(have, '1')
     endif
 endforeach
+
+configure_file(
+    input: 'include/a.meson.h.in',
+    output: 'a.meson.h',
+    configuration: a_have_h,
+)
 
 sources = [
     'include/a/a.h',
@@ -102,15 +108,19 @@ sources = [
 ]
 
 python = import('python').find_installation()
-a_args = ['-DA_EXPORTS', '-DA_HAVE_H="a.meson.h"']
-a_include = [include_directories('include'), include_directories('.')]
-patch_py = join_paths(meson.current_source_dir(), 'meson', 'patch.py')
-a_meson_h = join_paths(meson.current_build_dir(), 'a.meson.h')
-a_h = configure_file(output: 'a.h', input: 'include/a/a.h',
-    command: [python, patch_py, a_meson_h, '@INPUT@']
-)
+patch_py = meson.current_source_dir() / 'meson' / 'patch.py'
+a_meson_h = meson.current_build_dir() / 'a.meson.h'
+a_include = include_directories('include')
+a_h = meson.current_build_dir() / 'a.h'
 
-configure_file(input: 'include/a.meson.h.in', output: 'a.meson.h', configuration: a_have_h)
+res = run_command(python, patch_py,
+    meson.current_source_dir() / 'include' / 'a' / 'a.h',
+    a_meson_h, capture: true, check: true
+)
+if res.returncode() == 0
+    a_args = ['-DA_EXPORTS', '-DA_HAVE_H="' + res.stdout() + '"']
+endif
+
 a = both_libraries('a', sources, c_args: a_args, cpp_args: a_args,
     dependencies: compiler.find_library('m', required: false),
     implicit_include_directories: false,
@@ -126,5 +136,6 @@ install_headers(a_h, subdir: 'a')
 install_headers(a_meson_h, subdir: 'a')
 install_subdir('include/a', install_dir: get_option('includedir'))
 
+subdir('java')
 subdir('lua')
 subdir('quickjs')

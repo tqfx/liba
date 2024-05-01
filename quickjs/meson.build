@@ -26,12 +26,14 @@ sources = [
     'src/version.c',
 ]
 
-dep = compiler.find_library('quickjs', dirs: get_option('quickjs') / 'lib/quickjs')
-if build_machine.system() != 'windows'
-    dep = []
-endif
+includedir = get_option('quickjs') / 'include' / 'quickjs'
+include = [a_include, include_directories(includedir)]
+libdir = get_option('quickjs') / 'lib' / 'quickjs'
 
-include = include_directories(get_option('quickjs') / 'include/quickjs')
+dep = []
+if build_machine.system() == 'windows'
+    dep += [compiler.find_library('quickjs', dirs: libdir)]
+endif
 
 shared_module(
     'a', sources,
@@ -39,7 +41,7 @@ shared_module(
     cpp_args: a_args,
     dependencies: dep,
     implicit_include_directories: false,
-    include_directories: [a_include, include],
+    include_directories: include,
     install: true,
     install_dir: get_option('libdir') / 'quickjs',
     link_with: a.get_static_lib(),

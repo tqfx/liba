@@ -7,6 +7,10 @@ option('math',
         type: 'string',
         value: '')
 
+option('java',
+        type: 'string',
+        value: '')
+
 option('lua',
         type: 'string',
         value: '')
