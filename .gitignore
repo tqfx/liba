@@ -9,7 +9,6 @@
 # Object files
 *.obj
 *.lo
-*.os
 *.o
 
 # Linker output
@@ -86,9 +85,3 @@ Cargo.lock
 # Java
 *.class
 *.jar
-
-# SCons
-.sconsign.dblite
-.sconf_temp/
-config.log
-a.scons.h
