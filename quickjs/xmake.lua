@@ -14,9 +14,10 @@ if not is_plat("windows") and has_config("liba-qjs") then
     add_files("src/**.c")
     add_defines("A_EXPORTS")
     on_load(function(target)
-        local libdir = path.join("lib", "quickjs")
         target:set("targetdir", path.join(target:targetdir(), "quickjs"))
-        target:set("installfiles", target:targetfile(), { prefixdir = libdir })
+        target:set("installfiles", target:targetfile(), {
+            prefixdir = path.join("lib", "quickjs"),
+        })
     end)
     add_packages("quickjs")
     set_filename("liba.so")

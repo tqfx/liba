@@ -17,7 +17,7 @@ jobs:
           lfs: true
           submodules: true
       - name: Run xmake
-        run: xmake f -yvDc -m check --warning=y --liba-rust=y --liba-lua=luajit --liba-qjs=1
+        run: xmake f -yvDc -m check --warning=y --liba-rust=y --liba-jni=y --liba-lua=luajit --liba-qjs=y
       - run: xmake -vw --all
       - run: xmake i -vD -o_
       - run: xmake run --all
