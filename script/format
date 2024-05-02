@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 IFS=$'\n'
-sources=$(find include src test lua java quickjs javascript -regex ".*\.\(c\|h\|cc\|hh\|cpp\|hpp\|cxx\|hxx\)")
+sources=$(find include src test lua/src java/src quickjs/src javascript/src -regex ".*\.\(c\|h\|cc\|hh\|cpp\|hpp\|cxx\|hxx\)")
 clang-format -style=file -i $sources --verbose
 black .

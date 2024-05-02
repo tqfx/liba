@@ -41,10 +41,10 @@ if __name__ == "__main__":
             "include",
             "src",
             "test",
-            "lua",
-            "java",
-            "quickjs",
-            "javascript",
+            "lua/src",
+            "java/src",
+            "quickjs/src",
+            "javascript/src",
         ]
         + argv[1:]
     )()
