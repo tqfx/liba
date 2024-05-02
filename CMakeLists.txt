@@ -458,7 +458,7 @@ if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/lua/CMakeLists.txt)
 endif()
 
 if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/python/CMakeLists.txt)
-  if(LIBA_PYTHON AND PYTHON_FOUND)
+  if(PYTHON_FOUND AND CYTHON_FOUND)
     add_subdirectory(python)
   endif()
 endif()
@@ -514,25 +514,6 @@ endif()
 if(PYTHON_FOUND AND BLACK_FOUND)
   add_black(afmt.py ${CMAKE_CURRENT_LIST_DIR})
   add_dependencies(afmt afmt.py)
-endif()
-
-if(PYTHON_FOUND AND CYTHON_FOUND)
-  set(OPTIONS)
-
-  if(NOT CMAKE_VERSION VERSION_LESS 3.2)
-    file_scaner(SOURCES RECURSE python/src EXT c h cc hh cpp hpp)
-    list(APPEND OPTIONS BYPRODUCTS ${SOURCES})
-    file(GLOB PRODUCTS ${PROJECT_NAME}*.so ${PROJECT_NAME}*.pyd)
-    list(APPEND OPTIONS ${PRODUCTS})
-    file(GLOB_RECURSE PRODUCTS build/lib.*/*.* build/temp.*/*.*)
-    list(APPEND OPTIONS ${PRODUCTS})
-    set(PRODUCTS)
-  endif()
-
-  add_custom_target(apy ALL # https://cython.readthedocs.io/en/stable
-    ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/setup.py ${OPTIONS}
-  )
-  set(OPTIONS)
 endif()
 
 if(NOT CMAKE_VERSION VERSION_LESS 3.9 AND DOXYGEN_FOUND)

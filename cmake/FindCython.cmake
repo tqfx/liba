@@ -18,15 +18,21 @@
 include(${CMAKE_ROOT}/Modules/FindPackageHandleStandardArgs.cmake)
 
 if(EXISTS "${Python_EXECUTABLE}")
-  execute_process(COMMAND ${Python_EXECUTABLE} -c "import Cython; print(Cython.__version__)"
+  execute_process(COMMAND ${Python_EXECUTABLE} -c "import Cython;print(Cython.__version__)"
     ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE CYTHON_VERSION
+  )
+  execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "import sysconfig;print(sysconfig.get_path(\"platlib\"))"
+    ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE CYTHON_PLATLIB
+  )
+  execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "import sysconfig;print(sysconfig.get_config_var(\"EXT_SUFFIX\") or sysconfig.get_config_var(\"SO\"))"
+    ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE CYTHON_SUFFIX
   )
 endif()
 
 if(CYTHON_VERSION)
   set(CYTHON_EXECUTABLE ${Python_EXECUTABLE} -m cython)
 else()
-  find_program(CYTHON_EXECUTABLE NAMES cython)
+  find_program(CYTHON_EXECUTABLE NAMES cython3 cython)
   mark_as_advanced(CYTHON_EXECUTABLE)
   set(CYTHON_VERSION)
 endif()

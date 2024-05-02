@@ -1,52 +1,29 @@
-function(unittest source name)
-  set(ARGS)
+get_property(OPTIONS TARGET a PROPERTY SOURCES)
+set(OPTIONS MAIN_DEPENDENCY ${CMAKE_CURRENT_LIST_DIR}/src/a.pyx
+  DEPENDS ${OPTIONS}
+)
 
-  foreach(arg ${ARGN})
-    get_filename_component(ext ${arg} EXT)
-
-    if(NOT ext OR IS_ABSOLUTE ${arg})
-      list(APPEND ARGS ${arg})
-    else()
-      list(APPEND ARGS ${CMAKE_CURRENT_BINARY_DIR}/${arg})
-    endif()
-  endforeach()
-
-  add_test(NAME py_${name} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-    COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/test/${source}.py ${ARGS}
+if(NOT CMAKE_VERSION VERSION_LESS 3.2)
+  list(APPEND OPTIONS BYPRODUCTS ${CMAKE_CURRENT_LIST_DIR}/src/a.c
+    ${CMAKE_CURRENT_LIST_DIR}/liba${CYTHON_SUFFIX}
   )
-  set_tests_properties(py_${name} PROPERTIES TIMEOUT 30
-    FAIL_REGULAR_EXPRESSION "ERROR;error"
+endif()
+
+add_custom_command( # https://cython.readthedocs.io/en/stable
+  OUTPUT ${CMAKE_CURRENT_LIST_DIR}/liba${CYTHON_SUFFIX}
+  COMMAND ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/setup.py ${OPTIONS}
+)
+add_custom_target(apy ALL
+  DEPENDS ${CMAKE_CURRENT_LIST_DIR}/liba${CYTHON_SUFFIX}
+)
+
+if("${LIBA_INSTALL}" MATCHES "[Pp]ython")
+  install(FILES ${CMAKE_CURRENT_LIST_DIR}/liba.pyi
+    ${CMAKE_CURRENT_LIST_DIR}/liba${CYTHON_SUFFIX}
+    DESTINATION ${CYTHON_PLATLIB}
   )
-endfunction()
+endif()
 
-unittest(a a a.log)
-
-unittest(crc crc)
-
-unittest(hpf hpf)
-
-unittest(lpf lpf)
-
-unittest(mf mf)
-
-unittest(pid pid)
-
-unittest(pid_fuzzy pid_fuzzy)
-
-unittest(pid_neuro pid_neuro)
-
-unittest(poly poly)
-
-unittest(tf tf)
-
-unittest(trajbell trajbell)
-
-unittest(trajpoly3 trajpoly3)
-
-unittest(trajpoly5 trajpoly5)
-
-unittest(trajpoly7 trajpoly7)
-
-unittest(trajtrap trajtrap)
-
-unittest(version version)
+if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt)
+  add_subdirectory(test)
+endif()

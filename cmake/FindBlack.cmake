@@ -30,7 +30,7 @@
 include(${CMAKE_ROOT}/Modules/FindPackageHandleStandardArgs.cmake)
 
 if(EXISTS "${Python_EXECUTABLE}")
-  execute_process(COMMAND ${Python_EXECUTABLE} -c "import black; print(black.__version__)"
+  execute_process(COMMAND ${Python_EXECUTABLE} -c "import black;print(black.__version__)"
     ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE BLACK_VERSION
   )
 endif()
