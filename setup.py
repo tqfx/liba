@@ -9,13 +9,30 @@ except ImportError:
 try:
     USE_CYTHON = True
     from Cython.Build import cythonize
-except Exception:
+except ImportError:
     USE_CYTHON = False
+    from subprocess import Popen
 from argparse import ArgumentParser
 from sys import byteorder
 from re import findall
 import os, sys, ctypes
 import ctypes.util
+
+
+def find_executable(*executable):
+    if sys.platform == "win32":
+        executable2 = []
+        for e in executable:
+            executable2.append(e + ".exe")
+        executable = executable2
+    path = os.environ.get("PATH", "")
+    paths = path.split(os.pathsep)
+    for p in paths:
+        for e in executable:
+            f = os.path.join(p, e)
+            if os.path.isfile(f):
+                return f
+    return None
 
 
 def strtobool(s):
@@ -27,6 +44,8 @@ def strtobool(s):
 os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
 if len(sys.argv) < 2:
     sys.argv += ["--quiet", "build_ext", "--inplace"]
+if not USE_CYTHON:
+    CYTHON = find_executable("cython3", "cython")
 LIBA_OPENMP = os.environ.get("LIBA_OPENMP")
 if LIBA_OPENMP:
     LIBA_OPENMP = strtobool(LIBA_OPENMP)
@@ -121,7 +140,7 @@ if LIBA_FLOAT != 8:
     define_macros += [("A_SIZE_FLOAT", LIBA_FLOAT)]
 if USE_CYTHON and os.path.exists("python/src/a.pyx"):
     sources += ["python/src/a.pyx"]
-elif os.path.exists("python/src/a.c"):
+elif CYTHON or os.path.exists("python/src/a.c"):
     sources += ["python/src/a.c"]
 if not os.path.exists(base):
     os.makedirs(base)
@@ -139,7 +158,7 @@ ext_modules = [
     Extension(
         name="liba",
         language="c",
-        sources=sources,
+        sources=sorted(sources),
         include_dirs=["include"],
         define_macros=define_macros,
     )
@@ -149,6 +168,9 @@ if USE_CYTHON:
         ext_modules,
         quiet=True,
     )
+elif CYTHON:
+    cmd = [CYTHON, "--fast-fail", "--module-name"]
+    Popen(cmd + ["liba", "python/src/a.pyx"]).wait()
 
 
 class Build(build_ext):  # type: ignore
