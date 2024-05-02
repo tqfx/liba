@@ -107,15 +107,28 @@ sources = [
     'src/version.c',
 ]
 
-python = import('python').find_installation()
-patch_py = meson.current_source_dir() / 'meson' / 'patch.py'
-a_meson_h = meson.current_build_dir() / 'a.meson.h'
 a_include = include_directories('include')
-a_h = meson.current_build_dir() / 'a.h'
+a_meson_h = meson.current_build_dir() / 'a.meson.h'
+a_h = meson.current_source_dir() / 'include' / 'a' / 'a.h'
 
-res = run_command(python, patch_py,
-    meson.current_source_dir() / 'include' / 'a' / 'a.h',
-    a_meson_h, capture: true, check: true
+python = import('python').find_installation()
+res = run_command(python, '-c', '''import os, sys
+dir = os.path.dirname('@1@')
+src = os.path.basename('@0@')
+dst = os.path.basename('@1@')
+cur = "#if defined(A_HAVE_H)"
+new = '#include "' + dst + '"\n' + cur
+with open('@0@', "r") as f:
+    txt = f.read()
+res = txt.replace(cur, new)
+if res != txt:
+    new = os.path.join(dir, src)
+    with open(new, "wb") as f:
+        f.write(res.encode())
+dir = os.path.dirname('@0@')
+res = os.path.relpath('@1@', dir)
+sys.stdout.write(res.replace("\\", "/"))
+'''.format(a_h, a_meson_h), capture: true, check: true
 )
 if res.returncode() == 0
     a_args = ['-DA_EXPORTS', '-DA_HAVE_H="' + res.stdout() + '"']
@@ -132,8 +145,8 @@ a = both_libraries('a', sources, c_args: a_args, cpp_args: a_args,
     version: meson.project_version(),
 )
 
-install_headers(a_h, subdir: 'a')
 install_headers(a_meson_h, subdir: 'a')
+install_headers(meson.current_build_dir() / 'a.h', subdir: 'a')
 install_subdir('include/a', install_dir: get_option('includedir'))
 
 subdir('java')
