@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import os, sys
 
-base = os.path.dirname(__file__)
-path = os.path.dirname(base)
+path = os.path.dirname(__file__)
+path = os.path.dirname(path)
 sys.path.insert(0, path)
 if len(sys.argv) > 1:
     sys.stdout = open(sys.argv[1], "w")
