@@ -50,6 +50,7 @@ configure_file(
     configuration: a_have_h,
 )
 
+c_args = []
 sources = [
     'include/a/a.h',
     'include/a/avl.h',
@@ -131,10 +132,10 @@ sys.stdout.write(res.replace("\\", "/"))
 '''.format(a_h, a_meson_h), capture: true, check: true
 )
 if res.returncode() == 0
-    a_args = ['-DA_EXPORTS', '-DA_HAVE_H="' + res.stdout() + '"']
+    c_args += ['-DA_EXPORTS', '-DA_HAVE_H="' + res.stdout() + '"']
 endif
 
-a = both_libraries('a', sources, c_args: a_args, cpp_args: a_args,
+a = both_libraries('a', sources, c_args: c_args, cpp_args: c_args,
     dependencies: compiler.find_library('m', required: false),
     implicit_include_directories: false,
     include_directories: a_include,
@@ -147,8 +148,24 @@ a = both_libraries('a', sources, c_args: a_args, cpp_args: a_args,
 
 install_headers(a_meson_h, subdir: 'a')
 install_headers(meson.current_build_dir() / 'a.h', subdir: 'a')
-install_subdir('include/a', install_dir: get_option('includedir'))
+install_subdir('include/a', exclude_files: ['a.h'],
+    install_dir: get_option('includedir'),
+)
+
+if get_option('rust')
+    rust_args = []
+    add_languages('rust')
+    if get_option('float').to_int() == 4
+        rust_args += ['--cfg=float']
+    endif
+    static_library('liba', 'src/lib.rs',
+        rust_args: rust_args,
+        install: true,
+        link_with: a.get_static_lib(),
+    )
+endif
 
 subdir('java')
 subdir('lua')
+subdir('python')
 subdir('quickjs')

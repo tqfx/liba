@@ -53,8 +53,8 @@ endif
 
 shared_module(
     'a', sources,
-    c_args: a_args,
-    cpp_args: a_args,
+    c_args: c_args,
+    cpp_args: c_args,
     dependencies: lua,
     implicit_include_directories: false,
     include_directories: a_include,

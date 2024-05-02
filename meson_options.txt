@@ -15,6 +15,14 @@ option('lua',
         type: 'string',
         value: '')
 
+option('python',
+        type: 'boolean',
+        value: false)
+
 option('quickjs',
         type: 'string',
         value: '')
+
+option('rust',
+        type: 'boolean',
+        value: false)
