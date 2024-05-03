@@ -2,41 +2,36 @@ from conan import ConanFile
 from conan.tools.cmake import CMakeToolchain, CMake
 
 
-class aConan(ConanFile):
+class Conan(ConanFile):
     name = "liba"
     version = "0.1.12"
     license = "MPL-2.0"
-    topics = ("algorithm",)
+    topics = ["algorithm"]
     author = "tqfx tqfx@tqfx.org"
     homepage = url = "https://github.com/tqfx/liba"
     description = "An algorithm library based on C/C++"
     settings = "os", "compiler", "build_type", "arch"
     options = {
         "shared": [0, 1],
-        "fPIC": [0, 1],
         "ipo": [0, 1],
         "symlink": [0, 1],
         "pkgconfig": [0, 1],
     }
     default_options = {
         "shared": 0,
-        "fPIC": 1,
         "ipo": 0,
         "symlink": 0,
         "pkgconfig": 1,
     }
-    exports_sources = (
+    exports_sources = [
+        "include/a.cmake.h.in",
+        "include/a/*.h*",
         "CMakeLists.txt",
+        "cmake/*.cmake",
+        "src/*.[ch]*",
         "LICENSE.txt",
         "README.md",
-        "include/*",
-        "cmake/*",
-        "src/*",
-    )
-
-    def config_options(self):
-        if self.settings.os == "Windows":
-            del self.options.fPIC
+    ]
 
     def generate(self):
         cmake = CMakeToolchain(self)
