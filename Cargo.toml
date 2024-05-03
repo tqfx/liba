@@ -12,7 +12,8 @@ categories = ["algorithms"]
 edition = "2018"
 
 [build-dependencies]
-cmake = "0.1"
+cmake = { version = "0.1", optional = true }
+cc = "1"
 
 [features]
 static_crt = []
