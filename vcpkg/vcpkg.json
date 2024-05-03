@@ -21,6 +21,9 @@
     "symlink": {
       "description": "Enable create symbolic link"
     },
+    "float": {
+      "description": "floating-point number are float"
+    },
     "ipo": {
       "description": "Enable interprocedural optimization"
     }

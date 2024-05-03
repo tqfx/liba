@@ -14,6 +14,7 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
   FEATURES
     pkgconfig LIBA_PKGCONFIG
     symlink LIBA_SYMLINK
+    float LIBA_FLOAT=4
 )
 
 vcpkg_cmake_configure(SOURCE_PATH ${SOURCE_PATH}
