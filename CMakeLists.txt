@@ -481,16 +481,21 @@ if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt)
   endif()
 endif()
 
-set(CPACK_SOURCE_IGNORE_FILES
-  ${CMAKE_CURRENT_LIST_DIR}/.git
-  ${CMAKE_CURRENT_LIST_DIR}/.cache
-  ${CMAKE_CURRENT_LIST_DIR}/.vscode
-  ${CMAKE_CURRENT_LIST_DIR}/.github
-  ${CMAKE_CURRENT_LIST_DIR}/.gitignore
-  ${CMAKE_CURRENT_LIST_DIR}/.gitmodules
-  ${CMAKE_CURRENT_LIST_DIR}/.gitattributes
-  ${PROJECT_BINARY_DIR}
-)
+set(CPACK_SOURCE_IGNORE_FILES ${CMAKE_CURRENT_LIST_DIR}/.git)
+
+if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/.git AND GIT_FOUND)
+  execute_process(ERROR_QUIET
+    COMMAND ${GIT_EXECUTABLE} status -z --ignored=matching
+    OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE ignore
+  )
+  string(REPLACE "." "\\\\." ignore "${ignore}")
+  string(REPLACE "*" ".*" ignore "${ignore}")
+  string(REPLACE "?? " "!! " ignore "${ignore}")
+  string(REGEX MATCHALL "!! [^!]+" ignore "${ignore}")
+  string(REPLACE "!! " "${CMAKE_CURRENT_LIST_DIR}/" ignore "${ignore}")
+  list(APPEND CPACK_SOURCE_IGNORE_FILES ${ignore})
+endif()
+
 set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_LIST_DIR}/README.md)
 set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_LIST_DIR}/LICENSE.txt)
 include(CPack)
