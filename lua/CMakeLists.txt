@@ -6,17 +6,18 @@ endif()
 
 if(LIBA_WITH_LUA)
   include(${CMAKE_CURRENT_LIST_DIR}/lua.cmake)
+  add_subdirectory(${LUA_SOURCE_DIR} ${LUA_BINARY_DIR})
   option(LUA_ISOCLINE "Enable/Disable isocline in Lua" 1)
 
-  if(LUA_ISOCLINE)
-    file(RELATIVE_PATH LUA_READLINE_C ${LUA_ARCHIVE_DIR}/src ${CMAKE_CURRENT_LIST_DIR}/isocline.c)
+  if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/isocline/src/isocline.c AND LUA_ISOCLINE)
+    file(RELATIVE_PATH LUA_READLINE_C ${LUA_SOURCE_DIR}/src ${CMAKE_CURRENT_LIST_DIR}/isocline.c)
     target_compile_definitions(lua PRIVATE LUA_READLINE_C="${LUA_READLINE_C}")
   endif()
 
-  set(LUA_LIBRARIES lualib)
-  set(LUA_EXECUTABLE ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:lua>)
-  string(REGEX REPLACE "^([0-9]).*" "\\1" LUA_VERSION_MAJOR "${LUA_VERSION}")
   string(REGEX REPLACE "^[0-9]+\\.([0-9]).*" "\\1" LUA_VERSION_MINOR "${LUA_VERSION}")
+  string(REGEX REPLACE "^([0-9]).*" "\\1" LUA_VERSION_MAJOR "${LUA_VERSION}")
+  set(LUA_EXECUTABLE ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:lua>)
+  set(LUA_LIBRARIES lualib)
 
   if(LIBA_SANITIZE)
     target_compile_sanitize(PUBLIC liblua lualib lua.o)
