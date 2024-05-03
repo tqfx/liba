@@ -12,16 +12,18 @@ class Conan(ConanFile):
     description = "An algorithm library based on C/C++"
     settings = "os", "compiler", "build_type", "arch"
     options = {
-        "shared": [0, 1],
-        "ipo": [0, 1],
-        "symlink": [0, 1],
         "pkgconfig": [0, 1],
+        "symlink": [0, 1],
+        "shared": [0, 1],
+        "float": [4, 8],
+        "ipo": [0, 1],
     }
     default_options = {
-        "shared": 0,
-        "ipo": 0,
-        "symlink": 0,
         "pkgconfig": 1,
+        "symlink": 0,
+        "shared": 0,
+        "float": 8,
+        "ipo": 0,
     }
     exports_sources = [
         "include/a.cmake.h.in",
@@ -40,6 +42,8 @@ class Conan(ConanFile):
             cmake.variables["LIBA_INSTALL"] = "shared"
         else:
             cmake.variables["LIBA_INSTALL"] = "static"
+        if self.options.float != 8:
+            cmake.variables["LIBA_FLOAT"] = self.options.float
         cmake.variables["LIBA_SYMLINK"] = self.options.symlink
         cmake.variables["LIBA_PKGCONFIG"] = self.options.pkgconfig
         if self.settings.build_type != "Debug":
