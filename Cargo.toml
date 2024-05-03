@@ -15,6 +15,7 @@ edition = "2018"
 cmake = "0.1"
 
 [features]
-std = []
+static_crt = []
 # floating-point number are stored using C’s float type
 float = []
+std = []
