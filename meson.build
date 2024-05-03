@@ -156,7 +156,7 @@ if get_option('rust')
     rust_args = []
     add_languages('rust')
     if get_option('float').to_int() == 4
-        rust_args += ['--cfg=float']
+        rust_args += ['--cfg', 'feature="float"']
     endif
     static_library('liba', 'src/lib.rs',
         rust_args: rust_args,
