@@ -145,6 +145,7 @@ if(LIBA_SANITIZE)
   )
 endif()
 
-if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt AND CMAKE_CROSSCOMPILING_EMULATOR)
+if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt AND
+  CMAKE_CROSSCOMPILING_EMULATOR)
   add_subdirectory(test)
 endif()

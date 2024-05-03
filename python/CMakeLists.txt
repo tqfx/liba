@@ -22,7 +22,7 @@ if("${LIBA_INSTALL}" MATCHES "[Pp]ython")
     ${CMAKE_CURRENT_LIST_DIR}/liba${CYTHON_SUFFIX}
     DESTINATION ${CYTHON_PLATLIB}
   )
-else()
+elseif("${LIBA_INSTALL}" MATCHES "^$")
   get_filename_component(name ${CYTHON_PLATLIB} NAME)
   install(FILES ${CMAKE_CURRENT_LIST_DIR}/liba.pyi
     ${CMAKE_CURRENT_LIST_DIR}/liba${CYTHON_SUFFIX}
