@@ -22,6 +22,12 @@ if("${LIBA_INSTALL}" MATCHES "[Pp]ython")
     ${CMAKE_CURRENT_LIST_DIR}/liba${CYTHON_SUFFIX}
     DESTINATION ${CYTHON_PLATLIB}
   )
+else()
+  get_filename_component(name ${CYTHON_PLATLIB} NAME)
+  install(FILES ${CMAKE_CURRENT_LIST_DIR}/liba.pyi
+    ${CMAKE_CURRENT_LIST_DIR}/liba${CYTHON_SUFFIX}
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/${name}
+  )
 endif()
 
 if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/test/CMakeLists.txt)
