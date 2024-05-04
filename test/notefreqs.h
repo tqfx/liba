@@ -1,6 +1,6 @@
 #define MAIN(x) notefreqs##x
 #include "test.h"
-#define A_NOTEFREQ_T a_float
+#define A_NOTEFREQ a_float
 #define A_NOTEFREQ_C(X) A_FLOAT_C(X)
 #define A_NOTEFREQ_FREQ ((8000000 >> 1) / 100)
 #include "a/notefreqs.h"

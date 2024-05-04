@@ -719,7 +719,7 @@
 #define A_FLOAT_SINGLE 0x04
 #define A_FLOAT_DOUBLE 0x08
 #define A_FLOAT_EXTEND 0x10
-#if defined(A_FLOAT_T)
+#if defined(A_FLOAT)
 #elif A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
 
 /*! floating-point number stored using `float` */
@@ -823,7 +823,7 @@
 #define A_FLOAT_SCN(F, C) "%" F "L" C
 
 #else /* !A_FLOAT_TYPE */
-#error unknown precision
+#error unsupported precision
 #endif /* A_FLOAT_TYPE */
 
 #define A_FLOAT_INF a_cast_s(A_FLOAT, A_F64_INF)

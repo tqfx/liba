@@ -35,8 +35,8 @@
 */
 
 /*! frequency data type */
-#ifndef A_NOTEFREQ_T
-#define A_NOTEFREQ_T unsigned int
+#ifndef A_NOTEFREQ
+#define A_NOTEFREQ unsigned int
 #endif
 
 /*! constant expression */
@@ -1319,9 +1319,9 @@
 
 #if !defined A_NOTEFREQ_CAST
 #if !defined __cplusplus
-#define A_NOTEFREQ_CAST(X) ((A_NOTEFREQ_T)(X))
+#define A_NOTEFREQ_CAST(X) ((A_NOTEFREQ)(X))
 #else /* !__cplusplus */
-#define A_NOTEFREQ_CAST(X) static_cast<A_NOTEFREQ_T>(X)
+#define A_NOTEFREQ_CAST(X) static_cast<A_NOTEFREQ>(X)
 #endif /* __cplusplus */
 #endif /* A_NOTEFREQ_CAST */
 #undef A_NOTEFREQ_A4
