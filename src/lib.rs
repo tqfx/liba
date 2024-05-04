@@ -15,16 +15,49 @@ liba = "0.1"
 #![allow(non_camel_case_types)]
 #![cfg_attr(not(features = "std"), no_std)]
 
+#[cfg(feature = "std")]
+extern crate std;
+
 /// Equivalent to C's int type.
-pub type int = core::ffi::c_int;
+#[cfg(not(feature = "std"))]
+pub type c_int = core::ffi::c_int;
+/// Equivalent to C's int type.
+#[cfg(feature = "std")]
+pub type c_int = std::os::raw::c_int;
+
 /// Equivalent to C's unsigned int type.
-pub type uint = core::ffi::c_uint;
+#[cfg(not(feature = "std"))]
+pub type c_uint = core::ffi::c_uint;
+/// Equivalent to C's unsigned int type.
+#[cfg(feature = "std")]
+pub type c_uint = std::os::raw::c_uint;
+
 /// floating-point number stored using `f64`
 #[cfg(not(feature = "float"))]
 pub type float = f64;
 /// floating-point number stored using `f32`
 #[cfg(feature = "float")]
 pub type float = f32;
+
+#[cfg(not(feature = "std"))]
+use core::mem::size_of;
+#[cfg(feature = "std")]
+use std::mem::size_of;
+
+#[cfg(not(feature = "std"))]
+use core::cmp::Ordering;
+#[cfg(feature = "std")]
+use std::cmp::Ordering;
+
+#[cfg(not(feature = "std"))]
+use core::ptr::{null, null_mut};
+#[cfg(feature = "std")]
+use std::ptr::{null, null_mut};
+
+#[cfg(not(feature = "std"))]
+use core::slice::{from_raw_parts, from_raw_parts_mut};
+#[cfg(feature = "std")]
+use std::slice::{from_raw_parts, from_raw_parts_mut};
 
 extern "C" {
     fn a_u32_sqrt(x: u32) -> u16;
@@ -468,35 +501,35 @@ fn lpf() {
 
 /// membership function
 pub mod mf {
-    use crate::int;
+    use crate::c_int;
     /// none
-    pub const NUL: int = 0;
+    pub const NUL: c_int = 0;
     /// gaussian membership function
-    pub const GAUSS: int = 1;
+    pub const GAUSS: c_int = 1;
     /// gaussian combination membership function
-    pub const GAUSS2: int = 2;
+    pub const GAUSS2: c_int = 2;
     /// generalized bell-shaped membership function
-    pub const GBELL: int = 3;
+    pub const GBELL: c_int = 3;
     /// sigmoidal membership function
-    pub const SIG: int = 4;
+    pub const SIG: c_int = 4;
     /// difference between two sigmoidal membership functions
-    pub const DSIG: int = 5;
+    pub const DSIG: c_int = 5;
     /// product of two sigmoidal membership functions
-    pub const PSIG: int = 6;
+    pub const PSIG: c_int = 6;
     /// trapezoidal membership function
-    pub const TRAP: int = 7;
+    pub const TRAP: c_int = 7;
     /// triangular membership function
-    pub const TRI: int = 8;
+    pub const TRI: c_int = 8;
     /// linear s-shaped saturation membership function
-    pub const LINS: int = 9;
+    pub const LINS: c_int = 9;
     /// linear z-shaped saturation membership function
-    pub const LINZ: int = 10;
+    pub const LINZ: c_int = 10;
     /// s-shaped membership function
-    pub const S: int = 11;
+    pub const S: c_int = 11;
     /// z-shaped membership function
-    pub const Z: int = 12;
+    pub const Z: c_int = 12;
     /// pi-shaped membership function
-    pub const PI: int = 13;
+    pub const PI: c_int = 13;
 
     use crate::float;
     extern "C" {
@@ -774,28 +807,28 @@ fn pid() {
 
 /// fuzzy PID controller operator
 pub mod fuzzy {
-    use crate::uint;
+    use crate::c_uint;
     /// min(a,b)
-    pub const CAP: uint = 1;
+    pub const CAP: c_uint = 1;
     /// a*b
-    pub const CAP_ALGEBRA: uint = 2;
+    pub const CAP_ALGEBRA: c_uint = 2;
     /// max(a+b-1,0)
-    pub const CAP_BOUNDED: uint = 3;
+    pub const CAP_BOUNDED: c_uint = 3;
     /// max(a,b)
-    pub const CUP: uint = 4;
+    pub const CUP: c_uint = 4;
     /// a+b-a*b
-    pub const CUP_ALGEBRA: uint = 5;
+    pub const CUP_ALGEBRA: c_uint = 5;
     /// min(a+b,1)
-    pub const CUP_BOUNDED: uint = 6;
+    pub const CUP_BOUNDED: c_uint = 6;
     /// sqrt(a,b)*sqrt(1-(1-a)*(1-b))
-    pub const EQU: uint = 0;
+    pub const EQU: c_uint = 0;
 }
 
 #[macro_export]
 /// compute size of memory block for fuzzy PID controller
 macro_rules! PID_FUZZY_BLOCK {
     ($n:expr) => {{
-        core::mem::size_of::<uint>() * $n * 2 + core::mem::size_of::<float>() * $n * (2 + $n)
+        size_of::<c_uint>() * $n * 2 + size_of::<float>() * $n * (2 + $n)
     }};
 }
 
@@ -809,7 +842,7 @@ pub struct pid_fuzzy {
     pub(crate) mkp: *const float,
     pub(crate) mki: *const float,
     pub(crate) mkd: *const float,
-    pub(crate) idx: *mut uint,
+    pub(crate) idx: *mut c_uint,
     pub(crate) val: *mut float,
     /// fuzzy relational operator
     pub(crate) op: extern "C" fn(float, float) -> float,
@@ -820,9 +853,9 @@ pub struct pid_fuzzy {
     /// base derivative constant
     pub kd: float,
     /// number of order in the square matrix
-    pub(crate) order: uint,
+    pub(crate) order: c_uint,
     /// maximum number triggered by the rule
-    pub(crate) block: uint,
+    pub(crate) block: c_uint,
 }
 
 impl Default for pid_fuzzy {
@@ -830,13 +863,13 @@ impl Default for pid_fuzzy {
     fn default() -> Self {
         Self {
             pid: pid::default(),
-            me: core::ptr::null(),
-            mec: core::ptr::null(),
-            mkp: core::ptr::null(),
-            mki: core::ptr::null(),
-            mkd: core::ptr::null(),
-            idx: core::ptr::null_mut(),
-            val: core::ptr::null_mut(),
+            me: null(),
+            mec: null(),
+            mkp: null(),
+            mki: null(),
+            mkd: null(),
+            idx: null_mut(),
+            val: null_mut(),
             op: unsafe { a_pid_fuzzy_op(fuzzy::EQU) },
             kp: 0.0,
             ki: 0.0,
@@ -848,11 +881,11 @@ impl Default for pid_fuzzy {
 }
 
 extern "C" {
-    fn a_pid_fuzzy_op(op: uint) -> extern "C" fn(float, float) -> float;
-    fn a_pid_fuzzy_set_op(ctx: *mut pid_fuzzy, op: uint);
+    fn a_pid_fuzzy_op(op: c_uint) -> extern "C" fn(float, float) -> float;
+    fn a_pid_fuzzy_set_op(ctx: *mut pid_fuzzy, op: c_uint);
     fn a_pid_fuzzy_rule(
         ctx: *mut pid_fuzzy,
-        num: uint,
+        num: c_uint,
         me: *const float,
         mec: *const float,
         mkp: *const float,
@@ -888,7 +921,7 @@ impl pid_fuzzy {
         unsafe {
             a_pid_fuzzy_rule(
                 self,
-                col as uint,
+                col as c_uint,
                 me.as_ptr(),
                 mec.as_ptr(),
                 mkp.as_ptr(),
@@ -914,7 +947,7 @@ impl pid_fuzzy {
     #[inline(always)]
     pub fn block(&mut self) -> &mut [u8] {
         unsafe {
-            core::slice::from_raw_parts_mut(
+            from_raw_parts_mut(
                 a_pid_fuzzy_block(self),
                 PID_FUZZY_BLOCK!(self.block as usize),
             )
@@ -922,7 +955,7 @@ impl pid_fuzzy {
     }
     /// set fuzzy relational operator for fuzzy PID controller
     #[inline(always)]
-    pub fn op(&mut self, op: uint) -> &mut Self {
+    pub fn op(&mut self, op: c_uint) -> &mut Self {
         unsafe { a_pid_fuzzy_set_op(self, op) };
         self
     }
@@ -1140,20 +1173,20 @@ pub struct tf {
     /// denominator
     den_p: *const float,
     /// numerator number
-    num_n: uint,
+    num_n: c_uint,
     /// denominator number
-    den_n: uint,
+    den_n: c_uint,
 }
 
 extern "C" {
-    fn a_tf_set_num(ctx: *mut tf, num_n: uint, num_p: *const float, input: *mut float);
-    fn a_tf_set_den(ctx: *mut tf, den_n: uint, den_p: *const float, output: *mut float);
+    fn a_tf_set_num(ctx: *mut tf, num_n: c_uint, num_p: *const float, input: *mut float);
+    fn a_tf_set_den(ctx: *mut tf, den_n: c_uint, den_p: *const float, output: *mut float);
     fn a_tf_init(
         ctx: *mut tf,
-        num_n: uint,
+        num_n: c_uint,
         num_p: *const float,
         input: *mut float,
-        den_n: uint,
+        den_n: c_uint,
         den_p: *const float,
         output: *mut float,
     );
@@ -1166,20 +1199,20 @@ impl tf {
     #[inline(always)]
     pub fn new(num: &[float], input: &mut [float], den: &[float], output: &mut [float]) -> Self {
         let mut ctx: Self = Self {
-            input: core::ptr::null_mut(),
-            output: core::ptr::null_mut(),
-            num_p: core::ptr::null(),
-            den_p: core::ptr::null(),
+            input: null_mut(),
+            output: null_mut(),
+            num_p: null(),
+            den_p: null(),
             num_n: 0,
             den_n: 0,
         };
         unsafe {
             a_tf_init(
                 &mut ctx,
-                num.len() as uint,
+                num.len() as c_uint,
                 num.as_ptr(),
                 input.as_mut_ptr(),
-                den.len() as uint,
+                den.len() as c_uint,
                 den.as_ptr(),
                 output.as_mut_ptr(),
             )
@@ -1200,33 +1233,33 @@ impl tf {
     /// get input for transfer function
     #[inline(always)]
     pub fn input(&self) -> &[float] {
-        unsafe { core::slice::from_raw_parts(self.input, self.num_n as usize) }
+        unsafe { from_raw_parts(self.input, self.num_n as usize) }
     }
     /// get numerator for transfer function
     #[inline(always)]
     pub fn num(&self) -> &[float] {
-        unsafe { core::slice::from_raw_parts(self.num_p, self.num_n as usize) }
+        unsafe { from_raw_parts(self.num_p, self.num_n as usize) }
     }
     /// set numerator for transfer function
     #[inline(always)]
     pub fn set_num(&mut self, num: &[float], input: &mut [float]) -> &mut Self {
-        unsafe { a_tf_set_num(self, num.len() as uint, num.as_ptr(), input.as_mut_ptr()) };
+        unsafe { a_tf_set_num(self, num.len() as c_uint, num.as_ptr(), input.as_mut_ptr()) };
         self
     }
     /// get output for transfer function
     #[inline(always)]
     pub fn output(&self) -> &[float] {
-        unsafe { core::slice::from_raw_parts(self.output, self.den_n as usize) }
+        unsafe { from_raw_parts(self.output, self.den_n as usize) }
     }
     /// get denominator for transfer function
     #[inline(always)]
     pub fn den(&self) -> &[float] {
-        unsafe { core::slice::from_raw_parts(self.den_p, self.den_n as usize) }
+        unsafe { from_raw_parts(self.den_p, self.den_n as usize) }
     }
     /// set denominator for transfer function
     #[inline(always)]
     pub fn set_den(&mut self, den: &[float], output: &mut [float]) -> &mut Self {
-        unsafe { a_tf_set_den(self, den.len() as uint, den.as_ptr(), output.as_mut_ptr()) };
+        unsafe { a_tf_set_den(self, den.len() as c_uint, den.as_ptr(), output.as_mut_ptr()) };
         self
     }
 }
@@ -1762,39 +1795,39 @@ fn trajtrap() {
 #[repr(C)]
 pub struct version {
     /// major number
-    pub major: uint,
+    pub major: c_uint,
     /// minor number
-    pub minor: uint,
+    pub minor: c_uint,
     /// third number
-    pub third: uint,
+    pub third: c_uint,
     /// extra number
-    pub extra: uint,
+    pub extra: c_uint,
     /// alphabet
     pub alpha: [u8; 4],
 }
 
 extern "C" {
-    static a_version_major: uint;
-    static a_version_minor: uint;
-    static a_version_patch: uint;
+    static a_version_major: c_uint;
+    static a_version_minor: c_uint;
+    static a_version_patch: c_uint;
     static a_version_tweak: u32;
     fn a_version_set_alpha(ctx: *mut version, alpha: *const u8);
     fn a_version_alpha(ctx: *const version, alpha: &mut [u8; 5]);
-    fn a_version_parse(ctx: *mut version, ver: *const u8) -> uint;
-    fn a_version_tostr(ctx: *const version, p: *mut u8, n: usize) -> int;
-    fn a_version_cmp(ctx: *const version, rhs: *const version) -> int;
+    fn a_version_parse(ctx: *mut version, ver: *const u8) -> c_uint;
+    fn a_version_tostr(ctx: *const version, p: *mut u8, n: usize) -> c_int;
+    fn a_version_cmp(ctx: *const version, rhs: *const version) -> c_int;
     fn a_version_lt(ctx: *const version, rhs: *const version) -> bool;
     fn a_version_gt(ctx: *const version, rhs: *const version) -> bool;
     fn a_version_le(ctx: *const version, rhs: *const version) -> bool;
     fn a_version_ge(ctx: *const version, rhs: *const version) -> bool;
     fn a_version_eq(ctx: *const version, rhs: *const version) -> bool;
-    fn a_version_check(major: uint, minor: uint, patch: uint) -> int;
+    fn a_version_check(major: c_uint, minor: c_uint, patch: c_uint) -> c_int;
 }
 
 impl version {
     /// initialize for version
     #[inline(always)]
-    pub fn new(major: uint, minor: uint, third: uint) -> Self {
+    pub fn new(major: c_uint, minor: c_uint, third: c_uint) -> Self {
         Self {
             major,
             minor,
@@ -1815,32 +1848,32 @@ impl version {
     }
     /// parse version string to version
     #[inline(always)]
-    pub fn parse(&mut self, ver: &str) -> uint {
+    pub fn parse(&mut self, ver: &str) -> c_uint {
         unsafe { a_version_parse(self, ver.as_ptr()) }
     }
     /// convert version to string
     #[inline(always)]
-    pub fn tostr(&mut self, ver: &mut [u8]) -> int {
+    pub fn tostr(&mut self, ver: &mut [u8]) -> c_int {
         unsafe { a_version_tostr(self, ver.as_mut_ptr(), ver.len()) }
     }
     /// algorithm library version check
     #[inline(always)]
-    pub fn check(major: uint, minor: uint, patch: uint) -> int {
+    pub fn check(major: c_uint, minor: c_uint, patch: c_uint) -> c_int {
         unsafe { a_version_check(major, minor, patch) }
     }
     /// algorithm library version major
     #[inline(always)]
-    pub fn major() -> uint {
+    pub fn major() -> c_uint {
         unsafe { a_version_major }
     }
     /// algorithm library version minor
     #[inline(always)]
-    pub fn minor() -> uint {
+    pub fn minor() -> c_uint {
         unsafe { a_version_minor }
     }
     /// algorithm library version patch
     #[inline(always)]
-    pub fn patch() -> uint {
+    pub fn patch() -> c_uint {
         unsafe { a_version_patch }
     }
     /// algorithm library version tweak
@@ -1852,15 +1885,15 @@ impl version {
 
 impl PartialOrd for version {
     #[inline(always)]
-    fn partial_cmp(&self, that: &version) -> Option<core::cmp::Ordering> {
-        let ok: int = unsafe { a_version_cmp(self, that) };
+    fn partial_cmp(&self, that: &version) -> Option<Ordering> {
+        let ok: c_int = unsafe { a_version_cmp(self, that) };
         if ok > 0 {
-            return Some(core::cmp::Ordering::Greater);
+            return Some(Ordering::Greater);
         }
         if ok < 0 {
-            return Some(core::cmp::Ordering::Less);
+            return Some(Ordering::Less);
         }
-        Some(core::cmp::Ordering::Equal)
+        Some(Ordering::Equal)
     }
     #[inline(always)]
     fn lt(&self, that: &version) -> bool {
@@ -1890,8 +1923,8 @@ impl PartialEq for version {
 #[test]
 fn version() {
     extern crate std;
-    impl core::fmt::Debug for version {
-        fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+    impl std::fmt::Debug for version {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             let mut alpha = [0u8; 5];
             self.alpha(&mut alpha);
             f.debug_struct("version")
