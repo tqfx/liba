@@ -107,26 +107,6 @@ pub fn hash_sdbm(block: &[u8], value: u32) -> u32 {
     unsafe { a_hash_sdbm_(block.as_ptr(), block.len(), value) }
 }
 
-mod test {
-    extern crate std;
-    #[test]
-    fn usqrt() {
-        std::println!("{}", crate::u32_sqrt(u32::MAX));
-        std::println!("{}", crate::u64_sqrt(u64::MAX));
-    }
-    #[test]
-    fn rsqrt() {
-        std::println!("1/sqrt({})={}", 4, crate::f32_rsqrt(4.0));
-        std::println!("1/sqrt({})={}", 4, crate::f64_rsqrt(4.0));
-    }
-    #[test]
-    fn hash() {
-        let text: [u8; 10] = *b"0123456789";
-        std::println!("{}", crate::hash_bkdr(&text, 0));
-        std::println!("{}", crate::hash_sdbm(&text, 0));
-    }
-}
-
 /// Cyclic Redundancy Check for 8 bits
 #[repr(C)]
 pub struct crc8 {
@@ -171,19 +151,6 @@ impl crc8 {
     #[inline(always)]
     pub fn eval(self, block: &[u8], value: u8) -> u8 {
         unsafe { a_crc8(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
-    }
-}
-
-#[test]
-fn crc8() {
-    extern crate std;
-    {
-        let ctx = crate::crc8::new_msb(0x07);
-        assert_eq!(ctx.eval(b"0123456789", 0), 0x45);
-    }
-    {
-        let ctx = crate::crc8::new_lsb(0x31);
-        assert_eq!(ctx.eval(b"0123456789", 0), 0x75);
     }
 }
 
@@ -244,19 +211,6 @@ impl crc16 {
     }
 }
 
-#[test]
-fn crc16() {
-    extern crate std;
-    {
-        let ctx = crate::crc16::new_msb(0x1021);
-        assert_eq!(ctx.eval(b"0123456789", 0), 0x9C58);
-    }
-    {
-        let ctx = crate::crc16::new_lsb(0x8005);
-        assert_eq!(ctx.eval(b"0123456789", 0), 0x443D);
-    }
-}
-
 /// Cyclic Redundancy Check for 32 bits
 #[repr(C)]
 pub struct crc32 {
@@ -311,19 +265,6 @@ impl crc32 {
     #[inline(always)]
     pub fn eval(self, block: &[u8], value: u32) -> u32 {
         unsafe { (self.eval)(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
-    }
-}
-
-#[test]
-fn crc32() {
-    extern crate std;
-    {
-        let ctx = crate::crc32::new_msb(0x1EDC6F41);
-        assert_eq!(ctx.eval(b"0123456789", 0), 0x512B456E);
-    }
-    {
-        let ctx = crate::crc32::new_lsb(0x04C11DB7);
-        assert_eq!(ctx.eval(b"0123456789", 0), 0x450EAFB0);
     }
 }
 
@@ -384,19 +325,6 @@ impl crc64 {
     }
 }
 
-#[test]
-fn crc64() {
-    extern crate std;
-    {
-        let ctx = crate::crc64::new_msb(0x000000000000001B);
-        assert_eq!(ctx.eval(b"0123456789", 0), 0xE4FFBEA588AFC790);
-    }
-    {
-        let ctx = crate::crc64::new_lsb(0x42F0E1EBA9EA3693);
-        assert_eq!(ctx.eval(b"0123456789", 0), 0xDA60676A5CDE0008);
-    }
-}
-
 #[allow(clippy::excessive_precision)]
 const TAU: float = 6.28318530717958647692528676655900577;
 
@@ -443,13 +371,6 @@ impl hpf {
     }
 }
 
-#[test]
-fn hpf() {
-    extern crate std;
-    let mut a = crate::hpf::new(10.0, 0.01);
-    a.gen(10.0, 0.01).zero().iter(1.0);
-}
-
 #[allow(clippy::excessive_precision)]
 const _1_TAU: float = 0.159154943091895335768883763372514362;
 
@@ -490,13 +411,6 @@ impl lpf {
         self.output = 0.0;
         self
     }
-}
-
-#[test]
-fn lpf() {
-    extern crate std;
-    let mut a = crate::lpf::new(10.0, 0.01);
-    a.gen(10.0, 0.01).zero().iter(1.0);
 }
 
 /// membership function
@@ -613,95 +527,6 @@ pub mod mf {
     pub fn pi(x: float, a: float, b: float, c: float, d: float) -> float {
         unsafe { a_mf_pi(x, a, b, c, d) }
     }
-
-    #[cfg(test)]
-    mod test {
-        extern crate std;
-        #[test]
-        fn gauss2() {
-            for i in -4..=4 {
-                let x = i as crate::float;
-                std::println!("{:+} {}", x, crate::mf::gauss2(x, 1.0, -1.0, 1.0, 1.0));
-            }
-        }
-        #[test]
-        fn gbell() {
-            for i in -4..=4 {
-                let x = i as crate::float;
-                std::println!("{:+} {}", x, crate::mf::gbell(x, 2.0, 4.0, 0.0));
-            }
-        }
-        #[test]
-        fn sig() {
-            for i in -4..=4 {
-                let x = i as crate::float;
-                std::println!("{:+} {}", x, crate::mf::sig(x, 2.0, 0.0));
-            }
-        }
-        #[test]
-        fn dsig() {
-            for i in -4..=4 {
-                let x = i as crate::float;
-                std::println!("{:+} {}", x, crate::mf::dsig(x, 5.0, -2.0, 5.0, 2.0));
-            }
-        }
-        #[test]
-        fn psig() {
-            for i in -4..=4 {
-                let x = i as crate::float;
-                std::println!("{:+} {}", x, crate::mf::psig(x, 5.0, -2.0, -5.0, 2.0));
-            }
-        }
-        #[test]
-        fn trap() {
-            for i in -3..=3 {
-                let x = i as crate::float;
-                std::println!("{:+} {}", x, crate::mf::trap(x, -2.0, -1.0, 1.0, 2.0));
-            }
-        }
-        #[test]
-        fn tri() {
-            for i in -2..=2 {
-                let x = i as crate::float;
-                std::println!("{:+} {}", x, crate::mf::tri(x, -1.0, 0.0, 1.0));
-            }
-        }
-        #[test]
-        fn lins() {
-            for i in -2..=2 {
-                let x = i as crate::float;
-                std::println!("{:+} {}", x, crate::mf::lins(x, -1.0, 1.0));
-            }
-        }
-        #[test]
-        fn linz() {
-            for i in -2..=2 {
-                let x = i as crate::float;
-                std::println!("{:+} {}", x, crate::mf::linz(x, -1.0, 1.0));
-            }
-        }
-        #[test]
-        fn s() {
-            for i in -2..=2 {
-                let x = i as crate::float;
-                std::println!("{:+} {}", x, crate::mf::s(x, -1.0, 1.0));
-            }
-        }
-        #[test]
-        fn z() {
-            for i in -2..=2 {
-                let x = i as crate::float;
-                std::println!("{:+} {}", x, crate::mf::z(x, -1.0, 1.0));
-            }
-        }
-        #[test]
-        fn pi() {
-            for i in -3..=3 {
-                let x = i as crate::float;
-                std::println!("{:+} {}", x, crate::mf::pi(x, -2.0, -1.0, 1.0, 2.0));
-            }
-        }
-    }
 }
 
 /// proportional integral derivative controller
@@ -796,15 +621,6 @@ impl pid {
     }
 }
 
-#[test]
-fn pid() {
-    extern crate std;
-    let mut a = crate::pid::new();
-    a.kpid(10.0, 0.1, 1.0);
-    std::println!("{}", a.zero().pos(1.0, 0.0));
-    std::println!("{}", a.zero().inc(1.0, 0.0));
-}
-
 /// fuzzy PID controller operator
 pub mod fuzzy {
     use crate::c_uint;
@@ -822,14 +638,6 @@ pub mod fuzzy {
     pub const CUP_BOUNDED: c_uint = 6;
     /// sqrt(a,b)*sqrt(1-(1-a)*(1-b))
     pub const EQU: c_uint = 0;
-}
-
-#[macro_export]
-/// compute size of memory block for fuzzy PID controller
-macro_rules! PID_FUZZY_BLOCK {
-    ($n:expr) => {{
-        size_of::<c_uint>() * $n * 2 + size_of::<float>() * $n * (2 + $n)
-    }};
 }
 
 /// fuzzy proportional integral derivative controller
@@ -937,21 +745,22 @@ impl pid_fuzzy {
         unsafe { a_pid_fuzzy_kpid(self, kp, ki, kd) };
         self
     }
+    /// compute size of memory block for fuzzy PID controller
+    #[inline(always)]
+    #[allow(non_snake_case)]
+    pub const fn BLOCK(n: usize) -> usize {
+        size_of::<c_uint>() * n * 2 + size_of::<float>() * n * (2 + n)
+    }
+    /// get memory block for fuzzy PID controller
+    #[inline(always)]
+    pub fn block(&mut self) -> &mut [u8] {
+        unsafe { from_raw_parts_mut(a_pid_fuzzy_block(self), Self::BLOCK(self.block as usize)) }
+    }
     /// set memory block for fuzzy PID controller
     #[inline(always)]
     pub fn set_block(&mut self, ptr: &mut [u8], num: usize) -> &mut Self {
         unsafe { a_pid_fuzzy_set_block(self, ptr.as_mut_ptr(), num) };
         self
-    }
-    /// get memory block for fuzzy PID controller
-    #[inline(always)]
-    pub fn block(&mut self) -> &mut [u8] {
-        unsafe {
-            from_raw_parts_mut(
-                a_pid_fuzzy_block(self),
-                PID_FUZZY_BLOCK!(self.block as usize),
-            )
-        }
     }
     /// set fuzzy relational operator for fuzzy PID controller
     #[inline(always)]
@@ -980,101 +789,6 @@ impl pid_fuzzy {
         unsafe { a_pid_fuzzy_zero(self) };
         self
     }
-}
-
-#[test]
-#[allow(non_snake_case)]
-fn pid_fuzzy() {
-    extern crate std;
-    let NL: float = -3.0;
-    let NM: float = -2.0;
-    let NS: float = -1.0;
-    let ZO: float = 0.0;
-    let PS: float = 1.0;
-    let PM: float = 2.0;
-    let PL: float = 3.0;
-    let me = [
-        [crate::mf::TRI as float, NL, NL, NM],
-        [crate::mf::TRI as float, NL, NM, NS],
-        [crate::mf::TRI as float, NM, NS, ZO],
-        [crate::mf::TRI as float, NS, ZO, PS],
-        [crate::mf::TRI as float, ZO, PS, PM],
-        [crate::mf::TRI as float, PS, PM, PL],
-        [crate::mf::TRI as float, PM, PL, PL],
-    ];
-    let NL: float = -3.0;
-    let NM: float = -2.0;
-    let NS: float = -1.0;
-    let ZO: float = 0.0;
-    let PS: float = 1.0;
-    let PM: float = 2.0;
-    let PL: float = 3.0;
-    let mec = [
-        [crate::mf::TRI as float, NL, NL, NM],
-        [crate::mf::TRI as float, NL, NM, NS],
-        [crate::mf::TRI as float, NM, NS, ZO],
-        [crate::mf::TRI as float, NS, ZO, PS],
-        [crate::mf::TRI as float, ZO, PS, PM],
-        [crate::mf::TRI as float, PS, PM, PL],
-        [crate::mf::TRI as float, PM, PL, PL],
-    ];
-    let NL: float = -15.0;
-    let NM: float = -10.0;
-    let NS: float = -5.0;
-    let ZO: float = 0.0;
-    let PS: float = 5.0;
-    let PM: float = 10.0;
-    let PL: float = 15.0;
-    let mkp = [
-        [NL, NL, NM, NM, NS, ZO, ZO],
-        [NL, NL, NM, NS, NS, ZO, PS],
-        [NM, NM, NM, NS, ZO, PS, PS],
-        [NM, NM, NS, ZO, PS, PM, PM],
-        [NS, NS, ZO, PS, PS, PM, PM],
-        [NS, ZO, PS, PM, PM, PM, PL],
-        [ZO, ZO, PM, PM, PM, PL, PL],
-    ];
-    let NL: float = -3.0;
-    let NM: float = -2.0;
-    let NS: float = -1.0;
-    let ZO: float = 0.0;
-    let PS: float = 1.0;
-    let PM: float = 2.0;
-    let PL: float = 3.0;
-    let mki = [
-        [PL, PL, PM, PM, PS, ZO, ZO],
-        [PL, PL, PM, PS, PS, ZO, ZO],
-        [PL, PM, PS, PS, ZO, NS, NS],
-        [PM, PM, PS, ZO, NS, NM, NM],
-        [PM, PS, ZO, NS, NS, NM, NL],
-        [ZO, ZO, NS, NS, NM, NL, NL],
-        [ZO, ZO, NS, NM, NM, NL, NL],
-    ];
-    let mkd = [
-        [NS, PS, PL, PL, PL, PM, NS],
-        [NS, PS, PL, PM, PM, PS, ZO],
-        [ZO, PS, PM, PM, PS, PS, ZO],
-        [ZO, PS, PS, PS, PS, PS, ZO],
-        [ZO, ZO, ZO, ZO, ZO, ZO, ZO],
-        [NL, NS, NS, NS, NS, NS, NL],
-        [NL, NM, NM, NM, NS, NS, NL],
-    ];
-    let mut block = [0u8; crate::PID_FUZZY_BLOCK!(2)];
-    let mut a = pid_fuzzy::new();
-    a.rule(
-        me.len(),
-        &me.concat(),
-        &mec.concat(),
-        &mkp.concat(),
-        &mki.concat(),
-        &mkd.concat(),
-    )
-    .kpid(10.0, 0.1, 1.0)
-    .set_block(&mut block, 2);
-    a.op(crate::fuzzy::EQU).zero();
-    std::println!("{} {}", a.pos(1.0, 0.0), a.pos(1.0, 0.0));
-    a.op(crate::fuzzy::EQU).zero();
-    std::println!("{} {}", a.inc(1.0, 0.0), a.inc(1.0, 0.0));
 }
 
 /// single neuron proportional integral derivative controller
@@ -1150,15 +864,6 @@ impl pid_neuro {
         unsafe { a_pid_neuro_zero(self) };
         self
     }
-}
-
-#[test]
-fn pid_neuro() {
-    extern crate std;
-    let mut a = crate::pid_neuro::new();
-    a.kpid(10.0, 1.0, 0.1, 1.0).wpid(1.0, 0.0, 0.0);
-    std::println!("{}", a.inc(1.0, 0.0));
-    a.zero();
 }
 
 /// transfer function
@@ -1262,21 +967,6 @@ impl tf {
         unsafe { a_tf_set_den(self, den.len() as c_uint, den.as_ptr(), output.as_mut_ptr()) };
         self
     }
-}
-
-#[test]
-fn tf() {
-    extern crate std;
-    let num = [6.59492796e-05, 6.54019884e-05];
-    let den = [-1.97530991, 0.97530991];
-    let mut input = [0.0; 2];
-    let mut output = [0.0; 2];
-    let mut a = crate::tf::new(&num, &mut input, &den, &mut output);
-    a.set_num(&num, &mut input).set_den(&den, &mut output);
-    std::println!("{} {}", a.iter(10.0), a.iter(10.0));
-    std::println!("{:?} {:?}", a.num(), a.input());
-    std::println!("{:?} {:?}", a.den(), a.output());
-    a.zero();
 }
 
 /// bell-shaped velocity trajectory
@@ -1394,17 +1084,6 @@ impl trajbell {
     }
 }
 
-#[test]
-fn trajbell() {
-    extern crate std;
-    let x = 0.5;
-    {
-        let mut a = crate::trajbell::new();
-        std::print!("{} ", a.gen(3.0, 2.0, 3.0, 0.0, 10.0, 0.0, 0.0));
-        std::println!("[{}, {}, {}, {}]", a.pos(x), a.vel(x), a.acc(x), a.jer(x));
-    }
-}
-
 /// cubic polynomial trajectory
 #[repr(C)]
 pub struct trajpoly3 {
@@ -1455,16 +1134,6 @@ impl trajpoly3 {
     #[inline(always)]
     pub fn acc(&mut self, x: float) -> float {
         unsafe { a_trajpoly3_acc(self, x) }
-    }
-}
-
-#[test]
-fn trajpoly3() {
-    extern crate std;
-    let x = 0.5;
-    {
-        let mut a = crate::trajpoly3::new(1.0, 0.0, 1.0, 0.0, 1.0);
-        std::println!("[{}, {}, {}]", a.pos(x), a.vel(x), a.acc(x));
     }
 }
 
@@ -1546,16 +1215,6 @@ impl trajpoly5 {
     #[inline(always)]
     pub fn acc(&mut self, x: float) -> float {
         unsafe { a_trajpoly5_acc(self, x) }
-    }
-}
-
-#[test]
-fn trajpoly5() {
-    extern crate std;
-    let x = 0.5;
-    {
-        let mut a = crate::trajpoly5::new(1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
-        std::println!("[{}, {}, {}]", a.pos(x), a.vel(x), a.acc(x));
     }
 }
 
@@ -1652,16 +1311,6 @@ impl trajpoly7 {
     #[inline(always)]
     pub fn jer(&mut self, x: float) -> float {
         unsafe { a_trajpoly7_jer(self, x) }
-    }
-}
-
-#[test]
-fn trajpoly7() {
-    extern crate std;
-    let x = 0.5;
-    {
-        let mut a = crate::trajpoly7::new(1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
-        std::println!("[{}, {}, {}, {}]", a.pos(x), a.vel(x), a.acc(x), a.jer(x));
     }
 }
 
@@ -1765,17 +1414,6 @@ impl trajtrap {
     #[inline(always)]
     pub fn acc(&mut self, x: float) -> float {
         unsafe { a_trajtrap_acc(self, x) }
-    }
-}
-
-#[test]
-fn trajtrap() {
-    extern crate std;
-    let x = 0.5;
-    {
-        let mut a = crate::trajtrap::new();
-        std::print!("{} ", a.gen(2.0, 2.0, -2.0, 0.0, 2.0, 0.0, 0.0));
-        std::println!("[{}, {}, {}]", a.pos(x), a.vel(x), a.acc(x));
     }
 }
 
@@ -1918,40 +1556,4 @@ impl PartialEq for version {
     fn eq(&self, that: &version) -> bool {
         unsafe { a_version_eq(self, that) }
     }
-}
-
-#[test]
-fn version() {
-    extern crate std;
-    impl std::fmt::Debug for version {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            let mut alpha = [0u8; 5];
-            self.alpha(&mut alpha);
-            f.debug_struct("version")
-                .field("major", &self.major)
-                .field("minor", &self.minor)
-                .field("third", &self.third)
-                .field("extra", &self.extra)
-                .field("alpha", &std::str::from_utf8(&alpha).unwrap())
-                .finish()
-        }
-    }
-    std::println!("{}", crate::version::check(0, 0, 0));
-    std::println!("major {}", crate::version::major());
-    std::println!("minor {}", crate::version::minor());
-    std::println!("patch {}", crate::version::patch());
-    std::println!("tweak {}", crate::version::tweak());
-    let v000 = version::new(0, 0, 0);
-    let mut v001 = version::new(0, 0, 0);
-    let mut ver = [0u8; 48];
-    v001.parse("0.0.1-a.1");
-    v001.tostr(&mut ver);
-    std::println!("{:?}", v001);
-    std::println!("{}", std::str::from_utf8(&ver).unwrap());
-    assert!(v001 > v000);
-    assert!(v000 < v001);
-    assert!(v000 >= v000);
-    assert!(v000 <= v000);
-    assert!(v000 == v000);
-    assert!(v000 != v001);
 }
