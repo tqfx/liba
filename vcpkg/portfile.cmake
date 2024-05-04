@@ -14,8 +14,18 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
   FEATURES
     pkgconfig LIBA_PKGCONFIG
     symlink LIBA_SYMLINK
-    float LIBA_FLOAT=4
+    float LIBA_FLOAT
 )
+
+if(LIBA_FLOAT)
+  string(REGEX REPLACE "FLOAT=([^;]+)" "FLOAT=4"
+    FEATURE_OPTIONS "${FEATURE_OPTIONS}"
+  )
+else()
+  string(REGEX REPLACE "FLOAT=([^;]+)" "FLOAT=8"
+    FEATURE_OPTIONS "${FEATURE_OPTIONS}"
+  )
+endif()
 
 vcpkg_cmake_configure(SOURCE_PATH ${SOURCE_PATH}
   OPTIONS -DBUILD_TESTING=OFF ${FEATURE_OPTIONS}
