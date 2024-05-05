@@ -15,29 +15,25 @@ liba = "0.1"
 #![allow(non_camel_case_types)]
 #![cfg_attr(not(features = "std"), no_std)]
 
-#[cfg(feature = "std")]
-extern crate std;
-
-/// Equivalent to C's int type.
-#[cfg(not(feature = "std"))]
-pub type c_int = core::ffi::c_int;
-/// Equivalent to C's int type.
-#[cfg(feature = "std")]
-pub type c_int = std::os::raw::c_int;
-
-/// Equivalent to C's unsigned int type.
-#[cfg(not(feature = "std"))]
-pub type c_uint = core::ffi::c_uint;
-/// Equivalent to C's unsigned int type.
-#[cfg(feature = "std")]
-pub type c_uint = std::os::raw::c_uint;
-
 /// floating-point number stored using `f64`
 #[cfg(not(feature = "float"))]
 pub type float = f64;
 /// floating-point number stored using `f32`
 #[cfg(feature = "float")]
 pub type float = f32;
+
+#[cfg(feature = "std")]
+extern crate std;
+
+#[cfg(not(feature = "std"))]
+pub use core::ffi::c_int;
+#[cfg(feature = "std")]
+pub use std::os::raw::c_int;
+
+#[cfg(not(feature = "std"))]
+pub use core::ffi::c_uint;
+#[cfg(feature = "std")]
+pub use std::os::raw::c_uint;
 
 #[cfg(not(feature = "std"))]
 use core::mem::size_of;
@@ -551,7 +547,7 @@ pub struct pid {
     /// controller final output
     pub out: float,
     /// cache variable
-    pub(crate) var: float,
+    var: float,
     /// cache feedback
     pub fdb: float,
     /// cache error
@@ -645,15 +641,15 @@ pub mod fuzzy {
 pub struct pid_fuzzy {
     /// proportional integral derivative controller
     pub pid: pid,
-    pub(crate) me: *const float,
-    pub(crate) mec: *const float,
-    pub(crate) mkp: *const float,
-    pub(crate) mki: *const float,
-    pub(crate) mkd: *const float,
-    pub(crate) idx: *mut c_uint,
-    pub(crate) val: *mut float,
+    me: *const float,
+    mec: *const float,
+    mkp: *const float,
+    mki: *const float,
+    mkd: *const float,
+    idx: *mut c_uint,
+    val: *mut float,
     /// fuzzy relational operator
-    pub(crate) op: extern "C" fn(float, float) -> float,
+    op: extern "C" fn(float, float) -> float,
     /// base proportional constant
     pub kp: float,
     /// base integral constant
@@ -661,9 +657,9 @@ pub struct pid_fuzzy {
     /// base derivative constant
     pub kd: float,
     /// number of order in the square matrix
-    pub(crate) order: c_uint,
+    order: c_uint,
     /// maximum number triggered by the rule
-    pub(crate) block: c_uint,
+    block: c_uint,
 }
 
 impl Default for pid_fuzzy {
