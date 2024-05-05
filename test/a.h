@@ -221,6 +221,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         test_push(argc, argv);
         test_roll(argc, argv);
         test_hash_bkdr(argc, argv);
+        test_hash_sdbm(argc, argv);
         return 0;
     }
     switch (a_hash_bkdr(argv[1], 0))
