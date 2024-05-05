@@ -8,7 +8,7 @@ endif()
 set(CMAKE_JNI_TARGET TRUE)
 file(GLOB_RECURSE SOURCES src/*.java)
 add_jar(ajar GENERATE_NATIVE_HEADERS ajar_native
-  DESTINATION ${CMAKE_CURRENT_LIST_DIR}/include
+  DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include
   SOURCES ${SOURCES} OUTPUT_NAME liba
 )
 
@@ -21,11 +21,15 @@ if(CMAKE_VERSION VERSION_LESS 3.11)
 
   add_custom_command(TARGET ajar POST_BUILD
     COMMAND ${Java_JAVAC_EXECUTABLE} -classpath ${sep}${CMAKE_CURRENT_SOURCE_DIR}${sep}${CMAKE_CURRENT_BINARY_DIR}
-    -d ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/ajar.dir -h ${CMAKE_CURRENT_LIST_DIR}/include
-    @${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/ajar.dir/java_sources
+      -d ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/ajar.dir -h ${CMAKE_CURRENT_LIST_DIR}/include
+      @${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/ajar.dir/java_sources
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   )
   set(sep)
+else()
+  add_custom_command(TARGET ajar POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_CURRENT_BINARY_DIR}/include ${CMAKE_CURRENT_LIST_DIR}/include
+  )
 endif()
 
 option(LIBA_JAVADOC "Enable/Disable ffi javadoc" 0)
