@@ -1,0 +1,6 @@
+[package]
+name = "main"
+version = "0.1.0"
+edition = "2018"
+[dependencies]
+liba = { git = "https://github.com/tqfx/liba", features = ["std"] }

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-var liba = require("../liba");
+const liba = require("../liba");
 function do_leak_check() {
     for (const arg of arguments) {
         arg.delete();

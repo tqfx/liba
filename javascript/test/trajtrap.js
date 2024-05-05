@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-var liba = require("../liba");
+const liba = require("../liba");
 function assert(expr) {
     if (!eval(expr)) {
         throw Error(expr);

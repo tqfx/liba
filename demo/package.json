@@ -1,0 +1,13 @@
+{
+  "name": "main",
+  "version": "0.1.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node ."
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@tqfx/liba": "^0.1"
+  }
+}
