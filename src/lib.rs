@@ -1519,8 +1519,8 @@ impl version {
 
 impl PartialOrd for version {
     #[inline(always)]
-    fn partial_cmp(&self, that: &version) -> Option<Ordering> {
-        let ok: c_int = unsafe { a_version_cmp(self, that) };
+    fn partial_cmp(&self, other: &version) -> Option<Ordering> {
+        let ok: c_int = unsafe { a_version_cmp(self, other) };
         if ok > 0 {
             return Some(Ordering::Greater);
         }
@@ -1530,26 +1530,26 @@ impl PartialOrd for version {
         Some(Ordering::Equal)
     }
     #[inline(always)]
-    fn lt(&self, that: &version) -> bool {
-        unsafe { a_version_lt(self, that) }
+    fn lt(&self, other: &version) -> bool {
+        unsafe { a_version_lt(self, other) }
     }
     #[inline(always)]
-    fn gt(&self, that: &version) -> bool {
-        unsafe { a_version_gt(self, that) }
+    fn gt(&self, other: &version) -> bool {
+        unsafe { a_version_gt(self, other) }
     }
     #[inline(always)]
-    fn le(&self, that: &version) -> bool {
-        unsafe { a_version_le(self, that) }
+    fn le(&self, other: &version) -> bool {
+        unsafe { a_version_le(self, other) }
     }
     #[inline(always)]
-    fn ge(&self, that: &version) -> bool {
-        unsafe { a_version_ge(self, that) }
+    fn ge(&self, other: &version) -> bool {
+        unsafe { a_version_ge(self, other) }
     }
 }
 
 impl PartialEq for version {
     #[inline(always)]
-    fn eq(&self, that: &version) -> bool {
-        unsafe { a_version_eq(self, that) }
+    fn eq(&self, other: &version) -> bool {
+        unsafe { a_version_eq(self, other) }
     }
 }
