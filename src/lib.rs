@@ -1414,18 +1414,6 @@ impl trajtrap {
 }
 
 /// version
-///
-/// ## Examples
-///
-/// ```
-/// println!(
-///     "version {}.{}.{}+{}",
-///     liba::version::major(),
-///     liba::version::minor(),
-///     liba::version::patch(),
-///     liba::version::tweak()
-/// );
-/// ```
 #[repr(C)]
 pub struct version {
     /// major number
@@ -1438,6 +1426,19 @@ pub struct version {
     pub extra: c_uint,
     /// alphabet
     pub alpha: [u8; 4],
+}
+
+impl Default for version {
+    #[inline(always)]
+    fn default() -> Self {
+        Self {
+            major: 0,
+            minor: 0,
+            third: 0,
+            extra: 0,
+            alpha: [b'.', 0, 0, 0],
+        }
+    }
 }
 
 extern "C" {
@@ -1466,8 +1467,7 @@ impl version {
             major,
             minor,
             third,
-            extra: 0,
-            alpha: [b'.', 0, 0, 0],
+            ..Default::default()
         }
     }
     /// set alphabet for version
