@@ -21,13 +21,12 @@ import ctypes.util
 
 def find_executable(*executable):
     if sys.platform == "win32":
-        executable2 = []
+        exe = []
         for e in executable:
-            executable2.append(e + ".exe")
-        executable = executable2
+            exe.append(e + ".exe")
+        executable = exe
     path = os.environ.get("PATH", "")
-    paths = path.split(os.pathsep)
-    for p in paths:
+    for p in path.split(os.pathsep):
         for e in executable:
             f = os.path.join(p, e)
             if os.path.isfile(f):
