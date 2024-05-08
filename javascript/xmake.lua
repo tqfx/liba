@@ -39,6 +39,7 @@ if is_plat("wasm") then
     end
     set_filename("liba.js")
     add_syslinks("embind")
+    set_targetdir(".")
     add_deps("a")
     target_end()
 end
