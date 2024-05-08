@@ -3,7 +3,7 @@
 option("liba-lua")
 set_showmenu(true)
 set_category("liba")
-set_values("lua", "luajit")
+set_values("lua5.4", "lua5.3", "lua5.2", "lua5.1", "luajit")
 set_description("Enable/Disable Lua")
 option_end()
 
