@@ -16,28 +16,33 @@ on_load(function(target)
     target:set("extension", ".jar")
 end)
 on_build_files(function(target, sourcebatch, opt)
+    sourcebatch.objectfiles = {}
     local out = target:objectdir()
-    local src = path.join(target:scriptdir(), "src")
+    local classpath = path.join(target:scriptdir(), "src")
     for _, sourcefile in ipairs(sourcebatch.sourcefiles) do
-        local source = path.relative(sourcefile, src)
-        source = source:replace(".java", ".class")
-        local object = path.join(out, source)
-        target:add("objectfiles", object)
+        local source = path.relative(sourcefile, classpath):replace(".java", ".class")
+        table.join2(sourcebatch.objectfiles, path.join(out, source))
+        target:add("objectfiles", source)
     end
-    sourcebatch.objectfiles = target:get("objectfiles")
     local javac = find_tool("javac", { paths = "$(env JAVA_HOME)/bin" })
-    os.vrunv(javac.program, table.join("-cp", src, "-d", out, sourcebatch.sourcefiles))
+    os.vrunv(javac.program, table.join("-cp", classpath, "-d", out, sourcebatch.sourcefiles))
 end)
 on_link(function(target, opt)
-    local jar = find_tool("jar", { paths = "$(env JAVA_HOME)/bin" })
-    progress.show(opt.progress, "${color.build.target}archiving.$(mode) %s", path.filename(target:targetfile()))
-    os.vrunv(jar.program, table.join("-cf", target:targetfile(), target:get("objectfiles")))
-end)
-before_link(function(target)
     os.mkdir(target:targetdir())
+    local objectfiles = target:get("objectfiles")
+    local targetfile = path.absolute(target:targetfile())
+    local jar = find_tool("jar", { paths = "$(env JAVA_HOME)/bin" })
+    progress.show(opt.progress, "${color.build.target}archiving.$(mode) %s", path.filename(targetfile))
+    os.vrunv(jar.program, table.join("-cf", targetfile, objectfiles), {curdir = target:objectdir()})
 end)
-after_clean(function(target)
-    os.tryrm(target:targetdir())
+on_install(function(target)
+    local installdir = target:installdir()
+    if installdir then
+        print("installing %s to %s ..", target:name(), installdir)
+        installdir = path.join(installdir, "share", "java")
+        os.mkdir(installdir)
+        os.vcp(target:targetfile(), installdir)
+    end
 end)
 rule_end()
 
@@ -47,9 +52,6 @@ if has_config("liba-java") then
     add_files("src/**.java")
     on_load(function(target)
         target:set("targetdir", path.join(target:targetdir(), "java"))
-        target:set("installfiles", target:targetfile(), {
-            prefixdir = path.join("share", "java"),
-        })
     end)
     set_basename("liba")
     target_end()
@@ -67,9 +69,15 @@ if has_config("liba-java") then
             find_path("jni_md.h", "$(env JAVA_HOME)/include/*")
         )
         target:set("targetdir", path.join(target:targetdir(), "java"))
-        target:set("installfiles", target:targetfile(), {
-            prefixdir = path.join("lib", "jni"),
-        })
+    end)
+    on_install(function(target)
+        local installdir = target:installdir()
+        if installdir then
+            print("installing %s to %s ..", target:name(), installdir)
+            installdir = path.join(installdir, "lib", "jni")
+            os.mkdir(installdir)
+            os.vcp(target:targetfile(), installdir)
+        end
     end)
     if is_plat("windows", "mingw") then
         set_filename("a.dll")
