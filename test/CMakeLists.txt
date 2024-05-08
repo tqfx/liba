@@ -223,9 +223,6 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(notefreqs notefreqs.gp notefreqs.csv)
 endif()
 
-building(operator operator.c operator.cc)
-unittest(operator)
-
 building(pid pid.c pid.cc)
 unittest(pid)
 

@@ -60,10 +60,6 @@ target("test/notefreqs")
 building({ "notefreqs.c", "notefreqs.cc" })
 target_end()
 
-target("test/operator")
-building({ "operator.c", "operator.cc" })
-target_end()
-
 target("test/pid")
 building({ "pid.c", "pid.cc" })
 target_end()

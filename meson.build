@@ -64,7 +64,6 @@ sources = [
     'include/a/math.h',
     'include/a/mf.h',
     'include/a/notefreqs.h',
-    'include/a/operator.h',
     'include/a/pid.h',
     'include/a/pid_fuzzy.h',
     'include/a/pid_neuro.h',
