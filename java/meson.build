@@ -68,4 +68,34 @@ shared_module(
     install: true,
     install_dir: get_option('libdir') / 'jni',
     link_with: a.get_static_lib(),
+    name_prefix: build_machine.system() != 'windows' ? 'lib' : '',
+)
+
+add_languages('java')
+
+sources = [
+    'src/liba.java',
+    'src/liba/crc16.java',
+    'src/liba/crc32.java',
+    'src/liba/crc64.java',
+    'src/liba/crc8.java',
+    'src/liba/hpf.java',
+    'src/liba/lpf.java',
+    'src/liba/mf.java',
+    'src/liba/pid.java',
+    'src/liba/pid_fuzzy.java',
+    'src/liba/pid_neuro.java',
+    'src/liba/tf.java',
+    'src/liba/trajbell.java',
+    'src/liba/trajpoly3.java',
+    'src/liba/trajpoly5.java',
+    'src/liba/trajpoly7.java',
+    'src/liba/trajtrap.java',
+    'src/liba/version.java',
+]
+
+jar('liba', sources,
+    implicit_include_directories: false,
+    include_directories: include_directories('src'),
+    install: true,
 )

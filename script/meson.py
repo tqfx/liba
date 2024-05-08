@@ -7,7 +7,7 @@ ROOT = os.path.dirname(ROOT)
 ROOT = os.path.dirname(ROOT)
 
 
-def main():
+def main(index=0, SUFFIXS=SUFFIXS):
     sources = []
     for dirpath, dirnames, filenames in os.walk("include"):
         for filename in filenames:
@@ -25,13 +25,14 @@ def main():
 
     with open("meson.build", "r") as f:
         meson = f.read()
-    cur = re.findall(r"sources = ([^\]]+)", meson)[0] + "]\n"
+    cur = re.findall(r"sources = ([^\]]+)", meson)[index] + "]\n"
     new = "[\n    '" + "',\n    '".join(sources) + "',\n]\n"
     with open("meson.build", "wb") as f:
         meson = f.write(meson.replace(cur, new).encode())
 
 
 os.chdir(ROOT + "/java")
+main(1, [".java"])
 main()
 os.chdir(ROOT + "/lua")
 main()
