@@ -96,10 +96,10 @@ static JSValue liba_tf_zero(JSContext *ctx, JSValueConst this_val, int argc, JSV
 
 enum
 {
-    self_num_,
-    self_den_,
-    self_input_,
-    self_output_,
+    self_num,
+    self_den,
+    self_input,
+    self_output,
 };
 
 static JSValue liba_tf_get(JSContext *ctx, JSValueConst this_val, int magic)
@@ -108,10 +108,10 @@ static JSValue liba_tf_get(JSContext *ctx, JSValueConst this_val, int magic)
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_num_: return js_array_num_new(ctx, self->num_p, self->num_n);
-    case self_den_: return js_array_num_new(ctx, self->den_p, self->den_n);
-    case self_input_: return js_array_num_new(ctx, self->input, self->num_n);
-    case self_output_: return js_array_num_new(ctx, self->output, self->den_n);
+    case self_num: return js_array_num_new(ctx, self->num_p, self->num_n);
+    case self_den: return js_array_num_new(ctx, self->den_p, self->den_n);
+    case self_input: return js_array_num_new(ctx, self->input, self->num_n);
+    case self_output: return js_array_num_new(ctx, self->output, self->den_n);
     default: return JS_UNDEFINED;
     }
 }
@@ -122,10 +122,10 @@ static JSValue liba_tf_set(JSContext *ctx, JSValueConst this_val, JSValueConst v
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_num_:
+    case self_num:
         if (JS_IsObject(val)) { liba_tf_set_num_(ctx, self, val); }
         break;
-    case self_den_:
+    case self_den:
         if (JS_IsObject(val)) { liba_tf_set_den_(ctx, self, val); }
         break;
     default:
@@ -136,10 +136,10 @@ static JSValue liba_tf_set(JSContext *ctx, JSValueConst this_val, JSValueConst v
 
 static JSCFunctionListEntry const liba_tf_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.tf", 0),
-    JS_CGETSET_MAGIC_DEF("num", liba_tf_get, liba_tf_set, self_num_),
-    JS_CGETSET_MAGIC_DEF("den", liba_tf_get, liba_tf_set, self_den_),
-    JS_CGETSET_MAGIC_DEF("input", liba_tf_get, liba_tf_set, self_input_),
-    JS_CGETSET_MAGIC_DEF("output", liba_tf_get, liba_tf_set, self_output_),
+    JS_CGETSET_MAGIC_DEF("num", liba_tf_get, liba_tf_set, self_num),
+    JS_CGETSET_MAGIC_DEF("den", liba_tf_get, liba_tf_set, self_den),
+    JS_CGETSET_MAGIC_DEF("input", liba_tf_get, liba_tf_set, self_input),
+    JS_CGETSET_MAGIC_DEF("output", liba_tf_get, liba_tf_set, self_output),
     JS_CFUNC_DEF("iter", 1, liba_tf_iter),
     JS_CFUNC_DEF("zero", 0, liba_tf_zero),
 };

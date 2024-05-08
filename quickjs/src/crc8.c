@@ -116,14 +116,14 @@ fail:
 
 enum
 {
-    self_table_,
+    self_table,
 };
 
 static JSValue liba_crc8_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
     struct crc8 *const self = (struct crc8 *)JS_GetOpaque2(ctx, this_val, liba_crc8_class_id);
     if (!self) { return JS_EXCEPTION; }
-    if (magic == self_table_)
+    if (magic == self_table)
     {
         return js_array_u8_new(ctx, self->table, 0x100);
     }
@@ -132,7 +132,7 @@ static JSValue liba_crc8_get(JSContext *ctx, JSValueConst this_val, int magic)
 
 static JSCFunctionListEntry const liba_crc8_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.crc8", 0),
-    JS_CGETSET_MAGIC_DEF("table", liba_crc8_get, NULL, self_table_),
+    JS_CGETSET_MAGIC_DEF("table", liba_crc8_get, NULL, self_table),
     JS_CFUNC_DEF("gen", 2, liba_crc8_gen),
     JS_CFUNC_DEF("eval", 2, liba_crc8_eval),
     JS_CFUNC_DEF("pack", 2, liba_crc8_pack),
