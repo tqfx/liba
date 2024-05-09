@@ -1,9 +1,9 @@
 ---@diagnostic disable
 -- option: liba-wasm
 option("liba-wasm")
-set_default(true)
 set_showmenu(true)
 set_category("liba")
+set_default(is_plat("wasm") or false)
 set_description("Enable/Disable JavaScript WebAssembly")
 option_end()
 
@@ -23,7 +23,7 @@ set_category("liba")
 set_description("Enable/Disable JavaScript BigInt")
 option_end()
 
-if is_plat("wasm") then
+if get_config("liba-wasm") and is_plat("wasm") then
     target("ajs")
     set_kind("binary")
     add_files("src/**.cc")

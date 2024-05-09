@@ -59,6 +59,7 @@ option_end()
 
 -- option: rpath
 option("liba-rpath")
+set_default("")
 set_showmenu(true)
 set_category("liba")
 set_description("dynamic library search path")
@@ -133,7 +134,7 @@ else
 end
 -- add the platform options
 rpath = get_config("liba-rpath")
-if rpath then
+if rpath and path.is_absolute(rpath) then
     add_linkdirs(rpath, { public = true })
     add_rpathdirs(rpath, { public = true })
 end
