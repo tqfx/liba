@@ -42,7 +42,7 @@
 #define PRIt "I"
 #define SCNt "I"
 #else /* C < 199900 and C++ < 201100 */
-#if LONG_MAX < INT64_MAX
+#if LONG_MAX == INT32_MAX
 #define PRIj "ll"
 #define SCNj "ll"
 #else
