@@ -4,9 +4,7 @@ set(OPTIONS MAIN_DEPENDENCY ${CMAKE_CURRENT_LIST_DIR}/src/a.pyx
 )
 
 if(NOT CMAKE_VERSION VERSION_LESS 3.2)
-  list(APPEND OPTIONS BYPRODUCTS ${CMAKE_CURRENT_LIST_DIR}/src/a.c
-    ${CMAKE_CURRENT_LIST_DIR}/liba${CYTHON_SUFFIX}
-  )
+  list(APPEND OPTIONS BYPRODUCTS ${CMAKE_CURRENT_LIST_DIR}/src/a.c)
 endif()
 
 add_custom_command( # https://cython.readthedocs.io/en/stable
