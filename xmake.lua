@@ -39,8 +39,8 @@ end
 add_rules("mode.check", "mode.debug", "mode.release")
 if is_mode("check") and not is_plat("mingw") then
     local flags = {
-        "-fsanitize=address,leak",
         "-fsanitize=address,undefined",
+        "-fsanitize=address,leak",
         "-fsanitize-recover=all",
         "-fno-omit-frame-pointer",
     }
