@@ -7,10 +7,10 @@ except ImportError:
     from distutils.extension import Extension
     from distutils.core import setup
 try:
-    USE_CYTHON = True
+    USE_CYTHON = 1
     from Cython.Build import cythonize
 except ImportError:
-    USE_CYTHON = False
+    USE_CYTHON = 0
     from subprocess import Popen
 from argparse import ArgumentParser
 from sys import byteorder
@@ -43,7 +43,7 @@ def strtobool(s):
 os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
 if len(sys.argv) < 2:
     sys.argv += ["--quiet", "build_ext", "--inplace"]
-if not USE_CYTHON:
+if USE_CYTHON == 0:
     CYTHON = find_executable("cython3", "cython")
 LIBA_OPENMP = os.environ.get("LIBA_OPENMP")
 if LIBA_OPENMP:
@@ -163,13 +163,11 @@ ext_modules = [
     )
 ]
 if USE_CYTHON:
-    ext_modules = cythonize(
-        ext_modules,
-        quiet=True,
-    )
+    ext_modules = cythonize(ext_modules, quiet=True)
 elif CYTHON:
-    cmd = [CYTHON, "--fast-fail", "--module-name"]
-    Popen(cmd + ["liba", "python/src/a.pyx"]).wait()
+    cmd = [CYTHON, "--fast-fail"]
+    cmd += ["--module-name", "liba"]
+    Popen(cmd + ["python/src/a.pyx"]).wait()
 
 
 class Build(build_ext):  # type: ignore
