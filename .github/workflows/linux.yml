@@ -64,7 +64,7 @@ jobs:
           . _/emsdk/emsdk_env.sh
           set -x
           cmake -S . -B build -G "Ninja Multi-Config" \
-            -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/_ \
+            -DCMAKE_INSTALL_PREFIX=_ \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_ANALYZER=1 \
@@ -74,7 +74,6 @@ jobs:
             -DLIBA_JAVASCRIPT_BIGINT=1 \
             -DLIBA_WITH_LUA=1 \
             -DLIBA_PYTHON=1 \
-            -DLIBA_VCPKG=1 \
             -DLIBA_JAVA=1 \
             -DLIBA_QUICKJS=1 \
             -DLIBA_LIBTOOL=1 \
@@ -117,11 +116,16 @@ jobs:
           cmake --build build --config RelWithDebInfo --target install
           cmake -S demo -B demo/build
           cmake --build demo/build -v
+      - uses: actions/checkout@v4
+        with:
+          repository: microsoft/vcpkg
+          path: _/vcpkg
       - name: Run vcpkg
         env:
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
         run: |
           set -x
-          cp -r build/vcpkg/* $VCPKG_INSTALLATION_ROOT
-          vcpkg install liba[ipo,pkgconfig]
+          cmake -B build -DLIBA_VCPKG=_/vcpkg
+          _/vcpkg/bootstrap-vcpkg.sh -disableMetrics
+          _/vcpkg/vcpkg install liba[ipo,pkgconfig]

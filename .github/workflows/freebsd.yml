@@ -26,14 +26,13 @@ jobs:
             . _/bin/activate
             python -m pip install -r requirements.txt
             cmake -S . -B build -G "Ninja Multi-Config" \
-              -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/_ \
+              -DCMAKE_INSTALL_PREFIX=_ \
               -DBUILD_TESTING=1 \
               -DLIBA_WARNINGS=1 \
               -DLIBA_ANALYZER=1 \
               -DLIBA_SANITIZE=1 \
               -DLIBA_WITH_LUA=1 \
               -DLIBA_PYTHON=1 \
-              -DLIBA_VCPKG=1 \
               -DLIBA_JAVA=1 \
               -DLIBA_LIBTOOL=1 \
               -DLIBA_PKGCONFIG=1

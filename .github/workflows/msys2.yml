@@ -46,12 +46,11 @@ jobs:
         run: |
           set -x
           cmake -S . -B build -G Ninja -DPython_ROOT_DIR=D:/msys64/${{ matrix.sys }} \
-            -DCMAKE_INSTALL_PREFIX=$(pwd)/_ \
+            -DCMAKE_INSTALL_PREFIX=_ \
             -DBUILD_TESTING=1 \
             -DLIBA_WARNINGS=1 \
             -DLIBA_ANALYZER=1 \
             -DLIBA_PYTHON=1 \
-            -DLIBA_VCPKG=1 \
             -DLIBA_JAVA=1 \
             -DLIBA_LUA=1
       - name: Run ninja
@@ -79,12 +78,17 @@ jobs:
           cmake --build build --config RelWithDebInfo --target install
           cmake -S demo -B demo/build -DCMAKE_PREFIX_PATH=$(pwd)/_
           cmake --build demo/build -v
+      - uses: actions/checkout@v4
+        with:
+          repository: microsoft/vcpkg
+          path: _/vcpkg
       - name: Run vcpkg
         shell: msys2 {0}
         env:
           MSYSTEM: ${{ matrix.sys }}
         run: |
           set -x
-          cp -r build/vcpkg/* $VCPKG_INSTALLATION_ROOT
-          $VCPKG_INSTALLATION_ROOT/vcpkg install liba[ipo,pkgconfig]:${{ matrix.triple }}-mingw-static
-          $VCPKG_INSTALLATION_ROOT/vcpkg install liba[ipo,pkgconfig]:${{ matrix.triple }}-mingw-dynamic
+          cmake -B build -DLIBA_VCPKG=$(pwd)/_/vcpkg
+          _/vcpkg/bootstrap-vcpkg.sh -disableMetrics
+          _/vcpkg/vcpkg install liba[ipo,pkgconfig]:${{ matrix.triple }}-mingw-static
+          _/vcpkg/vcpkg install liba[ipo,pkgconfig]:${{ matrix.triple }}-mingw-dynamic
