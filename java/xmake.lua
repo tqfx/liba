@@ -11,33 +11,57 @@ rule("jar")
 set_extensions(".java")
 on_load(function(target)
     import("lib.detect.find_tool")
-    target:set("kind", "static")
-    target:set("prefixname", "")
-    target:set("extension", ".jar")
     local opt = { paths = { "$(env JAVA_HOME)/bin" }, check = function(...) end }
     target:set("javac", assert(find_tool("javac", opt), "javac not found!").program)
     local opt = { paths = { "$(env JAVA_HOME)/bin" }, check = function(...) end }
     target:set("jar", assert(find_tool("jar", opt), "jar not found!").program)
+    target:set("kind", "static")
+    target:set("prefixname", "")
+    target:set("extension", ".jar")
 end)
-on_build_files(function(target, sourcebatch, opt)
+on_buildcmd_files(function(target, batchcmds, sourcebatch, opt)
+    local src = path.join(target:scriptdir(), "src")
+    local src = path.relative(src, os.projectdir())
+    local out = path.join(target:objectdir(), src)
+    local targetfile = target:targetfile()
+
     sourcebatch.objectfiles = {}
-    local out = target:objectdir()
-    local classpath = path.join(target:scriptdir(), "src")
+    sourcebatch.dependfiles = {}
     for _, sourcefile in ipairs(sourcebatch.sourcefiles) do
-        local source = path.relative(sourcefile, classpath):replace(".java", ".class")
-        table.insert(sourcebatch.objectfiles, path.join(out, source))
-        target:add("objectfiles", source)
+        local objectfile = target:objectfile(sourcefile):gsub("(.+)%.java.+$", "%1.class")
+        local dependfile = target:dependfile(objectfile)
+        table.insert(sourcebatch.objectfiles, objectfile)
+        table.insert(sourcebatch.dependfiles, dependfile)
     end
-    os.mkdir(out)
-    os.vrunv(target:get("javac"), table.join("-classpath", classpath, "-d", out, sourcebatch.sourcefiles))
+
+    batchcmds:show_progress(opt.progress, "${color.build.object}compiling.java %s", path.filename(targetfile))
+    batchcmds:mkdir(out)
+    batchcmds:vrunv(target:get("javac"), table.join("-classpath", src, "-d", out, sourcebatch.sourcefiles))
+
+    batchcmds:add_depfiles(sourcebatch.sourcefiles)
+    for _, objectfile in ipairs(sourcebatch.objectfiles) do
+        batchcmds:set_depmtime(os.mtime(objectfile))
+        batchcmds:set_depcache(sourcebatch.dependfiles[_])
+    end
 end)
-on_link(function(target, opt)
-    import("utils.progress")
-    os.mkdir(target:targetdir())
-    local objectfiles = target:get("objectfiles")
-    local targetfile = path.absolute(target:targetfile())
-    progress.show(opt.progress, "${color.build.target}archiving.$(mode) %s", path.filename(targetfile))
-    os.vrunv(target:get("jar"), table.join("-cf", targetfile, objectfiles), { curdir = target:objectdir() })
+on_linkcmd(function(target, batchcmds, opt)
+    local src = path.join(target:scriptdir(), "src")
+    local src = path.relative(src, os.projectdir())
+    local cwd = path.join(target:objectdir(), src)
+    local targetfile = target:targetfile()
+
+    local objectfiles = {}
+    for _, objectfile in ipairs(target:objectfiles()) do
+        table.insert(objectfiles, path.relative(objectfile, cwd))
+    end
+
+    batchcmds:show_progress(opt.progress, "${color.build.target}archiving.java %s", path.filename(targetfile))
+    batchcmds:mkdir(target:targetdir())
+    batchcmds:vrunv(target:get("jar"), table.join("-cf", path.absolute(targetfile), objectfiles), { curdir = cwd })
+
+    batchcmds:add_depfiles(target:objectfiles())
+    batchcmds:set_depmtime(os.mtime(targetfile))
+    batchcmds:set_depcache(target:dependfile(targetfile))
 end)
 on_install(function(target)
     local installdir = target:installdir()

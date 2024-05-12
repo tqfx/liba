@@ -33,10 +33,9 @@ on_buildcmd_file(function(target, batchcmds, sourcefile, opt)
     local sourcefile_c = sourcefile:replace(".pyx", ".c")
     local objectfile = target:objectfile(sourcefile_c)
     table.insert(target:objectfiles(), objectfile)
-    local cython = target:get("cython")
 
     batchcmds:show_progress(opt.progress, "${color.build.object}compiling.cython %s", sourcefile)
-    batchcmds:vrunv(cython, { "--fast-fail", "--module-name", target:basename(), sourcefile })
+    batchcmds:vrunv(target:get("cython"), { "--fast-fail", "--module-name", target:basename(), sourcefile })
 
     batchcmds:show_progress(opt.progress, "${color.build.object}compiling.$(mode) %s", sourcefile_c)
     batchcmds:compile(sourcefile_c, objectfile)
