@@ -11,8 +11,7 @@ rule("cython")
 set_extensions(".pyx")
 on_load(function(target)
     import("lib.detect.find_tool")
-    local python = get_config("liba-python")
-    local python = assert(find_tool(python) or find_tool("python"), "python not found!")
+    local python = assert(find_tool(get_config("liba-python")), "python not found!")
     local cython = assert(find_tool("cython3") or find_tool("cython"), "cython not found!")
     local suffix = os.iorunv(python.program, {
         "-c",
