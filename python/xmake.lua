@@ -67,6 +67,7 @@ if has_config("liba-python") then
     add_packages(get_config("liba-python"))
     add_installfiles("liba.pyi")
     set_basename("liba")
+    set_warnings("all")
     set_targetdir(".")
     add_deps("a")
     target_end()
