@@ -12,7 +12,7 @@ function(unittest source name)
   endforeach()
 
   add_test(NAME py_${name} WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-    COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/${source}.py ${ARGS}
+    COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_LIST_DIR}/${source}.py ${ARGS}
   )
   set_tests_properties(py_${name} PROPERTIES TIMEOUT 30
     FAIL_REGULAR_EXPRESSION "ERROR;error"
