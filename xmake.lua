@@ -45,6 +45,7 @@ if is_mode("check") and not is_plat("mingw") then
         "-fno-omit-frame-pointer",
     }
     add_cxflags(flags)
+    add_shflags(flags)
     add_ldflags(flags)
 end
 
