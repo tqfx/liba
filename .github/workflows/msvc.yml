@@ -21,8 +21,8 @@ jobs:
         run: |
           python -m venv _
           _/Scripts/Activate.ps1
-          python -m pip install -r requirements.txt
           python -m pip install ninja
+          python -m pip install -r requirements.txt
           Get-ChildItem Env: | Sort Name
       - name: Run cmake
         run: |

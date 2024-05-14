@@ -42,13 +42,14 @@ sources = [
     'src/version.c',
 ]
 
+java_home = get_option('java').replace('\\', '/')
 res = run_command(python, '-c', '''import os, sys, glob
 res = os.path.join('@0@', 'include', '*', 'jni_md.h')
 sys.stdout.write(os.path.dirname(glob.glob(res)[0]))
-'''.format(get_option('java')), capture: true, check: true
+'''.format(java_home), capture: true, check: true
 )
 if res.returncode() == 0
-    includedir = get_option('java') / 'include'
+    includedir = java_home / 'include'
     include = [
         a_include,
         include_directories('include'),
