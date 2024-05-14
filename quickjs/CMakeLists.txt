@@ -1,18 +1,14 @@
-include(../cmake/QuickJSPIC.cmake)
-set(CMAKE_SHARED_MODULE_SUFFIX .so)
-
-if(WIN32)
-  set(CMAKE_SHARED_MODULE_PREFIX lib)
-endif()
-
 if(LIBA_CXX)
   file_scaner(SOURCES RECURSE src EXT c h cc hh cpp hpp)
 else()
   file_scaner(SOURCES RECURSE src EXT c h)
 endif()
 
+include(../cmake/QuickJSPIC.cmake)
+set(CMAKE_SHARED_MODULE_PREFIX "")
+set(CMAKE_SHARED_MODULE_SUFFIX .so)
 add_library(aqjs MODULE $<TARGET_OBJECTS:a> ${SOURCES})
-set_target_properties(aqjs PROPERTIES DEFINE_SYMBOL A_EXPORTS OUTPUT_NAME a)
+set_target_properties(aqjs PROPERTIES DEFINE_SYMBOL A_EXPORTS OUTPUT_NAME ${PROJECT_NAME})
 target_include_directories(aqjs PRIVATE ${QUICKJS_INCLUDE_DIR})
 add_library_properties(aqjs PRIVATE alib)
 set_library_options(aqjs)

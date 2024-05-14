@@ -1,9 +1,5 @@
 set(OBJECTS $<TARGET_OBJECTS:a>)
 
-if(WIN32)
-  set(CMAKE_SHARED_MODULE_PREFIX lib)
-endif()
-
 if(LIBA_WITH_LUA)
   include(${CMAKE_CURRENT_LIST_DIR}/lua.cmake)
   add_subdirectory(${LUA_SOURCE_DIR} ${LUA_BINARY_DIR})
@@ -32,8 +28,9 @@ else()
   file_scaner(SOURCES RECURSE src EXT c h)
 endif()
 
+set(CMAKE_SHARED_MODULE_PREFIX "")
 add_library(alua MODULE ${OBJECTS} ${SOURCES})
-set_target_properties(alua PROPERTIES DEFINE_SYMBOL A_EXPORTS OUTPUT_NAME a)
+set_target_properties(alua PROPERTIES DEFINE_SYMBOL A_EXPORTS OUTPUT_NAME ${PROJECT_NAME})
 target_link_libraries(alua PRIVATE ${LUA_LIBRARIES})
 add_library_properties(alua PRIVATE alib)
 set_library_options(alua)
