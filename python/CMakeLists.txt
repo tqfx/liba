@@ -20,6 +20,9 @@ if(Python_Development_FOUND)
 
   set(CMAKE_SHARED_MODULE_PREFIX "")
   set(python_suffix ${CMAKE_SHARED_MODULE_SUFFIX})
+  set(CMAKE_MSVC_RUNTIME_LIBRARY MultiThreadedDLL)
+  set(CMAKE_C_FLAGS_DEBUG ${CMAKE_C_FLAGS_RELWITHDEBINFO})
+  set(CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
   add_custom_command(OUTPUT ${CMAKE_CURRENT_LIST_DIR}/src/a.c
     COMMAND ${CYTHON_EXECUTABLE} --fast-fail --module-name ${PROJECT_NAME}
     ${CMAKE_CURRENT_LIST_DIR}/src/a.pyx # https://cython.readthedocs.io/en/stable
@@ -37,7 +40,13 @@ if(Python_Development_FOUND)
 
   if(TARGET Python::Python)
     target_link_libraries(apy PRIVATE Python::Python)
+    get_property(implib TARGET Python::Python PROPERTY IMPORTED_IMPLIB_RELEASE)
+
+    if(implib)
+      set_property(TARGET Python::Python PROPERTY MAP_IMPORTED_CONFIG_DEBUG Release)
+    endif()
   else()
+    string(REGEX REPLACE "optimized;([^;]+).*" "\\1" Python_LIBRARIES "${Python_LIBRARIES}")
     target_include_directories(apy PRIVATE ${Python_INCLUDE_DIRS})
     target_link_libraries(apy PRIVATE ${Python_LIBRARIES})
   endif()
