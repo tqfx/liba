@@ -137,10 +137,10 @@ a_have_h = os.path.relpath(config_h, "include/a")
 define_macros = [("A_HAVE_H", '"' + a_have_h + '"'), ("A_EXPORTS", None)]
 if LIBA_FLOAT != 8:
     define_macros += [("A_SIZE_FLOAT", LIBA_FLOAT)]
-if USE_CYTHON and os.path.exists("python/src/a.pyx"):
-    sources += ["python/src/a.pyx"]
-elif CYTHON or os.path.exists("python/src/a.c"):
-    sources += ["python/src/a.c"]
+if USE_CYTHON and os.path.exists("python/src/liba.pyx"):
+    sources += ["python/src/liba.pyx"]
+elif CYTHON or os.path.exists("python/src/liba.c"):
+    sources += ["python/src/liba.c"]
 if not os.path.exists(base):
     os.makedirs(base)
 configure(config_h)
@@ -165,9 +165,7 @@ ext_modules = [
 if USE_CYTHON:
     ext_modules = cythonize(ext_modules, quiet=True)
 elif CYTHON:
-    cmd = [CYTHON, "--fast-fail"]
-    cmd += ["--module-name", "liba"]
-    Popen(cmd + ["python/src/a.pyx"]).wait()
+    Popen([CYTHON, "--fast-fail", "python/src/liba.pyx"]).wait()
 
 
 class Build(build_ext):  # type: ignore

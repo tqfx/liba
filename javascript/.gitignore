@@ -1,2 +1,3 @@
 liba.*
+!liba.cc
 !liba.d.ts

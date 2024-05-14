@@ -95,13 +95,6 @@ check_math(A_HAVE_CASINH casinh)
 check_math(A_HAVE_CACOSH cacosh)
 check_math(A_HAVE_CATANH catanh)
 
-option(LIBA_PYTHON "Enable/Disable python" 0)
-
-if(LIBA_PYTHON)
-  find_package(Python COMPONENTS Interpreter OPTIONAL_COMPONENTS Development)
-  find_package(Cython)
-endif()
-
 option(LIBA_DOXYGEN "Enable/Disable doxygen" 0)
 
 if(LIBA_DOXYGEN)
@@ -462,8 +455,17 @@ if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/lua/CMakeLists.txt)
 endif()
 
 if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/python/CMakeLists.txt)
-  if(Python_FOUND AND CYTHON_FOUND)
-    add_subdirectory(python)
+  option(LIBA_PYTHON "Enable/Disable python" 0)
+
+  if(LIBA_PYTHON)
+    find_package(Python COMPONENTS Development OPTIONAL_COMPONENTS Interpreter)
+    find_package(Cython)
+  endif()
+
+  if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/python/src/liba.c OR CYTHON_FOUND)
+    if(Python_FOUND)
+      add_subdirectory(python)
+    endif()
   endif()
 endif()
 
@@ -516,7 +518,7 @@ if(CLANG_FORMAT_FOUND)
   add_dependencies(afmt afmt.c)
 endif()
 
-if(PROJECT_IS_TOP_LEVEL AND BUILD_TESTING AND LIBA_PYTHON)
+if(PROJECT_IS_TOP_LEVEL AND BUILD_TESTING)
   find_package(Black)
 endif()
 

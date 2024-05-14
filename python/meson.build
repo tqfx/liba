@@ -6,10 +6,9 @@ add_languages('cython')
 
 python.extension_module(
     'liba',
-    'src/a.pyx',
+    'src/liba.pyx',
     c_args: c_args,
     cpp_args: c_args,
-    cython_args: '--module-name=liba',
     dependencies: python.dependency(),
     implicit_include_directories: false,
     include_directories: a_include,
