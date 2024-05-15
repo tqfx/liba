@@ -11,7 +11,8 @@ rule("cython")
 set_extensions(".pyx")
 on_load(function(target)
     import("lib.detect.find_tool")
-    local python = assert(find_tool(get_config("liba-python")), "python not found!")
+    local python = get_config("liba-python"):split("::")
+    local python = assert(find_tool(python[#python]), "python not found!")
     local cython = assert(find_tool("cython3") or find_tool("cython"), "cython not found!")
     local suffix = os.iorunv(python.program, {
         "-c",
@@ -26,6 +27,17 @@ on_load(function(target)
     target:set("installdir", prefix:trim())
     target:add("runenvs", "PYTHONPATH", target:targetdir())
     target:set("platlib", path.relative(platlib:trim(), prefix:trim()))
+    local python = target:pkg(get_config("liba-python"))
+    local links = python:get("links")
+    if type(links) ~= "table" then
+        links = {}
+    end
+    for _, link in ipairs(links) do
+        if link:startswith("py") then
+            python:set("links", link)
+            break
+        end
+    end
 end)
 on_buildcmd_file(function(target, batchcmds, sourcefile, opt)
     local sourcefile_c = sourcefile:replace(".pyx", ".c")
@@ -45,7 +57,7 @@ end)
 rule_end()
 
 if has_config("liba-python") then
-    add_requires(get_config("liba-python"))
+    add_requires(get_config("liba-python"), { system = true })
     target("apy")
     add_rules("cython")
     add_defines("A_EXPORTS")

@@ -9,13 +9,14 @@ jobs:
         os: [ ubuntu-latest, macos-latest ]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: xmake-io/github-action-setup-xmake@v1
-        with:
-          xmake-version: latest
       - uses: actions/checkout@v4
         with:
           lfs: true
           submodules: true
+      - uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          actions-cache-key: xmake
+          actions-cache-folder: _
       - name: Run cargo
         run: cargo test --all-features
       - name: Run setup
@@ -23,6 +24,7 @@ jobs:
           python3 -m venv _
           . _/bin/activate
           python3 -m pip install -r requirements.txt
+          env
       - name: Run xmake f
         run: |
           . _/bin/activate
@@ -44,21 +46,22 @@ jobs:
       fail-fast: false
     runs-on: windows-latest
     steps:
-      - uses: xmake-io/github-action-setup-xmake@v1
-        with:
-          xmake-version: latest
       - uses: actions/checkout@v4
         with:
           lfs: true
           submodules: true
+      - uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          actions-cache-key: xmake
+          actions-cache-folder: _
       - name: Run cargo
         run: cargo test --all-features
       - name: Run setup
         run: |
-          Set-PSDebug -Trace 1
           python -m venv _
           _/Scripts/Activate.ps1
           python -m pip install -r requirements.txt
+          Get-ChildItem Env: | Sort Name
       - name: Run xmake f
         run: |
           _/Scripts/Activate.ps1
