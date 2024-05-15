@@ -14,19 +14,21 @@ if has_config("liba-lua") then
     add_files("src/**.c")
     add_defines("A_EXPORTS")
     on_load(function(target)
-        target:set("targetdir", path.join(target:targetdir(), get_config("liba-lua")))
+        local version = target:pkg(get_config("liba-lua")):version()
+        if version:major() >= 5 then
+            version = version:major() .. "." .. version:minor()
+        else
+            version = "5.1"
+        end
+        target:set("lua.version", version)
+        target:set("targetdir", path.join(target:targetdir(), "lua" .. version))
     end)
     on_install(function(target)
         local installdir = target:installdir()
         if installdir then
-            local lua = get_config("liba-lua")
-            if lua:match("luajit") then
-                lua = "lua/5.1"
-            elseif lua:match("lua%d") then
-                lua = lua:replace("lua", "lua/")
-            end
+            local version = target:get("lua.version")
             print("installing %s to %s ..", target:name(), installdir)
-            installdir = path.join(installdir, "lib", lua)
+            installdir = path.join(installdir, "lib", "lua", version)
             os.mkdir(installdir)
             os.vcp(target:targetfile(), installdir)
         end
