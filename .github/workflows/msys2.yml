@@ -25,6 +25,8 @@ jobs:
           update: true
           location: D:\
           msystem: ${{ matrix.sys }}
+          install: >-
+            patch
           pacboy: >-
             toolchain:p
             cmake:p
@@ -52,7 +54,8 @@ jobs:
             -DLIBA_ANALYZER=1 \
             -DLIBA_PYTHON=1 \
             -DLIBA_JAVA=1 \
-            -DLIBA_LUA=1
+            -DLIBA_LUA=1 \
+            -DLIBA_WITH_QUICKJS=1
       - name: Run ninja
         shell: msys2 {0}
         env:

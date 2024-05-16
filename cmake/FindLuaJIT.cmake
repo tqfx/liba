@@ -120,22 +120,27 @@ endif()
 
 find_library(LUAJIT_LIBRARY NAMES_PER_DIR NAMES luajit-5.1 lua51 lua5.1 lua-5.1)
 mark_as_advanced(LUAJIT_LIBRARY)
-if(EXISTS "${LUAJIT_LIBRARY}")
-  list(APPEND LUAJIT_LIBRARIES ${LUAJIT_LIBRARY})
-  if(UNIX AND NOT APPLE AND NOT BEOS)
-    find_library(LUA_MATH_LIBRARY m)
-    mark_as_advanced(LUA_MATH_LIBRARY)
-    if(NOT EXISTS "${LUA_MATH_LIBRARY}")
-      list(APPEND LUAJIT_LIBRARIES m)
-    else()
-      list(APPEND LUAJIT_LIBRARIES ${LUA_MATH_LIBRARY})
-    endif()
-    get_filename_component(ext ${LUAJIT_LIBRARY} EXT)
-    if(CMAKE_STATIC_LIBRARY_SUFFIX STREQUAL ext)
-      list(APPEND LUAJIT_LIBRARIES ${CMAKE_DL_LIBS})
-    endif()
-    set(ext)
+
+set(LUAJIT_LIBRARY2)
+if(NOT APPLE AND UNIX)
+  find_library(LUA_MATH_LIBRARY m)
+  mark_as_advanced(LUA_MATH_LIBRARY)
+  if(EXISTS "${LUA_MATH_LIBRARY}")
+    list(APPEND LUAJIT_LIBRARY2 ${LUA_MATH_LIBRARY})
+  else()
+    list(APPEND LUAJIT_LIBRARY2 m)
   endif()
+  get_filename_component(ext ${LUAJIT_LIBRARY} EXT)
+  if(ext STREQUAL CMAKE_STATIC_LIBRARY_SUFFIX)
+    list(APPEND LUAJIT_LIBRARY2 ${CMAKE_DL_LIBS})
+  endif()
+  set(ext)
+endif()
+
+if(EXISTS "${LUAJIT_LIBRARY}")
+  set(LUAJIT_LIBRARIES
+    ${LUAJIT_LIBRARY} ${LUAJIT_LIBRARY2}
+  )
 endif()
 
 find_package_handle_standard_args(LuaJIT
@@ -152,15 +157,12 @@ if(LUAJIT_FOUND)
   if(NOT TARGET luajit AND EXISTS "${LUAJIT_LIBRARY}")
     add_library(luajit UNKNOWN IMPORTED)
     set_target_properties(luajit PROPERTIES
-      INTERFACE_INCLUDE_DIRECTORIES "${LUAJIT_INCLUDE_DIR}"
       IMPORTED_LINK_INTERFACE_LANGUAGES C
+      INTERFACE_INCLUDE_DIRECTORIES "${LUAJIT_INCLUDE_DIR}"
       IMPORTED_LOCATION "${LUAJIT_LIBRARY}"
     )
-    set(libraries ${LUAJIT_LIBRARIES})
-    list(REMOVE_ITEM libraries ${LUAJIT_LIBRARY})
     set_property(TARGET luajit APPEND PROPERTY
-      INTERFACE_LINK_LIBRARIES ${libraries}
+      INTERFACE_LINK_LIBRARIES ${LUAJIT_LIBRARY2}
     )
-    set(libraries)
   endif()
 endif()

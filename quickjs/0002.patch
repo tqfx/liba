@@ -1,0 +1,138 @@
+diff --git a/qjsc.c b/qjsc.c
+index f8e60b3..4b14c7a 100644
+--- a/qjsc.c
++++ b/qjsc.c
+@@ -463,6 +463,121 @@ static int output_executable(const char *out_filename, const char *cfilename,
+     unlink(cfilename);
+     return ret;
+ }
++#elif defined(CONFIG_CC) && defined(_WIN32)
++#include <windows.h>
++
++int exec_cmd(char **argv)
++{
++    STARTUPINFO si;
++    PROCESS_INFORMATION pi;
++    LPSTR args;
++    {
++        unsigned int cur = 0;
++        for (char *const *strv = argv; *strv; ++strv) {
++            for (char const *str = *strv; *str; ++str) {
++                if (*str != '"') { ++cur; }
++                else { cur += 2; /* \" */ }
++            }
++            cur += 3; /* " " */
++        }
++        args = (char *)LocalAlloc(0, cur);
++        cur = 0;
++        for (char *const *strv = argv; *strv; ++strv) {
++            args[cur++] = '"';
++            for (char const *str = *strv; *str; ++str) {
++                if (*str != '"') {
++                    args[cur++] = *str;
++                }
++                else {
++                    args[cur++] = '\\';
++                    args[cur++] = *str;
++                }
++            }
++            args[cur++] = '"';
++            args[cur++] = ' ';
++        }
++        args[cur - 1] = 0;
++    }
++    memset(&si, 0, sizeof(si));
++    memset(&pi, 0, sizeof(pi));
++    if (CreateProcess(NULL, args, NULL, NULL, TRUE, 0, NULL, NULL, &si, &pi)) {
++        CloseHandle(pi.hThread);
++    }
++    LocalFree(args);
++    if (WaitForSingleObject(pi.hProcess, INFINITE) == WAIT_OBJECT_0) {
++        return 0;
++    }
++    return ~0;
++}
++
++static int output_executable(const char *out_filename, const char *cfilename,
++                             BOOL use_lto, BOOL verbose, const char *exename)
++{
++    const char *argv[64];
++    const char **arg, *lto_suffix;
++    char libjsname[1024];
++    char exe_dir[1024], inc_dir[1024], lib_dir[1024], buf[1024], *p;
++    int ret;
++
++    /* get the directory of the executable */
++    pstrcpy(exe_dir, sizeof(exe_dir), exename);
++    p = strrchr(exe_dir, '/');
++    if (p) {
++        *p = '\0';
++    } else {
++        pstrcpy(exe_dir, sizeof(exe_dir), ".");
++    }
++
++    /* if 'quickjs.h' is present at the same path as the executable, we
++       use it as include and lib directory */
++    snprintf(buf, sizeof(buf), "%s/quickjs.h", exe_dir);
++    if (access(buf, R_OK) == 0) {
++        pstrcpy(inc_dir, sizeof(inc_dir), exe_dir);
++        pstrcpy(lib_dir, sizeof(lib_dir), exe_dir);
++    } else {
++        snprintf(inc_dir, sizeof(inc_dir), "%s/include/quickjs", CONFIG_PREFIX);
++        snprintf(lib_dir, sizeof(lib_dir), "%s/lib/quickjs", CONFIG_PREFIX);
++    }
++
++    lto_suffix = "";
++
++    arg = argv;
++    *arg++ = CONFIG_CC;
++    *arg++ = "-pthread";
++    *arg++ = "-O2";
++#ifdef CONFIG_LTO
++    if (use_lto) {
++        *arg++ = "-flto";
++        lto_suffix = ".lto";
++    }
++#endif
++    /* XXX: use the executable path to find the includes files and
++       libraries */
++    *arg++ = "-D_GNU_SOURCE";
++    *arg++ = "-D__USE_MINGW_ANSI_STDIO";
++    *arg++ = "-I";
++    *arg++ = inc_dir;
++    *arg++ = "-o";
++    *arg++ = out_filename;
++    *arg++ = cfilename;
++    *arg++ = "-Wl,-Bstatic,--whole-archive";
++    *arg++ = "-lwinpthread";
++    *arg++ = "-Wl,--no-whole-archive";
++    snprintf(libjsname, sizeof(libjsname), "%s/libquickjs%s.a",
++             lib_dir, lto_suffix);
++    *arg++ = libjsname;
++    *arg = NULL;
++
++    if (verbose) {
++        for(arg = argv; *arg != NULL; arg++)
++            printf("%s ", *arg);
++        printf("\n");
++    }
++
++    ret = exec_cmd((char **)argv);
++    _unlink(cfilename);
++    return ret;
++}
+ #else
+ static int output_executable(const char *out_filename, const char *cfilename,
+                              BOOL use_lto, BOOL verbose, const char *exename)
+@@ -604,7 +719,11 @@ int main(int argc, char **argv)
+
+     if (!out_filename) {
+         if (output_type == OUTPUT_EXECUTABLE) {
++#if defined(_WIN32)
++            out_filename = "a.exe";
++#else /* !_WIN32 */
+             out_filename = "a.out";
++#endif /* _WIN32 */
+         } else {
+             out_filename = "out.c";
+         }

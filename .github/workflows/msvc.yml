@@ -35,7 +35,7 @@ jobs:
             -DLIBA_ANALYZER=1 `
             -DLIBA_SANITIZE=1 `
             -DLIBA_WITH_LUA=1 `
-            -DLIBA_PYTHON=1 `
+            -DLIBA_PYTHON=${{ matrix.arch == 'x64' }} `
             -DLIBA_JAVA=1
       - name: Run build
         env:

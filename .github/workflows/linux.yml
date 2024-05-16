@@ -7,7 +7,7 @@ jobs:
       fail-fast: false
       matrix:
         include: [
-          { cc: gcc-13, cxx: g++-13 },
+          { cc: gcc, cxx: g++ },
           { cc: clang, cxx: clang++ },
         ]
     runs-on: ubuntu-latest
@@ -37,22 +37,6 @@ jobs:
           python3 -m pip install ninja
           python3 -m pip install -r requirements.txt
           env
-      - uses: actions/cache@v4
-        id: cache-quickjs
-        with:
-          path: |
-            _/bin/qjs
-            _/bin/qjsc
-            _/lib/quickjs/libquickjs.a
-            _/lib/quickjs/libquickjs.lto.a
-            _/include/quickjs/quickjs.h
-            _/include/quickjs/quickjs-libc.h
-          key: quickjs-linux
-      - if: steps.cache-quickjs.outputs.cache-hit != 'true'
-        run: |
-          curl https://bellard.org/quickjs/quickjs-2024-01-13.tar.xz | tar -xJf -
-          make install PREFIX=${{ github.workspace }}/_ -C quickjs-2024-01-13
-          rm -rf quickjs-2024-01-13
       - name: Run cmake
         env:
           EMSDK_QUIET: 1
@@ -75,7 +59,7 @@ jobs:
             -DLIBA_WITH_LUA=1 \
             -DLIBA_PYTHON=1 \
             -DLIBA_JAVA=1 \
-            -DLIBA_QUICKJS=1 \
+            -DLIBA_WITH_QUICKJS=1 \
             -DLIBA_LIBTOOL=1 \
             -DLIBA_PKGCONFIG=1
       - name: Run ninja

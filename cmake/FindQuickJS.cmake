@@ -35,7 +35,7 @@
 #
 # ``QUICKJS_INCLUDE_DIR``
 #
-# ``QUICKJS_LIBRARY_IPO``
+# ``QUICKJS_LTO_LIBRARY``
 #
 # ``QUICKJS_LIBRARY``
 #
@@ -62,23 +62,36 @@ if(QUICKJS_VERSION)
   string(REGEX REPLACE ".*version[ ]+([^\n ]+).*" "\\1" QUICKJS_VERSION "${QUICKJS_VERSION}")
 endif()
 
-find_library(QUICKJS_LIBRARY_IPO NAMES quickjs.lto PATH_SUFFIXES quickjs)
+find_library(QUICKJS_LTO_LIBRARY NAMES quickjs.lto PATH_SUFFIXES quickjs)
 find_library(QUICKJS_LIBRARY NAMES quickjs PATH_SUFFIXES quickjs)
-mark_as_advanced(QUICKJS_LIBRARY_IPO QUICKJS_LIBRARY)
-if(EXISTS "${QUICKJS_LIBRARY}" OR EXISTS "${QUICKJS_LIBRARY_IPO}")
-  if(EXISTS "${QUICKJS_LIBRARY_IPO}")
-    list(APPEND QUICKJS_LIBRARIES ${QUICKJS_LIBRARY_IPO})
-  elseif(EXISTS "${QUICKJS_LIBRARY}")
-    list(APPEND QUICKJS_LIBRARIES ${QUICKJS_LIBRARY})
+mark_as_advanced(QUICKJS_LTO_LIBRARY QUICKJS_LIBRARY)
+
+set(QUICKJS_LIBRARY2)
+get_filename_component(ext "${QUICKJS_LIBRARY}" EXT)
+if(NOT APPLE AND UNIX)
+  find_library(QUICKJS_MATH_LIBRARY m)
+  mark_as_advanced(QUICKJS_MATH_LIBRARY)
+  if(EXISTS "${QUICKJS_MATH_LIBRARY}")
+    list(APPEND QUICKJS_LIBRARY2 ${QUICKJS_MATH_LIBRARY})
+  else()
+    list(APPEND QUICKJS_LIBRARY2 m)
   endif()
-  if(UNIX)
-    list(APPEND QUICKJS_LIBRARIES m ${CMAKE_DL_LIBS})
+  if(ext STREQUAL CMAKE_STATIC_LIBRARY_SUFFIX)
+    list(APPEND QUICKJS_LIBRARY2 ${CMAKE_DL_LIBS})
   endif()
-  find_library(QUICKJS_PTHREAD_LIBRARY pthread)
-  mark_as_advanced(QUICKJS_PTHREAD_LIBRARY)
-  if(QUICKJS_PTHREAD_LIBRARY)
-    list(APPEND QUICKJS_LIBRARIES pthread)
+endif()
+if(ext STREQUAL CMAKE_STATIC_LIBRARY_SUFFIX)
+  find_package(Threads)
+  if(CMAKE_USE_PTHREADS_INIT)
+    list(APPEND QUICKJS_LIBRARY2 pthread)
   endif()
+endif()
+set(ext)
+
+if(EXISTS "${QUICKJS_LIBRARY}")
+  set(QUICKJS_LIBRARIES
+    ${QUICKJS_LIBRARY} ${QUICKJS_LIBRARY2}
+  )
 endif()
 
 find_package_handle_standard_args(QuickJS
@@ -93,28 +106,27 @@ find_package_handle_standard_args(QuickJS
     QUICKJS_VERSION
 )
 
-if(NOT TARGET quickjs AND QUICKJS_FOUND)
-  set(libraries ${QUICKJS_LIBRARIES})
-  if(EXISTS "${QUICKJS_LIBRARY_IPO}" OR EXISTS "${QUICKJS_LIBRARY}")
-    add_library(quickjs UNKNOWN IMPORTED)
-    set_target_properties(quickjs PROPERTIES
-      INTERFACE_INCLUDE_DIRECTORIES "${QUICKJS_INCLUDE_DIR}"
+if(QUICKJS_FOUND)
+  if(NOT TARGET quickjs.lto AND EXISTS "${QUICKJS_LTO_LIBRARY}")
+    add_library(quickjs.lto UNKNOWN IMPORTED)
+    set_target_properties(quickjs.lto PROPERTIES
       IMPORTED_LINK_INTERFACE_LANGUAGES C
+      INTERFACE_INCLUDE_DIRECTORIES "${QUICKJS_INCLUDE_DIR}"
+      IMPORTED_LOCATION "${QUICKJS_LTO_LIBRARY}"
     )
-    if(EXISTS "${QUICKJS_LIBRARY_IPO}")
-      list(REMOVE_ITEM libraries ${QUICKJS_LIBRARY_IPO})
-      set_property(TARGET quickjs PROPERTY
-        IMPORTED_LOCATION "${QUICKJS_LIBRARY_IPO}"
-      )
-    elseif(EXISTS "${QUICKJS_LIBRARY}")
-      list(REMOVE_ITEM libraries ${QUICKJS_LIBRARY})
-      set_property(TARGET quickjs PROPERTY
-        IMPORTED_LOCATION "${QUICKJS_LIBRARY}"
-      )
-    endif()
-    set_property(TARGET quickjs APPEND PROPERTY
-      INTERFACE_LINK_LIBRARIES ${libraries}
+    set_property(TARGET quickjs.lto APPEND PROPERTY
+      INTERFACE_LINK_LIBRARIES ${QUICKJS_LIBRARY2}
     )
   endif()
-  set(libraries)
+  if(NOT TARGET quickjs AND EXISTS "${QUICKJS_LIBRARY}")
+    add_library(quickjs UNKNOWN IMPORTED)
+    set_target_properties(quickjs PROPERTIES
+      IMPORTED_LINK_INTERFACE_LANGUAGES C
+      INTERFACE_INCLUDE_DIRECTORIES "${QUICKJS_INCLUDE_DIR}"
+      IMPORTED_LOCATION "${QUICKJS_LIBRARY}"
+    )
+    set_property(TARGET quickjs APPEND PROPERTY
+      INTERFACE_LINK_LIBRARIES ${QUICKJS_LIBRARY2}
+    )
+  endif()
 endif()

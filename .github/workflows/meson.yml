@@ -60,6 +60,10 @@ jobs:
         with:
           repository: tqfx/lua
           path: _/lua
+      - uses: actions/checkout@v4
+        with:
+          repository: tqfx/quickjs
+          path: _/quickjs
       - name: Run setup
         env:
           CC: ${{ matrix.cc }}
@@ -85,9 +89,8 @@ jobs:
           key: quickjs-macos
       - if: steps.cache-quickjs.outputs.cache-hit != 'true'
         run: |
-          curl https://bellard.org/quickjs/quickjs-2024-01-13.tar.xz | tar -xJf -
-          make install PREFIX=${{ github.workspace }}/_ -C quickjs-2024-01-13
-          rm -rf quickjs-2024-01-13
+          cmake -S _/quickjs -B _/quickjs -DCMAKE_INSTALL_PREFIX=_ -DCMAKE_BUILD_TYPE=Release
+          cmake --build _/quickjs --target install
       - name: Run meson
         env:
           CC: ${{ matrix.cc }}
@@ -111,7 +114,7 @@ jobs:
       fail-fast: false
       matrix:
         include: [
-          { cc: gcc-13, cxx: g++-13 },
+          { cc: gcc, cxx: g++ },
           { cc: clang, cxx: clang++ },
         ]
     runs-on: ubuntu-latest
@@ -124,6 +127,10 @@ jobs:
         with:
           repository: tqfx/lua
           path: _/lua
+      - uses: actions/checkout@v4
+        with:
+          repository: tqfx/quickjs
+          path: _/quickjs
       - name: Run setup
         env:
           CC: ${{ matrix.cc }}
@@ -149,9 +156,8 @@ jobs:
           key: quickjs-linux
       - if: steps.cache-quickjs.outputs.cache-hit != 'true'
         run: |
-          curl https://bellard.org/quickjs/quickjs-2024-01-13.tar.xz | tar -xJf -
-          make install PREFIX=${{ github.workspace }}/_ -C quickjs-2024-01-13
-          rm -rf quickjs-2024-01-13
+          cmake -S _/quickjs -B _/quickjs -DCMAKE_INSTALL_PREFIX=_ -DCMAKE_BUILD_TYPE=Release
+          cmake --build _/quickjs --target install
       - name: Run meson
         env:
           CC: ${{ matrix.cc }}

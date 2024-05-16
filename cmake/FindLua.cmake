@@ -152,22 +152,26 @@ find_library(LUA_LIBRARY NAMES_PER_DIR NAMES
 )
 mark_as_advanced(LUA_LIBRARY)
 
-if(EXISTS "${LUA_LIBRARY}")
-  list(APPEND LUA_LIBRARIES ${LUA_LIBRARY})
-  if(UNIX AND NOT APPLE AND NOT BEOS)
-    find_library(LUA_MATH_LIBRARY m)
-    mark_as_advanced(LUA_MATH_LIBRARY)
-    if(NOT EXISTS "${LUA_MATH_LIBRARY}")
-      list(APPEND LUA_LIBRARIES m)
-    else()
-      list(APPEND LUA_LIBRARIES ${LUA_MATH_LIBRARY})
-    endif()
-    get_filename_component(ext ${LUA_LIBRARY} EXT)
-    if(CMAKE_STATIC_LIBRARY_SUFFIX STREQUAL ext)
-      list(APPEND LUA_LIBRARIES ${CMAKE_DL_LIBS})
-    endif()
-    set(ext)
+set(LUA_LIBRARY2)
+if(NOT APPLE AND UNIX)
+  find_library(LUA_MATH_LIBRARY m)
+  mark_as_advanced(LUA_MATH_LIBRARY)
+  if(EXISTS "${LUA_MATH_LIBRARY}")
+    list(APPEND LUA_LIBRARY2 ${LUA_MATH_LIBRARY})
+  else()
+    list(APPEND LUA_LIBRARY2 m)
   endif()
+  get_filename_component(ext ${LUA_LIBRARY} EXT)
+  if(ext STREQUAL CMAKE_STATIC_LIBRARY_SUFFIX)
+    list(APPEND LUA_LIBRARY2 ${CMAKE_DL_LIBS})
+  endif()
+  set(ext)
+endif()
+
+if(EXISTS "${LUA_LIBRARY}")
+  set(LUA_LIBRARIES
+    ${LUA_LIBRARY} ${LUA_LIBRARY2}
+  )
 endif()
 
 find_package_handle_standard_args(Lua
@@ -184,15 +188,12 @@ if(LUA_FOUND)
   if(NOT TARGET lualib AND EXISTS "${LUA_LIBRARY}")
     add_library(lualib UNKNOWN IMPORTED)
     set_target_properties(lualib PROPERTIES
-      INTERFACE_INCLUDE_DIRECTORIES "${LUA_INCLUDE_DIR}"
       IMPORTED_LINK_INTERFACE_LANGUAGES C
+      INTERFACE_INCLUDE_DIRECTORIES "${LUA_INCLUDE_DIR}"
       IMPORTED_LOCATION "${LUA_LIBRARY}"
     )
-    set(libraries ${LUA_LIBRARIES})
-    list(REMOVE_ITEM libraries ${LUA_LIBRARY})
     set_property(TARGET lualib APPEND PROPERTY
-      INTERFACE_LINK_LIBRARIES ${libraries}
+      INTERFACE_LINK_LIBRARIES ${LUA_LIBRARY2}
     )
-    set(libraries)
   endif()
 endif()

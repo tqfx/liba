@@ -471,12 +471,19 @@ endif()
 
 if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/quickjs/CMakeLists.txt)
   option(LIBA_QUICKJS "Enable/Disable quickjs" 0)
+  option(LIBA_WITH_QUICKJS "Enable/Disable build with quickjs" 0)
 
-  if(LIBA_QUICKJS)
+  if(LIBA_QUICKJS OR LIBA_WITH_QUICKJS)
+    set(QUICKJS_MATH_LIBRARY ${LIBA_MATH} CACHE STRING "quickjs math library")
+  endif()
+
+  if(NOT LIBA_WITH_QUICKJS AND LIBA_QUICKJS)
     find_package(QuickJS)
   endif()
 
   if(LIBA_QUICKJS AND QUICKJS_FOUND)
+    add_subdirectory(quickjs)
+  elseif(LIBA_WITH_QUICKJS)
     add_subdirectory(quickjs)
   endif()
 endif()
