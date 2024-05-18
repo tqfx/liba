@@ -1,5 +1,3 @@
-diff --git a/quickjs-libc.c b/quickjs-libc.c
-index d4f4d67..8220f39 100644
 --- a/quickjs-libc.c
 +++ b/quickjs-libc.c
 @@ -457,8 +457,50 @@ typedef JSModuleDef *(JSInitModuleFunc)(JSContext *ctx,

@@ -1,5 +1,3 @@
-diff --git a/qjsc.c b/qjsc.c
-index f8e60b3..4b14c7a 100644
 --- a/qjsc.c
 +++ b/qjsc.c
 @@ -463,6 +463,121 @@ static int output_executable(const char *out_filename, const char *cfilename,
@@ -125,7 +123,7 @@ index f8e60b3..4b14c7a 100644
  static int output_executable(const char *out_filename, const char *cfilename,
                               BOOL use_lto, BOOL verbose, const char *exename)
 @@ -604,7 +719,11 @@ int main(int argc, char **argv)
-
+ 
      if (!out_filename) {
          if (output_type == OUTPUT_EXECUTABLE) {
 +#if defined(_WIN32)
