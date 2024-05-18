@@ -1,3 +1,17 @@
+option(LIBA_OPENMP "Enable/Disable openmp" $ENV{LIBA_OPENMP})
+
+if(LIBA_OPENMP)
+  find_package(OpenMP)
+endif()
+
+if(LIBA_OPENMP AND OpenMP_C_FLAGS)
+  string_append(CMAKE_C_FLAGS ${OpenMP_C_FLAGS})
+endif()
+
+if(LIBA_OPENMP AND OpenMP_CXX_FLAGS)
+  string_append(CMAKE_CXX_FLAGS ${OpenMP_CXX_FLAGS})
+endif()
+
 if(WIN32)
   set(CMAKE_SHARED_MODULE_SUFFIX ".pyd")
 endif()
