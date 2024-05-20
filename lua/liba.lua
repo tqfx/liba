@@ -1673,6 +1673,6 @@ function liba.version.ne(lhs, rhs) end
 ---@return boolean
 function version:ne(rhs) end
 
-liba.VERSION = "0.1.12"
+liba.VERSION = "0.1.13"
 
 return liba
