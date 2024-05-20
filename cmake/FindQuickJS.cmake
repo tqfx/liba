@@ -86,7 +86,6 @@ if(ext STREQUAL CMAKE_STATIC_LIBRARY_SUFFIX)
     list(APPEND QUICKJS_LIBRARY2 pthread)
   endif()
 endif()
-set(ext)
 
 if(EXISTS "${QUICKJS_LIBRARY}")
   set(QUICKJS_LIBRARIES

@@ -22,7 +22,6 @@ file_scaner(SOURCES RECURSE src EXT c h cc hh cpp hpp)
 if(NOT LIBA_CXX)
   file_scaner(source RECURSE ../src EXT cc hh cpp hpp)
   list(APPEND SOURCES ${source})
-  set(source)
 endif()
 
 if(NOT DEFINED EMSDK_COMPILER_VERSION)

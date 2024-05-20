@@ -25,7 +25,6 @@ if(CMAKE_VERSION VERSION_LESS 3.11)
       @${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/ajar.dir/java_sources
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   )
-  set(sep)
 else()
   add_custom_command(TARGET ajar POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_CURRENT_BINARY_DIR}/include ${CMAKE_CURRENT_LIST_DIR}/include
@@ -82,9 +81,9 @@ endif()
 execute_process(COMMAND ${Java_JAVA_EXECUTABLE} -version
   OUTPUT_VARIABLE version ERROR_VARIABLE version
 )
-string(FIND "${version}" "64-Bit" index)
+string(FIND "${version}" "64-Bit" found)
 
-if(${index} GREATER -1)
+if(${found} GREATER -1)
   set(JAVA_SIZEOF_VOID_P 8) # 64
 else()
   set(JAVA_SIZEOF_VOID_P 4) # 32
