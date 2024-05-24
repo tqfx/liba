@@ -1,0 +1,192 @@
+From c33779dae01ec026fd2a0376ff0c0aa39a9e6243 Mon Sep 17 00:00:00 2001
+From: tqfx <tqfx@tqfx.org>
+Date: Fri, 24 May 2024 17:32:17 +0800
+Subject: [PATCH] support for autotools
+
+
+diff --git a/script/autogen b/script/autogen
+new file mode 100755
+index 0000000..ac0c567
+--- /dev/null
++++ b/script/autogen
+@@ -0,0 +1,48 @@
++#!/usr/bin/env sh
++cd $(dirname $0)
++
++mkdir -p ../build
++cp config.h.in configure.ac ../build
++cd ..
++cp -r src include/a build
++cd build
++
++for i in $(find a -regex ".*\.\(h\|hh\)"); do
++    HEADERS="$HEADERS $i"
++done
++
++for i in $(find src -regex ".*\.\(c\|h\)"); do
++    C_SOURCES="$C_SOURCES $i"
++done
++
++for i in $(find src -regex ".*\.\(cc\|hh\)"); do
++    CXX_SOURCES="$CXX_SOURCES $i"
++done
++
++echo "ACLOCAL_AMFLAGS = -I m4
++lib_LTLIBRARIES = liba.la
++liba_la_CPPFLAGS = -std=c11
++liba_la_LDFLAGS = -version-info 1:13:1
++liba_la_SOURCES =$C_SOURCES autogen.sh
++liba_la_LIBADD = \$(liba_cc_la_OBJECTS)
++noinst_LTLIBRARIES = liba.cc.la
++liba_cc_la_CPPFLAGS = -std=c++11
++liba_cc_la_SOURCES =$CXX_SOURCES
++nobase_include_HEADERS =$HEADERS
++install-data-hook:
++	\$(INSTALL_DATA) config.h \$(DESTDIR)\$(includedir)/a
++	@sed -i 's|#if defined(A_HAVE_H)|#include \"config.h\"\\\\n#if defined(A_HAVE_H)|g' \$(DESTDIR)\$(includedir)/a/a.h
++uninstall-hook:
++	\$(RM) \$(DESTDIR)\$(includedir)/a/config.h" > Makefile.am
++
++echo "libtoolize -Wall -ci
++aclocal -Wall
++autoreconf -Wall
++automake -Wall --add-missing
++if [ -f config.h.in~ ] && [ -f config.h.in ]; then
++    mv config.h.in~ config.h.in
++fi" > autogen.sh
++chmod +x autogen.sh
++./autogen.sh
++./configure
++make distcheck dist-xz
+diff --git a/script/config.h.in b/script/config.h.in
+new file mode 100644
+index 0000000..71c6410
+--- /dev/null
++++ b/script/config.h.in
+@@ -0,0 +1,76 @@
++#undef A_BYTE_ORDER
++
++/* version string */
++#undef A_VERSION
++
++/* major version number */
++#undef A_VERSION_MAJOR
++
++/* minor version number */
++#undef A_VERSION_MINOR
++
++/* patch version number */
++#undef A_VERSION_PATCH
++
++/* The size of `void *`, as computed by sizeof. */
++#undef A_SIZE_POINTER
++
++/* Define to 1 if you have `atan2`, as a function or macro. */
++#undef A_HAVE_ATAN2
++
++/* Define to 1 if you have `cacos`, as a function or macro. */
++#undef A_HAVE_CACOS
++
++/* Define to 1 if you have `cacosh`, as a function or macro. */
++#undef A_HAVE_CACOSH
++
++/* Define to 1 if you have `casin`, as a function or macro. */
++#undef A_HAVE_CASIN
++
++/* Define to 1 if you have `casinh`, as a function or macro. */
++#undef A_HAVE_CASINH
++
++/* Define to 1 if you have `catan`, as a function or macro. */
++#undef A_HAVE_CATAN
++
++/* Define to 1 if you have `catanh`, as a function or macro. */
++#undef A_HAVE_CATANH
++
++/* Define to 1 if you have `ccos`, as a function or macro. */
++#undef A_HAVE_CCOS
++
++/* Define to 1 if you have `ccosh`, as a function or macro. */
++#undef A_HAVE_CCOSH
++
++/* Define to 1 if you have `cexp`, as a function or macro. */
++#undef A_HAVE_CEXP
++
++/* Define to 1 if you have `clog`, as a function or macro. */
++#undef A_HAVE_CLOG
++
++/* Define to 1 if you have `cpow`, as a function or macro. */
++#undef A_HAVE_CPOW
++
++/* Define to 1 if you have `csin`, as a function or macro. */
++#undef A_HAVE_CSIN
++
++/* Define to 1 if you have `csinh`, as a function or macro. */
++#undef A_HAVE_CSINH
++
++/* Define to 1 if you have `csqrt`, as a function or macro. */
++#undef A_HAVE_CSQRT
++
++/* Define to 1 if you have `ctan`, as a function or macro. */
++#undef A_HAVE_CTAN
++
++/* Define to 1 if you have `ctanh`, as a function or macro. */
++#undef A_HAVE_CTANH
++
++/* Define to 1 if you have `expm1`, as a function or macro. */
++#undef A_HAVE_EXPM1
++
++/* Define to 1 if you have `hypot`, as a function or macro. */
++#undef A_HAVE_HYPOT
++
++/* Define to 1 if you have `log1p`, as a function or macro. */
++#undef A_HAVE_LOG1P
+diff --git a/script/configure.ac b/script/configure.ac
+new file mode 100644
+index 0000000..bdbad80
+--- /dev/null
++++ b/script/configure.ac
+@@ -0,0 +1,41 @@
++m4_define([version_major], [0])
++m4_define([version_minor], [1])
++m4_define([version_patch], [13])
++m4_define([version], [version_major.version_minor.version_patch])
++AC_INIT([liba], [version], [tqfx@tqfx.org])
++AC_CONFIG_MACRO_DIR([m4])
++AC_CONFIG_AUX_DIR([build-aux])
++AM_INIT_AUTOMAKE([foreign subdir-objects])
++AM_MAINTAINER_MODE([disable])
++LT_INIT([pic-only win32-dll])
++LT_LANG([C++])
++AC_CHECK_SIZEOF([void *])
++AC_DEFINE([A_VERSION], ["version"], [version string])
++AC_DEFINE_UNQUOTED([A_VERSION_MAJOR], [version_major], [major version number])
++AC_DEFINE_UNQUOTED([A_VERSION_MINOR], [version_minor], [minor version number])
++AC_DEFINE_UNQUOTED([A_VERSION_PATCH], [version_patch], [patch version number])
++AC_DEFINE_UNQUOTED([A_SIZE_POINTER], [$ac_cv_sizeof_void_p], [The size of `void *`, as computed by sizeof.])
++AC_C_BIGENDIAN([AC_DEFINE([A_BYTE_ORDER], [4321], [big endian])], [AC_DEFINE([A_BYTE_ORDER], [1234], [little endian])])
++AC_CHECK_LIB([m], [expm1], [AC_DEFINE([A_HAVE_EXPM1], [1], [Define to 1 if you have `expm1`, as a function or macro.])])
++AC_CHECK_LIB([m], [log1p], [AC_DEFINE([A_HAVE_LOG1P], [1], [Define to 1 if you have `log1p`, as a function or macro.])])
++AC_CHECK_LIB([m], [hypot], [AC_DEFINE([A_HAVE_HYPOT], [1], [Define to 1 if you have `hypot`, as a function or macro.])])
++AC_CHECK_LIB([m], [atan2], [AC_DEFINE([A_HAVE_ATAN2], [1], [Define to 1 if you have `atan2`, as a function or macro.])])
++AC_CHECK_LIB([m], [csqrt], [AC_DEFINE([A_HAVE_CSQRT], [1], [Define to 1 if you have `csqrt`, as a function or macro.])])
++AC_CHECK_LIB([m], [cpow], [AC_DEFINE([A_HAVE_CPOW], [1], [Define to 1 if you have `cpow`, as a function or macro.])])
++AC_CHECK_LIB([m], [cexp], [AC_DEFINE([A_HAVE_CEXP], [1], [Define to 1 if you have `cexp`, as a function or macro.])])
++AC_CHECK_LIB([m], [clog], [AC_DEFINE([A_HAVE_CLOG], [1], [Define to 1 if you have `clog`, as a function or macro.])])
++AC_CHECK_LIB([m], [csin], [AC_DEFINE([A_HAVE_CSIN], [1], [Define to 1 if you have `csin`, as a function or macro.])])
++AC_CHECK_LIB([m], [ccos], [AC_DEFINE([A_HAVE_CCOS], [1], [Define to 1 if you have `ccos`, as a function or macro.])])
++AC_CHECK_LIB([m], [ctan], [AC_DEFINE([A_HAVE_CTAN], [1], [Define to 1 if you have `ctan`, as a function or macro.])])
++AC_CHECK_LIB([m], [csinh], [AC_DEFINE([A_HAVE_CSINH], [1], [Define to 1 if you have `csinh`, as a function or macro.])])
++AC_CHECK_LIB([m], [ccosh], [AC_DEFINE([A_HAVE_CCOSH], [1], [Define to 1 if you have `ccosh`, as a function or macro.])])
++AC_CHECK_LIB([m], [ctanh], [AC_DEFINE([A_HAVE_CTANH], [1], [Define to 1 if you have `ctanh`, as a function or macro.])])
++AC_CHECK_LIB([m], [casin], [AC_DEFINE([A_HAVE_CASIN], [1], [Define to 1 if you have `casin`, as a function or macro.])])
++AC_CHECK_LIB([m], [cacos], [AC_DEFINE([A_HAVE_CACOS], [1], [Define to 1 if you have `cacos`, as a function or macro.])])
++AC_CHECK_LIB([m], [catan], [AC_DEFINE([A_HAVE_CATAN], [1], [Define to 1 if you have `catan`, as a function or macro.])])
++AC_CHECK_LIB([m], [casinh], [AC_DEFINE([A_HAVE_CASINH], [1], [Define to 1 if you have `casinh`, as a function or macro.])])
++AC_CHECK_LIB([m], [cacosh], [AC_DEFINE([A_HAVE_CACOSH], [1], [Define to 1 if you have `cacosh`, as a function or macro.])])
++AC_CHECK_LIB([m], [catanh], [AC_DEFINE([A_HAVE_CATANH], [1], [Define to 1 if you have `catanh`, as a function or macro.])])
++AC_CONFIG_HEADERS([config.h], [sed -i 's|HAVE_CONFIG_H|A_EXPORTS -DA_HAVE_H=\\"config.h\\"|g' Makefile])
++AC_CONFIG_FILES([Makefile])
++AC_OUTPUT
+-- 
+2.45.1
+
