@@ -72,10 +72,3 @@ jobs:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           external_repository: ${{ github.repository_owner }}/tqfx.github.io
           publish_dir: _/${{ github.repository_owner }}
-      - name: Run autotools
-        run: script/autogen
-      - uses: actions/upload-artifact@v4
-        with:
-          if-no-files-found: ignore
-          name: ${{ github.sha }}-auto
-          path: build/*.tar.*
