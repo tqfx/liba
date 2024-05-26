@@ -20,13 +20,13 @@ if has_config("liba-lua") then
         else
             version = "5.1"
         end
-        target:set("lua.version", version)
+        target:set("VERSION", version)
         target:set("targetdir", path.join(target:targetdir(), "lua" .. version))
     end)
     on_install(function(target)
         local installdir = target:installdir()
         if installdir then
-            local version = target:get("lua.version")
+            local version = target:get("VERSION")
             print("installing %s to %s ..", target:name(), installdir)
             installdir = path.join(installdir, "lib", "lua", version)
             os.mkdir(installdir)
