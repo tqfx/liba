@@ -146,17 +146,36 @@ void a_vec_sort_fore(a_vec const *ctx, int (*cmp)(void const *, void const *))
 {
     if (ctx->num_ > 1)
     {
+        a_byte *const end = (a_byte *)ctx->ptr_ + ctx->siz_ * ctx->num_;
+        a_byte *const top = end - ctx->siz_;
         a_byte *ptr = (a_byte *)ctx->ptr_;
-        a_byte *const end = (a_byte *)ctx->ptr_ + ctx->siz_ * ctx->num_ - ctx->siz_;
-        do {
-            a_byte *const cur = ptr + ctx->siz_;
-            if (cmp(ptr, cur) > 0)
+        if (ctx->num_ < ctx->mem_)
+        {
+            a_byte *const pos = ptr;
+            do {
+                a_byte *const cur = ptr + ctx->siz_;
+                if (cmp(pos, cur) <= 0) { break; }
+                ptr = cur;
+            } while (ptr != top);
+            if (ptr > pos)
             {
-                a_swap(cur, ptr, ctx->siz_);
+                a_copy(end, pos, ctx->siz_);
+                a_move(pos, pos + ctx->siz_, (a_size)(ptr - pos));
+                a_copy(ptr, end, ctx->siz_);
             }
-            else { break; }
-            ptr = cur;
-        } while (ptr != end);
+        }
+        else
+        {
+            do {
+                a_byte *const cur = ptr + ctx->siz_;
+                if (cmp(ptr, cur) > 0)
+                {
+                    a_swap(cur, ptr, ctx->siz_);
+                }
+                else { break; }
+                ptr = cur;
+            } while (ptr != top);
+        }
     }
 }
 
@@ -164,16 +183,35 @@ void a_vec_sort_back(a_vec const *ctx, int (*cmp)(void const *, void const *))
 {
     if (ctx->num_ > 1)
     {
-        a_byte *ptr = (a_byte *)ctx->ptr_ + ctx->siz_ * ctx->num_ - ctx->siz_;
-        do {
-            a_byte *const cur = ptr - ctx->siz_;
-            if (cmp(cur, ptr) > 0)
+        a_byte *const end = (a_byte *)ctx->ptr_ + ctx->siz_ * ctx->num_;
+        a_byte *ptr = end - ctx->siz_;
+        if (ctx->num_ < ctx->mem_)
+        {
+            a_byte *const pos = ptr;
+            do {
+                a_byte *const cur = ptr - ctx->siz_;
+                if (cmp(cur, pos) <= 0) { break; }
+                ptr = cur;
+            } while (ptr != ctx->ptr_);
+            if (ptr < pos)
             {
-                a_swap(cur, ptr, ctx->siz_);
+                a_copy(end, pos, ctx->siz_);
+                a_move(ptr + ctx->siz_, ptr, (a_size)(pos - ptr));
+                a_copy(ptr, end, ctx->siz_);
             }
-            else { break; }
-            ptr = cur;
-        } while (ptr != ctx->ptr_);
+        }
+        else
+        {
+            do {
+                a_byte *const cur = ptr - ctx->siz_;
+                if (cmp(cur, ptr) > 0)
+                {
+                    a_swap(cur, ptr, ctx->siz_);
+                }
+                else { break; }
+                ptr = cur;
+            } while (ptr != ctx->ptr_);
+        }
     }
 }
 
