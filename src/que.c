@@ -193,19 +193,18 @@ void a_que_sort_fore(a_que const *ctx, int (*cmp)(void const *, void const *))
 {
     if (ctx->num_ > 1)
     {
-        a_list *ok = A_NULL;
         a_list *const it = ctx->head_.next;
-        for (a_list *at = it->next; at != &ctx->head_; at = at->next)
+        a_list *at = it->next;
+        do {
+            if (cmp(it + 1, at + 1) <= 0) { break; }
+            at = at->next;
+        } while (at != &ctx->head_);
+        if (at != it->next)
         {
-            if (cmp(it + 1, at + 1) > 0) { ok = at; }
-            else { break; }
-        }
-        if (ok)
-        {
-            /* a-it-b-at-a => a-b-at-it-a */
+            at = at->prev; // a-it-b-at-a => a-b-at-it-a
             a_list_link(it->prev, it->next); // a-b
-            a_list_link(it, ok->next); // it-a
-            a_list_link(ok, it); // at-it
+            a_list_link(it, at->next); // it-a
+            a_list_link(at, it); // at-it
         }
     }
 }
@@ -214,21 +213,37 @@ void a_que_sort_back(a_que const *ctx, int (*cmp)(void const *, void const *))
 {
     if (ctx->num_ > 1)
     {
-        a_list *ok = A_NULL;
         a_list *const it = ctx->head_.prev;
-        for (a_list *at = it->prev; at != &ctx->head_; at = at->prev)
+        a_list *at = it->prev;
+        do {
+            if (cmp(at + 1, it + 1) <= 0) { break; }
+            at = at->prev;
+        } while (at != &ctx->head_);
+        if (at != it->prev)
         {
-            if (cmp(at + 1, it + 1) > 0) { ok = at; }
-            else { break; }
-        }
-        if (ok)
-        {
-            /* a-at-b-it-a => a-it-at-b-a */
+            at = at->next; // a-at-b-it-a => a-it-at-b-a
             a_list_link(it->prev, it->next); // b-a
-            a_list_link(ok->prev, it); // a-it
-            a_list_link(it, ok); // it-at
+            a_list_link(at->prev, it); // a-it
+            a_list_link(it, at); // it-at
         }
     }
+}
+
+void *a_que_push_sort(a_que *ctx, void const *key, int (*cmp)(void const *, void const *))
+{
+    a_list *it = ctx->head_.prev;
+    a_list *const node = a_que_new_(ctx);
+    if (A_UNLIKELY(!node)) { return node; }
+    if (ctx->num_ > 1)
+    {
+        do {
+            if (cmp(it + 1, key) <= 0) { break; }
+            it = it->prev;
+        } while (it != &ctx->head_);
+    }
+    a_list_link(node, it->next);
+    a_list_link(it, node);
+    return node + 1;
 }
 
 void *a_que_push_fore(a_que *ctx)

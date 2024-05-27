@@ -270,6 +270,20 @@ A_EXTERN void a_vec_sort_fore(a_vec const *ctx, int (*cmp)(void const *, void co
 A_EXTERN void a_vec_sort_back(a_vec const *ctx, int (*cmp)(void const *, void const *));
 
 /*!
+ @brief push an element into the vector and sort it
+ @param[in] ctx points to an instance of vector structure
+ @param[in] key the key on the right for insertion sort
+ @param[in] cmp a function that compares two elements
+  @arg cmp(lhs,rhs)==0 *lhs is equivalent to *rhs
+  @arg cmp(lhs,rhs)<0 *lhs goes before *rhs
+  @arg cmp(lhs,rhs)>0 *lhs goes after *rhs
+ @return element pointer
+  @retval 0 failure
+*/
+A_EXTERN void *a_vec_push_sort(a_vec *ctx, void const *key, int (*cmp)(void const *, void const *));
+#define A_VEC_PUSH_SORT(T, ctx, key, cmp) a_cast_s(T *, a_vec_push_sort(ctx, key, cmp))
+
+/*!
  @brief search the given element in this vector
  @param[in] ctx points to an instance of vector structure
  @param[in] obj object that serves as key for the search

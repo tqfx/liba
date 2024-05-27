@@ -216,6 +216,20 @@ A_EXTERN void a_buf_sort_fore(a_buf const *ctx, int (*cmp)(void const *, void co
 A_EXTERN void a_buf_sort_back(a_buf const *ctx, int (*cmp)(void const *, void const *));
 
 /*!
+ @brief push an element into the buffer and sort it
+ @param[in] ctx points to an instance of buffer structure
+ @param[in] key the key on the right for insertion sort
+ @param[in] cmp a function that compares two elements
+  @arg cmp(lhs,rhs)==0 *lhs is equivalent to *rhs
+  @arg cmp(lhs,rhs)<0 *lhs goes before *rhs
+  @arg cmp(lhs,rhs)>0 *lhs goes after *rhs
+ @return element pointer
+  @retval 0 failure
+*/
+A_EXTERN void *a_buf_push_sort(a_buf *ctx, void const *key, int (*cmp)(void const *, void const *));
+#define A_BUF_PUSH_SORT(T, ctx, key, cmp) a_cast_s(T *, a_buf_push_sort(ctx, key, cmp))
+
+/*!
  @brief search the given element in this buffer
  @param[in] ctx points to an instance of buffer structure
  @param[in] obj object that serves as key for the search

@@ -141,6 +141,29 @@ void a_buf_sort_back(a_buf const *ctx, int (*cmp)(void const *, void const *))
     }
 }
 
+void *a_buf_push_sort(a_buf *ctx, void const *key, int (*cmp)(void const *, void const *))
+{
+    if (ctx->num_ < ctx->mem_)
+    {
+        a_byte *ptr = (a_byte *)a_buf_inc_(ctx);
+        if (ctx->num_ > 1)
+        {
+            a_byte *const pos = ptr;
+            do {
+                a_byte *const cur = ptr - ctx->siz_;
+                if (cmp(cur, key) <= 0) { break; }
+                ptr = cur;
+            } while (ptr != ctx->ptr_);
+            if (ptr < pos)
+            {
+                a_move(ptr + ctx->siz_, ptr, (a_size)(pos - ptr));
+            }
+        }
+        return ptr;
+    }
+    return A_NULL;
+}
+
 void *a_buf_search(a_buf const *ctx, void const *obj, int (*cmp)(void const *, void const *))
 {
     return bsearch(obj, ctx->ptr_, ctx->num_, ctx->siz_, cmp);

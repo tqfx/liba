@@ -104,11 +104,18 @@ static int cmpr(void const *lhs, void const *rhs)
     return *a_int_(const *, rhs) - *a_int_(const *, lhs);
 }
 
+static int rand10(void)
+{
+    return a_cast_s(int, rand() / a_cast_s(double, RAND_MAX) * 10); // NOLINT
+}
+
 static void test_sort(void)
 {
     unsigned int t = a_cast_s(unsigned int, time(A_NULL));
     a_que *ctx = a_que_new(sizeof(int));
+    int x;
 
+    x = -1;
     srand(t);
     a_que_drop(ctx, A_NULL);
     for (int i = 0; i != 10; ++i)
@@ -116,7 +123,7 @@ static void test_sort(void)
         int *obj = A_QUE_PUSH_FORE(int, ctx);
         if (obj)
         {
-            *obj = rand() % 10; // NOLINT
+            *obj = rand10();
             printf("%i ", *obj);
             a_que_sort_fore(ctx, cmp);
         }
@@ -124,9 +131,12 @@ static void test_sort(void)
     printf("-> ");
     a_que_foreach(int, it, ctx)
     {
+        if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);
+        x = *it;
     }
 
+    x = -1;
     srand(t);
     printf("-> ");
     a_que_drop(ctx, dtor);
@@ -136,7 +146,7 @@ static void test_sort(void)
         int *obj = A_QUE_PUSH_BACK(int, ctx);
         if (obj)
         {
-            *obj = rand() % 10; // NOLINT
+            *obj = rand10();
             printf("%i ", *obj);
             a_que_sort_back(ctx, cmpr);
         }
@@ -144,7 +154,32 @@ static void test_sort(void)
     printf("-> ");
     a_que_foreach(int, it, ctx)
     {
+        if (x >= 0) { TEST_BUG(x >= *it); }
         printf("%i ", *it);
+        x = *it;
+    }
+
+    x = -1;
+    srand(t);
+    printf("-> ");
+    a_que_drop(ctx, dtor);
+    putchar('\n');
+    for (int i = 0; i != 10; ++i)
+    {
+        int key = rand10();
+        int *obj = A_QUE_PUSH_SORT(int, ctx, &key, cmp);
+        if (obj)
+        {
+            printf("%i ", key);
+            *obj = key;
+        }
+    }
+    printf("-> ");
+    a_que_foreach(int, it, ctx)
+    {
+        if (x >= 0) { TEST_BUG(x <= *it); }
+        printf("%i ", *it);
+        x = *it;
     }
 
     printf("-> ");

@@ -85,11 +85,13 @@ static int rand10(void)
 
 static void test_sort(void)
 {
+    int x;
     a_buf ctx;
     int buf[10];
     unsigned int t = a_cast_s(unsigned int, time(A_NULL));
     a_buf_ctor(&ctx, buf, sizeof(int), 10);
 
+    x = -1;
     srand(t);
     a_buf_drop(&ctx, A_NULL);
     for (int i = 0; i != 10; ++i)
@@ -105,10 +107,13 @@ static void test_sort(void)
     printf("-> ");
     a_buf_foreach(int, it, &ctx)
     {
+        if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);
+        x = *it;
     }
     putchar('\n');
 
+    x = -1;
     srand(t);
     a_buf_drop(&ctx, A_NULL);
     for (int i = 0; i != 10; ++i)
@@ -124,10 +129,35 @@ static void test_sort(void)
     printf("-> ");
     a_buf_foreach(int, it, &ctx)
     {
+        if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);
+        x = *it;
     }
     putchar('\n');
 
+    x = -1;
+    srand(t);
+    a_buf_drop(&ctx, A_NULL);
+    for (int i = 0; i != 10; ++i)
+    {
+        int key = rand10();
+        int *obj = A_BUF_PUSH_SORT(int, &ctx, &key, cmp);
+        if (obj)
+        {
+            printf("%i ", key);
+            *obj = key;
+        }
+    }
+    printf("-> ");
+    a_buf_foreach(int, it, &ctx)
+    {
+        if (x >= 0) { TEST_BUG(x <= *it); }
+        printf("%i ", *it);
+        x = *it;
+    }
+    putchar('\n');
+
+    x = -1;
     srand(t);
     a_buf_foreach(int, it, &ctx)
     {
@@ -138,10 +168,13 @@ static void test_sort(void)
     a_buf_sort(&ctx, cmp);
     a_buf_foreach(int, it, &ctx)
     {
+        if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);
+        x = *it;
     }
     putchar('\n');
 
+    x = -1;
     srand(t);
     a_buf_foreach(int, it, &ctx)
     {
@@ -152,7 +185,9 @@ static void test_sort(void)
     a_buf_sort(&ctx, cmpr);
     a_buf_foreach(int, it, &ctx)
     {
+        if (x >= 0) { TEST_BUG(x >= *it); }
         printf("%i ", *it);
+        x = *it;
     }
     putchar('\n');
 
@@ -163,7 +198,7 @@ static void test_sort(void)
         a_str_puts(no, "missing ");
         for (int i = 0; i != 10; ++i)
         {
-            int *obj = A_BUF_SEARCH(int, &ctx, &i, cmp);
+            int *obj = A_BUF_SEARCH(int, &ctx, &i, cmpr);
             if (obj)
             {
                 a_str_putf(ok, "%i ", *obj);
