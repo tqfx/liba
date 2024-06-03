@@ -975,6 +975,9 @@ typedef union a_cast
 */
 #define a_foreach(T, it, ptr, num) \
     for (T *it = a_cast_s(T *, ptr), *it##_ = it + (num); it < it##_; ++it)
+/*! @copydoc a_foreach */
+#define a_forsafe(T, it, ptr, num) \
+    for (T *it = a_cast_s(T *, ptr), *it##_ = (num) ? it + (num) : it; it < it##_; ++it)
 
 /*!
  @brief iterate over an array in reverse
@@ -985,6 +988,11 @@ typedef union a_cast
 */
 #define a_foreach_reverse(T, it, ptr, num) \
     for (T *it##_ = a_cast_s(T *, ptr) - 1, *it = it##_ + (num); it > it##_; --it)
+/*! @copydoc a_foreach_reverse */
+#define a_forsafe_reverse(T, it, ptr, num)                               \
+    for (T *it##_ = (num) ? a_cast_s(T *, ptr) - 1 : a_cast_s(T *, ptr), \
+           *it = (num) ? it##_ + (num) : it##_;                          \
+         it > it##_; --it)
 
 /*!
  @brief iterate over an array

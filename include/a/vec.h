@@ -419,7 +419,7 @@ A_INTERN void *a_vec_pull(a_vec *ctx) { return a_vec_pull_back(ctx); }
  @param it the &a_vec to use as a loop counter
  @param ctx points to an instance of vector structure
 */
-#define a_vec_foreach(T, it, ctx) a_foreach(T, it, (ctx)->ptr_, (ctx)->num_)
+#define a_vec_foreach(T, it, ctx) a_forsafe(T, it, (ctx)->ptr_, (ctx)->num_)
 
 /*!
  @brief iterate over a vector in reverse
@@ -433,7 +433,7 @@ A_INTERN void *a_vec_pull(a_vec *ctx) { return a_vec_pull_back(ctx); }
  @param it the &a_vec to use as a loop counter
  @param ctx points to an instance of vector structure
 */
-#define a_vec_foreach_reverse(T, it, ctx) a_foreach_reverse(T, it, (ctx)->ptr_, (ctx)->num_)
+#define a_vec_foreach_reverse(T, it, ctx) a_forsafe_reverse(T, it, (ctx)->ptr_, (ctx)->num_)
 
 /*! @} a_vec */
 
