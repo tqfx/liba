@@ -68,13 +68,13 @@ static void test(void)
         a_u32 *rhs = A_QUE_BACK_(a_u32, ctx);
         a_que_swap_(lhs, rhs);
     }
-    a_que_foreach(a_u32, it, ctx)
+    a_que_foreach(a_u32, *, it, ctx)
     {
         TEST_BUG(a_que_siz(ctx) >= sizeof(*it));
         printf("%" PRIu32 " ", *it);
     }
     putchar('\n');
-    a_que_foreach_reverse(a_u32, it, ctx)
+    a_que_foreach_reverse(a_u32, *, it, ctx)
     {
         TEST_BUG(a_que_siz(ctx) >= sizeof(*it));
         printf("%" PRIu32 " ", *it);
@@ -129,7 +129,7 @@ static void test_sort(void)
         }
     }
     printf("-> ");
-    a_que_foreach(int, it, ctx)
+    a_que_foreach(int, *, it, ctx)
     {
         if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);
@@ -152,7 +152,7 @@ static void test_sort(void)
         }
     }
     printf("-> ");
-    a_que_foreach(int, it, ctx)
+    a_que_foreach(int, *, it, ctx)
     {
         if (x >= 0) { TEST_BUG(x >= *it); }
         printf("%i ", *it);
@@ -175,7 +175,7 @@ static void test_sort(void)
         }
     }
     printf("-> ");
-    a_que_foreach(int, it, ctx)
+    a_que_foreach(int, *, it, ctx)
     {
         if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);

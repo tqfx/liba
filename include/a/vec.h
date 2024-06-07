@@ -234,7 +234,7 @@ A_EXTERN void a_vec_sort(a_vec const *ctx, int (*cmp)(void const *, void const *
 /*!
  @brief insert sort foremost element for a pointer to vector structure
  @code{.c}
- T *obj = a_vec_push_fore(T, ctx);
+ T *obj = A_VEC_PUSH_FORE(T, ctx);
  if (obj)
  {
      CTOR(obj);
@@ -253,7 +253,7 @@ A_EXTERN void a_vec_sort_fore(a_vec const *ctx, int (*cmp)(void const *, void co
 /*!
  @brief insert sort backmost element for a pointer to vector structure
  @code{.c}
- T *obj = a_vec_push_back(T, ctx);
+ T *obj = A_VEC_PUSH_BACK(T, ctx);
  if (obj)
  {
      CTOR(obj);
@@ -410,30 +410,32 @@ A_INTERN void *a_vec_pull(a_vec *ctx) { return a_vec_pull_back(ctx); }
 /*!
  @brief iterate over a vector
  @code{.c}
- a_vec_foreach(T, it, ctx)
+ a_vec_foreach(T, *, it, ctx)
  {
      assert(a_vec_siz(ctx) == sizeof(*it));
  }
  @endcode
- @param T type of elements in the vector
+ @param T the prefix of the element type
+ @param P the suffix of the element type
  @param it the &a_vec to use as a loop counter
  @param ctx points to an instance of vector structure
 */
-#define a_vec_foreach(T, it, ctx) a_forsafe(T, it, (ctx)->ptr_, (ctx)->num_)
+#define a_vec_foreach(T, P, it, ctx) a_forsafe(T, P, it, (ctx)->ptr_, (ctx)->num_)
 
 /*!
  @brief iterate over a vector in reverse
  @code{.c}
- a_vec_foreach_reverse(T, it, ctx)
+ a_vec_foreach_reverse(T, *, it, ctx)
  {
      assert(a_vec_siz(ctx) == sizeof(*it));
  }
  @endcode
- @param T type of elements in the vector
+ @param T the prefix of the element type
+ @param P the suffix of the element type
  @param it the &a_vec to use as a loop counter
  @param ctx points to an instance of vector structure
 */
-#define a_vec_foreach_reverse(T, it, ctx) a_forsafe_reverse(T, it, (ctx)->ptr_, (ctx)->num_)
+#define a_vec_foreach_reverse(T, P, it, ctx) a_forsafe_reverse(T, P, it, (ctx)->ptr_, (ctx)->num_)
 
 /*! @} a_vec */
 

@@ -62,14 +62,14 @@ static void test(void)
     }
     putchar('\n');
 
-    a_vec_foreach(a_u32, it, ctx)
+    a_vec_foreach(a_u32, *, it, ctx)
     {
         TEST_BUG(a_vec_siz(ctx) == sizeof(*it));
         TEST_BUG(sizeof(a_u32) == sizeof(*it));
         printf("%" PRIu32 " ", *it);
     }
     putchar('\n');
-    a_vec_foreach_reverse(a_u32, it, ctx)
+    a_vec_foreach_reverse(a_u32, *, it, ctx)
     {
         TEST_BUG(a_vec_siz(ctx) == sizeof(*it));
         TEST_BUG(sizeof(a_u32) == sizeof(*it));
@@ -100,7 +100,7 @@ static void test(void)
             a_u32 *obj = A_VEC_INSERT(a_u32, ctx, i);
             if (obj) { *obj = i; }
         }
-        a_vec_foreach(a_u32, it, ctx)
+        a_vec_foreach(a_u32, *, it, ctx)
         {
             printf("%" PRIu32 " ", *it);
         }
@@ -173,14 +173,14 @@ static void test_sort(void)
 
     x = -1;
     srand(t);
-    a_vec_foreach(int, it, ctx)
+    a_vec_foreach(int, *, it, ctx)
     {
         *it = rand10();
         printf("%i ", *it);
     }
     printf("-> ");
     a_vec_sort(ctx, cmpr);
-    a_vec_foreach(int, it, ctx)
+    a_vec_foreach(int, *, it, ctx)
     {
         if (x >= 0) { TEST_BUG(x >= *it); }
         printf("%i ", *it);
@@ -190,14 +190,14 @@ static void test_sort(void)
 
     x = -1;
     srand(t);
-    a_vec_foreach(int, it, ctx)
+    a_vec_foreach(int, *, it, ctx)
     {
         *it = rand10();
         printf("%i ", *it);
     }
     printf("-> ");
     a_vec_sort(ctx, cmp);
-    a_vec_foreach(int, it, ctx)
+    a_vec_foreach(int, *, it, ctx)
     {
         if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);
@@ -219,7 +219,7 @@ static void test_sort(void)
         }
     }
     printf("-> ");
-    a_vec_foreach(int, it, ctx)
+    a_vec_foreach(int, *, it, ctx)
     {
         if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);
@@ -241,7 +241,7 @@ static void test_sort(void)
         }
     }
     printf("-> ");
-    a_vec_foreach(int, it, ctx)
+    a_vec_foreach(int, *, it, ctx)
     {
         if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);
@@ -263,7 +263,7 @@ static void test_sort(void)
         }
     }
     printf("-> ");
-    a_vec_foreach(int, it, ctx)
+    a_vec_foreach(int, *, it, ctx)
     {
         if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);

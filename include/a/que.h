@@ -180,7 +180,7 @@ A_EXTERN int a_que_swap(a_que const *ctx, a_size lhs, a_size rhs);
 /*!
  @brief insert sort foremost element for a pointer to queue structure
  @code{.c}
- T *obj = a_que_push_fore(T, ctx);
+ T *obj = A_QUE_PUSH_FORE(T, ctx);
  if (obj)
  {
      CTOR(obj);
@@ -199,7 +199,7 @@ A_EXTERN void a_que_sort_fore(a_que const *ctx, int (*cmp)(void const *, void co
 /*!
  @brief insert sort backmost element for a pointer to queue structure
  @code{.c}
- T *obj = a_que_push_back(T, ctx);
+ T *obj = A_QUE_PUSH_BACK(T, ctx);
  if (obj)
  {
      CTOR(obj);
@@ -296,42 +296,44 @@ A_EXTERN void *a_que_remove(a_que *ctx, a_size idx);
 /*!
  @brief iterate over a queue
  @code{.c}
- a_que_foreach(T, it, ctx)
+ a_que_foreach(T, *, it, ctx)
  {
      assert(a_que_siz(ctx) >= sizeof(*it));
  }
  @endcode
- @param T type of elements in the queue
+ @param T the prefix of the element type
+ @param P the suffix of the element type
  @param it the &a_que to use as a loop counter
  @param ctx points to an instance of queue structure
 */
-#define a_que_foreach(T, it, ctx)                                  \
-    for (T *it = a_cast_r(T *, (ctx)->head_.next),                 \
-           *it##_ = a_cast_r(T *, a_list_(*, it)->next);           \
+#define a_que_foreach(T, P, it, ctx)                               \
+    for (T P it = a_cast_r(T P, (ctx)->head_.next),                \
+             P it##_ = a_cast_r(T P, a_list_(*, it)->next);        \
          a_list_(*, it) != &(ctx)->head_                           \
-             ? ((void)(it = a_cast_r(T *, a_list_(*, it) + 1)), 1) \
+             ? ((void)(it = a_cast_r(T P, a_list_(*, it) + 1)), 1) \
              : (0);                                                \
-         it = it##_, it##_ = a_cast_r(T *, a_list_(*, it)->next))
+         it = it##_, it##_ = a_cast_r(T P, a_list_(*, it)->next))
 
 /*!
  @brief iterate over a queue in reverse
  @code{.c}
- a_que_foreach_reverse(T, it, ctx)
+ a_que_foreach_reverse(T, *, it, ctx)
  {
      assert(a_que_siz(ctx) >= sizeof(*it));
  }
  @endcode
- @param T type of elements in the queue
+ @param T the prefix of the element type
+ @param P the suffix of the element type
  @param it the &a_que to use as a loop counter
  @param ctx points to an instance of queue structure
 */
-#define a_que_foreach_reverse(T, it, ctx)                          \
-    for (T *it = a_cast_r(T *, (ctx)->head_.prev),                 \
-           *it##_ = a_cast_r(T *, a_list_(*, it)->prev);           \
+#define a_que_foreach_reverse(T, P, it, ctx)                       \
+    for (T P it = a_cast_r(T P, (ctx)->head_.prev),                \
+             P it##_ = a_cast_r(T P, a_list_(*, it)->prev);        \
          a_list_(*, it) != &(ctx)->head_                           \
-             ? ((void)(it = a_cast_r(T *, a_list_(*, it) + 1)), 1) \
+             ? ((void)(it = a_cast_r(T P, a_list_(*, it) + 1)), 1) \
              : (0);                                                \
-         it = it##_, it##_ = a_cast_r(T *, a_list_(*, it)->prev))
+         it = it##_, it##_ = a_cast_r(T P, a_list_(*, it)->prev))
 
 /*! @} a_que */
 

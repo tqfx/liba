@@ -60,10 +60,10 @@ static void test_for(int argc, char *argv[])
     }
     debug("\n");
 
-    a_foreach(int, it, p, n) { debug("%i ", *it); }
+    a_foreach(int, *, it, p, n) { debug("%i ", *it); }
     debug("\n");
 
-    a_iterate(int, it, p, d) { debug("%i ", *it); }
+    a_iterate(int, *, it, p, d) { debug("%i ", *it); }
     debug("\n");
 
     a_forenum_reverse(unsigned int, i, n)
@@ -73,10 +73,10 @@ static void test_for(int argc, char *argv[])
     }
     debug("\n");
 
-    a_foreach_reverse(int, it, p, n) { debug("%i ", *it); }
+    a_foreach_reverse(int, *, it, p, n) { debug("%i ", *it); }
     debug("\n");
 
-    a_iterate_reverse(int, it, p, d) { debug("%i ", *it); }
+    a_iterate_reverse(int, *, it, p, d) { debug("%i ", *it); }
     debug("\n");
 
     a_die(p);

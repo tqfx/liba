@@ -180,7 +180,7 @@ A_EXTERN void a_buf_sort(a_buf const *ctx, int (*cmp)(void const *, void const *
 /*!
  @brief insert sort foremost element for a pointer to buffer structure
  @code{.c}
- T *obj = a_buf_push_fore(T, ctx);
+ T *obj = A_BUF_PUSH_FORE(T, ctx);
  if (obj)
  {
      CTOR(obj);
@@ -199,7 +199,7 @@ A_EXTERN void a_buf_sort_fore(a_buf const *ctx, int (*cmp)(void const *, void co
 /*!
  @brief insert sort backmost element for a pointer to buffer structure
  @code{.c}
- T *obj = a_buf_push_back(T, ctx);
+ T *obj = A_BUF_PUSH_BACK(T, ctx);
  if (obj)
  {
      CTOR(obj);
@@ -356,30 +356,32 @@ A_INTERN void *a_buf_pull(a_buf *ctx) { return a_buf_pull_back(ctx); }
 /*!
  @brief iterate over a buffer
  @code{.c}
- a_buf_foreach(T, it, ctx)
+ a_buf_foreach(T, *, it, ctx)
  {
      assert(a_buf_siz(ctx) == sizeof(*it));
  }
  @endcode
- @param T type of elements in the buffer
+ @param T the prefix of the element type
+ @param P the suffix of the element type
  @param it the &a_buf to use as a loop counter
  @param ctx points to an instance of buffer structure
 */
-#define a_buf_foreach(T, it, ctx) a_foreach(T, it, (ctx)->ptr_, (ctx)->num_)
+#define a_buf_foreach(T, P, it, ctx) a_foreach(T, P, it, (ctx)->ptr_, (ctx)->num_)
 
 /*!
  @brief iterate over a buffer in reverse
  @code{.c}
- a_buf_foreach_reverse(T, it, ctx)
+ a_buf_foreach_reverse(T, *, it, ctx)
  {
      assert(a_buf_siz(ctx) == sizeof(*it));
  }
  @endcode
- @param T type of elements in the buffer
+ @param T the prefix of the element type
+ @param P the suffix of the element type
  @param it the &a_buf to use as a loop counter
  @param ctx points to an instance of buffer structure
 */
-#define a_buf_foreach_reverse(T, it, ctx) a_foreach_reverse(T, it, (ctx)->ptr_, (ctx)->num_)
+#define a_buf_foreach_reverse(T, P, it, ctx) a_foreach_reverse(T, P, it, (ctx)->ptr_, (ctx)->num_)
 
 /*! @} a_buf */
 

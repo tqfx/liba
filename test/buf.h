@@ -21,7 +21,7 @@ static void back(void)
         if (obj) { *obj = i; }
     }
 
-    a_buf_foreach(a_u32, it, &ctx)
+    a_buf_foreach(a_u32, *, it, &ctx)
     {
         printf("%" PRIu32 " ", *it);
     }
@@ -49,7 +49,7 @@ static void fore(void)
         if (obj) { *obj = i; }
     }
 
-    a_buf_foreach_reverse(a_u32, it, &ctx)
+    a_buf_foreach_reverse(a_u32, *, it, &ctx)
     {
         printf("%" PRIu32 " ", *it);
     }
@@ -105,7 +105,7 @@ static void test_sort(void)
         }
     }
     printf("-> ");
-    a_buf_foreach(int, it, &ctx)
+    a_buf_foreach(int, *, it, &ctx)
     {
         if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);
@@ -127,7 +127,7 @@ static void test_sort(void)
         }
     }
     printf("-> ");
-    a_buf_foreach(int, it, &ctx)
+    a_buf_foreach(int, *, it, &ctx)
     {
         if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);
@@ -149,7 +149,7 @@ static void test_sort(void)
         }
     }
     printf("-> ");
-    a_buf_foreach(int, it, &ctx)
+    a_buf_foreach(int, *, it, &ctx)
     {
         if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);
@@ -159,14 +159,14 @@ static void test_sort(void)
 
     x = -1;
     srand(t);
-    a_buf_foreach(int, it, &ctx)
+    a_buf_foreach(int, *, it, &ctx)
     {
         *it = rand10();
         printf("%i ", *it);
     }
     printf("-> ");
     a_buf_sort(&ctx, cmp);
-    a_buf_foreach(int, it, &ctx)
+    a_buf_foreach(int, *, it, &ctx)
     {
         if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);
@@ -176,14 +176,14 @@ static void test_sort(void)
 
     x = -1;
     srand(t);
-    a_buf_foreach(int, it, &ctx)
+    a_buf_foreach(int, *, it, &ctx)
     {
         *it = rand10();
         printf("%i ", *it);
     }
     printf("-> ");
     a_buf_sort(&ctx, cmpr);
-    a_buf_foreach(int, it, &ctx)
+    a_buf_foreach(int, *, it, &ctx)
     {
         if (x >= 0) { TEST_BUG(x >= *it); }
         printf("%i ", *it);
