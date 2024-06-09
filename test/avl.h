@@ -76,17 +76,15 @@ static int test(int argc, char *argv[])
     (void)argc;
     (void)argv;
 
-    a_str str = A_STR_NUL;
+    a_str str = A_STR_INIT;
     a_avl root = A_AVL_ROOT;
     unsigned int const n = 0x1000;
     int_node *vec = a_new(int_node, A_NULL, n);
     int *sorted = a_new(int, A_NULL, n);
     for (unsigned int i = 0; i < n; ++i)
     {
-        a_str_putf(&str, "%u", i);
-        vec[i].data = a_cast_s(int, a_hash_bkdr(a_str_ptr(&str), 0));
-        a_str_drop(&str);
-        sorted[i] = vec[i].data;
+        a_str_setf(&str, "%u", i);
+        vec[i].data = sorted[i] = a_cast_s(int, a_hash_bkdr(a_str_ptr(&str), 0));
         a_avl_insert(&root, &vec[i].node, int_cmp);
         set_height(root.node);
         check_tree(root.node);

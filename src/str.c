@@ -39,24 +39,18 @@ void a_str_dtor(a_str *ctx)
     ctx->mem_ = 0;
 }
 
-int a_str_init(a_str *ctx, void const *pdata, a_size nbyte)
-{
-    ctx->num_ = nbyte;
-    ctx->mem_ = ctx->num_ + 1;
-    ctx->mem_ = a_size_up(sizeof(void *), ctx->mem_);
-    ctx->ptr_ = (char *)a_alloc(A_NULL, ctx->mem_);
-    if (A_UNLIKELY(!ctx->ptr_)) { return A_FAILURE; }
-    if (pdata && nbyte)
-    {
-        a_copy(ctx->ptr_, pdata, nbyte);
-    }
-    ctx->ptr_[ctx->num_] = 0;
-    return A_SUCCESS;
-}
-
 int a_str_copy(a_str *ctx, a_str const *obj)
 {
-    return a_str_init(ctx, obj->ptr_, obj->num_);
+    int ok;
+    a_str_ctor(ctx);
+    ok = a_str_alloc_(ctx, obj->num_ + 1);
+    if (ok == A_SUCCESS)
+    {
+        a_copy(ctx->ptr_, obj->ptr_, obj->num_);
+        ctx->ptr_[obj->num_] = 0;
+        ctx->num_ = obj->num_;
+    }
+    return ok;
 }
 
 void a_str_move(a_str *ctx, a_str *obj)
@@ -78,32 +72,49 @@ char *a_str_exit(a_str *ctx)
     return str;
 }
 
-int a_str_cmp(a_str const *lhs, a_str const *rhs)
-{
-    int ok = 0;
-    if (lhs->ptr_ && rhs->ptr_)
-    {
-        ok = memcmp(lhs->ptr_, rhs->ptr_, A_MIN(lhs->num_, rhs->num_));
-        if (ok) { return ok; }
-    }
-    if (lhs->num_ == rhs->num_) { return 0; }
-    return lhs->num_ < rhs->num_ ? -1 : +1;
-}
-
 int a_str_alloc_(a_str *ctx, a_size mem)
 {
     char *ptr;
     mem = a_size_up(sizeof(void *), mem);
     ptr = (char *)a_alloc(ctx->ptr_, mem);
-    if (A_UNLIKELY(!ptr && mem)) { return A_FAILURE; }
-    ctx->ptr_ = ptr;
-    ctx->mem_ = mem;
-    return A_SUCCESS;
+    if (ptr || mem == 0)
+    {
+        ctx->ptr_ = ptr;
+        ctx->mem_ = mem;
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
 }
 
 int a_str_alloc(a_str *ctx, a_size mem)
 {
-    return ctx->mem_ < mem ? a_str_alloc_(ctx, mem) : A_SUCCESS;
+    if (mem > ctx->mem_)
+    {
+        return a_str_alloc_(ctx, mem);
+    }
+    return A_SUCCESS;
+}
+
+int a_str_cmpn(a_str const *ctx, void const *pdata, a_size nbyte)
+{
+    int ok;
+    if (ctx->ptr_ && pdata)
+    {
+        ok = memcmp(ctx->ptr_, pdata, A_MIN(ctx->num_, nbyte));
+        if (ok) { return ok; }
+    }
+    if (ctx->num_ == nbyte) { return 0; }
+    return ctx->num_ < nbyte ? -1 : +1;
+}
+
+int a_str_cmps(a_str const *ctx, void const *str)
+{
+    return a_str_cmpn(ctx, str, strlen((char const *)str));
+}
+
+int a_str_cmp(a_str const *ctx, a_str const *str)
+{
+    return a_str_cmpn(ctx, str->ptr_, str->num_);
 }
 
 int a_str_getc_(a_str *ctx)
@@ -129,26 +140,35 @@ int a_str_getc(a_str *ctx)
 
 int a_str_putc_(a_str *ctx, int c)
 {
-    if (A_UNLIKELY(a_str_alloc(ctx, ctx->num_ + 1))) { return ~0; }
-    ctx->ptr_[ctx->num_++] = (char)c;
-    return c;
+    if (a_str_alloc(ctx, ctx->num_ + 1) == A_SUCCESS)
+    {
+        ctx->ptr_[ctx->num_++] = (char)c;
+        return c;
+    }
+    return ~0;
 }
 
 int a_str_putc(a_str *ctx, int c)
 {
-    if (A_UNLIKELY(a_str_alloc(ctx, ctx->num_ + 2))) { return ~0; }
-    ctx->ptr_[ctx->num_++] = (char)c;
-    ctx->ptr_[ctx->num_] = 0;
-    return c;
+    if (a_str_alloc(ctx, ctx->num_ + 2) == A_SUCCESS)
+    {
+        ctx->ptr_[ctx->num_++] = (char)c;
+        ctx->ptr_[ctx->num_] = 0;
+        return c;
+    }
+    return ~0;
 }
 
 a_size a_str_getn_(a_str *ctx, void *pdata, a_size nbyte)
 {
     if (nbyte > ctx->num_) { nbyte = ctx->num_; }
-    if (pdata && nbyte)
+    if (nbyte)
     {
         ctx->num_ -= nbyte;
-        a_copy(pdata, ctx->ptr_ + ctx->num_, nbyte);
+        if (pdata)
+        {
+            a_copy(pdata, ctx->ptr_ + ctx->num_, nbyte);
+        }
     }
     return nbyte;
 }
@@ -156,61 +176,121 @@ a_size a_str_getn_(a_str *ctx, void *pdata, a_size nbyte)
 a_size a_str_getn(a_str *ctx, void *pdata, a_size nbyte)
 {
     if (nbyte > ctx->num_) { nbyte = ctx->num_; }
-    if (pdata && nbyte)
+    if (nbyte)
     {
         ctx->num_ -= nbyte;
-        a_copy(pdata, ctx->ptr_ + ctx->num_, nbyte);
+        if (pdata)
+        {
+            a_copy(pdata, ctx->ptr_ + ctx->num_, nbyte);
+        }
         ctx->ptr_[ctx->num_] = 0;
     }
     return nbyte;
 }
 
+int a_str_setn_(a_str *ctx, void const *pdata, a_size nbyte)
+{
+    int ok = a_str_alloc(ctx, nbyte);
+    if (ok == A_SUCCESS && nbyte)
+    {
+        a_copy(ctx->ptr_, pdata, nbyte);
+        ctx->num_ = nbyte;
+    }
+    return ok;
+}
+
 int a_str_putn_(a_str *ctx, void const *pdata, a_size nbyte)
 {
-    if (pdata && nbyte)
+    int ok = a_str_alloc(ctx, ctx->num_ + nbyte);
+    if (ok == A_SUCCESS && nbyte)
     {
-        if (A_UNLIKELY(a_str_alloc(ctx, ctx->num_ + nbyte))) { return A_FAILURE; }
         a_copy(ctx->ptr_ + ctx->num_, pdata, nbyte);
         ctx->num_ += nbyte;
     }
-    return A_SUCCESS;
+    return ok;
+}
+
+int a_str_setn(a_str *ctx, void const *pdata, a_size nbyte)
+{
+    int ok = a_str_alloc(ctx, nbyte + 1);
+    if (ok == A_SUCCESS)
+    {
+        a_copy(ctx->ptr_, pdata, nbyte);
+        ctx->ptr_[nbyte] = 0;
+        ctx->num_ = nbyte;
+    }
+    return ok;
 }
 
 int a_str_putn(a_str *ctx, void const *pdata, a_size nbyte)
 {
-    if (pdata && nbyte)
+    int ok = a_str_alloc(ctx, ctx->num_ + nbyte + 1);
+    if (ok == A_SUCCESS)
     {
-        if (A_UNLIKELY(a_str_alloc(ctx, ctx->num_ + nbyte + 1))) { return A_FAILURE; }
         a_copy(ctx->ptr_ + ctx->num_, pdata, nbyte);
-        ctx->num_ += nbyte;
+        ctx->num_ = ctx->num_ + nbyte;
         ctx->ptr_[ctx->num_] = 0;
     }
-    return A_SUCCESS;
+    return ok;
+}
+
+int a_str_sets_(a_str *ctx, void const *str)
+{
+    return a_str_setn_(ctx, str, strlen((char const *)str));
+}
+int a_str_sets(a_str *ctx, void const *str)
+{
+    return a_str_setn(ctx, str, strlen((char const *)str));
 }
 
 int a_str_puts_(a_str *ctx, void const *str)
 {
     return a_str_putn_(ctx, str, strlen((char const *)str));
 }
-
 int a_str_puts(a_str *ctx, void const *str)
 {
     return a_str_putn(ctx, str, strlen((char const *)str));
 }
 
-int a_str_cat_(a_str *ctx, a_str const *obj)
+int a_str_set_(a_str *ctx, a_str const *obj)
+{
+    return a_str_setn_(ctx, obj->ptr_, obj->num_);
+}
+int a_str_set(a_str *ctx, a_str const *obj)
+{
+    return a_str_setn(ctx, obj->ptr_, obj->num_);
+}
+
+int a_str_put_(a_str *ctx, a_str const *obj)
 {
     return a_str_putn_(ctx, obj->ptr_, obj->num_);
 }
-
-int a_str_cat(a_str *ctx, a_str const *obj)
+int a_str_put(a_str *ctx, a_str const *obj)
 {
     return a_str_putn(ctx, obj->ptr_, obj->num_);
 }
 
 #include <stdio.h>
 
-int a_str_putf_(a_str *ctx, char const *fmt, va_list va)
+int a_str_setv(a_str *ctx, char const *fmt, va_list va)
+{
+    int res;
+    va_list ap;
+    va_copy(ap, va);
+    res = vsnprintf(ctx->ptr_, ctx->mem_, fmt, ap);
+    va_end(ap);
+    if ((a_size)res + 1 > ctx->mem_)
+    {
+        if (A_UNLIKELY(a_str_alloc_(ctx, (a_size)res + 1))) { return 0; }
+        va_copy(ap, va);
+        res = vsnprintf(ctx->ptr_, ctx->mem_, fmt, ap);
+        va_end(ap);
+    }
+    if (res >= 0) { ctx->num_ = (a_size)res; }
+    return res;
+}
+
+int a_str_putv(a_str *ctx, char const *fmt, va_list va)
 {
     int res;
     va_list ap;
@@ -219,7 +299,7 @@ int a_str_putf_(a_str *ctx, char const *fmt, va_list va)
     va_copy(ap, va);
     mem = ctx->mem_ - ctx->num_;
     res = vsnprintf(ptr, mem, fmt, ap);
-    mem = ctx->num_ + (size_t)(res + 1);
+    mem = ctx->num_ + (a_size)(res + 1);
     va_end(ap);
     if (mem > ctx->mem_)
     {
@@ -230,7 +310,17 @@ int a_str_putf_(a_str *ctx, char const *fmt, va_list va)
         res = vsnprintf(ptr, mem, fmt, ap);
         va_end(ap);
     }
-    if (res > 0) { ctx->num_ += (size_t)res; }
+    if (res > 0) { ctx->num_ += (a_size)res; }
+    return res;
+}
+
+int a_str_setf(a_str *ctx, char const *fmt, ...)
+{
+    int res;
+    va_list va;
+    va_start(va, fmt);
+    res = a_str_setv(ctx, fmt, va);
+    va_end(va);
     return res;
 }
 
@@ -239,7 +329,7 @@ int a_str_putf(a_str *ctx, char const *fmt, ...)
     int res;
     va_list va;
     va_start(va, fmt);
-    res = a_str_putf_(ctx, fmt, va);
+    res = a_str_putv(ctx, fmt, va);
     va_end(va);
     return res;
 }
