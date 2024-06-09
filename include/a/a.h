@@ -295,14 +295,11 @@
 #else /* !__cplusplus */
 #define A_NULL NULL
 #endif /* __cplusplus */
-#if !defined A_VOID
-#define A_VOID void
-#endif /* A_VOID */
 /*! static cast to \ref a_void */
-#define a_void_c(_, x) a_cast_s(A_VOID, x)
-#define a_void_(_, x) a_cast_s(A_VOID _, x)
+#define a_void_c(_, x) a_cast_s(void, x)
+#define a_void_(_, x) a_cast_s(void _, x)
 /*! incomplete type or no parameter or no return value */
-#define a_void A_VOID
+#define a_void void
 
 #if defined(__cplusplus)
 #define A_TRUE true
@@ -931,22 +928,22 @@ typedef union a_cast
 #define a_container_of(ptr, type, member) a_cast_r(type *, a_cast_r(a_uptr, ptr) - a_offsetof(type, member))
 
 /*!
- @brief round down size "n" to be a multiple of "a"
+ @brief round down size `n` to be a multiple of `a`
 */
 #define a_size_down(a, n) (a_cast_s(a_size, n) & ~a_cast_s(a_size, (a) - 1))
 
 /*!
- @brief round up size "n" to be a multiple of "a"
+ @brief round up size `n` to be a multiple of `a`
 */
 #define a_size_up(a, n) ((a_cast_s(a_size, n) + (a) - 1) & ~a_cast_s(a_size, (a) - 1))
 
 /*!
- @brief round pointer "p" down to the closest "a"-aligned address <= "p"
+ @brief round pointer `p` down to the closest `a`, aligned address <= `p`
 */
 #define a_align_down(a, p) a_cast_r(void *, a_cast_r(a_uptr, p) & ~a_cast_s(a_uptr, (a) - 1))
 
 /*!
- @brief round pointer "p" up to the closest "a"-aligned address >= "p"
+ @brief round pointer `p` up to the closest `a`, aligned address >= `p`
 */
 #define a_align_up(a, p) a_cast_r(void *, (a_cast_r(a_uptr, p) + (a) - 1) & ~a_cast_s(a_uptr, (a) - 1))
 
@@ -1037,7 +1034,7 @@ extern "C" {
 #endif /* LIBA_A_C */
 
 /*!
- @brief reverse the bits in an 8-bit unsigned integer x
+ @brief reverse the bits in an 8-bit unsigned integer
  @param x an 8-bit unsigned integer to be reversed
  @return reversed 8-bit unsigned integer
 */
@@ -1055,7 +1052,7 @@ A_INTERN a_u8 a_u8_rev(a_u8 x)
 #endif /* A_HAVE_INLINE */
 
 /*!
- @brief reverse the bits in a 16-bit unsigned integer x
+ @brief reverse the bits in a 16-bit unsigned integer
  @param x a 16-bit unsigned integer to be reversed
  @return reversed 16-bit unsigned integer
 */
@@ -1116,7 +1113,7 @@ A_INTERN void a_u16_setb(void *b, a_u16 x)
 #endif /* A_HAVE_INLINE */
 
 /*!
- @brief reverse the bits in a 32-bit unsigned integer x
+ @brief reverse the bits in a 32-bit unsigned integer
  @param x a 32-bit unsigned integer to be reversed
  @return reversed 32-bit unsigned integer
 */
@@ -1188,7 +1185,7 @@ A_INTERN void a_u32_setb(void *b, a_u32 x)
 #endif /* A_HAVE_INLINE */
 
 /*!
- @brief reverse the bits in a 64-bit unsigned integer x
+ @brief reverse the bits in a 64-bit unsigned integer
  @param x a 64-bit unsigned integer to be reversed
  @return reversed 64-bit unsigned integer
 */
@@ -1397,9 +1394,7 @@ A_EXTERN void *a_alloc_(void *addr, a_size size);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-/*!
- @brief declare allocation function
-*/
+/*! @brief declare allocation function */
 #define A_ALLOC(alloc, addr, size) void *alloc(void *addr, a_size size)
 #define a_new(T, ptr, num) a_cast_s(T *, a_alloc(ptr, sizeof(T) * (num)))
 #define a_die(ptr) a_alloc(ptr, 0)

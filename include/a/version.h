@@ -104,13 +104,13 @@ A_EXTERN unsigned int a_version_tostr(a_version const *ctx, void *pdata, a_size 
 A_EXTERN unsigned int a_version_parse(a_version *ctx, char const *ver);
 
 /*!
- @brief compare the version lhs with the version rhs
+ @brief compare the version `lhs` with the version `rhs`
  @param[in] lhs version structure to be compared
  @param[in] rhs version structure to be compared
  @return relationship between the versions
-  @retval <0 version lhs < version rhs
-  @retval >0 version lhs > version rhs
-  @retval 0 version lhs == version rhs
+  @retval <0 version `lhs` < version `rhs`
+  @retval >0 version `lhs` > version `rhs`
+  @retval 0 version `lhs` == version `rhs`
 */
 A_EXTERN int a_version_cmp(a_version const *lhs, a_version const *rhs);
 
