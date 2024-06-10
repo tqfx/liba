@@ -221,8 +221,11 @@ int a_str_putn(a_str *ctx, void const *pdata, a_size nbyte)
     int ok = a_str_alloc(ctx, ctx->num_ + nbyte + 1);
     if (ok == A_SUCCESS)
     {
-        if (nbyte) { a_copy(ctx->ptr_ + ctx->num_, pdata, nbyte); }
-        ctx->num_ = ctx->num_ + nbyte;
+        if (nbyte)
+        {
+            a_copy(ctx->ptr_ + ctx->num_, pdata, nbyte);
+            ctx->num_ += nbyte;
+        }
         ctx->ptr_[ctx->num_] = 0;
     }
     return ok;
