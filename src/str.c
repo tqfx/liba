@@ -46,7 +46,7 @@ int a_str_copy(a_str *ctx, a_str const *obj)
     ok = a_str_alloc_(ctx, obj->num_ + 1);
     if (ok == A_SUCCESS)
     {
-        a_copy(ctx->ptr_, obj->ptr_, obj->num_);
+        if (obj->num_) { a_copy(ctx->ptr_, obj->ptr_, obj->num_); }
         ctx->ptr_[obj->num_] = 0;
         ctx->num_ = obj->num_;
     }
@@ -165,10 +165,7 @@ a_size a_str_getn_(a_str *ctx, void *pdata, a_size nbyte)
     if (nbyte)
     {
         ctx->num_ -= nbyte;
-        if (pdata)
-        {
-            a_copy(pdata, ctx->ptr_ + ctx->num_, nbyte);
-        }
+        if (pdata) { a_copy(pdata, ctx->ptr_ + ctx->num_, nbyte); }
     }
     return nbyte;
 }
@@ -179,10 +176,7 @@ a_size a_str_getn(a_str *ctx, void *pdata, a_size nbyte)
     if (nbyte)
     {
         ctx->num_ -= nbyte;
-        if (pdata)
-        {
-            a_copy(pdata, ctx->ptr_ + ctx->num_, nbyte);
-        }
+        if (pdata) { a_copy(pdata, ctx->ptr_ + ctx->num_, nbyte); }
         ctx->ptr_[ctx->num_] = 0;
     }
     return nbyte;
@@ -215,7 +209,7 @@ int a_str_setn(a_str *ctx, void const *pdata, a_size nbyte)
     int ok = a_str_alloc(ctx, nbyte + 1);
     if (ok == A_SUCCESS)
     {
-        a_copy(ctx->ptr_, pdata, nbyte);
+        if (nbyte) { a_copy(ctx->ptr_, pdata, nbyte); }
         ctx->ptr_[nbyte] = 0;
         ctx->num_ = nbyte;
     }
@@ -227,7 +221,7 @@ int a_str_putn(a_str *ctx, void const *pdata, a_size nbyte)
     int ok = a_str_alloc(ctx, ctx->num_ + nbyte + 1);
     if (ok == A_SUCCESS)
     {
-        a_copy(ctx->ptr_ + ctx->num_, pdata, nbyte);
+        if (nbyte) { a_copy(ctx->ptr_ + ctx->num_, pdata, nbyte); }
         ctx->num_ = ctx->num_ + nbyte;
         ctx->ptr_[ctx->num_] = 0;
     }

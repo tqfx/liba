@@ -159,22 +159,29 @@
 #define A_ASSUME(x) (void)0
 #endif /* assume */
 
+/* attribute nonnull */
+#if A_PREREQ_GNUC(3, 3) || __has_attribute(__nonnull__)
+#define A_NONNULL(x) __attribute__((__nonnull__ x))
+#else /* !nonnull */
+#define A_NONNULL(x)
+#endif /* nonnull */
+
 /* attribute format */
-#if A_PREREQ_GNUC(2, 4) || __has_attribute(format)
+#if A_PREREQ_GNUC(2, 4) || __has_attribute(__format__)
 #define A_FORMAT(_, a, b) __attribute__((__format__(_, a, b)))
 #else /* !format */
 #define A_FORMAT(_, a, b)
 #endif /* format */
 
 /* attribute fallthrough */
-#if A_PREREQ_GNUC(7, 0) || __has_attribute(fallthrough)
+#if A_PREREQ_GNUC(7, 0) || __has_attribute(__fallthrough__)
 #define A_FALLTHROUGH __attribute__((__fallthrough__))
 #else /* !fallthrough */
 #define A_FALLTHROUGH (void)0
 #endif /* fallthrough */
 
 /* attribute deprecated */
-#if A_PREREQ_GNUC(3, 2) || __has_attribute(deprecated)
+#if A_PREREQ_GNUC(3, 2) || __has_attribute(__deprecated__)
 #define A_DEPRECATED __attribute__((__deprecated__))
 #elif defined(_WIN32) || defined(__CYGWIN__)
 #define A_DEPRECATED __declspec(deprecated)
@@ -183,7 +190,7 @@
 #endif /* deprecated */
 
 /* attribute always inline */
-#if A_PREREQ_GNUC(3, 2) || __has_attribute(always_inline)
+#if A_PREREQ_GNUC(3, 2) || __has_attribute(__always_inline__)
 #define A_INLINE __inline __attribute__((__always_inline__))
 #elif defined(_MSC_VER)
 #define A_INLINE __inline __forceinline
@@ -199,7 +206,7 @@
 #define A_EXPORT __declspec(dllexport)
 #define A_IMPORT __declspec(dllimport)
 #define A_HIDDEN
-#elif A_PREREQ_GNUC(4, 0) || __has_attribute(visibility)
+#elif A_PREREQ_GNUC(4, 0) || __has_attribute(__visibility__)
 #define A_EXPORT __attribute__((__visibility__("default")))
 #define A_IMPORT __attribute__((__visibility__("default")))
 #define A_HIDDEN __attribute__((__visibility__("hidden")))
@@ -1280,7 +1287,7 @@ A_INTERN void a_u64_setb(void *b, a_u64 x)
  @param[in] siz number of bytes to copy
  @return a copy of dest
 */
-A_EXTERN void *a_copy(void *__restrict dst, void const *__restrict src, a_size siz);
+A_EXTERN void *a_copy(void *__restrict dst, void const *__restrict src, a_size siz) A_NONNULL((1, 2));
 
 /*!
  @brief move one buffer to another
@@ -1289,7 +1296,7 @@ A_EXTERN void *a_copy(void *__restrict dst, void const *__restrict src, a_size s
  @param[in] siz number of bytes to copy
  @return a copy of dest
 */
-A_EXTERN void *a_move(void *dst, void const *src, a_size siz);
+A_EXTERN void *a_move(void *dst, void const *src, a_size siz) A_NONNULL((1, 2));
 
 /*!
  @brief fill a buffer with a character
@@ -1298,7 +1305,7 @@ A_EXTERN void *a_move(void *dst, void const *src, a_size siz);
  @param[in] val fill byte
  @return a copy of dest
 */
-A_EXTERN void *a_fill(void *ptr, a_size siz, int val);
+A_EXTERN void *a_fill(void *ptr, a_size siz, int val) A_NONNULL((1));
 
 /*!
  @brief fill a buffer with zero
@@ -1306,7 +1313,7 @@ A_EXTERN void *a_fill(void *ptr, a_size siz, int val);
  @param[in] siz number of bytes to fill
  @return a copy of dest
 */
-A_EXTERN void *a_zero(void *ptr, a_size siz);
+A_EXTERN void *a_zero(void *ptr, a_size siz) A_NONNULL((1));
 
 /*!
  @brief swap two different memory blocks of the same size
@@ -1314,7 +1321,7 @@ A_EXTERN void *a_zero(void *ptr, a_size siz);
  @param[in,out] lhs points to memory block on the left
  @param[in,out] rhs points to memory block on the right
 */
-A_EXTERN void a_swap(void *lhs, void *rhs, a_size siz);
+A_EXTERN void a_swap(void *lhs, void *rhs, a_size siz) A_NONNULL((1, 2));
 
 /*!
  @brief a hash function whose prime number is 131
