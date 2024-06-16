@@ -572,6 +572,8 @@ if(NOT CMAKE_VERSION VERSION_LESS 3.9 AND DOXYGEN_FOUND)
     "A_BYTE_ORDER=1234"
     "A_SIZE_POINTER=8"
     "A_INLINE:=inline"
+    "A_NONULL():="
+    "A_FORMAT():="
     "A_EXTERN:="
     "A_INTERN:="
     "A_PUBLIC:="
