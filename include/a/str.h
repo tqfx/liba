@@ -291,7 +291,7 @@ A_EXTERN int a_str_puts_(a_str *ctx, void const *str);
  @param[in] va instance of variable argument
  @return number of parsed characters
 */
-A_EXTERN int a_str_setv(a_str *ctx, char const *fmt, va_list va) A_FORMAT(printf, 2, 0);
+A_EXTERN A_FORMAT(__printf__, 2, 0) int a_str_setv(a_str *ctx, char const *fmt, va_list va);
 
 /*!
  @brief format string append to a pointer to string structure via va_list
@@ -300,7 +300,7 @@ A_EXTERN int a_str_setv(a_str *ctx, char const *fmt, va_list va) A_FORMAT(printf
  @param[in] va instance of variable argument
  @return number of parsed characters
 */
-A_EXTERN int a_str_putv(a_str *ctx, char const *fmt, va_list va) A_FORMAT(printf, 2, 0);
+A_EXTERN A_FORMAT(__printf__, 2, 0) int a_str_putv(a_str *ctx, char const *fmt, va_list va);
 
 /*!
  @brief format string to a pointer to string structure
@@ -308,7 +308,7 @@ A_EXTERN int a_str_putv(a_str *ctx, char const *fmt, va_list va) A_FORMAT(printf
  @param[in] fmt format of string to be parsed
  @return number of parsed characters
 */
-A_EXTERN int a_str_setf(a_str *ctx, char const *fmt, ...) A_FORMAT(printf, 2, 3);
+A_EXTERN A_FORMAT(__printf__, 2, 3) int a_str_setf(a_str *ctx, char const *fmt, ...);
 
 /*!
  @brief format string append to a pointer to string structure
@@ -316,7 +316,7 @@ A_EXTERN int a_str_setf(a_str *ctx, char const *fmt, ...) A_FORMAT(printf, 2, 3)
  @param[in] fmt format of string to be parsed
  @return number of parsed characters
 */
-A_EXTERN int a_str_putf(a_str *ctx, char const *fmt, ...) A_FORMAT(printf, 2, 3);
+A_EXTERN A_FORMAT(__printf__, 2, 3) int a_str_putf(a_str *ctx, char const *fmt, ...);
 
 /*!
  @brief set the string structure obj to the string structure ctx
