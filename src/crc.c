@@ -31,9 +31,10 @@ void a_crc8l_init(a_u8 table[0x100], a_u8 poly)
 }
 a_u8 a_crc8(a_u8 const table[0x100], void const *pdata, a_size nbyte, a_u8 value)
 {
-    a_byte const *p = (a_byte const *)pdata;
-    a_byte const *q = (a_byte const *)pdata + nbyte;
-    while (p != q) { value = table[value ^ *p++]; }
+    for (a_byte const *p = (a_byte const *)pdata; nbyte; --nbyte)
+    {
+        value = table[value ^ *p++];
+    }
     return value;
 }
 
@@ -68,16 +69,18 @@ void a_crc16l_init(a_u16 table[0x100], a_u16 poly)
 }
 a_u16 a_crc16m(a_u16 const table[0x100], void const *pdata, a_size nbyte, a_u16 value)
 {
-    a_byte const *p = (a_byte const *)pdata;
-    a_byte const *q = (a_byte const *)pdata + nbyte;
-    while (p != q) { value = (a_u16)((value << 8) ^ table[((value >> 8) ^ *p++) & 0xFF]); }
+    for (a_byte const *p = (a_byte const *)pdata; nbyte; --nbyte)
+    {
+        value = (a_u16)((value << 8) ^ table[((value >> 8) ^ *p++) & 0xFF]);
+    }
     return value;
 }
 a_u16 a_crc16l(a_u16 const table[0x100], void const *pdata, a_size nbyte, a_u16 value)
 {
-    a_byte const *p = (a_byte const *)pdata;
-    a_byte const *q = (a_byte const *)pdata + nbyte;
-    while (p != q) { value = (a_u16)((value >> 8) ^ table[(value ^ *p++) & 0xFF]); }
+    for (a_byte const *p = (a_byte const *)pdata; nbyte; --nbyte)
+    {
+        value = (a_u16)((value >> 8) ^ table[(value ^ *p++) & 0xFF]);
+    }
     return value;
 }
 
@@ -112,16 +115,18 @@ void a_crc32l_init(a_u32 table[0x100], a_u32 poly)
 }
 a_u32 a_crc32m(a_u32 const table[0x100], void const *pdata, a_size nbyte, a_u32 value)
 {
-    a_byte const *p = (a_byte const *)pdata;
-    a_byte const *q = (a_byte const *)pdata + nbyte;
-    while (p != q) { value = (value << 8) ^ table[((value >> 24) ^ *p++) & 0xFF]; }
+    for (a_byte const *p = (a_byte const *)pdata; nbyte; --nbyte)
+    {
+        value = (value << 8) ^ table[((value >> 24) ^ *p++) & 0xFF];
+    }
     return value;
 }
 a_u32 a_crc32l(a_u32 const table[0x100], void const *pdata, a_size nbyte, a_u32 value)
 {
-    a_byte const *p = (a_byte const *)pdata;
-    a_byte const *q = (a_byte const *)pdata + nbyte;
-    while (p != q) { value = (value >> 8) ^ table[(value ^ *p++) & 0xFF]; }
+    for (a_byte const *p = (a_byte const *)pdata; nbyte; --nbyte)
+    {
+        value = (value >> 8) ^ table[(value ^ *p++) & 0xFF];
+    }
     return value;
 }
 
@@ -156,15 +161,17 @@ void a_crc64l_init(a_u64 table[0x100], a_u64 poly)
 }
 a_u64 a_crc64m(a_u64 const table[0x100], void const *pdata, a_size nbyte, a_u64 value)
 {
-    a_byte const *p = (a_byte const *)pdata;
-    a_byte const *q = (a_byte const *)pdata + nbyte;
-    while (p != q) { value = (value << 8) ^ table[((value >> 56) ^ *p++) & 0xFF]; }
+    for (a_byte const *p = (a_byte const *)pdata; nbyte; --nbyte)
+    {
+        value = (value << 8) ^ table[((value >> 56) ^ *p++) & 0xFF];
+    }
     return value;
 }
 a_u64 a_crc64l(a_u64 const table[0x100], void const *pdata, a_size nbyte, a_u64 value)
 {
-    a_byte const *p = (a_byte const *)pdata;
-    a_byte const *q = (a_byte const *)pdata + nbyte;
-    while (p != q) { value = (value >> 8) ^ table[(value ^ *p++) & 0xFF]; }
+    for (a_byte const *p = (a_byte const *)pdata; nbyte; --nbyte)
+    {
+        value = (value >> 8) ^ table[(value ^ *p++) & 0xFF];
+    }
     return value;
 }
