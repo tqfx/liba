@@ -13,7 +13,7 @@ edition = "2018"
 
 [build-dependencies]
 cmake = { version = "0.1", optional = true }
-cc = "1"
+cc = { version = "1" }
 
 [features]
 static_crt = []
