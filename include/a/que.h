@@ -142,7 +142,7 @@ A_EXTERN void a_que_move(a_que *ctx, a_que *obj);
  @return element pointer
   @retval 0 out of bounds
 */
-A_EXTERN void *a_que_at(a_que const *ctx, a_imax idx);
+A_EXTERN void *a_que_at(a_que const *ctx, a_diff idx);
 #define A_QUE_AT(T, ctx, idx) a_cast_s(T *, a_que_at(ctx, idx))
 
 /*!

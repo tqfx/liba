@@ -97,9 +97,9 @@ void a_que_move(a_que *ctx, a_que *obj)
     a_zero(obj, sizeof(*obj));
 }
 
-void *a_que_at(a_que const *ctx, a_imax idx)
+void *a_que_at(a_que const *ctx, a_diff idx)
 {
-    a_imax cur = 0;
+    a_diff cur = 0;
     if (idx >= 0)
     {
         a_list_foreach_next(it, &ctx->head_)
