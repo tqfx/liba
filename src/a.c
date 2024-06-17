@@ -18,11 +18,11 @@ void a_swap(void *lhs_, void *rhs_, a_size siz)
 {
     a_byte *lhs = (a_byte *)lhs_;
     a_byte *rhs = (a_byte *)rhs_;
-    for (a_byte buf; siz; --siz, ++lhs, ++rhs)
+    for (a_byte byte; siz; --siz, ++lhs, ++rhs)
     {
-        buf = *lhs;
+        byte = *lhs;
         *lhs = *rhs;
-        *rhs = buf;
+        *rhs = byte;
     }
 }
 
@@ -42,12 +42,9 @@ a_u32 a_hash_bkdr(void const *str_, a_u32 val)
 a_u32 a_hash_bkdr_(void const *ptr_, a_size siz, a_u32 val)
 {
     a_byte const *ptr = (a_byte const *)ptr_;
-    if (ptr && siz)
+    for (; siz; --siz, ++ptr)
     {
-        for (; siz; --siz, ++ptr)
-        {
-            val = val * 131 + *ptr;
-        }
+        val = val * 131 + *ptr;
     }
     return val;
 }
@@ -68,12 +65,9 @@ a_u32 a_hash_sdbm(void const *str_, a_u32 val)
 a_u32 a_hash_sdbm_(void const *ptr_, a_size siz, a_u32 val)
 {
     a_byte const *ptr = (a_byte const *)ptr_;
-    if (ptr && siz)
+    for (; siz; --siz, ++ptr)
     {
-        for (; siz; --siz, ++ptr)
-        {
-            val = val * 65599 + *ptr;
-        }
+        val = val * 65599 + *ptr;
     }
     return val;
 }
