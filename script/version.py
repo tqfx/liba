@@ -59,36 +59,6 @@ class version(object):
         if text != text_:
             self.save(file, text)
 
-    def update_version_ac(self, file):
-        text = text_ = self.load(file)
-        res = re.findall(r"\[version_major\], \[(\d+)\]", text)
-        if res and self.major != res[0]:
-            line0 = "[version_major], [{}]".format(res[0])
-            line1 = "[version_major], [{}]".format(self.major)
-            text = text.replace(line0, line1)
-        res = re.findall(r"\[version_minor\], \[(\d+)\]", text)
-        if res and self.minor != res[0]:
-            line0 = "[version_minor], [{}]".format(res[0])
-            line1 = "[version_minor], [{}]".format(self.minor)
-            text = text.replace(line0, line1)
-        res = re.findall(r"\[version_patch\], \[(\d+)\]", text)
-        if res and self.patch != res[0]:
-            line0 = "[version_patch], [{}]".format(res[0])
-            line1 = "[version_patch], [{}]".format(self.patch)
-            text = text.replace(line0, line1)
-        if text != text_:
-            self.save(file, text)
-
-    def update_autogen(self, file):
-        text = self.load(file)
-        age = str(int(self.minor) - int(self.major))
-        version = self.minor + ":" + self.patch + ":" + age
-        res = re.findall(r"version-info ([0-9:]+)", text)
-        if res and version != res[0]:
-            line0 = "version-info {}".format(res[0])
-            line1 = "version-info {}".format(version)
-            self.save(file, text.replace(line0, line1))
-
 
 if __name__ == "__main__":
     import argparse
@@ -103,8 +73,6 @@ if __name__ == "__main__":
     v.update_version("lua/liba.lua", "VERSION")
     v.update_version_h("include/a/version.h")
     v.update_version("javascript/package.json")
-    v.update_version_ac("script/configure.ac")
-    v.update_autogen("script/autogen")
     v.update_version("Cargo.toml")
     v.update_version("conanfile.py")
     v.update_version("meson.build")
