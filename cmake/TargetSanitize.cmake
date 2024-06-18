@@ -16,7 +16,7 @@ macro(sanitize_flag_cx)
   foreach(arg ${ARGN})
     string(REPLACE "+" "x" var ${arg})
     string(REGEX REPLACE "[^A-Za-z0-9_-]+" "-" var ${var})
-    set(CMAKE_REQUIRED_FLAGS "${REQUIRED_FLAGS} ${arg}")
+    string(REPLACE ";" " " CMAKE_REQUIRED_FLAGS "${SANITIZE_CX} ${arg}")
     list(FIND ENABLED_LANGUAGES C found)
     if(${found} GREATER -1)
       check_c_compiler_flag(${arg} cx${var})
@@ -39,7 +39,7 @@ macro(sanitize_flag_ld)
   foreach(arg ${ARGN})
     string(REPLACE "+" "x" var ${arg})
     string(REGEX REPLACE "[^A-Za-z0-9_-]+" "-" var ${var})
-    set(CMAKE_REQUIRED_FLAGS "${REQUIRED_FLAGS} ${arg}")
+    string(REPLACE ";" " " CMAKE_REQUIRED_FLAGS "${SANITIZE_CX} ${SANITIZE_LD} ${arg}")
     list(FIND ENABLED_LANGUAGES C found)
     if(${found} GREATER -1)
       check_c_compiler_flag(${arg} ld${var})
@@ -62,7 +62,6 @@ if(
   CMAKE_C_COMPILER_ID MATCHES "GNU|[Cc]lang|LLVM" OR
   CMAKE_CXX_COMPILER_ID MATCHES "GNU|[Cc]lang|LLVM"
 )
-  set(REQUIRED_FLAGS -fsanitize=address)
   sanitize_flag_cx(-fsanitize=address)
   sanitize_flag_cx(-fsanitize=leak)
   sanitize_flag_cx(-fsanitize=undefined)
@@ -78,7 +77,6 @@ if(
   else()
     sanitize_flag_ld(-static-libsan)
   endif()
-  set(REQUIRED_FLAGS)
 elseif(
   CMAKE_C_COMPILER_ID MATCHES "MSVC" OR
   CMAKE_CXX_COMPILER_ID MATCHES "MSVC"
