@@ -668,7 +668,6 @@ a_avl_node *a_avl_next(a_avl_node *node)
      / \   / \
     A   C E   G
     */
-    if (!node) { return node; }
     if (node->right) /* D -> F -> E */
     {
         for (node = node->right; node->left; node = node->left) {}
@@ -687,7 +686,6 @@ a_avl_node *a_avl_next(a_avl_node *node)
 
 a_avl_node *a_avl_prev(a_avl_node *node)
 {
-    if (!node) { return node; }
     if (node->left)
     {
         for (node = node->left; node->right; node = node->right) {}
@@ -714,7 +712,6 @@ a_avl_node *a_avl_pre_next(a_avl_node *node)
     A   C E   G
     */
     a_avl_node *last = node;
-    if (!node) { return node; }
     if (node->left) { return node->left; }
     if (node->right) { return node->right; }
     for (node = a_avl_parent(node); node; node = a_avl_parent(node))
@@ -732,7 +729,6 @@ a_avl_node *a_avl_pre_next(a_avl_node *node)
 a_avl_node *a_avl_pre_prev(a_avl_node *node)
 {
     a_avl_node *last = node;
-    if (!node) { return node; }
     if (node->right) { return node->right; }
     if (node->left) { return node->left; }
     for (node = a_avl_parent(node); node; node = a_avl_parent(node))
@@ -786,7 +782,6 @@ a_avl_node *a_avl_post_next(a_avl_node *node)
     A   C E   G
     */
     a_avl_node *last = node;
-    if (!node) { return node; }
     node = a_avl_parent(node);
     if (node && node->right && node->right != last)
     {
@@ -799,7 +794,6 @@ a_avl_node *a_avl_post_next(a_avl_node *node)
 a_avl_node *a_avl_post_prev(a_avl_node *node)
 {
     a_avl_node *last = node;
-    if (!node) { return node; }
     node = a_avl_parent(node);
     if (node && node->left && node->left != last)
     {
