@@ -43,7 +43,7 @@ static A_INLINE void a_rbt_new_child(a_rbt *root, a_rbt_node *parent, a_rbt_node
 static A_INLINE void a_rbt_set_parent_color(a_rbt_node *node, a_rbt_node *parent, unsigned int color)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    node->parent_ = (a_uptr)parent | color;
+    node->parent_ = (a_uptr)parent + color;
 #else /* !A_SIZE_POINTER */
     node->parent = parent;
     node->color = color;
@@ -54,7 +54,7 @@ static A_INLINE void a_rbt_set_parent_color(a_rbt_node *node, a_rbt_node *parent
 static A_INLINE void a_rbt_set_parent(a_rbt_node *node, a_rbt_node *parent)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    node->parent_ = (a_uptr)parent | (node->parent_ & 1);
+    node->parent_ = (a_uptr)parent + (node->parent_ & 1);
 #else /* !A_SIZE_POINTER */
     node->parent = parent;
 #endif /* A_SIZE_POINTER */
@@ -74,9 +74,9 @@ static A_INLINE unsigned int a_rbt_color(a_rbt_node const *node)
 static A_INLINE void a_rbt_set_black(a_rbt_node *node)
 {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    node->parent_ |= A_RBT_B;
+    node->parent_ |= 1;
 #else /* !A_SIZE_POINTER */
-    node->color = A_RBT_B;
+    node->color = 1;
 #endif /* A_SIZE_POINTER */
 }
 
@@ -98,9 +98,15 @@ static A_INLINE void a_rbt_set_parents(a_rbt *root, a_rbt_node *node, a_rbt_node
     a_rbt_new_child(root, parent, node, newnode);
 }
 
+#if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
+#define A_RBT_PARENT(node) a_cast_r(a_rbt_node *, (node)->parent_)
+#else /* !A_SIZE_POINTER */
+#define A_RBT_PARENT(node) (node)->parent
+#endif /* A_SIZE_POINTER */
+
 void a_rbt_insert_adjust(a_rbt *root, a_rbt_node *node)
 {
-    for (a_rbt_node *parent = a_rbt_parent(node), *gparent, *tmp;;)
+    for (a_rbt_node *parent = A_RBT_PARENT(node), *gparent, *tmp;;)
     {
         /* Loop invariant: node is red. */
         if (A_UNLIKELY(!parent))
@@ -109,19 +115,19 @@ void a_rbt_insert_adjust(a_rbt *root, a_rbt_node *node)
             The inserted node is root. Either this is the first node,
             or we recursed at Case 1 below and are no longer violating 4).
             */
-            a_rbt_set_parent_color(node, A_NULL, A_RBT_B);
+            a_rbt_set_parent_color(node, A_NULL, 1);
             break;
         }
         /*
         If there is a black parent, we are done. Otherwise, take some corrective action as, per 4),
         we don't want a red root or two consecutive red nodes.
         */
-        if (a_rbt_color(parent) == A_RBT_B) { break; }
-        gparent = a_rbt_parent(parent);
+        if (a_rbt_color(parent)) { break; }
+        gparent = A_RBT_PARENT(parent);
         tmp = gparent->right;
         if (parent != tmp) /* parent == gparent->left */
         {
-            if (tmp && a_rbt_color(tmp) == A_RBT_R)
+            if (tmp && a_rbt_color(tmp) == 0)
             {
                 /*
                 Case 1 - node's uncle is red (color flips).
@@ -134,11 +140,11 @@ void a_rbt_insert_adjust(a_rbt *root, a_rbt_node *node)
 
                 However, since g's parent might be red, and 4) does not allow this, we need to recurse at g.
                 */
-                a_rbt_set_parent_color(tmp, gparent, A_RBT_B);
-                a_rbt_set_parent_color(parent, gparent, A_RBT_B);
+                a_rbt_set_parent_color(tmp, gparent, 1);
+                a_rbt_set_parent_color(parent, gparent, 1);
                 node = gparent;
                 parent = a_rbt_parent(node);
-                a_rbt_set_parent_color(node, parent, A_RBT_R);
+                a_rbt_set_parent_color(node, parent, 0);
                 continue;
             }
             tmp = parent->right;
@@ -158,8 +164,8 @@ void a_rbt_insert_adjust(a_rbt *root, a_rbt_node *node)
                 tmp = node->left;
                 parent->right = tmp;
                 node->left = parent;
-                if (tmp) { a_rbt_set_parent_color(tmp, parent, A_RBT_B); }
-                a_rbt_set_parent_color(parent, node, A_RBT_R);
+                if (tmp) { a_rbt_set_parent_color(tmp, parent, 1); }
+                a_rbt_set_parent_color(parent, node, 0);
                 parent = node;
                 tmp = node->right;
             }
@@ -175,21 +181,21 @@ void a_rbt_insert_adjust(a_rbt *root, a_rbt_node *node)
             */
             gparent->left = tmp; /* == parent->right */
             parent->right = gparent;
-            if (tmp) { a_rbt_set_parent_color(tmp, gparent, A_RBT_B); }
-            a_rbt_set_parents(root, gparent, parent, A_RBT_R);
+            if (tmp) { a_rbt_set_parent_color(tmp, gparent, 1); }
+            a_rbt_set_parents(root, gparent, parent, 0);
             break;
         }
         else
         {
             tmp = gparent->left;
-            if (tmp && a_rbt_color(tmp) == A_RBT_R)
+            if (tmp && a_rbt_color(tmp) == 0)
             {
                 /* Case 1 - color flips */
-                a_rbt_set_parent_color(tmp, gparent, A_RBT_B);
-                a_rbt_set_parent_color(parent, gparent, A_RBT_B);
+                a_rbt_set_parent_color(tmp, gparent, 1);
+                a_rbt_set_parent_color(parent, gparent, 1);
                 node = gparent;
                 parent = a_rbt_parent(node);
-                a_rbt_set_parent_color(node, parent, A_RBT_R);
+                a_rbt_set_parent_color(node, parent, 0);
                 continue;
             }
             tmp = parent->left;
@@ -199,16 +205,16 @@ void a_rbt_insert_adjust(a_rbt *root, a_rbt_node *node)
                 tmp = node->right;
                 parent->left = tmp;
                 node->right = parent;
-                if (tmp) { a_rbt_set_parent_color(tmp, parent, A_RBT_B); }
-                a_rbt_set_parent_color(parent, node, A_RBT_R);
+                if (tmp) { a_rbt_set_parent_color(tmp, parent, 1); }
+                a_rbt_set_parent_color(parent, node, 0);
                 parent = node;
                 tmp = node->left;
             }
             /* Case 3 - left rotate at gparent */
             gparent->right = tmp; /* == parent->left */
             parent->left = gparent;
-            if (tmp) { a_rbt_set_parent_color(tmp, gparent, A_RBT_B); }
-            a_rbt_set_parents(root, gparent, parent, A_RBT_R);
+            if (tmp) { a_rbt_set_parent_color(tmp, gparent, 1); }
+            a_rbt_set_parents(root, gparent, parent, 0);
             break;
         }
     }
@@ -228,7 +234,7 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
         if (node != parent->right) /* node == parent->left */
         {
             sibling = parent->right;
-            if (a_rbt_color(sibling) == A_RBT_R)
+            if (a_rbt_color(sibling) == 0)
             {
                 /*
                 Case 1 - left rotate at parent
@@ -242,16 +248,16 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
                 tmp1 = sibling->left;
                 parent->right = tmp1;
                 sibling->left = parent;
-                a_rbt_set_parent_color(tmp1, parent, A_RBT_B);
-                a_rbt_set_parents(root, parent, sibling, A_RBT_R);
+                a_rbt_set_parent_color(tmp1, parent, 1);
+                a_rbt_set_parents(root, parent, sibling, 0);
                 sibling = tmp1;
                 A_ASSUME(tmp1);
             }
             tmp1 = sibling->right;
-            if (!tmp1 || a_rbt_color(tmp1) == A_RBT_B)
+            if (!tmp1 || a_rbt_color(tmp1))
             {
                 tmp2 = sibling->left;
-                if (!tmp2 || a_rbt_color(tmp2) == A_RBT_B)
+                if (!tmp2 || a_rbt_color(tmp2))
                 {
                     /*
                     Case 2 - sibling color flip (p could be either color here)
@@ -265,8 +271,8 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
                     This leaves us violating 5) which can be fixed by flipping p to black if it was red,
                     or by recursing at p. p is red when coming from Case 1.
                     */
-                    a_rbt_set_parent_color(sibling, parent, A_RBT_R);
-                    if (a_rbt_color(parent) == A_RBT_R)
+                    a_rbt_set_parent_color(sibling, parent, 0);
+                    if (a_rbt_color(parent) == 0)
                     {
                         a_rbt_set_black(parent);
                     }
@@ -290,7 +296,7 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
                                           Sr
 
                 Note: p might be red, and then both p and sl are red after rotation(which breaks property 4).
-                This is fixed in Case 4 (in a_rbt_set_parents() which set sl the color of p and set A_RBT_B)
+                This is fixed in Case 4 (in a_rbt_set_parents() which set sl the color of p and set black)
 
                      (p)            (sl)
                      / \            /  \
@@ -304,7 +310,7 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
                 sibling->left = tmp1;
                 tmp2->right = sibling;
                 parent->right = tmp2;
-                if (tmp1) { a_rbt_set_parent_color(tmp1, sibling, A_RBT_B); }
+                if (tmp1) { a_rbt_set_parent_color(tmp1, sibling, 1); }
                 tmp1 = sibling;
                 sibling = tmp2;
             }
@@ -321,35 +327,35 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
             tmp2 = sibling->left;
             parent->right = tmp2;
             sibling->left = parent;
-            a_rbt_set_parent_color(tmp1, sibling, A_RBT_B);
+            a_rbt_set_parent_color(tmp1, sibling, 1);
             if (tmp2) { a_rbt_set_parent(tmp2, parent); }
-            a_rbt_set_parents(root, parent, sibling, A_RBT_B);
+            a_rbt_set_parents(root, parent, sibling, 1);
             break;
         }
         else
         {
             A_ASSUME(parent->left);
             sibling = parent->left;
-            if (a_rbt_color(sibling) == A_RBT_R)
+            if (a_rbt_color(sibling) == 0)
             {
                 /* Case 1 - right rotate at parent */
                 tmp1 = sibling->right;
                 parent->left = tmp1;
                 sibling->right = parent;
-                a_rbt_set_parent_color(tmp1, parent, A_RBT_B);
-                a_rbt_set_parents(root, parent, sibling, A_RBT_R);
+                a_rbt_set_parent_color(tmp1, parent, 1);
+                a_rbt_set_parents(root, parent, sibling, 0);
                 sibling = tmp1;
                 A_ASSUME(tmp1);
             }
             tmp1 = sibling->left;
-            if (!tmp1 || a_rbt_color(tmp1) == A_RBT_B)
+            if (!tmp1 || a_rbt_color(tmp1))
             {
                 tmp2 = sibling->right;
-                if (!tmp2 || a_rbt_color(tmp2) == A_RBT_B)
+                if (!tmp2 || a_rbt_color(tmp2))
                 {
                     /* Case 2 - sibling color flip */
-                    a_rbt_set_parent_color(sibling, parent, A_RBT_R);
-                    if (a_rbt_color(parent) == A_RBT_R)
+                    a_rbt_set_parent_color(sibling, parent, 0);
+                    if (a_rbt_color(parent) == 0)
                     {
                         a_rbt_set_black(parent);
                     }
@@ -366,7 +372,7 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
                 sibling->right = tmp1;
                 tmp2->left = sibling;
                 parent->left = tmp2;
-                if (tmp1) { a_rbt_set_parent_color(tmp1, sibling, A_RBT_B); }
+                if (tmp1) { a_rbt_set_parent_color(tmp1, sibling, 1); }
                 tmp1 = sibling;
                 sibling = tmp2;
             }
@@ -374,9 +380,9 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
             tmp2 = sibling->right;
             parent->left = tmp2;
             sibling->right = parent;
-            a_rbt_set_parent_color(tmp1, sibling, A_RBT_B);
+            a_rbt_set_parent_color(tmp1, sibling, 1);
             if (tmp2) { a_rbt_set_parent(tmp2, parent); }
-            a_rbt_set_parents(root, parent, sibling, A_RBT_B);
+            a_rbt_set_parents(root, parent, sibling, 1);
             break;
         }
     }
@@ -388,7 +394,7 @@ void a_rbt_remove(a_rbt *root, a_rbt_node *node)
     a_rbt_node *tmp = node->left;
     a_rbt_node *parent, *adjust;
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-    a_uptr pc;
+    a_uptr parent_;
 #else /* !A_SIZE_POINTER */
     unsigned int color;
 #endif /* A_SIZE_POINTER */
@@ -401,7 +407,7 @@ void a_rbt_remove(a_rbt *root, a_rbt_node *node)
         We adjust colors locally so as to bypass a_rbt_remove_adjust() later on.
         */
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-        pc = node->parent_;
+        parent_ = node->parent_;
 #else /* !A_SIZE_POINTER */
         color = node->color;
 #endif /* A_SIZE_POINTER */
@@ -410,7 +416,7 @@ void a_rbt_remove(a_rbt *root, a_rbt_node *node)
         if (child)
         {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-            child->parent_ = pc;
+            child->parent_ = parent_;
 #else /* !A_SIZE_POINTER */
             child->parent = parent;
             child->color = color;
@@ -420,9 +426,9 @@ void a_rbt_remove(a_rbt *root, a_rbt_node *node)
         else
         {
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-            adjust = (pc & 1) == A_RBT_B ? parent : A_NULL;
+            adjust = (parent_ & 1) ? parent : A_NULL;
 #else /* !A_SIZE_POINTER */
-            adjust = color == A_RBT_B ? parent : A_NULL;
+            adjust = color ? parent : A_NULL;
 #endif /* A_SIZE_POINTER */
         }
     }
@@ -489,7 +495,7 @@ void a_rbt_remove(a_rbt *root, a_rbt_node *node)
         a_rbt_set_parent(tmp, successor);
 
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-        pc = node->parent_;
+        parent_ = node->parent_;
 #else /* !A_SIZE_POINTER */
         color = node->color;
 #endif /* A_SIZE_POINTER */
@@ -498,15 +504,15 @@ void a_rbt_remove(a_rbt *root, a_rbt_node *node)
 
         if (child2)
         {
-            a_rbt_set_parent_color(child2, parent, A_RBT_B);
+            a_rbt_set_parent_color(child2, parent, 1);
             adjust = A_NULL;
         }
         else
         {
-            adjust = a_rbt_color(successor) == A_RBT_B ? parent : A_NULL;
+            adjust = a_rbt_color(successor) ? parent : A_NULL;
         }
 #if defined(A_SIZE_POINTER) && (A_SIZE_POINTER + 0 > 1)
-        successor->parent_ = pc;
+        successor->parent_ = parent_;
 #else /* !A_SIZE_POINTER */
         successor->parent = tmp;
         successor->color = color;

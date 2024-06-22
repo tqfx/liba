@@ -18,9 +18,6 @@
 #define A_RBT_ROOT {A_NULL}
 // clang-format on
 
-#define A_RBT_R 0 //!< red
-#define A_RBT_B 1 //!< black
-
 /*!
  @brief instance structure for red–black binary search tree node
 */
@@ -67,7 +64,7 @@ A_INTERN a_rbt_node *a_rbt_init(a_rbt_node *node, a_rbt_node *parent)
     node->parent_ = a_cast_r(a_uptr, parent);
 #else /* !A_SIZE_POINTER */
     node->parent = parent;
-    node->color = A_RBT_R;
+    node->color = 0;
 #endif /* A_SIZE_POINTER */
     node->right = A_NULL;
     node->left = A_NULL;
