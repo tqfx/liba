@@ -670,16 +670,16 @@ a_avl_node *a_avl_next(a_avl_node *node)
     */
     if (node->right) /* D -> F -> E */
     {
-        for (node = node->right; node->left; node = node->left) {}
+        node = node->right;
+        while (node->left) { node = node->left; }
     }
     else /* C -> B -> D */
     {
-        a_avl_node *last = node;
-        for (node = a_avl_parent(node); node && node->left != last;)
-        {
-            last = node;
+        a_avl_node *leaf;
+        do {
+            leaf = node;
             node = a_avl_parent(node);
-        }
+        } while (node && node->left != leaf);
     }
     return node;
 }
@@ -688,16 +688,16 @@ a_avl_node *a_avl_prev(a_avl_node *node)
 {
     if (node->left)
     {
-        for (node = node->left; node->right; node = node->right) {}
+        node = node->left;
+        while (node->right) { node = node->right; }
     }
     else
     {
-        a_avl_node *last = node;
-        for (node = a_avl_parent(node); node && node->right != last;)
-        {
-            last = node;
+        a_avl_node *leaf;
+        do {
+            leaf = node;
             node = a_avl_parent(node);
-        }
+        } while (node && node->right != leaf);
     }
     return node;
 }
@@ -711,34 +711,34 @@ a_avl_node *a_avl_pre_next(a_avl_node *node)
      / \   / \
     A   C E   G
     */
-    a_avl_node *last = node;
+    a_avl_node *leaf;
     if (node->left) { return node->left; }
     if (node->right) { return node->right; }
-    for (node = a_avl_parent(node); node; node = a_avl_parent(node))
+    for (leaf = node, node = a_avl_parent(node); node;
+         leaf = node, node = a_avl_parent(node))
     {
-        if (node->right && node->right != last)
+        if (node->right && node->right != leaf)
         {
-            node = node->right; /* A -> B -> C */
-            break;
-        }
-        last = node; /* C -> B -> D -> F */
+            node = node->right;
+            break; /* A -> B -> C */
+        } /* C -> B -> D -> F */
     }
     return node;
 }
 
 a_avl_node *a_avl_pre_prev(a_avl_node *node)
 {
-    a_avl_node *last = node;
+    a_avl_node *leaf;
     if (node->right) { return node->right; }
     if (node->left) { return node->left; }
-    for (node = a_avl_parent(node); node; node = a_avl_parent(node))
+    for (leaf = node, node = a_avl_parent(node); node;
+         leaf = node, node = a_avl_parent(node))
     {
-        if (node->left && node->left != last)
+        if (node->left && node->left != leaf)
         {
             node = node->left;
             break;
         }
-        last = node;
     }
     return node;
 }
@@ -781,9 +781,9 @@ a_avl_node *a_avl_post_next(a_avl_node *node)
      / \   / \
     A   C E   G
     */
-    a_avl_node *last = node;
+    a_avl_node *leaf = node;
     node = a_avl_parent(node);
-    if (node && node->right && node->right != last)
+    if (node && node->right && node->right != leaf)
     {
         node = node->right; /* B -> D -> F -> E */
         A_AVL_POST(left, right); /* A -> B -> C */
@@ -793,9 +793,9 @@ a_avl_node *a_avl_post_next(a_avl_node *node)
 
 a_avl_node *a_avl_post_prev(a_avl_node *node)
 {
-    a_avl_node *last = node;
+    a_avl_node *leaf = node;
     node = a_avl_parent(node);
-    if (node && node->left && node->left != last)
+    if (node && node->left && node->left != leaf)
     {
         node = node->left;
         A_AVL_POST(right, left);
