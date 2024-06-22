@@ -17,25 +17,26 @@ static A_INLINE int_node *int_entry(void const *node)
 
 static int int_cmp(void const *lhs, void const *rhs)
 {
-    return int_entry(lhs)->data - int_entry(rhs)->data;
+    int a = int_entry(lhs)->data;
+    int b = int_entry(rhs)->data;
+    if (a == b) { return 0; }
+    return a < b ? -1 : +1;
 }
 
 static int intcmp(void const *lhs, void const *rhs)
 {
-    return *a_int_(const *, lhs) - *a_int_(const *, rhs);
+    int a = *a_int_(const *, lhs);
+    int b = *a_int_(const *, rhs);
+    if (a == b) { return 0; }
+    return a < b ? -1 : +1;
 }
 
-static int test(int argc, char *argv[])
+static int test(unsigned long n)
 {
-    (void)argc;
-    (void)argv;
-
-    unsigned int const n = 0x1000;
-
     a_str str = A_STR_INIT;
     a_rbt root = A_RBT_ROOT;
-    int_node *vec = a_new(int_node, A_NULL, n);
     int *sorted = a_new(int, A_NULL, n);
+    int_node *vec = a_new(int_node, A_NULL, n);
     for (unsigned int i = 0; i < n; ++i)
     {
         a_str_setf(&str, "%u", i);
@@ -43,7 +44,7 @@ static int test(int argc, char *argv[])
         a_rbt_insert(&root, &vec[i].node, int_cmp);
         if (i % 0x100 == 0)
         {
-            debug("insert 0x%04X/0x%04X\n", i, n);
+            debug("insert 0x%04X/0x%04lX\n", i, n);
         }
     }
     a_str_dtor(&str);
@@ -53,7 +54,7 @@ static int test(int argc, char *argv[])
         TEST_BUG(a_rbt_search(&root, &vec[i].node, int_cmp));
     }
 
-    unsigned int x;
+    unsigned long x;
     qsort(sorted, n, sizeof(int), intcmp);
 
     x = 0;
@@ -152,7 +153,7 @@ static int test(int argc, char *argv[])
         a_rbt_remove(&root, &vec[i].node);
         if (i % 0x100 == 0)
         {
-            debug("remove 0x%04X/0x%04X\n", i, n);
+            debug("remove 0x%04X/0x%04lX\n", i, n);
         }
     }
 
@@ -180,6 +181,8 @@ static int test(int argc, char *argv[])
 int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     printf("%s\n", A_FUNC);
-    test(argc, argv);
+    unsigned long n = 0x1000;
+    if (argc > 1) { n = strtoul(argv[1], A_NULL, 0); }
+    test(n);
     return 0;
 }

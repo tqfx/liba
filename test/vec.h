@@ -150,12 +150,18 @@ static void test(void)
 
 static int cmp(void const *lhs, void const *rhs)
 {
-    return *a_int_(const *, lhs) - *a_int_(const *, rhs);
+    int a = *a_int_(const *, lhs);
+    int b = *a_int_(const *, rhs);
+    if (a == b) { return 0; }
+    return a < b ? -1 : +1;
 }
 
 static int cmpr(void const *lhs, void const *rhs)
 {
-    return *a_int_(const *, rhs) - *a_int_(const *, lhs);
+    int a = *a_int_(const *, lhs);
+    int b = *a_int_(const *, rhs);
+    if (a == b) { return 0; }
+    return a > b ? -1 : +1;
 }
 
 static int rand10(void)
