@@ -494,7 +494,7 @@ void a_rbt_remove(a_rbt *root, a_rbt_node *node)
         color = node->color;
 #endif /* A_SIZE_POINTER */
         tmp = a_rbt_parent(node);
-        a_rbt_new_child(root, node, successor, tmp);
+        a_rbt_new_child(root, tmp, node, successor);
 
         if (child2)
         {
