@@ -1,6 +1,6 @@
 {
   "name": "@tqfx/liba",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "An algorithm library based on C/C++",
   "main": "liba.js",
   "types": "liba.d.ts",
