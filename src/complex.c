@@ -164,15 +164,15 @@ void a_complex_inv_(a_complex *ctx)
 #undef A_HAVE_CSQRT
 #endif /* A_HAVE_CSQRT */
 #if defined(A_HAVE_CSQRT) && !defined A_COMPLEX
-a_complex A_FLOAT_F1(csqrt, a_complex);
+a_complex A_FLOAT_F(csqrt)(a_complex);
 #endif /* A_HAVE_CSQRT */
 void a_complex_sqrt_(a_complex *ctx)
 {
 #if defined(A_HAVE_CSQRT) && defined(A_COMPLEX)
     A_COMPLEX *const x = (A_COMPLEX *)ctx;
-    *x = A_FLOAT_F1(csqrt, *x);
+    *x = A_FLOAT_F(csqrt)(*x);
 #elif defined(A_HAVE_CSQRT)
-    *ctx = A_FLOAT_F1(csqrt, *ctx);
+    *ctx = A_FLOAT_F(csqrt)(*ctx);
 #else /* !A_HAVE_CSQRT */
     if (ctx->real != 0 || ctx->imag != 0)
     {
@@ -221,16 +221,16 @@ void a_complex_sqrt_real(a_complex *ctx, a_float x)
 #undef A_HAVE_CPOW
 #endif /* A_HAVE_CPOW */
 #if defined(A_HAVE_CPOW) && !defined A_COMPLEX
-a_complex A_FLOAT_F2(cpow, a_complex, a_complex);
+a_complex A_FLOAT_F(cpow)(a_complex, a_complex);
 #endif /* A_HAVE_CPOW */
 void a_complex_pow_(a_complex *ctx, a_complex a)
 {
 #if defined(A_HAVE_CPOW) && defined(A_COMPLEX)
     A_COMPLEX *const x = (A_COMPLEX *)ctx;
     A_COMPLEX *const y = (A_COMPLEX *)&a;
-    *x = A_FLOAT_F2(cpow, *x, *y);
+    *x = A_FLOAT_F(cpow)(*x, *y);
 #elif defined(A_HAVE_CPOW)
-    *ctx = A_FLOAT_F2(cpow, *ctx, a);
+    *ctx = A_FLOAT_F(cpow)(*ctx, a);
 #else /* !A_HAVE_CPOW */
     if (ctx->real != 0 || ctx->imag != 0)
     {
@@ -267,15 +267,15 @@ void a_complex_pow_real_(a_complex *ctx, a_float a)
 #undef A_HAVE_CEXP
 #endif /* A_HAVE_CEXP */
 #if defined(A_HAVE_CEXP) && !defined A_COMPLEX
-a_complex A_FLOAT_F1(cexp, a_complex);
+a_complex A_FLOAT_F(cexp)(a_complex);
 #endif /* A_HAVE_CEXP */
 void a_complex_exp_(a_complex *ctx)
 {
 #if defined(A_HAVE_CEXP) && defined(A_COMPLEX)
     A_COMPLEX *const x = (A_COMPLEX *)ctx;
-    *x = A_FLOAT_F1(cexp, *x);
+    *x = A_FLOAT_F(cexp)(*x);
 #elif defined(A_HAVE_CEXP)
-    *ctx = A_FLOAT_F1(cexp, *ctx);
+    *ctx = A_FLOAT_F(cexp)(*ctx);
 #else /* !A_HAVE_CEXP */
     a_complex_polar(ctx, a_float_exp(ctx->real), ctx->imag);
 #endif /* A_HAVE_CEXP */
@@ -285,15 +285,15 @@ void a_complex_exp_(a_complex *ctx)
 #undef A_HAVE_CLOG
 #endif /* A_HAVE_CLOG */
 #if defined(A_HAVE_CLOG) && !defined A_COMPLEX
-a_complex A_FLOAT_F1(clog, a_complex);
+a_complex A_FLOAT_F(clog)(a_complex);
 #endif /* A_HAVE_CLOG */
 void a_complex_log_(a_complex *ctx)
 {
 #if defined(A_HAVE_CLOG) && defined(A_COMPLEX)
     A_COMPLEX *const x = (A_COMPLEX *)ctx;
-    *x = A_FLOAT_F1(clog, *x);
+    *x = A_FLOAT_F(clog)(*x);
 #elif defined(A_HAVE_CLOG)
-    *ctx = A_FLOAT_F1(clog, *ctx);
+    *ctx = A_FLOAT_F(clog)(*ctx);
 #else /* !A_HAVE_CLOG */
     ctx->real = a_complex_logabs(*ctx);
     ctx->imag = a_complex_arg(*ctx);
@@ -323,15 +323,15 @@ void a_complex_logb_(a_complex *ctx, a_complex b)
 #undef A_HAVE_CSIN
 #endif /* A_HAVE_CSIN */
 #if defined(A_HAVE_CSIN) && !defined A_COMPLEX
-a_complex A_FLOAT_F1(csin, a_complex);
+a_complex A_FLOAT_F(csin)(a_complex);
 #endif /* A_HAVE_CSIN */
 void a_complex_sin_(a_complex *ctx)
 {
 #if defined(A_HAVE_CSIN) && defined(A_COMPLEX)
     A_COMPLEX *const x = (A_COMPLEX *)ctx;
-    *x = A_FLOAT_F1(csin, *x);
+    *x = A_FLOAT_F(csin)(*x);
 #elif defined(A_HAVE_CSIN)
-    *ctx = A_FLOAT_F1(csin, *ctx);
+    *ctx = A_FLOAT_F(csin)(*ctx);
 #else /* !A_HAVE_CSIN */
     if (ctx->imag != 0)
     {
@@ -350,15 +350,15 @@ void a_complex_sin_(a_complex *ctx)
 #undef A_HAVE_CCOS
 #endif /* A_HAVE_CCOS */
 #if defined(A_HAVE_CCOS) && !defined A_COMPLEX
-a_complex A_FLOAT_F1(ccos, a_complex);
+a_complex A_FLOAT_F(ccos)(a_complex);
 #endif /* A_HAVE_CCOS */
 void a_complex_cos_(a_complex *ctx)
 {
 #if defined(A_HAVE_CCOS) && defined(A_COMPLEX)
     A_COMPLEX *const x = (A_COMPLEX *)ctx;
-    *x = A_FLOAT_F1(ccos, *x);
+    *x = A_FLOAT_F(ccos)(*x);
 #elif defined(A_HAVE_CCOS)
-    *ctx = A_FLOAT_F1(ccos, *ctx);
+    *ctx = A_FLOAT_F(ccos)(*ctx);
 #else /* !A_HAVE_CCOS */
     if (ctx->imag != 0)
     {
@@ -377,15 +377,15 @@ void a_complex_cos_(a_complex *ctx)
 #undef A_HAVE_CTAN
 #endif /* A_HAVE_CTAN */
 #if defined(A_HAVE_CTAN) && !defined A_COMPLEX
-a_complex A_FLOAT_F1(ctan, a_complex);
+a_complex A_FLOAT_F(ctan)(a_complex);
 #endif /* A_HAVE_CTAN */
 void a_complex_tan_(a_complex *ctx)
 {
 #if defined(A_HAVE_CTAN) && defined(A_COMPLEX)
     A_COMPLEX *const x = (A_COMPLEX *)ctx;
-    *x = A_FLOAT_F1(ctan, *x);
+    *x = A_FLOAT_F(ctan)(*x);
 #elif defined(A_HAVE_CTAN)
-    *ctx = A_FLOAT_F1(ctan, *ctx);
+    *ctx = A_FLOAT_F(ctan)(*ctx);
 #else /* !A_HAVE_CTAN */
     a_float const cr = a_float_cos(ctx->real);
     a_float const si = a_float_sinh(ctx->imag);
@@ -425,15 +425,15 @@ void a_complex_cot_(a_complex *ctx)
 #undef A_HAVE_CASIN
 #endif /* A_HAVE_CASIN */
 #if defined(A_HAVE_CASIN) && !defined A_COMPLEX
-a_complex A_FLOAT_F1(casin, a_complex);
+a_complex A_FLOAT_F(casin)(a_complex);
 #endif /* A_HAVE_CASIN */
 void a_complex_asin_(a_complex *ctx)
 {
 #if defined(A_HAVE_CASIN) && defined(A_COMPLEX)
     A_COMPLEX *const x = (A_COMPLEX *)ctx;
-    *x = A_FLOAT_F1(casin, *x);
+    *x = A_FLOAT_F(casin)(*x);
 #elif defined(A_HAVE_CASIN)
-    *ctx = A_FLOAT_F1(casin, *ctx);
+    *ctx = A_FLOAT_F(casin)(*ctx);
 #else /* !A_HAVE_CASIN */
     if (ctx->imag != 0)
     {
@@ -516,15 +516,15 @@ void a_complex_asin_real(a_complex *ctx, a_float x)
 #undef A_HAVE_CACOS
 #endif /* A_HAVE_CACOS */
 #if defined(A_HAVE_CACOS) && !defined A_COMPLEX
-a_complex A_FLOAT_F1(cacos, a_complex);
+a_complex A_FLOAT_F(cacos)(a_complex);
 #endif /* A_HAVE_CACOS */
 void a_complex_acos_(a_complex *ctx)
 {
 #if defined(A_HAVE_CACOS) && defined(A_COMPLEX)
     A_COMPLEX *const x = (A_COMPLEX *)ctx;
-    *x = A_FLOAT_F1(cacos, *x);
+    *x = A_FLOAT_F(cacos)(*x);
 #elif defined(A_HAVE_CACOS)
-    *ctx = A_FLOAT_F1(cacos, *ctx);
+    *ctx = A_FLOAT_F(cacos)(*ctx);
 #else /* !A_HAVE_CACOS */
     if (ctx->imag != 0)
     {
@@ -607,15 +607,15 @@ void a_complex_acos_real(a_complex *ctx, a_float x)
 #undef A_HAVE_CATAN
 #endif /* A_HAVE_CATAN */
 #if defined(A_HAVE_CATAN) && !defined A_COMPLEX
-a_complex A_FLOAT_F1(catan, a_complex);
+a_complex A_FLOAT_F(catan)(a_complex);
 #endif /* A_HAVE_CATAN */
 void a_complex_atan_(a_complex *ctx)
 {
 #if defined(A_HAVE_CATAN) && defined(A_COMPLEX)
     A_COMPLEX *const x = (A_COMPLEX *)ctx;
-    *x = A_FLOAT_F1(catan, *x);
+    *x = A_FLOAT_F(catan)(*x);
 #elif defined(A_HAVE_CATAN)
-    *ctx = A_FLOAT_F1(catan, *ctx);
+    *ctx = A_FLOAT_F(catan)(*ctx);
 #else /* !A_HAVE_CATAN */
     if (ctx->imag != 0)
     {
@@ -732,15 +732,15 @@ void a_complex_acot_(a_complex *ctx)
 #undef A_HAVE_CSINH
 #endif /* A_HAVE_CSINH */
 #if defined(A_HAVE_CSINH) && !defined A_COMPLEX
-a_complex A_FLOAT_F1(csinh, a_complex);
+a_complex A_FLOAT_F(csinh)(a_complex);
 #endif /* A_HAVE_CSINH */
 void a_complex_sinh_(a_complex *ctx)
 {
 #if defined(A_HAVE_CSINH) && defined(A_COMPLEX)
     A_COMPLEX *const x = (A_COMPLEX *)ctx;
-    *x = A_FLOAT_F1(csinh, *x);
+    *x = A_FLOAT_F(csinh)(*x);
 #elif defined(A_HAVE_CSINH)
-    *ctx = A_FLOAT_F1(csinh, *ctx);
+    *ctx = A_FLOAT_F(csinh)(*ctx);
 #else /* !A_HAVE_CSINH */
     a_float const real = ctx->real;
     ctx->real = a_float_sinh(real) * a_float_cos(ctx->imag);
@@ -752,15 +752,15 @@ void a_complex_sinh_(a_complex *ctx)
 #undef A_HAVE_CCOSH
 #endif /* A_HAVE_CCOSH */
 #if defined(A_HAVE_CCOSH) && !defined A_COMPLEX
-a_complex A_FLOAT_F1(ccosh, a_complex);
+a_complex A_FLOAT_F(ccosh)(a_complex);
 #endif /* A_HAVE_CCOSH */
 void a_complex_cosh_(a_complex *ctx)
 {
 #if defined(A_HAVE_CCOSH) && defined(A_COMPLEX)
     A_COMPLEX *const x = (A_COMPLEX *)ctx;
-    *x = A_FLOAT_F1(ccosh, *x);
+    *x = A_FLOAT_F(ccosh)(*x);
 #elif defined(A_HAVE_CCOSH)
-    *ctx = A_FLOAT_F1(ccosh, *ctx);
+    *ctx = A_FLOAT_F(ccosh)(*ctx);
 #else /* !A_HAVE_CCOSH */
     a_float const real = ctx->real;
     ctx->real = a_float_cosh(real) * a_float_cos(ctx->imag);
@@ -772,15 +772,15 @@ void a_complex_cosh_(a_complex *ctx)
 #undef A_HAVE_CTANH
 #endif /* A_HAVE_CTANH */
 #if defined(A_HAVE_CTANH) && !defined A_COMPLEX
-a_complex A_FLOAT_F1(ctanh, a_complex);
+a_complex A_FLOAT_F(ctanh)(a_complex);
 #endif /* A_HAVE_CTANH */
 void a_complex_tanh_(a_complex *ctx)
 {
 #if defined(A_HAVE_CTANH) && defined(A_COMPLEX)
     A_COMPLEX *const x = (A_COMPLEX *)ctx;
-    *x = A_FLOAT_F1(ctanh, *x);
+    *x = A_FLOAT_F(ctanh)(*x);
 #elif defined(A_HAVE_CTANH)
-    *ctx = A_FLOAT_F1(ctanh, *ctx);
+    *ctx = A_FLOAT_F(ctanh)(*ctx);
 #else /* !A_HAVE_CTANH */
     a_float const ci = a_float_cos(ctx->imag);
     a_float const sr = a_float_sinh(ctx->real);
@@ -820,15 +820,15 @@ void a_complex_coth_(a_complex *ctx)
 #undef A_HAVE_CASINH
 #endif /* A_HAVE_CASINH */
 #if defined(A_HAVE_CASINH) && !defined A_COMPLEX
-a_complex A_FLOAT_F1(casinh, a_complex);
+a_complex A_FLOAT_F(casinh)(a_complex);
 #endif /* A_HAVE_CASINH */
 void a_complex_asinh_(a_complex *ctx)
 {
 #if defined(A_HAVE_CASINH) && defined(A_COMPLEX)
     A_COMPLEX *const x = (A_COMPLEX *)ctx;
-    *x = A_FLOAT_F1(casinh, *x);
+    *x = A_FLOAT_F(casinh)(*x);
 #elif defined(A_HAVE_CASINH)
-    *ctx = A_FLOAT_F1(casinh, *ctx);
+    *ctx = A_FLOAT_F(casinh)(*ctx);
 #else /* !A_HAVE_CASINH */
     a_complex_mul_imag_(ctx, +1);
     a_complex_asin_(ctx);
@@ -840,15 +840,15 @@ void a_complex_asinh_(a_complex *ctx)
 #undef A_HAVE_CACOSH
 #endif /* A_HAVE_CACOSH */
 #if defined(A_HAVE_CACOSH) && !defined A_COMPLEX
-a_complex A_FLOAT_F1(cacosh, a_complex);
+a_complex A_FLOAT_F(cacosh)(a_complex);
 #endif /* A_HAVE_CACOSH */
 void a_complex_acosh_(a_complex *ctx)
 {
 #if defined(A_HAVE_CACOSH) && defined(A_COMPLEX)
     A_COMPLEX *const x = (A_COMPLEX *)ctx;
-    *x = A_FLOAT_F1(cacosh, *x);
+    *x = A_FLOAT_F(cacosh)(*x);
 #elif defined(A_HAVE_CACOSH)
-    *ctx = A_FLOAT_F1(cacosh, *ctx);
+    *ctx = A_FLOAT_F(cacosh)(*ctx);
 #else /* !A_HAVE_CACOSH */
     a_complex_acsc_(ctx);
     a_complex_mul_imag_(ctx, ctx->imag > 0 ? -1 : +1);
@@ -879,15 +879,15 @@ void a_complex_acosh_real(a_complex *ctx, a_float x)
 #undef A_HAVE_CATANH
 #endif /* A_HAVE_CATANH */
 #if defined(A_HAVE_CATANH) && !defined A_COMPLEX
-a_complex A_FLOAT_F1(catanh, a_complex);
+a_complex A_FLOAT_F(catanh)(a_complex);
 #endif /* A_HAVE_CATANH */
 void a_complex_atanh_(a_complex *ctx)
 {
 #if defined(A_HAVE_CATANH) && defined(A_COMPLEX)
     A_COMPLEX *const x = (A_COMPLEX *)ctx;
-    *x = A_FLOAT_F1(catanh, *x);
+    *x = A_FLOAT_F(catanh)(*x);
 #elif defined(A_HAVE_CATANH)
-    *ctx = A_FLOAT_F1(catanh, *ctx);
+    *ctx = A_FLOAT_F(catanh)(*ctx);
 #else /* !A_HAVE_CATANH */
     if (ctx->imag != 0)
     {

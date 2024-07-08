@@ -79,33 +79,14 @@
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ > 199900L) || \
     defined(__cplusplus) && (__cplusplus > 201100L) || A_PREREQ_MSVC(18, 0)
 
-#if !defined A_HAVE_VARIADIC_MACROS
-#define A_HAVE_VARIADIC_MACROS 1
-#endif /* A_HAVE_VARIADIC_MACROS */
-
 #if !defined A_HAVE_LONG_LONG_TYPE
 #define A_HAVE_LONG_LONG_TYPE 1
 #endif /* A_HAVE_LONG_LONG_TYPE */
 
 #endif /* C > 199900 or C++ > 201100 */
-#if defined(A_HAVE_VARIADIC_MACROS) && (A_HAVE_VARIADIC_MACROS + 0 < 1)
-#undef A_HAVE_VARIADIC_MACROS
-#endif /* A_HAVE_VARIADIC_MACROS */
 #if defined(A_HAVE_LONG_LONG_TYPE) && (A_HAVE_LONG_LONG_TYPE + 0 < 1)
 #undef A_HAVE_LONG_LONG_TYPE
 #endif /* A_HAVE_LONG_LONG_TYPE */
-
-#if defined(__cplusplus) && (__cplusplus > 201100L) || \
-    defined(__STDC_VERSION__) && (__STDC_VERSION__ > 201100L)
-
-#if !defined A_HAVE_STATIC_ASSERT
-#define A_HAVE_STATIC_ASSERT 1
-#endif /* A_HAVE_STATIC_ASSERT */
-
-#endif /* C > 201100 or C++ > 201100 */
-#if defined(A_HAVE_STATIC_ASSERT) && (A_HAVE_STATIC_ASSERT + 0 < 1)
-#undef A_HAVE_STATIC_ASSERT
-#endif /* A_HAVE_STATIC_ASSERT */
 
 #if defined(__cplusplus) && (__cplusplus > 201100L)
 
@@ -636,12 +617,6 @@
 #define A_F32 float
 #define A_F32_C(X) A_CAST_2(X, F)
 #define A_F32_F(F) A_CAST_2(F, f)
-#define A_F32_F1(F, a) A_CAST_2(F, f)(a)
-#define A_F32_F2(F, a, b) A_CAST_2(F, f)(a, b)
-#define A_F32_F3(F, a, b, c) A_CAST_2(F, f)(a, b, c)
-#if defined(A_HAVE_VARIADIC_MACROS)
-#define A_F32_FN(F, ...) A_CAST_2(F, f)(__VA_ARGS__)
-#endif /* A_HAVE_VARIADIC_MACROS */
 #define A_F32_DIG FLT_DIG
 #define A_F32_EPSILON FLT_EPSILON
 #define A_F32_MANT_DIG FLT_MANT_DIG
@@ -670,12 +645,6 @@
 #define A_F64 double
 #define A_F64_C(X) X
 #define A_F64_F(F) F
-#define A_F64_F1(F, a) F(a)
-#define A_F64_F2(F, a, b) F(a, b)
-#define A_F64_F3(F, a, b, c) F(a, b, c)
-#if defined(A_HAVE_VARIADIC_MACROS)
-#define A_F64_FN(F, ...) F(__VA_ARGS__)
-#endif /* A_HAVE_VARIADIC_MACROS */
 #define A_F64_DIG DBL_DIG
 #define A_F64_EPSILON DBL_EPSILON
 #define A_F64_MANT_DIG DBL_MANT_DIG
@@ -740,12 +709,6 @@
  expands to a floating-point function expression having the value specified by its argument and the type \ref a_float
 */
 #define A_FLOAT_F(F) A_CAST_2(F, f)
-#define A_FLOAT_F1(F, a) A_CAST_2(F, f)(a)
-#define A_FLOAT_F2(F, a, b) A_CAST_2(F, f)(a, b)
-#define A_FLOAT_F3(F, a, b, c) A_CAST_2(F, f)(a, b, c)
-#if defined(A_HAVE_VARIADIC_MACROS)
-#define A_FLOAT_FN(F, ...) A_CAST_2(F, f)(__VA_ARGS__)
-#endif /* A_HAVE_VARIADIC_MACROS */
 
 /*! format constants for the fprintf family of functions */
 #define A_FLOAT_PRI(F, C) "%" F C
@@ -774,12 +737,6 @@
  expands to a floating-point function expression having the value specified by its argument and the type \ref a_float
 */
 #define A_FLOAT_F(F) F
-#define A_FLOAT_F1(F, a) F(a)
-#define A_FLOAT_F2(F, a, b) F(a, b)
-#define A_FLOAT_F3(F, a, b, c) F(a, b, c)
-#if defined(A_HAVE_VARIADIC_MACROS)
-#define A_FLOAT_FN(F, ...) F(__VA_ARGS__)
-#endif /* A_HAVE_VARIADIC_MACROS */
 
 /*! format constants for the fprintf family of functions */
 #define A_FLOAT_PRI(F, C) "%" F C
@@ -808,12 +765,6 @@
  expands to a floating-point function expression having the value specified by its argument and the type \ref a_float
 */
 #define A_FLOAT_F(F) A_CAST_2(F, l)
-#define A_FLOAT_F1(F, a) A_CAST_2(F, l)(a)
-#define A_FLOAT_F2(F, a, b) A_CAST_2(F, l)(a, b)
-#define A_FLOAT_F3(F, a, b, c) A_CAST_2(F, l)(a, b, c)
-#if defined(A_HAVE_VARIADIC_MACROS)
-#define A_FLOAT_FN(F, ...) A_CAST_2(F, l)(__VA_ARGS__)
-#endif /* A_HAVE_VARIADIC_MACROS */
 
 /*! format constants for the fprintf family of functions */
 #define A_FLOAT_PRI(F, C) "%" F "L" C
