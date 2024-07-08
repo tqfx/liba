@@ -12,6 +12,9 @@ from cython.view cimport array
 from cpython cimport *
 from a cimport *
 
+cdef array u16_new(a_diff n):
+    return array(shape=(n,), itemsize=2, format='H', mode='c')
+
 cdef array u32_new(a_diff n):
     cdef str u32 = 'I'
     if UINT32_MAX > UINT_MAX:
@@ -318,7 +321,7 @@ def sqrt_u32(object x):
     cdef const a_u32[::1] p
     if PyObject_HasAttrString(x, "__len__"):
         p = x
-        r = u32_new(p.shape[0])
+        r = u16_new(p.shape[0])
         q = <a_u16 *>r.data
         A_ASSUME(p.shape[0])
         for i in prange(p.shape[0], nogil=True):
@@ -333,7 +336,7 @@ def sqrt_u64(object x):
     cdef const a_u64[::1] p
     if PyObject_HasAttrString(x, "__len__"):
         p = x
-        r = u64_new(p.shape[0])
+        r = u32_new(p.shape[0])
         q = <a_u32 *>r.data
         A_ASSUME(p.shape[0])
         for i in prange(p.shape[0], nogil=True):
