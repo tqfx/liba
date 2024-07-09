@@ -239,7 +239,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         test_roll(argc - 1, argv + 1);
         break;
     case 0x0E0928A2: // hash
-    case 0x23CAC2CA: // hash_bkdr
+    case 0x57614C8C: // hash_bkdr
         test_hash_bkdr(argc - 1, argv + 1);
         break;
     case 0x59A69D8D: // hash_sdbm

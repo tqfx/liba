@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 from glob import glob
-import os, re
+from re import findall
 
-for source in glob(os.path.join("lua/src", "**.c"), recursive=True):
+
+def switch(source):
     with open(source, "r", encoding="UTF-8") as f:
         text = text_ = f.read()
-    for item in re.findall(r"0x([0-9A-Fa-f]+): // (\w+)", text):
+    for item in findall(r"0x([0-9A-Fa-f]+): // (\w+)", text):
         value = 0
         for i in item[1]:
             value = value * 131 + ord(i)
@@ -19,3 +20,12 @@ for source in glob(os.path.join("lua/src", "**.c"), recursive=True):
     if text != text_:
         with open(source, "wb") as f:
             f.write(text.encode("UTF-8"))
+
+
+def main(path):
+    for source in glob(path, recursive=True):
+        switch(source)
+
+
+main("lua/src/**.c")
+main("test/**.h")
