@@ -17,26 +17,24 @@ if(CCACHE_FOUND AND CMAKE_GENERATOR STREQUAL "Xcode")
   endif()
   set(CMAKE_XCODE_ATTRIBUTE_LD ${CMAKE_XCODE_ATTRIBUTE_CC})
   file(WRITE ${CMAKE_XCODE_ATTRIBUTE_CC}
-    "#!/usr/bin/env sh\n\n"
     "# Xcode generator doesn't include the compiler as the\n"
     "# first argument, Ninja and Makefiles do. Handle both cases.\n"
-    "if [ \"$1\" = \"${CMAKE_C_COMPILER}\" ] ; then\n"
+    "if [ \"$1\" = \"${CMAKE_C_COMPILER}\" ]; then\n"
     "    shift\n"
     "fi\n\n"
     "export CCACHE_CPP2=true\n"
-    "exec \"${CCACHE_EXECUTABLE}\" \"${CMAKE_C_COMPILER}\" \"$@\"\n"
+    "exec \"${CCACHE_EXECUTABLE}\" \"${CMAKE_C_COMPILER}\" \"$@\""
   )
   execute_process(COMMAND chmod a+rx ${CMAKE_XCODE_ATTRIBUTE_CC})
   set(CMAKE_XCODE_ATTRIBUTE_LDPLUSPLUS ${CMAKE_XCODE_ATTRIBUTE_CXX})
   file(WRITE ${CMAKE_XCODE_ATTRIBUTE_CXX}
-    "#!/usr/bin/env sh\n\n"
     "# Xcode generator doesn't include the compiler as the\n"
     "# first argument, Ninja and Makefiles do. Handle both cases.\n"
-    "if [ \"$1\" = \"${CMAKE_CXX_COMPILER}\" ] ; then\n"
+    "if [ \"$1\" = \"${CMAKE_CXX_COMPILER}\" ]; then\n"
     "    shift\n"
     "fi\n\n"
     "export CCACHE_CPP2=true\n"
-    "exec \"${CCACHE_EXECUTABLE}\" \"${CMAKE_CXX_COMPILER}\" \"$@\"\n"
+    "exec \"${CCACHE_EXECUTABLE}\" \"${CMAKE_CXX_COMPILER}\" \"$@\""
   )
   execute_process(COMMAND chmod a+rx ${CMAKE_XCODE_ATTRIBUTE_CXX})
 endif()
