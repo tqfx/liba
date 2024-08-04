@@ -152,16 +152,14 @@ static int cmp(void const *lhs, void const *rhs)
 {
     int a = *a_int_(const *, lhs);
     int b = *a_int_(const *, rhs);
-    if (a == b) { return 0; }
-    return a < b ? -1 : +1;
+    return (a > b) - (a < b);
 }
 
 static int cmpr(void const *lhs, void const *rhs)
 {
     int a = *a_int_(const *, lhs);
     int b = *a_int_(const *, rhs);
-    if (a == b) { return 0; }
-    return a > b ? -1 : +1;
+    return (a < b) - (a > b);
 }
 
 static int rand10(void)

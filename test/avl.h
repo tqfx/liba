@@ -29,16 +29,14 @@ static int int_cmp(void const *lhs, void const *rhs)
 {
     int a = int_entry(lhs)->data;
     int b = int_entry(rhs)->data;
-    if (a == b) { return 0; }
-    return a < b ? -1 : +1;
+    return (a > b) - (a < b);
 }
 
 static int intcmp(void const *lhs, void const *rhs)
 {
     int a = *a_int_(const *, lhs);
     int b = *a_int_(const *, rhs);
-    if (a == b) { return 0; }
-    return a < b ? -1 : +1;
+    return (a > b) - (a < b);
 }
 
 #define int_max(a, b) ((a) > (b) ? (a) : (b))
