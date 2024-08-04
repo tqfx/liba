@@ -95,26 +95,30 @@ int a_str_alloc(a_str *ctx, a_size mem)
     return A_SUCCESS;
 }
 
-int a_str_cmpn(a_str const *ctx, void const *pdata, a_size nbyte)
+int a_str_cmp_(void const *p0, a_size n0, void const *p1, a_size n1)
 {
     int ok;
-    if (ctx->ptr_ && pdata)
+    if (p0 && p1)
     {
-        ok = memcmp(ctx->ptr_, pdata, A_MIN(ctx->num_, nbyte));
+        ok = memcmp(p0, p1, A_MIN(n0, n1));
         if (ok) { return ok; }
     }
-    if (ctx->num_ == nbyte) { return 0; }
-    return ctx->num_ < nbyte ? -1 : +1;
-}
-
-int a_str_cmps(a_str const *ctx, void const *str)
-{
-    return a_str_cmpn(ctx, str, strlen((char const *)str));
+    return (n0 > n1) - (n0 < n1);
 }
 
 int a_str_cmp(a_str const *ctx, a_str const *str)
 {
-    return a_str_cmpn(ctx, str->ptr_, str->num_);
+    return a_str_cmp_(ctx->ptr_, ctx->num_, str->ptr_, str->num_);
+}
+
+int a_str_cmpn(a_str const *ctx, void const *pdata, a_size nbyte)
+{
+    return a_str_cmp_(ctx->ptr_, ctx->num_, pdata, nbyte);
+}
+
+int a_str_cmps(a_str const *ctx, void const *str)
+{
+    return a_str_cmp_(ctx->ptr_, ctx->num_, str, strlen((char const *)str));
 }
 
 int a_str_getc_(a_str *ctx)

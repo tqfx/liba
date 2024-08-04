@@ -176,6 +176,30 @@ A_EXTERN int a_str_alloc(a_str *ctx, a_size mem);
 A_EXTERN int a_str_alloc_(a_str *ctx, a_size mem);
 
 /*!
+ @brief compare the memory block 0 with the memory block 1
+ @param[in] p0 points to memory block 0 to be compared
+ @param[in] n0 length of memory block 0 to be compared
+ @param[in] p1 points to memory block 1 to be compared
+ @param[in] n1 length of memory block 1 to be compared
+ @return relationship between the memory blocks
+  @retval <0 memory block 0 < memory block 1
+  @retval >0 memory block 0 > memory block 1
+  @retval 0 memory block 0 == memory block 1
+*/
+A_EXTERN int a_str_cmp_(void const *p0, a_size n0, void const *p1, a_size n1);
+
+/*!
+ @brief compare the string `lhs` with the string `rhs`
+ @param[in] lhs string structure to be compared
+ @param[in] rhs string structure to be compared
+ @return relationship between the strings
+  @retval <0 string `lhs` < string `rhs`
+  @retval >0 string `lhs` > string `rhs`
+  @retval 0 string `lhs` == string `rhs`
+*/
+A_EXTERN int a_str_cmp(a_str const *lhs, a_str const *rhs);
+
+/*!
  @brief compare the string `ctx` with the memory block
  @param[in] ctx points to an instance of string structure
  @param[in] pdata points to memory block to be compared
@@ -197,17 +221,6 @@ A_EXTERN int a_str_cmpn(a_str const *ctx, void const *pdata, a_size nbyte);
   @retval 0 string `ctx` == C string `str`
 */
 A_EXTERN int a_str_cmps(a_str const *ctx, void const *str);
-
-/*!
- @brief compare the string `lhs` with the string `rhs`
- @param[in] lhs string structure to be compared
- @param[in] rhs string structure to be compared
- @return relationship between the strings
-  @retval <0 string `lhs` < string `rhs`
-  @retval >0 string `lhs` > string `rhs`
-  @retval 0 string `lhs` == string `rhs`
-*/
-A_EXTERN int a_str_cmp(a_str const *lhs, a_str const *rhs);
 
 /*!
  @brief get character for a pointer to string structure
