@@ -13,7 +13,7 @@ liba = "0.1"
 
 #![warn(missing_docs)]
 #![allow(non_camel_case_types)]
-#![cfg_attr(not(features = "std"), no_std)]
+#![cfg_attr(not(feature = "std"), no_std)]
 
 /// floating-point number stored using `f64`
 #[cfg(not(feature = "float"))]
