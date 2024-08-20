@@ -148,14 +148,14 @@ static void test(void)
 #include "a/str.h"
 #include <time.h>
 
-static int cmp(void const *lhs, void const *rhs)
+static int small(void const *lhs, void const *rhs)
 {
     int a = *a_int_(const *, lhs);
     int b = *a_int_(const *, rhs);
     return (a > b) - (a < b);
 }
 
-static int cmpr(void const *lhs, void const *rhs)
+static int large(void const *lhs, void const *rhs)
 {
     int a = *a_int_(const *, lhs);
     int b = *a_int_(const *, rhs);
@@ -183,7 +183,7 @@ static void test_sort(void)
         printf("%i ", *it);
     }
     printf("-> ");
-    a_vec_sort(ctx, cmpr);
+    a_vec_sort(ctx, large);
     a_vec_foreach(int, *, it, ctx)
     {
         if (x >= 0) { TEST_BUG(x >= *it); }
@@ -200,7 +200,7 @@ static void test_sort(void)
         printf("%i ", *it);
     }
     printf("-> ");
-    a_vec_sort(ctx, cmp);
+    a_vec_sort(ctx, small);
     a_vec_foreach(int, *, it, ctx)
     {
         if (x >= 0) { TEST_BUG(x <= *it); }
@@ -219,7 +219,7 @@ static void test_sort(void)
         {
             *obj = rand10();
             printf("%i ", *obj);
-            a_vec_sort_fore(ctx, cmp);
+            a_vec_sort_fore(ctx, small);
         }
     }
     printf("-> ");
@@ -241,7 +241,7 @@ static void test_sort(void)
         {
             *obj = rand10();
             printf("%i ", *obj);
-            a_vec_sort_back(ctx, cmp);
+            a_vec_sort_back(ctx, small);
         }
     }
     printf("-> ");
@@ -259,7 +259,7 @@ static void test_sort(void)
     for (int i = 0; i != 10; ++i)
     {
         int key = rand10();
-        int *obj = A_VEC_PUSH_SORT(int, ctx, &key, cmp);
+        int *obj = A_VEC_PUSH_SORT(int, ctx, &key, small);
         if (obj)
         {
             printf("%i ", key);
@@ -282,7 +282,7 @@ static void test_sort(void)
         a_str_puts(no, "missing ");
         for (int i = 0; i != 10; ++i)
         {
-            int *obj = A_VEC_SEARCH(int, ctx, &i, cmp);
+            int *obj = A_VEC_SEARCH(int, ctx, &i, small);
             if (obj)
             {
                 a_str_putf(ok, "%i ", *obj);

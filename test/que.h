@@ -94,14 +94,14 @@ static void test(void)
 
 #include <time.h>
 
-static int cmp(void const *lhs, void const *rhs)
+static int small(void const *lhs, void const *rhs)
 {
     int a = *a_int_(const *, lhs);
     int b = *a_int_(const *, rhs);
     return (a > b) - (a < b);
 }
 
-static int cmpr(void const *lhs, void const *rhs)
+static int large(void const *lhs, void const *rhs)
 {
     int a = *a_int_(const *, lhs);
     int b = *a_int_(const *, rhs);
@@ -129,7 +129,7 @@ static void test_sort(void)
         {
             *obj = rand10();
             printf("%i ", *obj);
-            a_que_sort_fore(ctx, cmp);
+            a_que_sort_fore(ctx, small);
         }
     }
     printf("-> ");
@@ -152,7 +152,7 @@ static void test_sort(void)
         {
             *obj = rand10();
             printf("%i ", *obj);
-            a_que_sort_back(ctx, cmpr);
+            a_que_sort_back(ctx, large);
         }
     }
     printf("-> ");
@@ -171,7 +171,7 @@ static void test_sort(void)
     for (int i = 0; i != 10; ++i)
     {
         int key = rand10();
-        int *obj = A_QUE_PUSH_SORT(int, ctx, &key, cmp);
+        int *obj = A_QUE_PUSH_SORT(int, ctx, &key, small);
         if (obj)
         {
             printf("%i ", key);
