@@ -72,15 +72,15 @@ jobs:
         run: |
           set -x
           cmake --build build --target test
-      - name: Run demo
+      - name: Run example
         shell: msys2 {0}
         env:
           MSYSTEM: ${{ matrix.sys }}
         run: |
           set -x
           cmake --build build --config RelWithDebInfo --target install
-          cmake -S demo -B demo/build -DCMAKE_PREFIX_PATH=$(pwd)/_
-          cmake --build demo/build -v
+          cmake -S example -B example/build -DCMAKE_PREFIX_PATH=$(pwd)/_
+          cmake --build example/build -v
       - uses: actions/checkout@v4
         with:
           repository: microsoft/vcpkg

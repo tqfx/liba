@@ -63,14 +63,14 @@ jobs:
         run: |
           Set-PSDebug -Trace 1
           cmake --build build --config RelWithDebInfo --target run_tests -- -noLogo
-      - name: Run demo
+      - name: Run example
         env:
           CMAKE_PREFIX_PATH: ${{ github.workspace }}/_
         run: |
           Set-PSDebug -Trace 1
           cmake --build build --config RelWithDebInfo --target install -- -noLogo
-          cmake -S demo -B demo/build -A ${{ matrix.arch }}
-          cmake --build demo/build -v
+          cmake -S example -B example/build -A ${{ matrix.arch }}
+          cmake --build example/build -v
       - uses: actions/checkout@v4
         with:
           repository: microsoft/vcpkg

@@ -35,8 +35,8 @@ jobs:
             -DLIBA_WITH_QUICKJS=1
           cmake --build build --target package
           sudo cmake --build build --target install
-          cmake -S demo -B demo/build
-          cmake --build demo/build -v
+          cmake -S example -B example/build
+          cmake --build example/build -v
   LLVM-MinGW:
     strategy:
       fail-fast: false
@@ -76,5 +76,5 @@ jobs:
             -DLIBA_WITH_QUICKJS=1
           cmake --build build --target package
           cmake --build build --target install
-          cmake -S demo -B demo/build -DCMAKE_SYSTEM_PROCESSOR=${{ matrix.arch }}
-          cmake --build demo/build -v
+          cmake -S example -B example/build -DCMAKE_SYSTEM_PROCESSOR=${{ matrix.arch }}
+          cmake --build example/build -v

@@ -90,7 +90,7 @@ jobs:
         run: |
           set -x
           cmake --build build --config RelWithDebInfo --target test
-      - name: Run demo
+      - name: Run example
         env:
           CC: ${{ matrix.cc }}
           CXX: ${{ matrix.cxx }}
@@ -98,8 +98,8 @@ jobs:
         run: |
           set -x
           cmake --build build --config RelWithDebInfo --target install
-          cmake -S demo -B demo/build
-          cmake --build demo/build -v
+          cmake -S example -B example/build
+          cmake --build example/build -v
       - uses: actions/checkout@v4
         with:
           repository: microsoft/vcpkg
