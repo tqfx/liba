@@ -77,23 +77,23 @@ class _pid_fuzzy {
                 { NL, NM, NM, NM, NS, NS, NL },
         };
         pid_fuzzy obj = new pid_fuzzy();
-        obj.set_rule(me, mec, mkp, mki, mkd).nfuzz(2);
-        obj.set_kpid(10, 0.1, 1);
+        obj.set_rule(me, mec, mkp, mki, mkd);
+        obj.set_kpid(10, 0.1, 1).set_nfuzz(2);
         System.out.print(obj.zero().pos(1, 0) + " ");
         System.out.print(obj.zero().inc(1, 0) + " ");
         System.out.println(obj.run(1, 0));
-        obj.kp(obj.kp());
-        obj.ki(obj.ki());
-        obj.kd(obj.kd());
-        obj.summax(obj.summax());
-        obj.summin(obj.summin());
+        obj.set_kp(obj.kp());
+        obj.set_ki(obj.ki());
+        obj.set_kd(obj.kd());
+        obj.set_summax(obj.summax());
+        obj.set_summin(obj.summin());
         obj.sum();
-        obj.outmax(obj.outmax());
-        obj.outmin(obj.outmin());
+        obj.set_outmax(obj.outmax());
+        obj.set_outmin(obj.outmin());
         obj.out();
         obj.fdb();
         obj.err();
         obj.nrule();
-        obj.nfuzz(obj.nfuzz());
+        obj.nfuzz();
     }
 }

@@ -28,15 +28,15 @@ JNIEXPORT void JNICALL Java_liba_pid_1fuzzy_init
  * Method:    kp
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_kp__
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_kp
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_fuzzy
- * Method:    kp
+ * Method:    set_kp
  * Signature: (D)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_kp__D
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1kp
   (JNIEnv *, jobject, jdouble);
 
 /*
@@ -44,15 +44,15 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_kp__D
  * Method:    ki
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_ki__
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_ki
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_fuzzy
- * Method:    ki
+ * Method:    set_ki
  * Signature: (D)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_ki__D
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1ki
   (JNIEnv *, jobject, jdouble);
 
 /*
@@ -60,15 +60,15 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_ki__D
  * Method:    kd
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_kd__
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_kd
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_fuzzy
- * Method:    kd
+ * Method:    set_kd
  * Signature: (D)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_kd__D
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1kd
   (JNIEnv *, jobject, jdouble);
 
 /*
@@ -76,15 +76,15 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_kd__D
  * Method:    summax
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_summax__
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_summax
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_fuzzy
- * Method:    summax
+ * Method:    set_summax
  * Signature: (D)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_summax__D
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1summax
   (JNIEnv *, jobject, jdouble);
 
 /*
@@ -92,15 +92,15 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_summax__D
  * Method:    summin
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_summin__
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_summin
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_fuzzy
- * Method:    summin
+ * Method:    set_summin
  * Signature: (D)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_summin__D
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1summin
   (JNIEnv *, jobject, jdouble);
 
 /*
@@ -116,15 +116,15 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_sum
  * Method:    outmax
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_outmax__
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_outmax
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_fuzzy
- * Method:    outmax
+ * Method:    set_outmax
  * Signature: (D)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_outmax__D
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1outmax
   (JNIEnv *, jobject, jdouble);
 
 /*
@@ -132,15 +132,15 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_outmax__D
  * Method:    outmin
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_outmin__
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_outmin
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_fuzzy
- * Method:    outmin
+ * Method:    set_outmin
  * Signature: (D)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_outmin__D
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1outmin
   (JNIEnv *, jobject, jdouble);
 
 /*
@@ -188,15 +188,15 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_opr
  * Method:    nfuzz
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_nfuzz__
+JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_nfuzz
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_fuzzy
- * Method:    nfuzz
+ * Method:    set_nfuzz
  * Signature: (I)Lliba/pid_fuzzy;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_nfuzz__I
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1nfuzz
   (JNIEnv *, jobject, jint);
 
 /*

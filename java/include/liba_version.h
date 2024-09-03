@@ -52,15 +52,15 @@ JNIEXPORT jstring JNICALL Java_liba_version_toString
  * Method:    major
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_liba_version_major__
+JNIEXPORT jint JNICALL Java_liba_version_major
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_version
- * Method:    major
+ * Method:    set_major
  * Signature: (I)Lliba/version;
  */
-JNIEXPORT jobject JNICALL Java_liba_version_major__I
+JNIEXPORT jobject JNICALL Java_liba_version_set_1major
   (JNIEnv *, jobject, jint);
 
 /*
@@ -68,15 +68,15 @@ JNIEXPORT jobject JNICALL Java_liba_version_major__I
  * Method:    minor
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_liba_version_minor__
+JNIEXPORT jint JNICALL Java_liba_version_minor
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_version
- * Method:    minor
+ * Method:    set_minor
  * Signature: (I)Lliba/version;
  */
-JNIEXPORT jobject JNICALL Java_liba_version_minor__I
+JNIEXPORT jobject JNICALL Java_liba_version_set_1minor
   (JNIEnv *, jobject, jint);
 
 /*
@@ -84,15 +84,15 @@ JNIEXPORT jobject JNICALL Java_liba_version_minor__I
  * Method:    third
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_liba_version_third__
+JNIEXPORT jint JNICALL Java_liba_version_third
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_version
- * Method:    third
+ * Method:    set_third
  * Signature: (I)Lliba/version;
  */
-JNIEXPORT jobject JNICALL Java_liba_version_third__I
+JNIEXPORT jobject JNICALL Java_liba_version_set_1third
   (JNIEnv *, jobject, jint);
 
 /*
@@ -100,15 +100,15 @@ JNIEXPORT jobject JNICALL Java_liba_version_third__I
  * Method:    extra
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_liba_version_extra__
+JNIEXPORT jint JNICALL Java_liba_version_extra
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_version
- * Method:    extra
+ * Method:    set_extra
  * Signature: (I)Lliba/version;
  */
-JNIEXPORT jobject JNICALL Java_liba_version_extra__I
+JNIEXPORT jobject JNICALL Java_liba_version_set_1extra
   (JNIEnv *, jobject, jint);
 
 /*
@@ -116,15 +116,15 @@ JNIEXPORT jobject JNICALL Java_liba_version_extra__I
  * Method:    alpha
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_liba_version_alpha__
+JNIEXPORT jstring JNICALL Java_liba_version_alpha
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_version
- * Method:    alpha
+ * Method:    set_alpha
  * Signature: (Ljava/lang/String;)Lliba/version;
  */
-JNIEXPORT jobject JNICALL Java_liba_version_alpha__Ljava_lang_String_2
+JNIEXPORT jobject JNICALL Java_liba_version_set_1alpha
   (JNIEnv *, jobject, jstring);
 
 /*

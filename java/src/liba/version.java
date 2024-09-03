@@ -114,7 +114,7 @@ public class version {
      * @param major major number
      * @return {@link version}
      */
-    public final native version major(int major);
+    public final native version set_major(int major);
 
     /***
      * get minor number for version
@@ -129,7 +129,7 @@ public class version {
      * @param minor minor number
      * @return {@link version}
      */
-    public final native version minor(int minor);
+    public final native version set_minor(int minor);
 
     /***
      * get third number for version
@@ -144,7 +144,7 @@ public class version {
      * @param third third number
      * @return {@link version}
      */
-    public final native version third(int third);
+    public final native version set_third(int third);
 
     /***
      * get extra number for version
@@ -159,7 +159,7 @@ public class version {
      * @param extra extra number
      * @return {@link version}
      */
-    public final native version extra(int extra);
+    public final native version set_extra(int extra);
 
     /***
      * get alphabet for version
@@ -174,7 +174,7 @@ public class version {
      * @param alpha alphabet
      * @return {@link version}
      */
-    public final native version alpha(String alpha);
+    public final native version set_alpha(String alpha);
 
     /**
      * parse for {@link version} object

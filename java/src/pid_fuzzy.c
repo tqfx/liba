@@ -53,14 +53,14 @@ JNIEXPORT void JNICALL Java_liba_pid_1fuzzy_init(JNIEnv *Env, jobject Obj)
     a_pid_fuzzy_init(ctx);
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_kp__(JNIEnv *Env, jobject Obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_kp(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->kp;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_kp__D(JNIEnv *Env, jobject Obj, jdouble kp)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1kp(JNIEnv *Env, jobject Obj, jdouble kp)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
@@ -68,14 +68,14 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_kp__D(JNIEnv *Env, jobject Obj, j
     return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_ki__(JNIEnv *Env, jobject Obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_ki(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->ki;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_ki__D(JNIEnv *Env, jobject Obj, jdouble ki)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1ki(JNIEnv *Env, jobject Obj, jdouble ki)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
@@ -83,14 +83,14 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_ki__D(JNIEnv *Env, jobject Obj, j
     return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_kd__(JNIEnv *Env, jobject Obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_kd(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->kd;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_kd__D(JNIEnv *Env, jobject Obj, jdouble kd)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1kd(JNIEnv *Env, jobject Obj, jdouble kd)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
@@ -98,14 +98,14 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_kd__D(JNIEnv *Env, jobject Obj, j
     return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_summax__(JNIEnv *Env, jobject Obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_summax(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->pid.summax;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_summax__D(JNIEnv *Env, jobject Obj, jdouble summax)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1summax(JNIEnv *Env, jobject Obj, jdouble summax)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
@@ -113,14 +113,14 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_summax__D(JNIEnv *Env, jobject Ob
     return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_summin__(JNIEnv *Env, jobject Obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_summin(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->pid.summin;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_summin__D(JNIEnv *Env, jobject Obj, jdouble summin)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1summin(JNIEnv *Env, jobject Obj, jdouble summin)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
@@ -135,14 +135,14 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_sum(JNIEnv *Env, jobject Obj)
     return ctx->pid.sum;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_outmax__(JNIEnv *Env, jobject Obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_outmax(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->pid.outmax;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_outmax__D(JNIEnv *Env, jobject Obj, jdouble outmax)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1outmax(JNIEnv *Env, jobject Obj, jdouble outmax)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
@@ -150,14 +150,14 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_outmax__D(JNIEnv *Env, jobject Ob
     return Obj;
 }
 
-JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_outmin__(JNIEnv *Env, jobject Obj)
+JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_outmin(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return ctx->pid.outmin;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_outmin__D(JNIEnv *Env, jobject Obj, jdouble outmin)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1outmin(JNIEnv *Env, jobject Obj, jdouble outmin)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
@@ -201,14 +201,14 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_opr(JNIEnv *Env, jobject Obj, jin
     return Obj;
 }
 
-JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_nfuzz__(JNIEnv *Env, jobject Obj)
+JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_nfuzz(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return (jint)ctx->nfuzz;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_nfuzz__I(JNIEnv *Env, jobject Obj, jint num)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1nfuzz(JNIEnv *Env, jobject Obj, jint num)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);

@@ -28,15 +28,15 @@ JNIEXPORT void JNICALL Java_liba_pid_1neuro_init
  * Method:    k
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_k__
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_k
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_neuro
- * Method:    k
+ * Method:    set_k
  * Signature: (D)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_k__D
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_set_1k
   (JNIEnv *, jobject, jdouble);
 
 /*
@@ -44,15 +44,15 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_k__D
  * Method:    kp
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_kp__
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_kp
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_neuro
- * Method:    kp
+ * Method:    set_kp
  * Signature: (D)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_kp__D
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_set_1kp
   (JNIEnv *, jobject, jdouble);
 
 /*
@@ -60,15 +60,15 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_kp__D
  * Method:    ki
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_ki__
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_ki
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_neuro
- * Method:    ki
+ * Method:    set_ki
  * Signature: (D)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_ki__D
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_set_1ki
   (JNIEnv *, jobject, jdouble);
 
 /*
@@ -76,15 +76,15 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_ki__D
  * Method:    kd
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_kd__
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_kd
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_neuro
- * Method:    kd
+ * Method:    set_kd
  * Signature: (D)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_kd__D
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_set_1kd
   (JNIEnv *, jobject, jdouble);
 
 /*
@@ -92,15 +92,15 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_kd__D
  * Method:    wp
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_wp__
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_wp
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_neuro
- * Method:    wp
+ * Method:    set_wp
  * Signature: (D)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wp__D
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_set_1wp
   (JNIEnv *, jobject, jdouble);
 
 /*
@@ -108,15 +108,15 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wp__D
  * Method:    wi
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_wi__
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_wi
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_neuro
- * Method:    wi
+ * Method:    set_wi
  * Signature: (D)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wi__D
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_set_1wi
   (JNIEnv *, jobject, jdouble);
 
 /*
@@ -124,15 +124,15 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wi__D
  * Method:    wd
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_wd__
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_wd
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_neuro
- * Method:    wd
+ * Method:    set_wd
  * Signature: (D)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wd__D
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_set_1wd
   (JNIEnv *, jobject, jdouble);
 
 /*
@@ -140,15 +140,15 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wd__D
  * Method:    outmax
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_outmax__
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_outmax
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_neuro
- * Method:    outmax
+ * Method:    set_outmax
  * Signature: (D)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_outmax__D
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_set_1outmax
   (JNIEnv *, jobject, jdouble);
 
 /*
@@ -156,15 +156,15 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_outmax__D
  * Method:    outmin
  * Signature: ()D
  */
-JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_outmin__
+JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_outmin
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_neuro
- * Method:    outmin
+ * Method:    set_outmin
  * Signature: (D)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_outmin__D
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_set_1outmin
   (JNIEnv *, jobject, jdouble);
 
 /*

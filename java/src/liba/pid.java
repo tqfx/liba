@@ -34,7 +34,7 @@ public class pid {
      * @param kp proportional constant
      * @return {@link pid}
      */
-    public final native pid kp(double kp);
+    public final native pid set_kp(double kp);
 
     /**
      * get integral constant for PID controller
@@ -49,7 +49,7 @@ public class pid {
      * @param ki integral constant
      * @return {@link pid}
      */
-    public final native pid ki(double ki);
+    public final native pid set_ki(double ki);
 
     /**
      * get derivative constant for PID controller
@@ -64,7 +64,7 @@ public class pid {
      * @param kd derivative constant
      * @return {@link pid}
      */
-    public final native pid kd(double kd);
+    public final native pid set_kd(double kd);
 
     /**
      * get maximum integral output for PID controller
@@ -79,7 +79,7 @@ public class pid {
      * @param max maximum integral output
      * @return {@link pid}
      */
-    public final native pid summax(double max);
+    public final native pid set_summax(double max);
 
     /**
      * get minimum integral output for PID controller
@@ -94,7 +94,7 @@ public class pid {
      * @param min minimum integral output
      * @return {@link pid}
      */
-    public final native pid summin(double min);
+    public final native pid set_summin(double min);
 
     /**
      * get cached integral output for PID controller
@@ -116,7 +116,7 @@ public class pid {
      * @param max maximum final output
      * @return {@link pid}
      */
-    public final native pid outmax(double max);
+    public final native pid set_outmax(double max);
 
     /**
      * get minimum final output for PID controller
@@ -131,7 +131,7 @@ public class pid {
      * @param min minimum final output
      * @return {@link pid}
      */
-    public final native pid outmin(double min);
+    public final native pid set_outmin(double min);
 
     /**
      * get cached output for PID controller

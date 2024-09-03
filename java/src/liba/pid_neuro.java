@@ -35,7 +35,7 @@ public class pid_neuro {
      * @param k proportional output coefficient
      * @return {@link pid}
      */
-    public final native pid k(double k);
+    public final native pid set_k(double k);
 
     /**
      * get proportional constant for single neuron PID controller
@@ -50,7 +50,7 @@ public class pid_neuro {
      * @param kp proportional constant
      * @return {@link pid}
      */
-    public final native pid kp(double kp);
+    public final native pid set_kp(double kp);
 
     /**
      * get integral constant for single neuron PID controller
@@ -65,7 +65,7 @@ public class pid_neuro {
      * @param ki integral constant
      * @return {@link pid}
      */
-    public final native pid ki(double ki);
+    public final native pid set_ki(double ki);
 
     /**
      * get derivative constant for single neuron PID controller
@@ -80,7 +80,7 @@ public class pid_neuro {
      * @param kd derivative constant
      * @return {@link pid}
      */
-    public final native pid kd(double kd);
+    public final native pid set_kd(double kd);
 
     /**
      * get proportional weight for single neuron PID controller
@@ -95,7 +95,7 @@ public class pid_neuro {
      * @param wp proportional weight
      * @return {@link pid}
      */
-    public final native pid wp(double wp);
+    public final native pid set_wp(double wp);
 
     /**
      * get integral weight for single neuron PID controller
@@ -110,7 +110,7 @@ public class pid_neuro {
      * @param wi integral weight
      * @return {@link pid}
      */
-    public final native pid wi(double wi);
+    public final native pid set_wi(double wi);
 
     /**
      * get derivative weight for single neuron PID controller
@@ -125,7 +125,7 @@ public class pid_neuro {
      * @param wd derivative weight
      * @return {@link pid}
      */
-    public final native pid wd(double wd);
+    public final native pid set_wd(double wd);
 
     /**
      * get maximum final output for single neuron PID controller
@@ -140,7 +140,7 @@ public class pid_neuro {
      * @param max maximum final output
      * @return {@link pid}
      */
-    public final native pid outmax(double max);
+    public final native pid set_outmax(double max);
 
     /**
      * get minimum final output for single neuron PID controller
@@ -155,7 +155,7 @@ public class pid_neuro {
      * @param min minimum final output
      * @return {@link pid}
      */
-    public final native pid outmin(double min);
+    public final native pid set_outmin(double min);
 
     /**
      * get cached output for single neuron PID controller

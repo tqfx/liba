@@ -57,14 +57,14 @@ JNIEXPORT jstring JNICALL Java_liba_version_toString(JNIEnv *Env, jobject Obj)
     return (*Env)->NewStringUTF(Env, str);
 }
 
-JNIEXPORT jint JNICALL Java_liba_version_major__(JNIEnv *Env, jobject Obj)
+JNIEXPORT jint JNICALL Java_liba_version_major(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_version *ctx = (a_version *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return (jint)ctx->major;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_version_major__I(JNIEnv *Env, jobject Obj, jint major)
+JNIEXPORT jobject JNICALL Java_liba_version_set_1major(JNIEnv *Env, jobject Obj, jint major)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_version *ctx = (a_version *)(*Env)->GetDirectBufferAddress(Env, Ctx);
@@ -72,14 +72,14 @@ JNIEXPORT jobject JNICALL Java_liba_version_major__I(JNIEnv *Env, jobject Obj, j
     return Obj;
 }
 
-JNIEXPORT jint JNICALL Java_liba_version_minor__(JNIEnv *Env, jobject Obj)
+JNIEXPORT jint JNICALL Java_liba_version_minor(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_version *ctx = (a_version *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return (jint)ctx->minor;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_version_minor__I(JNIEnv *Env, jobject Obj, jint minor)
+JNIEXPORT jobject JNICALL Java_liba_version_set_1minor(JNIEnv *Env, jobject Obj, jint minor)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_version *ctx = (a_version *)(*Env)->GetDirectBufferAddress(Env, Ctx);
@@ -87,14 +87,14 @@ JNIEXPORT jobject JNICALL Java_liba_version_minor__I(JNIEnv *Env, jobject Obj, j
     return Obj;
 }
 
-JNIEXPORT jint JNICALL Java_liba_version_third__(JNIEnv *Env, jobject Obj)
+JNIEXPORT jint JNICALL Java_liba_version_third(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_version *ctx = (a_version *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return (jint)ctx->third;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_version_third__I(JNIEnv *Env, jobject Obj, jint third)
+JNIEXPORT jobject JNICALL Java_liba_version_set_1third(JNIEnv *Env, jobject Obj, jint third)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_version *ctx = (a_version *)(*Env)->GetDirectBufferAddress(Env, Ctx);
@@ -102,14 +102,14 @@ JNIEXPORT jobject JNICALL Java_liba_version_third__I(JNIEnv *Env, jobject Obj, j
     return Obj;
 }
 
-JNIEXPORT jint JNICALL Java_liba_version_extra__(JNIEnv *Env, jobject Obj)
+JNIEXPORT jint JNICALL Java_liba_version_extra(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_version *ctx = (a_version *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     return (jint)ctx->extra;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_version_extra__I(JNIEnv *Env, jobject Obj, jint extra)
+JNIEXPORT jobject JNICALL Java_liba_version_set_1extra(JNIEnv *Env, jobject Obj, jint extra)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_version *ctx = (a_version *)(*Env)->GetDirectBufferAddress(Env, Ctx);
@@ -117,7 +117,7 @@ JNIEXPORT jobject JNICALL Java_liba_version_extra__I(JNIEnv *Env, jobject Obj, j
     return Obj;
 }
 
-JNIEXPORT jstring JNICALL Java_liba_version_alpha__(JNIEnv *Env, jobject Obj)
+JNIEXPORT jstring JNICALL Java_liba_version_alpha(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_version *ctx = (a_version *)(*Env)->GetDirectBufferAddress(Env, Ctx);
@@ -126,7 +126,7 @@ JNIEXPORT jstring JNICALL Java_liba_version_alpha__(JNIEnv *Env, jobject Obj)
     return (*Env)->NewStringUTF(Env, alpha);
 }
 
-JNIEXPORT jobject JNICALL Java_liba_version_alpha__Ljava_lang_String_2(JNIEnv *Env, jobject Obj, jstring Alpha)
+JNIEXPORT jobject JNICALL Java_liba_version_set_1alpha(JNIEnv *Env, jobject Obj, jstring Alpha)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_version *ctx = (a_version *)(*Env)->GetDirectBufferAddress(Env, Ctx);

@@ -62,7 +62,7 @@ public class pid_fuzzy {
      * @param kp proportional constant
      * @return {@link pid}
      */
-    public final native pid kp(double kp);
+    public final native pid set_kp(double kp);
 
     /**
      * get integral constant for fuzzy PID controller
@@ -77,7 +77,7 @@ public class pid_fuzzy {
      * @param ki integral constant
      * @return {@link pid}
      */
-    public final native pid ki(double ki);
+    public final native pid set_ki(double ki);
 
     /**
      * get derivative constant for fuzzy PID controller
@@ -92,7 +92,7 @@ public class pid_fuzzy {
      * @param kd derivative constant
      * @return {@link pid}
      */
-    public final native pid kd(double kd);
+    public final native pid set_kd(double kd);
 
     /**
      * get maximum integral output for fuzzy PID controller
@@ -107,7 +107,7 @@ public class pid_fuzzy {
      * @param max maximum integral output
      * @return {@link pid}
      */
-    public final native pid summax(double max);
+    public final native pid set_summax(double max);
 
     /**
      * get minimum integral output for fuzzy PID controller
@@ -122,7 +122,7 @@ public class pid_fuzzy {
      * @param min minimum integral output
      * @return {@link pid}
      */
-    public final native pid summin(double min);
+    public final native pid set_summin(double min);
 
     /**
      * get cached integral output for fuzzy PID controller
@@ -144,7 +144,7 @@ public class pid_fuzzy {
      * @param max maximum final output
      * @return {@link pid}
      */
-    public final native pid outmax(double max);
+    public final native pid set_outmax(double max);
 
     /**
      * get minimum final output for fuzzy PID controller
@@ -159,7 +159,7 @@ public class pid_fuzzy {
      * @param min minimum final output
      * @return {@link pid}
      */
-    public final native pid outmin(double min);
+    public final native pid set_outmin(double min);
 
     /**
      * get cached output for fuzzy PID controller
@@ -210,7 +210,7 @@ public class pid_fuzzy {
      * @param num maximum number triggered by the rule
      * @return {@link pid_fuzzy}
      */
-    public final native pid_fuzzy nfuzz(int num);
+    public final native pid_fuzzy set_nfuzz(int num);
 
     /**
      * set rule base for fuzzy PID controller

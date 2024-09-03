@@ -36,7 +36,7 @@ class _version {
         if (v100.cmp(v001.parse("0.0.1")) != 3) {
             throw new RuntimeException("v100.cmp(v001) == 3");
         }
-        v000.major(1).minor(2).third(3).extra(4);
+        v000.set_major(1).set_minor(2).set_third(3).set_extra(4);
         if (v000.major() != 1) {
             throw new RuntimeException("v000.major() != 1");
         }
@@ -49,7 +49,7 @@ class _version {
         if (v000.extra() != 4) {
             throw new RuntimeException("v000.extra() != 4");
         }
-        v000.alpha(v000.alpha());
+        v000.set_alpha(v000.alpha());
         System.out.println(v000);
     }
 }

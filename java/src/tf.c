@@ -58,7 +58,7 @@ JNIEXPORT void JNICALL Java_liba_tf_init(JNIEnv *Env, jobject Obj, jdoubleArray 
     ctx->den_n = (unsigned int)den_n;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_tf_num__(JNIEnv *Env, jobject Obj)
+JNIEXPORT jobject JNICALL Java_liba_tf_num(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_tf *ctx = (a_tf *)(*Env)->GetDirectBufferAddress(Env, Ctx);
@@ -67,7 +67,7 @@ JNIEXPORT jobject JNICALL Java_liba_tf_num__(JNIEnv *Env, jobject Obj)
     return num;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_tf_num___3D(JNIEnv *Env, jobject Obj, jdoubleArray num)
+JNIEXPORT jobject JNICALL Java_liba_tf_set_1num(JNIEnv *Env, jobject Obj, jdoubleArray num)
 {
     union
     {
@@ -103,7 +103,7 @@ JNIEXPORT jobject JNICALL Java_liba_tf_input(JNIEnv *Env, jobject Obj)
     return input;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_tf_den__(JNIEnv *Env, jobject Obj)
+JNIEXPORT jobject JNICALL Java_liba_tf_den(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_tf *ctx = (a_tf *)(*Env)->GetDirectBufferAddress(Env, Ctx);
@@ -112,7 +112,7 @@ JNIEXPORT jobject JNICALL Java_liba_tf_den__(JNIEnv *Env, jobject Obj)
     return den;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_tf_den___3D(JNIEnv *Env, jobject Obj, jdoubleArray den)
+JNIEXPORT jobject JNICALL Java_liba_tf_set_1den(JNIEnv *Env, jobject Obj, jdoubleArray den)
 {
     union
     {

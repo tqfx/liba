@@ -41,7 +41,7 @@ public class tf {
      * @param num numerator
      * @return {@link tf}
      */
-    public final native tf num(double[] num);
+    public final native tf set_num(double[] num);
 
     /**
      * get denominator for transfer function
@@ -56,7 +56,7 @@ public class tf {
      * @param den denominator
      * @return {@link tf}
      */
-    public final native tf den(double[] den);
+    public final native tf set_den(double[] den);
 
     /**
      * get input for transfer function

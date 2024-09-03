@@ -28,15 +28,15 @@ JNIEXPORT void JNICALL Java_liba_tf_init
  * Method:    num
  * Signature: ()[D
  */
-JNIEXPORT jdoubleArray JNICALL Java_liba_tf_num__
+JNIEXPORT jdoubleArray JNICALL Java_liba_tf_num
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_tf
- * Method:    num
+ * Method:    set_num
  * Signature: ([D)Lliba/tf;
  */
-JNIEXPORT jobject JNICALL Java_liba_tf_num___3D
+JNIEXPORT jobject JNICALL Java_liba_tf_set_1num
   (JNIEnv *, jobject, jdoubleArray);
 
 /*
@@ -44,15 +44,15 @@ JNIEXPORT jobject JNICALL Java_liba_tf_num___3D
  * Method:    den
  * Signature: ()[D
  */
-JNIEXPORT jdoubleArray JNICALL Java_liba_tf_den__
+JNIEXPORT jdoubleArray JNICALL Java_liba_tf_den
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_tf
- * Method:    den
+ * Method:    set_den
  * Signature: ([D)Lliba/tf;
  */
-JNIEXPORT jobject JNICALL Java_liba_tf_den___3D
+JNIEXPORT jobject JNICALL Java_liba_tf_set_1den
   (JNIEnv *, jobject, jdoubleArray);
 
 /*
