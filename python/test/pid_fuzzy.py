@@ -108,7 +108,7 @@ den = [1.0, -1.97530991, 0.97530991]
 
 tf = liba.tf(num, den[1:])
 pid_fuzzy = (
-    liba.pid_fuzzy().rule(me, mec, mkp, mki, mkd).set_block(2).set_opr(liba.pid_fuzzy.CAP_ALGEBRA)
+    liba.pid_fuzzy().rule(me, mec, mkp, mki, mkd).set_nfuzz(2).set_opr(liba.pid_fuzzy.CAP_ALGEBRA)
 )
 pid_fuzzy.outmax = MAX
 pid_fuzzy.outmin = MIN
@@ -157,4 +157,4 @@ pid_fuzzy.mkp
 pid_fuzzy.mki
 pid_fuzzy.mkd
 pid_fuzzy.nrule
-pid_fuzzy.block = pid_fuzzy.block + 1
+pid_fuzzy.nfuzz = pid_fuzzy.nfuzz + 1

@@ -700,10 +700,10 @@ cdef class pid_fuzzy:
     def set_opr(self, unsigned int opr):
         a_pid_fuzzy_set_opr(&self.ctx, opr)
         return self
-    def set_block(self, unsigned int num):
-        cdef void *ptr = a_pid_fuzzy_block(&self.ctx)
-        ptr = PyMem_Realloc(ptr, A_PID_FUZZY_BLOCK(num))
-        a_pid_fuzzy_set_block(&self.ctx, ptr, num)
+    def set_nfuzz(self, unsigned int num):
+        cdef void *ptr = a_pid_fuzzy_nfuzz(&self.ctx)
+        ptr = PyMem_Realloc(ptr, A_PID_FUZZY_NFUZZ(num))
+        a_pid_fuzzy_set_nfuzz(&self.ctx, ptr, num)
         return self
     def rule(self, me, mec, mkp, mki, mkd):
         self.me = num_new2(me)
@@ -728,7 +728,7 @@ cdef class pid_fuzzy:
     def inc(self, a_float set, a_float fdb):
         return a_pid_fuzzy_inc(&self.ctx, set, fdb)
     def __dealloc__(self):
-        PyMem_Free(a_pid_fuzzy_block(&self.ctx))
+        PyMem_Free(a_pid_fuzzy_nfuzz(&self.ctx))
     def zero(self):
         a_pid_fuzzy_zero(&self.ctx)
         return self
@@ -785,11 +785,11 @@ cdef class pid_fuzzy:
     property nrule:
         def __get__(self):
             return self.ctx.nrule
-    property block:
+    property nfuzz:
         def __get__(self):
-            return self.ctx.block
-        def __set__(self, unsigned int block):
-            self.set_block(block)
+            return self.ctx.nfuzz
+        def __set__(self, unsigned int nfuzz):
+            self.set_nfuzz(nfuzz)
 
 from a.pid_neuro cimport *
 

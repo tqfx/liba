@@ -659,7 +659,7 @@ pub struct pid_fuzzy {
     /// number of order in the square matrix
     nrule: c_uint,
     /// maximum number triggered by the rule
-    block: c_uint,
+    nfuzz: c_uint,
 }
 
 impl Default for pid_fuzzy {
@@ -679,7 +679,7 @@ impl Default for pid_fuzzy {
             ki: 0.0,
             kd: 0.0,
             nrule: 0,
-            block: 0,
+            nfuzz: 0,
         }
     }
 }
@@ -696,8 +696,8 @@ extern "C" {
         mki: *const float,
         mkd: *const float,
     );
-    fn a_pid_fuzzy_block(ctx: *mut pid_fuzzy) -> *mut u8;
-    fn a_pid_fuzzy_set_block(ctx: *mut pid_fuzzy, ptr: *mut u8, num: usize);
+    fn a_pid_fuzzy_nfuzz(ctx: *mut pid_fuzzy) -> *mut u8;
+    fn a_pid_fuzzy_set_nfuzz(ctx: *mut pid_fuzzy, ptr: *mut u8, num: usize);
     fn a_pid_fuzzy_kpid(ctx: *mut pid_fuzzy, kp: float, ki: float, kd: float);
     fn a_pid_fuzzy_run(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
     fn a_pid_fuzzy_pos(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
@@ -744,18 +744,18 @@ impl pid_fuzzy {
     /// compute size of memory block for fuzzy PID controller
     #[inline(always)]
     #[allow(non_snake_case)]
-    pub const fn BLOCK(n: usize) -> usize {
+    pub const fn NFUZZ(n: usize) -> usize {
         size_of::<c_uint>() * n * 2 + size_of::<float>() * n * (2 + n)
     }
     /// get memory block for fuzzy PID controller
     #[inline(always)]
-    pub fn block(&mut self) -> &mut [u8] {
-        unsafe { from_raw_parts_mut(a_pid_fuzzy_block(self), Self::BLOCK(self.block as usize)) }
+    pub fn nfuzz(&mut self) -> &mut [u8] {
+        unsafe { from_raw_parts_mut(a_pid_fuzzy_nfuzz(self), Self::NFUZZ(self.nfuzz as usize)) }
     }
     /// set memory block for fuzzy PID controller
     #[inline(always)]
-    pub fn set_block(&mut self, ptr: &mut [u8], num: usize) -> &mut Self {
-        unsafe { a_pid_fuzzy_set_block(self, ptr.as_mut_ptr(), num) };
+    pub fn set_nfuzz(&mut self, ptr: &mut [u8], num: usize) -> &mut Self {
+        unsafe { a_pid_fuzzy_set_nfuzz(self, ptr.as_mut_ptr(), num) };
         self
     }
     /// set fuzzy relational operator for fuzzy PID controller

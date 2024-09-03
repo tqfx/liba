@@ -892,7 +892,7 @@ function pid:inc(set, fdb) end
 ---@field fdb number
 ---@field err number
 ---@field nrule integer
----@field block integer
+---@field nfuzz integer
 local pid_fuzzy = {}
 ---@class liba.pid_fuzzy
 ---@overload fun(): a.pid_fuzzy
@@ -952,13 +952,13 @@ function liba.pid_fuzzy.set_opr(ctx, opr) end
 function pid_fuzzy:set_opr(opr) end
 
 ---@param ctx a.pid_fuzzy
----@param block integer
+---@param nfuzz integer
 ---@return a.pid_fuzzy
-function liba.pid_fuzzy.set_block(ctx, block) end
+function liba.pid_fuzzy.set_nfuzz(ctx, nfuzz) end
 
----@param block integer
+---@param nfuzz integer
 ---@return a.pid_fuzzy
-function pid_fuzzy:set_block(block) end
+function pid_fuzzy:set_nfuzz(nfuzz) end
 
 ---@param ctx a.pid_fuzzy
 ---@param kp number

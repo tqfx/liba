@@ -72,22 +72,22 @@ A_EXTERN void a_pid_fuzzy_rule(a_pid_fuzzy *ctx, unsigned int nrule, a_float con
  @brief compute size of memory block for fuzzy PID controller
  @param[in] n the maximum number triggered by the rule
 */
-#define A_PID_FUZZY_BLOCK(n) (sizeof(unsigned int) * (n) * 2 + sizeof(a_float) * (n) * (2 + (n)))
+#define A_PID_FUZZY_NFUZZ(n) (sizeof(unsigned int) * (n) * 2 + sizeof(a_float) * (n) * (2 + (n)))
 
 /*!
  @brief set memory block for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
- @param[in] ptr points to a buffer at least A_PID_FUZZY_BLOCK(num)
+ @param[in] ptr points to a buffer at least A_PID_FUZZY_NFUZZ(num)
  @param[in] num the maximum number triggered by the rule
 */
-A_EXTERN void a_pid_fuzzy_set_block(a_pid_fuzzy *ctx, void *ptr, a_size num);
+A_EXTERN void a_pid_fuzzy_set_nfuzz(a_pid_fuzzy *ctx, void *ptr, a_size num);
 
 /*!
  @brief get memory block for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
  @return memory block for fuzzy PID controller
 */
-A_EXTERN void *a_pid_fuzzy_block(a_pid_fuzzy *ctx);
+A_EXTERN void *a_pid_fuzzy_nfuzz(a_pid_fuzzy *ctx);
 
 /*!
  @brief set proportional integral derivative constant for fuzzy PID controller
@@ -162,16 +162,16 @@ struct a_pid_fuzzy
     a_float kd; //!< base derivative constant
 
     unsigned int nrule; //!< number of order in the square matrix
-    unsigned int block; //!< maximum number triggered by the rule
+    unsigned int nfuzz; //!< maximum number triggered by the rule
 #if defined(__cplusplus)
     A_INLINE void init() { a_pid_fuzzy_init(this); }
     A_INLINE void set_opr(unsigned int opr_)
     {
         a_pid_fuzzy_set_opr(this, opr_);
     }
-    A_INLINE void set_block(void *ptr, a_size num)
+    A_INLINE void set_nfuzz(void *ptr, a_size num)
     {
-        a_pid_fuzzy_set_block(this, ptr, num);
+        a_pid_fuzzy_set_nfuzz(this, ptr, num);
     }
     A_INLINE void rule(unsigned int nrule_, a_float const *me_, a_float const *mec_,
                        a_float const *mkp_, a_float const *mki_, a_float const *mkd_)

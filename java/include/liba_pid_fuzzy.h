@@ -193,18 +193,18 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_rule
 
 /*
  * Class:     liba_pid_fuzzy
- * Method:    block
+ * Method:    nfuzz
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_block__
+JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_nfuzz__
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_pid_fuzzy
- * Method:    block
+ * Method:    nfuzz
  * Signature: (I)Lliba/pid_fuzzy;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_block__I
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_nfuzz__I
   (JNIEnv *, jobject, jint);
 
 /*

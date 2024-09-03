@@ -111,10 +111,10 @@ void a_pid_fuzzy_rule(a_pid_fuzzy *ctx, unsigned int nrule, a_float const *me, a
     ctx->nrule = nrule;
 }
 
-void *a_pid_fuzzy_block(a_pid_fuzzy *ctx) { return ctx->idx; }
-void a_pid_fuzzy_set_block(a_pid_fuzzy *ctx, void *ptr, a_size num)
+void *a_pid_fuzzy_nfuzz(a_pid_fuzzy *ctx) { return ctx->idx; }
+void a_pid_fuzzy_set_nfuzz(a_pid_fuzzy *ctx, void *ptr, a_size num)
 {
-    ctx->block = (unsigned int)num;
+    ctx->nfuzz = (unsigned int)num;
     ctx->idx = (unsigned int *)ptr;
     if (ptr) { ptr = (a_byte *)ptr + 2 * sizeof(unsigned int) * num; }
     ctx->val = (a_float *)ptr;

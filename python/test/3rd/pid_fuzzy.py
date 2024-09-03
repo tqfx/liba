@@ -176,7 +176,7 @@ MIN = -10
 MAX = +10
 tf = liba.tf(num, den[1:])
 pid_fuzzy = (
-    liba.pid_fuzzy().rule(me, mec, mkp, mki, mkd).set_block(2).set_opr(liba.pid_fuzzy.CAP_ALGEBRA)
+    liba.pid_fuzzy().rule(me, mec, mkp, mki, mkd).set_nfuzz(2).set_opr(liba.pid_fuzzy.CAP_ALGEBRA)
 )
 pid_fuzzy.outmax = MAX
 pid_fuzzy.outmin = MIN

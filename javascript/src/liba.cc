@@ -463,10 +463,10 @@ struct pid_fuzzy: public a_pid_fuzzy
         a_pid_fuzzy::set_opr(opr_);
         return this;
     }
-    A_INLINE pid_fuzzy *set_block(unsigned int num)
+    A_INLINE pid_fuzzy *set_nfuzz(unsigned int num)
     {
-        void *ptr = a_alloc(a_pid_fuzzy_block(this), A_PID_FUZZY_BLOCK(num));
-        a_pid_fuzzy_set_block(this, ptr, num);
+        void *ptr = a_alloc(a_pid_fuzzy_nfuzz(this), A_PID_FUZZY_NFUZZ(num));
+        a_pid_fuzzy_set_nfuzz(this, ptr, num);
         return this;
     }
     A_INLINE pid_fuzzy *kpid(a_float kp_, a_float ki_, a_float kd_)
@@ -508,7 +508,7 @@ struct pid_fuzzy: public a_pid_fuzzy
         idx = nullptr;
         val = nullptr;
         nrule = 0;
-        block = 0;
+        nfuzz = 0;
         opr = a_fuzzy_equ;
         a_pid_fuzzy_init(this);
     }
@@ -519,7 +519,7 @@ struct pid_fuzzy: public a_pid_fuzzy
             a_float const *p;
             a_float *o;
         } u;
-        a_alloc(a_pid_fuzzy_block(this), 0);
+        a_alloc(a_pid_fuzzy_nfuzz(this), 0);
         u.p = me;
         a_alloc(u.o, 0);
         u.p = mec;
@@ -550,7 +550,7 @@ struct pid_fuzzy: public a_pid_fuzzy
     A_INLINE a_float fdb_r() const { return pid.fdb; }
     A_INLINE a_float err_r() const { return pid.err; }
     A_INLINE unsigned int nrule_r() const { return nrule; }
-    A_INLINE unsigned int block_r() const { return block; }
+    A_INLINE unsigned int nfuzz_r() const { return nfuzz; }
     static unsigned int const CAP;
     static unsigned int const CAP_ALGEBRA;
     static unsigned int const CAP_BOUNDED;
@@ -1001,7 +1001,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
     emscripten::class_<pid_fuzzy>("pid_fuzzy")
         .constructor<>()
         .function("set_opr", &pid_fuzzy::set_opr, emscripten::allow_raw_pointers())
-        .function("set_block", &pid_fuzzy::set_block, emscripten::allow_raw_pointers())
+        .function("set_nfuzz", &pid_fuzzy::set_nfuzz, emscripten::allow_raw_pointers())
         .function("rule", &pid_fuzzy::rule, emscripten::allow_raw_pointers())
         .function("kpid", &pid_fuzzy::kpid, emscripten::allow_raw_pointers())
         .function("zero", &pid_fuzzy::zero, emscripten::allow_raw_pointers())
@@ -1027,7 +1027,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("fdb", &pid_fuzzy::fdb_r)
         .property("err", &pid_fuzzy::err_r)
         .property("nrule", &pid_fuzzy::nrule_r)
-        .property("block", &pid_fuzzy::block_r, &pid_fuzzy::set_block);
+        .property("nfuzz", &pid_fuzzy::nfuzz_r, &pid_fuzzy::set_nfuzz);
     emscripten::class_<pid_neuro>("pid_neuro")
         .constructor<>()
         .function("kpid", &pid_neuro::kpid, emscripten::allow_raw_pointers())

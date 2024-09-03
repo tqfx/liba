@@ -22,7 +22,7 @@
  @field fdb cache feedback
  @field err cache error
  @field nrule number of order in the square matrix
- @field block maximum number triggered by the rule
+ @field nfuzz maximum number triggered by the rule
  @table a.pid_fuzzy
 */
 #if defined(__cplusplus)
@@ -61,9 +61,9 @@ int liba_pid_fuzzy_opr(lua_State *L);
  set memory block for fuzzy PID controller
  @tparam int num maximum number triggered by the rule
  @treturn a.pid_fuzzy fuzzy PID controller userdata
- @function set_block
+ @function set_nfuzz
 */
-int liba_pid_fuzzy_block(lua_State *L);
+int liba_pid_fuzzy_nfuzz(lua_State *L);
 
 /***
  set rule base for fuzzy PID controller

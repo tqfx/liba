@@ -76,7 +76,7 @@ fn pid_fuzzy() {
         [NL, NS, NS, NS, NS, NS, NL],
         [NL, NM, NM, NM, NS, NS, NL],
     ];
-    let mut block = [0u8; liba::pid_fuzzy::BLOCK(2)];
+    let mut fuzzy = [0u8; liba::pid_fuzzy::NFUZZ(2)];
     let mut pid = liba::pid_fuzzy::new();
     pid.rule(
         me.len(),
@@ -87,7 +87,7 @@ fn pid_fuzzy() {
         &mkd.concat(),
     )
     .kpid(10.0, 0.1, 1.0)
-    .set_block(&mut block, 2);
+    .set_nfuzz(&mut fuzzy, 2);
     pid.set_opr(liba::fuzzy::EQU).zero();
     std::println!("{} {}", pid.pos(1.0, 0.0), pid.pos(1.0, 0.0));
     pid.set_opr(liba::fuzzy::EQU).zero();

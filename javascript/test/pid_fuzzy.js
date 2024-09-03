@@ -87,7 +87,7 @@ var mkd = [
     [NL, NM, NM, NM, NS, NS, NL],
 ];
 var ctx = new liba.pid_fuzzy();
-ctx.rule(me, mec, mkp, mki, mkd).set_block(2);
+ctx.rule(me, mec, mkp, mki, mkd).set_nfuzz(2);
 ctx.kpid(10, 0.1, 1).set_opr(liba.pid_fuzzy.EQU);
 console.log(ctx.zero().run(10, 0));
 console.log(ctx.zero().pos(10, 0));
@@ -104,7 +104,7 @@ assert("ctx.out != undefined");
 assert("ctx.fdb != undefined");
 assert("ctx.err != undefined");
 assert("ctx.nrule != undefined");
-assert("ctx.block != undefined");
+assert("ctx.nfuzz != undefined");
 ctx.kp = 0;
 ctx.ki = 0;
 ctx.kd = 0;
@@ -112,5 +112,5 @@ ctx.summax = 0;
 ctx.summin = 0;
 ctx.outmax = 0;
 ctx.outmin = 0;
-ctx.block = 0;
+ctx.nfuzz = 0;
 do_leak_check(ctx);

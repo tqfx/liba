@@ -17,14 +17,14 @@ cdef extern from "a/pid_fuzzy.h":
         a_float kd
         a_float (*opr)(a_float, a_float)
         unsigned int nrule
-        unsigned int block
+        unsigned int nfuzz
     a_float (*a_pid_fuzzy_opr(unsigned int opr))(a_float, a_float)
     void a_pid_fuzzy_set_opr(a_pid_fuzzy *ctx, unsigned int opr)
     void a_pid_fuzzy_init(a_pid_fuzzy *ctx)
     void a_pid_fuzzy_rule(a_pid_fuzzy *ctx, unsigned int nrule, const a_float *mec, const a_float *mec, const a_float *mkp, const a_float *mki, const a_float *mkd)
-    void *a_pid_fuzzy_block(a_pid_fuzzy *ctx)
-    void a_pid_fuzzy_set_block(a_pid_fuzzy *ctx, void *ptr, a_size num)
-    a_size A_PID_FUZZY_BLOCK(unsigned int num)
+    void *a_pid_fuzzy_nfuzz(a_pid_fuzzy *ctx)
+    void a_pid_fuzzy_set_nfuzz(a_pid_fuzzy *ctx, void *ptr, a_size num)
+    a_size A_PID_FUZZY_NFUZZ(unsigned int num)
     void a_pid_fuzzy_kpid(a_pid_fuzzy *ctx, a_float kp, a_float ki, a_float kd)
     a_float a_pid_fuzzy_run(a_pid_fuzzy *ctx, a_float set, a_float fdb)
     a_float a_pid_fuzzy_pos(a_pid_fuzzy *ctx, a_float set, a_float fdb)

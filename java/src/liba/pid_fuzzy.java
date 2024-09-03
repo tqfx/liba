@@ -24,7 +24,7 @@ public class pid_fuzzy {
     ByteBuffer mkp;
     ByteBuffer mki;
     ByteBuffer mkd;
-    ByteBuffer block;
+    ByteBuffer fuzzy;
     static {
         System.loadLibrary("a");
         CAP = 1;
@@ -214,7 +214,7 @@ public class pid_fuzzy {
      *
      * @return maximum number triggered by the rule
      */
-    public final native int block();
+    public final native int nfuzz();
 
     /**
      * set maximum number triggered by the rule for fuzzy PID controller
@@ -222,7 +222,7 @@ public class pid_fuzzy {
      * @param num maximum number triggered by the rule
      * @return {@link pid_fuzzy}
      */
-    public final native pid_fuzzy block(int num);
+    public final native pid_fuzzy nfuzz(int num);
 
     /**
      * set proportional integral derivative constant for fuzzy PID controller

@@ -16,7 +16,7 @@ static struct
     jfieldID mkp;
     jfieldID mki;
     jfieldID mkd;
-    jfieldID block;
+    jfieldID fuzzy;
 } L = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
 
 JNIEXPORT void JNICALL Java_liba_pid_1fuzzy_clinit(JNIEnv *Env, jclass Cls)
@@ -29,7 +29,7 @@ JNIEXPORT void JNICALL Java_liba_pid_1fuzzy_clinit(JNIEnv *Env, jclass Cls)
     L.mkp = (*Env)->GetFieldID(Env, Cls, "mkp", "Ljava/nio/ByteBuffer;");
     L.mki = (*Env)->GetFieldID(Env, Cls, "mki", "Ljava/nio/ByteBuffer;");
     L.mkd = (*Env)->GetFieldID(Env, Cls, "mkd", "Ljava/nio/ByteBuffer;");
-    L.block = (*Env)->GetFieldID(Env, Cls, "block", "Ljava/nio/ByteBuffer;");
+    L.fuzzy = (*Env)->GetFieldID(Env, Cls, "fuzzy", "Ljava/nio/ByteBuffer;");
     (*Env)->SetStaticIntField(Env, Cls, (*Env)->GetStaticFieldID(Env, Cls, "CAP", "I"), A_PID_FUZZY_CAP);
     (*Env)->SetStaticIntField(Env, Cls, (*Env)->GetStaticFieldID(Env, Cls, "CAP_ALGEBRA", "I"), A_PID_FUZZY_CAP_ALGEBRA);
     (*Env)->SetStaticIntField(Env, Cls, (*Env)->GetStaticFieldID(Env, Cls, "CAP_BOUNDED", "I"), A_PID_FUZZY_CAP_BOUNDED);
@@ -243,22 +243,22 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_rule(JNIEnv *Env, jobject Obj, jo
     return Obj;
 }
 
-JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_block__(JNIEnv *Env, jobject Obj)
+JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_nfuzz__(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
-    return (jint)ctx->block;
+    return (jint)ctx->nfuzz;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_block__I(JNIEnv *Env, jobject Obj, jint num)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_nfuzz__I(JNIEnv *Env, jobject Obj, jint num)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
-    if (num > (jint)ctx->block)
+    if (num > (jint)ctx->nfuzz)
     {
-        jobject Block = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)A_PID_FUZZY_BLOCK((unsigned int)num));
-        a_pid_fuzzy_set_block(ctx, (*Env)->GetDirectBufferAddress(Env, Block), (a_size)num);
-        (*Env)->SetObjectField(Env, Obj, L.block, Block);
+        jobject Fuzzy = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)A_PID_FUZZY_NFUZZ((unsigned int)num));
+        a_pid_fuzzy_set_nfuzz(ctx, (*Env)->GetDirectBufferAddress(Env, Fuzzy), (a_size)num);
+        (*Env)->SetObjectField(Env, Obj, L.fuzzy, Fuzzy);
     }
     return Obj;
 }
