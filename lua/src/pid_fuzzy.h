@@ -51,11 +51,19 @@ int liba_pid_fuzzy_init(lua_State *L);
 
 /***
  set fuzzy relational operator for fuzzy PID controller
- @tparam int op enumeration for fuzzy PID controller operator
+ @tparam int opr enumeration for fuzzy PID controller operator
  @treturn a.pid_fuzzy fuzzy PID controller userdata
- @function op
+ @function opr
 */
-int liba_pid_fuzzy_op(lua_State *L);
+int liba_pid_fuzzy_opr(lua_State *L);
+
+/***
+ set memory block for fuzzy PID controller
+ @tparam int num maximum number triggered by the rule
+ @treturn a.pid_fuzzy fuzzy PID controller userdata
+ @function set_block
+*/
+int liba_pid_fuzzy_block(lua_State *L);
 
 /***
  set rule base for fuzzy PID controller
@@ -68,14 +76,6 @@ int liba_pid_fuzzy_op(lua_State *L);
  @function rule
 */
 int liba_pid_fuzzy_rule(lua_State *L);
-
-/***
- set memory block for fuzzy PID controller
- @tparam int num maximum number triggered by the rule
- @treturn a.pid_fuzzy fuzzy PID controller userdata
- @function set_block
-*/
-int liba_pid_fuzzy_block(lua_State *L);
 
 /***
  set proportional integral derivative constant for fuzzy PID controller

@@ -148,7 +148,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     pos_pid.mkp = m7kp;
     pos_pid.mki = m7ki;
     pos_pid.mkd = m7kd;
-    pos_pid.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
+    pos_pid.opr = a_pid_fuzzy_opr(A_PID_FUZZY_EQU);
     a_pid_fuzzy_init(&pos_pid);
     a_byte pos_block[A_PID_FUZZY_BLOCK(2)];
     a_pid_fuzzy_set_block(&pos_pid, pos_block, 2);
@@ -167,7 +167,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     inc_pid.mkp = m7kp;
     inc_pid.mki = m7ki;
     inc_pid.mkd = m7kd;
-    inc_pid.op = a_pid_fuzzy_op(A_PID_FUZZY_EQU);
+    inc_pid.opr = a_pid_fuzzy_opr(A_PID_FUZZY_EQU);
     a_pid_fuzzy_init(&inc_pid);
     a_byte inc_block[A_PID_FUZZY_BLOCK(2)];
     a_pid_fuzzy_set_block(&inc_pid, inc_block, 2);

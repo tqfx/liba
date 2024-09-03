@@ -49,7 +49,7 @@ JNIEXPORT void JNICALL Java_liba_pid_1fuzzy_init(JNIEnv *Env, jobject Obj)
     ctx->pid.outmax = +A_FLOAT_INF;
     ctx->pid.outmin = -A_FLOAT_INF;
     ctx->kp = ctx->pid.kp = 1;
-    ctx->op = a_fuzzy_equ;
+    ctx->opr = a_fuzzy_equ;
     a_pid_fuzzy_init(ctx);
 }
 
@@ -193,11 +193,11 @@ JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_order(JNIEnv *Env, jobject Obj)
     return (jint)ctx->order;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_op(JNIEnv *Env, jobject Obj, jint op)
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_opr(JNIEnv *Env, jobject Obj, jint opr)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
-    a_pid_fuzzy_set_op(ctx, (unsigned int)op);
+    a_pid_fuzzy_set_opr(ctx, (unsigned int)opr);
     return Obj;
 }
 

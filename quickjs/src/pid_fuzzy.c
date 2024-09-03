@@ -34,7 +34,7 @@ static JSValue liba_pid_fuzzy_ctor(JSContext *ctx, JSValueConst new_target, int 
     self->pid.outmax = +A_FLOAT_INF;
     self->pid.outmin = -A_FLOAT_INF;
     self->kp = self->pid.kp = 1;
-    self->op = a_fuzzy_equ;
+    self->opr = a_fuzzy_equ;
     a_pid_fuzzy_init(self);
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
@@ -49,14 +49,14 @@ fail:
     return JS_EXCEPTION;
 }
 
-static JSValue liba_pid_fuzzy_op(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+static JSValue liba_pid_fuzzy_opr(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_u32 op;
-    if (JS_ToUint32(ctx, &op, argv[0])) { return JS_EXCEPTION; }
-    a_pid_fuzzy_set_op(self, (unsigned int)op);
+    a_u32 opr;
+    if (JS_ToUint32(ctx, &opr, argv[0])) { return JS_EXCEPTION; }
+    a_pid_fuzzy_set_opr(self, (unsigned int)opr);
     return JS_UNDEFINED;
 }
 
@@ -325,9 +325,9 @@ static JSCFunctionListEntry const liba_pid_fuzzy_proto[] = {
     JS_CGETSET_MAGIC_DEF("err", liba_pid_fuzzy_get, NULL, self_err),
     JS_CGETSET_MAGIC_DEF("order", liba_pid_fuzzy_get, NULL, self_order),
     JS_CGETSET_MAGIC_DEF("block", liba_pid_fuzzy_get, liba_pid_fuzzy_set, self_block),
-    JS_CFUNC_DEF("op", 1, liba_pid_fuzzy_op),
-    JS_CFUNC_DEF("rule", 5, liba_pid_fuzzy_rule),
+    JS_CFUNC_DEF("set_opr", 1, liba_pid_fuzzy_opr),
     JS_CFUNC_DEF("set_block", 1, liba_pid_fuzzy_block),
+    JS_CFUNC_DEF("rule", 5, liba_pid_fuzzy_rule),
     JS_CFUNC_DEF("kpid", 3, liba_pid_fuzzy_kpid),
     JS_CFUNC_DEF("zero", 0, liba_pid_fuzzy_zero),
     JS_CFUNC_DEF("run", 2, liba_pid_fuzzy_run),

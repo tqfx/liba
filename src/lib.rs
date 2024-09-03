@@ -649,7 +649,7 @@ pub struct pid_fuzzy {
     idx: *mut c_uint,
     val: *mut float,
     /// fuzzy relational operator
-    op: extern "C" fn(float, float) -> float,
+    opr: extern "C" fn(float, float) -> float,
     /// base proportional constant
     pub kp: float,
     /// base integral constant
@@ -674,7 +674,7 @@ impl Default for pid_fuzzy {
             mkd: null(),
             idx: null_mut(),
             val: null_mut(),
-            op: unsafe { a_pid_fuzzy_op(fuzzy::EQU) },
+            opr: unsafe { a_pid_fuzzy_opr(fuzzy::EQU) },
             kp: 0.0,
             ki: 0.0,
             kd: 0.0,
@@ -685,8 +685,8 @@ impl Default for pid_fuzzy {
 }
 
 extern "C" {
-    fn a_pid_fuzzy_op(op: c_uint) -> extern "C" fn(float, float) -> float;
-    fn a_pid_fuzzy_set_op(ctx: *mut pid_fuzzy, op: c_uint);
+    fn a_pid_fuzzy_opr(opr: c_uint) -> extern "C" fn(float, float) -> float;
+    fn a_pid_fuzzy_set_opr(ctx: *mut pid_fuzzy, opr: c_uint);
     fn a_pid_fuzzy_rule(
         ctx: *mut pid_fuzzy,
         num: c_uint,
@@ -760,8 +760,8 @@ impl pid_fuzzy {
     }
     /// set fuzzy relational operator for fuzzy PID controller
     #[inline(always)]
-    pub fn op(&mut self, op: c_uint) -> &mut Self {
-        unsafe { a_pid_fuzzy_set_op(self, op) };
+    pub fn set_opr(&mut self, opr: c_uint) -> &mut Self {
+        unsafe { a_pid_fuzzy_set_opr(self, opr) };
         self
     }
     /// calculate for fuzzy PID controller

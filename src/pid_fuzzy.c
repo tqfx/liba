@@ -1,9 +1,9 @@
 #include "a/pid_fuzzy.h"
 #include "a/mf.h"
 
-a_float (*a_pid_fuzzy_op(unsigned int op))(a_float, a_float)
+a_float (*a_pid_fuzzy_opr(unsigned int opr))(a_float, a_float)
 {
-    switch (op)
+    switch (opr)
     {
     default:
     case A_PID_FUZZY_EQU:
@@ -23,7 +23,7 @@ a_float (*a_pid_fuzzy_op(unsigned int op))(a_float, a_float)
     }
 }
 
-void a_pid_fuzzy_set_op(a_pid_fuzzy *ctx, unsigned int op) { ctx->op = a_pid_fuzzy_op(op); }
+void a_pid_fuzzy_set_opr(a_pid_fuzzy *ctx, unsigned int opr) { ctx->opr = a_pid_fuzzy_opr(opr); }
 
 A_HIDDEN unsigned int a_pid_fuzzy_mf(a_float x, unsigned int n, a_float const *a, unsigned int *idx, a_float *val);
 unsigned int a_pid_fuzzy_mf(a_float x, unsigned int n, a_float const *a, unsigned int *idx, a_float *val)
@@ -150,7 +150,7 @@ void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_float ec, a_float e)
         {
             for (unsigned int j = 0; j != nec; ++j)
             {
-                *it = ctx->op(ctx->val[i], val[j]); /* mat(i,j)=f(e[i],ec[j]) */
+                *it = ctx->opr(ctx->val[i], val[j]); /* mat(i,j)=f(e[i],ec[j]) */
                 inv += *it++;
             }
             ctx->idx[i] *= ctx->order;

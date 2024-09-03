@@ -43,17 +43,17 @@ extern "C" {
 
 /*!
  @brief get fuzzy relational operator for fuzzy PID controller
- @param[in] op enumeration for fuzzy PID controller operator
+ @param[in] opr enumeration for fuzzy PID controller operator
  @return fuzzy relational operator for fuzzy PID controller
 */
-A_EXTERN a_float (*a_pid_fuzzy_op(unsigned int op))(a_float, a_float);
+A_EXTERN a_float (*a_pid_fuzzy_opr(unsigned int opr))(a_float, a_float);
 
 /*!
  @brief set fuzzy relational operator for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
- @param[in] op enumeration for fuzzy PID controller operator
+ @param[in] opr enumeration for fuzzy PID controller operator
 */
-A_EXTERN void a_pid_fuzzy_set_op(a_pid_fuzzy *ctx, unsigned int op);
+A_EXTERN void a_pid_fuzzy_set_opr(a_pid_fuzzy *ctx, unsigned int opr);
 
 /*!
  @brief set rule base for fuzzy PID controller
@@ -155,7 +155,7 @@ struct a_pid_fuzzy
     unsigned int *idx; //!< the memory block for membership index, >= 2N
     a_float *val; //!< the memory block for membership value and membership outer product of e and ec, >= (2+N)N
 
-    a_float (*op)(a_float, a_float); //!< fuzzy relational operator
+    a_float (*opr)(a_float, a_float); //!< fuzzy relational operator
 
     a_float kp; //!< base proportional constant
     a_float ki; //!< base integral constant
@@ -165,9 +165,9 @@ struct a_pid_fuzzy
     unsigned int block; //!< maximum number triggered by the rule
 #if defined(__cplusplus)
     A_INLINE void init() { a_pid_fuzzy_init(this); }
-    A_INLINE void set_op(unsigned int op_)
+    A_INLINE void set_opr(unsigned int opr_)
     {
-        a_pid_fuzzy_set_op(this, op_);
+        a_pid_fuzzy_set_opr(this, opr_);
     }
     A_INLINE void set_block(void *ptr, a_size num)
     {

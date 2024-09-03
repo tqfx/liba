@@ -458,9 +458,9 @@ struct pid_fuzzy: public a_pid_fuzzy
         val.delete_(val);
         return this;
     }
-    A_INLINE pid_fuzzy *set_op(unsigned int op_)
+    A_INLINE pid_fuzzy *set_opr(unsigned int opr_)
     {
-        a_pid_fuzzy::set_op(op_);
+        a_pid_fuzzy::set_opr(opr_);
         return this;
     }
     A_INLINE pid_fuzzy *set_block(unsigned int num)
@@ -509,7 +509,7 @@ struct pid_fuzzy: public a_pid_fuzzy
         val = nullptr;
         order = 0;
         block = 0;
-        op = a_fuzzy_equ;
+        opr = a_fuzzy_equ;
         a_pid_fuzzy_init(this);
     }
     A_INLINE ~pid_fuzzy()
@@ -1000,9 +1000,9 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("err", &pid::err_r);
     emscripten::class_<pid_fuzzy>("pid_fuzzy")
         .constructor<>()
-        .function("op", &pid_fuzzy::set_op, emscripten::allow_raw_pointers())
-        .function("rule", &pid_fuzzy::rule, emscripten::allow_raw_pointers())
+        .function("set_opr", &pid_fuzzy::set_opr, emscripten::allow_raw_pointers())
         .function("set_block", &pid_fuzzy::set_block, emscripten::allow_raw_pointers())
+        .function("rule", &pid_fuzzy::rule, emscripten::allow_raw_pointers())
         .function("kpid", &pid_fuzzy::kpid, emscripten::allow_raw_pointers())
         .function("zero", &pid_fuzzy::zero, emscripten::allow_raw_pointers())
         .function("run", &pid_fuzzy::run)

@@ -15,11 +15,11 @@ cdef extern from "a/pid_fuzzy.h":
         a_float kp
         a_float ki
         a_float kd
-        a_float (*op)(a_float, a_float)
+        a_float (*opr)(a_float, a_float)
         unsigned int order
         unsigned int block
-    a_float (*a_pid_fuzzy_op(unsigned int op))(a_float, a_float)
-    void a_pid_fuzzy_set_op(a_pid_fuzzy *ctx, unsigned int op)
+    a_float (*a_pid_fuzzy_opr(unsigned int opr))(a_float, a_float)
+    void a_pid_fuzzy_set_opr(a_pid_fuzzy *ctx, unsigned int opr)
     void a_pid_fuzzy_init(a_pid_fuzzy *ctx)
     void a_pid_fuzzy_rule(a_pid_fuzzy *ctx, unsigned int order, const a_float *mec, const a_float *mec, const a_float *mkp, const a_float *mki, const a_float *mkd)
     void *a_pid_fuzzy_block(a_pid_fuzzy *ctx)

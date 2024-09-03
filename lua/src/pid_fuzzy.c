@@ -59,7 +59,7 @@ int liba_pid_fuzzy_new(lua_State *L)
     ctx->val = 0;
     ctx->order = 0;
     ctx->block = 0;
-    ctx->op = a_fuzzy_equ;
+    ctx->opr = a_fuzzy_equ;
     a_pid_fuzzy_init(ctx);
     return 1;
 }
@@ -81,7 +81,7 @@ int liba_pid_fuzzy_init(lua_State *L)
     ctx->pid.summin = -A_FLOAT_INF;
     ctx->pid.outmax = +A_FLOAT_INF;
     ctx->pid.outmin = -A_FLOAT_INF;
-    ctx->op = a_fuzzy_equ;
+    ctx->opr = a_fuzzy_equ;
     a_pid_fuzzy_init(ctx);
     return 1;
 }
@@ -89,16 +89,37 @@ int liba_pid_fuzzy_init(lua_State *L)
 /***
  set fuzzy relational operator for fuzzy PID controller
  @tparam a.pid_fuzzy ctx fuzzy PID controller userdata
- @tparam int op enumeration for fuzzy PID controller operator
+ @tparam int opr enumeration for fuzzy PID controller operator
  @treturn a.pid_fuzzy fuzzy PID controller userdata
- @function op
+ @function set_opr
 */
-int liba_pid_fuzzy_op(lua_State *L)
+int liba_pid_fuzzy_opr(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_pid_fuzzy_set_op(ctx, (unsigned int)luaL_checkinteger(L, 2));
+        a_pid_fuzzy_set_opr(ctx, (unsigned int)luaL_checkinteger(L, 2));
+        lua_pushvalue(L, 1);
+        return 1;
+    }
+    return 0;
+}
+
+/***
+ set memory block for fuzzy PID controller
+ @tparam a.pid_fuzzy ctx fuzzy PID controller userdata
+ @tparam int num maximum number triggered by the rule
+ @treturn a.pid_fuzzy fuzzy PID controller userdata
+ @function set_block
+*/
+int liba_pid_fuzzy_block(lua_State *L)
+{
+    a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
+    if (ctx)
+    {
+        unsigned int const num = (unsigned int)luaL_checkinteger(L, 2);
+        void *ptr = lua_alloc(L, a_pid_fuzzy_block(ctx), A_PID_FUZZY_BLOCK(num));
+        a_pid_fuzzy_set_block(ctx, ptr, num);
         lua_pushvalue(L, 1);
         return 1;
     }
@@ -128,27 +149,6 @@ int liba_pid_fuzzy_rule(lua_State *L)
         a_float const *const mki = lua_table_num_get(L, 5, ctx->mki, 0);
         a_float const *const mkd = lua_table_num_get(L, 6, ctx->mkd, 0);
         a_pid_fuzzy_rule(ctx, num, me, mec, mkp, mki, mkd);
-        lua_pushvalue(L, 1);
-        return 1;
-    }
-    return 0;
-}
-
-/***
- set memory block for fuzzy PID controller
- @tparam a.pid_fuzzy ctx fuzzy PID controller userdata
- @tparam int num maximum number triggered by the rule
- @treturn a.pid_fuzzy fuzzy PID controller userdata
- @function set_block
-*/
-int liba_pid_fuzzy_block(lua_State *L)
-{
-    a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
-    if (ctx)
-    {
-        unsigned int const num = (unsigned int)luaL_checkinteger(L, 2);
-        void *ptr = lua_alloc(L, a_pid_fuzzy_block(ctx), A_PID_FUZZY_BLOCK(num));
-        a_pid_fuzzy_set_block(ctx, ptr, num);
         lua_pushvalue(L, 1);
         return 1;
     }
@@ -406,9 +406,9 @@ int luaopen_liba_pid_fuzzy(lua_State *L)
     static lua_fun const funcs[] = {
         {"new", liba_pid_fuzzy_new},
         {"init", liba_pid_fuzzy_init},
-        {"op", liba_pid_fuzzy_op},
-        {"rule", liba_pid_fuzzy_rule},
+        {"set_opr", liba_pid_fuzzy_opr},
         {"set_block", liba_pid_fuzzy_block},
+        {"rule", liba_pid_fuzzy_rule},
         {"kpid", liba_pid_fuzzy_kpid},
         {"run", liba_pid_fuzzy_run},
         {"pos", liba_pid_fuzzy_pos},

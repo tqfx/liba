@@ -192,10 +192,10 @@ public class pid_fuzzy {
     /**
      * set fuzzy relational operator for fuzzy PID controller
      *
-     * @param op enumeration for fuzzy PID controller operator
+     * @param opr enumeration for fuzzy PID controller operator
      * @return {@link pid_fuzzy}
      */
-    public final native pid_fuzzy op(int op);
+    public final native pid_fuzzy opr(int opr);
 
     /**
      * set rule base for fuzzy PID controller

@@ -695,10 +695,15 @@ cdef class pid_fuzzy:
         self.ctx.pid.outmax = +A_FLOAT_INF
         self.ctx.pid.outmin = -A_FLOAT_INF
         self.ctx.kp = self.ctx.pid.kp = 1
-        self.ctx.op = a_fuzzy_equ
+        self.ctx.opr = a_fuzzy_equ
         a_pid_fuzzy_init(&self.ctx)
-    def op(self, unsigned int op):
-        a_pid_fuzzy_set_op(&self.ctx, op)
+    def set_opr(self, unsigned int opr):
+        a_pid_fuzzy_set_opr(&self.ctx, opr)
+        return self
+    def set_block(self, unsigned int num):
+        cdef void *ptr = a_pid_fuzzy_block(&self.ctx)
+        ptr = PyMem_Realloc(ptr, A_PID_FUZZY_BLOCK(num))
+        a_pid_fuzzy_set_block(&self.ctx, ptr, num)
         return self
     def rule(self, me, mec, mkp, mki, mkd):
         self.me = num_new2(me)
@@ -712,11 +717,6 @@ cdef class pid_fuzzy:
                          num_set2(self.mkp.data, mkp),
                          num_set2(self.mki.data, mki),
                          num_set2(self.mkd.data, mkd))
-        return self
-    def set_block(self, unsigned int num):
-        cdef void *ptr = a_pid_fuzzy_block(&self.ctx)
-        ptr = PyMem_Realloc(ptr, A_PID_FUZZY_BLOCK(num))
-        a_pid_fuzzy_set_block(&self.ctx, ptr, num)
         return self
     def kpid(self, a_float kp, a_float ki, a_float kd):
         a_pid_fuzzy_kpid(&self.ctx, kp, ki, kd)

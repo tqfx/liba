@@ -177,10 +177,10 @@ JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_order
 
 /*
  * Class:     liba_pid_fuzzy
- * Method:    op
+ * Method:    opr
  * Signature: (I)Lliba/pid_fuzzy;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_op
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_opr
   (JNIEnv *, jobject, jint);
 
 /*

@@ -88,8 +88,8 @@ fn pid_fuzzy() {
     )
     .kpid(10.0, 0.1, 1.0)
     .set_block(&mut block, 2);
-    pid.op(liba::fuzzy::EQU).zero();
+    pid.set_opr(liba::fuzzy::EQU).zero();
     std::println!("{} {}", pid.pos(1.0, 0.0), pid.pos(1.0, 0.0));
-    pid.op(liba::fuzzy::EQU).zero();
+    pid.set_opr(liba::fuzzy::EQU).zero();
     std::println!("{} {}", pid.inc(1.0, 0.0), pid.inc(1.0, 0.0));
 }

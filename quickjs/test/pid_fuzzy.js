@@ -79,9 +79,9 @@ var mkd = [
 ];
 var ctx = new a.pid_fuzzy();
 ctx.rule(me, mec, mkp, mki, mkd);
+ctx.set_opr(a.pid_fuzzy.EQU);
 ctx.set_block(2);
 ctx.kpid(10, 0.1, 1);
-ctx.op(a.pid_fuzzy.EQU);
 console.log(ctx.run(10, 0));
 ctx.zero();
 console.log(ctx.pos(10, 0));

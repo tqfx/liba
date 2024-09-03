@@ -943,13 +943,13 @@ liba.pid_fuzzy.CUP_ALGEBRA = 5
 liba.pid_fuzzy.CUP_BOUNDED = 6
 liba.pid_fuzzy.EQU = 0
 ---@param ctx a.pid_fuzzy
----@param op integer
+---@param opr integer
 ---@return a.pid_fuzzy
-function liba.pid_fuzzy.op(ctx, op) end
+function liba.pid_fuzzy.set_opr(ctx, opr) end
 
----@param op integer
+---@param opr integer
 ---@return a.pid_fuzzy
-function pid_fuzzy:op(op) end
+function pid_fuzzy:set_opr(opr) end
 
 ---@param ctx a.pid_fuzzy
 ---@param block integer
