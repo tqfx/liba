@@ -189,15 +189,15 @@ struct a_version
     unsigned int minor; //!< minor number
     unsigned int third; //!< third number
     unsigned int extra; //!< extra number
-    char alpha[4]; //!< alphabet
+    char alpha_[4]; //!< alphabet
 #if defined(__cplusplus)
+    A_INLINE void alpha(char str[5]) const
+    {
+        a_version_alpha(this, str);
+    }
     A_INLINE void set_alpha(char const *str)
     {
         a_version_set_alpha(this, str);
-    }
-    A_INLINE void get_alpha(char str[5]) const
-    {
-        a_version_alpha(this, str);
     }
     A_INLINE unsigned int parse(char const *ver)
     {

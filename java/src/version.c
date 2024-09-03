@@ -26,7 +26,7 @@ JNIEXPORT void JNICALL Java_liba_version_init__Ljava_lang_String_2(JNIEnv *Env, 
     jobject Ctx = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)sizeof(a_version));
     a_version *ctx = (a_version *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     char const *ver = (*Env)->GetStringUTFChars(Env, Ver, NULL);
-    ctx->alpha[0] = '.';
+    ctx->alpha_[0] = '.';
     a_version_parse(ctx, ver);
     (*Env)->ReleaseStringUTFChars(Env, Ver, ver);
 }
@@ -40,7 +40,7 @@ JNIEXPORT void JNICALL Java_liba_version_init__IIII(JNIEnv *Env, jobject Obj, ji
     ctx->minor = (unsigned int)minor;
     ctx->third = (unsigned int)third;
     ctx->extra = (unsigned int)extra;
-    ctx->alpha[0] = '.';
+    ctx->alpha_[0] = '.';
 }
 
 JNIEXPORT jint JNICALL Java_liba_version_check(JNIEnv *Env, jclass Cls, jint major, jint minor, jint patch)
@@ -121,7 +121,7 @@ JNIEXPORT jstring JNICALL Java_liba_version_alpha__(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_version *ctx = (a_version *)(*Env)->GetDirectBufferAddress(Env, Ctx);
-    char alpha[sizeof(ctx->alpha) + 1];
+    char alpha[sizeof(ctx->alpha_) + 1];
     a_version_alpha(ctx, alpha);
     return (*Env)->NewStringUTF(Env, alpha);
 }

@@ -90,18 +90,18 @@ a_bool a_version_ne(a_version const *lhs, a_version const *rhs)
 static A_INLINE char const *a_version_set_alpha_(a_version *ctx, char const *alpha)
 {
     unsigned int c = 1;
-    ctx->alpha[0] = *alpha;
+    ctx->alpha_[0] = *alpha;
     for (++alpha; isalpha((a_byte)*alpha); ++alpha)
     {
-        if (c < sizeof(ctx->alpha)) { ctx->alpha[c++] = *alpha; }
+        if (c < sizeof(ctx->alpha_)) { ctx->alpha_[c++] = *alpha; }
     }
     if (*alpha == '.')
     {
-        if (c < sizeof(ctx->alpha)) { ctx->alpha[c++] = *alpha; }
-        else { ctx->alpha[c - 1] = *alpha; }
+        if (c < sizeof(ctx->alpha_)) { ctx->alpha_[c++] = *alpha; }
+        else { ctx->alpha_[c - 1] = *alpha; }
         ++alpha;
     }
-    while (c < sizeof(ctx->alpha)) { ctx->alpha[c++] = 0; }
+    while (c < sizeof(ctx->alpha_)) { ctx->alpha_[c++] = 0; }
     return alpha;
 }
 
@@ -152,9 +152,9 @@ extra:
 void a_version_alpha(a_version const *ctx, char alpha[5])
 {
     unsigned int c;
-    for (c = 0; c < sizeof(ctx->alpha) && ctx->alpha[c]; ++c)
+    for (c = 0; c < sizeof(ctx->alpha_) && ctx->alpha_[c]; ++c)
     {
-        alpha[c] = ctx->alpha[c];
+        alpha[c] = ctx->alpha_[c];
     }
     alpha[c] = 0;
 }
@@ -163,8 +163,8 @@ unsigned int a_version_tostr(a_version const *ctx, void *pdata, a_size nbyte)
 {
     int n;
     char *p = (char *)pdata;
-    char alpha[sizeof(ctx->alpha) + 1];
-    if (ctx->extra || isalpha((a_byte)ctx->alpha[0]) || isalpha((a_byte)ctx->alpha[1]))
+    char alpha[sizeof(ctx->alpha_) + 1];
+    if (ctx->extra || isalpha((a_byte)ctx->alpha_[0]) || isalpha((a_byte)ctx->alpha_[1]))
     {
         a_version_alpha(ctx, alpha);
         n = snprintf(p, nbyte, "%u.%u.%u%s%u",

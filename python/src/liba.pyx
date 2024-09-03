@@ -1340,7 +1340,7 @@ cdef class version:
         self.ctx.minor = minor
         self.ctx.third = third
         self.ctx.extra = extra
-        self.ctx.alpha[0] = 46
+        self.ctx.alpha_[0] = 46
     def __repr__(self):
         cdef char[48] str
         a_version_tostr(&self.ctx, str, sizeof(str))

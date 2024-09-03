@@ -30,7 +30,7 @@ static JSValue liba_version_ctor(JSContext *ctx, JSValueConst new_target, int ar
             goto fail;
         }
     }
-    self->alpha[0] = '.';
+    self->alpha_[0] = '.';
     if (ver)
     {
         a_version_parse(self, ver);
@@ -176,7 +176,7 @@ static JSValue liba_version_get(JSContext *ctx, JSValueConst this_val, int magic
     if (!self) { return JS_EXCEPTION; }
     if (magic == self_alpha)
     {
-        char alpha[sizeof(self->alpha) + 1];
+        char alpha[sizeof(self->alpha_) + 1];
         a_version_alpha(self, alpha);
         return JS_NewString(ctx, alpha);
     }

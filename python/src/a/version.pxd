@@ -11,7 +11,7 @@ cdef extern from "a/version.h":
         unsigned int minor
         unsigned int third
         unsigned int extra
-        char[4] alpha
+        char[4] alpha_
     int a_version_check(unsigned int major, unsigned int minor, unsigned int patch)
     unsigned int a_version_tostr(const a_version *ctx, void *pdata, a_size nbyte)
     unsigned int a_version_parse(a_version *ctx, const char *ver)

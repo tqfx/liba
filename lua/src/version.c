@@ -21,10 +21,10 @@ static int liba_version_tostring(lua_State *L)
 
 static int liba_version_init_(lua_State *L, a_version *ctx, int arg, int top)
 {
-    ctx->alpha[0] = '.';
-    ctx->alpha[1] = 0;
-    ctx->alpha[2] = 0;
-    ctx->alpha[3] = 0;
+    ctx->alpha_[0] = '.';
+    ctx->alpha_[1] = 0;
+    ctx->alpha_[2] = 0;
+    ctx->alpha_[3] = 0;
     switch (top)
     {
     default:
@@ -276,7 +276,7 @@ static int liba_version_get(lua_State *L)
         break;
     case 0xB5485B9E: // alpha
     {
-        char alpha[sizeof(ctx->alpha) + 1];
+        char alpha[sizeof(ctx->alpha_) + 1];
         a_version_alpha(ctx, alpha);
         lua_pushstring(L, alpha);
         break;

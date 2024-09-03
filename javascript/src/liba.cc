@@ -863,10 +863,10 @@ struct version: public a_version
         minor = minor_;
         third = third_;
         extra = extra_;
-        alpha[0] = '.';
-        alpha[1] = 0;
-        alpha[2] = 0;
-        alpha[3] = 0;
+        alpha_[0] = '.';
+        alpha_[1] = 0;
+        alpha_[2] = 0;
+        alpha_[3] = 0;
     }
     A_INLINE void major_w(unsigned int major_) { major = major_; }
     A_INLINE unsigned int major_r() const { return major; }
@@ -882,8 +882,8 @@ struct version: public a_version
     }
     A_INLINE std::string alpha_r() const
     {
-        char str[sizeof(alpha) + 1];
-        a_version::get_alpha(str);
+        char str[sizeof(alpha_) + 1];
+        a_version::alpha(str);
         return std::string(str);
     }
     static unsigned int const MAJOR;
