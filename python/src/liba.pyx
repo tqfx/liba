@@ -782,9 +782,9 @@ cdef class pid_fuzzy:
     property err:
         def __get__(self):
             return self.ctx.pid.err
-    property order:
+    property nrule:
         def __get__(self):
-            return self.ctx.order
+            return self.ctx.nrule
     property block:
         def __get__(self):
             return self.ctx.block

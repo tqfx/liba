@@ -93,7 +93,7 @@ class _pid_fuzzy {
         obj.out();
         obj.fdb();
         obj.err();
-        obj.order();
+        obj.nrule();
         obj.block(obj.block());
     }
 }

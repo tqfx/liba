@@ -21,7 +21,7 @@
  @field out controller final output
  @field fdb cache feedback
  @field err cache error
- @field order number of order in the square matrix
+ @field nrule number of order in the square matrix
  @field block maximum number triggered by the rule
  @table a.pid_fuzzy
 */

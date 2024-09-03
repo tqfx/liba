@@ -169,10 +169,10 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_err
 
 /*
  * Class:     liba_pid_fuzzy
- * Method:    order
+ * Method:    nrule
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_order
+JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_nrule
   (JNIEnv *, jobject);
 
 /*

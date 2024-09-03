@@ -100,7 +100,7 @@ out:
     return counter;
 }
 
-void a_pid_fuzzy_rule(a_pid_fuzzy *ctx, unsigned int order, a_float const *me, a_float const *mec,
+void a_pid_fuzzy_rule(a_pid_fuzzy *ctx, unsigned int nrule, a_float const *me, a_float const *mec,
                       a_float const *mkp, a_float const *mki, a_float const *mkd)
 {
     ctx->me = me;
@@ -108,7 +108,7 @@ void a_pid_fuzzy_rule(a_pid_fuzzy *ctx, unsigned int order, a_float const *me, a
     ctx->mkp = mkp;
     ctx->mki = mki;
     ctx->mkd = mkd;
-    ctx->order = order;
+    ctx->nrule = nrule;
 }
 
 void *a_pid_fuzzy_block(a_pid_fuzzy *ctx) { return ctx->idx; }
@@ -135,11 +135,11 @@ void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_float ec, a_float e)
     a_float ki = 0;
     a_float kd = 0;
     /* calculate membership */
-    unsigned int const ne = a_pid_fuzzy_mf(e, ctx->order, ctx->me, ctx->idx, ctx->val);
+    unsigned int const ne = a_pid_fuzzy_mf(e, ctx->nrule, ctx->me, ctx->idx, ctx->val);
     if (!ne) { goto pid; }
     unsigned int *const idx = ctx->idx + ne;
     a_float *const val = ctx->val + ne;
-    unsigned int const nec = a_pid_fuzzy_mf(ec, ctx->order, ctx->mec, idx, val);
+    unsigned int const nec = a_pid_fuzzy_mf(ec, ctx->nrule, ctx->mec, idx, val);
     if (!nec) { goto pid; }
     a_float *const mat = val + nec;
     /* joint membership */
@@ -153,7 +153,7 @@ void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_float ec, a_float e)
                 *it = ctx->opr(ctx->val[i], val[j]); /* mat(i,j)=f(e[i],ec[j]) */
                 inv += *it++;
             }
-            ctx->idx[i] *= ctx->order;
+            ctx->idx[i] *= ctx->nrule;
         }
     }
     inv = 1 / inv;

@@ -435,7 +435,7 @@ struct pid_fuzzy: public a_pid_fuzzy
             a_float const *p;
             a_float *o;
         } u;
-        order = me_["length"].as<unsigned int>();
+        nrule = me_["length"].as<unsigned int>();
         u.p = me;
         emscripten::val val = js_concat(me_);
         me = js_array_num_get(val, u.o, 0);
@@ -507,7 +507,7 @@ struct pid_fuzzy: public a_pid_fuzzy
         mkd = nullptr;
         idx = nullptr;
         val = nullptr;
-        order = 0;
+        nrule = 0;
         block = 0;
         opr = a_fuzzy_equ;
         a_pid_fuzzy_init(this);
@@ -549,7 +549,7 @@ struct pid_fuzzy: public a_pid_fuzzy
     A_INLINE a_float out_r() const { return pid.out; }
     A_INLINE a_float fdb_r() const { return pid.fdb; }
     A_INLINE a_float err_r() const { return pid.err; }
-    A_INLINE unsigned int order_r() const { return order; }
+    A_INLINE unsigned int nrule_r() const { return nrule; }
     A_INLINE unsigned int block_r() const { return block; }
     static unsigned int const CAP;
     static unsigned int const CAP_ALGEBRA;
@@ -1026,7 +1026,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("out", &pid_fuzzy::out_r)
         .property("fdb", &pid_fuzzy::fdb_r)
         .property("err", &pid_fuzzy::err_r)
-        .property("order", &pid_fuzzy::order_r)
+        .property("nrule", &pid_fuzzy::nrule_r)
         .property("block", &pid_fuzzy::block_r, &pid_fuzzy::set_block);
     emscripten::class_<pid_neuro>("pid_neuro")
         .constructor<>()

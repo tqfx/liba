@@ -113,7 +113,7 @@ assert(type(ctx.outmin) == "number")
 assert(type(ctx.out) == "number")
 assert(type(ctx.fdb) == "number")
 assert(type(ctx.err) == "number")
-assert(type(ctx.order) == "number")
+assert(type(ctx.nrule) == "number")
 assert(type(ctx.block) == "number")
 ctx.outmin = -10
 ctx.outmax = 10

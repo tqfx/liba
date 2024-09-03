@@ -891,7 +891,7 @@ function pid:inc(set, fdb) end
 ---@field out number
 ---@field fdb number
 ---@field err number
----@field order integer
+---@field nrule integer
 ---@field block integer
 local pid_fuzzy = {}
 ---@class liba.pid_fuzzy

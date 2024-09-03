@@ -657,7 +657,7 @@ pub struct pid_fuzzy {
     /// base derivative constant
     pub kd: float,
     /// number of order in the square matrix
-    order: c_uint,
+    nrule: c_uint,
     /// maximum number triggered by the rule
     block: c_uint,
 }
@@ -678,7 +678,7 @@ impl Default for pid_fuzzy {
             kp: 0.0,
             ki: 0.0,
             kd: 0.0,
-            order: 0,
+            nrule: 0,
             block: 0,
         }
     }

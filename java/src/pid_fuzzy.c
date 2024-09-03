@@ -186,11 +186,11 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1fuzzy_err(JNIEnv *Env, jobject Obj)
     return ctx->pid.err;
 }
 
-JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_order(JNIEnv *Env, jobject Obj)
+JNIEXPORT jint JNICALL Java_liba_pid_1fuzzy_nrule(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
-    return (jint)ctx->order;
+    return (jint)ctx->nrule;
 }
 
 JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_opr(JNIEnv *Env, jobject Obj, jint opr)
@@ -204,8 +204,8 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_opr(JNIEnv *Env, jobject Obj, jin
 static jobject concat(JNIEnv *Env, jobject Obj, jobjectArray val, jdouble const **out)
 {
     jsize length = 0;
-    jsize order = (*Env)->GetArrayLength(Env, val);
-    for (jsize idx = 0; idx != order; ++idx)
+    jsize nrule = (*Env)->GetArrayLength(Env, val);
+    for (jsize idx = 0; idx != nrule; ++idx)
     {
         jobject o = (*Env)->GetObjectArrayElement(Env, val, idx);
         length += (*Env)->GetArrayLength(Env, o);
@@ -214,7 +214,7 @@ static jobject concat(JNIEnv *Env, jobject Obj, jobjectArray val, jdouble const 
     jobject obj = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)length * 8);
     jdouble *ptr = (jdouble *)(*Env)->GetDirectBufferAddress(Env, obj);
     *out = ptr;
-    for (jsize idx = 0, num = 0; idx != order; ++idx, ptr += num)
+    for (jsize idx = 0, num = 0; idx != nrule; ++idx, ptr += num)
     {
         jobject o = (*Env)->GetObjectArrayElement(Env, val, idx);
         num = (*Env)->GetArrayLength(Env, o);
@@ -229,7 +229,7 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_rule(JNIEnv *Env, jobject Obj, jo
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
-    ctx->order = (unsigned int)(*Env)->GetArrayLength(Env, me);
+    ctx->nrule = (unsigned int)(*Env)->GetArrayLength(Env, me);
     jobject Me = concat(Env, Obj, me, &ctx->me);
     jobject Mec = concat(Env, Obj, mec, &ctx->mec);
     jobject Mkp = concat(Env, Obj, mkp, &ctx->mkp);

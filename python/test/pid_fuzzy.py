@@ -156,5 +156,5 @@ pid_fuzzy.mec
 pid_fuzzy.mkp
 pid_fuzzy.mki
 pid_fuzzy.mkd
-pid_fuzzy.order
+pid_fuzzy.nrule
 pid_fuzzy.block = pid_fuzzy.block + 1

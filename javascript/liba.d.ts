@@ -471,7 +471,7 @@ declare namespace liba {
     /** cache error */
     readonly err: number;
     /** number of order in the square matrix */
-    readonly order: number;
+    readonly nrule: number;
     /** maximum number triggered by the rule */
     block: number;
     /**

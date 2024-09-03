@@ -72,11 +72,11 @@ static JSValue liba_pid_fuzzy_rule(JSContext *ctx, JSValueConst this_val, int ar
     } u;
     a_u32 row;
     a_u32 len = 0;
-    a_u32 order = 0;
+    a_u32 nrule = 0;
     JSValue res = JS_UNDEFINED;
     if (JS_IsArray(ctx, argv[0]))
     {
-        if (js_array_length(ctx, argv[0], &order)) { goto fail; }
+        if (js_array_length(ctx, argv[0], &nrule)) { goto fail; }
         res = js_concat(ctx, argv[0]);
         if (js_array_length(ctx, res, &len)) { goto fail; }
         if (len)
@@ -91,7 +91,7 @@ static JSValue liba_pid_fuzzy_rule(JSContext *ctx, JSValueConst this_val, int ar
     }
     if (JS_IsArray(ctx, argv[1]))
     {
-        if (js_array_length(ctx, argv[1], &row) || row != order) { goto fail; }
+        if (js_array_length(ctx, argv[1], &row) || row != nrule) { goto fail; }
         res = js_concat(ctx, argv[1]);
         if (js_array_length(ctx, res, &len)) { goto fail; }
         if (len)
@@ -106,7 +106,7 @@ static JSValue liba_pid_fuzzy_rule(JSContext *ctx, JSValueConst this_val, int ar
     }
     if (JS_IsArray(ctx, argv[2]))
     {
-        if (js_array_length(ctx, argv[2], &row) || row != order) { goto fail; }
+        if (js_array_length(ctx, argv[2], &row) || row != nrule) { goto fail; }
         res = js_concat(ctx, argv[2]);
         if (js_array_length(ctx, res, &len)) { goto fail; }
         if (len)
@@ -121,7 +121,7 @@ static JSValue liba_pid_fuzzy_rule(JSContext *ctx, JSValueConst this_val, int ar
     }
     if (JS_IsArray(ctx, argv[3]))
     {
-        if (js_array_length(ctx, argv[3], &row) || row != order) { goto fail; }
+        if (js_array_length(ctx, argv[3], &row) || row != nrule) { goto fail; }
         res = js_concat(ctx, argv[3]);
         if (js_array_length(ctx, res, &len)) { goto fail; }
         if (len)
@@ -136,7 +136,7 @@ static JSValue liba_pid_fuzzy_rule(JSContext *ctx, JSValueConst this_val, int ar
     }
     if (JS_IsArray(ctx, argv[4]))
     {
-        if (js_array_length(ctx, argv[4], &row) || row != order) { goto fail; }
+        if (js_array_length(ctx, argv[4], &row) || row != nrule) { goto fail; }
         res = js_concat(ctx, argv[4]);
         if (js_array_length(ctx, res, &len)) { goto fail; }
         if (len)
@@ -148,7 +148,7 @@ static JSValue liba_pid_fuzzy_rule(JSContext *ctx, JSValueConst this_val, int ar
         }
         JS_FreeValue(ctx, res);
     }
-    self->order = order;
+    self->nrule = nrule;
     return JS_UNDEFINED;
 fail:
     JS_FreeValue(ctx, res);
@@ -254,7 +254,7 @@ enum
     self_out,
     self_fdb,
     self_err,
-    self_order,
+    self_nrule,
     self_block,
 };
 
@@ -276,7 +276,7 @@ static JSValue liba_pid_fuzzy_get(JSContext *ctx, JSValueConst this_val, int mag
     case self_out: x = (double)self->pid.out; break;
     case self_fdb: x = (double)self->pid.fdb; break;
     case self_err: x = (double)self->pid.err; break;
-    case self_order: return JS_NewUint32(ctx, self->order);
+    case self_nrule: return JS_NewUint32(ctx, self->nrule);
     case self_block: return JS_NewUint32(ctx, self->block);
     default: return JS_UNDEFINED;
     }
@@ -323,7 +323,7 @@ static JSCFunctionListEntry const liba_pid_fuzzy_proto[] = {
     JS_CGETSET_MAGIC_DEF("out", liba_pid_fuzzy_get, NULL, self_out),
     JS_CGETSET_MAGIC_DEF("fdb", liba_pid_fuzzy_get, NULL, self_fdb),
     JS_CGETSET_MAGIC_DEF("err", liba_pid_fuzzy_get, NULL, self_err),
-    JS_CGETSET_MAGIC_DEF("order", liba_pid_fuzzy_get, NULL, self_order),
+    JS_CGETSET_MAGIC_DEF("nrule", liba_pid_fuzzy_get, NULL, self_nrule),
     JS_CGETSET_MAGIC_DEF("block", liba_pid_fuzzy_get, liba_pid_fuzzy_set, self_block),
     JS_CFUNC_DEF("set_opr", 1, liba_pid_fuzzy_opr),
     JS_CFUNC_DEF("set_block", 1, liba_pid_fuzzy_block),

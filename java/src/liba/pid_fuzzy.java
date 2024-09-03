@@ -187,7 +187,7 @@ public class pid_fuzzy {
      *
      * @return number of order in the square matrix
      */
-    public final native int order();
+    public final native int nrule();
 
     /**
      * set fuzzy relational operator for fuzzy PID controller

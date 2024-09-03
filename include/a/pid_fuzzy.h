@@ -58,14 +58,14 @@ A_EXTERN void a_pid_fuzzy_set_opr(a_pid_fuzzy *ctx, unsigned int opr);
 /*!
  @brief set rule base for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
- @param[in] order number of order in the square matrix
+ @param[in] nrule number of order in the square matrix
  @param[in] me points to e's membership function parameter table
  @param[in] mec points to ec's membership function parameter table
  @param[in] mkp points to Kp's rule base table which must be a square matrix
  @param[in] mki points to Ki's rule base table which must be a square matrix
  @param[in] mkd points to Kd's rule base table which must be a square matrix
 */
-A_EXTERN void a_pid_fuzzy_rule(a_pid_fuzzy *ctx, unsigned int order, a_float const *me, a_float const *mec,
+A_EXTERN void a_pid_fuzzy_rule(a_pid_fuzzy *ctx, unsigned int nrule, a_float const *me, a_float const *mec,
                                a_float const *mkp, a_float const *mki, a_float const *mkd);
 
 /*!
@@ -161,7 +161,7 @@ struct a_pid_fuzzy
     a_float ki; //!< base integral constant
     a_float kd; //!< base derivative constant
 
-    unsigned int order; //!< number of order in the square matrix
+    unsigned int nrule; //!< number of order in the square matrix
     unsigned int block; //!< maximum number triggered by the rule
 #if defined(__cplusplus)
     A_INLINE void init() { a_pid_fuzzy_init(this); }
@@ -173,10 +173,10 @@ struct a_pid_fuzzy
     {
         a_pid_fuzzy_set_block(this, ptr, num);
     }
-    A_INLINE void rule(unsigned int order_, a_float const *me_, a_float const *mec_,
+    A_INLINE void rule(unsigned int nrule_, a_float const *me_, a_float const *mec_,
                        a_float const *mkp_, a_float const *mki_, a_float const *mkd_)
     {
-        a_pid_fuzzy_rule(this, order_, me_, mec_, mkp_, mki_, mkd_);
+        a_pid_fuzzy_rule(this, nrule_, me_, mec_, mkp_, mki_, mkd_);
     }
     A_INLINE void kpid(a_float kp_, a_float ki_, a_float kd_)
     {
