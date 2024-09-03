@@ -3,9 +3,9 @@
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
 
-void a_pid_expert_kpid(a_pid_expert *ctx, a_float kp, a_float ki, a_float kd)
+void a_pid_expert_set_kpid(a_pid_expert *ctx, a_float kp, a_float ki, a_float kd)
 {
-    a_pid_kpid(&ctx->pid, kp, ki, kd);
+    a_pid_set_kpid(&ctx->pid, kp, ki, kd);
 }
 
 a_float a_pid_expert_iter(a_pid_expert *ctx, a_float set, a_float fdb)

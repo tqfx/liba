@@ -575,7 +575,7 @@ impl Default for pid {
 }
 
 extern "C" {
-    fn a_pid_kpid(ctx: *mut pid, kp: float, ki: float, kd: float);
+    fn a_pid_set_kpid(ctx: *mut pid, kp: float, ki: float, kd: float);
     fn a_pid_run(ctx: *mut pid, set: float, fdb: float) -> float;
     fn a_pid_pos(ctx: *mut pid, set: float, fdb: float) -> float;
     fn a_pid_inc(ctx: *mut pid, set: float, fdb: float) -> float;
@@ -590,8 +590,8 @@ impl pid {
     }
     /// set proportional integral derivative constant for PID controller
     #[inline(always)]
-    pub fn kpid(&mut self, kp: float, ki: float, kd: float) -> &mut Self {
-        unsafe { a_pid_kpid(self, kp, ki, kd) };
+    pub fn set_kpid(&mut self, kp: float, ki: float, kd: float) -> &mut Self {
+        unsafe { a_pid_set_kpid(self, kp, ki, kd) };
         self
     }
     /// calculate for PID controller
@@ -687,7 +687,9 @@ impl Default for pid_fuzzy {
 extern "C" {
     fn a_pid_fuzzy_opr(opr: c_uint) -> extern "C" fn(float, float) -> float;
     fn a_pid_fuzzy_set_opr(ctx: *mut pid_fuzzy, opr: c_uint);
-    fn a_pid_fuzzy_rule(
+    fn a_pid_fuzzy_bfuzz(ctx: *const pid_fuzzy) -> *mut u8;
+    fn a_pid_fuzzy_set_bfuzz(ctx: *mut pid_fuzzy, ptr: *mut u8, num: usize);
+    fn a_pid_fuzzy_set_rule(
         ctx: *mut pid_fuzzy,
         num: c_uint,
         me: *const float,
@@ -696,9 +698,7 @@ extern "C" {
         mki: *const float,
         mkd: *const float,
     );
-    fn a_pid_fuzzy_nfuzz(ctx: *mut pid_fuzzy) -> *mut u8;
-    fn a_pid_fuzzy_set_nfuzz(ctx: *mut pid_fuzzy, ptr: *mut u8, num: usize);
-    fn a_pid_fuzzy_kpid(ctx: *mut pid_fuzzy, kp: float, ki: float, kd: float);
+    fn a_pid_fuzzy_set_kpid(ctx: *mut pid_fuzzy, kp: float, ki: float, kd: float);
     fn a_pid_fuzzy_run(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
     fn a_pid_fuzzy_pos(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
     fn a_pid_fuzzy_inc(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
@@ -711,9 +711,32 @@ impl pid_fuzzy {
     pub fn new() -> Self {
         Self::default()
     }
+    /// set fuzzy relational operator for fuzzy PID controller
+    #[inline(always)]
+    pub fn set_opr(&mut self, opr: c_uint) -> &mut Self {
+        unsafe { a_pid_fuzzy_set_opr(self, opr) };
+        self
+    }
+    /// compute size of memory block for fuzzy PID controller
+    #[inline(always)]
+    #[allow(non_snake_case)]
+    pub const fn BFUZZ(n: usize) -> usize {
+        size_of::<c_uint>() * n * 2 + size_of::<float>() * n * (2 + n)
+    }
+    /// get memory block for fuzzy PID controller
+    #[inline(always)]
+    pub fn bfuzz(&mut self) -> &mut [u8] {
+        unsafe { from_raw_parts_mut(a_pid_fuzzy_bfuzz(self), Self::BFUZZ(self.nfuzz as usize)) }
+    }
+    /// set memory block for fuzzy PID controller
+    #[inline(always)]
+    pub fn set_bfuzz(&mut self, ptr: &mut [u8], num: usize) -> &mut Self {
+        unsafe { a_pid_fuzzy_set_bfuzz(self, ptr.as_mut_ptr(), num) };
+        self
+    }
     /// set rule base for fuzzy PID controller
     #[inline(always)]
-    pub fn rule(
+    pub fn set_rule(
         &mut self,
         col: usize,
         me: &[float],
@@ -723,7 +746,7 @@ impl pid_fuzzy {
         mkd: &[float],
     ) -> &mut Self {
         unsafe {
-            a_pid_fuzzy_rule(
+            a_pid_fuzzy_set_rule(
                 self,
                 col as c_uint,
                 me.as_ptr(),
@@ -737,31 +760,8 @@ impl pid_fuzzy {
     }
     /// set proportional integral derivative constant for fuzzy PID controller
     #[inline(always)]
-    pub fn kpid(&mut self, kp: float, ki: float, kd: float) -> &mut Self {
-        unsafe { a_pid_fuzzy_kpid(self, kp, ki, kd) };
-        self
-    }
-    /// compute size of memory block for fuzzy PID controller
-    #[inline(always)]
-    #[allow(non_snake_case)]
-    pub const fn NFUZZ(n: usize) -> usize {
-        size_of::<c_uint>() * n * 2 + size_of::<float>() * n * (2 + n)
-    }
-    /// get memory block for fuzzy PID controller
-    #[inline(always)]
-    pub fn nfuzz(&mut self) -> &mut [u8] {
-        unsafe { from_raw_parts_mut(a_pid_fuzzy_nfuzz(self), Self::NFUZZ(self.nfuzz as usize)) }
-    }
-    /// set memory block for fuzzy PID controller
-    #[inline(always)]
-    pub fn set_nfuzz(&mut self, ptr: &mut [u8], num: usize) -> &mut Self {
-        unsafe { a_pid_fuzzy_set_nfuzz(self, ptr.as_mut_ptr(), num) };
-        self
-    }
-    /// set fuzzy relational operator for fuzzy PID controller
-    #[inline(always)]
-    pub fn set_opr(&mut self, opr: c_uint) -> &mut Self {
-        unsafe { a_pid_fuzzy_set_opr(self, opr) };
+    pub fn set_kpid(&mut self, kp: float, ki: float, kd: float) -> &mut Self {
+        unsafe { a_pid_fuzzy_set_kpid(self, kp, ki, kd) };
         self
     }
     /// calculate for fuzzy PID controller
@@ -819,8 +819,8 @@ impl Default for pid_neuro {
 }
 
 extern "C" {
-    fn a_pid_neuro_kpid(ctx: *mut pid_neuro, k: float, kp: float, ki: float, kd: float);
-    fn a_pid_neuro_wpid(ctx: *mut pid_neuro, wp: float, wi: float, wd: float);
+    fn a_pid_neuro_set_kpid(ctx: *mut pid_neuro, k: float, kp: float, ki: float, kd: float);
+    fn a_pid_neuro_set_wpid(ctx: *mut pid_neuro, wp: float, wi: float, wd: float);
     fn a_pid_neuro_run(ctx: *mut pid_neuro, set: float, fdb: float) -> float;
     fn a_pid_neuro_inc(ctx: *mut pid_neuro, set: float, fdb: float) -> float;
     fn a_pid_neuro_zero(ctx: *mut pid_neuro);
@@ -834,14 +834,14 @@ impl pid_neuro {
     }
     /// set proportional integral derivative constant for single neuron PID controller
     #[inline(always)]
-    pub fn kpid(&mut self, k: float, kp: float, ki: float, kd: float) -> &mut Self {
-        unsafe { a_pid_neuro_kpid(self, k, kp, ki, kd) };
+    pub fn set_kpid(&mut self, k: float, kp: float, ki: float, kd: float) -> &mut Self {
+        unsafe { a_pid_neuro_set_kpid(self, k, kp, ki, kd) };
         self
     }
     /// set proportional integral derivative weight for single neuron PID controller
     #[inline(always)]
-    pub fn wpid(&mut self, wp: float, wi: float, wd: float) -> &mut Self {
-        unsafe { a_pid_neuro_wpid(self, wp, wi, wd) };
+    pub fn set_wpid(&mut self, wp: float, wi: float, wd: float) -> &mut Self {
+        unsafe { a_pid_neuro_set_wpid(self, wp, wi, wd) };
         self
     }
     /// calculate for single neuron PID controller

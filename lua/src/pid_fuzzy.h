@@ -53,9 +53,9 @@ int liba_pid_fuzzy_init(lua_State *L);
  set fuzzy relational operator for fuzzy PID controller
  @tparam int opr enumeration for fuzzy PID controller operator
  @treturn a.pid_fuzzy fuzzy PID controller userdata
- @function opr
+ @function set_opr
 */
-int liba_pid_fuzzy_opr(lua_State *L);
+int liba_pid_fuzzy_set_opr(lua_State *L);
 
 /***
  set memory block for fuzzy PID controller
@@ -63,7 +63,7 @@ int liba_pid_fuzzy_opr(lua_State *L);
  @treturn a.pid_fuzzy fuzzy PID controller userdata
  @function set_nfuzz
 */
-int liba_pid_fuzzy_nfuzz(lua_State *L);
+int liba_pid_fuzzy_set_nfuzz(lua_State *L);
 
 /***
  set rule base for fuzzy PID controller
@@ -73,9 +73,9 @@ int liba_pid_fuzzy_nfuzz(lua_State *L);
  @tparam table mki points to Ki's rule base table which must be a square matrix
  @tparam table mkd points to Kd's rule base table which must be a square matrix
  @treturn a.pid_fuzzy fuzzy PID controller userdata
- @function rule
+ @function set_rule
 */
-int liba_pid_fuzzy_rule(lua_State *L);
+int liba_pid_fuzzy_set_rule(lua_State *L);
 
 /***
  set proportional integral derivative constant for fuzzy PID controller
@@ -83,9 +83,9 @@ int liba_pid_fuzzy_rule(lua_State *L);
  @tparam number ki integral constant
  @tparam number kd derivative constant
  @treturn a.pid_fuzzy fuzzy PID controller userdata
- @function kpid
+ @function set_kpid
 */
-int liba_pid_fuzzy_kpid(lua_State *L);
+int liba_pid_fuzzy_set_kpid(lua_State *L);
 
 /***
  calculate for fuzzy PID controller

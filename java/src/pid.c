@@ -166,11 +166,11 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_err(JNIEnv *Env, jobject Obj)
     return ctx->err;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_pid_kpid(JNIEnv *Env, jobject Obj, jdouble kp, jdouble ki, jdouble kd)
+JNIEXPORT jobject JNICALL Java_liba_pid_set_1kpid(JNIEnv *Env, jobject Obj, jdouble kp, jdouble ki, jdouble kd)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
-    a_pid_kpid(ctx, kp, ki, kd);
+    a_pid_set_kpid(ctx, kp, ki, kd);
     return Obj;
 }
 

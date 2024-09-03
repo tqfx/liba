@@ -838,13 +838,13 @@ function pid:zero() end
 ---@param ki number
 ---@param kd number
 ---@return a.pid
-function liba.pid.kpid(ctx, kp, ki, kd) end
+function liba.pid.set_kpid(ctx, kp, ki, kd) end
 
 ---@param kp number
 ---@param ki number
 ---@param kd number
 ---@return a.pid
-function pid:kpid(kp, ki, kd) end
+function pid:set_kpid(kp, ki, kd) end
 
 ---@param ctx a.pid
 ---@param set number
@@ -918,23 +918,6 @@ function liba.pid_fuzzy.zero(ctx) end
 ---@return a.pid_fuzzy
 function pid_fuzzy:zero() end
 
----@param ctx a.pid_fuzzy
----@param me table
----@param mec table
----@param mkp table
----@param mki table
----@param mkd table
----@return a.pid_fuzzy
-function liba.pid_fuzzy.rule(ctx, me, mec, mkp, mki, mkd) end
-
----@param me table
----@param mec table
----@param mkp table
----@param mki table
----@param mkd table
----@return a.pid_fuzzy
-function pid_fuzzy:rule(me, mec, mkp, mki, mkd) end
-
 liba.pid_fuzzy.CAP = 1
 liba.pid_fuzzy.CAP_ALGEBRA = 2
 liba.pid_fuzzy.CAP_BOUNDED = 3
@@ -961,17 +944,34 @@ function liba.pid_fuzzy.set_nfuzz(ctx, nfuzz) end
 function pid_fuzzy:set_nfuzz(nfuzz) end
 
 ---@param ctx a.pid_fuzzy
+---@param me table
+---@param mec table
+---@param mkp table
+---@param mki table
+---@param mkd table
+---@return a.pid_fuzzy
+function liba.pid_fuzzy.set_rule(ctx, me, mec, mkp, mki, mkd) end
+
+---@param me table
+---@param mec table
+---@param mkp table
+---@param mki table
+---@param mkd table
+---@return a.pid_fuzzy
+function pid_fuzzy:set_rule(me, mec, mkp, mki, mkd) end
+
+---@param ctx a.pid_fuzzy
 ---@param kp number
 ---@param ki number
 ---@param kd number
 ---@return a.pid_fuzzy
-function liba.pid_fuzzy.kpid(ctx, kp, ki, kd) end
+function liba.pid_fuzzy.set_kpid(ctx, kp, ki, kd) end
 
 ---@param kp number
 ---@param ki number
 ---@param kd number
 ---@return a.pid_fuzzy
-function pid_fuzzy:kpid(kp, ki, kd) end
+function pid_fuzzy:set_kpid(kp, ki, kd) end
 
 ---@param ctx a.pid_fuzzy
 ---@param set number
@@ -1051,27 +1051,27 @@ function pid_neuro:zero() end
 ---@param ki number
 ---@param kd number
 ---@return a.pid_neuro
-function liba.pid_neuro.kpid(ctx, k, kp, ki, kd) end
+function liba.pid_neuro.set_kpid(ctx, k, kp, ki, kd) end
 
 ---@param k number
 ---@param kp number
 ---@param ki number
 ---@param kd number
 ---@return a.pid_neuro
-function pid_neuro:kpid(k, kp, ki, kd) end
+function pid_neuro:set_kpid(k, kp, ki, kd) end
 
 ---@param ctx a.pid_neuro
 ---@param wp number
 ---@param wi number
 ---@param wd number
 ---@return a.pid_neuro
-function liba.pid_neuro.wpid(ctx, wp, wi, wd) end
+function liba.pid_neuro.set_wpid(ctx, wp, wi, wd) end
 
 ---@param wp number
 ---@param wi number
 ---@param wd number
 ---@return a.pid_neuro
-function pid_neuro:wpid(wp, wi, wd) end
+function pid_neuro:set_wpid(wp, wi, wd) end
 
 ---@param ctx a.pid_neuro
 ---@param set number

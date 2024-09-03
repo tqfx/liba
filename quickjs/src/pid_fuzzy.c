@@ -16,7 +16,7 @@ static void liba_pid_fuzzy_finalizer(JSRuntime *rt, JSValue val)
     js_free_rt(rt, ((void)(u.p = self->mkp), u.o));
     js_free_rt(rt, ((void)(u.p = self->mki), u.o));
     js_free_rt(rt, ((void)(u.p = self->mkd), u.o));
-    js_free_rt(rt, a_pid_fuzzy_nfuzz(self));
+    js_free_rt(rt, a_pid_fuzzy_bfuzz(self));
     js_free_rt(rt, self);
 }
 
@@ -49,7 +49,7 @@ fail:
     return JS_EXCEPTION;
 }
 
-static JSValue liba_pid_fuzzy_opr(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+static JSValue liba_pid_fuzzy_set_opr(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
@@ -60,7 +60,7 @@ static JSValue liba_pid_fuzzy_opr(JSContext *ctx, JSValueConst this_val, int arg
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_fuzzy_rule(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+static JSValue liba_pid_fuzzy_set_rule(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
@@ -155,30 +155,30 @@ fail:
     return JS_UNDEFINED;
 }
 
-static int liba_pid_fuzzy_nfuzz_(JSContext *ctx, a_pid_fuzzy *self, unsigned int num)
+static int liba_pid_fuzzy_set_nfuzz_(JSContext *ctx, a_pid_fuzzy *self, unsigned int num)
 {
-    void *ptr = a_pid_fuzzy_nfuzz(self);
+    void *ptr = a_pid_fuzzy_bfuzz(self);
     if (num > self->nfuzz)
     {
-        ptr = js_realloc(ctx, ptr, A_PID_FUZZY_NFUZZ(num));
+        ptr = js_realloc(ctx, ptr, A_PID_FUZZY_BFUZZ(num));
         if (!ptr) { return ~0; }
     }
-    a_pid_fuzzy_set_nfuzz(self, ptr, num);
+    a_pid_fuzzy_set_bfuzz(self, ptr, num);
     return 0;
 }
 
-static JSValue liba_pid_fuzzy_nfuzz(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+static JSValue liba_pid_fuzzy_set_nfuzz(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_u32 num;
     if (JS_ToUint32(ctx, &num, argv[0])) { return JS_EXCEPTION; }
-    if (liba_pid_fuzzy_nfuzz_(ctx, self, num)) { return JS_EXCEPTION; }
+    if (liba_pid_fuzzy_set_nfuzz_(ctx, self, num)) { return JS_EXCEPTION; }
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_fuzzy_kpid(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+static JSValue liba_pid_fuzzy_set_kpid(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
@@ -188,7 +188,7 @@ static JSValue liba_pid_fuzzy_kpid(JSContext *ctx, JSValueConst this_val, int ar
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    a_pid_fuzzy_kpid(self, (a_float)args[0], (a_float)args[1], (a_float)args[2]);
+    a_pid_fuzzy_set_kpid(self, (a_float)args[0], (a_float)args[1], (a_float)args[2]);
     return JS_UNDEFINED;
 }
 
@@ -291,7 +291,7 @@ static JSValue liba_pid_fuzzy_set(JSContext *ctx, JSValueConst this_val, JSValue
     if (magic == self_nfuzz)
     {
         if (JS_ToUint32(ctx, &u, val)) { return JS_EXCEPTION; }
-        if (liba_pid_fuzzy_nfuzz_(ctx, self, (unsigned int)u)) { return JS_EXCEPTION; }
+        if (liba_pid_fuzzy_set_nfuzz_(ctx, self, (unsigned int)u)) { return JS_EXCEPTION; }
         return JS_UNDEFINED;
     }
     double x;
@@ -325,10 +325,10 @@ static JSCFunctionListEntry const liba_pid_fuzzy_proto[] = {
     JS_CGETSET_MAGIC_DEF("err", liba_pid_fuzzy_get, NULL, self_err),
     JS_CGETSET_MAGIC_DEF("nrule", liba_pid_fuzzy_get, NULL, self_nrule),
     JS_CGETSET_MAGIC_DEF("nfuzz", liba_pid_fuzzy_get, liba_pid_fuzzy_set, self_nfuzz),
-    JS_CFUNC_DEF("set_opr", 1, liba_pid_fuzzy_opr),
-    JS_CFUNC_DEF("set_nfuzz", 1, liba_pid_fuzzy_nfuzz),
-    JS_CFUNC_DEF("rule", 5, liba_pid_fuzzy_rule),
-    JS_CFUNC_DEF("kpid", 3, liba_pid_fuzzy_kpid),
+    JS_CFUNC_DEF("set_opr", 1, liba_pid_fuzzy_set_opr),
+    JS_CFUNC_DEF("set_nfuzz", 1, liba_pid_fuzzy_set_nfuzz),
+    JS_CFUNC_DEF("set_rule", 5, liba_pid_fuzzy_set_rule),
+    JS_CFUNC_DEF("set_kpid", 3, liba_pid_fuzzy_set_kpid),
     JS_CFUNC_DEF("zero", 0, liba_pid_fuzzy_zero),
     JS_CFUNC_DEF("run", 2, liba_pid_fuzzy_run),
     JS_CFUNC_DEF("pos", 2, liba_pid_fuzzy_pos),

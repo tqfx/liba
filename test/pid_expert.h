@@ -39,7 +39,7 @@ extern "C" {
  @param[in] ki integral constant
  @param[in] kd derivative constant
 */
-A_EXTERN void a_pid_expert_kpid(a_pid_expert *ctx, a_float kp, a_float ki, a_float kd);
+A_EXTERN void a_pid_expert_set_kpid(a_pid_expert *ctx, a_float kp, a_float ki, a_float kd);
 
 /*!
  @brief calculate for expert PID controller
@@ -79,9 +79,9 @@ struct a_pid_expert
     a_float loss; //!< loss coefficient
 #if defined(__cplusplus)
     A_INLINE void init() { a_pid_expert_init(this); }
-    A_INLINE void kpid(a_float kp, a_float ki, a_float kd)
+    A_INLINE void set_kpid(a_float kp, a_float ki, a_float kd)
     {
-        a_pid_expert_kpid(this, kp, ki, kd);
+        a_pid_expert_set_kpid(this, kp, ki, kd);
     }
     A_INLINE a_float operator()(a_float set, a_float fdb)
     {

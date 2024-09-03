@@ -195,7 +195,7 @@ public class pid_neuro {
      * @param kd derivative learning constant
      * @return {@link pid_neuro}
      */
-    public final native pid_neuro kpid(double k, double kp, double ki, double kd);
+    public final native pid_neuro set_kpid(double k, double kp, double ki, double kd);
 
     /**
      * set proportional integral derivative weight for single neuron PID
@@ -206,7 +206,7 @@ public class pid_neuro {
      * @param wd derivative weight
      * @return {@link pid_neuro}
      */
-    public final native pid_neuro wpid(double wp, double wi, double wd);
+    public final native pid_neuro set_wpid(double wp, double wi, double wd);
 
     /**
      * calculate for single neuron PID controller

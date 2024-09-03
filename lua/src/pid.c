@@ -55,9 +55,9 @@ int liba_pid_init(lua_State *L)
  @tparam number ki integral constant
  @tparam number kd derivative constant
  @treturn a.pid PID controller userdata
- @function kpid
+ @function set_kpid
 */
-int liba_pid_kpid(lua_State *L)
+int liba_pid_set_kpid(lua_State *L)
 {
     a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
     if (ctx)
@@ -65,7 +65,7 @@ int liba_pid_kpid(lua_State *L)
         a_float const kp = (a_float)luaL_checknumber(L, 2);
         a_float const ki = (a_float)luaL_checknumber(L, 3);
         a_float const kd = (a_float)luaL_checknumber(L, 4);
-        a_pid_kpid(ctx, kp, ki, kd);
+        a_pid_set_kpid(ctx, kp, ki, kd);
         lua_pushvalue(L, 1);
         return 1;
     }
@@ -264,7 +264,7 @@ int luaopen_liba_pid(lua_State *L)
     static lua_fun const funcs[] = {
         {"new", liba_pid_new},
         {"init", liba_pid_init},
-        {"kpid", liba_pid_kpid},
+        {"set_kpid", liba_pid_set_kpid},
         {"run", liba_pid_run},
         {"pos", liba_pid_pos},
         {"inc", liba_pid_inc},

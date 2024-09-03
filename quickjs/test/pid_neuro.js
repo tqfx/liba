@@ -5,8 +5,8 @@ function assert(expr) {
     }
 }
 var ctx = new a.pid_neuro();
-ctx.kpid(10, 1, 0.1, 1);
-ctx.wpid(1, 0, 0);
+ctx.set_kpid(10, 1, 0.1, 1);
+ctx.set_wpid(1, 0, 0);
 console.log(ctx.run(10, 0));
 ctx.zero();
 console.log(ctx.inc(10, 0));

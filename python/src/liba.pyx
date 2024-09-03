@@ -613,8 +613,8 @@ cdef class pid:
         self.ctx.outmax = +A_FLOAT_INF
         self.ctx.outmin = -A_FLOAT_INF
         a_pid_init(&self.ctx)
-    def kpid(self, a_float kp, a_float ki, a_float kd):
-        a_pid_kpid(&self.ctx, kp, ki, kd)
+    def set_kpid(self, a_float kp, a_float ki, a_float kd):
+        a_pid_set_kpid(&self.ctx, kp, ki, kd)
         return self
     def run(self, a_float set, a_float fdb):
         return a_pid_run(&self.ctx, set, fdb)
@@ -701,25 +701,25 @@ cdef class pid_fuzzy:
         a_pid_fuzzy_set_opr(&self.ctx, opr)
         return self
     def set_nfuzz(self, unsigned int num):
-        cdef void *ptr = a_pid_fuzzy_nfuzz(&self.ctx)
-        ptr = PyMem_Realloc(ptr, A_PID_FUZZY_NFUZZ(num))
-        a_pid_fuzzy_set_nfuzz(&self.ctx, ptr, num)
+        cdef void *ptr = a_pid_fuzzy_bfuzz(&self.ctx)
+        ptr = PyMem_Realloc(ptr, A_PID_FUZZY_BFUZZ(num))
+        a_pid_fuzzy_set_bfuzz(&self.ctx, ptr, num)
         return self
-    def rule(self, me, mec, mkp, mki, mkd):
+    def set_rule(self, me, mec, mkp, mki, mkd):
         self.me = num_new2(me)
         self.mec = num_new2(mec)
         self.mkp = num_new2(mkp)
         self.mki = num_new2(mki)
         self.mkd = num_new2(mkd)
-        a_pid_fuzzy_rule(&self.ctx, <unsigned int>len(me),
+        a_pid_fuzzy_set_rule(&self.ctx, <unsigned int>len(me),
                          num_set2(self.me.data, me),
                          num_set2(self.mec.data, mec),
                          num_set2(self.mkp.data, mkp),
                          num_set2(self.mki.data, mki),
                          num_set2(self.mkd.data, mkd))
         return self
-    def kpid(self, a_float kp, a_float ki, a_float kd):
-        a_pid_fuzzy_kpid(&self.ctx, kp, ki, kd)
+    def set_kpid(self, a_float kp, a_float ki, a_float kd):
+        a_pid_fuzzy_set_kpid(&self.ctx, kp, ki, kd)
         return self
     def run(self, a_float set, a_float fdb):
         return a_pid_fuzzy_run(&self.ctx, set, fdb)
@@ -728,7 +728,7 @@ cdef class pid_fuzzy:
     def inc(self, a_float set, a_float fdb):
         return a_pid_fuzzy_inc(&self.ctx, set, fdb)
     def __dealloc__(self):
-        PyMem_Free(a_pid_fuzzy_nfuzz(&self.ctx))
+        PyMem_Free(a_pid_fuzzy_bfuzz(&self.ctx))
     def zero(self):
         a_pid_fuzzy_zero(&self.ctx)
         return self
@@ -805,11 +805,11 @@ cdef class pid_neuro:
         self.ctx.wi = 0.1
         self.ctx.wd = 0.1
         a_pid_neuro_init(&self.ctx)
-    def kpid(self, a_float k, a_float kp, a_float ki, a_float kd):
-        a_pid_neuro_kpid(&self.ctx, k, kp, ki, kd)
+    def set_kpid(self, a_float k, a_float kp, a_float ki, a_float kd):
+        a_pid_neuro_set_kpid(&self.ctx, k, kp, ki, kd)
         return self
-    def wpid(self, a_float wp, a_float wi, a_float wd):
-        a_pid_neuro_wpid(&self.ctx, wp, wi, wd)
+    def set_wpid(self, a_float wp, a_float wi, a_float wd):
+        a_pid_neuro_set_wpid(&self.ctx, wp, wi, wd)
         return self
     def run(self, a_float set, a_float fdb):
         return a_pid_neuro_run(&self.ctx, set, fdb)

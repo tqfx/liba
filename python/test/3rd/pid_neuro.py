@@ -51,7 +51,7 @@ y = 0.0
 tf.zero()
 error1 = []
 feedback1 = []
-pid_neuro.kpid(k, kp, ki, kd).wpid(wp, wi, wd)
+pid_neuro.set_kpid(k, kp, ki, kd).set_wpid(wp, wi, wd)
 for i in data:
     y = pid_neuro.inc(r, y)
     y = tf(y)

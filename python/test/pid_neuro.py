@@ -24,7 +24,7 @@ num = [6.59492796e-05, 6.54019884e-05]
 den = [1.0, -1.97530991, 0.97530991]
 
 tf = liba.tf(num, den[1:])
-pid_neuro = liba.pid_neuro().kpid(k, kp, ki, kd).wpid(wp, wi, wd)
+pid_neuro = liba.pid_neuro().set_kpid(k, kp, ki, kd).set_wpid(wp, wi, wd)
 
 t = 0
 x = []

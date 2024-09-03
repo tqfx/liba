@@ -3,7 +3,7 @@ import liba.pid_neuro;
 class _pid_neuro {
     public static void main(String[] args) {
         pid_neuro obj = new pid_neuro();
-        obj.kpid(10, 1, 0.1, 1).wpid(1, 0, 0).zero();
+        obj.set_kpid(10, 1, 0.1, 1).set_wpid(1, 0, 0).zero();
         System.out.print(obj.inc(1, 0) + " ");
         System.out.println(obj.run(1, 0));
         obj.k(obj.k());

@@ -1,12 +1,12 @@
 #include "a/pid_neuro.h"
 
-void a_pid_neuro_kpid(a_pid_neuro *ctx, a_float k, a_float kp, a_float ki, a_float kd)
+void a_pid_neuro_set_kpid(a_pid_neuro *ctx, a_float k, a_float kp, a_float ki, a_float kd)
 {
-    a_pid_kpid(&ctx->pid, kp, ki, kd);
+    a_pid_set_kpid(&ctx->pid, kp, ki, kd);
     ctx->k = k;
 }
 
-void a_pid_neuro_wpid(a_pid_neuro *ctx, a_float wp, a_float wi, a_float wd)
+void a_pid_neuro_set_wpid(a_pid_neuro *ctx, a_float wp, a_float wi, a_float wd)
 {
     ctx->wp = wp;
     ctx->wi = wi;

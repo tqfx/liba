@@ -21,7 +21,7 @@ int liba_pid_fuzzy_die(lua_State *L)
         lua_alloc(L, ctx->mkp, 0);
         lua_alloc(L, ctx->mki, 0);
         lua_alloc(L, ctx->mkd, 0);
-        lua_alloc(L, a_pid_fuzzy_nfuzz(ctx), 0);
+        lua_alloc(L, a_pid_fuzzy_bfuzz(ctx), 0);
         ctx->me = 0;
         ctx->mec = 0;
         ctx->mkp = 0;
@@ -93,7 +93,7 @@ int liba_pid_fuzzy_init(lua_State *L)
  @treturn a.pid_fuzzy fuzzy PID controller userdata
  @function set_opr
 */
-int liba_pid_fuzzy_opr(lua_State *L)
+int liba_pid_fuzzy_set_opr(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
@@ -112,14 +112,14 @@ int liba_pid_fuzzy_opr(lua_State *L)
  @treturn a.pid_fuzzy fuzzy PID controller userdata
  @function set_nfuzz
 */
-int liba_pid_fuzzy_nfuzz(lua_State *L)
+int liba_pid_fuzzy_set_nfuzz(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
     {
         unsigned int const num = (unsigned int)luaL_checkinteger(L, 2);
-        void *ptr = lua_alloc(L, a_pid_fuzzy_nfuzz(ctx), A_PID_FUZZY_NFUZZ(num));
-        a_pid_fuzzy_set_nfuzz(ctx, ptr, num);
+        void *ptr = lua_alloc(L, a_pid_fuzzy_bfuzz(ctx), A_PID_FUZZY_BFUZZ(num));
+        a_pid_fuzzy_set_bfuzz(ctx, ptr, num);
         lua_pushvalue(L, 1);
         return 1;
     }
@@ -135,9 +135,9 @@ int liba_pid_fuzzy_nfuzz(lua_State *L)
  @tparam table mki points to Ki's rule base table which must be a square matrix
  @tparam table mkd points to Kd's rule base table which must be a square matrix
  @treturn a.pid_fuzzy fuzzy PID controller userdata
- @function rule
+ @function set_rule
 */
-int liba_pid_fuzzy_rule(lua_State *L)
+int liba_pid_fuzzy_set_rule(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
@@ -148,7 +148,7 @@ int liba_pid_fuzzy_rule(lua_State *L)
         a_float const *const mkp = lua_table_num_get(L, 4, ctx->mkp, 0);
         a_float const *const mki = lua_table_num_get(L, 5, ctx->mki, 0);
         a_float const *const mkd = lua_table_num_get(L, 6, ctx->mkd, 0);
-        a_pid_fuzzy_rule(ctx, num, me, mec, mkp, mki, mkd);
+        a_pid_fuzzy_set_rule(ctx, num, me, mec, mkp, mki, mkd);
         lua_pushvalue(L, 1);
         return 1;
     }
@@ -162,9 +162,9 @@ int liba_pid_fuzzy_rule(lua_State *L)
  @tparam number ki integral constant
  @tparam number kd derivative constant
  @treturn a.pid_fuzzy fuzzy PID controller userdata
- @function kpid
+ @function set_kpid
 */
-int liba_pid_fuzzy_kpid(lua_State *L)
+int liba_pid_fuzzy_set_kpid(lua_State *L)
 {
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
@@ -172,7 +172,7 @@ int liba_pid_fuzzy_kpid(lua_State *L)
         a_float const kp = (a_float)luaL_checknumber(L, 2);
         a_float const ki = (a_float)luaL_checknumber(L, 3);
         a_float const kd = (a_float)luaL_checknumber(L, 4);
-        a_pid_fuzzy_kpid(ctx, kp, ki, kd);
+        a_pid_fuzzy_set_kpid(ctx, kp, ki, kd);
         lua_pushvalue(L, 1);
         return 1;
     }
@@ -288,8 +288,8 @@ static int liba_pid_fuzzy_set(lua_State *L)
     case 0x98AE2495: // nfuzz
     {
         unsigned int const num = (unsigned int)luaL_checkinteger(L, 3);
-        void *ptr = lua_alloc(L, a_pid_fuzzy_nfuzz(ctx), A_PID_FUZZY_NFUZZ(num));
-        a_pid_fuzzy_set_nfuzz(ctx, ptr, num);
+        void *ptr = lua_alloc(L, a_pid_fuzzy_bfuzz(ctx), A_PID_FUZZY_BFUZZ(num));
+        a_pid_fuzzy_set_bfuzz(ctx, ptr, num);
         break;
     }
     case 0xE8859EEB: // __name
@@ -406,10 +406,10 @@ int luaopen_liba_pid_fuzzy(lua_State *L)
     static lua_fun const funcs[] = {
         {"new", liba_pid_fuzzy_new},
         {"init", liba_pid_fuzzy_init},
-        {"set_opr", liba_pid_fuzzy_opr},
-        {"set_nfuzz", liba_pid_fuzzy_nfuzz},
-        {"rule", liba_pid_fuzzy_rule},
-        {"kpid", liba_pid_fuzzy_kpid},
+        {"set_opr", liba_pid_fuzzy_set_opr},
+        {"set_nfuzz", liba_pid_fuzzy_set_nfuzz},
+        {"set_rule", liba_pid_fuzzy_set_rule},
+        {"set_kpid", liba_pid_fuzzy_set_kpid},
         {"run", liba_pid_fuzzy_run},
         {"pos", liba_pid_fuzzy_pos},
         {"inc", liba_pid_fuzzy_inc},

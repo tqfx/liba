@@ -14,7 +14,7 @@ function do_leak_check() {
     }
 }
 var ctx = new liba.pid();
-ctx.kpid(10, 0.1, 1);
+ctx.set_kpid(10, 0.1, 1);
 console.log(ctx.zero().run(1, 0));
 console.log(ctx.zero().pos(1, 0));
 console.log(ctx.zero().inc(1, 0));

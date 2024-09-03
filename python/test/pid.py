@@ -22,7 +22,7 @@ num = [6.59492796e-05, 6.54019884e-05]
 den = [1.0, -1.97530991, 0.97530991]
 
 tf = liba.tf(num, den[1:])
-pid = liba.pid().kpid(kp, ki, kd)
+pid = liba.pid().set_kpid(kp, ki, kd)
 pid.outmax = MAX
 pid.outmin = MIN
 

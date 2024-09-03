@@ -39,7 +39,7 @@ fail:
     return JS_EXCEPTION;
 }
 
-static JSValue liba_pid_neuro_kpid(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+static JSValue liba_pid_neuro_set_kpid(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
@@ -49,11 +49,11 @@ static JSValue liba_pid_neuro_kpid(JSContext *ctx, JSValueConst this_val, int ar
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    a_pid_neuro_kpid(self, (a_float)args[0], (a_float)args[1], (a_float)args[2], (a_float)args[3]);
+    a_pid_neuro_set_kpid(self, (a_float)args[0], (a_float)args[1], (a_float)args[2], (a_float)args[3]);
     return JS_UNDEFINED;
 }
 
-static JSValue liba_pid_neuro_wpid(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+static JSValue liba_pid_neuro_set_wpid(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
@@ -63,7 +63,7 @@ static JSValue liba_pid_neuro_wpid(JSContext *ctx, JSValueConst this_val, int ar
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    a_pid_neuro_wpid(self, (a_float)args[0], (a_float)args[1], (a_float)args[2]);
+    a_pid_neuro_set_wpid(self, (a_float)args[0], (a_float)args[1], (a_float)args[2]);
     return JS_UNDEFINED;
 }
 
@@ -182,8 +182,8 @@ static JSCFunctionListEntry const liba_pid_neuro_proto[] = {
     JS_CGETSET_MAGIC_DEF("fdb", liba_pid_neuro_get, NULL, self_fdb),
     JS_CGETSET_MAGIC_DEF("err", liba_pid_neuro_get, NULL, self_err),
     JS_CGETSET_MAGIC_DEF("ec", liba_pid_neuro_get, NULL, self_ec),
-    JS_CFUNC_DEF("kpid", 4, liba_pid_neuro_kpid),
-    JS_CFUNC_DEF("wpid", 3, liba_pid_neuro_wpid),
+    JS_CFUNC_DEF("set_kpid", 4, liba_pid_neuro_set_kpid),
+    JS_CFUNC_DEF("set_wpid", 3, liba_pid_neuro_set_wpid),
     JS_CFUNC_DEF("zero", 0, liba_pid_neuro_zero),
     JS_CFUNC_DEF("run", 2, liba_pid_neuro_run),
     JS_CFUNC_DEF("inc", 2, liba_pid_neuro_inc),

@@ -50,9 +50,9 @@ int liba_pid_neuro_init(lua_State *L);
  @tparam number ki integral learning constant
  @tparam number kd derivative learning constant
  @treturn a.pid_neuro single neuron PID controller userdata
- @function kpid
+ @function set_kpid
 */
-int liba_pid_neuro_kpid(lua_State *L);
+int liba_pid_neuro_set_kpid(lua_State *L);
 
 /***
  set proportional integral derivative weight for single neuron PID controller
@@ -60,9 +60,9 @@ int liba_pid_neuro_kpid(lua_State *L);
  @tparam number wi integral weight
  @tparam number wd derivative weight
  @treturn a.pid_neuro single neuron PID controller userdata
- @function wpid
+ @function set_wpid
 */
-int liba_pid_neuro_wpid(lua_State *L);
+int liba_pid_neuro_set_wpid(lua_State *L);
 
 /***
  calculate for single neuron PID controller

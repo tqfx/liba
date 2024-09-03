@@ -24,7 +24,7 @@ public class pid_fuzzy {
     ByteBuffer mkp;
     ByteBuffer mki;
     ByteBuffer mkd;
-    ByteBuffer fuzzy;
+    ByteBuffer bfuzz;
     static {
         System.loadLibrary("a");
         CAP = 1;
@@ -198,18 +198,6 @@ public class pid_fuzzy {
     public final native pid_fuzzy opr(int opr);
 
     /**
-     * set rule base for fuzzy PID controller
-     *
-     * @param me  membership function parameter table, terminated by {@link mf}
-     * @param mec membership function parameter table, terminated by {@link mf}
-     * @param mkp Kp's rule base table which must be a square matrix
-     * @param mki Ki's rule base table which must be a square matrix
-     * @param mkd Kd's rule base table which must be a square matrix
-     * @return {@link pid_fuzzy}
-     */
-    public final native pid_fuzzy rule(double[][] me, double[][] mec, double[][] mkp, double[][] mki, double[][] mkd);
-
-    /**
      * get maximum number triggered by the rule for fuzzy PID controller
      *
      * @return maximum number triggered by the rule
@@ -225,6 +213,18 @@ public class pid_fuzzy {
     public final native pid_fuzzy nfuzz(int num);
 
     /**
+     * set rule base for fuzzy PID controller
+     *
+     * @param me  membership function parameter table, terminated by {@link mf}
+     * @param mec membership function parameter table, terminated by {@link mf}
+     * @param mkp Kp's rule base table which must be a square matrix
+     * @param mki Ki's rule base table which must be a square matrix
+     * @param mkd Kd's rule base table which must be a square matrix
+     * @return {@link pid_fuzzy}
+     */
+    public final native pid_fuzzy set_rule(double[][] me, double[][] mec, double[][] mkp, double[][] mki, double[][] mkd);
+
+    /**
      * set proportional integral derivative constant for fuzzy PID controller
      *
      * @param kp proportional constant
@@ -232,7 +232,7 @@ public class pid_fuzzy {
      * @param kd derivative constant
      * @return {@link pid_fuzzy}
      */
-    public final native pid_fuzzy kpid(double kp, double ki, double kd);
+    public final native pid_fuzzy set_kpid(double kp, double ki, double kd);
 
     /**
      * calculate for fuzzy PID controller

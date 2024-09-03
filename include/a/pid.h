@@ -56,7 +56,7 @@ extern "C" {
  @param[in] ki integral constant
  @param[in] kd derivative constant
 */
-A_EXTERN void a_pid_kpid(a_pid *ctx, a_float kp, a_float ki, a_float kd);
+A_EXTERN void a_pid_set_kpid(a_pid *ctx, a_float kp, a_float ki, a_float kd);
 
 /*!
  @brief calculate for PID controller
@@ -118,9 +118,9 @@ struct a_pid
     a_float err; //!< cache error
 #if defined(__cplusplus)
     A_INLINE void init() { a_pid_init(this); }
-    A_INLINE void kpid(a_float kp_, a_float ki_, a_float kd_)
+    A_INLINE void set_kpid(a_float kp_, a_float ki_, a_float kd_)
     {
-        a_pid_kpid(this, kp_, ki_, kd_);
+        a_pid_set_kpid(this, kp_, ki_, kd_);
     }
     A_INLINE a_float run(a_float set, a_float fdb_)
     {

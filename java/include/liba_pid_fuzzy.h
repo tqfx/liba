@@ -185,14 +185,6 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_opr
 
 /*
  * Class:     liba_pid_fuzzy
- * Method:    rule
- * Signature: ([[D[[D[[D[[D[[D)Lliba/pid_fuzzy;
- */
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_rule
-  (JNIEnv *, jobject, jobjectArray, jobjectArray, jobjectArray, jobjectArray, jobjectArray);
-
-/*
- * Class:     liba_pid_fuzzy
  * Method:    nfuzz
  * Signature: ()I
  */
@@ -209,10 +201,18 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_nfuzz__I
 
 /*
  * Class:     liba_pid_fuzzy
- * Method:    kpid
+ * Method:    set_rule
+ * Signature: ([[D[[D[[D[[D[[D)Lliba/pid_fuzzy;
+ */
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1rule
+  (JNIEnv *, jobject, jobjectArray, jobjectArray, jobjectArray, jobjectArray, jobjectArray);
+
+/*
+ * Class:     liba_pid_fuzzy
+ * Method:    set_kpid
  * Signature: (DDD)Lliba/pid_fuzzy;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_kpid
+JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1kpid
   (JNIEnv *, jobject, jdouble, jdouble, jdouble);
 
 /*

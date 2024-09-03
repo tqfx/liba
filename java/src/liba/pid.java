@@ -162,7 +162,7 @@ public class pid {
      * @param kd derivative constant
      * @return {@link pid}
      */
-    public final native pid kpid(double kp, double ki, double kd);
+    public final native pid set_kpid(double kp, double ki, double kd);
 
     /**
      * calculate for PID controller

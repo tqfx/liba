@@ -63,9 +63,9 @@ int liba_pid_neuro_init(lua_State *L)
  @tparam number ki integral learning constant
  @tparam number kd derivative learning constant
  @treturn a.pid_neuro single neuron PID controller userdata
- @function kpid
+ @function set_kpid
 */
-int liba_pid_neuro_kpid(lua_State *L)
+int liba_pid_neuro_set_kpid(lua_State *L)
 {
     a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
     if (ctx)
@@ -74,7 +74,7 @@ int liba_pid_neuro_kpid(lua_State *L)
         a_float const kp = (a_float)luaL_checknumber(L, 3);
         a_float const ki = (a_float)luaL_checknumber(L, 4);
         a_float const kd = (a_float)luaL_checknumber(L, 5);
-        a_pid_neuro_kpid(ctx, k, kp, ki, kd);
+        a_pid_neuro_set_kpid(ctx, k, kp, ki, kd);
         lua_pushvalue(L, 1);
         return 1;
     }
@@ -88,9 +88,9 @@ int liba_pid_neuro_kpid(lua_State *L)
  @tparam number wi integral weight
  @tparam number wd derivative weight
  @treturn a.pid_neuro single neuron PID controller userdata
- @function wpid
+ @function set_wpid
 */
-int liba_pid_neuro_wpid(lua_State *L)
+int liba_pid_neuro_set_wpid(lua_State *L)
 {
     a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
     if (ctx)
@@ -98,7 +98,7 @@ int liba_pid_neuro_wpid(lua_State *L)
         a_float const wp = (a_float)luaL_checknumber(L, 2);
         a_float const wi = (a_float)luaL_checknumber(L, 3);
         a_float const wd = (a_float)luaL_checknumber(L, 4);
-        a_pid_neuro_wpid(ctx, wp, wi, wd);
+        a_pid_neuro_set_wpid(ctx, wp, wi, wd);
         lua_pushvalue(L, 1);
         return 1;
     }
@@ -292,8 +292,8 @@ int luaopen_liba_pid_neuro(lua_State *L)
     static lua_fun const funcs[] = {
         {"new", liba_pid_neuro_new},
         {"init", liba_pid_neuro_init},
-        {"kpid", liba_pid_neuro_kpid},
-        {"wpid", liba_pid_neuro_wpid},
+        {"set_kpid", liba_pid_neuro_set_kpid},
+        {"set_wpid", liba_pid_neuro_set_wpid},
         {"run", liba_pid_neuro_run},
         {"inc", liba_pid_neuro_inc},
         {"zero", liba_pid_neuro_zero},

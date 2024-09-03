@@ -37,7 +37,7 @@ ki = 0.01 * Ts
 kd = 0.24 / Ts
 
 tf = liba.tf(num, den[1:])
-pid = liba.pid().kpid(kp, ki, kd)
+pid = liba.pid().set_kpid(kp, ki, kd)
 pid.outmax = MAX
 pid.outmin = MIN
 

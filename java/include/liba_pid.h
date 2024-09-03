@@ -169,10 +169,10 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_err
 
 /*
  * Class:     liba_pid
- * Method:    kpid
+ * Method:    set_kpid
  * Signature: (DDD)Lliba/pid;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_kpid
+JNIEXPORT jobject JNICALL Java_liba_pid_set_1kpid
   (JNIEnv *, jobject, jdouble, jdouble, jdouble);
 
 /*

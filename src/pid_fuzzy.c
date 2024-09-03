@@ -100,8 +100,8 @@ out:
     return counter;
 }
 
-void a_pid_fuzzy_rule(a_pid_fuzzy *ctx, unsigned int nrule, a_float const *me, a_float const *mec,
-                      a_float const *mkp, a_float const *mki, a_float const *mkd)
+void a_pid_fuzzy_set_rule(a_pid_fuzzy *ctx, unsigned int nrule, a_float const *me, a_float const *mec,
+                          a_float const *mkp, a_float const *mki, a_float const *mkd)
 {
     ctx->me = me;
     ctx->mec = mec;
@@ -111,8 +111,8 @@ void a_pid_fuzzy_rule(a_pid_fuzzy *ctx, unsigned int nrule, a_float const *me, a
     ctx->nrule = nrule;
 }
 
-void *a_pid_fuzzy_nfuzz(a_pid_fuzzy *ctx) { return ctx->idx; }
-void a_pid_fuzzy_set_nfuzz(a_pid_fuzzy *ctx, void *ptr, a_size num)
+void *a_pid_fuzzy_bfuzz(a_pid_fuzzy const *ctx) { return ctx->idx; }
+void a_pid_fuzzy_set_bfuzz(a_pid_fuzzy *ctx, void *ptr, a_size num)
 {
     ctx->nfuzz = (unsigned int)num;
     ctx->idx = (unsigned int *)ptr;
@@ -120,9 +120,9 @@ void a_pid_fuzzy_set_nfuzz(a_pid_fuzzy *ctx, void *ptr, a_size num)
     ctx->val = (a_float *)ptr;
 }
 
-void a_pid_fuzzy_kpid(a_pid_fuzzy *ctx, a_float kp, a_float ki, a_float kd)
+void a_pid_fuzzy_set_kpid(a_pid_fuzzy *ctx, a_float kp, a_float ki, a_float kd)
 {
-    a_pid_kpid(&ctx->pid, kp, ki, kd);
+    a_pid_set_kpid(&ctx->pid, kp, ki, kd);
     ctx->kp = kp;
     ctx->ki = ki;
     ctx->kd = kd;
@@ -198,7 +198,7 @@ void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_float ec, a_float e)
         kd *= inv;
     }
 pid:
-    a_pid_kpid(&ctx->pid, ctx->kp + kp, ctx->ki + ki, ctx->kd + kd);
+    a_pid_set_kpid(&ctx->pid, ctx->kp + kp, ctx->ki + ki, ctx->kd + kd);
 }
 
 A_HIDDEN a_float a_pid_run_(a_pid *ctx, a_float set, a_float fdb, a_float err);

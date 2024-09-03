@@ -415,7 +415,7 @@ declare namespace liba {
      * @param ki integral constant
      * @param kd derivative constant
      */
-    kpid(kp: number, ki: number, kd: number): pid;
+    set_kpid(kp: number, ki: number, kd: number): pid;
     /**
      * calculate for PID controller
      * @param set setpoint value
@@ -492,14 +492,14 @@ declare namespace liba {
      * @param mki Ki's rule base table which must be a square matrix
      * @param mkd Kd's rule base table which must be a square matrix
      */
-    rule(me: number[][], mec: number[][], mkp: number[][], mki: number[][], mkd: number[][]): pid_fuzzy;
+    set_rule(me: number[][], mec: number[][], mkp: number[][], mki: number[][], mkd: number[][]): pid_fuzzy;
     /**
      * set proportional integral derivative constant for fuzzy PID controller
      * @param kp proportional learning constant
      * @param ki integral learning constant
      * @param kd derivative learning constant
      */
-    kpid(kp: number, ki: number, kd: number): pid_fuzzy;
+    set_kpid(kp: number, ki: number, kd: number): pid_fuzzy;
     /**
      * calculate for fuzzy PID controller
      * @param set setpoint value
@@ -579,14 +579,14 @@ declare namespace liba {
      * @param ki integral learning constant
      * @param kd derivative learning constant
      */
-    kpid(k: number, kp: number, ki: number, kd: number): pid_neuro;
+    set_kpid(k: number, kp: number, ki: number, kd: number): pid_neuro;
     /**
      * set proportional integral derivative weight for single neuron PID controller
      * @param wp proportional weight
      * @param wi integral weight
      * @param wd derivative weight
      */
-    wpid(wp: number, wi: number, wd: number): pid_neuro;
+    set_wpid(wp: number, wi: number, wd: number): pid_neuro;
     /**
      * calculate for single neuron PID controller
      * @param set setpoint value

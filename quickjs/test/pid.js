@@ -5,7 +5,7 @@ function assert(expr) {
     }
 }
 var ctx = new a.pid();
-ctx.kpid(10, 0.1, 1);
+ctx.set_kpid(10, 0.1, 1);
 console.log(ctx.run(1, 0));
 ctx.zero();
 console.log(ctx.pos(1, 0));

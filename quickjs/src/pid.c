@@ -36,7 +36,7 @@ fail:
     return JS_EXCEPTION;
 }
 
-static JSValue liba_pid_kpid(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
+static JSValue liba_pid_set_kpid(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)argc;
     a_pid *const self = (a_pid *)JS_GetOpaque2(ctx, this_val, liba_pid_class_id);
@@ -46,7 +46,7 @@ static JSValue liba_pid_kpid(JSContext *ctx, JSValueConst this_val, int argc, JS
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    a_pid_kpid(self, (a_float)args[0], (a_float)args[1], (a_float)args[2]);
+    a_pid_set_kpid(self, (a_float)args[0], (a_float)args[1], (a_float)args[2]);
     return JS_UNDEFINED;
 }
 
@@ -170,7 +170,7 @@ static JSCFunctionListEntry const liba_pid_proto[] = {
     JS_CGETSET_MAGIC_DEF("out", liba_pid_get, NULL, self_out),
     JS_CGETSET_MAGIC_DEF("fdb", liba_pid_get, NULL, self_fdb),
     JS_CGETSET_MAGIC_DEF("err", liba_pid_get, NULL, self_err),
-    JS_CFUNC_DEF("kpid", 3, liba_pid_kpid),
+    JS_CFUNC_DEF("set_kpid", 3, liba_pid_set_kpid),
     JS_CFUNC_DEF("zero", 0, liba_pid_zero),
     JS_CFUNC_DEF("run", 2, liba_pid_run),
     JS_CFUNC_DEF("pos", 2, liba_pid_pos),

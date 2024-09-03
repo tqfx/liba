@@ -201,18 +201,18 @@ JNIEXPORT jdouble JNICALL Java_liba_pid_1neuro_ec
 
 /*
  * Class:     liba_pid_neuro
- * Method:    kpid
+ * Method:    set_kpid
  * Signature: (DDDD)Lliba/pid_neuro;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_kpid
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_set_1kpid
   (JNIEnv *, jobject, jdouble, jdouble, jdouble, jdouble);
 
 /*
  * Class:     liba_pid_neuro
- * Method:    wpid
+ * Method:    set_wpid
  * Signature: (DDD)Lliba/pid_neuro;
  */
-JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_wpid
+JNIEXPORT jobject JNICALL Java_liba_pid_1neuro_set_1wpid
   (JNIEnv *, jobject, jdouble, jdouble, jdouble);
 
 /*

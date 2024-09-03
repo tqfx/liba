@@ -87,8 +87,8 @@ var mkd = [
     [NL, NM, NM, NM, NS, NS, NL],
 ];
 var ctx = new liba.pid_fuzzy();
-ctx.rule(me, mec, mkp, mki, mkd).set_nfuzz(2);
-ctx.kpid(10, 0.1, 1).set_opr(liba.pid_fuzzy.EQU);
+ctx.set_rule(me, mec, mkp, mki, mkd).set_nfuzz(2);
+ctx.set_kpid(10, 0.1, 1).set_opr(liba.pid_fuzzy.EQU);
 console.log(ctx.zero().run(10, 0));
 console.log(ctx.zero().pos(10, 0));
 console.log(ctx.zero().inc(10, 0));

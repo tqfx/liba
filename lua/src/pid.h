@@ -47,9 +47,9 @@ int liba_pid_init(lua_State *L);
  @tparam number ki integral constant
  @tparam number kd derivative constant
  @treturn a.pid PID controller userdata
- @function kpid
+ @function set_kpid
 */
-int liba_pid_kpid(lua_State *L);
+int liba_pid_set_kpid(lua_State *L);
 
 /***
  calculate for PID controller

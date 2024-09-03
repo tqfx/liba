@@ -56,6 +56,27 @@ A_EXTERN a_float (*a_pid_fuzzy_opr(unsigned int opr))(a_float, a_float);
 A_EXTERN void a_pid_fuzzy_set_opr(a_pid_fuzzy *ctx, unsigned int opr);
 
 /*!
+ @brief get memory block for fuzzy PID controller
+ @param[in,out] ctx points to an instance of fuzzy PID controller
+ @return memory block for fuzzy PID controller
+*/
+A_EXTERN void *a_pid_fuzzy_bfuzz(a_pid_fuzzy const *ctx);
+
+/*!
+ @brief set memory block for fuzzy PID controller
+ @param[in,out] ctx points to an instance of fuzzy PID controller
+ @param[in] ptr points to a buffer at least A_PID_FUZZY_BFUZZ(num)
+ @param[in] num the maximum number triggered by the rule
+*/
+A_EXTERN void a_pid_fuzzy_set_bfuzz(a_pid_fuzzy *ctx, void *ptr, a_size num);
+
+/*!
+ @brief compute size of memory block for fuzzy PID controller
+ @param[in] n the maximum number triggered by the rule
+*/
+#define A_PID_FUZZY_BFUZZ(n) (sizeof(unsigned int) * (n) * 2 + sizeof(a_float) * (n) * (2 + (n)))
+
+/*!
  @brief set rule base for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
  @param[in] nrule number of order in the square matrix
@@ -65,29 +86,8 @@ A_EXTERN void a_pid_fuzzy_set_opr(a_pid_fuzzy *ctx, unsigned int opr);
  @param[in] mki points to Ki's rule base table which must be a square matrix
  @param[in] mkd points to Kd's rule base table which must be a square matrix
 */
-A_EXTERN void a_pid_fuzzy_rule(a_pid_fuzzy *ctx, unsigned int nrule, a_float const *me, a_float const *mec,
-                               a_float const *mkp, a_float const *mki, a_float const *mkd);
-
-/*!
- @brief compute size of memory block for fuzzy PID controller
- @param[in] n the maximum number triggered by the rule
-*/
-#define A_PID_FUZZY_NFUZZ(n) (sizeof(unsigned int) * (n) * 2 + sizeof(a_float) * (n) * (2 + (n)))
-
-/*!
- @brief set memory block for fuzzy PID controller
- @param[in,out] ctx points to an instance of fuzzy PID controller
- @param[in] ptr points to a buffer at least A_PID_FUZZY_NFUZZ(num)
- @param[in] num the maximum number triggered by the rule
-*/
-A_EXTERN void a_pid_fuzzy_set_nfuzz(a_pid_fuzzy *ctx, void *ptr, a_size num);
-
-/*!
- @brief get memory block for fuzzy PID controller
- @param[in,out] ctx points to an instance of fuzzy PID controller
- @return memory block for fuzzy PID controller
-*/
-A_EXTERN void *a_pid_fuzzy_nfuzz(a_pid_fuzzy *ctx);
+A_EXTERN void a_pid_fuzzy_set_rule(a_pid_fuzzy *ctx, unsigned int nrule, a_float const *me, a_float const *mec,
+                                   a_float const *mkp, a_float const *mki, a_float const *mkd);
 
 /*!
  @brief set proportional integral derivative constant for fuzzy PID controller
@@ -96,7 +96,7 @@ A_EXTERN void *a_pid_fuzzy_nfuzz(a_pid_fuzzy *ctx);
  @param[in] ki integral constant
  @param[in] kd derivative constant
 */
-A_EXTERN void a_pid_fuzzy_kpid(a_pid_fuzzy *ctx, a_float kp, a_float ki, a_float kd);
+A_EXTERN void a_pid_fuzzy_set_kpid(a_pid_fuzzy *ctx, a_float kp, a_float ki, a_float kd);
 
 /*!
  @brief calculate for fuzzy PID controller
@@ -169,18 +169,19 @@ struct a_pid_fuzzy
     {
         a_pid_fuzzy_set_opr(this, opr_);
     }
-    A_INLINE void set_nfuzz(void *ptr, a_size num)
+    A_INLINE void *bfuzz() const { return a_pid_fuzzy_bfuzz(this); }
+    A_INLINE void set_bfuzz(void *ptr, a_size num)
     {
-        a_pid_fuzzy_set_nfuzz(this, ptr, num);
+        a_pid_fuzzy_set_bfuzz(this, ptr, num);
     }
-    A_INLINE void rule(unsigned int nrule_, a_float const *me_, a_float const *mec_,
-                       a_float const *mkp_, a_float const *mki_, a_float const *mkd_)
+    A_INLINE void set_rule(unsigned int nrule_, a_float const *me_, a_float const *mec_,
+                           a_float const *mkp_, a_float const *mki_, a_float const *mkd_)
     {
-        a_pid_fuzzy_rule(this, nrule_, me_, mec_, mkp_, mki_, mkd_);
+        a_pid_fuzzy_set_rule(this, nrule_, me_, mec_, mkp_, mki_, mkd_);
     }
-    A_INLINE void kpid(a_float kp_, a_float ki_, a_float kd_)
+    A_INLINE void set_kpid(a_float kp_, a_float ki_, a_float kd_)
     {
-        a_pid_fuzzy_kpid(this, kp_, ki_, kd_);
+        a_pid_fuzzy_set_kpid(this, kp_, ki_, kd_);
     }
     A_INLINE a_float run(a_float set, a_float fdb)
     {

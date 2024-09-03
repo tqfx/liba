@@ -367,9 +367,9 @@ unsigned int const mf::PI = A_MF_PI;
 
 struct pid: public a_pid
 {
-    A_INLINE pid *kpid(a_float kp_, a_float ki_, a_float kd_)
+    A_INLINE pid *set_kpid(a_float kp_, a_float ki_, a_float kd_)
     {
-        a_pid::kpid(kp_, ki_, kd_);
+        a_pid::set_kpid(kp_, ki_, kd_);
         return this;
     }
     A_INLINE a_float run(a_float set, a_float fdb_)
@@ -424,11 +424,11 @@ struct pid: public a_pid
 
 struct pid_fuzzy: public a_pid_fuzzy
 {
-    A_INLINE pid_fuzzy *rule(emscripten::val const &me_,
-                             emscripten::val const &mec_,
-                             emscripten::val const &mkp_,
-                             emscripten::val const &mki_,
-                             emscripten::val const &mkd_)
+    A_INLINE pid_fuzzy *set_rule(emscripten::val const &me_,
+                                 emscripten::val const &mec_,
+                                 emscripten::val const &mkp_,
+                                 emscripten::val const &mki_,
+                                 emscripten::val const &mkd_)
     {
         union
         {
@@ -465,13 +465,13 @@ struct pid_fuzzy: public a_pid_fuzzy
     }
     A_INLINE pid_fuzzy *set_nfuzz(unsigned int num)
     {
-        void *ptr = a_alloc(a_pid_fuzzy_nfuzz(this), A_PID_FUZZY_NFUZZ(num));
-        a_pid_fuzzy_set_nfuzz(this, ptr, num);
+        void *ptr = a_alloc(a_pid_fuzzy::bfuzz(), A_PID_FUZZY_BFUZZ(num));
+        a_pid_fuzzy::set_bfuzz(ptr, num);
         return this;
     }
-    A_INLINE pid_fuzzy *kpid(a_float kp_, a_float ki_, a_float kd_)
+    A_INLINE pid_fuzzy *set_kpid(a_float kp_, a_float ki_, a_float kd_)
     {
-        a_pid_fuzzy::kpid(kp_, ki_, kd_);
+        a_pid_fuzzy::set_kpid(kp_, ki_, kd_);
         return this;
     }
     A_INLINE a_float run(a_float set, a_float fdb)
@@ -519,7 +519,7 @@ struct pid_fuzzy: public a_pid_fuzzy
             a_float const *p;
             a_float *o;
         } u;
-        a_alloc(a_pid_fuzzy_nfuzz(this), 0);
+        a_alloc(a_pid_fuzzy_bfuzz(this), 0);
         u.p = me;
         a_alloc(u.o, 0);
         u.p = mec;
@@ -571,14 +571,14 @@ unsigned int const pid_fuzzy::EQU = A_PID_FUZZY_EQU;
 
 struct pid_neuro: public a_pid_neuro
 {
-    A_INLINE pid_neuro *kpid(a_float k_, a_float kp, a_float ki, a_float kd)
+    A_INLINE pid_neuro *set_kpid(a_float k_, a_float kp, a_float ki, a_float kd)
     {
-        a_pid_neuro::kpid(k_, kp, ki, kd);
+        a_pid_neuro::set_kpid(k_, kp, ki, kd);
         return this;
     }
-    A_INLINE pid_neuro *wpid(a_float wp_, a_float wi_, a_float wd_)
+    A_INLINE pid_neuro *set_wpid(a_float wp_, a_float wi_, a_float wd_)
     {
-        a_pid_neuro::wpid(wp_, wi_, wd_);
+        a_pid_neuro::set_wpid(wp_, wi_, wd_);
         return this;
     }
     A_INLINE a_float run(a_float set, a_float fdb)
@@ -982,7 +982,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("output", &lpf::output_r);
     emscripten::class_<pid>("pid")
         .constructor<>()
-        .function("kpid", &pid::kpid, emscripten::allow_raw_pointers())
+        .function("set_kpid", &pid::set_kpid, emscripten::allow_raw_pointers())
         .function("zero", &pid::zero, emscripten::allow_raw_pointers())
         .function("run", &pid::run)
         .function("pos", &pid::pos)
@@ -1002,8 +1002,8 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .constructor<>()
         .function("set_opr", &pid_fuzzy::set_opr, emscripten::allow_raw_pointers())
         .function("set_nfuzz", &pid_fuzzy::set_nfuzz, emscripten::allow_raw_pointers())
-        .function("rule", &pid_fuzzy::rule, emscripten::allow_raw_pointers())
-        .function("kpid", &pid_fuzzy::kpid, emscripten::allow_raw_pointers())
+        .function("set_rule", &pid_fuzzy::set_rule, emscripten::allow_raw_pointers())
+        .function("set_kpid", &pid_fuzzy::set_kpid, emscripten::allow_raw_pointers())
         .function("zero", &pid_fuzzy::zero, emscripten::allow_raw_pointers())
         .function("run", &pid_fuzzy::run)
         .function("pos", &pid_fuzzy::pos)
@@ -1030,8 +1030,8 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("nfuzz", &pid_fuzzy::nfuzz_r, &pid_fuzzy::set_nfuzz);
     emscripten::class_<pid_neuro>("pid_neuro")
         .constructor<>()
-        .function("kpid", &pid_neuro::kpid, emscripten::allow_raw_pointers())
-        .function("wpid", &pid_neuro::wpid, emscripten::allow_raw_pointers())
+        .function("set_kpid", &pid_neuro::set_kpid, emscripten::allow_raw_pointers())
+        .function("set_wpid", &pid_neuro::set_wpid, emscripten::allow_raw_pointers())
         .function("zero", &pid_neuro::zero, emscripten::allow_raw_pointers())
         .function("run", &pid_neuro::run)
         .function("inc", &pid_neuro::inc)

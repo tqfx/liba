@@ -1,6 +1,6 @@
 #include "a/pid.h"
 
-void a_pid_kpid(a_pid *ctx, a_float kp, a_float ki, a_float kd)
+void a_pid_set_kpid(a_pid *ctx, a_float kp, a_float ki, a_float kd)
 {
     ctx->kp = kp;
     ctx->ki = ki;
