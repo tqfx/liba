@@ -88,6 +88,10 @@ target("test/rbt")
 building({ "rbt.c", "rbt.cc" })
 target_end()
 
+target("test/regress_linear")
+building({ "regress_linear.c", "regress_linear.cc" })
+target_end()
+
 target("test/slist")
 building({ "slist.c", "slist.cc" })
 target_end()
