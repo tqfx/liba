@@ -1,6 +1,7 @@
 #define MAIN(x) regress_linear##x
 #include "test.h"
 #include "a/regress_linear.h"
+#include <time.h>
 
 #define RAND_MAX_ 2147483647
 static unsigned long rand_seed = 1;
@@ -14,7 +15,7 @@ static long rand_(void)
     return a_cast_s(long, rand_seed);
 }
 
-static void main_1(a_float a, a_float b, a_size n, int m)
+static void main_1(int m, a_float a, a_float b, a_size n, a_float alpha, a_float threshold)
 {
     a_float *z = a_new(a_float, A_NULL, n);
     a_float *y = a_new(a_float, A_NULL, n);
@@ -25,24 +26,23 @@ static void main_1(a_float a, a_float b, a_size n, int m)
     for (a_size i = 0; i < n; ++i)
     {
         x[i] = a_cast_s(a_float, rand_() % x_n);
-        y[i] = a * x[i] + b + a_cast_s(a_float, rand_() % y_n) - a_cast_s(long, n);
+        y[i] = a * x[i] + b + a_cast_s(a_float, rand_() % y_n) - a_cast_s(a_float, n);
     }
 
     a_float coef = 1, u, v;
-    a_float alpha = A_FLOAT_C(5e-8);
 
     a_regress_linear ctx;
     a_regress_linear_init(&ctx, &coef, 1, 1);
     a_regress_linear_zero(&ctx);
 
-    if (m == 1)
+    if (m == 's')
     {
         a_float r = a_regress_linear_sdg1(&ctx, alpha, y, x, n, z);
         for (;;)
         {
             a_float s = a_regress_linear_sdg1(&ctx, alpha, y, x, n, z);
-            if (s <= r && r - s < 0.1) { break; }
-            if (r <= s && s - r < 0.1) { break; }
+            if (s <= r && r - s < threshold) { break; }
+            if (r <= s && s - r < threshold) { break; }
             r = s;
         }
     }
@@ -52,8 +52,8 @@ static void main_1(a_float a, a_float b, a_size n, int m)
         for (;;)
         {
             a_float s = a_regress_linear_bdg1(&ctx, alpha, y, x, n, z);
-            if (s <= r && r - s < 0.1) { break; }
-            if (r <= s && s - r < 0.1) { break; }
+            if (s <= r && r - s < threshold) { break; }
+            if (r <= s && s - r < threshold) { break; }
             r = s;
         }
     }
@@ -74,7 +74,7 @@ static void main_1(a_float a, a_float b, a_size n, int m)
     a_die(z);
 }
 
-static void main_2(a_float a, a_float b, a_float c, a_size n, int m)
+static void main_2(int m, a_float a, a_float b, a_float c, a_size n, a_float alpha, a_float threshold)
 {
     a_float *z = a_new(a_float, A_NULL, n);
     a_float *y = a_new(a_float, A_NULL, n);
@@ -87,24 +87,23 @@ static void main_2(a_float a, a_float b, a_float c, a_size n, int m)
         x[i * 2 + 0] = a_cast_s(a_float, rand_() % x_n);
         x[i * 2 + 1] = a_cast_s(a_float, rand_() % x_n);
         y[i] = a * x[i * 2 + 0] + b * x[i * 2 + 1] + c +
-               a_cast_s(a_float, rand_() % y_n) - a_cast_s(long, n);
+               a_cast_s(a_float, rand_() % y_n) - a_cast_s(a_float, n);
     }
 
     a_float coef[2] = {1, 1}, u[2], v;
-    a_float alpha = A_FLOAT_C(5e-9);
 
     a_regress_linear ctx;
     a_regress_linear_init(&ctx, coef, 2, 1);
     a_regress_linear_zero(&ctx);
 
-    if (m == 1)
+    if (m == 's')
     {
         a_float r = a_regress_linear_sdg1(&ctx, alpha, y, x, n, z);
         for (;;)
         {
             a_float s = a_regress_linear_sdg1(&ctx, alpha, y, x, n, z);
-            if (s <= r && r - s < 0.1) { break; }
-            if (r <= s && s - r < 0.1) { break; }
+            if (s <= r && r - s < threshold) { break; }
+            if (r <= s && s - r < threshold) { break; }
             r = s;
         }
     }
@@ -114,8 +113,8 @@ static void main_2(a_float a, a_float b, a_float c, a_size n, int m)
         for (;;)
         {
             a_float s = a_regress_linear_bdg1(&ctx, alpha, y, x, n, z);
-            if (s <= r && r - s < 0.1) { break; }
-            if (r <= s && s - r < 0.1) { break; }
+            if (s <= r && r - s < threshold) { break; }
+            if (r <= s && s - r < threshold) { break; }
             r = s;
         }
     }
@@ -147,21 +146,45 @@ static void main_2(a_float a, a_float b, a_float c, a_size n, int m)
 }
 
 #include <string.h>
-
 int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
+    srand_(a_cast_s(a_ulong, time(A_NULL)));
     main_init(argc, argv, 1);
+
+    a_float threshold = A_FLOAT_C(0.1);
+    a_float alpha = A_FLOAT_C(1e-8);
+    a_float a = A_FLOAT_C(0.7);
+    a_float b = A_FLOAT_C(1.4);
+    a_float c = 12;
+    a_size n = 100;
+    char *endptr;
+    char m = 'b';
+    int d = 1;
 
     if (argc > 1)
     {
-        if (strstr(argv[1], "regress_linear_2."))
-        {
-            main_2(A_FLOAT_C(0.7), A_FLOAT_C(1.4), A_FLOAT_C(12.0), 100, 0);
-        }
-        else
-        {
-            main_1(A_FLOAT_C(0.7), A_FLOAT_C(12.0), 100, 0);
-        }
+        char const *s = strstr(argv[1], "regress_linear_");
+        if (s) { sscanf(s, "regress_linear_%i%c", &d, &m); } // NOLINT
+    }
+
+    if (d == 1)
+    {
+        if (argc > 2) { a = strtonum(argv[2], &endptr); }
+        if (argc > 3) { c = strtonum(argv[3], &endptr); }
+        if (argc > 4) { n = strtoul(argv[4], &endptr, 0); }
+        if (argc > 5) { alpha = strtonum(argv[5], &endptr); }
+        if (argc > 6) { threshold = strtonum(argv[6], &endptr); }
+        main_1(m, a, c, n, alpha, threshold);
+    }
+    if (d == 2)
+    {
+        if (argc > 2) { a = strtonum(argv[2], &endptr); }
+        if (argc > 3) { b = strtonum(argv[3], &endptr); }
+        if (argc > 4) { c = strtonum(argv[4], &endptr); }
+        if (argc > 5) { n = strtoul(argv[5], &endptr, 0); }
+        if (argc > 6) { alpha = strtonum(argv[6], &endptr); }
+        if (argc > 7) { threshold = strtonum(argv[7], &endptr); }
+        main_2(m, a, b, c, n, alpha, threshold);
     }
 
 #if defined(__cplusplus) && (__cplusplus > 201100L)

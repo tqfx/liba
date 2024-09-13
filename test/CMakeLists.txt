@@ -264,8 +264,10 @@ building(regress_linear regress_linear.c regress_linear.cc)
 unittest(regress_linear)
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
-  unitplot(regress_linear regress1.gp regress_linear_1.csv)
-  unitplot(regress_linear regress2.gp regress_linear_2.csv)
+  unitplot(regress_linear regress1.gp regress_linear_1sdg.csv)
+  unitplot(regress_linear regress1.gp regress_linear_1bdg.csv)
+  unitplot(regress_linear regress2.gp regress_linear_2sdg.csv)
+  unitplot(regress_linear regress2.gp regress_linear_2bdg.csv)
 endif()
 
 building(slist slist.c slist.cc)
