@@ -105,6 +105,17 @@ void a_float_roll(a_float *block_p, a_size block_n,
     }
 }
 
+a_float a_float_mean(a_float const *p, a_size n)
+{
+    a_float res = 0;
+    if (n)
+    {
+        a_float const inv = 1 / (a_float)n;
+        while (n--) { res += *p++ * inv; }
+    }
+    return res;
+}
+
 A_ALLOC((*a_alloc), addr, size) = a_alloc_;
 A_ALLOC(a_alloc_, addr, size)
 {

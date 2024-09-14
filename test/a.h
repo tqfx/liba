@@ -193,6 +193,27 @@ static void test_roll(int argc, char *argv[])
     (void)argv;
 }
 
+static void test_mean(int argc, char *argv[])
+{
+    a_size const n = a_cast_s(a_size, argc);
+    a_float *p = a_new(a_float, A_NULL, n);
+
+    for (a_size i = 0; i < n; ++i)
+    {
+        char *endptr;
+        p[i] = strtonum(argv[i], &endptr);
+    }
+    a_float r = a_float_mean(p, n);
+    debug(A_FLOAT_PRI("", "g:{"), r);
+    for (a_size i = 0; i < n; ++i)
+    {
+        debug("%c" A_FLOAT_PRI("", "g"), i ? ',' : 0, p[i]);
+    }
+    debug("}\n");
+
+    a_die(p);
+}
+
 static void test_hash_bkdr(int argc, char *argv[])
 {
     for (int idx = 1; idx < argc; ++idx)
@@ -225,6 +246,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         test_roll(argc, argv);
         test_hash_bkdr(argc, argv);
         test_hash_sdbm(argc, argv);
+        test_mean(argc - 1, argv + 1);
         return 0;
     }
     switch (a_hash_bkdr(argv[1], 0))
@@ -241,6 +263,9 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     case 0x0F63D79D: // roll
         test_roll(argc - 1, argv + 1);
         break;
+    case 0x0EB5AF9D: // mean
+        test_mean(argc - 2, argv + 2);
+        break;
     case 0x0E0928A2: // hash
     case 0x57614C8C: // hash_bkdr
         test_hash_bkdr(argc - 1, argv + 1);
@@ -253,6 +278,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         debug("swap\n");
         debug("save\n");
         debug("roll\n");
+        debug("mean\n");
         debug("hash_bkdr\n");
         debug("hash_sdbm\n");
     }

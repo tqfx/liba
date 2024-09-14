@@ -1327,6 +1327,14 @@ A_EXTERN void a_float_roll(a_float *block_p, a_size block_n,
                            a_float *shift_p, a_size shift_n);
 
 /*!
+ @brief calculate the mean of a float array
+ @param[in] p points to a float array
+ @param[in] n number of a float array
+ @return mean of a float array
+*/
+A_EXTERN a_float a_float_mean(a_float const *p, a_size n);
+
+/*!
  @brief allocation function pointer
  @param[in] addr address of memory block
  @param[in] size new size of memory block

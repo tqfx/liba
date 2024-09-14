@@ -145,7 +145,6 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, a_float alp
     a_die(z);
 }
 
-#include <string.h>
 int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     srand_(a_cast_s(a_ulong, time(A_NULL)));
