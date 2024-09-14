@@ -845,9 +845,13 @@ typedef union a_cast
 #define A_MAX(x, y) (((x) > (y)) ? (x) : (y))
 
 /*!
- @brief signum function, \f$ \texttt{sgn}{x}=\begin{cases}+1&x>0\\0&0\\-1&x<0\end{cases} \f$
+ @brief signum function, \f$ \texttt{sgn}(x)=\begin{cases}+1&x>0\\0&0\\-1&x<0\end{cases} \f$
 */
 #define A_SGN(x) ((0 < (x)) - ((x) < 0))
+/*!
+ @brief signum function, \f$ \texttt{sgn2}(f,g)=\begin{cases}+1&f>g\\0&f=g\\-1&f<g\end{cases} \f$
+*/
+#define A_SGN2(f, g) (((f) > (g)) - ((f) < (g)))
 
 /*!
  @brief saturation value of x, \f$ \texttt{sat}(x,min,max)=\begin{cases}min&min>x\\max&x>max\\x&else\end{cases} \f$

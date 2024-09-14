@@ -30,6 +30,9 @@ static void test_sgn(void)
     A_BUILD_ASSERT(A_SGN(0) == 0);
     A_BUILD_ASSERT(A_SGN(+10) == +1);
     A_BUILD_ASSERT(A_SGN(-10) == -1);
+    A_BUILD_ASSERT(A_SGN2(0, 0) == 0);
+    A_BUILD_ASSERT(A_SGN2(+1, -1) == +1);
+    A_BUILD_ASSERT(A_SGN2(-1, +1) == -1);
 }
 
 static void test_sat(void)
