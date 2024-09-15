@@ -197,19 +197,39 @@ static void test_mean(int argc, char *argv[])
 {
     a_size const n = a_cast_s(a_size, argc);
     a_float *p = a_new(a_float, A_NULL, n);
-
     for (a_size i = 0; i < n; ++i)
     {
         char *endptr;
         p[i] = strtonum(argv[i], &endptr);
     }
-    a_float r = a_float_mean(p, n);
-    debug(A_FLOAT_PRI("", "g:{"), r);
+
+    debug("{");
     for (a_size i = 0; i < n; ++i)
     {
         debug("%c" A_FLOAT_PRI("", "g"), i ? ',' : 0, p[i]);
     }
-    debug("}\n");
+    debug("}:" A_FLOAT_PRI("", "g\n"), a_float_mean(p, n));
+
+    a_die(p);
+}
+
+static void test_sum(int argc, char *argv[])
+{
+    a_size const n = a_cast_s(a_size, argc);
+    a_float *p = a_new(a_float, A_NULL, n);
+    for (a_size i = 0; i < n; ++i)
+    {
+        char *endptr;
+        p[i] = strtonum(argv[i], &endptr);
+    }
+
+    debug("{");
+    for (a_size i = 0; i < n; ++i)
+    {
+        debug("%c" A_FLOAT_PRI("", "g"), i ? ',' : 0, p[i]);
+    }
+    debug("}:" A_FLOAT_PRI("", "g,") A_FLOAT_PRI("", "g,") A_FLOAT_PRI("", "g\n"),
+          a_float_sum(p, n), a_float_sumsq(p, n), a_float_sumabs(p, n));
 
     a_die(p);
 }
@@ -246,6 +266,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         test_roll(argc, argv);
         test_hash_bkdr(argc, argv);
         test_hash_sdbm(argc, argv);
+        test_sum(argc - 1, argv + 1);
         test_mean(argc - 1, argv + 1);
         return 0;
     }
@@ -253,6 +274,9 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     {
     case 0x001AEED5: // for
         test_for(argc - 1, argv + 1);
+        break;
+    case 0x001E5957: // sum
+        test_sum(argc - 2, argv + 2);
         break;
     case 0x0F8837E3: // swap
         test_swap(argc - 1, argv + 1);
@@ -275,6 +299,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         break;
     default:
         debug("for\n");
+        debug("sum\n");
         debug("swap\n");
         debug("save\n");
         debug("roll\n");

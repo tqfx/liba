@@ -111,8 +111,29 @@ a_float a_float_mean(a_float const *p, a_size n)
     if (n)
     {
         a_float const inv = 1 / (a_float)n;
-        while (n--) { res += *p++ * inv; }
+        for (; n; --n, ++p) { res += *p * inv; }
     }
+    return res;
+}
+
+a_float a_float_sum(a_float const *p, a_size n)
+{
+    a_float res = 0;
+    for (; n; --n, ++p) { res += *p; }
+    return res;
+}
+
+a_float a_float_sumsq(a_float const *p, a_size n)
+{
+    a_float res = 0;
+    for (; n; --n, ++p) { res += A_SQ(*p); }
+    return res;
+}
+
+a_float a_float_sumabs(a_float const *p, a_size n)
+{
+    a_float res = 0;
+    for (; n; --n, ++p) { res += A_ABS(*p); }
     return res;
 }
 
