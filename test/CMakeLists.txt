@@ -260,6 +260,9 @@ unittest(que)
 building(rbt rbt.c rbt.cc)
 unittest(rbt)
 
+building(regress regress.c regress.cc)
+unittest(regress)
+
 building(regress_linear regress_linear.c regress_linear.cc)
 unittest(regress_linear)
 
