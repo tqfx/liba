@@ -22,8 +22,8 @@ extern "C" {
 #endif /* __cplusplus */
 
 /*!
- @brief initialize for regress linear
- @param[in,out] ctx points to an instance of regress linear
+ @brief initialize for linear regression
+ @param[in,out] ctx points to an instance of linear regression
  @param[in] coef_p points to regression coefficients
  @param[in] coef_n number of regression coefficients
  @param[in] bias intercept
@@ -31,74 +31,171 @@ extern "C" {
 A_EXTERN void a_regress_linear_init(a_regress_linear *ctx, a_float *coef_p, a_size coef_n, a_float bias);
 
 /*!
- @brief calculate for regress linear
- @param[in] ctx points to an instance of regress linear
+ @brief calculate predicted value for linear regression
+ @param[in] ctx points to an instance of linear regression
  @param[in] val input variables
  @return predicted value
 */
 A_EXTERN a_float a_regress_linear_eval(a_regress_linear const *ctx, a_float const *val);
 
 /*!
- @brief stochastic gradient descent for positional regress linear
- @param[in,out] ctx points to an instance of regress linear
- @param[in] alpha learning rate for gradient descent
- @param[in] y response data
- @param[in] x predictor data
- @return residual
+ @brief calculate residuals for linear regression
+ @param[in] ctx points to an instance of linear regression
+ @param[out] err residuals, specified as a numeric vector
+ @param[in] y response data, specified as a numeric vector
+ @param[in] x predictor data, specified as a numeric matrix
+ @param[in] n number of samples, err[n], y[n], x[n][coef_n]
 */
-A_EXTERN a_float a_regress_linear_sdg(a_regress_linear *ctx, a_float alpha, a_float y, a_float const *x);
+A_EXTERN void a_regress_linear_err1(a_regress_linear const *ctx, a_float *err, a_float const *y, a_float const *x, a_size n);
 
 /*!
- @brief stochastic gradient descent for positional regress linear
- @param[in,out] ctx points to an instance of regress linear
+ @brief calculate residuals for linear regression
+ @param[in] ctx points to an instance of linear regression
+ @param[out] err residuals, specified as a numeric vector
+ @param[in] y response data, specified as a numeric vector
+ @param[in] x predictor data, specified as a numeric matrix
+ @param[in] n number of samples, err[n], y[n], x[coef_n*n]
+*/
+A_EXTERN void a_regress_linear_err2(a_regress_linear const *ctx, a_float *err, a_float const *y, a_float const *const *x, a_size n);
+
+/*!
+ @brief calculate prediction deviation from mean for linear regression
+ @param[in] ctx points to an instance of linear regression
+ @param[out] pdm deviation, specified as a numeric vector
+ @param[in] x predictor data, specified as a numeric matrix
+ @param[in] n number of samples, pdm[n], x[n][coef_n]
+ @param[in] y_mean mean of response data
+*/
+A_EXTERN void a_regress_linear_pdm1(a_regress_linear const *ctx, a_float *pdm, a_float const *x, a_size n, a_float y_mean);
+
+/*!
+ @brief calculate prediction deviation from mean for linear regression
+ @param[in] ctx points to an instance of linear regression
+ @param[out] pdm deviation, specified as a numeric vector
+ @param[in] x predictor data, specified as a numeric matrix
+ @param[in] n number of samples, pdm[n], x[coef_n*n]
+*/
+A_EXTERN void a_regress_linear_pdm2(a_regress_linear const *ctx, a_float *pdm, a_float const *const *x, a_size n, a_float y_mean);
+
+/*!
+ @brief stochastic gradient descent for linear regression
+ @param[in,out] ctx points to an instance of linear regression
+ @param[in] alpha learning rate for gradient descent
+ @param[in] error residual, specified as a numeric scalar
+ @param[in] x predictor data, specified as a numeric vector
+*/
+A_EXTERN void a_regress_linear_sgd_(a_regress_linear *ctx, a_float alpha, a_float error, a_float const *x);
+
+/*!
+ @brief stochastic gradient descent for linear regression
+ @param[in,out] ctx points to an instance of linear regression
+ @param[in] alpha learning rate for gradient descent
+ @param[in] y response data, specified as a numeric scalar
+ @param[in] x predictor data, specified as a numeric vector
+*/
+A_EXTERN void a_regress_linear_sgd(a_regress_linear *ctx, a_float alpha, a_float y, a_float const *x);
+
+/*!
+ @brief stochastic gradient descent for linear regression
+ @param[in,out] ctx points to an instance of linear regression
  @param[in] alpha learning rate for gradient descent
  @param[in] y response data, specified as a numeric vector
  @param[in] x predictor data, specified as a numeric matrix
  @param[in] n number of samples, y[n], x[coef_n*n]
- @param[in] error temporary buffer for residuals
- @return sum of absolute residuals
 */
-A_EXTERN a_float a_regress_linear_sdg1(a_regress_linear *ctx, a_float alpha, a_float const *y, a_float const *x, a_size n, a_float *error);
+A_EXTERN void a_regress_linear_sgd1(a_regress_linear *ctx, a_float alpha, a_float const *y, a_float const *x, a_size n);
 
 /*!
- @brief stochastic gradient descent for positional regress linear
- @param[in,out] ctx points to an instance of regress linear
+ @brief stochastic gradient descent for linear regression
+ @param[in,out] ctx points to an instance of linear regression
  @param[in] alpha learning rate for gradient descent
  @param[in] y response data, specified as a numeric vector
  @param[in] x predictor data, specified as a numeric matrix
  @param[in] n number of samples, y[n], x[n][coef_n]
- @param[in] error temporary buffer for residuals
- @return sum of absolute residuals
 */
-A_EXTERN a_float a_regress_linear_sdg2(a_regress_linear *ctx, a_float alpha, a_float const *y, a_float const *const *x, a_size n, a_float *error);
+A_EXTERN void a_regress_linear_sgd2(a_regress_linear *ctx, a_float alpha, a_float const *y, a_float const *const *x, a_size n);
 
 /*!
- @brief batch gradient descent for positional regress linear
- @param[in,out] ctx points to an instance of regress linear
+ @brief stochastic subgradient descent for linear regression
+ @param[in,out] ctx points to an instance of linear regression
+ @param[in] alpha learning rate for gradient descent
+ @param[in] error residual, specified as a numeric scalar
+ @param[in] x predictor data, specified as a numeric vector
+*/
+A_EXTERN void a_regress_linear_ssd_(a_regress_linear *ctx, a_float alpha, a_float error, a_float const *x);
+
+/*!
+ @brief stochastic subgradient descent for linear regression
+ @param[in,out] ctx points to an instance of linear regression
+ @param[in] alpha learning rate for gradient descent
+ @param[in] y response data, specified as a numeric scalar
+ @param[in] x predictor data, specified as a numeric vector
+*/
+A_EXTERN void a_regress_linear_ssd(a_regress_linear *ctx, a_float alpha, a_float y, a_float const *x);
+
+/*!
+ @brief stochastic subgradient descent for linear regression
+ @param[in,out] ctx points to an instance of linear regression
  @param[in] alpha learning rate for gradient descent
  @param[in] y response data, specified as a numeric vector
  @param[in] x predictor data, specified as a numeric matrix
  @param[in] n number of samples, y[n], x[coef_n*n]
- @param[in] error temporary buffer for residuals
- @return sum of absolute residuals
 */
-A_EXTERN a_float a_regress_linear_bdg1(a_regress_linear *ctx, a_float alpha, a_float const *y, a_float const *x, a_size n, a_float *error);
+A_EXTERN void a_regress_linear_ssd1(a_regress_linear *ctx, a_float alpha, a_float const *y, a_float const *x, a_size n);
 
 /*!
- @brief batch gradient descent for positional regress linear
- @param[in,out] ctx points to an instance of regress linear
+ @brief stochastic subgradient descent for linear regression
+ @param[in,out] ctx points to an instance of linear regression
  @param[in] alpha learning rate for gradient descent
  @param[in] y response data, specified as a numeric vector
  @param[in] x predictor data, specified as a numeric matrix
  @param[in] n number of samples, y[n], x[n][coef_n]
- @param[in] error temporary buffer for residuals
- @return sum of absolute residuals
 */
-A_EXTERN a_float a_regress_linear_bdg2(a_regress_linear *ctx, a_float alpha, a_float const *y, a_float const *const *x, a_size n, a_float *error);
+A_EXTERN void a_regress_linear_ssd2(a_regress_linear *ctx, a_float alpha, a_float const *y, a_float const *const *x, a_size n);
 
 /*!
- @brief zeroing for regress linear
- @param[in,out] ctx points to an instance of regress linear
+ @brief batch gradient descent for linear regression
+ @param[in,out] ctx points to an instance of linear regression
+ @param[in] alpha learning rate for gradient descent
+ @param[in] err residuals, specified as a numeric vector
+ @param[in] x predictor data, specified as a numeric matrix
+ @param[in] n number of samples, err[n], x[coef_n*n]
+*/
+A_EXTERN void a_regress_linear_bgd1(a_regress_linear *ctx, a_float alpha, a_float const *err, a_float const *x, a_size n);
+
+/*!
+ @brief batch gradient descent for linear regression
+ @param[in,out] ctx points to an instance of linear regression
+ @param[in] alpha learning rate for gradient descent
+ @param[in] err residuals, specified as a numeric vector
+ @param[in] x predictor data, specified as a numeric matrix
+ @param[in] n number of samples, err[n], x[n][coef_n]
+*/
+A_EXTERN void a_regress_linear_bgd2(a_regress_linear *ctx, a_float alpha, a_float const *err, a_float const *const *x, a_size n);
+
+/*!
+ @brief batch subgradient descent for linear regression
+ @param[in,out] ctx points to an instance of linear regression
+ @param[in] alpha learning rate for gradient descent
+ @param[in] err residuals, specified as a numeric vector
+ @param[in] x predictor data, specified as a numeric matrix
+ @param[in] n number of samples, err[n], x[coef_n*n]
+*/
+A_EXTERN void a_regress_linear_bsd1(a_regress_linear *ctx, a_float alpha, a_float const *err, a_float const *x, a_size n);
+
+/*!
+ @brief batch subgradient descent for linear regression
+ @param[in,out] ctx points to an instance of linear regression
+ @param[in] alpha learning rate for gradient descent
+ @param[in] err residuals, specified as a numeric vector
+ @param[in] x predictor data, specified as a numeric matrix
+ @param[in] n number of samples, err[n], x[n][coef_n]
+*/
+A_EXTERN void a_regress_linear_bsd2(a_regress_linear *ctx, a_float alpha, a_float const *err, a_float const *const *x, a_size n);
+
+/*!
+ @brief zeroing for linear regression
+ @param[in,out] ctx points to an instance of linear regression
 */
 A_EXTERN void a_regress_linear_zero(a_regress_linear *ctx);
 
@@ -111,7 +208,7 @@ typedef struct a_regress_linear regress_linear;
 #endif /* __cplusplus */
 
 /*!
- @brief instance structure for regress linear
+ @brief instance structure for linear regression
 */
 struct a_regress_linear
 {
@@ -127,25 +224,69 @@ struct a_regress_linear
     {
         return a_regress_linear_eval(this, val);
     }
-    A_INLINE a_float sdg(a_float alpha, a_float y, a_float const *x)
+    A_INLINE void err1(a_float *err, a_float const *y, a_float const *x, a_size n) const
     {
-        return a_regress_linear_sdg(this, alpha, y, x);
+        a_regress_linear_err1(this, err, y, x, n);
     }
-    A_INLINE a_float sdg1(a_float alpha, a_float const *y, a_float const *x, a_size n, a_float *error)
+    A_INLINE void err2(a_float *err, a_float const *y, a_float const *const *x, a_size n) const
     {
-        return a_regress_linear_bdg1(this, alpha, y, x, n, error);
+        a_regress_linear_err2(this, err, y, x, n);
     }
-    A_INLINE a_float sdg2(a_float alpha, a_float const *y, a_float const *const *x, a_size n, a_float *error)
+    A_INLINE void pdm1(a_float *pdm, a_float const *x, a_size n, a_float y_mean) const
     {
-        return a_regress_linear_bdg2(this, alpha, y, x, n, error);
+        a_regress_linear_pdm1(this, pdm, x, n, y_mean);
     }
-    A_INLINE a_float bdg1(a_float alpha, a_float const *y, a_float const *x, a_size n, a_float *error)
+    A_INLINE void pdm2(a_float *pdm, a_float const *const *x, a_size n, a_float y_mean) const
     {
-        return a_regress_linear_bdg1(this, alpha, y, x, n, error);
+        a_regress_linear_pdm2(this, pdm, x, n, y_mean);
     }
-    A_INLINE a_float bdg2(a_float alpha, a_float const *y, a_float const *const *x, a_size n, a_float *error)
+    A_INLINE void sgd_(a_float alpha, a_float error, a_float const *x)
     {
-        return a_regress_linear_bdg2(this, alpha, y, x, n, error);
+        a_regress_linear_sgd_(this, alpha, error, x);
+    }
+    A_INLINE void sgd(a_float alpha, a_float y, a_float const *x)
+    {
+        a_regress_linear_sgd(this, alpha, y, x);
+    }
+    A_INLINE void sgd1(a_float alpha, a_float const *y, a_float const *x, a_size n)
+    {
+        a_regress_linear_sgd1(this, alpha, y, x, n);
+    }
+    A_INLINE void sgd2(a_float alpha, a_float const *y, a_float const *const *x, a_size n)
+    {
+        a_regress_linear_sgd2(this, alpha, y, x, n);
+    }
+    A_INLINE void ssd_(a_float alpha, a_float error, a_float const *x)
+    {
+        a_regress_linear_ssd_(this, alpha, error, x);
+    }
+    A_INLINE void ssd(a_float alpha, a_float y, a_float const *x)
+    {
+        a_regress_linear_ssd(this, alpha, y, x);
+    }
+    A_INLINE void ssd1(a_float alpha, a_float const *y, a_float const *x, a_size n)
+    {
+        a_regress_linear_ssd1(this, alpha, y, x, n);
+    }
+    A_INLINE void ssd2(a_float alpha, a_float const *y, a_float const *const *x, a_size n)
+    {
+        a_regress_linear_ssd2(this, alpha, y, x, n);
+    }
+    A_INLINE void bgd1(a_float alpha, a_float const *err, a_float const *x, a_size n)
+    {
+        a_regress_linear_bgd1(this, alpha, err, x, n);
+    }
+    A_INLINE void bgd2(a_float alpha, a_float const *err, a_float const *const *x, a_size n)
+    {
+        a_regress_linear_bgd2(this, alpha, err, x, n);
+    }
+    A_INLINE void bsd1(a_float alpha, a_float const *err, a_float const *x, a_size n)
+    {
+        a_regress_linear_bsd1(this, alpha, err, x, n);
+    }
+    A_INLINE void bsd2(a_float alpha, a_float const *err, a_float const *const *x, a_size n)
+    {
+        a_regress_linear_bsd2(this, alpha, err, x, n);
     }
     A_INLINE void zero() { a_regress_linear_zero(this); }
 #endif /* __cplusplus */

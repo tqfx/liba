@@ -17,7 +17,7 @@ static long rand_(void)
 
 static void main_1(int m, a_float a, a_float b, a_size n, a_float alpha, a_float threshold)
 {
-    a_float *z = a_new(a_float, A_NULL, n);
+    a_float *e = a_new(a_float, A_NULL, n);
     a_float *y = a_new(a_float, A_NULL, n);
     a_float *x = a_new(a_float, A_NULL, n);
     long y_n = a_cast_s(long, n) * 2;
@@ -35,27 +35,69 @@ static void main_1(int m, a_float a, a_float b, a_size n, a_float alpha, a_float
     a_regress_linear_init(&ctx, &coef, 1, 1);
     a_regress_linear_zero(&ctx);
 
-    if (m == 's')
+    switch (m)
     {
-        a_float r = a_regress_linear_sdg1(&ctx, alpha, y, x, n, z);
+    default:
+    case 0:
+    {
+        a_regress_linear_err1(&ctx, e, y, x, n);
+        a_float r = a_float_sumabs(e, n);
         for (;;)
         {
-            a_float s = a_regress_linear_sdg1(&ctx, alpha, y, x, n, z);
+            a_regress_linear_bgd1(&ctx, alpha, e, x, n);
+            a_regress_linear_err1(&ctx, e, y, x, n);
+            a_float s = a_float_sumabs(e, n);
             if (s <= r && r - s < threshold) { break; }
             if (r <= s && s - r < threshold) { break; }
             r = s;
         }
+        break;
     }
-    else
+    case 1:
     {
-        a_float r = a_regress_linear_bdg1(&ctx, alpha, y, x, n, z);
+        a_regress_linear_err1(&ctx, e, y, x, n);
+        a_float r = a_float_sumabs(e, n);
         for (;;)
         {
-            a_float s = a_regress_linear_bdg1(&ctx, alpha, y, x, n, z);
+            a_regress_linear_sgd1(&ctx, alpha, y, x, n);
+            a_regress_linear_err1(&ctx, e, y, x, n);
+            a_float s = a_float_sumabs(e, n);
             if (s <= r && r - s < threshold) { break; }
             if (r <= s && s - r < threshold) { break; }
             r = s;
         }
+        break;
+    }
+    case 2:
+    {
+        a_regress_linear_err1(&ctx, e, y, x, n);
+        a_float r = a_float_sumabs(e, n);
+        for (;;)
+        {
+            a_regress_linear_bsd1(&ctx, alpha, e, x, n);
+            a_regress_linear_err1(&ctx, e, y, x, n);
+            a_float s = a_float_sumabs(e, n);
+            if (s <= r && r - s < threshold) { break; }
+            if (r <= s && s - r < threshold) { break; }
+            r = s;
+        }
+        break;
+    }
+    case 3:
+    {
+        a_regress_linear_err1(&ctx, e, y, x, n);
+        a_float r = a_float_sumabs(e, n);
+        for (;;)
+        {
+            a_regress_linear_ssd1(&ctx, alpha, e, x, n);
+            a_regress_linear_err1(&ctx, e, y, x, n);
+            a_float s = a_float_sumabs(e, n);
+            if (s <= r && r - s < threshold) { break; }
+            if (r <= s && s - r < threshold) { break; }
+            r = s;
+        }
+        break;
+    }
     }
 
     for (unsigned int i = 0; i < n; ++i)
@@ -64,19 +106,19 @@ static void main_1(int m, a_float a, a_float b, a_size n, a_float alpha, a_float
         v = a_regress_linear_eval(&ctx, &u);
         debug(A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f,")
                   A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f\n"),
-              u, v, x[i], y[i], z[i]);
+              u, v, x[i], y[i], e[i]);
     }
 
     a_regress_linear_zero(&ctx);
 
     a_die(x);
     a_die(y);
-    a_die(z);
+    a_die(e);
 }
 
 static void main_2(int m, a_float a, a_float b, a_float c, a_size n, a_float alpha, a_float threshold)
 {
-    a_float *z = a_new(a_float, A_NULL, n);
+    a_float *e = a_new(a_float, A_NULL, n);
     a_float *y = a_new(a_float, A_NULL, n);
     a_float *x = a_new(a_float, A_NULL, n * 2);
     long y_n = a_cast_s(long, n) * 2;
@@ -96,27 +138,69 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, a_float alp
     a_regress_linear_init(&ctx, coef, 2, 1);
     a_regress_linear_zero(&ctx);
 
-    if (m == 's')
+    switch (m)
     {
-        a_float r = a_regress_linear_sdg1(&ctx, alpha, y, x, n, z);
+    default:
+    case 0:
+    {
+        a_regress_linear_err1(&ctx, e, y, x, n);
+        a_float r = a_float_sumabs(e, n);
         for (;;)
         {
-            a_float s = a_regress_linear_sdg1(&ctx, alpha, y, x, n, z);
+            a_regress_linear_bgd1(&ctx, alpha, e, x, n);
+            a_regress_linear_err1(&ctx, e, y, x, n);
+            a_float s = a_float_sumabs(e, n);
             if (s <= r && r - s < threshold) { break; }
             if (r <= s && s - r < threshold) { break; }
             r = s;
         }
+        break;
     }
-    else
+    case 1:
     {
-        a_float r = a_regress_linear_bdg1(&ctx, alpha, y, x, n, z);
+        a_regress_linear_err1(&ctx, e, y, x, n);
+        a_float r = a_float_sumabs(e, n);
         for (;;)
         {
-            a_float s = a_regress_linear_bdg1(&ctx, alpha, y, x, n, z);
+            a_regress_linear_sgd1(&ctx, alpha, y, x, n);
+            a_regress_linear_err1(&ctx, e, y, x, n);
+            a_float s = a_float_sumabs(e, n);
             if (s <= r && r - s < threshold) { break; }
             if (r <= s && s - r < threshold) { break; }
             r = s;
         }
+        break;
+    }
+    case 2:
+    {
+        a_regress_linear_err1(&ctx, e, y, x, n);
+        a_float r = a_float_sumabs(e, n);
+        for (;;)
+        {
+            a_regress_linear_bsd1(&ctx, alpha, e, x, n);
+            a_regress_linear_err1(&ctx, e, y, x, n);
+            a_float s = a_float_sumabs(e, n);
+            if (s <= r && r - s < threshold) { break; }
+            if (r <= s && s - r < threshold) { break; }
+            r = s;
+        }
+        break;
+    }
+    case 3:
+    {
+        a_regress_linear_err1(&ctx, e, y, x, n);
+        a_float r = a_float_sumabs(e, n);
+        for (;;)
+        {
+            a_regress_linear_ssd1(&ctx, alpha, e, x, n);
+            a_regress_linear_err1(&ctx, e, y, x, n);
+            a_float s = a_float_sumabs(e, n);
+            if (s <= r && r - s < threshold) { break; }
+            if (r <= s && s - r < threshold) { break; }
+            r = s;
+        }
+        break;
+    }
     }
 
     for (unsigned int i = 0; i < n; ++i)
@@ -132,7 +216,7 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, a_float alp
             {
                 debug(A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f,")
                           A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f\n"),
-                      x[j * 2 + 0], x[j * 2 + 1], y[j], z[j]);
+                      x[j * 2 + 0], x[j * 2 + 1], y[j], e[j]);
             }
         }
         debug("\n");
@@ -142,7 +226,7 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, a_float alp
 
     a_die(x);
     a_die(y);
-    a_die(z);
+    a_die(e);
 }
 
 int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
@@ -150,22 +234,35 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     srand_(a_cast_s(a_ulong, time(A_NULL)));
     main_init(argc, argv, 1);
 
-    a_float threshold = A_FLOAT_C(0.1);
+    a_float threshold = A_FLOAT_C(1.0);
     a_float alpha = A_FLOAT_C(1e-8);
     a_float a = A_FLOAT_C(0.7);
     a_float b = A_FLOAT_C(1.4);
     a_float c = 12;
     a_size n = 100;
-    char *endptr;
-    char m = 'b';
+    char f = 'b';
+    char g = 'g';
     int d = 1;
+    int m = 0;
 
     if (argc > 1)
     {
         char const *s = strstr(argv[1], "regress_linear_");
-        if (s) { sscanf(s, "regress_linear_%i%c", &d, &m); } // NOLINT
+        if (s) { sscanf(s, "regress_linear_%i%c%c", &d, &f, &g); } // NOLINT
+        else
+        {
+            debug("regress_linear_1bgd.csv\n");
+            debug("regress_linear_1bsd.csv\n");
+            debug("regress_linear_2sgd.csv\n");
+            debug("regress_linear_2ssd.csv\n");
+            return 0;
+        }
     }
 
+    m |= f == 's' ? 1 : 0;
+    m |= g == 's' ? 2 : 0;
+
+    char *endptr;
     if (d == 1)
     {
         if (argc > 2) { a = strtonum(argv[2], &endptr); }
