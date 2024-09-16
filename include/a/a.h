@@ -833,6 +833,10 @@ typedef union a_cast
  @brief absolute value of x, \f$ |x| \f$
 */
 #define A_ABS(x) ((x) < 0 ? -(x) : (x))
+/*!
+ @brief absolute value of f-g, \f$ |f-g| \f$
+*/
+#define A_ABS_(f, g) ((f) < (g) ? (g) - (f) : (f) - (g))
 
 /*!
  @brief minimum value between x and y
@@ -849,9 +853,9 @@ typedef union a_cast
 */
 #define A_SGN(x) ((0 < (x)) - ((x) < 0))
 /*!
- @brief signum function, \f$ \texttt{sgn2}(f,g)=\begin{cases}+1&f>g\\0&f=g\\-1&f<g\end{cases} \f$
+ @brief signum function, \f$ \texttt{sgn}(f,g)=\begin{cases}+1&f>g\\0&f=g\\-1&f<g\end{cases} \f$
 */
-#define A_SGN2(f, g) (((f) > (g)) - ((f) < (g)))
+#define A_SGN_(f, g) (((f) > (g)) - ((f) < (g)))
 
 /*!
  @brief saturation value of x, \f$ \texttt{sat}(x,min,max)=\begin{cases}min&min>x\\max&x>max\\x&else\end{cases} \f$
