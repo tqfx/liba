@@ -73,41 +73,6 @@ void a_regress_linear_sgd2(a_regress_linear *ctx, a_float alpha, a_float const *
     }
 }
 
-void a_regress_linear_ssd_(a_regress_linear *ctx, a_float alpha, a_float error, a_float const *x)
-{
-    a_float delta = alpha * A_SGN(error);
-    a_float *coef = ctx->coef_p;
-    for (a_size n = ctx->coef_n; n; --n)
-    {
-        *coef++ += delta * *x++;
-    }
-    ctx->bias += delta;
-}
-
-void a_regress_linear_ssd(a_regress_linear *ctx, a_float alpha, a_float y, a_float const *x)
-{
-    a_float error = y - a_regress_linear_eval(ctx, x);
-    a_regress_linear_ssd_(ctx, alpha, error, x);
-}
-
-void a_regress_linear_ssd1(a_regress_linear *ctx, a_float alpha, a_float const *y, a_float const *x, a_size n)
-{
-    for (; n; --n, x += ctx->coef_n)
-    {
-        a_float error = *y++ - a_regress_linear_eval(ctx, x);
-        a_regress_linear_ssd_(ctx, alpha, error, x);
-    }
-}
-
-void a_regress_linear_ssd2(a_regress_linear *ctx, a_float alpha, a_float const *y, a_float const *const *x, a_size n)
-{
-    for (; n; --n, ++x)
-    {
-        a_float error = *y++ - a_regress_linear_eval(ctx, *x);
-        a_regress_linear_ssd_(ctx, alpha, error, *x);
-    }
-}
-
 void a_regress_linear_bgd1(a_regress_linear *ctx, a_float alpha, a_float const *err, a_float const *x, a_size n)
 {
     for (; n; --n)
@@ -129,35 +94,6 @@ void a_regress_linear_bgd2(a_regress_linear *ctx, a_float alpha, a_float const *
         a_float const *p = *x++;
         a_float *coef = ctx->coef_p;
         a_float delta = alpha * *err++;
-        for (a_size c = ctx->coef_n; c; --c)
-        {
-            *coef++ += delta * *p++;
-        }
-        ctx->bias += delta;
-    }
-}
-
-void a_regress_linear_bsd1(a_regress_linear *ctx, a_float alpha, a_float const *err, a_float const *x, a_size n)
-{
-    for (; n; --n, ++err)
-    {
-        a_float *coef = ctx->coef_p;
-        a_float delta = alpha * A_SGN(*err);
-        for (a_size c = ctx->coef_n; c; --c)
-        {
-            *coef++ += delta * *x++;
-        }
-        ctx->bias += delta;
-    }
-}
-
-void a_regress_linear_bsd2(a_regress_linear *ctx, a_float alpha, a_float const *err, a_float const *const *x, a_size n)
-{
-    for (; n; --n, ++err)
-    {
-        a_float const *p = *x++;
-        a_float *coef = ctx->coef_p;
-        a_float delta = alpha * A_SGN(*err);
         for (a_size c = ctx->coef_n; c; --c)
         {
             *coef++ += delta * *p++;

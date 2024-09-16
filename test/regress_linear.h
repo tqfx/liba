@@ -68,36 +68,6 @@ static void main_1(int m, a_float a, a_float b, a_size n, a_float alpha, a_float
         }
         break;
     }
-    case 2:
-    {
-        a_regress_linear_err1(&ctx, e, y, x, n);
-        a_float r = a_float_sumabs(e, n);
-        for (;;)
-        {
-            a_regress_linear_bsd1(&ctx, alpha, e, x, n);
-            a_regress_linear_err1(&ctx, e, y, x, n);
-            a_float s = a_float_sumabs(e, n);
-            r = A_ABS_(r, s);
-            if (r < threshold) { break; }
-            r = s;
-        }
-        break;
-    }
-    case 3:
-    {
-        a_regress_linear_err1(&ctx, e, y, x, n);
-        a_float r = a_float_sumabs(e, n);
-        for (;;)
-        {
-            a_regress_linear_ssd1(&ctx, alpha, e, x, n);
-            a_regress_linear_err1(&ctx, e, y, x, n);
-            a_float s = a_float_sumabs(e, n);
-            r = A_ABS_(r, s);
-            if (r < threshold) { break; }
-            r = s;
-        }
-        break;
-    }
     }
 
     for (unsigned int i = 0; i < n; ++i)
@@ -171,36 +141,6 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, a_float alp
         }
         break;
     }
-    case 2:
-    {
-        a_regress_linear_err1(&ctx, e, y, x, n);
-        a_float r = a_float_sumabs(e, n);
-        for (;;)
-        {
-            a_regress_linear_bsd1(&ctx, alpha, e, x, n);
-            a_regress_linear_err1(&ctx, e, y, x, n);
-            a_float s = a_float_sumabs(e, n);
-            r = A_ABS_(r, s);
-            if (r < threshold) { break; }
-            r = s;
-        }
-        break;
-    }
-    case 3:
-    {
-        a_regress_linear_err1(&ctx, e, y, x, n);
-        a_float r = a_float_sumabs(e, n);
-        for (;;)
-        {
-            a_regress_linear_ssd1(&ctx, alpha, e, x, n);
-            a_regress_linear_err1(&ctx, e, y, x, n);
-            a_float s = a_float_sumabs(e, n);
-            r = A_ABS_(r, s);
-            if (r < threshold) { break; }
-            r = s;
-        }
-        break;
-    }
     }
 
     for (unsigned int i = 0; i < n; ++i)
@@ -241,26 +181,24 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_float c = 12;
     a_size n = 100;
     char f = 'b';
-    char g = 'g';
     int d = 1;
     int m = 0;
 
     if (argc > 1)
     {
         char const *s = strstr(argv[1], "regress_linear_");
-        if (s) { sscanf(s, "regress_linear_%i%c%c", &d, &f, &g); } // NOLINT
+        if (s) { sscanf(s, "regress_linear_%i%c", &d, &f); } // NOLINT
         else
         {
             debug("regress_linear_1bgd.csv\n");
-            debug("regress_linear_1bsd.csv\n");
+            debug("regress_linear_1sgd.csv\n");
+            debug("regress_linear_2bgd.csv\n");
             debug("regress_linear_2sgd.csv\n");
-            debug("regress_linear_2ssd.csv\n");
             return 0;
         }
     }
 
     m |= f == 's' ? 1 : 0;
-    m |= g == 's' ? 2 : 0;
 
     char *endptr;
     if (d == 1)
