@@ -41,12 +41,12 @@ static void main_1(int m, a_float a, a_float b, a_size n, a_float alpha, a_float
     case 0:
     {
         a_regress_linear_err1(&ctx, e, y, x, n);
-        a_float r = a_float_sumabs(e, n);
+        a_float r = a_float_sum1(e, n);
         for (;;)
         {
             a_regress_linear_bgd1(&ctx, alpha, e, x, n);
             a_regress_linear_err1(&ctx, e, y, x, n);
-            a_float s = a_float_sumabs(e, n);
+            a_float s = a_float_sum1(e, n);
             r = A_ABS_(r, s);
             if (r < threshold) { break; }
             r = s;
@@ -56,12 +56,12 @@ static void main_1(int m, a_float a, a_float b, a_size n, a_float alpha, a_float
     case 1:
     {
         a_regress_linear_err1(&ctx, e, y, x, n);
-        a_float r = a_float_sumabs(e, n);
+        a_float r = a_float_sum1(e, n);
         for (;;)
         {
             a_regress_linear_sgd1(&ctx, alpha, y, x, n);
             a_regress_linear_err1(&ctx, e, y, x, n);
-            a_float s = a_float_sumabs(e, n);
+            a_float s = a_float_sum1(e, n);
             r = A_ABS_(r, s);
             if (r < threshold) { break; }
             r = s;
@@ -114,12 +114,12 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, a_float alp
     case 0:
     {
         a_regress_linear_err1(&ctx, e, y, x, n);
-        a_float r = a_float_sumabs(e, n);
+        a_float r = a_float_sum1(e, n);
         for (;;)
         {
             a_regress_linear_bgd1(&ctx, alpha, e, x, n);
             a_regress_linear_err1(&ctx, e, y, x, n);
-            a_float s = a_float_sumabs(e, n);
+            a_float s = a_float_sum1(e, n);
             r = A_ABS_(r, s);
             if (r < threshold) { break; }
             r = s;
@@ -129,12 +129,12 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, a_float alp
     case 1:
     {
         a_regress_linear_err1(&ctx, e, y, x, n);
-        a_float r = a_float_sumabs(e, n);
+        a_float r = a_float_sum1(e, n);
         for (;;)
         {
             a_regress_linear_sgd1(&ctx, alpha, y, x, n);
             a_regress_linear_err1(&ctx, e, y, x, n);
-            a_float s = a_float_sumabs(e, n);
+            a_float s = a_float_sum1(e, n);
             r = A_ABS_(r, s);
             if (r < threshold) { break; }
             r = s;

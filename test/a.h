@@ -232,7 +232,7 @@ static void test_sum(int argc, char *argv[])
         debug("%c" A_FLOAT_PRI("", "g"), i ? ',' : 0, p[i]);
     }
     debug("}:" A_FLOAT_PRI("", "g,") A_FLOAT_PRI("", "g,") A_FLOAT_PRI("", "g\n"),
-          a_float_sum(p, n), a_float_sumsq(p, n), a_float_sumabs(p, n));
+          a_float_sum(p, n), a_float_sum1(p, n), a_float_sum2(p, n));
 
     a_die(p);
 }

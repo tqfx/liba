@@ -1347,20 +1347,20 @@ A_EXTERN a_float a_float_mean(a_float const *p, a_size n);
 A_EXTERN a_float a_float_sum(a_float const *p, a_size n);
 
 /*!
- @brief calculate the sum of squares of a float array
- @param[in] p points to a float array
- @param[in] n number of a float array
- @return sum of squares of a float array
-*/
-A_EXTERN a_float a_float_sumsq(a_float const *p, a_size n);
-
-/*!
  @brief calculate the absolute sum of a float array
  @param[in] p points to a float array
  @param[in] n number of a float array
  @return absolute sum of a float array
 */
-A_EXTERN a_float a_float_sumabs(a_float const *p, a_size n);
+A_EXTERN a_float a_float_sum1(a_float const *p, a_size n);
+
+/*!
+ @brief calculate the sum of squares of a float array
+ @param[in] p points to a float array
+ @param[in] n number of a float array
+ @return sum of squares of a float array
+*/
+A_EXTERN a_float a_float_sum2(a_float const *p, a_size n);
 
 /*!
  @brief allocation function pointer
