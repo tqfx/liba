@@ -44,7 +44,7 @@ static void main_1(int m, a_float a, a_float b, a_size n, a_float alpha, a_float
         a_float r = a_float_sum1(e, n);
         for (;;)
         {
-            a_regress_linear_bgd1(&ctx, alpha, e, x, n);
+            a_regress_linear_bgd1(&ctx, e, x, n, alpha);
             a_regress_linear_err1(&ctx, e, y, x, n);
             a_float s = a_float_sum1(e, n);
             r = A_ABS_(r, s);
@@ -59,7 +59,7 @@ static void main_1(int m, a_float a, a_float b, a_size n, a_float alpha, a_float
         a_float r = a_float_sum1(e, n);
         for (;;)
         {
-            a_regress_linear_sgd1(&ctx, alpha, y, x, n);
+            a_regress_linear_sgd1(&ctx, y, x, n, alpha);
             a_regress_linear_err1(&ctx, e, y, x, n);
             a_float s = a_float_sum1(e, n);
             r = A_ABS_(r, s);
@@ -117,7 +117,7 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, a_float alp
         a_float r = a_float_sum1(e, n);
         for (;;)
         {
-            a_regress_linear_bgd1(&ctx, alpha, e, x, n);
+            a_regress_linear_bgd1(&ctx, e, x, n, alpha);
             a_regress_linear_err1(&ctx, e, y, x, n);
             a_float s = a_float_sum1(e, n);
             r = A_ABS_(r, s);
@@ -132,7 +132,7 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, a_float alp
         a_float r = a_float_sum1(e, n);
         for (;;)
         {
-            a_regress_linear_sgd1(&ctx, alpha, y, x, n);
+            a_regress_linear_sgd1(&ctx, y, x, n, alpha);
             a_regress_linear_err1(&ctx, e, y, x, n);
             a_float s = a_float_sum1(e, n);
             r = A_ABS_(r, s);

@@ -38,42 +38,42 @@ void a_regress_linear_pdm2(a_regress_linear const *ctx, a_float *pdm, a_float co
     for (; n; --n) { *pdm++ = a_regress_linear_eval(ctx, *x++) - y_mean; }
 }
 
-void a_regress_linear_sgd_(a_regress_linear *ctx, a_float alpha, a_float error, a_float const *x)
+void a_regress_linear_sgd_(a_regress_linear *ctx, a_float error, a_float const *input, a_float alpha)
 {
     a_float delta = alpha * error;
     a_float *coef = ctx->coef_p;
     for (a_size n = ctx->coef_n; n; --n)
     {
-        *coef++ += delta * *x++;
+        *coef++ += delta * *input++;
     }
     ctx->bias += delta;
 }
 
-void a_regress_linear_sgd(a_regress_linear *ctx, a_float alpha, a_float y, a_float const *x)
+void a_regress_linear_sgd(a_regress_linear *ctx, a_float y, a_float const *x, a_float alpha)
 {
     a_float error = y - a_regress_linear_eval(ctx, x);
-    a_regress_linear_sgd_(ctx, alpha, error, x);
+    a_regress_linear_sgd_(ctx, error, x, alpha);
 }
 
-void a_regress_linear_sgd1(a_regress_linear *ctx, a_float alpha, a_float const *y, a_float const *x, a_size n)
+void a_regress_linear_sgd1(a_regress_linear *ctx, a_float const *y, a_float const *x, a_size n, a_float alpha)
 {
     for (; n; --n, x += ctx->coef_n)
     {
         a_float error = *y++ - a_regress_linear_eval(ctx, x);
-        a_regress_linear_sgd_(ctx, alpha, error, x);
+        a_regress_linear_sgd_(ctx, error, x, alpha);
     }
 }
 
-void a_regress_linear_sgd2(a_regress_linear *ctx, a_float alpha, a_float const *y, a_float const *const *x, a_size n)
+void a_regress_linear_sgd2(a_regress_linear *ctx, a_float const *y, a_float const *const *x, a_size n, a_float alpha)
 {
     for (; n; --n, ++x)
     {
         a_float error = *y++ - a_regress_linear_eval(ctx, *x);
-        a_regress_linear_sgd_(ctx, alpha, error, *x);
+        a_regress_linear_sgd_(ctx, error, *x, alpha);
     }
 }
 
-void a_regress_linear_bgd1(a_regress_linear *ctx, a_float alpha, a_float const *err, a_float const *x, a_size n)
+void a_regress_linear_bgd1(a_regress_linear *ctx, a_float const *err, a_float const *x, a_size n, a_float alpha)
 {
     for (; n; --n)
     {
@@ -87,7 +87,7 @@ void a_regress_linear_bgd1(a_regress_linear *ctx, a_float alpha, a_float const *
     }
 }
 
-void a_regress_linear_bgd2(a_regress_linear *ctx, a_float alpha, a_float const *err, a_float const *const *x, a_size n)
+void a_regress_linear_bgd2(a_regress_linear *ctx, a_float const *err, a_float const *const *x, a_size n, a_float alpha)
 {
     for (; n; --n)
     {
