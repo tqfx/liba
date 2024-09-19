@@ -102,6 +102,73 @@ void a_regress_linear_bgd2(a_regress_linear *ctx, a_float const *err, a_float co
     }
 }
 
+int a_regress_linear_mgd1(a_regress_linear *ctx, a_float *err, a_float const *y_, a_float const *x_, a_size n, a_float alpha, a_float delta, a_size count, a_size batch)
+{
+    a_float r, s;
+    a_size q_ = n / batch;
+    a_size r_ = n % batch;
+    a_size c, xoffset = ctx->coef_n;
+    q_ ? (xoffset *= batch) : (batch = n);
+    a_regress_linear_err1(ctx, err, y_, x_, n);
+    r = a_float_sum2(err, n);
+    for (c = 0; c < count; ++c)
+    {
+        a_float const *y = y_;
+        a_float const *x = x_;
+        for (a_size q = q_; q; --q, y += batch, x += xoffset)
+        {
+            a_regress_linear_err1(ctx, err, y, x, batch);
+            a_regress_linear_bgd1(ctx, err, x, batch, alpha);
+        }
+        if (r_)
+        {
+            a_regress_linear_err1(ctx, err, y, x, r_);
+            a_regress_linear_bgd1(ctx, err, x, r_, alpha);
+        }
+        a_regress_linear_err1(ctx, err, y_, x_, n);
+        s = a_float_sum2(err, n);
+        if (A_ABS_(r, s) < delta)
+        {
+            break;
+        }
+        r = s;
+    }
+    return c < count;
+}
+
+int a_regress_linear_mgd2(a_regress_linear *ctx, a_float *err, a_float const *y_, a_float const *const *x_, a_size n, a_float alpha, a_float delta, a_size count, a_size batch)
+{
+    a_float r, s;
+    a_size q_ = n / batch;
+    a_size r_ = n % batch, c;
+    if (q_ == 0) { batch = n; }
+    a_regress_linear_err2(ctx, err, y_, x_, n);
+    r = a_float_sum2(err, n);
+    for (c = 0; c < count; ++c)
+    {
+        a_float const *y = y_;
+        a_float const *const *x = x_;
+        for (a_size q = q_; q; --q, y += batch, x += batch)
+        {
+            a_regress_linear_err2(ctx, err, y, x, batch);
+            a_regress_linear_bgd2(ctx, err, x, batch, alpha);
+        }
+        if (r_)
+        {
+            a_regress_linear_err2(ctx, err, y, x, r_);
+            a_regress_linear_bgd2(ctx, err, x, r_, alpha);
+        }
+        a_regress_linear_err2(ctx, err, y_, x_, n);
+        s = a_float_sum2(err, n);
+        if (A_ABS_(r, s) < delta)
+        {
+            break;
+        }
+        r = s;
+    }
+    return c < count;
+}
+
 void a_regress_linear_zero(a_regress_linear *ctx)
 {
     a_zero(ctx->coef_p, sizeof(a_float) * ctx->coef_n);

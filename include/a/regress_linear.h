@@ -10,7 +10,7 @@
 #include "a.h"
 
 /*!
- @ingroup liba
+ @ingroup a_regress
  @addtogroup a_regress_linear linear regression
  @{
 */
@@ -74,6 +74,7 @@ A_EXTERN void a_regress_linear_pdm1(a_regress_linear const *ctx, a_float *pdm, a
  @param[out] pdm deviation, specified as a numeric vector
  @param[in] x predictor data, specified as a numeric matrix
  @param[in] n number of samples, pdm[n], x[coef_n*n]
+ @param[in] y_mean mean of response data
 */
 A_EXTERN void a_regress_linear_pdm2(a_regress_linear const *ctx, a_float *pdm, a_float const *const *x, a_size n, a_float y_mean);
 
@@ -134,6 +135,40 @@ A_EXTERN void a_regress_linear_bgd1(a_regress_linear *ctx, a_float const *err, a
  @param[in] alpha learning rate for gradient descent
 */
 A_EXTERN void a_regress_linear_bgd2(a_regress_linear *ctx, a_float const *err, a_float const *const *x, a_size n, a_float alpha);
+
+/*!
+ @brief mini-batch gradient descent for linear regression
+ @param[in,out] ctx points to an instance of linear regression
+ @param[out] err residuals, specified as a numeric vector
+ @param[in] y response data, specified as a numeric vector
+ @param[in] x predictor data, specified as a numeric matrix
+ @param[in] n number of samples, err[n], y[n], x[coef_n*n]
+ @param[in] alpha learning rate for gradient descent
+ @param[in] delta threshold for gradient descent value
+ @param[in] count maximum number of iterations
+ @param[in] batch batch size of data
+ @retval 1 `delta` < threshold
+ @retval 0 reaching `count`
+*/
+A_EXTERN int a_regress_linear_mgd1(a_regress_linear *ctx, a_float *err, a_float const *y, a_float const *x,
+                                   a_size n, a_float alpha, a_float delta, a_size count, a_size batch);
+
+/*!
+ @brief mini-batch gradient descent for linear regression
+ @param[in,out] ctx points to an instance of linear regression
+ @param[out] err residuals, specified as a numeric vector
+ @param[in] y response data, specified as a numeric vector
+ @param[in] x predictor data, specified as a numeric matrix
+ @param[in] n number of samples, err[n], y[n], x[n][coef_n]
+ @param[in] alpha learning rate for gradient descent
+ @param[in] delta threshold for gradient descent value
+ @param[in] count maximum number of iterations
+ @param[in] batch batch size of data
+ @retval 1 `delta` < threshold
+ @retval 0 reaching `count`
+*/
+A_EXTERN int a_regress_linear_mgd2(a_regress_linear *ctx, a_float *err, a_float const *y, a_float const *const *x,
+                                   a_size n, a_float alpha, a_float delta, a_size count, a_size batch);
 
 /*!
  @brief zeroing for linear regression
@@ -205,6 +240,16 @@ struct a_regress_linear
     A_INLINE void bgd2(a_float const *err, a_float const *const *x, a_size n, a_float alpha)
     {
         a_regress_linear_bgd2(this, err, x, n, alpha);
+    }
+    A_INLINE int mgd1(a_float *err, a_float const *y, a_float const *x, a_size n,
+                      a_float alpha, a_float delta, a_size count, a_size batch)
+    {
+        return a_regress_linear_mgd1(this, err, y, x, n, alpha, delta, count, batch);
+    }
+    A_INLINE int mgd2(a_float *err, a_float const *y, a_float const *const *x, a_size n,
+                      a_float alpha, a_float delta, a_size count, a_size batch)
+    {
+        return a_regress_linear_mgd2(this, err, y, x, n, alpha, delta, count, batch);
     }
     A_INLINE void zero() { a_regress_linear_zero(this); }
 #endif /* __cplusplus */
