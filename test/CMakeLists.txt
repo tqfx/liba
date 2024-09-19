@@ -275,6 +275,13 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(regress_linear regress2.gp regress_linear_2mgd.csv)
 endif()
 
+building(regress_simple regress_simple.c regress_simple.cc)
+unittest(regress_simple)
+
+if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
+  unitplot(regress_simple regress1.gp regress_simple.csv)
+endif()
+
 building(slist slist.c slist.cc)
 unittest(slist)
 

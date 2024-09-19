@@ -23,6 +23,7 @@ fn main() {
         .file("src/rbt.c")
         .file("src/regress.c")
         .file("src/regress_linear.c")
+        .file("src/regress_simple.c")
         .file("src/str.c")
         .file("src/tf.c")
         .file("src/trajbell.c")

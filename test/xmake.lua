@@ -96,6 +96,10 @@ target("test/regress_linear")
 building({ "regress_linear.c", "regress_linear.cc" })
 target_end()
 
+target("test/regress_simple")
+building({ "regress_simple.c", "regress_simple.cc" })
+target_end()
+
 target("test/slist")
 building({ "slist.c", "slist.cc" })
 target_end()
