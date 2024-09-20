@@ -19,7 +19,7 @@ static void test_odm(int argc, char *argv[])
     {
         debug("%c" A_FLOAT_PRI("", "g"), i ? ',' : 0, p[i]);
     }
-    debug("}:" A_FLOAT_PRI("", "g\n{"), a_regress_odm(odm, p, n));
+    debug("}:" A_FLOAT_PRI("", "g\n{"), a_regress_odm(n, p, odm));
     for (a_size i = 0; i < n; ++i)
     {
         debug("%c" A_FLOAT_PRI("", "g"), i ? ',' : 0, odm[i]);

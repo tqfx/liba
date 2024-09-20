@@ -17,11 +17,11 @@ static long rand_(void)
 
 static void main_1(int m, a_float a, a_float b, a_size n, a_float alpha, a_float threshold)
 {
-    a_float *e = a_new(a_float, A_NULL, n);
-    a_float *y = a_new(a_float, A_NULL, n);
     a_float *x = a_new(a_float, A_NULL, n);
-    long y_n = a_cast_s(long, n) * 2;
+    a_float *y = a_new(a_float, A_NULL, n);
+    a_float *e = a_new(a_float, A_NULL, n);
     long x_n = a_cast_s(long, n) * 10;
+    long y_n = a_cast_s(long, n) * 2;
 
     for (a_size i = 0; i < n; ++i)
     {
@@ -40,12 +40,12 @@ static void main_1(int m, a_float a, a_float b, a_size n, a_float alpha, a_float
     default:
     case 's':
     {
-        a_regress_linear_err1(&ctx, e, y, x, n);
+        a_regress_linear_err1(&ctx, n, x, y, e);
         a_float r = a_float_sum2(e, n);
         for (a_size i = 0; i < 100; ++i)
         {
-            a_regress_linear_bgd1(&ctx, e, x, n, alpha);
-            a_regress_linear_err1(&ctx, e, y, x, n);
+            a_regress_linear_bgd1(&ctx, n, x, e, alpha);
+            a_regress_linear_err1(&ctx, n, x, y, e);
             a_float s = a_float_sum2(e, n);
             if (A_ABS_(r, s) < threshold)
             {
@@ -57,12 +57,12 @@ static void main_1(int m, a_float a, a_float b, a_size n, a_float alpha, a_float
     }
     case 'b':
     {
-        a_regress_linear_err1(&ctx, e, y, x, n);
+        a_regress_linear_err1(&ctx, n, x, y, e);
         a_float r = a_float_sum2(e, n);
         for (a_size i = 0; i < 100; ++i)
         {
-            a_regress_linear_sgd1(&ctx, y, x, n, alpha);
-            a_regress_linear_err1(&ctx, e, y, x, n);
+            a_regress_linear_sgd1(&ctx, n, x, y, alpha);
+            a_regress_linear_err1(&ctx, n, x, y, e);
             a_float s = a_float_sum2(e, n);
             if (A_ABS_(r, s) < threshold)
             {
@@ -73,7 +73,7 @@ static void main_1(int m, a_float a, a_float b, a_size n, a_float alpha, a_float
         break;
     }
     case 'm':
-        a_regress_linear_mgd1(&ctx, e, y, x, n, alpha, threshold, 100, 16);
+        a_regress_linear_mgd1(&ctx, n, x, y, e, alpha, threshold, 100, 16);
     }
 
     for (unsigned int i = 0; i < n; ++i)
@@ -94,11 +94,11 @@ static void main_1(int m, a_float a, a_float b, a_size n, a_float alpha, a_float
 
 static void main_2(int m, a_float a, a_float b, a_float c, a_size n, a_float alpha, a_float threshold)
 {
-    a_float *e = a_new(a_float, A_NULL, n);
-    a_float *y = a_new(a_float, A_NULL, n);
     a_float *x = a_new(a_float, A_NULL, n * 2);
-    long y_n = a_cast_s(long, n) * 2;
+    a_float *y = a_new(a_float, A_NULL, n);
+    a_float *e = a_new(a_float, A_NULL, n);
     long x_n = a_cast_s(long, n) * 10;
+    long y_n = a_cast_s(long, n) * 2;
 
     for (a_size i = 0; i < n; ++i)
     {
@@ -119,12 +119,12 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, a_float alp
     default:
     case 's':
     {
-        a_regress_linear_err1(&ctx, e, y, x, n);
+        a_regress_linear_err1(&ctx, n, x, y, e);
         a_float r = a_float_sum2(e, n);
         for (a_size i = 0; i < 100; ++i)
         {
-            a_regress_linear_bgd1(&ctx, e, x, n, alpha);
-            a_regress_linear_err1(&ctx, e, y, x, n);
+            a_regress_linear_bgd1(&ctx, n, x, e, alpha);
+            a_regress_linear_err1(&ctx, n, x, y, e);
             a_float s = a_float_sum2(e, n);
             if (A_ABS_(r, s) < threshold)
             {
@@ -136,12 +136,12 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, a_float alp
     }
     case 'b':
     {
-        a_regress_linear_err1(&ctx, e, y, x, n);
+        a_regress_linear_err1(&ctx, n, x, y, e);
         a_float r = a_float_sum2(e, n);
         for (a_size i = 0; i < 100; ++i)
         {
-            a_regress_linear_sgd1(&ctx, y, x, n, alpha);
-            a_regress_linear_err1(&ctx, e, y, x, n);
+            a_regress_linear_sgd1(&ctx, n, x, e, alpha);
+            a_regress_linear_err1(&ctx, n, x, y, e);
             a_float s = a_float_sum2(e, n);
             if (A_ABS_(r, s) < threshold)
             {
@@ -152,7 +152,7 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, a_float alp
         break;
     }
     case 'm':
-        a_regress_linear_mgd1(&ctx, e, y, x, n, alpha, threshold, 100, 16);
+        a_regress_linear_mgd1(&ctx, n, x, y, e, alpha, threshold, 100, 16);
     }
 
     for (unsigned int i = 0; i < n; ++i)

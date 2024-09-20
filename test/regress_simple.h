@@ -29,10 +29,10 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     if (argc > 3) { b = strtonum(argv[3], &endptr); }
     if (argc > 4) { n = strtoul(argv[4], &endptr, 0); }
 
-    a_float *y = a_new(a_float, A_NULL, n);
     a_float *x = a_new(a_float, A_NULL, n);
-    long y_n = a_cast_s(long, n) * 2;
+    a_float *y = a_new(a_float, A_NULL, n);
     long x_n = a_cast_s(long, n) * 10;
+    long y_n = a_cast_s(long, n) * 2;
 
     for (a_size i = 0; i < n; ++i)
     {
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 
     a_regress_simple ctx;
     a_regress_simple_init(&ctx, 0, 0);
-    a_regress_simple_olsm(&ctx, y, x, n);
+    a_regress_simple_olsm(&ctx, n, x, y);
 
     for (unsigned int i = 0; i < n; ++i)
     {
@@ -54,6 +54,9 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     }
 
     a_regress_simple_zero(&ctx);
+
+    a_die(x);
+    a_die(y);
 
 #if defined(__cplusplus) && (__cplusplus > 201100L)
     A_BUILD_ASSERT(std::is_pod<a_regress_simple>::value);
