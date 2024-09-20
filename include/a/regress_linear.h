@@ -33,7 +33,7 @@ A_EXTERN void a_regress_linear_init(a_regress_linear *ctx, a_float *coef_p, a_si
 /*!
  @brief calculate predicted value for linear regression
  @param[in] ctx points to an instance of linear regression
- @param[in] val input variables
+ @param[in] val independent variables
  @return predicted value
 */
 A_EXTERN a_float a_regress_linear_eval(a_regress_linear const *ctx, a_float const *val);

@@ -11,6 +11,11 @@ a_float a_regress_simple_eval(a_regress_simple const *ctx, a_float val)
     return ctx->coef * val + ctx->bias;
 }
 
+a_float a_regress_simple_evar(a_regress_simple const *ctx, a_float val)
+{
+    return (val - ctx->bias) / ctx->coef;
+}
+
 void a_regress_simple_olsm_(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y, a_float x_mean, a_float y_mean)
 {
     a_float num = 0, den = 0;

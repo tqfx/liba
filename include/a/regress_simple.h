@@ -32,10 +32,18 @@ A_EXTERN void a_regress_simple_init(a_regress_simple *ctx, a_float coef, a_float
 /*!
  @brief calculate predicted value for simple linear regression
  @param[in] ctx points to an instance of simple linear regression
- @param[in] val input variable
+ @param[in] val independent variable
  @return predicted value
 */
 A_EXTERN a_float a_regress_simple_eval(a_regress_simple const *ctx, a_float val);
+
+/*!
+ @brief calculate predicted value for simple linear regression
+ @param[in] ctx points to an instance of simple linear regression
+ @param[in] val dependent variable
+ @return predicted value
+*/
+A_EXTERN a_float a_regress_simple_evar(a_regress_simple const *ctx, a_float val);
 
 /*!
  @brief ordinary least squares method for simple linear regression
