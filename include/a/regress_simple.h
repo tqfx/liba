@@ -95,7 +95,7 @@ struct a_regress_simple
     {
         return a_regress_simple_eval(this, val);
     }
-    A_INLINE void olsm_(a_size n, a_float const *x, a_float const *y, a_float x_mean, a_float y_mean)
+    A_INLINE void olsm(a_size n, a_float const *x, a_float const *y, a_float x_mean, a_float y_mean)
     {
         a_regress_simple_olsm_(this, n, x, y, x_mean, y_mean);
     }
