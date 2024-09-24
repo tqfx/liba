@@ -219,7 +219,7 @@ struct a_regress_linear
     {
         a_regress_linear_pdm2(this, n, x, pdm, y_mean);
     }
-    A_INLINE void gd_(a_float const *input, a_float error, a_float alpha)
+    A_INLINE void gd(a_float const *input, a_float error, a_float alpha)
     {
         a_regress_linear_gd(this, input, error, alpha);
     }
