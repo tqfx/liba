@@ -143,15 +143,16 @@ A_EXTERN void a_regress_linear_bgd2(a_regress_linear *ctx, a_size n, a_float con
  @param[in] x predictor data, specified as a numeric matrix
  @param[in] y response data, specified as a numeric vector
  @param[in,out] err residuals, specified as a numeric vector
- @param[in] alpha learning rate for gradient descent
  @param[in] delta threshold for gradient descent value
- @param[in] count maximum number of iterations
+ @param[in] lrmin minimum learning rate of iterations
+ @param[in] lrmax maximum learning rate of iterations
+ @param[in] lrtim total number of learning rate steps
+ @param[in] epoch maximum number of epochs
  @param[in] batch batch size of data
- @retval 1 `delta` < threshold
- @retval 0 reaching `count`
+ @return change in loss function
 */
-A_EXTERN int a_regress_linear_mgd1(a_regress_linear *ctx, a_size n, a_float const *x, a_float const *y,
-                                   a_float *err, a_float alpha, a_float delta, a_size count, a_size batch);
+A_EXTERN a_float a_regress_linear_mgd1(a_regress_linear *ctx, a_size n, a_float const *x, a_float const *y, a_float *err,
+                                       a_float delta, a_float lrmax, a_float lrmin, a_size lrtim, a_size epoch, a_size batch);
 
 /*!
  @brief mini-batch gradient descent for linear regression
@@ -160,15 +161,16 @@ A_EXTERN int a_regress_linear_mgd1(a_regress_linear *ctx, a_size n, a_float cons
  @param[in] x predictor data, specified as a numeric matrix
  @param[in] y response data, specified as a numeric vector
  @param[in,out] err residuals, specified as a numeric vector
- @param[in] alpha learning rate for gradient descent
  @param[in] delta threshold for gradient descent value
- @param[in] count maximum number of iterations
+ @param[in] lrmin minimum learning rate of iterations
+ @param[in] lrmax maximum learning rate of iterations
+ @param[in] lrtim total number of learning rate steps
+ @param[in] epoch maximum number of epochs
  @param[in] batch batch size of data
- @retval 1 `delta` < threshold
- @retval 0 reaching `count`
+ @return change in loss function
 */
-A_EXTERN int a_regress_linear_mgd2(a_regress_linear *ctx, a_size n, a_float const *const *x, a_float const *y,
-                                   a_float *err, a_float alpha, a_float delta, a_size count, a_size batch);
+A_EXTERN a_float a_regress_linear_mgd2(a_regress_linear *ctx, a_size n, a_float const *const *x, a_float const *y, a_float *err,
+                                       a_float delta, a_float lrmax, a_float lrmin, a_size lrtim, a_size epoch, a_size batch);
 
 /*!
  @brief zeroing for linear regression
@@ -241,15 +243,15 @@ struct a_regress_linear
     {
         a_regress_linear_bgd2(this, n, x, err, alpha);
     }
-    A_INLINE int mgd1(a_size n, a_float const *x, a_float const *y, a_float *err,
-                      a_float alpha, a_float delta, a_size count, a_size batch)
+    A_INLINE a_float mgd1(a_size n, a_float const *x, a_float const *y, a_float *err, a_float delta,
+                          a_float lrmax, a_float lrmin, a_size lrtim, a_size epoch, a_size batch)
     {
-        return a_regress_linear_mgd1(this, n, x, y, err, alpha, delta, count, batch);
+        return a_regress_linear_mgd1(this, n, x, y, err, delta, lrmax, lrmin, lrtim, epoch, batch);
     }
-    A_INLINE int mgd2(a_size n, a_float const *const *x, a_float const *y, a_float *err,
-                      a_float alpha, a_float delta, a_size count, a_size batch)
+    A_INLINE a_float mgd2(a_size n, a_float const *const *x, a_float const *y, a_float *err, a_float delta,
+                          a_float lrmax, a_float lrmin, a_size lrtim, a_size epoch, a_size batch)
     {
-        return a_regress_linear_mgd2(this, n, x, y, err, alpha, delta, count, batch);
+        return a_regress_linear_mgd2(this, n, x, y, err, delta, lrmax, lrmin, lrtim, epoch, batch);
     }
     A_INLINE void zero() { a_regress_linear_zero(this); }
 #endif /* __cplusplus */
