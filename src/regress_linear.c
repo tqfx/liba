@@ -39,7 +39,7 @@ void a_regress_linear_pdm2(a_regress_linear const *ctx, a_size n, a_float const 
     for (; n; --n) { *pdm++ = a_regress_linear_eval(ctx, *x++) - y_mean; }
 }
 
-void a_regress_linear_sgd_(a_regress_linear *ctx, a_float const *input, a_float error, a_float alpha)
+void a_regress_linear_gd(a_regress_linear *ctx, a_float const *input, a_float error, a_float alpha)
 {
     a_float *coef = ctx->coef_p;
     a_float delta = alpha * error;
@@ -53,7 +53,7 @@ void a_regress_linear_sgd_(a_regress_linear *ctx, a_float const *input, a_float 
 void a_regress_linear_sgd(a_regress_linear *ctx, a_float const *x, a_float y, a_float alpha)
 {
     a_float error = y - a_regress_linear_eval(ctx, x);
-    a_regress_linear_sgd_(ctx, x, error, alpha);
+    a_regress_linear_gd(ctx, x, error, alpha);
 }
 
 void a_regress_linear_sgd1(a_regress_linear *ctx, a_size n, a_float const *x, a_float const *y, a_float alpha)
@@ -61,7 +61,7 @@ void a_regress_linear_sgd1(a_regress_linear *ctx, a_size n, a_float const *x, a_
     for (; n; --n, x += ctx->coef_n)
     {
         a_float error = *y++ - a_regress_linear_eval(ctx, x);
-        a_regress_linear_sgd_(ctx, x, error, alpha);
+        a_regress_linear_gd(ctx, x, error, alpha);
     }
 }
 
@@ -70,7 +70,7 @@ void a_regress_linear_sgd2(a_regress_linear *ctx, a_size n, a_float const *const
     for (; n; --n, ++x)
     {
         a_float error = *y++ - a_regress_linear_eval(ctx, *x);
-        a_regress_linear_sgd_(ctx, *x, error, alpha);
+        a_regress_linear_gd(ctx, *x, error, alpha);
     }
 }
 
@@ -78,7 +78,7 @@ void a_regress_linear_bgd1(a_regress_linear *ctx, a_size n, a_float const *x, a_
 {
     for (alpha /= (a_float)n; n; --n, x += ctx->coef_n)
     {
-        a_regress_linear_sgd_(ctx, x, *err++, alpha);
+        a_regress_linear_gd(ctx, x, *err++, alpha);
     }
 }
 
@@ -86,7 +86,7 @@ void a_regress_linear_bgd2(a_regress_linear *ctx, a_size n, a_float const *const
 {
     for (alpha /= (a_float)n; n; --n, ++x)
     {
-        a_regress_linear_sgd_(ctx, *x, *err++, alpha);
+        a_regress_linear_gd(ctx, *x, *err++, alpha);
     }
 }
 

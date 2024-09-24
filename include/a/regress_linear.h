@@ -79,13 +79,13 @@ A_EXTERN void a_regress_linear_pdm1(a_regress_linear const *ctx, a_size n, a_flo
 A_EXTERN void a_regress_linear_pdm2(a_regress_linear const *ctx, a_size n, a_float const *const *x, a_float *pdm, a_float y_mean);
 
 /*!
- @brief stochastic gradient descent for linear regression
+ @brief gradient descent for linear regression
  @param[in,out] ctx points to an instance of linear regression
  @param[in] input predictor data, specified as a numeric vector
  @param[in] error residual, specified as a numeric scalar
  @param[in] alpha learning rate for gradient descent
 */
-A_EXTERN void a_regress_linear_sgd_(a_regress_linear *ctx, a_float const *input, a_float error, a_float alpha);
+A_EXTERN void a_regress_linear_gd(a_regress_linear *ctx, a_float const *input, a_float error, a_float alpha);
 
 /*!
  @brief stochastic gradient descent for linear regression
@@ -219,9 +219,9 @@ struct a_regress_linear
     {
         a_regress_linear_pdm2(this, n, x, pdm, y_mean);
     }
-    A_INLINE void sgd_(a_float const *input, a_float error, a_float alpha)
+    A_INLINE void gd_(a_float const *input, a_float error, a_float alpha)
     {
-        a_regress_linear_sgd_(this, input, error, alpha);
+        a_regress_linear_gd(this, input, error, alpha);
     }
     A_INLINE void sgd(a_float const *x, a_float y, a_float alpha)
     {
