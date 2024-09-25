@@ -88,6 +88,34 @@ pub fn f64_rsqrt(x: f64) -> f64 {
 }
 
 extern "C" {
+    fn a_float_sum(p: *const float, n: usize) -> float;
+    fn a_float_sum1(p: *const float, n: usize) -> float;
+    fn a_float_sum2(p: *const float, n: usize) -> float;
+    fn a_float_mean(p: *const float, n: usize) -> float;
+}
+
+/// calculate the sum of a float array
+#[inline(always)]
+pub fn float_sum(x: &[float]) -> float {
+    unsafe { a_float_sum(x.as_ptr(), x.len()) }
+}
+/// calculate the absolute sum of a float array
+#[inline(always)]
+pub fn float_sum1(x: &[float]) -> float {
+    unsafe { a_float_sum1(x.as_ptr(), x.len()) }
+}
+/// calculate the sum of squares of a float array
+#[inline(always)]
+pub fn float_sum2(x: &[float]) -> float {
+    unsafe { a_float_sum2(x.as_ptr(), x.len()) }
+}
+/// calculate the mean of a float array
+#[inline(always)]
+pub fn float_mean(x: &[float]) -> float {
+    unsafe { a_float_mean(x.as_ptr(), x.len()) }
+}
+
+extern "C" {
     fn a_hash_bkdr_(pdata: *const u8, nbyte: usize, value: u32) -> u32;
     fn a_hash_sdbm_(pdata: *const u8, nbyte: usize, value: u32) -> u32;
 }

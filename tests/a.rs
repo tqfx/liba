@@ -16,3 +16,15 @@ fn hash() {
     std::println!("{}", liba::hash_bkdr(&text, 0));
     std::println!("{}", liba::hash_sdbm(&text, 0));
 }
+
+#[test]
+fn sum() {
+    let x = [1.0, 2.0, -3.0];
+    std::println!(
+        "sum({:?})={},{},{}",
+        x,
+        liba::float_sum(&x),
+        liba::float_sum1(&x),
+        liba::float_sum2(&x)
+    );
+}
