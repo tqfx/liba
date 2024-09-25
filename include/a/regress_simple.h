@@ -46,7 +46,7 @@ A_EXTERN a_float a_regress_simple_eval(a_regress_simple const *ctx, a_float val)
 A_EXTERN a_float a_regress_simple_evar(a_regress_simple const *ctx, a_float val);
 
 /*!
- @brief ordinary least squares method for simple linear regression
+ @brief ordinary least squares for simple linear regression
  @param[in,out] ctx points to an instance of simple linear regression
  @param[in] n number of samples, x[n], y[n]
  @param[in] x predictor data, specified as a numeric matrix
@@ -54,16 +54,18 @@ A_EXTERN a_float a_regress_simple_evar(a_regress_simple const *ctx, a_float val)
  @param[in] x_mean mean of predictor data
  @param[in] y_mean mean of response data
 */
-A_EXTERN void a_regress_simple_olsm_(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y, a_float x_mean, a_float y_mean);
+A_EXTERN void a_regress_simple_ols_(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y, a_float x_mean, a_float y_mean);
+A_EXTERN void a_regress_simple_olsx(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y, a_float x_mean);
+A_EXTERN void a_regress_simple_olsy(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y, a_float y_mean);
 
 /*!
- @brief ordinary least squares method for simple linear regression
+ @brief ordinary least squares for simple linear regression
  @param[in,out] ctx points to an instance of simple linear regression
  @param[in] n number of samples, x[n], y[n]
  @param[in] x predictor data, specified as a numeric matrix
  @param[in] y response data, specified as a numeric vector
 */
-A_EXTERN void a_regress_simple_olsm(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y);
+A_EXTERN void a_regress_simple_ols(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y);
 
 /*!
  @brief zeroing for simple linear regression
@@ -95,13 +97,21 @@ struct a_regress_simple
     {
         return a_regress_simple_eval(this, val);
     }
-    A_INLINE void olsm(a_size n, a_float const *x, a_float const *y, a_float x_mean, a_float y_mean)
+    A_INLINE void ols(a_size n, a_float const *x, a_float const *y, a_float x_mean, a_float y_mean)
     {
-        a_regress_simple_olsm_(this, n, x, y, x_mean, y_mean);
+        a_regress_simple_ols_(this, n, x, y, x_mean, y_mean);
     }
-    A_INLINE void olsm(a_size n, a_float const *x, a_float const *y)
+    A_INLINE void olsx(a_size n, a_float const *x, a_float const *y, a_float x_mean)
     {
-        a_regress_simple_olsm(this, n, x, y);
+        a_regress_simple_olsx(this, n, x, y, x_mean);
+    }
+    A_INLINE void olsy(a_size n, a_float const *x, a_float const *y, a_float y_mean)
+    {
+        a_regress_simple_olsy(this, n, x, y, y_mean);
+    }
+    A_INLINE void ols(a_size n, a_float const *x, a_float const *y)
+    {
+        a_regress_simple_ols(this, n, x, y);
     }
     A_INLINE void zero() { a_regress_simple_zero(this); }
 #endif /* __cplusplus */

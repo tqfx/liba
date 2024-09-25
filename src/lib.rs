@@ -862,6 +862,92 @@ impl pid_neuro {
     }
 }
 
+/// simple linear regression
+#[repr(C)]
+pub struct regress_simple {
+    /// regression coefficient
+    pub coef: float,
+    /// intercept
+    pub bias: float,
+}
+
+extern "C" {
+    fn a_regress_simple_eval(ctx: *const regress_simple, val: float) -> float;
+    fn a_regress_simple_evar(ctx: *const regress_simple, val: float) -> float;
+    fn a_regress_simple_ols_(
+        ctx: *mut regress_simple,
+        n: usize,
+        x: *const float,
+        y: *const float,
+        x_mean: float,
+        y_mean: float,
+    );
+    fn a_regress_simple_olsx(
+        ctx: *mut regress_simple,
+        n: usize,
+        x: *const float,
+        y: *const float,
+        x_mean: float,
+    );
+    fn a_regress_simple_olsy(
+        ctx: *mut regress_simple,
+        n: usize,
+        x: *const float,
+        y: *const float,
+        y_mean: float,
+    );
+    fn a_regress_simple_ols(ctx: *mut regress_simple, n: usize, x: *const float, y: *const float);
+    fn a_regress_simple_zero(ctx: *mut regress_simple);
+}
+
+impl regress_simple {
+    /// initialize for simple linear regression
+    #[inline(always)]
+    pub fn new(coef: float, bias: float) -> Self {
+        Self { coef, bias }
+    }
+    /// calculate predicted value for simple linear regression
+    #[inline(always)]
+    pub fn eval(&self, val: float) -> float {
+        unsafe { a_regress_simple_eval(self, val) }
+    }
+    /// calculate predicted value for simple linear regression
+    #[inline(always)]
+    pub fn evar(&self, val: float) -> float {
+        unsafe { a_regress_simple_evar(self, val) }
+    }
+    /// ordinary least squares for simple linear regression
+    #[inline(always)]
+    pub fn ols_(&mut self, x: &[float], y: &[float], x_mean: float, y_mean: float) -> &mut Self {
+        unsafe { a_regress_simple_ols_(self, x.len(), x.as_ptr(), y.as_ptr(), x_mean, y_mean) };
+        self
+    }
+    /// ordinary least squares for simple linear regression
+    #[inline(always)]
+    pub fn olsx(&mut self, x: &[float], y: &[float], x_mean: float) -> &mut Self {
+        unsafe { a_regress_simple_olsx(self, x.len(), x.as_ptr(), y.as_ptr(), x_mean) };
+        self
+    }
+    /// ordinary least squares for simple linear regression
+    #[inline(always)]
+    pub fn olsy(&mut self, x: &[float], y: &[float], y_mean: float) -> &mut Self {
+        unsafe { a_regress_simple_olsy(self, x.len(), x.as_ptr(), y.as_ptr(), y_mean) };
+        self
+    }
+    /// ordinary least squares for simple linear regression
+    #[inline(always)]
+    pub fn ols(&mut self, x: &[float], y: &[float]) -> &mut Self {
+        unsafe { a_regress_simple_ols(self, x.len(), x.as_ptr(), y.as_ptr()) };
+        self
+    }
+    /// zeroing for simple linear regression
+    #[inline(always)]
+    pub fn zero(&mut self) -> &mut Self {
+        unsafe { a_regress_simple_zero(self) };
+        self
+    }
+}
+
 /// transfer function
 #[repr(C)]
 pub struct tf {

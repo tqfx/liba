@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 
     a_regress_simple ctx;
     a_regress_simple_init(&ctx, 0, 0);
-    a_regress_simple_olsm(&ctx, n, x, y);
+    a_regress_simple_ols(&ctx, n, x, y);
 
     for (unsigned int i = 0; i < n; ++i)
     {

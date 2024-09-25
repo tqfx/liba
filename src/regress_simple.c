@@ -16,7 +16,7 @@ a_float a_regress_simple_evar(a_regress_simple const *ctx, a_float val)
     return (val - ctx->bias) / ctx->coef;
 }
 
-void a_regress_simple_olsm_(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y, a_float x_mean, a_float y_mean)
+void a_regress_simple_ols_(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y, a_float x_mean, a_float y_mean)
 {
     a_float num = 0, den = 0;
     for (; n; --n)
@@ -30,11 +30,23 @@ void a_regress_simple_olsm_(a_regress_simple *ctx, a_size n, a_float const *x, a
     ctx->bias = y_mean - ctx->coef * x_mean;
 }
 
-void a_regress_simple_olsm(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y)
+void a_regress_simple_olsx(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y, a_float x_mean)
+{
+    a_float const y_mean = a_float_mean(y, n);
+    a_regress_simple_ols_(ctx, n, x, y, x_mean, y_mean);
+}
+
+void a_regress_simple_olsy(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y, a_float y_mean)
+{
+    a_float const x_mean = a_float_mean(x, n);
+    a_regress_simple_ols_(ctx, n, x, y, x_mean, y_mean);
+}
+
+void a_regress_simple_ols(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y)
 {
     a_float const x_mean = a_float_mean(x, n);
     a_float const y_mean = a_float_mean(y, n);
-    a_regress_simple_olsm_(ctx, n, x, y, x_mean, y_mean);
+    a_regress_simple_ols_(ctx, n, x, y, x_mean, y_mean);
 }
 
 void a_regress_simple_zero(a_regress_simple *ctx)
