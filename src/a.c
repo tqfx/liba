@@ -76,9 +76,9 @@ void a_float_push(a_float *block_p, a_size block_n,
                   a_float const *cache_p, a_size cache_n)
 {
     a_size const n = A_MIN(cache_n, block_n);
-    for (a_size t = block_n, s = block_n - n; s;)
+    for (a_size o = block_n, i = block_n - n; i;)
     {
-        block_p[--t] = block_p[--s];
+        block_p[--o] = block_p[--i];
     }
     for (a_size i = 0; i != n; ++i)
     {
@@ -91,13 +91,13 @@ void a_float_roll(a_float *block_p, a_size block_n,
 {
     a_size const shift = shift_n % block_n;
     a_size const start = block_n - shift;
-    for (a_size t = 0, s = start; t != shift;)
+    for (a_size o = 0, i = start; o != shift;)
     {
-        shift_p[t++] = block_p[s++];
+        shift_p[o++] = block_p[i++];
     }
-    for (a_size t = block_n, s = start; s;)
+    for (a_size o = block_n, i = start; i;)
     {
-        block_p[--t] = block_p[--s];
+        block_p[--o] = block_p[--i];
     }
     for (a_size i = 0; i != shift; ++i)
     {
@@ -108,11 +108,8 @@ void a_float_roll(a_float *block_p, a_size block_n,
 a_float a_float_mean(a_float const *p, a_size n)
 {
     a_float res = 0;
-    if (n)
-    {
-        a_float const inv = 1 / (a_float)n;
-        for (; n; --n, ++p) { res += *p * inv; }
-    }
+    a_float const inv = 1 / (a_float)n;
+    for (; n; --n, ++p) { res += *p * inv; }
     return res;
 }
 
