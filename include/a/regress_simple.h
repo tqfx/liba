@@ -89,7 +89,7 @@ struct a_regress_simple
     a_float coef; // regression coefficient
     a_float bias; // intercept
 #if defined(__cplusplus)
-    A_INLINE void init(a_float a, a_float b = 0)
+    A_INLINE void init(a_float a = 1, a_float b = 0)
     {
         a_regress_simple_init(this, a, b);
     }

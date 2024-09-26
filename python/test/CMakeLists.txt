@@ -37,6 +37,8 @@ unittest(pid_neuro pid_neuro)
 
 unittest(poly poly)
 
+unittest(regress_simple regress_simple)
+
 unittest(tf tf)
 
 unittest(trajbell trajbell)

@@ -908,6 +908,66 @@ def poly_evar(object x, const a_float[::1] a):
         return r
     return a_poly_evar(&a[0], a.shape[0], x)
 
+from a.regress_simple cimport *
+
+cdef class regress_simple:
+    cdef a_regress_simple ctx
+    def __init__(self, a_float coef=1, a_float bias=0):
+        a_regress_simple_init(&self.ctx, coef, bias)
+    def eval(self, object x):
+        cdef array r
+        cdef a_diff i
+        cdef a_float *q
+        cdef const a_float[::1] p
+        if PyObject_HasAttrString(x, "__len__"):
+            p = x
+            r = num_new(p.shape[0])
+            q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
+            for i in prange(p.shape[0], nogil=True):
+                q[i] = a_regress_simple_eval(&self.ctx, p[i])
+            return r
+        return a_regress_simple_eval(&self.ctx, x)
+    def evar(self, object y):
+        cdef array r
+        cdef a_diff i
+        cdef a_float *q
+        cdef const a_float[::1] p
+        if PyObject_HasAttrString(y, "__len__"):
+            p = y
+            r = num_new(p.shape[0])
+            q = <a_float *>r.data
+            A_ASSUME(p.shape[0])
+            for i in prange(p.shape[0], nogil=True):
+                q[i] = a_regress_simple_evar(&self.ctx, p[i])
+            return r
+        return a_regress_simple_evar(&self.ctx, y)
+    def ols_(self, const a_float[::1] x, const a_float[::1] y, a_float x_mean, a_float y_mean):
+        a_regress_simple_ols_(&self.ctx, x.shape[0], &x[0], &y[0], x_mean, y_mean)
+        return self
+    def olsx(self, const a_float[::1] x, const a_float[::1] y, a_float x_mean):
+        a_regress_simple_olsx(&self.ctx, x.shape[0], &x[0], &y[0], x_mean)
+        return self
+    def olsy(self, const a_float[::1] x, const a_float[::1] y, a_float y_mean):
+        a_regress_simple_olsy(&self.ctx, x.shape[0], &x[0], &y[0], y_mean)
+        return self
+    def ols(self, const a_float[::1] x, const a_float[::1] y):
+        a_regress_simple_ols(&self.ctx, x.shape[0], &x[0], &y[0])
+        return self
+    def zero(self):
+        a_regress_simple_zero(&self.ctx)
+        return self
+    property coef:
+        def __get__(self):
+            return self.ctx.coef
+        def __set__(self, a_float coef):
+            self.ctx.coef = coef
+    property bias:
+        def __get__(self):
+            return self.ctx.bias
+        def __set__(self, a_float bias):
+            self.ctx.bias = bias
+
 from a.tf cimport *
 
 cdef class tf:
