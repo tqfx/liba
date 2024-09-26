@@ -1311,14 +1311,29 @@ A_EXTERN a_u32 a_hash_sdbm(void const *str, a_u32 val);
 A_EXTERN a_u32 a_hash_sdbm_(void const *ptr, a_size siz, a_u32 val);
 
 /*!
+ @brief roll back the elements of a float array and save the value
+ @param[in] p points to a float array
+ @param[in] n number of a float array
+ @param[in] x value
+*/
+A_EXTERN void a_float_push(a_float *p, a_size n, a_float x);
+
+/*!
  @brief roll back the elements of a float array and save the cache array
  @param[in] block_p points to a float array
  @param[in] block_n number of a float array
  @param[in] cache_p points to a cache array
  @param[in] cache_n number of a cache array
 */
-A_EXTERN void a_float_push(a_float *block_p, a_size block_n,
-                           a_float const *cache_p, a_size cache_n);
+A_EXTERN void a_float_push_(a_float *block_p, a_size block_n,
+                            a_float const *cache_p, a_size cache_n);
+
+/*!
+ @brief roll back the elements of a float array circularly
+ @param[in] p points to a float array
+ @param[in] n number of a float array
+*/
+A_EXTERN void a_float_roll(a_float *p, a_size n);
 
 /*!
  @brief roll back the elements of a float array circularly, array>>shift
@@ -1327,8 +1342,8 @@ A_EXTERN void a_float_push(a_float *block_p, a_size block_n,
  @param[in] shift_p points to a shift array
  @param[in] shift_n number of a shift array
 */
-A_EXTERN void a_float_roll(a_float *block_p, a_size block_n,
-                           a_float *shift_p, a_size shift_n);
+A_EXTERN void a_float_roll_(a_float *block_p, a_size block_n,
+                            a_float *shift_p, a_size shift_n);
 
 /*!
  @brief calculate the mean of a float array

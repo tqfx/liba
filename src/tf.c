@@ -27,7 +27,7 @@ void a_tf_init(a_tf *ctx,
 a_float a_tf_iter(a_tf const *ctx, a_float x)
 {
     a_float y = 0;
-    a_float_push(ctx->input, ctx->num_n, &x, 1);
+    a_float_push(ctx->input, ctx->num_n, x);
     for (unsigned int i = 0; i != ctx->num_n; ++i)
     {
         y += ctx->num_p[i] * ctx->input[i];
@@ -36,7 +36,7 @@ a_float a_tf_iter(a_tf const *ctx, a_float x)
     {
         y -= ctx->den_p[i] * ctx->output[i];
     }
-    a_float_push(ctx->output, ctx->den_n, &y, 1);
+    a_float_push(ctx->output, ctx->den_n, y);
     return y;
 }
 

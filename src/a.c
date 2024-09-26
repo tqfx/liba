@@ -72,8 +72,18 @@ a_u32 a_hash_sdbm_(void const *ptr_, a_size siz, a_u32 val)
     return val;
 }
 
-void a_float_push(a_float *block_p, a_size block_n,
-                  a_float const *cache_p, a_size cache_n)
+void a_float_push(a_float *p, a_size n, a_float x)
+{
+    if (n)
+    {
+        a_float *a = --p + n, *b = a - 1;
+        for (; b > p; a = b, --b) { *a = *b; }
+        *a = x;
+    }
+}
+
+void a_float_push_(a_float *block_p, a_size block_n,
+                   a_float const *cache_p, a_size cache_n)
 {
     a_size const n = A_MIN(cache_n, block_n);
     for (a_size o = block_n, i = block_n - n; i;)
@@ -86,8 +96,18 @@ void a_float_push(a_float *block_p, a_size block_n,
     }
 }
 
-void a_float_roll(a_float *block_p, a_size block_n,
-                  a_float *shift_p, a_size shift_n)
+void a_float_roll(a_float *p, a_size n)
+{
+    if (n)
+    {
+        a_float *a = --p + n, *b = a - 1, x;
+        for (x = *a; b > p; a = b, --b) { *a = *b; }
+        *a = x;
+    }
+}
+
+void a_float_roll_(a_float *block_p, a_size block_n,
+                   a_float *shift_p, a_size shift_n)
 {
     a_size const shift = shift_n % block_n;
     a_size const start = block_n - shift;

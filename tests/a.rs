@@ -18,6 +18,16 @@ fn hash() {
 }
 
 #[test]
+fn roll() {
+    let mut x = [1.0, 2.0, -3.0];
+    std::println!("{:?}", x);
+    liba::float_push(&mut x, 0.0);
+    std::println!("{:?}", x);
+    liba::float_roll(&mut x);
+    std::println!("{:?}", x);
+}
+
+#[test]
 fn sum() {
     let x = [1.0, 2.0, -3.0];
     std::println!(
