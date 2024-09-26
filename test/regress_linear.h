@@ -2,6 +2,7 @@
 #include "test.h"
 #include "a/regress_linear.h"
 #include "a/math.h"
+#include <string.h>
 #include <time.h>
 
 #define RAND_MAX_ 2147483647

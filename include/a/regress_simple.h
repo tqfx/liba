@@ -97,6 +97,10 @@ struct a_regress_simple
     {
         return a_regress_simple_eval(this, val);
     }
+    A_INLINE a_float evar(a_float val) const
+    {
+        return a_regress_simple_evar(this, val);
+    }
     A_INLINE void ols(a_size n, a_float const *x, a_float const *y, a_float x_mean, a_float y_mean)
     {
         a_regress_simple_ols_(this, n, x, y, x_mean, y_mean);

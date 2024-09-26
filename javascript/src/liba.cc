@@ -16,7 +16,7 @@ static emscripten::val js_concat(emscripten::val x)
 static a_float *js_array_num_get(emscripten::val const &x, a_float *p, a_size n)
 {
     a_size length = x["length"].as<a_size>();
-    n = (n < length ? length : n) * sizeof(a_float);
+    n = (length >= n ? length : n) * sizeof(a_float);
     p = a_cast_s(a_float *, a_alloc(p, n));
     for (a_size i = 0; i < length; ++i)
     {
@@ -632,6 +632,73 @@ struct pid_neuro: public a_pid_neuro
     A_INLINE a_float ec_r() const { return ec; }
 };
 
+#include "a/regress_simple.h"
+
+struct regress_simple: public a_regress_simple
+{
+    A_INLINE a_float coef_r() const { return coef; }
+    A_INLINE void coef_w(a_float coef_) { coef = coef_; }
+    A_INLINE a_float bias_r() const { return bias; }
+    A_INLINE void bias_w(a_float bias_) { bias = bias_; }
+    A_INLINE regress_simple(a_float a = 1, a_float b = 0)
+    {
+        a_regress_simple::init(a, b);
+    }
+    A_INLINE a_float eval(a_float val) const
+    {
+        return a_regress_simple::eval(val);
+    }
+    A_INLINE a_float evar(a_float val) const
+    {
+        return a_regress_simple::evar(val);
+    }
+    A_INLINE regress_simple *ols_(emscripten::val const &x_, emscripten::val const &y_, a_float x_mean, a_float y_mean)
+    {
+        a_size n = x_["length"].as<a_size>();
+        a_float *x = js_array_num_get(x_, nullptr, n);
+        a_float *y = js_array_num_get(y_, nullptr, n);
+        a_regress_simple::ols(n, x, y, x_mean, y_mean);
+        a_alloc(y, 0);
+        a_alloc(x, 0);
+        return this;
+    }
+    A_INLINE regress_simple *olsx(emscripten::val const &x_, emscripten::val const &y_, a_float x_mean)
+    {
+        a_size n = x_["length"].as<a_size>();
+        a_float *x = js_array_num_get(x_, nullptr, n);
+        a_float *y = js_array_num_get(y_, nullptr, n);
+        a_regress_simple::olsx(n, x, y, x_mean);
+        a_alloc(y, 0);
+        a_alloc(x, 0);
+        return this;
+    }
+    A_INLINE regress_simple *olsy(emscripten::val const &x_, emscripten::val const &y_, a_float y_mean)
+    {
+        a_size n = x_["length"].as<a_size>();
+        a_float *x = js_array_num_get(x_, nullptr, n);
+        a_float *y = js_array_num_get(y_, nullptr, n);
+        a_regress_simple::olsy(n, x, y, y_mean);
+        a_alloc(y, 0);
+        a_alloc(x, 0);
+        return this;
+    }
+    A_INLINE regress_simple *ols(emscripten::val const &x_, emscripten::val const &y_)
+    {
+        a_size n = x_["length"].as<a_size>();
+        a_float *x = js_array_num_get(x_, nullptr, n);
+        a_float *y = js_array_num_get(y_, nullptr, n);
+        a_regress_simple::ols(n, x, y);
+        a_alloc(y, 0);
+        a_alloc(x, 0);
+        return this;
+    }
+    A_INLINE regress_simple *zero()
+    {
+        a_regress_simple::zero();
+        return this;
+    }
+};
+
 #include "a/tf.h"
 
 struct tf: public a_tf
@@ -1048,6 +1115,19 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("fdb", &pid_neuro::fdb_r)
         .property("err", &pid_neuro::err_r)
         .property("ec", &pid_neuro::ec_r);
+    emscripten::class_<regress_simple>("regress_simple")
+        .constructor<>()
+        .constructor<a_float>()
+        .constructor<a_float, a_float>()
+        .function("eval", &regress_simple::eval)
+        .function("evar", &regress_simple::evar)
+        .function("ols_", &regress_simple::ols_, emscripten::allow_raw_pointers())
+        .function("olsx", &regress_simple::olsx, emscripten::allow_raw_pointers())
+        .function("olsy", &regress_simple::olsy, emscripten::allow_raw_pointers())
+        .function("ols", &regress_simple::ols, emscripten::allow_raw_pointers())
+        .function("zero", &regress_simple::zero, emscripten::allow_raw_pointers())
+        .property("coef", &regress_simple::coef_r, &regress_simple::coef_w)
+        .property("bias", &regress_simple::bias_r, &regress_simple::bias_w);
     emscripten::class_<tf>("tf")
         .constructor<emscripten::val, emscripten::val>()
         .function("set_num", &tf::set_num, emscripten::allow_raw_pointers())

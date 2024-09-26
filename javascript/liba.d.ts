@@ -611,6 +611,70 @@ declare namespace liba {
     readonly prototype: pid_neuro;
   };
 
+  interface regress_simple {
+    /** regression coefficient */
+    coef: number;
+    /** intercept */
+    bias: number;
+    /**
+     * calculate predicted value for simple linear regression
+     * @param val independent variable
+     * @return predicted value
+     */
+    eval(val: number): number;
+    /**
+     * calculate predicted value for simple linear regression
+     * @param val dependent variable
+     * @return predicted value
+     */
+    evar(val: number): number;
+    /**
+     * cordinary least squares for simple linear regression
+     * @param x predictor data, specified as a numeric matrix
+     * @param y response data, specified as a numeric vector
+     * @param x_mean mean of predictor data
+     * @param y_mean mean of response data
+     */
+    ols_(x: number[], y: number[], x_mean: number, y_mean: number): regress_simple;
+    /**
+     * cordinary least squares for simple linear regression
+     * @param x predictor data, specified as a numeric matrix
+     * @param y response data, specified as a numeric vector
+     * @param x_mean mean of predictor data
+     */
+    olsx(x: number[], y: number[], x_mean: number): regress_simple;
+    /**
+     * cordinary least squares for simple linear regression
+     * @param x predictor data, specified as a numeric matrix
+     * @param y response data, specified as a numeric vector
+     * @param y_mean mean of response data
+     */
+    olsy(x: number[], y: number[], y_mean: number): regress_simple;
+    /**
+     * cordinary least squares for simple linear regression
+     * @param x predictor data, specified as a numeric matrix
+     * @param y response data, specified as a numeric vector
+     */
+    ols(x: number[], y: number[]): regress_simple;
+    /** zeroing for simple linear regression */
+    zero(): regress_simple;
+    delete(): void;
+  }
+  /** constructor for simple linear regression */
+  let regress_simple: {
+    new(): regress_simple;
+    /**
+     * @param coef regression coefficient
+     */
+    new(coef: number): regress_simple;
+    /**
+     * @param coef regression coefficient
+     * @param bias intercept
+     */
+    new(coef: number, bias: number): regress_simple;
+    readonly prototype: regress_simple;
+  };
+
   interface tf {
     /** input for transfer function */
     readonly input: Float64Array | Float32Array;
@@ -632,7 +696,8 @@ declare namespace liba {
     set_den(den: number[]): tf;
     /**
      * calculate for transfer function
-     * @param x controller output
+     * @param x transfer function input
+     * @return transfer function output
      */
     iter(x: number): number;
     /** zeroing for transfer function */
