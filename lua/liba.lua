@@ -1095,6 +1095,112 @@ function liba.pid_neuro.inc(ctx, set, fdb) end
 ---@return number
 function pid_neuro:inc(set, fdb) end
 
+---@class a.regress_simple
+---@field coef number
+---@field bias number
+local regress_simple = {}
+---@class liba.regress_simple
+---@overload fun(coef: number, bias: number): a.regress_simple
+liba.regress_simple = {}
+
+---@param coef? number
+---@param bias? number
+---@return a.regress_simple
+function liba.regress_simple.new(coef, bias) end
+
+---@param coef? number
+---@param bias? number
+---@return a.regress_simple
+function regress_simple.new(coef, bias) end
+
+---@param ctx a.regress_simple
+---@param coef? number
+---@param bias? number
+---@return a.regress_simple
+function liba.regress_simple.init(ctx, coef, bias) end
+
+---@param coef? number
+---@param bias? number
+---@return a.regress_simple
+function regress_simple:init(coef, bias) end
+
+---@param ctx a.regress_simple
+---@param val number
+---@return number
+function liba.regress_simple.eval(ctx, val) end
+
+---@param val number
+---@return number
+function regress_simple:eval(val) end
+
+---@param ctx a.regress_simple
+---@param val number
+---@return number
+function liba.regress_simple.evar(ctx, val) end
+
+---@param val number
+---@return number
+function regress_simple:evar(val) end
+
+---@param ctx a.regress_simple
+---@param x table
+---@param y table
+---@param x_mean number
+---@param y_mean number
+---@return a.regress_simple
+function liba.regress_simple.ols_(ctx, x, y, x_mean, y_mean) end
+
+---@param x table
+---@param y table
+---@param x_mean number
+---@param y_mean number
+---@return a.regress_simple
+function regress_simple:ols_(x, y, x_mean, y_mean) end
+
+---@param ctx a.regress_simple
+---@param x table
+---@param y table
+---@param x_mean number
+---@return a.regress_simple
+function liba.regress_simple.olsx(ctx, x, y, x_mean) end
+
+---@param x table
+---@param y table
+---@param x_mean number
+---@return a.regress_simple
+function regress_simple:olsx(x, y, x_mean) end
+
+---@param ctx a.regress_simple
+---@param x table
+---@param y table
+---@param y_mean number
+---@return a.regress_simple
+function liba.regress_simple.olsy(ctx, x, y, y_mean) end
+
+---@param x table
+---@param y table
+---@param y_mean number
+---@return a.regress_simple
+function regress_simple:olsy(x, y, y_mean) end
+
+---@param ctx a.regress_simple
+---@param x table
+---@param y table
+---@return a.regress_simple
+function liba.regress_simple.ols(ctx, x, y) end
+
+---@param x table
+---@param y table
+---@return a.regress_simple
+function regress_simple:ols(x, y) end
+
+---@param ctx a.regress_simple
+---@return a.regress_simple
+function liba.regress_simple.zero(ctx) end
+
+---@return a.regress_simple
+function regress_simple:zero() end
+
 ---@class a.tf
 ---@field num table
 ---@field den table

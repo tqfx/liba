@@ -110,6 +110,7 @@ int js_liba_init(JSContext *ctx, JSModuleDef *m)
     js_liba_pid_init(ctx, m);
     js_liba_pid_fuzzy_init(ctx, m);
     js_liba_pid_neuro_init(ctx, m);
+    js_liba_regress_simple_init(ctx, m);
     js_liba_tf_init(ctx, m);
     js_liba_trajbell_init(ctx, m);
     js_liba_trajpoly3_init(ctx, m);
@@ -134,6 +135,7 @@ JSModuleDef *js_init_module(JSContext *ctx, char const *module_name)
         JS_AddModuleExport(ctx, m, "pid");
         JS_AddModuleExport(ctx, m, "pid_fuzzy");
         JS_AddModuleExport(ctx, m, "pid_neuro");
+        JS_AddModuleExport(ctx, m, "regress_simple");
         JS_AddModuleExport(ctx, m, "tf");
         JS_AddModuleExport(ctx, m, "trajbell");
         JS_AddModuleExport(ctx, m, "trajpoly3");

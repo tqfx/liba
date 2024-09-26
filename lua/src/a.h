@@ -156,6 +156,7 @@ A_PUBLIC int luaopen_liba_mf(lua_State *L);
 A_PUBLIC int luaopen_liba_pid(lua_State *L);
 A_PUBLIC int luaopen_liba_pid_fuzzy(lua_State *L);
 A_PUBLIC int luaopen_liba_pid_neuro(lua_State *L);
+A_PUBLIC int luaopen_liba_regress_simple(lua_State *L);
 A_PUBLIC int luaopen_liba_tf(lua_State *L);
 A_PUBLIC int luaopen_liba_trajbell(lua_State *L);
 A_PUBLIC int luaopen_liba_trajpoly3(lua_State *L);
