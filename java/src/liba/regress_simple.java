@@ -73,7 +73,7 @@ public class regress_simple {
     /**
      * calculate predicted value for simple linear regression
      *
-     * @param x predictor data, specified as a numeric matrix
+     * @param x predictor data, specified as a numeric vector
      * @param y response data, specified as a numeric vector
      * @param x_mean mean of predictor data
      * @param y_mean mean of response data
@@ -84,7 +84,7 @@ public class regress_simple {
     /**
      * calculate predicted value for simple linear regression
      *
-     * @param x predictor data, specified as a numeric matrix
+     * @param x predictor data, specified as a numeric vector
      * @param y response data, specified as a numeric vector
      * @param x_mean mean of predictor data
      * @return {@link regress_simple}
@@ -94,7 +94,7 @@ public class regress_simple {
     /**
      * calculate predicted value for simple linear regression
      *
-     * @param x predictor data, specified as a numeric matrix
+     * @param x predictor data, specified as a numeric vector
      * @param y response data, specified as a numeric vector
      * @param y_mean mean of response data
      * @return {@link regress_simple}
@@ -104,7 +104,7 @@ public class regress_simple {
     /**
      * calculate predicted value for simple linear regression
      *
-     * @param x predictor data, specified as a numeric matrix
+     * @param x predictor data, specified as a numeric vector
      * @param y response data, specified as a numeric vector
      * @return {@link regress_simple}
      */

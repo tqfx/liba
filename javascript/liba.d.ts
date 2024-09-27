@@ -630,7 +630,7 @@ declare namespace liba {
     evar(val: number): number;
     /**
      * cordinary least squares for simple linear regression
-     * @param x predictor data, specified as a numeric matrix
+     * @param x predictor data, specified as a numeric vector
      * @param y response data, specified as a numeric vector
      * @param x_mean mean of predictor data
      * @param y_mean mean of response data
@@ -638,21 +638,21 @@ declare namespace liba {
     ols_(x: number[], y: number[], x_mean: number, y_mean: number): regress_simple;
     /**
      * cordinary least squares for simple linear regression
-     * @param x predictor data, specified as a numeric matrix
+     * @param x predictor data, specified as a numeric vector
      * @param y response data, specified as a numeric vector
      * @param x_mean mean of predictor data
      */
     olsx(x: number[], y: number[], x_mean: number): regress_simple;
     /**
      * cordinary least squares for simple linear regression
-     * @param x predictor data, specified as a numeric matrix
+     * @param x predictor data, specified as a numeric vector
      * @param y response data, specified as a numeric vector
      * @param y_mean mean of response data
      */
     olsy(x: number[], y: number[], y_mean: number): regress_simple;
     /**
      * cordinary least squares for simple linear regression
-     * @param x predictor data, specified as a numeric matrix
+     * @param x predictor data, specified as a numeric vector
      * @param y response data, specified as a numeric vector
      */
     ols(x: number[], y: number[]): regress_simple;

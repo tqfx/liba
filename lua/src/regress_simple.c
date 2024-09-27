@@ -84,7 +84,7 @@ int liba_regress_simple_evar(lua_State *L)
 /***
  ordinary least squares for simple linear regression
  @tparam a.regress_simple ctx simple linear regression userdata
- @tparam table x predictor data, specified as a numeric matrix
+ @tparam table x predictor data, specified as a numeric vector
  @tparam table y response data, specified as a numeric vector
  @tparam number x_mean mean of predictor data
  @tparam number y_mean mean of response data
@@ -117,7 +117,7 @@ int liba_regress_simple_ols_(lua_State *L)
 /***
  ordinary least squares for simple linear regression
  @tparam a.regress_simple ctx simple linear regression userdata
- @tparam table x predictor data, specified as a numeric matrix
+ @tparam table x predictor data, specified as a numeric vector
  @tparam table y response data, specified as a numeric vector
  @tparam number x_mean mean of predictor data
  @treturn a.regress_simple simple linear regression userdata
@@ -148,7 +148,7 @@ int liba_regress_simple_olsx(lua_State *L)
 /***
  ordinary least squares for simple linear regression
  @tparam a.regress_simple ctx simple linear regression userdata
- @tparam table x predictor data, specified as a numeric matrix
+ @tparam table x predictor data, specified as a numeric vector
  @tparam table y response data, specified as a numeric vector
  @tparam number y_mean mean of response data
  @treturn a.regress_simple simple linear regression userdata
@@ -179,7 +179,7 @@ int liba_regress_simple_olsy(lua_State *L)
 /***
  ordinary least squares for simple linear regression
  @tparam a.regress_simple ctx simple linear regression userdata
- @tparam table x predictor data, specified as a numeric matrix
+ @tparam table x predictor data, specified as a numeric vector
  @tparam table y response data, specified as a numeric vector
  @treturn a.regress_simple simple linear regression userdata
  @function ols
