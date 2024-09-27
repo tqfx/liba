@@ -25,7 +25,6 @@ BraceWrapping:
 ColumnLimit: 0
 IndentWidth: 4
 KeepEmptyLinesAtTheStartOfBlocks: false
-ObjCBlockIndentWidth: 4
 ReflowComments: false
 SortIncludes: false
 SpaceBeforeCtorInitializerColon: false
