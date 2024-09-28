@@ -88,24 +88,12 @@ pub fn f64_rsqrt(x: f64) -> f64 {
 }
 
 extern "C" {
-    fn a_float_push(p: *mut float, n: usize, x: float);
-    fn a_float_roll(p: *mut float, n: usize);
     fn a_float_sum(p: *const float, n: usize) -> float;
     fn a_float_sum1(p: *const float, n: usize) -> float;
     fn a_float_sum2(p: *const float, n: usize) -> float;
     fn a_float_mean(p: *const float, n: usize) -> float;
 }
 
-/// roll back the elements of a float array and save the value
-#[inline(always)]
-pub fn float_push(x: &mut [float], v: float) {
-    unsafe { a_float_push(x.as_mut_ptr(), x.len(), v) }
-}
-/// roll back the elements of a float array circularly
-#[inline(always)]
-pub fn float_roll(x: &mut [float]) {
-    unsafe { a_float_roll(x.as_mut_ptr(), x.len()) }
-}
 /// calculate the sum of a float array
 #[inline(always)]
 pub fn float_sum(x: &[float]) -> float {

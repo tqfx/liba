@@ -1311,39 +1311,73 @@ A_EXTERN a_u32 a_hash_sdbm(void const *str, a_u32 val);
 A_EXTERN a_u32 a_hash_sdbm_(void const *ptr, a_size siz, a_u32 val);
 
 /*!
- @brief roll back the elements of a float array and save the value
+ @brief push an element into the front of a float array
  @param[in] p points to a float array
  @param[in] n number of a float array
  @param[in] x value
 */
-A_EXTERN void a_float_push(a_float *p, a_size n, a_float x);
+A_EXTERN void a_float_push_fore(a_float *p, a_size n, a_float x);
+/*!
+ @brief push an element into the end of a float array
+ @param[in] p points to a float array
+ @param[in] n number of a float array
+ @param[in] x value
+*/
+A_EXTERN void a_float_push_back(a_float *p, a_size n, a_float x);
 
 /*!
- @brief roll back the elements of a float array and save the cache array
+ @brief push the elements into the front of a float array
  @param[in] block_p points to a float array
  @param[in] block_n number of a float array
  @param[in] cache_p points to a cache array
  @param[in] cache_n number of a cache array
 */
-A_EXTERN void a_float_push_(a_float *block_p, a_size block_n,
-                            a_float const *cache_p, a_size cache_n);
+A_EXTERN void a_float_push_fore_(a_float *block_p, a_size block_n,
+                                 a_float const *cache_p, a_size cache_n);
 
 /*!
- @brief roll back the elements of a float array circularly
+ @brief push the elements into the end of a float array
+ @param[in] block_p points to a float array
+ @param[in] block_n number of a float array
+ @param[in] cache_p points to a cache array
+ @param[in] cache_n number of a cache array
+*/
+A_EXTERN void a_float_push_back_(a_float *block_p, a_size block_n,
+                                 a_float const *cache_p, a_size cache_n);
+
+/*!
+ @brief roll forward the elements of a float array circularly
  @param[in] p points to a float array
  @param[in] n number of a float array
 */
-A_EXTERN void a_float_roll(a_float *p, a_size n);
+A_EXTERN void a_float_roll_fore(a_float *p, a_size n);
 
 /*!
- @brief roll back the elements of a float array circularly, array>>shift
+ @brief roll backward the elements of a float array circularly
+ @param[in] p points to a float array
+ @param[in] n number of a float array
+*/
+A_EXTERN void a_float_roll_back(a_float *p, a_size n);
+
+/*!
+ @brief roll forward the elements of a float array circularly
  @param[in] block_p points to a float array
  @param[in] block_n number of a float array
  @param[in] shift_p points to a shift array
  @param[in] shift_n number of a shift array
 */
-A_EXTERN void a_float_roll_(a_float *block_p, a_size block_n,
-                            a_float *shift_p, a_size shift_n);
+A_EXTERN void a_float_roll_fore_(a_float *block_p, a_size block_n,
+                                 a_float *shift_p, a_size shift_n);
+
+/*!
+ @brief roll backward the elements of a float array circularly
+ @param[in] block_p points to a float array
+ @param[in] block_n number of a float array
+ @param[in] shift_p points to a shift array
+ @param[in] shift_n number of a shift array
+*/
+A_EXTERN void a_float_roll_back_(a_float *block_p, a_size block_n,
+                                 a_float *shift_p, a_size shift_n);
 
 /*!
  @brief calculate the mean of a float array

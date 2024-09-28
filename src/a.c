@@ -72,57 +72,88 @@ a_u32 a_hash_sdbm_(void const *ptr_, a_size siz, a_u32 val)
     return val;
 }
 
-void a_float_push(a_float *p, a_size n, a_float x)
+void a_float_push_fore(a_float *p, a_size n, a_float x)
 {
-    if (n)
+    if (n--)
     {
-        a_float *a = --p + n, *b = a - 1;
-        for (; b > p; a = b, --b) { *a = *b; }
-        *a = x;
+        a_move(p + 1, p, sizeof(a_float) * n);
+        p[0] = x;
     }
 }
 
-void a_float_push_(a_float *block_p, a_size block_n,
-                   a_float const *cache_p, a_size cache_n)
+void a_float_push_back(a_float *p, a_size n, a_float x)
+{
+    if (n--)
+    {
+        a_move(p, p + 1, sizeof(a_float) * n);
+        p[n] = x;
+    }
+}
+
+void a_float_push_fore_(a_float *block_p, a_size block_n,
+                        a_float const *cache_p, a_size cache_n)
 {
     a_size const n = A_MIN(cache_n, block_n);
-    for (a_size o = block_n, i = block_n - n; i;)
-    {
-        block_p[--o] = block_p[--i];
-    }
-    for (a_size i = 0; i != n; ++i)
-    {
-        block_p[i] = cache_p[i];
-    }
-}
-
-void a_float_roll(a_float *p, a_size n)
-{
     if (n)
     {
-        a_float *a = --p + n, *b = a - 1, x;
-        for (x = *a; b > p; a = b, --b) { *a = *b; }
-        *a = x;
+        a_size const m = block_n - n;
+        cache_p = cache_p + cache_n - n;
+        a_move(block_p + n, block_p, sizeof(a_float) * m);
+        a_copy(block_p, cache_p, sizeof(a_float) * n);
     }
 }
 
-void a_float_roll_(a_float *block_p, a_size block_n,
-                   a_float *shift_p, a_size shift_n)
+void a_float_push_back_(a_float *block_p, a_size block_n,
+                        a_float const *cache_p, a_size cache_n)
+{
+    a_size const n = A_MIN(cache_n, block_n);
+    if (n)
+    {
+        a_size const m = block_n - n;
+        cache_p = cache_p + cache_n - n;
+        a_move(block_p, block_p + n, sizeof(a_float) * m);
+        a_copy(block_p + m, cache_p, sizeof(a_float) * n);
+    }
+}
+
+void a_float_roll_fore(a_float *p, a_size n)
+{
+    if (n--)
+    {
+        a_float x = p[0];
+        a_move(p, p + 1, sizeof(a_float) * n);
+        p[n] = x;
+    }
+}
+
+void a_float_roll_back(a_float *p, a_size n)
+{
+    if (n--)
+    {
+        a_float x = p[n];
+        a_move(p + 1, p, sizeof(a_float) * n);
+        p[0] = x;
+    }
+}
+
+void a_float_roll_fore_(a_float *block_p, a_size block_n,
+                        a_float *shift_p, a_size shift_n)
 {
     a_size const shift = shift_n % block_n;
     a_size const start = block_n - shift;
-    for (a_size o = 0, i = start; o != shift;)
-    {
-        shift_p[o++] = block_p[i++];
-    }
-    for (a_size o = block_n, i = start; i;)
-    {
-        block_p[--o] = block_p[--i];
-    }
-    for (a_size i = 0; i != shift; ++i)
-    {
-        block_p[i] = shift_p[i];
-    }
+    a_copy(shift_p, block_p, sizeof(a_float) * shift);
+    a_move(block_p, block_p + shift, sizeof(a_float) * start);
+    a_copy(block_p + start, shift_p, sizeof(a_float) * shift);
+}
+
+void a_float_roll_back_(a_float *block_p, a_size block_n,
+                        a_float *shift_p, a_size shift_n)
+{
+    a_size const shift = shift_n % block_n;
+    a_size const start = block_n - shift;
+    a_copy(shift_p, block_p + start, sizeof(a_float) * shift);
+    a_move(block_p + shift, block_p, sizeof(a_float) * start);
+    a_copy(block_p, shift_p, sizeof(a_float) * shift);
 }
 
 a_float a_float_mean(a_float const *p, a_size n)
