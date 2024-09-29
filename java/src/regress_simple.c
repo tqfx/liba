@@ -73,9 +73,11 @@ JNIEXPORT jobject JNICALL Java_liba_regress_1simple_ols(JNIEnv *Env, jobject Obj
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_regress_simple *ctx = (a_regress_simple *)(*Env)->GetDirectBufferAddress(Env, Ctx);
+    a_size x_n = (a_size)(*Env)->GetArrayLength(Env, X);
+    a_size y_n = (a_size)(*Env)->GetArrayLength(Env, Y);
     jdouble *x = (*Env)->GetDoubleArrayElements(Env, X, NULL);
     jdouble *y = (*Env)->GetDoubleArrayElements(Env, Y, NULL);
-    a_regress_simple_ols(ctx, (a_size)(*Env)->GetArrayLength(Env, X), x, y);
+    a_regress_simple_ols(ctx, A_MIN(x_n, y_n), x, y);
     (*Env)->ReleaseDoubleArrayElements(Env, X, x, JNI_ABORT);
     (*Env)->ReleaseDoubleArrayElements(Env, Y, y, JNI_ABORT);
     return Obj;
@@ -85,9 +87,11 @@ JNIEXPORT jobject JNICALL Java_liba_regress_1simple_ols_1(JNIEnv *Env, jobject O
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_regress_simple *ctx = (a_regress_simple *)(*Env)->GetDirectBufferAddress(Env, Ctx);
+    a_size x_n = (a_size)(*Env)->GetArrayLength(Env, X);
+    a_size y_n = (a_size)(*Env)->GetArrayLength(Env, Y);
     jdouble *x = (*Env)->GetDoubleArrayElements(Env, X, NULL);
     jdouble *y = (*Env)->GetDoubleArrayElements(Env, Y, NULL);
-    a_regress_simple_ols_(ctx, (a_size)(*Env)->GetArrayLength(Env, X), x, y, x_mean, y_mean);
+    a_regress_simple_ols_(ctx, A_MIN(x_n, y_n), x, y, x_mean, y_mean);
     (*Env)->ReleaseDoubleArrayElements(Env, X, x, JNI_ABORT);
     (*Env)->ReleaseDoubleArrayElements(Env, Y, y, JNI_ABORT);
     return Obj;
@@ -97,9 +101,11 @@ JNIEXPORT jobject JNICALL Java_liba_regress_1simple_olsx(JNIEnv *Env, jobject Ob
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_regress_simple *ctx = (a_regress_simple *)(*Env)->GetDirectBufferAddress(Env, Ctx);
+    a_size x_n = (a_size)(*Env)->GetArrayLength(Env, X);
+    a_size y_n = (a_size)(*Env)->GetArrayLength(Env, Y);
     jdouble *x = (*Env)->GetDoubleArrayElements(Env, X, NULL);
     jdouble *y = (*Env)->GetDoubleArrayElements(Env, Y, NULL);
-    a_regress_simple_olsx(ctx, (a_size)(*Env)->GetArrayLength(Env, X), x, y, x_mean);
+    a_regress_simple_olsx(ctx, A_MIN(x_n, y_n), x, y, x_mean);
     (*Env)->ReleaseDoubleArrayElements(Env, X, x, JNI_ABORT);
     (*Env)->ReleaseDoubleArrayElements(Env, Y, y, JNI_ABORT);
     return Obj;
@@ -109,9 +115,11 @@ JNIEXPORT jobject JNICALL Java_liba_regress_1simple_olsy(JNIEnv *Env, jobject Ob
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_regress_simple *ctx = (a_regress_simple *)(*Env)->GetDirectBufferAddress(Env, Ctx);
+    a_size x_n = (a_size)(*Env)->GetArrayLength(Env, X);
+    a_size y_n = (a_size)(*Env)->GetArrayLength(Env, Y);
     jdouble *x = (*Env)->GetDoubleArrayElements(Env, X, NULL);
     jdouble *y = (*Env)->GetDoubleArrayElements(Env, Y, NULL);
-    a_regress_simple_olsy(ctx, (a_size)(*Env)->GetArrayLength(Env, X), x, y, y_mean);
+    a_regress_simple_olsy(ctx, A_MIN(x_n, y_n), x, y, y_mean);
     (*Env)->ReleaseDoubleArrayElements(Env, X, x, JNI_ABORT);
     (*Env)->ReleaseDoubleArrayElements(Env, Y, y, JNI_ABORT);
     return Obj;

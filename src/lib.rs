@@ -947,25 +947,29 @@ impl regress_simple {
     /// ordinary least squares for simple linear regression
     #[inline(always)]
     pub fn ols_(&mut self, x: &[float], y: &[float], x_mean: float, y_mean: float) -> &mut Self {
-        unsafe { a_regress_simple_ols_(self, x.len(), x.as_ptr(), y.as_ptr(), x_mean, y_mean) };
+        let n = x.len().min(y.len());
+        unsafe { a_regress_simple_ols_(self, n, x.as_ptr(), y.as_ptr(), x_mean, y_mean) };
         self
     }
     /// ordinary least squares for simple linear regression
     #[inline(always)]
     pub fn olsx(&mut self, x: &[float], y: &[float], x_mean: float) -> &mut Self {
-        unsafe { a_regress_simple_olsx(self, x.len(), x.as_ptr(), y.as_ptr(), x_mean) };
+        let n = x.len().min(y.len());
+        unsafe { a_regress_simple_olsx(self, n, x.as_ptr(), y.as_ptr(), x_mean) };
         self
     }
     /// ordinary least squares for simple linear regression
     #[inline(always)]
     pub fn olsy(&mut self, x: &[float], y: &[float], y_mean: float) -> &mut Self {
-        unsafe { a_regress_simple_olsy(self, x.len(), x.as_ptr(), y.as_ptr(), y_mean) };
+        let n = x.len().min(y.len());
+        unsafe { a_regress_simple_olsy(self, n, x.as_ptr(), y.as_ptr(), y_mean) };
         self
     }
     /// ordinary least squares for simple linear regression
     #[inline(always)]
     pub fn ols(&mut self, x: &[float], y: &[float]) -> &mut Self {
-        unsafe { a_regress_simple_ols(self, x.len(), x.as_ptr(), y.as_ptr()) };
+        let n = x.len().min(y.len());
+        unsafe { a_regress_simple_ols(self, n, x.as_ptr(), y.as_ptr()) };
         self
     }
     /// zeroing for simple linear regression

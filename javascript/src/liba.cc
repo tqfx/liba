@@ -654,40 +654,44 @@ struct regress_simple: public a_regress_simple
     }
     A_INLINE regress_simple *ols_(emscripten::val const &x_, emscripten::val const &y_, a_float x_mean, a_float y_mean)
     {
-        a_size n = x_["length"].as<a_size>();
-        a_float *x = js_array_num_get(x_, nullptr, n);
-        a_float *y = js_array_num_get(y_, nullptr, n);
-        a_regress_simple::ols(n, x, y, x_mean, y_mean);
+        a_size x_n = x_["length"].as<a_size>();
+        a_size y_n = y_["length"].as<a_size>();
+        a_float *x = js_array_num_get(x_, nullptr, x_n);
+        a_float *y = js_array_num_get(y_, nullptr, y_n);
+        a_regress_simple::ols(A_MIN(x_n, y_n), x, y, x_mean, y_mean);
         a_alloc(y, 0);
         a_alloc(x, 0);
         return this;
     }
     A_INLINE regress_simple *olsx(emscripten::val const &x_, emscripten::val const &y_, a_float x_mean)
     {
-        a_size n = x_["length"].as<a_size>();
-        a_float *x = js_array_num_get(x_, nullptr, n);
-        a_float *y = js_array_num_get(y_, nullptr, n);
-        a_regress_simple::olsx(n, x, y, x_mean);
+        a_size x_n = x_["length"].as<a_size>();
+        a_size y_n = y_["length"].as<a_size>();
+        a_float *x = js_array_num_get(x_, nullptr, x_n);
+        a_float *y = js_array_num_get(y_, nullptr, y_n);
+        a_regress_simple::olsx(A_MIN(x_n, y_n), x, y, x_mean);
         a_alloc(y, 0);
         a_alloc(x, 0);
         return this;
     }
     A_INLINE regress_simple *olsy(emscripten::val const &x_, emscripten::val const &y_, a_float y_mean)
     {
-        a_size n = x_["length"].as<a_size>();
-        a_float *x = js_array_num_get(x_, nullptr, n);
-        a_float *y = js_array_num_get(y_, nullptr, n);
-        a_regress_simple::olsy(n, x, y, y_mean);
+        a_size x_n = x_["length"].as<a_size>();
+        a_size y_n = y_["length"].as<a_size>();
+        a_float *x = js_array_num_get(x_, nullptr, x_n);
+        a_float *y = js_array_num_get(y_, nullptr, y_n);
+        a_regress_simple::olsy(A_MIN(x_n, y_n), x, y, y_mean);
         a_alloc(y, 0);
         a_alloc(x, 0);
         return this;
     }
     A_INLINE regress_simple *ols(emscripten::val const &x_, emscripten::val const &y_)
     {
-        a_size n = x_["length"].as<a_size>();
-        a_float *x = js_array_num_get(x_, nullptr, n);
-        a_float *y = js_array_num_get(y_, nullptr, n);
-        a_regress_simple::ols(n, x, y);
+        a_size x_n = x_["length"].as<a_size>();
+        a_size y_n = y_["length"].as<a_size>();
+        a_float *x = js_array_num_get(x_, nullptr, x_n);
+        a_float *y = js_array_num_get(y_, nullptr, y_n);
+        a_regress_simple::ols(A_MIN(x_n, y_n), x, y);
         a_alloc(y, 0);
         a_alloc(x, 0);
         return this;
