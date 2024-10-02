@@ -55,13 +55,13 @@ static void main_1(int m, a_float a, a_float b, a_size n, config const *cfg)
         a_float lrcur = 0;
         a_float const lramp = (cfg->lrmax - cfg->lrmin) / 2;
         a_float const lrper = A_FLOAT_PI / a_float_c(cfg->lrtim);
-        a_regress_linear_err1(&ctx, n, x, y, e);
+        a_regress_linear_err(&ctx, n, x, y, e);
         a_float r = a_float_sum2(e, n);
         for (a_size i = 0; i < cfg->epoch; ++i)
         {
             a_float alpha = cfg->lrmin + lramp * (a_float_cos(lrcur) + 1);
-            a_regress_linear_sgd1(&ctx, n, x, y, alpha);
-            a_regress_linear_err1(&ctx, n, x, y, e);
+            a_regress_linear_sgd(&ctx, n, x, y, alpha);
+            a_regress_linear_err(&ctx, n, x, y, e);
             a_float s = a_float_sum2(e, n);
             if (A_ABS_(r, s) < cfg->delta)
             {
@@ -77,13 +77,13 @@ static void main_1(int m, a_float a, a_float b, a_size n, config const *cfg)
         a_float lrcur = 0;
         a_float const lramp = (cfg->lrmax - cfg->lrmin) / 2;
         a_float const lrper = A_FLOAT_PI / a_float_c(cfg->lrtim);
-        a_regress_linear_err1(&ctx, n, x, y, e);
+        a_regress_linear_err(&ctx, n, x, y, e);
         a_float r = a_float_sum2(e, n);
         for (a_size i = 0; i < cfg->epoch; ++i)
         {
             a_float alpha = cfg->lrmin + lramp * (a_float_cos(lrcur) + 1);
-            a_regress_linear_bgd1(&ctx, n, x, e, alpha);
-            a_regress_linear_err1(&ctx, n, x, y, e);
+            a_regress_linear_bgd(&ctx, n, x, e, alpha);
+            a_regress_linear_err(&ctx, n, x, y, e);
             a_float s = a_float_sum2(e, n);
             if (A_ABS_(r, s) < cfg->delta)
             {
@@ -95,7 +95,7 @@ static void main_1(int m, a_float a, a_float b, a_size n, config const *cfg)
         break;
     }
     case 'm':
-        a_regress_linear_mgd1(&ctx, n, x, y, e, cfg->delta, cfg->lrmax, cfg->lrmin, cfg->lrtim, cfg->epoch, cfg->batch);
+        a_regress_linear_mgd(&ctx, n, x, y, e, cfg->delta, cfg->lrmax, cfg->lrmin, cfg->lrtim, cfg->epoch, cfg->batch);
     }
 
     for (unsigned int i = 0; i < n; ++i)
@@ -144,13 +144,13 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, config cons
         a_float lrcur = 0;
         a_float const lramp = (cfg->lrmax - cfg->lrmin) / 2;
         a_float const lrper = A_FLOAT_PI / a_float_c(cfg->lrtim);
-        a_regress_linear_err1(&ctx, n, x, y, e);
+        a_regress_linear_err(&ctx, n, x, y, e);
         a_float r = a_float_sum2(e, n);
         for (a_size i = 0; i < cfg->epoch; ++i)
         {
             a_float alpha = cfg->lrmin + lramp * (a_float_cos(lrcur) + 1);
-            a_regress_linear_sgd1(&ctx, n, x, y, alpha);
-            a_regress_linear_err1(&ctx, n, x, y, e);
+            a_regress_linear_sgd(&ctx, n, x, y, alpha);
+            a_regress_linear_err(&ctx, n, x, y, e);
             a_float s = a_float_sum2(e, n);
             if (A_ABS_(r, s) < cfg->delta)
             {
@@ -166,13 +166,13 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, config cons
         a_float lrcur = 0;
         a_float const lramp = (cfg->lrmax - cfg->lrmin) / 2;
         a_float const lrper = A_FLOAT_PI / a_float_c(cfg->lrtim);
-        a_regress_linear_err1(&ctx, n, x, y, e);
+        a_regress_linear_err(&ctx, n, x, y, e);
         a_float r = a_float_sum2(e, n);
         for (a_size i = 0; i < cfg->epoch; ++i)
         {
             a_float alpha = cfg->lrmin + lramp * (a_float_cos(lrcur) + 1);
-            a_regress_linear_bgd1(&ctx, n, x, e, alpha);
-            a_regress_linear_err1(&ctx, n, x, y, e);
+            a_regress_linear_bgd(&ctx, n, x, e, alpha);
+            a_regress_linear_err(&ctx, n, x, y, e);
             a_float s = a_float_sum2(e, n);
             if (A_ABS_(r, s) < cfg->delta)
             {
@@ -184,7 +184,7 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, config cons
         break;
     }
     case 'm':
-        a_regress_linear_mgd1(&ctx, n, x, y, e, cfg->delta, cfg->lrmax, cfg->lrmin, cfg->lrtim, cfg->epoch, cfg->batch);
+        a_regress_linear_mgd(&ctx, n, x, y, e, cfg->delta, cfg->lrmax, cfg->lrmin, cfg->lrtim, cfg->epoch, cfg->batch);
     }
 
     for (unsigned int i = 0; i < n; ++i)
@@ -240,11 +240,11 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         if (s) { sscanf(s, "regress_linear_%i%c", &d, &m); } // NOLINT
         else
         {
-            debug("regress_linear_1bgd.csv\n");
             debug("regress_linear_1sgd.csv\n");
+            debug("regress_linear_1bgd.csv\n");
             debug("regress_linear_1mgd.csv\n");
-            debug("regress_linear_2bgd.csv\n");
             debug("regress_linear_2sgd.csv\n");
+            debug("regress_linear_2bgd.csv\n");
             debug("regress_linear_2mgd.csv\n");
             return 0;
         }
