@@ -38,7 +38,7 @@ static void main_1(int m, a_float a, a_float b, a_size n, config const *cfg)
     for (a_size i = 0; i < n; ++i)
     {
         x[i] = a_cast_s(a_float, rand_() % x_n);
-        y[i] = a * x[i] + b + a_cast_s(a_float, rand_() % y_n) - a_cast_s(a_float, n);
+        y[i] = a * x[i] + b + a_cast_s(a_float, rand_() % y_n) - a_cast_s(a_float, y_n >> 1);
     }
 
     a_float coef[] = {1};
@@ -127,7 +127,7 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, config cons
         x[i * 2 + 0] = a_cast_s(a_float, rand_() % x_n);
         x[i * 2 + 1] = a_cast_s(a_float, rand_() % x_n);
         y[i] = a * x[i * 2 + 0] + b * x[i * 2 + 1] + c +
-               a_cast_s(a_float, rand_() % y_n) - a_cast_s(a_float, n);
+               a_cast_s(a_float, rand_() % y_n) - a_cast_s(a_float, y_n >> 1);
     }
 
     a_float coef[2] = {1, 1};
@@ -224,7 +224,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     a_float c = 12;
     a_size n = 100;
     char m = 'm';
-    int d = 1;
+    int dim = 1;
 
     config cfg;
     cfg.delta = 1;
@@ -237,7 +237,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     if (argc > 1)
     {
         char const *s = strstr(argv[1], "regress_linear_");
-        if (s) { sscanf(s, "regress_linear_%i%c", &d, &m); } // NOLINT
+        if (s) { sscanf(s, "regress_linear_%i%c", &dim, &m); } // NOLINT
         else
         {
             debug("regress_linear_1sgd.csv\n");
@@ -251,14 +251,14 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     }
 
     char *endptr;
-    if (d == 1)
+    if (dim == 1)
     {
         if (argc > 2) { a = strtonum(argv[2], &endptr); }
         if (argc > 3) { c = strtonum(argv[3], &endptr); }
         if (argc > 4) { n = strtoul(argv[4], &endptr, 0); }
         main_1(m, a, c, n, &cfg);
     }
-    if (d == 2)
+    if (dim == 2)
     {
         if (argc > 2) { a = strtonum(argv[2], &endptr); }
         if (argc > 3) { b = strtonum(argv[3], &endptr); }

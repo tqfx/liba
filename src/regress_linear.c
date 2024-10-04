@@ -42,18 +42,17 @@ void a_regress_linear_gd(a_regress_linear *ctx, a_float const *input, a_float er
 
 void a_regress_linear_sgd(a_regress_linear *ctx, a_size n, a_float const *x, a_float const *y, a_float alpha)
 {
-    for (; n; --n, x += ctx->coef_n)
+    for (; n; --n, x += ctx->coef_n, ++y)
     {
-        a_float err = *y++ - a_regress_linear_eval(ctx, x);
-        a_regress_linear_gd(ctx, x, err, alpha);
+        a_regress_linear_gd(ctx, x, *y - a_regress_linear_eval(ctx, x), alpha);
     }
 }
 
 void a_regress_linear_bgd(a_regress_linear *ctx, a_size n, a_float const *x, a_float const *err, a_float alpha)
 {
-    for (alpha /= (a_float)n; n; --n, x += ctx->coef_n)
+    for (alpha /= (a_float)n; n; --n, x += ctx->coef_n, ++err)
     {
-        a_regress_linear_gd(ctx, x, *err++, alpha);
+        a_regress_linear_gd(ctx, x, *err, alpha);
     }
 }
 
@@ -63,18 +62,15 @@ a_float a_regress_linear_mgd(a_regress_linear *ctx, a_size n, a_float const *x_,
     a_float r, s = 0, lrcur = 0;
     a_float const lramp = (lrmax - lrmin) / 2;
     a_float const lrper = A_FLOAT_PI / (a_float)lrtim;
-    a_size const q_ = n / batch;
-    a_size const r_ = n % batch;
-    a_size xoffset = ctx->coef_n;
-    q_ ? (xoffset *= batch) : (batch = n);
+    a_size const q_ = n / batch, r_ = n % batch;
+    a_size const xoffset = batch * ctx->coef_n;
     a_regress_linear_err(ctx, n, x_, y_, err);
     r = a_float_sum2(err, n);
     for (; epoch; --epoch)
     {
-        a_float const *y = y_;
-        a_float const *x = x_;
+        a_float const *x = x_, *y = y_;
         a_float alpha = lrmin + lramp * (a_float_cos(lrcur) + 1);
-        for (a_size q = q_; q; --q, y += batch, x += xoffset)
+        for (a_size q = q_; q; --q, x += xoffset, y += batch)
         {
             a_regress_linear_err(ctx, batch, x, y, err);
             a_regress_linear_bgd(ctx, batch, x, err, alpha);
