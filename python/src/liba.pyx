@@ -943,28 +943,16 @@ cdef class regress_simple:
             return r
         return a_regress_simple_evar(&self.ctx, y)
     def ols_(self, const a_float[::1] x, const a_float[::1] y, a_float x_mean, a_float y_mean):
-        cdef a_size n = x.shape[0]
-        if y.shape[0] < n:
-            n = y.shape[0]
-        a_regress_simple_ols_(&self.ctx, n, &x[0], &y[0], x_mean, y_mean)
+        a_regress_simple_ols_(&self.ctx, min(x.shape[0], y.shape[0]), &x[0], &y[0], x_mean, y_mean)
         return self
     def olsx(self, const a_float[::1] x, const a_float[::1] y, a_float x_mean):
-        cdef a_size n = x.shape[0]
-        if y.shape[0] < n:
-            n = y.shape[0]
-        a_regress_simple_olsx(&self.ctx, n, &x[0], &y[0], x_mean)
+        a_regress_simple_olsx(&self.ctx, min(x.shape[0], y.shape[0]), &x[0], &y[0], x_mean)
         return self
     def olsy(self, const a_float[::1] x, const a_float[::1] y, a_float y_mean):
-        cdef a_size n = x.shape[0]
-        if y.shape[0] < n:
-            n = y.shape[0]
-        a_regress_simple_olsy(&self.ctx, n, &x[0], &y[0], y_mean)
+        a_regress_simple_olsy(&self.ctx, min(x.shape[0], y.shape[0]), &x[0], &y[0], y_mean)
         return self
     def ols(self, const a_float[::1] x, const a_float[::1] y):
-        cdef a_size n = x.shape[0]
-        if y.shape[0] < n:
-            n = y.shape[0]
-        a_regress_simple_ols(&self.ctx, n, &x[0], &y[0])
+        a_regress_simple_ols(&self.ctx, min(x.shape[0], y.shape[0]), &x[0], &y[0])
         return self
     def zero(self):
         a_regress_simple_zero(&self.ctx)
