@@ -21,7 +21,7 @@ cdef array u32_new(a_diff n):
         u32 = 'L'
     return array(shape=(n,), itemsize=4, format=u32, mode='c')
 
-cdef a_u32 *u32_set(void *p, object x):
+cdef a_u32 *u32_set(void *p, object x, int d):
     cdef a_u32 *r = <a_u32 *>p
     cdef object o = iter(x)
     cdef a_diff i = 0
@@ -30,7 +30,7 @@ cdef a_u32 *u32_set(void *p, object x):
         try:
             o = next(L[i])
             if PyObject_HasAttrString(o, "__len__"):
-                if len(L) < 8:
+                if len(L) < d:
                     o = iter(o)
                     L.append(o)
                     i += 1
@@ -42,15 +42,15 @@ cdef a_u32 *u32_set(void *p, object x):
             i -= 1
     return <a_u32 *>p
 
-cdef array new_u32_(object x):
-    cdef a_diff n = num_len(x)
+cdef array new_u32_(object x, int d):
+    cdef a_diff n = num_len(x, d)
     cdef array r = u32_new(n)
-    u32_set(r.data, x)
+    u32_set(r.data, x, d)
     return r
 
-cpdef array new_u32(object x):
+cpdef array new_u32(object x, int d=1):
     if PyObject_HasAttrString(x, "__len__"):
-        return new_u32_(x)
+        return new_u32_(x, d)
     return u32_new(x)
 
 cdef array u64_new(a_diff n):
@@ -59,7 +59,7 @@ cdef array u64_new(a_diff n):
         u64 = 'Q'
     return array(shape=(n,), itemsize=8, format=u64, mode='c')
 
-cdef a_u64 *u64_set(void *p, object x):
+cdef a_u64 *u64_set(void *p, object x, int d):
     cdef a_u64 *r = <a_u64 *>p
     cdef object o = iter(x)
     cdef a_diff i = 0
@@ -68,7 +68,7 @@ cdef a_u64 *u64_set(void *p, object x):
         try:
             o = next(L[i])
             if PyObject_HasAttrString(o, "__len__"):
-                if len(L) < 8:
+                if len(L) < d:
                     o = iter(o)
                     L.append(o)
                     i += 1
@@ -80,21 +80,21 @@ cdef a_u64 *u64_set(void *p, object x):
             i -= 1
     return <a_u64 *>p
 
-cdef array new_u64_(object x):
-    cdef a_diff n = num_len(x)
+cdef array new_u64_(object x, int d):
+    cdef a_diff n = num_len(x, d)
     cdef array r = u64_new(n)
-    u64_set(r.data, x)
+    u64_set(r.data, x, d)
     return r
 
-cpdef array new_u64(object x):
+cpdef array new_u64(object x, int d=1):
     if PyObject_HasAttrString(x, "__len__"):
-        return new_u64_(x)
+        return new_u64_(x, d)
     return u64_new(x)
 
 cdef array f32_new(a_diff n):
     return array(shape=(n,), itemsize=4, format='f', mode='c')
 
-cdef a_f32 *f32_set(void *p, object x):
+cdef a_f32 *f32_set(void *p, object x, int d):
     cdef a_f32 *r = <a_f32 *>p
     cdef object o = iter(x)
     cdef a_diff i = 0
@@ -103,7 +103,7 @@ cdef a_f32 *f32_set(void *p, object x):
         try:
             o = next(L[i])
             if PyObject_HasAttrString(o, "__len__"):
-                if len(L) < 8:
+                if len(L) < d:
                     o = iter(o)
                     L.append(o)
                     i += 1
@@ -115,21 +115,21 @@ cdef a_f32 *f32_set(void *p, object x):
             i -= 1
     return <a_f32 *>p
 
-cdef array new_f32_(object x):
-    cdef a_diff n = num_len(x)
+cdef array new_f32_(object x, int d):
+    cdef a_diff n = num_len(x, d)
     cdef array r = f32_new(n)
-    f32_set(r.data, x)
+    f32_set(r.data, x, d)
     return r
 
-cpdef array new_f32(object x):
+cpdef array new_f32(object x, int d=1):
     if PyObject_HasAttrString(x, "__len__"):
-        return new_f32_(x)
+        return new_f32_(x, d)
     return f32_new(x)
 
 cdef array f64_new(a_diff n):
     return array(shape=(n,), itemsize=8, format='d', mode='c')
 
-cdef a_f64 *f64_set(void *p, object x):
+cdef a_f64 *f64_set(void *p, object x, int d):
     cdef a_f64 *r = <a_f64 *>p
     cdef object o = iter(x)
     cdef a_diff i = 0
@@ -138,7 +138,7 @@ cdef a_f64 *f64_set(void *p, object x):
         try:
             o = next(L[i])
             if PyObject_HasAttrString(o, "__len__"):
-                if len(L) < 8:
+                if len(L) < d:
                     o = iter(o)
                     L.append(o)
                     i += 1
@@ -150,18 +150,18 @@ cdef a_f64 *f64_set(void *p, object x):
             i -= 1
     return <a_f64 *>p
 
-cdef array new_f64_(object x):
-    cdef a_diff n = num_len(x)
+cdef array new_f64_(object x, int d):
+    cdef a_diff n = num_len(x, d)
     cdef array r = f64_new(n)
-    f64_set(r.data, x)
+    f64_set(r.data, x, d)
     return r
 
-cpdef array new_f64(object x):
+cpdef array new_f64(object x, int d=1):
     if PyObject_HasAttrString(x, "__len__"):
-        return new_f64_(x)
+        return new_f64_(x, d)
     return f64_new(x)
 
-cdef a_diff num_len(object x):
+cdef a_diff num_len(object x, int d):
     cdef a_diff i = 0, n = 0
     cdef object o = iter(x)
     cdef list L = [o]
@@ -169,7 +169,7 @@ cdef a_diff num_len(object x):
         try:
             o = next(L[i])
             if PyObject_HasAttrString(o, "__len__"):
-                if len(L) < 8:
+                if len(L) < d:
                     o = iter(o)
                     L.append(o)
                     i += 1
@@ -181,7 +181,7 @@ cdef a_diff num_len(object x):
     return n
 
 cdef array (*num_new)(a_diff)
-cdef array (*new_num_)(object)
+cdef array (*new_num_)(object,int)
 if A_FLOAT_TYPE == A_FLOAT_SINGLE:
     num_new = f32_new
     new_num_ = new_f32_
@@ -763,11 +763,11 @@ cdef class pid_fuzzy:
         a_pid_fuzzy_set_bfuzz(&self.ctx, ptr, num)
         return self
     def set_rule(self, me, mec, mkp, mki, mkd):
-        self.me = new_num_(me)
-        self.mec = new_num_(mec)
-        self.mkp = new_num_(mkp)
-        self.mki = new_num_(mki)
-        self.mkd = new_num_(mkd)
+        self.me = new_num_(me, 2)
+        self.mec = new_num_(mec, 2)
+        self.mkp = new_num_(mkp, 2)
+        self.mki = new_num_(mki, 2)
+        self.mkd = new_num_(mkd, 2)
         cdef a_u32 n = <a_u32>self.mkp.shape[0]
         a_pid_fuzzy_set_rule(&self.ctx, a_u32_sqrt(n),
                         <const a_float *>self.me.data,
@@ -1044,7 +1044,7 @@ cdef class tf:
         def __get__(self):
             return self.num_
         def __set__(self, object num):
-            self.num_ = new_num_(num)
+            self.num_ = new_num_(num, 1)
             self.input = num_new(self.num_.shape[0])
             a_tf_set_num(&self.ctx, <unsigned int>self.num_.shape[0],
                                     <const a_float *>self.num_.data,
@@ -1055,7 +1055,7 @@ cdef class tf:
         def __get__(self):
             return self.den_
         def __set__(self, object den):
-            self.den_ = new_num_(den)
+            self.den_ = new_num_(den, 1)
             self.output = num_new(self.den_.shape[0])
             a_tf_set_den(&self.ctx, <unsigned int>self.den_.shape[0],
                                     <const a_float *>self.den_.data,
