@@ -25,47 +25,47 @@ static A_INLINE void js_array_num_init(js_array_num &buf, a_float const *ptr = n
     buf.ptr = u.o;
 }
 
-static unsigned int js_array_num_len(emscripten::val const &x, int dim = 8) // NOLINT(misc-no-recursion)
+static unsigned int js_array_num_len(emscripten::val const &val, int dim) // NOLINT(misc-no-recursion)
 {
     unsigned int num = 0;
-    unsigned int i = 0, n = x["length"].as<unsigned int>();
+    unsigned int i = 0, n = val["length"].as<unsigned int>();
     for (--dim; i < n; ++i)
     {
-        emscripten::val const &o = x[i];
-        if (o.isNumber()) { ++num; }
-        else if (o.isArray() && dim > 0)
+        emscripten::val const &v = val[i];
+        if (v.isNumber()) { ++num; }
+        else if (v.isArray() && dim > 0)
         {
-            num += js_array_num_len(o, dim);
+            num += js_array_num_len(v, dim);
         }
     }
     return num;
 }
 
-static void js_array_num_ptr(emscripten::val const &x, js_array_num &buf, int dim = 8) // NOLINT(misc-no-recursion)
+static void js_array_num_ptr(emscripten::val const &val, js_array_num &buf, int dim) // NOLINT(misc-no-recursion)
 {
-    unsigned int i = 0, n = x["length"].as<unsigned int>();
+    unsigned int i = 0, n = val["length"].as<unsigned int>();
     for (--dim; i < n; ++i)
     {
-        emscripten::val const &o = x[i];
-        if (o.isNumber())
+        emscripten::val const &v = val[i];
+        if (v.isNumber())
         {
-            buf.ptr[buf.idx++] = o.as<a_float>();
+            buf.ptr[buf.idx++] = v.as<a_float>();
         }
-        else if (o.isArray() && dim > 0)
+        else if (v.isArray() && dim > 0)
         {
-            js_array_num_ptr(o, buf, dim);
+            js_array_num_ptr(v, buf, dim);
         }
     }
 }
 
-static void js_array_num_get(emscripten::val const &x, js_array_num &buf)
+static void js_array_num_get(emscripten::val const &val, js_array_num &buf, int dim)
 {
-    unsigned int n = js_array_num_len(x);
+    unsigned int n = js_array_num_len(val, dim);
     if (n > buf.num)
     {
         buf.ptr = a_cast_s(a_float *, a_alloc(buf.ptr, sizeof(a_float) * n));
     }
-    js_array_num_ptr(x, buf);
+    js_array_num_ptr(val, buf, dim);
     buf.num = n;
 }
 
@@ -477,20 +477,20 @@ struct pid_fuzzy: public a_pid_fuzzy
     {
         js_array_num buf;
         js_array_num_init(buf, me);
-        js_array_num_get(me_, buf);
+        js_array_num_get(me_, buf, 2);
         me = buf.ptr;
         js_array_num_init(buf, mec);
-        js_array_num_get(mec_, buf);
+        js_array_num_get(mec_, buf, 2);
         mec = buf.ptr;
         js_array_num_init(buf, mkp);
-        js_array_num_get(mkp_, buf);
+        js_array_num_get(mkp_, buf, 2);
         nrule = a_u32_sqrt(buf.num);
         mkp = buf.ptr;
         js_array_num_init(buf, mki);
-        js_array_num_get(mki_, buf);
+        js_array_num_get(mki_, buf, 2);
         mki = buf.ptr;
         js_array_num_init(buf, mkd);
-        js_array_num_get(mkd_, buf);
+        js_array_num_get(mkd_, buf, 2);
         mkd = buf.ptr;
         return this;
     }
@@ -693,8 +693,8 @@ struct regress_simple: public a_regress_simple
         js_array_num x, y;
         js_array_num_init(x);
         js_array_num_init(y);
-        js_array_num_get(x_, x);
-        js_array_num_get(y_, y);
+        js_array_num_get(x_, x, 1);
+        js_array_num_get(y_, y, 1);
         a_regress_simple::ols(A_MIN(x.num, y.num), x.ptr, y.ptr, x_mean, y_mean);
         a_alloc(y.ptr, 0);
         a_alloc(x.ptr, 0);
@@ -705,8 +705,8 @@ struct regress_simple: public a_regress_simple
         js_array_num x, y;
         js_array_num_init(x);
         js_array_num_init(y);
-        js_array_num_get(x_, x);
-        js_array_num_get(y_, y);
+        js_array_num_get(x_, x, 1);
+        js_array_num_get(y_, y, 1);
         a_regress_simple::olsx(A_MIN(x.num, y.num), x.ptr, y.ptr, x_mean);
         a_alloc(y.ptr, 0);
         a_alloc(x.ptr, 0);
@@ -717,8 +717,8 @@ struct regress_simple: public a_regress_simple
         js_array_num x, y;
         js_array_num_init(x);
         js_array_num_init(y);
-        js_array_num_get(x_, x);
-        js_array_num_get(y_, y);
+        js_array_num_get(x_, x, 1);
+        js_array_num_get(y_, y, 1);
         a_regress_simple::olsy(A_MIN(x.num, y.num), x.ptr, y.ptr, y_mean);
         a_alloc(y.ptr, 0);
         a_alloc(x.ptr, 0);
@@ -729,8 +729,8 @@ struct regress_simple: public a_regress_simple
         js_array_num x, y;
         js_array_num_init(x);
         js_array_num_init(y);
-        js_array_num_get(x_, x);
-        js_array_num_get(y_, y);
+        js_array_num_get(x_, x, 1);
+        js_array_num_get(y_, y, 1);
         a_regress_simple::ols(A_MIN(x.num, y.num), x.ptr, y.ptr);
         a_alloc(y.ptr, 0);
         a_alloc(x.ptr, 0);
@@ -749,22 +749,22 @@ struct tf: public a_tf
 {
     void set_num_(emscripten::val const &num_, js_array_num &buf)
     {
-        unsigned int n = js_array_num_len(num_);
+        unsigned int n = js_array_num_len(num_, 1);
         if (n > buf.num)
         {
             buf.ptr = a_cast_s(a_float *, a_alloc(buf.ptr, sizeof(a_float) * n * 2));
         }
-        js_array_num_ptr(num_, buf);
+        js_array_num_ptr(num_, buf, 1);
         a_tf_set_num(this, n, buf.ptr, buf.ptr + n);
     }
     void set_den_(emscripten::val const &den_, js_array_num &buf)
     {
-        unsigned int n = js_array_num_len(den_);
+        unsigned int n = js_array_num_len(den_, 1);
         if (n > buf.num)
         {
             buf.ptr = a_cast_s(a_float *, a_alloc(buf.ptr, sizeof(a_float) * n * 2));
         }
-        js_array_num_ptr(den_, buf);
+        js_array_num_ptr(den_, buf, 1);
         a_tf_set_den(this, n, buf.ptr, buf.ptr + n);
     }
     A_INLINE tf(emscripten::val const &num_, emscripten::val const &den_)
