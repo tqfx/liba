@@ -60,8 +60,8 @@ static JSValue liba_tf_ctor(JSContext *ctx, JSValueConst new_target, int argc, J
     JSValue proto, clazz = JS_UNDEFINED;
     a_tf *const self = (a_tf *)js_mallocz(ctx, sizeof(a_tf));
     if (!self) { return JS_EXCEPTION; }
-    if (JS_IsObject(argv[0]) && liba_tf_set_num_(ctx, self, argv[0])) { goto fail; }
-    if (JS_IsObject(argv[1]) && liba_tf_set_den_(ctx, self, argv[1])) { goto fail; }
+    if (liba_tf_set_num_(ctx, self, argv[0])) { goto fail; }
+    if (liba_tf_set_den_(ctx, self, argv[1])) { goto fail; }
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
     clazz = JS_NewObjectProtoClass(ctx, proto, liba_tf_class_id);
@@ -124,10 +124,10 @@ static JSValue liba_tf_set(JSContext *ctx, JSValueConst this_val, JSValueConst v
     switch (magic)
     {
     case self_coef:
-        if (JS_IsObject(val)) { liba_tf_set_num_(ctx, self, val); }
+        liba_tf_set_num_(ctx, self, val);
         break;
     case self_bias:
-        if (JS_IsObject(val)) { liba_tf_set_den_(ctx, self, val); }
+        liba_tf_set_den_(ctx, self, val);
         break;
     default:
         break;

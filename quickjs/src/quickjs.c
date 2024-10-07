@@ -3,9 +3,10 @@
 int js_array_length(JSContext *ctx, JSValueConst val, a_u32 *plen)
 {
     JSValue length = JS_GetPropertyStr(ctx, val, "length");
-    int ret = JS_ToUint32(ctx, plen, length);
+    if (JS_IsUndefined(length)) { return ~0; }
+    JS_ToUint32(ctx, plen, length);
     JS_FreeValue(ctx, length);
-    return ret;
+    return 0;
 }
 
 JSValue js_array_u8_new(JSContext *ctx, a_u8 const *ptr, a_u32 len)
@@ -67,7 +68,8 @@ int js_array_num_len(JSContext *ctx, JSValueConst val, unsigned int *num, int di
 {
     a_u32 i = 0, n = 0;
     JSValueConst length = JS_GetPropertyStr(ctx, val, "length");
-    int ret = JS_ToUint32(ctx, &n, length);
+    if (JS_IsUndefined(length)) { return ~0; }
+    JS_ToUint32(ctx, &n, length);
     JS_FreeValue(ctx, length);
     for (--dim; i < n; ++i)
     {
@@ -81,14 +83,14 @@ int js_array_num_len(JSContext *ctx, JSValueConst val, unsigned int *num, int di
         }
         JS_FreeValue(ctx, v);
     }
-    return ret;
+    return 0;
 }
 
 int js_array_num_ptr(JSContext *ctx, JSValueConst val, js_array_num *buf, int dim) // NOLINT(misc-no-recursion)
 {
     a_u32 i = 0, n = 0;
     JSValueConst length = JS_GetPropertyStr(ctx, val, "length");
-    int ret = JS_ToUint32(ctx, &n, length);
+    JS_ToUint32(ctx, &n, length);
     JS_FreeValue(ctx, length);
     for (--dim; i < n; ++i)
     {
@@ -107,7 +109,7 @@ int js_array_num_ptr(JSContext *ctx, JSValueConst val, js_array_num *buf, int di
         }
         JS_FreeValue(ctx, v);
     }
-    return ret;
+    return 0;
 }
 
 int js_array_num_get(JSContext *ctx, JSValueConst val, js_array_num *buf)
