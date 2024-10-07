@@ -21,18 +21,26 @@ cdef array u32_new(a_diff n):
         u32 = 'L'
     return array(shape=(n,), itemsize=4, format=u32, mode='c')
 
-cdef a_u32 *u32_set(void *p, object x, int d=8):
+cdef a_u32 *u32_set(void *p, object x):
     cdef a_u32 *r = <a_u32 *>p
-    cdef object o
-    if d:
-        d -= 1
-        for o in x:
+    cdef object o = iter(x)
+    cdef a_diff i = 0
+    cdef list L = [o]
+    while L:
+        try:
+            o = next(L[i])
             if PyObject_HasAttrString(o, "__len__"):
-                r = u32_set(r, o, d)
+                if len(L) < 8:
+                    o = iter(o)
+                    L.append(o)
+                    i += 1
             else:
                 r[0] = o
                 r += 1
-    return r
+        except StopIteration:
+            L.pop()
+            i -= 1
+    return <a_u32 *>p
 
 cdef array new_u32_(object x):
     cdef a_diff n = num_len(x)
@@ -51,18 +59,26 @@ cdef array u64_new(a_diff n):
         u64 = 'Q'
     return array(shape=(n,), itemsize=8, format=u64, mode='c')
 
-cdef a_u64 *u64_set(void *p, object x, int d=8):
+cdef a_u64 *u64_set(void *p, object x):
     cdef a_u64 *r = <a_u64 *>p
-    cdef object o
-    if d:
-        d -= 1
-        for o in x:
+    cdef object o = iter(x)
+    cdef a_diff i = 0
+    cdef list L = [o]
+    while L:
+        try:
+            o = next(L[i])
             if PyObject_HasAttrString(o, "__len__"):
-                r = u64_set(r, o, d)
+                if len(L) < 8:
+                    o = iter(o)
+                    L.append(o)
+                    i += 1
             else:
                 r[0] = o
                 r += 1
-    return r
+        except StopIteration:
+            L.pop()
+            i -= 1
+    return <a_u64 *>p
 
 cdef array new_u64_(object x):
     cdef a_diff n = num_len(x)
@@ -78,18 +94,26 @@ cpdef array new_u64(object x):
 cdef array f32_new(a_diff n):
     return array(shape=(n,), itemsize=4, format='f', mode='c')
 
-cdef a_f32 *f32_set(void *p, object x, int d=8):
+cdef a_f32 *f32_set(void *p, object x):
     cdef a_f32 *r = <a_f32 *>p
-    cdef object o
-    if d:
-        d -= 1
-        for o in x:
+    cdef object o = iter(x)
+    cdef a_diff i = 0
+    cdef list L = [o]
+    while L:
+        try:
+            o = next(L[i])
             if PyObject_HasAttrString(o, "__len__"):
-                r = f32_set(r, o, d)
+                if len(L) < 8:
+                    o = iter(o)
+                    L.append(o)
+                    i += 1
             else:
                 r[0] = o
                 r += 1
-    return r
+        except StopIteration:
+            L.pop()
+            i -= 1
+    return <a_f32 *>p
 
 cdef array new_f32_(object x):
     cdef a_diff n = num_len(x)
@@ -105,18 +129,26 @@ cpdef array new_f32(object x):
 cdef array f64_new(a_diff n):
     return array(shape=(n,), itemsize=8, format='d', mode='c')
 
-cdef a_f64 *f64_set(void *p, object x, int d=8):
+cdef a_f64 *f64_set(void *p, object x):
     cdef a_f64 *r = <a_f64 *>p
-    cdef object o
-    if d:
-        d -= 1
-        for o in x:
+    cdef object o = iter(x)
+    cdef a_diff i = 0
+    cdef list L = [o]
+    while L:
+        try:
+            o = next(L[i])
             if PyObject_HasAttrString(o, "__len__"):
-                r = f64_set(r, o, d)
+                if len(L) < 8:
+                    o = iter(o)
+                    L.append(o)
+                    i += 1
             else:
                 r[0] = o
                 r += 1
-    return r
+        except StopIteration:
+            L.pop()
+            i -= 1
+    return <a_f64 *>p
 
 cdef array new_f64_(object x):
     cdef a_diff n = num_len(x)
@@ -129,16 +161,23 @@ cpdef array new_f64(object x):
         return new_f64_(x)
     return f64_new(x)
 
-cdef a_diff num_len(object x, int d=8):
-    cdef a_diff n = 0
-    cdef object o
-    if d:
-        d -= 1
-        for o in x:
+cdef a_diff num_len(object x):
+    cdef a_diff i = 0, n = 0
+    cdef object o = iter(x)
+    cdef list L = [o]
+    while L:
+        try:
+            o = next(L[i])
             if PyObject_HasAttrString(o, "__len__"):
-                n += num_len(o, d)
+                if len(L) < 8:
+                    o = iter(o)
+                    L.append(o)
+                    i += 1
             else:
                 n += 1
+        except StopIteration:
+            L.pop()
+            i -= 1
     return n
 
 cdef array (*num_new)(a_diff)
