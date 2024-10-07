@@ -149,11 +149,11 @@ int liba_pid_fuzzy_set_rule(lua_State *L)
         luaL_checktype(L, 4, LUA_TTABLE);
         luaL_checktype(L, 5, LUA_TTABLE);
         luaL_checktype(L, 6, LUA_TTABLE);
-        a_float const *const me = lua_table_num_get(L, 2, ctx->me, 0);
-        a_float const *const mec = lua_table_num_get(L, 3, ctx->mec, 0);
-        a_float const *const mkp = lua_table_num_get(L, 4, ctx->mkp, &num);
-        a_float const *const mki = lua_table_num_get(L, 5, ctx->mki, 0);
-        a_float const *const mkd = lua_table_num_get(L, 6, ctx->mkd, 0);
+        a_float const *const me = lua_table_num_get(L, 2, ctx->me, 0, 2);
+        a_float const *const mec = lua_table_num_get(L, 3, ctx->mec, 0, 2);
+        a_float const *const mkp = lua_table_num_get(L, 4, ctx->mkp, &num, 2);
+        a_float const *const mki = lua_table_num_get(L, 5, ctx->mki, 0, 2);
+        a_float const *const mkd = lua_table_num_get(L, 6, ctx->mkd, 0, 2);
         a_pid_fuzzy_set_rule(ctx, a_u32_sqrt(num), me, mec, mkp, mki, mkd);
         lua_pushvalue(L, 1);
         return 1;
