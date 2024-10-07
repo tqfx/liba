@@ -144,6 +144,11 @@ int liba_pid_fuzzy_set_rule(lua_State *L)
     if (ctx)
     {
         unsigned int num = 0;
+        luaL_checktype(L, 2, LUA_TTABLE);
+        luaL_checktype(L, 3, LUA_TTABLE);
+        luaL_checktype(L, 4, LUA_TTABLE);
+        luaL_checktype(L, 5, LUA_TTABLE);
+        luaL_checktype(L, 6, LUA_TTABLE);
         a_float const *const me = lua_table_num_get(L, 2, ctx->me, 0);
         a_float const *const mec = lua_table_num_get(L, 3, ctx->mec, 0);
         a_float const *const mkp = lua_table_num_get(L, 4, ctx->mkp, &num);

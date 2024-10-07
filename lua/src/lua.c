@@ -258,21 +258,18 @@ LUA_NUM *lua_table_num_ptr(lua_State *L, int idx, LUA_NUM *ptr, int dim) // NOLI
     return ptr;
 }
 
-LUA_NUM *lua_table_num_get(lua_State *L, int idx, LUA_NUM const *ptr, unsigned int *num)
+LUA_NUM *lua_table_num_get(lua_State *L, int idx, LUA_NUM const *ptr_, unsigned int *num)
 {
-    LUA_NUM *ret = (LUA_NUM *)(intptr_t)ptr; // NOLINT(performance-no-int-to-ptr)
-    if (lua_type(L, idx) == LUA_TTABLE)
+    LUA_NUM *ptr = (LUA_NUM *)(intptr_t)ptr_; // NOLINT(performance-no-int-to-ptr)
+    unsigned int num_ = 0;
+    num = num ? num : &num_;
+    *num = lua_table_num_len(L, idx, 8);
+    if (*num)
     {
-        unsigned int num_ = 0;
-        num = num ? num : &num_;
-        *num = lua_table_num_len(L, idx, 8);
-        if (*num)
-        {
-            ret = (LUA_NUM *)lua_alloc(L, ret, sizeof(LUA_NUM) * *num);
-            lua_table_num_ptr(L, idx, ret, 8);
-        }
+        ptr = (LUA_NUM *)lua_alloc(L, ptr, sizeof(LUA_NUM) * *num);
+        lua_table_num_ptr(L, idx, ptr, 8);
     }
-    return ret;
+    return ptr;
 }
 
 #include <stdio.h>
