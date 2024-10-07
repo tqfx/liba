@@ -6,8 +6,13 @@ static JSClassID liba_tf_class_id;
 static void liba_tf_finalizer(JSRuntime *rt, JSValue val)
 {
     a_tf *const self = (a_tf *)JS_GetOpaque(val, liba_tf_class_id);
-    js_free_rt(rt, self->output);
-    js_free_rt(rt, self->input);
+    union
+    {
+        a_float const *p;
+        a_float *o;
+    } u;
+    js_free_rt(rt, ((void)(u.p = self->num_p), u.o));
+    js_free_rt(rt, ((void)(u.p = self->den_p), u.o));
     js_free_rt(rt, self);
 }
 
@@ -15,42 +20,38 @@ static JSClassDef liba_tf_class = {"tf", .finalizer = liba_tf_finalizer};
 
 static int liba_tf_set_num_(JSContext *ctx, a_tf *self, JSValueConst num)
 {
-    a_u32 num_n = 0;
-    a_float *num_p = self->input;
-    int ret = js_array_length(ctx, num, &num_n);
-    if (ret) { return ret; }
-    if (num_n > self->num_n)
+    js_array_num buf;
+    unsigned int n = 0;
+    int ret = js_array_num_len(ctx, num, &n, 8);
+    if (ret == 0)
     {
-        num_p = (a_float *)js_realloc(ctx, num_p, sizeof(a_float) * num_n * 2);
-        if (!num_p) { return ~0; }
-        self->input = num_p;
-        num_p += num_n;
-        self->num_p = num_p;
+        js_array_num_init(&buf, self->num_p, self->num_n);
+        if (n > buf.num)
+        {
+            buf.ptr = (a_float *)js_realloc(ctx, buf.ptr, sizeof(a_float) * n * 2);
+        }
+        js_array_num_ptr(ctx, num, &buf, 8);
+        a_tf_set_num(self, n, buf.ptr, buf.ptr + n);
     }
-    else { num_p += self->num_n; }
-    self->num_n = (unsigned int)num_n;
-    a_zero(self->input, sizeof(a_float) * num_n);
-    return js_array_num_get(ctx, num, num_p, num_n);
+    return ret;
 }
 
 static int liba_tf_set_den_(JSContext *ctx, a_tf *self, JSValueConst den)
 {
-    a_u32 den_n = 0;
-    a_float *den_p = self->output;
-    int ret = js_array_length(ctx, den, &den_n);
-    if (ret) { return ret; }
-    if (den_n > self->den_n)
+    js_array_num buf;
+    unsigned int n = 0;
+    int ret = js_array_num_len(ctx, den, &n, 8);
+    if (ret == 0)
     {
-        den_p = (a_float *)js_realloc(ctx, den_p, sizeof(a_float) * den_n * 2);
-        if (!den_p) { return ~0; }
-        self->output = den_p;
-        den_p += den_n;
-        self->den_p = den_p;
+        js_array_num_init(&buf, self->den_p, self->den_n);
+        if (n > buf.num)
+        {
+            buf.ptr = (a_float *)js_realloc(ctx, buf.ptr, sizeof(a_float) * n * 2);
+        }
+        js_array_num_ptr(ctx, den, &buf, 8);
+        a_tf_set_den(self, n, buf.ptr, buf.ptr + n);
     }
-    else { den_p += self->den_n; }
-    self->den_n = (unsigned int)den_n;
-    a_zero(self->output, sizeof(a_float) * den_n);
-    return js_array_num_get(ctx, den, den_p, den_n);
+    return ret;
 }
 
 static JSValue liba_tf_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)

@@ -14,14 +14,33 @@
 extern "C" {
 #endif /* __cplusplus */
 
-JSValue js_concat(JSContext *ctx, JSValueConst val);
 int js_array_length(JSContext *ctx, JSValueConst val, a_u32 *plen);
 JSValue js_array_u8_new(JSContext *ctx, a_u8 const *ptr, a_u32 len);
 JSValue js_array_u16_new(JSContext *ctx, a_u16 const *ptr, a_u32 len);
 JSValue js_array_u32_new(JSContext *ctx, a_u32 const *ptr, a_u32 len);
 JSValue js_array_u64_new(JSContext *ctx, a_u64 const *ptr, a_u32 len);
 JSValue js_array_num_new(JSContext *ctx, a_float const *ptr, a_u32 len);
-int js_array_num_get(JSContext *ctx, JSValueConst val, a_float *ptr, a_u32 len);
+
+typedef struct js_array_num
+{
+    unsigned int idx, num;
+    a_float *ptr;
+} js_array_num;
+A_INTERN void js_array_num_init(js_array_num *buf, a_float const *ptr, unsigned int num)
+{
+    union
+    {
+        a_float const *p;
+        a_float *o;
+    } u;
+    u.p = ptr;
+    buf->idx = 0;
+    buf->num = num;
+    buf->ptr = u.o;
+}
+int js_array_num_len(JSContext *ctx, JSValueConst val, unsigned int *num, int dim);
+int js_array_num_ptr(JSContext *ctx, JSValueConst val, js_array_num *buf, int dim);
+int js_array_num_get(JSContext *ctx, JSValueConst val, js_array_num *buf);
 
 A_PUBLIC JSModuleDef *js_init_module(JSContext *ctx, char const *module_name);
 

@@ -1,22 +1,8 @@
 #include "a.h"
 
-JSValue js_concat(JSContext *ctx, JSValueConst val)
-{
-    JSValue this_val = JS_NewArray(ctx);
-    JSValueConst argv[] = {this_val, val};
-    JSValue concat = JS_GetPropertyStr(ctx, this_val, "concat");
-    JSValue apply = JS_GetPropertyStr(ctx, concat, "apply");
-    JSValue res = JS_Call(ctx, apply, this_val, A_LEN(argv), argv);
-    JS_FreeValue(ctx, this_val);
-    JS_FreeValue(ctx, concat);
-    JS_FreeValue(ctx, apply);
-    return res;
-}
-
 int js_array_length(JSContext *ctx, JSValueConst val, a_u32 *plen)
 {
     JSValue length = JS_GetPropertyStr(ctx, val, "length");
-    if (JS_IsException(length)) { return ~0; }
     int ret = JS_ToUint32(ctx, plen, length);
     JS_FreeValue(ctx, length);
     return ret;
@@ -77,17 +63,65 @@ JSValue js_array_num_new(JSContext *ctx, a_float const *ptr, a_u32 len)
     return val;
 }
 
-int js_array_num_get(JSContext *ctx, JSValueConst val, a_float *ptr, a_u32 len)
+int js_array_num_len(JSContext *ctx, JSValueConst val, unsigned int *num, int dim) // NOLINT(misc-no-recursion)
 {
-    for (unsigned int i = 0; i < len; ++i)
+    a_u32 i = 0, n = 0;
+    JSValueConst length = JS_GetPropertyStr(ctx, val, "length");
+    int ret = JS_ToUint32(ctx, &n, length);
+    JS_FreeValue(ctx, length);
+    for (--dim; i < n; ++i)
     {
-        JSValue x_ = JS_GetPropertyUint32(ctx, val, i);
-        if (JS_IsException(x_)) { return ~0; }
-        double x;
-        int r = JS_ToFloat64(ctx, &x, x_);
-        JS_FreeValue(ctx, x_);
-        if (r) { return r; }
-        ptr[i] = (a_float)x;
+        JSValueConst v = JS_GetPropertyUint32(ctx, val, i);
+        int tag = JS_VALUE_GET_TAG(v);
+        if (tag == JS_TAG_FLOAT64 || tag == JS_TAG_INT ||
+            tag <= JS_TAG_BIG_FLOAT) { ++*num; }
+        else if (JS_IsArray(ctx, v) && dim > 0)
+        {
+            js_array_num_len(ctx, v, num, dim);
+        }
+        JS_FreeValue(ctx, v);
     }
-    return 0;
+    return ret;
+}
+
+int js_array_num_ptr(JSContext *ctx, JSValueConst val, js_array_num *buf, int dim) // NOLINT(misc-no-recursion)
+{
+    a_u32 i = 0, n = 0;
+    JSValueConst length = JS_GetPropertyStr(ctx, val, "length");
+    int ret = JS_ToUint32(ctx, &n, length);
+    JS_FreeValue(ctx, length);
+    for (--dim; i < n; ++i)
+    {
+        JSValueConst v = JS_GetPropertyUint32(ctx, val, i);
+        int tag = JS_VALUE_GET_TAG(v);
+        if (tag == JS_TAG_FLOAT64 || tag == JS_TAG_INT ||
+            tag <= JS_TAG_BIG_FLOAT)
+        {
+            double x = 0;
+            JS_ToFloat64(ctx, &x, v);
+            buf->ptr[buf->idx++] = (a_float)x;
+        }
+        else if (JS_IsArray(ctx, v) && dim > 0)
+        {
+            js_array_num_ptr(ctx, v, buf, dim);
+        }
+        JS_FreeValue(ctx, v);
+    }
+    return ret;
+}
+
+int js_array_num_get(JSContext *ctx, JSValueConst val, js_array_num *buf)
+{
+    unsigned int n = 0;
+    int ret = js_array_num_len(ctx, val, &n, 8);
+    if (ret == 0)
+    {
+        if (n > buf->num)
+        {
+            buf->ptr = (a_float *)js_realloc(ctx, buf->ptr, sizeof(a_float) * n);
+        }
+        js_array_num_ptr(ctx, val, buf, 8);
+        buf->num = n;
+    }
+    return ret;
 }

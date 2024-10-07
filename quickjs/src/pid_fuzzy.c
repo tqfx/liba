@@ -1,5 +1,6 @@
 #include "a.h"
 #include "a/pid_fuzzy.h"
+#include "a/math.h"
 
 static JSClassID liba_pid_fuzzy_class_id;
 
@@ -65,93 +66,41 @@ static JSValue liba_pid_fuzzy_set_rule(JSContext *ctx, JSValueConst this_val, in
     (void)argc;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
-    union
-    {
-        a_float const *p;
-        a_float *o;
-    } u;
-    a_u32 row;
-    a_u32 len = 0;
-    a_u32 nrule = 0;
-    JSValue res = JS_UNDEFINED;
+    js_array_num buf;
+    unsigned int nrule = 0;
     if (JS_IsArray(ctx, argv[0]))
     {
-        if (js_array_length(ctx, argv[0], &nrule)) { goto fail; }
-        res = js_concat(ctx, argv[0]);
-        if (js_array_length(ctx, res, &len)) { goto fail; }
-        if (len)
-        {
-            a_float *const me = (a_float *)js_realloc(ctx, ((void)(u.p = self->me), u.o), sizeof(a_float) * len);
-            if (!me) { goto fail; }
-            self->me = me;
-            if (js_array_num_get(ctx, res, me, len)) { goto fail; }
-        }
-        JS_FreeValue(ctx, res);
-        res = JS_UNDEFINED;
+        js_array_num_init(&buf, self->me, 0);
+        if (js_array_num_get(ctx, argv[0], &buf)) { goto fail; }
+        self->me = buf.ptr;
     }
     if (JS_IsArray(ctx, argv[1]))
     {
-        if (js_array_length(ctx, argv[1], &row) || row != nrule) { goto fail; }
-        res = js_concat(ctx, argv[1]);
-        if (js_array_length(ctx, res, &len)) { goto fail; }
-        if (len)
-        {
-            a_float *const mec = (a_float *)js_realloc(ctx, ((void)(u.p = self->mec), u.o), sizeof(a_float) * len);
-            if (!mec) { goto fail; }
-            self->mec = mec;
-            if (js_array_num_get(ctx, res, mec, len)) { goto fail; }
-        }
-        JS_FreeValue(ctx, res);
-        res = JS_UNDEFINED;
+        js_array_num_init(&buf, self->mec, 0);
+        if (js_array_num_get(ctx, argv[1], &buf)) { goto fail; }
+        self->mec = buf.ptr;
     }
     if (JS_IsArray(ctx, argv[2]))
     {
-        if (js_array_length(ctx, argv[2], &row) || row != nrule) { goto fail; }
-        res = js_concat(ctx, argv[2]);
-        if (js_array_length(ctx, res, &len)) { goto fail; }
-        if (len)
-        {
-            a_float *const mkp = (a_float *)js_realloc(ctx, ((void)(u.p = self->mkp), u.o), sizeof(a_float) * len);
-            if (!mkp) { goto fail; }
-            self->mkp = mkp;
-            if (js_array_num_get(ctx, res, mkp, len)) { goto fail; }
-        }
-        JS_FreeValue(ctx, res);
-        res = JS_UNDEFINED;
+        js_array_num_init(&buf, self->mkp, 0);
+        if (js_array_num_get(ctx, argv[2], &buf)) { goto fail; }
+        nrule = a_u32_sqrt(buf.num);
+        self->mkp = buf.ptr;
     }
     if (JS_IsArray(ctx, argv[3]))
     {
-        if (js_array_length(ctx, argv[3], &row) || row != nrule) { goto fail; }
-        res = js_concat(ctx, argv[3]);
-        if (js_array_length(ctx, res, &len)) { goto fail; }
-        if (len)
-        {
-            a_float *const mki = (a_float *)js_realloc(ctx, ((void)(u.p = self->mki), u.o), sizeof(a_float) * len);
-            if (!mki) { goto fail; }
-            self->mki = mki;
-            if (js_array_num_get(ctx, res, mki, len)) { goto fail; }
-        }
-        JS_FreeValue(ctx, res);
-        res = JS_UNDEFINED;
+        js_array_num_init(&buf, self->mki, 0);
+        if (js_array_num_get(ctx, argv[3], &buf)) { goto fail; }
+        self->mki = buf.ptr;
     }
     if (JS_IsArray(ctx, argv[4]))
     {
-        if (js_array_length(ctx, argv[4], &row) || row != nrule) { goto fail; }
-        res = js_concat(ctx, argv[4]);
-        if (js_array_length(ctx, res, &len)) { goto fail; }
-        if (len)
-        {
-            a_float *const mkd = (a_float *)js_realloc(ctx, ((void)(u.p = self->mkd), u.o), sizeof(a_float) * len);
-            if (!mkd) { goto fail; }
-            self->mkd = mkd;
-            if (js_array_num_get(ctx, res, mkd, len)) { goto fail; }
-        }
-        JS_FreeValue(ctx, res);
+        js_array_num_init(&buf, self->mkd, 0);
+        if (js_array_num_get(ctx, argv[4], &buf)) { goto fail; }
+        self->mkd = buf.ptr;
     }
     self->nrule = nrule;
-    return JS_UNDEFINED;
 fail:
-    JS_FreeValue(ctx, res);
     return JS_UNDEFINED;
 }
 

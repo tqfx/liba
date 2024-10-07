@@ -61,24 +61,20 @@ static JSValue liba_regress_simple_ols_(JSContext *ctx, JSValueConst this_val, i
     (void)argc;
     a_regress_simple *const self = (a_regress_simple *)JS_GetOpaque2(ctx, this_val, liba_regress_simple_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_u32 x_n = 0, y_n = 0;
     JSValue err = JS_EXCEPTION;
-    a_float *x = NULL, *y = NULL, x_mean, y_mean;
-    if (js_array_length(ctx, argv[0], &x_n)) { goto fail; }
-    if (js_array_length(ctx, argv[1], &y_n)) { goto fail; }
-    x = (a_float *)js_mallocz(ctx, sizeof(a_float) * x_n);
-    if (js_array_num_get(ctx, argv[0], x, x_n)) { goto fail_x; }
-    y = (a_float *)js_mallocz(ctx, sizeof(a_float) * y_n);
-    if (js_array_num_get(ctx, argv[1], y, y_n)) { goto fail_y; }
-    if (JS_ToFloat64(ctx, &x_mean, argv[2])) { goto fail_y; }
-    if (JS_ToFloat64(ctx, &y_mean, argv[3])) { goto fail_y; }
-    a_regress_simple_ols_(self, A_MIN(x_n, y_n), x, y, x_mean, y_mean);
+    a_float x_mean, y_mean;
+    js_array_num x, y;
+    js_array_num_init(&x, NULL, 0);
+    js_array_num_init(&y, NULL, 0);
+    if (js_array_num_get(ctx, argv[0], &x)) { goto fail; }
+    if (js_array_num_get(ctx, argv[1], &y)) { goto fail; }
+    if (JS_ToFloat64(ctx, &x_mean, argv[2])) { goto fail; }
+    if (JS_ToFloat64(ctx, &y_mean, argv[3])) { goto fail; }
+    a_regress_simple_ols_(self, A_MIN(x.num, y.num), x.ptr, y.ptr, x_mean, y_mean);
     err = JS_UNDEFINED;
-fail_y:
-    js_free(ctx, y);
-fail_x:
-    js_free(ctx, x);
 fail:
+    js_free(ctx, y.ptr);
+    js_free(ctx, x.ptr);
     return err;
 }
 
@@ -87,23 +83,19 @@ static JSValue liba_regress_simple_olsx(JSContext *ctx, JSValueConst this_val, i
     (void)argc;
     a_regress_simple *const self = (a_regress_simple *)JS_GetOpaque2(ctx, this_val, liba_regress_simple_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_u32 x_n = 0, y_n = 0;
     JSValue err = JS_EXCEPTION;
-    a_float *x = NULL, *y = NULL, x_mean;
-    if (js_array_length(ctx, argv[0], &x_n)) { goto fail; }
-    if (js_array_length(ctx, argv[1], &y_n)) { goto fail; }
-    x = (a_float *)js_mallocz(ctx, sizeof(a_float) * x_n);
-    if (js_array_num_get(ctx, argv[0], x, x_n)) { goto fail_x; }
-    y = (a_float *)js_mallocz(ctx, sizeof(a_float) * y_n);
-    if (js_array_num_get(ctx, argv[1], y, y_n)) { goto fail_y; }
-    if (JS_ToFloat64(ctx, &x_mean, argv[2])) { goto fail_y; }
-    a_regress_simple_olsx(self, A_MIN(x_n, y_n), x, y, x_mean);
+    js_array_num x, y;
+    a_float x_mean;
+    js_array_num_init(&x, NULL, 0);
+    js_array_num_init(&y, NULL, 0);
+    if (js_array_num_get(ctx, argv[0], &x)) { goto fail; }
+    if (js_array_num_get(ctx, argv[1], &y)) { goto fail; }
+    if (JS_ToFloat64(ctx, &x_mean, argv[2])) { goto fail; }
+    a_regress_simple_olsx(self, A_MIN(x.num, y.num), x.ptr, y.ptr, x_mean);
     err = JS_UNDEFINED;
-fail_y:
-    js_free(ctx, y);
-fail_x:
-    js_free(ctx, x);
 fail:
+    js_free(ctx, y.ptr);
+    js_free(ctx, x.ptr);
     return err;
 }
 
@@ -112,23 +104,19 @@ static JSValue liba_regress_simple_olsy(JSContext *ctx, JSValueConst this_val, i
     (void)argc;
     a_regress_simple *const self = (a_regress_simple *)JS_GetOpaque2(ctx, this_val, liba_regress_simple_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_u32 x_n = 0, y_n = 0;
     JSValue err = JS_EXCEPTION;
-    a_float *x = NULL, *y = NULL, y_mean;
-    if (js_array_length(ctx, argv[0], &x_n)) { goto fail; }
-    if (js_array_length(ctx, argv[1], &y_n)) { goto fail; }
-    x = (a_float *)js_mallocz(ctx, sizeof(a_float) * x_n);
-    if (js_array_num_get(ctx, argv[0], x, x_n)) { goto fail_x; }
-    y = (a_float *)js_mallocz(ctx, sizeof(a_float) * y_n);
-    if (js_array_num_get(ctx, argv[1], y, y_n)) { goto fail_y; }
-    if (JS_ToFloat64(ctx, &y_mean, argv[2])) { goto fail_y; }
-    a_regress_simple_olsy(self, A_MIN(x_n, y_n), x, y, y_mean);
+    js_array_num x, y;
+    a_float y_mean;
+    js_array_num_init(&x, NULL, 0);
+    js_array_num_init(&y, NULL, 0);
+    if (js_array_num_get(ctx, argv[0], &x)) { goto fail; }
+    if (js_array_num_get(ctx, argv[1], &y)) { goto fail; }
+    if (JS_ToFloat64(ctx, &y_mean, argv[2])) { goto fail; }
+    a_regress_simple_olsy(self, A_MIN(x.num, y.num), x.ptr, y.ptr, y_mean);
     err = JS_UNDEFINED;
-fail_y:
-    js_free(ctx, y);
-fail_x:
-    js_free(ctx, x);
 fail:
+    js_free(ctx, y.ptr);
+    js_free(ctx, x.ptr);
     return err;
 }
 
@@ -137,22 +125,17 @@ static JSValue liba_regress_simple_ols(JSContext *ctx, JSValueConst this_val, in
     (void)argc;
     a_regress_simple *const self = (a_regress_simple *)JS_GetOpaque2(ctx, this_val, liba_regress_simple_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_u32 x_n = 0, y_n = 0;
     JSValue err = JS_EXCEPTION;
-    a_float *x = NULL, *y = NULL;
-    if (js_array_length(ctx, argv[0], &x_n)) { goto fail; }
-    if (js_array_length(ctx, argv[1], &y_n)) { goto fail; }
-    x = (a_float *)js_mallocz(ctx, sizeof(a_float) * x_n);
-    if (js_array_num_get(ctx, argv[0], x, x_n)) { goto fail_x; }
-    y = (a_float *)js_mallocz(ctx, sizeof(a_float) * y_n);
-    if (js_array_num_get(ctx, argv[1], y, y_n)) { goto fail_y; }
-    a_regress_simple_ols(self, A_MIN(x_n, y_n), x, y);
+    js_array_num x, y;
+    js_array_num_init(&x, NULL, 0);
+    js_array_num_init(&y, NULL, 0);
+    if (js_array_num_get(ctx, argv[0], &x)) { goto fail; }
+    if (js_array_num_get(ctx, argv[1], &y)) { goto fail; }
+    a_regress_simple_ols(self, A_MIN(x.num, y.num), x.ptr, y.ptr);
     err = JS_UNDEFINED;
-fail_y:
-    js_free(ctx, y);
-fail_x:
-    js_free(ctx, x);
 fail:
+    js_free(ctx, y.ptr);
+    js_free(ctx, x.ptr);
     return err;
 }
 
