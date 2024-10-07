@@ -12,6 +12,17 @@ from cython.view cimport array
 from cpython cimport *
 from a cimport *
 
+cdef a_diff flatten(object o, object x, int d=8):
+    cdef a_diff n = 0
+    if d:
+        for i in x:
+            if PyObject_HasAttrString(i, "__len__"):
+                n += flatten(o, i, d - 1)
+            else:
+                PyList_Append(o, i)
+                n += 1
+    return n
+
 cdef array u16_new(a_diff n):
     return array(shape=(n,), itemsize=2, format='H', mode='c')
 
@@ -28,14 +39,16 @@ cdef a_u32 *u32_set(void *p, a_diff n, object x):
         r[i] = x[i]
     return r
 
+cdef array new_u32_(object x):
+    cdef list o = PyList_New(0)
+    cdef a_diff n = flatten(o, x)
+    cdef array r = u32_new(n)
+    u32_set(r.data, n, o)
+    return r
+
 cpdef array new_u32(object x):
-    cdef array r
-    cdef a_diff n
     if PyObject_HasAttrString(x, "__len__"):
-        n = len(x)
-        r = u32_new(n)
-        u32_set(r.data, n, x)
-        return r
+        return new_u32_(x)
     return u32_new(x)
 
 cdef array u64_new(a_diff n):
@@ -51,14 +64,16 @@ cdef a_u64 *u64_set(void *p, a_diff n, object x):
         r[i] = x[i]
     return r
 
+cdef array new_u64_(object x):
+    cdef list o = PyList_New(0)
+    cdef a_diff n = flatten(o, x)
+    cdef array r = u64_new(n)
+    u64_set(r.data, n, o)
+    return r
+
 cpdef array new_u64(object x):
-    cdef array r
-    cdef a_diff n
     if PyObject_HasAttrString(x, "__len__"):
-        n = len(x)
-        r = u64_new(n)
-        u64_set(r.data, n, x)
-        return r
+        return new_u64_(x)
     return u64_new(x)
 
 cdef array f32_new(a_diff n):
@@ -71,14 +86,16 @@ cdef a_f32 *f32_set(void *p, a_diff n, object x):
         r[i] = x[i]
     return r
 
+cdef array new_f32_(object x):
+    cdef list o = PyList_New(0)
+    cdef a_diff n = flatten(o, x)
+    cdef array r = f32_new(n)
+    f32_set(r.data, n, o)
+    return r
+
 cpdef array new_f32(object x):
-    cdef array r
-    cdef a_diff n
     if PyObject_HasAttrString(x, "__len__"):
-        n = len(x)
-        r = f32_new(n)
-        f32_set(r.data, n, x)
-        return r
+        return new_f32_(x)
     return f32_new(x)
 
 cdef array f64_new(a_diff n):
@@ -91,14 +108,16 @@ cdef a_f64 *f64_set(void *p, a_diff n, object x):
         r[i] = x[i]
     return r
 
+cdef array new_f64_(object x):
+    cdef list o = PyList_New(0)
+    cdef a_diff n = flatten(o, x)
+    cdef array r = f64_new(n)
+    f64_set(r.data, n, o)
+    return r
+
 cpdef array new_f64(object x):
-    cdef array r
-    cdef a_diff n
     if PyObject_HasAttrString(x, "__len__"):
-        n = len(x)
-        r = f64_new(n)
-        f64_set(r.data, n, x)
-        return r
+        return new_f64_(x)
     return f64_new(x)
 
 cdef a_float *num_set(void *p, a_diff n, object x):
@@ -109,30 +128,15 @@ cdef a_float *num_set(void *p, a_diff n, object x):
     return r
 
 cdef array (*num_new)(a_diff)
+cdef array (*new_num_)(object)
 if A_FLOAT_TYPE == A_FLOAT_SINGLE:
     num_new = f32_new
+    new_num_ = new_f32_
     new_num = new_f32
 else:
     num_new = f64_new
+    new_num_ = new_f64_
     new_num = new_f64
-
-cdef array num_new2(object x2):
-    cdef a_diff n = 0
-    cdef object x1
-    for x1 in x2:
-        n += len(x1)
-    return num_new(n)
-
-cdef a_float *num_set2(void *o, object x2):
-    cdef a_float *r = <a_float *>o
-    cdef a_diff n = 0
-    cdef object x1
-    cdef a_float x
-    for x1 in x2:
-        for x in x1:
-            r[n] = x
-            n += 1
-    return r
 
 def hash_bkdr(const char *str, a_u32 val=0) -> a_u32:
     return a_hash_bkdr(str, val)
@@ -706,17 +710,18 @@ cdef class pid_fuzzy:
         a_pid_fuzzy_set_bfuzz(&self.ctx, ptr, num)
         return self
     def set_rule(self, me, mec, mkp, mki, mkd):
-        self.me = num_new2(me)
-        self.mec = num_new2(mec)
-        self.mkp = num_new2(mkp)
-        self.mki = num_new2(mki)
-        self.mkd = num_new2(mkd)
-        a_pid_fuzzy_set_rule(&self.ctx, <unsigned int>len(me),
-                         num_set2(self.me.data, me),
-                         num_set2(self.mec.data, mec),
-                         num_set2(self.mkp.data, mkp),
-                         num_set2(self.mki.data, mki),
-                         num_set2(self.mkd.data, mkd))
+        self.me = new_num_(me)
+        self.mec = new_num_(mec)
+        self.mkp = new_num_(mkp)
+        self.mki = new_num_(mki)
+        self.mkd = new_num_(mkd)
+        cdef a_u32 n = <a_u32>self.mkp.shape[0]
+        a_pid_fuzzy_set_rule(&self.ctx, a_u32_sqrt(n),
+                        <const a_float *>self.me.data,
+                        <const a_float *>self.mec.data,
+                        <const a_float *>self.mkp.data,
+                        <const a_float *>self.mki.data,
+                        <const a_float *>self.mkd.data)
         return self
     def set_kpid(self, a_float kp, a_float ki, a_float kd):
         a_pid_fuzzy_set_kpid(&self.ctx, kp, ki, kd)
