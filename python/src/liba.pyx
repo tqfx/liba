@@ -12,17 +12,6 @@ from cython.view cimport array
 from cpython cimport *
 from a cimport *
 
-cdef a_diff flatten(object o, object x, int d=8):
-    cdef a_diff n = 0
-    if d:
-        for i in x:
-            if PyObject_HasAttrString(i, "__len__"):
-                n += flatten(o, i, d - 1)
-            else:
-                PyList_Append(o, i)
-                n += 1
-    return n
-
 cdef array u16_new(a_diff n):
     return array(shape=(n,), itemsize=2, format='H', mode='c')
 
@@ -32,18 +21,23 @@ cdef array u32_new(a_diff n):
         u32 = 'L'
     return array(shape=(n,), itemsize=4, format=u32, mode='c')
 
-cdef a_u32 *u32_set(void *p, a_diff n, object x):
+cdef a_u32 *u32_set(void *p, object x, int d=8):
     cdef a_u32 *r = <a_u32 *>p
-    cdef a_diff i
-    for i in range(n):
-        r[i] = x[i]
+    cdef object o
+    if d:
+        d -= 1
+        for o in x:
+            if PyObject_HasAttrString(o, "__len__"):
+                r = u32_set(r, o, d)
+            else:
+                r[0] = o
+                r += 1
     return r
 
 cdef array new_u32_(object x):
-    cdef list o = PyList_New(0)
-    cdef a_diff n = flatten(o, x)
+    cdef a_diff n = num_len(x)
     cdef array r = u32_new(n)
-    u32_set(r.data, n, o)
+    u32_set(r.data, x)
     return r
 
 cpdef array new_u32(object x):
@@ -57,18 +51,23 @@ cdef array u64_new(a_diff n):
         u64 = 'Q'
     return array(shape=(n,), itemsize=8, format=u64, mode='c')
 
-cdef a_u64 *u64_set(void *p, a_diff n, object x):
+cdef a_u64 *u64_set(void *p, object x, int d=8):
     cdef a_u64 *r = <a_u64 *>p
-    cdef a_diff i
-    for i in range(n):
-        r[i] = x[i]
+    cdef object o
+    if d:
+        d -= 1
+        for o in x:
+            if PyObject_HasAttrString(o, "__len__"):
+                r = u64_set(r, o, d)
+            else:
+                r[0] = o
+                r += 1
     return r
 
 cdef array new_u64_(object x):
-    cdef list o = PyList_New(0)
-    cdef a_diff n = flatten(o, x)
+    cdef a_diff n = num_len(x)
     cdef array r = u64_new(n)
-    u64_set(r.data, n, o)
+    u64_set(r.data, x)
     return r
 
 cpdef array new_u64(object x):
@@ -79,18 +78,23 @@ cpdef array new_u64(object x):
 cdef array f32_new(a_diff n):
     return array(shape=(n,), itemsize=4, format='f', mode='c')
 
-cdef a_f32 *f32_set(void *p, a_diff n, object x):
+cdef a_f32 *f32_set(void *p, object x, int d=8):
     cdef a_f32 *r = <a_f32 *>p
-    cdef a_diff i
-    for i in range(n):
-        r[i] = x[i]
+    cdef object o
+    if d:
+        d -= 1
+        for o in x:
+            if PyObject_HasAttrString(o, "__len__"):
+                r = f32_set(r, o, d)
+            else:
+                r[0] = o
+                r += 1
     return r
 
 cdef array new_f32_(object x):
-    cdef list o = PyList_New(0)
-    cdef a_diff n = flatten(o, x)
+    cdef a_diff n = num_len(x)
     cdef array r = f32_new(n)
-    f32_set(r.data, n, o)
+    f32_set(r.data, x)
     return r
 
 cpdef array new_f32(object x):
@@ -101,18 +105,23 @@ cpdef array new_f32(object x):
 cdef array f64_new(a_diff n):
     return array(shape=(n,), itemsize=8, format='d', mode='c')
 
-cdef a_f64 *f64_set(void *p, a_diff n, object x):
+cdef a_f64 *f64_set(void *p, object x, int d=8):
     cdef a_f64 *r = <a_f64 *>p
-    cdef a_diff i
-    for i in range(n):
-        r[i] = x[i]
+    cdef object o
+    if d:
+        d -= 1
+        for o in x:
+            if PyObject_HasAttrString(o, "__len__"):
+                r = f64_set(r, o, d)
+            else:
+                r[0] = o
+                r += 1
     return r
 
 cdef array new_f64_(object x):
-    cdef list o = PyList_New(0)
-    cdef a_diff n = flatten(o, x)
+    cdef a_diff n = num_len(x)
     cdef array r = f64_new(n)
-    f64_set(r.data, n, o)
+    f64_set(r.data, x)
     return r
 
 cpdef array new_f64(object x):
@@ -120,12 +129,17 @@ cpdef array new_f64(object x):
         return new_f64_(x)
     return f64_new(x)
 
-cdef a_float *num_set(void *p, a_diff n, object x):
-    cdef a_float *r = <a_float *>p
-    cdef a_diff i
-    for i in range(n):
-        r[i] = x[i]
-    return r
+cdef a_diff num_len(object x, int d=8):
+    cdef a_diff n = 0
+    cdef object o
+    if d:
+        d -= 1
+        for o in x:
+            if PyObject_HasAttrString(o, "__len__"):
+                n += num_len(o, d)
+            else:
+                n += 1
+    return n
 
 cdef array (*num_new)(a_diff)
 cdef array (*new_num_)(object)
@@ -991,20 +1005,22 @@ cdef class tf:
         def __get__(self):
             return self.num_
         def __set__(self, object num):
-            cdef a_diff n = len(num)
-            self.input = num_new(n)
-            self.num_ = num_new(n)
-            a_tf_set_num(&self.ctx, <unsigned int>n, num_set(self.num_.data, n, num), <a_float *>self.input.data)
+            self.num_ = new_num_(num)
+            self.input = num_new(self.num_.shape[0])
+            a_tf_set_num(&self.ctx, <unsigned int>self.num_.shape[0],
+                                    <const a_float *>self.num_.data,
+                                    <a_float *>self.input.data)
     cdef readonly array output
     cdef array den_
     property den:
         def __get__(self):
             return self.den_
         def __set__(self, object den):
-            cdef a_diff n = len(den)
-            self.output = num_new(n)
-            self.den_ = num_new(n)
-            a_tf_set_den(&self.ctx, <unsigned int>n, num_set(self.den_.data, n, den), <a_float *>self.output.data)
+            self.den_ = new_num_(den)
+            self.output = num_new(self.den_.shape[0])
+            a_tf_set_den(&self.ctx, <unsigned int>self.den_.shape[0],
+                                    <const a_float *>self.den_.data,
+                                    <a_float *>self.output.data)
 
 from a.trajbell cimport *
 
