@@ -112,17 +112,17 @@ int js_array_num_ptr(JSContext *ctx, JSValueConst val, js_array_num *buf, int di
     return 0;
 }
 
-int js_array_num_get(JSContext *ctx, JSValueConst val, js_array_num *buf)
+int js_array_num_get(JSContext *ctx, JSValueConst val, js_array_num *buf, int dim)
 {
     unsigned int n = 0;
-    int ret = js_array_num_len(ctx, val, &n, 8);
+    int ret = js_array_num_len(ctx, val, &n, dim);
     if (ret == 0)
     {
         if (n > buf->num)
         {
             buf->ptr = (a_float *)js_realloc(ctx, buf->ptr, sizeof(a_float) * n);
         }
-        js_array_num_ptr(ctx, val, buf, 8);
+        js_array_num_ptr(ctx, val, buf, dim);
         buf->num = n;
     }
     return ret;

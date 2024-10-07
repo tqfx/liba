@@ -40,7 +40,7 @@ A_INTERN void js_array_num_init(js_array_num *buf, a_float const *ptr, unsigned 
 }
 int js_array_num_len(JSContext *ctx, JSValueConst val, unsigned int *num, int dim);
 int js_array_num_ptr(JSContext *ctx, JSValueConst val, js_array_num *buf, int dim);
-int js_array_num_get(JSContext *ctx, JSValueConst val, js_array_num *buf);
+int js_array_num_get(JSContext *ctx, JSValueConst val, js_array_num *buf, int dim);
 
 A_PUBLIC JSModuleDef *js_init_module(JSContext *ctx, char const *module_name);
 

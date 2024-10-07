@@ -71,32 +71,32 @@ static JSValue liba_pid_fuzzy_set_rule(JSContext *ctx, JSValueConst this_val, in
     if (JS_IsArray(ctx, argv[0]))
     {
         js_array_num_init(&buf, self->me, 0);
-        if (js_array_num_get(ctx, argv[0], &buf)) { goto fail; }
+        if (js_array_num_get(ctx, argv[0], &buf, 2)) { goto fail; }
         self->me = buf.ptr;
     }
     if (JS_IsArray(ctx, argv[1]))
     {
         js_array_num_init(&buf, self->mec, 0);
-        if (js_array_num_get(ctx, argv[1], &buf)) { goto fail; }
+        if (js_array_num_get(ctx, argv[1], &buf, 2)) { goto fail; }
         self->mec = buf.ptr;
     }
     if (JS_IsArray(ctx, argv[2]))
     {
         js_array_num_init(&buf, self->mkp, 0);
-        if (js_array_num_get(ctx, argv[2], &buf)) { goto fail; }
+        if (js_array_num_get(ctx, argv[2], &buf, 2)) { goto fail; }
         nrule = a_u32_sqrt(buf.num);
         self->mkp = buf.ptr;
     }
     if (JS_IsArray(ctx, argv[3]))
     {
         js_array_num_init(&buf, self->mki, 0);
-        if (js_array_num_get(ctx, argv[3], &buf)) { goto fail; }
+        if (js_array_num_get(ctx, argv[3], &buf, 2)) { goto fail; }
         self->mki = buf.ptr;
     }
     if (JS_IsArray(ctx, argv[4]))
     {
         js_array_num_init(&buf, self->mkd, 0);
-        if (js_array_num_get(ctx, argv[4], &buf)) { goto fail; }
+        if (js_array_num_get(ctx, argv[4], &buf, 2)) { goto fail; }
         self->mkd = buf.ptr;
     }
     self->nrule = nrule;

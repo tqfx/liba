@@ -22,7 +22,7 @@ static int liba_tf_set_num_(JSContext *ctx, a_tf *self, JSValueConst num)
 {
     js_array_num buf;
     unsigned int n = 0;
-    int ret = js_array_num_len(ctx, num, &n, 8);
+    int ret = js_array_num_len(ctx, num, &n, 1);
     if (ret == 0)
     {
         js_array_num_init(&buf, self->num_p, self->num_n);
@@ -30,7 +30,7 @@ static int liba_tf_set_num_(JSContext *ctx, a_tf *self, JSValueConst num)
         {
             buf.ptr = (a_float *)js_realloc(ctx, buf.ptr, sizeof(a_float) * n * 2);
         }
-        js_array_num_ptr(ctx, num, &buf, 8);
+        js_array_num_ptr(ctx, num, &buf, 1);
         a_tf_set_num(self, n, buf.ptr, buf.ptr + n);
     }
     return ret;
@@ -40,7 +40,7 @@ static int liba_tf_set_den_(JSContext *ctx, a_tf *self, JSValueConst den)
 {
     js_array_num buf;
     unsigned int n = 0;
-    int ret = js_array_num_len(ctx, den, &n, 8);
+    int ret = js_array_num_len(ctx, den, &n, 1);
     if (ret == 0)
     {
         js_array_num_init(&buf, self->den_p, self->den_n);
@@ -48,7 +48,7 @@ static int liba_tf_set_den_(JSContext *ctx, a_tf *self, JSValueConst den)
         {
             buf.ptr = (a_float *)js_realloc(ctx, buf.ptr, sizeof(a_float) * n * 2);
         }
-        js_array_num_ptr(ctx, den, &buf, 8);
+        js_array_num_ptr(ctx, den, &buf, 1);
         a_tf_set_den(self, n, buf.ptr, buf.ptr + n);
     }
     return ret;

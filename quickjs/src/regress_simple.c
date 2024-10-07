@@ -66,8 +66,8 @@ static JSValue liba_regress_simple_ols_(JSContext *ctx, JSValueConst this_val, i
     js_array_num x, y;
     js_array_num_init(&x, NULL, 0);
     js_array_num_init(&y, NULL, 0);
-    if (js_array_num_get(ctx, argv[0], &x)) { goto fail; }
-    if (js_array_num_get(ctx, argv[1], &y)) { goto fail; }
+    if (js_array_num_get(ctx, argv[0], &x, 1)) { goto fail; }
+    if (js_array_num_get(ctx, argv[1], &y, 1)) { goto fail; }
     if (JS_ToFloat64(ctx, &x_mean, argv[2])) { goto fail; }
     if (JS_ToFloat64(ctx, &y_mean, argv[3])) { goto fail; }
     a_regress_simple_ols_(self, A_MIN(x.num, y.num), x.ptr, y.ptr, x_mean, y_mean);
@@ -88,8 +88,8 @@ static JSValue liba_regress_simple_olsx(JSContext *ctx, JSValueConst this_val, i
     a_float x_mean;
     js_array_num_init(&x, NULL, 0);
     js_array_num_init(&y, NULL, 0);
-    if (js_array_num_get(ctx, argv[0], &x)) { goto fail; }
-    if (js_array_num_get(ctx, argv[1], &y)) { goto fail; }
+    if (js_array_num_get(ctx, argv[0], &x, 1)) { goto fail; }
+    if (js_array_num_get(ctx, argv[1], &y, 1)) { goto fail; }
     if (JS_ToFloat64(ctx, &x_mean, argv[2])) { goto fail; }
     a_regress_simple_olsx(self, A_MIN(x.num, y.num), x.ptr, y.ptr, x_mean);
     err = JS_UNDEFINED;
@@ -109,8 +109,8 @@ static JSValue liba_regress_simple_olsy(JSContext *ctx, JSValueConst this_val, i
     a_float y_mean;
     js_array_num_init(&x, NULL, 0);
     js_array_num_init(&y, NULL, 0);
-    if (js_array_num_get(ctx, argv[0], &x)) { goto fail; }
-    if (js_array_num_get(ctx, argv[1], &y)) { goto fail; }
+    if (js_array_num_get(ctx, argv[0], &x, 1)) { goto fail; }
+    if (js_array_num_get(ctx, argv[1], &y, 1)) { goto fail; }
     if (JS_ToFloat64(ctx, &y_mean, argv[2])) { goto fail; }
     a_regress_simple_olsy(self, A_MIN(x.num, y.num), x.ptr, y.ptr, y_mean);
     err = JS_UNDEFINED;
@@ -129,8 +129,8 @@ static JSValue liba_regress_simple_ols(JSContext *ctx, JSValueConst this_val, in
     js_array_num x, y;
     js_array_num_init(&x, NULL, 0);
     js_array_num_init(&y, NULL, 0);
-    if (js_array_num_get(ctx, argv[0], &x)) { goto fail; }
-    if (js_array_num_get(ctx, argv[1], &y)) { goto fail; }
+    if (js_array_num_get(ctx, argv[0], &x, 1)) { goto fail; }
+    if (js_array_num_get(ctx, argv[1], &y, 1)) { goto fail; }
     a_regress_simple_ols(self, A_MIN(x.num, y.num), x.ptr, y.ptr);
     err = JS_UNDEFINED;
 fail:
