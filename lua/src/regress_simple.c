@@ -34,13 +34,16 @@ int liba_regress_simple_new(lua_State *L)
 */
 int liba_regress_simple_init(lua_State *L)
 {
-    luaL_checktype(L, 1, LUA_TUSERDATA);
-    a_float a = (a_float)luaL_optnumber(L, 2, 1);
-    a_float b = (a_float)luaL_optnumber(L, 3, 0);
     a_regress_simple *const ctx = (a_regress_simple *)lua_touserdata(L, 1);
-    a_regress_simple_init(ctx, a, b);
-    lua_pushvalue(L, 1);
-    return 1;
+    if (ctx)
+    {
+        a_float a = (a_float)luaL_optnumber(L, 2, 1);
+        a_float b = (a_float)luaL_optnumber(L, 3, 0);
+        a_regress_simple_init(ctx, a, b);
+        lua_pushvalue(L, 1);
+        return 1;
+    }
+    return 0;
 }
 
 /***

@@ -35,17 +35,20 @@ int liba_pid_new(lua_State *L)
 */
 int liba_pid_init(lua_State *L)
 {
-    luaL_checktype(L, 1, LUA_TUSERDATA);
     a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
-    ctx->kp = 1;
-    ctx->ki = 0;
-    ctx->kd = 0;
-    ctx->summax = +A_FLOAT_INF;
-    ctx->summin = -A_FLOAT_INF;
-    ctx->outmax = +A_FLOAT_INF;
-    ctx->outmin = -A_FLOAT_INF;
-    a_pid_init(ctx);
-    return 1;
+    if (ctx)
+    {
+        ctx->kp = 1;
+        ctx->ki = 0;
+        ctx->kd = 0;
+        ctx->summax = +A_FLOAT_INF;
+        ctx->summin = -A_FLOAT_INF;
+        ctx->outmax = +A_FLOAT_INF;
+        ctx->outmin = -A_FLOAT_INF;
+        a_pid_init(ctx);
+        return 1;
+    }
+    return 0;
 }
 
 /***

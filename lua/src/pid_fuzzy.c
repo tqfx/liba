@@ -73,18 +73,21 @@ int liba_pid_fuzzy_new(lua_State *L)
 */
 int liba_pid_fuzzy_init(lua_State *L)
 {
-    luaL_checktype(L, 1, LUA_TUSERDATA);
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
-    ctx->pid.kp = ctx->kp = 1;
-    ctx->pid.ki = ctx->ki = 0;
-    ctx->pid.kd = ctx->kd = 0;
-    ctx->pid.summax = +A_FLOAT_INF;
-    ctx->pid.summin = -A_FLOAT_INF;
-    ctx->pid.outmax = +A_FLOAT_INF;
-    ctx->pid.outmin = -A_FLOAT_INF;
-    ctx->opr = a_fuzzy_equ;
-    a_pid_fuzzy_init(ctx);
-    return 1;
+    if (ctx)
+    {
+        ctx->pid.kp = ctx->kp = 1;
+        ctx->pid.ki = ctx->ki = 0;
+        ctx->pid.kd = ctx->kd = 0;
+        ctx->pid.summax = +A_FLOAT_INF;
+        ctx->pid.summin = -A_FLOAT_INF;
+        ctx->pid.outmax = +A_FLOAT_INF;
+        ctx->pid.outmin = -A_FLOAT_INF;
+        ctx->opr = a_fuzzy_equ;
+        a_pid_fuzzy_init(ctx);
+        return 1;
+    }
+    return 0;
 }
 
 /***

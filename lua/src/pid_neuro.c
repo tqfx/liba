@@ -38,21 +38,24 @@ int liba_pid_neuro_new(lua_State *L)
 */
 int liba_pid_neuro_init(lua_State *L)
 {
-    luaL_checktype(L, 1, LUA_TUSERDATA);
     a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
-    ctx->pid.kp = 1;
-    ctx->pid.ki = 0;
-    ctx->pid.kd = 0;
-    ctx->pid.summax = +A_FLOAT_INF;
-    ctx->pid.summin = -A_FLOAT_INF;
-    ctx->pid.outmax = +A_FLOAT_INF;
-    ctx->pid.outmin = -A_FLOAT_INF;
-    ctx->k = 1;
-    ctx->wp = A_FLOAT_C(0.1);
-    ctx->wi = A_FLOAT_C(0.1);
-    ctx->wd = A_FLOAT_C(0.1);
-    a_pid_neuro_init(ctx);
-    return 1;
+    if (ctx)
+    {
+        ctx->pid.kp = 1;
+        ctx->pid.ki = 0;
+        ctx->pid.kd = 0;
+        ctx->pid.summax = +A_FLOAT_INF;
+        ctx->pid.summin = -A_FLOAT_INF;
+        ctx->pid.outmax = +A_FLOAT_INF;
+        ctx->pid.outmin = -A_FLOAT_INF;
+        ctx->k = 1;
+        ctx->wp = A_FLOAT_C(0.1);
+        ctx->wi = A_FLOAT_C(0.1);
+        ctx->wd = A_FLOAT_C(0.1);
+        a_pid_neuro_init(ctx);
+        return 1;
+    }
+    return 0;
 }
 
 /***

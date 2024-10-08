@@ -21,31 +21,50 @@ static int liba_version_tostring(lua_State *L)
 
 static int liba_version_init_(lua_State *L, a_version *ctx, int arg, int top)
 {
-    ctx->alpha_[0] = '.';
-    ctx->alpha_[1] = 0;
-    ctx->alpha_[2] = 0;
-    ctx->alpha_[3] = 0;
+    unsigned int major = 0, minor = 0, third = 0, extra = 0;
+    char const *str = NULL;
     switch (top)
     {
     default:
     case 4:
-        ctx->extra = (unsigned int)luaL_checkinteger(L, arg + 4);
+        extra = (unsigned int)luaL_checkinteger(L, arg + 4);
         A_FALLTHROUGH;
     case 3:
-        ctx->third = (unsigned int)luaL_checkinteger(L, arg + 3);
+        third = (unsigned int)luaL_checkinteger(L, arg + 3);
         A_FALLTHROUGH;
     case 2:
-        ctx->minor = (unsigned int)luaL_checkinteger(L, arg + 2);
+        minor = (unsigned int)luaL_checkinteger(L, arg + 2);
         A_FALLTHROUGH;
     case 1:
         if (lua_type(L, arg + 1) == LUA_TSTRING)
         {
-            a_version_parse(ctx, lua_tostring(L, arg + 1));
+            str = lua_tostring(L, arg + 1);
             break;
         }
-        ctx->major = (unsigned int)luaL_checkinteger(L, arg + 1);
+        major = (unsigned int)luaL_checkinteger(L, arg + 1);
         A_FALLTHROUGH;
     case 0:;
+    }
+    if (ctx == NULL)
+    {
+        ctx = lua_newclass(L, a_version);
+        lua_registry_get(L, liba_version_new);
+        lua_setmetatable(L, -2);
+    }
+    ctx->alpha_[0] = '.';
+    ctx->alpha_[1] = 0;
+    ctx->alpha_[2] = 0;
+    ctx->alpha_[3] = 0;
+    if (str != NULL)
+    {
+        a_version_parse(ctx, str);
+    }
+    else
+    {
+        ctx->major = major;
+        ctx->minor = minor;
+        ctx->third = third;
+        ctx->extra = extra;
     }
     return 1;
 }
@@ -61,12 +80,8 @@ static int liba_version_init_(lua_State *L, a_version *ctx, int arg, int top)
 */
 int liba_version_new(lua_State *L)
 {
-    int const top = lua_gettop(L);
-    a_version *const ctx = lua_newclass(L, a_version);
-    a_zero(ctx, sizeof(a_version));
-    lua_registry_get(L, liba_version_new);
-    lua_setmetatable(L, -2);
-    return liba_version_init_(L, ctx, 0, top);
+    liba_version_init_(L, NULL, 0, lua_gettop(L));
+    return 1;
 }
 
 /***
@@ -81,11 +96,14 @@ int liba_version_new(lua_State *L)
 */
 int liba_version_init(lua_State *L)
 {
-    int const top = lua_gettop(L);
-    luaL_checktype(L, 1, LUA_TUSERDATA);
     a_version *const ctx = (a_version *)lua_touserdata(L, 1);
-    lua_pushvalue(L, 1);
-    return liba_version_init_(L, ctx, 1, top - 1);
+    if (ctx)
+    {
+        liba_version_init_(L, ctx, 1, lua_gettop(L) - 1);
+        lua_pushvalue(L, 1);
+        return 1;
+    }
+    return 0;
 }
 
 /***

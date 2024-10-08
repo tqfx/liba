@@ -36,6 +36,12 @@ static int liba_trajpoly5_gen_(lua_State *L, a_trajpoly5 *ctx, int arg, int top)
         ts = (a_float)luaL_checknumber(L, arg + 1);
         A_FALLTHROUGH;
     case 0:
+        if (ctx == NULL)
+        {
+            ctx = lua_newclass(L, a_trajpoly5);
+            lua_registry_get(L, liba_trajpoly5_new);
+            lua_setmetatable(L, -2);
+        }
         a_trajpoly5_gen(ctx, ts, p0, p1, v0, v1, a0, a1);
     }
     return 1;
@@ -56,14 +62,8 @@ static int liba_trajpoly5_gen_(lua_State *L, a_trajpoly5 *ctx, int arg, int top)
 int liba_trajpoly5_new(lua_State *L)
 {
     int const top = lua_gettop(L);
-    if (top > 2)
-    {
-        a_trajpoly5 *const ctx = lua_newclass(L, a_trajpoly5);
-        lua_registry_get(L, liba_trajpoly5_new);
-        lua_setmetatable(L, -2);
-        return liba_trajpoly5_gen_(L, ctx, 0, top);
-    }
-    return 0;
+    liba_trajpoly5_gen_(L, NULL, 0, top > 2 ? top : 3);
+    return 1;
 }
 
 /***
@@ -81,13 +81,13 @@ int liba_trajpoly5_new(lua_State *L)
 */
 int liba_trajpoly5_gen(lua_State *L)
 {
-    int const top = lua_gettop(L);
-    if (top > 3)
+    a_trajpoly5 *const ctx = (a_trajpoly5 *)lua_touserdata(L, 1);
+    if (ctx)
     {
-        luaL_checktype(L, 1, LUA_TUSERDATA);
-        a_trajpoly5 *const ctx = (a_trajpoly5 *)lua_touserdata(L, 1);
+        int const top = lua_gettop(L);
+        liba_trajpoly5_gen_(L, ctx, 1, top > 3 ? top - 1 : 3);
         lua_pushvalue(L, 1);
-        return liba_trajpoly5_gen_(L, ctx, 1, top - 1);
+        return 1;
     }
     return 0;
 }

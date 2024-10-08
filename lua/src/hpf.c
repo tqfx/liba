@@ -15,27 +15,22 @@
 */
 int liba_hpf_new(lua_State *L)
 {
-    int top = lua_gettop(L);
-    if (top > 1)
+    a_float alpha;
+    if (lua_gettop(L) > 1)
     {
         a_float fc = (a_float)luaL_checknumber(L, 1);
         a_float ts = (a_float)luaL_checknumber(L, 2);
-        a_hpf *const ctx = lua_newclass(L, a_hpf);
-        lua_registry_get(L, liba_hpf_new);
-        lua_setmetatable(L, -2);
-        a_hpf_init(ctx, A_HPF_GEN(fc, ts));
-        return 1;
+        alpha = A_HPF_GEN(fc, ts);
     }
-    if (top > 0)
+    else
     {
-        a_float alpha = (a_float)luaL_checknumber(L, 1);
-        a_hpf *const ctx = lua_newclass(L, a_hpf);
-        lua_registry_get(L, liba_hpf_new);
-        lua_setmetatable(L, -2);
-        a_hpf_init(ctx, alpha);
-        return 1;
+        alpha = (a_float)luaL_checknumber(L, 1);
     }
-    return 0;
+    a_hpf *const ctx = lua_newclass(L, a_hpf);
+    lua_registry_get(L, liba_hpf_new);
+    lua_setmetatable(L, -2);
+    a_hpf_init(ctx, alpha);
+    return 1;
 }
 
 /***
@@ -48,22 +43,19 @@ int liba_hpf_new(lua_State *L)
 */
 int liba_hpf_gen(lua_State *L)
 {
-    int top = lua_gettop(L);
-    if (top > 2)
+    a_hpf *const ctx = (a_hpf *)lua_touserdata(L, 1);
+    if (ctx)
     {
-        luaL_checktype(L, 1, LUA_TUSERDATA);
-        a_hpf *const ctx = (a_hpf *)lua_touserdata(L, 1);
-        a_float fc = (a_float)luaL_checknumber(L, 2);
-        a_float ts = (a_float)luaL_checknumber(L, 3);
-        ctx->alpha = A_HPF_GEN(fc, ts);
-        lua_pushvalue(L, 1);
-        return 1;
-    }
-    if (top > 1)
-    {
-        luaL_checktype(L, 1, LUA_TUSERDATA);
-        a_hpf *const ctx = (a_hpf *)lua_touserdata(L, 1);
-        ctx->alpha = (a_float)luaL_checknumber(L, 2);
+        if (lua_gettop(L) > 2)
+        {
+            a_float fc = (a_float)luaL_checknumber(L, 2);
+            a_float ts = (a_float)luaL_checknumber(L, 3);
+            ctx->alpha = A_HPF_GEN(fc, ts);
+        }
+        else
+        {
+            ctx->alpha = (a_float)luaL_checknumber(L, 2);
+        }
         lua_pushvalue(L, 1);
         return 1;
     }

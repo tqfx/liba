@@ -37,31 +37,27 @@ int liba_tf_die(lua_State *L)
 */
 int liba_tf_new(lua_State *L)
 {
-    if (lua_gettop(L) > 1)
+    luaL_checktype(L, 1, LUA_TTABLE);
+    luaL_checktype(L, 2, LUA_TTABLE);
+    unsigned int const num_n = lua_array_num_len(L, 1, 1);
+    unsigned int const den_n = lua_array_num_len(L, 2, 1);
+    a_tf *const ctx = lua_newclass(L, a_tf);
+    a_zero(ctx, sizeof(a_tf));
+    lua_registry_get(L, liba_tf_new);
+    lua_setmetatable(L, -2);
+    if (num_n)
     {
-        luaL_checktype(L, 1, LUA_TTABLE);
-        luaL_checktype(L, 2, LUA_TTABLE);
-        unsigned int const num_n = lua_array_num_len(L, 1, 1);
-        unsigned int const den_n = lua_array_num_len(L, 2, 1);
-        a_tf *const ctx = lua_newclass(L, a_tf);
-        a_zero(ctx, sizeof(a_tf));
-        lua_registry_get(L, liba_tf_new);
-        lua_setmetatable(L, -2);
-        if (num_n)
-        {
-            a_float *num_p = (a_float *)lua_alloc(L, NULL, sizeof(a_float) * num_n * 2);
-            a_tf_set_num(ctx, num_n, num_p, num_p + num_n);
-            lua_array_num_ptr(L, 1, num_p, 1);
-        }
-        if (den_n)
-        {
-            a_float *den_p = (a_float *)lua_alloc(L, NULL, sizeof(a_float) * den_n * 2);
-            a_tf_set_den(ctx, den_n, den_p, den_p + den_n);
-            lua_array_num_ptr(L, 2, den_p, 1);
-        }
-        return 1;
+        a_float *num_p = (a_float *)lua_alloc(L, NULL, sizeof(a_float) * num_n * 2);
+        a_tf_set_num(ctx, num_n, num_p, num_p + num_n);
+        lua_array_num_ptr(L, 1, num_p, 1);
     }
-    return 0;
+    if (den_n)
+    {
+        a_float *den_p = (a_float *)lua_alloc(L, NULL, sizeof(a_float) * den_n * 2);
+        a_tf_set_den(ctx, den_n, den_p, den_p + den_n);
+        lua_array_num_ptr(L, 2, den_p, 1);
+    }
+    return 1;
 }
 
 /***
@@ -74,12 +70,11 @@ int liba_tf_new(lua_State *L)
 */
 int liba_tf_init(lua_State *L)
 {
-    if (lua_gettop(L) > 2)
+    a_tf *const ctx = (a_tf *)lua_touserdata(L, 1);
+    if (ctx)
     {
-        luaL_checktype(L, 1, LUA_TUSERDATA);
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
-        a_tf *const ctx = (a_tf *)lua_touserdata(L, 1);
         unsigned int const num_n = lua_array_num_len(L, 2, 1);
         unsigned int const den_n = lua_array_num_len(L, 3, 1);
         if (num_n > ctx->num_n)
