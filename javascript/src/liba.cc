@@ -9,10 +9,9 @@ namespace
 
 struct js_array_num
 {
-    unsigned int idx, num;
     a_float *ptr;
+    unsigned int num, idx;
 };
-
 static A_INLINE void js_array_num_init(js_array_num &buf, a_float const *ptr = nullptr, unsigned int num = 0)
 {
     union
@@ -20,15 +19,13 @@ static A_INLINE void js_array_num_init(js_array_num &buf, a_float const *ptr = n
         a_float const *p;
         a_float *o;
     } u = {ptr};
-    buf.idx = 0;
-    buf.num = num;
     buf.ptr = u.o;
+    buf.num = num;
+    buf.idx = 0;
 }
-
 static unsigned int js_array_num_len(emscripten::val const &val, int dim) // NOLINT(misc-no-recursion)
 {
-    unsigned int num = 0;
-    unsigned int i = 0, n = val["length"].as<unsigned int>();
+    unsigned int i = 0, n = val["length"].as<unsigned int>(), num = 0;
     for (--dim; i < n; ++i)
     {
         emscripten::val const &v = val[i];
@@ -40,7 +37,6 @@ static unsigned int js_array_num_len(emscripten::val const &val, int dim) // NOL
     }
     return num;
 }
-
 static void js_array_num_ptr(emscripten::val const &val, js_array_num &buf, int dim) // NOLINT(misc-no-recursion)
 {
     unsigned int i = 0, n = val["length"].as<unsigned int>();
@@ -57,7 +53,6 @@ static void js_array_num_ptr(emscripten::val const &val, js_array_num &buf, int 
         }
     }
 }
-
 static void js_array_num_get(emscripten::val const &val, js_array_num &buf, int dim)
 {
     unsigned int n = js_array_num_len(val, dim);
@@ -68,7 +63,6 @@ static void js_array_num_get(emscripten::val const &val, js_array_num &buf, int 
     js_array_num_ptr(val, buf, dim);
     buf.num = n;
 }
-
 static emscripten::val js_array_num_new(a_float const *p, a_size n)
 {
     return emscripten::val(emscripten::typed_memory_view(n, p));
@@ -753,9 +747,10 @@ struct tf: public a_tf
         if (n > buf.num)
         {
             buf.ptr = a_cast_s(a_float *, a_alloc(buf.ptr, sizeof(a_float) * n * 2));
+            a_tf::set_num(n, buf.ptr, buf.ptr + n);
         }
+        else { num_n = n; }
         js_array_num_ptr(num_, buf, 1);
-        a_tf_set_num(this, n, buf.ptr, buf.ptr + n);
     }
     void set_den_(emscripten::val const &den_, js_array_num &buf)
     {
@@ -763,9 +758,10 @@ struct tf: public a_tf
         if (n > buf.num)
         {
             buf.ptr = a_cast_s(a_float *, a_alloc(buf.ptr, sizeof(a_float) * n * 2));
+            a_tf::set_den(n, buf.ptr, buf.ptr + n);
         }
+        else { den_n = n; }
         js_array_num_ptr(den_, buf, 1);
-        a_tf_set_den(this, n, buf.ptr, buf.ptr + n);
     }
     A_INLINE tf(emscripten::val const &num_, emscripten::val const &den_)
     {

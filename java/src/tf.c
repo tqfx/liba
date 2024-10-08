@@ -27,6 +27,11 @@ JNIEXPORT void JNICALL Java_liba_tf_clinit(JNIEnv *Env, jclass Cls)
 
 JNIEXPORT void JNICALL Java_liba_tf_init(JNIEnv *Env, jobject Obj, jdoubleArray num, jdoubleArray den)
 {
+    union
+    {
+        double const *p;
+        double *o;
+    } u;
     jsize num_n = (*Env)->GetArrayLength(Env, num);
     jsize den_n = (*Env)->GetArrayLength(Env, den);
 
@@ -37,25 +42,20 @@ JNIEXPORT void JNICALL Java_liba_tf_init(JNIEnv *Env, jobject Obj, jdoubleArray 
     jobject Output = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)den_n * 8);
 
     a_tf *ctx = (a_tf *)(*Env)->GetDirectBufferAddress(Env, Ctx);
-    double *num_p = (double *)(*Env)->GetDirectBufferAddress(Env, Num);
-    double *den_p = (double *)(*Env)->GetDirectBufferAddress(Env, Den);
-    double *input = (double *)(*Env)->GetDirectBufferAddress(Env, Input);
-    double *output = (double *)(*Env)->GetDirectBufferAddress(Env, Output);
+    ctx->num_p = (double *)(*Env)->GetDirectBufferAddress(Env, Num);
+    ctx->den_p = (double *)(*Env)->GetDirectBufferAddress(Env, Den);
+    ctx->input = (double *)(*Env)->GetDirectBufferAddress(Env, Input);
+    ctx->output = (double *)(*Env)->GetDirectBufferAddress(Env, Output);
+    ctx->num_n = (unsigned int)num_n;
+    ctx->den_n = (unsigned int)den_n;
 
     (*Env)->SetObjectField(Env, Obj, L.ctx, Ctx);
     (*Env)->SetObjectField(Env, Obj, L.num, Num);
     (*Env)->SetObjectField(Env, Obj, L.den, Den);
     (*Env)->SetObjectField(Env, Obj, L.input, Input);
     (*Env)->SetObjectField(Env, Obj, L.output, Output);
-    (*Env)->GetDoubleArrayRegion(Env, num, 0, num_n, num_p);
-    (*Env)->GetDoubleArrayRegion(Env, den, 0, den_n, den_p);
-
-    ctx->num_p = num_p;
-    ctx->den_p = den_p;
-    ctx->input = input;
-    ctx->output = output;
-    ctx->num_n = (unsigned int)num_n;
-    ctx->den_n = (unsigned int)den_n;
+    (*Env)->GetDoubleArrayRegion(Env, num, 0, num_n, ((void)(u.p = ctx->num_p), u.o));
+    (*Env)->GetDoubleArrayRegion(Env, den, 0, den_n, ((void)(u.p = ctx->den_p), u.o));
 }
 
 JNIEXPORT jobject JNICALL Java_liba_tf_num(JNIEnv *Env, jobject Obj)
@@ -71,8 +71,8 @@ JNIEXPORT jobject JNICALL Java_liba_tf_set_1num(JNIEnv *Env, jobject Obj, jdoubl
 {
     union
     {
-        double *p;
-        double const *q;
+        double const *p;
+        double *o;
     } u;
     jsize num_n = (*Env)->GetArrayLength(Env, num);
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
@@ -81,16 +81,13 @@ JNIEXPORT jobject JNICALL Java_liba_tf_set_1num(JNIEnv *Env, jobject Obj, jdoubl
     {
         jobject Num = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)num_n * 8);
         jobject Input = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)num_n * 8);
-        double *num_p = (double *)(*Env)->GetDirectBufferAddress(Env, Num);
-        double *input = (double *)(*Env)->GetDirectBufferAddress(Env, Input);
+        ctx->num_p = (double *)(*Env)->GetDirectBufferAddress(Env, Num);
+        ctx->input = (double *)(*Env)->GetDirectBufferAddress(Env, Input);
         (*Env)->SetObjectField(Env, Obj, L.num, Num);
         (*Env)->SetObjectField(Env, Obj, L.input, Input);
-        ctx->num_n = (unsigned int)num_n;
-        ctx->num_p = num_p;
-        ctx->input = input;
     }
-    u.q = ctx->num_p;
-    (*Env)->GetDoubleArrayRegion(Env, num, 0, num_n, u.p);
+    ctx->num_n = (unsigned int)num_n;
+    (*Env)->GetDoubleArrayRegion(Env, num, 0, num_n, ((void)(u.p = ctx->num_p), u.o));
     return Obj;
 }
 
@@ -116,8 +113,8 @@ JNIEXPORT jobject JNICALL Java_liba_tf_set_1den(JNIEnv *Env, jobject Obj, jdoubl
 {
     union
     {
-        double *p;
-        double const *q;
+        double const *p;
+        double *o;
     } u;
     jsize den_n = (*Env)->GetArrayLength(Env, den);
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
@@ -126,16 +123,13 @@ JNIEXPORT jobject JNICALL Java_liba_tf_set_1den(JNIEnv *Env, jobject Obj, jdoubl
     {
         jobject Den = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)den_n * 8);
         jobject Output = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)den_n * 8);
-        double *den_p = (double *)(*Env)->GetDirectBufferAddress(Env, Den);
-        double *output = (double *)(*Env)->GetDirectBufferAddress(Env, Output);
+        ctx->den_p = (double *)(*Env)->GetDirectBufferAddress(Env, Den);
+        ctx->output = (double *)(*Env)->GetDirectBufferAddress(Env, Output);
         (*Env)->SetObjectField(Env, Obj, L.den, Den);
         (*Env)->SetObjectField(Env, Obj, L.output, Output);
-        ctx->den_n = (unsigned int)den_n;
-        ctx->den_p = den_p;
-        ctx->output = output;
     }
-    u.q = ctx->den_p;
-    (*Env)->GetDoubleArrayRegion(Env, den, 0, den_n, u.p);
+    ctx->den_n = (unsigned int)den_n;
+    (*Env)->GetDoubleArrayRegion(Env, den, 0, den_n, ((void)(u.p = ctx->den_p), u.o));
     return Obj;
 }
 

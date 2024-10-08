@@ -136,12 +136,10 @@ void lua_array_int_get(lua_State *L, int idx, LUA_INT *ptr, unsigned int num);
 void lua_array_int_set(lua_State *L, int idx, LUA_INT const *ptr, unsigned int num);
 
 void lua_array_num_new(lua_State *L, LUA_NUM const *ptr, unsigned int num);
-void lua_array_num_get(lua_State *L, int idx, LUA_NUM *ptr, unsigned int num);
+unsigned int lua_array_num_len(lua_State *L, int idx, int dim);
+LUA_NUM *lua_array_num_ptr(lua_State *L, int idx, LUA_NUM *ptr, int dim);
+LUA_NUM *lua_array_num_get(lua_State *L, int idx, LUA_NUM const *ptr, unsigned int *num, int dim);
 void lua_array_num_set(lua_State *L, int idx, LUA_NUM const *ptr, unsigned int num);
-
-unsigned int lua_table_num_len(lua_State *L, int idx, int dim);
-LUA_NUM *lua_table_num_ptr(lua_State *L, int idx, LUA_NUM *ptr, int dim);
-LUA_NUM *lua_table_num_get(lua_State *L, int idx, LUA_NUM const *ptr, unsigned int *num, int dim);
 
 void lua_stack_view(lua_State *L, unsigned int line);
 // #define LUA_STACK(L) lua_stack_view(L, __LINE__)

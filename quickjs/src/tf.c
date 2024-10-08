@@ -5,12 +5,12 @@ static JSClassID liba_tf_class_id;
 
 static void liba_tf_finalizer(JSRuntime *rt, JSValue val)
 {
-    a_tf *const self = (a_tf *)JS_GetOpaque(val, liba_tf_class_id);
     union
     {
         a_float const *p;
         a_float *o;
     } u;
+    a_tf *const self = (a_tf *)JS_GetOpaque(val, liba_tf_class_id);
     js_free_rt(rt, ((void)(u.p = self->num_p), u.o));
     js_free_rt(rt, ((void)(u.p = self->den_p), u.o));
     js_free_rt(rt, self);
@@ -29,9 +29,10 @@ static int liba_tf_set_num_(JSContext *ctx, a_tf *self, JSValueConst num)
         if (n > buf.num)
         {
             buf.ptr = (a_float *)js_realloc(ctx, buf.ptr, sizeof(a_float) * n * 2);
+            a_tf_set_num(self, n, buf.ptr, buf.ptr + n);
         }
+        else { self->num_n = n; }
         js_array_num_ptr(ctx, num, &buf, 1);
-        a_tf_set_num(self, n, buf.ptr, buf.ptr + n);
     }
     return ret;
 }
@@ -47,9 +48,10 @@ static int liba_tf_set_den_(JSContext *ctx, a_tf *self, JSValueConst den)
         if (n > buf.num)
         {
             buf.ptr = (a_float *)js_realloc(ctx, buf.ptr, sizeof(a_float) * n * 2);
+            a_tf_set_den(self, n, buf.ptr, buf.ptr + n);
         }
+        else { self->den_n = n; }
         js_array_num_ptr(ctx, den, &buf, 1);
-        a_tf_set_den(self, n, buf.ptr, buf.ptr + n);
     }
     return ret;
 }

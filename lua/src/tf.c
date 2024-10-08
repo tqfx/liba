@@ -41,16 +41,24 @@ int liba_tf_new(lua_State *L)
     {
         luaL_checktype(L, 1, LUA_TTABLE);
         luaL_checktype(L, 2, LUA_TTABLE);
-        unsigned int const num_n = (unsigned int)lua_rawlen(L, 1);
-        a_float *const num_p = (a_float *)lua_alloc(L, NULL, sizeof(a_float) * num_n * 2);
-        lua_array_num_get(L, 1, num_p, num_n);
-        unsigned int const den_n = (unsigned int)lua_rawlen(L, 2);
-        a_float *const den_p = (a_float *)lua_alloc(L, NULL, sizeof(a_float) * den_n * 2);
-        lua_array_num_get(L, 2, den_p, den_n);
+        unsigned int const num_n = lua_array_num_len(L, 1, 1);
+        unsigned int const den_n = lua_array_num_len(L, 2, 1);
         a_tf *const ctx = lua_newclass(L, a_tf);
+        a_zero(ctx, sizeof(a_tf));
         lua_registry_get(L, liba_tf_new);
         lua_setmetatable(L, -2);
-        a_tf_init(ctx, num_n, num_p, num_p + num_n, den_n, den_p, den_p + den_n);
+        if (num_n)
+        {
+            a_float *num_p = (a_float *)lua_alloc(L, NULL, sizeof(a_float) * num_n * 2);
+            a_tf_set_num(ctx, num_n, num_p, num_p + num_n);
+            lua_array_num_ptr(L, 1, num_p, 1);
+        }
+        if (den_n)
+        {
+            a_float *den_p = (a_float *)lua_alloc(L, NULL, sizeof(a_float) * den_n * 2);
+            a_tf_set_den(ctx, den_n, den_p, den_p + den_n);
+            lua_array_num_ptr(L, 2, den_p, 1);
+        }
         return 1;
     }
     return 0;
@@ -72,13 +80,22 @@ int liba_tf_init(lua_State *L)
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
         a_tf *const ctx = (a_tf *)lua_touserdata(L, 1);
-        unsigned int const num_n = (unsigned int)lua_rawlen(L, 2);
-        a_float *const num_p = (a_float *)lua_alloc(L, ctx->num_p, sizeof(a_float) * num_n * 2);
-        lua_array_num_get(L, 2, num_p, num_n);
-        unsigned int const den_n = (unsigned int)lua_rawlen(L, 3);
-        a_float *const den_p = (a_float *)lua_alloc(L, ctx->den_p, sizeof(a_float) * den_n * 2);
-        lua_array_num_get(L, 3, den_p, den_n);
-        a_tf_init(ctx, num_n, num_p, num_p + num_n, den_n, den_p, den_p + den_n);
+        unsigned int const num_n = lua_array_num_len(L, 2, 1);
+        unsigned int const den_n = lua_array_num_len(L, 3, 1);
+        if (num_n > ctx->num_n)
+        {
+            a_float *num_p = (a_float *)lua_alloc(L, ctx->num_p, sizeof(a_float) * num_n * 2);
+            a_tf_set_num(ctx, num_n, num_p, num_p + num_n);
+            lua_array_num_ptr(L, 2, num_p, 1);
+        }
+        else { ctx->num_n = num_n; }
+        if (den_n > ctx->den_n)
+        {
+            a_float *den_p = (a_float *)lua_alloc(L, ctx->den_p, sizeof(a_float) * den_n * 2);
+            a_tf_set_den(ctx, den_n, den_p, den_p + den_n);
+            lua_array_num_ptr(L, 3, den_p, 1);
+        }
+        else { ctx->den_n = den_n; }
         lua_pushvalue(L, 1);
         return 1;
     }
@@ -129,19 +146,27 @@ static int liba_tf_set(lua_State *L)
     case 0x001D0A2A: // num
     {
         luaL_checktype(L, 3, LUA_TTABLE);
-        unsigned int const num_n = (unsigned int)lua_rawlen(L, 3);
-        a_float *const num_p = (a_float *)lua_alloc(L, ctx->num_p, sizeof(a_float) * num_n * 2);
-        lua_array_num_get(L, 3, num_p, num_n);
-        a_tf_set_num(ctx, num_n, num_p, num_p + num_n);
+        unsigned int const num_n = lua_array_num_len(L, 3, 1);
+        if (num_n > ctx->num_n)
+        {
+            a_float *num_p = (a_float *)lua_alloc(L, ctx->num_p, sizeof(a_float) * num_n * 2);
+            a_tf_set_num(ctx, num_n, num_p, num_p + num_n);
+            lua_array_num_ptr(L, 3, num_p, 1);
+        }
+        else { ctx->num_n = num_n; }
         break;
     }
     case 0x001A63A1: // den
     {
         luaL_checktype(L, 3, LUA_TTABLE);
-        unsigned int const den_n = (unsigned int)lua_rawlen(L, 3);
-        a_float *const den_p = (a_float *)lua_alloc(L, ctx->den_p, sizeof(a_float) * den_n * 2);
-        lua_array_num_get(L, 3, den_p, den_n);
-        a_tf_set_den(ctx, den_n, den_p, den_p + den_n);
+        unsigned int const den_n = lua_array_num_len(L, 3, 1);
+        if (den_n > ctx->den_n)
+        {
+            a_float *den_p = (a_float *)lua_alloc(L, ctx->den_p, sizeof(a_float) * den_n * 2);
+            a_tf_set_den(ctx, den_n, den_p, den_p + den_n);
+            lua_array_num_ptr(L, 3, den_p, 1);
+        }
+        else { ctx->den_n = den_n; }
         break;
     }
     case 0xE8859EEB: // __name
