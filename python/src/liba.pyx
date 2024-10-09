@@ -966,6 +966,76 @@ def poly_evar(object x, const a_float[::1] a):
         return r
     return a_poly_evar(&a[0], a.shape[0], x)
 
+from a.regress_linear cimport *
+
+cdef class regress_linear:
+    cdef a_regress_linear ctx
+    def __init__(self, object coef, a_float bias=0):
+        if PyObject_HasAttrString(coef, "__len__"):
+            self.coef_ = new_num_(coef, 1)
+        else:
+            self.coef_ = num_new(1)
+            self.coef_[0] = coef
+        a_regress_linear_init(&self.ctx, <a_float *>self.coef_.data, self.coef_.shape[0], bias)
+    def eval(self, const a_float[::1] x):
+        cdef array r
+        cdef a_diff i
+        cdef a_float *y
+        cdef a_diff n = x.shape[0] // self.ctx.coef_n
+        if n > 1:
+            r = num_new(n)
+            y = <a_float *>r.data
+            for i in prange(n, nogil=True):
+                y[i] = a_regress_linear_eval(&self.ctx, &x[i * self.ctx.coef_n])
+            return r
+        return a_regress_linear_eval(&self.ctx, &x[0])
+    def err(self, const a_float[::1] x, const a_float[::1] y):
+        cdef a_diff m = x.shape[0] // self.ctx.coef_n
+        cdef a_diff n = min(m, y.shape[0])
+        cdef array r = num_new(n)
+        a_regress_linear_err(&self.ctx, n, &x[0], &y[0], <a_float *>r.data)
+        return r
+    def gd(self, const a_float[::1] input, a_float error, a_float alpha):
+        a_regress_linear_gd(&self.ctx, &input[0], error, alpha)
+        return self
+    def sgd(self, const a_float[::1] x, const a_float[::1] y, a_float alpha):
+        cdef a_diff m = x.shape[0] // self.ctx.coef_n
+        cdef a_diff n = min(m, y.shape[0])
+        a_regress_linear_sgd(&self.ctx, n, &x[0], &y[0], alpha)
+        return self
+    def bgd(self, const a_float[::1] x, const a_float[::1] y, a_float alpha):
+        cdef a_diff m = x.shape[0] // self.ctx.coef_n
+        cdef a_diff n = min(m, y.shape[0])
+        cdef array r = num_new(n)
+        a_regress_linear_err(&self.ctx, n, &x[0], &y[0], <a_float *>r.data)
+        a_regress_linear_bgd(&self.ctx, n, &x[0], <a_float *>r.data, alpha)
+        return self
+    def mgd(self, const a_float[::1] x, const a_float[::1] y, a_float delta, a_float lrmax, a_float lrmin, a_size lrtim=100, a_size epoch=1000, a_size batch=10):
+        cdef a_diff m = x.shape[0] // self.ctx.coef_n
+        cdef a_diff n = min(m, y.shape[0])
+        cdef array r = num_new(n)
+        return a_regress_linear_mgd(&self.ctx, n, &x[0], &y[0], <a_float *>r.data, delta, lrmax, lrmin, lrtim, epoch, batch)
+    def zero(self):
+        a_regress_linear_zero(&self.ctx)
+        return self
+    cdef array coef_
+    property coef:
+        def __get__(self):
+            return self.coef_
+        def __set__(self, object coef):
+            if PyObject_HasAttrString(coef, "__len__"):
+                self.coef_ = new_num_(coef, 1)
+            else:
+                self.coef_ = num_new(1)
+                self.coef_[0] = coef
+            self.ctx.coef_p = <a_float *>self.coef_.data
+            self.ctx.coef_n = self.coef_.shape[0]
+    property bias:
+        def __get__(self):
+            return self.ctx.bias
+        def __set__(self, a_float bias):
+            self.ctx.bias = bias
+
 from a.regress_simple cimport *
 
 cdef class regress_simple:
