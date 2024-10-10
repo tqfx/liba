@@ -95,8 +95,8 @@ A_EXTERN void a_regress_linear_bgd(a_regress_linear *ctx, a_size n, a_float cons
  @param[in] y response data, specified as a numeric vector
  @param[in,out] err residuals, specified as a numeric vector
  @param[in] delta threshold for gradient descent value
- @param[in] lrmin minimum learning rate of iterations
  @param[in] lrmax maximum learning rate of iterations
+ @param[in] lrmin minimum learning rate of iterations
  @param[in] lrtim total number of learning rate steps
  @param[in] epoch maximum number of epochs
  @param[in] batch batch size of data
