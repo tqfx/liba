@@ -890,6 +890,166 @@ impl pid_neuro {
     }
 }
 
+/// linear regression
+#[repr(C)]
+pub struct regress_linear {
+    /// points to regression coefficients
+    coef_p: *mut float,
+    /// number of regression coefficients
+    coef_n: usize,
+    /// intercept
+    pub bias: float,
+}
+
+extern "C" {
+    fn a_regress_linear_eval(ctx: *const regress_linear, val: *const float) -> float;
+    fn a_regress_linear_err(
+        ctx: *const regress_linear,
+        n: usize,
+        x: *const float,
+        y: *const float,
+        err: *mut float,
+    );
+    fn a_regress_linear_pdm(
+        ctx: *const regress_linear,
+        n: usize,
+        x: *const float,
+        pdm: *mut float,
+        y_mean: float,
+    );
+    fn a_regress_linear_gd(
+        ctx: *mut regress_linear,
+        input: *const float,
+        error: float,
+        alpha: float,
+    );
+    fn a_regress_linear_sgd(
+        ctx: *mut regress_linear,
+        n: usize,
+        x: *const float,
+        y: *const float,
+        alpha: float,
+    );
+    fn a_regress_linear_bgd(
+        ctx: *mut regress_linear,
+        n: usize,
+        x: *const float,
+        err: *const float,
+        alpha: float,
+    );
+    fn a_regress_linear_mgd(
+        ctx: *mut regress_linear,
+        n: usize,
+        x: *const float,
+        y: *const float,
+        err: *mut float,
+        delta: float,
+        lrmax: float,
+        lrmin: float,
+        lrtim: usize,
+        epoch: usize,
+        batch: usize,
+    );
+    fn a_regress_linear_zero(ctx: *mut regress_linear);
+}
+
+impl regress_linear {
+    /// initialize for linear regression
+    #[inline(always)]
+    pub fn new(coef: &mut [float], bias: float) -> Self {
+        Self {
+            coef_p: coef.as_mut_ptr(),
+            coef_n: coef.len(),
+            bias,
+        }
+    }
+    /// get regression coefficients for linear regression
+    #[inline(always)]
+    pub fn coef(&mut self) -> &mut [float] {
+        unsafe { from_raw_parts_mut(self.coef_p, self.coef_n) }
+    }
+    /// set regression coefficients for linear regression
+    #[inline(always)]
+    pub fn set_coef(&mut self, coef: &mut [float]) -> &mut Self {
+        self.coef_p = coef.as_mut_ptr();
+        self.coef_n = coef.len();
+        self
+    }
+    /// calculate predicted value for linear regression
+    #[inline(always)]
+    pub fn eval(&self, val: &[float]) -> float {
+        unsafe { a_regress_linear_eval(self, val.as_ptr()) }
+    }
+    /// calculate residuals for linear regression
+    #[inline(always)]
+    pub fn err(&self, x: &[float], y: &[float], err: &mut [float]) {
+        unsafe { a_regress_linear_err(self, y.len(), x.as_ptr(), y.as_ptr(), err.as_mut_ptr()) }
+    }
+    /// calculate prediction deviation from mean for linear regression
+    #[inline(always)]
+    pub fn pdm(&self, x: &[float], pdm: &mut [float], y_mean: float) {
+        let n = x.len() / self.coef_n;
+        unsafe { a_regress_linear_pdm(self, n, x.as_ptr(), pdm.as_mut_ptr(), y_mean) }
+    }
+    /// gradient descent for linear regression
+    #[inline(always)]
+    pub fn gd(&mut self, input: &[float], error: float, alpha: float) -> &mut Self {
+        unsafe { a_regress_linear_gd(self, input.as_ptr(), error, alpha) }
+        self
+    }
+    /// stochastic gradient descent for linear regression
+    #[inline(always)]
+    pub fn sgd(&mut self, x: &[float], y: &[float], alpha: float) -> &mut Self {
+        unsafe { a_regress_linear_sgd(self, y.len(), x.as_ptr(), y.as_ptr(), alpha) }
+        self
+    }
+    /// batch gradient descent for linear regression
+    #[inline(always)]
+    pub fn bgd(&mut self, x: &[float], err: &[float], alpha: float) -> &mut Self {
+        let n = x.len() / self.coef_n;
+        unsafe { a_regress_linear_bgd(self, n, x.as_ptr(), err.as_ptr(), alpha) }
+        self
+    }
+    /// mini-batch gradient descent for linear regression
+    #[allow(clippy::too_many_arguments)]
+    #[inline(always)]
+    pub fn mgd(
+        &mut self,
+        x: &[float],
+        y: &[float],
+        err: &mut [float],
+        delta: float,
+        lrmax: float,
+        lrmin: float,
+        lrtim: usize,
+        epoch: usize,
+        batch: usize,
+    ) -> &mut Self {
+        unsafe {
+            a_regress_linear_mgd(
+                self,
+                y.len(),
+                x.as_ptr(),
+                y.as_ptr(),
+                err.as_mut_ptr(),
+                delta,
+                lrmax,
+                lrmin,
+                lrtim,
+                epoch,
+                batch,
+            )
+        }
+        self
+    }
+    /// zeroing for linear regression
+    #[inline(always)]
+    pub fn zero(&mut self) -> &mut Self {
+        unsafe { a_regress_linear_zero(self) };
+        self
+    }
+}
+
 /// simple linear regression
 #[repr(C)]
 pub struct regress_simple {
