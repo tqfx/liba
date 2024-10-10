@@ -191,10 +191,22 @@ else:
     new_num_ = new_f64_
     new_num = new_f64
 
-def hash_bkdr(const char *str, a_u32 val=0) -> a_u32:
+def num_sum(const a_float[::1] x):
+    return a_float_sum(&x[0], x.shape[0])
+
+def num_sum1(const a_float[::1] x):
+    return a_float_sum1(&x[0], x.shape[0])
+
+def num_sum2(const a_float[::1] x):
+    return a_float_sum2(&x[0], x.shape[0])
+
+def num_mean(const a_float[::1] x):
+    return a_float_mean(&x[0], x.shape[0])
+
+def hash_bkdr(const char *str, a_u32 val=0):
     return a_hash_bkdr(str, val)
 
-def hash_sdbm(const char *str, a_u32 val=0) -> a_u32:
+def hash_sdbm(const char *str, a_u32 val=0):
     return a_hash_sdbm(str, val)
 
 from a.crc cimport *
