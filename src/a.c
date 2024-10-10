@@ -156,14 +156,6 @@ void a_float_roll_back_(a_float *block_p, a_size block_n,
     a_copy(block_p, shift_p, sizeof(a_float) * shift);
 }
 
-a_float a_float_mean(a_float const *p, a_size n)
-{
-    a_float res = 0;
-    a_float const inv = 1 / (a_float)n;
-    for (; n; --n, ++p) { res += *p * inv; }
-    return res;
-}
-
 a_float a_float_sum(a_float const *p, a_size n)
 {
     a_float res = 0;
@@ -182,6 +174,14 @@ a_float a_float_sum2(a_float const *p, a_size n)
 {
     a_float res = 0;
     for (; n; --n, ++p) { res += A_SQ(*p); }
+    return res;
+}
+
+a_float a_float_mean(a_float const *p, a_size n)
+{
+    a_float res = 0;
+    a_float const inv = 1 / (a_float)n;
+    for (; n; --n, ++p) { res += *p * inv; }
     return res;
 }
 
