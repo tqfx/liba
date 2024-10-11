@@ -124,14 +124,14 @@ while t <= 0.2:
 N = len(x)
 r = 1
 
-y1 = liba.new_num(N)
+y1 = liba.new_float(N)
 for i in range(len(x)):
     y1[i] = tf(pid_fuzzy.pos(r, tf.output[0]))
 
 pid_fuzzy.zero()
 tf.zero()
 
-y2 = liba.new_num(N)
+y2 = liba.new_float(N)
 for i in range(len(x)):
     y2[i] = tf(pid_fuzzy.inc(r, tf.output[0]))
 

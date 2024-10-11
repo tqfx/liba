@@ -11,8 +11,8 @@ if len(sys.argv) > 1:
 import liba  # type: ignore
 
 N = 100
-x = liba.new_num([0, 1, 2, 3, 4])
-y = liba.new_num([1, 2, 3, 4, 5])
+x = liba.new_float([0, 1, 2, 3, 4])
+y = liba.new_float([1, 2, 3, 4, 5])
 
 regress = liba.regress_linear([0], 0)
 
@@ -20,7 +20,7 @@ regress.zero()
 for i in range(N):
     regress.sgd(x, y, 0.1)
 print("y=" + str(regress.coef[0]) + "x+" + str(regress.bias))
-print(liba.num_sum(regress.err(x, y)))
+print(liba.float_sum(regress.err(x, y)))
 print(list(regress.eval(x)))
 print(list(regress.err(x, y)))
 
@@ -28,14 +28,14 @@ regress.zero()
 for i in range(N):
     regress.bgd(x, y, 0.1)
 print("y=" + str(regress.coef[0]) + "x+" + str(regress.bias))
-print(liba.num_sum(regress.err(x, y)))
+print(liba.float_sum(regress.err(x, y)))
 print(list(regress.eval(x)))
 print(list(regress.err(x, y)))
 
 regress.zero()
 print(regress.mgd(x, y, 0.001, 0.2, 0.1, epoch=N))
 print("y=" + str(regress.coef[0]) + "x+" + str(regress.bias))
-print(liba.num_sum(regress.err(x, y)))
+print(liba.float_sum(regress.err(x, y)))
 print(list(regress.eval(x)))
 print(list(regress.err(x, y)))
 

@@ -12,6 +12,25 @@ from cython.view cimport array
 from cpython cimport *
 from a cimport *
 
+cdef a_diff get_len(object x, int d):
+    cdef a_diff i = 0, n = 0
+    cdef object o = iter(x)
+    cdef list L = [o]
+    while L:
+        try:
+            o = next(L[i])
+            if PyObject_HasAttrString(o, "__len__"):
+                if len(L) < d:
+                    o = iter(o)
+                    L.append(o)
+                    i += 1
+            else:
+                n += 1
+        except StopIteration:
+            L.pop()
+            i -= 1
+    return n
+
 cdef array u16_new(a_diff n):
     return array(shape=(n,), itemsize=2, format='H', mode='c')
 
@@ -42,15 +61,15 @@ cdef a_u32 *u32_set(void *p, object x, int d):
             i -= 1
     return <a_u32 *>p
 
-cdef array new_u32_(object x, int d):
-    cdef a_diff n = num_len(x, d)
+cdef array u32_get(object x, int d):
+    cdef a_diff n = get_len(x, d)
     cdef array r = u32_new(n)
     u32_set(r.data, x, d)
     return r
 
 cpdef array new_u32(object x, int d=1):
     if PyObject_HasAttrString(x, "__len__"):
-        return new_u32_(x, d)
+        return u32_get(x, d)
     return u32_new(x)
 
 cdef array u64_new(a_diff n):
@@ -80,15 +99,15 @@ cdef a_u64 *u64_set(void *p, object x, int d):
             i -= 1
     return <a_u64 *>p
 
-cdef array new_u64_(object x, int d):
-    cdef a_diff n = num_len(x, d)
+cdef array u64_get(object x, int d):
+    cdef a_diff n = get_len(x, d)
     cdef array r = u64_new(n)
     u64_set(r.data, x, d)
     return r
 
 cpdef array new_u64(object x, int d=1):
     if PyObject_HasAttrString(x, "__len__"):
-        return new_u64_(x, d)
+        return u64_get(x, d)
     return u64_new(x)
 
 cdef array f32_new(a_diff n):
@@ -115,15 +134,15 @@ cdef a_f32 *f32_set(void *p, object x, int d):
             i -= 1
     return <a_f32 *>p
 
-cdef array new_f32_(object x, int d):
-    cdef a_diff n = num_len(x, d)
+cdef array f32_get(object x, int d):
+    cdef a_diff n = get_len(x, d)
     cdef array r = f32_new(n)
     f32_set(r.data, x, d)
     return r
 
 cpdef array new_f32(object x, int d=1):
     if PyObject_HasAttrString(x, "__len__"):
-        return new_f32_(x, d)
+        return f32_get(x, d)
     return f32_new(x)
 
 cdef array f64_new(a_diff n):
@@ -150,57 +169,38 @@ cdef a_f64 *f64_set(void *p, object x, int d):
             i -= 1
     return <a_f64 *>p
 
-cdef array new_f64_(object x, int d):
-    cdef a_diff n = num_len(x, d)
+cdef array f64_get(object x, int d):
+    cdef a_diff n = get_len(x, d)
     cdef array r = f64_new(n)
     f64_set(r.data, x, d)
     return r
 
 cpdef array new_f64(object x, int d=1):
     if PyObject_HasAttrString(x, "__len__"):
-        return new_f64_(x, d)
+        return f64_get(x, d)
     return f64_new(x)
 
-cdef a_diff num_len(object x, int d):
-    cdef a_diff i = 0, n = 0
-    cdef object o = iter(x)
-    cdef list L = [o]
-    while L:
-        try:
-            o = next(L[i])
-            if PyObject_HasAttrString(o, "__len__"):
-                if len(L) < d:
-                    o = iter(o)
-                    L.append(o)
-                    i += 1
-            else:
-                n += 1
-        except StopIteration:
-            L.pop()
-            i -= 1
-    return n
-
-cdef array (*num_new)(a_diff)
-cdef array (*new_num_)(object,int)
+cdef array (*float_new)(a_diff)
+cdef array (*float_get)(object,int)
 if A_FLOAT_TYPE == A_FLOAT_SINGLE:
-    num_new = f32_new
-    new_num_ = new_f32_
-    new_num = new_f32
+    float_new = f32_new
+    float_get = f32_get
+    new_float = new_f32
 else:
-    num_new = f64_new
-    new_num_ = new_f64_
-    new_num = new_f64
+    float_new = f64_new
+    float_get = f64_get
+    new_float = new_f64
 
-def num_sum(const a_float[::1] x):
+def float_sum(const a_float[::1] x):
     return a_float_sum(&x[0], x.shape[0])
 
-def num_sum1(const a_float[::1] x):
+def float_sum1(const a_float[::1] x):
     return a_float_sum1(&x[0], x.shape[0])
 
-def num_sum2(const a_float[::1] x):
+def float_sum2(const a_float[::1] x):
     return a_float_sum2(&x[0], x.shape[0])
 
-def num_mean(const a_float[::1] x):
+def float_mean(const a_float[::1] x):
     return a_float_mean(&x[0], x.shape[0])
 
 def hash_bkdr(const char *str, a_u32 val=0):
@@ -468,7 +468,7 @@ cdef class mf:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -483,7 +483,7 @@ cdef class mf:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -498,7 +498,7 @@ cdef class mf:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -513,7 +513,7 @@ cdef class mf:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -528,7 +528,7 @@ cdef class mf:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -543,7 +543,7 @@ cdef class mf:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -558,7 +558,7 @@ cdef class mf:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -573,7 +573,7 @@ cdef class mf:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -588,7 +588,7 @@ cdef class mf:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -603,7 +603,7 @@ cdef class mf:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -618,7 +618,7 @@ cdef class mf:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -633,7 +633,7 @@ cdef class mf:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -648,7 +648,7 @@ cdef class mf:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -663,7 +663,7 @@ cdef class mf:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -775,11 +775,11 @@ cdef class pid_fuzzy:
         a_pid_fuzzy_set_bfuzz(&self.ctx, ptr, num)
         return self
     def set_rule(self, me, mec, mkp, mki, mkd):
-        self.me = new_num_(me, 2)
-        self.mec = new_num_(mec, 2)
-        self.mkp = new_num_(mkp, 2)
-        self.mki = new_num_(mki, 2)
-        self.mkd = new_num_(mkd, 2)
+        self.me = float_get(me, 2)
+        self.mec = float_get(mec, 2)
+        self.mkp = float_get(mkp, 2)
+        self.mki = float_get(mki, 2)
+        self.mkd = float_get(mkd, 2)
         cdef a_u32 n = <a_u32>self.mkp.shape[0]
         a_pid_fuzzy_set_rule(&self.ctx, a_u32_sqrt(n),
                         <const a_float *>self.me.data,
@@ -955,7 +955,7 @@ def poly_eval(object x, const a_float[::1] a):
     cdef const a_float[::1] p
     if PyObject_HasAttrString(x, "__len__"):
         p = x
-        r = num_new(p.shape[0])
+        r = float_new(p.shape[0])
         q = <a_float *>r.data
         A_ASSUME(p.shape[0])
         for i in prange(p.shape[0], nogil=True):
@@ -970,7 +970,7 @@ def poly_evar(object x, const a_float[::1] a):
     cdef const a_float[::1] p
     if PyObject_HasAttrString(x, "__len__"):
         p = x
-        r = num_new(p.shape[0])
+        r = float_new(p.shape[0])
         q = <a_float *>r.data
         A_ASSUME(p.shape[0])
         for i in prange(p.shape[0], nogil=True):
@@ -984,9 +984,9 @@ cdef class regress_linear:
     cdef a_regress_linear ctx
     def __init__(self, object coef, a_float bias=0):
         if PyObject_HasAttrString(coef, "__len__"):
-            self.coef_ = new_num_(coef, 1)
+            self.coef_ = float_get(coef, 1)
         else:
-            self.coef_ = num_new(1)
+            self.coef_ = float_new(1)
             self.coef_[0] = coef
         a_regress_linear_init(&self.ctx, <a_float *>self.coef_.data, self.coef_.shape[0], bias)
     def eval(self, const a_float[::1] x):
@@ -995,7 +995,7 @@ cdef class regress_linear:
         cdef a_float *y
         cdef a_diff n = x.shape[0] // self.ctx.coef_n
         if n > 1:
-            r = num_new(n)
+            r = float_new(n)
             y = <a_float *>r.data
             for i in prange(n, nogil=True):
                 y[i] = a_regress_linear_eval(&self.ctx, &x[i * self.ctx.coef_n])
@@ -1004,7 +1004,7 @@ cdef class regress_linear:
     def err(self, const a_float[::1] x, const a_float[::1] y):
         cdef a_diff m = x.shape[0] // self.ctx.coef_n
         cdef a_diff n = min(m, y.shape[0])
-        cdef array r = num_new(n)
+        cdef array r = float_new(n)
         a_regress_linear_err(&self.ctx, n, &x[0], &y[0], <a_float *>r.data)
         return r
     def gd(self, const a_float[::1] input, a_float error, a_float alpha):
@@ -1018,14 +1018,14 @@ cdef class regress_linear:
     def bgd(self, const a_float[::1] x, const a_float[::1] y, a_float alpha):
         cdef a_diff m = x.shape[0] // self.ctx.coef_n
         cdef a_diff n = min(m, y.shape[0])
-        cdef array r = num_new(n)
+        cdef array r = float_new(n)
         a_regress_linear_err(&self.ctx, n, &x[0], &y[0], <a_float *>r.data)
         a_regress_linear_bgd(&self.ctx, n, &x[0], <a_float *>r.data, alpha)
         return self
     def mgd(self, const a_float[::1] x, const a_float[::1] y, a_float delta, a_float lrmax, a_float lrmin, a_size lrtim=100, a_size epoch=1000, a_size batch=10):
         cdef a_diff m = x.shape[0] // self.ctx.coef_n
         cdef a_diff n = min(m, y.shape[0])
-        cdef array r = num_new(n)
+        cdef array r = float_new(n)
         return a_regress_linear_mgd(&self.ctx, n, &x[0], &y[0], <a_float *>r.data, delta, lrmax, lrmin, lrtim, epoch, batch)
     def zero(self):
         a_regress_linear_zero(&self.ctx)
@@ -1036,9 +1036,9 @@ cdef class regress_linear:
             return self.coef_
         def __set__(self, object coef):
             if PyObject_HasAttrString(coef, "__len__"):
-                self.coef_ = new_num_(coef, 1)
+                self.coef_ = float_get(coef, 1)
             else:
-                self.coef_ = num_new(1)
+                self.coef_ = float_new(1)
                 self.coef_[0] = coef
             self.ctx.coef_p = <a_float *>self.coef_.data
             self.ctx.coef_n = self.coef_.shape[0]
@@ -1061,7 +1061,7 @@ cdef class regress_simple:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1075,7 +1075,7 @@ cdef class regress_simple:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(y, "__len__"):
             p = y
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1126,8 +1126,8 @@ cdef class tf:
         def __get__(self):
             return self.num_
         def __set__(self, object num):
-            self.num_ = new_num_(num, 1)
-            self.input = num_new(self.num_.shape[0])
+            self.num_ = float_get(num, 1)
+            self.input = float_new(self.num_.shape[0])
             a_tf_set_num(&self.ctx, <unsigned int>self.num_.shape[0],
                                     <const a_float *>self.num_.data,
                                     <a_float *>self.input.data)
@@ -1137,8 +1137,8 @@ cdef class tf:
         def __get__(self):
             return self.den_
         def __set__(self, object den):
-            self.den_ = new_num_(den, 1)
-            self.output = num_new(self.den_.shape[0])
+            self.den_ = float_get(den, 1)
+            self.output = float_new(self.den_.shape[0])
             a_tf_set_den(&self.ctx, <unsigned int>self.den_.shape[0],
                                     <const a_float *>self.den_.data,
                                     <a_float *>self.output.data)
@@ -1156,7 +1156,7 @@ cdef class trajbell:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1170,7 +1170,7 @@ cdef class trajbell:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1184,7 +1184,7 @@ cdef class trajbell:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1198,7 +1198,7 @@ cdef class trajbell:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1264,7 +1264,7 @@ cdef class trajpoly3:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1278,7 +1278,7 @@ cdef class trajpoly3:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1292,7 +1292,7 @@ cdef class trajpoly3:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1325,7 +1325,7 @@ cdef class trajpoly5:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1339,7 +1339,7 @@ cdef class trajpoly5:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1353,7 +1353,7 @@ cdef class trajpoly5:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1386,7 +1386,7 @@ cdef class trajpoly7:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1400,7 +1400,7 @@ cdef class trajpoly7:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1414,7 +1414,7 @@ cdef class trajpoly7:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1428,7 +1428,7 @@ cdef class trajpoly7:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1461,7 +1461,7 @@ cdef class trajtrap:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1475,7 +1475,7 @@ cdef class trajtrap:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
@@ -1489,7 +1489,7 @@ cdef class trajtrap:
         cdef const a_float[::1] p
         if PyObject_HasAttrString(x, "__len__"):
             p = x
-            r = num_new(p.shape[0])
+            r = float_new(p.shape[0])
             q = <a_float *>r.data
             A_ASSUME(p.shape[0])
             for i in prange(p.shape[0], nogil=True):
