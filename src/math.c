@@ -87,7 +87,8 @@ a_u16 a_u32_sqrt(a_u32 x)
     return (a_u16)x0;
 #else /* Digit-by-digit */
     a_u32 a, b = 1, y = 0;
-    for (b <<= sizeof(b) * 8 - 2; b > x; b >>= 2) {}
+    b <<= sizeof(b) * 8 - 2;
+    while (b > x) { b >>= 2; }
     for (; b; b >>= 2)
     {
         a = y + b;
@@ -142,7 +143,8 @@ a_u32 a_u64_sqrt(a_u64 x)
     return (a_u32)x0;
 #else /* Digit-by-digit */
     a_u64 a, b = 1, y = 0;
-    for (b <<= sizeof(b) * 8 - 2; b > x; b >>= 2) {}
+    b <<= sizeof(b) * 8 - 2;
+    while (b > x) { b >>= 2; }
     for (; b; b >>= 2)
     {
         a = y + b;
@@ -188,7 +190,7 @@ a_float a_float_expm1(a_float x)
     if (!isfinite(x))
     {
         if (isnan(x) || x > 0) { return x; }
-        else { return -1; }
+        return -1;
     }
     if (x < -A_FLOAT_C(0.5) || x > A_FLOAT_C(0.5))
     {
@@ -249,7 +251,7 @@ a_float a_float_hypot3(a_float x, a_float y, a_float z)
     }
     if (w < b) { w = b; }
     if (w < c) { w = c; }
-    if (w == 0) { return 0; }
+    if (!w) { return 0; }
     x /= w;
     y /= w;
     z /= w;
