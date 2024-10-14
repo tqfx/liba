@@ -42,11 +42,3 @@ cdef extern from "a/a.h":
     a_u64 a_u64_getb(const void *b)
     void a_u64_setl(void *b, a_u64 x)
     void a_u64_setb(void *b, a_u64 x)
-
-    a_u32 a_hash_bkdr(const char *str, a_u32 val)
-    a_u32 a_hash_sdbm(const char *str, a_u32 val)
-
-    a_float a_float_sum(const a_float *p, a_size n)
-    a_float a_float_sum1(const a_float *p, a_size n)
-    a_float a_float_sum2(const a_float *p, a_size n)
-    a_float a_float_mean(const a_float *p, a_size n)

@@ -1,4 +1,5 @@
 #include "a.h"
+#include "a/hash.h"
 
 static JSValue liba_hash_bkdr(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {

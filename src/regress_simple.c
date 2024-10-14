@@ -1,4 +1,5 @@
 #include "a/regress_simple.h"
+#include "a/math.h"
 
 void a_regress_simple_init(a_regress_simple *ctx, a_float coef, a_float bias)
 {

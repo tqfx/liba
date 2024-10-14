@@ -2,6 +2,7 @@
 #include "test.h"
 #include "a/rbt.h"
 #include "a/str.h"
+#include "a/hash.h"
 
 typedef struct
 {

@@ -68,6 +68,8 @@ static emscripten::val js_array_num_new(a_float const *p, a_size n)
     return emscripten::val(emscripten::typed_memory_view(n, p));
 }
 
+#include "a/hash.h"
+
 static a_u32 hash_bkdr(std::string const &str, a_u32 val)
 {
     return a_hash_bkdr_(str.data(), str.length(), val);

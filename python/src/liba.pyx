@@ -191,24 +191,6 @@ else:
     float_get = f64_get
     new_float = new_f64
 
-def float_sum(const a_float[::1] x):
-    return a_float_sum(&x[0], x.shape[0])
-
-def float_sum1(const a_float[::1] x):
-    return a_float_sum1(&x[0], x.shape[0])
-
-def float_sum2(const a_float[::1] x):
-    return a_float_sum2(&x[0], x.shape[0])
-
-def float_mean(const a_float[::1] x):
-    return a_float_mean(&x[0], x.shape[0])
-
-def hash_bkdr(const char *str, a_u32 val=0):
-    return a_hash_bkdr(str, val)
-
-def hash_sdbm(const char *str, a_u32 val=0):
-    return a_hash_sdbm(str, val)
-
 from a.crc cimport *
 
 cdef class crc8:
@@ -320,6 +302,14 @@ cdef class crc64:
         else:
             a_u64_setl(p + n, value)
         return block
+
+from a.hash cimport *
+
+def hash_bkdr(const char *str, a_u32 val=0):
+    return a_hash_bkdr(str, val)
+
+def hash_sdbm(const char *str, a_u32 val=0):
+    return a_hash_sdbm(str, val)
 
 from a.hpf cimport *
 
@@ -442,6 +432,18 @@ def rsqrt_f64(object x):
             q[i] = a_f64_rsqrt(p[i])
         return r
     return a_f64_rsqrt(x)
+
+def float_sum(const a_float[::1] x):
+    return a_float_sum(&x[0], x.shape[0])
+
+def float_sum1(const a_float[::1] x):
+    return a_float_sum1(&x[0], x.shape[0])
+
+def float_sum2(const a_float[::1] x):
+    return a_float_sum2(&x[0], x.shape[0])
+
+def float_mean(const a_float[::1] x):
+    return a_float_mean(&x[0], x.shape[0])
 
 from a.mf cimport *
 

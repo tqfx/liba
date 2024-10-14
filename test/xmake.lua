@@ -36,6 +36,10 @@ target("test/crc")
 building({ "crc.c", "crc.cc" })
 target_end()
 
+target("test/hash")
+building({ "hash.c", "hash.cc" })
+target_end()
+
 target("test/hpf")
 building({ "hpf.c", "hpf.cc" })
 target_end()

@@ -30,6 +30,8 @@ static void test_odm(int argc, char *argv[])
     a_die(p);
 }
 
+#include "a/hash.h"
+
 int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 {
     if (argc < 2)

@@ -1,4 +1,5 @@
 #include "a/regress.h"
+#include "a/math.h"
 
 void a_regress_odm_(a_size n, a_float const *p, a_float *odm, a_float p_mean)
 {

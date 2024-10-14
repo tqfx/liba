@@ -7,7 +7,7 @@
 #endif /* _CRT_SECURE_NO_WARNINGS */
 #pragma warning(disable : 4820)
 #endif /* _MSC_VER */
-#include "a/a.h"
+#include "a/hash.h"
 #if __has_warning("-Wcomma")
 #pragma clang diagnostic ignored "-Wcomma"
 #endif /* -Wcomma */

@@ -59,10 +59,146 @@ static void test_f64_rsqrt(void)
     }
 }
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+static void test_sum(int argc, char *argv[])
 {
+    a_size const n = a_cast_s(a_size, argc);
+    a_float *p = a_new(a_float, A_NULL, n);
+    for (a_size i = 0; i < n; ++i)
+    {
+        char *endptr;
+        p[i] = strtonum(argv[i], &endptr);
+    }
+
+    debug("{");
+    for (a_size i = 0; i < n; ++i)
+    {
+        debug("%c" A_FLOAT_PRI("", "g"), i ? ',' : 0, p[i]);
+    }
+    debug("}:" A_FLOAT_PRI("", "g,") A_FLOAT_PRI("", "g,") A_FLOAT_PRI("", "g\n"),
+          a_float_sum(p, n), a_float_sum1(p, n), a_float_sum2(p, n));
+
+    a_die(p);
+}
+
+static void test_mean(int argc, char *argv[])
+{
+    a_size const n = a_cast_s(a_size, argc);
+    a_float *p = a_new(a_float, A_NULL, n);
+    for (a_size i = 0; i < n; ++i)
+    {
+        char *endptr;
+        p[i] = strtonum(argv[i], &endptr);
+    }
+
+    debug("{");
+    for (a_size i = 0; i < n; ++i)
+    {
+        debug("%c" A_FLOAT_PRI("", "g"), i ? ',' : 0, p[i]);
+    }
+    debug("}:" A_FLOAT_PRI("", "g\n"), a_float_mean(p, n));
+
+    a_die(p);
+}
+
+static void test_push(int argc, char *argv[])
+{
+    a_float array[] = {0, 1, 2, 3, 4, 5, 6, 7};
+    for (a_size i = 0; i < A_LEN(array); ++i)
+    {
+        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+    }
+    a_float_push_fore(array, A_LEN(array), -1);
+    for (a_size i = 0; i < A_LEN(array); ++i)
+    {
+        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+    }
+    a_float_push_back(array, A_LEN(array), -1);
+    for (a_size i = 0; i < A_LEN(array); ++i)
+    {
+        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+    }
+    {
+        a_float cache[] = {-1, -2};
+        a_float_push_fore_(array, A_LEN(array), cache, A_LEN(cache));
+    }
+    for (a_size i = 0; i < A_LEN(array); ++i)
+    {
+        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+    }
+    {
+        a_float cache[] = {-2, -1};
+        a_float_push_back_(array, A_LEN(array), cache, A_LEN(cache));
+    }
+    for (a_size i = 0; i < A_LEN(array); ++i)
+    {
+        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+    }
+    {
+        a_float cache[] = {-0, -1, -2, -3, -4, -5, -6, -7, -8, -9};
+        a_float_push_fore_(array, A_LEN(array), cache, A_LEN(cache));
+    }
+    for (a_size i = 0; i < A_LEN(array); ++i)
+    {
+        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+    }
+    {
+        a_float cache[] = {-9, -8, -7, -6, -5, -4, -3, -2, -1, -0};
+        a_float_push_fore_(array, A_LEN(array), cache, A_LEN(cache));
+    }
+    for (a_size i = 0; i < A_LEN(array); ++i)
+    {
+        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+    }
     (void)argc;
     (void)argv;
+}
+
+static void test_roll(int argc, char *argv[])
+{
+    a_float array[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    a_float shift[16];
+    for (a_size i = 0; i < A_LEN(array); ++i)
+    {
+        debug(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+    }
+    a_float_roll_fore(array, A_LEN(array));
+    for (a_size i = 0; i < A_LEN(array); ++i)
+    {
+        debug(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+    }
+    a_float_roll_back(array, A_LEN(array));
+    for (a_size i = 0; i < A_LEN(array); ++i)
+    {
+        debug(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+    }
+    a_float_roll_fore_(array, A_LEN(array), shift, 2);
+    for (a_size i = 0; i < A_LEN(array); ++i)
+    {
+        debug(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+    }
+    a_float_roll_back_(array, A_LEN(array), shift, 2);
+    for (a_size i = 0; i < A_LEN(array); ++i)
+    {
+        debug(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+    }
+    a_float_roll_fore_(array, A_LEN(array), shift, 15);
+    for (a_size i = 0; i < A_LEN(array); ++i)
+    {
+        debug(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+    }
+    a_float_roll_back_(array, A_LEN(array), shift, 15);
+    for (a_size i = 0; i < A_LEN(array); ++i)
+    {
+        debug(A_FLOAT_PRI(, "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+    }
+    (void)argc;
+    (void)argv;
+}
+
+#include "a/hash.h"
+
+int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+{
     test_u32_sqrt();
     test_u64_sqrt();
     test_f32_rsqrt();
@@ -125,6 +261,34 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
         TEST_BUG(isinf(a_float_hypot3(A_FLOAT_NAN, A_FLOAT_INF, A_FLOAT_NAN)));
         TEST_BUG(isinf(a_float_hypot3(A_FLOAT_NAN, A_FLOAT_NAN, A_FLOAT_INF)));
         TEST_BUG(isnan(a_float_hypot3(A_FLOAT_NAN, A_FLOAT_NAN, A_FLOAT_NAN)));
+    }
+    if (argc < 2)
+    {
+        test_sum(argc - 1, argv + 1);
+        test_mean(argc - 1, argv + 1);
+        test_push(argc - 1, argv + 1);
+        test_roll(argc - 1, argv + 1);
+        return 0;
+    }
+    switch (a_hash_bkdr(argv[1], 0))
+    {
+    case 0x001E5957: // sum
+        test_sum(argc - 2, argv + 2);
+        break;
+    case 0x0EB5AF9D: // mean
+        test_mean(argc - 2, argv + 2);
+        break;
+    case 0x0F20D22E: // push
+        test_push(argc - 1, argv + 1);
+        break;
+    case 0x0F63D79D: // roll
+        test_roll(argc - 1, argv + 1);
+        break;
+    default:
+        debug("sum\n");
+        debug("mean\n");
+        debug("push\n");
+        debug("roll\n");
     }
     return 0;
 }

@@ -2,6 +2,7 @@
 #include "test.h"
 #include "a/avl.h"
 #include "a/str.h"
+#include "a/hash.h"
 
 typedef struct
 {

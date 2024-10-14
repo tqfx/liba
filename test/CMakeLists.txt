@@ -177,6 +177,9 @@ unittest(complex ARGS -4,3 -2,1)
 building(crc crc.c crc.cc)
 unittest(crc ARGS crc.c)
 
+building(hash hash.c hash.cc)
+unittest(hash)
+
 building(hpf hpf.c hpf.cc)
 unittest(hpf)
 

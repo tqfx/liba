@@ -268,6 +268,108 @@ A_EXTERN a_float a_float_atan2(a_float x, a_float y);
 A_EXTERN a_float a_float_hypot(a_float x, a_float y);
 A_EXTERN a_float a_float_hypot3(a_float x, a_float y, a_float z);
 
+/*!
+ @brief calculate the sum of a float array
+ @param[in] p points to a float array
+ @param[in] n number of a float array
+ @return sum of a float array
+*/
+A_EXTERN a_float a_float_sum(a_float const *p, a_size n);
+
+/*!
+ @brief calculate the absolute sum of a float array
+ @param[in] p points to a float array
+ @param[in] n number of a float array
+ @return absolute sum of a float array
+*/
+A_EXTERN a_float a_float_sum1(a_float const *p, a_size n);
+
+/*!
+ @brief calculate the sum of squares of a float array
+ @param[in] p points to a float array
+ @param[in] n number of a float array
+ @return sum of squares of a float array
+*/
+A_EXTERN a_float a_float_sum2(a_float const *p, a_size n);
+
+/*!
+ @brief calculate the mean of a float array
+ @param[in] p points to a float array
+ @param[in] n number of a float array
+ @return mean of a float array
+*/
+A_EXTERN a_float a_float_mean(a_float const *p, a_size n);
+
+/*!
+ @brief push an element into the front of a float array
+ @param[in] p points to a float array
+ @param[in] n number of a float array
+ @param[in] x value
+*/
+A_EXTERN void a_float_push_fore(a_float *p, a_size n, a_float x);
+
+/*!
+ @brief push an element into the end of a float array
+ @param[in] p points to a float array
+ @param[in] n number of a float array
+ @param[in] x value
+*/
+A_EXTERN void a_float_push_back(a_float *p, a_size n, a_float x);
+
+/*!
+ @brief push the elements into the front of a float array
+ @param[in] block_p points to a float array
+ @param[in] block_n number of a float array
+ @param[in] cache_p points to a cache array
+ @param[in] cache_n number of a cache array
+*/
+A_EXTERN void a_float_push_fore_(a_float *block_p, a_size block_n,
+                                 a_float const *cache_p, a_size cache_n);
+
+/*!
+ @brief push the elements into the end of a float array
+ @param[in] block_p points to a float array
+ @param[in] block_n number of a float array
+ @param[in] cache_p points to a cache array
+ @param[in] cache_n number of a cache array
+*/
+A_EXTERN void a_float_push_back_(a_float *block_p, a_size block_n,
+                                 a_float const *cache_p, a_size cache_n);
+
+/*!
+ @brief roll forward the elements of a float array circularly
+ @param[in] p points to a float array
+ @param[in] n number of a float array
+*/
+A_EXTERN void a_float_roll_fore(a_float *p, a_size n);
+
+/*!
+ @brief roll backward the elements of a float array circularly
+ @param[in] p points to a float array
+ @param[in] n number of a float array
+*/
+A_EXTERN void a_float_roll_back(a_float *p, a_size n);
+
+/*!
+ @brief roll forward the elements of a float array circularly
+ @param[in] block_p points to a float array
+ @param[in] block_n number of a float array
+ @param[in] shift_p points to a shift array
+ @param[in] shift_n number of a shift array
+*/
+A_EXTERN void a_float_roll_fore_(a_float *block_p, a_size block_n,
+                                 a_float *shift_p, a_size shift_n);
+
+/*!
+ @brief roll backward the elements of a float array circularly
+ @param[in] block_p points to a float array
+ @param[in] block_n number of a float array
+ @param[in] shift_p points to a shift array
+ @param[in] shift_n number of a shift array
+*/
+A_EXTERN void a_float_roll_back_(a_float *block_p, a_size block_n,
+                                 a_float *shift_p, a_size shift_n);
+
 #if defined(__cplusplus)
 } /* extern "C" */
 #endif /* __cplusplus */

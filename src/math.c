@@ -241,19 +241,131 @@ a_float a_float_hypot(a_float x, a_float y)
 
 a_float a_float_hypot3(a_float x, a_float y, a_float z)
 {
-    a_float const a = a_float_abs(x);
+    a_float a = a_float_abs(x);
     a_float const b = a_float_abs(y);
     a_float const c = a_float_abs(z);
-    a_float w = a;
     if (isinf(x) || isinf(y) || isinf(z))
     {
         return A_FLOAT_INF;
     }
-    if (w < b) { w = b; }
-    if (w < c) { w = c; }
-    if (!w) { return 0; }
-    x /= w;
-    y /= w;
-    z /= w;
-    return a_float_sqrt(x * x + y * y + z * z) * w;
+    if (a < b) { a = b; }
+    if (a < c) { a = c; }
+    if (!a) { return 0; }
+    x /= a;
+    y /= a;
+    z /= a;
+    return a_float_sqrt(x * x + y * y + z * z) * a;
+}
+
+a_float a_float_sum(a_float const *p, a_size n)
+{
+    a_float r = 0;
+    for (; n; --n, ++p) { r += *p; }
+    return r;
+}
+
+a_float a_float_sum1(a_float const *p, a_size n)
+{
+    a_float r = 0;
+    for (; n; --n, ++p) { r += A_ABS(*p); }
+    return r;
+}
+
+a_float a_float_sum2(a_float const *p, a_size n)
+{
+    a_float r = 0;
+    for (; n; --n, ++p) { r += A_SQ(*p); }
+    return r;
+}
+
+a_float a_float_mean(a_float const *p, a_size n)
+{
+    a_float r = 0;
+    a_float const i = 1 / (a_float)n;
+    for (; n; --n, ++p) { r += *p * i; }
+    return r;
+}
+
+void a_float_push_fore(a_float *p, a_size n, a_float x)
+{
+    if (n--)
+    {
+        a_move(p + 1, p, sizeof(a_float) * n);
+        p[0] = x;
+    }
+}
+
+void a_float_push_back(a_float *p, a_size n, a_float x)
+{
+    if (n--)
+    {
+        a_move(p, p + 1, sizeof(a_float) * n);
+        p[n] = x;
+    }
+}
+
+void a_float_push_fore_(a_float *block_p, a_size block_n,
+                        a_float const *cache_p, a_size cache_n)
+{
+    a_size const n = A_MIN(cache_n, block_n);
+    if (n)
+    {
+        a_size const m = block_n - n;
+        cache_p = cache_p + cache_n - n;
+        a_move(block_p + n, block_p, sizeof(a_float) * m);
+        a_copy(block_p, cache_p, sizeof(a_float) * n);
+    }
+}
+
+void a_float_push_back_(a_float *block_p, a_size block_n,
+                        a_float const *cache_p, a_size cache_n)
+{
+    a_size const n = A_MIN(cache_n, block_n);
+    if (n)
+    {
+        a_size const m = block_n - n;
+        cache_p = cache_p + cache_n - n;
+        a_move(block_p, block_p + n, sizeof(a_float) * m);
+        a_copy(block_p + m, cache_p, sizeof(a_float) * n);
+    }
+}
+
+void a_float_roll_fore(a_float *p, a_size n)
+{
+    if (n--)
+    {
+        a_float x = p[0];
+        a_move(p, p + 1, sizeof(a_float) * n);
+        p[n] = x;
+    }
+}
+
+void a_float_roll_back(a_float *p, a_size n)
+{
+    if (n--)
+    {
+        a_float x = p[n];
+        a_move(p + 1, p, sizeof(a_float) * n);
+        p[0] = x;
+    }
+}
+
+void a_float_roll_fore_(a_float *block_p, a_size block_n,
+                        a_float *shift_p, a_size shift_n)
+{
+    shift_n %= block_n;
+    block_n -= shift_n;
+    a_copy(shift_p, block_p, sizeof(a_float) * shift_n);
+    a_move(block_p, block_p + shift_n, sizeof(a_float) * block_n);
+    a_copy(block_p + block_n, shift_p, sizeof(a_float) * shift_n);
+}
+
+void a_float_roll_back_(a_float *block_p, a_size block_n,
+                        a_float *shift_p, a_size shift_n)
+{
+    shift_n %= block_n;
+    block_n -= shift_n;
+    a_copy(shift_p, block_p + block_n, sizeof(a_float) * shift_n);
+    a_move(block_p + shift_n, block_p, sizeof(a_float) * block_n);
+    a_copy(block_p, shift_p, sizeof(a_float) * shift_n);
 }

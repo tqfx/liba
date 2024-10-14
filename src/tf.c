@@ -1,4 +1,5 @@
 #include "a/tf.h"
+#include "a/math.h"
 
 void a_tf_set_num(a_tf *ctx, unsigned int num_n, a_float const *num_p, a_float *input)
 {
