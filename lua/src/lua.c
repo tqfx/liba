@@ -221,18 +221,18 @@ LUA_NUM *lua_array_num_ptr(lua_State *L, int idx, LUA_NUM *ptr, int dim) // NOLI
     return ptr;
 }
 
-LUA_NUM *lua_array_num_get(lua_State *L, int idx, LUA_NUM const *ptr_, unsigned int *num, int dim)
+LUA_NUM *lua_array_num_get(lua_State *L, int idx, LUA_NUM const *ptr, unsigned int *num, int dim)
 {
-    LUA_NUM *ptr = (LUA_NUM *)(intptr_t)ptr_; // NOLINT(performance-no-int-to-ptr)
-    unsigned int num_ = 0;
-    num = num ? num : &num_;
-    *num = lua_array_num_len(L, idx, dim);
-    if (*num)
+    LUA_NUM *p = (LUA_NUM *)(intptr_t)ptr; // NOLINT(performance-no-int-to-ptr)
+    unsigned int n = lua_array_num_len(L, idx, dim), n_ = 0;
+    if (!num) { num = &n_; }
+    if (n > *num)
     {
-        ptr = (LUA_NUM *)lua_alloc(L, ptr, sizeof(LUA_NUM) * *num);
-        lua_array_num_ptr(L, idx, ptr, dim);
+        p = (LUA_NUM *)lua_alloc(L, p, sizeof(LUA_NUM) * n);
     }
-    return ptr;
+    lua_array_num_ptr(L, idx, p, dim);
+    *num = n;
+    return p;
 }
 
 void lua_array_num_set(lua_State *L, int idx, LUA_NUM const *ptr, unsigned int num)

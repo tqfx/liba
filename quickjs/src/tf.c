@@ -20,38 +20,46 @@ static JSClassDef liba_tf_class = {"tf", .finalizer = liba_tf_finalizer};
 
 static int liba_tf_set_num_(JSContext *ctx, a_tf *self, JSValueConst num)
 {
-    js_array_num buf;
+    union
+    {
+        a_float const *p;
+        a_float *o;
+    } u;
     unsigned int n = 0;
     int ret = js_array_num_len(ctx, num, &n, 1);
     if (ret == 0)
     {
-        js_array_num_init(&buf, self->num_p, self->num_n);
-        if (n > buf.num)
+        u.p = self->num_p;
+        if (n > self->num_n)
         {
-            buf.ptr = (a_float *)js_realloc(ctx, buf.ptr, sizeof(a_float) * n * 2);
-            a_tf_set_num(self, n, buf.ptr, buf.ptr + n);
+            u.o = (a_float *)js_realloc(ctx, u.o, sizeof(a_float) * n * 2);
+            a_tf_set_num(self, n, u.o, u.o + n);
         }
         else { self->num_n = n; }
-        js_array_num_ptr(ctx, num, &buf, 1);
+        js_array_num_ptr(ctx, num, u.o, 1);
     }
     return ret;
 }
 
 static int liba_tf_set_den_(JSContext *ctx, a_tf *self, JSValueConst den)
 {
-    js_array_num buf;
+    union
+    {
+        a_float const *p;
+        a_float *o;
+    } u;
     unsigned int n = 0;
     int ret = js_array_num_len(ctx, den, &n, 1);
     if (ret == 0)
     {
-        js_array_num_init(&buf, self->den_p, self->den_n);
-        if (n > buf.num)
+        u.p = self->den_p;
+        if (n > self->den_n)
         {
-            buf.ptr = (a_float *)js_realloc(ctx, buf.ptr, sizeof(a_float) * n * 2);
-            a_tf_set_den(self, n, buf.ptr, buf.ptr + n);
+            u.o = (a_float *)js_realloc(ctx, u.o, sizeof(a_float) * n * 2);
+            a_tf_set_den(self, n, u.o, u.o + n);
         }
         else { self->den_n = n; }
-        js_array_num_ptr(ctx, den, &buf, 1);
+        js_array_num_ptr(ctx, den, u.o, 1);
     }
     return ret;
 }

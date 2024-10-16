@@ -66,38 +66,43 @@ static JSValue liba_pid_fuzzy_set_rule(JSContext *ctx, JSValueConst this_val, in
     (void)argc;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
-    js_array_num buf;
+    union
+    {
+        a_float const *p;
+        a_float *o;
+    } u;
     unsigned int nrule = 0;
     if (JS_IsArray(ctx, argv[0]))
     {
-        js_array_num_init(&buf, self->me, 0);
-        if (js_array_num_get(ctx, argv[0], &buf, 2)) { goto fail; }
-        self->me = buf.ptr;
+        u.p = self->me;
+        u.o = js_array_num_get(ctx, argv[0], u.o, NULL, 2);
+        if (!u.o) { goto fail; }
+        self->me = u.o;
     }
     if (JS_IsArray(ctx, argv[1]))
     {
-        js_array_num_init(&buf, self->mec, 0);
-        if (js_array_num_get(ctx, argv[1], &buf, 2)) { goto fail; }
-        self->mec = buf.ptr;
+        u.p = self->mec;
+        u.o = js_array_num_get(ctx, argv[1], u.o, NULL, 2);
+        if (!u.o) { goto fail; }
+        self->mec = u.o;
     }
     if (JS_IsArray(ctx, argv[2]))
     {
-        js_array_num_init(&buf, self->mkp, 0);
-        if (js_array_num_get(ctx, argv[2], &buf, 2)) { goto fail; }
-        nrule = a_u32_sqrt(buf.num);
-        self->mkp = buf.ptr;
+        u.p = self->mkp;
+        u.o = js_array_num_get(ctx, argv[2], u.o, &nrule, 2);
+        nrule = a_u32_sqrt(nrule);
+        if (!u.o) { goto fail; }
+        self->mkp = u.o;
     }
     if (JS_IsArray(ctx, argv[3]))
     {
-        js_array_num_init(&buf, self->mki, 0);
-        if (js_array_num_get(ctx, argv[3], &buf, 2)) { goto fail; }
-        self->mki = buf.ptr;
+        u.p = self->mki;
+        self->mki = js_array_num_get(ctx, argv[3], u.o, NULL, 2);
     }
     if (JS_IsArray(ctx, argv[4]))
     {
-        js_array_num_init(&buf, self->mkd, 0);
-        if (js_array_num_get(ctx, argv[4], &buf, 2)) { goto fail; }
-        self->mkd = buf.ptr;
+        u.p = self->mkd;
+        self->mkd = js_array_num_get(ctx, argv[4], u.o, NULL, 2);
     }
     self->nrule = nrule;
 fail:

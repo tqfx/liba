@@ -21,26 +21,9 @@ JSValue js_array_u32_new(JSContext *ctx, a_u32 const *ptr, a_u32 len);
 JSValue js_array_u64_new(JSContext *ctx, a_u64 const *ptr, a_u32 len);
 JSValue js_array_num_new(JSContext *ctx, a_float const *ptr, a_u32 len);
 
-typedef struct js_array_num
-{
-    a_float *ptr;
-    unsigned int num, idx;
-} js_array_num;
-A_INTERN void js_array_num_init(js_array_num *buf, a_float const *ptr, unsigned int num)
-{
-    union
-    {
-        a_float const *p;
-        a_float *o;
-    } u;
-    u.p = ptr;
-    buf->ptr = u.o;
-    buf->num = num;
-    buf->idx = 0;
-}
 int js_array_num_len(JSContext *ctx, JSValueConst val, unsigned int *num, int dim);
-int js_array_num_ptr(JSContext *ctx, JSValueConst val, js_array_num *buf, int dim);
-int js_array_num_get(JSContext *ctx, JSValueConst val, js_array_num *buf, int dim);
+a_float *js_array_num_ptr(JSContext *ctx, JSValueConst val, a_float *ptr, int dim);
+a_float *js_array_num_get(JSContext *ctx, JSValueConst val, a_float *ptr, unsigned int *num, int dim);
 
 A_PUBLIC JSModuleDef *js_init_module(JSContext *ctx, char const *module_name);
 
