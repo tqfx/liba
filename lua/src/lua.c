@@ -47,8 +47,7 @@ void lua_str_set(lua_State *L, int idx, char const *name, char const *data)
 char const *lua_str_get(lua_State *L, int idx, char const *name)
 {
     /* data=table[name] */
-    lua_pushstring(L, name);
-    lua_rawget(L, idx < 0 ? idx - 1 : idx);
+    lua_getfield(L, idx, name);
     char const *s = lua_tostring(L, -1);
     lua_pop(L, 1);
     return s;
@@ -76,8 +75,7 @@ void lua_int_set(lua_State *L, int idx, char const *name, LUA_INT data)
 LUA_INT lua_int_get(lua_State *L, int idx, char const *name)
 {
     /* data=table[name] */
-    lua_pushstring(L, name);
-    lua_rawget(L, idx < 0 ? idx - 1 : idx);
+    lua_getfield(L, idx, name);
     LUA_INT x = (LUA_INT)lua_tointeger(L, -1);
     lua_pop(L, 1);
     return x;
@@ -105,8 +103,7 @@ void lua_num_set(lua_State *L, int idx, char const *name, LUA_NUM data)
 LUA_NUM lua_num_get(lua_State *L, int idx, char const *name)
 {
     /* data=table[name] */
-    lua_pushstring(L, name);
-    lua_rawget(L, idx < 0 ? idx - 1 : idx);
+    lua_getfield(L, idx, name);
     LUA_NUM x = (LUA_NUM)lua_tonumber(L, -1);
     lua_pop(L, 1);
     return x;
@@ -129,7 +126,7 @@ void lua_array_str_get(lua_State *L, int idx, char const **ptr, unsigned int num
     if (num > len) { num = (unsigned int)len; }
     for (unsigned int i = num; i--; num = i)
     {
-        lua_rawgeti(L, idx, (lua_Integer)num);
+        lua_geti(L, idx, (lua_Integer)num);
         ptr[i] = lua_tostring(L, -1);
         lua_pop(L, 1);
     }
@@ -161,7 +158,7 @@ void lua_array_int_get(lua_State *L, int idx, LUA_INT *ptr, unsigned int num)
     if (num > len) { num = (unsigned int)len; }
     for (unsigned int i = num; i--; num = i)
     {
-        lua_rawgeti(L, idx, (lua_Integer)num);
+        lua_geti(L, idx, (lua_Integer)num);
         ptr[i] = (LUA_INT)lua_tointeger(L, -1);
         lua_pop(L, 1);
     }
@@ -192,7 +189,7 @@ unsigned int lua_array_num_len(lua_State *L, int idx, int dim) // NOLINT(misc-no
     unsigned int i = 0, n = (unsigned int)lua_rawlen(L, idx), num = 0;
     for (--dim; i++ != n;)
     {
-        lua_rawgeti(L, idx, (lua_Integer)i);
+        lua_geti(L, idx, (lua_Integer)i);
         int e = lua_type(L, -1);
         if (e == LUA_TNUMBER) { ++num; }
         else if (e == LUA_TTABLE && dim > 0)
@@ -209,7 +206,7 @@ LUA_NUM *lua_array_num_ptr(lua_State *L, int idx, LUA_NUM *ptr, int dim) // NOLI
     unsigned int i = 0, n = (unsigned int)lua_rawlen(L, idx);
     for (--dim; i++ != n;)
     {
-        lua_rawgeti(L, idx, (lua_Integer)i);
+        lua_geti(L, idx, (lua_Integer)i);
         int e = lua_type(L, -1);
         if (e == LUA_TNUMBER)
         {
