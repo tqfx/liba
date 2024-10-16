@@ -611,6 +611,76 @@ declare namespace liba {
     readonly prototype: pid_neuro;
   };
 
+  interface regress_linear {
+    /** regression coefficient */
+    coef: Float64Array | Float32Array;
+    /** intercept */
+    bias: number;
+    /**
+     * calculate predicted value for linear regression
+     * @param val independent variable
+     * @return predicted value
+     */
+    eval(val: number[]): number;
+    /**
+     * calculate residuals for linear regression
+     * @param x predictor data, specified as a numeric matrix
+     * @param y response data, specified as a numeric vector
+     * @return residuals, specified as a numeric vector
+     */
+    err(x: number[], y: number[]): Float64Array | Float32Array;
+    /**
+     * gradient descent for linear regression
+     * @param input predictor data, specified as a numeric vector
+     * @param error residual, specified as a numeric scalar
+     * @param alpha learning rate for gradient descent
+     */
+    gd(input: number[], error: number, alpha: number): regress_linear;
+    /**
+     * stochastic gradient descent for linear regression
+     * @param x predictor data, specified as a numeric matrix
+     * @param y response data, specified as a numeric vector
+     * @param alpha learning rate for gradient descent
+     */
+    sgd(x: number[], y: number[], alpha: number): regress_linear;
+    /**
+     * batch gradient descent for linear regression
+     * @param x predictor data, specified as a numeric matrix
+     * @param y residuals, specified as a numeric vector
+     * @param alpha learning rate for gradient descent
+     */
+    bgd(x: number[], y: number[], alpha: number): regress_linear;
+    /**
+     * mini-batch gradient descent for linear regression
+     * @param x predictor data, specified as a numeric matrix
+     * @param y response data, specified as a numeric vector
+     * @param delta threshold for gradient descent value
+     * @param lrmax maximum learning rate of iterations
+     * @param lrmin minimum learning rate of iterations
+     * @param lrtim total number of learning rate steps
+     * @param epoch maximum number of epochs
+     * @param batch batch size of data
+     * @return change in loss function
+     */
+    mgd(x: number[], y: number[], delta: number, lrmax: number, lrmin: number, lrtim: number, epoch: number, batch: number): number;
+    /** zeroing for linear regression */
+    zero(): regress_linear;
+    delete(): void;
+  }
+  /** constructor for linear regression */
+  let regress_linear: {
+    /**
+     * @param coef regression coefficient
+     */
+    new(coef: number[]): regress_linear;
+    /**
+     * @param coef regression coefficient
+     * @param bias intercept
+     */
+    new(coef: number[], bias: number): regress_linear;
+    readonly prototype: regress_linear;
+  };
+
   interface regress_simple {
     /** regression coefficient */
     coef: number;

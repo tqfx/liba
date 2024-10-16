@@ -651,6 +651,110 @@ struct pid_neuro: public a_pid_neuro
     A_INLINE a_float ec_r() const { return ec; }
 };
 
+#include "a/regress_linear.h"
+
+struct regress_linear: public a_regress_linear
+{
+    void set_coef_(emscripten::val const &coef, a_float *ptr, unsigned int num)
+    {
+        unsigned int n = js_array_num_len(coef, 1);
+        if (n > num)
+        {
+            ptr = a_cast_s(a_float *, a_alloc(ptr, sizeof(a_float) * n));
+            coef_p = ptr;
+        }
+        js_array_num_ptr(coef, ptr, 1);
+        coef_n = n;
+    }
+    A_INLINE emscripten::val coef_r() const { return js_array_num_new(coef_p, coef_n); }
+    A_INLINE void coef_w(emscripten::val const &coef)
+    {
+        set_coef_(coef, coef_p, coef_n);
+    }
+    A_INLINE a_float bias_r() const { return bias; }
+    A_INLINE void bias_w(a_float bias_) { bias = bias_; }
+    A_INLINE regress_linear(emscripten::val const &coef, a_float bias_ = 0)
+    {
+        set_coef_(coef, nullptr, 0);
+        bias = bias_;
+    }
+    A_INLINE a_float eval(emscripten::val const &val_) const
+    {
+        a_float *val = js_array_num_get(val_, nullptr, nullptr, 1);
+        a_float res = a_regress_linear::eval(val);
+        a_alloc(val, 0);
+        return res;
+    }
+    A_INLINE emscripten::val err(emscripten::val const &x_, emscripten::val const &y_) const
+    {
+        unsigned int m = 0, n = 0;
+        a_float *x = js_array_num_get(x_, nullptr, &m, 1);
+        a_float *y = js_array_num_get(y_, nullptr, &n, 1);
+        m /= coef_n;
+        if (m < n) { n = m; }
+        a_float *err = a_cast_s(a_float *, a_alloc(nullptr, sizeof(a_float) * n));
+        a_regress_linear::err(n, x, y, err);
+        emscripten::val r = js_array_num_new(err, n);
+        a_alloc(err, 0);
+        a_alloc(y, 0);
+        a_alloc(x, 0);
+        return r;
+    }
+    A_INLINE regress_linear *gd(emscripten::val const &input_, a_float error, a_float alpha)
+    {
+        a_float *input = js_array_num_get(input_, nullptr, nullptr, 1);
+        a_regress_linear::gd(input, error, alpha);
+        a_alloc(input, 0);
+        return this;
+    }
+    A_INLINE regress_linear *sgd(emscripten::val const &x_, emscripten::val const &y_, a_float alpha)
+    {
+        unsigned int m = 0, n = 0;
+        a_float *x = js_array_num_get(x_, nullptr, &m, 1);
+        a_float *y = js_array_num_get(y_, nullptr, &n, 1);
+        m /= coef_n;
+        if (m < n) { n = m; }
+        a_regress_linear::sgd(n, x, y, alpha);
+        a_alloc(y, 0);
+        a_alloc(x, 0);
+        return this;
+    }
+    A_INLINE regress_linear *bgd(emscripten::val const &x_, emscripten::val const &y_, a_float alpha)
+    {
+        unsigned int m = 0, n = 0;
+        a_float *x = js_array_num_get(x_, nullptr, &m, 1);
+        a_float *y = js_array_num_get(y_, nullptr, &n, 1);
+        m /= coef_n;
+        if (m < n) { n = m; }
+        a_float *err = a_cast_s(a_float *, a_alloc(nullptr, sizeof(a_float) * n));
+        a_regress_linear::err(n, x, y, err);
+        a_regress_linear::bgd(n, x, err, alpha);
+        a_alloc(err, 0);
+        a_alloc(y, 0);
+        a_alloc(x, 0);
+        return this;
+    }
+    A_INLINE a_float mgd(emscripten::val const &x_, emscripten::val const &y_, a_float delta, a_float lrmax, a_float lrmin, a_size lrtim, a_size epoch, a_size batch)
+    {
+        unsigned int m = 0, n = 0;
+        a_float *x = js_array_num_get(x_, nullptr, &m, 1);
+        a_float *y = js_array_num_get(y_, nullptr, &n, 1);
+        m /= coef_n;
+        if (m < n) { n = m; }
+        a_float *err = a_cast_s(a_float *, a_alloc(nullptr, sizeof(a_float) * n));
+        a_float r = a_regress_linear::mgd(n, x, y, err, delta, lrmax, lrmin, lrtim, epoch, batch);
+        a_alloc(err, 0);
+        a_alloc(y, 0);
+        a_alloc(x, 0);
+        return r;
+    }
+    A_INLINE regress_linear *zero()
+    {
+        a_regress_linear::zero();
+        return this;
+    }
+};
+
 #include "a/regress_simple.h"
 
 struct regress_simple: public a_regress_simple
@@ -1146,6 +1250,18 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("fdb", &pid_neuro::fdb_r)
         .property("err", &pid_neuro::err_r)
         .property("ec", &pid_neuro::ec_r);
+    emscripten::class_<regress_linear>("regress_linear")
+        .constructor<emscripten::val>()
+        .constructor<emscripten::val, a_float>()
+        .function("eval", &regress_linear::eval)
+        .function("err", &regress_linear::err)
+        .function("gd", &regress_linear::gd, emscripten::allow_raw_pointers())
+        .function("sgd", &regress_linear::sgd, emscripten::allow_raw_pointers())
+        .function("bgd", &regress_linear::bgd, emscripten::allow_raw_pointers())
+        .function("mgd", &regress_linear::mgd)
+        .function("zero", &regress_linear::zero, emscripten::allow_raw_pointers())
+        .property("coef", &regress_linear::coef_r, &regress_linear::coef_w)
+        .property("bias", &regress_linear::bias_r, &regress_linear::bias_w);
     emscripten::class_<regress_simple>("regress_simple")
         .constructor<>()
         .constructor<a_float>()
