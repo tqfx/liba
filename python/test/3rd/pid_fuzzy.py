@@ -134,18 +134,18 @@ def fuzzy(e: float, ec: float):
 
     kp = 0.0
     for i in range(len(val_e)):
-        for j in range(len(val_ec)):
-            kp += mat[i][j] * mkp[idx_e[i]][idx_ec[j]]
+        for ii in range(len(val_ec)):
+            kp += mat[i][ii] * mkp[idx_e[i]][idx_ec[ii]]
     kp *= inv
     ki = 0.0
     for i in range(len(val_e)):
-        for j in range(len(val_ec)):
-            ki += mat[i][j] * mki[idx_e[i]][idx_ec[j]]
+        for ii in range(len(val_ec)):
+            ki += mat[i][ii] * mki[idx_e[i]][idx_ec[ii]]
     ki *= inv
     kd = 0.0
     for i in range(len(val_e)):
-        for j in range(len(val_ec)):
-            kd += mat[i][j] * mkd[idx_e[i]][idx_ec[j]]
+        for ii in range(len(val_ec)):
+            kd += mat[i][ii] * mkd[idx_e[i]][idx_ec[ii]]
     kd *= inv
 
     return kp, ki, kd

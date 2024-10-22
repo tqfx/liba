@@ -5,15 +5,15 @@
 #define WRITE_TABLE(bit, row, fmt)                                                  \
     static void write_table##bit(FILE *out, a_u##bit ctx[0x100], char const *label) \
     {                                                                               \
-        (void)fprintf(out, "uint%i_t const %s[0x%X] = {\n", bit, label, 0x100);     \
+        (void)fprintf(out, "uint%i_t const %s[0x%X] = {\n", bit, label, 0x100U);    \
         (void)fprintf(out, "    /* clang-format off */\n");                         \
         for (a_size i = 0; i != 0x100 / (row); ++i)                                 \
         {                                                                           \
             (void)fprintf(out, "    ");                                             \
-            for (a_size j = 0; j != (row); ++j)                                     \
+            for (a_size ii = 0; ii != (row); ++ii)                                  \
             {                                                                       \
-                (void)fprintf(out, "0x%0" #fmt PRIX##bit ",", ctx[(row) * i + j]);  \
-                if (j != (row) - 1) { (void)fputc(' ', out); }                      \
+                (void)fprintf(out, "0x%0" #fmt PRIX##bit ",", ctx[(row) * i + ii]); \
+                if (ii != (row) - 1) { (void)fputc(' ', out); }                     \
             }                                                                       \
             (void)fputc('\n', out);                                                 \
         }                                                                           \

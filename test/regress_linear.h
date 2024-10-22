@@ -191,9 +191,9 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, config cons
     {
         a_float u[2];
         u[0] = a_cast_s(a_float, i * 10);
-        for (unsigned int j = 0; j < n; ++j)
+        for (unsigned int ii = 0; ii < n; ++ii)
         {
-            u[1] = a_cast_s(a_float, j * 10);
+            u[1] = a_cast_s(a_float, ii * 10);
             a_float v = a_regress_linear_eval(&ctx, u);
             debug(A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f"), u[0], u[1], v);
             debug("%c", i ? '\n' : ',');
@@ -201,7 +201,7 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, config cons
             {
                 debug(A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f,")
                           A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f\n"),
-                      x[j * 2 + 0], x[j * 2 + 1], y[j], e[j]);
+                      x[ii * 2 + 0], x[ii * 2 + 1], y[ii], e[ii]);
             }
         }
         debug("\n");

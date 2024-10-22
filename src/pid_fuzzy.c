@@ -148,9 +148,9 @@ void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_float ec, a_float e)
         a_float *it = mat;
         for (unsigned int i = 0; i != ne; ++i)
         {
-            for (unsigned int j = 0; j != nec; ++j)
+            for (unsigned int ii = 0; ii != nec; ++ii)
             {
-                *it = ctx->opr(ctx->val[i], val[j]); /* mat(i,j)=f(e[i],ec[j]) */
+                *it = ctx->opr(ctx->val[i], val[ii]); /* mat(i,ii)=f(e[i],ec[ii]) */
                 inv += *it++;
             }
             ctx->idx[i] *= ctx->nrule;
@@ -164,9 +164,9 @@ void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_float ec, a_float e)
         for (unsigned int i = 0; i != ne; ++i)
         {
             a_float const *const mkp = ctx->mkp + ctx->idx[i];
-            for (unsigned int j = 0; j != nec; ++j)
+            for (unsigned int ii = 0; ii != nec; ++ii)
             {
-                kp += *it++ * mkp[idx[j]]; /* += mat(i,j) * mkp(e[i],ec[j]) */
+                kp += *it++ * mkp[idx[ii]]; /* += mat(i,ii) * mkp(e[i],ec[ii]) */
             }
         }
         kp *= inv;
@@ -177,9 +177,9 @@ void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_float ec, a_float e)
         for (unsigned int i = 0; i != ne; ++i)
         {
             a_float const *const mki = ctx->mki + ctx->idx[i];
-            for (unsigned int j = 0; j != nec; ++j)
+            for (unsigned int ii = 0; ii != nec; ++ii)
             {
-                ki += *it++ * mki[idx[j]]; /* += mat(i,j) * mki(e[i],ec[j]) */
+                ki += *it++ * mki[idx[ii]]; /* += mat(i,ii) * mki(e[i],ec[ii]) */
             }
         }
         ki *= inv;
@@ -190,9 +190,9 @@ void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_float ec, a_float e)
         for (unsigned int i = 0; i != ne; ++i)
         {
             a_float const *const mkd = ctx->mkd + ctx->idx[i];
-            for (unsigned int j = 0; j != nec; ++j)
+            for (unsigned int ii = 0; ii != nec; ++ii)
             {
-                kd += *it++ * mkd[idx[j]]; /* += mat(i,j) * mkd(e[i],ec[j]) */
+                kd += *it++ * mkd[idx[ii]]; /* += mat(i,ii) * mkd(e[i],ec[ii]) */
             }
         }
         kd *= inv;
