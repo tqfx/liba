@@ -77,6 +77,9 @@ LUALIB_API void luaL_register(lua_State *L, char const *libname, lua_fun const *
 #define lua_rawlen lua_objlen
 #endif /* LUA_VERSION_NUM */
 
+LUALIB_API int luaL_callmeta(lua_State *L, int obj, const char *e);
+LUALIB_API int luaL_getmetafield(lua_State *L, int obj, const char *e);
+
 LUALIB_API char const *luaL_checklstring(lua_State *L, int numArg, size_t *l);
 LUALIB_API char const *luaL_optlstring(lua_State *L, int numArg, char const *def, size_t *l);
 
@@ -121,6 +124,8 @@ LUA_INT lua_int_get(lua_State *L, int idx, char const *name);
 void lua_num_reg(lua_State *L, int idx, lua_num const *tab, size_t len);
 void lua_num_set(lua_State *L, int idx, char const *name, LUA_NUM data);
 LUA_NUM lua_num_get(lua_State *L, int idx, char const *name);
+
+unsigned int lua_array_len(lua_State *L, int idx);
 
 void lua_array_u8_new(lua_State *L, a_u8 const *ptr, unsigned int num);
 void lua_array_u16_new(lua_State *L, a_u16 const *ptr, unsigned int num);
