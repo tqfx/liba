@@ -27,6 +27,8 @@ sources = [
     'src/pid_fuzzy.h',
     'src/pid_neuro.c',
     'src/pid_neuro.h',
+    'src/regress_linear.c',
+    'src/regress_linear.h',
     'src/regress_simple.c',
     'src/regress_simple.h',
     'src/tf.c',

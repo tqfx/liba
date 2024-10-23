@@ -1095,6 +1095,124 @@ function liba.pid_neuro.inc(ctx, set, fdb) end
 ---@return number
 function pid_neuro:inc(set, fdb) end
 
+---@class a.regress_linear
+---@field coef table
+---@field bias number
+local regress_linear = {}
+---@class liba.regress_linear
+---@overload fun(coef: table, bias: number): a.regress_linear
+liba.regress_linear = {}
+
+---@param coef table
+---@param bias? number
+---@return a.regress_linear
+function liba.regress_linear.new(coef, bias) end
+
+---@param coef table
+---@param bias? number
+---@return a.regress_linear
+function regress_linear.new(coef, bias) end
+
+---@param ctx a.regress_linear
+---@param coef table
+---@param bias? number
+---@return a.regress_linear
+function liba.regress_linear.init(ctx, coef, bias) end
+
+---@param coef table
+---@param bias? number
+---@return a.regress_linear
+function regress_linear:init(coef, bias) end
+
+---@param ctx a.regress_linear
+---@param val table
+---@return number
+function liba.regress_linear.eval(ctx, val) end
+
+---@param val table
+---@return number
+function regress_linear:eval(val) end
+
+---@param ctx a.regress_linear
+---@param x table
+---@param y table
+---@return table
+function liba.regress_linear.err(ctx, x, y) end
+
+---@param x table
+---@param y table
+---@return table
+function regress_linear:err(x, y) end
+
+---@param ctx a.regress_linear
+---@param input table
+---@param error number
+---@param alpha number
+---@return a.regress_linear
+function liba.regress_linear.gd(ctx, input, error, alpha) end
+
+---@param input table
+---@param error number
+---@param alpha number
+---@return a.regress_linear
+function regress_linear:gd(input, error, alpha) end
+
+---@param ctx a.regress_linear
+---@param x table
+---@param y table
+---@param alpha number
+---@return a.regress_linear
+function liba.regress_linear.sgd(ctx, x, y, alpha) end
+
+---@param x table
+---@param y table
+---@param alpha number
+---@return a.regress_linear
+function regress_linear:sgd(x, y, alpha) end
+
+---@param ctx a.regress_linear
+---@param x table
+---@param y table
+---@param alpha number
+---@return a.regress_linear
+function liba.regress_linear.bgd(ctx, x, y, alpha) end
+
+---@param x table
+---@param y table
+---@param alpha number
+---@return a.regress_linear
+function regress_linear:bgd(x, y, alpha) end
+
+---@param ctx a.regress_linear
+---@param x table
+---@param y table
+---@param delta number
+---@param lrmax number
+---@param lrmin number
+---@param lrtim? integer
+---@param epoch? integer
+---@param batch? integer
+---@return a.regress_linear
+function liba.regress_linear.mgd(ctx, x, y, delta, lrmax, lrmin, lrtim, epoch, batch) end
+
+---@param x table
+---@param y table
+---@param delta number
+---@param lrmax number
+---@param lrmin number
+---@param lrtim? integer
+---@param epoch? integer
+---@param batch? integer
+---@return a.regress_linear
+function regress_linear:mgd(x, y, delta, lrmax, lrmin, lrtim, epoch, batch) end
+
+---@param ctx a.regress_linear
+---@return a.regress_linear
+function liba.regress_linear.zero(ctx) end
+
+---@return a.regress_linear
+function regress_linear:zero() end
+
 ---@class a.regress_simple
 ---@field coef number
 ---@field bias number

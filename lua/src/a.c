@@ -158,6 +158,10 @@ int luaopen_liba(lua_State *L)
     luaopen_liba_pid_neuro(L);
     lua_rawset(L, -3);
 
+    lua_pushstring(L, "regress_linear");
+    luaopen_liba_regress_linear(L);
+    lua_rawset(L, -3);
+
     lua_pushstring(L, "regress_simple");
     luaopen_liba_regress_simple(L);
     lua_rawset(L, -3);

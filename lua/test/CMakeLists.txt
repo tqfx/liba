@@ -43,6 +43,8 @@ unittest(pid_fuzzy pid_fuzzy)
 
 unittest(pid_neuro pid_neuro)
 
+unittest(regress_linear regress_linear)
+
 unittest(regress_simple regress_simple)
 
 unittest(tf tf)
