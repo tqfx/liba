@@ -61,7 +61,7 @@ static JSValue liba_regress_simple_ols_(JSContext *ctx, JSValueConst this_val, i
     (void)argc;
     a_regress_simple *const self = (a_regress_simple *)JS_GetOpaque2(ctx, this_val, liba_regress_simple_class_id);
     if (!self) { return JS_EXCEPTION; }
-    JSValue err = JS_EXCEPTION;
+    JSValue r = JS_EXCEPTION;
     a_float x_mean, y_mean;
     unsigned int x_n = 0, y_n = 0;
     a_float *x = js_array_num_get(ctx, argv[0], NULL, &x_n, 1);
@@ -69,11 +69,11 @@ static JSValue liba_regress_simple_ols_(JSContext *ctx, JSValueConst this_val, i
     if (JS_ToFloat64(ctx, &x_mean, argv[2])) { goto fail; }
     if (JS_ToFloat64(ctx, &y_mean, argv[3])) { goto fail; }
     a_regress_simple_ols_(self, A_MIN(x_n, y_n), x, y, x_mean, y_mean);
-    err = JS_UNDEFINED;
+    r = JS_UNDEFINED;
 fail:
     js_free(ctx, y);
     js_free(ctx, x);
-    return err;
+    return r;
 }
 
 static JSValue liba_regress_simple_olsx(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
@@ -81,18 +81,18 @@ static JSValue liba_regress_simple_olsx(JSContext *ctx, JSValueConst this_val, i
     (void)argc;
     a_regress_simple *const self = (a_regress_simple *)JS_GetOpaque2(ctx, this_val, liba_regress_simple_class_id);
     if (!self) { return JS_EXCEPTION; }
-    JSValue err = JS_EXCEPTION;
+    JSValue r = JS_EXCEPTION;
     a_float x_mean;
     unsigned int x_n = 0, y_n = 0;
     a_float *x = js_array_num_get(ctx, argv[0], NULL, &x_n, 1);
     a_float *y = js_array_num_get(ctx, argv[1], NULL, &y_n, 1);
     if (JS_ToFloat64(ctx, &x_mean, argv[2])) { goto fail; }
     a_regress_simple_olsx(self, A_MIN(x_n, y_n), x, y, x_mean);
-    err = JS_UNDEFINED;
+    r = JS_UNDEFINED;
 fail:
     js_free(ctx, y);
     js_free(ctx, x);
-    return err;
+    return r;
 }
 
 static JSValue liba_regress_simple_olsy(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
@@ -100,18 +100,18 @@ static JSValue liba_regress_simple_olsy(JSContext *ctx, JSValueConst this_val, i
     (void)argc;
     a_regress_simple *const self = (a_regress_simple *)JS_GetOpaque2(ctx, this_val, liba_regress_simple_class_id);
     if (!self) { return JS_EXCEPTION; }
-    JSValue err = JS_EXCEPTION;
+    JSValue r = JS_EXCEPTION;
     a_float y_mean;
     unsigned int x_n = 0, y_n = 0;
     a_float *x = js_array_num_get(ctx, argv[0], NULL, &x_n, 1);
     a_float *y = js_array_num_get(ctx, argv[1], NULL, &y_n, 1);
     if (JS_ToFloat64(ctx, &y_mean, argv[2])) { goto fail; }
     a_regress_simple_olsy(self, A_MIN(x_n, y_n), x, y, y_mean);
-    err = JS_UNDEFINED;
+    r = JS_UNDEFINED;
 fail:
     js_free(ctx, y);
     js_free(ctx, x);
-    return err;
+    return r;
 }
 
 static JSValue liba_regress_simple_ols(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)

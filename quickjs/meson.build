@@ -17,6 +17,7 @@ sources = [
     'src/pid_fuzzy.c',
     'src/pid_neuro.c',
     'src/quickjs.c',
+    'src/regress_linear.c',
     'src/regress_simple.c',
     'src/tf.c',
     'src/trajbell.c',
