@@ -692,10 +692,8 @@ struct regress_linear: public a_regress_linear
         a_float *y = js_array_num_get(y_, nullptr, &n, 1);
         m /= coef_n;
         if (m < n) { n = m; }
-        a_float *err = a_cast_s(a_float *, a_alloc(nullptr, sizeof(a_float) * n));
-        a_regress_linear::err(n, x, y, err);
-        emscripten::val r = js_array_num_new(err, n);
-        a_alloc(err, 0);
+        a_regress_linear::err(n, x, y, y);
+        emscripten::val r = js_array_num_new(y, n);
         a_alloc(y, 0);
         a_alloc(x, 0);
         return r;
@@ -726,10 +724,8 @@ struct regress_linear: public a_regress_linear
         a_float *y = js_array_num_get(y_, nullptr, &n, 1);
         m /= coef_n;
         if (m < n) { n = m; }
-        a_float *err = a_cast_s(a_float *, a_alloc(nullptr, sizeof(a_float) * n));
-        a_regress_linear::err(n, x, y, err);
-        a_regress_linear::bgd(n, x, err, alpha);
-        a_alloc(err, 0);
+        a_regress_linear::err(n, x, y, y);
+        a_regress_linear::bgd(n, x, y, alpha);
         a_alloc(y, 0);
         a_alloc(x, 0);
         return this;
