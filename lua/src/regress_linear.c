@@ -120,7 +120,7 @@ int liba_regress_linear_err(lua_State *L)
 /***
  gradient descent for linear regression
  @tparam a.regress_linear ctx linear regression userdata
- @tparam table input predictor data, specified as a numeric matrix
+ @tparam table input predictor data, specified as a numeric vector
  @tparam number error residual, specified as a numeric scalar
  @tparam number alpha learning rate for gradient descent
  @treturn a.regress_linear linear regression userdata
