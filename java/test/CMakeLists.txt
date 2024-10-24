@@ -53,6 +53,9 @@ unittest(pid_fuzzy)
 building(pid_neuro)
 unittest(pid_neuro)
 
+building(regress_linear)
+unittest(regress_linear)
+
 building(regress_simple)
 unittest(regress_simple)
 
