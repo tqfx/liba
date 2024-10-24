@@ -197,7 +197,7 @@ int liba_regress_linear_bgd(lua_State *L)
         m /= (unsigned int)ctx->coef_n;
         if (m < n) { n = m; }
         a_regress_linear_err(ctx, n, x, y, y);
-        a_regress_linear_sgd(ctx, n, x, y, alpha);
+        a_regress_linear_bgd(ctx, n, x, y, alpha);
         lua_alloc(L, y, 0);
         lua_alloc(L, x, 0);
         lua_pushvalue(L, 1);
