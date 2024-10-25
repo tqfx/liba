@@ -16,7 +16,7 @@ class _regress_linear {
         for (int i = 0; i < 100; ++i) {
             obj.sgd(x, y, 0.1);
         }
-        for (int i = 0; i < r.length; i++) {
+        for (int i = 0; i < r.length; ++i) {
             double[] val = { x[i] };
             r[i] = obj.eval(val);
         }
@@ -27,7 +27,7 @@ class _regress_linear {
         for (int i = 0; i < 100; ++i) {
             obj.bgd(x, y, 0.1);
         }
-        for (int i = 0; i < r.length; i++) {
+        for (int i = 0; i < r.length; ++i) {
             double[] val = { x[i] };
             r[i] = obj.eval(val);
         }
@@ -36,7 +36,7 @@ class _regress_linear {
 
         obj.zero();
         obj.mgd(x, y, 0.001, 0.2, 0.1, 100, 100, 10);
-        for (int i = 0; i < r.length; i++) {
+        for (int i = 0; i < r.length; ++i) {
             double[] val = { x[i] };
             r[i] = obj.eval(val);
         }
