@@ -131,19 +131,20 @@ void a_pid_fuzzy_set_kpid(a_pid_fuzzy *ctx, a_float kp, a_float ki, a_float kd)
 A_HIDDEN void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_float ec, a_float e);
 void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_float ec, a_float e)
 {
-    a_float kp = 0;
-    a_float ki = 0;
-    a_float kd = 0;
+    unsigned int *idx, ne, nec;
+    a_float *val, *mat, inv = 0;
+    a_float kp = 0, ki = 0, kd = 0;
     /* calculate membership */
-    unsigned int const ne = a_pid_fuzzy_mf(e, ctx->nrule, ctx->me, ctx->idx, ctx->val);
+    idx = ctx->idx;
+    val = ctx->val;
+    ne = a_pid_fuzzy_mf(e, ctx->nrule, ctx->me, idx, val);
     if (!ne) { goto pid; }
-    unsigned int *const idx = ctx->idx + ne;
-    a_float *const val = ctx->val + ne;
-    unsigned int const nec = a_pid_fuzzy_mf(ec, ctx->nrule, ctx->mec, idx, val);
+    idx = idx + ne;
+    val = val + ne;
+    nec = a_pid_fuzzy_mf(ec, ctx->nrule, ctx->mec, idx, val);
     if (!nec) { goto pid; }
-    a_float *const mat = val + nec;
+    mat = val + nec;
     /* joint membership */
-    a_float inv = 0;
     {
         a_float *it = mat;
         for (unsigned int i = 0; i != ne; ++i)
@@ -155,8 +156,8 @@ void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_float ec, a_float e)
             }
             ctx->idx[i] *= ctx->nrule;
         }
+        inv = 1 / inv;
     }
-    inv = 1 / inv;
     /* mean of centers defuzzifier */
     if (ctx->mkp)
     {
