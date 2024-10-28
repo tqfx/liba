@@ -1,6 +1,7 @@
 from typing import TypeVar, Iterable, Sequence, SupportsIndex, overload
 
 _T = TypeVar("_T", int, float)
+VERSION: str
 
 class memoryview(Iterable[_T]):  # built in cython
     def __len__(self) -> int: ...
@@ -802,5 +803,3 @@ class version:
     MINOR: int
     PATCH: int
     TWEAK: int
-
-VERSION: str

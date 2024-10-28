@@ -71,27 +71,27 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-S")
-    parser.add_argument("-O")
+    parser.add_argument("-B")
     parser.add_argument("--cc", default="")
     parser.add_argument("--cxx", default="")
     parser.add_argument("--cflags", default="")
     parser.add_argument("--cxxflags", default="")
     parser.add_argument("-l", "--lang", default="")
     args = parser.parse_known_args()
-    if not args[0].O:
-        args[0].O = "build"
+    if not args[0].B:
+        args[0].B = "build"
     if not args[0].S:
         args[0].S = "src"
     o = godbolt()
     if args[0].lang:
         exit(o.compilers(args[0].lang))
     args[0].S = os.path.relpath(args[0].S)
-    args[0].O = os.path.relpath(args[0].O)
+    args[0].B = os.path.relpath(args[0].B)
     single = os.path.join(os.path.dirname(__file__), "single.py")
     single = [sys.executable, single, "-Iinclude", "-C", args[0].S]
-    single += ["-O", os.path.join(args[0].O, args[0].S)]
+    single += ["-O", os.path.join(args[0].B, args[0].S)]
     Popen(single).wait()
-    os.chdir(args[0].O)
+    os.chdir(args[0].B)
     o.compiler["CC"] = args[0].cc
     o.compiler["CFLAGS"] = args[0].cflags
     o.compiler["CXX"] = args[0].cxx
@@ -102,9 +102,9 @@ if __name__ == "__main__":
             prefix, suffix = os.path.splitext(source)
             if suffix in (".c", ".cc", ".cpp", ".cxx"):
                 err = o.compile(source)
-                if err != False:
+                if err:
                     sys.stdout.write(source)
-                if type(err) == type(""):
+                if type(err) is type(""):
                     sys.stdout.write(err)  # type: ignore
-                if err != False:
+                if err:
                     sys.stdout.write("\n")

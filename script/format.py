@@ -36,15 +36,13 @@ class format:
 
 
 if __name__ == "__main__":
-    format(
-        [
-            "include",
-            "src",
-            "test",
-            "lua/src",
-            "java/src",
-            "quickjs/src",
-            "javascript/src",
-        ]
-        + argv[1:]
-    )()
+    dirs = [
+        "include",
+        "src",
+        "test",
+        "lua/src",
+        "java/src",
+        "quickjs/src",
+        "javascript/src",
+    ]
+    format(dirs + argv[1:])()
