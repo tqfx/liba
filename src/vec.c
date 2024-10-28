@@ -24,12 +24,12 @@ static int a_vec_alloc(a_vec *ctx, a_size num)
 {
     if (ctx->mem_ <= num)
     {
+        void *ptr;
         a_size mem = ctx->mem_;
         do {
             mem += (mem >> 1) + 1;
         } while (mem < num);
-        a_size const siz = a_size_up(sizeof(void *), ctx->siz_ * mem);
-        void *ptr = a_alloc(ctx->ptr_, siz);
+        ptr = a_alloc(ctx->ptr_, a_size_up(sizeof(void *), ctx->siz_ * mem));
         if (A_UNLIKELY(!ptr)) { return A_FAILURE; }
         ctx->ptr_ = ptr;
         ctx->mem_ = mem;
@@ -269,14 +269,18 @@ void *a_vec_remove(a_vec *ctx, a_size idx)
 {
     if (ctx->num_ && idx < ctx->num_ - 1)
     {
-        if (A_UNLIKELY(a_vec_alloc(ctx, ctx->num_))) { return A_NULL; }
-        a_byte *const ptr = (a_byte *)ctx->ptr_ + ctx->siz_ * ctx->num_;
-        a_byte *const dst = (a_byte *)ctx->ptr_ + ctx->siz_ * (idx + 0);
-        a_byte *const src = (a_byte *)ctx->ptr_ + ctx->siz_ * (idx + 1);
-        a_copy(ptr, dst, ctx->siz_);
-        a_move(dst, src, (a_size)(ptr - src));
-        --ctx->num_;
-        return ptr;
+        if (a_vec_alloc(ctx, ctx->num_) == A_SUCCESS)
+        {
+            a_byte *const ptr = (a_byte *)ctx->ptr_ + ctx->siz_ * ctx->num_;
+            a_byte *const dst = (a_byte *)ctx->ptr_ + ctx->siz_ * (idx + 0);
+            a_byte *const src = (a_byte *)ctx->ptr_ + ctx->siz_ * (idx + 1);
+            a_size const siz = (a_size)(ptr - src);
+            a_copy(ptr, dst, ctx->siz_);
+            a_move(dst, src, siz);
+            --ctx->num_;
+            return ptr;
+        }
+        return A_NULL;
     }
     return ctx->num_ ? a_vec_dec_(ctx) : A_NULL;
 }

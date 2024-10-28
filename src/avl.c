@@ -204,14 +204,13 @@ Indeed, a single node insertion cannot require that more than one (single or dou
 static A_INLINE a_bool a_avl_handle_growth(a_avl *root, a_avl_node *parent, a_avl_node *node, int sign)
 {
     int const cur_factor = a_avl_factor(parent);
+    int const new_factor = cur_factor + sign;
     if (cur_factor == 0)
     {
         /* `parent` is still sufficiently balanced (-1 or +1 balance factor), but must have increased in height. Continue up the tree. */
         a_avl_set_factor(parent, sign);
         return A_FALSE;
     }
-
-    int const new_factor = cur_factor + sign;
     if (new_factor == 0)
     {
         /* `parent` is now perfectly balanced (0 balance factor). It cannot have increased in height, so there is nothing more to do. */
@@ -329,20 +328,21 @@ void a_avl_insert_adjust(a_avl *root, a_avl_node *node)
 
     /* The subtree rooted at parent increased in height by 1. */
 
-    a_bool done;
-    do {
+    for (a_bool ok;;)
+    {
         node = parent;
         parent = a_avl_parent(node);
-        if (!parent) { return; }
+        if (!parent) { break; }
         if (parent->left == node)
         {
-            done = a_avl_handle_growth(root, parent, node, -1);
+            ok = a_avl_handle_growth(root, parent, node, -1);
         }
         else
         {
-            done = a_avl_handle_growth(root, parent, node, +1);
+            ok = a_avl_handle_growth(root, parent, node, +1);
         }
-    } while (!done);
+        if (ok) { break; }
+    }
 }
 
 /*
@@ -373,6 +373,8 @@ Also in the latter case, *left will be set.
 static A_INLINE a_avl_node *a_avl_handle_shrink(a_avl *root, a_avl_node *parent, int sign, a_bool *left)
 {
     int const cur_factor = a_avl_factor(parent);
+    int const new_factor = cur_factor + sign;
+    a_avl_node *node;
     if (cur_factor == 0)
     {
         /*
@@ -382,9 +384,6 @@ static A_INLINE a_avl_node *a_avl_handle_shrink(a_avl *root, a_avl_node *parent,
         a_avl_set_factor(parent, sign);
         return A_NULL;
     }
-
-    a_avl_node *node;
-    int const new_factor = cur_factor + sign;
     if (new_factor == 0)
     {
         /*
@@ -602,10 +601,10 @@ a_avl_node *a_avl_insert(a_avl *root, a_avl_node *node, int (*cmp)(void const *,
 {
     a_avl_node *parent = root->node;
     a_avl_node **link = &root->node;
-    while (*link)
+    for (int res; *link;)
     {
         parent = *link;
-        int const res = cmp(node, parent);
+        res = cmp(node, parent);
         if (res < 0)
         {
             link = &parent->left;

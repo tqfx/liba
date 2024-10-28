@@ -526,10 +526,10 @@ a_rbt_node *a_rbt_insert(a_rbt *root, a_rbt_node *node, int (*cmp)(void const *,
 {
     a_rbt_node *parent = root->node;
     a_rbt_node **link = &root->node;
-    while (*link)
+    for (int res; *link;)
     {
         parent = *link;
-        int const res = cmp(node, parent);
+        res = cmp(node, parent);
         if (res < 0)
         {
             link = &parent->left;
