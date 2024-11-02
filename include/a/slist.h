@@ -14,10 +14,10 @@
  @{
 */
 
-// clang-format off
+/* clang-format off */
 #define A_SLIST_NODE {A_NULL}
 #define A_SLIST_INIT(list) {{A_NULL}, &(list).head}
-// clang-format on
+/* clang-format on */
 
 /*!
  @brief instance structure for singly linked list node

@@ -238,7 +238,7 @@ static void test_atrih(a_complex x)
     debug(")=" A_COMPLEX_PRI("", "g", "", "g") "\n", z.real, z.imag);
 }
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     a_complex x = A_COMPLEX_C(0.0, 0.0);
     a_complex y = a_complex_c(0.0, 0.0);

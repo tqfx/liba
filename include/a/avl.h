@@ -14,9 +14,9 @@
  @{
 */
 
-// clang-format off
+/* clang-format off */
 #define A_AVL_ROOT {A_NULL}
-// clang-format on
+/* clang-format on */
 
 /*!
  @brief instance structure for AVL binary search tree node
@@ -82,7 +82,7 @@ A_INTERN a_avl_node *a_avl_init(a_avl_node *node, a_avl_node *parent)
 */
 typedef union a_avl
 {
-    struct a_avl_node *node; //!< root node
+    struct a_avl_node *node; /*!< root node */
 } a_avl;
 
 /*!
@@ -242,6 +242,8 @@ A_EXTERN void a_avl_remove(a_avl *root, a_avl_node *node);
 */
 #define a_avl_foreach(cur, root) \
     for (a_avl_node *cur = a_avl_head(root); cur; cur = a_avl_next(cur))
+#define A_AVL_FOREACH(cur, root) \
+    for (cur = a_avl_head(root); cur; cur = a_avl_next(cur))
 
 /*!
  @brief iterate over a AVL binary search tree in-order reverse
@@ -261,6 +263,8 @@ A_EXTERN void a_avl_remove(a_avl *root, a_avl_node *node);
 */
 #define a_avl_foreach_reverse(cur, root) \
     for (a_avl_node *cur = a_avl_tail(root); cur; cur = a_avl_prev(cur))
+#define A_AVL_FOREACH_REVERSE(cur, root) \
+    for (cur = a_avl_tail(root); cur; cur = a_avl_prev(cur))
 
 /*!
  @brief iterate over a AVL binary search tree preorder
@@ -280,6 +284,8 @@ A_EXTERN void a_avl_remove(a_avl *root, a_avl_node *node);
 */
 #define a_avl_pre_foreach(cur, root) \
     for (a_avl_node *cur = (root)->node; cur; cur = a_avl_pre_next(cur))
+#define A_AVL_PRE_FOREACH(cur, root) \
+    for (cur = (root)->node; cur; cur = a_avl_pre_next(cur))
 
 /*!
  @brief iterate over a AVL binary search tree preorder reverse
@@ -299,6 +305,8 @@ A_EXTERN void a_avl_remove(a_avl *root, a_avl_node *node);
 */
 #define a_avl_pre_foreach_reverse(cur, root) \
     for (a_avl_node *cur = (root)->node; cur; cur = a_avl_pre_prev(cur))
+#define A_AVL_PRE_FOREACH_REVERSE(cur, root) \
+    for (cur = (root)->node; cur; cur = a_avl_pre_prev(cur))
 
 /*!
  @brief iterate over a AVL binary search tree postorder
@@ -318,6 +326,8 @@ A_EXTERN void a_avl_remove(a_avl *root, a_avl_node *node);
 */
 #define a_avl_post_foreach(cur, root) \
     for (a_avl_node *cur = a_avl_post_head(root); cur; cur = a_avl_post_next(cur))
+#define A_AVL_POST_FOREACH(cur, root) \
+    for (cur = a_avl_post_head(root); cur; cur = a_avl_post_next(cur))
 
 /*!
  @brief iterate over a AVL binary search tree postorder reverse
@@ -337,6 +347,8 @@ A_EXTERN void a_avl_remove(a_avl *root, a_avl_node *node);
 */
 #define a_avl_post_foreach_reverse(cur, root) \
     for (a_avl_node *cur = a_avl_post_tail(root); cur; cur = a_avl_post_prev(cur))
+#define A_AVL_POST_FOREACH_REVERSE(cur, root) \
+    for (cur = a_avl_post_tail(root); cur; cur = a_avl_post_prev(cur))
 
 /*!
  @brief tear a AVL binary search tree using postorder traversal
@@ -357,6 +369,8 @@ A_EXTERN void a_avl_remove(a_avl *root, a_avl_node *node);
 */
 #define a_avl_fortear(cur, next, root) \
     for (a_avl_node *next = A_NULL, *cur = a_avl_tear(root, &next); cur; cur = a_avl_tear(root, &next))
+#define A_AVL_FORTEAR(cur, next, root) \
+    for ((void)(next = A_NULL), cur = a_avl_tear(root, &next); cur; cur = a_avl_tear(root, &next))
 
 /*! @} a_avl */
 

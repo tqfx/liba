@@ -313,6 +313,13 @@ A_EXTERN void *a_que_remove(a_que *ctx, a_size idx);
              ? ((void)(it = a_cast_r(T P, a_list_(*, it) + 1)), 1) \
              : (0);                                                \
          it = it##_, it##_ = a_cast_r(T P, a_list_(*, it)->next))
+#define A_QUE_FOREACH(T, it, it_, ctx)                           \
+    for ((void)(it = a_cast_r(T, (ctx)->head_.next)),            \
+         it_ = a_cast_r(T, a_list_(*, it)->next);                \
+         a_list_(*, it) != &(ctx)->head_                         \
+             ? ((void)(it = a_cast_r(T, a_list_(*, it) + 1)), 1) \
+             : (0);                                              \
+         it = it_, it_ = a_cast_r(T, a_list_(*, it)->next))
 
 /*!
  @brief iterate over a queue in reverse
@@ -334,6 +341,13 @@ A_EXTERN void *a_que_remove(a_que *ctx, a_size idx);
              ? ((void)(it = a_cast_r(T P, a_list_(*, it) + 1)), 1) \
              : (0);                                                \
          it = it##_, it##_ = a_cast_r(T P, a_list_(*, it)->prev))
+#define A_QUE_FOREACH_REVERSE(T, it, it_, ctx)                   \
+    for ((void)(it = a_cast_r(T, (ctx)->head_.prev)),            \
+         it_ = a_cast_r(T, a_list_(*, it)->prev);                \
+         a_list_(*, it) != &(ctx)->head_                         \
+             ? ((void)(it = a_cast_r(T, a_list_(*, it) + 1)), 1) \
+             : (0);                                              \
+         it = it_, it_ = a_cast_r(T, a_list_(*, it)->prev))
 
 /*! @} a_que */
 

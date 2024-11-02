@@ -223,18 +223,20 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1nfuzz(JNIEnv *Env, jobject O
 
 static jobject concat(JNIEnv *Env, jobject Obj, jobjectArray val, jdouble const **out)
 {
-    jsize length = 0;
-    jsize nrule = (*Env)->GetArrayLength(Env, val);
-    for (jsize idx = 0; idx != nrule; ++idx)
+    jobject obj;
+    jdouble *ptr;
+    jsize idx, num, length = 0;
+    jsize n = (*Env)->GetArrayLength(Env, val);
+    for (idx = 0; idx != n; ++idx)
     {
         jobject o = (*Env)->GetObjectArrayElement(Env, val, idx);
         length += (*Env)->GetArrayLength(Env, o);
         (*Env)->DeleteLocalRef(Env, o);
     }
-    jobject obj = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)length * 8);
-    jdouble *ptr = (jdouble *)(*Env)->GetDirectBufferAddress(Env, obj);
+    obj = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)length * 8);
+    ptr = (jdouble *)(*Env)->GetDirectBufferAddress(Env, obj);
     *out = ptr;
-    for (jsize idx = 0, num = 0; idx != nrule; ++idx, ptr += num)
+    for (idx = 0; idx != n; ++idx, ptr += num)
     {
         jobject o = (*Env)->GetObjectArrayElement(Env, val, idx);
         num = (*Env)->GetArrayLength(Env, o);
@@ -249,12 +251,12 @@ JNIEXPORT jobject JNICALL Java_liba_pid_1fuzzy_set_1rule(JNIEnv *Env, jobject Ob
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_pid_fuzzy *ctx = (a_pid_fuzzy *)(*Env)->GetDirectBufferAddress(Env, Ctx);
-    ctx->nrule = (unsigned int)(*Env)->GetArrayLength(Env, me);
     jobject Me = concat(Env, Obj, me, &ctx->me);
     jobject Mec = concat(Env, Obj, mec, &ctx->mec);
     jobject Mkp = concat(Env, Obj, mkp, &ctx->mkp);
     jobject Mki = concat(Env, Obj, mki, &ctx->mki);
     jobject Mkd = concat(Env, Obj, mkd, &ctx->mkd);
+    ctx->nrule = (unsigned int)(*Env)->GetArrayLength(Env, me);
     (*Env)->SetObjectField(Env, Obj, L.me, Me);
     (*Env)->SetObjectField(Env, Obj, L.mec, Mec);
     (*Env)->SetObjectField(Env, Obj, L.mkp, Mkp);

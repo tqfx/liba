@@ -564,38 +564,38 @@ static int liba_complex_set(lua_State *L)
     a_complex *const ctx = (a_complex *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x0F6133A2: // real
+    case 0x0F6133A2: /* real */
         ctx->real = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x0E2E9172: // imag
+    case 0x0E2E9172: /* imag */
         ctx->imag = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x001E0FA9: // rho
+    case 0x001E0FA9: /* rho */
     {
         a_float const rho = (a_float)luaL_checknumber(L, 3);
         a_float const theta = a_complex_arg(*ctx);
         a_complex_polar(ctx, rho, theta);
         break;
     }
-    case 0x0240D1F6: // theta
+    case 0x0240D1F6: /* theta */
     {
         a_float const theta = (a_float)luaL_checknumber(L, 3);
         a_float const rho = a_complex_abs(*ctx);
         a_complex_polar(ctx, rho, theta);
         break;
     }
-    case 0x0CD3E0FC: // __eq
-    case 0x906DF07D: // __len
-    case 0x90705068: // __unm
-    case 0x906B0E8D: // __add
-    case 0x906FCDE0: // __sub
-    case 0x906E3BB4: // __mul
-    case 0x906BDA49: // __div
-    case 0x906F01C8: // __pow
-    case 0xE8859EEB: // __name
-    case 0xA65758B2: // __index
-    case 0xAEB551C6: // __newindex
-    case 0x5DA21A54: // __tostring
+    case 0x0CD3E0FC: /* __eq */
+    case 0x906DF07D: /* __len */
+    case 0x90705068: /* __unm */
+    case 0x906B0E8D: /* __add */
+    case 0x906FCDE0: /* __sub */
+    case 0x906E3BB4: /* __mul */
+    case 0x906BDA49: /* __div */
+    case 0x906F01C8: /* __pow */
+    case 0xE8859EEB: /* __name */
+    case 0xA65758B2: /* __index */
+    case 0xAEB551C6: /* __newindex */
+    case 0x5DA21A54: /* __tostring */
         break;
     default:
         lua_getmetatable(L, 1);
@@ -610,19 +610,19 @@ static int liba_complex_get(lua_State *L)
     a_complex const *const ctx = (a_complex const *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x0F6133A2: // real
+    case 0x0F6133A2: /* real */
         lua_pushnumber(L, (lua_Number)ctx->real);
         break;
-    case 0x0E2E9172: // imag
+    case 0x0E2E9172: /* imag */
         lua_pushnumber(L, (lua_Number)ctx->imag);
         break;
-    case 0x001E0FA9: // rho
+    case 0x001E0FA9: /* rho */
         lua_pushnumber(L, (lua_Number)a_complex_abs(*ctx));
         break;
-    case 0x0240D1F6: // theta
+    case 0x0240D1F6: /* theta */
         lua_pushnumber(L, (lua_Number)a_complex_arg(*ctx));
         break;
-    case 0xA65758B2: // __index
+    case 0xA65758B2: /* __index */
         lua_registry_get(L, liba_complex_new);
         lua_num_set(L, -1, "real", ctx->real);
         lua_num_set(L, -1, "imag", ctx->imag);

@@ -105,7 +105,7 @@ static a_float u[] = {
     A_FLOAT_C(-0.0012074614),
 };
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     main_init(argc, argv, 1);
 

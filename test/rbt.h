@@ -13,7 +13,7 @@ typedef struct
 
 static A_INLINE int_node *int_entry(void const *node)
 {
-    return a_cast_r(int_node *, a_cast_r(a_uptr, node) - a_offsetof(int_node, node)); // NOLINT
+    return a_cast_r(int_node *, a_cast_r(a_uptr, node) - a_offsetof(int_node, node)); /* NOLINT */
 }
 
 static int int_cmp(void const *lhs, void const *rhs)
@@ -177,7 +177,7 @@ static int test(unsigned long n)
     return 0;
 }
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     printf("%s\n", A_FUNC);
     unsigned long n = 0x1000;

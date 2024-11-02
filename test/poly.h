@@ -13,7 +13,7 @@ static void print_(a_float const *a, a_size n)
     putchar('}');
 }
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     (void)argc;
     (void)argv;

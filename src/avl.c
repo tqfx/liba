@@ -201,7 +201,7 @@ so the caller should continue up the tree.
 Note that if `false` is returned, no rotation will have been done.
 Indeed, a single node insertion cannot require that more than one (single or double) rotation be done.
 */
-static A_INLINE a_bool a_avl_handle_growth(a_avl *root, a_avl_node *parent, a_avl_node *node, int sign)
+static A_INLINE int a_avl_handle_growth(a_avl *root, a_avl_node *parent, a_avl_node *node, int sign)
 {
     int const cur_factor = a_avl_factor(parent);
     int const new_factor = cur_factor + sign;
@@ -209,13 +209,13 @@ static A_INLINE a_bool a_avl_handle_growth(a_avl *root, a_avl_node *parent, a_av
     {
         /* `parent` is still sufficiently balanced (-1 or +1 balance factor), but must have increased in height. Continue up the tree. */
         a_avl_set_factor(parent, sign);
-        return A_FALSE;
+        return 0;
     }
     if (new_factor == 0)
     {
         /* `parent` is now perfectly balanced (0 balance factor). It cannot have increased in height, so there is nothing more to do. */
         a_avl_set_factor(parent, sign);
-        return A_TRUE;
+        return 1;
     }
 
     /* `parent` is too left-heavy (new_balance_factor == -2) or too right-heavy (new_balance_factor == +2). */
@@ -260,10 +260,10 @@ static A_INLINE a_bool a_avl_handle_growth(a_avl *root, a_avl_node *parent, a_av
         a_avl_rotate(root, parent, -sign);
 
         /* Equivalent to setting `parent`'s balance factor to 0. */
-        a_avl_set_factor(parent, -sign); // A
+        a_avl_set_factor(parent, -sign); /* A */
 
         /* Equivalent to setting `node`'s balance factor to 0. */
-        a_avl_set_factor(node, -sign); // B
+        a_avl_set_factor(node, -sign); /* B */
     }
     else
     {
@@ -304,14 +304,17 @@ static A_INLINE a_bool a_avl_handle_growth(a_avl *root, a_avl_node *parent, a_av
     }
 
     /* Height after rotation is unchanged; nothing more to do. */
-    return A_TRUE;
+    return 1;
 }
 
 void a_avl_insert_adjust(a_avl *root, a_avl_node *node)
 {
+    int ok;
+    a_avl_node *parent;
+
     /* Adjust balance factor of new node's parent. No rotation will need to be done at this level. */
 
-    a_avl_node *parent = a_avl_parent(node);
+    parent = a_avl_parent(node);
     if (!parent) { return; }
 
     if (parent->left == node)
@@ -327,12 +330,12 @@ void a_avl_insert_adjust(a_avl *root, a_avl_node *node)
     if (a_avl_factor(parent) == 0) { return; }
 
     /* The subtree rooted at parent increased in height by 1. */
-
-    for (a_bool ok;;)
-    {
+    do {
         node = parent;
+
         parent = a_avl_parent(node);
-        if (!parent) { break; }
+        if (!parent) { return; }
+
         if (parent->left == node)
         {
             ok = a_avl_handle_growth(root, parent, node, -1);
@@ -341,8 +344,7 @@ void a_avl_insert_adjust(a_avl *root, a_avl_node *node)
         {
             ok = a_avl_handle_growth(root, parent, node, +1);
         }
-        if (ok) { break; }
-    }
+    } while (!ok);
 }
 
 /*
@@ -370,11 +372,11 @@ The return value will be null if the full AVL tree is now adequately balanced,
 or a pointer to the parent of parent if parent is now adequately balanced but has decreased in height by 1.
 Also in the latter case, *left will be set.
 */
-static A_INLINE a_avl_node *a_avl_handle_shrink(a_avl *root, a_avl_node *parent, int sign, a_bool *left)
+static A_INLINE a_avl_node *a_avl_handle_shrink(a_avl *root, a_avl_node *parent, int sign, int *left)
 {
+    a_avl_node *node;
     int const cur_factor = a_avl_factor(parent);
     int const new_factor = cur_factor + sign;
-    a_avl_node *node;
     if (cur_factor == 0)
     {
         /*
@@ -459,7 +461,17 @@ static A_INLINE a_avl_node *a_avl_handle_shrink(a_avl *root, a_avl_node *parent,
         }
     }
     parent = a_avl_parent(node);
-    if (parent) { *left = (parent->left == node); }
+    if (parent)
+    {
+        if (parent->left == node)
+        {
+            *left = 1;
+        }
+        else
+        {
+            *left = 0;
+        }
+    }
     return parent;
 }
 
@@ -467,7 +479,7 @@ static A_INLINE a_avl_node *a_avl_handle_shrink(a_avl *root, a_avl_node *parent,
 Swaps node X, which must have 2 children, with its in-order successor, then unlinks node X.
 Returns the parent of X just before unlinking, without its balance factor having been updated to account for the unlink.
 */
-static A_INLINE a_avl_node *a_avl_handle_remove(a_avl *root, a_avl_node *X, a_bool *left)
+static A_INLINE a_avl_node *a_avl_handle_remove(a_avl *root, a_avl_node *X, int *left)
 {
     a_avl_node *node;
 
@@ -485,7 +497,7 @@ static A_INLINE a_avl_node *a_avl_handle_remove(a_avl *root, a_avl_node *X, a_bo
 
         [ X unlinked, Y returned ]
         */
-        *left = A_FALSE;
+        *left = 0;
         node = Y;
     }
     else
@@ -517,7 +529,7 @@ static A_INLINE a_avl_node *a_avl_handle_remove(a_avl *root, a_avl_node *X, a_bo
         }
         Y->right = X->right;
         a_avl_set_parent(X->right, Y);
-        *left = A_TRUE;
+        *left = 1;
         node = Q;
     }
 
@@ -537,8 +549,8 @@ static A_INLINE a_avl_node *a_avl_handle_remove(a_avl *root, a_avl_node *X, a_bo
 
 void a_avl_remove(a_avl *root, a_avl_node *node)
 {
+    int left = 0;
     a_avl_node *parent;
-    a_bool left = A_FALSE;
     if (node->left && node->right)
     {
         /*
@@ -567,12 +579,12 @@ void a_avl_remove(a_avl *root, a_avl_node *node)
             if (parent->left == node)
             {
                 parent->left = child;
-                left = A_TRUE;
+                left = 1;
             }
             else
             {
                 parent->right = child;
-                left = A_FALSE;
+                left = 0;
             }
             if (child) { a_avl_set_parent(child, parent); }
         }
@@ -601,8 +613,9 @@ a_avl_node *a_avl_insert(a_avl *root, a_avl_node *node, int (*cmp)(void const *,
 {
     a_avl_node *parent = root->node;
     a_avl_node **link = &root->node;
-    for (int res; *link;)
+    while (*link)
     {
+        int res;
         parent = *link;
         res = cmp(node, parent);
         if (res < 0)
@@ -622,7 +635,8 @@ a_avl_node *a_avl_insert(a_avl *root, a_avl_node *node, int (*cmp)(void const *,
 
 a_avl_node *a_avl_search(a_avl const *root, void const *ctx, int (*cmp)(void const *, void const *))
 {
-    for (a_avl_node *cur = root->node; cur;)
+    a_avl_node *cur = root->node;
+    while (cur)
     {
         int const res = cmp(ctx, cur);
         if (res < 0)
@@ -713,8 +727,9 @@ a_avl_node *a_avl_pre_next(a_avl_node *node)
     a_avl_node *leaf;
     if (node->left) { return node->left; }
     if (node->right) { return node->right; }
-    for (leaf = node, node = a_avl_parent(node); node;
-         leaf = node, node = a_avl_parent(node))
+    for ((void)(leaf = node), node = a_avl_parent(node);
+         node;
+         (void)(leaf = node), node = a_avl_parent(node))
     {
         if (node->right && node->right != leaf)
         {
@@ -730,8 +745,9 @@ a_avl_node *a_avl_pre_prev(a_avl_node *node)
     a_avl_node *leaf;
     if (node->right) { return node->right; }
     if (node->left) { return node->left; }
-    for (leaf = node, node = a_avl_parent(node); node;
-         leaf = node, node = a_avl_parent(node))
+    for ((void)(leaf = node), node = a_avl_parent(node);
+         node;
+         (void)(leaf = node), node = a_avl_parent(node))
     {
         if (node->left && node->left != leaf)
         {

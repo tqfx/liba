@@ -182,9 +182,9 @@ static int liba_trajpoly7_set(lua_State *L)
 {
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0xE8859EEB: // __name
-    case 0xA65758B2: // __index
-    case 0xAEB551C6: // __newindex
+    case 0xE8859EEB: /* __name */
+    case 0xA65758B2: /* __index */
+    case 0xAEB551C6: /* __newindex */
         break;
     default:
         lua_getmetatable(L, 1);
@@ -199,19 +199,19 @@ static int liba_trajpoly7_get(lua_State *L)
     a_trajpoly7 const *const ctx = (a_trajpoly7 const *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x00000070: // p
+    case 0x00000070: /* p */
         lua_array_num_new(L, ctx->p, A_LEN(ctx->p));
         break;
-    case 0x00000076: // v
+    case 0x00000076: /* v */
         lua_array_num_new(L, ctx->v, A_LEN(ctx->v));
         break;
-    case 0x00000061: // a
+    case 0x00000061: /* a */
         lua_array_num_new(L, ctx->a, A_LEN(ctx->a));
         break;
-    case 0x0000006A: // j
+    case 0x0000006A: /* j */
         lua_array_num_new(L, ctx->j, A_LEN(ctx->j));
         break;
-    case 0xA65758B2: // __index
+    case 0xA65758B2: /* __index */
         lua_registry_get(L, liba_trajpoly7_new);
         lua_pushstring(L, "p");
         lua_array_num_new(L, ctx->p, A_LEN(ctx->p));

@@ -97,18 +97,18 @@ typedef struct a_trajtrap trajtrap;
 */
 struct a_trajtrap
 {
-    a_float t; //!< total duration
-    a_float p0; //!< initial position
-    a_float p1; //!< final position
-    a_float v0; //!< initial velocity
-    a_float v1; //!< final velocity
-    a_float vc; //!< constant velocity
-    a_float ta; //!< time before constant velocity
-    a_float td; //!< time after constant velocity
-    a_float pa; //!< position before constant velocity
-    a_float pd; //!< position after constant velocity
-    a_float ac; //!< acceleration before constant velocity
-    a_float de; //!< acceleration after constant velocity
+    a_float t; /*!< total duration */
+    a_float p0; /*!< initial position */
+    a_float p1; /*!< final position */
+    a_float v0; /*!< initial velocity */
+    a_float v1; /*!< final velocity */
+    a_float vc; /*!< constant velocity */
+    a_float ta; /*!< time before constant velocity */
+    a_float td; /*!< time after constant velocity */
+    a_float pa; /*!< position before constant velocity */
+    a_float pd; /*!< position after constant velocity */
+    a_float ac; /*!< acceleration before constant velocity */
+    a_float de; /*!< acceleration after constant velocity */
 #if defined(__cplusplus)
     A_INLINE a_float gen(a_float vm, a_float ac_, a_float de_, a_float p0_, a_float p1_,
                          a_float v0_ = 0, a_float v1_ = 0)

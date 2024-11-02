@@ -59,7 +59,7 @@ static void test_next(void)
         a_list_add_prev(list2, &node->node);
     }
     {
-        data *node = a_list_entry_prev(list2, data, node); // NOLINT(performance-no-int-to-ptr)
+        data *node = a_list_entry_prev(list2, data, node); /* NOLINT(performance-no-int-to-ptr) */
         a_list_del_prev(list2);
         a_die(node);
     }
@@ -67,13 +67,13 @@ static void test_next(void)
     a_list_mov_prev(list1, list2);
     a_list_foreach_next(it, list1)
     {
-        data *node = a_list_entry(it, data, node); // NOLINT(performance-no-int-to-ptr)
+        data *node = a_list_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
         printf("%i ", node->data.i);
     }
     printf("%" PRIz "u", a_list_len(list1));
     a_list_forsafe_next(it, pre, list1)
     {
-        data *node = a_list_entry(it, data, node); // NOLINT(performance-no-int-to-ptr)
+        data *node = a_list_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
         a_list_del_node(&node->node);
         a_die(node);
     }
@@ -106,7 +106,7 @@ static void test_prev(void)
         a_list_add_next(list2, &node->node);
     }
     {
-        data *node = a_list_entry_next(list2, data, node); // NOLINT(performance-no-int-to-ptr)
+        data *node = a_list_entry_next(list2, data, node); /* NOLINT(performance-no-int-to-ptr) */
         a_list_del_next(list2);
         a_die(node);
     }
@@ -114,13 +114,13 @@ static void test_prev(void)
     a_list_mov_next(list1, list2);
     a_list_foreach_prev(it, list1)
     {
-        data *node = a_list_entry(it, data, node); // NOLINT(performance-no-int-to-ptr)
+        data *node = a_list_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
         printf("%i ", node->data.i);
     }
     printf("%" PRIz "u", a_list_len(list1));
     a_list_forsafe_prev(it, pre, list1)
     {
-        data *node = a_list_entry(it, data, node); // NOLINT(performance-no-int-to-ptr)
+        data *node = a_list_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
         a_list_del_node(&node->node);
         a_die(node);
     }
@@ -156,29 +156,29 @@ static void test_func(void)
     {
         a_list *ptr = list2->prev;
         a_list_set_node(ptr, &ctx->node);
-        ctx = a_list_entry(ptr, data, node); // NOLINT(performance-no-int-to-ptr)
+        ctx = a_list_entry(ptr, data, node); /* NOLINT(performance-no-int-to-ptr) */
     }
     a_list_swap_node(list2->prev, list2->next);
     a_list_foreach_next(it, list1)
     {
-        data *node = a_list_entry(it, data, node); // NOLINT(performance-no-int-to-ptr)
+        data *node = a_list_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
         printf("%i ", node->data.i);
     }
     a_list_foreach_next(it, list2)
     {
-        data *node = a_list_entry(it, data, node); // NOLINT(performance-no-int-to-ptr)
+        data *node = a_list_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
         printf("%i ", node->data.i);
     }
     printf("%" PRIz "u", a_list_len(list1) + a_list_len(list2));
     a_list_forsafe_next(it, at, list1)
     {
-        data *node = a_list_entry(it, data, node); // NOLINT(performance-no-int-to-ptr)
+        data *node = a_list_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
         a_list_del_node(&node->node);
         a_die(node);
     }
     a_list_forsafe_next(it, at, list2)
     {
-        data *node = a_list_entry(it, data, node); // NOLINT(performance-no-int-to-ptr)
+        data *node = a_list_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
         a_list_del_node(&node->node);
         a_die(node);
     }
@@ -301,7 +301,7 @@ static void test_null(void)
     }
 }
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     (void)argc;
     (void)argv;

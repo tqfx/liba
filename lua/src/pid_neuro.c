@@ -172,37 +172,37 @@ static int liba_pid_neuro_set(lua_State *L)
     a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x0000006B: // k
+    case 0x0000006B: /* k */
         ctx->k = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x00003731: // kp
+    case 0x00003731: /* kp */
         ctx->pid.kp = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x0000372A: // ki
+    case 0x0000372A: /* ki */
         ctx->pid.ki = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x00003725: // kd
+    case 0x00003725: /* kd */
         ctx->pid.kd = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x00003D55: // wp
+    case 0x00003D55: /* wp */
         ctx->wp = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x00003D4E: // wi
+    case 0x00003D4E: /* wi */
         ctx->wi = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x00003D49: // wd
+    case 0x00003D49: /* wd */
         ctx->wd = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x23C8F10E: // outmax
+    case 0x23C8F10E: /* outmax */
         ctx->pid.outmax = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x23C8F51C: // outmin
+    case 0x23C8F51C: /* outmin */
         ctx->pid.outmin = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0xE8859EEB: // __name
-    case 0xE70C48C6: // __call
-    case 0xA65758B2: // __index
-    case 0xAEB551C6: // __newindex
+    case 0xE8859EEB: /* __name */
+    case 0xE70C48C6: /* __call */
+    case 0xA65758B2: /* __index */
+    case 0xAEB551C6: /* __newindex */
         break;
     default:
         lua_getmetatable(L, 1);
@@ -217,46 +217,46 @@ static int liba_pid_neuro_get(lua_State *L)
     a_pid_neuro const *const ctx = (a_pid_neuro const *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x0000006B: // k
+    case 0x0000006B: /* k */
         lua_pushnumber(L, (lua_Number)ctx->k);
         break;
-    case 0x00003731: // kp
+    case 0x00003731: /* kp */
         lua_pushnumber(L, (lua_Number)ctx->pid.kp);
         break;
-    case 0x0000372A: // ki
+    case 0x0000372A: /* ki */
         lua_pushnumber(L, (lua_Number)ctx->pid.ki);
         break;
-    case 0x00003725: // kd
+    case 0x00003725: /* kd */
         lua_pushnumber(L, (lua_Number)ctx->pid.kd);
         break;
-    case 0x00003D55: // wp
+    case 0x00003D55: /* wp */
         lua_pushnumber(L, (lua_Number)ctx->wp);
         break;
-    case 0x00003D4E: // wi
+    case 0x00003D4E: /* wi */
         lua_pushnumber(L, (lua_Number)ctx->wi);
         break;
-    case 0x00003D49: // wd
+    case 0x00003D49: /* wd */
         lua_pushnumber(L, (lua_Number)ctx->wd);
         break;
-    case 0x23C8F10E: // outmax
+    case 0x23C8F10E: /* outmax */
         lua_pushnumber(L, (lua_Number)ctx->pid.outmax);
         break;
-    case 0x23C8F51C: // outmin
+    case 0x23C8F51C: /* outmin */
         lua_pushnumber(L, (lua_Number)ctx->pid.outmin);
         break;
-    case 0x001D4D3A: // out
+    case 0x001D4D3A: /* out */
         lua_pushnumber(L, (lua_Number)ctx->pid.out);
         break;
-    case 0x001AE924: // fdb
+    case 0x001AE924: /* fdb */
         lua_pushnumber(L, (lua_Number)ctx->pid.fdb);
         break;
-    case 0x001AAD55: // err
+    case 0x001AAD55: /* err */
         lua_pushnumber(L, (lua_Number)ctx->pid.err);
         break;
-    case 0x00003412: // ec
+    case 0x00003412: /* ec */
         lua_pushnumber(L, (lua_Number)ctx->ec);
         break;
-    case 0xA65758B2: // __index
+    case 0xA65758B2: /* __index */
         lua_registry_get(L, liba_pid_neuro_new);
         lua_num_set(L, -1, "kp", ctx->pid.kp);
         lua_num_set(L, -1, "ki", ctx->pid.ki);

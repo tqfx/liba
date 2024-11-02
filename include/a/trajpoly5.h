@@ -125,12 +125,12 @@ typedef struct a_trajpoly5 trajpoly5;
 */
 struct a_trajpoly5
 {
-    a_float p[6]; //!< coefficients of position
+    a_float p[6]; /*!< coefficients of position */
 #if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 1)
-    a_float v[5]; //!< coefficients of velocity
+    a_float v[5]; /*!< coefficients of velocity */
 #endif /* A_TRAJPOLY5 */
 #if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 2)
-    a_float a[4]; //!< coefficients of acceleration
+    a_float a[4]; /*!< coefficients of acceleration */
 #endif /* A_TRAJPOLY5 */
 #if defined(__cplusplus)
     A_INLINE void gen(a_float ts, a_float p0, a_float p1,

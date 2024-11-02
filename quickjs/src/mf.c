@@ -4,8 +4,9 @@ JSValue liba_mf_gauss(JSContext *ctx, JSValueConst this_val, int argc, JSValueCo
 {
     (void)argc;
     (void)this_val;
+    unsigned int i;
     double args[] = {0, 0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -17,8 +18,9 @@ JSValue liba_mf_gauss2(JSContext *ctx, JSValueConst this_val, int argc, JSValueC
 {
     (void)argc;
     (void)this_val;
+    unsigned int i;
     double args[] = {0, 0, 0, 0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -30,8 +32,9 @@ JSValue liba_mf_gbell(JSContext *ctx, JSValueConst this_val, int argc, JSValueCo
 {
     (void)argc;
     (void)this_val;
+    unsigned int i;
     double args[] = {0, 0, 0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -43,8 +46,9 @@ JSValue liba_mf_sig(JSContext *ctx, JSValueConst this_val, int argc, JSValueCons
 {
     (void)argc;
     (void)this_val;
+    unsigned int i;
     double args[] = {0, 0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -56,8 +60,9 @@ JSValue liba_mf_dsig(JSContext *ctx, JSValueConst this_val, int argc, JSValueCon
 {
     (void)argc;
     (void)this_val;
+    unsigned int i;
     double args[] = {0, 0, 0, 0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -69,8 +74,9 @@ JSValue liba_mf_psig(JSContext *ctx, JSValueConst this_val, int argc, JSValueCon
 {
     (void)argc;
     (void)this_val;
+    unsigned int i;
     double args[] = {0, 0, 0, 0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -82,8 +88,9 @@ JSValue liba_mf_trap(JSContext *ctx, JSValueConst this_val, int argc, JSValueCon
 {
     (void)argc;
     (void)this_val;
+    unsigned int i;
     double args[] = {0, 0, 0, 0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -95,8 +102,9 @@ JSValue liba_mf_tri(JSContext *ctx, JSValueConst this_val, int argc, JSValueCons
 {
     (void)argc;
     (void)this_val;
+    unsigned int i;
     double args[] = {0, 0, 0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -108,8 +116,9 @@ JSValue liba_mf_lins(JSContext *ctx, JSValueConst this_val, int argc, JSValueCon
 {
     (void)argc;
     (void)this_val;
+    unsigned int i;
     double args[] = {0, 0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -121,8 +130,9 @@ JSValue liba_mf_linz(JSContext *ctx, JSValueConst this_val, int argc, JSValueCon
 {
     (void)argc;
     (void)this_val;
+    unsigned int i;
     double args[] = {0, 0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -134,8 +144,9 @@ JSValue liba_mf_s(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst 
 {
     (void)argc;
     (void)this_val;
+    unsigned int i;
     double args[] = {0, 0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -147,8 +158,9 @@ JSValue liba_mf_z(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst 
 {
     (void)argc;
     (void)this_val;
+    unsigned int i;
     double args[] = {0, 0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -160,8 +172,9 @@ JSValue liba_mf_pi(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst
 {
     (void)argc;
     (void)this_val;
+    unsigned int i;
     double args[] = {0, 0, 0, 0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }

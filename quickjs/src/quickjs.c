@@ -11,9 +11,10 @@ int js_array_length(JSContext *ctx, JSValueConst val, a_u32 *plen)
 
 JSValue js_array_u8_new(JSContext *ctx, a_u8 const *ptr, a_u32 len)
 {
+    unsigned int i;
     JSValue val = JS_NewArray(ctx);
     if (JS_IsException(val)) { return val; }
-    for (unsigned int i = 0; i < len; ++i)
+    for (i = 0; i < len; ++i)
     {
         JS_SetPropertyUint32(ctx, val, i, JS_NewInt32(ctx, (a_u8)ptr[i]));
     }
@@ -22,9 +23,10 @@ JSValue js_array_u8_new(JSContext *ctx, a_u8 const *ptr, a_u32 len)
 
 JSValue js_array_u16_new(JSContext *ctx, a_u16 const *ptr, a_u32 len)
 {
+    unsigned int i;
     JSValue val = JS_NewArray(ctx);
     if (JS_IsException(val)) { return val; }
-    for (unsigned int i = 0; i < len; ++i)
+    for (i = 0; i < len; ++i)
     {
         JS_SetPropertyUint32(ctx, val, i, JS_NewInt32(ctx, (a_u8)ptr[i]));
     }
@@ -33,9 +35,10 @@ JSValue js_array_u16_new(JSContext *ctx, a_u16 const *ptr, a_u32 len)
 
 JSValue js_array_u32_new(JSContext *ctx, a_u32 const *ptr, a_u32 len)
 {
+    unsigned int i;
     JSValue val = JS_NewArray(ctx);
     if (JS_IsException(val)) { return val; }
-    for (unsigned int i = 0; i < len; ++i)
+    for (i = 0; i < len; ++i)
     {
         JS_SetPropertyUint32(ctx, val, i, JS_NewUint32(ctx, ptr[i]));
     }
@@ -44,9 +47,10 @@ JSValue js_array_u32_new(JSContext *ctx, a_u32 const *ptr, a_u32 len)
 
 JSValue js_array_u64_new(JSContext *ctx, a_u64 const *ptr, a_u32 len)
 {
+    unsigned int i;
     JSValue val = JS_NewArray(ctx);
     if (JS_IsException(val)) { return val; }
-    for (unsigned int i = 0; i < len; ++i)
+    for (i = 0; i < len; ++i)
     {
         JS_SetPropertyUint32(ctx, val, i, JS_NewBigUint64(ctx, ptr[i]));
     }
@@ -55,16 +59,17 @@ JSValue js_array_u64_new(JSContext *ctx, a_u64 const *ptr, a_u32 len)
 
 JSValue js_array_num_new(JSContext *ctx, a_float const *ptr, a_u32 len)
 {
+    unsigned int i;
     JSValue val = JS_NewArray(ctx);
     if (JS_IsException(val)) { return val; }
-    for (unsigned int i = 0; i < len; ++i)
+    for (i = 0; i < len; ++i)
     {
         JS_SetPropertyUint32(ctx, val, i, JS_NewFloat64(ctx, (double)ptr[i]));
     }
     return val;
 }
 
-int js_array_num_len(JSContext *ctx, JSValueConst val, unsigned int *num, int dim) // NOLINT(misc-no-recursion)
+int js_array_num_len(JSContext *ctx, JSValueConst val, unsigned int *num, int dim) /* NOLINT(misc-no-recursion) */
 {
     a_u32 i = 0, n = 0;
     JSValueConst length = JS_GetPropertyStr(ctx, val, "length");
@@ -86,7 +91,7 @@ int js_array_num_len(JSContext *ctx, JSValueConst val, unsigned int *num, int di
     return 0;
 }
 
-a_float *js_array_num_ptr(JSContext *ctx, JSValueConst val, a_float *ptr, int dim) // NOLINT(misc-no-recursion)
+a_float *js_array_num_ptr(JSContext *ctx, JSValueConst val, a_float *ptr, int dim) /* NOLINT(misc-no-recursion) */
 {
     a_u32 i = 0, n = 0;
     JSValueConst length = JS_GetPropertyStr(ctx, val, "length");

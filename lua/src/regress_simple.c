@@ -222,20 +222,20 @@ static int liba_regress_simple_set(lua_State *L)
     a_regress_simple *const ctx = (a_regress_simple *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x0D6147ED: // coef
+    case 0x0D6147ED: /* coef */
     {
         ctx->coef = (a_float)luaL_checknumber(L, 3);
         break;
     }
-    case 0x0D3D661D: // bias
+    case 0x0D3D661D: /* bias */
     {
         ctx->bias = (a_float)luaL_checknumber(L, 3);
         break;
     }
-    case 0xE8859EEB: // __name
-    case 0xE70C48C6: // __call
-    case 0xA65758B2: // __index
-    case 0xAEB551C6: // __newindex
+    case 0xE8859EEB: /* __name */
+    case 0xE70C48C6: /* __call */
+    case 0xA65758B2: /* __index */
+    case 0xAEB551C6: /* __newindex */
         break;
     default:
         lua_getmetatable(L, 1);
@@ -250,13 +250,13 @@ static int liba_regress_simple_get(lua_State *L)
     a_regress_simple const *const ctx = (a_regress_simple const *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x0D6147ED: // coef
+    case 0x0D6147ED: /* coef */
         lua_pushnumber(L, (lua_Number)ctx->coef);
         break;
-    case 0x0D3D661D: // bias
+    case 0x0D3D661D: /* bias */
         lua_pushnumber(L, (lua_Number)ctx->bias);
         break;
-    case 0xA65758B2: // __index
+    case 0xA65758B2: /* __index */
         lua_registry_get(L, liba_regress_simple_new);
         lua_num_set(L, -1, "coef", ctx->coef);
         lua_num_set(L, -1, "bias", ctx->bias);

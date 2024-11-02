@@ -16,9 +16,9 @@
  @{
 */
 
-// clang-format off
+/* clang-format off */
 #define A_STR_INIT {A_NULL, 0, 0}
-// clang-format on
+/* clang-format on */
 
 /*!
  @brief instance structure for basic string

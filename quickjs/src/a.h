@@ -8,6 +8,8 @@
 #if A_PREREQ_GNUC(2, 95) || __has_warning("-Waggregate-return")
 #pragma GCC diagnostic ignored "-Waggregate-return"
 #endif /* -Waggregate-return */
+#undef inline
+#define inline __inline
 #include "quickjs.h"
 
 #if defined(__cplusplus)

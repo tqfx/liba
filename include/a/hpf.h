@@ -37,9 +37,9 @@
 */
 typedef struct a_hpf
 {
-    a_float alpha; //!< filter coefficient [0,1]
-    a_float output; //!< filter output
-    a_float input; //!< filter input
+    a_float alpha; /*!< filter coefficient [0,1] */
+    a_float output; /*!< filter output */
+    a_float input; /*!< filter input */
 #if defined(__cplusplus)
     A_INLINE void gen(a_float fc, a_float ts)
     {
@@ -63,7 +63,7 @@ namespace a
 typedef struct a_hpf hpf;
 } /* namespace a */
 #endif /* __cplusplus */
-// clang-format off
+/* clang-format off */
 #if defined(__cplusplus)
 #define A_HPF_INIT(alpha) {a_float_c(alpha), 0, 0}
 #define A_HPF_INIT2(fc, ts) {A_HPF_GEN(fc, ts), 0, 0}
@@ -71,7 +71,7 @@ typedef struct a_hpf hpf;
 #define A_HPF_INIT(alpha) (a_hpf){a_float_c(alpha), 0, 0}
 #define A_HPF_INIT2(fc, ts) (a_hpf){A_HPF_GEN(fc, ts), 0, 0}
 #endif /* __cplusplus */
-// clang-format on
+/* clang-format on */
 #define A_HPF_GEN(fc, ts) (1 / (A_FLOAT_TAU * a_float_c(fc) * a_float_c(ts) + 1))
 
 /*!

@@ -16,9 +16,10 @@ static JSValue liba_regress_simple_ctor(JSContext *ctx, JSValueConst new_target,
     JSValue proto, clazz = JS_UNDEFINED;
     a_regress_simple *const self = (a_regress_simple *)js_mallocz(ctx, sizeof(a_regress_simple));
     if (!self) { return JS_EXCEPTION; }
+    int i;
     double args[] = {1, 0};
     if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
-    for (int i = 0; i < argc; ++i)
+    for (i = 0; i < argc; ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { goto fail; }
     }
@@ -141,7 +142,7 @@ static JSValue liba_regress_simple_zero(JSContext *ctx, JSValueConst this_val, i
 enum
 {
     self_coef,
-    self_bias,
+    self_bias
 };
 
 static JSValue liba_regress_simple_get(JSContext *ctx, JSValueConst this_val, int magic)

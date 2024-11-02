@@ -14,9 +14,9 @@
  @{
 */
 
-// clang-format off
+/* clang-format off */
 #define A_RBT_ROOT {A_NULL}
-// clang-format on
+/* clang-format on */
 
 /*!
  @brief instance structure for red–black binary search tree node
@@ -76,7 +76,7 @@ A_INTERN a_rbt_node *a_rbt_init(a_rbt_node *node, a_rbt_node *parent)
 */
 typedef union a_rbt
 {
-    struct a_rbt_node *node; //!< root node
+    struct a_rbt_node *node; /*!< root node */
 } a_rbt;
 
 /*!
@@ -236,6 +236,8 @@ A_EXTERN void a_rbt_remove(a_rbt *root, a_rbt_node *node);
 */
 #define a_rbt_foreach(cur, root) \
     for (a_rbt_node *cur = a_rbt_head(root); cur; cur = a_rbt_next(cur))
+#define A_RBT_FOREACH(cur, root) \
+    for (cur = a_rbt_head(root); cur; cur = a_rbt_next(cur))
 
 /*!
  @brief iterate over a red–black binary search tree in-order reverse
@@ -255,6 +257,8 @@ A_EXTERN void a_rbt_remove(a_rbt *root, a_rbt_node *node);
 */
 #define a_rbt_foreach_reverse(cur, root) \
     for (a_rbt_node *cur = a_rbt_tail(root); cur; cur = a_rbt_prev(cur))
+#define A_RBT_FOREACH_REVERSE(cur, root) \
+    for (cur = a_rbt_tail(root); cur; cur = a_rbt_prev(cur))
 
 /*!
  @brief iterate over a red–black binary search tree preorder
@@ -274,6 +278,8 @@ A_EXTERN void a_rbt_remove(a_rbt *root, a_rbt_node *node);
 */
 #define a_rbt_pre_foreach(cur, root) \
     for (a_rbt_node *cur = (root)->node; cur; cur = a_rbt_pre_next(cur))
+#define A_RBT_PRE_FOREACH(cur, root) \
+    for (cur = (root)->node; cur; cur = a_rbt_pre_next(cur))
 
 /*!
  @brief iterate over a red–black binary search tree preorder reverse
@@ -293,6 +299,8 @@ A_EXTERN void a_rbt_remove(a_rbt *root, a_rbt_node *node);
 */
 #define a_rbt_pre_foreach_reverse(cur, root) \
     for (a_rbt_node *cur = (root)->node; cur; cur = a_rbt_pre_prev(cur))
+#define A_RBT_PRE_FOREACH_REVERSE(cur, root) \
+    for (cur = (root)->node; cur; cur = a_rbt_pre_prev(cur))
 
 /*!
  @brief iterate over a red–black binary search tree postorder
@@ -312,6 +320,8 @@ A_EXTERN void a_rbt_remove(a_rbt *root, a_rbt_node *node);
 */
 #define a_rbt_post_foreach(cur, root) \
     for (a_rbt_node *cur = a_rbt_post_head(root); cur; cur = a_rbt_post_next(cur))
+#define A_RBT_POST_FOREACH(cur, root) \
+    for (cur = a_rbt_post_head(root); cur; cur = a_rbt_post_next(cur))
 
 /*!
  @brief iterate over a red–black binary search tree postorder reverse
@@ -331,6 +341,8 @@ A_EXTERN void a_rbt_remove(a_rbt *root, a_rbt_node *node);
 */
 #define a_rbt_post_foreach_reverse(cur, root) \
     for (a_rbt_node *cur = a_rbt_post_tail(root); cur; cur = a_rbt_post_prev(cur))
+#define A_RBT_POST_FOREACH_REVERSE(cur, root) \
+    for (cur = a_rbt_post_tail(root); cur; cur = a_rbt_post_prev(cur))
 
 /*!
  @brief tear a red–black binary search tree using postorder traversal
@@ -351,6 +363,8 @@ A_EXTERN void a_rbt_remove(a_rbt *root, a_rbt_node *node);
 */
 #define a_rbt_fortear(cur, next, root) \
     for (a_rbt_node *next = A_NULL, *cur = a_rbt_tear(root, &next); cur; cur = a_rbt_tear(root, &next))
+#define A_RBT_FORTEAR(cur, next, root) \
+    for ((void)(next = A_NULL), cur = a_rbt_tear(root, &next); cur; cur = a_rbt_tear(root, &next))
 
 /*! @} a_rbt */
 

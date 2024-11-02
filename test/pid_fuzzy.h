@@ -2,7 +2,6 @@
 #include "test.h"
 #include "a/tf.h"
 #include "a/mf.h"
-// #include "a/math.h"
 #include "a/pid_fuzzy.h"
 
 static A_INLINE a_float input(a_float const x)
@@ -115,7 +114,7 @@ static a_float const m7kd[] = {
     NL, NM, NM, NM, NS, NS, NL};
 #undef X
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     main_init(argc, argv, 1);
 

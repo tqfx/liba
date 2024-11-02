@@ -430,7 +430,7 @@ static void test_str_set(void)
     }
 }
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     printf("%s\n", A_FUNC);
     test_str();

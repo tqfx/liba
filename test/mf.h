@@ -3,7 +3,7 @@
 #include "a/mf.h"
 #include <string.h>
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     main_init(argc, argv, 1);
     unsigned int e = A_MF_NUL;

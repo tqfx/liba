@@ -57,7 +57,7 @@
 #define A_NOTEFREQ_A4 440
 #endif
 
-// clang-format off
+/* clang-format off */
 
 /*
  Speed of Sound = 345 m/s = 1130 ft/s = 770 miles/hr
@@ -1480,7 +1480,7 @@
 #define A_NOTEFREQ_Bb8 A_NOTEFREQ_CAST(A_NOTEFREQ_FREQ / A_NOTEFREQ_FREQ_Bb8) /*!< Bb8 */
 #define A_NOTEFREQ_B8  A_NOTEFREQ_CAST(A_NOTEFREQ_FREQ / A_NOTEFREQ_FREQ_B8)  /*!< B8  */
 
-// clang-format on
+/* clang-format on */
 
 /*! @} a_notefreq */
 

@@ -121,10 +121,10 @@ static int liba_crc8_set(lua_State *L)
 {
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0xE8859EEB: // __name
-    case 0xE70C48C6: // __call
-    case 0xA65758B2: // __index
-    case 0xAEB551C6: // __newindex
+    case 0xE8859EEB: /* __name */
+    case 0xE70C48C6: /* __call */
+    case 0xA65758B2: /* __index */
+    case 0xAEB551C6: /* __newindex */
         break;
     default:
         lua_getmetatable(L, 1);
@@ -139,10 +139,10 @@ static int liba_crc8_get(lua_State *L)
     struct crc8 const *const ctx = (struct crc8 const *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x014FE58A: // table
+    case 0x014FE58A: /* table */
         lua_array_u8_new(L, ctx->table, 0x100);
         break;
-    case 0xA65758B2: // __index
+    case 0xA65758B2: /* __index */
         lua_registry_get(L, liba_crc8_new);
         lua_pushstring(L, "table");
         lua_array_u8_new(L, ctx->table, 0x100);

@@ -197,7 +197,7 @@ static void test_roll(int argc, char *argv[])
 
 #include "a/hash.h"
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     test_u32_sqrt();
     test_u64_sqrt();
@@ -272,16 +272,16 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     }
     switch (a_hash_bkdr(argv[1], 0))
     {
-    case 0x001E5957: // sum
+    case 0x001E5957: /* sum */
         test_sum(argc - 2, argv + 2);
         break;
-    case 0x0EB5AF9D: // mean
+    case 0x0EB5AF9D: /* mean */
         test_mean(argc - 2, argv + 2);
         break;
-    case 0x0F20D22E: // push
+    case 0x0F20D22E: /* push */
         test_push(argc - 1, argv + 1);
         break;
-    case 0x0F63D79D: // roll
+    case 0x0F63D79D: /* roll */
         test_roll(argc - 1, argv + 1);
         break;
     default:

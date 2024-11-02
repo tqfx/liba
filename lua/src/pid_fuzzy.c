@@ -273,38 +273,38 @@ static int liba_pid_fuzzy_set(lua_State *L)
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x00003731: // kp
+    case 0x00003731: /* kp */
         ctx->pid.kp = ctx->kp = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x0000372A: // ki
+    case 0x0000372A: /* ki */
         ctx->pid.ki = ctx->ki = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x00003725: // kd
+    case 0x00003725: /* kd */
         ctx->pid.kd = ctx->kd = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x10E9FF9D: // summax
+    case 0x10E9FF9D: /* summax */
         ctx->pid.summax = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x10EA03AB: // summin
+    case 0x10EA03AB: /* summin */
         ctx->pid.summin = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x23C8F10E: // outmax
+    case 0x23C8F10E: /* outmax */
         ctx->pid.outmax = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x23C8F51C: // outmin
+    case 0x23C8F51C: /* outmin */
         ctx->pid.outmin = (a_float)luaL_checknumber(L, 3);
         break;
-    case 0x98AE2495: // nfuzz
+    case 0x98AE2495: /* nfuzz */
     {
         unsigned int const num = (unsigned int)luaL_checkinteger(L, 3);
         void *ptr = lua_alloc(L, a_pid_fuzzy_bfuzz(ctx), A_PID_FUZZY_BFUZZ(num));
         a_pid_fuzzy_set_bfuzz(ctx, ptr, num);
         break;
     }
-    case 0xE8859EEB: // __name
-    case 0xE70C48C6: // __call
-    case 0xA65758B2: // __index
-    case 0xAEB551C6: // __newindex
+    case 0xE8859EEB: /* __name */
+    case 0xE70C48C6: /* __call */
+    case 0xA65758B2: /* __index */
+    case 0xAEB551C6: /* __newindex */
         break;
     default:
         lua_getmetatable(L, 1);
@@ -319,46 +319,46 @@ static int liba_pid_fuzzy_get(lua_State *L)
     a_pid_fuzzy const *const ctx = (a_pid_fuzzy const *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x00003731: // kp
+    case 0x00003731: /* kp */
         lua_pushnumber(L, (lua_Number)ctx->kp);
         break;
-    case 0x0000372A: // ki
+    case 0x0000372A: /* ki */
         lua_pushnumber(L, (lua_Number)ctx->ki);
         break;
-    case 0x00003725: // kd
+    case 0x00003725: /* kd */
         lua_pushnumber(L, (lua_Number)ctx->kd);
         break;
-    case 0x10E9FF9D: // summax
+    case 0x10E9FF9D: /* summax */
         lua_pushnumber(L, (lua_Number)ctx->pid.summax);
         break;
-    case 0x10EA03AB: // summin
+    case 0x10EA03AB: /* summin */
         lua_pushnumber(L, (lua_Number)ctx->pid.summin);
         break;
-    case 0x001E5957: // sum
+    case 0x001E5957: /* sum */
         lua_pushnumber(L, (lua_Number)ctx->pid.sum);
         break;
-    case 0x23C8F10E: // outmax
+    case 0x23C8F10E: /* outmax */
         lua_pushnumber(L, (lua_Number)ctx->pid.outmax);
         break;
-    case 0x23C8F51C: // outmin
+    case 0x23C8F51C: /* outmin */
         lua_pushnumber(L, (lua_Number)ctx->pid.outmin);
         break;
-    case 0x001D4D3A: // out
+    case 0x001D4D3A: /* out */
         lua_pushnumber(L, (lua_Number)ctx->pid.out);
         break;
-    case 0x001AE924: // fdb
+    case 0x001AE924: /* fdb */
         lua_pushnumber(L, (lua_Number)ctx->pid.fdb);
         break;
-    case 0x001AAD55: // err
+    case 0x001AAD55: /* err */
         lua_pushnumber(L, (lua_Number)ctx->pid.err);
         break;
-    case 0x9A49C09A: // nrule
+    case 0x9A49C09A: /* nrule */
         lua_pushinteger(L, (lua_Integer)ctx->nrule);
         break;
-    case 0x98AE2495: // nfuzz
+    case 0x98AE2495: /* nfuzz */
         lua_pushinteger(L, (lua_Integer)ctx->nfuzz);
         break;
-    case 0xA65758B2: // __index
+    case 0xA65758B2: /* __index */
         lua_registry_get(L, liba_pid_fuzzy_new);
         lua_num_set(L, -1, "kp", ctx->kp);
         lua_num_set(L, -1, "ki", ctx->ki);

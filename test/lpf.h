@@ -15,7 +15,7 @@ static long rand_(void)
     return a_cast_s(long, rand_seed);
 }
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     main_init(argc, argv, 1);
     a_lpf ctx = A_LPF_INIT(A_LPF_GEN(10, 0.01));

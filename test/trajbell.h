@@ -2,7 +2,7 @@
 #include "test.h"
 #include "a/trajbell.h"
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     int start = 1;
     if (argc > 1)
@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     }
     a_trajbell ctx;
     a_float t = a_trajbell_gen(&ctx, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6]);
-    for (a_float x = 0, delta = t / 1000; x < t; x += delta) // NOLINT
+    for (a_float x = 0, delta = t / 1000; x < t; x += delta) /* NOLINT */
     {
         debug(A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f\n"),
               x, a_trajbell_pos(&ctx, x), a_trajbell_vel(&ctx, x), a_trajbell_acc(&ctx, x), a_trajbell_jer(&ctx, x));

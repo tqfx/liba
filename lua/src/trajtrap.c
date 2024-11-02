@@ -116,9 +116,9 @@ static int liba_trajtrap_set(lua_State *L)
 {
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0xE8859EEB: // __name
-    case 0xA65758B2: // __index
-    case 0xAEB551C6: // __newindex
+    case 0xE8859EEB: /* __name */
+    case 0xA65758B2: /* __index */
+    case 0xAEB551C6: /* __newindex */
         break;
     default:
         lua_getmetatable(L, 1);
@@ -133,43 +133,43 @@ static int liba_trajtrap_get(lua_State *L)
     a_trajtrap const *const ctx = (a_trajtrap const *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x00000074: // t
+    case 0x00000074: /* t */
         lua_pushnumber(L, (lua_Number)ctx->t);
         break;
-    case 0x00003980: // p0
+    case 0x00003980: /* p0 */
         lua_pushnumber(L, (lua_Number)ctx->p0);
         break;
-    case 0x00003981: // p1
+    case 0x00003981: /* p1 */
         lua_pushnumber(L, (lua_Number)ctx->p1);
         break;
-    case 0x00003C92: // v0
+    case 0x00003C92: /* v0 */
         lua_pushnumber(L, (lua_Number)ctx->v0);
         break;
-    case 0x00003C93: // v1
+    case 0x00003C93: /* v1 */
         lua_pushnumber(L, (lua_Number)ctx->v1);
         break;
-    case 0x00003CC5: // vc
+    case 0x00003CC5: /* vc */
         lua_pushnumber(L, (lua_Number)ctx->vc);
         break;
-    case 0x00003BBD: // ta
+    case 0x00003BBD: /* ta */
         lua_pushnumber(L, (lua_Number)ctx->ta);
         break;
-    case 0x00003BC0: // td
+    case 0x00003BC0: /* td */
         lua_pushnumber(L, (lua_Number)ctx->td);
         break;
-    case 0x000039B1: // pa
+    case 0x000039B1: /* pa */
         lua_pushnumber(L, (lua_Number)ctx->pa);
         break;
-    case 0x000039B4: // pd
+    case 0x000039B4: /* pd */
         lua_pushnumber(L, (lua_Number)ctx->pd);
         break;
-    case 0x00003206: // ac
+    case 0x00003206: /* ac */
         lua_pushnumber(L, (lua_Number)ctx->ac);
         break;
-    case 0x00003391: // de
+    case 0x00003391: /* de */
         lua_pushnumber(L, (lua_Number)ctx->de);
         break;
-    case 0xA65758B2: // __index
+    case 0xA65758B2: /* __index */
         lua_registry_get(L, liba_trajtrap_new);
         lua_num_set(L, -1, "t", ctx->t);
         lua_num_set(L, -1, "p0", ctx->p0);

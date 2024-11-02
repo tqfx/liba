@@ -15,13 +15,14 @@ static JSValue liba_trajpoly7_ctor(JSContext *ctx, JSValueConst new_target, int 
     JSValue proto, clazz = JS_UNDEFINED;
     a_trajpoly7 *const self = (a_trajpoly7 *)js_mallocz(ctx, sizeof(a_trajpoly7));
     if (!self) { return JS_EXCEPTION; }
+    int i;
     double args[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
-    for (int i = 0; i < 3; ++i)
+    for (i = 0; i < 3; ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { goto fail; }
     }
-    for (int i = 3; i < argc; ++i)
+    for (i = 3; i < argc; ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { goto fail; }
     }
@@ -47,13 +48,14 @@ static JSValue liba_trajpoly7_gen(JSContext *ctx, JSValueConst this_val, int arg
 {
     a_trajpoly7 *const self = (a_trajpoly7 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly7_class_id);
     if (!self) { return JS_EXCEPTION; }
+    int i;
     double args[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
-    for (int i = 0; i < 3; ++i)
+    for (i = 0; i < 3; ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    for (int i = 3; i < argc; ++i)
+    for (i = 3; i < argc; ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -114,7 +116,7 @@ enum
     self_p,
     self_v,
     self_a,
-    self_j,
+    self_j
 };
 
 static JSValue liba_trajpoly7_get(JSContext *ctx, JSValueConst this_val, int magic)

@@ -16,7 +16,7 @@ a_float a_mf_gauss2(a_float x, a_float sigma1, a_float c1, a_float sigma2, a_flo
     {
         x = a_mf_gauss(x, sigma2, c2);
     }
-    else // c1 <= x <= c2
+    else /* c1 <= x <= c2 */
     {
         x = 1;
     }
@@ -47,27 +47,27 @@ a_float a_mf_trap(a_float x, a_float a, a_float b, a_float c, a_float d)
 {
     if (x < b)
     {
-        if (x > a) // a < x <= b
+        if (x > a) /* a < x <= b */
         {
             x = (x - a) / (b - a);
         }
-        else // x <= a
+        else /* x <= a */
         {
             x = 0;
         }
     }
     else if (x > c)
     {
-        if (x < d) // c <= x < d
+        if (x < d) /* c <= x < d */
         {
             x = (d - x) / (d - c);
         }
-        else // d <= x
+        else /* d <= x */
         {
             x = 0;
         }
     }
-    else // b <= x <= c
+    else /* b <= x <= c */
     {
         x = 1;
     }
@@ -78,22 +78,22 @@ a_float a_mf_tri(a_float x, a_float a, a_float b, a_float c)
 {
     if (x < b)
     {
-        if (x > a) // a < x <= b
+        if (x > a) /* a < x <= b */
         {
             x = (x - a) / (b - a);
         }
-        else // x <= a
+        else /* x <= a */
         {
             x = 0;
         }
     }
     else
     {
-        if (x < c) // b <= x < c
+        if (x < c) /* b <= x < c */
         {
             x = (c - x) / (c - b);
         }
-        else // c <= x
+        else /* c <= x */
         {
             x = 0;
         }
@@ -111,7 +111,7 @@ a_float a_mf_lins(a_float x, a_float a, a_float b)
     {
         x = 1;
     }
-    else // a <= x <= b
+    else /* a <= x <= b */
     {
         x = (x - a) / (b - a);
     }
@@ -128,7 +128,7 @@ a_float a_mf_linz(a_float x, a_float a, a_float b)
     {
         x = 0;
     }
-    else // a <= x <= b
+    else /* a <= x <= b */
     {
         x = (b - x) / (b - a);
     }
@@ -143,18 +143,18 @@ a_float a_mf_s(a_float x, a_float a, a_float b)
         {
             x = 1 - 2 * a_float_pow((b - x) / (b - a), 2);
         }
-        else // x >= b
+        else /* x >= b */
         {
             x = 1;
         }
     }
-    else // x <= (a+b)/2
+    else /* x <= (a+b)/2 */
     {
         if (x > a)
         {
             x = 2 * a_float_pow((x - a) / (b - a), 2);
         }
-        else // x <= a
+        else /* x <= a */
         {
             x = 0;
         }
@@ -170,18 +170,18 @@ a_float a_mf_z(a_float x, a_float a, a_float b)
         {
             x = 1 - 2 * a_float_pow((x - a) / (b - a), 2);
         }
-        else // x <= a
+        else /* x <= a */
         {
             x = 1;
         }
     }
-    else // x >= (a+b)/2
+    else /* x >= (a+b)/2 */
     {
         if (x < b)
         {
             x = 2 * a_float_pow((b - x) / (b - a), 2);
         }
-        else // x >= b
+        else /* x >= b */
         {
             x = 0;
         }

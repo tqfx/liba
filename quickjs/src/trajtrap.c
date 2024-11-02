@@ -34,13 +34,14 @@ static JSValue liba_trajtrap_gen(JSContext *ctx, JSValueConst this_val, int argc
 {
     a_trajtrap *const self = (a_trajtrap *)JS_GetOpaque2(ctx, this_val, liba_trajtrap_class_id);
     if (!self) { return JS_EXCEPTION; }
+    int i;
     double args[] = {0, 0, 0, 0, 0, 0, 0};
     if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
-    for (int i = 0; i < 5; ++i)
+    for (i = 0; i < 5; ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    for (int i = 5; i < argc; ++i)
+    for (i = 5; i < argc; ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -95,7 +96,7 @@ enum
     self_pa,
     self_pd,
     self_ac,
-    self_de,
+    self_de
 };
 
 static JSValue liba_trajtrap_get(JSContext *ctx, JSValueConst this_val, int magic)

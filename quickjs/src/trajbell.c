@@ -34,13 +34,14 @@ static JSValue liba_trajbell_gen(JSContext *ctx, JSValueConst this_val, int argc
 {
     a_trajbell *const self = (a_trajbell *)JS_GetOpaque2(ctx, this_val, liba_trajbell_class_id);
     if (!self) { return JS_EXCEPTION; }
+    int i;
     double args[] = {0, 0, 0, 0, 0, 0, 0};
     if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
-    for (int i = 0; i < 5; ++i)
+    for (i = 0; i < 5; ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
-    for (int i = 5; i < argc; ++i)
+    for (i = 5; i < argc; ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }

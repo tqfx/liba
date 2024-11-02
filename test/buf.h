@@ -84,7 +84,7 @@ static int large(void const *lhs, void const *rhs)
 
 static int rand10(void)
 {
-    return a_cast_s(int, rand() / a_cast_s(double, RAND_MAX) * 10); // NOLINT
+    return a_cast_s(int, rand() / a_cast_s(double, RAND_MAX) * 10); /* NOLINT */
 }
 
 static void test_sort(void)
@@ -220,7 +220,7 @@ static void test_sort(void)
     a_buf_dtor(&ctx, A_NULL);
 }
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     (void)argc;
     (void)argv;

@@ -14,9 +14,9 @@
  @{
 */
 
-// clang-format off
+/* clang-format off */
 #define A_LIST_INIT(node) {&(node), &(node)}
-// clang-format on
+/* clang-format on */
 
 /*!
  @brief instance structure for circular doubly linked list
@@ -54,8 +54,12 @@ typedef struct a_list
 */
 #define a_list_foreach_(it, ctx, next) \
     for (a_list *it = (ctx)->next; it != (ctx); it = it->next)
+#define A_LIST_FOREACH_(it, ctx, next) \
+    for (it = (ctx)->next; it != (ctx); it = it->next)
 #define a_list_foreach_next(it, ctx) a_list_foreach_(it, ctx, next)
 #define a_list_foreach_prev(it, ctx) a_list_foreach_(it, ctx, prev)
+#define A_LIST_FOREACH_NEXT(it, ctx) A_LIST_FOREACH_(it, ctx, next)
+#define A_LIST_FOREACH_PREV(it, ctx) A_LIST_FOREACH_(it, ctx, prev)
 
 /*!
  @brief iterate over a list safe against removal of list entry
@@ -68,8 +72,12 @@ typedef struct a_list
 */
 #define a_list_forsafe_(it, at, ctx, next) \
     for (a_list *it = (ctx)->next, *at = it->next; it != (ctx); it = at, at = it->next)
+#define A_LIST_FORSAFE_(it, at, ctx, next) \
+    for (it = (ctx)->next, at = it->next; it != (ctx); it = at, at = it->next)
 #define a_list_forsafe_next(it, at, ctx) a_list_forsafe_(it, at, ctx, next)
 #define a_list_forsafe_prev(it, at, ctx) a_list_forsafe_(it, at, ctx, prev)
+#define A_LIST_FORSAFE_NEXT(it, at, ctx) A_LIST_FORSAFE_(it, at, ctx, next)
+#define A_LIST_FORSAFE_PREV(it, at, ctx) A_LIST_FORSAFE_(it, at, ctx, prev)
 
 /*!
  @brief constructor for circular doubly linked list

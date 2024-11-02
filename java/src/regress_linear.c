@@ -88,6 +88,7 @@ JNIEXPORT jdouble JNICALL Java_liba_regress_1linear_eval(JNIEnv *Env, jobject Ob
 
 JNIEXPORT jdoubleArray JNICALL Java_liba_regress_1linear_err(JNIEnv *Env, jobject Obj, jdoubleArray X, jdoubleArray Y)
 {
+    jdoubleArray r;
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_regress_linear *ctx = (a_regress_linear *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     jdouble *x = (*Env)->GetDoubleArrayElements(Env, X, NULL);
@@ -97,7 +98,7 @@ JNIEXPORT jdoubleArray JNICALL Java_liba_regress_1linear_err(JNIEnv *Env, jobjec
     m /= (a_size)ctx->coef_n;
     if (m < n) { n = m; }
     a_regress_linear_err(ctx, n, x, y, y);
-    jdoubleArray r = (*Env)->NewDoubleArray(Env, (jsize)n);
+    r = (*Env)->NewDoubleArray(Env, (jsize)n);
     (*Env)->SetDoubleArrayRegion(Env, r, 0, (jsize)n, y);
     (*Env)->ReleaseDoubleArrayElements(Env, Y, y, JNI_ABORT);
     (*Env)->ReleaseDoubleArrayElements(Env, X, x, JNI_ABORT);
@@ -149,6 +150,8 @@ JNIEXPORT jobject JNICALL Java_liba_regress_1linear_bgd(JNIEnv *Env, jobject Obj
 
 JNIEXPORT jdouble JNICALL Java_liba_regress_1linear_mgd(JNIEnv *Env, jobject Obj, jdoubleArray X, jdoubleArray Y, jdouble delta, jdouble lrmax, jdouble lrmin, jint lrtim, jint epoch, jint batch)
 {
+    jdouble r;
+    a_float *err;
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_regress_linear *ctx = (a_regress_linear *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     jdouble *x = (*Env)->GetDoubleArrayElements(Env, X, NULL);
@@ -157,8 +160,8 @@ JNIEXPORT jdouble JNICALL Java_liba_regress_1linear_mgd(JNIEnv *Env, jobject Obj
     a_size n = (a_size)(*Env)->GetArrayLength(Env, Y);
     m /= (a_size)ctx->coef_n;
     if (m < n) { n = m; }
-    a_float *err = (a_float *)a_alloc(0, sizeof(a_float) * n);
-    jdouble r = a_regress_linear_mgd(ctx, n, x, y, err, delta, lrmax, lrmin, (a_size)lrtim, (a_size)epoch, (a_size)batch);
+    err = (a_float *)a_alloc(0, sizeof(a_float) * n);
+    r = a_regress_linear_mgd(ctx, n, x, y, err, delta, lrmax, lrmin, (a_size)lrtim, (a_size)epoch, (a_size)batch);
     (*Env)->ReleaseDoubleArrayElements(Env, Y, y, JNI_ABORT);
     (*Env)->ReleaseDoubleArrayElements(Env, X, x, JNI_ABORT);
     a_alloc(err, 0);

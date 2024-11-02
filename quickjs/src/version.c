@@ -15,10 +15,11 @@ static JSValue liba_version_ctor(JSContext *ctx, JSValueConst new_target, int ar
     JSValue proto, clazz = JS_UNDEFINED;
     a_version *const self = (a_version *)js_mallocz(ctx, sizeof(a_version));
     if (!self) { return JS_EXCEPTION; }
+    int i;
     char const *ver = NULL;
     a_u32 args[] = {0, 0, 0, 0};
     if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
-    for (int i = 0; i < argc; ++i)
+    for (i = 0; i < argc; ++i)
     {
         if (JS_ToUint32(ctx, &args[i], argv[i]))
         {
@@ -59,9 +60,10 @@ fail:
 static JSValue liba_version_check(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     (void)this_val;
+    int i;
     a_u32 args[] = {0, 0, 0};
     if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
-    for (int i = 0; i < argc; ++i)
+    for (i = 0; i < argc; ++i)
     {
         if (JS_ToUint32(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -167,7 +169,7 @@ enum
     self_minor,
     self_third,
     self_extra,
-    self_alpha,
+    self_alpha
 };
 
 static JSValue liba_version_get(JSContext *ctx, JSValueConst this_val, int magic)

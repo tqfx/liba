@@ -2,7 +2,7 @@
 #include "test.h"
 #include "a/version.h"
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
 #if defined(__cplusplus)
     a::version v000 = A_VERSION_0();

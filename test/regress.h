@@ -32,7 +32,7 @@ static void test_odm(int argc, char *argv[])
 
 #include "a/hash.h"
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     if (argc < 2)
     {
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
 
     switch (a_hash_bkdr(argv[1], 0))
     {
-    case 0x001D4480: // odm
+    case 0x001D4480: /* odm */
         test_odm(argc - 2, argv + 2);
         break;
     default:

@@ -10,9 +10,10 @@ void a_regress_linear_init(a_regress_linear *ctx, a_float *coef_p, a_size coef_n
 
 a_float a_regress_linear_eval(a_regress_linear const *ctx, a_float const *val)
 {
+    a_size n;
     a_float res = ctx->bias;
     a_float const *coef = ctx->coef_p;
-    for (a_size n = ctx->coef_n; n; --n)
+    for (n = ctx->coef_n; n; --n)
     {
         res += *coef++ * *val++;
     }
@@ -31,9 +32,10 @@ void a_regress_linear_pdm(a_regress_linear const *ctx, a_size n, a_float const *
 
 void a_regress_linear_gd(a_regress_linear *ctx, a_float const *input, a_float error, a_float alpha)
 {
+    a_size n;
     a_float *coef = ctx->coef_p;
     a_float delta = alpha * error;
-    for (a_size n = ctx->coef_n; n; --n)
+    for (n = ctx->coef_n; n; --n)
     {
         *coef++ += delta * *input++;
     }
@@ -68,9 +70,10 @@ a_float a_regress_linear_mgd(a_regress_linear *ctx, a_size n, a_float const *x_,
     r = a_float_sum2(err, n);
     for (; epoch; --epoch)
     {
+        a_size q;
         a_float const *x = x_, *y = y_;
         a_float alpha = lrmin + lramp * (a_float_cos(lrcur) + 1);
-        for (a_size q = q_; q; --q, x += xoffset, y += batch)
+        for (q = q_; q; --q, x += xoffset, y += batch)
         {
             a_regress_linear_err(ctx, batch, x, y, err);
             a_regress_linear_bgd(ctx, batch, x, err, alpha);

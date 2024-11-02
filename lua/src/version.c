@@ -240,32 +240,32 @@ static int liba_version_set(lua_State *L)
     a_version *const ctx = (a_version *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x86720331: // major
+    case 0x86720331: /* major */
         ctx->major = (unsigned int)luaL_checkinteger(L, 3);
         break;
-    case 0x87857C2D: // minor
+    case 0x87857C2D: /* minor */
         ctx->minor = (unsigned int)luaL_checkinteger(L, 3);
         break;
-    case 0x0241DD17: // third
+    case 0x0241DD17: /* third */
         ctx->third = (unsigned int)luaL_checkinteger(L, 3);
         break;
-    case 0xFD1BE968: // extra
+    case 0xFD1BE968: /* extra */
         ctx->extra = (unsigned int)luaL_checkinteger(L, 3);
         break;
-    case 0xB5485B9E: // alpha
+    case 0xB5485B9E: /* alpha */
     {
         char const *alpha = luaL_checklstring(L, 3, 0);
         a_version_set_alpha(ctx, alpha);
         break;
     }
-    case 0x0CD3E494: // __lt
-    case 0x0CD3E485: // __le
-    case 0x0CD3E0FC: // __eq
-    case 0xE8859EEB: // __name
-    case 0xE70C48C6: // __call
-    case 0xA65758B2: // __index
-    case 0xAEB551C6: // __newindex
-    case 0x5DA21A54: // __tostring
+    case 0x0CD3E494: /* __lt */
+    case 0x0CD3E485: /* __le */
+    case 0x0CD3E0FC: /* __eq */
+    case 0xE8859EEB: /* __name */
+    case 0xE70C48C6: /* __call */
+    case 0xA65758B2: /* __index */
+    case 0xAEB551C6: /* __newindex */
+    case 0x5DA21A54: /* __tostring */
         break;
     default:
         lua_getmetatable(L, 1);
@@ -280,26 +280,26 @@ static int liba_version_get(lua_State *L)
     a_version const *const ctx = (a_version const *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x86720331: // major
+    case 0x86720331: /* major */
         lua_pushinteger(L, (lua_Integer)ctx->major);
         break;
-    case 0x87857C2D: // minor
+    case 0x87857C2D: /* minor */
         lua_pushinteger(L, (lua_Integer)ctx->minor);
         break;
-    case 0x0241DD17: // third
+    case 0x0241DD17: /* third */
         lua_pushinteger(L, (lua_Integer)ctx->third);
         break;
-    case 0xFD1BE968: // extra
+    case 0xFD1BE968: /* extra */
         lua_pushinteger(L, (lua_Integer)ctx->extra);
         break;
-    case 0xB5485B9E: // alpha
+    case 0xB5485B9E: /* alpha */
     {
         char alpha[sizeof(ctx->alpha_) + 1];
         a_version_alpha(ctx, alpha);
         lua_pushstring(L, alpha);
         break;
     }
-    case 0xA65758B2: // __index
+    case 0xA65758B2: /* __index */
         lua_registry_get(L, liba_version_new);
         lua_int_set(L, -1, "major", (lua_Integer)ctx->major);
         lua_int_set(L, -1, "minor", (lua_Integer)ctx->minor);

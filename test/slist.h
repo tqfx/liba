@@ -47,19 +47,19 @@ static void test(void)
     a_slist_dtor(list3);
     a_slist_foreach(it, list1)
     {
-        data *node = a_slist_entry(it, data, node); // NOLINT(performance-no-int-to-ptr)
+        data *node = a_slist_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
         printf("%i ", node->data.i);
     }
     printf("%" PRIz "u", a_slist_len(list1));
     for (int i = 0; i != 10; ++i)
     {
-        data *node = a_slist_entry_next(&list1->head, data, node); // NOLINT(performance-no-int-to-ptr)
+        data *node = a_slist_entry_next(&list1->head, data, node); /* NOLINT(performance-no-int-to-ptr) */
         a_slist_del_head(list1);
         a_die(node);
     }
     a_slist_forsafe(it, at, list1)
     {
-        data *node = a_slist_entry(it, data, node); // NOLINT(performance-no-int-to-ptr)
+        data *node = a_slist_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
         a_slist_del(list1, at);
         a_die(node);
         it = A_NULL;
@@ -105,7 +105,7 @@ static void null(void)
     a_slist_mov(&list2, &list1, list1.tail);
 }
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     (void)argc;
     (void)argv;

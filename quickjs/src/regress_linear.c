@@ -159,11 +159,11 @@ static JSValue liba_regress_linear_mgd(JSContext *ctx, JSValueConst this_val, in
     {
         if (JS_ToUint32(ctx, &batch, argv[7])) { goto fail; }
     }
-    // clang-format off
+    /* clang-format off */
     r = JS_NewFloat64(ctx, a_regress_linear_mgd(self,
         n, x, y, err, delta, lrmax, lrmin, lrtim, epoch, batch
     ));
-    // clang-format on
+    /* clang-format on */
 fail:
     js_free(ctx, err);
     js_free(ctx, y);

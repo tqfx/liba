@@ -28,8 +28,9 @@ void a_pid_fuzzy_set_opr(a_pid_fuzzy *ctx, unsigned int opr) { ctx->opr = a_pid_
 A_HIDDEN unsigned int a_pid_fuzzy_mf(a_float x, unsigned int n, a_float const *a, unsigned int *idx, a_float *val);
 unsigned int a_pid_fuzzy_mf(a_float x, unsigned int n, a_float const *a, unsigned int *idx, a_float *val)
 {
+    unsigned int i;
     unsigned int counter = 0;
-    for (unsigned int i = 0; i != n; ++i)
+    for (i = 0; i != n; ++i)
     {
         a_float y = 0;
         switch ((int)*a++)
@@ -146,10 +147,12 @@ void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_float ec, a_float e)
     mat = val + nec;
     /* joint membership */
     {
+        unsigned int i;
         a_float *it = mat;
-        for (unsigned int i = 0; i != ne; ++i)
+        for (i = 0; i != ne; ++i)
         {
-            for (unsigned int ii = 0; ii != nec; ++ii)
+            unsigned int ii;
+            for (ii = 0; ii != nec; ++ii)
             {
                 *it = ctx->opr(ctx->val[i], val[ii]); /* mat(i,ii)=f(e[i],ec[ii]) */
                 inv += *it++;
@@ -161,11 +164,13 @@ void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_float ec, a_float e)
     /* mean of centers defuzzifier */
     if (ctx->mkp)
     {
+        unsigned int i;
         a_float const *it = mat;
-        for (unsigned int i = 0; i != ne; ++i)
+        for (i = 0; i != ne; ++i)
         {
+            unsigned int ii;
             a_float const *const mkp = ctx->mkp + ctx->idx[i];
-            for (unsigned int ii = 0; ii != nec; ++ii)
+            for (ii = 0; ii != nec; ++ii)
             {
                 kp += *it++ * mkp[idx[ii]]; /* += mat(i,ii) * mkp(e[i],ec[ii]) */
             }
@@ -174,11 +179,13 @@ void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_float ec, a_float e)
     }
     if (ctx->mki)
     {
+        unsigned int i;
         a_float const *it = mat;
-        for (unsigned int i = 0; i != ne; ++i)
+        for (i = 0; i != ne; ++i)
         {
+            unsigned int ii;
             a_float const *const mki = ctx->mki + ctx->idx[i];
-            for (unsigned int ii = 0; ii != nec; ++ii)
+            for (ii = 0; ii != nec; ++ii)
             {
                 ki += *it++ * mki[idx[ii]]; /* += mat(i,ii) * mki(e[i],ec[ii]) */
             }
@@ -187,11 +194,13 @@ void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_float ec, a_float e)
     }
     if (ctx->mkd)
     {
+        unsigned int i;
         a_float const *it = mat;
-        for (unsigned int i = 0; i != ne; ++i)
+        for (i = 0; i != ne; ++i)
         {
+            unsigned int ii;
             a_float const *const mkd = ctx->mkd + ctx->idx[i];
-            for (unsigned int ii = 0; ii != nec; ++ii)
+            for (ii = 0; ii != nec; ++ii)
             {
                 kd += *it++ * mkd[idx[ii]]; /* += mat(i,ii) * mkd(e[i],ec[ii]) */
             }

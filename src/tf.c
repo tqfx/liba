@@ -28,12 +28,13 @@ void a_tf_init(a_tf *ctx,
 a_float a_tf_iter(a_tf const *ctx, a_float x)
 {
     a_float y = 0;
+    unsigned int i;
     a_float_push_fore(ctx->input, ctx->num_n, x);
-    for (unsigned int i = 0; i != ctx->num_n; ++i)
+    for (i = 0; i != ctx->num_n; ++i)
     {
         y += ctx->num_p[i] * ctx->input[i];
     }
-    for (unsigned int i = 0; i != ctx->den_n; ++i)
+    for (i = 0; i != ctx->den_n; ++i)
     {
         y -= ctx->den_p[i] * ctx->output[i];
     }

@@ -149,20 +149,20 @@ typedef struct a_trajbell trajbell;
 */
 struct a_trajbell
 {
-    a_float t; //!< total duration
-    a_float tv; //!< constant velocity phase
-    a_float ta; //!< acceleration phase
-    a_float td; //!< deceleration phase
-    a_float taj; //!< time-interval in which the jerk is constant (j max or j min ) during the acceleration phase
-    a_float tdj; //!< time-interval in which the jerk is constant (j max or j min ) during the deceleration phase
-    a_float p0; //!< initial position
-    a_float p1; //!< final position
-    a_float v0; //!< initial velocity
-    a_float v1; //!< final velocity
-    a_float vm; //!< maximum velocity
-    a_float jm; //!< maximum jerk
-    a_float am; //!< maximum acceleration
-    a_float dm; //!< maximum deceleration
+    a_float t; /*!< total duration */
+    a_float tv; /*!< constant velocity phase */
+    a_float ta; /*!< acceleration phase */
+    a_float td; /*!< deceleration phase */
+    a_float taj; /*!< time-interval in which the jerk is constant (j max or j min ) during the acceleration phase */
+    a_float tdj; /*!< time-interval in which the jerk is constant (j max or j min ) during the deceleration phase */
+    a_float p0; /*!< initial position */
+    a_float p1; /*!< final position */
+    a_float v0; /*!< initial velocity */
+    a_float v1; /*!< final velocity */
+    a_float vm; /*!< maximum velocity */
+    a_float jm; /*!< maximum jerk */
+    a_float am; /*!< maximum acceleration */
+    a_float dm; /*!< maximum deceleration */
 #if defined(__cplusplus)
     A_INLINE a_float gen(a_float jm_, a_float am_, a_float vm_, a_float p0_, a_float p1_,
                          a_float v0_ = 0, a_float v1_ = 0)

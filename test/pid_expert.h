@@ -69,14 +69,14 @@ struct pid_expert;
 */
 struct a_pid_expert
 {
-    a_pid pid; //!< instance structure for PID controller
-    a_float ec; //!< error change
-    a_float outmax; //!< maximum output
-    a_float epsilon; //!< precision
-    a_float max1; //!< first error bound
-    a_float gain; //!< gain coefficient
-    a_float max2; //!< second error bound
-    a_float loss; //!< loss coefficient
+    a_pid pid; /*!< instance structure for PID controller */
+    a_float ec; /*!< error change */
+    a_float outmax; /*!< maximum output */
+    a_float epsilon; /*!< precision */
+    a_float max1; /*!< first error bound */
+    a_float gain; /*!< gain coefficient */
+    a_float max2; /*!< second error bound */
+    a_float loss; /*!< loss coefficient */
 #if defined(__cplusplus)
     A_INLINE void init() { a_pid_expert_init(this); }
     A_INLINE void set_kpid(a_float kp, a_float ki, a_float kd)
@@ -95,8 +95,6 @@ struct a_pid_expert
 
 #endif /* a/pid_expert.h */
 
-// #include "a/math.h"
-
 static A_INLINE a_float input(a_float const x)
 {
 #if defined(LIBA_MATH_H)
@@ -106,7 +104,7 @@ static A_INLINE a_float input(a_float const x)
 #endif
 }
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     main_init(argc, argv, 1);
 

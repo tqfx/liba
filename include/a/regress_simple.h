@@ -104,8 +104,8 @@ typedef struct a_regress_simple regress_simple;
 */
 struct a_regress_simple
 {
-    a_float coef; // regression coefficient
-    a_float bias; // intercept
+    a_float coef; /*!< regression coefficient */
+    a_float bias; /*!< intercept */
 #if defined(__cplusplus)
     A_INLINE void init(a_float a = 1, a_float b = 0)
     {

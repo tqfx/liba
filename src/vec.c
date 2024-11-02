@@ -82,9 +82,10 @@ int a_vec_copy(a_vec *ctx, a_vec const *obj, int (*dup)(void *, void const *))
     ctx->siz_ = obj->siz_;
     if (dup)
     {
+        a_size num;
         a_byte *dst = (a_byte *)ctx->ptr_;
         a_byte *src = (a_byte *)obj->ptr_;
-        for (a_size num = obj->num_; num; --num)
+        for (num = obj->num_; num; --num)
         {
             dup(dst, src);
             dst += ctx->siz_;

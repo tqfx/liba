@@ -150,15 +150,15 @@ typedef struct a_trajpoly7 trajpoly7;
 */
 struct a_trajpoly7
 {
-    a_float p[8]; //!< coefficients of position
+    a_float p[8]; /*!< coefficients of position */
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 1)
-    a_float v[7]; //!< coefficients of velocity
+    a_float v[7]; /*!< coefficients of velocity */
 #endif /* A_TRAJPOLY7 */
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 2)
-    a_float a[6]; //!< coefficients of acceleration
+    a_float a[6]; /*!< coefficients of acceleration */
 #endif /* A_TRAJPOLY7 */
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 3)
-    a_float j[5]; //!< coefficients of jerk
+    a_float j[5]; /*!< coefficients of jerk */
 #endif /* A_TRAJPOLY7 */
 #if defined(__cplusplus)
     A_INLINE void gen(a_float ts, a_float p0, a_float p1,

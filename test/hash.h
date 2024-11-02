@@ -18,7 +18,7 @@ static void test_hash_sdbm(int argc, char *argv[])
     }
 }
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     if (argc < 2)
     {
@@ -28,11 +28,11 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     }
     switch (a_hash_bkdr(argv[1], 0))
     {
-    case 0x0E0928A2: // hash
-    case 0x0D3DEDB7: // bkdr
+    case 0x0E0928A2: /* hash */
+    case 0x0D3DEDB7: /* bkdr */
         test_hash_bkdr(argc - 1, argv + 1);
         break;
-    case 0x0F833EB8: // sdbm
+    case 0x0F833EB8: /* sdbm */
         test_hash_sdbm(argc - 1, argv + 1);
         break;
     default:

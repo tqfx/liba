@@ -22,13 +22,13 @@ typedef struct a_pid_fuzzy a_pid_fuzzy;
 */
 enum
 {
-    A_PID_FUZZY_EQU, //!< sqrt(a,b)*sqrt(1-(1-a)*(1-b))
-    A_PID_FUZZY_CAP, //!< min(a,b)
-    A_PID_FUZZY_CAP_ALGEBRA, //!< a*b
-    A_PID_FUZZY_CAP_BOUNDED, //!< max(a+b-1,0)
-    A_PID_FUZZY_CUP, //!< max(a,b)
-    A_PID_FUZZY_CUP_ALGEBRA, //!< a+b-a*b
-    A_PID_FUZZY_CUP_BOUNDED //!< min(a+b,1)
+    A_PID_FUZZY_EQU, /*!< sqrt(a,b)*sqrt(1-(1-a)*(1-b)) */
+    A_PID_FUZZY_CAP, /*!< min(a,b) */
+    A_PID_FUZZY_CAP_ALGEBRA, /*!< a*b */
+    A_PID_FUZZY_CAP_BOUNDED, /*!< max(a+b-1,0) */
+    A_PID_FUZZY_CUP, /*!< max(a,b) */
+    A_PID_FUZZY_CUP_ALGEBRA, /*!< a+b-a*b */
+    A_PID_FUZZY_CUP_BOUNDED /*!< min(a+b,1) */
 };
 
 #if defined(__cplusplus)
@@ -144,25 +144,25 @@ typedef struct a_pid_fuzzy pid_fuzzy;
 */
 struct a_pid_fuzzy
 {
-    a_pid pid; //!< instance structure for PID controller
+    a_pid pid; /*!< instance structure for PID controller */
 
-    a_float const *me; //!< points to e's membership function parameter table
-    a_float const *mec; //!< points to ec's membership function parameter table
-    a_float const *mkp; //!< points to Kp's rule base, which must be a square matrix
-    a_float const *mki; //!< points to Ki's rule base, which must be a square matrix
-    a_float const *mkd; //!< points to Kd's rule base, which must be a square matrix
+    a_float const *me; /*!< points to e's membership function parameter table */
+    a_float const *mec; /*!< points to ec's membership function parameter table */
+    a_float const *mkp; /*!< points to Kp's rule base, which must be a square matrix */
+    a_float const *mki; /*!< points to Ki's rule base, which must be a square matrix */
+    a_float const *mkd; /*!< points to Kd's rule base, which must be a square matrix */
 
-    unsigned int *idx; //!< the memory block for membership index, >= 2N
-    a_float *val; //!< the memory block for membership value and membership outer product of e and ec, >= (2+N)N
+    unsigned int *idx; /*!< the memory block for membership index, >= 2N */
+    a_float *val; /*!< the memory block for membership value and membership outer product of e and ec, >= (2+N)N */
 
-    a_float (*opr)(a_float, a_float); //!< fuzzy relational operator
+    a_float (*opr)(a_float, a_float); /*!< fuzzy relational operator */
 
-    a_float kp; //!< base proportional constant
-    a_float ki; //!< base integral constant
-    a_float kd; //!< base derivative constant
+    a_float kp; /*!< base proportional constant */
+    a_float ki; /*!< base integral constant */
+    a_float kd; /*!< base derivative constant */
 
-    unsigned int nrule; //!< number of order in the square matrix
-    unsigned int nfuzz; //!< maximum number triggered by the rule
+    unsigned int nrule; /*!< number of order in the square matrix */
+    unsigned int nfuzz; /*!< maximum number triggered by the rule */
 #if defined(__cplusplus)
     A_INLINE void init() { a_pid_fuzzy_init(this); }
     A_INLINE void set_opr(unsigned int opr_)

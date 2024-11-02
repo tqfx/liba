@@ -110,7 +110,7 @@ static void test_swap(int argc, char *argv[])
 
 #include "a/hash.h"
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     test_sq();
     test_min();
@@ -126,10 +126,10 @@ int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
     }
     switch (a_hash_bkdr(argv[1], 0))
     {
-    case 0x001AEED5: // for
+    case 0x001AEED5: /* for */
         test_for(argc - 1, argv + 1);
         break;
-    case 0x0F8837E3: // swap
+    case 0x0F8837E3: /* swap */
         test_swap(argc - 1, argv + 1);
         break;
     default:

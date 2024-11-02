@@ -37,8 +37,8 @@
 */
 typedef struct a_lpf
 {
-    a_float alpha; //!< filter coefficient [0,1]
-    a_float output; //!< filter output
+    a_float alpha; /*!< filter coefficient [0,1] */
+    a_float output; /*!< filter output */
 #if defined(__cplusplus)
     A_INLINE void gen(a_float fc, a_float ts)
     {
@@ -59,7 +59,7 @@ namespace a
 typedef struct a_lpf lpf;
 } /* namespace a */
 #endif /* __cplusplus */
-// clang-format off
+/* clang-format off */
 #if defined(__cplusplus)
 #define A_LPF_INIT(alpha) {a_float_c(alpha), 0}
 #define A_LPF_INIT2(fc, ts) {A_LPF_GEN(fc, ts), 0}
@@ -67,7 +67,7 @@ typedef struct a_lpf lpf;
 #define A_LPF_INIT(alpha) (a_lpf){a_float_c(alpha), 0}
 #define A_LPF_INIT2(fc, ts) (a_lpf){A_LPF_GEN(fc, ts), 0}
 #endif /* __cplusplus */
-// clang-format on
+/* clang-format on */
 #define A_LPF_GEN(fc, ts) (a_float_c(ts) / (A_FLOAT_1_TAU / a_float_c(fc) + a_float_c(ts)))
 
 /*!

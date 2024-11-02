@@ -44,8 +44,9 @@ static JSValue liba_pid_neuro_set_kpid(JSContext *ctx, JSValueConst this_val, in
     (void)argc;
     a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
     if (!self) { return JS_EXCEPTION; }
+    unsigned int i;
     double args[] = {0, 0, 0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -58,8 +59,9 @@ static JSValue liba_pid_neuro_set_wpid(JSContext *ctx, JSValueConst this_val, in
     (void)argc;
     a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
     if (!self) { return JS_EXCEPTION; }
+    unsigned int i;
     double args[] = {0, 0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -82,8 +84,9 @@ static JSValue liba_pid_neuro_run(JSContext *ctx, JSValueConst this_val, int arg
     (void)argc;
     a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
     if (!self) { return JS_EXCEPTION; }
+    unsigned int i;
     double args[] = {0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }
@@ -95,8 +98,9 @@ static JSValue liba_pid_neuro_inc(JSContext *ctx, JSValueConst this_val, int arg
     (void)argc;
     a_pid_neuro *const self = (a_pid_neuro *)JS_GetOpaque2(ctx, this_val, liba_pid_neuro_class_id);
     if (!self) { return JS_EXCEPTION; }
+    unsigned int i;
     double args[] = {0, 0};
-    for (unsigned int i = 0; i < A_LEN(args); ++i)
+    for (i = 0; i < A_LEN(args); ++i)
     {
         if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
     }

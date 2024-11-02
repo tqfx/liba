@@ -79,12 +79,12 @@ A_EXTERN void a_tf_zero(a_tf const *ctx);
 */
 struct a_tf
 {
-    a_float *input; //!< input
-    a_float *output; //!< output
-    a_float const *num_p; //!< numerator
-    a_float const *den_p; //!< denominator
-    unsigned int num_n; //!< numerator number
-    unsigned int den_n; //!< denominator number
+    a_float *input; /*!< input */
+    a_float *output; /*!< output */
+    a_float const *num_p; /*!< numerator */
+    a_float const *den_p; /*!< denominator */
+    unsigned int num_n; /*!< numerator number */
+    unsigned int den_n; /*!< denominator number */
 #if defined(__cplusplus)
     A_INLINE void init(unsigned int num_n_, a_float const *num_p_, a_float *input_,
                        unsigned int den_n_, a_float const *den_p_, a_float *output_)

@@ -49,10 +49,11 @@ static int liba_hash_sdbm(lua_State *L)
 */
 static int liba_isqrt(lua_State *L)
 {
-    int const Ln = lua_gettop(L);
-    for (int Li = 1; Li <= Ln; ++Li)
+    int i;
+    int const n = lua_gettop(L);
+    for (i = 1; i <= n; ++i)
     {
-        lua_Integer x = luaL_checkinteger(L, Li);
+        lua_Integer x = luaL_checkinteger(L, i);
 #if A_SIZE_MAX == A_U32_MAX
         x = (lua_Integer)a_u32_sqrt((a_u32)x);
 #else /* !A_SIZE_MAX */
@@ -60,7 +61,7 @@ static int liba_isqrt(lua_State *L)
 #endif /* A_SIZE_MAX */
         lua_pushinteger(L, x);
     }
-    return Ln;
+    return n;
 }
 
 /***
@@ -71,10 +72,11 @@ static int liba_isqrt(lua_State *L)
 */
 static int liba_rsqrt(lua_State *L)
 {
-    int const Ln = lua_gettop(L);
-    for (int Li = 1; Li <= Ln; ++Li)
+    int i;
+    int const n = lua_gettop(L);
+    for (i = 1; i <= n; ++i)
     {
-        lua_Number x = luaL_checknumber(L, Li);
+        lua_Number x = luaL_checknumber(L, i);
 #if A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
         x = (lua_Number)a_f64_rsqrt((a_f64)x);
 #elif A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
@@ -84,7 +86,7 @@ static int liba_rsqrt(lua_State *L)
 #endif /* A_FLOAT_TYPE */
         lua_pushnumber(L, x);
     }
-    return Ln;
+    return n;
 }
 
 #if !defined A_VERSION

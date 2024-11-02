@@ -2,7 +2,7 @@
 #include "test.h"
 #include "a/utf.h"
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     for (int i = 1; i < argc; ++i)
     {

@@ -124,9 +124,9 @@ typedef struct a_regress_linear regress_linear;
 */
 struct a_regress_linear
 {
-    a_float *coef_p; // points to regression coefficients
-    a_size coef_n; // number of regression coefficients
-    a_float bias; // intercept
+    a_float *coef_p; /*!< points to regression coefficients */
+    a_size coef_n; /*!< number of regression coefficients */
+    a_float bias; /*!< intercept */
 #if defined(__cplusplus)
     A_INLINE void init(a_float *p, a_size n, a_float b = 0)
     {

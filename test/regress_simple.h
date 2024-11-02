@@ -15,7 +15,7 @@ static long rand_(void)
     return a_cast_s(long, rand_seed);
 }
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     srand_(a_cast_s(a_ulong, time(A_NULL)));
     main_init(argc, argv, 1);

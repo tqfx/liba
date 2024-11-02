@@ -138,7 +138,7 @@ static int liba_tf_set(lua_State *L)
     a_tf *const ctx = (a_tf *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x001D0A2A: // num
+    case 0x001D0A2A: /* num */
     {
         luaL_checktype(L, 3, LUA_TTABLE);
         unsigned int const num_n = lua_array_num_len(L, 3, 1);
@@ -151,7 +151,7 @@ static int liba_tf_set(lua_State *L)
         else { ctx->num_n = num_n; }
         break;
     }
-    case 0x001A63A1: // den
+    case 0x001A63A1: /* den */
     {
         luaL_checktype(L, 3, LUA_TTABLE);
         unsigned int const den_n = lua_array_num_len(L, 3, 1);
@@ -164,10 +164,10 @@ static int liba_tf_set(lua_State *L)
         else { ctx->den_n = den_n; }
         break;
     }
-    case 0xE8859EEB: // __name
-    case 0xE70C48C6: // __call
-    case 0xA65758B2: // __index
-    case 0xAEB551C6: // __newindex
+    case 0xE8859EEB: /* __name */
+    case 0xE70C48C6: /* __call */
+    case 0xA65758B2: /* __index */
+    case 0xAEB551C6: /* __newindex */
         break;
     default:
         lua_getmetatable(L, 1);
@@ -182,19 +182,19 @@ static int liba_tf_get(lua_State *L)
     a_tf const *const ctx = (a_tf const *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x001D0A2A: // num
+    case 0x001D0A2A: /* num */
         lua_array_num_new(L, ctx->num_p, ctx->num_n);
         break;
-    case 0x001A63A1: // den
+    case 0x001A63A1: /* den */
         lua_array_num_new(L, ctx->den_p, ctx->den_n);
         break;
-    case 0x41FAB016: // input
+    case 0x41FAB016: /* input */
         lua_array_num_new(L, ctx->input, ctx->num_n);
         break;
-    case 0x23C9C461: // output
+    case 0x23C9C461: /* output */
         lua_array_num_new(L, ctx->output, ctx->den_n);
         break;
-    case 0xA65758B2: // __index
+    case 0xA65758B2: /* __index */
         lua_registry_get(L, liba_tf_new);
         lua_pushstring(L, "num");
         lua_array_num_new(L, ctx->num_p, ctx->num_n);

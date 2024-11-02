@@ -104,18 +104,18 @@ typedef struct a_pid pid;
 */
 struct a_pid
 {
-    a_float kp; //!< proportional constant
-    a_float ki; //!< integral constant
-    a_float kd; //!< derivative constant
-    a_float summax; //!< maximum integral output
-    a_float summin; //!< minimum integral output
-    a_float sum; //!< controller integral output
-    a_float outmax; //!< maximum final output
-    a_float outmin; //!< minimum final output
-    a_float out; //!< controller final output
-    a_float var; //!< cache variable
-    a_float fdb; //!< cache feedback
-    a_float err; //!< cache error
+    a_float kp; /*!< proportional constant */
+    a_float ki; /*!< integral constant */
+    a_float kd; /*!< derivative constant */
+    a_float summax; /*!< maximum integral output */
+    a_float summin; /*!< minimum integral output */
+    a_float sum; /*!< controller integral output */
+    a_float outmax; /*!< maximum final output */
+    a_float outmin; /*!< minimum final output */
+    a_float out; /*!< controller final output */
+    a_float var; /*!< cache variable */
+    a_float fdb; /*!< cache feedback */
+    a_float err; /*!< cache error */
 #if defined(__cplusplus)
     A_INLINE void init() { a_pid_init(this); }
     A_INLINE void set_kpid(a_float kp_, a_float ki_, a_float kd_)

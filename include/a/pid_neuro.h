@@ -97,12 +97,12 @@ typedef struct a_pid_neuro pid_neuro;
 */
 struct a_pid_neuro
 {
-    a_pid pid; //!< instance structure for PID controller
-    a_float k; //!< proportional output coefficient
-    a_float wp; //!< proportional weight
-    a_float wi; //!< integral weight
-    a_float wd; //!< derivative weight
-    a_float ec; //!< error change
+    a_pid pid; /*!< instance structure for PID controller */
+    a_float k; /*!< proportional output coefficient */
+    a_float wp; /*!< proportional weight */
+    a_float wi; /*!< integral weight */
+    a_float wd; /*!< derivative weight */
+    a_float ec; /*!< error change */
 #if defined(__cplusplus)
     A_INLINE void init() { a_pid_neuro_init(this); }
     A_INLINE void set_kpid(a_float k_, a_float kp, a_float ki, a_float kd)

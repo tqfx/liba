@@ -1,7 +1,6 @@
 #define MAIN(x) pid_neuro##x
 #include "test.h"
 #include "a/tf.h"
-// #include "a/math.h"
 #include "a/pid_neuro.h"
 
 static A_INLINE a_float input(a_float const x)
@@ -13,7 +12,7 @@ static A_INLINE a_float input(a_float const x)
 #endif
 }
 
-int main(int argc, char *argv[]) // NOLINT(misc-definitions-in-headers)
+int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     main_init(argc, argv, 1);
 

@@ -19,20 +19,20 @@
 */
 enum
 {
-    A_MF_NUL, //!< none
-    A_MF_GAUSS, //!< gaussian membership function
-    A_MF_GAUSS2, //!< gaussian combination membership function
-    A_MF_GBELL, //!< generalized bell-shaped membership function
-    A_MF_SIG, //!< sigmoidal membership function
-    A_MF_DSIG, //!< difference between two sigmoidal membership functions
-    A_MF_PSIG, //!< product of two sigmoidal membership functions
-    A_MF_TRAP, //!< trapezoidal membership function
-    A_MF_TRI, //!< triangular membership function
-    A_MF_LINS, //!< linear s-shaped saturation membership function
-    A_MF_LINZ, //!< linear z-shaped saturation membership function
-    A_MF_S, //!< s-shaped membership function
-    A_MF_Z, //!< z-shaped membership function
-    A_MF_PI //!< pi-shaped membership function
+    A_MF_NUL, /*!< none */
+    A_MF_GAUSS, /*!< gaussian membership function */
+    A_MF_GAUSS2, /*!< gaussian combination membership function */
+    A_MF_GBELL, /*!< generalized bell-shaped membership function */
+    A_MF_SIG, /*!< sigmoidal membership function */
+    A_MF_DSIG, /*!< difference between two sigmoidal membership functions */
+    A_MF_PSIG, /*!< product of two sigmoidal membership functions */
+    A_MF_TRAP, /*!< trapezoidal membership function */
+    A_MF_TRI, /*!< triangular membership function */
+    A_MF_LINS, /*!< linear s-shaped saturation membership function */
+    A_MF_LINZ, /*!< linear z-shaped saturation membership function */
+    A_MF_S, /*!< s-shaped membership function */
+    A_MF_Z, /*!< z-shaped membership function */
+    A_MF_PI /*!< pi-shaped membership function */
 };
 
 #if defined(__cplusplus)

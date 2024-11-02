@@ -239,11 +239,11 @@ int liba_regress_linear_mgd(lua_State *L)
         m /= (unsigned int)ctx->coef_n;
         if (m < n) { n = m; }
         a_float *const err = (a_float *)lua_alloc(L, NULL, sizeof(a_float) * n);
-        // clang-format off
+        /* clang-format off */
         a_float r = a_regress_linear_mgd(ctx,
             n, x, y, err, delta, lrmax, lrmin, lrtim, epoch, batch
         );
-        // clang-format on
+        /* clang-format on */
         lua_pushnumber(L, (lua_Number)r);
         lua_alloc(L, err, 0);
         lua_alloc(L, y, 0);
@@ -275,7 +275,7 @@ static int liba_regress_linear_set(lua_State *L)
     a_regress_linear *const ctx = (a_regress_linear *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x0D6147ED: // coef
+    case 0x0D6147ED: /* coef */
     {
         luaL_checktype(L, 3, LUA_TTABLE);
         unsigned int n = (unsigned int)ctx->coef_n;
@@ -283,15 +283,15 @@ static int liba_regress_linear_set(lua_State *L)
         ctx->coef_n = n;
         break;
     }
-    case 0x0D3D661D: // bias
+    case 0x0D3D661D: /* bias */
     {
         ctx->bias = (a_float)luaL_checknumber(L, 3);
         break;
     }
-    case 0xE8859EEB: // __name
-    case 0xE70C48C6: // __call
-    case 0xA65758B2: // __index
-    case 0xAEB551C6: // __newindex
+    case 0xE8859EEB: /* __name */
+    case 0xE70C48C6: /* __call */
+    case 0xA65758B2: /* __index */
+    case 0xAEB551C6: /* __newindex */
         break;
     default:
         lua_getmetatable(L, 1);
@@ -306,13 +306,13 @@ static int liba_regress_linear_get(lua_State *L)
     a_regress_linear const *const ctx = (a_regress_linear const *)lua_touserdata(L, 1);
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x0D6147ED: // coef
+    case 0x0D6147ED: /* coef */
         lua_array_num_new(L, ctx->coef_p, (unsigned int)ctx->coef_n);
         break;
-    case 0x0D3D661D: // bias
+    case 0x0D3D661D: /* bias */
         lua_pushnumber(L, (lua_Number)ctx->bias);
         break;
-    case 0xA65758B2: // __index
+    case 0xA65758B2: /* __index */
         lua_registry_get(L, liba_regress_linear_new);
         lua_pushstring(L, "coef");
         lua_array_num_new(L, ctx->coef_p, (unsigned int)ctx->coef_n);

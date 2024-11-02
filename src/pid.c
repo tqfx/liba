@@ -30,16 +30,16 @@ a_float a_pid_pos(a_pid *ctx, a_float set, a_float fdb)
 a_float a_pid_pos_(a_pid *ctx, a_float fdb, a_float err)
 {
     a_float const var = ctx->fdb - fdb;
-    // When the limit of integration is exceeded or the direction of integration is the same, the integration stops.
+    /* When the limit of integration is exceeded or the direction of integration is the same, the integration stops. */
     if ((ctx->sum > ctx->summin && ctx->sum < ctx->summax) || ctx->sum * err < 0)
     {
 #if 1
-        ctx->sum += ctx->ki * err; // sum = K_i[\sum^k_{i=0}err(i)]
+        ctx->sum += ctx->ki * err; /* sum = K_i[\sum^k_{i=0}err(i)] */
 #else
         ctx->sum += ctx->ki * (err + ctx->err) * A_FLOAT_C(0.5);
 #endif
     }
-    // Avoid derivative kick, fdb[k-1]-fdb[k]. out = K_p[err(k)]+sum+K_d[fdb(k-1)-fdb(k)].
+    /* Avoid derivative kick, fdb[k-1]-fdb[k]. out = K_p[err(k)]+sum+K_d[fdb(k-1)-fdb(k)]. */
     ctx->out = ctx->kp * err + ctx->sum + ctx->kd * var;
     ctx->out = A_SAT(ctx->out, ctx->outmin, ctx->outmax);
     ctx->var = var;
