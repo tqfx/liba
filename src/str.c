@@ -271,6 +271,12 @@ int a_str_put(a_str *ctx, a_str const *obj)
     return a_str_putn(ctx, obj->ptr_, obj->num_);
 }
 
+#if !defined va_copy && \
+    (A_PREREQ_GNUC(3, 0) || __has_builtin(__builtin_va_copy))
+#define va_copy(d, s) __builtin_va_copy(d, s)
+#elif !defined va_copy
+#define va_copy(d, s) ((d) = (s))
+#endif /* va_copy */
 #include <stdio.h>
 
 int a_str_setv(a_str *ctx, char const *fmt, va_list va)
@@ -283,9 +289,7 @@ int a_str_setv(a_str *ctx, char const *fmt, va_list va)
     if ((a_size)res + 1 > ctx->mem_)
     {
         if (A_UNLIKELY(a_str_alloc_(ctx, (a_size)res + 1))) { return 0; }
-        va_copy(ap, va);
-        res = vsnprintf(ctx->ptr_, ctx->mem_, fmt, ap);
-        va_end(ap);
+        res = vsnprintf(ctx->ptr_, ctx->mem_, fmt, va);
     }
     if (res >= 0) { ctx->num_ = (a_size)res; }
     return res;
@@ -296,20 +300,19 @@ int a_str_putv(a_str *ctx, char const *fmt, va_list va)
     int res;
     va_list ap;
     a_size mem;
-    char *ptr = ctx->ptr_ ? ctx->ptr_ + ctx->num_ : ctx->ptr_;
-    va_copy(ap, va);
+    char *ptr = ctx->ptr_;
+    if (ptr) { ptr += ctx->num_; }
     mem = ctx->mem_ - ctx->num_;
+    va_copy(ap, va);
     res = vsnprintf(ptr, mem, fmt, ap);
-    mem = ctx->num_ + (a_size)(res + 1);
     va_end(ap);
+    mem = ctx->num_ + (a_size)(res + 1);
     if (mem > ctx->mem_)
     {
         if (A_UNLIKELY(a_str_alloc_(ctx, mem))) { return 0; }
-        va_copy(ap, va);
         ptr = ctx->ptr_ + ctx->num_;
         mem = ctx->mem_ - ctx->num_;
-        res = vsnprintf(ptr, mem, fmt, ap);
-        va_end(ap);
+        res = vsnprintf(ptr, mem, fmt, va);
     }
     if (res > 0) { ctx->num_ += (a_size)res; }
     return res;
