@@ -123,7 +123,7 @@
 #define A_ASSUME(x) __builtin_assume(x)
 #elif A_PREREQ_GNUC(13, 0)
 #define A_ASSUME(x) __attribute__((__assume__(x)))
-#elif defined(__GNUC__)
+#elif A_PREREQ_GNUC(4, 5)
 #define A_ASSUME(x)                            \
     do {                                       \
         if (!(x)) { __builtin_unreachable(); } \
