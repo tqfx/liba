@@ -11,7 +11,7 @@ a_float a_trajtrap_gen(a_trajtrap *ctx, a_float vm, a_float ac, a_float de,
     a_float v02, v12, vc2;
     a_float const p = p1 - p0;
     a_float const _2p = 2 * p;
-    a_bool const reversed = p < 0;
+    int const reversed = p < 0;
     if (ac == de) { return 0; }
     if (vm < 0) { vm = -vm; }
     v0 = A_SAT(v0, -vm, +vm);
