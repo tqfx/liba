@@ -14,16 +14,14 @@ static void liba_crc16_finalizer(JSRuntime *rt, JSValue val)
     js_free_rt(rt, JS_GetOpaque(val, liba_crc16_class_id));
 }
 
-static JSClassDef liba_crc16_class = {"crc16", .finalizer = liba_crc16_finalizer};
-
 static JSValue liba_crc16_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
+    a_u32 poly = 0;
+    int reversed = 0;
     JSValue proto, clazz = JS_UNDEFINED;
     struct crc16 *const self = (struct crc16 *)js_mallocz(ctx, sizeof(struct crc16));
     if (!self) { return JS_EXCEPTION; }
-    a_u32 poly = 0;
     if (JS_ToUint32(ctx, &poly, argv[0])) { goto fail; }
-    int reversed = 0;
     if (argc > 1)
     {
         reversed = JS_ToBool(ctx, argv[1]);
@@ -54,11 +52,11 @@ fail:
 
 static JSValue liba_crc16_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
+    a_u32 poly = 0;
+    int reversed = 0;
     struct crc16 *const self = (struct crc16 *)JS_GetOpaque2(ctx, this_val, liba_crc16_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_u32 poly = 0;
     if (JS_ToUint32(ctx, &poly, argv[0])) { return JS_EXCEPTION; }
-    int reversed = 0;
     if (argc > 1)
     {
         reversed = JS_ToBool(ctx, argv[1]);
@@ -79,16 +77,16 @@ static JSValue liba_crc16_gen(JSContext *ctx, JSValueConst this_val, int argc, J
 
 static JSValue liba_crc16_eval(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
+    size_t n = 0;
+    a_u16 value = 0;
     struct crc16 *const self = (struct crc16 *)JS_GetOpaque2(ctx, this_val, liba_crc16_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_u16 value = 0;
     if (argc > 1)
     {
         a_u32 x = 0;
         if (JS_ToUint32(ctx, &x, argv[1])) { return JS_EXCEPTION; }
         value = (a_u16)x;
     }
-    size_t n = 0;
     if (JS_IsArray(ctx, argv[0]))
     {
         a_byte *p = JS_GetArrayBuffer(ctx, &n, argv[0]);
@@ -106,19 +104,21 @@ static JSValue liba_crc16_eval(JSContext *ctx, JSValueConst this_val, int argc, 
 static JSValue liba_crc16_pack(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     JSValue val = JS_UNDEFINED;
+    a_u16 value = 0;
+    size_t n = 0;
+    char const *s;
+    a_byte *p;
     struct crc16 *const self = (struct crc16 *)JS_GetOpaque2(ctx, this_val, liba_crc16_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_u16 value = 0;
     if (argc > 1)
     {
         a_u32 x = 0;
         if (JS_ToUint32(ctx, &x, argv[1])) { return JS_EXCEPTION; }
         value = (a_u16)x;
     }
-    size_t n = 0;
-    char const *const s = JS_ToCStringLen(ctx, &n, argv[0]);
+    s = JS_ToCStringLen(ctx, &n, argv[0]);
     value = self->eval(self->table, s, n, value);
-    a_byte *p = (a_byte *)js_malloc(ctx, n + 2);
+    p = (a_byte *)js_malloc(ctx, n + 2);
     if (p) { a_copy(p, s, n); }
     else { goto fail; }
     self->eval == a_crc16m
@@ -131,25 +131,17 @@ fail:
     return val;
 }
 
-enum
-{
-    self_table,
-};
-
-static JSValue liba_crc16_get(JSContext *ctx, JSValueConst this_val, int magic)
+static JSValue liba_crc16_get(JSContext *ctx, JSValueConst this_val)
 {
     struct crc16 *const self = (struct crc16 *)JS_GetOpaque2(ctx, this_val, liba_crc16_class_id);
     if (!self) { return JS_EXCEPTION; }
-    if (magic == self_table)
-    {
-        return js_array_u16_new(ctx, self->table, 0x100);
-    }
-    return JS_UNDEFINED;
+    return js_array_u16_new(ctx, self->table, 0x100);
 }
 
+static JSClassDef liba_crc16_class;
 static JSCFunctionListEntry const liba_crc16_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.crc16", 0),
-    JS_CGETSET_MAGIC_DEF("table", liba_crc16_get, NULL, self_table),
+    JS_CGETSET_DEF("table", liba_crc16_get, NULL),
     JS_CFUNC_DEF("gen", 2, liba_crc16_gen),
     JS_CFUNC_DEF("eval", 2, liba_crc16_eval),
     JS_CFUNC_DEF("pack", 2, liba_crc16_pack),
@@ -157,15 +149,19 @@ static JSCFunctionListEntry const liba_crc16_proto[] = {
 
 int js_liba_crc16_init(JSContext *ctx, JSModuleDef *m)
 {
+    JSValue proto, clazz;
+    liba_crc16_class.class_name = "crc16";
+    liba_crc16_class.finalizer = liba_crc16_finalizer;
+
     JS_NewClassID(&liba_crc16_class_id);
     JS_NewClass(JS_GetRuntime(ctx), liba_crc16_class_id, &liba_crc16_class);
 
-    JSValue const proto = JS_NewObject(ctx);
+    proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_crc16_proto, A_LEN(liba_crc16_proto));
 
-    JSValue const clazz = JS_NewCFunction2(ctx, liba_crc16_ctor, "crc16", 2, JS_CFUNC_constructor, 0);
-    JS_SetConstructor(ctx, clazz, proto);
+    clazz = JS_NewCFunction2(ctx, liba_crc16_ctor, "crc16", 2, JS_CFUNC_constructor, 0);
     JS_SetClassProto(ctx, liba_crc16_class_id, proto);
+    JS_SetConstructor(ctx, clazz, proto);
 
     return JS_SetModuleExport(ctx, m, "crc16", clazz);
 }

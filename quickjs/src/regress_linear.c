@@ -10,21 +10,19 @@ static void liba_regress_linear_finalizer(JSRuntime *rt, JSValue val)
     js_free_rt(rt, self);
 }
 
-static JSClassDef liba_regress_linear_class = {"regress_linear", .finalizer = liba_regress_linear_finalizer};
-
 static JSValue liba_regress_linear_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
-    (void)argc;
+    double bias = 0;
+    a_float *p = NULL;
+    unsigned int n = 0;
     JSValue proto, clazz = JS_UNDEFINED;
     a_regress_linear *const self = (a_regress_linear *)js_mallocz(ctx, sizeof(a_regress_linear));
     if (!self) { return JS_EXCEPTION; }
-    double bias = 0;
     if (argc > 1)
     {
         if (JS_ToFloat64(ctx, &bias, argv[1])) { goto fail; }
     }
-    unsigned int n = 0;
-    a_float *p = js_array_num_get(ctx, argv[0], NULL, &n, 1);
+    p = js_array_num_get(ctx, argv[0], NULL, &n, 1);
     a_regress_linear_init(self, p, n, bias);
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
@@ -34,6 +32,8 @@ static JSValue liba_regress_linear_ctor(JSContext *ctx, JSValueConst new_target,
     JS_SetOpaque(clazz, self);
     return clazz;
 fail:
+    (void)argc;
+    js_free(ctx, p);
     js_free(ctx, self);
     JS_FreeValue(ctx, clazz);
     return JS_UNDEFINED;
@@ -41,63 +41,67 @@ fail:
 
 static JSValue liba_regress_linear_eval(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
+    a_float *p;
+    double res = A_FLOAT_NAN;
     a_regress_linear *const self = (a_regress_linear *)JS_GetOpaque2(ctx, this_val, liba_regress_linear_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double res = A_FLOAT_NAN;
-    a_float *p = js_array_num_get(ctx, argv[0], NULL, NULL, 1);
+    p = js_array_num_get(ctx, argv[0], NULL, NULL, 1);
     if (p)
     {
         res = a_regress_linear_eval(self, p);
         js_free(ctx, p);
     }
+    (void)argc;
     return JS_NewFloat64(ctx, res);
 }
 
 static JSValue liba_regress_linear_err(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
+    JSValue r;
+    a_float *x, *y;
+    unsigned int m = 0, n = 0;
     a_regress_linear *const self = (a_regress_linear *)JS_GetOpaque2(ctx, this_val, liba_regress_linear_class_id);
     if (!self) { return JS_EXCEPTION; }
-    unsigned int m = 0, n = 0;
-    a_float *x = js_array_num_get(ctx, argv[0], NULL, &m, 1);
-    a_float *y = js_array_num_get(ctx, argv[1], NULL, &n, 1);
+    x = js_array_num_get(ctx, argv[0], NULL, &m, 1);
+    y = js_array_num_get(ctx, argv[1], NULL, &n, 1);
     m /= (unsigned int)self->coef_n;
     if (m < n) { n = m; }
     a_regress_linear_err(self, n, x, y, y);
-    JSValue r = js_array_num_new(ctx, y, n);
+    r = js_array_num_new(ctx, y, n);
     js_free(ctx, y);
     js_free(ctx, x);
+    (void)argc;
     return r;
 }
 
 static JSValue liba_regress_linear_gd(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
+    a_float *input;
+    double error, alpha;
+    JSValue r = JS_EXCEPTION;
     a_regress_linear *const self = (a_regress_linear *)JS_GetOpaque2(ctx, this_val, liba_regress_linear_class_id);
     if (!self) { return JS_EXCEPTION; }
-    JSValue r = JS_EXCEPTION;
-    double error, alpha;
-    a_float *input = js_array_num_get(ctx, argv[0], NULL, NULL, 1);
+    input = js_array_num_get(ctx, argv[0], NULL, NULL, 1);
     if (JS_ToFloat64(ctx, &error, argv[1])) { goto fail; }
     if (JS_ToFloat64(ctx, &alpha, argv[2])) { goto fail; }
     a_regress_linear_gd(self, input, error, alpha);
     r = JS_UNDEFINED;
 fail:
     js_free(ctx, input);
+    (void)argc;
     return r;
 }
 
 static JSValue liba_regress_linear_sgd(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
-    a_regress_linear *const self = (a_regress_linear *)JS_GetOpaque2(ctx, this_val, liba_regress_linear_class_id);
-    if (!self) { return JS_EXCEPTION; }
+    double alpha;
+    a_float *x, *y;
     JSValue r = JS_EXCEPTION;
     unsigned int m = 0, n = 0;
-    a_float *x = js_array_num_get(ctx, argv[0], NULL, &m, 1);
-    a_float *y = js_array_num_get(ctx, argv[1], NULL, &n, 1);
-    double alpha;
+    a_regress_linear *const self = (a_regress_linear *)JS_GetOpaque2(ctx, this_val, liba_regress_linear_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    x = js_array_num_get(ctx, argv[0], NULL, &m, 1);
+    y = js_array_num_get(ctx, argv[1], NULL, &n, 1);
     if (JS_ToFloat64(ctx, &alpha, argv[2])) { goto fail; }
     m /= (unsigned int)self->coef_n;
     if (m < n) { n = m; }
@@ -106,19 +110,20 @@ static JSValue liba_regress_linear_sgd(JSContext *ctx, JSValueConst this_val, in
 fail:
     js_free(ctx, y);
     js_free(ctx, x);
+    (void)argc;
     return r;
 }
 
 static JSValue liba_regress_linear_bgd(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
-    a_regress_linear *const self = (a_regress_linear *)JS_GetOpaque2(ctx, this_val, liba_regress_linear_class_id);
-    if (!self) { return JS_EXCEPTION; }
+    double alpha;
+    a_float *x, *y;
     JSValue r = JS_EXCEPTION;
     unsigned int m = 0, n = 0;
-    a_float *x = js_array_num_get(ctx, argv[0], NULL, &m, 1);
-    a_float *y = js_array_num_get(ctx, argv[1], NULL, &n, 1);
-    double alpha;
+    a_regress_linear *const self = (a_regress_linear *)JS_GetOpaque2(ctx, this_val, liba_regress_linear_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    x = js_array_num_get(ctx, argv[0], NULL, &m, 1);
+    y = js_array_num_get(ctx, argv[1], NULL, &n, 1);
     if (JS_ToFloat64(ctx, &alpha, argv[2])) { goto fail; }
     m /= (unsigned int)self->coef_n;
     if (m < n) { n = m; }
@@ -128,25 +133,27 @@ static JSValue liba_regress_linear_bgd(JSContext *ctx, JSValueConst this_val, in
 fail:
     js_free(ctx, y);
     js_free(ctx, x);
+    (void)argc;
     return r;
 }
 
 static JSValue liba_regress_linear_mgd(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    a_regress_linear *const self = (a_regress_linear *)JS_GetOpaque2(ctx, this_val, liba_regress_linear_class_id);
-    if (!self) { return JS_EXCEPTION; }
+    a_float *x, *y, *err;
     JSValue r = JS_EXCEPTION;
     unsigned int m = 0, n = 0;
-    a_float *x = js_array_num_get(ctx, argv[0], NULL, &m, 1);
-    a_float *y = js_array_num_get(ctx, argv[1], NULL, &n, 1);
+    double delta, lrmax, lrmin;
+    a_u32 lrtim = 100, epoch = 1000, batch = 10;
+    a_regress_linear *const self = (a_regress_linear *)JS_GetOpaque2(ctx, this_val, liba_regress_linear_class_id);
+    if (!self) { return JS_EXCEPTION; }
+    x = js_array_num_get(ctx, argv[0], NULL, &m, 1);
+    y = js_array_num_get(ctx, argv[1], NULL, &n, 1);
     m /= (unsigned int)self->coef_n;
     if (m < n) { n = m; }
-    a_float *err = (a_float *)js_malloc(ctx, sizeof(a_float) * n);
-    double delta, lrmax, lrmin;
+    err = (a_float *)js_malloc(ctx, sizeof(a_float) * n);
     if (JS_ToFloat64(ctx, &delta, argv[2])) { goto fail; }
     if (JS_ToFloat64(ctx, &lrmax, argv[3])) { goto fail; }
     if (JS_ToFloat64(ctx, &lrmin, argv[4])) { goto fail; }
-    a_u32 lrtim = 100, epoch = 1000, batch = 10;
     if (argc > 5)
     {
         if (JS_ToUint32(ctx, &lrtim, argv[5])) { goto fail; }
@@ -173,18 +180,18 @@ fail:
 
 static JSValue liba_regress_linear_zero(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
-    (void)argv;
     a_regress_linear *const self = (a_regress_linear *)JS_GetOpaque2(ctx, this_val, liba_regress_linear_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_regress_linear_zero(self);
+    (void)argc;
+    (void)argv;
     return JS_UNDEFINED;
 }
 
 enum
 {
     self_coef,
-    self_bias,
+    self_bias
 };
 
 static JSValue liba_regress_linear_get(JSContext *ctx, JSValueConst this_val, int magic)
@@ -221,6 +228,7 @@ static JSValue liba_regress_linear_set(JSContext *ctx, JSValueConst this_val, JS
     return JS_UNDEFINED;
 }
 
+static JSClassDef liba_regress_linear_class;
 static JSCFunctionListEntry const liba_regress_linear_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.regress_linear", 0),
     JS_CGETSET_MAGIC_DEF("coef", liba_regress_linear_get, liba_regress_linear_set, self_coef),
@@ -236,15 +244,19 @@ static JSCFunctionListEntry const liba_regress_linear_proto[] = {
 
 int js_liba_regress_linear_init(JSContext *ctx, JSModuleDef *m)
 {
+    JSValue proto, clazz;
+    liba_regress_linear_class.class_name = "regress_linear";
+    liba_regress_linear_class.finalizer = liba_regress_linear_finalizer;
+
     JS_NewClassID(&liba_regress_linear_class_id);
     JS_NewClass(JS_GetRuntime(ctx), liba_regress_linear_class_id, &liba_regress_linear_class);
 
-    JSValue const proto = JS_NewObject(ctx);
+    proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_regress_linear_proto, A_LEN(liba_regress_linear_proto));
 
-    JSValue const clazz = JS_NewCFunction2(ctx, liba_regress_linear_ctor, "regress_linear", 2, JS_CFUNC_constructor, 0);
-    JS_SetConstructor(ctx, clazz, proto);
+    clazz = JS_NewCFunction2(ctx, liba_regress_linear_ctor, "regress_linear", 2, JS_CFUNC_constructor, 0);
     JS_SetClassProto(ctx, liba_regress_linear_class_id, proto);
+    JS_SetConstructor(ctx, clazz, proto);
 
     return JS_SetModuleExport(ctx, m, "regress_linear", clazz);
 }

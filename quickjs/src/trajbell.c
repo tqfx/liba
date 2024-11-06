@@ -8,12 +8,8 @@ static void liba_trajbell_finalizer(JSRuntime *rt, JSValue val)
     js_free_rt(rt, JS_GetOpaque(val, liba_trajbell_class_id));
 }
 
-static JSClassDef liba_trajbell_class = {"trajbell", .finalizer = liba_trajbell_finalizer};
-
 static JSValue liba_trajbell_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
-    (void)argc;
-    (void)argv;
     JSValue proto, clazz = JS_UNDEFINED;
     a_trajbell *const self = (a_trajbell *)js_mallocz(ctx, sizeof(a_trajbell));
     if (!self) { return JS_EXCEPTION; }
@@ -25,6 +21,8 @@ static JSValue liba_trajbell_ctor(JSContext *ctx, JSValueConst new_target, int a
     JS_SetOpaque(clazz, self);
     return clazz;
 fail:
+    (void)argc;
+    (void)argv;
     js_free(ctx, self);
     JS_FreeValue(ctx, clazz);
     return JS_EXCEPTION;
@@ -32,65 +30,69 @@ fail:
 
 static JSValue liba_trajbell_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
+    double arg[] = {0, 0, 0, 0, 0, 0, 0};
+    int i = (int)A_LEN(arg);
     a_trajbell *const self = (a_trajbell *)JS_GetOpaque2(ctx, this_val, liba_trajbell_class_id);
     if (!self) { return JS_EXCEPTION; }
-    int i;
-    double args[] = {0, 0, 0, 0, 0, 0, 0};
-    if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
+    if (argc > i) { argc = i; }
     for (i = 0; i < 5; ++i)
     {
-        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
+        if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
     for (i = 5; i < argc; ++i)
     {
-        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
+        if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
-    args[0] = (double)a_trajbell_gen(self, (a_float)args[0], (a_float)args[1], (a_float)args[2],
-                                     (a_float)args[3], (a_float)args[4], (a_float)args[5], (a_float)args[6]);
-    return JS_NewFloat64(ctx, args[0]);
+    arg[0] = (double)a_trajbell_gen(self, (a_float)arg[0], (a_float)arg[1], (a_float)arg[2],
+                                    (a_float)arg[3], (a_float)arg[4], (a_float)arg[5], (a_float)arg[6]);
+    return JS_NewFloat64(ctx, arg[0]);
 }
 
 static JSValue liba_trajbell_pos(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
+    double x;
+    a_float pos;
     a_trajbell *const self = (a_trajbell *)JS_GetOpaque2(ctx, this_val, liba_trajbell_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double x;
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    a_float pos = a_trajbell_pos(self, (a_float)x);
+    pos = a_trajbell_pos(self, (a_float)x);
+    (void)argc;
     return JS_NewFloat64(ctx, (double)pos);
 }
 
 static JSValue liba_trajbell_vel(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
+    double x;
+    a_float vel;
     a_trajbell *const self = (a_trajbell *)JS_GetOpaque2(ctx, this_val, liba_trajbell_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double x;
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    a_float vel = a_trajbell_vel(self, (a_float)x);
+    vel = a_trajbell_vel(self, (a_float)x);
+    (void)argc;
     return JS_NewFloat64(ctx, (double)vel);
 }
 
 static JSValue liba_trajbell_acc(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
+    double x;
+    a_float acc;
     a_trajbell *const self = (a_trajbell *)JS_GetOpaque2(ctx, this_val, liba_trajbell_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double x;
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    a_float acc = a_trajbell_acc(self, (a_float)x);
+    acc = a_trajbell_acc(self, (a_float)x);
+    (void)argc;
     return JS_NewFloat64(ctx, (double)acc);
 }
 
 static JSValue liba_trajbell_jer(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
+    double x;
+    a_float acc;
     a_trajbell *const self = (a_trajbell *)JS_GetOpaque2(ctx, this_val, liba_trajbell_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double x;
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    a_float acc = a_trajbell_jer(self, (a_float)x);
+    acc = a_trajbell_jer(self, (a_float)x);
+    (void)argc;
     return JS_NewFloat64(ctx, (double)acc);
 }
 
@@ -109,14 +111,14 @@ enum
     self_vm,
     self_jm,
     self_am,
-    self_dm,
+    self_dm
 };
 
 static JSValue liba_trajbell_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
+    double x;
     a_trajbell *const self = (a_trajbell *)JS_GetOpaque2(ctx, this_val, liba_trajbell_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double x;
     switch (magic)
     {
     case self_t: x = (double)self->t; break;
@@ -138,6 +140,7 @@ static JSValue liba_trajbell_get(JSContext *ctx, JSValueConst this_val, int magi
     return JS_NewFloat64(ctx, x);
 }
 
+static JSClassDef liba_trajbell_class;
 static JSCFunctionListEntry const liba_trajbell_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.trajbell", 0),
     JS_CGETSET_MAGIC_DEF("t", liba_trajbell_get, NULL, self_t),
@@ -163,15 +166,19 @@ static JSCFunctionListEntry const liba_trajbell_proto[] = {
 
 int js_liba_trajbell_init(JSContext *ctx, JSModuleDef *m)
 {
+    JSValue proto, clazz;
+    liba_trajbell_class.class_name = "trajbell";
+    liba_trajbell_class.finalizer = liba_trajbell_finalizer;
+
     JS_NewClassID(&liba_trajbell_class_id);
     JS_NewClass(JS_GetRuntime(ctx), liba_trajbell_class_id, &liba_trajbell_class);
 
-    JSValue const proto = JS_NewObject(ctx);
+    proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_trajbell_proto, A_LEN(liba_trajbell_proto));
 
-    JSValue const clazz = JS_NewCFunction2(ctx, liba_trajbell_ctor, "trajbell", 0, JS_CFUNC_constructor, 0);
-    JS_SetConstructor(ctx, clazz, proto);
+    clazz = JS_NewCFunction2(ctx, liba_trajbell_ctor, "trajbell", 0, JS_CFUNC_constructor, 0);
     JS_SetClassProto(ctx, liba_trajbell_class_id, proto);
+    JS_SetConstructor(ctx, clazz, proto);
 
     return JS_SetModuleExport(ctx, m, "trajbell", clazz);
 }

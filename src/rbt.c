@@ -642,8 +642,8 @@ a_rbt_node *a_rbt_pre_next(a_rbt_node *node)
     a_rbt_node *leaf;
     if (node->left) { return node->left; }
     if (node->right) { return node->right; }
-    for (leaf = node, node = a_rbt_parent(node); node;
-         leaf = node, node = a_rbt_parent(node))
+    for ((void)(leaf = node), node = a_rbt_parent(node); node;
+         (void)(leaf = node), node = a_rbt_parent(node))
     {
         if (node->right && node->right != leaf)
         {
@@ -659,8 +659,8 @@ a_rbt_node *a_rbt_pre_prev(a_rbt_node *node)
     a_rbt_node *leaf;
     if (node->right) { return node->right; }
     if (node->left) { return node->left; }
-    for (leaf = node, node = a_rbt_parent(node); node;
-         leaf = node, node = a_rbt_parent(node))
+    for ((void)(leaf = node), node = a_rbt_parent(node); node;
+         (void)(leaf = node), node = a_rbt_parent(node))
     {
         if (node->left && node->left != leaf)
         {

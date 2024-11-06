@@ -8,20 +8,18 @@ static void liba_version_finalizer(JSRuntime *rt, JSValue val)
     js_free_rt(rt, JS_GetOpaque(val, liba_version_class_id));
 }
 
-static JSClassDef liba_version_class = {"version", .finalizer = liba_version_finalizer};
-
 static JSValue liba_version_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
+    a_u32 arg[] = {0, 0, 0, 0};
+    int i = (int)A_LEN(arg);
+    char const *ver = NULL;
     JSValue proto, clazz = JS_UNDEFINED;
     a_version *const self = (a_version *)js_mallocz(ctx, sizeof(a_version));
     if (!self) { return JS_EXCEPTION; }
-    int i;
-    char const *ver = NULL;
-    a_u32 args[] = {0, 0, 0, 0};
-    if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
+    if (argc > i) { argc = i; }
     for (i = 0; i < argc; ++i)
     {
-        if (JS_ToUint32(ctx, &args[i], argv[i]))
+        if (JS_ToUint32(ctx, &arg[i], argv[i]))
         {
             if (i == 0)
             {
@@ -39,10 +37,10 @@ static JSValue liba_version_ctor(JSContext *ctx, JSValueConst new_target, int ar
     }
     else
     {
-        self->major = (unsigned int)args[0];
-        self->minor = (unsigned int)args[1];
-        self->third = (unsigned int)args[2];
-        self->extra = (unsigned int)args[3];
+        self->major = (unsigned int)arg[0];
+        self->minor = (unsigned int)arg[1];
+        self->third = (unsigned int)arg[2];
+        self->extra = (unsigned int)arg[3];
     }
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
@@ -59,107 +57,115 @@ fail:
 
 static JSValue liba_version_check(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)this_val;
-    int i;
-    a_u32 args[] = {0, 0, 0};
-    if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
+    a_u32 arg[] = {0, 0, 0};
+    int i = (int)A_LEN(arg);
+    if (argc > i) { argc = i; }
     for (i = 0; i < argc; ++i)
     {
-        if (JS_ToUint32(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
+        if (JS_ToUint32(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
-    return JS_NewInt32(ctx, a_version_check((unsigned int)args[0], (unsigned int)args[1], (unsigned int)args[2]));
+    (void)this_val;
+    return JS_NewInt32(ctx, a_version_check((unsigned int)arg[0], (unsigned int)arg[1], (unsigned int)arg[2]));
 }
 
 static JSValue liba_version_tostring(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
-    (void)argv;
     char str[48];
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_version_tostr(self, str, sizeof(str));
+    (void)argc;
+    (void)argv;
     return JS_NewString(ctx, str);
 }
 
 static JSValue liba_version_parse(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
+    char const *ver;
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
-    char const *ver = JS_ToCString(ctx, argv[0]);
+    ver = JS_ToCString(ctx, argv[0]);
     if (!ver) { return JS_EXCEPTION; }
     a_version_parse(self, ver);
     JS_FreeCString(ctx, ver);
+    (void)argc;
     return JS_UNDEFINED;
 }
 
 static JSValue liba_version_cmp(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
-    a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
+    a_version *self, *that;
+    self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_version *const that = (a_version *)JS_GetOpaque2(ctx, argv[0], liba_version_class_id);
+    that = (a_version *)JS_GetOpaque2(ctx, argv[0], liba_version_class_id);
     if (!that) { return JS_EXCEPTION; }
+    (void)argc;
     return JS_NewInt32(ctx, a_version_cmp(self, that));
 }
 
 static JSValue liba_version_lt(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
-    a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
+    a_version *self, *that;
+    self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_version *const that = (a_version *)JS_GetOpaque2(ctx, argv[0], liba_version_class_id);
+    that = (a_version *)JS_GetOpaque2(ctx, argv[0], liba_version_class_id);
     if (!that) { return JS_EXCEPTION; }
+    (void)argc;
     return JS_NewBool(ctx, a_version_lt(self, that));
 }
 
 static JSValue liba_version_gt(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
-    a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
+    a_version *self, *that;
+    self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_version *const that = (a_version *)JS_GetOpaque2(ctx, argv[0], liba_version_class_id);
+    that = (a_version *)JS_GetOpaque2(ctx, argv[0], liba_version_class_id);
     if (!that) { return JS_EXCEPTION; }
+    (void)argc;
     return JS_NewBool(ctx, a_version_gt(self, that));
 }
 
 static JSValue liba_version_le(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
-    a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
+    a_version *self, *that;
+    self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_version *const that = (a_version *)JS_GetOpaque2(ctx, argv[0], liba_version_class_id);
+    that = (a_version *)JS_GetOpaque2(ctx, argv[0], liba_version_class_id);
     if (!that) { return JS_EXCEPTION; }
+    (void)argc;
     return JS_NewBool(ctx, a_version_le(self, that));
 }
 
 static JSValue liba_version_ge(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
-    a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
+    a_version *self, *that;
+    self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_version *const that = (a_version *)JS_GetOpaque2(ctx, argv[0], liba_version_class_id);
+    that = (a_version *)JS_GetOpaque2(ctx, argv[0], liba_version_class_id);
     if (!that) { return JS_EXCEPTION; }
+    (void)argc;
     return JS_NewBool(ctx, a_version_ge(self, that));
 }
 
 static JSValue liba_version_eq(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
-    a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
+    a_version *self, *that;
+    self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_version *const that = (a_version *)JS_GetOpaque2(ctx, argv[0], liba_version_class_id);
+    that = (a_version *)JS_GetOpaque2(ctx, argv[0], liba_version_class_id);
     if (!that) { return JS_EXCEPTION; }
+    (void)argc;
     return JS_NewBool(ctx, a_version_eq(self, that));
 }
 
 static JSValue liba_version_ne(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
-    a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
+    a_version *self, *that;
+    self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
-    a_version *const that = (a_version *)JS_GetOpaque2(ctx, argv[0], liba_version_class_id);
+    that = (a_version *)JS_GetOpaque2(ctx, argv[0], liba_version_class_id);
     if (!that) { return JS_EXCEPTION; }
+    (void)argc;
     return JS_NewBool(ctx, a_version_ne(self, that));
 }
 
@@ -174,6 +180,7 @@ enum
 
 static JSValue liba_version_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
+    a_u32 x;
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (magic == self_alpha)
@@ -182,7 +189,6 @@ static JSValue liba_version_get(JSContext *ctx, JSValueConst this_val, int magic
         a_version_alpha(self, alpha);
         return JS_NewString(ctx, alpha);
     }
-    a_u32 x;
     switch (magic)
     {
     case self_major: x = self->major; break;
@@ -196,6 +202,7 @@ static JSValue liba_version_get(JSContext *ctx, JSValueConst this_val, int magic
 
 static JSValue liba_version_set(JSContext *ctx, JSValueConst this_val, JSValueConst val, int magic)
 {
+    a_u32 x;
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (magic == self_alpha)
@@ -205,7 +212,6 @@ static JSValue liba_version_set(JSContext *ctx, JSValueConst this_val, JSValueCo
         JS_FreeCString(ctx, alpha);
         return JS_UNDEFINED;
     }
-    a_u32 x;
     if (JS_ToUint32(ctx, &x, val)) { return JS_EXCEPTION; }
     switch (magic)
     {
@@ -218,6 +224,7 @@ static JSValue liba_version_set(JSContext *ctx, JSValueConst this_val, JSValueCo
     return JS_UNDEFINED;
 }
 
+static JSClassDef liba_version_class;
 static JSCFunctionListEntry const liba_version_proto[] = {
     JS_CGETSET_MAGIC_DEF("major", liba_version_get, liba_version_set, self_major),
     JS_CGETSET_MAGIC_DEF("minor", liba_version_get, liba_version_set, self_minor),
@@ -237,17 +244,21 @@ static JSCFunctionListEntry const liba_version_proto[] = {
 
 int js_liba_version_init(JSContext *ctx, JSModuleDef *m)
 {
+    JSValue proto, clazz, check;
+    liba_version_class.class_name = "version";
+    liba_version_class.finalizer = liba_version_finalizer;
+
     JS_NewClassID(&liba_version_class_id);
     JS_NewClass(JS_GetRuntime(ctx), liba_version_class_id, &liba_version_class);
 
-    JSValue const proto = JS_NewObject(ctx);
+    proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_version_proto, A_LEN(liba_version_proto));
 
-    JSValue const clazz = JS_NewCFunction2(ctx, liba_version_ctor, "version", 4, JS_CFUNC_constructor, 0);
-    JS_SetConstructor(ctx, clazz, proto);
+    clazz = JS_NewCFunction2(ctx, liba_version_ctor, "version", 4, JS_CFUNC_constructor, 0);
     JS_SetClassProto(ctx, liba_version_class_id, proto);
+    JS_SetConstructor(ctx, clazz, proto);
 
-    JSValue const check = JS_NewCFunction2(ctx, liba_version_check, "check", 3, JS_CFUNC_generic, 0);
+    check = JS_NewCFunction2(ctx, liba_version_check, "check", 3, JS_CFUNC_generic, 0);
     JS_DefinePropertyValueStr(ctx, clazz, "MAJOR", JS_NewUint32(ctx, A_VERSION_MAJOR), 0);
     JS_DefinePropertyValueStr(ctx, clazz, "MINOR", JS_NewUint32(ctx, A_VERSION_MINOR), 0);
     JS_DefinePropertyValueStr(ctx, clazz, "PATCH", JS_NewUint32(ctx, A_VERSION_PATCH), 0);

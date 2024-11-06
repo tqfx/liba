@@ -8,28 +8,26 @@ static void liba_trajpoly5_finalizer(JSRuntime *rt, JSValue val)
     js_free_rt(rt, JS_GetOpaque(val, liba_trajpoly5_class_id));
 }
 
-static JSClassDef liba_trajpoly5_class = {"trajpoly5", .finalizer = liba_trajpoly5_finalizer};
-
 static JSValue liba_trajpoly5_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
+    double arg[] = {0, 0, 0, 0, 0, 0, 0};
+    int i = (int)A_LEN(arg);
     JSValue proto, clazz = JS_UNDEFINED;
     a_trajpoly5 *const self = (a_trajpoly5 *)js_mallocz(ctx, sizeof(a_trajpoly5));
     if (!self) { return JS_EXCEPTION; }
-    int i;
-    double args[] = {0, 0, 0, 0, 0, 0, 0};
-    if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
+    if (argc > i) { argc = i; }
     for (i = 0; i < 3; ++i)
     {
-        if (JS_ToFloat64(ctx, &args[i], argv[i])) { goto fail; }
+        if (JS_ToFloat64(ctx, &arg[i], argv[i])) { goto fail; }
     }
     for (i = 3; i < argc; ++i)
     {
-        if (JS_ToFloat64(ctx, &args[i], argv[i])) { goto fail; }
+        if (JS_ToFloat64(ctx, &arg[i], argv[i])) { goto fail; }
     }
-    a_trajpoly5_gen(self, (a_float)args[0],
-                    (a_float)args[1], (a_float)args[2],
-                    (a_float)args[3], (a_float)args[4],
-                    (a_float)args[5], (a_float)args[6]);
+    a_trajpoly5_gen(self, (a_float)arg[0],
+                    (a_float)arg[1], (a_float)arg[2],
+                    (a_float)arg[3], (a_float)arg[4],
+                    (a_float)arg[5], (a_float)arg[6]);
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
     clazz = JS_NewObjectProtoClass(ctx, proto, liba_trajpoly5_class_id);
@@ -45,56 +43,59 @@ fail:
 
 static JSValue liba_trajpoly5_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
+    double arg[] = {0, 0, 0, 0, 0, 0, 0};
+    int i = (int)A_LEN(arg);
     a_trajpoly5 *const self = (a_trajpoly5 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly5_class_id);
     if (!self) { return JS_EXCEPTION; }
-    int i;
-    double args[] = {0, 0, 0, 0, 0, 0, 0};
-    if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
+    if (argc > i) { argc = i; }
     for (i = 0; i < 3; ++i)
     {
-        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
+        if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
     for (i = 3; i < argc; ++i)
     {
-        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
+        if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
-    a_trajpoly5_gen(self, (a_float)args[0],
-                    (a_float)args[1], (a_float)args[2],
-                    (a_float)args[3], (a_float)args[4],
-                    (a_float)args[5], (a_float)args[6]);
+    a_trajpoly5_gen(self, (a_float)arg[0],
+                    (a_float)arg[1], (a_float)arg[2],
+                    (a_float)arg[3], (a_float)arg[4],
+                    (a_float)arg[5], (a_float)arg[6]);
     return JS_UNDEFINED;
 }
 
 static JSValue liba_trajpoly5_pos(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
+    double x;
+    a_float pos;
     a_trajpoly5 *const self = (a_trajpoly5 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly5_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double x;
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    a_float pos = a_trajpoly5_pos(self, (a_float)x);
+    pos = a_trajpoly5_pos(self, (a_float)x);
+    (void)argc;
     return JS_NewFloat64(ctx, (double)pos);
 }
 
 static JSValue liba_trajpoly5_vel(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
+    double x;
+    a_float vel;
     a_trajpoly5 *const self = (a_trajpoly5 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly5_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double x;
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    a_float vel = a_trajpoly5_vel(self, (a_float)x);
+    vel = a_trajpoly5_vel(self, (a_float)x);
+    (void)argc;
     return JS_NewFloat64(ctx, (double)vel);
 }
 
 static JSValue liba_trajpoly5_acc(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
+    double x;
+    a_float acc;
     a_trajpoly5 *const self = (a_trajpoly5 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly5_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double x;
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    a_float acc = a_trajpoly5_acc(self, (a_float)x);
+    acc = a_trajpoly5_acc(self, (a_float)x);
+    (void)argc;
     return JS_NewFloat64(ctx, (double)acc);
 }
 
@@ -118,6 +119,7 @@ static JSValue liba_trajpoly5_get(JSContext *ctx, JSValueConst this_val, int mag
     }
 }
 
+static JSClassDef liba_trajpoly5_class;
 static JSCFunctionListEntry const liba_trajpoly5_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.trajpoly5", 0),
     JS_CGETSET_MAGIC_DEF("p", liba_trajpoly5_get, NULL, self_p),
@@ -131,15 +133,19 @@ static JSCFunctionListEntry const liba_trajpoly5_proto[] = {
 
 int js_liba_trajpoly5_init(JSContext *ctx, JSModuleDef *m)
 {
+    JSValue proto, clazz;
+    liba_trajpoly5_class.class_name = "trajpoly5";
+    liba_trajpoly5_class.finalizer = liba_trajpoly5_finalizer;
+
     JS_NewClassID(&liba_trajpoly5_class_id);
     JS_NewClass(JS_GetRuntime(ctx), liba_trajpoly5_class_id, &liba_trajpoly5_class);
 
-    JSValue const proto = JS_NewObject(ctx);
+    proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_trajpoly5_proto, A_LEN(liba_trajpoly5_proto));
 
-    JSValue const clazz = JS_NewCFunction2(ctx, liba_trajpoly5_ctor, "trajpoly5", 7, JS_CFUNC_constructor, 0);
-    JS_SetConstructor(ctx, clazz, proto);
+    clazz = JS_NewCFunction2(ctx, liba_trajpoly5_ctor, "trajpoly5", 7, JS_CFUNC_constructor, 0);
     JS_SetClassProto(ctx, liba_trajpoly5_class_id, proto);
+    JS_SetConstructor(ctx, clazz, proto);
 
     return JS_SetModuleExport(ctx, m, "trajpoly5", clazz);
 }

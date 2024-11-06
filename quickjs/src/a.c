@@ -4,7 +4,6 @@
 static JSValue liba_hash_bkdr(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     a_u32 x = 0;
-    (void)this_val;
     if (argc > 1)
     {
         if (JS_ToUint32(ctx, &x, argv[1])) { return JS_EXCEPTION; }
@@ -15,13 +14,13 @@ static JSValue liba_hash_bkdr(JSContext *ctx, JSValueConst this_val, int argc, J
         x = a_hash_bkdr(str, x);
         JS_FreeCString(ctx, str);
     }
+    (void)this_val;
     return JS_NewUint32(ctx, x);
 }
 
 static JSValue liba_hash_sdbm(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     a_u32 x = 0;
-    (void)this_val;
     if (argc > 1)
     {
         if (JS_ToUint32(ctx, &x, argv[1])) { return JS_EXCEPTION; }
@@ -32,6 +31,7 @@ static JSValue liba_hash_sdbm(JSContext *ctx, JSValueConst this_val, int argc, J
         x = a_hash_sdbm(str, x);
         JS_FreeCString(ctx, str);
     }
+    (void)this_val;
     return JS_NewUint32(ctx, x);
 }
 
@@ -39,19 +39,19 @@ static JSValue liba_hash_sdbm(JSContext *ctx, JSValueConst this_val, int argc, J
 
 static JSValue liba_isqrt(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)this_val;
-    (void)argc;
     uint64_t x;
     if (JS_ToIndex(ctx, &x, argv[0])) { return JS_EXCEPTION; }
+    (void)this_val;
+    (void)argc;
     return JS_NewUint32(ctx, a_u64_sqrt(x));
 }
 
 static JSValue liba_rsqrt(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)this_val;
-    (void)argc;
     double x;
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
+    (void)this_val;
+    (void)argc;
     return JS_NewFloat64(ctx, a_f64_rsqrt(x));
 }
 
@@ -125,7 +125,7 @@ int js_liba_init(JSContext *ctx, JSModuleDef *m)
 
 JSModuleDef *js_init_module(JSContext *ctx, char const *module_name)
 {
-    JSModuleDef *m = JS_NewCModule(ctx, module_name, js_liba_init);
+    JSModuleDef *const m = JS_NewCModule(ctx, module_name, js_liba_init);
     if (m)
     {
         JS_AddModuleExport(ctx, m, "crc16");

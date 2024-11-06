@@ -8,12 +8,8 @@ static void liba_trajtrap_finalizer(JSRuntime *rt, JSValue val)
     js_free_rt(rt, JS_GetOpaque(val, liba_trajtrap_class_id));
 }
 
-static JSClassDef liba_trajtrap_class = {"trajtrap", .finalizer = liba_trajtrap_finalizer};
-
 static JSValue liba_trajtrap_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
-    (void)argc;
-    (void)argv;
     JSValue proto, clazz = JS_UNDEFINED;
     a_trajtrap *const self = (a_trajtrap *)js_mallocz(ctx, sizeof(a_trajtrap));
     if (!self) { return JS_EXCEPTION; }
@@ -25,6 +21,8 @@ static JSValue liba_trajtrap_ctor(JSContext *ctx, JSValueConst new_target, int a
     JS_SetOpaque(clazz, self);
     return clazz;
 fail:
+    (void)argc;
+    (void)argv;
     js_free(ctx, self);
     JS_FreeValue(ctx, clazz);
     return JS_EXCEPTION;
@@ -32,54 +30,57 @@ fail:
 
 static JSValue liba_trajtrap_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
+    double arg[] = {0, 0, 0, 0, 0, 0, 0};
+    int i = (int)A_LEN(arg);
     a_trajtrap *const self = (a_trajtrap *)JS_GetOpaque2(ctx, this_val, liba_trajtrap_class_id);
     if (!self) { return JS_EXCEPTION; }
-    int i;
-    double args[] = {0, 0, 0, 0, 0, 0, 0};
-    if (argc > (int)A_LEN(args)) { argc = (int)A_LEN(args); }
+    if (argc > i) { argc = i; }
     for (i = 0; i < 5; ++i)
     {
-        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
+        if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
     for (i = 5; i < argc; ++i)
     {
-        if (JS_ToFloat64(ctx, &args[i], argv[i])) { return JS_EXCEPTION; }
+        if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
-    args[0] = (double)a_trajtrap_gen(self, (a_float)args[0], (a_float)args[1], (a_float)args[2],
-                                     (a_float)args[3], (a_float)args[4], (a_float)args[5], (a_float)args[6]);
-    return JS_NewFloat64(ctx, args[0]);
+    arg[0] = (double)a_trajtrap_gen(self, (a_float)arg[0], (a_float)arg[1], (a_float)arg[2],
+                                    (a_float)arg[3], (a_float)arg[4], (a_float)arg[5], (a_float)arg[6]);
+    return JS_NewFloat64(ctx, arg[0]);
 }
 
 static JSValue liba_trajtrap_pos(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
+    double x;
+    a_float pos;
     a_trajtrap *const self = (a_trajtrap *)JS_GetOpaque2(ctx, this_val, liba_trajtrap_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double x;
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    a_float pos = a_trajtrap_pos(self, (a_float)x);
+    pos = a_trajtrap_pos(self, (a_float)x);
+    (void)argc;
     return JS_NewFloat64(ctx, (double)pos);
 }
 
 static JSValue liba_trajtrap_vel(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
+    double x;
+    a_float vel;
     a_trajtrap *const self = (a_trajtrap *)JS_GetOpaque2(ctx, this_val, liba_trajtrap_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double x;
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    a_float vel = a_trajtrap_vel(self, (a_float)x);
+    vel = a_trajtrap_vel(self, (a_float)x);
+    (void)argc;
     return JS_NewFloat64(ctx, (double)vel);
 }
 
 static JSValue liba_trajtrap_acc(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
+    double x;
+    a_float acc;
     a_trajtrap *const self = (a_trajtrap *)JS_GetOpaque2(ctx, this_val, liba_trajtrap_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double x;
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    a_float acc = a_trajtrap_acc(self, (a_float)x);
+    acc = a_trajtrap_acc(self, (a_float)x);
+    (void)argc;
     return JS_NewFloat64(ctx, (double)acc);
 }
 
@@ -101,9 +102,9 @@ enum
 
 static JSValue liba_trajtrap_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
+    double x;
     a_trajtrap *const self = (a_trajtrap *)JS_GetOpaque2(ctx, this_val, liba_trajtrap_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double x;
     switch (magic)
     {
     case self_t: x = (double)self->t; break;
@@ -123,6 +124,7 @@ static JSValue liba_trajtrap_get(JSContext *ctx, JSValueConst this_val, int magi
     return JS_NewFloat64(ctx, x);
 }
 
+static JSClassDef liba_trajtrap_class;
 static JSCFunctionListEntry const liba_trajtrap_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.trajtrap", 0),
     JS_CGETSET_MAGIC_DEF("t", liba_trajtrap_get, NULL, self_t),
@@ -145,15 +147,19 @@ static JSCFunctionListEntry const liba_trajtrap_proto[] = {
 
 int js_liba_trajtrap_init(JSContext *ctx, JSModuleDef *m)
 {
+    JSValue proto, clazz;
+    liba_trajtrap_class.class_name = "trajtrap";
+    liba_trajtrap_class.finalizer = liba_trajtrap_finalizer;
+
     JS_NewClassID(&liba_trajtrap_class_id);
     JS_NewClass(JS_GetRuntime(ctx), liba_trajtrap_class_id, &liba_trajtrap_class);
 
-    JSValue const proto = JS_NewObject(ctx);
+    proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_trajtrap_proto, A_LEN(liba_trajtrap_proto));
 
-    JSValue const clazz = JS_NewCFunction2(ctx, liba_trajtrap_ctor, "trajtrap", 0, JS_CFUNC_constructor, 0);
-    JS_SetConstructor(ctx, clazz, proto);
+    clazz = JS_NewCFunction2(ctx, liba_trajtrap_ctor, "trajtrap", 0, JS_CFUNC_constructor, 0);
     JS_SetClassProto(ctx, liba_trajtrap_class_id, proto);
+    JS_SetConstructor(ctx, clazz, proto);
 
     return JS_SetModuleExport(ctx, m, "trajtrap", clazz);
 }

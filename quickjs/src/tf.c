@@ -16,8 +16,6 @@ static void liba_tf_finalizer(JSRuntime *rt, JSValue val)
     js_free_rt(rt, self);
 }
 
-static JSClassDef liba_tf_class = {"tf", .finalizer = liba_tf_finalizer};
-
 static int liba_tf_set_num_(JSContext *ctx, a_tf *self, JSValueConst num)
 {
     union
@@ -66,7 +64,6 @@ static int liba_tf_set_den_(JSContext *ctx, a_tf *self, JSValueConst den)
 
 static JSValue liba_tf_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
-    (void)argc;
     JSValue proto, clazz = JS_UNDEFINED;
     a_tf *const self = (a_tf *)js_mallocz(ctx, sizeof(a_tf));
     if (!self) { return JS_EXCEPTION; }
@@ -80,6 +77,7 @@ static JSValue liba_tf_ctor(JSContext *ctx, JSValueConst new_target, int argc, J
     JS_SetOpaque(clazz, self);
     return clazz;
 fail:
+    (void)argc;
     js_free(ctx, self);
     JS_FreeValue(ctx, clazz);
     return JS_EXCEPTION;
@@ -87,21 +85,21 @@ fail:
 
 static JSValue liba_tf_iter(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
+    double x;
     a_tf *const self = (a_tf *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
     if (!self) { return JS_EXCEPTION; }
-    double x;
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
+    (void)argc;
     return JS_NewFloat64(ctx, (double)a_tf_iter(self, (a_float)x));
 }
 
 static JSValue liba_tf_zero(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    (void)argc;
-    (void)argv;
     a_tf *const self = (a_tf *)JS_GetOpaque2(ctx, this_val, liba_tf_class_id);
     if (!self) { return JS_EXCEPTION; }
     a_tf_zero(self);
+    (void)argc;
+    (void)argv;
     return JS_UNDEFINED;
 }
 
@@ -110,7 +108,7 @@ enum
     self_coef,
     self_bias,
     self_input,
-    self_output,
+    self_output
 };
 
 static JSValue liba_tf_get(JSContext *ctx, JSValueConst this_val, int magic)
@@ -145,6 +143,7 @@ static JSValue liba_tf_set(JSContext *ctx, JSValueConst this_val, JSValueConst v
     return JS_UNDEFINED;
 }
 
+static JSClassDef liba_tf_class;
 static JSCFunctionListEntry const liba_tf_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.tf", 0),
     JS_CGETSET_MAGIC_DEF("num", liba_tf_get, liba_tf_set, self_coef),
@@ -157,15 +156,19 @@ static JSCFunctionListEntry const liba_tf_proto[] = {
 
 int js_liba_tf_init(JSContext *ctx, JSModuleDef *m)
 {
+    JSValue proto, clazz;
+    liba_tf_class.class_name = "tf";
+    liba_tf_class.finalizer = liba_tf_finalizer;
+
     JS_NewClassID(&liba_tf_class_id);
     JS_NewClass(JS_GetRuntime(ctx), liba_tf_class_id, &liba_tf_class);
 
-    JSValue const proto = JS_NewObject(ctx);
+    proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_tf_proto, A_LEN(liba_tf_proto));
 
-    JSValue const clazz = JS_NewCFunction2(ctx, liba_tf_ctor, "tf", 2, JS_CFUNC_constructor, 0);
-    JS_SetConstructor(ctx, clazz, proto);
+    clazz = JS_NewCFunction2(ctx, liba_tf_ctor, "tf", 2, JS_CFUNC_constructor, 0);
     JS_SetClassProto(ctx, liba_tf_class_id, proto);
+    JS_SetConstructor(ctx, clazz, proto);
 
     return JS_SetModuleExport(ctx, m, "tf", clazz);
 }
