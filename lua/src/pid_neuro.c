@@ -301,16 +301,17 @@ int luaopen_liba_pid_neuro(lua_State *L)
         {"inc", liba_pid_neuro_inc},
         {"zero", liba_pid_neuro_zero},
     };
+    static lua_fun const metas[] = {
+        {"__newindex", liba_pid_neuro_set},
+        {"__index", liba_pid_neuro_get},
+    };
+
     lua_createtable(L, 0, A_LEN(funcs));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_createtable(L, 0, 1);
     lua_fun_set(L, -1, "__call", liba_pid_neuro_);
     lua_setmetatable(L, -2);
 
-    static lua_fun const metas[] = {
-        {"__newindex", liba_pid_neuro_set},
-        {"__index", liba_pid_neuro_get},
-    };
     lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
     lua_fun_reg(L, -1, metas, A_LEN(metas));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));

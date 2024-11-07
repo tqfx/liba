@@ -237,16 +237,17 @@ int luaopen_liba_trajbell(lua_State *L)
         {"acc", liba_trajbell_acc},
         {"jer", liba_trajbell_jer},
     };
+    static lua_fun const metas[] = {
+        {"__newindex", liba_trajbell_set},
+        {"__index", liba_trajbell_get},
+    };
+
     lua_createtable(L, 0, A_LEN(funcs));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_createtable(L, 0, 1);
     lua_fun_set(L, -1, "__call", liba_trajbell_);
     lua_setmetatable(L, -2);
 
-    static lua_fun const metas[] = {
-        {"__newindex", liba_trajbell_set},
-        {"__index", liba_trajbell_get},
-    };
     lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
     lua_fun_reg(L, -1, metas, A_LEN(metas));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));

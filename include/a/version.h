@@ -49,11 +49,7 @@ typedef struct a_version a_version;
 #define A_VERSION_2(major, minor) A_VERSION_3(major, minor, 0)
 #define A_VERSION_3(major, minor, third) A_VERSION_4(major, minor, third, 0)
 /* clang-format off */
-#if defined(__cplusplus)
 #define A_VERSION_4(major, minor, third, extra) {major, minor, third, extra, {'.', 0, 0, 0}}
-#else /* !__cplusplus */
-#define A_VERSION_4(major, minor, third, extra) (a_version){major, minor, third, extra, {'.', 0, 0, 0}}
-#endif /* __cplusplus */
 /* clang-format on */
 
 #if defined(__cplusplus)

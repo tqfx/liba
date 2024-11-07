@@ -192,17 +192,18 @@ int luaopen_liba_crc32(lua_State *L)
         {"eval", liba_crc32_eval},
         {"pack", liba_crc32_pack},
     };
+    static lua_fun const metas[] = {
+        {"__newindex", liba_crc32_set},
+        {"__index", liba_crc32_get},
+        {"__call", liba_crc32_eval},
+    };
+
     lua_createtable(L, 0, A_LEN(funcs));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_createtable(L, 0, 1);
     lua_fun_set(L, -1, "__call", liba_crc32_);
     lua_setmetatable(L, -2);
 
-    static lua_fun const metas[] = {
-        {"__newindex", liba_crc32_set},
-        {"__index", liba_crc32_get},
-        {"__call", liba_crc32_eval},
-    };
     lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
     lua_fun_reg(L, -1, metas, A_LEN(metas));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));

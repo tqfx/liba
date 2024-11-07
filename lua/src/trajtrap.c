@@ -209,16 +209,17 @@ int luaopen_liba_trajtrap(lua_State *L)
         {"vel", liba_trajtrap_vel},
         {"acc", liba_trajtrap_acc},
     };
+    static lua_fun const metas[] = {
+        {"__newindex", liba_trajtrap_set},
+        {"__index", liba_trajtrap_get},
+    };
+
     lua_createtable(L, 0, A_LEN(funcs));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_createtable(L, 0, 1);
     lua_fun_set(L, -1, "__call", liba_trajtrap_);
     lua_setmetatable(L, -2);
 
-    static lua_fun const metas[] = {
-        {"__newindex", liba_trajtrap_set},
-        {"__index", liba_trajtrap_get},
-    };
     lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
     lua_fun_reg(L, -1, metas, A_LEN(metas));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));

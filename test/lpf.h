@@ -17,11 +17,12 @@ static long rand_(void)
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
+    unsigned int i;
+    a_lpf ctx = A_LPF_1(A_LPF_GEN(10, 0.01));
     main_init(argc, argv, 1);
-    a_lpf ctx = A_LPF_INIT(A_LPF_GEN(10, 0.01));
     a_lpf_init(&ctx, a_lpf_gen(10, A_FLOAT_C(0.01)));
     srand_(a_cast_s(unsigned long, time(A_NULL)));
-    for (unsigned int i = 0; i < 100; ++i)
+    for (i = 0; i < 100; ++i)
     {
         a_float noise = (a_float_c(rand_()) / a_float_c(RAND_MAX_) - A_FLOAT_C(0.5));
         a_float x = A_FLOAT_PI / 25 * a_float_c(i);

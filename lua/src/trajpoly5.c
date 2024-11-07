@@ -216,16 +216,17 @@ int luaopen_liba_trajpoly5(lua_State *L)
         {"vel", liba_trajpoly5_vel},
         {"acc", liba_trajpoly5_acc},
     };
+    static lua_fun const metas[] = {
+        {"__newindex", liba_trajpoly5_set},
+        {"__index", liba_trajpoly5_get},
+    };
+
     lua_createtable(L, 0, A_LEN(funcs));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_createtable(L, 0, 1);
     lua_fun_set(L, -1, "__call", liba_trajpoly5_);
     lua_setmetatable(L, -2);
 
-    static lua_fun const metas[] = {
-        {"__newindex", liba_trajpoly5_set},
-        {"__index", liba_trajpoly5_get},
-    };
     lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
     lua_fun_reg(L, -1, metas, A_LEN(metas));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));

@@ -60,13 +60,8 @@ typedef struct a_lpf lpf;
 } /* namespace a */
 #endif /* __cplusplus */
 /* clang-format off */
-#if defined(__cplusplus)
-#define A_LPF_INIT(alpha) {a_float_c(alpha), 0}
-#define A_LPF_INIT2(fc, ts) {A_LPF_GEN(fc, ts), 0}
-#else /* !__cplusplus */
-#define A_LPF_INIT(alpha) (a_lpf){a_float_c(alpha), 0}
-#define A_LPF_INIT2(fc, ts) (a_lpf){A_LPF_GEN(fc, ts), 0}
-#endif /* __cplusplus */
+#define A_LPF_1(alpha) {a_float_c(alpha), 0}
+#define A_LPF_2(fc, ts) {A_LPF_GEN(fc, ts), 0}
 /* clang-format on */
 #define A_LPF_GEN(fc, ts) (a_float_c(ts) / (A_FLOAT_1_TAU / a_float_c(fc) + a_float_c(ts)))
 

@@ -99,13 +99,15 @@ int liba_regress_simple_ols_(lua_State *L)
     a_regress_simple *const ctx = (a_regress_simple *)lua_touserdata(L, 1);
     if (ctx)
     {
+        a_float *x, *y;
+        a_float x_mean, y_mean;
         unsigned int x_n = 0, y_n = 0;
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
-        a_float const x_mean = (a_float)luaL_checknumber(L, 4);
-        a_float const y_mean = (a_float)luaL_checknumber(L, 5);
-        a_float *const x = lua_array_num_get(L, 2, NULL, &x_n, 1);
-        a_float *const y = lua_array_num_get(L, 3, NULL, &y_n, 1);
+        x_mean = (a_float)luaL_checknumber(L, 4);
+        y_mean = (a_float)luaL_checknumber(L, 5);
+        x = lua_array_num_get(L, 2, NULL, &x_n, 1);
+        y = lua_array_num_get(L, 3, NULL, &y_n, 1);
         a_regress_simple_ols_(ctx, A_MIN(x_n, y_n), x, y, x_mean, y_mean);
         lua_alloc(L, y, 0);
         lua_alloc(L, x, 0);
@@ -129,12 +131,14 @@ int liba_regress_simple_olsx(lua_State *L)
     a_regress_simple *const ctx = (a_regress_simple *)lua_touserdata(L, 1);
     if (ctx)
     {
+        a_float *x, *y;
+        a_float x_mean;
         unsigned int x_n = 0, y_n = 0;
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
-        a_float const x_mean = (a_float)luaL_checknumber(L, 4);
-        a_float *const x = lua_array_num_get(L, 2, NULL, &x_n, 1);
-        a_float *const y = lua_array_num_get(L, 3, NULL, &y_n, 1);
+        x_mean = (a_float)luaL_checknumber(L, 4);
+        x = lua_array_num_get(L, 2, NULL, &x_n, 1);
+        y = lua_array_num_get(L, 3, NULL, &y_n, 1);
         a_regress_simple_olsx(ctx, A_MIN(x_n, y_n), x, y, x_mean);
         lua_alloc(L, y, 0);
         lua_alloc(L, x, 0);
@@ -158,12 +162,14 @@ int liba_regress_simple_olsy(lua_State *L)
     a_regress_simple *const ctx = (a_regress_simple *)lua_touserdata(L, 1);
     if (ctx)
     {
+        a_float *x, *y;
+        a_float y_mean;
         unsigned int x_n = 0, y_n = 0;
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
-        a_float const y_mean = (a_float)luaL_checknumber(L, 4);
-        a_float *const x = lua_array_num_get(L, 2, NULL, &x_n, 1);
-        a_float *const y = lua_array_num_get(L, 3, NULL, &y_n, 1);
+        y_mean = (a_float)luaL_checknumber(L, 4);
+        x = lua_array_num_get(L, 2, NULL, &x_n, 1);
+        y = lua_array_num_get(L, 3, NULL, &y_n, 1);
         a_regress_simple_olsy(ctx, A_MIN(x_n, y_n), x, y, y_mean);
         lua_alloc(L, y, 0);
         lua_alloc(L, x, 0);
@@ -186,11 +192,12 @@ int liba_regress_simple_ols(lua_State *L)
     a_regress_simple *const ctx = (a_regress_simple *)lua_touserdata(L, 1);
     if (ctx)
     {
+        a_float *x, *y;
         unsigned int x_n = 0, y_n = 0;
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
-        a_float *const x = lua_array_num_get(L, 2, NULL, &x_n, 1);
-        a_float *const y = lua_array_num_get(L, 3, NULL, &y_n, 1);
+        x = lua_array_num_get(L, 2, NULL, &x_n, 1);
+        y = lua_array_num_get(L, 3, NULL, &y_n, 1);
         a_regress_simple_ols(ctx, A_MIN(x_n, y_n), x, y);
         lua_alloc(L, y, 0);
         lua_alloc(L, x, 0);
@@ -290,16 +297,17 @@ int luaopen_liba_regress_simple(lua_State *L)
         {"ols", liba_regress_simple_ols},
         {"new", liba_regress_simple_new},
     };
+    static lua_fun const metas[] = {
+        {"__newindex", liba_regress_simple_set},
+        {"__index", liba_regress_simple_get},
+    };
+
     lua_createtable(L, 0, A_LEN(funcs));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_createtable(L, 0, 1);
     lua_fun_set(L, -1, "__call", liba_regress_simple_);
     lua_setmetatable(L, -2);
 
-    static lua_fun const metas[] = {
-        {"__newindex", liba_regress_simple_set},
-        {"__index", liba_regress_simple_get},
-    };
     lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
     lua_fun_reg(L, -1, metas, A_LEN(metas));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));

@@ -30,46 +30,46 @@ int a_version_cmp(a_version const *lhs, a_version const *rhs)
 
 a_bool a_version_lt(a_version const *lhs, a_version const *rhs)
 {
-    if (lhs->major < rhs->major) { return A_TRUE; }
-    if (lhs->major > rhs->major) { return A_FALSE; }
-    if (lhs->minor < rhs->minor) { return A_TRUE; }
-    if (lhs->minor > rhs->minor) { return A_FALSE; }
-    if (lhs->third < rhs->third) { return A_TRUE; }
-    if (lhs->third > rhs->third) { return A_FALSE; }
-    return A_FALSE;
+    if (lhs->major < rhs->major) { return 1; }
+    if (lhs->major > rhs->major) { return 0; }
+    if (lhs->minor < rhs->minor) { return 1; }
+    if (lhs->minor > rhs->minor) { return 0; }
+    if (lhs->third < rhs->third) { return 1; }
+    if (lhs->third > rhs->third) { return 0; }
+    return 0;
 }
 
 a_bool a_version_gt(a_version const *lhs, a_version const *rhs)
 {
-    if (lhs->major > rhs->major) { return A_TRUE; }
-    if (lhs->major < rhs->major) { return A_FALSE; }
-    if (lhs->minor > rhs->minor) { return A_TRUE; }
-    if (lhs->minor < rhs->minor) { return A_FALSE; }
-    if (lhs->third > rhs->third) { return A_TRUE; }
-    if (lhs->third < rhs->third) { return A_FALSE; }
-    return A_FALSE;
+    if (lhs->major > rhs->major) { return 1; }
+    if (lhs->major < rhs->major) { return 0; }
+    if (lhs->minor > rhs->minor) { return 1; }
+    if (lhs->minor < rhs->minor) { return 0; }
+    if (lhs->third > rhs->third) { return 1; }
+    if (lhs->third < rhs->third) { return 0; }
+    return 0;
 }
 
 a_bool a_version_le(a_version const *lhs, a_version const *rhs)
 {
-    if (lhs->major < rhs->major) { return A_TRUE; }
-    if (lhs->major > rhs->major) { return A_FALSE; }
-    if (lhs->minor < rhs->minor) { return A_TRUE; }
-    if (lhs->minor > rhs->minor) { return A_FALSE; }
-    if (lhs->third < rhs->third) { return A_TRUE; }
-    if (lhs->third > rhs->third) { return A_FALSE; }
-    return A_TRUE;
+    if (lhs->major < rhs->major) { return 1; }
+    if (lhs->major > rhs->major) { return 0; }
+    if (lhs->minor < rhs->minor) { return 1; }
+    if (lhs->minor > rhs->minor) { return 0; }
+    if (lhs->third < rhs->third) { return 1; }
+    if (lhs->third > rhs->third) { return 0; }
+    return 1;
 }
 
 a_bool a_version_ge(a_version const *lhs, a_version const *rhs)
 {
-    if (lhs->major > rhs->major) { return A_TRUE; }
-    if (lhs->major < rhs->major) { return A_FALSE; }
-    if (lhs->minor > rhs->minor) { return A_TRUE; }
-    if (lhs->minor < rhs->minor) { return A_FALSE; }
-    if (lhs->third > rhs->third) { return A_TRUE; }
-    if (lhs->third < rhs->third) { return A_FALSE; }
-    return A_TRUE;
+    if (lhs->major > rhs->major) { return 1; }
+    if (lhs->major < rhs->major) { return 0; }
+    if (lhs->minor > rhs->minor) { return 1; }
+    if (lhs->minor < rhs->minor) { return 0; }
+    if (lhs->third > rhs->third) { return 1; }
+    if (lhs->third < rhs->third) { return 0; }
+    return 1;
 }
 
 a_bool a_version_eq(a_version const *lhs, a_version const *rhs)

@@ -49,8 +49,7 @@ static int liba_hash_sdbm(lua_State *L)
 */
 static int liba_isqrt(lua_State *L)
 {
-    int i;
-    int const n = lua_gettop(L);
+    int i, n = lua_gettop(L);
     for (i = 1; i <= n; ++i)
     {
         lua_Integer x = luaL_checkinteger(L, i);
@@ -72,8 +71,7 @@ static int liba_isqrt(lua_State *L)
 */
 static int liba_rsqrt(lua_State *L)
 {
-    int i;
-    int const n = lua_gettop(L);
+    int i, n = lua_gettop(L);
     for (i = 1; i <= n; ++i)
     {
         lua_Number x = luaL_checknumber(L, i);
@@ -95,7 +93,6 @@ static int liba_rsqrt(lua_State *L)
 
 int luaopen_liba(lua_State *L)
 {
-    luaL_checkversion(L);
     /***
      algorithm library
      @field VERSION algorithm library version string
@@ -107,9 +104,12 @@ int luaopen_liba(lua_State *L)
         {"isqrt", liba_isqrt},
         {"rsqrt", liba_rsqrt},
     };
+    luaL_checkversion(L);
 #if !defined LUA_VERSION_NUM || (LUA_VERSION_NUM <= 501)
-    lua_fun func = {NULL, NULL};
-    luaL_register(L, "liba", &func);
+    {
+        lua_fun l = {NULL, NULL};
+        luaL_register(L, "liba", &l);
+    }
 #else /* !LUA_VERSION_NUM */
     lua_createtable(L, 0, A_LEN(funcs) + 1);
 #endif /* LUA_VERSION_NUM */

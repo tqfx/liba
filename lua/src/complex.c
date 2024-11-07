@@ -72,7 +72,7 @@ static int liba_complex_tostring(lua_State *L)
 */
 int liba_complex_new(lua_State *L)
 {
-    a_complex z = A_COMPLEX_C(0.0, 0.0);
+    a_complex z = A_COMPLEX_C(0, 0);
     int const top = lua_gettop(L);
     if (top >= 1)
     {
@@ -697,12 +697,6 @@ int luaopen_liba_complex(lua_State *L)
         {"acsch", liba_complex_acsch},
         {"acoth", liba_complex_acoth},
     };
-    lua_createtable(L, 0, A_LEN(funcs));
-    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
-    lua_createtable(L, 0, 1);
-    lua_fun_set(L, -1, "__call", liba_complex_);
-    lua_setmetatable(L, -2);
-
     static lua_fun const metas[] = {
         {"__tostring", liba_complex_tostring},
         {"__newindex", liba_complex_set},
@@ -716,6 +710,13 @@ int luaopen_liba_complex(lua_State *L)
         {"__pow", liba_complex_pow},
         {"__eq", liba_complex_eq},
     };
+
+    lua_createtable(L, 0, A_LEN(funcs));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
+    lua_createtable(L, 0, 1);
+    lua_fun_set(L, -1, "__call", liba_complex_);
+    lua_setmetatable(L, -2);
+
     lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
     lua_fun_reg(L, -1, metas, A_LEN(metas));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));

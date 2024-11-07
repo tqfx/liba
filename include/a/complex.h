@@ -17,19 +17,13 @@
 /* clang-format off */
 /*! format constants for the fprintf family of functions */
 #define A_COMPLEX_PRI(RF, RC, IF, IC) "(" A_FLOAT_PRI(RF, RC) "," A_FLOAT_PRI(IF, IC) ")"
-/*! constructs a complex number constant from real and imaginary parts */
-#if !defined __cplusplus
-#define A_COMPLEX_C(R, I) (a_complex){A_FLOAT_C(R), A_FLOAT_C(I)}
-#else /* !__cplusplus */
-#define A_COMPLEX_C(R, I) {A_FLOAT_C(R), A_FLOAT_C(I)}
-#endif /* __cplusplus */
 /*! constructs a complex number from real and imaginary parts */
-#if !defined __cplusplus
-#define a_complex_c(r, i) (a_complex){a_float_c(r), a_float_c(i)}
-#else /* !__cplusplus */
-#define a_complex_c(r, i) {a_float_c(r), a_float_c(i)}
-#endif /* __cplusplus */
+#define A_COMPLEX_C(real, imag) {a_float_c(real), a_float_c(imag)}
 /* clang-format on */
+
+/*! static cast to \ref a_complex */
+#define a_complex_c(x) a_cast_s(a_complex, x)
+#define a_complex_(_, x) a_cast_s(a_complex _, x)
 
 /*!
  @brief instance structure for complex number

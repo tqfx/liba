@@ -15,6 +15,7 @@
 */
 int liba_hpf_new(lua_State *L)
 {
+    a_hpf *ctx;
     a_float alpha;
     if (lua_gettop(L) > 1)
     {
@@ -26,7 +27,7 @@ int liba_hpf_new(lua_State *L)
     {
         alpha = (a_float)luaL_checknumber(L, 1);
     }
-    a_hpf *const ctx = lua_newclass(L, a_hpf);
+    ctx = lua_newclass(L, a_hpf);
     lua_registry_get(L, liba_hpf_new);
     lua_setmetatable(L, -2);
     a_hpf_init(ctx, alpha);
@@ -159,17 +160,18 @@ int luaopen_liba_hpf(lua_State *L)
         {"iter", liba_hpf_iter},
         {"zero", liba_hpf_zero},
     };
+    static lua_fun const metas[] = {
+        {"__newindex", liba_hpf_set},
+        {"__index", liba_hpf_get},
+        {"__call", liba_hpf_iter},
+    };
+
     lua_createtable(L, 0, A_LEN(funcs));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));
     lua_createtable(L, 0, 1);
     lua_fun_set(L, -1, "__call", liba_hpf_);
     lua_setmetatable(L, -2);
 
-    static lua_fun const metas[] = {
-        {"__newindex", liba_hpf_set},
-        {"__index", liba_hpf_get},
-        {"__call", liba_hpf_iter},
-    };
     lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
     lua_fun_reg(L, -1, metas, A_LEN(metas));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));

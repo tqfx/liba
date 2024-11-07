@@ -64,13 +64,8 @@ typedef struct a_hpf hpf;
 } /* namespace a */
 #endif /* __cplusplus */
 /* clang-format off */
-#if defined(__cplusplus)
-#define A_HPF_INIT(alpha) {a_float_c(alpha), 0, 0}
-#define A_HPF_INIT2(fc, ts) {A_HPF_GEN(fc, ts), 0, 0}
-#else /* !__cplusplus */
-#define A_HPF_INIT(alpha) (a_hpf){a_float_c(alpha), 0, 0}
-#define A_HPF_INIT2(fc, ts) (a_hpf){A_HPF_GEN(fc, ts), 0, 0}
-#endif /* __cplusplus */
+#define A_HPF_1(alpha) {a_float_c(alpha), 0, 0}
+#define A_HPF_2(fc, ts) {A_HPF_GEN(fc, ts), 0, 0}
 /* clang-format on */
 #define A_HPF_GEN(fc, ts) (1 / (A_FLOAT_TAU * a_float_c(fc) * a_float_c(ts) + 1))
 

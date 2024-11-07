@@ -167,24 +167,26 @@ static int liba_version_check(lua_State *L)
 */
 int liba_version_cmp(lua_State *L)
 {
+    a_version const *lhs, *rhs;
     luaL_checktype(L, 1, LUA_TUSERDATA);
     luaL_checktype(L, 2, LUA_TUSERDATA);
-    a_version const *const lhs = (a_version const *)lua_touserdata(L, 1);
-    a_version const *const rhs = (a_version const *)lua_touserdata(L, 2);
+    lhs = (a_version const *)lua_touserdata(L, 1);
+    rhs = (a_version const *)lua_touserdata(L, 2);
     lua_pushinteger(L, a_version_cmp(lhs, rhs));
     return 1;
 }
 
 #undef F2
-#define F2(func)                                            \
-    int liba_version_##func(lua_State *L)                   \
-    {                                                       \
-        luaL_checktype(L, 1, LUA_TUSERDATA);                \
-        luaL_checktype(L, 2, LUA_TUSERDATA);                \
-        a_version *lhs = (a_version *)lua_touserdata(L, 1); \
-        a_version *rhs = (a_version *)lua_touserdata(L, 2); \
-        lua_pushboolean(L, a_version_##func(lhs, rhs));     \
-        return 1;                                           \
+#define F2(func)                                        \
+    int liba_version_##func(lua_State *L)               \
+    {                                                   \
+        a_version const *lhs, *rhs;                     \
+        luaL_checktype(L, 1, LUA_TUSERDATA);            \
+        luaL_checktype(L, 2, LUA_TUSERDATA);            \
+        lhs = (a_version const *)lua_touserdata(L, 1);  \
+        rhs = (a_version const *)lua_touserdata(L, 2);  \
+        lua_pushboolean(L, a_version_##func(lhs, rhs)); \
+        return 1;                                       \
     }
 /***
  version lhs is less than version rhs
@@ -352,13 +354,6 @@ int luaopen_liba_version(lua_State *L)
         {"eq", liba_version_eq},
         {"ne", liba_version_ne},
     };
-    lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs));
-    lua_int_reg(L, -1, enums, A_LEN(enums));
-    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
-    lua_createtable(L, 0, 1);
-    lua_fun_set(L, -1, "__call", liba_version_);
-    lua_setmetatable(L, -2);
-
     static lua_fun const metas[] = {
         {"__tostring", liba_version_tostring},
         {"__newindex", liba_version_set},
@@ -368,6 +363,14 @@ int luaopen_liba_version(lua_State *L)
         {"__lt", liba_version_lt},
         {"__le", liba_version_le},
     };
+
+    lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs));
+    lua_int_reg(L, -1, enums, A_LEN(enums));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
+    lua_createtable(L, 0, 1);
+    lua_fun_set(L, -1, "__call", liba_version_);
+    lua_setmetatable(L, -2);
+
     lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs));
     lua_fun_reg(L, -1, metas, A_LEN(metas));
     lua_fun_reg(L, -1, funcs + 1, A_LEN(funcs) - 1);

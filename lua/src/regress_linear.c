@@ -32,11 +32,13 @@ int liba_regress_linear_die(lua_State *L)
 */
 int liba_regress_linear_new(lua_State *L)
 {
+    a_float b, *p;
     unsigned int n = 0;
+    a_regress_linear *ctx;
     luaL_checktype(L, 1, LUA_TTABLE);
-    a_float const b = (a_float)luaL_optnumber(L, 2, 0);
-    a_float *const p = lua_array_num_get(L, 1, NULL, &n, 1);
-    a_regress_linear *const ctx = lua_newclass(L, a_regress_linear);
+    b = (a_float)luaL_optnumber(L, 2, 0);
+    p = lua_array_num_get(L, 1, NULL, &n, 1);
+    ctx = lua_newclass(L, a_regress_linear);
     lua_registry_get(L, liba_regress_linear_new);
     lua_setmetatable(L, -2);
     a_regress_linear_init(ctx, p, n, b);
@@ -56,10 +58,11 @@ int liba_regress_linear_init(lua_State *L)
     a_regress_linear *const ctx = (a_regress_linear *)lua_touserdata(L, 1);
     if (ctx)
     {
-        luaL_checktype(L, 2, LUA_TTABLE);
+        a_float b, *p;
         unsigned int n = (unsigned int)ctx->coef_n;
-        a_float const b = (a_float)luaL_optnumber(L, 3, 0);
-        a_float *const p = lua_array_num_get(L, 2, ctx->coef_p, &n, 1);
+        luaL_checktype(L, 2, LUA_TTABLE);
+        b = (a_float)luaL_optnumber(L, 3, 0);
+        p = lua_array_num_get(L, 2, ctx->coef_p, &n, 1);
         a_regress_linear_init(ctx, p, n, b);
         lua_pushvalue(L, 1);
         return 1;
@@ -79,8 +82,9 @@ int liba_regress_linear_eval(lua_State *L)
     a_regress_linear *const ctx = (a_regress_linear *)lua_touserdata(L, 1);
     if (ctx)
     {
+        a_float *p;
         luaL_checktype(L, 2, LUA_TTABLE);
-        a_float *const p = lua_array_num_get(L, 2, NULL, NULL, 1);
+        p = lua_array_num_get(L, 2, NULL, NULL, 1);
         lua_pushnumber(L, (lua_Number)a_regress_linear_eval(ctx, p));
         lua_alloc(L, p, 0);
         return 1;
@@ -101,11 +105,12 @@ int liba_regress_linear_err(lua_State *L)
     a_regress_linear *const ctx = (a_regress_linear *)lua_touserdata(L, 1);
     if (ctx)
     {
+        a_float *x, *y;
         unsigned int m = 0, n = 0;
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
-        a_float *const x = lua_array_num_get(L, 2, NULL, &m, 1);
-        a_float *const y = lua_array_num_get(L, 3, NULL, &n, 1);
+        x = lua_array_num_get(L, 2, NULL, &m, 1);
+        y = lua_array_num_get(L, 3, NULL, &n, 1);
         m /= (unsigned int)ctx->coef_n;
         if (m < n) { n = m; }
         a_regress_linear_err(ctx, n, x, y, y);
@@ -131,10 +136,11 @@ int liba_regress_linear_gd(lua_State *L)
     a_regress_linear *const ctx = (a_regress_linear *)lua_touserdata(L, 1);
     if (ctx)
     {
+        a_float alpha, error, *input;
         luaL_checktype(L, 2, LUA_TTABLE);
-        a_float const error = (a_float)luaL_checknumber(L, 3);
-        a_float const alpha = (a_float)luaL_checknumber(L, 4);
-        a_float *const input = lua_array_num_get(L, 2, NULL, NULL, 1);
+        error = (a_float)luaL_checknumber(L, 3);
+        alpha = (a_float)luaL_checknumber(L, 4);
+        input = lua_array_num_get(L, 2, NULL, NULL, 1);
         a_regress_linear_gd(ctx, input, error, alpha);
         lua_alloc(L, input, 0);
         lua_pushvalue(L, 1);
@@ -157,12 +163,13 @@ int liba_regress_linear_sgd(lua_State *L)
     a_regress_linear *const ctx = (a_regress_linear *)lua_touserdata(L, 1);
     if (ctx)
     {
+        a_float alpha, *x, *y;
         unsigned int m = 0, n = 0;
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
-        a_float const alpha = (a_float)luaL_checknumber(L, 4);
-        a_float *const x = lua_array_num_get(L, 2, NULL, &m, 1);
-        a_float *const y = lua_array_num_get(L, 3, NULL, &n, 1);
+        alpha = (a_float)luaL_checknumber(L, 4);
+        x = lua_array_num_get(L, 2, NULL, &m, 1);
+        y = lua_array_num_get(L, 3, NULL, &n, 1);
         m /= (unsigned int)ctx->coef_n;
         if (m < n) { n = m; }
         a_regress_linear_sgd(ctx, n, x, y, alpha);
@@ -188,12 +195,13 @@ int liba_regress_linear_bgd(lua_State *L)
     a_regress_linear *const ctx = (a_regress_linear *)lua_touserdata(L, 1);
     if (ctx)
     {
+        a_float alpha, *x, *y;
         unsigned int m = 0, n = 0;
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
-        a_float const alpha = (a_float)luaL_checknumber(L, 4);
-        a_float *const x = lua_array_num_get(L, 2, NULL, &m, 1);
-        a_float *const y = lua_array_num_get(L, 3, NULL, &n, 1);
+        alpha = (a_float)luaL_checknumber(L, 4);
+        x = lua_array_num_get(L, 2, NULL, &m, 1);
+        y = lua_array_num_get(L, 3, NULL, &n, 1);
         m /= (unsigned int)ctx->coef_n;
         if (m < n) { n = m; }
         a_regress_linear_err(ctx, n, x, y, y);
@@ -225,24 +233,26 @@ int liba_regress_linear_mgd(lua_State *L)
     a_regress_linear *const ctx = (a_regress_linear *)lua_touserdata(L, 1);
     if (ctx)
     {
+        a_float *x, *y, *err, r;
         unsigned int m = 0, n = 0;
+        a_float delta, lrmax, lrmin;
+        unsigned int lrtim, epoch, batch;
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
-        a_float const delta = (a_float)luaL_checknumber(L, 4);
-        a_float const lrmax = (a_float)luaL_checknumber(L, 5);
-        a_float const lrmin = (a_float)luaL_checknumber(L, 6);
-        unsigned int const lrtim = (unsigned int)luaL_optinteger(L, 7, 100);
-        unsigned int const epoch = (unsigned int)luaL_optinteger(L, 8, 1000);
-        unsigned int const batch = (unsigned int)luaL_optinteger(L, 9, 10);
-        a_float *const x = lua_array_num_get(L, 2, NULL, &m, 1);
-        a_float *const y = lua_array_num_get(L, 3, NULL, &n, 1);
+        delta = (a_float)luaL_checknumber(L, 4);
+        lrmax = (a_float)luaL_checknumber(L, 5);
+        lrmin = (a_float)luaL_checknumber(L, 6);
+        lrtim = (unsigned int)luaL_optinteger(L, 7, 100);
+        epoch = (unsigned int)luaL_optinteger(L, 8, 1000);
+        batch = (unsigned int)luaL_optinteger(L, 9, 10);
+        x = lua_array_num_get(L, 2, NULL, &m, 1);
+        y = lua_array_num_get(L, 3, NULL, &n, 1);
         m /= (unsigned int)ctx->coef_n;
         if (m < n) { n = m; }
-        a_float *const err = (a_float *)lua_alloc(L, NULL, sizeof(a_float) * n);
+        err = (a_float *)lua_alloc(L, NULL, sizeof(a_float) * n);
         /* clang-format off */
-        a_float r = a_regress_linear_mgd(ctx,
-            n, x, y, err, delta, lrmax, lrmin, lrtim, epoch, batch
-        );
+        r = a_regress_linear_mgd(ctx, n, x, y, err,
+            delta, lrmax, lrmin, lrtim, epoch, batch);
         /* clang-format on */
         lua_pushnumber(L, (lua_Number)r);
         lua_alloc(L, err, 0);
@@ -277,8 +287,8 @@ static int liba_regress_linear_set(lua_State *L)
     {
     case 0x0D6147ED: /* coef */
     {
-        luaL_checktype(L, 3, LUA_TTABLE);
         unsigned int n = (unsigned int)ctx->coef_n;
+        luaL_checktype(L, 3, LUA_TTABLE);
         ctx->coef_p = lua_array_num_get(L, 3, ctx->coef_p, &n, 1);
         ctx->coef_n = n;
         break;
@@ -348,12 +358,6 @@ int luaopen_liba_regress_linear(lua_State *L)
         {"mgd", liba_regress_linear_mgd},
         {"new", liba_regress_linear_new},
     };
-    lua_createtable(L, 0, A_LEN(funcs));
-    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
-    lua_createtable(L, 0, 1);
-    lua_fun_set(L, -1, "__call", liba_regress_linear_);
-    lua_setmetatable(L, -2);
-
     static lua_fun const metas[] = {
         {"__newindex", liba_regress_linear_set},
         {"__index", liba_regress_linear_get},
@@ -362,6 +366,13 @@ int luaopen_liba_regress_linear(lua_State *L)
 #endif /* LUA_VERSION_NUM */
         {"__gc", liba_regress_linear_die},
     };
+
+    lua_createtable(L, 0, A_LEN(funcs));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
+    lua_createtable(L, 0, 1);
+    lua_fun_set(L, -1, "__call", liba_regress_linear_);
+    lua_setmetatable(L, -2);
+
     lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
     lua_fun_reg(L, -1, metas, A_LEN(metas));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));

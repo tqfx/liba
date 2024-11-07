@@ -146,18 +146,23 @@ int liba_pid_fuzzy_set_rule(lua_State *L)
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
     {
-        unsigned int num = 0;
+        a_float const *me;
+        a_float const *mec;
+        a_float const *mkp;
+        a_float const *mki;
+        a_float const *mkd;
+        unsigned int n = 0;
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
         luaL_checktype(L, 4, LUA_TTABLE);
         luaL_checktype(L, 5, LUA_TTABLE);
         luaL_checktype(L, 6, LUA_TTABLE);
-        a_float const *const me = lua_array_num_get(L, 2, ctx->me, 0, 2);
-        a_float const *const mec = lua_array_num_get(L, 3, ctx->mec, 0, 2);
-        a_float const *const mkp = lua_array_num_get(L, 4, ctx->mkp, &num, 2);
-        a_float const *const mki = lua_array_num_get(L, 5, ctx->mki, 0, 2);
-        a_float const *const mkd = lua_array_num_get(L, 6, ctx->mkd, 0, 2);
-        a_pid_fuzzy_set_rule(ctx, a_u32_sqrt(num), me, mec, mkp, mki, mkd);
+        me = lua_array_num_get(L, 2, ctx->me, 0, 2);
+        mec = lua_array_num_get(L, 3, ctx->mec, 0, 2);
+        mkp = lua_array_num_get(L, 4, ctx->mkp, &n, 2);
+        mki = lua_array_num_get(L, 5, ctx->mki, 0, 2);
+        mkd = lua_array_num_get(L, 6, ctx->mkd, 0, 2);
+        a_pid_fuzzy_set_rule(ctx, a_u32_sqrt(n), me, mec, mkp, mki, mkd);
         lua_pushvalue(L, 1);
         return 1;
     }
@@ -424,13 +429,6 @@ int luaopen_liba_pid_fuzzy(lua_State *L)
         {"inc", liba_pid_fuzzy_inc},
         {"zero", liba_pid_fuzzy_zero},
     };
-    lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs));
-    lua_int_reg(L, -1, enums, A_LEN(enums));
-    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
-    lua_createtable(L, 0, 1);
-    lua_fun_set(L, -1, "__call", liba_pid_fuzzy_);
-    lua_setmetatable(L, -2);
-
     static lua_fun const metas[] = {
         {"__newindex", liba_pid_fuzzy_set},
         {"__index", liba_pid_fuzzy_get},
@@ -439,6 +437,14 @@ int luaopen_liba_pid_fuzzy(lua_State *L)
 #endif /* LUA_VERSION_NUM */
         {"__gc", liba_pid_fuzzy_die},
     };
+
+    lua_createtable(L, 0, A_LEN(enums) + A_LEN(funcs));
+    lua_int_reg(L, -1, enums, A_LEN(enums));
+    lua_fun_reg(L, -1, funcs, A_LEN(funcs));
+    lua_createtable(L, 0, 1);
+    lua_fun_set(L, -1, "__call", liba_pid_fuzzy_);
+    lua_setmetatable(L, -2);
+
     lua_createtable(L, 0, A_LEN(metas) + A_LEN(funcs) + 1);
     lua_fun_reg(L, -1, metas, A_LEN(metas));
     lua_fun_reg(L, -1, funcs, A_LEN(funcs));

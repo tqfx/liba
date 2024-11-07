@@ -240,8 +240,8 @@ static void test_atrih(a_complex x)
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
-    a_complex x = A_COMPLEX_C(0.0, 0.0);
-    a_complex y = a_complex_c(0.0, 0.0);
+    a_complex x = A_COMPLEX_C(0, 0);
+    a_complex y = A_COMPLEX_C(0, 0);
     if (argc > 1)
     {
         a_complex_parse(&x, argv[1]);

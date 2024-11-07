@@ -162,8 +162,13 @@ void lua_array_str_set(lua_State *L, int idx, char const *const *ptr, unsigned i
     idx = idx < 0 ? idx - 1 : idx;
     for (i = num; i--; num = i)
     {
+#if defined(LUA_VERSION_NUM) && (LUA_VERSION_NUM > 502)
+        lua_Integer n = (lua_Integer)num;
+#else /* !LUA_VERSION_NUM */
+        int n = (int)num;
+#endif /* LUA_VERSION_NUM */
         lua_pushstring(L, ptr[i]);
-        lua_rawseti(L, idx, (lua_Integer)num);
+        lua_rawseti(L, idx, n);
     }
 }
 
@@ -173,8 +178,13 @@ void lua_array_str_new(lua_State *L, char const *const *ptr, unsigned int num)
     lua_createtable(L, (int)num, 0);
     for (i = num; i--; num = i)
     {
+#if defined(LUA_VERSION_NUM) && (LUA_VERSION_NUM > 502)
+        lua_Integer n = (lua_Integer)num;
+#else /* !LUA_VERSION_NUM */
+        int n = (int)num;
+#endif /* LUA_VERSION_NUM */
         lua_pushstring(L, ptr[i]);
-        lua_rawseti(L, -2, (lua_Integer)num);
+        lua_rawseti(L, -2, n);
     }
 }
 
@@ -196,8 +206,13 @@ void lua_array_int_set(lua_State *L, int idx, LUA_INT const *ptr, unsigned int n
     idx = idx < 0 ? idx - 1 : idx;
     for (i = num; i--; num = i)
     {
+#if defined(LUA_VERSION_NUM) && (LUA_VERSION_NUM > 502)
+        lua_Integer n = (lua_Integer)num;
+#else /* !LUA_VERSION_NUM */
+        int n = (int)num;
+#endif /* LUA_VERSION_NUM */
         lua_pushinteger(L, (lua_Integer)ptr[i]);
-        lua_rawseti(L, idx, (lua_Integer)num);
+        lua_rawseti(L, idx, n);
     }
 }
 
@@ -207,8 +222,13 @@ void lua_array_int_new(lua_State *L, LUA_INT const *ptr, unsigned int num)
     lua_createtable(L, (int)num, 0);
     for (i = num; i--; num = i)
     {
+#if defined(LUA_VERSION_NUM) && (LUA_VERSION_NUM > 502)
+        lua_Integer n = (lua_Integer)num;
+#else /* !LUA_VERSION_NUM */
+        int n = (int)num;
+#endif /* LUA_VERSION_NUM */
         lua_pushinteger(L, (lua_Integer)ptr[i]);
-        lua_rawseti(L, -2, (lua_Integer)num);
+        lua_rawseti(L, -2, n);
     }
 }
 
@@ -271,8 +291,13 @@ void lua_array_num_set(lua_State *L, int idx, LUA_NUM const *ptr, unsigned int n
     idx = idx < 0 ? idx - 1 : idx;
     for (i = num; i--; num = i)
     {
+#if defined(LUA_VERSION_NUM) && (LUA_VERSION_NUM > 502)
+        lua_Integer n = (lua_Integer)num;
+#else /* !LUA_VERSION_NUM */
+        int n = (int)num;
+#endif /* LUA_VERSION_NUM */
         lua_pushnumber(L, (lua_Number)ptr[i]);
-        lua_rawseti(L, idx, (lua_Integer)num);
+        lua_rawseti(L, idx, n);
     }
 }
 
@@ -282,8 +307,13 @@ void lua_array_num_new(lua_State *L, LUA_NUM const *ptr, unsigned int num)
     lua_createtable(L, (int)num, 0);
     for (i = num; i--; num = i)
     {
+#if defined(LUA_VERSION_NUM) && (LUA_VERSION_NUM > 502)
+        lua_Integer n = (lua_Integer)num;
+#else /* !LUA_VERSION_NUM */
+        int n = (int)num;
+#endif /* LUA_VERSION_NUM */
         lua_pushnumber(L, (lua_Number)ptr[i]);
-        lua_rawseti(L, -2, (lua_Integer)num);
+        lua_rawseti(L, -2, n);
     }
 }
 
@@ -376,8 +406,13 @@ void lua_array_u8_new(lua_State *L, a_u8 const *ptr, unsigned int num)
     lua_createtable(L, (int)num, 0);
     for (i = num; i--; num = i)
     {
+#if defined(LUA_VERSION_NUM) && (LUA_VERSION_NUM > 502)
+        lua_Integer n = (lua_Integer)num;
+#else /* !LUA_VERSION_NUM */
+        int n = (int)num;
+#endif /* LUA_VERSION_NUM */
         lua_u8_new(L, ptr[i]);
-        lua_rawseti(L, -2, (lua_Integer)num);
+        lua_rawseti(L, -2, n);
     }
 }
 
@@ -387,8 +422,13 @@ void lua_array_u16_new(lua_State *L, a_u16 const *ptr, unsigned int num)
     lua_createtable(L, (int)num, 0);
     for (i = num; i--; num = i)
     {
+#if defined(LUA_VERSION_NUM) && (LUA_VERSION_NUM > 502)
+        lua_Integer n = (lua_Integer)num;
+#else /* !LUA_VERSION_NUM */
+        int n = (int)num;
+#endif /* LUA_VERSION_NUM */
         lua_u16_new(L, ptr[i]);
-        lua_rawseti(L, -2, (lua_Integer)num);
+        lua_rawseti(L, -2, n);
     }
 }
 
@@ -398,8 +438,13 @@ void lua_array_u32_new(lua_State *L, a_u32 const *ptr, unsigned int num)
     lua_createtable(L, (int)num, 0);
     for (i = num; i--; num = i)
     {
+#if defined(LUA_VERSION_NUM) && (LUA_VERSION_NUM > 502)
+        lua_Integer n = (lua_Integer)num;
+#else /* !LUA_VERSION_NUM */
+        int n = (int)num;
+#endif /* LUA_VERSION_NUM */
         lua_u32_new(L, ptr[i]);
-        lua_rawseti(L, -2, (lua_Integer)num);
+        lua_rawseti(L, -2, n);
     }
 }
 
@@ -409,8 +454,13 @@ void lua_array_u64_new(lua_State *L, a_u64 const *ptr, unsigned int num)
     lua_createtable(L, (int)num, 0);
     for (i = num; i--; num = i)
     {
+#if defined(LUA_VERSION_NUM) && (LUA_VERSION_NUM > 502)
+        lua_Integer n = (lua_Integer)num;
+#else /* !LUA_VERSION_NUM */
+        int n = (int)num;
+#endif /* LUA_VERSION_NUM */
         lua_u64_new(L, ptr[i]);
-        lua_rawseti(L, -2, (lua_Integer)num);
+        lua_rawseti(L, -2, n);
     }
 }
 
