@@ -1,6 +1,9 @@
 set(LIBA_JAVASCRIPT_SUFFIX ".js" CACHE STRING "The suffix for JavaScript output files.")
 set_property(CACHE LIBA_JAVASCRIPT_SUFFIX PROPERTY STRINGS ".js" ".mjs" ".html" ".wasm")
 set(CMAKE_EXECUTABLE_SUFFIX ${LIBA_JAVASCRIPT_SUFFIX})
+set(CMAKE_CXX_STANDARD_REQUIRED 1)
+set(CMAKE_CXX_EXTENSIONS 0)
+set(CMAKE_CXX_STANDARD 11)
 
 if(NOT LIBA_CXX)
   enable_language(CXX)
