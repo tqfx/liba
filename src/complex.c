@@ -1,6 +1,8 @@
-#if !defined _XOPEN_SOURCE
-#define _XOPEN_SOURCE 500
-#endif /* _XOPEN_SOURCE */
+#if defined(__GNUC__)
+#if !defined _GNU_SOURCE
+#define _GNU_SOURCE 1
+#endif /* _GNU_SOURCE */
+#endif /* __GNUC__ */
 #include "a/a.h"
 #if A_PREREQ_GNUC(3, 0)
 #pragma GCC diagnostic ignored "-Wfloat-conversion"
