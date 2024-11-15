@@ -1,3 +1,6 @@
+#if !defined _XOPEN_SOURCE
+#define _XOPEN_SOURCE 500
+#endif /* _XOPEN_SOURCE */
 #include "a/version.h"
 
 unsigned int const a_version_major = A_VERSION_MAJOR;

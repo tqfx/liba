@@ -392,6 +392,7 @@ A_INTERN void *a_vec_pull(a_vec *ctx) { return a_vec_pull_back(ctx); }
  @param ctx points to an instance of vector structure
 */
 #define a_vec_forenum(i, ctx) a_forenum(a_size, i, (ctx)->num_)
+#define A_VEC_FORENUM(I, i, ctx) A_FORENUM(I, i, (ctx)->num_)
 
 /*!
  @brief iterate over a vector in reverse
@@ -406,6 +407,7 @@ A_INTERN void *a_vec_pull(a_vec *ctx) { return a_vec_pull_back(ctx); }
  @param ctx points to an instance of vector structure
 */
 #define a_vec_forenum_reverse(i, ctx) a_forenum_reverse(a_size, i, (ctx)->num_)
+#define A_VEC_FORENUM_REVERSE(I, i, ctx) A_FORENUM_REVERSE(I, i, (ctx)->num_)
 
 /*!
  @brief iterate over a vector
@@ -416,11 +418,12 @@ A_INTERN void *a_vec_pull(a_vec *ctx) { return a_vec_pull_back(ctx); }
  }
  @endcode
  @param T the prefix of the element type
- @param P the suffix of the element type
+ @param S the suffix of the element type
  @param it the &a_vec to use as a loop counter
  @param ctx points to an instance of vector structure
 */
-#define a_vec_foreach(T, P, it, ctx) a_forsafe(T, P, it, (ctx)->ptr_, (ctx)->num_)
+#define a_vec_foreach(T, S, it, ctx) a_forsafe(T, S, it, (ctx)->ptr_, (ctx)->num_)
+#define A_VEC_FOREACH(T, it, at, ctx) A_FORSAFE(T, it, at, (ctx)->ptr_, (ctx)->num_)
 
 /*!
  @brief iterate over a vector in reverse
@@ -431,11 +434,12 @@ A_INTERN void *a_vec_pull(a_vec *ctx) { return a_vec_pull_back(ctx); }
  }
  @endcode
  @param T the prefix of the element type
- @param P the suffix of the element type
+ @param S the suffix of the element type
  @param it the &a_vec to use as a loop counter
  @param ctx points to an instance of vector structure
 */
-#define a_vec_foreach_reverse(T, P, it, ctx) a_forsafe_reverse(T, P, it, (ctx)->ptr_, (ctx)->num_)
+#define a_vec_foreach_reverse(T, S, it, ctx) a_forsafe_reverse(T, S, it, (ctx)->ptr_, (ctx)->num_)
+#define A_VEC_FOREACH_REVERSE(T, it, at, ctx) A_FORSAFE_REVERSE(T, it, at, (ctx)->ptr_, (ctx)->num_)
 
 /*! @} a_vec */
 

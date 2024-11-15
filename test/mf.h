@@ -5,8 +5,10 @@
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
-    main_init(argc, argv, 1);
+    int i;
     unsigned int e = A_MF_NUL;
+    a_float params[6] = {0, 0, 0, 0, 0, 0};
+    main_init(argc, argv, 1);
     if (argc > 1)
     {
         if (strstr(argv[1], "gauss2.")) { e = A_MF_GAUSS2; }
@@ -23,19 +25,18 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         else if (strstr(argv[1], "z.")) { e = A_MF_Z; }
         else if (strstr(argv[1], "pi.")) { e = A_MF_PI; }
     }
-    a_float params[6] = {0, 0, 0, 0, 0, 0};
-    for (int i = 2; i < argc && i < 8; ++i)
+    for (i = 2; i < argc && i < 8; ++i)
     {
         params[i - 2] = strtonum(argv[i], A_NULL);
     }
     if (e != A_MF_NUL)
     {
         a_float delta = (params[1] - params[0]) / A_FLOAT_C(100.0);
-        for (int i = 0; i < 100; ++i)
+        for (i = 0; i < 100; ++i)
         {
             a_float x = params[0] + delta * a_float_c(i);
             a_float y = a_mf(e, x, params + 2);
-            debug(A_FLOAT_PRI(, "g,") A_FLOAT_PRI(, "g\n"), x, y);
+            debug(A_FLOAT_PRI("", "g,") A_FLOAT_PRI("", "g\n"), x, y);
         }
     }
     else

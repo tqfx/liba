@@ -293,7 +293,11 @@
 #define A_TRUE 1
 #define A_FALSE 0
 #if !defined A_BOOL
+#if defined(__STDC_VERSION__) || A_PREREQ_MSVC(18, 0)
 #define A_BOOL _Bool
+#else /* !__STDC_VERSION__ */
+#define A_BOOL unsigned char
+#endif /* __STDC_VERSION__ */
 #endif /* A_BOOL */
 #endif /* __cplusplus */
 /*! static cast to \ref a_bool */
@@ -914,6 +918,7 @@ typedef union a_cast
  @param n final value of the iteration
 */
 #define a_forenum(I, i, n) for (I i = 0; i < (n); ++i)
+#define A_FORENUM(I, i, n) for (i = 0; i < a_cast_s(I, n); ++i)
 
 /*!
  @brief iterate from n to 0 and not include n
@@ -922,58 +927,73 @@ typedef union a_cast
  @param n final value of the iteration
 */
 #define a_forenum_reverse(I, i, n) for (I i = (n); i-- > 0;)
+#define A_FORENUM_REVERSE(I, i, n) for (i = a_cast_s(I, n); i-- > 0;)
 
 /*!
  @brief iterate over an array
  @param T the prefix of the element type
- @param P the suffix of the element type
+ @param S the suffix of the element type
  @param it pointer to the current element
  @param ptr starting address of this array
  @param num number of elements in this array
 */
-#define a_foreach(T, P, it, ptr, num) \
-    for (T P it = a_cast_s(T P, ptr), P it##_ = it + (num); it < it##_; ++it)
+#define a_foreach(T, S, it, ptr, num) \
+    for (T S it = a_cast_s(T S, ptr), S it##_ = it + (num); it < it##_; ++it)
+#define A_FOREACH(T, it, at, ptr, num) \
+    for (it = a_cast_s(T, ptr), at = it + (num); it < at; ++it)
 /*! @copydoc a_foreach */
-#define a_forsafe(T, P, it, ptr, num) \
-    for (T P it = a_cast_s(T P, ptr), P it##_ = (num) ? it + (num) : it; it < it##_; ++it)
+#define a_forsafe(T, S, it, ptr, num) \
+    for (T S it = a_cast_s(T S, ptr), S it##_ = (num) ? it + (num) : it; it < it##_; ++it)
+#define A_FORSAFE(T, it, at, ptr, num) \
+    for (it = a_cast_s(T, ptr), at = (num) ? it + (num) : it; it < at; ++it)
 
 /*!
  @brief iterate over an array in reverse
  @param T the prefix of the element type
- @param P the suffix of the element type
+ @param S the suffix of the element type
  @param it pointer to the current element
  @param ptr starting address of this array
  @param num number of elements in this array
 */
-#define a_foreach_reverse(T, P, it, ptr, num) \
-    for (T P it##_ = a_cast_s(T P, ptr) - 1, P it = it##_ + (num); it > it##_; --it)
+#define a_foreach_reverse(T, S, it, ptr, num) \
+    for (T S it##_ = a_cast_s(T S, ptr) - 1, S it = it##_ + (num); it > it##_; --it)
+#define A_FOREACH_REVERSE(T, it, at, ptr, num) \
+    for (at = a_cast_s(T, ptr) - 1, it = at + (num); it > at; --it)
 /*! @copydoc a_foreach_reverse */
-#define a_forsafe_reverse(T, P, it, ptr, num)                             \
-    for (T P it##_ = (num) ? a_cast_s(T P, ptr) - 1 : a_cast_s(T P, ptr), \
-             P it = (num) ? it##_ + (num) : it##_;                        \
+#define a_forsafe_reverse(T, S, it, ptr, num)                             \
+    for (T S it##_ = (num) ? a_cast_s(T S, ptr) - 1 : a_cast_s(T S, ptr), \
+             S it = (num) ? it##_ + (num) : it##_;                        \
          it > it##_; --it)
+#define A_FORSAFE_REVERSE(T, it, at, ptr, num)                 \
+    for (at = (num) ? a_cast_s(T, ptr) - 1 : a_cast_s(T, ptr), \
+        it = (num) ? at + (num) : at;                          \
+         it > at; --it)
 
 /*!
  @brief iterate over an array
  @param T the prefix of the element type
- @param P the suffix of the element type
+ @param S the suffix of the element type
  @param it pointer to the current element
  @param ptr starting address of this array
  @param end the end address of this array
 */
-#define a_iterate(T, P, it, ptr, end) \
-    for (T P it = a_cast_s(T P, ptr), P it##_ = a_cast_s(T P, end); it < it##_; ++it)
+#define a_iterate(T, S, it, ptr, end) \
+    for (T S it = a_cast_s(T S, ptr), S it##_ = a_cast_s(T S, end); it < it##_; ++it)
+#define A_ITERATE(T, it, at, ptr, end) \
+    for (it = a_cast_s(T, ptr), at = a_cast_s(T, end); it < at; ++it)
 
 /*!
  @brief iterate over an array in reverse
  @param T the prefix of the element type
- @param P the suffix of the element type
+ @param S the suffix of the element type
  @param it pointer to the current element
  @param ptr starting address of this array
  @param end the end address of this array
 */
-#define a_iterate_reverse(T, P, it, ptr, end) \
-    for (T P it = a_cast_s(T P, end) - 1, P it##_ = a_cast_s(T P, ptr) - 1; it > it##_; --it)
+#define a_iterate_reverse(T, S, it, ptr, end) \
+    for (T S it = a_cast_s(T S, end) - 1, S it##_ = a_cast_s(T S, ptr) - 1; it > it##_; --it)
+#define A_ITERATE_REVERSE(T, it, at, ptr, end) \
+    for (it = a_cast_s(T, end) - 1, at = a_cast_s(T, ptr) - 1; it > at; --it)
 
 /*!
  @brief enumeration for return values

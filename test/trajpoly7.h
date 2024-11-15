@@ -4,7 +4,11 @@
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
-    int start = 1;
+    a_float arg[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    a_float x, delta;
+    int i, start = 1;
+    a_trajpoly7 ctx;
+
     if (argc > 1)
     {
         char *endptr = A_NULL;
@@ -16,17 +20,15 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         }
     }
 
-    a_float arg[10] = {0};
-    for (int i = start; i < argc; ++i)
+    for (i = start; i < argc; ++i)
     {
         arg[i - start] = strtonum(argv[i], A_NULL);
     }
-    a_trajpoly7 pt7;
-    a_trajpoly7_gen(&pt7, arg[1] - arg[0], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7], arg[8], arg[9]);
-    for (a_float x = arg[0], delta = (arg[1] - arg[0]) / 1000; x < arg[1]; x += delta) /* NOLINT */
+    a_trajpoly7_gen(&ctx, arg[1] - arg[0], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7], arg[8], arg[9]);
+    for ((void)(x = arg[0]), delta = (arg[1] - arg[0]) / 1000; x < arg[1]; x += delta) /* NOLINT */
     {
         debug(A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f\n"),
-              x, a_trajpoly7_pos(&pt7, x), a_trajpoly7_vel(&pt7, x), a_trajpoly7_acc(&pt7, x), a_trajpoly7_jer(&pt7, x));
+              x, a_trajpoly7_pos(&ctx, x), a_trajpoly7_vel(&ctx, x), a_trajpoly7_acc(&ctx, x), a_trajpoly7_jer(&ctx, x));
     }
 
 #if defined(__cplusplus) && (__cplusplus > 201100L)

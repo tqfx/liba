@@ -12,27 +12,27 @@ static void dtor(void *ptr)
 static void back(void)
 {
     a_buf ctx;
-    a_u32 buf[10];
+    a_u32 buf[10], i, *it, *at;
     a_buf_ctor(&ctx, buf, sizeof(a_u32), 10);
 
-    for (a_u32 i = 0; i != 20; ++i)
+    for (i = 0; i != 20; ++i)
     {
         a_u32 *obj = A_BUF_PUSH_BACK(a_u32, &ctx);
         if (obj) { *obj = i; }
     }
 
-    a_buf_foreach(a_u32, *, it, &ctx)
+    A_BUF_FOREACH(a_u32 *, it, at, &ctx)
     {
         printf("%" PRIu32 " ", *it);
     }
-    putchar('\n');
+    (void)putchar('\n');
 
-    for (a_u32 i = 0; i != 20; ++i)
+    for (i = 0; i != 20; ++i)
     {
         a_u32 *obj = A_BUF_PULL_BACK(a_u32, &ctx);
         if (obj) { printf("%" PRIu32 " ", *obj); }
     }
-    putchar('\n');
+    (void)putchar('\n');
 
     a_buf_dtor(&ctx, dtor);
 }
@@ -40,27 +40,27 @@ static void back(void)
 static void fore(void)
 {
     a_buf ctx;
-    a_u32 buf[10];
+    a_u32 buf[10], i, *it, *at;
     a_buf_ctor(&ctx, buf, sizeof(a_u32), 10);
 
-    for (a_u32 i = 0; i != 20; ++i)
+    for (i = 0; i != 20; ++i)
     {
         a_u32 *obj = A_BUF_PUSH_FORE(a_u32, &ctx);
         if (obj) { *obj = i; }
     }
 
-    a_buf_foreach_reverse(a_u32, *, it, &ctx)
+    A_BUF_FOREACH_REVERSE(a_u32 *, it, at, &ctx)
     {
         printf("%" PRIu32 " ", *it);
     }
-    putchar('\n');
+    (void)putchar('\n');
 
-    for (a_u32 i = 0; i != 20; ++i)
+    for (i = 0; i != 20; ++i)
     {
         a_u32 *obj = A_BUF_PULL_FORE(a_u32, &ctx);
         if (obj) { printf("%" PRIu32 " ", *obj); }
     }
-    putchar('\n');
+    (void)putchar('\n');
 
     a_buf_dtor(&ctx, dtor);
 }
@@ -89,16 +89,16 @@ static int rand10(void)
 
 static void test_sort(void)
 {
-    int x;
+    int i, x;
     a_buf ctx;
-    int buf[10];
+    int buf[10], *it, *at;
     unsigned int t = a_cast_s(unsigned int, time(A_NULL));
     a_buf_ctor(&ctx, buf, sizeof(int), 10);
 
     x = -1;
     srand(t);
     a_buf_drop(&ctx, A_NULL);
-    for (int i = 0; i != 10; ++i)
+    for (i = 0; i != 10; ++i)
     {
         int *obj = A_BUF_PUSH_FORE(int, &ctx);
         if (obj)
@@ -109,18 +109,18 @@ static void test_sort(void)
         }
     }
     printf("-> ");
-    a_buf_foreach(int, *, it, &ctx)
+    A_BUF_FOREACH(int *, it, at, &ctx)
     {
         if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);
         x = *it;
     }
-    putchar('\n');
+    (void)putchar('\n');
 
     x = -1;
     srand(t);
     a_buf_drop(&ctx, A_NULL);
-    for (int i = 0; i != 10; ++i)
+    for (i = 0; i != 10; ++i)
     {
         int *obj = A_BUF_PUSH_BACK(int, &ctx);
         if (obj)
@@ -131,18 +131,18 @@ static void test_sort(void)
         }
     }
     printf("-> ");
-    a_buf_foreach(int, *, it, &ctx)
+    A_BUF_FOREACH(int *, it, at, &ctx)
     {
         if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);
         x = *it;
     }
-    putchar('\n');
+    (void)putchar('\n');
 
     x = -1;
     srand(t);
     a_buf_drop(&ctx, A_NULL);
-    for (int i = 0; i != 10; ++i)
+    for (i = 0; i != 10; ++i)
     {
         int key = rand10();
         int *obj = A_BUF_PUSH_SORT(int, &ctx, &key, small);
@@ -153,54 +153,54 @@ static void test_sort(void)
         }
     }
     printf("-> ");
-    a_buf_foreach(int, *, it, &ctx)
+    A_BUF_FOREACH(int *, it, at, &ctx)
     {
         if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);
         x = *it;
     }
-    putchar('\n');
+    (void)putchar('\n');
 
     x = -1;
     srand(t);
-    a_buf_foreach(int, *, it, &ctx)
+    A_BUF_FOREACH(int *, it, at, &ctx)
     {
         *it = rand10();
         printf("%i ", *it);
     }
     printf("-> ");
     a_buf_sort(&ctx, small);
-    a_buf_foreach(int, *, it, &ctx)
+    A_BUF_FOREACH(int *, it, at, &ctx)
     {
         if (x >= 0) { TEST_BUG(x <= *it); }
         printf("%i ", *it);
         x = *it;
     }
-    putchar('\n');
+    (void)putchar('\n');
 
     x = -1;
     srand(t);
-    a_buf_foreach(int, *, it, &ctx)
+    A_BUF_FOREACH(int *, it, at, &ctx)
     {
         *it = rand10();
         printf("%i ", *it);
     }
     printf("-> ");
     a_buf_sort(&ctx, large);
-    a_buf_foreach(int, *, it, &ctx)
+    A_BUF_FOREACH(int *, it, at, &ctx)
     {
         if (x >= 0) { TEST_BUG(x >= *it); }
         printf("%i ", *it);
         x = *it;
     }
-    putchar('\n');
+    (void)putchar('\n');
 
     {
         a_str *ok = a_str_new();
         a_str *no = a_str_new();
         a_str_puts(ok, "finding ");
         a_str_puts(no, "missing ");
-        for (int i = 0; i != 10; ++i)
+        for (i = 0; i != 10; ++i)
         {
             int *obj = A_BUF_SEARCH(int, &ctx, &i, large);
             if (obj)
@@ -222,11 +222,11 @@ static void test_sort(void)
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
-    (void)argc;
-    (void)argv;
-    printf("%s\n", A_FUNC);
+    puts(A_FUNC);
     back();
     fore();
     test_sort();
+    (void)argc;
+    (void)argv;
     return 0;
 }

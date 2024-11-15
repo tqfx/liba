@@ -66,8 +66,9 @@ static a_float const song[][2] = {
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
+    unsigned int i;
     main_init(argc, argv, 1);
-    for (unsigned int i = 0; i != A_LEN(song); ++i)
+    for (i = 0; i != A_LEN(song); ++i)
     {
         debug(A_FLOAT_PRI("", "g,") A_FLOAT_PRI("", "g,") A_FLOAT_PRI("", "g\n"), song[i][0], song[i][1], 1 / song[i][1]);
     }

@@ -432,7 +432,8 @@ static void test_str_set(void)
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
-    printf("%s\n", A_FUNC);
+    int i;
+    puts(A_FUNC);
     test_str();
     test_str_cmp();
     test_str_getc();
@@ -451,7 +452,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(a_str_at(ctx, 4) == 0);
         a_str_die(ctx);
     }
-    for (int i = 1; i < argc; ++i)
+    for (i = 1; i < argc; ++i)
     {
         a_str *ctx = a_str_new();
         a_str_sets(ctx, argv[i]);

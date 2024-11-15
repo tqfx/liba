@@ -4,6 +4,7 @@
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
+    int i;
 #if defined(__cplusplus)
     a::version v000 = A_VERSION_0();
     a::version v100 = A_VERSION_1(1);
@@ -78,7 +79,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 #if defined(__cplusplus) && (__cplusplus > 201100L)
     A_BUILD_ASSERT(std::is_pod<a_version>::value);
 #endif /* __cplusplus */
-    for (int i = 0; i < argc; ++i)
+    for (i = 0; i < argc; ++i)
     {
         char str[48];
         a_version ctx = A_VERSION_0();
@@ -86,7 +87,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_version_tostr(&ctx, str, sizeof(str));
         debug("parse \"%s\" -> %s\n", argv[i], str);
     }
-    printf("%s\n", A_FUNC);
+    puts(A_FUNC);
     debug("version %u.%u.%u+%" PRIu32 "\n", a_version_major, a_version_minor, a_version_patch, a_version_tweak);
     TEST_BUG(A_VERSION_CHECK() == 0);
     return 0;

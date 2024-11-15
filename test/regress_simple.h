@@ -17,34 +17,35 @@ static long rand_(void)
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
-    srand_(a_cast_s(a_ulong, time(A_NULL)));
-    main_init(argc, argv, 1);
-
+    char *endptr;
+    long x_n, y_n;
+    a_float *x, *y;
+    a_size i, n = 100;
     a_float a = A_FLOAT_C(0.7);
     a_float b = 12;
-    a_size n = 100;
-    char *endptr;
+    a_regress_simple ctx;
 
     if (argc > 2) { a = strtonum(argv[2], &endptr); }
     if (argc > 3) { b = strtonum(argv[3], &endptr); }
     if (argc > 4) { n = strtoul(argv[4], &endptr, 0); }
 
-    a_float *x = a_new(a_float, A_NULL, n);
-    a_float *y = a_new(a_float, A_NULL, n);
-    long x_n = a_cast_s(long, n) * 10;
-    long y_n = a_cast_s(long, n) * 2;
+    x = a_new(a_float, A_NULL, n);
+    y = a_new(a_float, A_NULL, n);
+    x_n = a_cast_s(long, n) * 10;
+    y_n = a_cast_s(long, n) * 2;
 
-    for (a_size i = 0; i < n; ++i)
+    srand_(a_cast_s(a_ulong, time(A_NULL)));
+    main_init(argc, argv, 1);
+    for (i = 0; i < n; ++i)
     {
         x[i] = a_cast_s(a_float, rand_() % x_n);
         y[i] = a * x[i] + b + a_cast_s(a_float, rand_() % y_n) - a_cast_s(a_float, n);
     }
 
-    a_regress_simple ctx;
     a_regress_simple_init(&ctx, 0, 0);
     a_regress_simple_ols(&ctx, n, x, y);
 
-    for (unsigned int i = 0; i < n; ++i)
+    for (i = 0; i < n; ++i)
     {
         a_float u = a_cast_s(a_float, i * 10);
         a_float v = a_regress_simple_eval(&ctx, u);

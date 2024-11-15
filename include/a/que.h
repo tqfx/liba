@@ -302,24 +302,24 @@ A_EXTERN void *a_que_remove(a_que *ctx, a_size idx);
  }
  @endcode
  @param T the prefix of the element type
- @param P the suffix of the element type
+ @param S the suffix of the element type
  @param it the &a_que to use as a loop counter
  @param ctx points to an instance of queue structure
 */
-#define a_que_foreach(T, P, it, ctx)                               \
-    for (T P it = a_cast_r(T P, (ctx)->head_.next),                \
-             P it##_ = a_cast_r(T P, a_list_(*, it)->next);        \
+#define a_que_foreach(T, S, it, ctx)                               \
+    for (T S it = a_cast_r(T S, (ctx)->head_.next),                \
+             S it##_ = a_cast_r(T S, a_list_(*, it)->next);        \
          a_list_(*, it) != &(ctx)->head_                           \
-             ? ((void)(it = a_cast_r(T P, a_list_(*, it) + 1)), 1) \
+             ? ((void)(it = a_cast_r(T S, a_list_(*, it) + 1)), 1) \
              : (0);                                                \
-         it = it##_, it##_ = a_cast_r(T P, a_list_(*, it)->next))
-#define A_QUE_FOREACH(T, it, it_, ctx)                           \
+         it = it##_, it##_ = a_cast_r(T S, a_list_(*, it)->next))
+#define A_QUE_FOREACH(T, it, at, ctx)                            \
     for ((void)(it = a_cast_r(T, (ctx)->head_.next)),            \
-         it_ = a_cast_r(T, a_list_(*, it)->next);                \
+         at = a_cast_r(T, a_list_(*, it)->next);                 \
          a_list_(*, it) != &(ctx)->head_                         \
              ? ((void)(it = a_cast_r(T, a_list_(*, it) + 1)), 1) \
              : (0);                                              \
-         it = it_, it_ = a_cast_r(T, a_list_(*, it)->next))
+         it = at, at = a_cast_r(T, a_list_(*, it)->next))
 
 /*!
  @brief iterate over a queue in reverse
@@ -330,24 +330,24 @@ A_EXTERN void *a_que_remove(a_que *ctx, a_size idx);
  }
  @endcode
  @param T the prefix of the element type
- @param P the suffix of the element type
+ @param S the suffix of the element type
  @param it the &a_que to use as a loop counter
  @param ctx points to an instance of queue structure
 */
-#define a_que_foreach_reverse(T, P, it, ctx)                       \
-    for (T P it = a_cast_r(T P, (ctx)->head_.prev),                \
-             P it##_ = a_cast_r(T P, a_list_(*, it)->prev);        \
+#define a_que_foreach_reverse(T, S, it, ctx)                       \
+    for (T S it = a_cast_r(T S, (ctx)->head_.prev),                \
+             S it##_ = a_cast_r(T S, a_list_(*, it)->prev);        \
          a_list_(*, it) != &(ctx)->head_                           \
-             ? ((void)(it = a_cast_r(T P, a_list_(*, it) + 1)), 1) \
+             ? ((void)(it = a_cast_r(T S, a_list_(*, it) + 1)), 1) \
              : (0);                                                \
-         it = it##_, it##_ = a_cast_r(T P, a_list_(*, it)->prev))
-#define A_QUE_FOREACH_REVERSE(T, it, it_, ctx)                   \
+         it = it##_, it##_ = a_cast_r(T S, a_list_(*, it)->prev))
+#define A_QUE_FOREACH_REVERSE(T, it, at, ctx)                    \
     for ((void)(it = a_cast_r(T, (ctx)->head_.prev)),            \
-         it_ = a_cast_r(T, a_list_(*, it)->prev);                \
+         at = a_cast_r(T, a_list_(*, it)->prev);                 \
          a_list_(*, it) != &(ctx)->head_                         \
              ? ((void)(it = a_cast_r(T, a_list_(*, it) + 1)), 1) \
              : (0);                                              \
-         it = it_, it_ = a_cast_r(T, a_list_(*, it)->prev))
+         it = at, at = a_cast_r(T, a_list_(*, it)->prev))
 
 /*! @} a_que */
 

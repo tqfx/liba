@@ -1,3 +1,6 @@
+#if !defined _XOPEN_SOURCE
+#define _XOPEN_SOURCE 500
+#endif /* _XOPEN_SOURCE */
 #include "a.h"
 
 void *lua_alloc(lua_State *L, void const *ptr_, size_t siz)

@@ -107,17 +107,17 @@ static a_float u[] = {
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
-    main_init(argc, argv, 1);
-
+    a_tf ctx;
     a_float num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
     a_float den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
-
-    a_tf ctx;
     a_float input[A_LEN(num)];
     a_float output[A_LEN(den)];
+    unsigned int i;
+
+    main_init(argc, argv, 1);
     a_tf_init(&ctx, A_LEN(num), num, input, A_LEN(den), den, output);
 
-    for (unsigned int i = 0; i < A_LEN(u); ++i)
+    for (i = 0; i < A_LEN(u); ++i)
     {
         a_tf_iter(&ctx, u[i]);
         debug(A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f\n"),

@@ -247,13 +247,13 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
                        / \         / \
                       Sl  Sr      N   Sl
                 */
+                A_ASSUME(sibling->left);
                 tmp1 = sibling->left;
                 parent->right = tmp1;
                 sibling->left = parent;
                 a_rbt_set_parent_color(tmp1, parent, 1);
                 a_rbt_set_parents(root, parent, sibling, 0);
                 sibling = tmp1;
-                A_ASSUME(tmp1);
             }
             tmp1 = sibling->right;
             if (!tmp1 || a_rbt_color(tmp1))
@@ -341,13 +341,13 @@ static A_INLINE void a_rbt_remove_adjust(a_rbt *root, a_rbt_node *parent)
             if (a_rbt_color(sibling) == 0)
             {
                 /* Case 1 - right rotate at parent */
+                A_ASSUME(sibling->right);
                 tmp1 = sibling->right;
                 parent->left = tmp1;
                 sibling->right = parent;
                 a_rbt_set_parent_color(tmp1, parent, 1);
                 a_rbt_set_parents(root, parent, sibling, 0);
                 sibling = tmp1;
-                A_ASSUME(tmp1);
             }
             tmp1 = sibling->left;
             if (!tmp1 || a_rbt_color(tmp1))

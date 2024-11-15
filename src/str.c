@@ -3,6 +3,9 @@
 #define _CRT_SECURE_NO_WARNINGS /* NOLINT */
 #endif /* _CRT_SECURE_NO_WARNINGS */
 #endif /* _MSC_VER */
+#if !defined _XOPEN_SOURCE
+#define _XOPEN_SOURCE 500
+#endif /* _XOPEN_SOURCE */
 #include "a/str.h"
 
 a_str *a_str_new(void)

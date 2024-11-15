@@ -60,6 +60,8 @@ typedef struct a_slist
 */
 #define a_slist_foreach(it, ctx) \
     for (a_slist_node *it = (ctx)->head.next; it; it = it->next)
+#define A_SLIST_FOREACH(it, ctx) \
+    for (it = (ctx)->head.next; it; it = it->next)
 
 /*!
  @brief iterate over a list safe against removal of list entry
@@ -70,6 +72,9 @@ typedef struct a_slist
 #define a_slist_forsafe(it, at, ctx)                      \
     for (a_slist_node *at = &(ctx)->head, *it = at->next; \
          it; at = it ? it : at, it = at->next)
+#define A_SLIST_FORSAFE(it, at, ctx)           \
+    for (at = &(ctx)->head, it = at->next; it; \
+         at = it ? it : at, it = at->next)
 
 /*!
  @brief constructor for singly linked list head

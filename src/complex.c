@@ -1,3 +1,6 @@
+#if !defined _XOPEN_SOURCE
+#define _XOPEN_SOURCE 500
+#endif /* _XOPEN_SOURCE */
 #include "a/a.h"
 #if A_PREREQ_GNUC(3, 0)
 #pragma GCC diagnostic ignored "-Wfloat-conversion"
@@ -27,6 +30,12 @@
 #endif /* A_FLOAT_TYPE */
 #include "a/math.h"
 #include <stdlib.h>
+
+#if !defined __STDC_VERSION__ || (defined(_MSC_VER) && (_MSC_VER < 1800))
+#if !defined isinf
+#define isinf(x) ((x) + (x) == (x) + 1)
+#endif /* isinf */
+#endif /* __STDC_VERSION__ */
 
 void a_complex_polar(a_complex *ctx, a_float rho, a_float theta)
 {
@@ -121,7 +130,7 @@ void a_complex_proj_(a_complex *ctx)
     if (isinf(ctx->real) || isinf(ctx->imag))
     {
         ctx->real = A_FLOAT_INF;
-        ctx->imag = a_float_copysign(0, ctx->imag);
+        ctx->imag = ctx->imag < 0 ? A_FLOAT_C(-0.0) : A_FLOAT_C(0.0);
     }
 }
 

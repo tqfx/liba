@@ -34,16 +34,16 @@ static void main_1(int m, a_float a, a_float b, a_size n, config const *cfg)
     a_float *e = a_new(a_float, A_NULL, n);
     long x_n = a_cast_s(long, n) * 10;
     long y_n = a_cast_s(long, n) * 2;
+    a_float coef[] = {1};
+    a_regress_linear ctx;
+    a_size i;
 
-    for (a_size i = 0; i < n; ++i)
+    for (i = 0; i < n; ++i)
     {
         x[i] = a_cast_s(a_float, rand_() % x_n);
         y[i] = a * x[i] + b + a_cast_s(a_float, rand_() % y_n) - a_cast_s(a_float, y_n >> 1);
     }
 
-    a_float coef[] = {1};
-
-    a_regress_linear ctx;
     a_regress_linear_init(&ctx, coef, 1, 1);
     a_regress_linear_zero(&ctx);
 
@@ -52,17 +52,17 @@ static void main_1(int m, a_float a, a_float b, a_size n, config const *cfg)
     default:
     case 's':
     {
-        a_float lrcur = 0;
+        a_float r, s, lrcur = 0;
         a_float const lramp = (cfg->lrmax - cfg->lrmin) / 2;
         a_float const lrper = A_FLOAT_PI / a_float_c(cfg->lrtim);
         a_regress_linear_err(&ctx, n, x, y, e);
-        a_float r = a_float_sum2(e, n);
-        for (a_size i = 0; i < cfg->epoch; ++i)
+        r = a_float_sum2(e, n);
+        for (i = 0; i < cfg->epoch; ++i)
         {
             a_float alpha = cfg->lrmin + lramp * (a_float_cos(lrcur) + 1);
             a_regress_linear_sgd(&ctx, n, x, y, alpha);
             a_regress_linear_err(&ctx, n, x, y, e);
-            a_float s = a_float_sum2(e, n);
+            s = a_float_sum2(e, n);
             if (A_ABS_(r, s) < cfg->delta)
             {
                 break;
@@ -74,17 +74,17 @@ static void main_1(int m, a_float a, a_float b, a_size n, config const *cfg)
     }
     case 'b':
     {
-        a_float lrcur = 0;
+        a_float r, s, lrcur = 0;
         a_float const lramp = (cfg->lrmax - cfg->lrmin) / 2;
         a_float const lrper = A_FLOAT_PI / a_float_c(cfg->lrtim);
         a_regress_linear_err(&ctx, n, x, y, e);
-        a_float r = a_float_sum2(e, n);
-        for (a_size i = 0; i < cfg->epoch; ++i)
+        r = a_float_sum2(e, n);
+        for (i = 0; i < cfg->epoch; ++i)
         {
             a_float alpha = cfg->lrmin + lramp * (a_float_cos(lrcur) + 1);
             a_regress_linear_bgd(&ctx, n, x, e, alpha);
             a_regress_linear_err(&ctx, n, x, y, e);
-            a_float s = a_float_sum2(e, n);
+            s = a_float_sum2(e, n);
             if (A_ABS_(r, s) < cfg->delta)
             {
                 break;
@@ -98,7 +98,7 @@ static void main_1(int m, a_float a, a_float b, a_size n, config const *cfg)
         a_regress_linear_mgd(&ctx, n, x, y, e, cfg->delta, cfg->lrmax, cfg->lrmin, cfg->lrtim, cfg->epoch, cfg->batch);
     }
 
-    for (unsigned int i = 0; i < n; ++i)
+    for (i = 0; i < n; ++i)
     {
         a_float u = a_cast_s(a_float, i * 10);
         a_float v = a_regress_linear_eval(&ctx, &u);
@@ -121,8 +121,11 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, config cons
     a_float *e = a_new(a_float, A_NULL, n);
     long x_n = a_cast_s(long, n) * 10;
     long y_n = a_cast_s(long, n) * 2;
+    a_float coef[2] = {1, 1};
+    a_regress_linear ctx;
+    a_size i, ii;
 
-    for (a_size i = 0; i < n; ++i)
+    for (i = 0; i < n; ++i)
     {
         x[i * 2 + 0] = a_cast_s(a_float, rand_() % x_n);
         x[i * 2 + 1] = a_cast_s(a_float, rand_() % x_n);
@@ -130,9 +133,6 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, config cons
                a_cast_s(a_float, rand_() % y_n) - a_cast_s(a_float, y_n >> 1);
     }
 
-    a_float coef[2] = {1, 1};
-
-    a_regress_linear ctx;
     a_regress_linear_init(&ctx, coef, 2, 1);
     a_regress_linear_zero(&ctx);
 
@@ -141,17 +141,17 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, config cons
     default:
     case 's':
     {
-        a_float lrcur = 0;
+        a_float r, s, lrcur = 0;
         a_float const lramp = (cfg->lrmax - cfg->lrmin) / 2;
         a_float const lrper = A_FLOAT_PI / a_float_c(cfg->lrtim);
         a_regress_linear_err(&ctx, n, x, y, e);
-        a_float r = a_float_sum2(e, n);
-        for (a_size i = 0; i < cfg->epoch; ++i)
+        r = a_float_sum2(e, n);
+        for (i = 0; i < cfg->epoch; ++i)
         {
             a_float alpha = cfg->lrmin + lramp * (a_float_cos(lrcur) + 1);
             a_regress_linear_sgd(&ctx, n, x, y, alpha);
             a_regress_linear_err(&ctx, n, x, y, e);
-            a_float s = a_float_sum2(e, n);
+            s = a_float_sum2(e, n);
             if (A_ABS_(r, s) < cfg->delta)
             {
                 break;
@@ -163,17 +163,17 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, config cons
     }
     case 'b':
     {
-        a_float lrcur = 0;
+        a_float r, s, lrcur = 0;
         a_float const lramp = (cfg->lrmax - cfg->lrmin) / 2;
         a_float const lrper = A_FLOAT_PI / a_float_c(cfg->lrtim);
         a_regress_linear_err(&ctx, n, x, y, e);
-        a_float r = a_float_sum2(e, n);
-        for (a_size i = 0; i < cfg->epoch; ++i)
+        r = a_float_sum2(e, n);
+        for (i = 0; i < cfg->epoch; ++i)
         {
             a_float alpha = cfg->lrmin + lramp * (a_float_cos(lrcur) + 1);
             a_regress_linear_bgd(&ctx, n, x, e, alpha);
             a_regress_linear_err(&ctx, n, x, y, e);
-            a_float s = a_float_sum2(e, n);
+            s = a_float_sum2(e, n);
             if (A_ABS_(r, s) < cfg->delta)
             {
                 break;
@@ -187,14 +187,15 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, config cons
         a_regress_linear_mgd(&ctx, n, x, y, e, cfg->delta, cfg->lrmax, cfg->lrmin, cfg->lrtim, cfg->epoch, cfg->batch);
     }
 
-    for (unsigned int i = 0; i < n; ++i)
+    for (i = 0; i < n; ++i)
     {
         a_float u[2];
         u[0] = a_cast_s(a_float, i * 10);
-        for (unsigned int ii = 0; ii < n; ++ii)
+        for (ii = 0; ii < n; ++ii)
         {
+            a_float v;
             u[1] = a_cast_s(a_float, ii * 10);
-            a_float v = a_regress_linear_eval(&ctx, u);
+            v = a_regress_linear_eval(&ctx, u);
             debug(A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f"), u[0], u[1], v);
             debug("%c", i ? '\n' : ',');
             if (i == 0)
@@ -216,13 +217,11 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, config cons
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
-    srand_(a_cast_s(a_ulong, time(A_NULL)));
-    main_init(argc, argv, 1);
-
     a_float a = A_FLOAT_C(0.7);
     a_float b = A_FLOAT_C(1.4);
     a_float c = 12;
     a_size n = 100;
+    char *endptr;
     char m = 'm';
     int dim = 1;
 
@@ -233,6 +232,9 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     cfg.lrtim = 100;
     cfg.epoch = 1000;
     cfg.batch = 16;
+
+    srand_(a_cast_s(a_ulong, time(A_NULL)));
+    main_init(argc, argv, 1);
 
     if (argc > 1)
     {
@@ -250,7 +252,6 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         }
     }
 
-    char *endptr;
     if (dim == 1)
     {
         if (argc > 2) { a = strtonum(argv[2], &endptr); }

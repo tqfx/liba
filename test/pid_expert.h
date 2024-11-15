@@ -106,17 +106,18 @@ static A_INLINE a_float input(a_float const x)
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
-    main_init(argc, argv, 1);
-
+    unsigned int i;
     a_float num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
     a_float den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
 
     a_tf tf;
     a_float tf_input[A_LEN(num)];
     a_float tf_output[A_LEN(den)];
+    a_pid_expert ctx;
+
+    main_init(argc, argv, 1);
     a_tf_init(&tf, A_LEN(num), num, tf_input, A_LEN(den), den, tf_output);
 
-    a_pid_expert ctx;
     ctx.pid.kp = A_FLOAT_C(10.0);
     ctx.pid.ki = A_FLOAT_C(0.5);
     ctx.pid.kd = A_FLOAT_C(10.0);
@@ -129,7 +130,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     ctx.outmax = A_FLOAT_C(10.0);
     ctx.epsilon = A_FLOAT_C(0.01);
     a_pid_expert_init(&ctx);
-    for (unsigned int i = 0; i < 500; ++i)
+    for (i = 0; i < 500; ++i)
     {
         a_float in = input(A_FLOAT_C(0.001) * a_float_c(i));
         a_tf_iter(&tf, a_pid_expert_iter(&ctx, in, *tf.output));

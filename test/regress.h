@@ -5,22 +5,24 @@
 
 static void test_odm(int argc, char *argv[])
 {
-    a_size const n = a_cast_s(a_size, argc);
-    a_float *p = a_new(a_float, A_NULL, n);
-    for (a_size i = 0; i < n; ++i)
+    a_float *p, *odm;
+    a_size i, n = a_cast_s(a_size, argc);
+
+    p = a_new(a_float, A_NULL, n);
+    for (i = 0; i < n; ++i)
     {
         char *endptr;
         p[i] = strtonum(argv[i], &endptr);
     }
 
-    a_float *odm = a_new(a_float, A_NULL, n);
+    odm = a_new(a_float, A_NULL, n);
     debug("{");
-    for (a_size i = 0; i < n; ++i)
+    for (i = 0; i < n; ++i)
     {
         debug("%c" A_FLOAT_PRI("", "g"), i ? ',' : 0, p[i]);
     }
     debug("}:" A_FLOAT_PRI("", "g\n{"), a_regress_odm(n, p, odm));
-    for (a_size i = 0; i < n; ++i)
+    for (i = 0; i < n; ++i)
     {
         debug("%c" A_FLOAT_PRI("", "g"), i ? ',' : 0, odm[i]);
     }

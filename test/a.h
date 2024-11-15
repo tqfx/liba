@@ -47,42 +47,46 @@ static void test_sat(void)
 
 static void test_for(int argc, char *argv[])
 {
-    unsigned int n = 10;
+    int *p, *d, *it, *at;
+    unsigned int i, n = 10;
+
     if (argc > 1)
     {
         char *endptr = A_NULL;
-        unsigned long l = strtoul(argv[1], &endptr, 0);
-        if (l > n) { n = a_cast_s(unsigned int, l); }
+        unsigned long u = strtoul(argv[1], &endptr, 0);
+        if (u > n) { n = a_cast_s(unsigned int, u); }
     }
 
-    int *p = a_new(int, A_NULL, n);
-    int *d = p + n;
-    A_ASSUME(p);
+    p = a_new(int, A_NULL, n);
+    d = p + n;
+    {
+        A_ASSUME(p);
+    }
 
-    a_forenum(unsigned int, i, n)
+    A_FORENUM(unsigned int, i, n)
     {
         p[i] = a_cast_s(int, i);
         debug("%u ", i);
     }
     debug("\n");
 
-    a_foreach(int, *, it, p, n) { debug("%i ", *it); }
+    A_FOREACH(int *, it, at, p, n) { debug("%i ", *it); }
     debug("\n");
 
-    a_iterate(int, *, it, p, d) { debug("%i ", *it); }
+    A_ITERATE(int *, it, at, p, d) { debug("%i ", *it); }
     debug("\n");
 
-    a_forenum_reverse(unsigned int, i, n)
+    A_FORENUM_REVERSE(unsigned int, i, n)
     {
         p[i] = a_cast_s(int, i);
         debug("%u ", i);
     }
     debug("\n");
 
-    a_foreach_reverse(int, *, it, p, n) { debug("%i ", *it); }
+    A_FOREACH_REVERSE(int *, it, at, p, n) { debug("%i ", *it); }
     debug("\n");
 
-    a_iterate_reverse(int, *, it, p, d) { debug("%i ", *it); }
+    A_ITERATE_REVERSE(int *, it, at, p, d) { debug("%i ", *it); }
     debug("\n");
 
     a_die(p);

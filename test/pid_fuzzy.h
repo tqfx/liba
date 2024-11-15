@@ -116,21 +116,26 @@ static a_float const m7kd[] = {
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
-    main_init(argc, argv, 1);
-
+    unsigned int i;
     a_float num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
     a_float den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
 
     a_tf pos_tf;
     a_float pos_input[A_LEN(num)];
     a_float pos_output[A_LEN(den)];
-    a_tf_init(&pos_tf, A_LEN(num), num, pos_input, A_LEN(den), den, pos_output);
+    a_pid_fuzzy pos_pid;
+    a_byte pos_bfuzz[A_PID_FUZZY_BFUZZ(2)];
+
     a_tf inc_tf;
     a_float inc_input[A_LEN(num)];
     a_float inc_output[A_LEN(den)];
+    a_pid_fuzzy inc_pid;
+    a_byte inc_bfuzz[A_PID_FUZZY_BFUZZ(2)];
+
+    main_init(argc, argv, 1);
+    a_tf_init(&pos_tf, A_LEN(num), num, pos_input, A_LEN(den), den, pos_output);
     a_tf_init(&inc_tf, A_LEN(num), num, inc_input, A_LEN(den), den, inc_output);
 
-    a_pid_fuzzy pos_pid;
     pos_pid.pid.summax = +10;
     pos_pid.pid.summin = -10;
     pos_pid.pid.outmax = +10;
@@ -149,9 +154,8 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     pos_pid.mkd = m7kd;
     pos_pid.opr = a_pid_fuzzy_opr(A_PID_FUZZY_EQU);
     a_pid_fuzzy_init(&pos_pid);
-    a_byte pos_bfuzz[A_PID_FUZZY_BFUZZ(2)];
     a_pid_fuzzy_set_bfuzz(&pos_pid, pos_bfuzz, 2);
-    a_pid_fuzzy inc_pid;
+
     inc_pid.pid.outmax = +10;
     inc_pid.pid.outmin = -10;
     inc_pid.nrule = 3;
@@ -168,18 +172,17 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     inc_pid.mkd = m7kd;
     inc_pid.opr = a_pid_fuzzy_opr(A_PID_FUZZY_EQU);
     a_pid_fuzzy_init(&inc_pid);
-    a_byte inc_bfuzz[A_PID_FUZZY_BFUZZ(2)];
     a_pid_fuzzy_set_bfuzz(&inc_pid, inc_bfuzz, 2);
 
     a_pid_fuzzy_set_kpid(&pos_pid, 600, A_FLOAT_C(20.0), A_FLOAT_C(6000.0));
     a_pid_fuzzy_set_kpid(&inc_pid, 600, A_FLOAT_C(20.0), A_FLOAT_C(6000.0));
-    for (unsigned int i = 0; i < 200; ++i)
+    for (i = 0; i < 200; ++i)
     {
-        a_float in = input(A_FLOAT_C(0.001) * a_float_c(i));
-        a_tf_iter(&pos_tf, a_pid_fuzzy_pos(&pos_pid, in, *pos_tf.output));
-        a_tf_iter(&inc_tf, a_pid_fuzzy_inc(&inc_pid, in, *inc_tf.output));
+        a_float const ix = input(A_FLOAT_C(0.001) * a_float_c(i));
+        a_tf_iter(&pos_tf, a_pid_fuzzy_pos(&pos_pid, ix, *pos_tf.output));
+        a_tf_iter(&inc_tf, a_pid_fuzzy_inc(&inc_pid, ix, *inc_tf.output));
         debug(A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f\n"),
-              A_FLOAT_C(0.001) * a_float_c(i), in, *pos_tf.output, *inc_tf.output);
+              A_FLOAT_C(0.001) * a_float_c(i), ix, *pos_tf.output, *inc_tf.output);
     }
     a_pid_fuzzy_zero(&pos_pid);
     a_pid_fuzzy_zero(&inc_pid);

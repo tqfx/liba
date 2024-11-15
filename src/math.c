@@ -10,6 +10,15 @@
 #pragma warning(disable : 5250)
 #endif /* msvc 17.0+ */
 
+#if !defined __STDC_VERSION__ || (defined(_MSC_VER) && (_MSC_VER < 1800))
+#if !defined isinf
+#define isinf(x) ((x) + (x) == (x) + 1)
+#endif /* isinf */
+#if !defined isnan
+#define isnan(x) ((x) != (x))
+#endif /* isnan */
+#endif /* __STDC_VERSION__ */
+
 static A_INLINE a_float polevl(a_float const *p, a_size n, a_float x)
 {
     a_float y = *p++;
@@ -22,7 +31,7 @@ static A_INLINE a_float polevl(a_float const *p, a_size n, a_float x)
 a_f32 a_f32_rsqrt(a_f32 x)
 {
     a_u32 *const u = (a_u32 *)&x;
-#if 1
+#if defined(__STDC_VERSION__) || A_PREREQ_MSVC(18, 0)
     if (x > 0) { return 1 / a_f32_sqrt(x); }
 #else
     if (x > 0)
@@ -187,11 +196,8 @@ a_float a_float_expm1(a_float x)
         A_FLOAT_C(2.0000000000000000000897E-0),
     };
     a_float xx, y;
-    if (!isfinite(x))
-    {
-        if (isnan(x) || x > 0) { return x; }
-        return -1;
-    }
+    if (isnan(x)) { return x; }
+    if (isinf(x)) { return x > 0 ? x : -1; }
     if (x < -A_FLOAT_C(0.5) || x > A_FLOAT_C(0.5))
     {
         return a_float_exp(x) - 1;

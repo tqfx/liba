@@ -12,6 +12,12 @@ if(LIBA_OPENMP AND OpenMP_CXX_FLAGS)
   string_append(CMAKE_CXX_FLAGS ${OpenMP_CXX_FLAGS})
 endif()
 
+if(NOT Python_VERSION VERSION_LESS 3.11)
+  set(CMAKE_C_STANDARD 11)
+elseif(NOT Python_VERSION VERSION_LESS 3.6)
+  set(CMAKE_C_STANDARD 99)
+endif()
+
 if(WIN32)
   set(CMAKE_SHARED_MODULE_SUFFIX ".pyd")
 endif()
