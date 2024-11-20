@@ -12,7 +12,7 @@
 
 #if !defined __STDC_VERSION__ || (defined(_MSC_VER) && (_MSC_VER < 1800))
 #if !defined isinf
-#define isinf(x) ((x) + (x) == (x) + 1)
+#define isinf(x) ((x) + (x) == (x) && (x))
 #endif /* isinf */
 #if !defined isnan
 #define isnan(x) ((x) != (x))

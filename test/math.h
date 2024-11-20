@@ -15,7 +15,7 @@
 #if !defined __STDC_VERSION__ || (defined(_MSC_VER) && (_MSC_VER < 1800))
 #if !defined isinf
 #define isinf(x) isinf_(x)
-static A_INLINE a_bool isinf_(a_float x) { return x + x == x + 1; }
+static A_INLINE a_bool isinf_(a_float x) { return x + x == x && x; }
 #endif /* isinf */
 #if !defined isnan
 #define isnan(x) isnan_(x)
