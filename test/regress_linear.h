@@ -239,7 +239,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     if (argc > 1)
     {
         char const *s = strstr(argv[1], "regress_linear_");
-        if (s) { sscanf(s, "regress_linear_%i%c", &dim, &m); } /* NOLINT */
+        if (s) { (void)sscanf(s, "regress_linear_%i%c", &dim, &m); } /* NOLINT */
         else
         {
             debug("regress_linear_1sgd.csv\n");
