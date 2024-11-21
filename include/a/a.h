@@ -245,7 +245,6 @@
 
 #include <stddef.h>
 #include <limits.h>
-#include <stdint.h>
 #include <float.h>
 
 /*!
@@ -306,8 +305,8 @@
 #define a_bool A_BOOL
 
 #define A_INT int
-#define A_INT_MIN INT_MIN
 #define A_INT_MAX INT_MAX
+#define A_INT_MIN INT_MIN
 /*! static cast to \ref a_int */
 #define a_int_c(x) a_cast_s(A_INT, x)
 #define a_int_(_, x) a_cast_s(A_INT _, x)
@@ -323,8 +322,8 @@
 #define a_uint A_UINT
 
 #define A_SHRT short
-#define A_SHRT_MIN SHRT_MIN
 #define A_SHRT_MAX SHRT_MAX
+#define A_SHRT_MIN SHRT_MIN
 /*! static cast to \ref a_shrt */
 #define a_shrt_c(x) a_cast_s(A_SHRT, x)
 #define a_shrt_(_, x) a_cast_s(A_SHRT _, x)
@@ -359,8 +358,8 @@
 #if defined(A_HAVE_LONG_LONG_TYPE)
 
 #define A_LLONG long long
-#define A_LLONG_MIN LLONG_MIN
 #define A_LLONG_MAX LLONG_MAX
+#define A_LLONG_MIN LLONG_MIN
 /*! static cast to \ref a_llong */
 #define a_llong_c(x) a_cast_s(A_LLONG, x)
 #define a_llong_(_, x) a_cast_s(A_LLONG _, x)
@@ -386,8 +385,8 @@
 #define a_byte A_BYTE
 
 #define A_C8 char
-#define A_C8_MIN CHAR_MIN
 #define A_C8_MAX CHAR_MAX
+#define A_C8_MIN CHAR_MIN
 /*! static cast to \ref a_c8 */
 #define a_c8_c(x) a_cast_s(A_C8, x)
 #define a_c8_(_, x) a_cast_s(A_C8 _, x)
@@ -395,17 +394,17 @@
 #define a_c8 A_C8
 
 #if !defined A_I8
-#define A_I8 int8_t
+#define A_I8 signed char
 #endif /* A_I8 */
-#if !defined A_I8_C && defined(INT8_C)
-#define A_I8_C(X) INT8_C(X)
+#if !defined A_I8_C
+#define A_I8_C(X) X
 #endif /* A_I8_C */
-#if !defined A_I8_MIN && defined(INT8_MIN)
-#define A_I8_MIN INT8_MIN
-#endif /* A_I8_MIN */
-#if !defined A_I8_MAX && defined(INT8_MAX)
-#define A_I8_MAX INT8_MAX
+#if !defined A_I8_MAX
+#define A_I8_MAX A_I8_C(0x7F)
 #endif /* A_I8_MAX */
+#if !defined A_I8_MIN
+#define A_I8_MIN A_I8_C(-0x80)
+#endif /* A_I8_MIN */
 /*! static cast to \ref a_i8 */
 #define a_i8_c(x) a_cast_s(A_I8, x)
 #define a_i8_(_, x) a_cast_s(A_I8 _, x)
@@ -413,13 +412,13 @@
 #define a_i8 A_I8
 
 #if !defined A_U8
-#define A_U8 uint8_t
+#define A_U8 unsigned char
 #endif /* A_U8 */
-#if !defined A_U8_C && defined(UINT8_C)
-#define A_U8_C(X) UINT8_C(X)
+#if !defined A_U8_C
+#define A_U8_C(X) X
 #endif /* A_U8_C */
-#if !defined A_U8_MAX && defined(UINT8_MAX)
-#define A_U8_MAX UINT8_MAX
+#if !defined A_U8_MAX
+#define A_U8_MAX A_U8_C(0xFF)
 #endif /* A_U8_MAX */
 /*! static cast to \ref a_u8 */
 #define a_u8_c(x) a_cast_s(A_U8, x)
@@ -427,32 +426,36 @@
 /*! unsigned integer type with width of exactly 8 bits */
 #define a_u8 A_U8
 
-#if !defined A_I16
-#define A_I16 int16_t
+#if !defined A_I16 && INT_MAX == 0x7FFF
+#define A_I16 int
+#elif !defined A_I16
+#define A_I16 short
 #endif /* A_I16 */
-#if !defined A_I16_C && defined(INT16_C)
-#define A_I16_C(X) INT16_C(X)
+#if !defined A_I16_C
+#define A_I16_C(X) X
 #endif /* A_I16_C */
-#if !defined A_I16_MIN && defined(INT16_MIN)
-#define A_I16_MIN INT16_MIN
-#endif /* A_I16_MIN */
-#if !defined A_I16_MAX && defined(INT16_MAX)
-#define A_I16_MAX INT16_MAX
+#if !defined A_I16_MAX
+#define A_I16_MAX A_I16_C(0x7FFF)
 #endif /* A_I16_MAX */
+#if !defined A_I16_MIN
+#define A_I16_MIN A_I16_C(-0x8000)
+#endif /* A_I16_MIN */
 /*! static cast to \ref a_i16 */
 #define a_i16_c(x) a_cast_s(A_I16, x)
 #define a_i16_(_, x) a_cast_s(A_I16 _, x)
 /*! signed integer type with width of exactly 16 bits */
 #define a_i16 A_I16
 
-#if !defined A_U16
-#define A_U16 uint16_t
+#if !defined A_U16 && UINT_MAX == 0xFFFF
+#define A_U16 unsigned int
+#elif !defined A_U16
+#define A_U16 unsigned short
 #endif /* A_U16 */
-#if !defined A_U16_C && defined(UINT16_C)
-#define A_U16_C(X) UINT16_C(X)
+#if !defined A_U16_C
+#define A_U16_C(X) X
 #endif /* A_U16_C */
-#if !defined A_U16_MAX && defined(UINT16_MAX)
-#define A_U16_MAX UINT16_MAX
+#if !defined A_U16_MAX
+#define A_U16_MAX A_U16_C(0xFFFF)
 #endif /* A_U16_MAX */
 /*! static cast to \ref a_u16 */
 #define a_u16_c(x) a_cast_s(A_U16, x)
@@ -460,32 +463,40 @@
 /*! unsigned integer type with width of exactly 16 bits */
 #define a_u16 A_U16
 
-#if !defined A_I32
-#define A_I32 int32_t
+#if !defined A_I32 && INT_MAX == 0x7FFFFFFF
+#define A_I32 int
+#elif !defined A_I32
+#define A_I32 long
 #endif /* A_I32 */
-#if !defined A_I32_C && defined(INT32_C)
-#define A_I32_C(X) INT32_C(X)
+#if !defined A_I32_C && INT_MAX == 0x7FFFFFFF
+#define A_I32_C(X) X
+#elif !defined A_I32_C
+#define A_I32_C(X) X##L
 #endif /* A_I32_C */
-#if !defined A_I32_MIN && defined(INT32_MIN)
-#define A_I32_MIN INT32_MIN
-#endif /* A_I32_MIN */
-#if !defined A_I32_MAX && defined(INT32_MAX)
-#define A_I32_MAX INT32_MAX
+#if !defined A_I32_MAX
+#define A_I32_MAX A_I32_C(0x7FFFFFFF)
 #endif /* A_I32_MAX */
+#if !defined A_I32_MIN
+#define A_I32_MIN A_I32_C(-0x80000000)
+#endif /* A_I32_MIN */
 /*! static cast to \ref a_i32 */
 #define a_i32_c(x) a_cast_s(A_I32, x)
 #define a_i32_(_, x) a_cast_s(A_I32 _, x)
 /*! signed integer type with width of exactly 32 bits */
 #define a_i32 A_I32
 
-#if !defined A_U32
-#define A_U32 uint32_t
+#if !defined A_U32 && UINT_MAX == 0xFFFFFFFFU
+#define A_U32 unsigned int
+#elif !defined A_U32
+#define A_U32 unsigned long
 #endif /* A_U32 */
-#if !defined A_U32_C && defined(UINT32_C)
-#define A_U32_C(X) UINT32_C(X)
+#if !defined A_U32_C && UINT_MAX == 0xFFFFFFFFU
+#define A_U32_C(X) X##U
+#elif !defined A_U32
+#define A_U32_C(X) X##UL
 #endif /* A_U32_C */
-#if !defined A_U32_MAX && defined(UINT32_MAX)
-#define A_U32_MAX UINT32_MAX
+#if !defined A_U32_MAX
+#define A_U32_MAX A_U32_C(0xFFFFFFFF)
 #endif /* A_U32_MAX */
 /*! static cast to \ref a_u32 */
 #define a_u32_c(x) a_cast_s(A_U32, x)
@@ -493,32 +504,60 @@
 /*! unsigned integer type with width of exactly 32 bits */
 #define a_u32 A_U32
 
-#if !defined A_I64
-#define A_I64 int64_t
+#if !defined A_I64 && LONG_MAX == 0x7FFFFFFFL
+#if defined(_MSC_VER)
+#define A_I64 __int64
+#elif defined(__GNUC__)
+#define A_I64 __extension__ long long
+#else /* !__int64 */
+#define A_I64 long long
+#endif /* __int64 */
+#elif !defined A_I64
+#define A_I64 long
 #endif /* A_I64 */
-#if !defined A_I64_C && defined(INT64_C)
-#define A_I64_C(X) INT64_C(X)
+#if !defined A_I64_C && LONG_MAX == 0x7FFFFFFFL
+#if defined(_MSC_VER)
+#define A_I64_C(X) X##i64
+#else /* !__int64 */
+#define A_I64_C(X) X##LL
+#endif /* __int64 */
+#elif !defined A_I64_C
+#define A_I64_C(X) X##L
 #endif /* A_I64_C */
-#if !defined A_I64_MIN && defined(INT64_MIN)
-#define A_I64_MIN INT64_MIN
-#endif /* A_I64_MIN */
-#if !defined A_I64_MAX && defined(INT64_MAX)
-#define A_I64_MAX INT64_MAX
+#if !defined A_I64_MAX
+#define A_I64_MAX A_I64_C(0x7FFFFFFFFFFFFFFF)
 #endif /* A_I64_MAX */
+#if !defined A_I64_MIN
+#define A_I64_MIN A_I64_C(-0x8000000000000000)
+#endif /* A_I64_MIN */
 /*! static cast to \ref a_i64 */
 #define a_i64_c(x) a_cast_s(A_I64, x)
 #define a_i64_(_, x) a_cast_s(A_I64 _, x)
 /*! signed integer type with width of exactly 64 bits */
 #define a_i64 A_I64
 
-#if !defined A_U64
-#define A_U64 uint64_t
+#if !defined A_U64 && LONG_MAX == 0xFFFFFFFFUL
+#if defined(_MSC_VER)
+#define A_U64 __uint64
+#elif defined(__GNUC__)
+#define A_U64 __extension__ unsigned long long
+#else /* !__int64 */
+#define A_U64 unsigned long long
+#endif /* __int64 */
+#elif !defined A_U64
+#define A_U64 unsigned long
 #endif /* A_U64 */
-#if !defined A_U64_C && defined(UINT64_C)
-#define A_U64_C(X) UINT64_C(X)
+#if !defined A_U64_C && LONG_MAX == 0xFFFFFFFFUL
+#if defined(_MSC_VER)
+#define A_U64_C(X) X##u64
+#else /* !__int64 */
+#define A_U64_C(X) X##ULL
+#endif /* __int64 */
+#elif !defined A_U64_C
+#define A_U64_C(X) X##UL
 #endif /* A_U64_C */
-#if !defined A_U64_MAX && defined(UINT64_MAX)
-#define A_U64_MAX UINT64_MAX
+#if !defined A_U64_MAX
+#define A_U64_MAX A_U64_C(0xFFFFFFFFFFFFFFFF)
 #endif /* A_U64_MAX */
 /*! static cast to \ref a_u64 */
 #define a_u64_c(x) a_cast_s(A_U64, x)
@@ -527,17 +566,17 @@
 #define a_u64 A_U64
 
 #if !defined A_IMAX
-#define A_IMAX intmax_t
+#define A_IMAX A_I64
 #endif /* A_IMAX */
-#if !defined A_IMAX_C && defined(INTMAX_C)
-#define A_IMAX_C(X) INTMAX_C(X)
+#if !defined A_IMAX_C
+#define A_IMAX_C(X) A_I64_C(X)
 #endif /* A_IMAX_C */
-#if !defined A_IMAX_MIN && defined(INTMAX_MIN)
-#define A_IMAX_MIN INTMAX_MIN
-#endif /* A_IMAX_MIN */
-#if !defined A_IMAX_MAX && defined(INTMAX_MAX)
-#define A_IMAX_MAX INTMAX_MAX
+#if !defined A_IMAX_MAX
+#define A_IMAX_MAX A_I64_MAX
 #endif /* A_IMAX_MAX */
+#if !defined A_IMAX_MIN
+#define A_IMAX_MIN A_I64_MIN
+#endif /* A_IMAX_MIN */
 /*! static cast to \ref a_imax */
 #define a_imax_c(x) a_cast_s(A_IMAX, x)
 #define a_imax_(_, x) a_cast_s(A_IMAX _, x)
@@ -545,13 +584,13 @@
 #define a_imax A_IMAX
 
 #if !defined A_UMAX
-#define A_UMAX uintmax_t
+#define A_UMAX A_U64
 #endif /* A_UMAX */
-#if !defined A_UMAX_C && defined(UINTMAX_C)
-#define A_UMAX_C(X) UINTMAX_C(X)
+#if !defined A_UMAX_C
+#define A_UMAX_C(X) A_U64_C(X)
 #endif /* A_UMAX_C */
-#if !defined A_UMAX_MAX && defined(UINTMAX_MAX)
-#define A_UMAX_MAX UINTMAX_MAX
+#if !defined A_UMAX_MAX
+#define A_UMAX_MAX A_U64_MAX
 #endif /* A_UMAX_MAX */
 /*! static cast to \ref a_umax */
 #define a_umax_c(x) a_cast_s(A_UMAX, x)
@@ -559,26 +598,36 @@
 /*! maximum-width unsigned integer type */
 #define a_umax A_UMAX
 
-#if !defined A_IPTR
-#define A_IPTR intptr_t
+#if !defined A_IPTR && A_SIZE_POINTER == 8
+#define A_IPTR A_I64
+#elif !defined A_IPTR
+#define A_IPTR A_I32
 #endif /* A_IPTR */
-#if !defined A_IPTR_MIN && defined(INTPTR_MIN)
-#define A_IPTR_MIN INTPTR_MIN
-#endif /* A_IPTR_MIN */
-#if !defined A_IPTR_MAX && defined(INTPTR_MAX)
-#define A_IPTR_MAX INTPTR_MAX
+#if !defined A_IPTR_MAX && A_SIZE_POINTER == 8
+#define A_IPTR_MAX A_I64_MAX
+#elif !defined A_IPTR_MAX
+#define A_IPTR_MAX A_I32_MAX
 #endif /* A_IPTR_MAX */
+#if !defined A_IPTR_MIN && A_SIZE_POINTER == 8
+#define A_IPTR_MIN A_I64_MIN
+#elif !defined A_IPTR_MIN
+#define A_IPTR_MIN A_I32_MIN
+#endif /* A_IPTR_MIN */
 /*! static cast to \ref a_iptr */
 #define a_iptr_c(x) a_cast_s(A_IPTR, x)
 #define a_iptr_(_, x) a_cast_s(A_IPTR _, x)
 /*! signed integer type capable of holding a pointer to void */
 #define a_iptr A_IPTR
 
-#if !defined A_UPTR
-#define A_UPTR uintptr_t
+#if !defined A_UPTR && A_SIZE_POINTER == 8
+#define A_UPTR A_U64
+#elif !defined A_UPTR
+#define A_UPTR A_U32
 #endif /* A_UPTR */
-#if !defined A_UPTR_MAX && defined(UINTPTR_MAX)
-#define A_UPTR_MAX UINTPTR_MAX
+#if !defined A_UPTR_MAX && A_SIZE_POINTER == 8
+#define A_UPTR_MAX A_U64_MAX
+#elif !defined A_UPTR_MAX
+#define A_UPTR_MAX A_U32_MAX
 #endif /* A_UPTR_MAX */
 /*! static cast to \ref a_uptr */
 #define a_uptr_c(x) a_cast_s(A_UPTR, x)
@@ -589,12 +638,12 @@
 #if !defined A_DIFF
 #define A_DIFF ptrdiff_t
 #endif /* A_DIFF */
-#if !defined A_DIFF_MIN && defined(PTRDIFF_MIN)
-#define A_DIFF_MIN PTRDIFF_MIN
-#endif /* A_DIFF_MIN */
-#if !defined A_DIFF_MAX && defined(PTRDIFF_MAX)
+#if !defined A_DIFF_MAX
 #define A_DIFF_MAX PTRDIFF_MAX
 #endif /* A_DIFF_MAX */
+#if !defined A_DIFF_MIN
+#define A_DIFF_MIN PTRDIFF_MIN
+#endif /* A_DIFF_MIN */
 /*! static cast to \ref a_diff */
 #define a_diff_c(x) a_cast_s(A_DIFF, x)
 #define a_diff_(_, x) a_cast_s(A_DIFF _, x)
@@ -604,7 +653,7 @@
 #if !defined A_SIZE
 #define A_SIZE size_t
 #endif /* A_SIZE */
-#if !defined A_SIZE_MAX && defined(SIZE_MAX)
+#if !defined A_SIZE_MAX
 #define A_SIZE_MAX SIZE_MAX
 #endif /* A_SIZE_MAX */
 /*! static cast to \ref a_size */
