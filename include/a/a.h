@@ -426,7 +426,7 @@
 /*! unsigned integer type with width of exactly 8 bits */
 #define a_u8 A_U8
 
-#if !defined A_I16 && INT_MAX == 0x7FFF
+#if !defined A_I16 && (INT_MAX == 0x7FFF)
 #define A_I16 int
 #elif !defined A_I16
 #define A_I16 short
@@ -446,7 +446,7 @@
 /*! signed integer type with width of exactly 16 bits */
 #define a_i16 A_I16
 
-#if !defined A_U16 && UINT_MAX == 0xFFFF
+#if !defined A_U16 && (UINT_MAX == 0xFFFF)
 #define A_U16 unsigned int
 #elif !defined A_U16
 #define A_U16 unsigned short
@@ -463,12 +463,12 @@
 /*! unsigned integer type with width of exactly 16 bits */
 #define a_u16 A_U16
 
-#if !defined A_I32 && INT_MAX == 0x7FFFFFFF
+#if !defined A_I32 && (INT_MAX == 0x7FFFFFFF)
 #define A_I32 int
 #elif !defined A_I32
 #define A_I32 long
 #endif /* A_I32 */
-#if !defined A_I32_C && INT_MAX == 0x7FFFFFFF
+#if !defined A_I32_C && (INT_MAX == 0x7FFFFFFF)
 #define A_I32_C(X) X
 #elif !defined A_I32_C
 #define A_I32_C(X) X##L
@@ -485,12 +485,12 @@
 /*! signed integer type with width of exactly 32 bits */
 #define a_i32 A_I32
 
-#if !defined A_U32 && UINT_MAX == 0xFFFFFFFFU
+#if !defined A_U32 && (UINT_MAX == 0xFFFFFFFFU)
 #define A_U32 unsigned int
 #elif !defined A_U32
 #define A_U32 unsigned long
 #endif /* A_U32 */
-#if !defined A_U32_C && UINT_MAX == 0xFFFFFFFFU
+#if !defined A_U32_C && (UINT_MAX == 0xFFFFFFFFU)
 #define A_U32_C(X) X##U
 #elif !defined A_U32
 #define A_U32_C(X) X##UL
@@ -504,7 +504,7 @@
 /*! unsigned integer type with width of exactly 32 bits */
 #define a_u32 A_U32
 
-#if !defined A_I64 && LONG_MAX == 0x7FFFFFFFL
+#if !defined A_I64 && (LONG_MAX == 0x7FFFFFFFL)
 #if defined(_MSC_VER)
 #define A_I64 __int64
 #elif defined(__GNUC__)
@@ -515,7 +515,7 @@
 #elif !defined A_I64
 #define A_I64 long
 #endif /* A_I64 */
-#if !defined A_I64_C && LONG_MAX == 0x7FFFFFFFL
+#if !defined A_I64_C && (LONG_MAX == 0x7FFFFFFFL)
 #if defined(_MSC_VER)
 #define A_I64_C(X) X##i64
 #else /* !__int64 */
@@ -536,7 +536,7 @@
 /*! signed integer type with width of exactly 64 bits */
 #define a_i64 A_I64
 
-#if !defined A_U64 && LONG_MAX == 0xFFFFFFFFUL
+#if !defined A_U64 && (LONG_MAX == 0xFFFFFFFFUL)
 #if defined(_MSC_VER)
 #define A_U64 __uint64
 #elif defined(__GNUC__)
@@ -547,7 +547,7 @@
 #elif !defined A_U64
 #define A_U64 unsigned long
 #endif /* A_U64 */
-#if !defined A_U64_C && LONG_MAX == 0xFFFFFFFFUL
+#if !defined A_U64_C && (LONG_MAX == 0xFFFFFFFFUL)
 #if defined(_MSC_VER)
 #define A_U64_C(X) X##u64
 #else /* !__int64 */
@@ -598,17 +598,17 @@
 /*! maximum-width unsigned integer type */
 #define a_umax A_UMAX
 
-#if !defined A_IPTR && A_SIZE_POINTER == 8
+#if !defined A_IPTR && (A_SIZE_POINTER == 8)
 #define A_IPTR A_I64
 #elif !defined A_IPTR
 #define A_IPTR A_I32
 #endif /* A_IPTR */
-#if !defined A_IPTR_MAX && A_SIZE_POINTER == 8
+#if !defined A_IPTR_MAX && (A_SIZE_POINTER == 8)
 #define A_IPTR_MAX A_I64_MAX
 #elif !defined A_IPTR_MAX
 #define A_IPTR_MAX A_I32_MAX
 #endif /* A_IPTR_MAX */
-#if !defined A_IPTR_MIN && A_SIZE_POINTER == 8
+#if !defined A_IPTR_MIN && (A_SIZE_POINTER == 8)
 #define A_IPTR_MIN A_I64_MIN
 #elif !defined A_IPTR_MIN
 #define A_IPTR_MIN A_I32_MIN
@@ -619,12 +619,12 @@
 /*! signed integer type capable of holding a pointer to void */
 #define a_iptr A_IPTR
 
-#if !defined A_UPTR && A_SIZE_POINTER == 8
+#if !defined A_UPTR && (A_SIZE_POINTER == 8)
 #define A_UPTR A_U64
 #elif !defined A_UPTR
 #define A_UPTR A_U32
 #endif /* A_UPTR */
-#if !defined A_UPTR_MAX && A_SIZE_POINTER == 8
+#if !defined A_UPTR_MAX && (A_SIZE_POINTER == 8)
 #define A_UPTR_MAX A_U64_MAX
 #elif !defined A_UPTR_MAX
 #define A_UPTR_MAX A_U32_MAX
