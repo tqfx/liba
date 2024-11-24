@@ -27,7 +27,7 @@
 #endif /* A_FLOAT_TYPE + 0 == 0x04 */
 #endif /* -Wdouble-promotion */
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ > 199900L) || \
-    defined(__cplusplus) && (__cplusplus > 201100L) || A_PREREQ_MSVC(19, 0)
+    defined(__cplusplus) && (__cplusplus > 201100L) || A_PREREQ_MSVC(19, 0) || defined(__GNUC__)
 #define PRIj "j"
 #define SCNj "j"
 #define PRIz "z"
@@ -42,7 +42,7 @@
 #define PRIt "I"
 #define SCNt "I"
 #else /* C < 199900 and C++ < 201100 */
-#if LONG_MAX == INT32_MAX
+#if LONG_MAX == A_I32_MAX
 #define PRIj "ll"
 #define SCNj "ll"
 #else

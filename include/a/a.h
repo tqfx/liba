@@ -277,7 +277,7 @@
 #define A_NULL NULL
 #endif /* __cplusplus */
 /*! static cast to \ref a_void */
-#define a_void_c(_, x) a_cast_s(void, x)
+#define a_void_c(x) a_cast_s(void, x)
 #define a_void_(_, x) a_cast_s(void _, x)
 /*! incomplete type or no parameter or no return value */
 #define a_void void
@@ -508,19 +508,21 @@
 #if defined(_MSC_VER)
 #define A_I64 __int64
 #elif defined(__GNUC__)
-#define A_I64 __extension__ long long
-#else /* !__int64 */
+__extension__ typedef long long A_I64;
+#else /* !extension */
 #define A_I64 long long
-#endif /* __int64 */
+#endif /* extension */
 #elif !defined A_I64
 #define A_I64 long
 #endif /* A_I64 */
 #if !defined A_I64_C && (LONG_MAX == 0x7FFFFFFFL)
 #if defined(_MSC_VER)
 #define A_I64_C(X) X##i64
-#else /* !__int64 */
+#elif defined(__GNUC__)
+#define A_I64_C(X) (__extension__ X##LL)
+#else /* !extension */
 #define A_I64_C(X) X##LL
-#endif /* __int64 */
+#endif /* extension */
 #elif !defined A_I64_C
 #define A_I64_C(X) X##L
 #endif /* A_I64_C */
@@ -536,23 +538,25 @@
 /*! signed integer type with width of exactly 64 bits */
 #define a_i64 A_I64
 
-#if !defined A_U64 && (LONG_MAX == 0xFFFFFFFFUL)
+#if !defined A_U64 && (ULONG_MAX == 0xFFFFFFFFUL)
 #if defined(_MSC_VER)
 #define A_U64 __uint64
 #elif defined(__GNUC__)
-#define A_U64 __extension__ unsigned long long
-#else /* !__int64 */
+__extension__ typedef unsigned long long A_U64;
+#else /* !extension */
 #define A_U64 unsigned long long
-#endif /* __int64 */
+#endif /* extension */
 #elif !defined A_U64
 #define A_U64 unsigned long
 #endif /* A_U64 */
-#if !defined A_U64_C && (LONG_MAX == 0xFFFFFFFFUL)
+#if !defined A_U64_C && (ULONG_MAX == 0xFFFFFFFFUL)
 #if defined(_MSC_VER)
 #define A_U64_C(X) X##u64
-#else /* !__int64 */
+#elif defined(__GNUC__)
+#define A_U64_C(X) (__extension__ X##ULL)
+#else /* !extension */
 #define A_U64_C(X) X##ULL
-#endif /* __int64 */
+#endif /* extension */
 #elif !defined A_U64_C
 #define A_U64_C(X) X##UL
 #endif /* A_U64_C */
