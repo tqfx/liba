@@ -276,7 +276,7 @@ LUA_NUM *lua_array_num_ptr(lua_State *L, int idx, LUA_NUM *ptr, int dim) /* NOLI
 
 LUA_NUM *lua_array_num_get(lua_State *L, int idx, LUA_NUM const *ptr, unsigned int *num, int dim)
 {
-    LUA_NUM *p = (LUA_NUM *)(intptr_t)ptr; /* NOLINT(performance-no-int-to-ptr) */
+    LUA_NUM *p = (LUA_NUM *)(a_uptr)ptr; /* NOLINT(performance-no-int-to-ptr) */
     unsigned int n = lua_array_num_len(L, idx, dim), n_ = 0;
     if (!num) { num = &n_; }
     if (n > *num)
