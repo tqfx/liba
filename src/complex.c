@@ -24,7 +24,8 @@
 #endif /* A_COMPLEX */
 #elif defined(__GNUC__) || defined(__clang__)
 #include <complex.h>
-#define A_COMPLEX _Complex A_FLOAT
+#define A_COMPLEX A_Complex
+__extension__ typedef _Complex A_FLOAT A_COMPLEX;
 #else /* !A_FLOAT_TYPE */
 #if A_PREREQ_GNUC(2, 95) || __has_warning("-Waggregate-return")
 #pragma GCC diagnostic ignored "-Waggregate-return"
