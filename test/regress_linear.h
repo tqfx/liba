@@ -13,7 +13,7 @@ static void srand_(unsigned long seed)
 }
 static long rand_(void)
 {
-    rand_seed = (rand_seed * 1103515245 + 12345) % 2147483648;
+    rand_seed = (rand_seed * 1103515245UL + 12345) % 2147483648UL;
     return a_cast_s(long, rand_seed);
 }
 

@@ -34,24 +34,24 @@ static void create_table(FILE *out)
 
     (void)fprintf(out, "#include <stdint.h>\n");
 
-    a_crc8m_init(table8, 0x07);
+    a_crc8m_init(table8, A_U8_C(0x07));
     write_table8(out, table8, "CRC8M");
-    a_crc8l_init(table8, 0x07); /* 0xE0 */
+    a_crc8l_init(table8, A_U8_C(0x07)); /* 0xE0 */
     write_table8(out, table8, "CRC8L");
 
-    a_crc16m_init(table16, 0x8005);
+    a_crc16m_init(table16, A_U16_C(0x8005));
     write_table16(out, table16, "CRC16M");
-    a_crc16l_init(table16, 0x8005); /* 0xA001 */
+    a_crc16l_init(table16, A_U16_C(0x8005)); /* 0xA001 */
     write_table16(out, table16, "CRC16L");
 
-    a_crc32m_init(table32, 0x04C11DB7);
+    a_crc32m_init(table32, A_U32_C(0x04C11DB7));
     write_table32(out, table32, "CRC32M");
-    a_crc32l_init(table32, 0x04C11DB7); /* 0xEDB88320 */
+    a_crc32l_init(table32, A_U32_C(0x04C11DB7)); /* 0xEDB88320 */
     write_table32(out, table32, "CRC32L");
 
-    a_crc64m_init(table64, 0x42F0E1EBA9EA3693);
+    a_crc64m_init(table64, A_U64_C(0x42F0E1EBA9EA3693));
     write_table64(out, table64, "CRC64M");
-    a_crc64l_init(table64, 0x42F0E1EBA9EA3693); /* 0xC96C5795D7870F42 */
+    a_crc64l_init(table64, A_U64_C(0x42F0E1EBA9EA3693)); /* 0xC96C5795D7870F42 */
     write_table64(out, table64, "CRC64L");
 
     (void)fflush(out);
