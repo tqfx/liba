@@ -15,8 +15,6 @@
 */
 
 /* clang-format off */
-/*! format constants for the fprintf family of functions */
-#define A_COMPLEX_PRI(RF, RC, IF, IC) "(" A_FLOAT_PRI(RF, RC) "," A_FLOAT_PRI(IF, IC) ")"
 /*! constructs a complex number from real and imaginary parts */
 #define A_COMPLEX_C(real, imag) {a_float_c(real), a_float_c(imag)}
 /* clang-format on */

@@ -54,7 +54,7 @@ static void test(void)
         data *node = a_slist_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
         printf("%i ", node->data.i);
     }
-    printf("%" PRIz "u", a_slist_len(list1));
+    printf("%" A_PRIz "u", a_slist_len(list1));
     for (i = 0; i != 10; ++i)
     {
         data *node = a_slist_entry_next(&list1->head, data, node); /* NOLINT(performance-no-int-to-ptr) */

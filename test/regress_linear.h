@@ -102,8 +102,7 @@ static void main_1(int m, a_float a, a_float b, a_size n, config const *cfg)
     {
         a_float u = a_cast_s(a_float, i * 10);
         a_float v = a_regress_linear_eval(&ctx, &u);
-        debug(A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f,")
-                  A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f\n"),
+        debug("%+.1" A_FLOAT_PRI "f,%+.1" A_FLOAT_PRI "f,%+.1" A_FLOAT_PRI "f,%+.1" A_FLOAT_PRI "f,%+.1" A_FLOAT_PRI "f\n",
               u, v, x[i], y[i], e[i]);
     }
 
@@ -196,12 +195,11 @@ static void main_2(int m, a_float a, a_float b, a_float c, a_size n, config cons
             a_float v;
             u[1] = a_cast_s(a_float, ii * 10);
             v = a_regress_linear_eval(&ctx, u);
-            debug(A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f"), u[0], u[1], v);
+            debug("%+.1" A_FLOAT_PRI "f,%+.1" A_FLOAT_PRI "f,%+.1" A_FLOAT_PRI "f", u[0], u[1], v);
             debug("%c", i ? '\n' : ',');
             if (i == 0)
             {
-                debug(A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f,")
-                          A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f\n"),
+                debug("%+.1" A_FLOAT_PRI "f,%+.1" A_FLOAT_PRI "f,%+.1" A_FLOAT_PRI "f,%+.1" A_FLOAT_PRI "f\n",
                       x[ii * 2 + 0], x[ii * 2 + 1], y[ii], e[ii]);
             }
         }

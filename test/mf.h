@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         {
             a_float x = params[0] + delta * a_float_c(i);
             a_float y = a_mf(e, x, params + 2);
-            debug(A_FLOAT_PRI("", "g,") A_FLOAT_PRI("", "g\n"), x, y);
+            debug("%" A_FLOAT_PRI "g,%" A_FLOAT_PRI "g\n", x, y);
         }
     }
     else

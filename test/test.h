@@ -26,34 +26,6 @@
 #pragma GCC diagnostic ignored "-Wdouble-promotion"
 #endif /* A_FLOAT_TYPE + 0 == 0x04 */
 #endif /* -Wdouble-promotion */
-#if defined(__STDC_VERSION__) && (__STDC_VERSION__ > 199900L) || \
-    defined(__cplusplus) && (__cplusplus > 201100L) || A_PREREQ_MSVC(19, 0) || defined(__GNUC__)
-#define PRIj "j"
-#define SCNj "j"
-#define PRIz "z"
-#define SCNz "z"
-#define PRIt "t"
-#define SCNt "t"
-#elif defined(_MSC_VER)
-#define PRIj "I64"
-#define SCNj "I64"
-#define PRIz "I"
-#define SCNz "I"
-#define PRIt "I"
-#define SCNt "I"
-#else /* C < 199900 and C++ < 201100 */
-#if LONG_MAX == A_I32_MAX
-#define PRIj "ll"
-#define SCNj "ll"
-#else
-#define PRIj "l"
-#define SCNj "l"
-#endif
-#define PRIz "l"
-#define SCNz "l"
-#define PRIt "l"
-#define SCNt "l"
-#endif /* C > 199900 or C++ > 201100 */
 
 #if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
 #define strtonum(string, endptr) strtof(string, endptr)

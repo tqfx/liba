@@ -75,7 +75,7 @@ static void test_next(void)
         data *node = a_list_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
         printf("%i ", node->data.i);
     }
-    printf("%" PRIz "u", a_list_len(list1));
+    printf("%" A_PRIz "u", a_list_len(list1));
     A_LIST_FORSAFE_NEXT(it, at, list1)
     {
         data *node = a_list_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
@@ -125,7 +125,7 @@ static void test_prev(void)
         data *node = a_list_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
         printf("%i ", node->data.i);
     }
-    printf("%" PRIz "u", a_list_len(list1));
+    printf("%" A_PRIz "u", a_list_len(list1));
     A_LIST_FORSAFE_PREV(it, at, list1)
     {
         data *node = a_list_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
@@ -181,7 +181,7 @@ static void test_func(void)
         data *node = a_list_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
         printf("%i ", node->data.i);
     }
-    printf("%" PRIz "u", a_list_len(list1) + a_list_len(list2));
+    printf("%" A_PRIz "u", a_list_len(list1) + a_list_len(list2));
     A_LIST_FORSAFE_NEXT(it, at, list1)
     {
         data *node = a_list_entry(it, data, node); /* NOLINT(performance-no-int-to-ptr) */
@@ -214,28 +214,28 @@ static void test_null(void)
     len = a_list_len(&list1) + a_list_len(&list2);
     if (len != 0)
     {
-        printf("failure in %s %i %" PRIz "u\n", __FILE__, __LINE__, len);
+        printf("failure in %s %i %" A_PRIz "u\n", __FILE__, __LINE__, len);
     }
 
     a_list_add_prev(&list1, &list1);
     len = a_list_len(&list1) + a_list_len(&list2);
     if (len != 0)
     {
-        printf("failure in %s %i %" PRIz "u\n", __FILE__, __LINE__, len);
+        printf("failure in %s %i %" A_PRIz "u\n", __FILE__, __LINE__, len);
     }
 
     a_list_add_next(&list1, &list2);
     len = a_list_len(&list1) + a_list_len(&list2);
     if (len != 2)
     {
-        printf("failure in %s %i %" PRIz "u\n", __FILE__, __LINE__, len);
+        printf("failure in %s %i %" A_PRIz "u\n", __FILE__, __LINE__, len);
     }
 
     a_list_add_prev(&list1, &list2);
     len = a_list_len(&list1) + a_list_len(&list2);
     if (len != 2)
     {
-        printf("failure in %s %i %" PRIz "u\n", __FILE__, __LINE__, len);
+        printf("failure in %s %i %" A_PRIz "u\n", __FILE__, __LINE__, len);
     }
 
     a_list_del_node(&list1);
@@ -246,7 +246,7 @@ static void test_null(void)
     len = a_list_len(&list1) + a_list_len(&list2);
     if (len != 0)
     {
-        printf("failure in %s %i %" PRIz "u\n", __FILE__, __LINE__, len);
+        printf("failure in %s %i %" A_PRIz "u\n", __FILE__, __LINE__, len);
     }
 
     a_list_rot_next(&list1);
@@ -254,7 +254,7 @@ static void test_null(void)
     len = a_list_len(&list1) + a_list_len(&list2);
     if (len != 0)
     {
-        printf("failure in %s %i %" PRIz "u\n", __FILE__, __LINE__, len);
+        printf("failure in %s %i %" A_PRIz "u\n", __FILE__, __LINE__, len);
     }
 
     a_list_link(&list1, &list2);
@@ -262,7 +262,7 @@ static void test_null(void)
     len = a_list_len(&list1) + a_list_len(&list2);
     if (len != 2)
     {
-        printf("failure in %s %i %" PRIz "u\n", __FILE__, __LINE__, len);
+        printf("failure in %s %i %" A_PRIz "u\n", __FILE__, __LINE__, len);
     }
 
     a_list_rot_next(&list1);
@@ -271,7 +271,7 @@ static void test_null(void)
     len = a_list_len(&list1) + a_list_len(&list2);
     if (len != 2)
     {
-        printf("failure in %s %i %" PRIz "u\n", __FILE__, __LINE__, len);
+        printf("failure in %s %i %" A_PRIz "u\n", __FILE__, __LINE__, len);
     }
 
     a_list_swap_node(&list1, &list1);
@@ -279,21 +279,21 @@ static void test_null(void)
     len = a_list_len(&list1) + a_list_len(&list2);
     if (len != 2)
     {
-        printf("failure in %s %i %" PRIz "u\n", __FILE__, __LINE__, len);
+        printf("failure in %s %i %" A_PRIz "u\n", __FILE__, __LINE__, len);
     }
 
     a_list_swap_node(&list1, &list2);
     len = a_list_len(&list1) + a_list_len(&list2);
     if (len != 0)
     {
-        printf("failure in %s %i %" PRIz "u\n", __FILE__, __LINE__, len);
+        printf("failure in %s %i %" A_PRIz "u\n", __FILE__, __LINE__, len);
     }
 
     a_list_swap_node(&list2, &list1);
     len = a_list_len(&list1) + a_list_len(&list2);
     if (len != 2)
     {
-        printf("failure in %s %i %" PRIz "u\n", __FILE__, __LINE__, len);
+        printf("failure in %s %i %" A_PRIz "u\n", __FILE__, __LINE__, len);
     }
 
     a_list_set_node(&list1, &list1);
@@ -301,7 +301,7 @@ static void test_null(void)
     len = a_list_len(&list1) + a_list_len(&list2);
     if (len != 2)
     {
-        printf("failure in %s %i %" PRIz "u\n", __FILE__, __LINE__, len);
+        printf("failure in %s %i %" A_PRIz "u\n", __FILE__, __LINE__, len);
     }
 
     a_list_set_node(&list2, &list1);
@@ -309,7 +309,7 @@ static void test_null(void)
     len = a_list_len(&list1) + a_list_len(&list2);
     if (len != 0)
     {
-        printf("failure in %s %i %" PRIz "u\n", __FILE__, __LINE__, len);
+        printf("failure in %s %i %" A_PRIz "u\n", __FILE__, __LINE__, len);
     }
 }
 

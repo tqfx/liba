@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_float x0 = a_float_sin(x);
         a_float x1 = x0 + A_FLOAT_C(0.2) * noise;
         a_float x2 = a_lpf_iter(&ctx, x1);
-        debug(A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f,") A_FLOAT_PRI("+", "f\n"), x, x0, x1, x2);
+        debug("%+" A_FLOAT_PRI "f,%+" A_FLOAT_PRI "f,%+" A_FLOAT_PRI "f,%+" A_FLOAT_PRI "f\n", x, x0, x1, x2);
     }
     a_lpf_zero(&ctx);
 #if defined(__cplusplus) && (__cplusplus > 201100L)

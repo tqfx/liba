@@ -96,18 +96,18 @@ static void test_swap(int argc, char *argv[])
 {
     a_u64 lhs = 0;
     a_u64 rhs = A_U64_MAX;
-    debug("0x%016" PRIX64 " 0x%016" PRIX64 " -> ", lhs, rhs);
+    debug("0x%016" A_PRI64 "X 0x%016" A_PRI64 "X -> ", lhs, rhs);
     a_swap(&lhs, &rhs, 1);
-    debug("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
-    debug("0x%016" PRIX64 " 0x%016" PRIX64 " -> ", lhs, rhs);
+    debug("0x%016" A_PRI64 "X 0x%016" A_PRI64 "X  \n", lhs, rhs);
+    debug("0x%016" A_PRI64 "X 0x%016" A_PRI64 "X -> ", lhs, rhs);
     a_swap(&lhs, &rhs, 2);
-    debug("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
-    debug("0x%016" PRIX64 " 0x%016" PRIX64 " -> ", lhs, rhs);
+    debug("0x%016" A_PRI64 "X 0x%016" A_PRI64 "X  \n", lhs, rhs);
+    debug("0x%016" A_PRI64 "X 0x%016" A_PRI64 "X -> ", lhs, rhs);
     a_swap(&lhs, &rhs, 4);
-    debug("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
-    debug("0x%016" PRIX64 " 0x%016" PRIX64 " -> ", lhs, rhs);
+    debug("0x%016" A_PRI64 "X 0x%016" A_PRI64 "X  \n", lhs, rhs);
+    debug("0x%016" A_PRI64 "X 0x%016" A_PRI64 "X -> ", lhs, rhs);
     a_swap(&lhs, &rhs, 8);
-    debug("0x%016" PRIX64 " 0x%016" PRIX64 "  \n", lhs, rhs);
+    debug("0x%016" A_PRI64 "X 0x%016" A_PRI64 "X  \n", lhs, rhs);
     (void)argc;
     (void)argv;
 }

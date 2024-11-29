@@ -426,6 +426,13 @@ typedef A_I8 a_i8;
 /*! unsigned integer type with width of exactly 8 bits */
 typedef A_U8 a_u8;
 
+#if !defined A_SCN8
+#define A_SCN8 "hh"
+#endif /* A_SCN8 */
+#if !defined A_PRI8
+#define A_PRI8
+#endif /* A_PRI8 */
+
 #if !defined A_I16 && (INT_MAX == 0x7FFF)
 #define A_I16 int
 #elif !defined A_I16
@@ -463,6 +470,17 @@ typedef A_I16 a_i16;
 /*! unsigned integer type with width of exactly 16 bits */
 typedef A_U16 a_u16;
 
+#if !defined A_SCN16 && (UINT_MAX == 0xFFFF)
+#define A_SCN16
+#elif !defined A_SCN16
+#define A_SCN16 "h"
+#endif /* A_SCN16 */
+#if !defined A_PRI16 && (UINT_MAX == 0xFFFF)
+#define A_PRI16
+#elif !defined A_PRI16
+#define A_PRI16
+#endif /* A_PRI16 */
+
 #if !defined A_I32 && (INT_MAX == 0x7FFFFFFFL)
 #define A_I32 int
 #elif !defined A_I32
@@ -471,7 +489,7 @@ typedef A_U16 a_u16;
 #if !defined A_I32_C && (INT_MAX == 0x7FFFFFFFL)
 #define A_I32_C(X) X
 #elif !defined A_I32_C
-#define A_I32_C(X) X##L
+#define A_I32_C(X) A_CAST_2(X, L)
 #endif /* A_I32_C */
 #if !defined A_I32_MAX
 #define A_I32_MAX A_I32_C(0x7FFFFFFF)
@@ -491,9 +509,9 @@ typedef A_I32 a_i32;
 #define A_U32 unsigned long
 #endif /* A_U32 */
 #if !defined A_U32_C && (UINT_MAX == 0xFFFFFFFFUL)
-#define A_U32_C(X) X##U
+#define A_U32_C(X) A_CAST_2(X, U)
 #elif !defined A_U32_C
-#define A_U32_C(X) X##UL
+#define A_U32_C(X) A_CAST_2(X, UL)
 #endif /* A_U32_C */
 #if !defined A_U32_MAX
 #define A_U32_MAX A_U32_C(0xFFFFFFFF)
@@ -504,8 +522,19 @@ typedef A_I32 a_i32;
 /*! unsigned integer type with width of exactly 32 bits */
 typedef A_U32 a_u32;
 
+#if !defined A_SCN32 && (UINT_MAX == 0xFFFFFFFFUL)
+#define A_SCN32
+#elif !defined A_SCN32
+#define A_SCN32 "l"
+#endif /* A_SCN32 */
+#if !defined A_PRI32 && (UINT_MAX == 0xFFFFFFFFUL)
+#define A_PRI32
+#elif !defined A_PRI32
+#define A_PRI32 "l"
+#endif /* A_PRI32 */
+
 #if !defined A_I64 && (LONG_MAX == 0x7FFFFFFFL)
-#if defined(_MSC_VER) ||                             \
+#if defined(_MSC_VER) && (_MSC_VER < 1800) ||        \
     defined(__WATCOMC__) && (__WATCOMC__ >= 1100) || \
     defined(__BORLANDC__) && (__BORLANDC__ >= 0x530)
 #define A_I64 __int64
@@ -516,17 +545,17 @@ typedef A_U32 a_u32;
 #define A_I64 long
 #endif /* A_I64 */
 #if !defined A_I64_C && (LONG_MAX == 0x7FFFFFFFL)
-#if defined(_MSC_VER) ||                             \
+#if defined(_MSC_VER) && (_MSC_VER < 1800) ||        \
     defined(__WATCOMC__) && (__WATCOMC__ >= 1100) || \
     defined(__BORLANDC__) && (__BORLANDC__ >= 0x530)
-#define A_I64_C(X) X##i64
+#define A_I64_C(X) A_CAST_2(X, i64)
 #elif defined(__GNUC__)
-#define A_I64_C(X) (__extension__ X##LL)
+#define A_I64_C(X) (A_CAST_2(__extension__ X, LL))
 #else /* !extension */
-#define A_I64_C(X) X##LL
+#define A_I64_C(X) A_CAST_2(X, LL)
 #endif /* extension */
 #elif !defined A_I64_C
-#define A_I64_C(X) X##L
+#define A_I64_C(X) A_CAST_2(X, L)
 #endif /* A_I64_C */
 #if !defined A_I64_MAX
 #define A_I64_MAX A_I64_C(0x7FFFFFFFFFFFFFFF)
@@ -546,7 +575,7 @@ typedef A_I64 a_i64;
 /* clang-format on */
 
 #if !defined A_U64 && (ULONG_MAX == 0xFFFFFFFFUL)
-#if defined(_MSC_VER) ||                             \
+#if defined(_MSC_VER) && (_MSC_VER < 1800) ||        \
     defined(__WATCOMC__) && (__WATCOMC__ >= 1100) || \
     defined(__BORLANDC__) && (__BORLANDC__ >= 0x530)
 #define A_U64 unsigned __int64
@@ -557,17 +586,17 @@ typedef A_I64 a_i64;
 #define A_U64 unsigned long
 #endif /* A_U64 */
 #if !defined A_U64_C && (ULONG_MAX == 0xFFFFFFFFUL)
-#if defined(_MSC_VER) ||                             \
+#if defined(_MSC_VER) && (_MSC_VER < 1800) ||        \
     defined(__WATCOMC__) && (__WATCOMC__ >= 1100) || \
     defined(__BORLANDC__) && (__BORLANDC__ >= 0x530)
-#define A_U64_C(X) X##ui64
+#define A_U64_C(X) A_CAST_2(X, ui64)
 #elif defined(__GNUC__)
-#define A_U64_C(X) (__extension__ X##ULL)
+#define A_U64_C(X) (A_CAST_2(__extension__ X, ULL))
 #else /* !extension */
-#define A_U64_C(X) X##ULL
+#define A_U64_C(X) A_CAST_2(X, ULL)
 #endif /* extension */
 #elif !defined A_U64_C
-#define A_U64_C(X) X##UL
+#define A_U64_C(X) A_CAST_2(X, UL)
 #endif /* A_U64_C */
 #if !defined A_U64_MAX
 #define A_U64_MAX A_U64_C(0xFFFFFFFFFFFFFFFF)
@@ -582,6 +611,29 @@ __extension__
 /*! unsigned integer type with width of exactly 64 bits */
 typedef A_U64 a_u64;
 /* clang-format on */
+
+#if !defined A_SCN64 && (ULONG_MAX == 0xFFFFFFFFUL)
+#if defined(_MSC_VER) && (_MSC_VER < 1800) ||        \
+    defined(__WATCOMC__) && (__WATCOMC__ >= 1100) || \
+    defined(__BORLANDC__) && (__BORLANDC__ >= 0x530)
+#define A_SCN64 "I64"
+#else /* !extension */
+#define A_SCN64 "ll"
+#endif /* extension */
+#elif !defined A_SCN64
+#define A_SCN64 "l"
+#endif /* A_SCN64 */
+#if !defined A_PRI64 && (ULONG_MAX == 0xFFFFFFFFUL)
+#if defined(_MSC_VER) && (_MSC_VER < 1800) ||        \
+    defined(__WATCOMC__) && (__WATCOMC__ >= 1100) || \
+    defined(__BORLANDC__) && (__BORLANDC__ >= 0x530)
+#define A_PRI64 "I64"
+#else /* !extension */
+#define A_PRI64 "ll"
+#endif /* extension */
+#elif !defined A_PRI64
+#define A_PRI64 "l"
+#endif /* A_PRI64 */
 
 #if !defined A_IMAX
 #define A_IMAX A_I64
@@ -615,6 +667,13 @@ typedef A_IMAX a_imax;
 #define a_umax_(_, x) a_cast_s(a_umax _, x)
 /*! maximum-width unsigned integer type */
 typedef A_UMAX a_umax;
+
+#if !defined A_SCNMAX
+#define A_SCNMAX A_SCN64
+#endif /* A_SCNMAX */
+#if !defined A_PRIMAX
+#define A_PRIMAX A_PRI64
+#endif /* A_PRIMAX */
 
 #if !defined A_IPTR && (A_SIZE_POINTER == 8)
 #define A_IPTR A_I64
@@ -653,6 +712,17 @@ typedef A_IPTR a_iptr;
 /*! unsigned integer type capable of holding a pointer to void */
 typedef A_UPTR a_uptr;
 
+#if !defined A_SCNPTR && (A_SIZE_POINTER == 8)
+#define A_SCNPTR A_SCN64
+#elif !defined A_SCNPTR
+#define A_SCNPTR A_SCN32
+#endif /* A_SCNPTR */
+#if !defined A_PRIPTR && (A_SIZE_POINTER == 8)
+#define A_PRIPTR A_PRI64
+#elif !defined A_PRIPTR
+#define A_PRIPTR A_PRI32
+#endif /* A_PRIPTR */
+
 #if !defined A_DIFF
 #define A_DIFF ptrdiff_t
 #endif /* A_DIFF */
@@ -668,6 +738,28 @@ typedef A_UPTR a_uptr;
 /*! signed integer type returned when subtracting two pointers */
 typedef A_DIFF a_diff;
 
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ > 199900L) || \
+    defined(__cplusplus) && (__cplusplus > 201100L) ||           \
+    defined(__GNUC__) || A_PREREQ_MSVC(19, 0)
+#if !defined A_SCNt
+#define A_SCNt "t"
+#endif /* A_SCNt */
+#if !defined A_PRIt
+#define A_PRIt "t"
+#endif /* A_PRIt */
+#else /* C < 199900 and C++ < 201100 */
+#if !defined A_SCNt && (A_DIFF_MAX == 0x7FFFFFFFL)
+#define A_SCNt A_SCN32
+#elif !defined A_SCNt
+#define A_SCNt A_SCN64
+#endif /* A_SCNt */
+#if !defined A_PRIt && (A_DIFF_MAX == 0x7FFFFFFFL)
+#define A_PRIt A_PRI32
+#elif !defined A_PRIt
+#define A_PRIt A_PRI64
+#endif /* A_PRIt */
+#endif /* C > 199900 or C++ > 201100 */
+
 #if !defined A_SIZE
 #define A_SIZE size_t
 #endif /* A_SIZE */
@@ -679,6 +771,28 @@ typedef A_DIFF a_diff;
 #define a_size_(_, x) a_cast_s(a_size _, x)
 /*! unsigned integer type returned by the sizeof operator */
 typedef A_SIZE a_size;
+
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ > 199900L) || \
+    defined(__cplusplus) && (__cplusplus > 201100L) ||           \
+    defined(__GNUC__) || A_PREREQ_MSVC(19, 0)
+#if !defined A_SCNz
+#define A_SCNz "z"
+#endif /* A_SCNz */
+#if !defined A_PRIz
+#define A_PRIz "z"
+#endif /* A_PRIz */
+#else /* C < 199900 and C++ < 201100 */
+#if !defined A_SCNz && (A_SIZE_MAX == 0xFFFFFFFFUL)
+#define A_SCNz A_SCN32
+#elif !defined A_SCNz
+#define A_SCNz A_SCN64
+#endif /* A_SCNz */
+#if !defined A_PRIz && (A_SIZE_MAX == 0xFFFFFFFFUL)
+#define A_PRIz A_PRI32
+#elif !defined A_PRIz
+#define A_PRIz A_PRI64
+#endif /* A_PRIz */
+#endif /* C > 199900 or C++ > 201100 */
 
 #define A_F16_NNAN A_U16_C(0xFE00)
 #define A_F16_PNAN A_U16_C(0x7E00)
@@ -703,10 +817,6 @@ typedef A_SIZE a_size;
 #define A_F32_PNAN A_U32_C(0x7FC00000)
 #define A_F32_NINF A_U32_C(0xFF800000)
 #define A_F32_PINF A_U32_C(0x7F800000)
-/*! format constants for the fprintf family of functions */
-#define A_F32_PRI(F, C) "%" F C
-/*! format constants for the fscanf family of functions */
-#define A_F32_SCN(F, C) "%" F C
 /*! static cast to \ref a_f32 */
 #define a_f32_c(x) a_cast_s(a_f32, x)
 #define a_f32_(_, x) a_cast_s(a_f32 _, x)
@@ -731,10 +841,6 @@ typedef A_F32 a_f32;
 #define A_F64_PNAN A_U64_C(0x7FF8000000000000)
 #define A_F64_NINF A_U64_C(0xFFF0000000000000)
 #define A_F64_PINF A_U64_C(0x7FF0000000000000)
-/*! format constants for the fprintf family of functions */
-#define A_F64_PRI(F, C) "%" F "l" C
-/*! format constants for the fscanf family of functions */
-#define A_F64_SCN(F, C) "%" F "l" C
 /*! static cast to \ref a_f64 */
 #define a_f64_c(x) a_cast_s(a_f64, x)
 #define a_f64_(_, x) a_cast_s(a_f64 _, x)
@@ -782,9 +888,9 @@ typedef A_F64 a_f64;
 #define A_FLOAT_F(F) A_CAST_2(F, f)
 
 /*! format constants for the fprintf family of functions */
-#define A_FLOAT_PRI(F, C) "%" F C
+#define A_FLOAT_PRI
 /*! format constants for the fscanf family of functions */
-#define A_FLOAT_SCN(F, C) "%" F C
+#define A_FLOAT_SCN
 
 #elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
 
@@ -810,9 +916,9 @@ typedef A_F64 a_f64;
 #define A_FLOAT_F(F) F
 
 /*! format constants for the fprintf family of functions */
-#define A_FLOAT_PRI(F, C) "%" F C
+#define A_FLOAT_PRI
 /*! format constants for the fscanf family of functions */
-#define A_FLOAT_SCN(F, C) "%" F "l" C
+#define A_FLOAT_SCN "l"
 
 #elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
 
@@ -838,9 +944,9 @@ typedef A_F64 a_f64;
 #define A_FLOAT_F(F) A_CAST_2(F, l)
 
 /*! format constants for the fprintf family of functions */
-#define A_FLOAT_PRI(F, C) "%" F "L" C
+#define A_FLOAT_PRI "L"
 /*! format constants for the fscanf family of functions */
-#define A_FLOAT_SCN(F, C) "%" F "L" C
+#define A_FLOAT_SCN "L"
 
 #else /* !A_FLOAT_TYPE */
 #error unsupported precision

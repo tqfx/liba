@@ -90,9 +90,9 @@ static void test_sum(int argc, char *argv[])
     debug("{");
     for (i = 0; i < n; ++i)
     {
-        debug("%c" A_FLOAT_PRI("", "g"), i ? ',' : 0, p[i]);
+        debug("%c%" A_FLOAT_PRI "g", i ? ',' : 0, p[i]);
     }
-    debug("}:" A_FLOAT_PRI("", "g,") A_FLOAT_PRI("", "g,") A_FLOAT_PRI("", "g\n"),
+    debug("}:%" A_FLOAT_PRI "g,%" A_FLOAT_PRI "g,%" A_FLOAT_PRI "g\n",
           a_float_sum(p, n), a_float_sum1(p, n), a_float_sum2(p, n));
 
     a_die(p);
@@ -112,9 +112,9 @@ static void test_mean(int argc, char *argv[])
     debug("{");
     for (i = 0; i < n; ++i)
     {
-        debug("%c" A_FLOAT_PRI("", "g"), i ? ',' : 0, p[i]);
+        debug("%c%" A_FLOAT_PRI "g", i ? ',' : 0, p[i]);
     }
-    debug("}:" A_FLOAT_PRI("", "g\n"), a_float_mean(p, n));
+    debug("}:%" A_FLOAT_PRI "g\n", a_float_mean(p, n));
 
     a_die(p);
 }
@@ -125,17 +125,17 @@ static void test_push(int argc, char *argv[])
     a_float array[] = {0, 1, 2, 3, 4, 5, 6, 7};
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%+" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     a_float_push_fore(array, A_LEN(array), -1);
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%+" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     a_float_push_back(array, A_LEN(array), -1);
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%+" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     {
         a_float cache[] = {-1, -2};
@@ -143,7 +143,7 @@ static void test_push(int argc, char *argv[])
     }
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%+" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     {
         a_float cache[] = {-2, -1};
@@ -151,7 +151,7 @@ static void test_push(int argc, char *argv[])
     }
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%+" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     {
         a_float cache[] = {-0, -1, -2, -3, -4, -5, -6, -7, -8, -9};
@@ -159,7 +159,7 @@ static void test_push(int argc, char *argv[])
     }
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%+" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     {
         a_float cache[] = {-9, -8, -7, -6, -5, -4, -3, -2, -1, -0};
@@ -167,7 +167,7 @@ static void test_push(int argc, char *argv[])
     }
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug(A_FLOAT_PRI("+", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%+" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     (void)argc;
     (void)argv;
@@ -180,37 +180,37 @@ static void test_roll(int argc, char *argv[])
     a_float shift[16];
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug(A_FLOAT_PRI("", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     a_float_roll_fore(array, A_LEN(array));
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug(A_FLOAT_PRI("", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     a_float_roll_back(array, A_LEN(array));
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug(A_FLOAT_PRI("", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     a_float_roll_fore_(array, A_LEN(array), shift, 2);
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug(A_FLOAT_PRI("", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     a_float_roll_back_(array, A_LEN(array), shift, 2);
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug(A_FLOAT_PRI("", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     a_float_roll_fore_(array, A_LEN(array), shift, 15);
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug(A_FLOAT_PRI("", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     a_float_roll_back_(array, A_LEN(array), shift, 15);
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug(A_FLOAT_PRI("", "g") "%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     (void)argc;
     (void)argv;
@@ -245,24 +245,24 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_float max = A_FLOAT_MAX;
         a_float inf = A_FLOAT_INF;
         a_float nan = A_FLOAT_NAN;
-        debug("min = " A_FLOAT_PRI("-12", "g ") "max = " A_FLOAT_PRI("", "g\n"), min, max);
-        debug("inf = " A_FLOAT_PRI("-12", "g ") "nan = " A_FLOAT_PRI("", "g\n"), inf, nan);
+        debug("min = %-12" A_FLOAT_PRI "g max = %" A_FLOAT_PRI "g\n", min, max);
+        debug("inf = %-12" A_FLOAT_PRI "g nan = %" A_FLOAT_PRI "g\n", inf, nan);
     }
     {
 #undef a_float_expm1
         a_float x = A_FLOAT_EPSILON / 2;
         TEST_BUG(isinf(a_float_expm1(A_FLOAT_INF)));
         TEST_BUG(isnan(a_float_expm1(A_FLOAT_NAN)));
-        debug("expm1(" A_FLOAT_PRI(".15", "g") ")=" A_FLOAT_PRI(".15", "g\n"), x, a_float_expm1(x));
-        debug("exp(" A_FLOAT_PRI(".15", "g") ")-1=" A_FLOAT_PRI(".15", "g\n"), x, a_float_exp(x) - 1);
+        debug("expm1(%.15" A_FLOAT_PRI "g)=%.15" A_FLOAT_PRI "g\n", x, a_float_expm1(x));
+        debug("exp(%.15" A_FLOAT_PRI "g)-1=%.15" A_FLOAT_PRI "g\n", x, a_float_exp(x) - 1);
     }
     {
 #undef a_float_log1p
         a_float x = A_FLOAT_EPSILON / 2;
         TEST_BUG(isinf(a_float_log1p(A_FLOAT_INF)));
         TEST_BUG(isnan(a_float_log1p(A_FLOAT_NAN)));
-        debug("log1p(" A_FLOAT_PRI(".15", "g") ")=" A_FLOAT_PRI(".15", "g\n"), x, a_float_log1p(x));
-        debug("log(1+" A_FLOAT_PRI(".15", "g") ")=" A_FLOAT_PRI(".15", "g\n"), x, a_float_log(x + 1));
+        debug("log1p(%.15" A_FLOAT_PRI "g)=%.15" A_FLOAT_PRI "g\n", x, a_float_log1p(x));
+        debug("log(1+%.15" A_FLOAT_PRI "g)=%.15" A_FLOAT_PRI "g\n", x, a_float_log(x + 1));
     }
     {
 #undef a_float_hypot

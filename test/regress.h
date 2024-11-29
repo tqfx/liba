@@ -19,12 +19,12 @@ static void test_odm(int argc, char *argv[])
     debug("{");
     for (i = 0; i < n; ++i)
     {
-        debug("%c" A_FLOAT_PRI("", "g"), i ? ',' : 0, p[i]);
+        debug("%c%" A_FLOAT_PRI "g", i ? ',' : 0, p[i]);
     }
-    debug("}:" A_FLOAT_PRI("", "g\n{"), a_regress_odm(n, p, odm));
+    debug("}:%" A_FLOAT_PRI "g\n{", a_regress_odm(n, p, odm));
     for (i = 0; i < n; ++i)
     {
-        debug("%c" A_FLOAT_PRI("", "g"), i ? ',' : 0, odm[i]);
+        debug("%c%" A_FLOAT_PRI "g", i ? ',' : 0, odm[i]);
     }
     debug("}\n");
 

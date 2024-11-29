@@ -49,9 +49,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     {
         a_float u = a_cast_s(a_float, i * 10);
         a_float v = a_regress_simple_eval(&ctx, u);
-        debug(A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f,")
-                  A_FLOAT_PRI("+.1", "f,") A_FLOAT_PRI("+.1", "f\n"),
-              u, v, x[i], y[i]);
+        debug("%+.1" A_FLOAT_PRI "f,%+.1" A_FLOAT_PRI "f,%+.1" A_FLOAT_PRI "f,%+.1" A_FLOAT_PRI "f\n", u, v, x[i], y[i]);
     }
 
     a_regress_simple_zero(&ctx);

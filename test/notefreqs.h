@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     main_init(argc, argv, 1);
     for (i = 0; i != A_LEN(song); ++i)
     {
-        debug(A_FLOAT_PRI("", "g,") A_FLOAT_PRI("", "g,") A_FLOAT_PRI("", "g\n"), song[i][0], song[i][1], 1 / song[i][1]);
+        debug("%" A_FLOAT_PRI "g,%" A_FLOAT_PRI "g,%" A_FLOAT_PRI "g\n", song[i][0], song[i][1], 1 / song[i][1]);
     }
     return 0;
 }
