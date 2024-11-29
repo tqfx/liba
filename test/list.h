@@ -209,6 +209,10 @@ static void test_null(void)
     static a_list list1 = A_LIST_INIT(list1);
     static a_list list2 = A_LIST_INIT(list2);
     a_size len = a_list_len(&list1) + a_list_len(&list2);
+    if (len != 0)
+    {
+        printf("failure in %s %i %" A_PRIz "u\n", __FILE__, __LINE__, len);
+    }
 
     a_list_add_next(&list1, &list1);
     len = a_list_len(&list1) + a_list_len(&list2);
