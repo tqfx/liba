@@ -31,7 +31,7 @@ GENERATE_XML           = YES
 # Configuration options related to the Perl module output
 # Configuration options related to the preprocessor
 MACRO_EXPANSION        = YES
-PREDEFINED             = __STDC_VERSION__=201112L __cplusplus=201103L A_BYTE_ORDER=1234 A_SIZE_POINTER=8 A_INLINE:=inline A_NONULL():= A_FORMAT():= A_EXTERN:= A_INTERN:= A_PUBLIC:= A_HIDDEN:=
+PREDEFINED             = __STDC_VERSION__=201112L __cplusplus=201103L A_INLINE:=inline A_NONULL():= A_FORMAT():= A_EXTERN:= A_INTERN:= A_PUBLIC:= A_HIDDEN:=
 # Configuration options related to external references
 # Configuration options related to the dot tool
 HAVE_DOT               = YES
