@@ -754,8 +754,7 @@ typedef A_UPTR a_uptr;
 typedef A_DIFF a_diff;
 
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ > 199900L) || \
-    defined(__cplusplus) && (__cplusplus > 201100L) ||           \
-    defined(__GNUC__) || A_PREREQ_MSVC(19, 0)
+    defined(__cplusplus) && (__cplusplus > 201100L) || A_PREREQ_MSVC(19, 0)
 #if !defined A_PRIt
 #define A_PRIt "t"
 #endif /* A_PRIt */
@@ -788,8 +787,7 @@ typedef A_DIFF a_diff;
 typedef A_SIZE a_size;
 
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ > 199900L) || \
-    defined(__cplusplus) && (__cplusplus > 201100L) ||           \
-    defined(__GNUC__) || A_PREREQ_MSVC(19, 0)
+    defined(__cplusplus) && (__cplusplus > 201100L) || A_PREREQ_MSVC(19, 0)
 #if !defined A_PRIz
 #define A_PRIz "z"
 #endif /* A_PRIz */
