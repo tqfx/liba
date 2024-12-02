@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         {
             a_utf_encode(A_NULL, val);
             buf[a_utf_encode(buf, val)] = 0;
-            debug(" %s:%" PRIu32, buf, val);
+            debug(" %s:%" A_PRI32 "u", buf, val);
             if (!*s) { break; }
         }
         debug("\n");

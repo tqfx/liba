@@ -6,7 +6,7 @@
 static void dtor(void *ptr)
 {
     a_u32 *obj = a_u32_(*, ptr);
-    printf("%" PRIu32 " ", *obj);
+    printf("%" A_PRI32 "u ", *obj);
 }
 
 static void back(void)
@@ -23,14 +23,14 @@ static void back(void)
 
     A_BUF_FOREACH(a_u32 *, it, at, &ctx)
     {
-        printf("%" PRIu32 " ", *it);
+        printf("%" A_PRI32 "u ", *it);
     }
     (void)putchar('\n');
 
     for (i = 0; i != 20; ++i)
     {
         a_u32 *obj = A_BUF_PULL_BACK(a_u32, &ctx);
-        if (obj) { printf("%" PRIu32 " ", *obj); }
+        if (obj) { printf("%" A_PRI32 "u ", *obj); }
     }
     (void)putchar('\n');
 
@@ -51,14 +51,14 @@ static void fore(void)
 
     A_BUF_FOREACH_REVERSE(a_u32 *, it, at, &ctx)
     {
-        printf("%" PRIu32 " ", *it);
+        printf("%" A_PRI32 "u ", *it);
     }
     (void)putchar('\n');
 
     for (i = 0; i != 20; ++i)
     {
         a_u32 *obj = A_BUF_PULL_FORE(a_u32, &ctx);
-        if (obj) { printf("%" PRIu32 " ", *obj); }
+        if (obj) { printf("%" A_PRI32 "u ", *obj); }
     }
     (void)putchar('\n');
 

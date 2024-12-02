@@ -16,7 +16,7 @@ static void liba_crc64_finalizer(JSRuntime *rt, JSValue val)
 
 static JSValue liba_crc64_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
-    a_i64 poly = 0;
+    int64_t poly = 0;
     int reversed = 0;
     JSValue proto, clazz = JS_UNDEFINED;
     struct crc64 *const self = (struct crc64 *)js_mallocz(ctx, sizeof(struct crc64));
@@ -52,7 +52,7 @@ fail:
 
 static JSValue liba_crc64_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    a_i64 poly = 0;
+    int64_t poly = 0;
     int reversed = 0;
     struct crc64 *const self = (struct crc64 *)JS_GetOpaque2(ctx, this_val, liba_crc64_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -83,7 +83,7 @@ static JSValue liba_crc64_eval(JSContext *ctx, JSValueConst this_val, int argc, 
     if (!self) { return JS_EXCEPTION; }
     if (argc > 1)
     {
-        a_i64 x = 0;
+        int64_t x = 0;
         if (JS_ToInt64Ext(ctx, &x, argv[1])) { return JS_EXCEPTION; }
         value = (a_u64)x;
     }
@@ -112,7 +112,7 @@ static JSValue liba_crc64_pack(JSContext *ctx, JSValueConst this_val, int argc, 
     if (!self) { return JS_EXCEPTION; }
     if (argc > 1)
     {
-        a_i64 x = 0;
+        int64_t x = 0;
         if (JS_ToInt64Ext(ctx, &x, argv[1])) { return JS_EXCEPTION; }
         value = (a_u64)x;
     }

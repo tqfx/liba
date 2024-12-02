@@ -1,8 +1,6 @@
-#if defined(__GNUC__)
-#if !defined _GNU_SOURCE
+#if !defined _GNU_SOURCE && defined(__linux__)
 #define _GNU_SOURCE 1
 #endif /* _GNU_SOURCE */
-#endif /* __GNUC__ */
 #include "a/version.h"
 
 unsigned int const a_version_major = A_VERSION_MAJOR;

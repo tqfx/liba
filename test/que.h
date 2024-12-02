@@ -5,7 +5,7 @@
 static void dtor(void *ptr)
 {
     a_u32 *u = a_u32_(*, ptr);
-    printf("%" PRIu32 " ", *u);
+    printf("%" A_PRI32 "u ", *u);
 }
 
 static void test(void)
@@ -20,14 +20,14 @@ static void test(void)
     {
         a_u64 *fore = A_QUE_FORE_(a_u64, ctx);
         a_u64 *back = A_QUE_BACK_(a_u64, ctx);
-        printf("%" PRIu64 " %" PRIu64 " ", *fore, *back);
+        printf("%" A_PRI64 "u %" A_PRI64 "u ", *fore, *back);
     }
     {
         a_u64 *fore = A_QUE_FORE(a_u64, ctx);
         a_u64 *back = A_QUE_BACK(a_u64, ctx);
         if (fore && back)
         {
-            printf("%" PRIu64 " %" PRIu64 " ", *fore, *back);
+            printf("%" A_PRI64 "u %" A_PRI64 "u ", *fore, *back);
         }
     }
     {
@@ -35,7 +35,7 @@ static void test(void)
         a_u64 *back = A_QUE_AT(a_u64, ctx, ~0);
         if (fore && back)
         {
-            printf("%" PRIu64 " %" PRIu64 "\n", *fore, *back);
+            printf("%" A_PRI64 "u %" A_PRI64 "u\n", *fore, *back);
         }
     }
     for (i = 0; i != 5; ++i)
@@ -72,13 +72,13 @@ static void test(void)
     A_QUE_FOREACH(a_u32 *, it, at, ctx)
     {
         TEST_BUG(a_que_siz(ctx) >= sizeof(*it));
-        printf("%" PRIu32 " ", *it);
+        printf("%" A_PRI32 "u ", *it);
     }
     (void)putchar('\n');
     A_QUE_FOREACH_REVERSE(a_u32 *, it, at, ctx)
     {
         TEST_BUG(a_que_siz(ctx) >= sizeof(*it));
-        printf("%" PRIu32 " ", *it);
+        printf("%" A_PRI32 "u ", *it);
     }
     (void)putchar('\n');
     for (i = 0; i != 5; ++i)

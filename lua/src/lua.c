@@ -1,6 +1,6 @@
-#if !defined _XOPEN_SOURCE
-#define _XOPEN_SOURCE 500
-#endif /* _XOPEN_SOURCE */
+#if !defined _GNU_SOURCE && defined(__linux__)
+#define _GNU_SOURCE 1
+#endif /* _GNU_SOURCE */
 #include "a.h"
 
 void *lua_alloc(lua_State *L, void const *ptr_, size_t siz)
@@ -322,7 +322,6 @@ void lua_array_num_new(lua_State *L, LUA_NUM const *ptr, unsigned int num)
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <inttypes.h>
 #if defined(_MSC_VER) && (_MSC_VER < 1900)
 #define snprintf sprintf_s
 #endif /* _MSC_VER */
@@ -364,7 +363,7 @@ a_u16 lua_u16_get(lua_State *L, int idx)
 void lua_u32_new(lua_State *L, a_u32 value)
 {
     char buf[8 + 3];
-    (void)snprintf(buf, sizeof(buf), "0x%08" PRIX32, value);
+    (void)snprintf(buf, sizeof(buf), "0x%08" A_PRI32 "X", value);
     lua_pushstring(L, buf);
 }
 
@@ -383,7 +382,7 @@ a_u32 lua_u32_get(lua_State *L, int idx)
 void lua_u64_new(lua_State *L, a_u64 value)
 {
     char buf[16 + 3];
-    (void)snprintf(buf, sizeof(buf), "0x%016" PRIX64, value);
+    (void)snprintf(buf, sizeof(buf), "0x%016" A_PRI64 "X", value);
     lua_pushstring(L, buf);
 }
 

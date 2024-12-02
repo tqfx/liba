@@ -5,13 +5,13 @@
 static void dtor(void *ptr)
 {
     a_u32 *obj = a_u32_(*, ptr);
-    printf("%" PRIu32 " ", *obj);
+    printf("%" A_PRI32 "u ", *obj);
 }
 
 static int u32dup(void *dst, void const *src)
 {
     *a_u32_(*, dst) = *a_u32_(const *, src);
-    printf("%" PRIu32 " ", *a_u32_(const *, src));
+    printf("%" A_PRI32 "u ", *a_u32_(const *, src));
     return 0;
 }
 
@@ -52,14 +52,14 @@ static void test(void)
     {
         it = A_VEC_AT(a_u32, ctx, i);
         TEST_BUG(a_vec_siz(ctx) == sizeof(*it));
-        if (it) { printf("%" PRIu32 " ", *it); }
+        if (it) { printf("%" A_PRI32 "u ", *it); }
     }
     (void)putchar('\n');
     A_VEC_FORENUM_REVERSE(a_u32, i, ctx)
     {
         it = A_VEC_AT(a_u32, ctx, i);
         TEST_BUG(a_vec_siz(ctx) == sizeof(*it));
-        if (it) { printf("%" PRIu32 " ", *it); }
+        if (it) { printf("%" A_PRI32 "u ", *it); }
     }
     (void)putchar('\n');
 
@@ -67,14 +67,14 @@ static void test(void)
     {
         TEST_BUG(a_vec_siz(ctx) == sizeof(*it));
         TEST_BUG(sizeof(a_u32) == sizeof(*it));
-        printf("%" PRIu32 " ", *it);
+        printf("%" A_PRI32 "u ", *it);
     }
     (void)putchar('\n');
     A_VEC_FOREACH_REVERSE(a_u32 *, it, at, ctx)
     {
         TEST_BUG(a_vec_siz(ctx) == sizeof(*it));
         TEST_BUG(sizeof(a_u32) == sizeof(*it));
-        printf("%" PRIu32 " ", *it);
+        printf("%" A_PRI32 "u ", *it);
     }
     (void)putchar('\n');
 
@@ -103,18 +103,18 @@ static void test(void)
         }
         A_VEC_FOREACH(a_u32 *, it, at, ctx)
         {
-            printf("%" PRIu32 " ", *it);
+            printf("%" A_PRI32 "u ", *it);
         }
         (void)putchar('\n');
         for (i = 0; i != 5; ++i)
         {
             a_u32 *obj = A_VEC_REMOVE(a_u32, ctx, i);
-            if (obj) { printf("%" PRIu32 " ", *obj); }
+            if (obj) { printf("%" A_PRI32 "u ", *obj); }
         }
         for (i = 0; i != 5; ++i)
         {
             a_u32 *obj = A_VEC_REMOVE(a_u32, ctx, 0);
-            if (obj) { printf("%" PRIu32 " ", *obj); }
+            if (obj) { printf("%" A_PRI32 "u ", *obj); }
         }
         (void)putchar('\n');
         a_vec_die(ctx, A_NULL);
@@ -129,7 +129,7 @@ static void test(void)
         for (i = 5; i != 10; ++i)
         {
             a_u32 *obj = A_VEC_PULL_BACK(a_u32, ctx);
-            if (obj) { printf("%" PRIu32 " ", *obj); }
+            if (obj) { printf("%" A_PRI32 "u ", *obj); }
         }
         for (i = 0; i != 5; ++i)
         {
@@ -139,7 +139,7 @@ static void test(void)
         for (i = 0; i != 5; ++i)
         {
             a_u32 *obj = A_VEC_PULL_FORE(a_u32, ctx);
-            if (obj) { printf("%" PRIu32 " ", *obj); }
+            if (obj) { printf("%" A_PRI32 "u ", *obj); }
         }
         (void)putchar('\n');
         a_vec_die(ctx, A_NULL);

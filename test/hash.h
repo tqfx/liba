@@ -7,7 +7,7 @@ static void test_hash_bkdr(int argc, char *argv[])
     int idx;
     for (idx = 1; idx < argc; ++idx)
     {
-        debug("case 0x%08" PRIX32 ": // %s\n    break;\n", a_hash_bkdr(argv[idx], 0), argv[idx]);
+        debug("case 0x%08" A_PRI32 "X: // %s\n    break;\n", a_hash_bkdr(argv[idx], 0), argv[idx]);
     }
 }
 
@@ -16,7 +16,7 @@ static void test_hash_sdbm(int argc, char *argv[])
     int idx;
     for (idx = 1; idx < argc; ++idx)
     {
-        debug("case 0x%08" PRIX32 ": // %s\n    break;\n", a_hash_sdbm(argv[idx], 0), argv[idx]);
+        debug("case 0x%08" A_PRI32 "X: // %s\n    break;\n", a_hash_sdbm(argv[idx], 0), argv[idx]);
     }
 }
 

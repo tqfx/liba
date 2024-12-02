@@ -1,13 +1,9 @@
-#if defined(_MSC_VER)
-#if !defined _CRT_SECURE_NO_WARNINGS
+#if !defined _CRT_SECURE_NO_WARNINGS && defined(_MSC_VER)
 #define _CRT_SECURE_NO_WARNINGS /* NOLINT */
 #endif /* _CRT_SECURE_NO_WARNINGS */
-#endif /* _MSC_VER */
-#if defined(__GNUC__)
-#if !defined _GNU_SOURCE
+#if !defined _GNU_SOURCE && defined(__linux__)
 #define _GNU_SOURCE 1
 #endif /* _GNU_SOURCE */
-#endif /* __GNUC__ */
 #include "a/str.h"
 
 a_str *a_str_new(void)

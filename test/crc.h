@@ -10,10 +10,11 @@
         (void)fprintf(out, "    /* clang-format off */\n");                         \
         for (i = 0; i != 0x100 / (row); ++i)                                        \
         {                                                                           \
+            a_size r = (row) * i;                                                   \
             (void)fprintf(out, "    ");                                             \
             for (ii = 0; ii != (row); ++ii)                                         \
             {                                                                       \
-                (void)fprintf(out, "0x%0" #fmt PRIX##bit ",", ctx[(row) * i + ii]); \
+                (void)fprintf(out, "0x%0" #fmt A_PRI##bit "X,", ctx[r + ii]);       \
                 if (ii != (row) - 1) { (void)fputc(' ', out); }                     \
             }                                                                       \
             (void)fputc('\n', out);                                                 \
