@@ -259,10 +259,10 @@
 */
 #if defined(__SIZEOF_POINTER__)
 #define A_SIZE_POINTER __SIZEOF_POINTER__
-#elif SIZE_MAX + 0 == 0xFFFFFFFFUL
-#define A_SIZE_POINTER 4
-#else /* !__SIZEOF_POINTER__ */
+#elif defined(_WIN64) || defined(__LP64__)
 #define A_SIZE_POINTER 8
+#else /* !__SIZEOF_POINTER__ */
+#define A_SIZE_POINTER 4
 #endif /* __SIZEOF_POINTER__ */
 #endif /* A_SIZE_POINTER */
 
@@ -448,7 +448,7 @@ typedef A_U8 a_u8;
 #define A_SCN8 "hh"
 #endif /* A_SCN8 */
 
-#if !defined A_I16 && (INT_MAX == 0x7FFF)
+#if !defined A_I16 && (INT_MAX == 0x7FFFL)
 #define A_I16 int
 #elif !defined A_I16
 #define A_I16 short
@@ -468,7 +468,7 @@ typedef A_U8 a_u8;
 /*! @brief signed integer type with width of exactly 16 bits */
 typedef A_I16 a_i16;
 
-#if !defined A_U16 && (UINT_MAX == 0xFFFF)
+#if !defined A_U16 && (UINT_MAX == 0xFFFFUL)
 #define A_U16 unsigned int
 #elif !defined A_U16
 #define A_U16 unsigned short
@@ -485,12 +485,12 @@ typedef A_I16 a_i16;
 /*! @brief unsigned integer type with width of exactly 16 bits */
 typedef A_U16 a_u16;
 
-#if !defined A_PRI16 && (UINT_MAX == 0xFFFF)
+#if !defined A_PRI16 && (UINT_MAX == 0xFFFFUL)
 #define A_PRI16
 #elif !defined A_PRI16
 #define A_PRI16
 #endif /* A_PRI16 */
-#if !defined A_SCN16 && (UINT_MAX == 0xFFFF)
+#if !defined A_SCN16 && (UINT_MAX == 0xFFFFUL)
 #define A_SCN16
 #elif !defined A_SCN16
 #define A_SCN16 "h"
@@ -690,20 +690,26 @@ typedef A_UMAX a_umax;
 #define A_SCNMAX A_SCN64
 #endif /* A_SCNMAX */
 
-#if !defined A_IPTR && (A_SIZE_POINTER == 8)
-#define A_IPTR A_I64
-#elif !defined A_IPTR
+#if !defined A_IPTR && (A_SIZE_POINTER == 2)
+#define A_IPTR A_I16
+#elif !defined A_IPTR && (A_SIZE_POINTER == 4)
 #define A_IPTR A_I32
+#elif !defined A_IPTR
+#define A_IPTR A_I64
 #endif /* A_IPTR */
-#if !defined A_IPTR_MAX && (A_SIZE_POINTER == 8)
-#define A_IPTR_MAX A_I64_MAX
-#elif !defined A_IPTR_MAX
+#if !defined A_IPTR_MAX && (A_SIZE_POINTER == 2)
+#define A_IPTR_MAX A_I16_MAX
+#elif !defined A_IPTR_MAX && (A_SIZE_POINTER == 4)
 #define A_IPTR_MAX A_I32_MAX
+#elif !defined A_IPTR_MAX
+#define A_IPTR_MAX A_I64_MAX
 #endif /* A_IPTR_MAX */
-#if !defined A_IPTR_MIN && (A_SIZE_POINTER == 8)
-#define A_IPTR_MIN A_I64_MIN
-#elif !defined A_IPTR_MIN
+#if !defined A_IPTR_MIN && (A_SIZE_POINTER == 2)
+#define A_IPTR_MIN A_I16_MIN
+#elif !defined A_IPTR_MIN && (A_SIZE_POINTER == 4)
 #define A_IPTR_MIN A_I32_MIN
+#elif !defined A_IPTR_MIN
+#define A_IPTR_MIN A_I64_MIN
 #endif /* A_IPTR_MIN */
 /*! @brief static cast to \ref a_iptr */
 #define a_iptr_c(x) a_cast_s(a_iptr, x)
@@ -711,15 +717,19 @@ typedef A_UMAX a_umax;
 /*! @brief signed integer type capable of holding a pointer to void */
 typedef A_IPTR a_iptr;
 
-#if !defined A_UPTR && (A_SIZE_POINTER == 8)
-#define A_UPTR A_U64
-#elif !defined A_UPTR
+#if !defined A_UPTR && (A_SIZE_POINTER == 2)
+#define A_UPTR A_U16
+#elif !defined A_UPTR && (A_SIZE_POINTER == 4)
 #define A_UPTR A_U32
+#elif !defined A_UPTR
+#define A_UPTR A_U64
 #endif /* A_UPTR */
-#if !defined A_UPTR_MAX && (A_SIZE_POINTER == 8)
-#define A_UPTR_MAX A_U64_MAX
-#elif !defined A_UPTR_MAX
+#if !defined A_UPTR_MAX && (A_SIZE_POINTER == 2)
+#define A_UPTR_MAX A_U16_MAX
+#elif !defined A_UPTR_MAX && (A_SIZE_POINTER == 4)
 #define A_UPTR_MAX A_U32_MAX
+#elif !defined A_UPTR_MAX
+#define A_UPTR_MAX A_U64_MAX
 #endif /* A_UPTR_MAX */
 /*! @brief static cast to \ref a_uptr */
 #define a_uptr_c(x) a_cast_s(a_uptr, x)
@@ -727,25 +737,41 @@ typedef A_IPTR a_iptr;
 /*! @brief unsigned integer type capable of holding a pointer to void */
 typedef A_UPTR a_uptr;
 
-#if !defined A_PRIPTR && (A_SIZE_POINTER == 8)
-#define A_PRIPTR A_PRI64
-#elif !defined A_PRIPTR
+#if !defined A_PRIPTR && (A_SIZE_POINTER == 2)
+#define A_PRIPTR A_PRI16
+#elif !defined A_PRIPTR && (A_SIZE_POINTER == 4)
 #define A_PRIPTR A_PRI32
+#elif !defined A_PRIPTR
+#define A_PRIPTR A_PRI64
 #endif /* A_PRIPTR */
-#if !defined A_SCNPTR && (A_SIZE_POINTER == 8)
-#define A_SCNPTR A_SCN64
-#elif !defined A_SCNPTR
+#if !defined A_SCNPTR && (A_SIZE_POINTER == 2)
+#define A_SCNPTR A_SCN16
+#elif !defined A_SCNPTR && (A_SIZE_POINTER == 4)
 #define A_SCNPTR A_SCN32
+#elif !defined A_SCNPTR
+#define A_SCNPTR A_SCN64
 #endif /* A_SCNPTR */
 
 #if !defined A_DIFF
 #define A_DIFF ptrdiff_t
 #endif /* A_DIFF */
-#if !defined A_DIFF_MAX
-#define A_DIFF_MAX PTRDIFF_MAX
+#if !defined A_DIFF_MAX && defined(__PTRDIFF_MAX__)
+#define A_DIFF_MAX __PTRDIFF_MAX__
+#elif !defined A_DIFF_MAX && (A_SIZE_POINTER == 2)
+#define A_DIFF_MAX A_I16_MAX
+#elif !defined A_DIFF_MAX && (A_SIZE_POINTER == 4)
+#define A_DIFF_MAX A_I32_MAX
+#elif !defined A_DIFF_MAX
+#define A_DIFF_MAX A_I64_MAX
 #endif /* A_DIFF_MAX */
-#if !defined A_DIFF_MIN
-#define A_DIFF_MIN PTRDIFF_MIN
+#if !defined A_DIFF_MIN && defined(__PTRDIFF_MAX__)
+#define A_DIFF_MIN (~__PTRDIFF_MAX__)
+#elif !defined A_DIFF_MIN && (A_SIZE_POINTER == 2)
+#define A_DIFF_MIN A_I16_MIN
+#elif !defined A_DIFF_MIN && (A_SIZE_POINTER == 4)
+#define A_DIFF_MIN A_I32_MIN
+#elif !defined A_DIFF_MIN
+#define A_DIFF_MIN A_I64_MIN
 #endif /* A_DIFF_MIN */
 /*! @brief static cast to \ref a_diff */
 #define a_diff_c(x) a_cast_s(a_diff, x)
@@ -762,12 +788,16 @@ typedef A_DIFF a_diff;
 #define A_SCNt "t"
 #endif /* A_SCNt */
 #else /* C < 199900 and C++ < 201100 */
-#if !defined A_PRIt && (A_DIFF_MAX == 0x7FFFFFFFL)
+#if !defined A_PRIt && (A_SIZE_POINTER == 2)
+#define A_PRIt A_PRI16
+#elif !defined A_PRIt && (A_SIZE_POINTER == 4)
 #define A_PRIt A_PRI32
 #elif !defined A_PRIt
 #define A_PRIt A_PRI64
 #endif /* A_PRIt */
-#if !defined A_SCNt && (A_DIFF_MAX == 0x7FFFFFFFL)
+#if !defined A_SCNt && (A_SIZE_POINTER == 2)
+#define A_SCNt A_SCN16
+#elif !defined A_SCNt && (A_SIZE_POINTER == 4)
 #define A_SCNt A_SCN32
 #elif !defined A_SCNt
 #define A_SCNt A_SCN64
@@ -777,8 +807,14 @@ typedef A_DIFF a_diff;
 #if !defined A_SIZE
 #define A_SIZE size_t
 #endif /* A_SIZE */
-#if !defined A_SIZE_MAX
-#define A_SIZE_MAX SIZE_MAX
+#if !defined A_SIZE_MAX && defined(__SIZE_MAX__)
+#define A_SIZE_MAX __SIZE_MAX__
+#elif !defined A_SIZE_MAX && (A_SIZE_POINTER == 2)
+#define A_SIZE_MAX A_U16_MAX
+#elif !defined A_SIZE_MAX && (A_SIZE_POINTER == 4)
+#define A_SIZE_MAX A_U32_MAX
+#elif !defined A_SIZE_MAX
+#define A_SIZE_MAX A_U64_MAX
 #endif /* A_SIZE_MAX */
 /*! @brief static cast to \ref a_size */
 #define a_size_c(x) a_cast_s(a_size, x)
@@ -795,12 +831,16 @@ typedef A_SIZE a_size;
 #define A_SCNz "z"
 #endif /* A_SCNz */
 #else /* C < 199900 and C++ < 201100 */
-#if !defined A_PRIz && (A_SIZE_MAX == 0xFFFFFFFFUL)
+#if !defined A_PRIz && (A_SIZE_POINTER == 2)
+#define A_PRIz A_PRI16
+#elif !defined A_PRIz && (A_SIZE_POINTER == 4)
 #define A_PRIz A_PRI32
 #elif !defined A_PRIz
 #define A_PRIz A_PRI64
 #endif /* A_PRIz */
-#if !defined A_SCNz && (A_SIZE_MAX == 0xFFFFFFFFUL)
+#if !defined A_SCNz && (A_SIZE_POINTER == 2)
+#define A_SCNz A_SCN16
+#elif !defined A_SCNz && (A_SIZE_POINTER == 4)
 #define A_SCNz A_SCN32
 #elif !defined A_SCNz
 #define A_SCNz A_SCN64
