@@ -125,18 +125,17 @@ unsigned int a_version_parse(a_version *ctx, char const *ver)
     } u;
     u.s = ver;
     if (!ver) { return 0; }
-    do {
-        ctx->extra = 0;
-        ctx->third = 0;
-        ctx->minor = 0;
-        ctx->major = (unsigned int)strtoul(u.s, &u.p, 10);
-        if (u.s[0] == '.' && u.s[1] >= '0' && u.s[1] <= '9') { ++u.s; }
-        else { break; }
-        ctx->minor = (unsigned int)strtoul(u.s, &u.p, 10);
-        if (u.s[0] == '.' && u.s[1] >= '0' && u.s[1] <= '9') { ++u.s; }
-        else { break; }
-        ctx->third = (unsigned int)strtoul(u.s, &u.p, 10);
-    } while (0);
+    ctx->extra = 0;
+    ctx->third = 0;
+    ctx->minor = 0;
+    ctx->major = (unsigned int)strtoul(u.s, &u.p, 10);
+    if (u.s[0] == '.' && u.s[1] >= '0' && u.s[1] <= '9') { ++u.s; }
+    else { goto ext; }
+    ctx->minor = (unsigned int)strtoul(u.s, &u.p, 10);
+    if (u.s[0] == '.' && u.s[1] >= '0' && u.s[1] <= '9') { ++u.s; }
+    else { goto ext; }
+    ctx->third = (unsigned int)strtoul(u.s, &u.p, 10);
+ext:
     if ((u.s[0] == '.' || u.s[0] == '-' || u.s[0] == '+' || isalpha((a_byte)u.s[0])) &&
         (isalnum((a_byte)u.s[1]) || !u.s[1]))
     {
