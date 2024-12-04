@@ -67,10 +67,13 @@ def check_math(text=""):
     except Exception:
         return text
     for func in (
+        "asinh",
+        "acosh",
+        "atanh",
         "expm1",
         "log1p",
-        "hypot",
         "atan2",
+        "hypot",
         "csqrt",
         "cpow",
         "cexp",
