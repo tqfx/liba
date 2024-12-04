@@ -416,6 +416,8 @@ A_EXTERN void a_float_roll_back_(a_float *block_p, a_size block_n,
 #define a_float_cbrt A_FLOAT_F(cbrt)
 #if defined(A_HAVE_HYPOT) && (A_HAVE_HYPOT + 0 > 0)
 #define a_float_hypot A_FLOAT_F(hypot)
+#elif defined(_MSC_VER)
+#define a_float_hypot A_FLOAT_F(_hypot)
 #endif /* A_HAVE_HYPOT */
 
 #define a_float_sin A_FLOAT_F(sin)

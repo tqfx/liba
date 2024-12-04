@@ -53,7 +53,7 @@ static int liba_isqrt(lua_State *L)
     for (i = 1; i <= n; ++i)
     {
         lua_Integer x = luaL_checkinteger(L, i);
-#if A_SIZE_MAX == A_U32_MAX
+#if A_SIZE_MAX == 0xFFFFFFFFUL
         x = (lua_Integer)a_u32_sqrt((a_u32)x);
 #else /* !A_SIZE_MAX */
         x = (lua_Integer)a_u64_sqrt((a_u64)x);

@@ -74,7 +74,7 @@ a_f64 a_f64_rsqrt(a_f64 x)
     return x;
 }
 
-#if (__has_builtin(__builtin_clz) || A_PREREQ_GNUC(3, 4)) && (ULONG_MAX == A_U32_MAX)
+#if (__has_builtin(__builtin_clz) || A_PREREQ_GNUC(3, 4)) && (ULONG_MAX == 0xFFFFFFFFUL)
 #define A_U32_BSR(x) (31 - __builtin_clzl(x))
 #elif __has_builtin(__builtin_clz) || A_PREREQ_GNUC(3, 4)
 #define A_U32_BSR(x) (31 - __builtin_clz(x))
@@ -118,7 +118,7 @@ a_u16 a_u32_sqrt(a_u32 x)
 #endif
 }
 
-#if (__has_builtin(__builtin_clz) || A_PREREQ_GNUC(3, 4)) && (ULONG_MAX == A_U32_MAX)
+#if (__has_builtin(__builtin_clz) || A_PREREQ_GNUC(3, 4)) && (ULONG_MAX == 0xFFFFFFFFUL)
 #define A_U64_BSR(x) (63 - __builtin_clzll(x))
 #elif __has_builtin(__builtin_clz) || A_PREREQ_GNUC(3, 4)
 #define A_U64_BSR(x) (63 - __builtin_clzl(x))
@@ -177,8 +177,8 @@ a_u32 a_u64_sqrt(a_u64 x)
 #undef a_float_asinh
 a_float a_float_asinh(a_float x)
 {
-    a_float a = a_float_abs(x);
-    a_float s = (x < 0) ? -1 : 1;
+    a_float const a = a_float_abs(x);
+    a_float const s = (x < 0) ? -1 : 1;
     if (a > 1 / A_FLOAT_SQRT_EPSILON)
     {
         return s * (a_float_log(a) + A_FLOAT_LN2);
@@ -189,7 +189,7 @@ a_float a_float_asinh(a_float x)
     }
     if (a > A_FLOAT_SQRT_EPSILON)
     {
-        a_float aa = a * a;
+        a_float const aa = a * a;
         return s * a_float_log1p(aa / (a_float_sqrt(aa + 1) + 1) + a);
     }
     return x;
@@ -198,7 +198,7 @@ a_float a_float_asinh(a_float x)
 #undef a_float_acosh
 a_float a_float_acosh(a_float x)
 {
-    if (x > 1.0 / A_FLOAT_SQRT_EPSILON)
+    if (x > 1 / A_FLOAT_SQRT_EPSILON)
     {
         return a_float_log(x) + A_FLOAT_LN2;
     }
@@ -208,7 +208,7 @@ a_float a_float_acosh(a_float x)
     }
     if (x > 1)
     {
-        a_float t = x - 1;
+        a_float const t = x - 1;
         return a_float_log1p(a_float_sqrt(t * t + t * 2) + t);
     }
     if (x == 1) { return 0; }
@@ -218,8 +218,8 @@ a_float a_float_acosh(a_float x)
 #undef a_float_atanh
 a_float a_float_atanh(a_float x)
 {
-    a_float a = a_float_abs(x);
-    a_float s = (x < 0) ? A_FLOAT_C(-0.5) : A_FLOAT_C(0.5);
+    a_float const a = a_float_abs(x);
+    a_float const s = (x < 0) ? A_FLOAT_C(-0.5) : A_FLOAT_C(0.5);
     if (a > 1) { return A_FLOAT_NAN; }
     if (a == 1)
     {
