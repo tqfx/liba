@@ -131,7 +131,7 @@ elseif(CMAKE_C_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   warnings_flag_cx(-Wlogical-op) # 4.3+
 elseif(CMAKE_C_COMPILER_ID MATCHES "MSVC" OR CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   # https://learn.microsoft.com/cpp/error-messages/compiler-warnings
-  warnings_flag_cx(/sdl /Wall)
+  warnings_flag_cx(/Wall)
   warnings_flag_cx(/wd4464) # relative include path contains '..'
   warnings_flag_cx(/wd4514) # 'function' : unreferenced inline function has been removed
   warnings_flag_cx(/wd4710) # 'function' : function not inlined
