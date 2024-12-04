@@ -15,10 +15,13 @@ ${define A_BYTE_ORDER}
 ${define A_SIZE_FLOAT}
 #endif /* A_SIZE_FLOAT */
 
+${define A_HAVE_ASINH}
+${define A_HAVE_ACOSH}
+${define A_HAVE_ATANH}
 ${define A_HAVE_EXPM1}
 ${define A_HAVE_LOG1P}
-${define A_HAVE_HYPOT}
 ${define A_HAVE_ATAN2}
+${define A_HAVE_HYPOT}
 ${define A_HAVE_CSQRT}
 ${define A_HAVE_CPOW}
 ${define A_HAVE_CEXP}

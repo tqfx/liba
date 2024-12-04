@@ -19,6 +19,12 @@
 #endif /* isnan */
 #endif /* __STDC_VERSION__ */
 
+#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
+#define A_FLOAT_SQRT_EPSILON 3.4526698300124393e-04F
+#else /* !A_FLOAT_TYPE */
+#define A_FLOAT_SQRT_EPSILON 1.4901161193847656e-08
+#endif /* A_FLOAT_TYPE */
+
 static A_INLINE a_float polevl(a_float const *p, a_size n, a_float x)
 {
     a_float y = *p++;
@@ -168,17 +174,67 @@ a_u32 a_u64_sqrt(a_u64 x)
 #endif
 }
 
-#undef a_float_log1p
-a_float a_float_log1p(a_float x)
+#undef a_float_asinh
+a_float a_float_asinh(a_float x)
 {
-    a_float volatile a = x + 1;
-    a_float y = a_float_log(a);
-    if (x < A_FLOAT_EPSILON && a > 0)
+    a_float a = a_float_abs(x);
+    a_float s = (x < 0) ? -1 : 1;
+    if (a > 1 / A_FLOAT_SQRT_EPSILON)
     {
-        a_float volatile b = a - 1;
-        y -= (b - x) / a;
+        return s * (a_float_log(a) + A_FLOAT_LN2);
     }
-    return y;
+    if (a > 2)
+    {
+        return s * a_float_log(1 / (a_float_sqrt(a * a + 1) + a) + a * 2);
+    }
+    if (a > A_FLOAT_SQRT_EPSILON)
+    {
+        a_float aa = a * a;
+        return s * a_float_log1p(aa / (a_float_sqrt(aa + 1) + 1) + a);
+    }
+    return x;
+}
+
+#undef a_float_acosh
+a_float a_float_acosh(a_float x)
+{
+    if (x > 1.0 / A_FLOAT_SQRT_EPSILON)
+    {
+        return a_float_log(x) + A_FLOAT_LN2;
+    }
+    if (x > 2)
+    {
+        return a_float_log(-1 / (a_float_sqrt(x * x - 1) + x) + x * 2);
+    }
+    if (x > 1)
+    {
+        a_float t = x - 1;
+        return a_float_log1p(a_float_sqrt(t * t + t * 2) + t);
+    }
+    if (x == 1) { return 0; }
+    return A_FLOAT_NAN;
+}
+
+#undef a_float_atanh
+a_float a_float_atanh(a_float x)
+{
+    a_float a = a_float_abs(x);
+    a_float s = (x < 0) ? A_FLOAT_C(-0.5) : A_FLOAT_C(0.5);
+    if (a > 1) { return A_FLOAT_NAN; }
+    if (a == 1)
+    {
+        if (x < 0) { return -A_FLOAT_INF; }
+        return A_FLOAT_INF;
+    }
+    if (a >= A_FLOAT_C(0.5))
+    {
+        return s * a_float_log1p((a + a) / (1 - a));
+    }
+    if (a > A_FLOAT_EPSILON)
+    {
+        return s * a_float_log1p((a + a) * (a / (1 - a) + 1));
+    }
+    return x;
 }
 
 #undef a_float_expm1
@@ -206,6 +262,19 @@ a_float a_float_expm1(a_float x)
     y = polevl(P, A_LEN(P) - 1, xx) * x;
     y /= polevl(Q, A_LEN(Q) - 1, xx) - y;
     return y + y;
+}
+
+#undef a_float_log1p
+a_float a_float_log1p(a_float x)
+{
+    a_float volatile a = x + 1;
+    a_float y = a_float_log(a);
+    if (x < A_FLOAT_EPSILON && a > 0)
+    {
+        a_float volatile b = a - 1;
+        y -= (b - x) / a;
+    }
+    return y;
 }
 
 #undef a_float_atan2

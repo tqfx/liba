@@ -262,6 +262,9 @@ A_EXTERN a_u32 a_u64_sqrt(a_u64 x);
 extern "C" {
 #endif /* __cplusplus */
 
+A_EXTERN a_float a_float_asinh(a_float x);
+A_EXTERN a_float a_float_acosh(a_float x);
+A_EXTERN a_float a_float_atanh(a_float x);
 A_EXTERN a_float a_float_expm1(a_float x);
 A_EXTERN a_float a_float_log1p(a_float x);
 A_EXTERN a_float a_float_atan2(a_float x, a_float y);
@@ -428,9 +431,15 @@ A_EXTERN void a_float_roll_back_(a_float *block_p, a_size block_n,
 #define a_float_sinh A_FLOAT_F(sinh)
 #define a_float_cosh A_FLOAT_F(cosh)
 #define a_float_tanh A_FLOAT_F(tanh)
+#if defined(A_HAVE_ASINH) && (A_HAVE_ASINH + 0 > 0)
 #define a_float_asinh A_FLOAT_F(asinh)
+#endif /* A_HAVE_ASINH */
+#if defined(A_HAVE_ACOSH) && (A_HAVE_ACOSH + 0 > 0)
 #define a_float_acosh A_FLOAT_F(acosh)
+#endif /* A_HAVE_ACOSH */
+#if defined(A_HAVE_ATANH) && (A_HAVE_ATANH + 0 > 0)
 #define a_float_atanh A_FLOAT_F(atanh)
+#endif /* A_HAVE_ATANH */
 
 #define a_float_erf A_FLOAT_F(erf)
 #define a_float_erfc A_FLOAT_F(erfc)
