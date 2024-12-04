@@ -393,7 +393,11 @@ a_u64 lua_u64_get(lua_State *L, int idx)
     {
     default: A_FALLTHROUGH;
     case LUA_TNUMBER: value = (a_u64)luaL_checkinteger(L, idx); break;
-#if ULONG_MAX > A_U32_MAX
+#if defined(_MSC_VER) && (_MSC_VER < 1800) ||        \
+    defined(__WATCOMC__) && (__WATCOMC__ >= 1100) || \
+    defined(__BORLANDC__) && (__BORLANDC__ >= 0x530)
+    case LUA_TSTRING: value = _strtoui64(lua_tostring(L, idx), NULL, 0);
+#elif ULONG_MAX > 0xFFFFFFFFUL
     case LUA_TSTRING: value = (a_u64)strtoul(lua_tostring(L, idx), NULL, 0);
 #else /* >long */
     case LUA_TSTRING: value = (a_u64)strtoull(lua_tostring(L, idx), NULL, 0);

@@ -3,7 +3,12 @@ set(OBJECTS $<TARGET_OBJECTS:a>)
 if(LIBA_WITH_LUA)
   include(${CMAKE_CURRENT_LIST_DIR}/lua.cmake)
   add_subdirectory(${LUA_SOURCE_DIR} ${LUA_BINARY_DIR})
-  option(LUA_ISOCLINE "Enable/Disable isocline in Lua" 1)
+
+  if(DEFINED MSVC_VERSION AND MSVC_VERSION LESS 1800)
+    option(LUA_ISOCLINE "Enable/Disable isocline in Lua" 0)
+  else()
+    option(LUA_ISOCLINE "Enable/Disable isocline in Lua" 1)
+  endif()
 
   if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/isocline/src/isocline.c AND LUA_ISOCLINE)
     file(RELATIVE_PATH LUA_READLINE_C ${LUA_SOURCE_DIR}/src ${CMAKE_CURRENT_LIST_DIR}/isocline.c)
