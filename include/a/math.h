@@ -304,6 +304,14 @@ A_EXTERN a_float a_float_sum2(a_float const *p, a_size n);
 A_EXTERN a_float a_float_mean(a_float const *p, a_size n);
 
 /*!
+ @brief swap two different a_float blocks of the same size
+ @param[in,out] lhs points to a_float block on the left
+ @param[in,out] rhs points to a_float block on the right
+ @param[in] n the number of a_float block being swapped
+*/
+A_EXTERN A_NONULL((1, 2)) void a_float_swap(a_float *lhs, a_float *rhs, a_size n);
+
+/*!
  @brief push an element into the front of a float array
  @param[in] p points to a float array
  @param[in] n number of a float array

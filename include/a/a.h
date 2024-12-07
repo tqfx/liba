@@ -1504,9 +1504,9 @@ A_EXTERN A_NONULL((1)) void *a_zero(void *ptr, a_size siz);
 
 /*!
  @brief swap two different memory blocks of the same size
- @param[in] siz the size of memory block being swapped
  @param[in,out] lhs points to memory block on the left
  @param[in,out] rhs points to memory block on the right
+ @param[in] siz the size of memory block being swapped
 */
 A_EXTERN A_NONULL((1, 2)) void a_swap(void *lhs, void *rhs, a_size siz);
 

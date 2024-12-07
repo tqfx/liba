@@ -28,14 +28,14 @@ void *a_zero(void *ptr, a_size siz)
 
 void a_swap(void *lhs_, void *rhs_, a_size siz)
 {
-    a_byte byte;
     a_byte *lhs = (a_byte *)lhs_;
     a_byte *rhs = (a_byte *)rhs_;
     for (; siz; --siz, ++lhs, ++rhs)
     {
-        byte = *lhs;
+        a_byte swap;
+        swap = *lhs;
         *lhs = *rhs;
-        *rhs = byte;
+        *rhs = swap;
     }
 }
 

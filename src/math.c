@@ -361,6 +361,17 @@ a_float a_float_mean(a_float const *p, a_size n)
     return r;
 }
 
+void a_float_swap(a_float *lhs, a_float *rhs, a_size n)
+{
+    for (; n; --n, ++lhs, ++rhs)
+    {
+        a_float swap;
+        swap = *lhs;
+        *lhs = *rhs;
+        *rhs = swap;
+    }
+}
+
 void a_float_push_fore(a_float *p, a_size n, a_float x)
 {
     if (n--)
