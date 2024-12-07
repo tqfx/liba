@@ -187,6 +187,9 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(hpf 2.gp hpf.csv)
 endif()
 
+building(linalg_plu linalg_plu.c linalg_plu.cc)
+unittest(linalg_plu)
+
 building(list list.c list.cc)
 unittest(list)
 
