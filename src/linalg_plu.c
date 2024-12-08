@@ -1,10 +1,11 @@
 #include "a/linalg.h"
+#include "a/math.h"
 
-int a_linalg_plu(a_float *A, a_uint n, a_uint *P, int *sign)
+int a_linalg_plu(a_float *A, a_uint n, a_uint *p, int *sign)
 {
     a_uint r;
     *sign = 1;
-    for (r = 0; r < n; ++r) { P[r] = r; }
+    for (r = 0; r < n; ++r) { p[r] = r; }
     for (r = 0; r < n; ++r)
     {
         a_float *const Ar = A + (a_size)n * r;
@@ -25,9 +26,9 @@ int a_linalg_plu(a_float *A, a_uint n, a_uint *P, int *sign)
         if (abs_x < A_FLOAT_MIN) { return ~0; }
         if (max_r != r)
         {
-            a_uint u = P[r];
-            P[r] = P[max_r];
-            P[max_r] = u;
+            a_uint u = p[r];
+            p[r] = p[max_r];
+            p[max_r] = u;
             a_float_swap(Ar, A + (a_size)n * max_r, n);
             *sign = -*sign;
         }
@@ -45,15 +46,14 @@ int a_linalg_plu(a_float *A, a_uint n, a_uint *P, int *sign)
     return 0;
 }
 
-void a_linalg_plu_get_P(a_uint const *P, a_uint n, a_float *I)
+void a_linalg_plu_get_P(a_uint const *p, a_uint n, a_float *P)
 {
     a_uint r, c;
     for (r = 0; r < n; ++r)
     {
-        a_uint const u = P[r];
         for (c = 0; c < n; ++c)
         {
-            *I++ = (c == u);
+            *P++ = (p[c] == r);
         }
     }
 }
@@ -93,10 +93,10 @@ void a_linalg_plu_get_U(a_float const *A, a_uint n, a_float *U)
     }
 }
 
-void a_linalg_plu_apply(a_uint const *P, a_float const *b, a_uint n, a_float *Pb)
+void a_linalg_plu_apply(a_uint const *p, a_float const *b, a_uint n, a_float *Pb)
 {
     a_uint i;
-    for (i = 0; i < n; ++i) { Pb[i] = b[P[i]]; }
+    for (i = 0; i < n; ++i) { Pb[i] = b[p[i]]; }
 }
 
 void a_linalg_plu_lower(a_float const *L, a_uint n, a_float *y)
@@ -126,18 +126,25 @@ void a_linalg_plu_upper(a_float const *U, a_uint n, a_float *x)
     }
 }
 
-void a_linalg_plu_solve(a_float const *A, a_uint n, a_uint const *P, a_float const *b, a_float *x)
+void a_linalg_plu_solve(a_float const *A, a_uint n, a_uint const *p, a_float const *b, a_float *x)
 {
-    a_linalg_plu_apply(P, b, n, x);
+    a_linalg_plu_apply(p, b, n, x);
     a_linalg_plu_lower(A, n, x);
     a_linalg_plu_upper(A, n, x);
 }
 
-void a_linalg_plu_inv(a_float const *A, a_uint n, a_uint const *P, a_float *b, a_float *I)
+void a_linalg_plu_inv(a_float const *A, a_uint n, a_uint const *p, a_float *b, a_float *I)
 {
-    a_float *x;
     a_uint r, c;
-    a_linalg_plu_get_P(P, n, I);
+    a_float *x = I;
+    for (r = 0; r < n; ++r)
+    {
+        a_uint const u = p[r];
+        for (c = 0; c < n; ++c)
+        {
+            *x++ = (c == u);
+        }
+    }
     for (c = 0; c < n; ++c)
     {
         x = I + c;
