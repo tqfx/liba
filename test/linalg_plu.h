@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
 #define N 3
     int sign;
+    int i, ii;
     a_uint p[N];
     a_float b[N];
     a_float m[N * N];
@@ -47,6 +48,18 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         show(m, N);
         a_linalg_plu_inv(a, N, p, b, m);
         debug("INV=\n");
+        show(m, N);
+        debug("solve=\n");
+        for (i = 0; i < N; ++i)
+        {
+            a_float *x = m + a_size_c(i) * N;
+            for (ii = 0; ii < N; ++ii)
+            {
+                b[ii] = (ii == i);
+            }
+            a_linalg_plu_solve(a, N, p, b, x);
+        }
+        a_linalg_Tnn(m, N);
         show(m, N);
         if (a_linalg_plu(m, N, p, &sign) == 0)
         {

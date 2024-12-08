@@ -70,11 +70,11 @@ A_EXTERN void a_linalg_plu_get_U(a_float const *A, a_uint n, a_float *U);
 /*!
  @brief apply the permutation P to the vector b, producing Pb.
  @param[in] p the row permutation indices after partial pivoting.
- @param[in] b the input vector of size n that will be permuted.
  @param[in] n the order of the square matrix that was decomposed.
+ @param[in] b the input vector of size n that will be permuted.
  @param[out] Pb the output vector where the permuted result will be stored.
 */
-A_EXTERN void a_linalg_plu_apply(a_uint const *p, a_float const *b, a_uint n, a_float *Pb);
+A_EXTERN void a_linalg_plu_apply(a_uint const *p, a_uint n, a_float const *b, a_float *Pb);
 
 /*!
  @brief solve the lower triangular system Ly = Pb for y.

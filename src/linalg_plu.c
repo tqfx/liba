@@ -93,7 +93,7 @@ void a_linalg_plu_get_U(a_float const *A, a_uint n, a_float *U)
     }
 }
 
-void a_linalg_plu_apply(a_uint const *p, a_float const *b, a_uint n, a_float *Pb)
+void a_linalg_plu_apply(a_uint const *p, a_uint n, a_float const *b, a_float *Pb)
 {
     a_uint i;
     for (i = 0; i < n; ++i) { Pb[i] = b[p[i]]; }
@@ -128,7 +128,7 @@ void a_linalg_plu_upper(a_float const *U, a_uint n, a_float *x)
 
 void a_linalg_plu_solve(a_float const *A, a_uint n, a_uint const *p, a_float const *b, a_float *x)
 {
-    a_linalg_plu_apply(p, b, n, x);
+    a_linalg_plu_apply(p, n, b, x);
     a_linalg_plu_lower(A, n, x);
     a_linalg_plu_upper(A, n, x);
 }
