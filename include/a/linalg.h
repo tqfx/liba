@@ -23,7 +23,7 @@ extern "C" {
  @param[in,out] A an n x n square matrix
  @param[in] n order of square matrix A
  */
-A_EXTERN void a_linalg_Tnn(a_float *A, a_uint n);
+A_EXTERN void a_linalg_T1(a_float *A, a_uint n);
 
 /*!
  @brief transpose a given m x n matrix A into an n x m matrix T.
@@ -32,7 +32,7 @@ A_EXTERN void a_linalg_Tnn(a_float *A, a_uint n);
  @param[in] n columns in the input matrix A.
  @param[out] T the output matrix where the transposed matrix T (n x m) will be stored.
 */
-A_EXTERN void a_linalg_Tmn(a_float const *__restrict A, a_uint m, a_uint n, a_float *__restrict T);
+A_EXTERN void a_linalg_T2(a_float const *__restrict A, a_uint m, a_uint n, a_float *__restrict T);
 
 /*!
  @brief compute LU decomposition of a square matrix with partial pivoting.

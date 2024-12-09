@@ -1,6 +1,6 @@
 #include "a/linalg.h"
 
-void a_linalg_Tnn(a_float *A, a_uint n)
+void a_linalg_T1(a_float *A, a_uint n)
 {
     a_uint r, c;
     for (r = 0; r < n; ++r)
@@ -19,7 +19,7 @@ void a_linalg_Tnn(a_float *A, a_uint n)
     }
 }
 
-void a_linalg_Tmn(a_float const *__restrict A, a_uint m, a_uint n, a_float *__restrict T)
+void a_linalg_T2(a_float const *__restrict A, a_uint m, a_uint n, a_float *__restrict T)
 {
     a_uint r, c;
     for (r = 0; r < m; ++r)
