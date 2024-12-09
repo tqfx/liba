@@ -18,3 +18,17 @@ void a_linalg_Tnn(a_float *A, a_uint n)
         }
     }
 }
+
+void a_linalg_Tmn(a_float const *__restrict A, a_uint m, a_uint n, a_float *__restrict T)
+{
+    a_uint r, c;
+    for (r = 0; r < m; ++r)
+    {
+        a_float *Tr = T + r;
+        for (c = 0; c < n; ++c)
+        {
+            *Tr = *A++;
+            Tr += m;
+        }
+    }
+}

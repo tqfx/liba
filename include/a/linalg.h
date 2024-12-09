@@ -26,6 +26,15 @@ extern "C" {
 A_EXTERN void a_linalg_Tnn(a_float *A, a_uint n);
 
 /*!
+ @brief transpose a given m x n matrix A into an n x m matrix T.
+ @param[in] A the input matrix A (m x n), stored in row-major order.
+ @param[in] m rows in the input matrix A.
+ @param[in] n columns in the input matrix A.
+ @param[out] T the output matrix where the transposed matrix T (n x m) will be stored.
+*/
+A_EXTERN void a_linalg_Tmn(a_float const *__restrict A, a_uint m, a_uint n, a_float *__restrict T);
+
+/*!
  @brief compute LU decomposition of a square matrix with partial pivoting.
  @details This function performs an LU decomposition on the given square matrix A,
  where L is a lower triangular matrix, and U is an upper triangular matrix.
