@@ -35,6 +35,141 @@ A_EXTERN void a_linalg_T1(a_float *A, a_uint n);
 A_EXTERN void a_linalg_T2(a_float const *__restrict A, a_uint m, a_uint n, a_float *__restrict T);
 
 /*!
+ @brief multiply two matrices X and Y, storing the result in Z.
+ \f{aligned}{
+  \pmb Z_{rc}&=\pmb X_{rn}\pmb Y_{nc}
+  \\&=
+  \begin{bmatrix}
+  x_{11} & \cdots & x_{1n} \\
+  \vdots & \ddots & \vdots \\
+  x_{r1} & \cdots & x_{rn} \\
+  \end{bmatrix}
+  \begin{bmatrix}
+  y_{11} & \cdots & y_{1c} \\
+  \vdots & \ddots & \vdots \\
+  y_{n1} & \cdots & y_{nc} \\
+  \end{bmatrix}
+  \\&=
+  \begin{bmatrix}
+  (x_{11}y_{11}+\ldots+x_{1n}y_{n1}) & \cdots & (x_{11}y_{1c}+\ldots+x_{1n}y_{nc}) \\
+  \vdots & \ddots & \vdots \\
+  (x_{r1}y_{11}+\ldots+x_{rn}y_{n1}) & \cdots & (x_{r1}y_{1c}+\ldots+x_{rn}y_{nc}) \\
+  \end{bmatrix}
+ \f}
+ @param[out] Z the output matrix where the result will be stored.
+ @param[in] X the first input matrix.
+ @param[in] Y the second input matrix.
+ @param[in] row rows matrix Z and rows in matrix X.
+ @param[in] c_r columns in matrix X and rows in matrix Y.
+ @param[in] col columns in matrix Z and columns in matrix Y.
+*/
+A_EXTERN void a_linalg_mulmm(a_float *Z, a_float const *X, a_float const *Y, a_uint row, a_uint c_r, a_uint col);
+
+/*!
+ @brief multiply the transpose of matrix X with matrix Y, storing the result in Z.
+ \f{aligned}{
+  \pmb Z_{rc}&=\pmb X_{nr}^{T}\pmb Y_{nc}
+  \\&=
+  \begin{bmatrix}
+  x_{11} & \cdots & x_{1r} \\
+  \vdots & \ddots & \vdots \\
+  x_{n1} & \cdots & x_{nr} \\
+  \end{bmatrix}^T
+  \begin{bmatrix}
+  y_{11} & \cdots & y_{1c} \\
+  \vdots & \ddots & \vdots \\
+  y_{n1} & \cdots & y_{nc} \\
+  \end{bmatrix}
+  \\&=
+  \begin{bmatrix}
+  (x_{11}y_{11}+\ldots+x_{n1}y_{n1}) & \cdots & (x_{11}y_{1c}+\ldots+x_{n1}y_{nc}) \\
+  \vdots & \ddots & \vdots \\
+  (x_{1r}y_{11}+\ldots+x_{nr}y_{n1}) & \cdots & (x_{1r}y_{1c}+\ldots+x_{nr}y_{nc}) \\
+  \end{bmatrix}
+  \\&=
+  \begin{bmatrix}
+  x_{11}y_{11} & \cdots & x_{11}y_{1c} \\
+  \vdots & \ddots & \vdots \\
+  x_{1r}y_{11} & \cdots & x_{1r}y_{1c} \\
+  \end{bmatrix}+\cdots+
+  \begin{bmatrix}
+  x_{n1}y_{n1} & \cdots & x_{n1}y_{nc} \\
+  \vdots & \ddots & \vdots \\
+  x_{nr}y_{n1} & \cdots & x_{nr}y_{nc} \\
+  \end{bmatrix}
+ \f}
+ @param[out] Z the output matrix where the result will be stored.
+ @param[in] X the first input matrix that will be transposed during multiplication.
+ @param[in] Y the second input matrix.
+ @param[in] c_r rows in matrix X and rows in matrix Y.
+ @param[in] row rows in matrix Z and columns in matrix X.
+ @param[in] col columns in matrix Z and columns in matrix Y.
+*/
+A_EXTERN void a_linalg_mulTm(a_float *Z, a_float const *X, a_float const *Y, a_uint c_r, a_uint row, a_uint col);
+
+/*!
+ @brief multiply matrix X with the transpose of matrix Y, storing the result in Z.
+ \f{aligned}{
+  \pmb Z_{rc}&=\pmb X_{rn}\pmb Y_{cn}^T
+  \\&=
+  \begin{bmatrix}
+  x_{11} & \cdots & x_{1n} \\
+  \vdots & \ddots & \vdots \\
+  x_{r1} & \cdots & x_{rn} \\
+  \end{bmatrix}
+  \begin{bmatrix}
+  y_{11} & \cdots & y_{1n} \\
+  \vdots & \ddots & \vdots \\
+  y_{c1} & \cdots & y_{cn} \\
+  \end{bmatrix}^T
+  \\&=
+  \begin{bmatrix}
+  (x_{11}y_{11}+\ldots+x_{1n}y_{1n}) & \cdots & (x_{11}y_{c1}+\ldots+x_{1n}y_{cn}) \\
+  \vdots & \ddots & \vdots \\
+  (x_{r1}y_{11}+\ldots+x_{rn}y_{1n}) & \cdots & (x_{r1}y_{c1}+\ldots+x_{rn}y_{cn}) \\
+  \end{bmatrix}
+ \f}
+ @param[out] Z the output matrix where the result will be stored.
+ @param[in] X the first input matrix.
+ @param[in] Y the second input matrix that will be transposed during multiplication.
+ @param[in] row rows matrix Z and rows in matrix X.
+ @param[in] col columns in matrix Z and rows in matrix Y.
+ @param[in] c_r columns in matrix X and columns in matrix Y.
+*/
+A_EXTERN void a_linalg_mulmT(a_float *Z, a_float const *X, a_float const *Y, a_uint row, a_uint col, a_uint c_r);
+
+/*!
+ @brief multiply the transpose of matrix X with the transpose of matrix Y, storing the result in Z.
+ \f{aligned}{
+  \pmb Z_{rc}&=\pmb X_{nr}^T\pmb Y_{cn}^T
+  \\&=
+  \begin{bmatrix}
+  x_{11} & \cdots & x_{1r} \\
+  \vdots & \ddots & \vdots \\
+  x_{n1} & \cdots & x_{nr} \\
+  \end{bmatrix}^T
+  \begin{bmatrix}
+  y_{11} & \cdots & y_{1n} \\
+  \vdots & \ddots & \vdots \\
+  y_{c1} & \cdots & y_{cn} \\
+  \end{bmatrix}^T
+  \\&=
+  \begin{bmatrix}
+  (x_{11}y_{11}+\ldots+x_{n1}y_{1n}) & \cdots & (x_{11}y_{c1}+\ldots+x_{n1}y_{cn}) \\
+  \vdots & \ddots & \vdots \\
+  (x_{1r}y_{11}+\ldots+x_{nr}y_{1n}) & \cdots & (x_{1r}y_{c1}+\ldots+x_{nr}y_{cn}) \\
+  \end{bmatrix}
+ \f}
+ @param[out] Z the output matrix where the result will be stored.
+ @param[in] X the first input matrix that will be transposed during multiplication.
+ @param[in] Y the second input matrix that will be transposed during multiplication.
+ @param[in] row rows matrix Z and columns in matrix X.
+ @param[in] c_r rows in matrix X and columns in matrix Y.
+ @param[in] col columns in matrix Z and rows in matrix Y.
+*/
+A_EXTERN void a_linalg_mulTT(a_float *Z, a_float const *X, a_float const *Y, a_uint row, a_uint c_r, a_uint col);
+
+/*!
  @brief compute LU decomposition of a square matrix with partial pivoting.
  @details This function performs an LU decomposition on the given square matrix A,
  where L is a lower triangular matrix, and U is an upper triangular matrix.
