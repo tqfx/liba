@@ -19,7 +19,7 @@ void a_linalg_T1(a_float *A, a_uint n)
     }
 }
 
-void a_linalg_T2(a_float const *__restrict A, a_uint m, a_uint n, a_float *__restrict T)
+void a_linalg_T2(a_float *__restrict T, a_float const *__restrict A, a_uint m, a_uint n)
 {
     a_uint r, c;
     for (r = 0; r < m; ++r)
@@ -31,6 +31,16 @@ void a_linalg_T2(a_float const *__restrict A, a_uint m, a_uint n, a_float *__res
             Tr += m;
         }
     }
+}
+
+a_float a_linalg_dot(a_float const *__restrict X, a_float const *__restrict Y, a_size n)
+{
+    a_float res = 0;
+    for (; n; --n)
+    {
+        res += *X++ * *Y++;
+    }
+    return res;
 }
 
 void a_linalg_mulmm(a_float *Z, a_float const *X, a_float const *Y, a_uint row, a_uint c_r, a_uint col)

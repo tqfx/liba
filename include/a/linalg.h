@@ -27,12 +27,21 @@ A_EXTERN void a_linalg_T1(a_float *A, a_uint n);
 
 /*!
  @brief transpose a given m x n matrix A into an n x m matrix T.
+ @param[out] T the output matrix where the transposed matrix T (n x m) will be stored.
  @param[in] A the input matrix A (m x n), stored in row-major order.
  @param[in] m rows in the input matrix A.
  @param[in] n columns in the input matrix A.
- @param[out] T the output matrix where the transposed matrix T (n x m) will be stored.
 */
-A_EXTERN void a_linalg_T2(a_float const *__restrict A, a_uint m, a_uint n, a_float *__restrict T);
+A_EXTERN void a_linalg_T2(a_float *__restrict T, a_float const *__restrict A, a_uint m, a_uint n);
+
+/*!
+ @brief compute the dot product of two vectors.
+ @param[in] X points to the first vector.
+ @param[in] Y points to the second vector.
+ @param[in] n number of elements in each of the vectors X and Y.
+ @return dot product of vectors X and Y.
+*/
+A_EXTERN a_float a_linalg_dot(a_float const *__restrict X, a_float const *__restrict Y, a_size n);
 
 /*!
  @brief multiply two matrices X and Y, storing the result in Z.

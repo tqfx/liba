@@ -58,6 +58,8 @@ static void test_mul(void)
         debug("%" A_FLOAT_PRI "g%c", z[i], i < 8 ? ',' : '}');
     }
     debug("\n");
+
+    debug("X.Y\t=%" A_FLOAT_PRI "g\n", a_linalg_dot(x, y, 9));
 }
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */

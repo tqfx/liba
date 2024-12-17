@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_linalg_T1(m, N);
         show(m, N, N);
         debug("T=\n");
-        a_linalg_T2(m, N, N, a);
+        a_linalg_T2(a, m, N, N);
         show(a, N, N);
         if (a_linalg_plu(m, N, p, &sign) == 0)
         {
