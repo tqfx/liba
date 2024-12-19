@@ -14,7 +14,7 @@ int a_linalg_plu(a_float *A, a_uint n, a_uint *p, int *sign)
         a_float abs_x = a_float_abs(max_x);
         for (i = r + 1; i < n; ++i)
         {
-            a_float const max_i = A[n * i + r];
+            a_float const max_i = A[(a_size)n * i + r];
             a_float const abs_i = a_float_abs(max_i);
             if (abs_i > abs_x)
             {
