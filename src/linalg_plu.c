@@ -14,7 +14,7 @@ int a_linalg_plu(a_float *A, a_uint n, a_uint *p, int *sign)
         a_float abs_x = a_float_abs(max_x);
         for (i = r + 1; i < n; ++i)
         {
-            a_float const max_i = A[n * i + r];
+            a_float const max_i = A[(a_size)n * i + r];
             a_float const abs_i = a_float_abs(max_i);
             if (abs_i > abs_x)
             {
@@ -29,8 +29,8 @@ int a_linalg_plu(a_float *A, a_uint n, a_uint *p, int *sign)
             a_uint u = p[r];
             p[r] = p[max_r];
             p[max_r] = u;
-            a_float_swap(Ar, A + (a_size)n * max_r, n);
             *sign = -*sign;
+            a_float_swap(Ar, A + (a_size)n * max_r, n);
         }
         for (i = r + 1; i < n; ++i)
         {
@@ -101,28 +101,28 @@ void a_linalg_plu_apply(a_uint const *p, a_uint n, a_float const *b, a_float *Pb
 
 void a_linalg_plu_lower(a_float const *L, a_uint n, a_float *y)
 {
-    a_uint i, ii; /* Ly=Pb */
-    for (i = 0; i < n; ++i)
+    a_uint r, c; /* Ly = Pb */
+    for (r = 0; r < n; ++r)
     {
-        a_float const *const Li = L + (a_size)n * i;
-        for (ii = 0; ii < i; ++ii)
+        a_float const *const Lr = L + (a_size)n * r;
+        for (c = 0; c < r; ++c)
         {
-            y[i] -= Li[ii] * y[ii];
+            y[r] -= Lr[c] * y[c];
         }
     }
 }
 
 void a_linalg_plu_upper(a_float const *U, a_uint n, a_float *x)
 {
-    a_uint i, ii; /* Ux=y */
-    for (i = n; i;)
+    a_uint r, c; /* Ux = y */
+    for (r = n; r;)
     {
-        a_float const *const Ui = U + (a_size)n * --i;
-        for (ii = i + 1; ii < n; ++ii)
+        a_float const *const Ur = U + (a_size)n * --r;
+        for (c = r + 1; c < n; ++c)
         {
-            x[i] -= Ui[ii] * x[ii];
+            x[r] -= Ur[c] * x[c];
         }
-        x[i] /= Ui[i];
+        x[r] /= Ur[r];
     }
 }
 

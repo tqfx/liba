@@ -58,11 +58,11 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
             }
             a_linalg_plu_solve(a, N, p, b, x);
         }
-        debug("I=\n");
         a_linalg_T1(m, N);
+        debug("I=\n");
         show(m, N, N);
-        debug("T=\n");
         a_linalg_T2(a, m, N, N);
+        debug("T=\n");
         show(a, N, N);
         if (a_linalg_plu(m, N, p, &sign) == 0)
         {
