@@ -95,6 +95,7 @@ sources = [
     'src/fuzzy.c',
     'src/hash.c',
     'src/linalg.c',
+    'src/linalg_cho.c',
     'src/linalg_plu.c',
     'src/math.c',
     'src/mf.c',
