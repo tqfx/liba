@@ -41,7 +41,7 @@ A_EXTERN void a_linalg_T2(a_float *__restrict T, a_float const *__restrict A, a_
  @param[in] n number of elements in each of the vectors X and Y.
  @return dot product of vectors X and Y.
 */
-A_EXTERN a_float a_linalg_dot(a_float const *__restrict X, a_float const *__restrict Y, a_size n);
+A_EXTERN a_float a_linalg_dot(a_float const *X, a_float const *Y, a_size n);
 
 /*!
  @brief multiply two matrices X and Y, storing the result in Z.

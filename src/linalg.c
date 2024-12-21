@@ -31,7 +31,7 @@ void a_linalg_T2(a_float *__restrict T, a_float const *__restrict A, a_uint m, a
     }
 }
 
-a_float a_linalg_dot(a_float const *__restrict X, a_float const *__restrict Y, a_size n)
+a_float a_linalg_dot(a_float const *X, a_float const *Y, a_size n)
 {
     a_float res = 0;
     for (; n; --n)
