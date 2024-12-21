@@ -5,16 +5,14 @@ void a_linalg_T1(a_float *A, a_uint n)
     a_uint r, c;
     for (r = 0; r < n; ++r)
     {
-        a_float *Ar = A + (a_size)n * r;
+        a_float *const Ar = A + (a_size)n * r;
         for (c = r + 1; c < n; ++c)
         {
-            a_float *Ac = A + (a_size)n * c;
-            a_float *const lhs = Ar + c;
-            a_float *const rhs = Ac + r;
-            a_float swap;
-            swap = *lhs;
-            *lhs = *rhs;
-            *rhs = swap;
+            a_float *const Ac = A + (a_size)n * c;
+            a_float value;
+            value = Ac[r];
+            Ac[r] = Ar[c];
+            Ar[c] = value;
         }
     }
 }
@@ -22,13 +20,13 @@ void a_linalg_T1(a_float *A, a_uint n)
 void a_linalg_T2(a_float *__restrict T, a_float const *__restrict A, a_uint m, a_uint n)
 {
     a_uint r, c;
-    for (r = 0; r < m; ++r)
+    for (c = 0; c < n; ++c)
     {
-        a_float *Tr = T + r;
-        for (c = 0; c < n; ++c)
+        a_size const mc = (a_size)m * c;
+        for (r = 0; r < m; ++r)
         {
-            *Tr = *A++;
-            Tr += m;
+            a_size const nr = (a_size)n * r;
+            T[mc + r] = A[nr + c];
         }
     }
 }
@@ -43,7 +41,7 @@ a_float a_linalg_dot(a_float const *__restrict X, a_float const *__restrict Y, a
     return res;
 }
 
-void a_linalg_mulmm(a_float *Z, a_float const *X, a_float const *Y, a_uint row, a_uint c_r, a_uint col)
+void a_linalg_mulmm(a_float *__restrict Z, a_float const *__restrict X, a_float const *__restrict Y, a_uint row, a_uint c_r, a_uint col)
 {
     a_float const *x, *x_, *y, *y_;
     a_float *z, *z_ = Z + (a_size)row * col;
@@ -62,7 +60,7 @@ void a_linalg_mulmm(a_float *Z, a_float const *X, a_float const *Y, a_uint row, 
     }
 }
 
-void a_linalg_mulTm(a_float *Z, a_float const *X, a_float const *Y, a_uint c_r, a_uint row, a_uint col)
+void a_linalg_mulTm(a_float *__restrict Z, a_float const *__restrict X, a_float const *__restrict Y, a_uint c_r, a_uint row, a_uint col)
 {
     a_float const *x, *x_, *y, *y_;
     a_float *z, *z_ = Z + (a_size)row * col;
@@ -81,7 +79,7 @@ void a_linalg_mulTm(a_float *Z, a_float const *X, a_float const *Y, a_uint c_r, 
     }
 }
 
-void a_linalg_mulmT(a_float *Z, a_float const *X, a_float const *Y, a_uint row, a_uint col, a_uint c_r)
+void a_linalg_mulmT(a_float *__restrict Z, a_float const *__restrict X, a_float const *__restrict Y, a_uint row, a_uint col, a_uint c_r)
 {
     a_float const *x, *x_, *y, *y_ = Y + (a_size)col * c_r;
     a_float *z, *z_ = Z + (a_size)row * col;
@@ -99,7 +97,7 @@ void a_linalg_mulmT(a_float *Z, a_float const *X, a_float const *Y, a_uint row, 
     }
 }
 
-void a_linalg_mulTT(a_float *Z, a_float const *X, a_float const *Y, a_uint row, a_uint c_r, a_uint col)
+void a_linalg_mulTT(a_float *__restrict Z, a_float const *__restrict X, a_float const *__restrict Y, a_uint row, a_uint c_r, a_uint col)
 {
     a_uint const n = c_r;
     a_float const *x, *x_, *y, *y_ = Y + (a_size)col * c_r;

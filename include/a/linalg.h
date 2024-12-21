@@ -72,7 +72,7 @@ A_EXTERN a_float a_linalg_dot(a_float const *__restrict X, a_float const *__rest
  @param[in] c_r columns in matrix X and rows in matrix Y.
  @param[in] col columns in matrix Z and columns in matrix Y.
 */
-A_EXTERN void a_linalg_mulmm(a_float *Z, a_float const *X, a_float const *Y, a_uint row, a_uint c_r, a_uint col);
+A_EXTERN void a_linalg_mulmm(a_float *__restrict Z, a_float const *__restrict X, a_float const *__restrict Y, a_uint row, a_uint c_r, a_uint col);
 
 /*!
  @brief multiply the transpose of matrix X with matrix Y, storing the result in Z.
@@ -114,7 +114,7 @@ A_EXTERN void a_linalg_mulmm(a_float *Z, a_float const *X, a_float const *Y, a_u
  @param[in] row rows in matrix Z and columns in matrix X.
  @param[in] col columns in matrix Z and columns in matrix Y.
 */
-A_EXTERN void a_linalg_mulTm(a_float *Z, a_float const *X, a_float const *Y, a_uint c_r, a_uint row, a_uint col);
+A_EXTERN void a_linalg_mulTm(a_float *__restrict Z, a_float const *__restrict X, a_float const *__restrict Y, a_uint c_r, a_uint row, a_uint col);
 
 /*!
  @brief multiply matrix X with the transpose of matrix Y, storing the result in Z.
@@ -145,7 +145,7 @@ A_EXTERN void a_linalg_mulTm(a_float *Z, a_float const *X, a_float const *Y, a_u
  @param[in] col columns in matrix Z and rows in matrix Y.
  @param[in] c_r columns in matrix X and columns in matrix Y.
 */
-A_EXTERN void a_linalg_mulmT(a_float *Z, a_float const *X, a_float const *Y, a_uint row, a_uint col, a_uint c_r);
+A_EXTERN void a_linalg_mulmT(a_float *__restrict Z, a_float const *__restrict X, a_float const *__restrict Y, a_uint row, a_uint col, a_uint c_r);
 
 /*!
  @brief multiply the transpose of matrix X with the transpose of matrix Y, storing the result in Z.
@@ -176,7 +176,7 @@ A_EXTERN void a_linalg_mulmT(a_float *Z, a_float const *X, a_float const *Y, a_u
  @param[in] c_r rows in matrix X and columns in matrix Y.
  @param[in] col columns in matrix Z and rows in matrix Y.
 */
-A_EXTERN void a_linalg_mulTT(a_float *Z, a_float const *X, a_float const *Y, a_uint row, a_uint c_r, a_uint col);
+A_EXTERN void a_linalg_mulTT(a_float *__restrict Z, a_float const *__restrict X, a_float const *__restrict Y, a_uint row, a_uint c_r, a_uint col);
 
 /*!
  @brief compute LU decomposition of a square matrix with partial pivoting.
