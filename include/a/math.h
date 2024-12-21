@@ -309,7 +309,7 @@ A_EXTERN a_float a_float_mean(a_float const *p, a_size n);
  @param[in,out] rhs points to a_float block on the right
  @param[in] n the number of a_float block being swapped
 */
-A_EXTERN A_NONULL((1, 2)) void a_float_swap(a_float *lhs, a_float *rhs, a_size n);
+A_EXTERN A_NONULL((1, 2)) void a_float_swap(a_float *__restrict lhs, a_float *__restrict rhs, a_size n);
 
 /*!
  @brief push an element into the front of a float array
