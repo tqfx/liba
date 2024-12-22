@@ -4,14 +4,14 @@
 
 static void show(a_float const *p, a_size m, a_size n)
 {
-    a_size i, ii;
-    for (i = 0; i < m; ++i)
+    a_size r, c;
+    for (r = 0; r < m; ++r)
     {
         debug("\t");
-        for (ii = 0; ii < n; ++ii)
+        for (c = 0; c < n; ++c)
         {
             a_float const x = *p++;
-            if (ii) { debug(","); }
+            if (c) { debug(","); }
             debug("%+.6" A_FLOAT_PRI "f", x);
         }
         debug("\n");
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
 #define N 3
     int sign;
-    int i, ii;
+    int r, c;
     a_uint p[N];
     a_float b[N];
     a_float m[N * N];
@@ -49,12 +49,12 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_linalg_plu_inv(a, N, p, b, m);
         debug("INV=\n");
         show(m, N, N);
-        for (i = 0; i < N; ++i)
+        for (r = 0; r < N; ++r)
         {
-            a_float *x = m + a_size_c(i) * N;
-            for (ii = 0; ii < N; ++ii)
+            a_float *x = m + a_size_c(r) * N;
+            for (c = 0; c < N; ++c)
             {
-                b[ii] = (ii == i);
+                b[c] = (c == r);
             }
             a_linalg_plu_solve(a, N, p, b, x);
         }

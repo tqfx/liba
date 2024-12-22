@@ -9,7 +9,7 @@ int a_linalg_plu(a_float *A, a_uint n, a_uint *p, int *sign)
     for (r = 0; r < n; ++r)
     {
         a_float *const Ar = A + (a_size)n * r;
-        a_uint max_r = r, i, ii;
+        a_uint max_r = r, i, c;
         a_float max_x = Ar[r];
         a_float abs_x = a_float_abs(max_x);
         for (i = r + 1; i < n; ++i)
@@ -36,9 +36,9 @@ int a_linalg_plu(a_float *A, a_uint n, a_uint *p, int *sign)
         {
             a_float *const Ai = A + (a_size)n * i;
             a_float const x = Ai[r] / max_x;
-            for (ii = r + 1; ii < n; ++ii)
+            for (c = r + 1; c < n; ++c)
             {
-                Ai[ii] -= Ar[ii] * x;
+                Ai[c] -= Ar[c] * x;
             }
             Ai[r] = x;
         }
