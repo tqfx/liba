@@ -20,9 +20,9 @@
 #endif /* __STDC_VERSION__ */
 
 #if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
-#define A_FLOAT_SQRT_EPSILON 3.4526698300124393e-04F
+#define A_FLOAT_SQRT_EPSILON 3.4526698300124393e-4F
 #else /* !A_FLOAT_TYPE */
-#define A_FLOAT_SQRT_EPSILON 1.4901161193847656e-08
+#define A_FLOAT_SQRT_EPSILON 1.4901161193847656e-8
 #endif /* A_FLOAT_TYPE */
 
 static A_INLINE a_float polevl(a_float const *p, a_size n, a_float x)

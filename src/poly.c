@@ -3,9 +3,10 @@
 
 a_float *a_poly_swap(a_float *a, a_size n)
 {
-    a_float x, *b = a, *c = a + n;
+    a_float *b = a, *c = a + n;
     for (; b < --c; ++b)
     {
+        a_float x;
         x = *b;
         *b = *c;
         *c = x;
