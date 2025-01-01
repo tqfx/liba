@@ -1,17 +1,15 @@
 #define LIBA_POLY_C
 #include "a/poly.h"
 
-a_float *a_poly_swap(a_float *a, a_size n)
+void a_poly_swap_(a_float *a, a_float *b)
 {
-    a_float *b = a, *c = a + n;
-    for (; b < --c; ++b)
+    for (; a < --b; ++a)
     {
-        a_float x;
-        x = *b;
-        *b = *c;
-        *c = x;
+        a_float _c;
+        _c = *a;
+        *a = *b;
+        *b = _c;
     }
-    return a;
 }
 
 a_float a_poly_eval_(a_float const *a, a_float const *b, a_float x)

@@ -25,7 +25,16 @@ extern "C" {
 /*!
  @brief swap between \f$ \sum_{i=0}^{n}a_{i}x^{i} \f$ and \f$ \sum_{i=0}^{n}a_{i}x^{n-i} \f$
 */
-A_EXTERN a_float *a_poly_swap(a_float *a, a_size n);
+#if !defined A_HAVE_INLINE || defined(LIBA_POLY_C)
+A_EXTERN void a_poly_swap(a_float *a, a_size n);
+#endif /* A_HAVE_INLINE */
+A_EXTERN void a_poly_swap_(a_float *a, a_float *b);
+#if defined(A_HAVE_INLINE) || defined(LIBA_POLY_C)
+A_INTERN void a_poly_swap(a_float *a, a_size n)
+{
+    if (n > 1) { a_poly_swap_(a, a + n); }
+}
+#endif /* A_HAVE_INLINE */
 
 /*!
  @brief horner function for polynomial \f$ \sum_{i=0}^{n}a_{i}x^{i} \f$
