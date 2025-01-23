@@ -278,21 +278,21 @@ a_float a_float_log1p(a_float x)
 }
 
 #undef a_float_atan2
-a_float a_float_atan2(a_float x, a_float y)
+a_float a_float_atan2(a_float y, a_float x)
 {
     if (x > 0) { return a_float_atan(y / x); }
     if (x < 0)
     {
-        if (y >= 0) { return a_float_atan(y / x) + A_FLOAT_PI; }
-        return a_float_atan(y / x) - A_FLOAT_PI;
+        a_float const r = a_float_atan(y / x);
+        if (y >= 0) { return r + A_FLOAT_PI; }
+        return r - A_FLOAT_PI;
     }
     if (y > 0) { return +A_FLOAT_PI; }
     if (y < 0) { return -A_FLOAT_PI; }
     return 0;
 }
 
-#undef a_float_hypot
-a_float a_float_hypot(a_float x, a_float y)
+a_float a_float_norm2(a_float x, a_float y)
 {
     a_float const a = a_float_abs(x);
     a_float const b = a_float_abs(y);
@@ -314,7 +314,7 @@ a_float a_float_hypot(a_float x, a_float y)
     return a_float_sqrt(x * x + 1) * y;
 }
 
-a_float a_float_hypot3(a_float x, a_float y, a_float z)
+a_float a_float_norm3(a_float x, a_float y, a_float z)
 {
     a_float a = a_float_abs(x);
     a_float const b = a_float_abs(y);

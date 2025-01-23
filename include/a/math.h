@@ -267,9 +267,9 @@ A_EXTERN a_float a_float_acosh(a_float x);
 A_EXTERN a_float a_float_atanh(a_float x);
 A_EXTERN a_float a_float_expm1(a_float x);
 A_EXTERN a_float a_float_log1p(a_float x);
-A_EXTERN a_float a_float_atan2(a_float x, a_float y);
-A_EXTERN a_float a_float_hypot(a_float x, a_float y);
-A_EXTERN a_float a_float_hypot3(a_float x, a_float y, a_float z);
+A_EXTERN a_float a_float_atan2(a_float y, a_float x);
+A_EXTERN a_float a_float_norm2(a_float x, a_float y);
+A_EXTERN a_float a_float_norm3(a_float x, a_float y, a_float z);
 
 /*!
  @brief calculate the sum of a float array
@@ -426,6 +426,8 @@ A_EXTERN void a_float_roll_back_(a_float *block_p, a_size block_n,
 #define a_float_hypot A_FLOAT_F(_hypot)
 #elif defined(A_HAVE_HYPOT) && (A_HAVE_HYPOT + 0 > 0)
 #define a_float_hypot A_FLOAT_F(hypot)
+#else /* !A_HAVE_HYPOT */
+#define a_float_hypot a_float_norm2
 #endif /* A_HAVE_HYPOT */
 
 #define a_float_sin A_FLOAT_F(sin)

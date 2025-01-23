@@ -265,23 +265,22 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         debug("log(1+%.15" A_FLOAT_PRI "g)=%.15" A_FLOAT_PRI "g\n", x, a_float_log(x + 1));
     }
     {
-#undef a_float_hypot
         a_float x = A_FLOAT_MAX / A_FLOAT_SQRT2;
         a_float y = A_FLOAT_MAX / A_FLOAT_SQRT2;
-        TEST_BUG(!isinf(a_float_hypot(x, y)));
-        TEST_BUG(isinf(a_float_hypot(A_FLOAT_INF, A_FLOAT_NAN)));
-        TEST_BUG(isinf(a_float_hypot(A_FLOAT_NAN, A_FLOAT_INF)));
-        TEST_BUG(isnan(a_float_hypot(A_FLOAT_NAN, A_FLOAT_NAN)));
+        TEST_BUG(!isinf(a_float_norm2(x, y)));
+        TEST_BUG(isinf(a_float_norm2(A_FLOAT_INF, A_FLOAT_NAN)));
+        TEST_BUG(isinf(a_float_norm2(A_FLOAT_NAN, A_FLOAT_INF)));
+        TEST_BUG(isnan(a_float_norm2(A_FLOAT_NAN, A_FLOAT_NAN)));
     }
     {
         a_float x = A_FLOAT_MAX / A_FLOAT_SQRT3;
         a_float y = A_FLOAT_MAX / A_FLOAT_SQRT3;
         a_float z = A_FLOAT_MAX / A_FLOAT_SQRT3;
-        TEST_BUG(!isinf(a_float_hypot3(x, y, z)));
-        TEST_BUG(isinf(a_float_hypot3(A_FLOAT_INF, A_FLOAT_NAN, A_FLOAT_NAN)));
-        TEST_BUG(isinf(a_float_hypot3(A_FLOAT_NAN, A_FLOAT_INF, A_FLOAT_NAN)));
-        TEST_BUG(isinf(a_float_hypot3(A_FLOAT_NAN, A_FLOAT_NAN, A_FLOAT_INF)));
-        TEST_BUG(isnan(a_float_hypot3(A_FLOAT_NAN, A_FLOAT_NAN, A_FLOAT_NAN)));
+        TEST_BUG(!isinf(a_float_norm3(x, y, z)));
+        TEST_BUG(isinf(a_float_norm3(A_FLOAT_INF, A_FLOAT_NAN, A_FLOAT_NAN)));
+        TEST_BUG(isinf(a_float_norm3(A_FLOAT_NAN, A_FLOAT_INF, A_FLOAT_NAN)));
+        TEST_BUG(isinf(a_float_norm3(A_FLOAT_NAN, A_FLOAT_NAN, A_FLOAT_INF)));
+        TEST_BUG(isnan(a_float_norm3(A_FLOAT_NAN, A_FLOAT_NAN, A_FLOAT_NAN)));
     }
     if (argc < 2)
     {
