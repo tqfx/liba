@@ -3,7 +3,7 @@
 
 #if defined(_MSC_VER)
 #if !defined _CRT_SECURE_NO_WARNINGS
-#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS /* NOLINT */
 #endif /* _CRT_SECURE_NO_WARNINGS */
 #pragma warning(disable : 4820)
 #endif /* _MSC_VER */

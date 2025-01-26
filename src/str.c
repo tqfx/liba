@@ -2,7 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS /* NOLINT */
 #endif /* _CRT_SECURE_NO_WARNINGS */
 #if !defined _GNU_SOURCE && defined(__linux__)
-#define _GNU_SOURCE 1
+#define _GNU_SOURCE /* NOLINT */
 #endif /* _GNU_SOURCE */
 #include "a/str.h"
 

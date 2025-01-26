@@ -1,9 +1,9 @@
 #ifndef TEST_TEST_H
 #define TEST_TEST_H
 
-#if defined(_MSC_VER)
-#define _CRT_SECURE_NO_WARNINGS
-#endif /* _MSC_VER */
+#if !defined _CRT_SECURE_NO_WARNINGS && defined(_MSC_VER)
+#define _CRT_SECURE_NO_WARNINGS /* NOLINT */
+#endif /* _CRT_SECURE_NO_WARNINGS */
 #include "a/a.h"
 #include <stdio.h>
 #include <stdlib.h>
