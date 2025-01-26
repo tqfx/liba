@@ -125,9 +125,8 @@ unsigned int a_version_parse(a_version *ctx, char const *ver)
     } u;
     u.s = ver;
     if (!ver) { return 0; }
-    ctx->extra = 0;
-    ctx->third = 0;
-    ctx->minor = 0;
+    if (!isdigit((a_byte)*ver)) { return 0; }
+    ctx->minor = ctx->third = ctx->extra = 0;
     ctx->major = (unsigned int)strtoul(u.s, &u.p, 10);
     if (u.s[0] == '.' && u.s[1] >= '0' && u.s[1] <= '9') { ++u.s; }
     else { goto ext; }
@@ -140,7 +139,10 @@ ext:
         (isalnum((a_byte)u.s[1]) || !u.s[1]))
     {
         u.s = a_version_set_alpha_(ctx, u.s);
-        ctx->extra = (unsigned int)strtoul(u.s, &u.p, 10);
+        if (isdigit((a_byte)u.s[0]))
+        {
+            ctx->extra = (unsigned int)strtoul(u.s, &u.p, 10);
+        }
     }
     return (unsigned int)(u.s - ver);
 }
