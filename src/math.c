@@ -178,7 +178,7 @@ a_u32 a_u64_sqrt(a_u64 x)
 a_float a_float_asinh(a_float x)
 {
     a_float const a = a_float_abs(x);
-    a_float const s = (x < 0) ? -1 : 1;
+    a_float const s = x < 0 ? -1 : 1;
     if (a > 1 / A_FLOAT_SQRT_EPSILON)
     {
         return s * (a_float_log(a) + A_FLOAT_LN2);
@@ -219,7 +219,7 @@ a_float a_float_acosh(a_float x)
 a_float a_float_atanh(a_float x)
 {
     a_float const a = a_float_abs(x);
-    a_float const s = (x < 0) ? A_FLOAT_C(-0.5) : A_FLOAT_C(0.5);
+    a_float const s = x < 0 ? A_FLOAT_C(-0.5) : A_FLOAT_C(0.5);
     if (a > 1) { return A_FLOAT_NAN; }
     if (a == 1)
     {
@@ -294,42 +294,66 @@ a_float a_float_atan2(a_float y, a_float x)
 
 a_float a_float_norm2(a_float x, a_float y)
 {
-    a_float const a = a_float_abs(x);
-    a_float const b = a_float_abs(y);
-    if (isinf(x) || isinf(y))
+    a_float w;
+    x = a_float_abs(x);
+    if (isinf(x)) { return A_FLOAT_INF; }
+    y = a_float_abs(y);
+    if (isinf(y)) { return A_FLOAT_INF; }
+    if (x > y)
     {
-        return A_FLOAT_INF;
+        w = x;
+        x = y;
+        y = w;
     }
-    if (a <= b)
-    {
-        x = a;
-        y = b;
-    }
-    else
-    {
-        x = b;
-        y = a;
-    }
+    if (!y) { return 0; }
     x /= y;
     return a_float_sqrt(x * x + 1) * y;
 }
 
 a_float a_float_norm3(a_float x, a_float y, a_float z)
 {
-    a_float a = a_float_abs(x);
-    a_float const b = a_float_abs(y);
-    a_float const c = a_float_abs(z);
-    if (isinf(x) || isinf(y) || isinf(z))
+    a_float w;
+    x = a_float_abs(x);
+    if (isinf(x)) { return A_FLOAT_INF; }
+    y = a_float_abs(y);
+    if (isinf(y)) { return A_FLOAT_INF; }
+    z = a_float_abs(z);
+    if (isinf(z)) { return A_FLOAT_INF; }
+    if (x > y)
     {
-        return A_FLOAT_INF;
+        w = x;
+        x = y;
+        y = w;
     }
-    if (a < b) { a = b; }
-    if (a < c) { a = c; }
-    if (!a) { return 0; }
-    x /= a;
-    y /= a;
-    z /= a;
-    return a_float_sqrt(x * x + y * y + z * z) * a;
+    if (y > z)
+    {
+        w = y;
+        y = z;
+        z = w;
+    }
+    if (!z) { return 0; }
+    x /= z;
+    y /= z;
+    return a_float_sqrt(x * x + y * y + 1) * z;
+}
+
+a_float a_float_norm(a_float const *p, a_size n)
+{
+    a_size i;
+    a_float w = 0, s = 0;
+    for (i = 0; i < n; ++i)
+    {
+        a_float const x = a_float_abs(p[i]);
+        if (isinf(x)) { return A_FLOAT_INF; }
+        if (x > w) { w = x; }
+    }
+    if (w <= 0) { return 0; }
+    for (i = 0; i < n; ++i)
+    {
+        a_float const x = p[i] / w;
+        s += x * x;
+    }
+    return a_float_sqrt(s) * w;
 }
 
 a_float a_float_sum(a_float const *p, a_size n)

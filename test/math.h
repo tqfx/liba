@@ -98,6 +98,27 @@ static void test_sum(int argc, char *argv[])
     a_die(p);
 }
 
+static void test_norm(int argc, char *argv[])
+{
+    a_size i, n = a_cast_s(a_size, argc);
+    a_float *p = a_new(a_float, A_NULL, n);
+
+    for (i = 0; i < n; ++i)
+    {
+        char *endptr;
+        p[i] = strtonum(argv[i], &endptr);
+    }
+
+    debug("{");
+    for (i = 0; i < n; ++i)
+    {
+        debug("%c%" A_FLOAT_PRI "g", i ? ',' : 0, p[i]);
+    }
+    debug("}:%" A_FLOAT_PRI "g\n", a_float_norm(p, n));
+
+    a_die(p);
+}
+
 static void test_mean(int argc, char *argv[])
 {
     a_size i, n = a_cast_s(a_size, argc);
@@ -295,6 +316,9 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     case 0x001E5957: /* sum */
         test_sum(argc - 2, argv + 2);
         break;
+    case 0x0EDAA444: /* norm */
+        test_norm(argc - 2, argv + 2);
+        break;
     case 0x0EB5AF9D: /* mean */
         test_mean(argc - 2, argv + 2);
         break;
@@ -306,6 +330,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         break;
     default:
         debug("sum\n");
+        debug("norm\n");
         debug("mean\n");
         debug("push\n");
         debug("roll\n");
