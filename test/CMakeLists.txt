@@ -41,10 +41,12 @@ function(set_executable_options)
   endif()
 endfunction()
 
-set(TARGET_PREFIX test.)
+if(NOT CMAKE_EXECUTABLE_SUFFIX)
+  set(CMAKE_EXECUTABLE_SUFFIX .run)
+endif()
 
 function(building target)
-  set(TARGET "${TARGET_PREFIX}${target}")
+  set(TARGET "test.${target}")
   list(FIND ENABLED_LANGUAGES CXX HAS_CXX)
 
   if(${HAS_CXX} EQUAL -1)
@@ -61,6 +63,8 @@ function(building target)
     add_executable(${TARGET} ${ARGN})
   endif()
 
+  set_property(TARGET ${TARGET} PROPERTY OUTPUT_NAME ${target})
+
   if(LIBA_SANITIZE AND CMAKE_VERSION VERSION_LESS 3.12)
     add_library_properties(${TARGET} PRIVATE asan)
   elseif(LIBA_SANITIZE)
@@ -75,7 +79,7 @@ function(building target)
 endfunction()
 
 function(unittest target)
-  set(TARGET "${TARGET_PREFIX}${target}")
+  set(TARGET "test.${target}")
   cmake_parse_arguments(TEST "" "NAME" "ARGS" ${ARGN})
   set(ARGS)
 
@@ -125,7 +129,7 @@ endif()
 
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   function(unitplot target script output)
-    set(TARGET "${TARGET_PREFIX}${target}")
+    set(TARGET "test.${target}")
     set(SOURCE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
     if(IS_MULTI_CONFIG)
