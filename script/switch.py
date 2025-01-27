@@ -12,7 +12,7 @@ def switch(source):
             value = value * 131 + ord(i)
             value &= 0xFFFFFFFF
         new = "%08X" % value
-        if item[0] == new:
+        if item[0] != new:
             print("{} -> {} /* {} */".format(item[0], new, item[1]))
             cur = "0x{}: /* {} */".format(item[0], item[1])
             new = "0x{}: /* {} */".format(new, item[1])
