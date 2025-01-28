@@ -270,6 +270,7 @@ A_EXTERN a_float a_float_log1p(a_float x);
 A_EXTERN a_float a_float_atan2(a_float y, a_float x);
 A_EXTERN a_float a_float_norm2(a_float x, a_float y);
 A_EXTERN a_float a_float_norm3(a_float x, a_float y, a_float z);
+A_EXTERN a_float a_float_norm_(a_float const *p, a_size n, a_size c);
 A_EXTERN a_float a_float_norm(a_float const *p, a_size n);
 
 /*!

@@ -337,6 +337,26 @@ a_float a_float_norm3(a_float x, a_float y, a_float z)
     return a_float_sqrt(x * x + y * y + 1) * z;
 }
 
+a_float a_float_norm_(a_float const *p, a_size n, a_size c)
+{
+    a_size i;
+    a_float w = 0, s = 0;
+    a_size const nc = n * c;
+    for (i = 0; i < nc; i += c)
+    {
+        a_float const x = a_float_abs(p[i]);
+        if (isinf(x)) { return A_FLOAT_INF; }
+        if (x > w) { w = x; }
+    }
+    if (w <= 0) { return 0; }
+    for (i = 0; i < nc; i += c)
+    {
+        a_float const x = p[i] / w;
+        s += x * x;
+    }
+    return a_float_sqrt(s) * w;
+}
+
 a_float a_float_norm(a_float const *p, a_size n)
 {
     a_size i;
