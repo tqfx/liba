@@ -59,21 +59,39 @@ extern "C" {
 #endif /* __cplusplus */
 
 /*!
- @brief reciprocal of square-root, \f$ \frac{1}{\sqrt{x}} \f$
- @details http://en.wikipedia.org/wiki/Fast_inverse_square_root
- @param[in] x independent variable
- @return calculated result
+ @brief compute the greatest common divisor of two unsigned integers
+ @param[in] a unsigned integer
+ @param[in] b unsigned integer
+ @return greatest common divisor
 */
-A_EXTERN a_f32 a_f32_rsqrt(a_f32 x);
-A_EXTERN a_f64 a_f64_rsqrt(a_f64 x);
+A_EXTERN a_u32 a_u32_gcd(a_u32 a, a_u32 b);
+A_EXTERN a_u64 a_u64_gcd(a_u64 a, a_u64 b);
 
 /*!
- @brief square root of an unsigned integer
+ @brief compute the least common multiple of two unsigned integers
+ @param[in] a unsigned integer
+ @param[in] b unsigned integer
+ @return least common multiple
+*/
+A_EXTERN a_u32 a_u32_lcm(a_u32 a, a_u32 b);
+A_EXTERN a_u64 a_u64_lcm(a_u64 a, a_u64 b);
+
+/*!
+ @brief compute the square root of an unsigned integer
  @param[in] x independent variable
- @return calculated result
+ @return square root
 */
 A_EXTERN a_u16 a_u32_sqrt(a_u32 x);
 A_EXTERN a_u32 a_u64_sqrt(a_u64 x);
+
+/*!
+ @brief compute the reciprocal of square-root, \f$ \frac{1}{\sqrt{x}} \f$
+ @details http://en.wikipedia.org/wiki/Fast_inverse_square_root
+ @param[in] x independent variable
+ @return reciprocal of square-root
+*/
+A_EXTERN a_f32 a_f32_rsqrt(a_f32 x);
+A_EXTERN a_f64 a_f64_rsqrt(a_f64 x);
 
 #if defined(__cplusplus)
 } /* extern "C" */

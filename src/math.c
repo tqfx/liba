@@ -34,44 +34,40 @@ static A_INLINE a_float polevl(a_float const *p, a_size n, a_float x)
     return y;
 }
 
-a_f32 a_f32_rsqrt(a_f32 x)
+a_u32 a_u32_gcd(a_u32 a, a_u32 b)
 {
-    a_u32 *const u = (a_u32 *)&x;
-#if defined(__STDC_VERSION__) || A_PREREQ_MSVC(18, 0)
-    if (x > 0) { return 1 / a_f32_sqrt(x); }
-#else
-    if (x > 0)
+    while (b)
     {
-        a_f32 xh = A_F32_C(0.5) * x;
-        *u = A_U32_C(0x5F375A86) - (*u >> 1);
-        x *= A_F32_C(1.5) - x * x * xh;
-        x *= A_F32_C(1.5) - x * x * xh;
-        return x;
+        a_u32 const r = a % b;
+        a = b;
+        b = r;
     }
-#endif
-    if (x < 0) { return A_F32_NAN; }
-    *u |= A_F32_PINF;
-    return x;
+    return a;
 }
 
-a_f64 a_f64_rsqrt(a_f64 x)
+a_u64 a_u64_gcd(a_u64 a, a_u64 b)
 {
-    a_u64 *const u = (a_u64 *)&x;
-#if 1
-    if (x > 0) { return 1 / a_f64_sqrt(x); }
-#else
-    if (x > 0)
+    while (b)
     {
-        a_f64 xh = A_F64_C(0.5) * x;
-        *u = A_U64_C(0x5FE6EC85E7DE30DA) - (*u >> 1);
-        x *= A_F64_C(1.5) - x * x * xh;
-        x *= A_F64_C(1.5) - x * x * xh;
-        return x;
+        a_u64 const r = a % b;
+        a = b;
+        b = r;
     }
-#endif
-    if (x < 0) { return A_F64_NAN; }
-    *u |= A_F64_PINF;
-    return x;
+    return a;
+}
+
+a_u32 a_u32_lcm(a_u32 a, a_u32 b)
+{
+    a_u32 r = a_u32_gcd(a, b);
+    if (r) { r = a / r * b; }
+    return r;
+}
+
+a_u64 a_u64_lcm(a_u64 a, a_u64 b)
+{
+    a_u64 r = a_u64_gcd(a, b);
+    if (r) { r = a / r * b; }
+    return r;
 }
 
 #if (__has_builtin(__builtin_clz) || A_PREREQ_GNUC(3, 4)) && (ULONG_MAX == 0xFFFFFFFFUL)
@@ -172,6 +168,46 @@ a_u32 a_u64_sqrt(a_u64 x)
     }
     return (a_u32)y;
 #endif
+}
+
+a_f32 a_f32_rsqrt(a_f32 x)
+{
+    a_u32 *const u = (a_u32 *)&x;
+#if defined(__STDC_VERSION__) || A_PREREQ_MSVC(18, 0)
+    if (x > 0) { return 1 / a_f32_sqrt(x); }
+#else
+    if (x > 0)
+    {
+        a_f32 xh = A_F32_C(0.5) * x;
+        *u = A_U32_C(0x5F375A86) - (*u >> 1);
+        x *= A_F32_C(1.5) - x * x * xh;
+        x *= A_F32_C(1.5) - x * x * xh;
+        return x;
+    }
+#endif
+    if (x < 0) { return A_F32_NAN; }
+    *u |= A_F32_PINF;
+    return x;
+}
+
+a_f64 a_f64_rsqrt(a_f64 x)
+{
+    a_u64 *const u = (a_u64 *)&x;
+#if 1
+    if (x > 0) { return 1 / a_f64_sqrt(x); }
+#else
+    if (x > 0)
+    {
+        a_f64 xh = A_F64_C(0.5) * x;
+        *u = A_U64_C(0x5FE6EC85E7DE30DA) - (*u >> 1);
+        x *= A_F64_C(1.5) - x * x * xh;
+        x *= A_F64_C(1.5) - x * x * xh;
+        return x;
+    }
+#endif
+    if (x < 0) { return A_F64_NAN; }
+    *u |= A_F64_PINF;
+    return x;
 }
 
 #undef a_float_asinh

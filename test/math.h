@@ -24,6 +24,38 @@ static A_INLINE a_bool isnan_(a_float x) { return x != x; }
 #define sqrtf(x) sqrt(x)
 #endif /* __STDC_VERSION__ */
 
+static void test_u32_gcd(void)
+{
+    TEST_BUG(a_u32_gcd(0, 0) == 0);
+    TEST_BUG(a_u32_gcd(0, 1) == 1);
+    TEST_BUG(a_u32_gcd(1, 0) == 1);
+    TEST_BUG(a_u32_gcd(6, 9) == 3);
+}
+
+static void test_u64_gcd(void)
+{
+    TEST_BUG(a_u64_gcd(0, 0) == 0);
+    TEST_BUG(a_u64_gcd(0, 1) == 1);
+    TEST_BUG(a_u64_gcd(1, 0) == 1);
+    TEST_BUG(a_u64_gcd(6, 9) == 3);
+}
+
+static void test_u32_lcm(void)
+{
+    TEST_BUG(a_u32_lcm(0, 0) == 0);
+    TEST_BUG(a_u32_lcm(0, 1) == 0);
+    TEST_BUG(a_u32_lcm(1, 0) == 0);
+    TEST_BUG(a_u32_lcm(6, 9) == 18);
+}
+
+static void test_u64_lcm(void)
+{
+    TEST_BUG(a_u64_lcm(0, 0) == 0);
+    TEST_BUG(a_u64_lcm(0, 1) == 0);
+    TEST_BUG(a_u64_lcm(1, 0) == 0);
+    TEST_BUG(a_u64_lcm(6, 9) == 18);
+}
+
 static void test_u32_sqrt(void)
 {
     TEST_BUG(a_u32_sqrt(A_U32_C(~0)) == A_U16_C(0xFFFF));
@@ -241,6 +273,10 @@ static void test_roll(int argc, char *argv[])
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
+    test_u32_gcd();
+    test_u64_gcd();
+    test_u32_lcm();
+    test_u64_lcm();
     test_u32_sqrt();
     test_u64_sqrt();
     test_f32_rsqrt();
