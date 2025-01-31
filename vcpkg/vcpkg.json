@@ -22,7 +22,7 @@
       "description": "Enable create symbolic link"
     },
     "float": {
-      "description": "floating-point number is float"
+      "description": "floating-point number stored using C’s float type"
     },
     "ipo": {
       "description": "Enable interprocedural optimization"

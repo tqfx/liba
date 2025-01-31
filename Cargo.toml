@@ -17,6 +17,6 @@ cc = { version = "1" }
 
 [features]
 static_crt = []
-# floating-point number is stored using C’s float type
+# floating-point number stored using C’s float type
 float = []
 std = []
