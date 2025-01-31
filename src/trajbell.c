@@ -5,10 +5,10 @@
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
 
-a_float a_trajbell_gen(a_trajbell *ctx, a_float jm, a_float am, a_float vm,
-                       a_float p0, a_float p1, a_float v0, a_float v1)
+a_real a_trajbell_gen(a_trajbell *ctx, a_real jm, a_real am, a_real vm,
+                      a_real p0, a_real p1, a_real v0, a_real v1)
 {
-    a_float p, ac, tj, _2tj, _2v0, _2v1, _tmp, temp, v0pv1, _2v02pv12;
+    a_real p, ac, tj, _2tj, _2v0, _2v1, _tmp, temp, v0pv1, _2v02pv12;
     if (jm < 0) { jm = -jm; }
     if (am < 0) { am = -am; }
     if (vm < 0) { vm = -vm; }
@@ -31,7 +31,7 @@ a_float a_trajbell_gen(a_trajbell *ctx, a_float jm, a_float am, a_float vm,
     _2v0 = vm - v0;
     if (_2v0 * jm < _tmp)
     {
-        ctx->taj = a_float_sqrt(_2v0 / jm);
+        ctx->taj = a_real_sqrt(_2v0 / jm);
         ctx->ta = 2 * ctx->taj;
         ctx->am = +jm * ctx->taj;
     }
@@ -44,7 +44,7 @@ a_float a_trajbell_gen(a_trajbell *ctx, a_float jm, a_float am, a_float vm,
     _2v1 = vm - v1;
     if (_2v1 * jm < _tmp)
     {
-        ctx->tdj = a_float_sqrt(_2v1 / jm);
+        ctx->tdj = a_real_sqrt(_2v1 / jm);
         ctx->td = 2 * ctx->tdj;
         ctx->dm = -jm * ctx->tdj;
     }
@@ -55,14 +55,14 @@ a_float a_trajbell_gen(a_trajbell *ctx, a_float jm, a_float am, a_float vm,
         ctx->dm = -am;
     }
     p = p1 - p0;
-    ctx->tv = p / vm - A_FLOAT_C(0.5) * ctx->ta * (1 + v0 / vm) - A_FLOAT_C(0.5) * ctx->td * (1 + v1 / vm);
+    ctx->tv = p / vm - A_REAL_C(0.5) * ctx->ta * (1 + v0 / vm) - A_REAL_C(0.5) * ctx->td * (1 + v1 / vm);
     if (ctx->tv > 0) { goto out; }
     ctx->tv = 0;
     _2v0 = 2 * v0;
     _2v1 = 2 * v1;
     v0pv1 = v0 + v1;
     ctx->am = ac = am;
-    ctx->dm = ac * A_FLOAT_C(0.0625);
+    ctx->dm = ac * A_REAL_C(0.0625);
     _2v02pv12 = 2 * (v0 * v0 + v1 * v1);
     do {
         tj = am / jm;
@@ -71,7 +71,7 @@ a_float a_trajbell_gen(a_trajbell *ctx, a_float jm, a_float am, a_float vm,
         ctx->tdj = tj;
         _tmp = am * tj;
         temp = _tmp * _tmp + _2v02pv12 + (4 * p - _2tj * v0pv1) * am;
-        _tmp += a_float_sqrt(temp);
+        _tmp += a_real_sqrt(temp);
         temp = 2 * am;
         ctx->ta = (_tmp - _2v0) / temp;
         if (ctx->ta < 0)
@@ -84,13 +84,13 @@ a_float a_trajbell_gen(a_trajbell *ctx, a_float jm, a_float am, a_float vm,
                 _tmp = jm * p;
                 temp = jm * (_tmp * p + (v1 - v0) * v0pv1 * v0pv1);
                 if (temp < 0) { goto fail; }
-                ctx->tdj = (_tmp - a_float_sqrt(temp)) / (jm * v0pv1);
+                ctx->tdj = (_tmp - a_real_sqrt(temp)) / (jm * v0pv1);
                 ctx->am = 0;
                 ctx->dm = -jm * ctx->tdj;
                 ctx->vm = v0;
                 goto out;
             }
-            ac *= A_FLOAT_C(0.5);
+            ac *= A_REAL_C(0.5);
             am += ac;
             continue;
         }
@@ -105,13 +105,13 @@ a_float a_trajbell_gen(a_trajbell *ctx, a_float jm, a_float am, a_float vm,
                 _tmp = jm * p;
                 temp = jm * (_tmp * p + (v0 - v1) * v0pv1 * v0pv1);
                 if (temp < 0) { goto fail; }
-                ctx->taj = (_tmp - a_float_sqrt(temp)) / (jm * v0pv1);
+                ctx->taj = (_tmp - a_real_sqrt(temp)) / (jm * v0pv1);
                 ctx->am = +jm * ctx->taj;
                 ctx->dm = 0;
                 ctx->vm = v0 + ctx->am * (ctx->ta - ctx->taj);
                 goto out;
             }
-            ac *= A_FLOAT_C(0.5);
+            ac *= A_REAL_C(0.5);
             am += ac;
             continue;
         }
@@ -124,13 +124,13 @@ a_float a_trajbell_gen(a_trajbell *ctx, a_float jm, a_float am, a_float vm,
                 ctx->vm = v0 + ctx->am * (ctx->ta - tj);
                 goto out;
             }
-            ac *= A_FLOAT_C(0.5);
+            ac *= A_REAL_C(0.5);
             am += ac;
             continue;
         }
-        ac *= A_FLOAT_C(0.5);
+        ac *= A_REAL_C(0.5);
         am -= ac;
-    } while (ac > A_FLOAT_EPSILON);
+    } while (ac > A_REAL_EPSILON);
 fail:
     ctx->t = 0;
     return 0;
@@ -139,13 +139,13 @@ out:
     return ctx->t;
 }
 
-a_float a_trajbell_pos(a_trajbell const *ctx, a_float x)
+a_real a_trajbell_pos(a_trajbell const *ctx, a_real x)
 {
-    a_float y;
-    a_float p0 = ctx->p0;
-    a_float p1 = ctx->p1;
-    a_float v0 = ctx->v0;
-    a_float v1 = ctx->v1;
+    a_real y;
+    a_real p0 = ctx->p0;
+    a_real p1 = ctx->p1;
+    a_real v0 = ctx->v0;
+    a_real v1 = ctx->v1;
     int const rev = ctx->p0 > ctx->p1;
     if (rev)
     {
@@ -168,18 +168,18 @@ a_float a_trajbell_pos(a_trajbell const *ctx, a_float x)
             goto out;
         }
         x = ctx->ta - x;
-        y = p0 + A_FLOAT_C(0.5) * (ctx->vm + v0) * ctx->ta - ctx->vm * x + ctx->jm * x * x * x / 6;
+        y = p0 + A_REAL_C(0.5) * (ctx->vm + v0) * ctx->ta - ctx->vm * x + ctx->jm * x * x * x / 6;
         goto out;
     }
     if (x < ctx->t - ctx->td + ctx->tdj)
     {
         if (x < ctx->ta + ctx->tv)
         {
-            y = p0 + A_FLOAT_C(0.5) * (ctx->vm + v0) * ctx->ta + ctx->vm * (x - ctx->ta);
+            y = p0 + A_REAL_C(0.5) * (ctx->vm + v0) * ctx->ta + ctx->vm * (x - ctx->ta);
             goto out;
         }
         x -= ctx->t - ctx->td;
-        y = p1 - A_FLOAT_C(0.5) * (ctx->vm + v1) * ctx->td + ctx->vm * x - ctx->jm * x * x * x / 6;
+        y = p1 - A_REAL_C(0.5) * (ctx->vm + v1) * ctx->td + ctx->vm * x - ctx->jm * x * x * x / 6;
         goto out;
     }
     if (x < ctx->t)
@@ -187,7 +187,7 @@ a_float a_trajbell_pos(a_trajbell const *ctx, a_float x)
         if (x < ctx->t - ctx->tdj)
         {
             x -= ctx->t - ctx->td;
-            y = p1 - A_FLOAT_C(0.5) * (ctx->vm + v1) * ctx->td + ctx->vm * x +
+            y = p1 - A_REAL_C(0.5) * (ctx->vm + v1) * ctx->td + ctx->vm * x +
                 ctx->dm * (3 * x * x - 3 * x * ctx->tdj + ctx->tdj * ctx->tdj) / 6;
             goto out;
         }
@@ -200,11 +200,11 @@ out:
     return rev ? -y : y;
 }
 
-a_float a_trajbell_vel(a_trajbell const *ctx, a_float x)
+a_real a_trajbell_vel(a_trajbell const *ctx, a_real x)
 {
-    a_float y;
-    a_float v0 = ctx->v0;
-    a_float v1 = ctx->v1;
+    a_real y;
+    a_real v0 = ctx->v0;
+    a_real v1 = ctx->v1;
     int const rev = ctx->p0 > ctx->p1;
     if (rev)
     {
@@ -216,16 +216,16 @@ a_float a_trajbell_vel(a_trajbell const *ctx, a_float x)
         if (x < ctx->taj)
         {
             if (x <= 0) { return ctx->v0; }
-            y = v0 + A_FLOAT_C(0.5) * ctx->jm * x * x;
+            y = v0 + A_REAL_C(0.5) * ctx->jm * x * x;
             goto out;
         }
         if (x < ctx->ta - ctx->taj)
         {
-            y = v0 + ctx->am * (x - A_FLOAT_C(0.5) * ctx->taj);
+            y = v0 + ctx->am * (x - A_REAL_C(0.5) * ctx->taj);
             goto out;
         }
         x = ctx->ta - x;
-        y = ctx->vm - A_FLOAT_C(0.5) * ctx->jm * x * x;
+        y = ctx->vm - A_REAL_C(0.5) * ctx->jm * x * x;
         goto out;
     }
     if (x < ctx->t - ctx->td + ctx->tdj)
@@ -236,18 +236,18 @@ a_float a_trajbell_vel(a_trajbell const *ctx, a_float x)
             goto out;
         }
         x -= ctx->t - ctx->td;
-        y = ctx->vm - A_FLOAT_C(0.5) * ctx->jm * x * x;
+        y = ctx->vm - A_REAL_C(0.5) * ctx->jm * x * x;
         goto out;
     }
     if (x < ctx->t)
     {
         if (x < ctx->t - ctx->tdj)
         {
-            y = ctx->vm + ctx->dm * (x - ctx->t + ctx->td - A_FLOAT_C(0.5) * ctx->tdj);
+            y = ctx->vm + ctx->dm * (x - ctx->t + ctx->td - A_REAL_C(0.5) * ctx->tdj);
             goto out;
         }
         x = ctx->t - x;
-        y = v1 + A_FLOAT_C(0.5) * ctx->jm * x * x;
+        y = v1 + A_REAL_C(0.5) * ctx->jm * x * x;
         goto out;
     }
     return ctx->v1;
@@ -255,9 +255,9 @@ out:
     return rev ? -y : y;
 }
 
-a_float a_trajbell_acc(a_trajbell const *ctx, a_float x)
+a_real a_trajbell_acc(a_trajbell const *ctx, a_real x)
 {
-    a_float y;
+    a_real y;
     if (x < ctx->ta)
     {
         if (x >= ctx->taj)
@@ -303,9 +303,9 @@ out:
     return y;
 }
 
-a_float a_trajbell_jer(a_trajbell const *ctx, a_float x)
+a_real a_trajbell_jer(a_trajbell const *ctx, a_real x)
 {
-    a_float y;
+    a_real y;
     if (x < ctx->ta)
     {
         if (x >= ctx->ta - ctx->taj)

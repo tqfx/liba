@@ -27,7 +27,7 @@ extern "C" {
  @param[in] coef regression coefficient
  @param[in] bias intercept
 */
-A_EXTERN void a_regress_simple_init(a_regress_simple *ctx, a_float coef, a_float bias);
+A_EXTERN void a_regress_simple_init(a_regress_simple *ctx, a_real coef, a_real bias);
 
 /*!
  @brief calculate predicted value for simple linear regression
@@ -35,7 +35,7 @@ A_EXTERN void a_regress_simple_init(a_regress_simple *ctx, a_float coef, a_float
  @param[in] val independent variable
  @return predicted value
 */
-A_EXTERN a_float a_regress_simple_eval(a_regress_simple const *ctx, a_float val);
+A_EXTERN a_real a_regress_simple_eval(a_regress_simple const *ctx, a_real val);
 
 /*!
  @brief calculate predicted value for simple linear regression
@@ -43,7 +43,7 @@ A_EXTERN a_float a_regress_simple_eval(a_regress_simple const *ctx, a_float val)
  @param[in] val dependent variable
  @return predicted value
 */
-A_EXTERN a_float a_regress_simple_evar(a_regress_simple const *ctx, a_float val);
+A_EXTERN a_real a_regress_simple_evar(a_regress_simple const *ctx, a_real val);
 
 /*!
  @brief ordinary least squares for simple linear regression
@@ -54,7 +54,7 @@ A_EXTERN a_float a_regress_simple_evar(a_regress_simple const *ctx, a_float val)
  @param[in] x_mean mean of predictor data
  @param[in] y_mean mean of response data
 */
-A_EXTERN void a_regress_simple_ols_(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y, a_float x_mean, a_float y_mean);
+A_EXTERN void a_regress_simple_ols_(a_regress_simple *ctx, a_size n, a_real const *x, a_real const *y, a_real x_mean, a_real y_mean);
 
 /*!
  @brief ordinary least squares for simple linear regression
@@ -64,7 +64,7 @@ A_EXTERN void a_regress_simple_ols_(a_regress_simple *ctx, a_size n, a_float con
  @param[in] y response data, specified as a numeric vector
  @param[in] x_mean mean of predictor data
 */
-A_EXTERN void a_regress_simple_olsx(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y, a_float x_mean);
+A_EXTERN void a_regress_simple_olsx(a_regress_simple *ctx, a_size n, a_real const *x, a_real const *y, a_real x_mean);
 
 /*!
  @brief ordinary least squares for simple linear regression
@@ -74,7 +74,7 @@ A_EXTERN void a_regress_simple_olsx(a_regress_simple *ctx, a_size n, a_float con
  @param[in] y response data, specified as a numeric vector
  @param[in] y_mean mean of response data
 */
-A_EXTERN void a_regress_simple_olsy(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y, a_float y_mean);
+A_EXTERN void a_regress_simple_olsy(a_regress_simple *ctx, a_size n, a_real const *x, a_real const *y, a_real y_mean);
 
 /*!
  @brief ordinary least squares for simple linear regression
@@ -83,7 +83,7 @@ A_EXTERN void a_regress_simple_olsy(a_regress_simple *ctx, a_size n, a_float con
  @param[in] x predictor data, specified as a numeric vector
  @param[in] y response data, specified as a numeric vector
 */
-A_EXTERN void a_regress_simple_ols(a_regress_simple *ctx, a_size n, a_float const *x, a_float const *y);
+A_EXTERN void a_regress_simple_ols(a_regress_simple *ctx, a_size n, a_real const *x, a_real const *y);
 
 /*!
  @brief zeroing for simple linear regression
@@ -104,34 +104,34 @@ typedef struct a_regress_simple regress_simple;
 */
 struct a_regress_simple
 {
-    a_float coef; /*!< regression coefficient */
-    a_float bias; /*!< intercept */
+    a_real coef; /*!< regression coefficient */
+    a_real bias; /*!< intercept */
 #if defined(__cplusplus)
-    A_INLINE void init(a_float a = 1, a_float b = 0)
+    A_INLINE void init(a_real a = 1, a_real b = 0)
     {
         a_regress_simple_init(this, a, b);
     }
-    A_INLINE a_float eval(a_float val) const
+    A_INLINE a_real eval(a_real val) const
     {
         return a_regress_simple_eval(this, val);
     }
-    A_INLINE a_float evar(a_float val) const
+    A_INLINE a_real evar(a_real val) const
     {
         return a_regress_simple_evar(this, val);
     }
-    A_INLINE void ols(a_size n, a_float const *x, a_float const *y, a_float x_mean, a_float y_mean)
+    A_INLINE void ols(a_size n, a_real const *x, a_real const *y, a_real x_mean, a_real y_mean)
     {
         a_regress_simple_ols_(this, n, x, y, x_mean, y_mean);
     }
-    A_INLINE void olsx(a_size n, a_float const *x, a_float const *y, a_float x_mean)
+    A_INLINE void olsx(a_size n, a_real const *x, a_real const *y, a_real x_mean)
     {
         a_regress_simple_olsx(this, n, x, y, x_mean);
     }
-    A_INLINE void olsy(a_size n, a_float const *x, a_float const *y, a_float y_mean)
+    A_INLINE void olsy(a_size n, a_real const *x, a_real const *y, a_real y_mean)
     {
         a_regress_simple_olsy(this, n, x, y, y_mean);
     }
-    A_INLINE void ols(a_size n, a_float const *x, a_float const *y)
+    A_INLINE void ols(a_size n, a_real const *x, a_real const *y)
     {
         a_regress_simple_ols(this, n, x, y);
     }

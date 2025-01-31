@@ -901,108 +901,108 @@ typedef A_F32 a_f32;
 typedef A_F64 a_f64;
 
 /*!
- @addtogroup a_float floating-point number
+ @addtogroup a_real floating-point number
  @{
 */
 
 /*!
- @def A_FLOAT_TYPE
+ @def A_REAL_TYPE
  @brief floating-point number bytes
 */
-#if !defined A_FLOAT_TYPE
-#if !defined A_SIZE_FLOAT
-#define A_FLOAT_TYPE A_FLOAT_DOUBLE
-#else /* !A_SIZE_FLOAT */
-#define A_FLOAT_TYPE A_SIZE_FLOAT
-#endif /* A_SIZE_FLOAT */
-#endif /* A_FLOAT_TYPE */
-#define A_FLOAT_SINGLE 0x04
-#define A_FLOAT_DOUBLE 0x08
-#define A_FLOAT_EXTEND 0x10
-#if defined(A_FLOAT)
-#elif A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
+#if !defined A_REAL_TYPE
+#if !defined A_SIZE_REAL
+#define A_REAL_TYPE A_REAL_DOUBLE
+#else /* !A_SIZE_REAL */
+#define A_REAL_TYPE A_SIZE_REAL
+#endif /* A_SIZE_REAL */
+#endif /* A_REAL_TYPE */
+#define A_REAL_SINGLE 0x04
+#define A_REAL_DOUBLE 0x08
+#define A_REAL_EXTEND 0x10
+#if defined(A_REAL)
+#elif A_REAL_TYPE + 0 == A_REAL_SINGLE
 
 /*! @brief floating-point number stored using `float` */
-#define A_FLOAT float
-#define A_FLOAT_DIG FLT_DIG
-#define A_FLOAT_EPSILON FLT_EPSILON
-#define A_FLOAT_MANT_DIG FLT_MANT_DIG
-#define A_FLOAT_MAX FLT_MAX
-#define A_FLOAT_MAX_10_EXP FLT_MAX_10_EXP
-#define A_FLOAT_MAX_EXP FLT_MAX_EXP
-#define A_FLOAT_MIN FLT_MIN
-#define A_FLOAT_MIN_10_EXP FLT_MIN_10_EXP
-#define A_FLOAT_MIN_EXP FLT_MIN_EXP
-#define A_FLOAT_C(X) A_CAST_2(X, F)
-#define A_FLOAT_F(F) A_CAST_2(F, f)
-#define A_FLOAT_PRI
-#define A_FLOAT_SCN
+#define A_REAL float
+#define A_REAL_DIG FLT_DIG
+#define A_REAL_EPSILON FLT_EPSILON
+#define A_REAL_MANT_DIG FLT_MANT_DIG
+#define A_REAL_MAX FLT_MAX
+#define A_REAL_MAX_10_EXP FLT_MAX_10_EXP
+#define A_REAL_MAX_EXP FLT_MAX_EXP
+#define A_REAL_MIN FLT_MIN
+#define A_REAL_MIN_10_EXP FLT_MIN_10_EXP
+#define A_REAL_MIN_EXP FLT_MIN_EXP
+#define A_REAL_C(X) A_CAST_2(X, F)
+#define A_REAL_F(F) A_CAST_2(F, f)
+#define A_REAL_PRI
+#define A_REAL_SCN
 
-#elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
+#elif A_REAL_TYPE + 0 == A_REAL_DOUBLE
 
 /*! @brief floating-point number stored using `double` */
-#define A_FLOAT double
-#define A_FLOAT_DIG DBL_DIG
-#define A_FLOAT_EPSILON DBL_EPSILON
-#define A_FLOAT_MANT_DIG DBL_MANT_DIG
-#define A_FLOAT_MAX DBL_MAX
-#define A_FLOAT_MAX_10_EXP DBL_MAX_10_EXP
-#define A_FLOAT_MAX_EXP DBL_MAX_EXP
-#define A_FLOAT_MIN DBL_MIN
-#define A_FLOAT_MIN_10_EXP DBL_MIN_10_EXP
-#define A_FLOAT_MIN_EXP DBL_MIN_EXP
-#define A_FLOAT_C(X) X
-#define A_FLOAT_F(F) F
-#define A_FLOAT_PRI
-#define A_FLOAT_SCN "l"
+#define A_REAL double
+#define A_REAL_DIG DBL_DIG
+#define A_REAL_EPSILON DBL_EPSILON
+#define A_REAL_MANT_DIG DBL_MANT_DIG
+#define A_REAL_MAX DBL_MAX
+#define A_REAL_MAX_10_EXP DBL_MAX_10_EXP
+#define A_REAL_MAX_EXP DBL_MAX_EXP
+#define A_REAL_MIN DBL_MIN
+#define A_REAL_MIN_10_EXP DBL_MIN_10_EXP
+#define A_REAL_MIN_EXP DBL_MIN_EXP
+#define A_REAL_C(X) X
+#define A_REAL_F(F) F
+#define A_REAL_PRI
+#define A_REAL_SCN "l"
 
-#elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
+#elif A_REAL_TYPE + 0 == A_REAL_EXTEND
 
 /*! @brief floating-point number stored using `long double` */
-#define A_FLOAT long double
-#define A_FLOAT_DIG LDBL_DIG
-#define A_FLOAT_EPSILON LDBL_EPSILON
-#define A_FLOAT_MANT_DIG LDBL_MANT_DIG
-#define A_FLOAT_MAX LDBL_MAX
-#define A_FLOAT_MAX_10_EXP LDBL_MAX_10_EXP
-#define A_FLOAT_MAX_EXP LDBL_MAX_EXP
-#define A_FLOAT_MIN LDBL_MIN
-#define A_FLOAT_MIN_10_EXP LDBL_MIN_10_EXP
-#define A_FLOAT_MIN_EXP LDBL_MIN_EXP
-#define A_FLOAT_C(X) A_CAST_2(X, L)
-#define A_FLOAT_F(F) A_CAST_2(F, l)
-#define A_FLOAT_PRI "L"
-#define A_FLOAT_SCN "L"
+#define A_REAL long double
+#define A_REAL_DIG LDBL_DIG
+#define A_REAL_EPSILON LDBL_EPSILON
+#define A_REAL_MANT_DIG LDBL_MANT_DIG
+#define A_REAL_MAX LDBL_MAX
+#define A_REAL_MAX_10_EXP LDBL_MAX_10_EXP
+#define A_REAL_MAX_EXP LDBL_MAX_EXP
+#define A_REAL_MIN LDBL_MIN
+#define A_REAL_MIN_10_EXP LDBL_MIN_10_EXP
+#define A_REAL_MIN_EXP LDBL_MIN_EXP
+#define A_REAL_C(X) A_CAST_2(X, L)
+#define A_REAL_F(F) A_CAST_2(F, l)
+#define A_REAL_PRI "L"
+#define A_REAL_SCN "L"
 
-#else /* !A_FLOAT_TYPE */
+#else /* !A_REAL_TYPE */
 #error unsupported precision
-#endif /* A_FLOAT_TYPE */
+#endif /* A_REAL_TYPE */
 
-#define A_FLOAT_INF a_cast_s(A_FLOAT, A_F64_INF)
-#define A_FLOAT_NAN (A_FLOAT_C(0.0) * A_FLOAT_INF)
+#define A_REAL_INF a_cast_s(A_REAL, A_F64_INF)
+#define A_REAL_NAN (A_REAL_C(0.0) * A_REAL_INF)
 /*!
- @def A_FLOAT_C(X)
- @brief expands to a floating-point constant expression having the value specified by its argument and the type \ref a_float
+ @def A_REAL_C(X)
+ @brief expands to a floating-point constant expression having the value specified by its argument and the type \ref a_real
 */
 /*!
- @def A_FLOAT_F(F)
- @brief expands to a floating-point function expression having the value specified by its argument and the type \ref a_float
+ @def A_REAL_F(F)
+ @brief expands to a floating-point function expression having the value specified by its argument and the type \ref a_real
 */
 /*!
- @def A_FLOAT_SCN
+ @def A_REAL_SCN
  @brief format constants for the fscanf family of functions
 */
 /*!
- @def A_FLOAT_PRI
+ @def A_REAL_PRI
  @brief format constants for the fprintf family of functions
 */
-/*! @brief static cast to \ref a_float */
-#define a_float_c(x) a_cast_s(a_float, x)
-#define a_float_(_, x) a_cast_s(a_float _, x)
+/*! @brief static cast to \ref a_real */
+#define a_real_c(x) a_cast_s(a_real, x)
+#define a_real_(_, x) a_cast_s(a_real _, x)
 /*! @brief compiler built-in floating-point number type */
-typedef A_FLOAT a_float;
+typedef A_REAL a_real;
 
-/*! @} a_float */
+/*! @} a_real */
 
 typedef union a_cast
 {
@@ -1037,9 +1037,9 @@ typedef union a_cast
     void *ptr;
     char const *STR;
     char *str;
-#if defined(A_FLOAT_TYPE) && (A_FLOAT_TYPE + 0 < A_FLOAT_EXTEND)
-    a_float f;
-#endif /* A_FLOAT_TYPE */
+#if defined(A_REAL_TYPE) && (A_REAL_TYPE + 0 < A_REAL_EXTEND)
+    a_real f;
+#endif /* A_REAL_TYPE */
 } a_cast;
 
 /*!

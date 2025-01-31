@@ -21,18 +21,18 @@
 #pragma GCC diagnostic ignored "-Wpadded"
 #endif /* -Wpadded */
 #if A_PREREQ_GNUC(4, 6) || __has_warning("-Wdouble-promotion")
-#if defined(A_FLOAT_TYPE) && (A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE)
+#if defined(A_REAL_TYPE) && (A_REAL_TYPE + 0 == A_REAL_SINGLE)
 #pragma GCC diagnostic ignored "-Wdouble-promotion"
-#endif /* A_FLOAT_TYPE + 0 == 0x04 */
+#endif /* A_REAL_TYPE + 0 == 0x04 */
 #endif /* -Wdouble-promotion */
 
-#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
+#if A_REAL_TYPE + 0 == A_REAL_SINGLE
 #define strtonum(string, endptr) strtof(string, endptr)
-#elif A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
+#elif A_REAL_TYPE + 0 == A_REAL_DOUBLE
 #define strtonum(string, endptr) strtod(string, endptr)
-#elif A_FLOAT_TYPE + 0 == A_FLOAT_EXTEND
+#elif A_REAL_TYPE + 0 == A_REAL_EXTEND
 #define strtonum(string, endptr) strtold(string, endptr)
-#endif /* A_FLOAT_TYPE */
+#endif /* A_REAL_TYPE */
 
 #define TEST_IS1(expression, message)                                         \
     do {                                                                      \

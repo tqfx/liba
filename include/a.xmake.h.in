@@ -11,9 +11,9 @@ ${define A_SIZE_POINTER}
 #if !defined A_BYTE_ORDER
 ${define A_BYTE_ORDER}
 #endif /* A_BYTE_ORDER */
-#if !defined A_SIZE_FLOAT
-${define A_SIZE_FLOAT}
-#endif /* A_SIZE_FLOAT */
+#if !defined A_SIZE_REAL
+${define A_SIZE_REAL}
+#endif /* A_SIZE_REAL */
 
 ${define A_HAVE_ASINH}
 ${define A_HAVE_ACOSH}

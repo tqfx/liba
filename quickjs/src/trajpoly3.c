@@ -24,9 +24,9 @@ static JSValue liba_trajpoly3_ctor(JSContext *ctx, JSValueConst new_target, int 
     {
         if (JS_ToFloat64(ctx, &arg[i], argv[i])) { goto fail; }
     }
-    a_trajpoly3_gen(self, (a_float)arg[0],
-                    (a_float)arg[1], (a_float)arg[2],
-                    (a_float)arg[3], (a_float)arg[4]);
+    a_trajpoly3_gen(self, (a_real)arg[0],
+                    (a_real)arg[1], (a_real)arg[2],
+                    (a_real)arg[3], (a_real)arg[4]);
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
     clazz = JS_NewObjectProtoClass(ctx, proto, liba_trajpoly3_class_id);
@@ -55,20 +55,20 @@ static JSValue liba_trajpoly3_gen(JSContext *ctx, JSValueConst this_val, int arg
     {
         if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
-    a_trajpoly3_gen(self, (a_float)arg[0],
-                    (a_float)arg[1], (a_float)arg[2],
-                    (a_float)arg[3], (a_float)arg[4]);
+    a_trajpoly3_gen(self, (a_real)arg[0],
+                    (a_real)arg[1], (a_real)arg[2],
+                    (a_real)arg[3], (a_real)arg[4]);
     return JS_UNDEFINED;
 }
 
 static JSValue liba_trajpoly3_pos(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     double x;
-    a_float pos;
+    a_real pos;
     a_trajpoly3 *const self = (a_trajpoly3 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly3_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    pos = a_trajpoly3_pos(self, (a_float)x);
+    pos = a_trajpoly3_pos(self, (a_real)x);
     (void)argc;
     return JS_NewFloat64(ctx, (double)pos);
 }
@@ -76,11 +76,11 @@ static JSValue liba_trajpoly3_pos(JSContext *ctx, JSValueConst this_val, int arg
 static JSValue liba_trajpoly3_vel(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     double x;
-    a_float vel;
+    a_real vel;
     a_trajpoly3 *const self = (a_trajpoly3 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly3_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    vel = a_trajpoly3_vel(self, (a_float)x);
+    vel = a_trajpoly3_vel(self, (a_real)x);
     (void)argc;
     return JS_NewFloat64(ctx, (double)vel);
 }
@@ -88,11 +88,11 @@ static JSValue liba_trajpoly3_vel(JSContext *ctx, JSValueConst this_val, int arg
 static JSValue liba_trajpoly3_acc(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     double x;
-    a_float acc;
+    a_real acc;
     a_trajpoly3 *const self = (a_trajpoly3 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly3_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    acc = a_trajpoly3_acc(self, (a_float)x);
+    acc = a_trajpoly3_acc(self, (a_real)x);
     (void)argc;
     return JS_NewFloat64(ctx, (double)acc);
 }

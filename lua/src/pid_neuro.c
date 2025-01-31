@@ -16,16 +16,16 @@ int liba_pid_neuro_new(lua_State *L)
     a_pid_neuro *const ctx = lua_newclass(L, a_pid_neuro);
     lua_registry_get(L, liba_pid_neuro_new);
     lua_setmetatable(L, -2);
-    ctx->pid.summax = +A_FLOAT_INF;
-    ctx->pid.summin = -A_FLOAT_INF;
-    ctx->pid.outmax = +A_FLOAT_INF;
-    ctx->pid.outmin = -A_FLOAT_INF;
+    ctx->pid.summax = +A_REAL_INF;
+    ctx->pid.summin = -A_REAL_INF;
+    ctx->pid.outmax = +A_REAL_INF;
+    ctx->pid.outmin = -A_REAL_INF;
     ctx->pid.kp = ctx->k = 1;
     ctx->pid.ki = 0;
     ctx->pid.kd = 0;
-    ctx->wp = A_FLOAT_C(0.1);
-    ctx->wi = A_FLOAT_C(0.1);
-    ctx->wd = A_FLOAT_C(0.1);
+    ctx->wp = A_REAL_C(0.1);
+    ctx->wi = A_REAL_C(0.1);
+    ctx->wd = A_REAL_C(0.1);
     a_pid_neuro_init(ctx);
     return 1;
 }
@@ -44,14 +44,14 @@ int liba_pid_neuro_init(lua_State *L)
         ctx->pid.kp = 1;
         ctx->pid.ki = 0;
         ctx->pid.kd = 0;
-        ctx->pid.summax = +A_FLOAT_INF;
-        ctx->pid.summin = -A_FLOAT_INF;
-        ctx->pid.outmax = +A_FLOAT_INF;
-        ctx->pid.outmin = -A_FLOAT_INF;
+        ctx->pid.summax = +A_REAL_INF;
+        ctx->pid.summin = -A_REAL_INF;
+        ctx->pid.outmax = +A_REAL_INF;
+        ctx->pid.outmin = -A_REAL_INF;
         ctx->k = 1;
-        ctx->wp = A_FLOAT_C(0.1);
-        ctx->wi = A_FLOAT_C(0.1);
-        ctx->wd = A_FLOAT_C(0.1);
+        ctx->wp = A_REAL_C(0.1);
+        ctx->wi = A_REAL_C(0.1);
+        ctx->wd = A_REAL_C(0.1);
         a_pid_neuro_init(ctx);
         return 1;
     }
@@ -73,10 +73,10 @@ int liba_pid_neuro_set_kpid(lua_State *L)
     a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const k = (a_float)luaL_checknumber(L, 2);
-        a_float const kp = (a_float)luaL_checknumber(L, 3);
-        a_float const ki = (a_float)luaL_checknumber(L, 4);
-        a_float const kd = (a_float)luaL_checknumber(L, 5);
+        a_real const k = (a_real)luaL_checknumber(L, 2);
+        a_real const kp = (a_real)luaL_checknumber(L, 3);
+        a_real const ki = (a_real)luaL_checknumber(L, 4);
+        a_real const kd = (a_real)luaL_checknumber(L, 5);
         a_pid_neuro_set_kpid(ctx, k, kp, ki, kd);
         lua_pushvalue(L, 1);
         return 1;
@@ -98,9 +98,9 @@ int liba_pid_neuro_set_wpid(lua_State *L)
     a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const wp = (a_float)luaL_checknumber(L, 2);
-        a_float const wi = (a_float)luaL_checknumber(L, 3);
-        a_float const wd = (a_float)luaL_checknumber(L, 4);
+        a_real const wp = (a_real)luaL_checknumber(L, 2);
+        a_real const wi = (a_real)luaL_checknumber(L, 3);
+        a_real const wd = (a_real)luaL_checknumber(L, 4);
         a_pid_neuro_set_wpid(ctx, wp, wi, wd);
         lua_pushvalue(L, 1);
         return 1;
@@ -121,8 +121,8 @@ int liba_pid_neuro_run(lua_State *L)
     a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const set = (a_float)luaL_checknumber(L, 2);
-        a_float const fdb = (a_float)luaL_checknumber(L, 3);
+        a_real const set = (a_real)luaL_checknumber(L, 2);
+        a_real const fdb = (a_real)luaL_checknumber(L, 3);
         lua_pushnumber(L, (lua_Number)a_pid_neuro_run(ctx, set, fdb));
         return 1;
     }
@@ -142,8 +142,8 @@ int liba_pid_neuro_inc(lua_State *L)
     a_pid_neuro *const ctx = (a_pid_neuro *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const set = (a_float)luaL_checknumber(L, 2);
-        a_float const fdb = (a_float)luaL_checknumber(L, 3);
+        a_real const set = (a_real)luaL_checknumber(L, 2);
+        a_real const fdb = (a_real)luaL_checknumber(L, 3);
         lua_pushnumber(L, (lua_Number)a_pid_neuro_inc(ctx, set, fdb));
         return 1;
     }
@@ -173,31 +173,31 @@ static int liba_pid_neuro_set(lua_State *L)
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x0000006B: /* k */
-        ctx->k = (a_float)luaL_checknumber(L, 3);
+        ctx->k = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x00003731: /* kp */
-        ctx->pid.kp = (a_float)luaL_checknumber(L, 3);
+        ctx->pid.kp = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x0000372A: /* ki */
-        ctx->pid.ki = (a_float)luaL_checknumber(L, 3);
+        ctx->pid.ki = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x00003725: /* kd */
-        ctx->pid.kd = (a_float)luaL_checknumber(L, 3);
+        ctx->pid.kd = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x00003D55: /* wp */
-        ctx->wp = (a_float)luaL_checknumber(L, 3);
+        ctx->wp = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x00003D4E: /* wi */
-        ctx->wi = (a_float)luaL_checknumber(L, 3);
+        ctx->wi = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x00003D49: /* wd */
-        ctx->wd = (a_float)luaL_checknumber(L, 3);
+        ctx->wd = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x23C8F10E: /* outmax */
-        ctx->pid.outmax = (a_float)luaL_checknumber(L, 3);
+        ctx->pid.outmax = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x23C8F51C: /* outmin */
-        ctx->pid.outmin = (a_float)luaL_checknumber(L, 3);
+        ctx->pid.outmin = (a_real)luaL_checknumber(L, 3);
         break;
     case 0xE8859EEB: /* __name */
     case 0xE70C48C6: /* __call */

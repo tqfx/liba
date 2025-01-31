@@ -21,11 +21,11 @@ JSValue js_array_u8_new(JSContext *ctx, a_u8 const *ptr, a_u32 len);
 JSValue js_array_u16_new(JSContext *ctx, a_u16 const *ptr, a_u32 len);
 JSValue js_array_u32_new(JSContext *ctx, a_u32 const *ptr, a_u32 len);
 JSValue js_array_u64_new(JSContext *ctx, a_u64 const *ptr, a_u32 len);
-JSValue js_array_num_new(JSContext *ctx, a_float const *ptr, a_u32 len);
+JSValue js_array_num_new(JSContext *ctx, a_real const *ptr, a_u32 len);
 
 int js_array_num_len(JSContext *ctx, JSValueConst val, unsigned int *num, int dim);
-a_float *js_array_num_ptr(JSContext *ctx, JSValueConst val, a_float *ptr, int dim);
-a_float *js_array_num_get(JSContext *ctx, JSValueConst val, a_float *ptr, unsigned int *num, int dim);
+a_real *js_array_num_ptr(JSContext *ctx, JSValueConst val, a_real *ptr, int dim);
+a_real *js_array_num_get(JSContext *ctx, JSValueConst val, a_real *ptr, unsigned int *num, int dim);
 
 A_PUBLIC JSModuleDef *js_init_module(JSContext *ctx, char const *module_name);
 

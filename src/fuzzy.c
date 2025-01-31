@@ -2,12 +2,12 @@
 #include "a/fuzzy.h"
 #include "a/math.h"
 
-a_float a_fuzzy_equ(a_float a, a_float b)
+a_real a_fuzzy_equ(a_real a, a_real b)
 {
-    return a_float_sqrt(a * b) * a_float_sqrt(1 - (1 - a) * (1 - b));
+    return a_real_sqrt(a * b) * a_real_sqrt(1 - (1 - a) * (1 - b));
 }
 
-a_float a_fuzzy_equ_(a_float gamma, a_float a, a_float b)
+a_real a_fuzzy_equ_(a_real gamma, a_real a, a_real b)
 {
-    return a_float_pow(a * b, 1 - gamma) * a_float_pow(1 - (1 - a) * (1 - b), gamma);
+    return a_real_pow(a * b, 1 - gamma) * a_real_pow(1 - (1 - a) * (1 - b), gamma);
 }

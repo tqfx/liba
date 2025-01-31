@@ -12,9 +12,9 @@
 #if !defined A_BYTE_ORDER
 #define A_BYTE_ORDER @CMAKE_BYTE_ORDER@
 #endif /* A_BYTE_ORDER */
-#if !defined A_SIZE_FLOAT
-#define A_SIZE_FLOAT @LIBA_FLOAT@
-#endif /* A_SIZE_FLOAT */
+#if !defined A_SIZE_REAL
+#define A_SIZE_REAL @LIBA_REAL@
+#endif /* A_SIZE_REAL */
 
 #cmakedefine A_HAVE_ASINH @A_HAVE_ASINH@
 #cmakedefine A_HAVE_ACOSH @A_HAVE_ACOSH@

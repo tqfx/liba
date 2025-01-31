@@ -8,8 +8,8 @@ static void liba_pid_fuzzy_finalizer(JSRuntime *rt, JSValue val)
 {
     union
     {
-        a_float const *p;
-        a_float *o;
+        a_real const *p;
+        a_real *o;
     } u;
     a_pid_fuzzy *self = (a_pid_fuzzy *)JS_GetOpaque(val, liba_pid_fuzzy_class_id);
     js_free_rt(rt, ((void)(u.p = self->me), u.o));
@@ -26,10 +26,10 @@ static JSValue liba_pid_fuzzy_ctor(JSContext *ctx, JSValueConst new_target, int 
     JSValue proto, clazz = JS_UNDEFINED;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)js_mallocz(ctx, sizeof(a_pid_fuzzy));
     if (!self) { return JS_EXCEPTION; }
-    self->pid.summax = +A_FLOAT_INF;
-    self->pid.summin = -A_FLOAT_INF;
-    self->pid.outmax = +A_FLOAT_INF;
-    self->pid.outmin = -A_FLOAT_INF;
+    self->pid.summax = +A_REAL_INF;
+    self->pid.summin = -A_REAL_INF;
+    self->pid.outmax = +A_REAL_INF;
+    self->pid.outmin = -A_REAL_INF;
     self->kp = self->pid.kp = 1;
     self->opr = a_fuzzy_equ;
     a_pid_fuzzy_init(self);
@@ -63,8 +63,8 @@ static JSValue liba_pid_fuzzy_set_rule(JSContext *ctx, JSValueConst this_val, in
 {
     union
     {
-        a_float const *p;
-        a_float *o;
+        a_real const *p;
+        a_real *o;
     } u;
     unsigned int nrule = 0;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
@@ -140,7 +140,7 @@ static JSValue liba_pid_fuzzy_set_kpid(JSContext *ctx, JSValueConst this_val, in
     {
         if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
-    a_pid_fuzzy_set_kpid(self, (a_float)arg[0], (a_float)arg[1], (a_float)arg[2]);
+    a_pid_fuzzy_set_kpid(self, (a_real)arg[0], (a_real)arg[1], (a_real)arg[2]);
     (void)argc;
     return JS_UNDEFINED;
 }
@@ -166,7 +166,7 @@ static JSValue liba_pid_fuzzy_run(JSContext *ctx, JSValueConst this_val, int arg
         if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
     (void)argc;
-    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_run(self, (a_float)arg[0], (a_float)arg[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_run(self, (a_real)arg[0], (a_real)arg[1]));
 }
 
 static JSValue liba_pid_fuzzy_pos(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
@@ -180,7 +180,7 @@ static JSValue liba_pid_fuzzy_pos(JSContext *ctx, JSValueConst this_val, int arg
         if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
     (void)argc;
-    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_pos(self, (a_float)arg[0], (a_float)arg[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_pos(self, (a_real)arg[0], (a_real)arg[1]));
 }
 
 static JSValue liba_pid_fuzzy_inc(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
@@ -194,7 +194,7 @@ static JSValue liba_pid_fuzzy_inc(JSContext *ctx, JSValueConst this_val, int arg
         if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
     (void)argc;
-    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_inc(self, (a_float)arg[0], (a_float)arg[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_fuzzy_inc(self, (a_real)arg[0], (a_real)arg[1]));
 }
 
 enum
@@ -254,13 +254,13 @@ static JSValue liba_pid_fuzzy_set(JSContext *ctx, JSValueConst this_val, JSValue
     if (JS_ToFloat64(ctx, &x, val)) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_kp: self->pid.kp = self->kp = (a_float)x; break;
-    case self_ki: self->pid.ki = self->ki = (a_float)x; break;
-    case self_kd: self->pid.kd = self->kd = (a_float)x; break;
-    case self_summax: self->pid.summax = (a_float)x; break;
-    case self_summin: self->pid.summin = (a_float)x; break;
-    case self_outmax: self->pid.outmax = (a_float)x; break;
-    case self_outmin: self->pid.outmin = (a_float)x; break;
+    case self_kp: self->pid.kp = self->kp = (a_real)x; break;
+    case self_ki: self->pid.ki = self->ki = (a_real)x; break;
+    case self_kd: self->pid.kd = self->kd = (a_real)x; break;
+    case self_summax: self->pid.summax = (a_real)x; break;
+    case self_summin: self->pid.summin = (a_real)x; break;
+    case self_outmax: self->pid.outmax = (a_real)x; break;
+    case self_outmin: self->pid.outmin = (a_real)x; break;
     default: break;
     }
     return JS_UNDEFINED;

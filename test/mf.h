@@ -7,7 +7,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     int i;
     unsigned int e = A_MF_NUL;
-    a_float params[6] = {0, 0, 0, 0, 0, 0};
+    a_real params[6] = {0, 0, 0, 0, 0, 0};
     main_init(argc, argv, 1);
     if (argc > 1)
     {
@@ -31,12 +31,12 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     }
     if (e != A_MF_NUL)
     {
-        a_float delta = (params[1] - params[0]) / A_FLOAT_C(100.0);
+        a_real delta = (params[1] - params[0]) / A_REAL_C(100.0);
         for (i = 0; i < 100; ++i)
         {
-            a_float x = params[0] + delta * a_float_c(i);
-            a_float y = a_mf(e, x, params + 2);
-            debug("%" A_FLOAT_PRI "g,%" A_FLOAT_PRI "g\n", x, y);
+            a_real x = params[0] + delta * a_real_c(i);
+            a_real y = a_mf(e, x, params + 2);
+            debug("%" A_REAL_PRI "g,%" A_REAL_PRI "g\n", x, y);
         }
     }
     else

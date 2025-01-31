@@ -1,11 +1,11 @@
 #define MAIN(x) notefreqs##x
 #include "test.h"
-#define A_NOTEFREQ a_float
-#define A_NOTEFREQ_C(X) A_FLOAT_C(X)
+#define A_NOTEFREQ a_real
+#define A_NOTEFREQ_C(X) A_REAL_C(X)
 #define A_NOTEFREQ_FREQ ((8000000 >> 1) / 100)
 #include "a/notefreqs.h"
 
-static a_float const song[][2] = {
+static a_real const song[][2] = {
     /* clang-format off */
     {A_NOTEFREQ_FREQ_C0,  A_NOTEFREQ_C0},  {A_NOTEFREQ_FREQ_C_0, A_NOTEFREQ_C_0}, /* NOLINT(bugprone-integer-division) */
     {A_NOTEFREQ_FREQ_D0,  A_NOTEFREQ_D0},  {A_NOTEFREQ_FREQ_D_0, A_NOTEFREQ_D_0}, /* NOLINT(bugprone-integer-division) */
@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     main_init(argc, argv, 1);
     for (i = 0; i != A_LEN(song); ++i)
     {
-        debug("%" A_FLOAT_PRI "g,%" A_FLOAT_PRI "g,%" A_FLOAT_PRI "g\n", song[i][0], song[i][1], 1 / song[i][1]);
+        debug("%" A_REAL_PRI "g,%" A_REAL_PRI "g,%" A_REAL_PRI "g\n", song[i][0], song[i][1], 1 / song[i][1]);
     }
     return 0;
 }

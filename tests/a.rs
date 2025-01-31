@@ -23,8 +23,8 @@ fn sum() {
     std::println!(
         "sum({:?})={},{},{}",
         x,
-        liba::float_sum(&x),
-        liba::float_sum1(&x),
-        liba::float_sum2(&x)
+        liba::real_sum(&x),
+        liba::real_sum1(&x),
+        liba::real_sum2(&x)
     );
 }

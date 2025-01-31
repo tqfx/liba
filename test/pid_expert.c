@@ -3,18 +3,18 @@
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
 
-void a_pid_expert_set_kpid(a_pid_expert *ctx, a_float kp, a_float ki, a_float kd)
+void a_pid_expert_set_kpid(a_pid_expert *ctx, a_real kp, a_real ki, a_real kd)
 {
     a_pid_set_kpid(&ctx->pid, kp, ki, kd);
 }
 
-a_float a_pid_expert_iter(a_pid_expert *ctx, a_float set, a_float fdb)
+a_real a_pid_expert_iter(a_pid_expert *ctx, a_real set, a_real fdb)
 {
-    a_float out = 0;
-    a_float const err = set - fdb;
-    a_float const abs = A_ABS(err);
-    a_float const var = ctx->pid.fdb - fdb;
-    a_float const ec = err - ctx->pid.err;
+    a_real out = 0;
+    a_real const err = set - fdb;
+    a_real const abs = A_ABS(err);
+    a_real const var = ctx->pid.fdb - fdb;
+    a_real const ec = err - ctx->pid.err;
 
     if (-ctx->max1 > err)
     {

@@ -47,8 +47,8 @@ extern "C" {
  @param[in] v1 defines the final velocity
  @return total duration
 */
-A_EXTERN a_float a_trajtrap_gen(a_trajtrap *ctx, a_float vm, a_float ac, a_float de,
-                                a_float p0, a_float p1, a_float v0, a_float v1);
+A_EXTERN a_real a_trajtrap_gen(a_trajtrap *ctx, a_real vm, a_real ac, a_real de,
+                               a_real p0, a_real p1, a_real v0, a_real v1);
 
 /*!
  @brief calculate position for trapezoidal velocity trajectory
@@ -60,7 +60,7 @@ A_EXTERN a_float a_trajtrap_gen(a_trajtrap *ctx, a_float vm, a_float ac, a_float
  @param[in] x difference between current time and initial time
  @return position output
 */
-A_EXTERN a_float a_trajtrap_pos(a_trajtrap const *ctx, a_float x);
+A_EXTERN a_real a_trajtrap_pos(a_trajtrap const *ctx, a_real x);
 
 /*!
  @brief calculate velocity for trapezoidal velocity trajectory
@@ -71,7 +71,7 @@ A_EXTERN a_float a_trajtrap_pos(a_trajtrap const *ctx, a_float x);
  @param[in] x difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_float a_trajtrap_vel(a_trajtrap const *ctx, a_float x);
+A_EXTERN a_real a_trajtrap_vel(a_trajtrap const *ctx, a_real x);
 
 /*!
  @brief calculate acceleration for trapezoidal velocity trajectory
@@ -82,7 +82,7 @@ A_EXTERN a_float a_trajtrap_vel(a_trajtrap const *ctx, a_float x);
  @param[in] x difference between current time and initial time
  @return acceleration output
 */
-A_EXTERN a_float a_trajtrap_acc(a_trajtrap const *ctx, a_float x);
+A_EXTERN a_real a_trajtrap_acc(a_trajtrap const *ctx, a_real x);
 
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -97,33 +97,33 @@ typedef struct a_trajtrap trajtrap;
 */
 struct a_trajtrap
 {
-    a_float t; /*!< total duration */
-    a_float p0; /*!< initial position */
-    a_float p1; /*!< final position */
-    a_float v0; /*!< initial velocity */
-    a_float v1; /*!< final velocity */
-    a_float vc; /*!< constant velocity */
-    a_float ta; /*!< time before constant velocity */
-    a_float td; /*!< time after constant velocity */
-    a_float pa; /*!< position before constant velocity */
-    a_float pd; /*!< position after constant velocity */
-    a_float ac; /*!< acceleration before constant velocity */
-    a_float de; /*!< acceleration after constant velocity */
+    a_real t; /*!< total duration */
+    a_real p0; /*!< initial position */
+    a_real p1; /*!< final position */
+    a_real v0; /*!< initial velocity */
+    a_real v1; /*!< final velocity */
+    a_real vc; /*!< constant velocity */
+    a_real ta; /*!< time before constant velocity */
+    a_real td; /*!< time after constant velocity */
+    a_real pa; /*!< position before constant velocity */
+    a_real pd; /*!< position after constant velocity */
+    a_real ac; /*!< acceleration before constant velocity */
+    a_real de; /*!< acceleration after constant velocity */
 #if defined(__cplusplus)
-    A_INLINE a_float gen(a_float vm, a_float ac_, a_float de_, a_float p0_, a_float p1_,
-                         a_float v0_ = 0, a_float v1_ = 0)
+    A_INLINE a_real gen(a_real vm, a_real ac_, a_real de_, a_real p0_, a_real p1_,
+                        a_real v0_ = 0, a_real v1_ = 0)
     {
         return a_trajtrap_gen(this, vm, ac_, de_, p0_, p1_, v0_, v1_);
     }
-    A_INLINE a_float pos(a_float x) const
+    A_INLINE a_real pos(a_real x) const
     {
         return a_trajtrap_pos(this, x);
     }
-    A_INLINE a_float vel(a_float x) const
+    A_INLINE a_real vel(a_real x) const
     {
         return a_trajtrap_vel(this, x);
     }
-    A_INLINE a_float acc(a_float x) const
+    A_INLINE a_real acc(a_real x) const
     {
         return a_trajtrap_acc(this, x);
     }

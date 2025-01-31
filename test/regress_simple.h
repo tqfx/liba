@@ -19,18 +19,18 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     char *endptr;
     long x_n, y_n;
-    a_float *x, *y;
+    a_real *x, *y;
     a_size i, n = 100;
-    a_float a = A_FLOAT_C(0.7);
-    a_float b = 12;
+    a_real a = A_REAL_C(0.7);
+    a_real b = 12;
     a_regress_simple ctx;
 
     if (argc > 2) { a = strtonum(argv[2], &endptr); }
     if (argc > 3) { b = strtonum(argv[3], &endptr); }
     if (argc > 4) { n = strtoul(argv[4], &endptr, 0); }
 
-    x = a_new(a_float, A_NULL, n);
-    y = a_new(a_float, A_NULL, n);
+    x = a_new(a_real, A_NULL, n);
+    y = a_new(a_real, A_NULL, n);
     x_n = a_cast_s(long, n) * 10;
     y_n = a_cast_s(long, n) * 2;
 
@@ -38,8 +38,8 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     main_init(argc, argv, 1);
     for (i = 0; i < n; ++i)
     {
-        x[i] = a_cast_s(a_float, rand_() % x_n);
-        y[i] = a * x[i] + b + a_cast_s(a_float, rand_() % y_n) - a_cast_s(a_float, n);
+        x[i] = a_cast_s(a_real, rand_() % x_n);
+        y[i] = a * x[i] + b + a_cast_s(a_real, rand_() % y_n) - a_cast_s(a_real, n);
     }
 
     a_regress_simple_init(&ctx, 0, 0);
@@ -47,9 +47,9 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 
     for (i = 0; i < n; ++i)
     {
-        a_float u = a_cast_s(a_float, i * 10);
-        a_float v = a_regress_simple_eval(&ctx, u);
-        debug("%+.1" A_FLOAT_PRI "f,%+.1" A_FLOAT_PRI "f,%+.1" A_FLOAT_PRI "f,%+.1" A_FLOAT_PRI "f\n", u, v, x[i], y[i]);
+        a_real u = a_cast_s(a_real, i * 10);
+        a_real v = a_regress_simple_eval(&ctx, u);
+        debug("%+.1" A_REAL_PRI "f,%+.1" A_REAL_PRI "f,%+.1" A_REAL_PRI "f,%+.1" A_REAL_PRI "f\n", u, v, x[i], y[i]);
     }
 
     a_regress_simple_zero(&ctx);

@@ -6,7 +6,7 @@ fn regress_linear() {
     let mut out = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
     let x = [0.0, 1.0, 2.0, 3.0, 4.0];
     let y = [1.0, 2.0, 3.0, 4.0, 5.0];
-    let y_mean = liba::float_mean(&y);
+    let y_mean = liba::real_mean(&y);
     regress.set_coef(&mut coef);
     regress.coef();
 
@@ -16,7 +16,7 @@ fn regress_linear() {
     }
     std::println!("y={}x+{}", coef[0], regress.bias);
     regress.pdm(&x, &mut out, y_mean);
-    std::println!("{}", liba::float_sum(&out));
+    std::println!("{}", liba::real_sum(&out));
     std::println!("{:?}", out);
     for i in 0..x.len() {
         out[i] = regress.eval(&[x[i]]);
@@ -32,7 +32,7 @@ fn regress_linear() {
     }
     std::println!("y={}x+{}", coef[0], regress.bias);
     regress.pdm(&x, &mut out, y_mean);
-    std::println!("{}", liba::float_sum(&out));
+    std::println!("{}", liba::real_sum(&out));
     for i in 0..x.len() {
         out[i] = regress.eval(&[x[i]]);
     }
@@ -44,7 +44,7 @@ fn regress_linear() {
     regress.mgd(&x, &y, &mut out, 0.001, 0.2, 0.1, 100, n, 10);
     std::println!("y={}x+{}", coef[0], regress.bias);
     regress.pdm(&x, &mut out, y_mean);
-    std::println!("{}", liba::float_sum(&out));
+    std::println!("{}", liba::real_sum(&out));
     for i in 0..x.len() {
         out[i] = regress.eval(&[x[i]]);
     }

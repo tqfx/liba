@@ -14,10 +14,10 @@ static JSValue liba_pid_ctor(JSContext *ctx, JSValueConst new_target, int argc, 
     a_pid *const self = (a_pid *)js_mallocz(ctx, sizeof(a_pid));
     if (!self) { return JS_EXCEPTION; }
     self->kp = 1;
-    self->summax = +A_FLOAT_INF;
-    self->summin = -A_FLOAT_INF;
-    self->outmax = +A_FLOAT_INF;
-    self->outmin = -A_FLOAT_INF;
+    self->summax = +A_REAL_INF;
+    self->summin = -A_REAL_INF;
+    self->outmax = +A_REAL_INF;
+    self->outmin = -A_REAL_INF;
     a_pid_init(self);
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
@@ -44,7 +44,7 @@ static JSValue liba_pid_set_kpid(JSContext *ctx, JSValueConst this_val, int argc
     {
         if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
-    a_pid_set_kpid(self, (a_float)arg[0], (a_float)arg[1], (a_float)arg[2]);
+    a_pid_set_kpid(self, (a_real)arg[0], (a_real)arg[1], (a_real)arg[2]);
     (void)argc;
     return JS_UNDEFINED;
 }
@@ -70,7 +70,7 @@ static JSValue liba_pid_run(JSContext *ctx, JSValueConst this_val, int argc, JSV
         if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
     (void)argc;
-    return JS_NewFloat64(ctx, (double)a_pid_run(self, (a_float)arg[0], (a_float)arg[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_run(self, (a_real)arg[0], (a_real)arg[1]));
 }
 
 static JSValue liba_pid_pos(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
@@ -84,7 +84,7 @@ static JSValue liba_pid_pos(JSContext *ctx, JSValueConst this_val, int argc, JSV
         if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
     (void)argc;
-    return JS_NewFloat64(ctx, (double)a_pid_pos(self, (a_float)arg[0], (a_float)arg[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_pos(self, (a_real)arg[0], (a_real)arg[1]));
 }
 
 static JSValue liba_pid_inc(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
@@ -98,7 +98,7 @@ static JSValue liba_pid_inc(JSContext *ctx, JSValueConst this_val, int argc, JSV
         if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
     (void)argc;
-    return JS_NewFloat64(ctx, (double)a_pid_inc(self, (a_float)arg[0], (a_float)arg[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_inc(self, (a_real)arg[0], (a_real)arg[1]));
 }
 
 enum
@@ -147,13 +147,13 @@ static JSValue liba_pid_set(JSContext *ctx, JSValueConst this_val, JSValueConst 
     if (JS_ToFloat64(ctx, &x, val)) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_kp: self->kp = (a_float)x; break;
-    case self_ki: self->ki = (a_float)x; break;
-    case self_kd: self->kd = (a_float)x; break;
-    case self_summax: self->summax = (a_float)x; break;
-    case self_summin: self->summin = (a_float)x; break;
-    case self_outmax: self->outmax = (a_float)x; break;
-    case self_outmin: self->outmin = (a_float)x; break;
+    case self_kp: self->kp = (a_real)x; break;
+    case self_ki: self->ki = (a_real)x; break;
+    case self_kd: self->kd = (a_real)x; break;
+    case self_summax: self->summax = (a_real)x; break;
+    case self_summin: self->summin = (a_real)x; break;
+    case self_outmax: self->outmax = (a_real)x; break;
+    case self_outmin: self->outmin = (a_real)x; break;
     default: break;
     }
     return JS_UNDEFINED;

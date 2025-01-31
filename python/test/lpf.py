@@ -13,7 +13,7 @@ import liba  # type: ignore
 N = 100
 T = math.pi * 0.1
 lpf = liba.lpf(10, 0.01)
-x = liba.new_float(N)
+x = liba.new_real(N)
 for i in range(N):
     x[i] = i * T
     x1 = math.sin(x[i]) + 0.2 * (random.random() - 0.5)

@@ -39,7 +39,7 @@ extern "C" {
  @param[in] ki integral constant
  @param[in] kd derivative constant
 */
-A_EXTERN void a_pid_expert_set_kpid(a_pid_expert *ctx, a_float kp, a_float ki, a_float kd);
+A_EXTERN void a_pid_expert_set_kpid(a_pid_expert *ctx, a_real kp, a_real ki, a_real kd);
 
 /*!
  @brief calculate for expert PID controller
@@ -48,7 +48,7 @@ A_EXTERN void a_pid_expert_set_kpid(a_pid_expert *ctx, a_float kp, a_float ki, a
  @param[in] fdb feedback value
  @return output value
 */
-A_EXTERN a_float a_pid_expert_iter(a_pid_expert *ctx, a_float set, a_float fdb);
+A_EXTERN a_real a_pid_expert_iter(a_pid_expert *ctx, a_real set, a_real fdb);
 
 /*!
  @brief zeroing for expert PID controller
@@ -70,20 +70,20 @@ struct pid_expert;
 struct a_pid_expert
 {
     a_pid pid; /*!< instance structure for PID controller */
-    a_float ec; /*!< error change */
-    a_float outmax; /*!< maximum output */
-    a_float epsilon; /*!< precision */
-    a_float max1; /*!< first error bound */
-    a_float gain; /*!< gain coefficient */
-    a_float max2; /*!< second error bound */
-    a_float loss; /*!< loss coefficient */
+    a_real ec; /*!< error change */
+    a_real outmax; /*!< maximum output */
+    a_real epsilon; /*!< precision */
+    a_real max1; /*!< first error bound */
+    a_real gain; /*!< gain coefficient */
+    a_real max2; /*!< second error bound */
+    a_real loss; /*!< loss coefficient */
 #if defined(__cplusplus)
     A_INLINE void init() { a_pid_expert_init(this); }
-    A_INLINE void set_kpid(a_float kp, a_float ki, a_float kd)
+    A_INLINE void set_kpid(a_real kp, a_real ki, a_real kd)
     {
         a_pid_expert_set_kpid(this, kp, ki, kd);
     }
-    A_INLINE a_float operator()(a_float set, a_float fdb)
+    A_INLINE a_real operator()(a_real set, a_real fdb)
     {
         return a_pid_expert_iter(this, set, fdb);
     }
@@ -95,10 +95,10 @@ struct a_pid_expert
 
 #endif /* a/pid_expert.h */
 
-static A_INLINE a_float input(a_float const x)
+static A_INLINE a_real input(a_real const x)
 {
 #if defined(LIBA_MATH_H)
-    return a_float_sin(4 * A_FLOAT_PI * x);
+    return a_real_sin(4 * A_REAL_PI * x);
 #else
     return (void)x, 1;
 #endif
@@ -107,35 +107,35 @@ static A_INLINE a_float input(a_float const x)
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
     unsigned int i;
-    a_float num[] = {A_FLOAT_C(6.59492796e-05), A_FLOAT_C(6.54019884e-05)};
-    a_float den[] = {A_FLOAT_C(-1.97530991), A_FLOAT_C(0.97530991)};
+    a_real num[] = {A_REAL_C(6.59492796e-05), A_REAL_C(6.54019884e-05)};
+    a_real den[] = {A_REAL_C(-1.97530991), A_REAL_C(0.97530991)};
 
     a_tf tf;
-    a_float tf_input[A_LEN(num)];
-    a_float tf_output[A_LEN(den)];
+    a_real tf_input[A_LEN(num)];
+    a_real tf_output[A_LEN(den)];
     a_pid_expert ctx;
 
     main_init(argc, argv, 1);
     a_tf_init(&tf, A_LEN(num), num, tf_input, A_LEN(den), den, tf_output);
 
-    ctx.pid.kp = A_FLOAT_C(10.0);
-    ctx.pid.ki = A_FLOAT_C(0.5);
-    ctx.pid.kd = A_FLOAT_C(10.0);
-    ctx.pid.outmax = +A_FLOAT_MAX;
-    ctx.pid.outmin = -A_FLOAT_MAX;
-    ctx.max1 = A_FLOAT_C(0.4);
-    ctx.gain = A_FLOAT_C(2.0);
-    ctx.max2 = A_FLOAT_C(0.1);
-    ctx.loss = A_FLOAT_C(0.5);
-    ctx.outmax = A_FLOAT_C(10.0);
-    ctx.epsilon = A_FLOAT_C(0.01);
+    ctx.pid.kp = A_REAL_C(10.0);
+    ctx.pid.ki = A_REAL_C(0.5);
+    ctx.pid.kd = A_REAL_C(10.0);
+    ctx.pid.outmax = +A_REAL_MAX;
+    ctx.pid.outmin = -A_REAL_MAX;
+    ctx.max1 = A_REAL_C(0.4);
+    ctx.gain = A_REAL_C(2.0);
+    ctx.max2 = A_REAL_C(0.1);
+    ctx.loss = A_REAL_C(0.5);
+    ctx.outmax = A_REAL_C(10.0);
+    ctx.epsilon = A_REAL_C(0.01);
     a_pid_expert_init(&ctx);
     for (i = 0; i < 500; ++i)
     {
-        a_float in = input(A_FLOAT_C(0.001) * a_float_c(i));
+        a_real in = input(A_REAL_C(0.001) * a_real_c(i));
         a_tf_iter(&tf, a_pid_expert_iter(&ctx, in, *tf.output));
-        debug("%+" A_FLOAT_PRI "f,%+" A_FLOAT_PRI "f,%+" A_FLOAT_PRI "f,%+" A_FLOAT_PRI "f\n",
-              A_FLOAT_C(0.001) * a_float_c(i), in, *tf.output, ctx.pid.err);
+        debug("%+" A_REAL_PRI "f,%+" A_REAL_PRI "f,%+" A_REAL_PRI "f,%+" A_REAL_PRI "f\n",
+              A_REAL_C(0.001) * a_real_c(i), in, *tf.output, ctx.pid.err);
     }
     a_pid_expert_zero(&ctx);
     a_tf_zero(&tf);

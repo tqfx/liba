@@ -1,20 +1,20 @@
 #define LIBA_POLY_C
 #include "a/poly.h"
 
-void a_poly_swap_(a_float *a, a_float *b)
+void a_poly_swap_(a_real *a, a_real *b)
 {
     for (; a < --b; ++a)
     {
-        a_float _c;
+        a_real _c;
         _c = *a;
         *a = *b;
         *b = _c;
     }
 }
 
-a_float a_poly_eval_(a_float const *a, a_float const *b, a_float x)
+a_real a_poly_eval_(a_real const *a, a_real const *b, a_real x)
 {
-    a_float y;
+    a_real y;
     for (y = *--b; b > a;)
     {
         y = y * x + *--b;
@@ -22,9 +22,9 @@ a_float a_poly_eval_(a_float const *a, a_float const *b, a_float x)
     return y;
 }
 
-a_float a_poly_evar_(a_float const *a, a_float const *b, a_float x)
+a_real a_poly_evar_(a_real const *a, a_real const *b, a_real x)
 {
-    a_float y;
+    a_real y;
     for (y = *a; ++a < b;)
     {
         y = y * x + *a;

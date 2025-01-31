@@ -25,14 +25,14 @@ JNIEXPORT void JNICALL Java_liba_pid_1neuro_init(JNIEnv *Env, jobject Obj)
     jobject Ctx = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)sizeof(a_pid_neuro));
     a_pid_neuro *ctx = (a_pid_neuro *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     (*Env)->SetObjectField(Env, Obj, L.ctx, Ctx);
-    ctx->pid.summax = +A_FLOAT_INF;
-    ctx->pid.summin = -A_FLOAT_INF;
-    ctx->pid.outmax = +A_FLOAT_INF;
-    ctx->pid.outmin = -A_FLOAT_INF;
+    ctx->pid.summax = +A_REAL_INF;
+    ctx->pid.summin = -A_REAL_INF;
+    ctx->pid.outmax = +A_REAL_INF;
+    ctx->pid.outmin = -A_REAL_INF;
     ctx->k = ctx->pid.kp = 1;
-    ctx->wp = A_FLOAT_C(0.1);
-    ctx->wi = A_FLOAT_C(0.1);
-    ctx->wd = A_FLOAT_C(0.1);
+    ctx->wp = A_REAL_C(0.1);
+    ctx->wi = A_REAL_C(0.1);
+    ctx->wd = A_REAL_C(0.1);
     a_pid_neuro_init(ctx);
 }
 

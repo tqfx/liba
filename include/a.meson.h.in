@@ -11,9 +11,9 @@
 #if !defined A_BYTE_ORDER
 #mesondefine A_BYTE_ORDER
 #endif /* A_BYTE_ORDER */
-#if !defined A_SIZE_FLOAT
-#mesondefine A_SIZE_FLOAT
-#endif /* A_SIZE_FLOAT */
+#if !defined A_SIZE_REAL
+#mesondefine A_SIZE_REAL
+#endif /* A_SIZE_REAL */
 
 #mesondefine A_HAVE_ASINH
 #mesondefine A_HAVE_ACOSH

@@ -47,10 +47,10 @@ int liba_pid_fuzzy_new(lua_State *L)
     ctx->pid.kp = ctx->kp = 1;
     ctx->pid.ki = ctx->ki = 0;
     ctx->pid.kd = ctx->kd = 0;
-    ctx->pid.summax = +A_FLOAT_INF;
-    ctx->pid.summin = -A_FLOAT_INF;
-    ctx->pid.outmax = +A_FLOAT_INF;
-    ctx->pid.outmin = -A_FLOAT_INF;
+    ctx->pid.summax = +A_REAL_INF;
+    ctx->pid.summin = -A_REAL_INF;
+    ctx->pid.outmax = +A_REAL_INF;
+    ctx->pid.outmin = -A_REAL_INF;
     ctx->me = 0;
     ctx->mec = 0;
     ctx->mkp = 0;
@@ -79,10 +79,10 @@ int liba_pid_fuzzy_init(lua_State *L)
         ctx->pid.kp = ctx->kp = 1;
         ctx->pid.ki = ctx->ki = 0;
         ctx->pid.kd = ctx->kd = 0;
-        ctx->pid.summax = +A_FLOAT_INF;
-        ctx->pid.summin = -A_FLOAT_INF;
-        ctx->pid.outmax = +A_FLOAT_INF;
-        ctx->pid.outmin = -A_FLOAT_INF;
+        ctx->pid.summax = +A_REAL_INF;
+        ctx->pid.summin = -A_REAL_INF;
+        ctx->pid.outmax = +A_REAL_INF;
+        ctx->pid.outmin = -A_REAL_INF;
         ctx->opr = a_fuzzy_equ;
         a_pid_fuzzy_init(ctx);
         return 1;
@@ -146,11 +146,11 @@ int liba_pid_fuzzy_set_rule(lua_State *L)
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const *me;
-        a_float const *mec;
-        a_float const *mkp;
-        a_float const *mki;
-        a_float const *mkd;
+        a_real const *me;
+        a_real const *mec;
+        a_real const *mkp;
+        a_real const *mki;
+        a_real const *mkd;
         unsigned int n = 0;
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
@@ -183,9 +183,9 @@ int liba_pid_fuzzy_set_kpid(lua_State *L)
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const kp = (a_float)luaL_checknumber(L, 2);
-        a_float const ki = (a_float)luaL_checknumber(L, 3);
-        a_float const kd = (a_float)luaL_checknumber(L, 4);
+        a_real const kp = (a_real)luaL_checknumber(L, 2);
+        a_real const ki = (a_real)luaL_checknumber(L, 3);
+        a_real const kd = (a_real)luaL_checknumber(L, 4);
         a_pid_fuzzy_set_kpid(ctx, kp, ki, kd);
         lua_pushvalue(L, 1);
         return 1;
@@ -206,8 +206,8 @@ int liba_pid_fuzzy_run(lua_State *L)
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const set = (a_float)luaL_checknumber(L, 2);
-        a_float const fdb = (a_float)luaL_checknumber(L, 3);
+        a_real const set = (a_real)luaL_checknumber(L, 2);
+        a_real const fdb = (a_real)luaL_checknumber(L, 3);
         lua_pushnumber(L, (lua_Number)a_pid_fuzzy_run(ctx, set, fdb));
         return 1;
     }
@@ -227,8 +227,8 @@ int liba_pid_fuzzy_pos(lua_State *L)
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const set = (a_float)luaL_checknumber(L, 2);
-        a_float const fdb = (a_float)luaL_checknumber(L, 3);
+        a_real const set = (a_real)luaL_checknumber(L, 2);
+        a_real const fdb = (a_real)luaL_checknumber(L, 3);
         lua_pushnumber(L, (lua_Number)a_pid_fuzzy_pos(ctx, set, fdb));
         return 1;
     }
@@ -248,8 +248,8 @@ int liba_pid_fuzzy_inc(lua_State *L)
     a_pid_fuzzy *const ctx = (a_pid_fuzzy *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const set = (a_float)luaL_checknumber(L, 2);
-        a_float const fdb = (a_float)luaL_checknumber(L, 3);
+        a_real const set = (a_real)luaL_checknumber(L, 2);
+        a_real const fdb = (a_real)luaL_checknumber(L, 3);
         lua_pushnumber(L, (lua_Number)a_pid_fuzzy_inc(ctx, set, fdb));
         return 1;
     }
@@ -279,25 +279,25 @@ static int liba_pid_fuzzy_set(lua_State *L)
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x00003731: /* kp */
-        ctx->pid.kp = ctx->kp = (a_float)luaL_checknumber(L, 3);
+        ctx->pid.kp = ctx->kp = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x0000372A: /* ki */
-        ctx->pid.ki = ctx->ki = (a_float)luaL_checknumber(L, 3);
+        ctx->pid.ki = ctx->ki = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x00003725: /* kd */
-        ctx->pid.kd = ctx->kd = (a_float)luaL_checknumber(L, 3);
+        ctx->pid.kd = ctx->kd = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x10E9FF9D: /* summax */
-        ctx->pid.summax = (a_float)luaL_checknumber(L, 3);
+        ctx->pid.summax = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x10EA03AB: /* summin */
-        ctx->pid.summin = (a_float)luaL_checknumber(L, 3);
+        ctx->pid.summin = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x23C8F10E: /* outmax */
-        ctx->pid.outmax = (a_float)luaL_checknumber(L, 3);
+        ctx->pid.outmax = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x23C8F51C: /* outmin */
-        ctx->pid.outmin = (a_float)luaL_checknumber(L, 3);
+        ctx->pid.outmin = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x98AE2495: /* nfuzz */
     {

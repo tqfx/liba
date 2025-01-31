@@ -15,7 +15,7 @@ traj.gen(3, 2, 3, 0, 10)
 
 N = 1000
 T = traj.t / N
-x = liba.new_float(N)
+x = liba.new_real(N)
 for i in range(N):
     x[i] = i * T
 

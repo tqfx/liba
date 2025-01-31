@@ -4,7 +4,7 @@ fn main() -> std::io::Result<()> {
     make.include("include");
     make.define("A_EXPORTS", None);
     #[cfg(feature = "float")]
-    make.define("A_SIZE_FLOAT", "4");
+    make.define("A_SIZE_REAL", "4");
     #[cfg(feature = "static_crt")]
     make.static_crt(true);
 
@@ -25,7 +25,7 @@ fn main() {
 
     cmake.define("BUILD_TESTING", "0");
     #[cfg(feature = "float")]
-    cmake.define("LIBA_FLOAT", "4");
+    cmake.define("LIBA_REAL", "4");
     #[cfg(feature = "static_crt")]
     cmake.static_crt(true);
 

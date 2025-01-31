@@ -55,17 +55,17 @@ else()
 endif()
 
 set(LIBA_INSTALL "" CACHE STRING "Specify installation behavior")
-set(LIBA_FLOAT 8 CACHE STRING "floating-point number bytes")
-set_property(CACHE LIBA_FLOAT PROPERTY STRINGS 4 8 16)
+set(LIBA_REAL 8 CACHE STRING "floating-point number bytes")
+set_property(CACHE LIBA_REAL PROPERTY STRINGS 4 8 16)
 include(CheckLibraryExists)
 
 function(check_math VARIABLE FUNCTION)
   get_filename_component(LOCATION "${LIBA_MATH}" DIRECTORY)
   list(APPEND CMAKE_REQUIRED_LIBRARIES ${LIBA_MATH})
 
-  if(LIBA_FLOAT GREATER 8)
+  if(LIBA_REAL GREATER 8)
     set(FUNCTION ${FUNCTION}l)
-  elseif(LIBA_FLOAT EQUAL 4)
+  elseif(LIBA_REAL EQUAL 4)
     set(FUNCTION ${FUNCTION}f)
   endif()
 

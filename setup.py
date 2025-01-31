@@ -48,11 +48,11 @@ if USE_CYTHON == 0:
 LIBA_OPENMP = os.environ.get("LIBA_OPENMP")
 if LIBA_OPENMP:
     LIBA_OPENMP = strtobool(LIBA_OPENMP)
-LIBA_FLOAT = os.environ.get("LIBA_FLOAT")
-if LIBA_FLOAT:
-    LIBA_FLOAT = int(LIBA_FLOAT)
+LIBA_REAL = os.environ.get("LIBA_REAL")
+if LIBA_REAL:
+    LIBA_REAL = int(LIBA_REAL)
 else:
-    LIBA_FLOAT = 8
+    LIBA_REAL = 8
 
 
 def check_math(text=""):
@@ -92,9 +92,9 @@ def check_math(text=""):
         "catanh",
     ):
         name = "A_HAVE_" + func.upper()
-        if LIBA_FLOAT == 0x10:
+        if LIBA_REAL == 0x10:
             func += "l"
-        if LIBA_FLOAT == 0x04:
+        if LIBA_REAL == 0x04:
             func += "f"
         try:
             libm[func]
@@ -138,8 +138,8 @@ sources, objects = [], []
 config_h = os.path.join(base, "a.setup.h")
 a_have_h = os.path.relpath(config_h, "include/a")
 define_macros = [("A_HAVE_H", '"' + a_have_h + '"'), ("A_EXPORTS", None)]
-if LIBA_FLOAT != 8:
-    define_macros += [("A_SIZE_FLOAT", LIBA_FLOAT)]
+if LIBA_REAL != 8:
+    define_macros += [("A_SIZE_REAL", LIBA_REAL)]
 if USE_CYTHON and os.path.exists("python/src/liba.pyx"):
     sources += ["python/src/liba.pyx"]
 elif CYTHON or os.path.exists("python/src/liba.c"):

@@ -4,8 +4,8 @@
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
-    a_float arg[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-    a_float x, delta;
+    a_real arg[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    a_real x, delta;
     int i, start = 1;
     a_trajpoly5 ctx;
 
@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     a_trajpoly5_gen(&ctx, arg[1] - arg[0], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7]);
     for ((void)(x = arg[0]), delta = (arg[1] - arg[0]) / 1000; x < arg[1]; x += delta) /* NOLINT */
     {
-        debug("%+" A_FLOAT_PRI "f,%+" A_FLOAT_PRI "f,%+" A_FLOAT_PRI "f,%+" A_FLOAT_PRI "f\n",
+        debug("%+" A_REAL_PRI "f,%+" A_REAL_PRI "f,%+" A_REAL_PRI "f,%+" A_REAL_PRI "f\n",
               x, a_trajpoly5_pos(&ctx, x), a_trajpoly5_vel(&ctx, x), a_trajpoly5_acc(&ctx, x));
     }
 

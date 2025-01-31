@@ -1,47 +1,47 @@
 #[test]
 #[allow(non_snake_case)]
 fn pid_fuzzy() {
-    use liba::float;
+    use liba::real;
     use liba::mf::TRI;
-    let NL: float = -3.0;
-    let NM: float = -2.0;
-    let NS: float = -1.0;
-    let ZO: float = 0.0;
-    let PS: float = 1.0;
-    let PM: float = 2.0;
-    let PL: float = 3.0;
+    let NL: real = -3.0;
+    let NM: real = -2.0;
+    let NS: real = -1.0;
+    let ZO: real = 0.0;
+    let PS: real = 1.0;
+    let PM: real = 2.0;
+    let PL: real = 3.0;
     let me = [
-        [TRI as float, NL, NL, NM],
-        [TRI as float, NL, NM, NS],
-        [TRI as float, NM, NS, ZO],
-        [TRI as float, NS, ZO, PS],
-        [TRI as float, ZO, PS, PM],
-        [TRI as float, PS, PM, PL],
-        [TRI as float, PM, PL, PL],
+        [TRI as real, NL, NL, NM],
+        [TRI as real, NL, NM, NS],
+        [TRI as real, NM, NS, ZO],
+        [TRI as real, NS, ZO, PS],
+        [TRI as real, ZO, PS, PM],
+        [TRI as real, PS, PM, PL],
+        [TRI as real, PM, PL, PL],
     ];
-    let NL: float = -3.0;
-    let NM: float = -2.0;
-    let NS: float = -1.0;
-    let ZO: float = 0.0;
-    let PS: float = 1.0;
-    let PM: float = 2.0;
-    let PL: float = 3.0;
+    let NL: real = -3.0;
+    let NM: real = -2.0;
+    let NS: real = -1.0;
+    let ZO: real = 0.0;
+    let PS: real = 1.0;
+    let PM: real = 2.0;
+    let PL: real = 3.0;
     let mec = [
-        [TRI as float, NL, NL, NM],
-        [TRI as float, NL, NM, NS],
-        [TRI as float, NM, NS, ZO],
-        [TRI as float, NS, ZO, PS],
-        [TRI as float, ZO, PS, PM],
-        [TRI as float, PS, PM, PL],
-        [TRI as float, PM, PL, PL],
+        [TRI as real, NL, NL, NM],
+        [TRI as real, NL, NM, NS],
+        [TRI as real, NM, NS, ZO],
+        [TRI as real, NS, ZO, PS],
+        [TRI as real, ZO, PS, PM],
+        [TRI as real, PS, PM, PL],
+        [TRI as real, PM, PL, PL],
     ];
-    let NL: float = -15.0;
-    let NM: float = -10.0;
-    let NS: float = -5.0;
-    let ZO: float = 0.0;
-    let PS: float = 5.0;
-    let PM: float = 10.0;
-    let PL: float = 15.0;
+    let NL: real = -15.0;
+    let NM: real = -10.0;
+    let NS: real = -5.0;
+    let ZO: real = 0.0;
+    let PS: real = 5.0;
+    let PM: real = 10.0;
+    let PL: real = 15.0;
     let mkp = [
         [NL, NL, NM, NM, NS, ZO, ZO],
         [NL, NL, NM, NS, NS, ZO, PS],
@@ -51,13 +51,13 @@ fn pid_fuzzy() {
         [NS, ZO, PS, PM, PM, PM, PL],
         [ZO, ZO, PM, PM, PM, PL, PL],
     ];
-    let NL: float = -3.0;
-    let NM: float = -2.0;
-    let NS: float = -1.0;
-    let ZO: float = 0.0;
-    let PS: float = 1.0;
-    let PM: float = 2.0;
-    let PL: float = 3.0;
+    let NL: real = -3.0;
+    let NM: real = -2.0;
+    let NS: real = -1.0;
+    let ZO: real = 0.0;
+    let PS: real = 1.0;
+    let PM: real = 2.0;
+    let PL: real = 3.0;
     let mki = [
         [PL, PL, PM, PM, PS, ZO, ZO],
         [PL, PL, PM, PS, PS, ZO, ZO],

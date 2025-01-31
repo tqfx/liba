@@ -57,7 +57,7 @@ JSValue js_array_u64_new(JSContext *ctx, a_u64 const *ptr, a_u32 len)
     return val;
 }
 
-JSValue js_array_num_new(JSContext *ctx, a_float const *ptr, a_u32 len)
+JSValue js_array_num_new(JSContext *ctx, a_real const *ptr, a_u32 len)
 {
     unsigned int i;
     JSValue val = JS_NewArray(ctx);
@@ -91,7 +91,7 @@ int js_array_num_len(JSContext *ctx, JSValueConst val, unsigned int *num, int di
     return 0;
 }
 
-a_float *js_array_num_ptr(JSContext *ctx, JSValueConst val, a_float *ptr, int dim) /* NOLINT(misc-no-recursion) */
+a_real *js_array_num_ptr(JSContext *ctx, JSValueConst val, a_real *ptr, int dim) /* NOLINT(misc-no-recursion) */
 {
     a_u32 i = 0, n = 0;
     JSValueConst length = JS_GetPropertyStr(ctx, val, "length");
@@ -106,7 +106,7 @@ a_float *js_array_num_ptr(JSContext *ctx, JSValueConst val, a_float *ptr, int di
         {
             double x = 0;
             JS_ToFloat64(ctx, &x, v);
-            *ptr++ = (a_float)x;
+            *ptr++ = (a_real)x;
         }
         else if (JS_IsArray(ctx, v) && dim > 0)
         {
@@ -117,7 +117,7 @@ a_float *js_array_num_ptr(JSContext *ctx, JSValueConst val, a_float *ptr, int di
     return ptr;
 }
 
-a_float *js_array_num_get(JSContext *ctx, JSValueConst val, a_float *ptr, unsigned int *num, int dim)
+a_real *js_array_num_get(JSContext *ctx, JSValueConst val, a_real *ptr, unsigned int *num, int dim)
 {
     unsigned int n = 0, n_ = 0;
     int ret = js_array_num_len(ctx, val, &n, dim);
@@ -126,7 +126,7 @@ a_float *js_array_num_get(JSContext *ctx, JSValueConst val, a_float *ptr, unsign
         if (!num) { num = &n_; }
         if (n > *num)
         {
-            ptr = (a_float *)js_realloc(ctx, ptr, sizeof(a_float) * n);
+            ptr = (a_real *)js_realloc(ctx, ptr, sizeof(a_real) * n);
         }
         js_array_num_ptr(ctx, val, ptr, dim);
         *num = n;

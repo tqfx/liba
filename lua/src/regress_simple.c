@@ -15,8 +15,8 @@
 */
 int liba_regress_simple_new(lua_State *L)
 {
-    a_float const a = (a_float)luaL_optnumber(L, 1, 1);
-    a_float const b = (a_float)luaL_optnumber(L, 2, 0);
+    a_real const a = (a_real)luaL_optnumber(L, 1, 1);
+    a_real const b = (a_real)luaL_optnumber(L, 2, 0);
     a_regress_simple *const ctx = lua_newclass(L, a_regress_simple);
     lua_registry_get(L, liba_regress_simple_new);
     lua_setmetatable(L, -2);
@@ -37,8 +37,8 @@ int liba_regress_simple_init(lua_State *L)
     a_regress_simple *const ctx = (a_regress_simple *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const a = (a_float)luaL_optnumber(L, 2, 1);
-        a_float const b = (a_float)luaL_optnumber(L, 3, 0);
+        a_real const a = (a_real)luaL_optnumber(L, 2, 1);
+        a_real const b = (a_real)luaL_optnumber(L, 3, 0);
         a_regress_simple_init(ctx, a, b);
         lua_pushvalue(L, 1);
         return 1;
@@ -58,7 +58,7 @@ int liba_regress_simple_eval(lua_State *L)
     a_regress_simple *const ctx = (a_regress_simple *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const x = (a_float)luaL_checknumber(L, 2);
+        a_real const x = (a_real)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_regress_simple_eval(ctx, x));
         return 1;
     }
@@ -77,7 +77,7 @@ int liba_regress_simple_evar(lua_State *L)
     a_regress_simple *const ctx = (a_regress_simple *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const x = (a_float)luaL_checknumber(L, 2);
+        a_real const x = (a_real)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_regress_simple_eval(ctx, x));
         return 1;
     }
@@ -99,13 +99,13 @@ int liba_regress_simple_ols_(lua_State *L)
     a_regress_simple *const ctx = (a_regress_simple *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float *x, *y;
-        a_float x_mean, y_mean;
+        a_real *x, *y;
+        a_real x_mean, y_mean;
         unsigned int x_n = 0, y_n = 0;
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
-        x_mean = (a_float)luaL_checknumber(L, 4);
-        y_mean = (a_float)luaL_checknumber(L, 5);
+        x_mean = (a_real)luaL_checknumber(L, 4);
+        y_mean = (a_real)luaL_checknumber(L, 5);
         x = lua_array_num_get(L, 2, NULL, &x_n, 1);
         y = lua_array_num_get(L, 3, NULL, &y_n, 1);
         a_regress_simple_ols_(ctx, A_MIN(x_n, y_n), x, y, x_mean, y_mean);
@@ -131,12 +131,12 @@ int liba_regress_simple_olsx(lua_State *L)
     a_regress_simple *const ctx = (a_regress_simple *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float *x, *y;
-        a_float x_mean;
+        a_real *x, *y;
+        a_real x_mean;
         unsigned int x_n = 0, y_n = 0;
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
-        x_mean = (a_float)luaL_checknumber(L, 4);
+        x_mean = (a_real)luaL_checknumber(L, 4);
         x = lua_array_num_get(L, 2, NULL, &x_n, 1);
         y = lua_array_num_get(L, 3, NULL, &y_n, 1);
         a_regress_simple_olsx(ctx, A_MIN(x_n, y_n), x, y, x_mean);
@@ -162,12 +162,12 @@ int liba_regress_simple_olsy(lua_State *L)
     a_regress_simple *const ctx = (a_regress_simple *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float *x, *y;
-        a_float y_mean;
+        a_real *x, *y;
+        a_real y_mean;
         unsigned int x_n = 0, y_n = 0;
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
-        y_mean = (a_float)luaL_checknumber(L, 4);
+        y_mean = (a_real)luaL_checknumber(L, 4);
         x = lua_array_num_get(L, 2, NULL, &x_n, 1);
         y = lua_array_num_get(L, 3, NULL, &y_n, 1);
         a_regress_simple_olsy(ctx, A_MIN(x_n, y_n), x, y, y_mean);
@@ -192,7 +192,7 @@ int liba_regress_simple_ols(lua_State *L)
     a_regress_simple *const ctx = (a_regress_simple *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float *x, *y;
+        a_real *x, *y;
         unsigned int x_n = 0, y_n = 0;
         luaL_checktype(L, 2, LUA_TTABLE);
         luaL_checktype(L, 3, LUA_TTABLE);
@@ -231,12 +231,12 @@ static int liba_regress_simple_set(lua_State *L)
     {
     case 0x0D6147ED: /* coef */
     {
-        ctx->coef = (a_float)luaL_checknumber(L, 3);
+        ctx->coef = (a_real)luaL_checknumber(L, 3);
         break;
     }
     case 0x0D3D661D: /* bias */
     {
-        ctx->bias = (a_float)luaL_checknumber(L, 3);
+        ctx->bias = (a_real)luaL_checknumber(L, 3);
         break;
     }
     case 0xE8859EEB: /* __name */

@@ -14,15 +14,15 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
   FEATURES
     pkgconfig LIBA_PKGCONFIG
     symlink LIBA_SYMLINK
-    float LIBA_FLOAT
+    float LIBA_REAL
 )
 
-if(LIBA_FLOAT)
-  string(REGEX REPLACE "FLOAT=([^;]+)" "FLOAT=4"
+if(LIBA_REAL)
+  string(REGEX REPLACE "REAL=([^;]+)" "REAL=4"
     FEATURE_OPTIONS "${FEATURE_OPTIONS}"
   )
 else()
-  string(REGEX REPLACE "FLOAT=([^;]+)" "FLOAT=8"
+  string(REGEX REPLACE "REAL=([^;]+)" "REAL=8"
     FEATURE_OPTIONS "${FEATURE_OPTIONS}"
   )
 endif()

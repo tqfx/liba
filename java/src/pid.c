@@ -26,10 +26,10 @@ JNIEXPORT void JNICALL Java_liba_pid_init(JNIEnv *Env, jobject Obj)
     a_pid *ctx = (a_pid *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     (*Env)->SetObjectField(Env, Obj, L.ctx, Ctx);
     ctx->kp = 1;
-    ctx->summax = +A_FLOAT_INF;
-    ctx->summin = -A_FLOAT_INF;
-    ctx->outmax = +A_FLOAT_INF;
-    ctx->outmin = -A_FLOAT_INF;
+    ctx->summax = +A_REAL_INF;
+    ctx->summin = -A_REAL_INF;
+    ctx->outmax = +A_REAL_INF;
+    ctx->outmin = -A_REAL_INF;
     a_pid_init(ctx);
 }
 

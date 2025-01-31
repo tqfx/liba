@@ -29,8 +29,8 @@ JNIEXPORT void JNICALL Java_liba_tf_init(JNIEnv *Env, jobject Obj, jdoubleArray 
 {
     union
     {
-        a_float const *p;
-        a_float *o;
+        a_real const *p;
+        a_real *o;
     } u;
     jsize num_n = (*Env)->GetArrayLength(Env, num);
     jsize den_n = (*Env)->GetArrayLength(Env, den);
@@ -42,10 +42,10 @@ JNIEXPORT void JNICALL Java_liba_tf_init(JNIEnv *Env, jobject Obj, jdoubleArray 
     jobject Output = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)den_n * 8);
 
     a_tf *ctx = (a_tf *)(*Env)->GetDirectBufferAddress(Env, Ctx);
-    ctx->num_p = (a_float *)(*Env)->GetDirectBufferAddress(Env, Num);
-    ctx->den_p = (a_float *)(*Env)->GetDirectBufferAddress(Env, Den);
-    ctx->input = (a_float *)(*Env)->GetDirectBufferAddress(Env, Input);
-    ctx->output = (a_float *)(*Env)->GetDirectBufferAddress(Env, Output);
+    ctx->num_p = (a_real *)(*Env)->GetDirectBufferAddress(Env, Num);
+    ctx->den_p = (a_real *)(*Env)->GetDirectBufferAddress(Env, Den);
+    ctx->input = (a_real *)(*Env)->GetDirectBufferAddress(Env, Input);
+    ctx->output = (a_real *)(*Env)->GetDirectBufferAddress(Env, Output);
     ctx->num_n = (unsigned int)num_n;
     ctx->den_n = (unsigned int)den_n;
 
@@ -71,8 +71,8 @@ JNIEXPORT jobject JNICALL Java_liba_tf_set_1num(JNIEnv *Env, jobject Obj, jdoubl
 {
     union
     {
-        a_float const *p;
-        a_float *o;
+        a_real const *p;
+        a_real *o;
     } u;
     jsize num_n = (*Env)->GetArrayLength(Env, num);
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
@@ -81,8 +81,8 @@ JNIEXPORT jobject JNICALL Java_liba_tf_set_1num(JNIEnv *Env, jobject Obj, jdoubl
     {
         jobject Num = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)num_n * 8);
         jobject Input = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)num_n * 8);
-        ctx->num_p = (a_float *)(*Env)->GetDirectBufferAddress(Env, Num);
-        ctx->input = (a_float *)(*Env)->GetDirectBufferAddress(Env, Input);
+        ctx->num_p = (a_real *)(*Env)->GetDirectBufferAddress(Env, Num);
+        ctx->input = (a_real *)(*Env)->GetDirectBufferAddress(Env, Input);
         (*Env)->SetObjectField(Env, Obj, L.num, Num);
         (*Env)->SetObjectField(Env, Obj, L.input, Input);
     }
@@ -113,8 +113,8 @@ JNIEXPORT jobject JNICALL Java_liba_tf_set_1den(JNIEnv *Env, jobject Obj, jdoubl
 {
     union
     {
-        a_float const *p;
-        a_float *o;
+        a_real const *p;
+        a_real *o;
     } u;
     jsize den_n = (*Env)->GetArrayLength(Env, den);
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
@@ -123,8 +123,8 @@ JNIEXPORT jobject JNICALL Java_liba_tf_set_1den(JNIEnv *Env, jobject Obj, jdoubl
     {
         jobject Den = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)den_n * 8);
         jobject Output = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)den_n * 8);
-        ctx->den_p = (a_float *)(*Env)->GetDirectBufferAddress(Env, Den);
-        ctx->output = (a_float *)(*Env)->GetDirectBufferAddress(Env, Output);
+        ctx->den_p = (a_real *)(*Env)->GetDirectBufferAddress(Env, Den);
+        ctx->output = (a_real *)(*Env)->GetDirectBufferAddress(Env, Output);
         (*Env)->SetObjectField(Env, Obj, L.den, Den);
         (*Env)->SetObjectField(Env, Obj, L.output, Output);
     }

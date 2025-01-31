@@ -48,14 +48,14 @@ int liba_tf_new(lua_State *L)
     num_n = lua_array_num_len(L, 1, 1);
     if (num_n)
     {
-        a_float *num_p = (a_float *)lua_alloc(L, NULL, sizeof(a_float) * num_n * 2);
+        a_real *num_p = (a_real *)lua_alloc(L, NULL, sizeof(a_real) * num_n * 2);
         a_tf_set_num(ctx, num_n, num_p, num_p + num_n);
         lua_array_num_ptr(L, 1, num_p, 1);
     }
     den_n = lua_array_num_len(L, 2, 1);
     if (den_n)
     {
-        a_float *den_p = (a_float *)lua_alloc(L, NULL, sizeof(a_float) * den_n * 2);
+        a_real *den_p = (a_real *)lua_alloc(L, NULL, sizeof(a_real) * den_n * 2);
         a_tf_set_den(ctx, den_n, den_p, den_p + den_n);
         lua_array_num_ptr(L, 2, den_p, 1);
     }
@@ -81,7 +81,7 @@ int liba_tf_init(lua_State *L)
         num_n = lua_array_num_len(L, 2, 1);
         if (num_n > ctx->num_n)
         {
-            a_float *num_p = (a_float *)lua_alloc(L, ctx->num_p, sizeof(a_float) * num_n * 2);
+            a_real *num_p = (a_real *)lua_alloc(L, ctx->num_p, sizeof(a_real) * num_n * 2);
             a_tf_set_num(ctx, num_n, num_p, num_p + num_n);
             lua_array_num_ptr(L, 2, num_p, 1);
         }
@@ -89,7 +89,7 @@ int liba_tf_init(lua_State *L)
         den_n = lua_array_num_len(L, 3, 1);
         if (den_n > ctx->den_n)
         {
-            a_float *den_p = (a_float *)lua_alloc(L, ctx->den_p, sizeof(a_float) * den_n * 2);
+            a_real *den_p = (a_real *)lua_alloc(L, ctx->den_p, sizeof(a_real) * den_n * 2);
             a_tf_set_den(ctx, den_n, den_p, den_p + den_n);
             lua_array_num_ptr(L, 3, den_p, 1);
         }
@@ -112,7 +112,7 @@ int liba_tf_iter(lua_State *L)
     a_tf *const ctx = (a_tf *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float x = (a_float)luaL_checknumber(L, 2);
+        a_real x = (a_real)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_tf_iter(ctx, x));
         return 1;
     }
@@ -148,7 +148,7 @@ static int liba_tf_set(lua_State *L)
         num_n = lua_array_num_len(L, 3, 1);
         if (num_n > ctx->num_n)
         {
-            a_float *num_p = (a_float *)lua_alloc(L, ctx->num_p, sizeof(a_float) * num_n * 2);
+            a_real *num_p = (a_real *)lua_alloc(L, ctx->num_p, sizeof(a_real) * num_n * 2);
             a_tf_set_num(ctx, num_n, num_p, num_p + num_n);
             lua_array_num_ptr(L, 3, num_p, 1);
         }
@@ -162,7 +162,7 @@ static int liba_tf_set(lua_State *L)
         den_n = lua_array_num_len(L, 3, 1);
         if (den_n > ctx->den_n)
         {
-            a_float *den_p = (a_float *)lua_alloc(L, ctx->den_p, sizeof(a_float) * den_n * 2);
+            a_real *den_p = (a_real *)lua_alloc(L, ctx->den_p, sizeof(a_real) * den_n * 2);
             a_tf_set_den(ctx, den_n, den_p, den_p + den_n);
             lua_array_num_ptr(L, 3, den_p, 1);
         }

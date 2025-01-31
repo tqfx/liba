@@ -1,14 +1,14 @@
 #include "a/regress.h"
 #include "a/math.h"
 
-void a_regress_odm_(a_size n, a_float const *p, a_float *odm, a_float p_mean)
+void a_regress_odm_(a_size n, a_real const *p, a_real *odm, a_real p_mean)
 {
     for (; n; --n) { *odm++ = *p++ - p_mean; }
 }
 
-a_float a_regress_odm(a_size n, a_float const *p, a_float *odm)
+a_real a_regress_odm(a_size n, a_real const *p, a_real *odm)
 {
-    a_float m = a_float_mean(p, n);
+    a_real m = a_real_mean(p, n);
     a_regress_odm_(n, p, odm, m);
     return m;
 }

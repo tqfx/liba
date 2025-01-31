@@ -28,7 +28,7 @@ extern "C" {
  @param[in] coef_n number of regression coefficients
  @param[in] bias intercept
 */
-A_EXTERN void a_regress_linear_init(a_regress_linear *ctx, a_float *coef_p, a_size coef_n, a_float bias);
+A_EXTERN void a_regress_linear_init(a_regress_linear *ctx, a_real *coef_p, a_size coef_n, a_real bias);
 
 /*!
  @brief calculate predicted value for linear regression
@@ -36,7 +36,7 @@ A_EXTERN void a_regress_linear_init(a_regress_linear *ctx, a_float *coef_p, a_si
  @param[in] val independent variables
  @return predicted value
 */
-A_EXTERN a_float a_regress_linear_eval(a_regress_linear const *ctx, a_float const *val);
+A_EXTERN a_real a_regress_linear_eval(a_regress_linear const *ctx, a_real const *val);
 
 /*!
  @brief calculate residuals for linear regression
@@ -46,7 +46,7 @@ A_EXTERN a_float a_regress_linear_eval(a_regress_linear const *ctx, a_float cons
  @param[in] y response data, specified as a numeric vector
  @param[in,out] err residuals, specified as a numeric vector
 */
-A_EXTERN void a_regress_linear_err(a_regress_linear const *ctx, a_size n, a_float const *x, a_float const *y, a_float *err);
+A_EXTERN void a_regress_linear_err(a_regress_linear const *ctx, a_size n, a_real const *x, a_real const *y, a_real *err);
 
 /*!
  @brief calculate prediction deviation from mean for linear regression
@@ -56,7 +56,7 @@ A_EXTERN void a_regress_linear_err(a_regress_linear const *ctx, a_size n, a_floa
  @param[in,out] pdm deviation, specified as a numeric vector
  @param[in] y_mean mean of response data
 */
-A_EXTERN void a_regress_linear_pdm(a_regress_linear const *ctx, a_size n, a_float const *x, a_float *pdm, a_float y_mean);
+A_EXTERN void a_regress_linear_pdm(a_regress_linear const *ctx, a_size n, a_real const *x, a_real *pdm, a_real y_mean);
 
 /*!
  @brief gradient descent for linear regression
@@ -65,7 +65,7 @@ A_EXTERN void a_regress_linear_pdm(a_regress_linear const *ctx, a_size n, a_floa
  @param[in] error residual, specified as a numeric scalar
  @param[in] alpha learning rate for gradient descent
 */
-A_EXTERN void a_regress_linear_gd(a_regress_linear *ctx, a_float const *input, a_float error, a_float alpha);
+A_EXTERN void a_regress_linear_gd(a_regress_linear *ctx, a_real const *input, a_real error, a_real alpha);
 
 /*!
  @brief stochastic gradient descent for linear regression
@@ -75,7 +75,7 @@ A_EXTERN void a_regress_linear_gd(a_regress_linear *ctx, a_float const *input, a
  @param[in] y response data, specified as a numeric vector
  @param[in] alpha learning rate for gradient descent
 */
-A_EXTERN void a_regress_linear_sgd(a_regress_linear *ctx, a_size n, a_float const *x, a_float const *y, a_float alpha);
+A_EXTERN void a_regress_linear_sgd(a_regress_linear *ctx, a_size n, a_real const *x, a_real const *y, a_real alpha);
 
 /*!
  @brief batch gradient descent for linear regression
@@ -85,7 +85,7 @@ A_EXTERN void a_regress_linear_sgd(a_regress_linear *ctx, a_size n, a_float cons
  @param[in] err residuals, specified as a numeric vector
  @param[in] alpha learning rate for gradient descent
 */
-A_EXTERN void a_regress_linear_bgd(a_regress_linear *ctx, a_size n, a_float const *x, a_float const *err, a_float alpha);
+A_EXTERN void a_regress_linear_bgd(a_regress_linear *ctx, a_size n, a_real const *x, a_real const *err, a_real alpha);
 
 /*!
  @brief mini-batch gradient descent for linear regression
@@ -102,8 +102,8 @@ A_EXTERN void a_regress_linear_bgd(a_regress_linear *ctx, a_size n, a_float cons
  @param[in] batch batch size of data
  @return change in loss function
 */
-A_EXTERN a_float a_regress_linear_mgd(a_regress_linear *ctx, a_size n, a_float const *x, a_float const *y, a_float *err,
-                                      a_float delta, a_float lrmax, a_float lrmin, a_size lrtim, a_size epoch, a_size batch);
+A_EXTERN a_real a_regress_linear_mgd(a_regress_linear *ctx, a_size n, a_real const *x, a_real const *y, a_real *err,
+                                     a_real delta, a_real lrmax, a_real lrmin, a_size lrtim, a_size epoch, a_size batch);
 
 /*!
  @brief zeroing for linear regression
@@ -124,40 +124,40 @@ typedef struct a_regress_linear regress_linear;
 */
 struct a_regress_linear
 {
-    a_float *coef_p; /*!< points to regression coefficients */
+    a_real *coef_p; /*!< points to regression coefficients */
     a_size coef_n; /*!< number of regression coefficients */
-    a_float bias; /*!< intercept */
+    a_real bias; /*!< intercept */
 #if defined(__cplusplus)
-    A_INLINE void init(a_float *p, a_size n, a_float b = 0)
+    A_INLINE void init(a_real *p, a_size n, a_real b = 0)
     {
         a_regress_linear_init(this, p, n, b);
     }
-    A_INLINE a_float eval(a_float const *val) const
+    A_INLINE a_real eval(a_real const *val) const
     {
         return a_regress_linear_eval(this, val);
     }
-    A_INLINE void err(a_size n, a_float const *x, a_float const *y, a_float *err) const
+    A_INLINE void err(a_size n, a_real const *x, a_real const *y, a_real *err) const
     {
         a_regress_linear_err(this, n, x, y, err);
     }
-    A_INLINE void pdm(a_size n, a_float const *x, a_float *pdm, a_float y_mean) const
+    A_INLINE void pdm(a_size n, a_real const *x, a_real *pdm, a_real y_mean) const
     {
         a_regress_linear_pdm(this, n, x, pdm, y_mean);
     }
-    A_INLINE void gd(a_float const *input, a_float error, a_float alpha)
+    A_INLINE void gd(a_real const *input, a_real error, a_real alpha)
     {
         a_regress_linear_gd(this, input, error, alpha);
     }
-    A_INLINE void sgd(a_size n, a_float const *x, a_float const *y, a_float alpha)
+    A_INLINE void sgd(a_size n, a_real const *x, a_real const *y, a_real alpha)
     {
         a_regress_linear_sgd(this, n, x, y, alpha);
     }
-    A_INLINE void bgd(a_size n, a_float const *x, a_float const *err, a_float alpha)
+    A_INLINE void bgd(a_size n, a_real const *x, a_real const *err, a_real alpha)
     {
         a_regress_linear_bgd(this, n, x, err, alpha);
     }
-    A_INLINE a_float mgd(a_size n, a_float const *x, a_float const *y, a_float *err, a_float delta,
-                         a_float lrmax, a_float lrmin, a_size lrtim, a_size epoch, a_size batch)
+    A_INLINE a_real mgd(a_size n, a_real const *x, a_real const *y, a_real *err, a_real delta,
+                        a_real lrmax, a_real lrmin, a_size lrtim, a_size epoch, a_size batch)
     {
         return a_regress_linear_mgd(this, n, x, y, err, delta, lrmax, lrmin, lrtim, epoch, batch);
     }

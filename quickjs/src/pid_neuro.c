@@ -13,14 +13,14 @@ static JSValue liba_pid_neuro_ctor(JSContext *ctx, JSValueConst new_target, int 
     JSValue proto, clazz = JS_UNDEFINED;
     a_pid_neuro *const self = (a_pid_neuro *)js_mallocz(ctx, sizeof(a_pid_neuro));
     if (!self) { return JS_EXCEPTION; }
-    self->pid.summax = +A_FLOAT_INF;
-    self->pid.summin = -A_FLOAT_INF;
-    self->pid.outmax = +A_FLOAT_INF;
-    self->pid.outmin = -A_FLOAT_INF;
+    self->pid.summax = +A_REAL_INF;
+    self->pid.summin = -A_REAL_INF;
+    self->pid.outmax = +A_REAL_INF;
+    self->pid.outmin = -A_REAL_INF;
     self->k = self->pid.kp = 1;
-    self->wp = A_FLOAT_C(0.1);
-    self->wi = A_FLOAT_C(0.1);
-    self->wd = A_FLOAT_C(0.1);
+    self->wp = A_REAL_C(0.1);
+    self->wi = A_REAL_C(0.1);
+    self->wd = A_REAL_C(0.1);
     a_pid_neuro_init(self);
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
@@ -47,7 +47,7 @@ static JSValue liba_pid_neuro_set_kpid(JSContext *ctx, JSValueConst this_val, in
     {
         if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
-    a_pid_neuro_set_kpid(self, (a_float)arg[0], (a_float)arg[1], (a_float)arg[2], (a_float)arg[3]);
+    a_pid_neuro_set_kpid(self, (a_real)arg[0], (a_real)arg[1], (a_real)arg[2], (a_real)arg[3]);
     (void)argc;
     return JS_UNDEFINED;
 }
@@ -62,7 +62,7 @@ static JSValue liba_pid_neuro_set_wpid(JSContext *ctx, JSValueConst this_val, in
     {
         if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
-    a_pid_neuro_set_wpid(self, (a_float)arg[0], (a_float)arg[1], (a_float)arg[2]);
+    a_pid_neuro_set_wpid(self, (a_real)arg[0], (a_real)arg[1], (a_real)arg[2]);
     (void)argc;
     return JS_UNDEFINED;
 }
@@ -88,7 +88,7 @@ static JSValue liba_pid_neuro_run(JSContext *ctx, JSValueConst this_val, int arg
         if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
     (void)argc;
-    return JS_NewFloat64(ctx, (double)a_pid_neuro_run(self, (a_float)arg[0], (a_float)arg[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_neuro_run(self, (a_real)arg[0], (a_real)arg[1]));
 }
 
 static JSValue liba_pid_neuro_inc(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
@@ -102,7 +102,7 @@ static JSValue liba_pid_neuro_inc(JSContext *ctx, JSValueConst this_val, int arg
         if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
     (void)argc;
-    return JS_NewFloat64(ctx, (double)a_pid_neuro_inc(self, (a_float)arg[0], (a_float)arg[1]));
+    return JS_NewFloat64(ctx, (double)a_pid_neuro_inc(self, (a_real)arg[0], (a_real)arg[1]));
 }
 
 enum
@@ -155,15 +155,15 @@ static JSValue liba_pid_neuro_set(JSContext *ctx, JSValueConst this_val, JSValue
     if (JS_ToFloat64(ctx, &x, val)) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_k: self->k = (a_float)x; break;
-    case self_kp: self->pid.kp = (a_float)x; break;
-    case self_ki: self->pid.ki = (a_float)x; break;
-    case self_kd: self->pid.kd = (a_float)x; break;
-    case self_wp: self->wp = (a_float)x; break;
-    case self_wi: self->wi = (a_float)x; break;
-    case self_wd: self->wd = (a_float)x; break;
-    case self_outmax: self->pid.outmax = (a_float)x; break;
-    case self_outmin: self->pid.outmin = (a_float)x; break;
+    case self_k: self->k = (a_real)x; break;
+    case self_kp: self->pid.kp = (a_real)x; break;
+    case self_ki: self->pid.ki = (a_real)x; break;
+    case self_kd: self->pid.kd = (a_real)x; break;
+    case self_wp: self->wp = (a_real)x; break;
+    case self_wi: self->wi = (a_real)x; break;
+    case self_wd: self->wd = (a_real)x; break;
+    case self_outmax: self->pid.outmax = (a_real)x; break;
+    case self_outmin: self->pid.outmin = (a_real)x; break;
     default: break;
     }
     return JS_UNDEFINED;

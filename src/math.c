@@ -19,15 +19,15 @@
 #endif /* isnan */
 #endif /* __STDC_VERSION__ */
 
-#if A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
-#define A_FLOAT_SQRT_EPSILON 3.4526698300124393e-4F
-#else /* !A_FLOAT_TYPE */
-#define A_FLOAT_SQRT_EPSILON 1.4901161193847656e-8
-#endif /* A_FLOAT_TYPE */
+#if A_REAL_TYPE + 0 == A_REAL_SINGLE
+#define A_REAL_SQRT_EPSILON 3.4526698300124393e-4F
+#else /* !A_REAL_TYPE */
+#define A_REAL_SQRT_EPSILON 1.4901161193847656e-8
+#endif /* A_REAL_TYPE */
 
-static A_INLINE a_float polevl(a_float const *p, a_size n, a_float x)
+static A_INLINE a_real polevl(a_real const *p, a_size n, a_real x)
 {
-    a_float y = *p++;
+    a_real y = *p++;
     do {
         y = y * x + *p++;
     } while (--n);
@@ -210,89 +210,89 @@ a_f64 a_f64_rsqrt(a_f64 x)
     return x;
 }
 
-#undef a_float_asinh
-a_float a_float_asinh(a_float x)
+#undef a_real_asinh
+a_real a_real_asinh(a_real x)
 {
-    a_float const a = a_float_abs(x);
-    a_float const s = x < 0 ? -1 : 1;
-    if (a > 1 / A_FLOAT_SQRT_EPSILON)
+    a_real const a = a_real_abs(x);
+    a_real const s = x < 0 ? -1 : 1;
+    if (a > 1 / A_REAL_SQRT_EPSILON)
     {
-        return s * (a_float_log(a) + A_FLOAT_LN2);
+        return s * (a_real_log(a) + A_REAL_LN2);
     }
     if (a > 2)
     {
-        return s * a_float_log(1 / (a_float_sqrt(a * a + 1) + a) + a * 2);
+        return s * a_real_log(1 / (a_real_sqrt(a * a + 1) + a) + a * 2);
     }
-    if (a > A_FLOAT_SQRT_EPSILON)
+    if (a > A_REAL_SQRT_EPSILON)
     {
-        a_float const aa = a * a;
-        return s * a_float_log1p(aa / (a_float_sqrt(aa + 1) + 1) + a);
+        a_real const aa = a * a;
+        return s * a_real_log1p(aa / (a_real_sqrt(aa + 1) + 1) + a);
     }
     return x;
 }
 
-#undef a_float_acosh
-a_float a_float_acosh(a_float x)
+#undef a_real_acosh
+a_real a_real_acosh(a_real x)
 {
-    if (x > 1 / A_FLOAT_SQRT_EPSILON)
+    if (x > 1 / A_REAL_SQRT_EPSILON)
     {
-        return a_float_log(x) + A_FLOAT_LN2;
+        return a_real_log(x) + A_REAL_LN2;
     }
     if (x > 2)
     {
-        return a_float_log(-1 / (a_float_sqrt(x * x - 1) + x) + x * 2);
+        return a_real_log(-1 / (a_real_sqrt(x * x - 1) + x) + x * 2);
     }
     if (x > 1)
     {
-        a_float const t = x - 1;
-        return a_float_log1p(a_float_sqrt(t * t + t * 2) + t);
+        a_real const t = x - 1;
+        return a_real_log1p(a_real_sqrt(t * t + t * 2) + t);
     }
     if (x == 1) { return 0; }
-    return A_FLOAT_NAN;
+    return A_REAL_NAN;
 }
 
-#undef a_float_atanh
-a_float a_float_atanh(a_float x)
+#undef a_real_atanh
+a_real a_real_atanh(a_real x)
 {
-    a_float const a = a_float_abs(x);
-    a_float const s = x < 0 ? A_FLOAT_C(-0.5) : A_FLOAT_C(0.5);
-    if (a > 1) { return A_FLOAT_NAN; }
+    a_real const a = a_real_abs(x);
+    a_real const s = x < 0 ? A_REAL_C(-0.5) : A_REAL_C(0.5);
+    if (a > 1) { return A_REAL_NAN; }
     if (a == 1)
     {
-        if (x < 0) { return -A_FLOAT_INF; }
-        return A_FLOAT_INF;
+        if (x < 0) { return -A_REAL_INF; }
+        return A_REAL_INF;
     }
-    if (a >= A_FLOAT_C(0.5))
+    if (a >= A_REAL_C(0.5))
     {
-        return s * a_float_log1p((a + a) / (1 - a));
+        return s * a_real_log1p((a + a) / (1 - a));
     }
-    if (a > A_FLOAT_EPSILON)
+    if (a > A_REAL_EPSILON)
     {
-        return s * a_float_log1p((a + a) * (a / (1 - a) + 1));
+        return s * a_real_log1p((a + a) * (a / (1 - a) + 1));
     }
     return x;
 }
 
-#undef a_float_expm1
-a_float a_float_expm1(a_float x)
+#undef a_real_expm1
+a_real a_real_expm1(a_real x)
 {
-    static a_float const P[] = {
-        A_FLOAT_C(1.2617719307481059087798E-4),
-        A_FLOAT_C(3.0299440770744196129956E-2),
-        A_FLOAT_C(9.9999999999999999991025E-1),
+    static a_real const P[] = {
+        A_REAL_C(1.2617719307481059087798E-4),
+        A_REAL_C(3.0299440770744196129956E-2),
+        A_REAL_C(9.9999999999999999991025E-1),
     };
-    static a_float const Q[] = {
-        A_FLOAT_C(3.0019850513866445504159E-6),
-        A_FLOAT_C(2.5244834034968410419224E-3),
-        A_FLOAT_C(2.2726554820815502876593E-1),
-        A_FLOAT_C(2.0000000000000000000897E-0),
+    static a_real const Q[] = {
+        A_REAL_C(3.0019850513866445504159E-6),
+        A_REAL_C(2.5244834034968410419224E-3),
+        A_REAL_C(2.2726554820815502876593E-1),
+        A_REAL_C(2.0000000000000000000897E-0),
     };
-    a_float xx, y;
+    a_real xx, y;
     if (isnan(x)) { return x; }
     if (isinf(x)) { return x > 0 ? x : -1; }
-    if (x < -A_FLOAT_C(0.5) || x > A_FLOAT_C(0.5))
+    if (x < -A_REAL_C(0.5) || x > A_REAL_C(0.5))
     {
-        return a_float_exp(x) - 1;
+        return a_real_exp(x) - 1;
     }
     xx = x * x;
     y = polevl(P, A_LEN(P) - 1, xx) * x;
@@ -300,41 +300,41 @@ a_float a_float_expm1(a_float x)
     return y + y;
 }
 
-#undef a_float_log1p
-a_float a_float_log1p(a_float x)
+#undef a_real_log1p
+a_real a_real_log1p(a_real x)
 {
-    a_float volatile a = x + 1;
-    a_float y = a_float_log(a);
-    if (x < A_FLOAT_EPSILON && a > 0)
+    a_real volatile a = x + 1;
+    a_real y = a_real_log(a);
+    if (x < A_REAL_EPSILON && a > 0)
     {
-        a_float volatile b = a - 1;
+        a_real volatile b = a - 1;
         y -= (b - x) / a;
     }
     return y;
 }
 
-#undef a_float_atan2
-a_float a_float_atan2(a_float y, a_float x)
+#undef a_real_atan2
+a_real a_real_atan2(a_real y, a_real x)
 {
-    if (x > 0) { return a_float_atan(y / x); }
+    if (x > 0) { return a_real_atan(y / x); }
     if (x < 0)
     {
-        a_float const r = a_float_atan(y / x);
-        if (y >= 0) { return r + A_FLOAT_PI; }
-        return r - A_FLOAT_PI;
+        a_real const r = a_real_atan(y / x);
+        if (y >= 0) { return r + A_REAL_PI; }
+        return r - A_REAL_PI;
     }
-    if (y > 0) { return +A_FLOAT_PI; }
-    if (y < 0) { return -A_FLOAT_PI; }
+    if (y > 0) { return +A_REAL_PI; }
+    if (y < 0) { return -A_REAL_PI; }
     return 0;
 }
 
-a_float a_float_norm2(a_float x, a_float y)
+a_real a_real_norm2(a_real x, a_real y)
 {
-    a_float w;
-    x = a_float_abs(x);
-    if (isinf(x)) { return A_FLOAT_INF; }
-    y = a_float_abs(y);
-    if (isinf(y)) { return A_FLOAT_INF; }
+    a_real w;
+    x = a_real_abs(x);
+    if (isinf(x)) { return A_REAL_INF; }
+    y = a_real_abs(y);
+    if (isinf(y)) { return A_REAL_INF; }
     if (x > y)
     {
         w = x;
@@ -343,18 +343,18 @@ a_float a_float_norm2(a_float x, a_float y)
     }
     if (!y) { return 0; }
     x /= y;
-    return a_float_sqrt(x * x + 1) * y;
+    return a_real_sqrt(x * x + 1) * y;
 }
 
-a_float a_float_norm3(a_float x, a_float y, a_float z)
+a_real a_real_norm3(a_real x, a_real y, a_real z)
 {
-    a_float w;
-    x = a_float_abs(x);
-    if (isinf(x)) { return A_FLOAT_INF; }
-    y = a_float_abs(y);
-    if (isinf(y)) { return A_FLOAT_INF; }
-    z = a_float_abs(z);
-    if (isinf(z)) { return A_FLOAT_INF; }
+    a_real w;
+    x = a_real_abs(x);
+    if (isinf(x)) { return A_REAL_INF; }
+    y = a_real_abs(y);
+    if (isinf(y)) { return A_REAL_INF; }
+    z = a_real_abs(z);
+    if (isinf(z)) { return A_REAL_INF; }
     if (x > y)
     {
         w = x;
@@ -370,168 +370,168 @@ a_float a_float_norm3(a_float x, a_float y, a_float z)
     if (!z) { return 0; }
     x /= z;
     y /= z;
-    return a_float_sqrt(x * x + y * y + 1) * z;
+    return a_real_sqrt(x * x + y * y + 1) * z;
 }
 
-a_float a_float_norm_(a_float const *p, a_size n, a_size c)
+a_real a_real_norm_(a_real const *p, a_size n, a_size c)
 {
     a_size i;
-    a_float w = 0, s = 0;
+    a_real w = 0, s = 0;
     a_size const nc = n * c;
     for (i = 0; i < nc; i += c)
     {
-        a_float const x = a_float_abs(p[i]);
-        if (isinf(x)) { return A_FLOAT_INF; }
+        a_real const x = a_real_abs(p[i]);
+        if (isinf(x)) { return A_REAL_INF; }
         if (x > w) { w = x; }
     }
     if (w <= 0) { return 0; }
     for (i = 0; i < nc; i += c)
     {
-        a_float const x = p[i] / w;
+        a_real const x = p[i] / w;
         s += x * x;
     }
-    return a_float_sqrt(s) * w;
+    return a_real_sqrt(s) * w;
 }
 
-a_float a_float_norm(a_float const *p, a_size n)
+a_real a_real_norm(a_real const *p, a_size n)
 {
     a_size i;
-    a_float w = 0, s = 0;
+    a_real w = 0, s = 0;
     for (i = 0; i < n; ++i)
     {
-        a_float const x = a_float_abs(p[i]);
-        if (isinf(x)) { return A_FLOAT_INF; }
+        a_real const x = a_real_abs(p[i]);
+        if (isinf(x)) { return A_REAL_INF; }
         if (x > w) { w = x; }
     }
     if (w <= 0) { return 0; }
     for (i = 0; i < n; ++i)
     {
-        a_float const x = p[i] / w;
+        a_real const x = p[i] / w;
         s += x * x;
     }
-    return a_float_sqrt(s) * w;
+    return a_real_sqrt(s) * w;
 }
 
-a_float a_float_sum(a_float const *p, a_size n)
+a_real a_real_sum(a_real const *p, a_size n)
 {
-    a_float r = 0;
+    a_real r = 0;
     for (; n; --n, ++p) { r += *p; }
     return r;
 }
 
-a_float a_float_sum1(a_float const *p, a_size n)
+a_real a_real_sum1(a_real const *p, a_size n)
 {
-    a_float r = 0;
+    a_real r = 0;
     for (; n; --n, ++p) { r += A_ABS(*p); }
     return r;
 }
 
-a_float a_float_sum2(a_float const *p, a_size n)
+a_real a_real_sum2(a_real const *p, a_size n)
 {
-    a_float r = 0;
+    a_real r = 0;
     for (; n; --n, ++p) { r += A_SQ(*p); }
     return r;
 }
 
-a_float a_float_mean(a_float const *p, a_size n)
+a_real a_real_mean(a_real const *p, a_size n)
 {
-    a_float r = 0;
-    a_float const i = 1 / (a_float)n;
+    a_real r = 0;
+    a_real const i = 1 / (a_real)n;
     for (; n; --n, ++p) { r += *p * i; }
     return r;
 }
 
-void a_float_swap(a_float *__restrict lhs, a_float *__restrict rhs, a_size n)
+void a_real_swap(a_real *__restrict lhs, a_real *__restrict rhs, a_size n)
 {
     for (; n; --n, ++lhs, ++rhs)
     {
-        a_float swap;
+        a_real swap;
         swap = *lhs;
         *lhs = *rhs;
         *rhs = swap;
     }
 }
 
-void a_float_push_fore(a_float *p, a_size n, a_float x)
+void a_real_push_fore(a_real *p, a_size n, a_real x)
 {
     if (n--)
     {
-        a_move(p + 1, p, sizeof(a_float) * n);
+        a_move(p + 1, p, sizeof(a_real) * n);
         p[0] = x;
     }
 }
 
-void a_float_push_back(a_float *p, a_size n, a_float x)
+void a_real_push_back(a_real *p, a_size n, a_real x)
 {
     if (n--)
     {
-        a_move(p, p + 1, sizeof(a_float) * n);
+        a_move(p, p + 1, sizeof(a_real) * n);
         p[n] = x;
     }
 }
 
-void a_float_push_fore_(a_float *block_p, a_size block_n,
-                        a_float const *cache_p, a_size cache_n)
+void a_real_push_fore_(a_real *block_p, a_size block_n,
+                       a_real const *cache_p, a_size cache_n)
 {
     a_size const n = A_MIN(cache_n, block_n);
     if (n)
     {
         a_size const m = block_n - n;
         cache_p = cache_p + cache_n - n;
-        a_move(block_p + n, block_p, sizeof(a_float) * m);
-        a_copy(block_p, cache_p, sizeof(a_float) * n);
+        a_move(block_p + n, block_p, sizeof(a_real) * m);
+        a_copy(block_p, cache_p, sizeof(a_real) * n);
     }
 }
 
-void a_float_push_back_(a_float *block_p, a_size block_n,
-                        a_float const *cache_p, a_size cache_n)
+void a_real_push_back_(a_real *block_p, a_size block_n,
+                       a_real const *cache_p, a_size cache_n)
 {
     a_size const n = A_MIN(cache_n, block_n);
     if (n)
     {
         a_size const m = block_n - n;
         cache_p = cache_p + cache_n - n;
-        a_move(block_p, block_p + n, sizeof(a_float) * m);
-        a_copy(block_p + m, cache_p, sizeof(a_float) * n);
+        a_move(block_p, block_p + n, sizeof(a_real) * m);
+        a_copy(block_p + m, cache_p, sizeof(a_real) * n);
     }
 }
 
-void a_float_roll_fore(a_float *p, a_size n)
+void a_real_roll_fore(a_real *p, a_size n)
 {
     if (n--)
     {
-        a_float x = p[0];
-        a_move(p, p + 1, sizeof(a_float) * n);
+        a_real x = p[0];
+        a_move(p, p + 1, sizeof(a_real) * n);
         p[n] = x;
     }
 }
 
-void a_float_roll_back(a_float *p, a_size n)
+void a_real_roll_back(a_real *p, a_size n)
 {
     if (n--)
     {
-        a_float x = p[n];
-        a_move(p + 1, p, sizeof(a_float) * n);
+        a_real x = p[n];
+        a_move(p + 1, p, sizeof(a_real) * n);
         p[0] = x;
     }
 }
 
-void a_float_roll_fore_(a_float *block_p, a_size block_n,
-                        a_float *shift_p, a_size shift_n)
+void a_real_roll_fore_(a_real *block_p, a_size block_n,
+                       a_real *shift_p, a_size shift_n)
 {
     shift_n %= block_n;
     block_n -= shift_n;
-    a_copy(shift_p, block_p, sizeof(a_float) * shift_n);
-    a_move(block_p, block_p + shift_n, sizeof(a_float) * block_n);
-    a_copy(block_p + block_n, shift_p, sizeof(a_float) * shift_n);
+    a_copy(shift_p, block_p, sizeof(a_real) * shift_n);
+    a_move(block_p, block_p + shift_n, sizeof(a_real) * block_n);
+    a_copy(block_p + block_n, shift_p, sizeof(a_real) * shift_n);
 }
 
-void a_float_roll_back_(a_float *block_p, a_size block_n,
-                        a_float *shift_p, a_size shift_n)
+void a_real_roll_back_(a_real *block_p, a_size block_n,
+                       a_real *shift_p, a_size shift_n)
 {
     shift_n %= block_n;
     block_n -= shift_n;
-    a_copy(shift_p, block_p + block_n, sizeof(a_float) * shift_n);
-    a_move(block_p + shift_n, block_p, sizeof(a_float) * block_n);
-    a_copy(block_p, shift_p, sizeof(a_float) * shift_n);
+    a_copy(shift_p, block_p + block_n, sizeof(a_real) * shift_n);
+    a_move(block_p + shift_n, block_p, sizeof(a_real) * block_n);
+    a_copy(block_p, shift_p, sizeof(a_real) * shift_n);
 }

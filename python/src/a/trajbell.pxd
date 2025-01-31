@@ -2,22 +2,22 @@ from a cimport *
 
 cdef extern from "a/trajbell.h":
     ctypedef struct a_trajbell:
-        a_float t
-        a_float tv
-        a_float ta
-        a_float td
-        a_float taj
-        a_float tdj
-        a_float p0
-        a_float p1
-        a_float v0
-        a_float v1
-        a_float vm
-        a_float jm
-        a_float am
-        a_float dm
-    a_float a_trajbell_gen(a_trajbell *ctx, a_float jm, a_float am, a_float vm, a_float p0, a_float p1, a_float v0, a_float v1)
-    a_float a_trajbell_pos(const a_trajbell *ctx, a_float x) nogil
-    a_float a_trajbell_vel(const a_trajbell *ctx, a_float x) nogil
-    a_float a_trajbell_acc(const a_trajbell *ctx, a_float x) nogil
-    a_float a_trajbell_jer(const a_trajbell *ctx, a_float x) nogil
+        a_real t
+        a_real tv
+        a_real ta
+        a_real td
+        a_real taj
+        a_real tdj
+        a_real p0
+        a_real p1
+        a_real v0
+        a_real v1
+        a_real vm
+        a_real jm
+        a_real am
+        a_real dm
+    a_real a_trajbell_gen(a_trajbell *ctx, a_real jm, a_real am, a_real vm, a_real p0, a_real p1, a_real v0, a_real v1) nogil
+    a_real a_trajbell_pos(const a_trajbell *ctx, a_real x) nogil
+    a_real a_trajbell_vel(const a_trajbell *ctx, a_real x) nogil
+    a_real a_trajbell_acc(const a_trajbell *ctx, a_real x) nogil
+    a_real a_trajbell_jer(const a_trajbell *ctx, a_real x) nogil

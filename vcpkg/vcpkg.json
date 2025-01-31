@@ -22,7 +22,7 @@
       "description": "Enable create symbolic link"
     },
     "float": {
-      "description": "floating-point number are float"
+      "description": "floating-point number is float"
     },
     "ipo": {
       "description": "Enable interprocedural optimization"

@@ -8,26 +8,26 @@
 
 static int liba_trajpoly3_gen_(lua_State *L, a_trajpoly3 *ctx, int arg, int top)
 {
-    a_float p0 = 0, v0 = 0;
-    a_float p1 = 0, v1 = 0;
-    a_float ts = 0;
+    a_real p0 = 0, v0 = 0;
+    a_real p1 = 0, v1 = 0;
+    a_real ts = 0;
     switch (top)
     {
     default:
     case 5:
-        v1 = (a_float)luaL_checknumber(L, arg + 5);
+        v1 = (a_real)luaL_checknumber(L, arg + 5);
         A_FALLTHROUGH;
     case 4:
-        v0 = (a_float)luaL_checknumber(L, arg + 4);
+        v0 = (a_real)luaL_checknumber(L, arg + 4);
         A_FALLTHROUGH;
     case 3:
-        p1 = (a_float)luaL_checknumber(L, arg + 3);
+        p1 = (a_real)luaL_checknumber(L, arg + 3);
         A_FALLTHROUGH;
     case 2:
-        p0 = (a_float)luaL_checknumber(L, arg + 2);
+        p0 = (a_real)luaL_checknumber(L, arg + 2);
         A_FALLTHROUGH;
     case 1:
-        ts = (a_float)luaL_checknumber(L, arg + 1);
+        ts = (a_real)luaL_checknumber(L, arg + 1);
         A_FALLTHROUGH;
     case 0:
         if (ctx == NULL)
@@ -94,7 +94,7 @@ int liba_trajpoly3_pos(lua_State *L)
     a_trajpoly3 const *const ctx = (a_trajpoly3 const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const x = (a_float)luaL_checknumber(L, 2);
+        a_real const x = (a_real)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_trajpoly3_pos(ctx, x));
         return 1;
     }
@@ -113,7 +113,7 @@ int liba_trajpoly3_vel(lua_State *L)
     a_trajpoly3 const *const ctx = (a_trajpoly3 const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const x = (a_float)luaL_checknumber(L, 2);
+        a_real const x = (a_real)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_trajpoly3_vel(ctx, x));
         return 1;
     }
@@ -132,7 +132,7 @@ int liba_trajpoly3_acc(lua_State *L)
     a_trajpoly3 const *const ctx = (a_trajpoly3 const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const x = (a_float)luaL_checknumber(L, 2);
+        a_real const x = (a_real)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_trajpoly3_acc(ctx, x));
         return 1;
     }

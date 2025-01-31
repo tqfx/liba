@@ -17,7 +17,7 @@ traj = liba.trajpoly3(t[1] - t[0], p[0], p[1], v[0], v[1])
 
 N = 1000
 T = (t[1] - t[0]) / N
-x = liba.new_float(N)
+x = liba.new_real(N)
 for i in range(N):
     x[i] = i * T
 

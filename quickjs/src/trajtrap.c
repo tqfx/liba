@@ -43,19 +43,19 @@ static JSValue liba_trajtrap_gen(JSContext *ctx, JSValueConst this_val, int argc
     {
         if (JS_ToFloat64(ctx, &arg[i], argv[i])) { return JS_EXCEPTION; }
     }
-    arg[0] = (double)a_trajtrap_gen(self, (a_float)arg[0], (a_float)arg[1], (a_float)arg[2],
-                                    (a_float)arg[3], (a_float)arg[4], (a_float)arg[5], (a_float)arg[6]);
+    arg[0] = (double)a_trajtrap_gen(self, (a_real)arg[0], (a_real)arg[1], (a_real)arg[2],
+                                    (a_real)arg[3], (a_real)arg[4], (a_real)arg[5], (a_real)arg[6]);
     return JS_NewFloat64(ctx, arg[0]);
 }
 
 static JSValue liba_trajtrap_pos(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     double x;
-    a_float pos;
+    a_real pos;
     a_trajtrap *const self = (a_trajtrap *)JS_GetOpaque2(ctx, this_val, liba_trajtrap_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    pos = a_trajtrap_pos(self, (a_float)x);
+    pos = a_trajtrap_pos(self, (a_real)x);
     (void)argc;
     return JS_NewFloat64(ctx, (double)pos);
 }
@@ -63,11 +63,11 @@ static JSValue liba_trajtrap_pos(JSContext *ctx, JSValueConst this_val, int argc
 static JSValue liba_trajtrap_vel(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     double x;
-    a_float vel;
+    a_real vel;
     a_trajtrap *const self = (a_trajtrap *)JS_GetOpaque2(ctx, this_val, liba_trajtrap_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    vel = a_trajtrap_vel(self, (a_float)x);
+    vel = a_trajtrap_vel(self, (a_real)x);
     (void)argc;
     return JS_NewFloat64(ctx, (double)vel);
 }
@@ -75,11 +75,11 @@ static JSValue liba_trajtrap_vel(JSContext *ctx, JSValueConst this_val, int argc
 static JSValue liba_trajtrap_acc(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     double x;
-    a_float acc;
+    a_real acc;
     a_trajtrap *const self = (a_trajtrap *)JS_GetOpaque2(ctx, this_val, liba_trajtrap_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
-    acc = a_trajtrap_acc(self, (a_float)x);
+    acc = a_trajtrap_acc(self, (a_real)x);
     (void)argc;
     return JS_NewFloat64(ctx, (double)acc);
 }

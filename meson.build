@@ -14,7 +14,7 @@ a_have_h.set('A_VERSION', meson.project_version())
 a_have_h.set('A_VERSION_MAJOR', meson.project_version().split('.')[0])
 a_have_h.set('A_VERSION_MINOR', meson.project_version().split('.')[1])
 a_have_h.set('A_VERSION_PATCH', meson.project_version().split('.')[2])
-a_have_h.set('A_SIZE_FLOAT', get_option('float'))
+a_have_h.set('A_SIZE_REAL', get_option('real'))
 if target_machine.endian() == 'little'
     a_have_h.set('A_BYTE_ORDER', 1234)
 elif target_machine.endian() == 'big'
@@ -33,11 +33,11 @@ math = ['asinh', 'acosh', 'atanh', 'expm1',
         'casinh', 'cacosh', 'catanh']
 
 foreach func: math
-    float = get_option('float').to_int()
+    real = get_option('real').to_int()
     have = 'A_HAVE_' + func.to_upper()
-    if  float == 4
+    if  real == 4
         func = func + 'f'
-    elif float > 8
+    elif real > 8
         func = func + 'l'
     endif
     if compiler.has_function(func)
@@ -167,7 +167,7 @@ install_subdir('include/a', exclude_files: ['a.h'],
 if get_option('rust')
     rust_args = []
     add_languages('rust')
-    if get_option('float').to_int() == 4
+    if get_option('real').to_int() == 4
         rust_args += ['--cfg', 'feature="float"']
     endif
     static_library('liba', 'src/lib.rs',

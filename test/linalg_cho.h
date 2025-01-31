@@ -3,7 +3,7 @@
 #include "test.h"
 #include "a/linalg.h"
 
-static void show(a_float const *p, a_size m, a_size n)
+static void show(a_real const *p, a_size m, a_size n)
 {
     a_size r, c;
     for (r = 0; r < m; ++r)
@@ -11,9 +11,9 @@ static void show(a_float const *p, a_size m, a_size n)
         debug("\t");
         for (c = 0; c < n; ++c)
         {
-            a_float const x = *p++;
+            a_real const x = *p++;
             if (c) { debug(","); }
-            debug("%+.6" A_FLOAT_PRI "f", x);
+            debug("%+.6" A_REAL_PRI "f", x);
         }
         debug("\n");
     }
@@ -23,9 +23,9 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
 #define N 3
     int r, c;
-    a_float b[N];
-    a_float m[N * N];
-    a_float a[N * N] = {4, 12, -16, 12, 37, -43, -16, -43, 98};
+    a_real b[N];
+    a_real m[N * N];
+    a_real a[N * N] = {4, 12, -16, 12, 37, -43, -16, -43, 98};
     main_init(argc, argv, 1);
     debug("A=\n");
     show(a, N, N);
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         show(m, N, N);
         for (r = 0; r < N; ++r)
         {
-            a_float *x = m + a_size_c(r) * N;
+            a_real *x = m + a_size_c(r) * N;
             for (c = 0; c < N; ++c)
             {
                 x[c] = 0;

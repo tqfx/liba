@@ -75,13 +75,13 @@ static int liba_rsqrt(lua_State *L)
     for (i = 1; i <= n; ++i)
     {
         lua_Number x = luaL_checknumber(L, i);
-#if A_FLOAT_TYPE + 0 == A_FLOAT_DOUBLE
+#if A_REAL_TYPE + 0 == A_REAL_DOUBLE
         x = (lua_Number)a_f64_rsqrt((a_f64)x);
-#elif A_FLOAT_TYPE + 0 == A_FLOAT_SINGLE
+#elif A_REAL_TYPE + 0 == A_REAL_SINGLE
         x = (lua_Number)a_f32_rsqrt((a_f32)x);
-#else /* !A_FLOAT_TYPE */
+#else /* !A_REAL_TYPE */
         x = (lua_Number)(1 / sqrt((double)x));
-#endif /* A_FLOAT_TYPE */
+#endif /* A_REAL_TYPE */
         lua_pushnumber(L, x);
     }
     return n;

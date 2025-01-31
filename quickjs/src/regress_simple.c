@@ -42,7 +42,7 @@ static JSValue liba_regress_simple_eval(JSContext *ctx, JSValueConst this_val, i
     if (!self) { return JS_EXCEPTION; }
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
     (void)argc;
-    return JS_NewFloat64(ctx, (double)a_regress_simple_eval(self, (a_float)x));
+    return JS_NewFloat64(ctx, (double)a_regress_simple_eval(self, (a_real)x));
 }
 
 static JSValue liba_regress_simple_evar(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
@@ -52,13 +52,13 @@ static JSValue liba_regress_simple_evar(JSContext *ctx, JSValueConst this_val, i
     if (!self) { return JS_EXCEPTION; }
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
     (void)argc;
-    return JS_NewFloat64(ctx, (double)a_regress_simple_evar(self, (a_float)x));
+    return JS_NewFloat64(ctx, (double)a_regress_simple_evar(self, (a_real)x));
 }
 
 static JSValue liba_regress_simple_ols_(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    a_float *x, *y;
-    a_float x_mean, y_mean;
+    a_real *x, *y;
+    a_real x_mean, y_mean;
     JSValue r = JS_EXCEPTION;
     unsigned int x_n = 0, y_n = 0;
     a_regress_simple *const self = (a_regress_simple *)JS_GetOpaque2(ctx, this_val, liba_regress_simple_class_id);
@@ -78,8 +78,8 @@ fail:
 
 static JSValue liba_regress_simple_olsx(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    a_float *x, *y;
-    a_float x_mean;
+    a_real *x, *y;
+    a_real x_mean;
     JSValue r = JS_EXCEPTION;
     unsigned int x_n = 0, y_n = 0;
     a_regress_simple *const self = (a_regress_simple *)JS_GetOpaque2(ctx, this_val, liba_regress_simple_class_id);
@@ -98,8 +98,8 @@ fail:
 
 static JSValue liba_regress_simple_olsy(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    a_float *x, *y;
-    a_float y_mean;
+    a_real *x, *y;
+    a_real y_mean;
     JSValue r = JS_EXCEPTION;
     unsigned int x_n = 0, y_n = 0;
     a_regress_simple *const self = (a_regress_simple *)JS_GetOpaque2(ctx, this_val, liba_regress_simple_class_id);
@@ -118,7 +118,7 @@ fail:
 
 static JSValue liba_regress_simple_ols(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    a_float *x, *y;
+    a_real *x, *y;
     unsigned int x_n = 0, y_n = 0;
     a_regress_simple *const self = (a_regress_simple *)JS_GetOpaque2(ctx, this_val, liba_regress_simple_class_id);
     if (!self) { return JS_EXCEPTION; }
@@ -169,8 +169,8 @@ static JSValue liba_regress_simple_set(JSContext *ctx, JSValueConst this_val, JS
     if (JS_ToFloat64(ctx, &x, val)) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_coef: self->coef = (a_float)x; break;
-    case self_bias: self->bias = (a_float)x; break;
+    case self_coef: self->coef = (a_real)x; break;
+    case self_bias: self->bias = (a_real)x; break;
     default:
         break;
     }

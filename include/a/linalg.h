@@ -23,7 +23,7 @@ extern "C" {
  @param[in,out] A an n x n square matrix
  @param[in] n order of square matrix A
  */
-A_EXTERN void a_linalg_T1(a_float *A, a_uint n);
+A_EXTERN void a_linalg_T1(a_real *A, a_uint n);
 
 /*!
  @brief transpose a given m x n matrix A into an n x m matrix T.
@@ -32,7 +32,7 @@ A_EXTERN void a_linalg_T1(a_float *A, a_uint n);
  @param[in] m rows in the input matrix A.
  @param[in] n columns in the input matrix A.
 */
-A_EXTERN void a_linalg_T2(a_float *__restrict T, a_float const *__restrict A, a_uint m, a_uint n);
+A_EXTERN void a_linalg_T2(a_real *__restrict T, a_real const *__restrict A, a_uint m, a_uint n);
 
 /*!
  @brief compute the dot product of two vectors.
@@ -41,7 +41,7 @@ A_EXTERN void a_linalg_T2(a_float *__restrict T, a_float const *__restrict A, a_
  @param[in] n number of elements in each of the vectors X and Y.
  @return dot product of vectors X and Y.
 */
-A_EXTERN a_float a_linalg_dot(a_float const *X, a_float const *Y, a_size n);
+A_EXTERN a_real a_linalg_dot(a_real const *X, a_real const *Y, a_size n);
 
 /*!
  @brief multiply two matrices X and Y, storing the result in Z.
@@ -72,7 +72,7 @@ A_EXTERN a_float a_linalg_dot(a_float const *X, a_float const *Y, a_size n);
  @param[in] c_r columns in matrix X and rows in matrix Y.
  @param[in] col columns in matrix Z and columns in matrix Y.
 */
-A_EXTERN void a_linalg_mulmm(a_float *__restrict Z, a_float const *__restrict X, a_float const *__restrict Y, a_uint row, a_uint c_r, a_uint col);
+A_EXTERN void a_linalg_mulmm(a_real *__restrict Z, a_real const *__restrict X, a_real const *__restrict Y, a_uint row, a_uint c_r, a_uint col);
 
 /*!
  @brief multiply the transpose of matrix X with matrix Y, storing the result in Z.
@@ -114,7 +114,7 @@ A_EXTERN void a_linalg_mulmm(a_float *__restrict Z, a_float const *__restrict X,
  @param[in] row rows in matrix Z and columns in matrix X.
  @param[in] col columns in matrix Z and columns in matrix Y.
 */
-A_EXTERN void a_linalg_mulTm(a_float *__restrict Z, a_float const *__restrict X, a_float const *__restrict Y, a_uint c_r, a_uint row, a_uint col);
+A_EXTERN void a_linalg_mulTm(a_real *__restrict Z, a_real const *__restrict X, a_real const *__restrict Y, a_uint c_r, a_uint row, a_uint col);
 
 /*!
  @brief multiply matrix X with the transpose of matrix Y, storing the result in Z.
@@ -145,7 +145,7 @@ A_EXTERN void a_linalg_mulTm(a_float *__restrict Z, a_float const *__restrict X,
  @param[in] col columns in matrix Z and rows in matrix Y.
  @param[in] c_r columns in matrix X and columns in matrix Y.
 */
-A_EXTERN void a_linalg_mulmT(a_float *__restrict Z, a_float const *__restrict X, a_float const *__restrict Y, a_uint row, a_uint col, a_uint c_r);
+A_EXTERN void a_linalg_mulmT(a_real *__restrict Z, a_real const *__restrict X, a_real const *__restrict Y, a_uint row, a_uint col, a_uint c_r);
 
 /*!
  @brief multiply the transpose of matrix X with the transpose of matrix Y, storing the result in Z.
@@ -176,7 +176,7 @@ A_EXTERN void a_linalg_mulmT(a_float *__restrict Z, a_float const *__restrict X,
  @param[in] c_r rows in matrix X and columns in matrix Y.
  @param[in] col columns in matrix Z and rows in matrix Y.
 */
-A_EXTERN void a_linalg_mulTT(a_float *__restrict Z, a_float const *__restrict X, a_float const *__restrict Y, a_uint row, a_uint c_r, a_uint col);
+A_EXTERN void a_linalg_mulTT(a_real *__restrict Z, a_real const *__restrict X, a_real const *__restrict Y, a_uint row, a_uint c_r, a_uint col);
 
 /*!
  @brief compute LU decomposition of a square matrix with partial pivoting.
@@ -194,7 +194,7 @@ A_EXTERN void a_linalg_mulTT(a_float *__restrict Z, a_float const *__restrict X,
  @return 0 on success, or a non-zero error code if the decomposition fails.
   @retval -1 on failure, A is a singular matrix.
  */
-A_EXTERN int a_linalg_plu(a_float *A, a_uint n, a_uint *p, int *sign);
+A_EXTERN int a_linalg_plu(a_real *A, a_uint n, a_uint *p, int *sign);
 
 /*!
  @brief construct the permutation matrix P from a permutation vector p.
@@ -202,7 +202,7 @@ A_EXTERN int a_linalg_plu(a_float *A, a_uint n, a_uint *p, int *sign);
  @param[in] n the order of the square matrix that was decomposed.
  @param[out] P the output matrix where the permutation matrix will be stored.
 */
-A_EXTERN void a_linalg_plu_get_P(a_uint const *p, a_uint n, a_float *P);
+A_EXTERN void a_linalg_plu_get_P(a_uint const *p, a_uint n, a_real *P);
 
 /*!
  @brief extract the lower triangular matrix L from matrix A.
@@ -210,7 +210,7 @@ A_EXTERN void a_linalg_plu_get_P(a_uint const *p, a_uint n, a_float *P);
  @param[in] n the order of the square matrix that was decomposed.
  @param[out] L the output matrix where the lower triangular matrix will be stored.
 */
-A_EXTERN void a_linalg_plu_get_L(a_float const *A, a_uint n, a_float *L);
+A_EXTERN void a_linalg_plu_get_L(a_real const *A, a_uint n, a_real *L);
 
 /*!
  @brief extract the upper triangular matrix U from matrix A.
@@ -218,7 +218,7 @@ A_EXTERN void a_linalg_plu_get_L(a_float const *A, a_uint n, a_float *L);
  @param[in] n the order of the square matrix that was decomposed.
  @param[out] U the output matrix where the upper triangular matrix will be stored.
 */
-A_EXTERN void a_linalg_plu_get_U(a_float const *A, a_uint n, a_float *U);
+A_EXTERN void a_linalg_plu_get_U(a_real const *A, a_uint n, a_real *U);
 
 /*!
  @brief apply the permutation P to the vector b, producing Pb.
@@ -227,7 +227,7 @@ A_EXTERN void a_linalg_plu_get_U(a_float const *A, a_uint n, a_float *U);
  @param[in] b the input vector of size n that will be permuted.
  @param[out] Pb the output vector where the permuted result will be stored.
 */
-A_EXTERN void a_linalg_plu_apply(a_uint const *p, a_uint n, a_float const *b, a_float *Pb);
+A_EXTERN void a_linalg_plu_apply(a_uint const *p, a_uint n, a_real const *b, a_real *Pb);
 
 /*!
  @brief solve the lower triangular system Ly = Pb for y.
@@ -235,7 +235,7 @@ A_EXTERN void a_linalg_plu_apply(a_uint const *p, a_uint n, a_float const *b, a_
  @param[in] n the order of the square matrix L (number of rows and columns).
  @param[in,out] y on input, contains the permuted vector Pb. on output, contains the solution vector y.
 */
-A_EXTERN void a_linalg_plu_lower(a_float const *L, a_uint n, a_float *y);
+A_EXTERN void a_linalg_plu_lower(a_real const *L, a_uint n, a_real *y);
 
 /*!
  @brief solve the upper triangular system Ux = y for x.
@@ -243,7 +243,7 @@ A_EXTERN void a_linalg_plu_lower(a_float const *L, a_uint n, a_float *y);
  @param[in] n the order of the square matrix U (number of rows and columns).
  @param[in,out] x on input, contains the vector y. on output, contains the solution vector x.
 */
-A_EXTERN void a_linalg_plu_upper(a_float const *U, a_uint n, a_float *x);
+A_EXTERN void a_linalg_plu_upper(a_real const *U, a_uint n, a_real *x);
 
 /*!
  @brief solve the linear system Ax = b using LU decomposition with partial pivoting.
@@ -253,7 +253,7 @@ A_EXTERN void a_linalg_plu_upper(a_float const *U, a_uint n, a_float *x);
  @param[in] b the input vector b of the linear system.
  @param[out] x the output vector x where the solution will be stored.
 */
-A_EXTERN void a_linalg_plu_solve(a_float const *A, a_uint n, a_uint const *p, a_float const *b, a_float *x);
+A_EXTERN void a_linalg_plu_solve(a_real const *A, a_uint n, a_uint const *p, a_real const *b, a_real *x);
 
 /*!
  @brief compute the inverse of a matrix using its LU decomposition and permutation matrix.
@@ -263,7 +263,7 @@ A_EXTERN void a_linalg_plu_solve(a_float const *A, a_uint n, a_uint const *p, a_
  @param[in] b a pre-allocated temporary buffer of size n for intermediate computations.
  @param[out] I the output matrix where the inverse of A will be stored.
 */
-A_EXTERN void a_linalg_plu_inv(a_float const *A, a_uint n, a_uint const *p, a_float *b, a_float *I);
+A_EXTERN void a_linalg_plu_inv(a_real const *A, a_uint n, a_uint const *p, a_real *b, a_real *I);
 
 /*!
  @brief compute the determinant of a matrix using its LU decomposition.
@@ -272,7 +272,7 @@ A_EXTERN void a_linalg_plu_inv(a_float const *A, a_uint n, a_uint const *p, a_fl
  @param[in] sign the sign of the permutation matrix P (+1 or -1).
  @return the determinant of matrix A.
 */
-A_EXTERN a_float a_linalg_plu_det(a_float const *A, a_uint n, int sign);
+A_EXTERN a_real a_linalg_plu_det(a_real const *A, a_uint n, int sign);
 
 /*!
  @brief compute the natural logarithm of the absolute value of the determinant of a matrix using its LU decomposition.
@@ -280,7 +280,7 @@ A_EXTERN a_float a_linalg_plu_det(a_float const *A, a_uint n, int sign);
  @param[in] n the order of the square matrix A (number of rows and columns).
  @return the natural logarithm of the absolute value of the determinant.
 */
-A_EXTERN a_float a_linalg_plu_lndet(a_float const *A, a_uint n);
+A_EXTERN a_real a_linalg_plu_lndet(a_real const *A, a_uint n);
 
 /*!
  @brief compute the sign of the determinant of a matrix using its LU decomposition.
@@ -289,7 +289,7 @@ A_EXTERN a_float a_linalg_plu_lndet(a_float const *A, a_uint n);
  @param[in] sign the sign of the permutation matrix P (+1 or -1).
  @return the sign of the determinant: -1, 0, +1.
 */
-A_EXTERN int a_linalg_plu_sgndet(a_float const *A, a_uint n, int sign);
+A_EXTERN int a_linalg_plu_sgndet(a_real const *A, a_uint n, int sign);
 
 /*!
  @brief compute Cholesky decomposition of a symmetric positive-definite matrix.
@@ -299,7 +299,7 @@ A_EXTERN int a_linalg_plu_sgndet(a_float const *A, a_uint n, int sign);
  @return 0 on success, or a non-zero error code if the decomposition fails.
   @retval -1 on failure, A is a singular matrix.
 */
-A_EXTERN int a_linalg_cho(a_float *A, a_uint n);
+A_EXTERN int a_linalg_cho(a_real *A, a_uint n);
 
 /*!
  @brief extract the lower triangular matrix L from matrix A.
@@ -307,7 +307,7 @@ A_EXTERN int a_linalg_cho(a_float *A, a_uint n);
  @param[in] n the order of the square matrix that was decomposed.
  @param[out] L the output matrix where the lower triangular matrix will be stored.
 */
-A_EXTERN void a_linalg_cho_get_L(a_float const *A, a_uint n, a_float *L);
+A_EXTERN void a_linalg_cho_get_L(a_real const *A, a_uint n, a_real *L);
 
 /*!
  @brief solve the lower triangular system Ly = b for y.
@@ -315,7 +315,7 @@ A_EXTERN void a_linalg_cho_get_L(a_float const *A, a_uint n, a_float *L);
  @param[in] n the order of the square matrix L (number of rows and columns).
  @param[in,out] y on input, contains the vector b. on output, contains the solution vector y.
 */
-A_EXTERN void a_linalg_cho_lower(a_float const *L, a_uint n, a_float *y);
+A_EXTERN void a_linalg_cho_lower(a_real const *L, a_uint n, a_real *y);
 
 /*!
  @brief solve the upper triangular system L^T x = y for x.
@@ -323,7 +323,7 @@ A_EXTERN void a_linalg_cho_lower(a_float const *L, a_uint n, a_float *y);
  @param[in] n the order of the square matrix L (number of rows and columns).
  @param[in,out] x on input, contains the vector y. on output, contains the solution vector x.
 */
-A_EXTERN void a_linalg_cho_upper(a_float const *L, a_uint n, a_float *x);
+A_EXTERN void a_linalg_cho_upper(a_real const *L, a_uint n, a_real *x);
 
 /*!
  @brief solve the linear system Ax = b using the Cholesky factorization A = LL^T.
@@ -331,7 +331,7 @@ A_EXTERN void a_linalg_cho_upper(a_float const *L, a_uint n, a_float *x);
  @param[in] n the order of the square matrix A (number of rows and columns).
  @param[in,out] x on input, contains the vector b. on output, contains the solution vector x.
 */
-A_EXTERN void a_linalg_cho_solve(a_float const *A, a_uint n, a_float *x);
+A_EXTERN void a_linalg_cho_solve(a_real const *A, a_uint n, a_real *x);
 
 /*!
  @brief compute the inverse of a matrix using its Cholesky factorization A = LL^T.
@@ -340,7 +340,7 @@ A_EXTERN void a_linalg_cho_solve(a_float const *A, a_uint n, a_float *x);
  @param[in] b a pre-allocated temporary buffer of size n for intermediate computations.
  @param[out] I the output matrix where the inverse of A will be stored.
 */
-A_EXTERN void a_linalg_cho_inv(a_float const *A, a_uint n, a_float *b, a_float *I);
+A_EXTERN void a_linalg_cho_inv(a_real const *A, a_uint n, a_real *b, a_real *I);
 
 #if defined(__cplusplus)
 } /* extern "C" */

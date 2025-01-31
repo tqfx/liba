@@ -16,16 +16,16 @@
 int liba_hpf_new(lua_State *L)
 {
     a_hpf *ctx;
-    a_float alpha;
+    a_real alpha;
     if (lua_gettop(L) > 1)
     {
-        a_float fc = (a_float)luaL_checknumber(L, 1);
-        a_float ts = (a_float)luaL_checknumber(L, 2);
+        a_real fc = (a_real)luaL_checknumber(L, 1);
+        a_real ts = (a_real)luaL_checknumber(L, 2);
         alpha = A_HPF_GEN(fc, ts);
     }
     else
     {
-        alpha = (a_float)luaL_checknumber(L, 1);
+        alpha = (a_real)luaL_checknumber(L, 1);
     }
     ctx = lua_newclass(L, a_hpf);
     lua_registry_get(L, liba_hpf_new);
@@ -49,13 +49,13 @@ int liba_hpf_gen(lua_State *L)
     {
         if (lua_gettop(L) > 2)
         {
-            a_float fc = (a_float)luaL_checknumber(L, 2);
-            a_float ts = (a_float)luaL_checknumber(L, 3);
+            a_real fc = (a_real)luaL_checknumber(L, 2);
+            a_real ts = (a_real)luaL_checknumber(L, 3);
             ctx->alpha = A_HPF_GEN(fc, ts);
         }
         else
         {
-            ctx->alpha = (a_float)luaL_checknumber(L, 2);
+            ctx->alpha = (a_real)luaL_checknumber(L, 2);
         }
         lua_pushvalue(L, 1);
         return 1;
@@ -75,7 +75,7 @@ int liba_hpf_iter(lua_State *L)
     a_hpf *const ctx = (a_hpf *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float x = (a_float)luaL_checknumber(L, 2);
+        a_real x = (a_real)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_hpf_iter(ctx, x));
         return 1;
     }

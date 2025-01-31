@@ -5,21 +5,21 @@
 static void test_mul(void)
 {
     a_uint i;
-    a_float z[3 * 3];
-    a_float x[3 * 3] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    a_float y[3 * 3] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
+    a_real z[3 * 3];
+    a_real x[3 * 3] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    a_real y[3 * 3] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
 
     debug("X\t={");
     for (i = 0; i < 9; ++i)
     {
-        debug("%" A_FLOAT_PRI "g%c", x[i], i < 8 ? ',' : '}');
+        debug("%" A_REAL_PRI "g%c", x[i], i < 8 ? ',' : '}');
     }
     debug("\n");
 
     debug("Y\t={");
     for (i = 0; i < 9; ++i)
     {
-        debug("%" A_FLOAT_PRI "g%c", y[i], i < 8 ? ',' : '}');
+        debug("%" A_REAL_PRI "g%c", y[i], i < 8 ? ',' : '}');
     }
     debug("\n");
 
@@ -28,7 +28,7 @@ static void test_mul(void)
     debug("XY\t={");
     for (i = 0; i < 9; ++i)
     {
-        debug("%" A_FLOAT_PRI "g%c", z[i], i < 8 ? ',' : '}');
+        debug("%" A_REAL_PRI "g%c", z[i], i < 8 ? ',' : '}');
     }
     debug("\n");
 
@@ -37,7 +37,7 @@ static void test_mul(void)
     debug("X'Y\t={");
     for (i = 0; i < 9; ++i)
     {
-        debug("%" A_FLOAT_PRI "g%c", z[i], i < 8 ? ',' : '}');
+        debug("%" A_REAL_PRI "g%c", z[i], i < 8 ? ',' : '}');
     }
     debug("\n");
 
@@ -46,7 +46,7 @@ static void test_mul(void)
     debug("XY'\t={");
     for (i = 0; i < 9; ++i)
     {
-        debug("%" A_FLOAT_PRI "g%c", z[i], i < 8 ? ',' : '}');
+        debug("%" A_REAL_PRI "g%c", z[i], i < 8 ? ',' : '}');
     }
     debug("\n");
 
@@ -55,11 +55,11 @@ static void test_mul(void)
     debug("X'Y'\t={");
     for (i = 0; i < 9; ++i)
     {
-        debug("%" A_FLOAT_PRI "g%c", z[i], i < 8 ? ',' : '}');
+        debug("%" A_REAL_PRI "g%c", z[i], i < 8 ? ',' : '}');
     }
     debug("\n");
 
-    debug("X.Y\t=%" A_FLOAT_PRI "g\n", a_linalg_dot(x, y, 9));
+    debug("X.Y\t=%" A_REAL_PRI "g\n", a_linalg_dot(x, y, 9));
 }
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */

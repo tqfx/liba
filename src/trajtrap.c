@@ -5,12 +5,12 @@
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
 
-a_float a_trajtrap_gen(a_trajtrap *ctx, a_float vm, a_float ac, a_float de,
-                       a_float p0, a_float p1, a_float v0, a_float v1)
+a_real a_trajtrap_gen(a_trajtrap *ctx, a_real vm, a_real ac, a_real de,
+                      a_real p0, a_real p1, a_real v0, a_real v1)
 {
-    a_float v02, v12, vc2;
-    a_float const p = p1 - p0;
-    a_float const _2p = 2 * p;
+    a_real v02, v12, vc2;
+    a_real const p = p1 - p0;
+    a_real const _2p = 2 * p;
     int const reversed = p < 0;
     if (ac == de) { return 0; }
     if (vm < 0) { vm = -vm; }
@@ -29,8 +29,8 @@ a_float a_trajtrap_gen(a_trajtrap *ctx, a_float vm, a_float ac, a_float de,
         ctx->vc = reversed ? -vm : vm;
         ctx->ta = (ctx->vc - v0) / ac;
         ctx->t = (v1 - ctx->vc) / de;
-        ctx->pa = p0 + ctx->v0 * ctx->ta + A_FLOAT_C(0.5) * ac * ctx->ta * ctx->ta;
-        ctx->pd = p1 - ctx->vc * ctx->t - A_FLOAT_C(0.5) * de * ctx->t * ctx->t;
+        ctx->pa = p0 + ctx->v0 * ctx->ta + A_REAL_C(0.5) * ac * ctx->ta * ctx->ta;
+        ctx->pd = p1 - ctx->vc * ctx->t - A_REAL_C(0.5) * de * ctx->t * ctx->t;
         ctx->td = ctx->ta + (ctx->pd - ctx->pa) / ctx->vc;
         ctx->t += ctx->td;
     }
@@ -38,20 +38,20 @@ a_float a_trajtrap_gen(a_trajtrap *ctx, a_float vm, a_float ac, a_float de,
     {
         v12 = v02 + _2p * ac;
         if (v12 < 0) { return 0; }
-        ctx->v1 = a_float_sqrt(v12);
+        ctx->v1 = a_real_sqrt(v12);
         if (reversed) { ctx->v1 = -ctx->v1; }
         ctx->vc = ctx->v1;
         ctx->t = (ctx->v1 - v0) / ac;
         ctx->ta = ctx->t;
         ctx->td = ctx->t;
-        ctx->pa = p0 + ctx->v0 * ctx->t + A_FLOAT_C(0.5) * ac * ctx->t * ctx->t;
+        ctx->pa = p0 + ctx->v0 * ctx->t + A_REAL_C(0.5) * ac * ctx->t * ctx->t;
         ctx->pd = p1;
     }
     else if (vc2 <= v02 && vc2 > v12) /* deceleration */
     {
         v12 = v02 + _2p * de;
         if (v12 < 0) { return 0; }
-        ctx->v1 = a_float_sqrt(v12);
+        ctx->v1 = a_real_sqrt(v12);
         if (reversed) { ctx->v1 = -ctx->v1; }
         ctx->vc = ctx->v0;
         ctx->t = (ctx->v1 - v0) / de;
@@ -62,12 +62,12 @@ a_float a_trajtrap_gen(a_trajtrap *ctx, a_float vm, a_float ac, a_float de,
     }
     else /* acceleration, deceleration */
     {
-        ctx->vc = a_float_sqrt(vc2);
+        ctx->vc = a_real_sqrt(vc2);
         if (reversed) { ctx->vc = -ctx->vc; }
         ctx->t = (ctx->vc - v0) / ac;
         ctx->ta = ctx->t;
         ctx->td = ctx->t;
-        ctx->pa = p0 + ctx->v0 * ctx->t + A_FLOAT_C(0.5) * ac * ctx->t * ctx->t;
+        ctx->pa = p0 + ctx->v0 * ctx->t + A_REAL_C(0.5) * ac * ctx->t * ctx->t;
         ctx->t += (v1 - ctx->vc) / de;
         ctx->pd = ctx->pa;
     }
@@ -76,7 +76,7 @@ a_float a_trajtrap_gen(a_trajtrap *ctx, a_float vm, a_float ac, a_float de,
     return ctx->t;
 }
 
-a_float a_trajtrap_pos(a_trajtrap const *ctx, a_float x)
+a_real a_trajtrap_pos(a_trajtrap const *ctx, a_real x)
 {
     if (x >= ctx->ta)
     {
@@ -87,18 +87,18 @@ a_float a_trajtrap_pos(a_trajtrap const *ctx, a_float x)
         if (x < ctx->t) /* final blend */
         {
             x -= ctx->td;
-            return ctx->pd + ctx->vc * x + A_FLOAT_C(0.5) * ctx->de * x * x;
+            return ctx->pd + ctx->vc * x + A_REAL_C(0.5) * ctx->de * x * x;
         }
         return ctx->p1;
     }
     if (x > 0) /* initial blend */
     {
-        return ctx->p0 + ctx->v0 * x + A_FLOAT_C(0.5) * ctx->ac * x * x;
+        return ctx->p0 + ctx->v0 * x + A_REAL_C(0.5) * ctx->ac * x * x;
     }
     return ctx->p0;
 }
 
-a_float a_trajtrap_vel(a_trajtrap const *ctx, a_float x)
+a_real a_trajtrap_vel(a_trajtrap const *ctx, a_real x)
 {
     if (x >= ctx->ta)
     {
@@ -119,7 +119,7 @@ a_float a_trajtrap_vel(a_trajtrap const *ctx, a_float x)
     return ctx->v0;
 }
 
-a_float a_trajtrap_acc(a_trajtrap const *ctx, a_float x)
+a_real a_trajtrap_acc(a_trajtrap const *ctx, a_real x)
 {
     if (x < ctx->ta)
     {

@@ -233,63 +233,63 @@ A_EXTERN a_f64 a_f64_rsqrt(a_f64 x);
 
 /*!
  @ingroup liba
- @addtogroup a_float floating-point number
+ @addtogroup a_real floating-point number
  @{
 */
 
 /*! \f$ e \f$ */
-#define A_FLOAT_E A_FLOAT_C(A_E)
+#define A_REAL_E A_REAL_C(A_E)
 /*! \f$ \log_{2}{e}=\frac{1}{\ln{2}} \f$ */
-#define A_FLOAT_LOG2E A_FLOAT_C(A_LOG2E)
+#define A_REAL_LOG2E A_REAL_C(A_LOG2E)
 /*! \f$ \lg{e}=\frac{1}{\ln{2}+\ln{5}} \f$ */
-#define A_FLOAT_LOG10E A_FLOAT_C(A_LOG10E)
+#define A_REAL_LOG10E A_REAL_C(A_LOG10E)
 /*! \f$ \ln{2} \f$ */
-#define A_FLOAT_LN2 A_FLOAT_C(A_LN2)
+#define A_REAL_LN2 A_REAL_C(A_LN2)
 /*! \f$ \frac{1}{\ln{2}} \f$ */
-#define A_FLOAT_LN1_2 A_FLOAT_C(A_LN1_2)
+#define A_REAL_LN1_2 A_REAL_C(A_LN1_2)
 /*! \f$ \ln{10} \f$ */
-#define A_FLOAT_LN10 A_FLOAT_C(A_LN10)
+#define A_REAL_LN10 A_REAL_C(A_LN10)
 /*! \f$ \frac{1}{\ln{10}} \f$ */
-#define A_FLOAT_LN1_10 A_FLOAT_C(A_LN1_10)
+#define A_REAL_LN1_10 A_REAL_C(A_LN1_10)
 /*! \f$ \pi \f$ */
-#define A_FLOAT_PI A_FLOAT_C(A_PI)
+#define A_REAL_PI A_REAL_C(A_PI)
 /*! \f$ 2\pi \f$ */
-#define A_FLOAT_TAU A_FLOAT_C(A_TAU)
+#define A_REAL_TAU A_REAL_C(A_TAU)
 /*! \f$ \frac{\pi}{2} \f$ */
-#define A_FLOAT_PI_2 A_FLOAT_C(A_PI_2)
+#define A_REAL_PI_2 A_REAL_C(A_PI_2)
 /*! \f$ \frac{\pi}{4} \f$ */
-#define A_FLOAT_PI_4 A_FLOAT_C(A_PI_4)
+#define A_REAL_PI_4 A_REAL_C(A_PI_4)
 /*! \f$ \frac{1}{\pi} \f$ */
-#define A_FLOAT_1_PI A_FLOAT_C(A_1_PI)
+#define A_REAL_1_PI A_REAL_C(A_1_PI)
 /*! \f$ \frac{2}{\pi} \f$ */
-#define A_FLOAT_2_PI A_FLOAT_C(A_2_PI)
+#define A_REAL_2_PI A_REAL_C(A_2_PI)
 /*! \f$ \frac{1}{2\pi} \f$ */
-#define A_FLOAT_1_TAU A_FLOAT_C(A_1_TAU)
+#define A_REAL_1_TAU A_REAL_C(A_1_TAU)
 /*! \f$ \frac{2}{\sqrt{\pi}} \f$ */
-#define A_FLOAT_2_SQRTPI A_FLOAT_C(A_2_SQRTPI)
+#define A_REAL_2_SQRTPI A_REAL_C(A_2_SQRTPI)
 /*! \f$ \sqrt{2} \f$ */
-#define A_FLOAT_SQRT2 A_FLOAT_C(A_SQRT2)
+#define A_REAL_SQRT2 A_REAL_C(A_SQRT2)
 /*! \f$ \frac{1}{\sqrt{2}}=\frac{\sqrt{2}}{2} \f$ */
-#define A_FLOAT_SQRT1_2 A_FLOAT_C(A_SQRT1_2)
+#define A_REAL_SQRT1_2 A_REAL_C(A_SQRT1_2)
 /*! \f$ \sqrt{3} \f$ */
-#define A_FLOAT_SQRT3 A_FLOAT_C(A_SQRT3)
+#define A_REAL_SQRT3 A_REAL_C(A_SQRT3)
 /*! \f$ \frac{1}{\sqrt{3}}=\frac{\sqrt{3}}{3} \f$ */
-#define A_FLOAT_SQRT1_3 A_FLOAT_C(A_SQRT1_3)
+#define A_REAL_SQRT1_3 A_REAL_C(A_SQRT1_3)
 
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
 
-A_EXTERN a_float a_float_asinh(a_float x);
-A_EXTERN a_float a_float_acosh(a_float x);
-A_EXTERN a_float a_float_atanh(a_float x);
-A_EXTERN a_float a_float_expm1(a_float x);
-A_EXTERN a_float a_float_log1p(a_float x);
-A_EXTERN a_float a_float_atan2(a_float y, a_float x);
-A_EXTERN a_float a_float_norm2(a_float x, a_float y);
-A_EXTERN a_float a_float_norm3(a_float x, a_float y, a_float z);
-A_EXTERN a_float a_float_norm_(a_float const *p, a_size n, a_size c);
-A_EXTERN a_float a_float_norm(a_float const *p, a_size n);
+A_EXTERN a_real a_real_asinh(a_real x);
+A_EXTERN a_real a_real_acosh(a_real x);
+A_EXTERN a_real a_real_atanh(a_real x);
+A_EXTERN a_real a_real_expm1(a_real x);
+A_EXTERN a_real a_real_log1p(a_real x);
+A_EXTERN a_real a_real_atan2(a_real y, a_real x);
+A_EXTERN a_real a_real_norm2(a_real x, a_real y);
+A_EXTERN a_real a_real_norm3(a_real x, a_real y, a_real z);
+A_EXTERN a_real a_real_norm_(a_real const *p, a_size n, a_size c);
+A_EXTERN a_real a_real_norm(a_real const *p, a_size n);
 
 /*!
  @brief calculate the sum of a float array
@@ -297,7 +297,7 @@ A_EXTERN a_float a_float_norm(a_float const *p, a_size n);
  @param[in] n number of a float array
  @return sum of a float array
 */
-A_EXTERN a_float a_float_sum(a_float const *p, a_size n);
+A_EXTERN a_real a_real_sum(a_real const *p, a_size n);
 
 /*!
  @brief calculate the absolute sum of a float array
@@ -305,7 +305,7 @@ A_EXTERN a_float a_float_sum(a_float const *p, a_size n);
  @param[in] n number of a float array
  @return absolute sum of a float array
 */
-A_EXTERN a_float a_float_sum1(a_float const *p, a_size n);
+A_EXTERN a_real a_real_sum1(a_real const *p, a_size n);
 
 /*!
  @brief calculate the sum of squares of a float array
@@ -313,7 +313,7 @@ A_EXTERN a_float a_float_sum1(a_float const *p, a_size n);
  @param[in] n number of a float array
  @return sum of squares of a float array
 */
-A_EXTERN a_float a_float_sum2(a_float const *p, a_size n);
+A_EXTERN a_real a_real_sum2(a_real const *p, a_size n);
 
 /*!
  @brief calculate the mean of a float array
@@ -321,15 +321,15 @@ A_EXTERN a_float a_float_sum2(a_float const *p, a_size n);
  @param[in] n number of a float array
  @return mean of a float array
 */
-A_EXTERN a_float a_float_mean(a_float const *p, a_size n);
+A_EXTERN a_real a_real_mean(a_real const *p, a_size n);
 
 /*!
- @brief swap two different a_float blocks of the same size
- @param[in,out] lhs points to a_float block on the left
- @param[in,out] rhs points to a_float block on the right
- @param[in] n the number of a_float block being swapped
+ @brief swap two different a_real blocks of the same size
+ @param[in,out] lhs points to a_real block on the left
+ @param[in,out] rhs points to a_real block on the right
+ @param[in] n the number of a_real block being swapped
 */
-A_EXTERN A_NONULL((1, 2)) void a_float_swap(a_float *__restrict lhs, a_float *__restrict rhs, a_size n);
+A_EXTERN A_NONULL((1, 2)) void a_real_swap(a_real *__restrict lhs, a_real *__restrict rhs, a_size n);
 
 /*!
  @brief push an element into the front of a float array
@@ -337,7 +337,7 @@ A_EXTERN A_NONULL((1, 2)) void a_float_swap(a_float *__restrict lhs, a_float *__
  @param[in] n number of a float array
  @param[in] x value
 */
-A_EXTERN void a_float_push_fore(a_float *p, a_size n, a_float x);
+A_EXTERN void a_real_push_fore(a_real *p, a_size n, a_real x);
 
 /*!
  @brief push an element into the end of a float array
@@ -345,7 +345,7 @@ A_EXTERN void a_float_push_fore(a_float *p, a_size n, a_float x);
  @param[in] n number of a float array
  @param[in] x value
 */
-A_EXTERN void a_float_push_back(a_float *p, a_size n, a_float x);
+A_EXTERN void a_real_push_back(a_real *p, a_size n, a_real x);
 
 /*!
  @brief push the elements into the front of a float array
@@ -354,8 +354,8 @@ A_EXTERN void a_float_push_back(a_float *p, a_size n, a_float x);
  @param[in] cache_p points to a cache array
  @param[in] cache_n number of a cache array
 */
-A_EXTERN void a_float_push_fore_(a_float *block_p, a_size block_n,
-                                 a_float const *cache_p, a_size cache_n);
+A_EXTERN void a_real_push_fore_(a_real *block_p, a_size block_n,
+                                a_real const *cache_p, a_size cache_n);
 
 /*!
  @brief push the elements into the end of a float array
@@ -364,22 +364,22 @@ A_EXTERN void a_float_push_fore_(a_float *block_p, a_size block_n,
  @param[in] cache_p points to a cache array
  @param[in] cache_n number of a cache array
 */
-A_EXTERN void a_float_push_back_(a_float *block_p, a_size block_n,
-                                 a_float const *cache_p, a_size cache_n);
+A_EXTERN void a_real_push_back_(a_real *block_p, a_size block_n,
+                                a_real const *cache_p, a_size cache_n);
 
 /*!
  @brief roll forward the elements of a float array circularly
  @param[in] p points to a float array
  @param[in] n number of a float array
 */
-A_EXTERN void a_float_roll_fore(a_float *p, a_size n);
+A_EXTERN void a_real_roll_fore(a_real *p, a_size n);
 
 /*!
  @brief roll backward the elements of a float array circularly
  @param[in] p points to a float array
  @param[in] n number of a float array
 */
-A_EXTERN void a_float_roll_back(a_float *p, a_size n);
+A_EXTERN void a_real_roll_back(a_real *p, a_size n);
 
 /*!
  @brief roll forward the elements of a float array circularly
@@ -388,8 +388,8 @@ A_EXTERN void a_float_roll_back(a_float *p, a_size n);
  @param[in] shift_p points to a shift array
  @param[in] shift_n number of a shift array
 */
-A_EXTERN void a_float_roll_fore_(a_float *block_p, a_size block_n,
-                                 a_float *shift_p, a_size shift_n);
+A_EXTERN void a_real_roll_fore_(a_real *block_p, a_size block_n,
+                                a_real *shift_p, a_size shift_n);
 
 /*!
  @brief roll backward the elements of a float array circularly
@@ -398,97 +398,97 @@ A_EXTERN void a_float_roll_fore_(a_float *block_p, a_size block_n,
  @param[in] shift_p points to a shift array
  @param[in] shift_n number of a shift array
 */
-A_EXTERN void a_float_roll_back_(a_float *block_p, a_size block_n,
-                                 a_float *shift_p, a_size shift_n);
+A_EXTERN void a_real_roll_back_(a_real *block_p, a_size block_n,
+                                a_real *shift_p, a_size shift_n);
 
 #if defined(__cplusplus)
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#define a_float_modf A_FLOAT_F(modf)
-#define a_float_frexp A_FLOAT_F(frexp)
-#define a_float_ldexp A_FLOAT_F(ldexp)
-#define a_float_scalbn A_FLOAT_F(scalbn)
-#define a_float_scalbln A_FLOAT_F(scalbln)
-#define a_float_nextafter A_FLOAT_F(nextafter)
-#define a_float_nexttoward A_FLOAT_F(nexttoward)
-#define a_float_copysign A_FLOAT_F(copysign)
+#define a_real_modf A_REAL_F(modf)
+#define a_real_frexp A_REAL_F(frexp)
+#define a_real_ldexp A_REAL_F(ldexp)
+#define a_real_scalbn A_REAL_F(scalbn)
+#define a_real_scalbln A_REAL_F(scalbln)
+#define a_real_nextafter A_REAL_F(nextafter)
+#define a_real_nexttoward A_REAL_F(nexttoward)
+#define a_real_copysign A_REAL_F(copysign)
 
-#define a_float_ma A_FLOAT_F(fma)
-#define a_float_nan A_FLOAT_F(nan)
-#define a_float_abs A_FLOAT_F(fabs)
-#define a_float_mod A_FLOAT_F(fmod)
-#define a_float_max A_FLOAT_F(fmax)
-#define a_float_min A_FLOAT_F(fmin)
-#define a_float_dim A_FLOAT_F(fdim)
-#define a_float_remquo A_FLOAT_F(remquo)
-#define a_float_remainder A_FLOAT_F(remainder)
+#define a_real_ma A_REAL_F(fma)
+#define a_real_nan A_REAL_F(nan)
+#define a_real_abs A_REAL_F(fabs)
+#define a_real_mod A_REAL_F(fmod)
+#define a_real_max A_REAL_F(fmax)
+#define a_real_min A_REAL_F(fmin)
+#define a_real_dim A_REAL_F(fdim)
+#define a_real_remquo A_REAL_F(remquo)
+#define a_real_remainder A_REAL_F(remainder)
 
-#define a_float_exp A_FLOAT_F(exp)
-#define a_float_exp2 A_FLOAT_F(exp2)
+#define a_real_exp A_REAL_F(exp)
+#define a_real_exp2 A_REAL_F(exp2)
 #if defined(A_HAVE_EXPM1) && (A_HAVE_EXPM1 + 0 > 0)
-#define a_float_expm1 A_FLOAT_F(expm1)
+#define a_real_expm1 A_REAL_F(expm1)
 #endif /* A_HAVE_EXPM1 */
 
-#define a_float_log A_FLOAT_F(log)
-#define a_float_logb A_FLOAT_F(logb)
-#define a_float_log2 A_FLOAT_F(log2)
-#define a_float_log10 A_FLOAT_F(log10)
+#define a_real_log A_REAL_F(log)
+#define a_real_logb A_REAL_F(logb)
+#define a_real_log2 A_REAL_F(log2)
+#define a_real_log10 A_REAL_F(log10)
 #if defined(A_HAVE_LOG1P) && (A_HAVE_LOG1P + 0 > 0)
-#define a_float_log1p A_FLOAT_F(log1p)
+#define a_real_log1p A_REAL_F(log1p)
 #endif /* A_HAVE_LOG1P */
-#define a_float_ilogb A_FLOAT_F(ilogb)
+#define a_real_ilogb A_REAL_F(ilogb)
 
-#define a_float_pow A_FLOAT_F(pow)
-#define a_float_sqrt A_FLOAT_F(sqrt)
-#define a_float_cbrt A_FLOAT_F(cbrt)
+#define a_real_pow A_REAL_F(pow)
+#define a_real_sqrt A_REAL_F(sqrt)
+#define a_real_cbrt A_REAL_F(cbrt)
 #if defined(_MSC_VER) && (_MSC_VER < 1900)
-#define a_float_hypot A_FLOAT_F(_hypot)
+#define a_real_hypot A_REAL_F(_hypot)
 #elif defined(A_HAVE_HYPOT) && (A_HAVE_HYPOT + 0 > 0)
-#define a_float_hypot A_FLOAT_F(hypot)
+#define a_real_hypot A_REAL_F(hypot)
 #else /* !A_HAVE_HYPOT */
-#define a_float_hypot a_float_norm2
+#define a_real_hypot a_real_norm2
 #endif /* A_HAVE_HYPOT */
 
-#define a_float_sin A_FLOAT_F(sin)
-#define a_float_cos A_FLOAT_F(cos)
-#define a_float_tan A_FLOAT_F(tan)
-#define a_float_asin A_FLOAT_F(asin)
-#define a_float_acos A_FLOAT_F(acos)
-#define a_float_atan A_FLOAT_F(atan)
+#define a_real_sin A_REAL_F(sin)
+#define a_real_cos A_REAL_F(cos)
+#define a_real_tan A_REAL_F(tan)
+#define a_real_asin A_REAL_F(asin)
+#define a_real_acos A_REAL_F(acos)
+#define a_real_atan A_REAL_F(atan)
 #if defined(A_HAVE_ATAN2) && (A_HAVE_ATAN2 + 0 > 0)
-#define a_float_atan2 A_FLOAT_F(atan2)
+#define a_real_atan2 A_REAL_F(atan2)
 #endif /* A_HAVE_ATAN2 */
 
-#define a_float_sinh A_FLOAT_F(sinh)
-#define a_float_cosh A_FLOAT_F(cosh)
-#define a_float_tanh A_FLOAT_F(tanh)
+#define a_real_sinh A_REAL_F(sinh)
+#define a_real_cosh A_REAL_F(cosh)
+#define a_real_tanh A_REAL_F(tanh)
 #if defined(A_HAVE_ASINH) && (A_HAVE_ASINH + 0 > 0)
-#define a_float_asinh A_FLOAT_F(asinh)
+#define a_real_asinh A_REAL_F(asinh)
 #endif /* A_HAVE_ASINH */
 #if defined(A_HAVE_ACOSH) && (A_HAVE_ACOSH + 0 > 0)
-#define a_float_acosh A_FLOAT_F(acosh)
+#define a_real_acosh A_REAL_F(acosh)
 #endif /* A_HAVE_ACOSH */
 #if defined(A_HAVE_ATANH) && (A_HAVE_ATANH + 0 > 0)
-#define a_float_atanh A_FLOAT_F(atanh)
+#define a_real_atanh A_REAL_F(atanh)
 #endif /* A_HAVE_ATANH */
 
-#define a_float_erf A_FLOAT_F(erf)
-#define a_float_erfc A_FLOAT_F(erfc)
-#define a_float_tgamma A_FLOAT_F(tgamma)
-#define a_float_lgamma A_FLOAT_F(lgamma)
+#define a_real_erf A_REAL_F(erf)
+#define a_real_erfc A_REAL_F(erfc)
+#define a_real_tgamma A_REAL_F(tgamma)
+#define a_real_lgamma A_REAL_F(lgamma)
 
-#define a_float_ceil A_FLOAT_F(ceil)
-#define a_float_floor A_FLOAT_F(floor)
-#define a_float_trunc A_FLOAT_F(trunc)
-#define a_float_round A_FLOAT_F(round)
-#define a_float_lround A_FLOAT_F(lround)
-#define a_float_llround A_FLOAT_F(llround)
-#define a_float_nearbyint A_FLOAT_F(nearbyint)
-#define a_float_rint A_FLOAT_F(rint)
-#define a_float_lrintt A_FLOAT_F(lrint)
-#define a_float_llrintt A_FLOAT_F(llrint)
+#define a_real_ceil A_REAL_F(ceil)
+#define a_real_floor A_REAL_F(floor)
+#define a_real_trunc A_REAL_F(trunc)
+#define a_real_round A_REAL_F(round)
+#define a_real_lround A_REAL_F(lround)
+#define a_real_llround A_REAL_F(llround)
+#define a_real_nearbyint A_REAL_F(nearbyint)
+#define a_real_rint A_REAL_F(rint)
+#define a_real_lrintt A_REAL_F(lrint)
+#define a_real_llrintt A_REAL_F(llrint)
 
-/*! @} a_float */
+/*! @} a_real */
 
 #endif /* a/math.h */

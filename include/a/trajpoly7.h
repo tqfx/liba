@@ -51,16 +51,16 @@ extern "C" {
  @param[in] j0 initial jerk
  @param[in] j1 final jerk
 */
-A_EXTERN void a_trajpoly7_gen(a_trajpoly7 *ctx, a_float ts,
-                              a_float p0, a_float p1,
-                              a_float v0, a_float v1,
-                              a_float a0, a_float a1,
-                              a_float j0, a_float j1);
-A_EXTERN void a_trajpoly7_gen0(a_trajpoly7 *ctx, a_float ts,
-                               a_float p0, a_float p1,
-                               a_float v0, a_float v1,
-                               a_float a0, a_float a1,
-                               a_float j0, a_float j1);
+A_EXTERN void a_trajpoly7_gen(a_trajpoly7 *ctx, a_real ts,
+                              a_real p0, a_real p1,
+                              a_real v0, a_real v1,
+                              a_real a0, a_real a1,
+                              a_real j0, a_real j1);
+A_EXTERN void a_trajpoly7_gen0(a_trajpoly7 *ctx, a_real ts,
+                               a_real p0, a_real p1,
+                               a_real v0, a_real v1,
+                               a_real a0, a_real a1,
+                               a_real j0, a_real j1);
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 1)
 A_EXTERN void a_trajpoly7_gen1(a_trajpoly7 *ctx);
 #endif /* A_TRAJPOLY7 */
@@ -82,7 +82,7 @@ A_EXTERN void a_trajpoly7_gen3(a_trajpoly7 *ctx);
  @param[in] x difference between current time and initial time
  @return position output
 */
-A_EXTERN a_float a_trajpoly7_pos(a_trajpoly7 const *ctx, a_float x);
+A_EXTERN a_real a_trajpoly7_pos(a_trajpoly7 const *ctx, a_real x);
 
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 1)
 /*!
@@ -96,7 +96,7 @@ A_EXTERN a_float a_trajpoly7_pos(a_trajpoly7 const *ctx, a_float x);
  @param[in] x difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_float a_trajpoly7_vel(a_trajpoly7 const *ctx, a_float x);
+A_EXTERN a_real a_trajpoly7_vel(a_trajpoly7 const *ctx, a_real x);
 #endif /* A_TRAJPOLY7 */
 
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 2)
@@ -111,7 +111,7 @@ A_EXTERN a_float a_trajpoly7_vel(a_trajpoly7 const *ctx, a_float x);
  @param[in] x difference between current time and initial time
  @return acceleration output
 */
-A_EXTERN a_float a_trajpoly7_acc(a_trajpoly7 const *ctx, a_float x);
+A_EXTERN a_real a_trajpoly7_acc(a_trajpoly7 const *ctx, a_real x);
 #endif /* A_TRAJPOLY7 */
 
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 3)
@@ -126,7 +126,7 @@ A_EXTERN a_float a_trajpoly7_acc(a_trajpoly7 const *ctx, a_float x);
  @param[in] x difference between current time and initial time
  @return jerk output
 */
-A_EXTERN a_float a_trajpoly7_jer(a_trajpoly7 const *ctx, a_float x);
+A_EXTERN a_real a_trajpoly7_jer(a_trajpoly7 const *ctx, a_real x);
 #endif /* A_TRAJPOLY7 */
 
 #if defined(__cplusplus)
@@ -150,52 +150,52 @@ typedef struct a_trajpoly7 trajpoly7;
 */
 struct a_trajpoly7
 {
-    a_float p[8]; /*!< coefficients of position */
+    a_real p[8]; /*!< coefficients of position */
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 1)
-    a_float v[7]; /*!< coefficients of velocity */
+    a_real v[7]; /*!< coefficients of velocity */
 #endif /* A_TRAJPOLY7 */
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 2)
-    a_float a[6]; /*!< coefficients of acceleration */
+    a_real a[6]; /*!< coefficients of acceleration */
 #endif /* A_TRAJPOLY7 */
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 3)
-    a_float j[5]; /*!< coefficients of jerk */
+    a_real j[5]; /*!< coefficients of jerk */
 #endif /* A_TRAJPOLY7 */
 #if defined(__cplusplus)
-    A_INLINE void gen(a_float ts, a_float p0, a_float p1,
-                      a_float v0 = 0, a_float v1 = 0,
-                      a_float a0 = 0, a_float a1 = 0,
-                      a_float j0 = 0, a_float j1 = 0)
+    A_INLINE void gen(a_real ts, a_real p0, a_real p1,
+                      a_real v0 = 0, a_real v1 = 0,
+                      a_real a0 = 0, a_real a1 = 0,
+                      a_real j0 = 0, a_real j1 = 0)
     {
         a_trajpoly7_gen(this, ts, p0, p1, v0, v1, a0, a1, j0, j1);
     }
-    A_INLINE void gen0(a_float ts, a_float p0, a_float p1,
-                       a_float v0 = 0, a_float v1 = 0,
-                       a_float a0 = 0, a_float a1 = 0,
-                       a_float j0 = 0, a_float j1 = 0)
+    A_INLINE void gen0(a_real ts, a_real p0, a_real p1,
+                       a_real v0 = 0, a_real v1 = 0,
+                       a_real a0 = 0, a_real a1 = 0,
+                       a_real j0 = 0, a_real j1 = 0)
     {
         a_trajpoly7_gen0(this, ts, p0, p1, v0, v1, a0, a1, j0, j1);
     }
-    A_INLINE a_float pos(a_float x) const
+    A_INLINE a_real pos(a_real x) const
     {
         return a_trajpoly7_pos(this, x);
     }
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 1)
     A_INLINE void gen1() { a_trajpoly7_gen1(this); }
-    A_INLINE a_float vel(a_float x) const
+    A_INLINE a_real vel(a_real x) const
     {
         return a_trajpoly7_vel(this, x);
     }
 #endif /* A_TRAJPOLY7 */
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 2)
     A_INLINE void gen2() { a_trajpoly7_gen2(this); }
-    A_INLINE a_float acc(a_float x) const
+    A_INLINE a_real acc(a_real x) const
     {
         return a_trajpoly7_acc(this, x);
     }
 #endif /* A_TRAJPOLY7 */
 #if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 3)
     A_INLINE void gen3() { a_trajpoly7_gen3(this); }
-    A_INLINE a_float jer(a_float x) const
+    A_INLINE a_real jer(a_real x) const
     {
         return a_trajpoly7_jer(this, x);
     }

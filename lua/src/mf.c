@@ -16,9 +16,9 @@
 */
 static int liba_mf_gauss_(lua_State *L, int arg)
 {
-    a_float const x = (a_float)luaL_checknumber(L, arg + 1);
-    a_float const sigma = (a_float)luaL_checknumber(L, arg + 2);
-    a_float const c = (a_float)luaL_checknumber(L, arg + 3);
+    a_real const x = (a_real)luaL_checknumber(L, arg + 1);
+    a_real const sigma = (a_real)luaL_checknumber(L, arg + 2);
+    a_real const c = (a_real)luaL_checknumber(L, arg + 3);
     lua_pushnumber(L, (lua_Number)a_mf_gauss(x, sigma, c));
     return 1;
 }
@@ -39,11 +39,11 @@ static int liba_mf_gauss(lua_State *L)
 */
 static int liba_mf_gauss2_(lua_State *L, int arg)
 {
-    a_float const x = (a_float)luaL_checknumber(L, arg + 1);
-    a_float const sigma1 = (a_float)luaL_checknumber(L, arg + 2);
-    a_float const c1 = (a_float)luaL_checknumber(L, arg + 3);
-    a_float const sigma2 = (a_float)luaL_checknumber(L, arg + 4);
-    a_float const c2 = (a_float)luaL_checknumber(L, arg + 4);
+    a_real const x = (a_real)luaL_checknumber(L, arg + 1);
+    a_real const sigma1 = (a_real)luaL_checknumber(L, arg + 2);
+    a_real const c1 = (a_real)luaL_checknumber(L, arg + 3);
+    a_real const sigma2 = (a_real)luaL_checknumber(L, arg + 4);
+    a_real const c2 = (a_real)luaL_checknumber(L, arg + 4);
     lua_pushnumber(L, (lua_Number)a_mf_gauss2(x, sigma1, c1, sigma2, c2));
     return 1;
 }
@@ -63,10 +63,10 @@ static int liba_mf_gauss2(lua_State *L)
 */
 static int liba_mf_gbell_(lua_State *L, int arg)
 {
-    a_float const x = (a_float)luaL_checknumber(L, arg + 1);
-    a_float const a = (a_float)luaL_checknumber(L, arg + 2);
-    a_float const b = (a_float)luaL_checknumber(L, arg + 3);
-    a_float const c = (a_float)luaL_checknumber(L, arg + 4);
+    a_real const x = (a_real)luaL_checknumber(L, arg + 1);
+    a_real const a = (a_real)luaL_checknumber(L, arg + 2);
+    a_real const b = (a_real)luaL_checknumber(L, arg + 3);
+    a_real const c = (a_real)luaL_checknumber(L, arg + 4);
     lua_pushnumber(L, (lua_Number)a_mf_gbell(x, a, b, c));
     return 1;
 }
@@ -85,9 +85,9 @@ static int liba_mf_gbell(lua_State *L)
 */
 static int liba_mf_sig_(lua_State *L, int arg)
 {
-    a_float const x = (a_float)luaL_checknumber(L, arg + 1);
-    a_float const a = (a_float)luaL_checknumber(L, arg + 2);
-    a_float const c = (a_float)luaL_checknumber(L, arg + 3);
+    a_real const x = (a_real)luaL_checknumber(L, arg + 1);
+    a_real const a = (a_real)luaL_checknumber(L, arg + 2);
+    a_real const c = (a_real)luaL_checknumber(L, arg + 3);
     lua_pushnumber(L, (lua_Number)a_mf_sig(x, a, c));
     return 1;
 }
@@ -108,11 +108,11 @@ static int liba_mf_sig(lua_State *L)
 */
 static int liba_mf_dsig_(lua_State *L, int arg)
 {
-    a_float const x = (a_float)luaL_checknumber(L, arg + 1);
-    a_float const a1 = (a_float)luaL_checknumber(L, arg + 2);
-    a_float const c1 = (a_float)luaL_checknumber(L, arg + 3);
-    a_float const a2 = (a_float)luaL_checknumber(L, arg + 4);
-    a_float const c2 = (a_float)luaL_checknumber(L, arg + 4);
+    a_real const x = (a_real)luaL_checknumber(L, arg + 1);
+    a_real const a1 = (a_real)luaL_checknumber(L, arg + 2);
+    a_real const c1 = (a_real)luaL_checknumber(L, arg + 3);
+    a_real const a2 = (a_real)luaL_checknumber(L, arg + 4);
+    a_real const c2 = (a_real)luaL_checknumber(L, arg + 4);
     lua_pushnumber(L, (lua_Number)a_mf_dsig(x, a1, c1, a2, c2));
     return 1;
 }
@@ -133,11 +133,11 @@ static int liba_mf_dsig(lua_State *L)
 */
 static int liba_mf_psig_(lua_State *L, int arg)
 {
-    a_float const x = (a_float)luaL_checknumber(L, arg + 1);
-    a_float const a1 = (a_float)luaL_checknumber(L, arg + 2);
-    a_float const c1 = (a_float)luaL_checknumber(L, arg + 3);
-    a_float const a2 = (a_float)luaL_checknumber(L, arg + 4);
-    a_float const c2 = (a_float)luaL_checknumber(L, arg + 4);
+    a_real const x = (a_real)luaL_checknumber(L, arg + 1);
+    a_real const a1 = (a_real)luaL_checknumber(L, arg + 2);
+    a_real const c1 = (a_real)luaL_checknumber(L, arg + 3);
+    a_real const a2 = (a_real)luaL_checknumber(L, arg + 4);
+    a_real const c2 = (a_real)luaL_checknumber(L, arg + 4);
     lua_pushnumber(L, (lua_Number)a_mf_psig(x, a1, c1, a2, c2));
     return 1;
 }
@@ -158,11 +158,11 @@ static int liba_mf_psig(lua_State *L)
 */
 static int liba_mf_trap_(lua_State *L, int arg)
 {
-    a_float const x = (a_float)luaL_checknumber(L, arg + 1);
-    a_float const a = (a_float)luaL_checknumber(L, arg + 2);
-    a_float const b = (a_float)luaL_checknumber(L, arg + 3);
-    a_float const c = (a_float)luaL_checknumber(L, arg + 4);
-    a_float const d = (a_float)luaL_checknumber(L, arg + 4);
+    a_real const x = (a_real)luaL_checknumber(L, arg + 1);
+    a_real const a = (a_real)luaL_checknumber(L, arg + 2);
+    a_real const b = (a_real)luaL_checknumber(L, arg + 3);
+    a_real const c = (a_real)luaL_checknumber(L, arg + 4);
+    a_real const d = (a_real)luaL_checknumber(L, arg + 4);
     lua_pushnumber(L, (lua_Number)a_mf_trap(x, a, b, c, d));
     return 1;
 }
@@ -182,10 +182,10 @@ static int liba_mf_trap(lua_State *L)
 */
 static int liba_mf_tri_(lua_State *L, int arg)
 {
-    a_float const x = (a_float)luaL_checknumber(L, arg + 1);
-    a_float const a = (a_float)luaL_checknumber(L, arg + 2);
-    a_float const b = (a_float)luaL_checknumber(L, arg + 3);
-    a_float const c = (a_float)luaL_checknumber(L, arg + 4);
+    a_real const x = (a_real)luaL_checknumber(L, arg + 1);
+    a_real const a = (a_real)luaL_checknumber(L, arg + 2);
+    a_real const b = (a_real)luaL_checknumber(L, arg + 3);
+    a_real const c = (a_real)luaL_checknumber(L, arg + 4);
     lua_pushnumber(L, (lua_Number)a_mf_tri(x, a, b, c));
     return 1;
 }
@@ -204,9 +204,9 @@ static int liba_mf_tri(lua_State *L)
 */
 static int liba_mf_lins_(lua_State *L, int arg)
 {
-    a_float const x = (a_float)luaL_checknumber(L, arg + 1);
-    a_float const a = (a_float)luaL_checknumber(L, arg + 2);
-    a_float const b = (a_float)luaL_checknumber(L, arg + 3);
+    a_real const x = (a_real)luaL_checknumber(L, arg + 1);
+    a_real const a = (a_real)luaL_checknumber(L, arg + 2);
+    a_real const b = (a_real)luaL_checknumber(L, arg + 3);
     lua_pushnumber(L, (lua_Number)a_mf_lins(x, a, b));
     return 1;
 }
@@ -225,9 +225,9 @@ static int liba_mf_lins(lua_State *L)
 */
 static int liba_mf_linz_(lua_State *L, int arg)
 {
-    a_float const x = (a_float)luaL_checknumber(L, arg + 1);
-    a_float const a = (a_float)luaL_checknumber(L, arg + 2);
-    a_float const b = (a_float)luaL_checknumber(L, arg + 3);
+    a_real const x = (a_real)luaL_checknumber(L, arg + 1);
+    a_real const a = (a_real)luaL_checknumber(L, arg + 2);
+    a_real const b = (a_real)luaL_checknumber(L, arg + 3);
     lua_pushnumber(L, (lua_Number)a_mf_linz(x, a, b));
     return 1;
 }
@@ -246,9 +246,9 @@ static int liba_mf_linz(lua_State *L)
 */
 static int liba_mf_s_(lua_State *L, int arg)
 {
-    a_float const x = (a_float)luaL_checknumber(L, arg + 1);
-    a_float const a = (a_float)luaL_checknumber(L, arg + 2);
-    a_float const b = (a_float)luaL_checknumber(L, arg + 3);
+    a_real const x = (a_real)luaL_checknumber(L, arg + 1);
+    a_real const a = (a_real)luaL_checknumber(L, arg + 2);
+    a_real const b = (a_real)luaL_checknumber(L, arg + 3);
     lua_pushnumber(L, (lua_Number)a_mf_s(x, a, b));
     return 1;
 }
@@ -267,9 +267,9 @@ static int liba_mf_s(lua_State *L)
 */
 static int liba_mf_z_(lua_State *L, int arg)
 {
-    a_float const x = (a_float)luaL_checknumber(L, arg + 1);
-    a_float const a = (a_float)luaL_checknumber(L, arg + 2);
-    a_float const b = (a_float)luaL_checknumber(L, arg + 3);
+    a_real const x = (a_real)luaL_checknumber(L, arg + 1);
+    a_real const a = (a_real)luaL_checknumber(L, arg + 2);
+    a_real const b = (a_real)luaL_checknumber(L, arg + 3);
     lua_pushnumber(L, (lua_Number)a_mf_z(x, a, b));
     return 1;
 }
@@ -290,11 +290,11 @@ static int liba_mf_z(lua_State *L)
 */
 static int liba_mf_pi_(lua_State *L, int arg)
 {
-    a_float const x = (a_float)luaL_checknumber(L, arg + 1);
-    a_float const a = (a_float)luaL_checknumber(L, arg + 2);
-    a_float const b = (a_float)luaL_checknumber(L, arg + 3);
-    a_float const c = (a_float)luaL_checknumber(L, arg + 4);
-    a_float const d = (a_float)luaL_checknumber(L, arg + 4);
+    a_real const x = (a_real)luaL_checknumber(L, arg + 1);
+    a_real const a = (a_real)luaL_checknumber(L, arg + 2);
+    a_real const b = (a_real)luaL_checknumber(L, arg + 3);
+    a_real const c = (a_real)luaL_checknumber(L, arg + 4);
+    a_real const d = (a_real)luaL_checknumber(L, arg + 4);
     lua_pushnumber(L, (lua_Number)a_mf_pi(x, a, b, c, d));
     return 1;
 }

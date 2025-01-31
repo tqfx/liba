@@ -23,13 +23,13 @@ PS = +1 * X
 PM = +2 * X
 PL = +3 * X
 me = [
-    liba.new_float([liba.mf.TRI, NL, NL, NM]),
-    liba.new_float([liba.mf.TRI, NL, NM, NS]),
-    liba.new_float([liba.mf.TRI, NM, NS, ZO]),
-    liba.new_float([liba.mf.TRI, NS, ZO, PS]),
-    liba.new_float([liba.mf.TRI, ZO, PS, PM]),
-    liba.new_float([liba.mf.TRI, PS, PM, PL]),
-    liba.new_float([liba.mf.TRI, PM, PL, PL]),
+    liba.new_real([liba.mf.TRI, NL, NL, NM]),
+    liba.new_real([liba.mf.TRI, NL, NM, NS]),
+    liba.new_real([liba.mf.TRI, NM, NS, ZO]),
+    liba.new_real([liba.mf.TRI, NS, ZO, PS]),
+    liba.new_real([liba.mf.TRI, ZO, PS, PM]),
+    liba.new_real([liba.mf.TRI, PS, PM, PL]),
+    liba.new_real([liba.mf.TRI, PM, PL, PL]),
 ]
 NL = -6 * X
 NM = -4 * X
@@ -39,13 +39,13 @@ PS = +2 * X
 PM = +4 * X
 PL = +6 * X
 mec = [
-    liba.new_float([liba.mf.TRI, NL, NL, NM]),
-    liba.new_float([liba.mf.TRI, NL, NM, NS]),
-    liba.new_float([liba.mf.TRI, NM, NS, ZO]),
-    liba.new_float([liba.mf.TRI, NS, ZO, PS]),
-    liba.new_float([liba.mf.TRI, ZO, PS, PM]),
-    liba.new_float([liba.mf.TRI, PS, PM, PL]),
-    liba.new_float([liba.mf.TRI, PM, PL, PL]),
+    liba.new_real([liba.mf.TRI, NL, NL, NM]),
+    liba.new_real([liba.mf.TRI, NL, NM, NS]),
+    liba.new_real([liba.mf.TRI, NM, NS, ZO]),
+    liba.new_real([liba.mf.TRI, NS, ZO, PS]),
+    liba.new_real([liba.mf.TRI, ZO, PS, PM]),
+    liba.new_real([liba.mf.TRI, PS, PM, PL]),
+    liba.new_real([liba.mf.TRI, PM, PL, PL]),
 ]
 X = 10 / 3
 NL = -3 * X

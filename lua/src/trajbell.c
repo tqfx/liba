@@ -35,19 +35,19 @@ int liba_trajbell_new(lua_State *L)
 */
 int liba_trajbell_gen(lua_State *L)
 {
-    a_float v0 = 0, v1 = 0;
-    a_float jm, am, vm, p0, p1;
+    a_real v0 = 0, v1 = 0;
+    a_real jm, am, vm, p0, p1;
     int const top = lua_gettop(L);
     a_trajbell *const ctx = (a_trajbell *)lua_touserdata(L, 1);
     if (ctx)
     {
-        jm = (a_float)luaL_checknumber(L, 2);
-        am = (a_float)luaL_checknumber(L, 3);
-        vm = (a_float)luaL_checknumber(L, 4);
-        p0 = (a_float)luaL_checknumber(L, 5);
-        p1 = (a_float)luaL_checknumber(L, 6);
-        if (top >= 7) { v0 = (a_float)luaL_checknumber(L, 7); }
-        if (top >= 8) { v1 = (a_float)luaL_checknumber(L, 8); }
+        jm = (a_real)luaL_checknumber(L, 2);
+        am = (a_real)luaL_checknumber(L, 3);
+        vm = (a_real)luaL_checknumber(L, 4);
+        p0 = (a_real)luaL_checknumber(L, 5);
+        p1 = (a_real)luaL_checknumber(L, 6);
+        if (top >= 7) { v0 = (a_real)luaL_checknumber(L, 7); }
+        if (top >= 8) { v1 = (a_real)luaL_checknumber(L, 8); }
         a_trajbell_gen(ctx, jm, am, vm, p0, p1, v0, v1);
         lua_pushnumber(L, (lua_Number)ctx->t);
         return 1;
@@ -67,7 +67,7 @@ int liba_trajbell_pos(lua_State *L)
     a_trajbell const *const ctx = (a_trajbell const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const x = (a_float)luaL_checknumber(L, 2);
+        a_real const x = (a_real)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_trajbell_pos(ctx, x));
         return 1;
     }
@@ -86,7 +86,7 @@ int liba_trajbell_vel(lua_State *L)
     a_trajbell const *const ctx = (a_trajbell const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const x = (a_float)luaL_checknumber(L, 2);
+        a_real const x = (a_real)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_trajbell_vel(ctx, x));
         return 1;
     }
@@ -105,7 +105,7 @@ int liba_trajbell_acc(lua_State *L)
     a_trajbell const *const ctx = (a_trajbell const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const x = (a_float)luaL_checknumber(L, 2);
+        a_real const x = (a_real)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_trajbell_acc(ctx, x));
         return 1;
     }
@@ -124,7 +124,7 @@ int liba_trajbell_jer(lua_State *L)
     a_trajbell const *const ctx = (a_trajbell const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const x = (a_float)luaL_checknumber(L, 2);
+        a_real const x = (a_real)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_trajbell_jer(ctx, x));
         return 1;
     }

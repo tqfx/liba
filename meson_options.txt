@@ -1,4 +1,4 @@
-option('float',
+option('real',
         type: 'combo',
         choices: ['4', '8', '16'],
         value: '8')

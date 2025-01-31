@@ -17,10 +17,10 @@ liba = "0.1"
 
 /// floating-point number stored using `f64`
 #[cfg(not(feature = "float"))]
-pub type float = f64;
+pub type real = f64;
 /// floating-point number stored using `f32`
 #[cfg(feature = "float")]
-pub type float = f32;
+pub type real = f32;
 
 #[cfg(feature = "std")]
 extern crate std;
@@ -88,31 +88,31 @@ pub fn f64_rsqrt(x: f64) -> f64 {
 }
 
 extern "C" {
-    fn a_float_sum(p: *const float, n: usize) -> float;
-    fn a_float_sum1(p: *const float, n: usize) -> float;
-    fn a_float_sum2(p: *const float, n: usize) -> float;
-    fn a_float_mean(p: *const float, n: usize) -> float;
+    fn a_real_sum(p: *const real, n: usize) -> real;
+    fn a_real_sum1(p: *const real, n: usize) -> real;
+    fn a_real_sum2(p: *const real, n: usize) -> real;
+    fn a_real_mean(p: *const real, n: usize) -> real;
 }
 
 /// calculate the sum of a float array
 #[inline(always)]
-pub fn float_sum(x: &[float]) -> float {
-    unsafe { a_float_sum(x.as_ptr(), x.len()) }
+pub fn real_sum(x: &[real]) -> real {
+    unsafe { a_real_sum(x.as_ptr(), x.len()) }
 }
 /// calculate the absolute sum of a float array
 #[inline(always)]
-pub fn float_sum1(x: &[float]) -> float {
-    unsafe { a_float_sum1(x.as_ptr(), x.len()) }
+pub fn real_sum1(x: &[real]) -> real {
+    unsafe { a_real_sum1(x.as_ptr(), x.len()) }
 }
 /// calculate the sum of squares of a float array
 #[inline(always)]
-pub fn float_sum2(x: &[float]) -> float {
-    unsafe { a_float_sum2(x.as_ptr(), x.len()) }
+pub fn real_sum2(x: &[real]) -> real {
+    unsafe { a_real_sum2(x.as_ptr(), x.len()) }
 }
 /// calculate the mean of a float array
 #[inline(always)]
-pub fn float_mean(x: &[float]) -> float {
-    unsafe { a_float_mean(x.as_ptr(), x.len()) }
+pub fn real_mean(x: &[real]) -> real {
+    unsafe { a_real_mean(x.as_ptr(), x.len()) }
 }
 
 extern "C" {
@@ -350,23 +350,23 @@ impl crc64 {
 }
 
 #[allow(clippy::excessive_precision)]
-const TAU: float = 6.28318530717958647692528676655900577;
+const TAU: real = 6.28318530717958647692528676655900577;
 
 /// High Pass Filter
 #[repr(C)]
 pub struct hpf {
     /// filter coefficient
-    pub alpha: float,
+    pub alpha: real,
     /// filter output
-    pub output: float,
+    pub output: real,
     /// filter input
-    pub input: float,
+    pub input: real,
 }
 
 impl hpf {
     /// initialize for High Pass Filter
     #[inline(always)]
-    pub fn new(fc: float, ts: float) -> Self {
+    pub fn new(fc: real, ts: real) -> Self {
         Self {
             alpha: 1.0 / (TAU * fc * ts + 1.0),
             output: 0.0,
@@ -375,13 +375,13 @@ impl hpf {
     }
     /// generate for High Pass Filter
     #[inline(always)]
-    pub fn gen(&mut self, fc: float, ts: float) -> &mut Self {
+    pub fn gen(&mut self, fc: real, ts: real) -> &mut Self {
         self.alpha = 1.0 / (TAU * fc * ts + 1.0);
         self
     }
     /// calculate for High Pass Filter
     #[inline(always)]
-    pub fn iter(&mut self, x: float) -> float {
+    pub fn iter(&mut self, x: real) -> real {
         self.output = self.alpha * (self.output + x - self.input);
         self.input = x;
         self.output
@@ -396,21 +396,21 @@ impl hpf {
 }
 
 #[allow(clippy::excessive_precision)]
-const _1_TAU: float = 0.159154943091895335768883763372514362;
+const _1_TAU: real = 0.159154943091895335768883763372514362;
 
 /// Low Pass Filter
 #[repr(C)]
 pub struct lpf {
     /// filter coefficient
-    pub alpha: float,
+    pub alpha: real,
     /// filter output
-    pub output: float,
+    pub output: real,
 }
 
 impl lpf {
     /// initialize for Low Pass Filter
     #[inline(always)]
-    pub fn new(fc: float, ts: float) -> Self {
+    pub fn new(fc: real, ts: real) -> Self {
         Self {
             alpha: ts / (_1_TAU / fc + ts),
             output: 0.0,
@@ -418,13 +418,13 @@ impl lpf {
     }
     /// generate for Low Pass Filter
     #[inline(always)]
-    pub fn gen(&mut self, fc: float, ts: float) -> &mut Self {
+    pub fn gen(&mut self, fc: real, ts: real) -> &mut Self {
         self.alpha = ts / (_1_TAU / fc + ts);
         self
     }
     /// calculate for Low Pass Filter
     #[inline(always)]
-    pub fn iter(&mut self, x: float) -> float {
+    pub fn iter(&mut self, x: real) -> real {
         self.output *= 1.0 - self.alpha;
         self.output += x * self.alpha;
         self.output
@@ -469,86 +469,86 @@ pub mod mf {
     /// pi-shaped membership function
     pub const PI: c_int = 13;
 
-    use crate::float;
+    use crate::real;
     extern "C" {
-        fn a_mf_gauss(x: float, sigma: float, c: float) -> float;
-        fn a_mf_gauss2(x: float, sigma1: float, c1: float, sigma2: float, c2: float) -> float;
-        fn a_mf_gbell(x: float, a: float, b: float, c: float) -> float;
-        fn a_mf_sig(x: float, a: float, c: float) -> float;
-        fn a_mf_dsig(x: float, a1: float, c1: float, a2: float, c2: float) -> float;
-        fn a_mf_psig(x: float, a1: float, c1: float, a2: float, c2: float) -> float;
-        fn a_mf_trap(x: float, a: float, b: float, c: float, d: float) -> float;
-        fn a_mf_tri(x: float, a: float, b: float, c: float) -> float;
-        fn a_mf_lins(x: float, a: float, b: float) -> float;
-        fn a_mf_linz(x: float, a: float, b: float) -> float;
-        fn a_mf_s(x: float, a: float, b: float) -> float;
-        fn a_mf_z(x: float, a: float, b: float) -> float;
-        fn a_mf_pi(x: float, a: float, b: float, c: float, d: float) -> float;
+        fn a_mf_gauss(x: real, sigma: real, c: real) -> real;
+        fn a_mf_gauss2(x: real, sigma1: real, c1: real, sigma2: real, c2: real) -> real;
+        fn a_mf_gbell(x: real, a: real, b: real, c: real) -> real;
+        fn a_mf_sig(x: real, a: real, c: real) -> real;
+        fn a_mf_dsig(x: real, a1: real, c1: real, a2: real, c2: real) -> real;
+        fn a_mf_psig(x: real, a1: real, c1: real, a2: real, c2: real) -> real;
+        fn a_mf_trap(x: real, a: real, b: real, c: real, d: real) -> real;
+        fn a_mf_tri(x: real, a: real, b: real, c: real) -> real;
+        fn a_mf_lins(x: real, a: real, b: real) -> real;
+        fn a_mf_linz(x: real, a: real, b: real) -> real;
+        fn a_mf_s(x: real, a: real, b: real) -> real;
+        fn a_mf_z(x: real, a: real, b: real) -> real;
+        fn a_mf_pi(x: real, a: real, b: real, c: real, d: real) -> real;
     }
 
     /// gaussian membership function
     #[inline(always)]
-    pub fn gauss(x: float, sigma: float, c: float) -> float {
+    pub fn gauss(x: real, sigma: real, c: real) -> real {
         unsafe { a_mf_gauss(x, sigma, c) }
     }
     /// gaussian combination membership function
     #[inline(always)]
-    pub fn gauss2(x: float, sigma1: float, c1: float, sigma2: float, c2: float) -> float {
+    pub fn gauss2(x: real, sigma1: real, c1: real, sigma2: real, c2: real) -> real {
         unsafe { a_mf_gauss2(x, sigma1, c1, sigma2, c2) }
     }
     /// generalized bell-shaped membership function
     #[inline(always)]
-    pub fn gbell(x: float, a: float, b: float, c: float) -> float {
+    pub fn gbell(x: real, a: real, b: real, c: real) -> real {
         unsafe { a_mf_gbell(x, a, b, c) }
     }
     /// sigmoidal membership function
     #[inline(always)]
-    pub fn sig(x: float, a: float, c: float) -> float {
+    pub fn sig(x: real, a: real, c: real) -> real {
         unsafe { a_mf_sig(x, a, c) }
     }
     /// difference between two sigmoidal membership functions
     #[inline(always)]
-    pub fn dsig(x: float, a1: float, c1: float, a2: float, c2: float) -> float {
+    pub fn dsig(x: real, a1: real, c1: real, a2: real, c2: real) -> real {
         unsafe { a_mf_dsig(x, a1, c1, a2, c2) }
     }
     /// product of two sigmoidal membership functions
     #[inline(always)]
-    pub fn psig(x: float, a1: float, c1: float, a2: float, c2: float) -> float {
+    pub fn psig(x: real, a1: real, c1: real, a2: real, c2: real) -> real {
         unsafe { a_mf_psig(x, a1, c1, a2, c2) }
     }
     /// trapezoidal membership function
     #[inline(always)]
-    pub fn trap(x: float, a: float, b: float, c: float, d: float) -> float {
+    pub fn trap(x: real, a: real, b: real, c: real, d: real) -> real {
         unsafe { a_mf_trap(x, a, b, c, d) }
     }
     /// triangular membership function
     #[inline(always)]
-    pub fn tri(x: float, a: float, b: float, c: float) -> float {
+    pub fn tri(x: real, a: real, b: real, c: real) -> real {
         unsafe { a_mf_tri(x, a, b, c) }
     }
     /// linear s-shaped saturation membership function
     #[inline(always)]
-    pub fn lins(x: float, a: float, b: float) -> float {
+    pub fn lins(x: real, a: real, b: real) -> real {
         unsafe { a_mf_lins(x, a, b) }
     }
     /// linear z-shaped saturation membership function
     #[inline(always)]
-    pub fn linz(x: float, a: float, b: float) -> float {
+    pub fn linz(x: real, a: real, b: real) -> real {
         unsafe { a_mf_linz(x, a, b) }
     }
     /// s-shaped membership function
     #[inline(always)]
-    pub fn s(x: float, a: float, b: float) -> float {
+    pub fn s(x: real, a: real, b: real) -> real {
         unsafe { a_mf_s(x, a, b) }
     }
     /// z-shaped membership function
     #[inline(always)]
-    pub fn z(x: float, a: float, b: float) -> float {
+    pub fn z(x: real, a: real, b: real) -> real {
         unsafe { a_mf_z(x, a, b) }
     }
     /// pi-shaped membership function
     #[inline(always)]
-    pub fn pi(x: float, a: float, b: float, c: float, d: float) -> float {
+    pub fn pi(x: real, a: real, b: real, c: real, d: real) -> real {
         unsafe { a_mf_pi(x, a, b, c, d) }
     }
 }
@@ -557,29 +557,29 @@ pub mod mf {
 #[repr(C)]
 pub struct pid {
     /// proportional constant
-    pub kp: float,
+    pub kp: real,
     /// integral constant
-    pub ki: float,
+    pub ki: real,
     /// derivative constant
-    pub kd: float,
+    pub kd: real,
     /// maximum integral output
-    pub summax: float,
+    pub summax: real,
     /// minimum integral output
-    pub summin: float,
+    pub summin: real,
     /// controller integral output
-    pub sum: float,
+    pub sum: real,
     /// maximum final output
-    pub outmax: float,
+    pub outmax: real,
     /// minimum final output
-    pub outmin: float,
+    pub outmin: real,
     /// controller final output
-    pub out: float,
+    pub out: real,
     /// cache variable
-    var: float,
+    var: real,
     /// cache feedback
-    pub fdb: float,
+    pub fdb: real,
     /// cache error
-    pub err: float,
+    pub err: real,
 }
 
 impl Default for pid {
@@ -589,11 +589,11 @@ impl Default for pid {
             kp: 0.0,
             ki: 0.0,
             kd: 0.0,
-            summax: float::INFINITY,
-            summin: -float::INFINITY,
+            summax: real::INFINITY,
+            summin: -real::INFINITY,
             sum: 0.0,
-            outmax: float::INFINITY,
-            outmin: -float::INFINITY,
+            outmax: real::INFINITY,
+            outmin: -real::INFINITY,
             out: 0.0,
             var: 0.0,
             fdb: 0.0,
@@ -603,10 +603,10 @@ impl Default for pid {
 }
 
 extern "C" {
-    fn a_pid_set_kpid(ctx: *mut pid, kp: float, ki: float, kd: float);
-    fn a_pid_run(ctx: *mut pid, set: float, fdb: float) -> float;
-    fn a_pid_pos(ctx: *mut pid, set: float, fdb: float) -> float;
-    fn a_pid_inc(ctx: *mut pid, set: float, fdb: float) -> float;
+    fn a_pid_set_kpid(ctx: *mut pid, kp: real, ki: real, kd: real);
+    fn a_pid_run(ctx: *mut pid, set: real, fdb: real) -> real;
+    fn a_pid_pos(ctx: *mut pid, set: real, fdb: real) -> real;
+    fn a_pid_inc(ctx: *mut pid, set: real, fdb: real) -> real;
     fn a_pid_zero(ctx: *mut pid);
 }
 
@@ -618,23 +618,23 @@ impl pid {
     }
     /// set proportional integral derivative constant for PID controller
     #[inline(always)]
-    pub fn set_kpid(&mut self, kp: float, ki: float, kd: float) -> &mut Self {
+    pub fn set_kpid(&mut self, kp: real, ki: real, kd: real) -> &mut Self {
         unsafe { a_pid_set_kpid(self, kp, ki, kd) };
         self
     }
     /// calculate for PID controller
     #[inline(always)]
-    pub fn run(&mut self, set: float, fdb: float) -> float {
+    pub fn run(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_run(self, set, fdb) }
     }
     /// calculate for positional PID controller
     #[inline(always)]
-    pub fn pos(&mut self, set: float, fdb: float) -> float {
+    pub fn pos(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_pos(self, set, fdb) }
     }
     /// calculate for incremental PID controller
     #[inline(always)]
-    pub fn inc(&mut self, set: float, fdb: float) -> float {
+    pub fn inc(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_inc(self, set, fdb) }
     }
     /// zeroing for PID controller
@@ -669,21 +669,21 @@ pub mod fuzzy {
 pub struct pid_fuzzy {
     /// proportional integral derivative controller
     pub pid: pid,
-    me: *const float,
-    mec: *const float,
-    mkp: *const float,
-    mki: *const float,
-    mkd: *const float,
+    me: *const real,
+    mec: *const real,
+    mkp: *const real,
+    mki: *const real,
+    mkd: *const real,
     idx: *mut c_uint,
-    val: *mut float,
+    val: *mut real,
     /// fuzzy relational operator
-    opr: extern "C" fn(float, float) -> float,
+    opr: extern "C" fn(real, real) -> real,
     /// base proportional constant
-    pub kp: float,
+    pub kp: real,
     /// base integral constant
-    pub ki: float,
+    pub ki: real,
     /// base derivative constant
-    pub kd: float,
+    pub kd: real,
     /// number of order in the square matrix
     nrule: c_uint,
     /// maximum number triggered by the rule
@@ -713,23 +713,23 @@ impl Default for pid_fuzzy {
 }
 
 extern "C" {
-    fn a_pid_fuzzy_opr(opr: c_uint) -> extern "C" fn(float, float) -> float;
+    fn a_pid_fuzzy_opr(opr: c_uint) -> extern "C" fn(real, real) -> real;
     fn a_pid_fuzzy_set_opr(ctx: *mut pid_fuzzy, opr: c_uint);
     fn a_pid_fuzzy_bfuzz(ctx: *const pid_fuzzy) -> *mut u8;
     fn a_pid_fuzzy_set_bfuzz(ctx: *mut pid_fuzzy, ptr: *mut u8, num: usize);
     fn a_pid_fuzzy_set_rule(
         ctx: *mut pid_fuzzy,
         num: c_uint,
-        me: *const float,
-        mec: *const float,
-        mkp: *const float,
-        mki: *const float,
-        mkd: *const float,
+        me: *const real,
+        mec: *const real,
+        mkp: *const real,
+        mki: *const real,
+        mkd: *const real,
     );
-    fn a_pid_fuzzy_set_kpid(ctx: *mut pid_fuzzy, kp: float, ki: float, kd: float);
-    fn a_pid_fuzzy_run(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
-    fn a_pid_fuzzy_pos(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
-    fn a_pid_fuzzy_inc(ctx: *mut pid_fuzzy, set: float, fdb: float) -> float;
+    fn a_pid_fuzzy_set_kpid(ctx: *mut pid_fuzzy, kp: real, ki: real, kd: real);
+    fn a_pid_fuzzy_run(ctx: *mut pid_fuzzy, set: real, fdb: real) -> real;
+    fn a_pid_fuzzy_pos(ctx: *mut pid_fuzzy, set: real, fdb: real) -> real;
+    fn a_pid_fuzzy_inc(ctx: *mut pid_fuzzy, set: real, fdb: real) -> real;
     fn a_pid_fuzzy_zero(ctx: *mut pid_fuzzy);
 }
 
@@ -749,7 +749,7 @@ impl pid_fuzzy {
     #[inline(always)]
     #[allow(non_snake_case)]
     pub const fn BFUZZ(n: usize) -> usize {
-        size_of::<c_uint>() * n * 2 + size_of::<float>() * n * (2 + n)
+        size_of::<c_uint>() * n * 2 + size_of::<real>() * n * (2 + n)
     }
     /// get memory block for fuzzy PID controller
     #[inline(always)]
@@ -767,11 +767,11 @@ impl pid_fuzzy {
     pub fn set_rule(
         &mut self,
         col: usize,
-        me: &[float],
-        mec: &[float],
-        mkp: &[float],
-        mki: &[float],
-        mkd: &[float],
+        me: &[real],
+        mec: &[real],
+        mkp: &[real],
+        mki: &[real],
+        mkd: &[real],
     ) -> &mut Self {
         unsafe {
             a_pid_fuzzy_set_rule(
@@ -788,23 +788,23 @@ impl pid_fuzzy {
     }
     /// set proportional integral derivative constant for fuzzy PID controller
     #[inline(always)]
-    pub fn set_kpid(&mut self, kp: float, ki: float, kd: float) -> &mut Self {
+    pub fn set_kpid(&mut self, kp: real, ki: real, kd: real) -> &mut Self {
         unsafe { a_pid_fuzzy_set_kpid(self, kp, ki, kd) };
         self
     }
     /// calculate for fuzzy PID controller
     #[inline(always)]
-    pub fn run(&mut self, set: float, fdb: float) -> float {
+    pub fn run(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_fuzzy_run(self, set, fdb) }
     }
     /// calculate for positional fuzzy PID controller
     #[inline(always)]
-    pub fn pos(&mut self, set: float, fdb: float) -> float {
+    pub fn pos(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_fuzzy_pos(self, set, fdb) }
     }
     /// calculate for incremental fuzzy PID controller
     #[inline(always)]
-    pub fn inc(&mut self, set: float, fdb: float) -> float {
+    pub fn inc(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_fuzzy_inc(self, set, fdb) }
     }
     /// zeroing for fuzzy PID controller
@@ -821,15 +821,15 @@ pub struct pid_neuro {
     /// proportional integral derivative controller
     pub pid: pid,
     /// proportional coefficient
-    pub k: float,
+    pub k: real,
     /// proportional weight
-    pub wp: float,
+    pub wp: real,
     /// integral weight
-    pub wi: float,
+    pub wi: real,
     /// derivative weight
-    pub wd: float,
+    pub wd: real,
     /// error change
-    pub ec: float,
+    pub ec: real,
 }
 
 impl Default for pid_neuro {
@@ -847,10 +847,10 @@ impl Default for pid_neuro {
 }
 
 extern "C" {
-    fn a_pid_neuro_set_kpid(ctx: *mut pid_neuro, k: float, kp: float, ki: float, kd: float);
-    fn a_pid_neuro_set_wpid(ctx: *mut pid_neuro, wp: float, wi: float, wd: float);
-    fn a_pid_neuro_run(ctx: *mut pid_neuro, set: float, fdb: float) -> float;
-    fn a_pid_neuro_inc(ctx: *mut pid_neuro, set: float, fdb: float) -> float;
+    fn a_pid_neuro_set_kpid(ctx: *mut pid_neuro, k: real, kp: real, ki: real, kd: real);
+    fn a_pid_neuro_set_wpid(ctx: *mut pid_neuro, wp: real, wi: real, wd: real);
+    fn a_pid_neuro_run(ctx: *mut pid_neuro, set: real, fdb: real) -> real;
+    fn a_pid_neuro_inc(ctx: *mut pid_neuro, set: real, fdb: real) -> real;
     fn a_pid_neuro_zero(ctx: *mut pid_neuro);
 }
 
@@ -862,24 +862,24 @@ impl pid_neuro {
     }
     /// set proportional integral derivative constant for single neuron PID controller
     #[inline(always)]
-    pub fn set_kpid(&mut self, k: float, kp: float, ki: float, kd: float) -> &mut Self {
+    pub fn set_kpid(&mut self, k: real, kp: real, ki: real, kd: real) -> &mut Self {
         unsafe { a_pid_neuro_set_kpid(self, k, kp, ki, kd) };
         self
     }
     /// set proportional integral derivative weight for single neuron PID controller
     #[inline(always)]
-    pub fn set_wpid(&mut self, wp: float, wi: float, wd: float) -> &mut Self {
+    pub fn set_wpid(&mut self, wp: real, wi: real, wd: real) -> &mut Self {
         unsafe { a_pid_neuro_set_wpid(self, wp, wi, wd) };
         self
     }
     /// calculate for single neuron PID controller
     #[inline(always)]
-    pub fn run(&mut self, set: float, fdb: float) -> float {
+    pub fn run(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_neuro_run(self, set, fdb) }
     }
     /// calculate for incremental single neuron PID controller
     #[inline(always)]
-    pub fn inc(&mut self, set: float, fdb: float) -> float {
+    pub fn inc(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_neuro_inc(self, set, fdb) }
     }
     /// zeroing for single neuron PID controller
@@ -894,58 +894,58 @@ impl pid_neuro {
 #[repr(C)]
 pub struct regress_linear {
     /// points to regression coefficients
-    coef_p: *mut float,
+    coef_p: *mut real,
     /// number of regression coefficients
     coef_n: usize,
     /// intercept
-    pub bias: float,
+    pub bias: real,
 }
 
 extern "C" {
-    fn a_regress_linear_eval(ctx: *const regress_linear, val: *const float) -> float;
+    fn a_regress_linear_eval(ctx: *const regress_linear, val: *const real) -> real;
     fn a_regress_linear_err(
         ctx: *const regress_linear,
         n: usize,
-        x: *const float,
-        y: *const float,
-        err: *mut float,
+        x: *const real,
+        y: *const real,
+        err: *mut real,
     );
     fn a_regress_linear_pdm(
         ctx: *const regress_linear,
         n: usize,
-        x: *const float,
-        pdm: *mut float,
-        y_mean: float,
+        x: *const real,
+        pdm: *mut real,
+        y_mean: real,
     );
     fn a_regress_linear_gd(
         ctx: *mut regress_linear,
-        input: *const float,
-        error: float,
-        alpha: float,
+        input: *const real,
+        error: real,
+        alpha: real,
     );
     fn a_regress_linear_sgd(
         ctx: *mut regress_linear,
         n: usize,
-        x: *const float,
-        y: *const float,
-        alpha: float,
+        x: *const real,
+        y: *const real,
+        alpha: real,
     );
     fn a_regress_linear_bgd(
         ctx: *mut regress_linear,
         n: usize,
-        x: *const float,
-        err: *const float,
-        alpha: float,
+        x: *const real,
+        err: *const real,
+        alpha: real,
     );
     fn a_regress_linear_mgd(
         ctx: *mut regress_linear,
         n: usize,
-        x: *const float,
-        y: *const float,
-        err: *mut float,
-        delta: float,
-        lrmax: float,
-        lrmin: float,
+        x: *const real,
+        y: *const real,
+        err: *mut real,
+        delta: real,
+        lrmax: real,
+        lrmin: real,
         lrtim: usize,
         epoch: usize,
         batch: usize,
@@ -956,7 +956,7 @@ extern "C" {
 impl regress_linear {
     /// initialize for linear regression
     #[inline(always)]
-    pub fn new(coef: &mut [float], bias: float) -> Self {
+    pub fn new(coef: &mut [real], bias: real) -> Self {
         Self {
             coef_p: coef.as_mut_ptr(),
             coef_n: coef.len(),
@@ -965,47 +965,47 @@ impl regress_linear {
     }
     /// get regression coefficients for linear regression
     #[inline(always)]
-    pub fn coef(&mut self) -> &mut [float] {
+    pub fn coef(&mut self) -> &mut [real] {
         unsafe { from_raw_parts_mut(self.coef_p, self.coef_n) }
     }
     /// set regression coefficients for linear regression
     #[inline(always)]
-    pub fn set_coef(&mut self, coef: &mut [float]) -> &mut Self {
+    pub fn set_coef(&mut self, coef: &mut [real]) -> &mut Self {
         self.coef_p = coef.as_mut_ptr();
         self.coef_n = coef.len();
         self
     }
     /// calculate predicted value for linear regression
     #[inline(always)]
-    pub fn eval(&self, val: &[float]) -> float {
+    pub fn eval(&self, val: &[real]) -> real {
         unsafe { a_regress_linear_eval(self, val.as_ptr()) }
     }
     /// calculate residuals for linear regression
     #[inline(always)]
-    pub fn err(&self, x: &[float], y: &[float], err: &mut [float]) {
+    pub fn err(&self, x: &[real], y: &[real], err: &mut [real]) {
         unsafe { a_regress_linear_err(self, y.len(), x.as_ptr(), y.as_ptr(), err.as_mut_ptr()) }
     }
     /// calculate prediction deviation from mean for linear regression
     #[inline(always)]
-    pub fn pdm(&self, x: &[float], pdm: &mut [float], y_mean: float) {
+    pub fn pdm(&self, x: &[real], pdm: &mut [real], y_mean: real) {
         let n = x.len() / self.coef_n;
         unsafe { a_regress_linear_pdm(self, n, x.as_ptr(), pdm.as_mut_ptr(), y_mean) }
     }
     /// gradient descent for linear regression
     #[inline(always)]
-    pub fn gd(&mut self, input: &[float], error: float, alpha: float) -> &mut Self {
+    pub fn gd(&mut self, input: &[real], error: real, alpha: real) -> &mut Self {
         unsafe { a_regress_linear_gd(self, input.as_ptr(), error, alpha) }
         self
     }
     /// stochastic gradient descent for linear regression
     #[inline(always)]
-    pub fn sgd(&mut self, x: &[float], y: &[float], alpha: float) -> &mut Self {
+    pub fn sgd(&mut self, x: &[real], y: &[real], alpha: real) -> &mut Self {
         unsafe { a_regress_linear_sgd(self, y.len(), x.as_ptr(), y.as_ptr(), alpha) }
         self
     }
     /// batch gradient descent for linear regression
     #[inline(always)]
-    pub fn bgd(&mut self, x: &[float], err: &[float], alpha: float) -> &mut Self {
+    pub fn bgd(&mut self, x: &[real], err: &[real], alpha: real) -> &mut Self {
         let n = x.len() / self.coef_n;
         unsafe { a_regress_linear_bgd(self, n, x.as_ptr(), err.as_ptr(), alpha) }
         self
@@ -1015,12 +1015,12 @@ impl regress_linear {
     #[inline(always)]
     pub fn mgd(
         &mut self,
-        x: &[float],
-        y: &[float],
-        err: &mut [float],
-        delta: float,
-        lrmax: float,
-        lrmin: float,
+        x: &[real],
+        y: &[real],
+        err: &mut [real],
+        delta: real,
+        lrmax: real,
+        lrmin: real,
         lrtim: usize,
         epoch: usize,
         batch: usize,
@@ -1054,80 +1054,80 @@ impl regress_linear {
 #[repr(C)]
 pub struct regress_simple {
     /// regression coefficient
-    pub coef: float,
+    pub coef: real,
     /// intercept
-    pub bias: float,
+    pub bias: real,
 }
 
 extern "C" {
-    fn a_regress_simple_eval(ctx: *const regress_simple, val: float) -> float;
-    fn a_regress_simple_evar(ctx: *const regress_simple, val: float) -> float;
+    fn a_regress_simple_eval(ctx: *const regress_simple, val: real) -> real;
+    fn a_regress_simple_evar(ctx: *const regress_simple, val: real) -> real;
     fn a_regress_simple_ols_(
         ctx: *mut regress_simple,
         n: usize,
-        x: *const float,
-        y: *const float,
-        x_mean: float,
-        y_mean: float,
+        x: *const real,
+        y: *const real,
+        x_mean: real,
+        y_mean: real,
     );
     fn a_regress_simple_olsx(
         ctx: *mut regress_simple,
         n: usize,
-        x: *const float,
-        y: *const float,
-        x_mean: float,
+        x: *const real,
+        y: *const real,
+        x_mean: real,
     );
     fn a_regress_simple_olsy(
         ctx: *mut regress_simple,
         n: usize,
-        x: *const float,
-        y: *const float,
-        y_mean: float,
+        x: *const real,
+        y: *const real,
+        y_mean: real,
     );
-    fn a_regress_simple_ols(ctx: *mut regress_simple, n: usize, x: *const float, y: *const float);
+    fn a_regress_simple_ols(ctx: *mut regress_simple, n: usize, x: *const real, y: *const real);
     fn a_regress_simple_zero(ctx: *mut regress_simple);
 }
 
 impl regress_simple {
     /// initialize for simple linear regression
     #[inline(always)]
-    pub fn new(coef: float, bias: float) -> Self {
+    pub fn new(coef: real, bias: real) -> Self {
         Self { coef, bias }
     }
     /// calculate predicted value for simple linear regression
     #[inline(always)]
-    pub fn eval(&self, val: float) -> float {
+    pub fn eval(&self, val: real) -> real {
         unsafe { a_regress_simple_eval(self, val) }
     }
     /// calculate predicted value for simple linear regression
     #[inline(always)]
-    pub fn evar(&self, val: float) -> float {
+    pub fn evar(&self, val: real) -> real {
         unsafe { a_regress_simple_evar(self, val) }
     }
     /// ordinary least squares for simple linear regression
     #[inline(always)]
-    pub fn ols_(&mut self, x: &[float], y: &[float], x_mean: float, y_mean: float) -> &mut Self {
+    pub fn ols_(&mut self, x: &[real], y: &[real], x_mean: real, y_mean: real) -> &mut Self {
         let n = x.len().min(y.len());
         unsafe { a_regress_simple_ols_(self, n, x.as_ptr(), y.as_ptr(), x_mean, y_mean) };
         self
     }
     /// ordinary least squares for simple linear regression
     #[inline(always)]
-    pub fn olsx(&mut self, x: &[float], y: &[float], x_mean: float) -> &mut Self {
+    pub fn olsx(&mut self, x: &[real], y: &[real], x_mean: real) -> &mut Self {
         let n = x.len().min(y.len());
         unsafe { a_regress_simple_olsx(self, n, x.as_ptr(), y.as_ptr(), x_mean) };
         self
     }
     /// ordinary least squares for simple linear regression
     #[inline(always)]
-    pub fn olsy(&mut self, x: &[float], y: &[float], y_mean: float) -> &mut Self {
+    pub fn olsy(&mut self, x: &[real], y: &[real], y_mean: real) -> &mut Self {
         let n = x.len().min(y.len());
         unsafe { a_regress_simple_olsy(self, n, x.as_ptr(), y.as_ptr(), y_mean) };
         self
     }
     /// ordinary least squares for simple linear regression
     #[inline(always)]
-    pub fn ols(&mut self, x: &[float], y: &[float]) -> &mut Self {
+    pub fn ols(&mut self, x: &[real], y: &[real]) -> &mut Self {
         let n = x.len().min(y.len());
         unsafe { a_regress_simple_ols(self, n, x.as_ptr(), y.as_ptr()) };
         self
@@ -1144,13 +1144,13 @@ impl regress_simple {
 #[repr(C)]
 pub struct tf {
     /// input
-    input: *mut float,
+    input: *mut real,
     /// output
-    output: *mut float,
+    output: *mut real,
     /// numerator
-    num_p: *const float,
+    num_p: *const real,
     /// denominator
-    den_p: *const float,
+    den_p: *const real,
     /// numerator number
     num_n: c_uint,
     /// denominator number
@@ -1158,25 +1158,25 @@ pub struct tf {
 }
 
 extern "C" {
-    fn a_tf_set_num(ctx: *mut tf, num_n: c_uint, num_p: *const float, input: *mut float);
-    fn a_tf_set_den(ctx: *mut tf, den_n: c_uint, den_p: *const float, output: *mut float);
+    fn a_tf_set_num(ctx: *mut tf, num_n: c_uint, num_p: *const real, input: *mut real);
+    fn a_tf_set_den(ctx: *mut tf, den_n: c_uint, den_p: *const real, output: *mut real);
     fn a_tf_init(
         ctx: *mut tf,
         num_n: c_uint,
-        num_p: *const float,
-        input: *mut float,
+        num_p: *const real,
+        input: *mut real,
         den_n: c_uint,
-        den_p: *const float,
-        output: *mut float,
+        den_p: *const real,
+        output: *mut real,
     );
-    fn a_tf_iter(ctx: *const tf, x: float) -> float;
+    fn a_tf_iter(ctx: *const tf, x: real) -> real;
     fn a_tf_zero(ctx: *const tf);
 }
 
 impl tf {
     /// initialize for transfer function
     #[inline(always)]
-    pub fn new(num: &[float], input: &mut [float], den: &[float], output: &mut [float]) -> Self {
+    pub fn new(num: &[real], input: &mut [real], den: &[real], output: &mut [real]) -> Self {
         let mut ctx: Self = Self {
             input: null_mut(),
             output: null_mut(),
@@ -1200,7 +1200,7 @@ impl tf {
     }
     /// calculate for transfer function
     #[inline(always)]
-    pub fn iter(&mut self, x: float) -> float {
+    pub fn iter(&mut self, x: real) -> real {
         unsafe { a_tf_iter(self, x) }
     }
     /// zeroing for transfer function
@@ -1211,33 +1211,33 @@ impl tf {
     }
     /// get input for transfer function
     #[inline(always)]
-    pub fn input(&self) -> &[float] {
+    pub fn input(&self) -> &[real] {
         unsafe { from_raw_parts(self.input, self.num_n as usize) }
     }
     /// get numerator for transfer function
     #[inline(always)]
-    pub fn num(&self) -> &[float] {
+    pub fn num(&self) -> &[real] {
         unsafe { from_raw_parts(self.num_p, self.num_n as usize) }
     }
     /// set numerator for transfer function
     #[inline(always)]
-    pub fn set_num(&mut self, num: &[float], input: &mut [float]) -> &mut Self {
+    pub fn set_num(&mut self, num: &[real], input: &mut [real]) -> &mut Self {
         unsafe { a_tf_set_num(self, num.len() as c_uint, num.as_ptr(), input.as_mut_ptr()) };
         self
     }
     /// get output for transfer function
     #[inline(always)]
-    pub fn output(&self) -> &[float] {
+    pub fn output(&self) -> &[real] {
         unsafe { from_raw_parts(self.output, self.den_n as usize) }
     }
     /// get denominator for transfer function
     #[inline(always)]
-    pub fn den(&self) -> &[float] {
+    pub fn den(&self) -> &[real] {
         unsafe { from_raw_parts(self.den_p, self.den_n as usize) }
     }
     /// set denominator for transfer function
     #[inline(always)]
-    pub fn set_den(&mut self, den: &[float], output: &mut [float]) -> &mut Self {
+    pub fn set_den(&mut self, den: &[real], output: &mut [real]) -> &mut Self {
         unsafe { a_tf_set_den(self, den.len() as c_uint, den.as_ptr(), output.as_mut_ptr()) };
         self
     }
@@ -1247,33 +1247,33 @@ impl tf {
 #[repr(C)]
 pub struct trajbell {
     /// total duration
-    pub t: float,
+    pub t: real,
     /// constant velocity phase
-    pub tv: float,
+    pub tv: real,
     /// acceleration phase
-    pub ta: float,
+    pub ta: real,
     /// deceleration phase
-    pub td: float,
+    pub td: real,
     /// time-interval in which the jerk is constant (j max or j min ) during the acceleration phase
-    pub taj: float,
+    pub taj: real,
     /// time-interval in which the jerk is constant (j max or j min ) during the deceleration phase
-    pub tdj: float,
+    pub tdj: real,
     /// initial position
-    pub p0: float,
+    pub p0: real,
     /// final position
-    pub p1: float,
+    pub p1: real,
     /// initial velocity
-    pub v0: float,
+    pub v0: real,
     /// final velocity
-    pub v1: float,
+    pub v1: real,
     /// maximum velocity
-    pub vm: float,
+    pub vm: real,
     /// maximum jerk
-    pub jm: float,
+    pub jm: real,
     /// maximum acceleration
-    pub am: float,
+    pub am: real,
     /// maximum deceleration
-    pub dm: float,
+    pub dm: real,
 }
 
 impl Default for trajbell {
@@ -1301,18 +1301,18 @@ impl Default for trajbell {
 extern "C" {
     fn a_trajbell_gen(
         ctx: *mut trajbell,
-        jm: float,
-        am: float,
-        vm: float,
-        p0: float,
-        p1: float,
-        v0: float,
-        v1: float,
-    ) -> float;
-    fn a_trajbell_pos(ctx: *const trajbell, x: float) -> float;
-    fn a_trajbell_vel(ctx: *const trajbell, x: float) -> float;
-    fn a_trajbell_acc(ctx: *const trajbell, x: float) -> float;
-    fn a_trajbell_jer(ctx: *const trajbell, x: float) -> float;
+        jm: real,
+        am: real,
+        vm: real,
+        p0: real,
+        p1: real,
+        v0: real,
+        v1: real,
+    ) -> real;
+    fn a_trajbell_pos(ctx: *const trajbell, x: real) -> real;
+    fn a_trajbell_vel(ctx: *const trajbell, x: real) -> real;
+    fn a_trajbell_acc(ctx: *const trajbell, x: real) -> real;
+    fn a_trajbell_jer(ctx: *const trajbell, x: real) -> real;
 }
 
 impl trajbell {
@@ -1326,34 +1326,34 @@ impl trajbell {
     #[inline(always)]
     pub fn gen(
         &mut self,
-        jm: float,
-        am: float,
-        vm: float,
-        p0: float,
-        p1: float,
-        v0: float,
-        v1: float,
-    ) -> float {
+        jm: real,
+        am: real,
+        vm: real,
+        p0: real,
+        p1: real,
+        v0: real,
+        v1: real,
+    ) -> real {
         unsafe { a_trajbell_gen(self, jm, am, vm, p0, p1, v0, v1) }
     }
     /// calculate position for bell-shaped velocity trajectory
     #[inline(always)]
-    pub fn pos(&mut self, x: float) -> float {
+    pub fn pos(&mut self, x: real) -> real {
         unsafe { a_trajbell_pos(self, x) }
     }
     /// calculate velocity for bell-shaped velocity trajectory
     #[inline(always)]
-    pub fn vel(&mut self, x: float) -> float {
+    pub fn vel(&mut self, x: real) -> real {
         unsafe { a_trajbell_vel(self, x) }
     }
     /// calculate acceleration for bell-shaped velocity trajectory
     #[inline(always)]
-    pub fn acc(&mut self, x: float) -> float {
+    pub fn acc(&mut self, x: real) -> real {
         unsafe { a_trajbell_acc(self, x) }
     }
     /// calculate jerk for bell-shaped velocity trajectory
     #[inline(always)]
-    pub fn jer(&mut self, x: float) -> float {
+    pub fn jer(&mut self, x: real) -> real {
         unsafe { a_trajbell_jer(self, x) }
     }
 }
@@ -1362,24 +1362,24 @@ impl trajbell {
 #[repr(C)]
 pub struct trajpoly3 {
     /// coefficients of position
-    pub p: [float; 4],
+    pub p: [real; 4],
     /// coefficients of velocity
-    pub v: [float; 3],
+    pub v: [real; 3],
     /// coefficients of acceleration
-    pub a: [float; 2],
+    pub a: [real; 2],
 }
 
 extern "C" {
-    fn a_trajpoly3_gen(ctx: *mut trajpoly3, ts: float, p0: float, p1: float, v0: float, v1: float);
-    fn a_trajpoly3_pos(ctx: *const trajpoly3, x: float) -> float;
-    fn a_trajpoly3_vel(ctx: *const trajpoly3, x: float) -> float;
-    fn a_trajpoly3_acc(ctx: *const trajpoly3, x: float) -> float;
+    fn a_trajpoly3_gen(ctx: *mut trajpoly3, ts: real, p0: real, p1: real, v0: real, v1: real);
+    fn a_trajpoly3_pos(ctx: *const trajpoly3, x: real) -> real;
+    fn a_trajpoly3_vel(ctx: *const trajpoly3, x: real) -> real;
+    fn a_trajpoly3_acc(ctx: *const trajpoly3, x: real) -> real;
 }
 
 impl trajpoly3 {
     /// initialize for cubic polynomial trajectory
     #[inline(always)]
-    pub fn new(ts: float, p0: float, p1: float, v0: float, v1: float) -> Self {
+    pub fn new(ts: real, p0: real, p1: real, v0: real, v1: real) -> Self {
         let mut ctx: Self = Self {
             p: [0.0; 4],
             v: [0.0; 3],
@@ -1390,23 +1390,23 @@ impl trajpoly3 {
     }
     /// generate for cubic polynomial trajectory
     #[inline(always)]
-    pub fn gen(&mut self, ts: float, p0: float, p1: float, v0: float, v1: float) -> &mut Self {
+    pub fn gen(&mut self, ts: real, p0: real, p1: real, v0: real, v1: real) -> &mut Self {
         unsafe { a_trajpoly3_gen(self, ts, p0, p1, v0, v1) };
         self
     }
     /// calculate position for cubic polynomial trajectory
     #[inline(always)]
-    pub fn pos(&mut self, x: float) -> float {
+    pub fn pos(&mut self, x: real) -> real {
         unsafe { a_trajpoly3_pos(self, x) }
     }
     /// calculate velocity for cubic polynomial trajectory
     #[inline(always)]
-    pub fn vel(&mut self, x: float) -> float {
+    pub fn vel(&mut self, x: real) -> real {
         unsafe { a_trajpoly3_vel(self, x) }
     }
     /// calculate acceleration for cubic polynomial trajectory
     #[inline(always)]
-    pub fn acc(&mut self, x: float) -> float {
+    pub fn acc(&mut self, x: real) -> real {
         unsafe { a_trajpoly3_acc(self, x) }
     }
 }
@@ -1415,27 +1415,27 @@ impl trajpoly3 {
 #[repr(C)]
 pub struct trajpoly5 {
     /// coefficients of position
-    pub p: [float; 6],
+    pub p: [real; 6],
     /// coefficients of velocity
-    pub v: [float; 5],
+    pub v: [real; 5],
     /// coefficients of acceleration
-    pub a: [float; 4],
+    pub a: [real; 4],
 }
 
 extern "C" {
     fn a_trajpoly5_gen(
         ctx: *mut trajpoly5,
-        ts: float,
-        p0: float,
-        p1: float,
-        v0: float,
-        v1: float,
-        a0: float,
-        a1: float,
+        ts: real,
+        p0: real,
+        p1: real,
+        v0: real,
+        v1: real,
+        a0: real,
+        a1: real,
     );
-    fn a_trajpoly5_pos(ctx: *const trajpoly5, x: float) -> float;
-    fn a_trajpoly5_vel(ctx: *const trajpoly5, x: float) -> float;
-    fn a_trajpoly5_acc(ctx: *const trajpoly5, x: float) -> float;
+    fn a_trajpoly5_pos(ctx: *const trajpoly5, x: real) -> real;
+    fn a_trajpoly5_vel(ctx: *const trajpoly5, x: real) -> real;
+    fn a_trajpoly5_acc(ctx: *const trajpoly5, x: real) -> real;
 }
 
 impl trajpoly5 {
@@ -1443,13 +1443,13 @@ impl trajpoly5 {
     #[allow(clippy::too_many_arguments)]
     #[inline(always)]
     pub fn new(
-        ts: float,
-        p0: float,
-        p1: float,
-        v0: float,
-        v1: float,
-        a0: float,
-        a1: float,
+        ts: real,
+        p0: real,
+        p1: real,
+        v0: real,
+        v1: real,
+        a0: real,
+        a1: real,
     ) -> Self {
         let mut ctx: Self = Self {
             p: [0.0; 6],
@@ -1464,30 +1464,30 @@ impl trajpoly5 {
     #[inline(always)]
     pub fn gen(
         &mut self,
-        ts: float,
-        p0: float,
-        p1: float,
-        v0: float,
-        v1: float,
-        a0: float,
-        a1: float,
+        ts: real,
+        p0: real,
+        p1: real,
+        v0: real,
+        v1: real,
+        a0: real,
+        a1: real,
     ) -> &mut Self {
         unsafe { a_trajpoly5_gen(self, ts, p0, p1, v0, v1, a0, a1) };
         self
     }
     /// calculate position for quintic polynomial trajectory
     #[inline(always)]
-    pub fn pos(&mut self, x: float) -> float {
+    pub fn pos(&mut self, x: real) -> real {
         unsafe { a_trajpoly5_pos(self, x) }
     }
     /// calculate velocity for quintic polynomial trajectory
     #[inline(always)]
-    pub fn vel(&mut self, x: float) -> float {
+    pub fn vel(&mut self, x: real) -> real {
         unsafe { a_trajpoly5_vel(self, x) }
     }
     /// calculate acceleration for quintic polynomial trajectory
     #[inline(always)]
-    pub fn acc(&mut self, x: float) -> float {
+    pub fn acc(&mut self, x: real) -> real {
         unsafe { a_trajpoly5_acc(self, x) }
     }
 }
@@ -1496,32 +1496,32 @@ impl trajpoly5 {
 #[repr(C)]
 pub struct trajpoly7 {
     /// coefficients of position
-    pub p: [float; 8],
+    pub p: [real; 8],
     /// coefficients of velocity
-    pub v: [float; 7],
+    pub v: [real; 7],
     /// coefficients of acceleration
-    pub a: [float; 6],
+    pub a: [real; 6],
     /// coefficients of jerk
-    pub j: [float; 5],
+    pub j: [real; 5],
 }
 
 extern "C" {
     fn a_trajpoly7_gen(
         ctx: *mut trajpoly7,
-        ts: float,
-        p0: float,
-        p1: float,
-        v0: float,
-        v1: float,
-        a0: float,
-        a1: float,
-        j0: float,
-        j1: float,
+        ts: real,
+        p0: real,
+        p1: real,
+        v0: real,
+        v1: real,
+        a0: real,
+        a1: real,
+        j0: real,
+        j1: real,
     );
-    fn a_trajpoly7_pos(ctx: *const trajpoly7, x: float) -> float;
-    fn a_trajpoly7_vel(ctx: *const trajpoly7, x: float) -> float;
-    fn a_trajpoly7_acc(ctx: *const trajpoly7, x: float) -> float;
-    fn a_trajpoly7_jer(ctx: *const trajpoly7, x: float) -> float;
+    fn a_trajpoly7_pos(ctx: *const trajpoly7, x: real) -> real;
+    fn a_trajpoly7_vel(ctx: *const trajpoly7, x: real) -> real;
+    fn a_trajpoly7_acc(ctx: *const trajpoly7, x: real) -> real;
+    fn a_trajpoly7_jer(ctx: *const trajpoly7, x: real) -> real;
 }
 
 impl trajpoly7 {
@@ -1529,15 +1529,15 @@ impl trajpoly7 {
     #[allow(clippy::too_many_arguments)]
     #[inline(always)]
     pub fn new(
-        ts: float,
-        p0: float,
-        p1: float,
-        v0: float,
-        v1: float,
-        a0: float,
-        a1: float,
-        j0: float,
-        j1: float,
+        ts: real,
+        p0: real,
+        p1: real,
+        v0: real,
+        v1: real,
+        a0: real,
+        a1: real,
+        j0: real,
+        j1: real,
     ) -> Self {
         let mut ctx: Self = Self {
             p: [0.0; 8],
@@ -1553,37 +1553,37 @@ impl trajpoly7 {
     #[inline(always)]
     pub fn gen(
         &mut self,
-        ts: float,
-        p0: float,
-        p1: float,
-        v0: float,
-        v1: float,
-        a0: float,
-        a1: float,
-        j0: float,
-        j1: float,
+        ts: real,
+        p0: real,
+        p1: real,
+        v0: real,
+        v1: real,
+        a0: real,
+        a1: real,
+        j0: real,
+        j1: real,
     ) -> &mut Self {
         unsafe { a_trajpoly7_gen(self, ts, p0, p1, v0, v1, a0, a1, j0, j1) };
         self
     }
     /// calculate position for hepta polynomial trajectory
     #[inline(always)]
-    pub fn pos(&mut self, x: float) -> float {
+    pub fn pos(&mut self, x: real) -> real {
         unsafe { a_trajpoly7_pos(self, x) }
     }
     /// calculate velocity for hepta polynomial trajectory
     #[inline(always)]
-    pub fn vel(&mut self, x: float) -> float {
+    pub fn vel(&mut self, x: real) -> real {
         unsafe { a_trajpoly7_vel(self, x) }
     }
     /// calculate acceleration for hepta polynomial trajectory
     #[inline(always)]
-    pub fn acc(&mut self, x: float) -> float {
+    pub fn acc(&mut self, x: real) -> real {
         unsafe { a_trajpoly7_acc(self, x) }
     }
     /// calculate jerk for hepta polynomial trajectory
     #[inline(always)]
-    pub fn jer(&mut self, x: float) -> float {
+    pub fn jer(&mut self, x: real) -> real {
         unsafe { a_trajpoly7_jer(self, x) }
     }
 }
@@ -1592,29 +1592,29 @@ impl trajpoly7 {
 #[repr(C)]
 pub struct trajtrap {
     /// total duration
-    pub t: float,
+    pub t: real,
     /// initial position
-    pub p0: float,
+    pub p0: real,
     /// final position
-    pub p1: float,
+    pub p1: real,
     /// initial velocity
-    pub v0: float,
+    pub v0: real,
     /// final velocity
-    pub v1: float,
+    pub v1: real,
     /// constant velocity
-    pub vc: float,
+    pub vc: real,
     /// time before constant velocity
-    pub ta: float,
+    pub ta: real,
     /// time after constant velocity
-    pub td: float,
+    pub td: real,
     /// position before constant velocity
-    pub pa: float,
+    pub pa: real,
     /// position after constant velocity
-    pub pd: float,
+    pub pd: real,
     /// acceleration before constant velocity
-    pub ac: float,
+    pub ac: real,
     /// acceleration after constant velocity
-    pub de: float,
+    pub de: real,
 }
 
 impl Default for trajtrap {
@@ -1640,17 +1640,17 @@ impl Default for trajtrap {
 extern "C" {
     fn a_trajtrap_gen(
         ctx: *mut trajtrap,
-        vm: float,
-        ac: float,
-        de: float,
-        p0: float,
-        p1: float,
-        v0: float,
-        v1: float,
-    ) -> float;
-    fn a_trajtrap_pos(ctx: *const trajtrap, x: float) -> float;
-    fn a_trajtrap_vel(ctx: *const trajtrap, x: float) -> float;
-    fn a_trajtrap_acc(ctx: *const trajtrap, x: float) -> float;
+        vm: real,
+        ac: real,
+        de: real,
+        p0: real,
+        p1: real,
+        v0: real,
+        v1: real,
+    ) -> real;
+    fn a_trajtrap_pos(ctx: *const trajtrap, x: real) -> real;
+    fn a_trajtrap_vel(ctx: *const trajtrap, x: real) -> real;
+    fn a_trajtrap_acc(ctx: *const trajtrap, x: real) -> real;
 }
 
 impl trajtrap {
@@ -1664,29 +1664,29 @@ impl trajtrap {
     #[inline(always)]
     pub fn gen(
         &mut self,
-        vm: float,
-        ac: float,
-        de: float,
-        p0: float,
-        p1: float,
-        v0: float,
-        v1: float,
-    ) -> float {
+        vm: real,
+        ac: real,
+        de: real,
+        p0: real,
+        p1: real,
+        v0: real,
+        v1: real,
+    ) -> real {
         unsafe { a_trajtrap_gen(self, vm, ac, de, p0, p1, v0, v1) }
     }
     /// calculate position for trapezoidal velocity trajectory
     #[inline(always)]
-    pub fn pos(&mut self, x: float) -> float {
+    pub fn pos(&mut self, x: real) -> real {
         unsafe { a_trajtrap_pos(self, x) }
     }
     /// calculate velocity for trapezoidal velocity trajectory
     #[inline(always)]
-    pub fn vel(&mut self, x: float) -> float {
+    pub fn vel(&mut self, x: real) -> real {
         unsafe { a_trajtrap_vel(self, x) }
     }
     /// calculate acceleration for trapezoidal velocity trajectory
     #[inline(always)]
-    pub fn acc(&mut self, x: float) -> float {
+    pub fn acc(&mut self, x: real) -> real {
         unsafe { a_trajtrap_acc(self, x) }
     }
 }

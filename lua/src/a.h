@@ -26,7 +26,7 @@
 #define LUA_INT lua_Integer
 #endif /* LUA_INT */
 #if !defined LUA_NUM
-#define LUA_NUM a_float
+#define LUA_NUM a_real
 #endif /* LUA_NUM */
 
 typedef struct

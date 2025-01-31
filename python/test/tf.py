@@ -17,11 +17,11 @@ tf = liba.tf(num, den[1:])
 
 N = 1000
 T = 0.5 / N
-x = liba.new_float(N)
+x = liba.new_real(N)
 for i in range(N):
     x[i] = i * T
 
-y = liba.new_float(N)
+y = liba.new_real(N)
 for i in range(N):
     y[i] = tf(x[i])
 

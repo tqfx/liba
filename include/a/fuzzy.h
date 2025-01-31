@@ -28,10 +28,10 @@ extern "C" {
  @return = \f$ 1-x \f$
 */
 #if !defined A_HAVE_INLINE || defined(LIBA_FUZZY_C)
-A_EXTERN a_float a_fuzzy_not(a_float x);
+A_EXTERN a_real a_fuzzy_not(a_real x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
-A_INTERN a_float a_fuzzy_not(a_float x) { return 1 - x; }
+A_INTERN a_real a_fuzzy_not(a_real x) { return 1 - x; }
 #endif /* A_HAVE_INLINE */
 
 /*!
@@ -41,10 +41,10 @@ A_INTERN a_float a_fuzzy_not(a_float x) { return 1 - x; }
  @return = \f$ \min(a,b) \f$
 */
 #if !defined A_HAVE_INLINE || defined(LIBA_FUZZY_C)
-A_EXTERN a_float a_fuzzy_cap(a_float a, a_float b);
+A_EXTERN a_real a_fuzzy_cap(a_real a, a_real b);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
-A_INTERN a_float a_fuzzy_cap(a_float a, a_float b) { return A_MIN(a, b); }
+A_INTERN a_real a_fuzzy_cap(a_real a, a_real b) { return A_MIN(a, b); }
 #endif /* A_HAVE_INLINE */
 
 /*!
@@ -54,10 +54,10 @@ A_INTERN a_float a_fuzzy_cap(a_float a, a_float b) { return A_MIN(a, b); }
  @return = \f$ ab \f$
 */
 #if !defined A_HAVE_INLINE || defined(LIBA_FUZZY_C)
-A_EXTERN a_float a_fuzzy_cap_algebra(a_float a, a_float b);
+A_EXTERN a_real a_fuzzy_cap_algebra(a_real a, a_real b);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
-A_INTERN a_float a_fuzzy_cap_algebra(a_float a, a_float b) { return a * b; }
+A_INTERN a_real a_fuzzy_cap_algebra(a_real a, a_real b) { return a * b; }
 #endif /* A_HAVE_INLINE */
 
 /*!
@@ -67,12 +67,12 @@ A_INTERN a_float a_fuzzy_cap_algebra(a_float a, a_float b) { return a * b; }
  @return = \f$ \max(a+b-1,0) \f$
 */
 #if !defined A_HAVE_INLINE || defined(LIBA_FUZZY_C)
-A_EXTERN a_float a_fuzzy_cap_bounded(a_float a, a_float b);
+A_EXTERN a_real a_fuzzy_cap_bounded(a_real a, a_real b);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
-A_INTERN a_float a_fuzzy_cap_bounded(a_float a, a_float b)
+A_INTERN a_real a_fuzzy_cap_bounded(a_real a, a_real b)
 {
-    a_float const c = a + b - 1;
+    a_real const c = a + b - 1;
     return A_MAX(c, 0);
 }
 #endif /* A_HAVE_INLINE */
@@ -84,10 +84,10 @@ A_INTERN a_float a_fuzzy_cap_bounded(a_float a, a_float b)
  @return = \f$ \max(a,b) \f$
 */
 #if !defined A_HAVE_INLINE || defined(LIBA_FUZZY_C)
-A_EXTERN a_float a_fuzzy_cup(a_float a, a_float b);
+A_EXTERN a_real a_fuzzy_cup(a_real a, a_real b);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
-A_INTERN a_float a_fuzzy_cup(a_float a, a_float b) { return A_MAX(a, b); }
+A_INTERN a_real a_fuzzy_cup(a_real a, a_real b) { return A_MAX(a, b); }
 #endif /* A_HAVE_INLINE */
 
 /*!
@@ -97,10 +97,10 @@ A_INTERN a_float a_fuzzy_cup(a_float a, a_float b) { return A_MAX(a, b); }
  @return = \f$ a+b-ab \f$
 */
 #if !defined A_HAVE_INLINE || defined(LIBA_FUZZY_C)
-A_EXTERN a_float a_fuzzy_cup_algebra(a_float a, a_float b);
+A_EXTERN a_real a_fuzzy_cup_algebra(a_real a, a_real b);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
-A_INTERN a_float a_fuzzy_cup_algebra(a_float a, a_float b) { return a + b - a * b; }
+A_INTERN a_real a_fuzzy_cup_algebra(a_real a, a_real b) { return a + b - a * b; }
 #endif /* A_HAVE_INLINE */
 
 /*!
@@ -110,12 +110,12 @@ A_INTERN a_float a_fuzzy_cup_algebra(a_float a, a_float b) { return a + b - a * 
  @return = \f$ \min(a+b,1) \f$
 */
 #if !defined A_HAVE_INLINE || defined(LIBA_FUZZY_C)
-A_EXTERN a_float a_fuzzy_cup_bounded(a_float a, a_float b);
+A_EXTERN a_real a_fuzzy_cup_bounded(a_real a, a_real b);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_FUZZY_C)
-A_INTERN a_float a_fuzzy_cup_bounded(a_float a, a_float b)
+A_INTERN a_real a_fuzzy_cup_bounded(a_real a, a_real b)
 {
-    a_float const c = a + b;
+    a_real const c = a + b;
     return A_MIN(c, 1);
 }
 #endif /* A_HAVE_INLINE */
@@ -126,7 +126,7 @@ A_INTERN a_float a_fuzzy_cup_bounded(a_float a, a_float b)
  @param[in] b right-hand operand
  @return = \f$ \sqrt{ab}\sqrt{1-(1-a)(1-b)} \f$
 */
-A_EXTERN a_float a_fuzzy_equ(a_float a, a_float b);
+A_EXTERN a_real a_fuzzy_equ(a_real a, a_real b);
 
 /*!
  @brief equilibrium operator
@@ -135,7 +135,7 @@ A_EXTERN a_float a_fuzzy_equ(a_float a, a_float b);
  @param[in] b right-hand operand
  @return = \f$ (ab)^{1-\gamma}(1-(1-a)(1-b))^{\gamma} \f$
 */
-A_EXTERN a_float a_fuzzy_equ_(a_float gamma, a_float a, a_float b);
+A_EXTERN a_real a_fuzzy_equ_(a_real gamma, a_real a, a_real b);
 
 #if defined(LIBA_FUZZY_C)
 #undef A_INTERN

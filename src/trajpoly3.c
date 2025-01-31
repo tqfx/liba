@@ -1,9 +1,9 @@
 #include "a/trajpoly3.h"
 #include "a/poly.h"
 
-void a_trajpoly3_gen(a_trajpoly3 *ctx, a_float ts,
-                     a_float p0, a_float p1,
-                     a_float v0, a_float v1)
+void a_trajpoly3_gen(a_trajpoly3 *ctx, a_real ts,
+                     a_real p0, a_real p1,
+                     a_real v0, a_real v1)
 {
     a_trajpoly3_gen0(ctx, ts, p0, p1, v0, v1);
 #if defined(A_TRAJPOLY3) && (A_TRAJPOLY3 + 0 > 1)
@@ -14,14 +14,14 @@ void a_trajpoly3_gen(a_trajpoly3 *ctx, a_float ts,
 #endif /* A_TRAJPOLY3 */
 }
 
-void a_trajpoly3_gen0(a_trajpoly3 *ctx, a_float ts,
-                      a_float p0, a_float p1,
-                      a_float v0, a_float v1)
+void a_trajpoly3_gen0(a_trajpoly3 *ctx, a_real ts,
+                      a_real p0, a_real p1,
+                      a_real v0, a_real v1)
 {
-    a_float const p = p1 - p0;
-    a_float const _t1 = 1 / ts;
-    a_float const _t2 = _t1 * _t1;
-    a_float const _t3 = _t1 * _t2;
+    a_real const p = p1 - p0;
+    a_real const _t1 = 1 / ts;
+    a_real const _t2 = _t1 * _t1;
+    a_real const _t3 = _t1 * _t2;
 
     ctx->p[0] = p0;
     ctx->p[1] = v0;
@@ -48,20 +48,20 @@ void a_trajpoly3_gen2(a_trajpoly3 *ctx)
 }
 #endif /* A_TRAJPOLY3 */
 
-a_float a_trajpoly3_pos(a_trajpoly3 const *ctx, a_float x)
+a_real a_trajpoly3_pos(a_trajpoly3 const *ctx, a_real x)
 {
     return a_poly_eval_(ctx->p, ctx->p + A_LEN(ctx->p), x);
 }
 
 #if defined(A_TRAJPOLY3) && (A_TRAJPOLY3 + 0 > 1)
-a_float a_trajpoly3_vel(a_trajpoly3 const *ctx, a_float x)
+a_real a_trajpoly3_vel(a_trajpoly3 const *ctx, a_real x)
 {
     return a_poly_eval_(ctx->v, ctx->v + A_LEN(ctx->v), x);
 }
 #endif /* A_TRAJPOLY3 */
 
 #if defined(A_TRAJPOLY3) && (A_TRAJPOLY3 + 0 > 2)
-a_float a_trajpoly3_acc(a_trajpoly3 const *ctx, a_float x)
+a_real a_trajpoly3_acc(a_trajpoly3 const *ctx, a_real x)
 {
     return a_poly_eval_(ctx->a, ctx->a + A_LEN(ctx->a), x);
 }

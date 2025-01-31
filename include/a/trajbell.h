@@ -56,8 +56,8 @@ extern "C" {
  @param[in] v1 defines the final velocity
  @return total duration
 */
-A_EXTERN a_float a_trajbell_gen(a_trajbell *ctx, a_float jm, a_float am, a_float vm,
-                                a_float p0, a_float p1, a_float v0, a_float v1);
+A_EXTERN a_real a_trajbell_gen(a_trajbell *ctx, a_real jm, a_real am, a_real vm,
+                               a_real p0, a_real p1, a_real v0, a_real v1);
 
 /*!
  @brief calculate position for bell-shaped velocity trajectory
@@ -77,7 +77,7 @@ A_EXTERN a_float a_trajbell_gen(a_trajbell *ctx, a_float jm, a_float am, a_float
  @param[in] x difference between current time and initial time
  @return position output
 */
-A_EXTERN a_float a_trajbell_pos(a_trajbell const *ctx, a_float x);
+A_EXTERN a_real a_trajbell_pos(a_trajbell const *ctx, a_real x);
 
 /*!
  @brief calculate velocity for bell-shaped velocity trajectory
@@ -96,7 +96,7 @@ A_EXTERN a_float a_trajbell_pos(a_trajbell const *ctx, a_float x);
  @param[in] x difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_float a_trajbell_vel(a_trajbell const *ctx, a_float x);
+A_EXTERN a_real a_trajbell_vel(a_trajbell const *ctx, a_real x);
 
 /*!
  @brief calculate acceleration for bell-shaped velocity trajectory
@@ -115,7 +115,7 @@ A_EXTERN a_float a_trajbell_vel(a_trajbell const *ctx, a_float x);
  @param[in] x difference between current time and initial time
  @return acceleration output
 */
-A_EXTERN a_float a_trajbell_acc(a_trajbell const *ctx, a_float x);
+A_EXTERN a_real a_trajbell_acc(a_trajbell const *ctx, a_real x);
 
 /*!
  @brief calculate jerk for bell-shaped velocity trajectory
@@ -134,7 +134,7 @@ A_EXTERN a_float a_trajbell_acc(a_trajbell const *ctx, a_float x);
  @param[in] x difference between current time and initial time
  @return jerk output
 */
-A_EXTERN a_float a_trajbell_jer(a_trajbell const *ctx, a_float x);
+A_EXTERN a_real a_trajbell_jer(a_trajbell const *ctx, a_real x);
 
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -149,39 +149,39 @@ typedef struct a_trajbell trajbell;
 */
 struct a_trajbell
 {
-    a_float t; /*!< total duration */
-    a_float tv; /*!< constant velocity phase */
-    a_float ta; /*!< acceleration phase */
-    a_float td; /*!< deceleration phase */
-    a_float taj; /*!< time-interval in which the jerk is constant (j max or j min ) during the acceleration phase */
-    a_float tdj; /*!< time-interval in which the jerk is constant (j max or j min ) during the deceleration phase */
-    a_float p0; /*!< initial position */
-    a_float p1; /*!< final position */
-    a_float v0; /*!< initial velocity */
-    a_float v1; /*!< final velocity */
-    a_float vm; /*!< maximum velocity */
-    a_float jm; /*!< maximum jerk */
-    a_float am; /*!< maximum acceleration */
-    a_float dm; /*!< maximum deceleration */
+    a_real t; /*!< total duration */
+    a_real tv; /*!< constant velocity phase */
+    a_real ta; /*!< acceleration phase */
+    a_real td; /*!< deceleration phase */
+    a_real taj; /*!< time-interval in which the jerk is constant (j max or j min ) during the acceleration phase */
+    a_real tdj; /*!< time-interval in which the jerk is constant (j max or j min ) during the deceleration phase */
+    a_real p0; /*!< initial position */
+    a_real p1; /*!< final position */
+    a_real v0; /*!< initial velocity */
+    a_real v1; /*!< final velocity */
+    a_real vm; /*!< maximum velocity */
+    a_real jm; /*!< maximum jerk */
+    a_real am; /*!< maximum acceleration */
+    a_real dm; /*!< maximum deceleration */
 #if defined(__cplusplus)
-    A_INLINE a_float gen(a_float jm_, a_float am_, a_float vm_, a_float p0_, a_float p1_,
-                         a_float v0_ = 0, a_float v1_ = 0)
+    A_INLINE a_real gen(a_real jm_, a_real am_, a_real vm_, a_real p0_, a_real p1_,
+                        a_real v0_ = 0, a_real v1_ = 0)
     {
         return a_trajbell_gen(this, jm_, am_, vm_, p0_, p1_, v0_, v1_);
     }
-    A_INLINE a_float pos(a_float x) const
+    A_INLINE a_real pos(a_real x) const
     {
         return a_trajbell_pos(this, x);
     }
-    A_INLINE a_float vel(a_float x) const
+    A_INLINE a_real vel(a_real x) const
     {
         return a_trajbell_vel(this, x);
     }
-    A_INLINE a_float acc(a_float x) const
+    A_INLINE a_real acc(a_real x) const
     {
         return a_trajbell_acc(this, x);
     }
-    A_INLINE a_float jer(a_float x) const
+    A_INLINE a_real jer(a_real x) const
     {
         return a_trajbell_jer(this, x);
     }

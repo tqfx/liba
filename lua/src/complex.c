@@ -24,7 +24,7 @@ static int liba_complex_from(lua_State *L, a_complex *z, int idx)
     switch (type)
     {
     case LUA_TNUMBER:
-        z->real = (a_float)lua_tonumber(L, idx);
+        z->real = (a_real)lua_tonumber(L, idx);
         z->imag = 0;
         break;
     case LUA_TSTRING:
@@ -79,7 +79,7 @@ int liba_complex_new(lua_State *L)
         int const type = liba_complex_from(L, &z, 1);
         if (type == LUA_TNUMBER && top >= 2)
         {
-            z.imag = (a_float)lua_tonumber(L, 2);
+            z.imag = (a_real)lua_tonumber(L, 2);
         }
     }
     *liba_complex_new_(L) = z;
@@ -95,10 +95,10 @@ int liba_complex_new(lua_State *L)
 */
 int liba_complex_rect(lua_State *L)
 {
-    a_float real = 0, imag = 0;
+    a_real real = 0, imag = 0;
     int const top = lua_gettop(L);
-    if (top >= 1) { real = (a_float)lua_tonumber(L, 1); }
-    if (top >= 2) { imag = (a_float)lua_tonumber(L, 2); }
+    if (top >= 1) { real = (a_real)lua_tonumber(L, 1); }
+    if (top >= 2) { imag = (a_real)lua_tonumber(L, 2); }
     a_complex_rect(liba_complex_new_(L), real, imag);
     return 1;
 }
@@ -112,10 +112,10 @@ int liba_complex_rect(lua_State *L)
 */
 int liba_complex_polar(lua_State *L)
 {
-    a_float rho = 0, theta = 0;
+    a_real rho = 0, theta = 0;
     int const top = lua_gettop(L);
-    if (top >= 1) { rho = (a_float)lua_tonumber(L, 1); }
-    if (top >= 2) { theta = (a_float)lua_tonumber(L, 2); }
+    if (top >= 1) { rho = (a_real)lua_tonumber(L, 1); }
+    if (top >= 2) { theta = (a_real)lua_tonumber(L, 2); }
     a_complex_polar(liba_complex_new_(L), rho, theta);
     return 1;
 }
@@ -565,22 +565,22 @@ static int liba_complex_set(lua_State *L)
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x0F6133A2: /* real */
-        ctx->real = (a_float)luaL_checknumber(L, 3);
+        ctx->real = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x0E2E9172: /* imag */
-        ctx->imag = (a_float)luaL_checknumber(L, 3);
+        ctx->imag = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x001E0FA9: /* rho */
     {
-        a_float const rho = (a_float)luaL_checknumber(L, 3);
-        a_float const theta = a_complex_arg(*ctx);
+        a_real const rho = (a_real)luaL_checknumber(L, 3);
+        a_real const theta = a_complex_arg(*ctx);
         a_complex_polar(ctx, rho, theta);
         break;
     }
     case 0x0240D1F6: /* theta */
     {
-        a_float const theta = (a_float)luaL_checknumber(L, 3);
-        a_float const rho = a_complex_abs(*ctx);
+        a_real const theta = (a_real)luaL_checknumber(L, 3);
+        a_real const rho = a_complex_abs(*ctx);
         a_complex_polar(ctx, rho, theta);
         break;
     }

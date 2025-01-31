@@ -21,7 +21,7 @@ static unsigned int js_array_num_len(emscripten::val const &val, int dim) // NOL
     }
     return num;
 }
-static a_float *js_array_num_ptr(emscripten::val const &val, a_float *ptr, int dim) // NOLINT(misc-no-recursion)
+static a_real *js_array_num_ptr(emscripten::val const &val, a_real *ptr, int dim) // NOLINT(misc-no-recursion)
 {
     unsigned int i = 0, n = val["length"].as<unsigned int>();
     for (--dim; i < n; ++i)
@@ -29,7 +29,7 @@ static a_float *js_array_num_ptr(emscripten::val const &val, a_float *ptr, int d
         emscripten::val const &v = val[i];
         if (v.isNumber())
         {
-            *ptr++ = v.as<a_float>();
+            *ptr++ = v.as<a_real>();
         }
         else if (v.isArray() && dim > 0)
         {
@@ -38,19 +38,19 @@ static a_float *js_array_num_ptr(emscripten::val const &val, a_float *ptr, int d
     }
     return ptr;
 }
-static a_float *js_array_num_get(emscripten::val const &val, a_float *ptr, unsigned int *num, int dim)
+static a_real *js_array_num_get(emscripten::val const &val, a_real *ptr, unsigned int *num, int dim)
 {
     unsigned int n = js_array_num_len(val, dim), n_ = 0;
     if (!num) { num = &n_; }
     if (n > *num)
     {
-        ptr = a_cast_s(a_float *, a_alloc(ptr, sizeof(a_float) * n));
+        ptr = a_cast_s(a_real *, a_alloc(ptr, sizeof(a_real) * n));
     }
     js_array_num_ptr(val, ptr, dim);
     *num = n;
     return ptr;
 }
-static emscripten::val js_array_num_new(a_float const *p, a_size n)
+static emscripten::val js_array_num_new(a_real const *p, a_size n)
 {
     return emscripten::val(emscripten::typed_memory_view(n, p));
 }
@@ -241,27 +241,27 @@ struct crc64
 
 struct hpf: public a_hpf
 {
-    A_INLINE a_float alpha_r() const { return alpha; }
-    A_INLINE a_float output_r() const { return output; }
-    A_INLINE a_float input_r() const { return input; }
-    A_INLINE hpf(a_float fc, a_float ts)
+    A_INLINE a_real alpha_r() const { return alpha; }
+    A_INLINE a_real output_r() const { return output; }
+    A_INLINE a_real input_r() const { return input; }
+    A_INLINE hpf(a_real fc, a_real ts)
     {
         alpha = A_HPF_GEN(fc, ts);
         output = 0;
         input = 0;
     }
-    A_INLINE hpf(a_float alpha_)
+    A_INLINE hpf(a_real alpha_)
     {
         alpha = alpha_;
         output = 0;
         input = 0;
     }
-    A_INLINE hpf *gen(a_float fc, a_float ts)
+    A_INLINE hpf *gen(a_real fc, a_real ts)
     {
         a_hpf::gen(fc, ts);
         return this;
     }
-    A_INLINE a_float operator()(a_float x)
+    A_INLINE a_real operator()(a_real x)
     {
         return a_hpf::operator()(x);
     }
@@ -276,24 +276,24 @@ struct hpf: public a_hpf
 
 struct lpf: public a_lpf
 {
-    A_INLINE a_float alpha_r() const { return alpha; }
-    A_INLINE a_float output_r() const { return output; }
-    A_INLINE lpf(a_float fc, a_float ts)
+    A_INLINE a_real alpha_r() const { return alpha; }
+    A_INLINE a_real output_r() const { return output; }
+    A_INLINE lpf(a_real fc, a_real ts)
     {
         alpha = A_LPF_GEN(fc, ts);
         output = 0;
     }
-    A_INLINE lpf(a_float alpha_)
+    A_INLINE lpf(a_real alpha_)
     {
         alpha = alpha_;
         output = 0;
     }
-    A_INLINE lpf *gen(a_float fc, a_float ts)
+    A_INLINE lpf *gen(a_real fc, a_real ts)
     {
         a_lpf::gen(fc, ts);
         return this;
     }
-    A_INLINE a_float operator()(a_float x)
+    A_INLINE a_real operator()(a_real x)
     {
         return a_lpf::operator()(x);
     }
@@ -309,67 +309,67 @@ struct lpf: public a_lpf
 struct mf
 {
     static unsigned int const NUL;
-    static a_float gauss(a_float x, a_float sigma, a_float c)
+    static a_real gauss(a_real x, a_real sigma, a_real c)
     {
         return a_mf_gauss(x, sigma, c);
     }
     static unsigned int const GAUSS;
-    static a_float gauss2(a_float x, a_float sigma1, a_float c1, a_float sigma2, a_float c2)
+    static a_real gauss2(a_real x, a_real sigma1, a_real c1, a_real sigma2, a_real c2)
     {
         return a_mf_gauss2(x, sigma1, c1, sigma2, c2);
     }
     static unsigned int const GAUSS2;
-    static a_float gbell(a_float x, a_float a, a_float b, a_float c)
+    static a_real gbell(a_real x, a_real a, a_real b, a_real c)
     {
         return a_mf_gbell(x, a, b, c);
     }
     static unsigned int const GBELL;
-    static a_float sig(a_float x, a_float a, a_float c)
+    static a_real sig(a_real x, a_real a, a_real c)
     {
         return a_mf_sig(x, a, c);
     }
     static unsigned int const SIG;
-    static a_float dsig(a_float x, a_float a1, a_float c1, a_float a2, a_float c2)
+    static a_real dsig(a_real x, a_real a1, a_real c1, a_real a2, a_real c2)
     {
         return a_mf_dsig(x, a1, c1, a2, c2);
     }
     static unsigned int const DSIG;
-    static a_float psig(a_float x, a_float a1, a_float c1, a_float a2, a_float c2)
+    static a_real psig(a_real x, a_real a1, a_real c1, a_real a2, a_real c2)
     {
         return a_mf_psig(x, a1, c1, a2, c2);
     }
     static unsigned int const PSIG;
-    static a_float trap(a_float x, a_float a, a_float b, a_float c, a_float d)
+    static a_real trap(a_real x, a_real a, a_real b, a_real c, a_real d)
     {
         return a_mf_trap(x, a, b, c, d);
     }
     static unsigned int const TRAP;
-    static a_float tri(a_float x, a_float a, a_float b, a_float c)
+    static a_real tri(a_real x, a_real a, a_real b, a_real c)
     {
         return a_mf_tri(x, a, b, c);
     }
     static unsigned int const TRI;
-    static a_float lins(a_float x, a_float a, a_float b)
+    static a_real lins(a_real x, a_real a, a_real b)
     {
         return a_mf_lins(x, a, b);
     }
     static unsigned int const LINS;
-    static a_float linz(a_float x, a_float a, a_float b)
+    static a_real linz(a_real x, a_real a, a_real b)
     {
         return a_mf_linz(x, a, b);
     }
     static unsigned int const LINZ;
-    static a_float s(a_float x, a_float a, a_float b)
+    static a_real s(a_real x, a_real a, a_real b)
     {
         return a_mf_s(x, a, b);
     }
     static unsigned int const S;
-    static a_float z(a_float x, a_float a, a_float b)
+    static a_real z(a_real x, a_real a, a_real b)
     {
         return a_mf_z(x, a, b);
     }
     static unsigned int const Z;
-    static a_float pi(a_float x, a_float a, a_float b, a_float c, a_float d)
+    static a_real pi(a_real x, a_real a, a_real b, a_real c, a_real d)
     {
         return a_mf_pi(x, a, b, c, d);
     }
@@ -394,20 +394,20 @@ unsigned int const mf::PI = A_MF_PI;
 
 struct pid: public a_pid
 {
-    A_INLINE pid *set_kpid(a_float kp_, a_float ki_, a_float kd_)
+    A_INLINE pid *set_kpid(a_real kp_, a_real ki_, a_real kd_)
     {
         a_pid::set_kpid(kp_, ki_, kd_);
         return this;
     }
-    A_INLINE a_float run(a_float set, a_float fdb_)
+    A_INLINE a_real run(a_real set, a_real fdb_)
     {
         return a_pid::run(set, fdb_);
     }
-    A_INLINE a_float pos(a_float set, a_float fdb_)
+    A_INLINE a_real pos(a_real set, a_real fdb_)
     {
         return a_pid::pos(set, fdb_);
     }
-    A_INLINE a_float inc(a_float set, a_float fdb_)
+    A_INLINE a_real inc(a_real set, a_real fdb_)
     {
         return a_pid::inc(set, fdb_);
     }
@@ -421,30 +421,30 @@ struct pid: public a_pid
         kp = 1;
         ki = 0;
         kd = 0;
-        summax = +A_FLOAT_INF;
-        summin = -A_FLOAT_INF;
-        outmax = +A_FLOAT_INF;
-        outmin = -A_FLOAT_INF;
+        summax = +A_REAL_INF;
+        summin = -A_REAL_INF;
+        outmax = +A_REAL_INF;
+        outmin = -A_REAL_INF;
         a_pid_init(this);
     }
-    A_INLINE a_float kp_r() const { return kp; }
-    A_INLINE void kp_w(a_float kp_) { kp = kp_; }
-    A_INLINE a_float ki_r() const { return ki; }
-    A_INLINE void ki_w(a_float ki_) { ki = ki_; }
-    A_INLINE a_float kd_r() const { return kd; }
-    A_INLINE void kd_w(a_float kd_) { kd = kd_; }
-    A_INLINE a_float summax_r() const { return summax; }
-    A_INLINE void summax_w(a_float summax_) { summax = summax_; }
-    A_INLINE a_float summin_r() const { return summin; }
-    A_INLINE void summin_w(a_float summin_) { summin = summin_; }
-    A_INLINE a_float outmax_r() const { return outmax; }
-    A_INLINE void outmax_w(a_float outmax_) { outmax = outmax_; }
-    A_INLINE a_float outmin_r() const { return outmin; }
-    A_INLINE void outmin_w(a_float outmin_) { outmin = outmin_; }
-    A_INLINE a_float sum_r() const { return sum; }
-    A_INLINE a_float out_r() const { return out; }
-    A_INLINE a_float fdb_r() const { return fdb; }
-    A_INLINE a_float err_r() const { return err; }
+    A_INLINE a_real kp_r() const { return kp; }
+    A_INLINE void kp_w(a_real kp_) { kp = kp_; }
+    A_INLINE a_real ki_r() const { return ki; }
+    A_INLINE void ki_w(a_real ki_) { ki = ki_; }
+    A_INLINE a_real kd_r() const { return kd; }
+    A_INLINE void kd_w(a_real kd_) { kd = kd_; }
+    A_INLINE a_real summax_r() const { return summax; }
+    A_INLINE void summax_w(a_real summax_) { summax = summax_; }
+    A_INLINE a_real summin_r() const { return summin; }
+    A_INLINE void summin_w(a_real summin_) { summin = summin_; }
+    A_INLINE a_real outmax_r() const { return outmax; }
+    A_INLINE void outmax_w(a_real outmax_) { outmax = outmax_; }
+    A_INLINE a_real outmin_r() const { return outmin; }
+    A_INLINE void outmin_w(a_real outmin_) { outmin = outmin_; }
+    A_INLINE a_real sum_r() const { return sum; }
+    A_INLINE a_real out_r() const { return out; }
+    A_INLINE a_real fdb_r() const { return fdb; }
+    A_INLINE a_real err_r() const { return err; }
 };
 
 #include "a/pid_fuzzy.h"
@@ -461,8 +461,8 @@ struct pid_fuzzy: public a_pid_fuzzy
         unsigned int n = 0;
         union
         {
-            a_float const *p;
-            a_float *o;
+            a_real const *p;
+            a_real *o;
         } u;
         u.p = me;
         me = js_array_num_get(me_, u.o, nullptr, 2);
@@ -488,20 +488,20 @@ struct pid_fuzzy: public a_pid_fuzzy
         a_pid_fuzzy::set_bfuzz(ptr, num);
         return this;
     }
-    A_INLINE pid_fuzzy *set_kpid(a_float kp_, a_float ki_, a_float kd_)
+    A_INLINE pid_fuzzy *set_kpid(a_real kp_, a_real ki_, a_real kd_)
     {
         a_pid_fuzzy::set_kpid(kp_, ki_, kd_);
         return this;
     }
-    A_INLINE a_float run(a_float set, a_float fdb)
+    A_INLINE a_real run(a_real set, a_real fdb)
     {
         return a_pid_fuzzy::run(set, fdb);
     }
-    A_INLINE a_float pos(a_float set, a_float fdb)
+    A_INLINE a_real pos(a_real set, a_real fdb)
     {
         return a_pid_fuzzy::pos(set, fdb);
     }
-    A_INLINE a_float inc(a_float set, a_float fdb)
+    A_INLINE a_real inc(a_real set, a_real fdb)
     {
         return a_pid_fuzzy::inc(set, fdb);
     }
@@ -515,10 +515,10 @@ struct pid_fuzzy: public a_pid_fuzzy
         pid.kp = kp = 1;
         pid.ki = ki = 0;
         pid.kd = kd = 0;
-        pid.summax = +A_FLOAT_INF;
-        pid.summin = -A_FLOAT_INF;
-        pid.outmax = +A_FLOAT_INF;
-        pid.outmin = -A_FLOAT_INF;
+        pid.summax = +A_REAL_INF;
+        pid.summin = -A_REAL_INF;
+        pid.outmax = +A_REAL_INF;
+        pid.outmin = -A_REAL_INF;
         me = nullptr;
         mec = nullptr;
         mkp = nullptr;
@@ -535,8 +535,8 @@ struct pid_fuzzy: public a_pid_fuzzy
     {
         union
         {
-            a_float const *p;
-            a_float *o;
+            a_real const *p;
+            a_real *o;
         } u;
         a_alloc(a_pid_fuzzy_bfuzz(this), 0);
         u.p = me;
@@ -550,24 +550,24 @@ struct pid_fuzzy: public a_pid_fuzzy
         u.p = mkd;
         a_alloc(u.o, 0);
     }
-    A_INLINE a_float kp_r() const { return kp; }
-    A_INLINE void kp_w(a_float kp_) { kp = kp_; }
-    A_INLINE a_float ki_r() const { return ki; }
-    A_INLINE void ki_w(a_float ki_) { ki = ki_; }
-    A_INLINE a_float kd_r() const { return kd; }
-    A_INLINE void kd_w(a_float kd_) { kd = kd_; }
-    A_INLINE a_float summax_r() const { return pid.summax; }
-    A_INLINE void summax_w(a_float summax) { pid.summax = summax; }
-    A_INLINE a_float summin_r() const { return pid.summin; }
-    A_INLINE void summin_w(a_float summin) { pid.summin = summin; }
-    A_INLINE a_float outmax_r() const { return pid.outmax; }
-    A_INLINE void outmax_w(a_float outmax) { pid.outmax = outmax; }
-    A_INLINE a_float outmin_r() const { return pid.outmin; }
-    A_INLINE void outmin_w(a_float outmin) { pid.outmin = outmin; }
-    A_INLINE a_float sum_r() const { return pid.sum; }
-    A_INLINE a_float out_r() const { return pid.out; }
-    A_INLINE a_float fdb_r() const { return pid.fdb; }
-    A_INLINE a_float err_r() const { return pid.err; }
+    A_INLINE a_real kp_r() const { return kp; }
+    A_INLINE void kp_w(a_real kp_) { kp = kp_; }
+    A_INLINE a_real ki_r() const { return ki; }
+    A_INLINE void ki_w(a_real ki_) { ki = ki_; }
+    A_INLINE a_real kd_r() const { return kd; }
+    A_INLINE void kd_w(a_real kd_) { kd = kd_; }
+    A_INLINE a_real summax_r() const { return pid.summax; }
+    A_INLINE void summax_w(a_real summax) { pid.summax = summax; }
+    A_INLINE a_real summin_r() const { return pid.summin; }
+    A_INLINE void summin_w(a_real summin) { pid.summin = summin; }
+    A_INLINE a_real outmax_r() const { return pid.outmax; }
+    A_INLINE void outmax_w(a_real outmax) { pid.outmax = outmax; }
+    A_INLINE a_real outmin_r() const { return pid.outmin; }
+    A_INLINE void outmin_w(a_real outmin) { pid.outmin = outmin; }
+    A_INLINE a_real sum_r() const { return pid.sum; }
+    A_INLINE a_real out_r() const { return pid.out; }
+    A_INLINE a_real fdb_r() const { return pid.fdb; }
+    A_INLINE a_real err_r() const { return pid.err; }
     A_INLINE unsigned int nrule_r() const { return nrule; }
     A_INLINE unsigned int nfuzz_r() const { return nfuzz; }
     static unsigned int const CAP;
@@ -590,21 +590,21 @@ unsigned int const pid_fuzzy::EQU = A_PID_FUZZY_EQU;
 
 struct pid_neuro: public a_pid_neuro
 {
-    A_INLINE pid_neuro *set_kpid(a_float k_, a_float kp, a_float ki, a_float kd)
+    A_INLINE pid_neuro *set_kpid(a_real k_, a_real kp, a_real ki, a_real kd)
     {
         a_pid_neuro::set_kpid(k_, kp, ki, kd);
         return this;
     }
-    A_INLINE pid_neuro *set_wpid(a_float wp_, a_float wi_, a_float wd_)
+    A_INLINE pid_neuro *set_wpid(a_real wp_, a_real wi_, a_real wd_)
     {
         a_pid_neuro::set_wpid(wp_, wi_, wd_);
         return this;
     }
-    A_INLINE a_float run(a_float set, a_float fdb)
+    A_INLINE a_real run(a_real set, a_real fdb)
     {
         return a_pid_neuro::run(set, fdb);
     }
-    A_INLINE a_float inc(a_float set, a_float fdb)
+    A_INLINE a_real inc(a_real set, a_real fdb)
     {
         return a_pid_neuro::inc(set, fdb);
     }
@@ -615,52 +615,52 @@ struct pid_neuro: public a_pid_neuro
     }
     A_INLINE pid_neuro()
     {
-        pid.summax = +A_FLOAT_INF;
-        pid.summin = -A_FLOAT_INF;
-        pid.outmax = +A_FLOAT_INF;
-        pid.outmin = -A_FLOAT_INF;
+        pid.summax = +A_REAL_INF;
+        pid.summin = -A_REAL_INF;
+        pid.outmax = +A_REAL_INF;
+        pid.outmin = -A_REAL_INF;
         pid.kp = k = 1;
         pid.ki = 0;
         pid.kd = 0;
-        wp = A_FLOAT_C(0.1);
-        wi = A_FLOAT_C(0.1);
-        wd = A_FLOAT_C(0.1);
+        wp = A_REAL_C(0.1);
+        wi = A_REAL_C(0.1);
+        wd = A_REAL_C(0.1);
         a_pid_neuro_init(this);
     }
-    A_INLINE a_float k_r() const { return k; }
-    A_INLINE void k_w(a_float k_) { k = k_; }
-    A_INLINE a_float kp_r() const { return pid.kp; }
-    A_INLINE void kp_w(a_float kp) { pid.kp = kp; }
-    A_INLINE a_float ki_r() const { return pid.ki; }
-    A_INLINE void ki_w(a_float ki) { pid.ki = ki; }
-    A_INLINE a_float kd_r() const { return pid.kd; }
-    A_INLINE void kd_w(a_float kd) { pid.kd = kd; }
-    A_INLINE a_float wp_r() const { return wp; }
-    A_INLINE void wp_w(a_float wp_) { wp = wp_; }
-    A_INLINE a_float wi_r() const { return wi; }
-    A_INLINE void wi_w(a_float wi_) { wi = wi_; }
-    A_INLINE a_float wd_r() const { return wd; }
-    A_INLINE void wd_w(a_float wd_) { wd = wd_; }
-    A_INLINE a_float outmax_r() const { return pid.outmax; }
-    A_INLINE void outmax_w(a_float outmax) { pid.outmax = outmax; }
-    A_INLINE a_float outmin_r() const { return pid.outmin; }
-    A_INLINE void outmin_w(a_float outmin) { pid.outmin = outmin; }
-    A_INLINE a_float out_r() const { return pid.out; }
-    A_INLINE a_float fdb_r() const { return pid.fdb; }
-    A_INLINE a_float err_r() const { return pid.err; }
-    A_INLINE a_float ec_r() const { return ec; }
+    A_INLINE a_real k_r() const { return k; }
+    A_INLINE void k_w(a_real k_) { k = k_; }
+    A_INLINE a_real kp_r() const { return pid.kp; }
+    A_INLINE void kp_w(a_real kp) { pid.kp = kp; }
+    A_INLINE a_real ki_r() const { return pid.ki; }
+    A_INLINE void ki_w(a_real ki) { pid.ki = ki; }
+    A_INLINE a_real kd_r() const { return pid.kd; }
+    A_INLINE void kd_w(a_real kd) { pid.kd = kd; }
+    A_INLINE a_real wp_r() const { return wp; }
+    A_INLINE void wp_w(a_real wp_) { wp = wp_; }
+    A_INLINE a_real wi_r() const { return wi; }
+    A_INLINE void wi_w(a_real wi_) { wi = wi_; }
+    A_INLINE a_real wd_r() const { return wd; }
+    A_INLINE void wd_w(a_real wd_) { wd = wd_; }
+    A_INLINE a_real outmax_r() const { return pid.outmax; }
+    A_INLINE void outmax_w(a_real outmax) { pid.outmax = outmax; }
+    A_INLINE a_real outmin_r() const { return pid.outmin; }
+    A_INLINE void outmin_w(a_real outmin) { pid.outmin = outmin; }
+    A_INLINE a_real out_r() const { return pid.out; }
+    A_INLINE a_real fdb_r() const { return pid.fdb; }
+    A_INLINE a_real err_r() const { return pid.err; }
+    A_INLINE a_real ec_r() const { return ec; }
 };
 
 #include "a/regress_linear.h"
 
 struct regress_linear: public a_regress_linear
 {
-    void set_coef_(emscripten::val const &coef, a_float *ptr, unsigned int num)
+    void set_coef_(emscripten::val const &coef, a_real *ptr, unsigned int num)
     {
         unsigned int n = js_array_num_len(coef, 1);
         if (n > num)
         {
-            ptr = a_cast_s(a_float *, a_alloc(ptr, sizeof(a_float) * n));
+            ptr = a_cast_s(a_real *, a_alloc(ptr, sizeof(a_real) * n));
             coef_p = ptr;
         }
         js_array_num_ptr(coef, ptr, 1);
@@ -671,25 +671,25 @@ struct regress_linear: public a_regress_linear
     {
         set_coef_(coef, coef_p, coef_n);
     }
-    A_INLINE a_float bias_r() const { return bias; }
-    A_INLINE void bias_w(a_float bias_) { bias = bias_; }
-    A_INLINE regress_linear(emscripten::val const &coef, a_float bias_ = 0)
+    A_INLINE a_real bias_r() const { return bias; }
+    A_INLINE void bias_w(a_real bias_) { bias = bias_; }
+    A_INLINE regress_linear(emscripten::val const &coef, a_real bias_ = 0)
     {
         set_coef_(coef, nullptr, 0);
         bias = bias_;
     }
-    A_INLINE a_float eval(emscripten::val const &val_) const
+    A_INLINE a_real eval(emscripten::val const &val_) const
     {
-        a_float *val = js_array_num_get(val_, nullptr, nullptr, 1);
-        a_float res = a_regress_linear::eval(val);
+        a_real *val = js_array_num_get(val_, nullptr, nullptr, 1);
+        a_real res = a_regress_linear::eval(val);
         a_alloc(val, 0);
         return res;
     }
     A_INLINE emscripten::val err(emscripten::val const &x_, emscripten::val const &y_) const
     {
         unsigned int m = 0, n = 0;
-        a_float *x = js_array_num_get(x_, nullptr, &m, 1);
-        a_float *y = js_array_num_get(y_, nullptr, &n, 1);
+        a_real *x = js_array_num_get(x_, nullptr, &m, 1);
+        a_real *y = js_array_num_get(y_, nullptr, &n, 1);
         m /= coef_n;
         if (m < n) { n = m; }
         a_regress_linear::err(n, x, y, y);
@@ -698,18 +698,18 @@ struct regress_linear: public a_regress_linear
         a_alloc(x, 0);
         return r;
     }
-    A_INLINE regress_linear *gd(emscripten::val const &input_, a_float error, a_float alpha)
+    A_INLINE regress_linear *gd(emscripten::val const &input_, a_real error, a_real alpha)
     {
-        a_float *input = js_array_num_get(input_, nullptr, nullptr, 1);
+        a_real *input = js_array_num_get(input_, nullptr, nullptr, 1);
         a_regress_linear::gd(input, error, alpha);
         a_alloc(input, 0);
         return this;
     }
-    A_INLINE regress_linear *sgd(emscripten::val const &x_, emscripten::val const &y_, a_float alpha)
+    A_INLINE regress_linear *sgd(emscripten::val const &x_, emscripten::val const &y_, a_real alpha)
     {
         unsigned int m = 0, n = 0;
-        a_float *x = js_array_num_get(x_, nullptr, &m, 1);
-        a_float *y = js_array_num_get(y_, nullptr, &n, 1);
+        a_real *x = js_array_num_get(x_, nullptr, &m, 1);
+        a_real *y = js_array_num_get(y_, nullptr, &n, 1);
         m /= coef_n;
         if (m < n) { n = m; }
         a_regress_linear::sgd(n, x, y, alpha);
@@ -717,11 +717,11 @@ struct regress_linear: public a_regress_linear
         a_alloc(x, 0);
         return this;
     }
-    A_INLINE regress_linear *bgd(emscripten::val const &x_, emscripten::val const &y_, a_float alpha)
+    A_INLINE regress_linear *bgd(emscripten::val const &x_, emscripten::val const &y_, a_real alpha)
     {
         unsigned int m = 0, n = 0;
-        a_float *x = js_array_num_get(x_, nullptr, &m, 1);
-        a_float *y = js_array_num_get(y_, nullptr, &n, 1);
+        a_real *x = js_array_num_get(x_, nullptr, &m, 1);
+        a_real *y = js_array_num_get(y_, nullptr, &n, 1);
         m /= coef_n;
         if (m < n) { n = m; }
         a_regress_linear::err(n, x, y, y);
@@ -730,15 +730,15 @@ struct regress_linear: public a_regress_linear
         a_alloc(x, 0);
         return this;
     }
-    A_INLINE a_float mgd(emscripten::val const &x_, emscripten::val const &y_, a_float delta, a_float lrmax, a_float lrmin, a_size lrtim, a_size epoch, a_size batch)
+    A_INLINE a_real mgd(emscripten::val const &x_, emscripten::val const &y_, a_real delta, a_real lrmax, a_real lrmin, a_size lrtim, a_size epoch, a_size batch)
     {
         unsigned int m = 0, n = 0;
-        a_float *x = js_array_num_get(x_, nullptr, &m, 1);
-        a_float *y = js_array_num_get(y_, nullptr, &n, 1);
+        a_real *x = js_array_num_get(x_, nullptr, &m, 1);
+        a_real *y = js_array_num_get(y_, nullptr, &n, 1);
         m /= coef_n;
         if (m < n) { n = m; }
-        a_float *err = a_cast_s(a_float *, a_alloc(nullptr, sizeof(a_float) * n));
-        a_float r = a_regress_linear::mgd(n, x, y, err, delta, lrmax, lrmin, lrtim, epoch, batch);
+        a_real *err = a_cast_s(a_real *, a_alloc(nullptr, sizeof(a_real) * n));
+        a_real r = a_regress_linear::mgd(n, x, y, err, delta, lrmax, lrmin, lrtim, epoch, batch);
         a_alloc(err, 0);
         a_alloc(y, 0);
         a_alloc(x, 0);
@@ -755,47 +755,47 @@ struct regress_linear: public a_regress_linear
 
 struct regress_simple: public a_regress_simple
 {
-    A_INLINE a_float coef_r() const { return coef; }
-    A_INLINE void coef_w(a_float coef_) { coef = coef_; }
-    A_INLINE a_float bias_r() const { return bias; }
-    A_INLINE void bias_w(a_float bias_) { bias = bias_; }
-    A_INLINE regress_simple(a_float a = 1, a_float b = 0)
+    A_INLINE a_real coef_r() const { return coef; }
+    A_INLINE void coef_w(a_real coef_) { coef = coef_; }
+    A_INLINE a_real bias_r() const { return bias; }
+    A_INLINE void bias_w(a_real bias_) { bias = bias_; }
+    A_INLINE regress_simple(a_real a = 1, a_real b = 0)
     {
         a_regress_simple::init(a, b);
     }
-    A_INLINE a_float eval(a_float val) const
+    A_INLINE a_real eval(a_real val) const
     {
         return a_regress_simple::eval(val);
     }
-    A_INLINE a_float evar(a_float val) const
+    A_INLINE a_real evar(a_real val) const
     {
         return a_regress_simple::evar(val);
     }
-    A_INLINE regress_simple *ols_(emscripten::val const &x_, emscripten::val const &y_, a_float x_mean, a_float y_mean)
+    A_INLINE regress_simple *ols_(emscripten::val const &x_, emscripten::val const &y_, a_real x_mean, a_real y_mean)
     {
         unsigned int x_n = 0, y_n = 0;
-        a_float *x = js_array_num_get(x_, nullptr, &x_n, 1);
-        a_float *y = js_array_num_get(y_, nullptr, &y_n, 1);
+        a_real *x = js_array_num_get(x_, nullptr, &x_n, 1);
+        a_real *y = js_array_num_get(y_, nullptr, &y_n, 1);
         a_regress_simple::ols(A_MIN(x_n, y_n), x, y, x_mean, y_mean);
         a_alloc(y, 0);
         a_alloc(x, 0);
         return this;
     }
-    A_INLINE regress_simple *olsx(emscripten::val const &x_, emscripten::val const &y_, a_float x_mean)
+    A_INLINE regress_simple *olsx(emscripten::val const &x_, emscripten::val const &y_, a_real x_mean)
     {
         unsigned int x_n = 0, y_n = 0;
-        a_float *x = js_array_num_get(x_, nullptr, &x_n, 1);
-        a_float *y = js_array_num_get(y_, nullptr, &y_n, 1);
+        a_real *x = js_array_num_get(x_, nullptr, &x_n, 1);
+        a_real *y = js_array_num_get(y_, nullptr, &y_n, 1);
         a_regress_simple::olsx(A_MIN(x_n, y_n), x, y, x_mean);
         a_alloc(y, 0);
         a_alloc(x, 0);
         return this;
     }
-    A_INLINE regress_simple *olsy(emscripten::val const &x_, emscripten::val const &y_, a_float y_mean)
+    A_INLINE regress_simple *olsy(emscripten::val const &x_, emscripten::val const &y_, a_real y_mean)
     {
         unsigned int x_n = 0, y_n = 0;
-        a_float *x = js_array_num_get(x_, nullptr, &x_n, 1);
-        a_float *y = js_array_num_get(y_, nullptr, &y_n, 1);
+        a_real *x = js_array_num_get(x_, nullptr, &x_n, 1);
+        a_real *y = js_array_num_get(y_, nullptr, &y_n, 1);
         a_regress_simple::olsy(A_MIN(x_n, y_n), x, y, y_mean);
         a_alloc(y, 0);
         a_alloc(x, 0);
@@ -804,8 +804,8 @@ struct regress_simple: public a_regress_simple
     A_INLINE regress_simple *ols(emscripten::val const &x_, emscripten::val const &y_)
     {
         unsigned int x_n = 0, y_n = 0;
-        a_float *x = js_array_num_get(x_, nullptr, &x_n, 1);
-        a_float *y = js_array_num_get(y_, nullptr, &y_n, 1);
+        a_real *x = js_array_num_get(x_, nullptr, &x_n, 1);
+        a_real *y = js_array_num_get(y_, nullptr, &y_n, 1);
         a_regress_simple::ols(A_MIN(x_n, y_n), x, y);
         a_alloc(y, 0);
         a_alloc(x, 0);
@@ -822,35 +822,35 @@ struct regress_simple: public a_regress_simple
 
 struct tf: public a_tf
 {
-    void set_num_(emscripten::val const &num_, a_float const *ptr, unsigned int num)
+    void set_num_(emscripten::val const &num_, a_real const *ptr, unsigned int num)
     {
         union
         {
-            a_float const *p;
-            a_float *o;
+            a_real const *p;
+            a_real *o;
         } u;
         u.p = ptr;
         unsigned int n = js_array_num_len(num_, 1);
         if (n > num)
         {
-            u.o = a_cast_s(a_float *, a_alloc(u.o, sizeof(a_float) * n * 2));
+            u.o = a_cast_s(a_real *, a_alloc(u.o, sizeof(a_real) * n * 2));
             a_tf::set_num(n, u.o, u.o + n);
         }
         else { num_n = n; }
         js_array_num_ptr(num_, u.o, 1);
     }
-    void set_den_(emscripten::val const &den_, a_float const *ptr, unsigned int num)
+    void set_den_(emscripten::val const &den_, a_real const *ptr, unsigned int num)
     {
         union
         {
-            a_float const *p;
-            a_float *o;
+            a_real const *p;
+            a_real *o;
         } u;
         u.p = ptr;
         unsigned int n = js_array_num_len(den_, 1);
         if (n > num)
         {
-            u.o = a_cast_s(a_float *, a_alloc(u.o, sizeof(a_float) * n * 2));
+            u.o = a_cast_s(a_real *, a_alloc(u.o, sizeof(a_real) * n * 2));
             a_tf::set_den(n, u.o, u.o + n);
         }
         else { den_n = n; }
@@ -865,8 +865,8 @@ struct tf: public a_tf
     {
         union
         {
-            a_float const *p;
-            a_float *o;
+            a_real const *p;
+            a_real *o;
         } u;
         u.p = num_p;
         a_alloc(u.o, 0);
@@ -887,7 +887,7 @@ struct tf: public a_tf
         set_den_(den_, den_p, den_n);
         return this;
     }
-    A_INLINE a_float operator()(a_float x) const
+    A_INLINE a_real operator()(a_real x) const
     {
         return a_tf::operator()(x);
     }
@@ -902,43 +902,43 @@ struct tf: public a_tf
 
 struct trajbell: public a_trajbell
 {
-    A_INLINE a_float gen(a_float jm_, a_float am_, a_float vm_, a_float p0_, a_float p1_,
-                         a_float v0_ = 0, a_float v1_ = 0)
+    A_INLINE a_real gen(a_real jm_, a_real am_, a_real vm_, a_real p0_, a_real p1_,
+                        a_real v0_ = 0, a_real v1_ = 0)
     {
         return a_trajbell::gen(jm_, am_, vm_, p0_, p1_, v0_, v1_);
     }
-    A_INLINE a_float pos(a_float x) const { return a_trajbell::pos(x); }
-    A_INLINE a_float vel(a_float x) const { return a_trajbell::vel(x); }
-    A_INLINE a_float acc(a_float x) const { return a_trajbell::acc(x); }
-    A_INLINE a_float jer(a_float x) const { return a_trajbell::jer(x); }
-    A_INLINE a_float t_r() const { return t; }
-    A_INLINE a_float tv_r() const { return tv; }
-    A_INLINE a_float ta_r() const { return ta; }
-    A_INLINE a_float td_r() const { return td; }
-    A_INLINE a_float taj_r() const { return taj; }
-    A_INLINE a_float tdj_r() const { return tdj; }
-    A_INLINE a_float p0_r() const { return p0; }
-    A_INLINE a_float p1_r() const { return p1; }
-    A_INLINE a_float v0_r() const { return v0; }
-    A_INLINE a_float v1_r() const { return v1; }
-    A_INLINE a_float vm_r() const { return vm; }
-    A_INLINE a_float jm_r() const { return jm; }
-    A_INLINE a_float am_r() const { return am; }
-    A_INLINE a_float dm_r() const { return dm; }
+    A_INLINE a_real pos(a_real x) const { return a_trajbell::pos(x); }
+    A_INLINE a_real vel(a_real x) const { return a_trajbell::vel(x); }
+    A_INLINE a_real acc(a_real x) const { return a_trajbell::acc(x); }
+    A_INLINE a_real jer(a_real x) const { return a_trajbell::jer(x); }
+    A_INLINE a_real t_r() const { return t; }
+    A_INLINE a_real tv_r() const { return tv; }
+    A_INLINE a_real ta_r() const { return ta; }
+    A_INLINE a_real td_r() const { return td; }
+    A_INLINE a_real taj_r() const { return taj; }
+    A_INLINE a_real tdj_r() const { return tdj; }
+    A_INLINE a_real p0_r() const { return p0; }
+    A_INLINE a_real p1_r() const { return p1; }
+    A_INLINE a_real v0_r() const { return v0; }
+    A_INLINE a_real v1_r() const { return v1; }
+    A_INLINE a_real vm_r() const { return vm; }
+    A_INLINE a_real jm_r() const { return jm; }
+    A_INLINE a_real am_r() const { return am; }
+    A_INLINE a_real dm_r() const { return dm; }
 };
 
 #include "a/trajpoly3.h"
 
 struct trajpoly3: public a_trajpoly3
 {
-    A_INLINE trajpoly3(a_float ts, a_float p0, a_float p1,
-                       a_float v0 = 0, a_float v1 = 0)
+    A_INLINE trajpoly3(a_real ts, a_real p0, a_real p1,
+                       a_real v0 = 0, a_real v1 = 0)
     {
         a_trajpoly3_gen(this, ts, p0, p1, v0, v1);
     }
-    A_INLINE a_float pos(a_float x) const { return a_trajpoly3::pos(x); }
-    A_INLINE a_float vel(a_float x) const { return a_trajpoly3::vel(x); }
-    A_INLINE a_float acc(a_float x) const { return a_trajpoly3::acc(x); }
+    A_INLINE a_real pos(a_real x) const { return a_trajpoly3::pos(x); }
+    A_INLINE a_real vel(a_real x) const { return a_trajpoly3::vel(x); }
+    A_INLINE a_real acc(a_real x) const { return a_trajpoly3::acc(x); }
     A_INLINE emscripten::val p_r() const { return js_array_num_new(p, A_LEN(p)); }
     A_INLINE emscripten::val v_r() const { return js_array_num_new(v, A_LEN(v)); }
     A_INLINE emscripten::val a_r() const { return js_array_num_new(a, A_LEN(a)); }
@@ -948,15 +948,15 @@ struct trajpoly3: public a_trajpoly3
 
 struct trajpoly5: public a_trajpoly5
 {
-    A_INLINE trajpoly5(a_float ts, a_float p0, a_float p1,
-                       a_float v0 = 0, a_float v1 = 0,
-                       a_float a0 = 0, a_float a1 = 0)
+    A_INLINE trajpoly5(a_real ts, a_real p0, a_real p1,
+                       a_real v0 = 0, a_real v1 = 0,
+                       a_real a0 = 0, a_real a1 = 0)
     {
         a_trajpoly5_gen(this, ts, p0, p1, v0, v1, a0, a1);
     }
-    A_INLINE a_float pos(a_float x) const { return a_trajpoly5::pos(x); }
-    A_INLINE a_float vel(a_float x) const { return a_trajpoly5::vel(x); }
-    A_INLINE a_float acc(a_float x) const { return a_trajpoly5::acc(x); }
+    A_INLINE a_real pos(a_real x) const { return a_trajpoly5::pos(x); }
+    A_INLINE a_real vel(a_real x) const { return a_trajpoly5::vel(x); }
+    A_INLINE a_real acc(a_real x) const { return a_trajpoly5::acc(x); }
     A_INLINE emscripten::val p_r() const { return js_array_num_new(p, A_LEN(p)); }
     A_INLINE emscripten::val v_r() const { return js_array_num_new(v, A_LEN(v)); }
     A_INLINE emscripten::val a_r() const { return js_array_num_new(a, A_LEN(a)); }
@@ -966,17 +966,17 @@ struct trajpoly5: public a_trajpoly5
 
 struct trajpoly7: public a_trajpoly7
 {
-    A_INLINE trajpoly7(a_float ts, a_float p0, a_float p1,
-                       a_float v0 = 0, a_float v1 = 0,
-                       a_float a0 = 0, a_float a1 = 0,
-                       a_float j0 = 0, a_float j1 = 0)
+    A_INLINE trajpoly7(a_real ts, a_real p0, a_real p1,
+                       a_real v0 = 0, a_real v1 = 0,
+                       a_real a0 = 0, a_real a1 = 0,
+                       a_real j0 = 0, a_real j1 = 0)
     {
         a_trajpoly7_gen(this, ts, p0, p1, v0, v1, a0, a1, j0, j1);
     }
-    A_INLINE a_float pos(a_float x) const { return a_trajpoly7::pos(x); }
-    A_INLINE a_float vel(a_float x) const { return a_trajpoly7::vel(x); }
-    A_INLINE a_float acc(a_float x) const { return a_trajpoly7::acc(x); }
-    A_INLINE a_float jer(a_float x) const { return a_trajpoly7::jer(x); }
+    A_INLINE a_real pos(a_real x) const { return a_trajpoly7::pos(x); }
+    A_INLINE a_real vel(a_real x) const { return a_trajpoly7::vel(x); }
+    A_INLINE a_real acc(a_real x) const { return a_trajpoly7::acc(x); }
+    A_INLINE a_real jer(a_real x) const { return a_trajpoly7::jer(x); }
     A_INLINE emscripten::val p_r() const { return js_array_num_new(p, A_LEN(p)); }
     A_INLINE emscripten::val v_r() const { return js_array_num_new(v, A_LEN(v)); }
     A_INLINE emscripten::val a_r() const { return js_array_num_new(a, A_LEN(a)); }
@@ -987,26 +987,26 @@ struct trajpoly7: public a_trajpoly7
 
 struct trajtrap: public a_trajtrap
 {
-    A_INLINE a_float gen(a_float vm, a_float ac_, a_float de_, a_float p0_, a_float p1_,
-                         a_float v0_ = 0, a_float v1_ = 0)
+    A_INLINE a_real gen(a_real vm, a_real ac_, a_real de_, a_real p0_, a_real p1_,
+                        a_real v0_ = 0, a_real v1_ = 0)
     {
         return a_trajtrap::gen(vm, ac_, de_, p0_, p1_, v0_, v1_);
     }
-    A_INLINE a_float pos(a_float x) const { return a_trajtrap::pos(x); }
-    A_INLINE a_float vel(a_float x) const { return a_trajtrap::vel(x); }
-    A_INLINE a_float acc(a_float x) const { return a_trajtrap::acc(x); }
-    A_INLINE a_float t_r() const { return t; }
-    A_INLINE a_float p0_r() const { return p0; }
-    A_INLINE a_float p1_r() const { return p1; }
-    A_INLINE a_float v0_r() const { return v0; }
-    A_INLINE a_float v1_r() const { return v1; }
-    A_INLINE a_float vc_r() const { return vc; }
-    A_INLINE a_float ta_r() const { return ta; }
-    A_INLINE a_float td_r() const { return td; }
-    A_INLINE a_float pa_r() const { return pa; }
-    A_INLINE a_float pd_r() const { return pd; }
-    A_INLINE a_float ac_r() const { return ac; }
-    A_INLINE a_float de_r() const { return de; }
+    A_INLINE a_real pos(a_real x) const { return a_trajtrap::pos(x); }
+    A_INLINE a_real vel(a_real x) const { return a_trajtrap::vel(x); }
+    A_INLINE a_real acc(a_real x) const { return a_trajtrap::acc(x); }
+    A_INLINE a_real t_r() const { return t; }
+    A_INLINE a_real p0_r() const { return p0; }
+    A_INLINE a_real p1_r() const { return p1; }
+    A_INLINE a_real v0_r() const { return v0; }
+    A_INLINE a_real v1_r() const { return v1; }
+    A_INLINE a_real vc_r() const { return vc; }
+    A_INLINE a_real ta_r() const { return ta; }
+    A_INLINE a_real td_r() const { return td; }
+    A_INLINE a_real pa_r() const { return pa; }
+    A_INLINE a_real pd_r() const { return pd; }
+    A_INLINE a_real ac_r() const { return ac; }
+    A_INLINE a_real de_r() const { return de; }
 };
 
 #include "a/version.h"
@@ -1162,8 +1162,8 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .function("gen", &crc64::gen, emscripten::allow_raw_pointers());
 #endif /* WASM_BIGINT */
     emscripten::class_<hpf>("hpf")
-        .constructor<a_float>()
-        .constructor<a_float, a_float>()
+        .constructor<a_real>()
+        .constructor<a_real, a_real>()
         .function("iter", &hpf::operator())
         .function("gen", &hpf::gen, emscripten::allow_raw_pointers())
         .function("zero", &hpf::zero, emscripten::allow_raw_pointers())
@@ -1171,8 +1171,8 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("output", &hpf::output_r)
         .property("input", &hpf::input_r);
     emscripten::class_<lpf>("lpf")
-        .constructor<a_float>()
-        .constructor<a_float, a_float>()
+        .constructor<a_real>()
+        .constructor<a_real, a_real>()
         .function("iter", &lpf::operator())
         .function("gen", &lpf::gen, emscripten::allow_raw_pointers())
         .function("zero", &lpf::zero, emscripten::allow_raw_pointers())
@@ -1248,7 +1248,7 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("ec", &pid_neuro::ec_r);
     emscripten::class_<regress_linear>("regress_linear")
         .constructor<emscripten::val>()
-        .constructor<emscripten::val, a_float>()
+        .constructor<emscripten::val, a_real>()
         .function("eval", &regress_linear::eval)
         .function("err", &regress_linear::err)
         .function("gd", &regress_linear::gd, emscripten::allow_raw_pointers())
@@ -1260,8 +1260,8 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("bias", &regress_linear::bias_r, &regress_linear::bias_w);
     emscripten::class_<regress_simple>("regress_simple")
         .constructor<>()
-        .constructor<a_float>()
-        .constructor<a_float, a_float>()
+        .constructor<a_real>()
+        .constructor<a_real, a_real>()
         .function("eval", &regress_simple::eval)
         .function("evar", &regress_simple::evar)
         .function("ols_", &regress_simple::ols_, emscripten::allow_raw_pointers())
@@ -1303,8 +1303,8 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("am", &trajbell::am_r)
         .property("dm", &trajbell::dm_r);
     emscripten::class_<trajpoly3>("trajpoly3")
-        .constructor<a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float>()
+        .constructor<a_real, a_real, a_real>()
+        .constructor<a_real, a_real, a_real, a_real, a_real>()
         .function("pos", &trajpoly3::pos)
         .function("vel", &trajpoly3::vel)
         .function("acc", &trajpoly3::acc)
@@ -1312,9 +1312,9 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("v", &trajpoly3::v_r)
         .property("a", &trajpoly3::a_r);
     emscripten::class_<trajpoly5>("trajpoly5")
-        .constructor<a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
+        .constructor<a_real, a_real, a_real>()
+        .constructor<a_real, a_real, a_real, a_real, a_real>()
+        .constructor<a_real, a_real, a_real, a_real, a_real, a_real, a_real>()
         .function("pos", &trajpoly5::pos)
         .function("vel", &trajpoly5::vel)
         .function("acc", &trajpoly5::acc)
@@ -1322,10 +1322,10 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .property("v", &trajpoly5::v_r)
         .property("a", &trajpoly5::a_r);
     emscripten::class_<trajpoly7>("trajpoly7")
-        .constructor<a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
-        .constructor<a_float, a_float, a_float, a_float, a_float, a_float, a_float, a_float, a_float>()
+        .constructor<a_real, a_real, a_real>()
+        .constructor<a_real, a_real, a_real, a_real, a_real>()
+        .constructor<a_real, a_real, a_real, a_real, a_real, a_real, a_real>()
+        .constructor<a_real, a_real, a_real, a_real, a_real, a_real, a_real, a_real, a_real>()
         .function("pos", &trajpoly7::pos)
         .function("vel", &trajpoly7::vel)
         .function("acc", &trajpoly7::acc)

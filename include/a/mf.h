@@ -49,7 +49,7 @@ extern "C" {
  @param[in] c is the mean.
  @return membership value.
 */
-A_EXTERN a_float a_mf_gauss(a_float x, a_float sigma, a_float c);
+A_EXTERN a_real a_mf_gauss(a_real x, a_real sigma, a_real c);
 
 /*!
  @brief gaussian combination membership function
@@ -67,7 +67,7 @@ A_EXTERN a_float a_mf_gauss(a_float x, a_float sigma, a_float c);
  @param[in] c2 is the mean of the right gaussian function.
  @return membership value.
 */
-A_EXTERN a_float a_mf_gauss2(a_float x, a_float sigma1, a_float c1, a_float sigma2, a_float c2);
+A_EXTERN a_real a_mf_gauss2(a_real x, a_real sigma1, a_real c1, a_real sigma2, a_real c2);
 
 /*!
  @brief generalized bell-shaped membership function
@@ -80,7 +80,7 @@ A_EXTERN a_float a_mf_gauss2(a_float x, a_float sigma1, a_float c1, a_float sigm
  @param[in] c defines the center of the membership function.
  @return membership value.
 */
-A_EXTERN a_float a_mf_gbell(a_float x, a_float a, a_float b, a_float c);
+A_EXTERN a_real a_mf_gbell(a_real x, a_real a, a_real b, a_real c);
 
 /*!
  @brief sigmoidal membership function
@@ -92,7 +92,7 @@ A_EXTERN a_float a_mf_gbell(a_float x, a_float a, a_float b, a_float c);
  @param[in] c defines the center of the transition area.
  @return membership value.
 */
-A_EXTERN a_float a_mf_sig(a_float x, a_float a, a_float c);
+A_EXTERN a_real a_mf_sig(a_real x, a_real a, a_real c);
 
 /*!
  @brief difference between two sigmoidal membership functions
@@ -106,7 +106,7 @@ A_EXTERN a_float a_mf_sig(a_float x, a_float a, a_float c);
  @param[in] c2 defines the center of the second transition area.
  @return membership value.
 */
-A_EXTERN a_float a_mf_dsig(a_float x, a_float a1, a_float c1, a_float a2, a_float c2);
+A_EXTERN a_real a_mf_dsig(a_real x, a_real a1, a_real c1, a_real a2, a_real c2);
 
 /*!
  @brief product of two sigmoidal membership functions
@@ -120,7 +120,7 @@ A_EXTERN a_float a_mf_dsig(a_float x, a_float a1, a_float c1, a_float a2, a_floa
  @param[in] c2 defines the center of the second transition area.
  @return membership value.
 */
-A_EXTERN a_float a_mf_psig(a_float x, a_float a1, a_float c1, a_float a2, a_float c2);
+A_EXTERN a_real a_mf_psig(a_real x, a_real a1, a_real c1, a_real a2, a_real c2);
 
 /*!
  @brief trapezoidal membership function
@@ -140,7 +140,7 @@ A_EXTERN a_float a_mf_psig(a_float x, a_float a1, a_float c1, a_float a2, a_floa
  @param[in] d defines its right foot.
  @return membership value.
 */
-A_EXTERN a_float a_mf_trap(a_float x, a_float a, a_float b, a_float c, a_float d);
+A_EXTERN a_real a_mf_trap(a_real x, a_real a, a_real b, a_real c, a_real d);
 
 /*!
  @brief triangular membership function
@@ -158,7 +158,7 @@ A_EXTERN a_float a_mf_trap(a_float x, a_float a, a_float b, a_float c, a_float d
  @param[in] c defines its right foot.
  @return membership value.
 */
-A_EXTERN a_float a_mf_tri(a_float x, a_float a, a_float b, a_float c);
+A_EXTERN a_real a_mf_tri(a_real x, a_real a, a_real b, a_real c);
 
 /*!
  @brief linear s-shaped saturation membership function
@@ -174,7 +174,7 @@ A_EXTERN a_float a_mf_tri(a_float x, a_float a, a_float b, a_float c);
  @param[in] b defines its shoulder.
  @return membership value.
 */
-A_EXTERN a_float a_mf_lins(a_float x, a_float a, a_float b);
+A_EXTERN a_real a_mf_lins(a_real x, a_real a, a_real b);
 
 /*!
  @brief linear z-shaped saturation membership function
@@ -190,7 +190,7 @@ A_EXTERN a_float a_mf_lins(a_float x, a_float a, a_float b);
  @param[in] b defines its foot.
  @return membership value.
 */
-A_EXTERN a_float a_mf_linz(a_float x, a_float a, a_float b);
+A_EXTERN a_real a_mf_linz(a_real x, a_real a, a_real b);
 
 /*!
  @brief s-shaped membership function
@@ -207,7 +207,7 @@ A_EXTERN a_float a_mf_linz(a_float x, a_float a, a_float b);
  @param[in] b defines its shoulder.
  @return membership value.
 */
-A_EXTERN a_float a_mf_s(a_float x, a_float a, a_float b);
+A_EXTERN a_real a_mf_s(a_real x, a_real a, a_real b);
 
 /*!
  @brief z-shaped membership function
@@ -224,7 +224,7 @@ A_EXTERN a_float a_mf_s(a_float x, a_float a, a_float b);
  @param[in] b defines its foot.
  @return membership value.
 */
-A_EXTERN a_float a_mf_z(a_float x, a_float a, a_float b);
+A_EXTERN a_real a_mf_z(a_real x, a_real a, a_real b);
 
 /*!
  @brief pi-shaped membership function
@@ -246,7 +246,7 @@ A_EXTERN a_float a_mf_z(a_float x, a_float a, a_float b);
  @param[in] d defines its right foot.
  @return membership value.
 */
-A_EXTERN a_float a_mf_pi(a_float x, a_float a, a_float b, a_float c, a_float d);
+A_EXTERN a_real a_mf_pi(a_real x, a_real a, a_real b, a_real c, a_real d);
 
 /*!
  @brief membership function
@@ -273,7 +273,7 @@ A_EXTERN a_float a_mf_pi(a_float x, a_float a, a_float b, a_float c, a_float d);
   @arg \b a[4] \ref a_mf_gauss2 \ref a_mf_dsig \ref a_mf_psig \ref a_mf_trap \ref a_mf_pi
  @return membership value.
 */
-A_EXTERN a_float a_mf(unsigned int e, a_float x, a_float const *a);
+A_EXTERN a_real a_mf(unsigned int e, a_real x, a_real const *a);
 
 #if defined(__cplusplus)
 } /* extern "C" */

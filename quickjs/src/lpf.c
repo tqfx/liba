@@ -23,7 +23,7 @@ static JSValue liba_lpf_ctor(JSContext *ctx, JSValueConst new_target, int argc, 
     else
     {
         if (JS_ToFloat64(ctx, &arg[0], argv[0])) { goto fail; }
-        a_lpf_init(self, (a_float)arg[0]);
+        a_lpf_init(self, (a_real)arg[0]);
     }
     proto = JS_GetPropertyStr(ctx, new_target, "prototype");
     if (JS_IsException(proto)) { goto fail; }
@@ -52,7 +52,7 @@ static JSValue liba_lpf_gen(JSContext *ctx, JSValueConst this_val, int argc, JSV
     else
     {
         if (JS_ToFloat64(ctx, &arg[0], argv[0])) { return JS_EXCEPTION; }
-        self->alpha = (a_float)arg[0];
+        self->alpha = (a_real)arg[0];
     }
     return JS_UNDEFINED;
 }
@@ -64,7 +64,7 @@ static JSValue liba_lpf_iter(JSContext *ctx, JSValueConst this_val, int argc, JS
     if (!self) { return JS_EXCEPTION; }
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
     (void)argc;
-    return JS_NewFloat64(ctx, (double)a_lpf_iter(self, (a_float)x));
+    return JS_NewFloat64(ctx, (double)a_lpf_iter(self, (a_real)x));
 }
 
 static JSValue liba_lpf_zero(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)

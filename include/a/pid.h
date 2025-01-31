@@ -56,7 +56,7 @@ extern "C" {
  @param[in] ki integral constant
  @param[in] kd derivative constant
 */
-A_EXTERN void a_pid_set_kpid(a_pid *ctx, a_float kp, a_float ki, a_float kd);
+A_EXTERN void a_pid_set_kpid(a_pid *ctx, a_real kp, a_real ki, a_real kd);
 
 /*!
  @brief calculate for PID controller
@@ -65,7 +65,7 @@ A_EXTERN void a_pid_set_kpid(a_pid *ctx, a_float kp, a_float ki, a_float kd);
  @param[in] fdb feedback value
  @return setpoint value
 */
-A_EXTERN a_float a_pid_run(a_pid *ctx, a_float set, a_float fdb);
+A_EXTERN a_real a_pid_run(a_pid *ctx, a_real set, a_real fdb);
 
 /*!
  @brief calculate for positional PID controller
@@ -74,7 +74,7 @@ A_EXTERN a_float a_pid_run(a_pid *ctx, a_float set, a_float fdb);
  @param[in] fdb feedback value
  @return output value
 */
-A_EXTERN a_float a_pid_pos(a_pid *ctx, a_float set, a_float fdb);
+A_EXTERN a_real a_pid_pos(a_pid *ctx, a_real set, a_real fdb);
 
 /*!
  @brief calculate for incremental PID controller
@@ -83,7 +83,7 @@ A_EXTERN a_float a_pid_pos(a_pid *ctx, a_float set, a_float fdb);
  @param[in] fdb feedback value
  @return output value
 */
-A_EXTERN a_float a_pid_inc(a_pid *ctx, a_float set, a_float fdb);
+A_EXTERN a_real a_pid_inc(a_pid *ctx, a_real set, a_real fdb);
 
 /*!
  @brief zeroing for PID controller
@@ -104,33 +104,33 @@ typedef struct a_pid pid;
 */
 struct a_pid
 {
-    a_float kp; /*!< proportional constant */
-    a_float ki; /*!< integral constant */
-    a_float kd; /*!< derivative constant */
-    a_float summax; /*!< maximum integral output */
-    a_float summin; /*!< minimum integral output */
-    a_float sum; /*!< controller integral output */
-    a_float outmax; /*!< maximum final output */
-    a_float outmin; /*!< minimum final output */
-    a_float out; /*!< controller final output */
-    a_float var; /*!< cache variable */
-    a_float fdb; /*!< cache feedback */
-    a_float err; /*!< cache error */
+    a_real kp; /*!< proportional constant */
+    a_real ki; /*!< integral constant */
+    a_real kd; /*!< derivative constant */
+    a_real summax; /*!< maximum integral output */
+    a_real summin; /*!< minimum integral output */
+    a_real sum; /*!< controller integral output */
+    a_real outmax; /*!< maximum final output */
+    a_real outmin; /*!< minimum final output */
+    a_real out; /*!< controller final output */
+    a_real var; /*!< cache variable */
+    a_real fdb; /*!< cache feedback */
+    a_real err; /*!< cache error */
 #if defined(__cplusplus)
     A_INLINE void init() { a_pid_init(this); }
-    A_INLINE void set_kpid(a_float kp_, a_float ki_, a_float kd_)
+    A_INLINE void set_kpid(a_real kp_, a_real ki_, a_real kd_)
     {
         a_pid_set_kpid(this, kp_, ki_, kd_);
     }
-    A_INLINE a_float run(a_float set, a_float fdb_)
+    A_INLINE a_real run(a_real set, a_real fdb_)
     {
         return a_pid_run(this, set, fdb_);
     }
-    A_INLINE a_float pos(a_float set, a_float fdb_)
+    A_INLINE a_real pos(a_real set, a_real fdb_)
     {
         return a_pid_pos(this, set, fdb_);
     }
-    A_INLINE a_float inc(a_float set, a_float fdb_)
+    A_INLINE a_real inc(a_real set, a_real fdb_)
     {
         return a_pid_inc(this, set, fdb_);
     }

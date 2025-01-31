@@ -49,7 +49,7 @@ extern "C" {
  @param[in] ki integral learning constant
  @param[in] kd derivative learning constant
 */
-A_EXTERN void a_pid_neuro_set_kpid(a_pid_neuro *ctx, a_float k, a_float kp, a_float ki, a_float kd);
+A_EXTERN void a_pid_neuro_set_kpid(a_pid_neuro *ctx, a_real k, a_real kp, a_real ki, a_real kd);
 
 /*!
  @brief set proportional integral derivative weight for single neuron PID controller
@@ -58,7 +58,7 @@ A_EXTERN void a_pid_neuro_set_kpid(a_pid_neuro *ctx, a_float k, a_float kp, a_fl
  @param[in] wi integral weight
  @param[in] wd derivative lweight
 */
-A_EXTERN void a_pid_neuro_set_wpid(a_pid_neuro *ctx, a_float wp, a_float wi, a_float wd);
+A_EXTERN void a_pid_neuro_set_wpid(a_pid_neuro *ctx, a_real wp, a_real wi, a_real wd);
 
 /*!
  @brief calculate for single neuron PID controller
@@ -67,7 +67,7 @@ A_EXTERN void a_pid_neuro_set_wpid(a_pid_neuro *ctx, a_float wp, a_float wi, a_f
  @param[in] fdb feedback value
  @return setpoint value
 */
-A_EXTERN a_float a_pid_neuro_run(a_pid_neuro *ctx, a_float set, a_float fdb);
+A_EXTERN a_real a_pid_neuro_run(a_pid_neuro *ctx, a_real set, a_real fdb);
 
 /*!
  @brief calculate for incremental single neuron PID controller
@@ -76,7 +76,7 @@ A_EXTERN a_float a_pid_neuro_run(a_pid_neuro *ctx, a_float set, a_float fdb);
  @param[in] fdb feedback value
  @return output value
 */
-A_EXTERN a_float a_pid_neuro_inc(a_pid_neuro *ctx, a_float set, a_float fdb);
+A_EXTERN a_real a_pid_neuro_inc(a_pid_neuro *ctx, a_real set, a_real fdb);
 
 /*!
  @brief zeroing for single neuron PID controller
@@ -98,26 +98,26 @@ typedef struct a_pid_neuro pid_neuro;
 struct a_pid_neuro
 {
     a_pid pid; /*!< instance structure for PID controller */
-    a_float k; /*!< proportional output coefficient */
-    a_float wp; /*!< proportional weight */
-    a_float wi; /*!< integral weight */
-    a_float wd; /*!< derivative weight */
-    a_float ec; /*!< error change */
+    a_real k; /*!< proportional output coefficient */
+    a_real wp; /*!< proportional weight */
+    a_real wi; /*!< integral weight */
+    a_real wd; /*!< derivative weight */
+    a_real ec; /*!< error change */
 #if defined(__cplusplus)
     A_INLINE void init() { a_pid_neuro_init(this); }
-    A_INLINE void set_kpid(a_float k_, a_float kp, a_float ki, a_float kd)
+    A_INLINE void set_kpid(a_real k_, a_real kp, a_real ki, a_real kd)
     {
         a_pid_neuro_set_kpid(this, k_, kp, ki, kd);
     }
-    A_INLINE void set_wpid(a_float wp_, a_float wi_, a_float wd_)
+    A_INLINE void set_wpid(a_real wp_, a_real wi_, a_real wd_)
     {
         a_pid_neuro_set_wpid(this, wp_, wi_, wd_);
     }
-    A_INLINE a_float run(a_float set, a_float fdb)
+    A_INLINE a_real run(a_real set, a_real fdb)
     {
         return a_pid_neuro_run(this, set, fdb);
     }
-    A_INLINE a_float inc(a_float set, a_float fdb)
+    A_INLINE a_real inc(a_real set, a_real fdb)
     {
         return a_pid_neuro_inc(this, set, fdb);
     }

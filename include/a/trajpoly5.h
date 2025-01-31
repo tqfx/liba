@@ -47,14 +47,14 @@ extern "C" {
  @param[in] a0 initial acceleration
  @param[in] a1 final acceleration
 */
-A_EXTERN void a_trajpoly5_gen(a_trajpoly5 *ctx, a_float ts,
-                              a_float p0, a_float p1,
-                              a_float v0, a_float v1,
-                              a_float a0, a_float a1);
-A_EXTERN void a_trajpoly5_gen0(a_trajpoly5 *ctx, a_float ts,
-                               a_float p0, a_float p1,
-                               a_float v0, a_float v1,
-                               a_float a0, a_float a1);
+A_EXTERN void a_trajpoly5_gen(a_trajpoly5 *ctx, a_real ts,
+                              a_real p0, a_real p1,
+                              a_real v0, a_real v1,
+                              a_real a0, a_real a1);
+A_EXTERN void a_trajpoly5_gen0(a_trajpoly5 *ctx, a_real ts,
+                               a_real p0, a_real p1,
+                               a_real v0, a_real v1,
+                               a_real a0, a_real a1);
 #if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 1)
 A_EXTERN void a_trajpoly5_gen1(a_trajpoly5 *ctx);
 #endif /* A_TRAJPOLY5 */
@@ -73,7 +73,7 @@ A_EXTERN void a_trajpoly5_gen2(a_trajpoly5 *ctx);
  @param[in] x difference between current time and initial time
  @return position output
 */
-A_EXTERN a_float a_trajpoly5_pos(a_trajpoly5 const *ctx, a_float x);
+A_EXTERN a_real a_trajpoly5_pos(a_trajpoly5 const *ctx, a_real x);
 
 #if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 1)
 /*!
@@ -87,7 +87,7 @@ A_EXTERN a_float a_trajpoly5_pos(a_trajpoly5 const *ctx, a_float x);
  @param[in] x difference between current time and initial time
  @return velocity output
 */
-A_EXTERN a_float a_trajpoly5_vel(a_trajpoly5 const *ctx, a_float x);
+A_EXTERN a_real a_trajpoly5_vel(a_trajpoly5 const *ctx, a_real x);
 #endif /* A_TRAJPOLY5 */
 
 #if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 2)
@@ -102,7 +102,7 @@ A_EXTERN a_float a_trajpoly5_vel(a_trajpoly5 const *ctx, a_float x);
  @param[in] x difference between current time and initial time
  @return acceleration output
 */
-A_EXTERN a_float a_trajpoly5_acc(a_trajpoly5 const *ctx, a_float x);
+A_EXTERN a_real a_trajpoly5_acc(a_trajpoly5 const *ctx, a_real x);
 #endif /* A_TRAJPOLY5 */
 
 #if defined(__cplusplus)
@@ -125,40 +125,40 @@ typedef struct a_trajpoly5 trajpoly5;
 */
 struct a_trajpoly5
 {
-    a_float p[6]; /*!< coefficients of position */
+    a_real p[6]; /*!< coefficients of position */
 #if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 1)
-    a_float v[5]; /*!< coefficients of velocity */
+    a_real v[5]; /*!< coefficients of velocity */
 #endif /* A_TRAJPOLY5 */
 #if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 2)
-    a_float a[4]; /*!< coefficients of acceleration */
+    a_real a[4]; /*!< coefficients of acceleration */
 #endif /* A_TRAJPOLY5 */
 #if defined(__cplusplus)
-    A_INLINE void gen(a_float ts, a_float p0, a_float p1,
-                      a_float v0 = 0, a_float v1 = 0,
-                      a_float a0 = 0, a_float a1 = 0)
+    A_INLINE void gen(a_real ts, a_real p0, a_real p1,
+                      a_real v0 = 0, a_real v1 = 0,
+                      a_real a0 = 0, a_real a1 = 0)
     {
         a_trajpoly5_gen(this, ts, p0, p1, v0, v1, a0, a1);
     }
-    A_INLINE void gen0(a_float ts, a_float p0, a_float p1,
-                       a_float v0 = 0, a_float v1 = 0,
-                       a_float a0 = 0, a_float a1 = 0)
+    A_INLINE void gen0(a_real ts, a_real p0, a_real p1,
+                       a_real v0 = 0, a_real v1 = 0,
+                       a_real a0 = 0, a_real a1 = 0)
     {
         a_trajpoly5_gen0(this, ts, p0, p1, v0, v1, a0, a1);
     }
-    A_INLINE a_float pos(a_float x) const
+    A_INLINE a_real pos(a_real x) const
     {
         return a_trajpoly5_pos(this, x);
     }
 #if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 1)
     A_INLINE void gen1() { a_trajpoly5_gen1(this); }
-    A_INLINE a_float vel(a_float x) const
+    A_INLINE a_real vel(a_real x) const
     {
         return a_trajpoly5_vel(this, x);
     }
 #endif /* A_TRAJPOLY5 */
 #if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 2)
     A_INLINE void gen2() { a_trajpoly5_gen2(this); }
-    A_INLINE a_float acc(a_float x) const
+    A_INLINE a_real acc(a_real x) const
     {
         return a_trajpoly5_acc(this, x);
     }

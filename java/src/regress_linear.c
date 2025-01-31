@@ -53,7 +53,7 @@ JNIEXPORT jobject JNICALL Java_liba_regress_1linear_set_1coef(JNIEnv *Env, jobje
     if (n > (jsize)ctx->coef_n)
     {
         jobject Coef = (*Env)->CallObjectMethod(Env, Obj, L.New, (jint)n * 8);
-        ctx->coef_p = (a_float *)(*Env)->GetDirectBufferAddress(Env, Coef);
+        ctx->coef_p = (a_real *)(*Env)->GetDirectBufferAddress(Env, Coef);
         (*Env)->SetObjectField(Env, Obj, L.coef, Coef);
     }
     ctx->coef_n = (a_size)n;
@@ -151,7 +151,7 @@ JNIEXPORT jobject JNICALL Java_liba_regress_1linear_bgd(JNIEnv *Env, jobject Obj
 JNIEXPORT jdouble JNICALL Java_liba_regress_1linear_mgd(JNIEnv *Env, jobject Obj, jdoubleArray X, jdoubleArray Y, jdouble delta, jdouble lrmax, jdouble lrmin, jint lrtim, jint epoch, jint batch)
 {
     jdouble r;
-    a_float *err;
+    a_real *err;
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_regress_linear *ctx = (a_regress_linear *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     jdouble *x = (*Env)->GetDoubleArrayElements(Env, X, NULL);
@@ -160,7 +160,7 @@ JNIEXPORT jdouble JNICALL Java_liba_regress_1linear_mgd(JNIEnv *Env, jobject Obj
     a_size n = (a_size)(*Env)->GetArrayLength(Env, Y);
     m /= (a_size)ctx->coef_n;
     if (m < n) { n = m; }
-    err = (a_float *)a_alloc(0, sizeof(a_float) * n);
+    err = (a_real *)a_alloc(0, sizeof(a_real) * n);
     r = a_regress_linear_mgd(ctx, n, x, y, err, delta, lrmax, lrmin, (a_size)lrtim, (a_size)epoch, (a_size)batch);
     (*Env)->ReleaseDoubleArrayElements(Env, Y, y, JNI_ABORT);
     (*Env)->ReleaseDoubleArrayElements(Env, X, x, JNI_ABORT);

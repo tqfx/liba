@@ -16,7 +16,7 @@
 
 /* clang-format off */
 /*! constructs a complex number from real and imaginary parts */
-#define A_COMPLEX_C(real, imag) {a_float_c(real), a_float_c(imag)}
+#define A_COMPLEX_C(real, imag) {a_real_c(real), a_real_c(imag)}
 /* clang-format on */
 
 /*! static cast to \ref a_complex */
@@ -28,8 +28,8 @@
 */
 typedef struct a_complex
 {
-    a_float real; /*! real part of complex number */
-    a_float imag; /*! imaginary part of complex number */
+    a_real real; /*! real part of complex number */
+    a_real imag; /*! imaginary part of complex number */
 } a_complex;
 
 #if defined(__cplusplus)
@@ -46,7 +46,7 @@ extern "C" {
  @param real real part of complex number
  @param imag imaginary part of complex number
 */
-static A_INLINE void a_complex_rect(a_complex *ctx, a_float real, a_float imag)
+static A_INLINE void a_complex_rect(a_complex *ctx, a_real real, a_real imag)
 {
     ctx->real = real;
     ctx->imag = imag;
@@ -58,7 +58,7 @@ static A_INLINE void a_complex_rect(a_complex *ctx, a_float real, a_float imag)
  @param rho a distance from a reference point
  @param theta an angle from a reference direction
 */
-A_EXTERN void a_complex_polar(a_complex *ctx, a_float rho, a_float theta);
+A_EXTERN void a_complex_polar(a_complex *ctx, a_real rho, a_real theta);
 
 /*!
  @brief parse a string into a complex number
@@ -91,28 +91,28 @@ A_EXTERN a_bool a_complex_ne(a_complex x, a_complex y);
  @param z a complex number
  @return = \f$ \log\left|x\right| \f$
 */
-A_EXTERN a_float a_complex_logabs(a_complex z);
+A_EXTERN a_real a_complex_logabs(a_complex z);
 
 /*!
  @brief computes the squared magnitude of a complex number
  @param z a complex number
  @return = \f$ a^2+b^2 \f$
 */
-A_EXTERN a_float a_complex_abs2(a_complex z);
+A_EXTERN a_real a_complex_abs2(a_complex z);
 
 /*!
  @brief computes the magnitude of a complex number
  @param z a complex number
  @return = \f$ \sqrt{a^2+b^2} \f$
 */
-A_EXTERN a_float a_complex_abs(a_complex z);
+A_EXTERN a_real a_complex_abs(a_complex z);
 
 /*!
  @brief computes the phase angle of a complex number
  @param z a complex number
  @return = \f$ \arctan\frac{b}{a} \f$
 */
-A_EXTERN a_float a_complex_arg(a_complex z);
+A_EXTERN a_real a_complex_arg(a_complex z);
 
 /* Complex arithmetic operators */
 
@@ -211,39 +211,39 @@ A_INTERN void a_complex_add_(a_complex *ctx, a_complex z)
 }
 #endif /* A_HAVE_INLINE */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_add_real(a_complex *ctx, a_complex x, a_float y);
+A_EXTERN void a_complex_add_real(a_complex *ctx, a_complex x, a_real y);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_add_real(a_complex *ctx, a_complex x, a_float y)
+A_INTERN void a_complex_add_real(a_complex *ctx, a_complex x, a_real y)
 {
     ctx->real = x.real + y;
     ctx->imag = x.imag;
 }
 #endif /* A_HAVE_INLINE */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_add_real_(a_complex *ctx, a_float x);
+A_EXTERN void a_complex_add_real_(a_complex *ctx, a_real x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_add_real_(a_complex *ctx, a_float x)
+A_INTERN void a_complex_add_real_(a_complex *ctx, a_real x)
 {
     ctx->real += x;
 }
 #endif /* A_HAVE_INLINE */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_add_imag(a_complex *ctx, a_complex x, a_float y);
+A_EXTERN void a_complex_add_imag(a_complex *ctx, a_complex x, a_real y);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_add_imag(a_complex *ctx, a_complex x, a_float y)
+A_INTERN void a_complex_add_imag(a_complex *ctx, a_complex x, a_real y)
 {
     ctx->real = x.real;
     ctx->imag = x.imag + y;
 }
 #endif /* A_HAVE_INLINE */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_add_imag_(a_complex *ctx, a_float x);
+A_EXTERN void a_complex_add_imag_(a_complex *ctx, a_real x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_add_imag_(a_complex *ctx, a_float x)
+A_INTERN void a_complex_add_imag_(a_complex *ctx, a_real x)
 {
     ctx->imag += x;
 }
@@ -276,39 +276,39 @@ A_INTERN void a_complex_sub_(a_complex *ctx, a_complex z)
 }
 #endif /* A_HAVE_INLINE */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_sub_real(a_complex *ctx, a_complex x, a_float y);
+A_EXTERN void a_complex_sub_real(a_complex *ctx, a_complex x, a_real y);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_sub_real(a_complex *ctx, a_complex x, a_float y)
+A_INTERN void a_complex_sub_real(a_complex *ctx, a_complex x, a_real y)
 {
     ctx->real = x.real - y;
     ctx->imag = x.imag;
 }
 #endif /* A_HAVE_INLINE */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_sub_real_(a_complex *ctx, a_float x);
+A_EXTERN void a_complex_sub_real_(a_complex *ctx, a_real x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_sub_real_(a_complex *ctx, a_float x)
+A_INTERN void a_complex_sub_real_(a_complex *ctx, a_real x)
 {
     ctx->real -= x;
 }
 #endif /* A_HAVE_INLINE */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_sub_imag(a_complex *ctx, a_complex x, a_float y);
+A_EXTERN void a_complex_sub_imag(a_complex *ctx, a_complex x, a_real y);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_sub_imag(a_complex *ctx, a_complex x, a_float y)
+A_INTERN void a_complex_sub_imag(a_complex *ctx, a_complex x, a_real y)
 {
     ctx->real = x.real;
     ctx->imag = x.imag - y;
 }
 #endif /* A_HAVE_INLINE */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_sub_imag_(a_complex *ctx, a_float x);
+A_EXTERN void a_complex_sub_imag_(a_complex *ctx, a_real x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_sub_imag_(a_complex *ctx, a_float x)
+A_INTERN void a_complex_sub_imag_(a_complex *ctx, a_real x)
 {
     ctx->imag -= x;
 }
@@ -332,42 +332,42 @@ A_INTERN void a_complex_mul(a_complex *ctx, a_complex x, a_complex y)
 }
 #endif /* A_HAVE_INLINE */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_mul_real(a_complex *ctx, a_complex x, a_float y);
+A_EXTERN void a_complex_mul_real(a_complex *ctx, a_complex x, a_real y);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_mul_real(a_complex *ctx, a_complex x, a_float y)
+A_INTERN void a_complex_mul_real(a_complex *ctx, a_complex x, a_real y)
 {
     ctx->real = x.real * y;
     ctx->imag = x.imag * y;
 }
 #endif /* A_HAVE_INLINE */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_mul_real_(a_complex *ctx, a_float x);
+A_EXTERN void a_complex_mul_real_(a_complex *ctx, a_real x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_mul_real_(a_complex *ctx, a_float x)
+A_INTERN void a_complex_mul_real_(a_complex *ctx, a_real x)
 {
     ctx->real *= x;
     ctx->imag *= x;
 }
 #endif /* A_HAVE_INLINE */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_mul_imag(a_complex *ctx, a_complex x, a_float y);
+A_EXTERN void a_complex_mul_imag(a_complex *ctx, a_complex x, a_real y);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_mul_imag(a_complex *ctx, a_complex x, a_float y)
+A_INTERN void a_complex_mul_imag(a_complex *ctx, a_complex x, a_real y)
 {
     ctx->real = -x.imag * y;
     ctx->imag = x.real * y;
 }
 #endif /* A_HAVE_INLINE */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_mul_imag_(a_complex *ctx, a_float x);
+A_EXTERN void a_complex_mul_imag_(a_complex *ctx, a_real x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_mul_imag_(a_complex *ctx, a_float x)
+A_INTERN void a_complex_mul_imag_(a_complex *ctx, a_real x)
 {
-    a_float const real = ctx->real;
+    a_real const real = ctx->real;
     ctx->real = -ctx->imag * x;
     ctx->imag = real * x;
 }
@@ -391,42 +391,42 @@ A_INTERN void a_complex_div(a_complex *ctx, a_complex x, a_complex y)
 }
 #endif /* A_HAVE_INLINE */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_div_real(a_complex *ctx, a_complex x, a_float y);
+A_EXTERN void a_complex_div_real(a_complex *ctx, a_complex x, a_real y);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_div_real(a_complex *ctx, a_complex x, a_float y)
+A_INTERN void a_complex_div_real(a_complex *ctx, a_complex x, a_real y)
 {
     ctx->real = x.real / y;
     ctx->imag = x.imag / y;
 }
 #endif /* A_HAVE_INLINE */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_div_real_(a_complex *ctx, a_float x);
+A_EXTERN void a_complex_div_real_(a_complex *ctx, a_real x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_div_real_(a_complex *ctx, a_float x)
+A_INTERN void a_complex_div_real_(a_complex *ctx, a_real x)
 {
     ctx->real /= x;
     ctx->imag /= x;
 }
 #endif /* A_HAVE_INLINE */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_div_imag(a_complex *ctx, a_complex x, a_float y);
+A_EXTERN void a_complex_div_imag(a_complex *ctx, a_complex x, a_real y);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_div_imag(a_complex *ctx, a_complex x, a_float y)
+A_INTERN void a_complex_div_imag(a_complex *ctx, a_complex x, a_real y)
 {
     ctx->real = -x.imag / y;
     ctx->imag = x.real / y;
 }
 #endif /* A_HAVE_INLINE */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_div_imag_(a_complex *ctx, a_float x);
+A_EXTERN void a_complex_div_imag_(a_complex *ctx, a_real x);
 #endif /* A_HAVE_INLINE */
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_div_imag_(a_complex *ctx, a_float x)
+A_INTERN void a_complex_div_imag_(a_complex *ctx, a_real x)
 {
-    a_float const real = ctx->real;
+    a_real const real = ctx->real;
     ctx->real = -ctx->imag / x;
     ctx->imag = real / x;
 }
@@ -460,7 +460,7 @@ A_INTERN void a_complex_inv(a_complex *ctx, a_complex z)
 A_EXTERN void a_complex_sqrt(a_complex *ctx, a_complex z);
 #endif /* A_HAVE_INLINE */
 A_EXTERN void a_complex_sqrt_(a_complex *ctx);
-A_EXTERN void a_complex_sqrt_real(a_complex *ctx, a_float x);
+A_EXTERN void a_complex_sqrt_real(a_complex *ctx, a_real x);
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
 A_INTERN void a_complex_sqrt(a_complex *ctx, a_complex z)
 {
@@ -494,11 +494,11 @@ A_INTERN void a_complex_pow(a_complex *ctx, a_complex z, a_complex a)
  @param a a real number
 */
 #if !defined A_HAVE_INLINE || defined(LIBA_COMPLEX_C)
-A_EXTERN void a_complex_pow_real(a_complex *ctx, a_complex z, a_float a);
+A_EXTERN void a_complex_pow_real(a_complex *ctx, a_complex z, a_real a);
 #endif /* A_HAVE_INLINE */
-A_EXTERN void a_complex_pow_real_(a_complex *ctx, a_float a);
+A_EXTERN void a_complex_pow_real_(a_complex *ctx, a_real a);
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
-A_INTERN void a_complex_pow_real(a_complex *ctx, a_complex z, a_float a)
+A_INTERN void a_complex_pow_real(a_complex *ctx, a_complex z, a_real a)
 {
     a_complex_pow_real_(&z, a);
     *ctx = z;
@@ -706,7 +706,7 @@ A_INTERN void a_complex_cot(a_complex *ctx, a_complex z)
 A_EXTERN void a_complex_asin(a_complex *ctx, a_complex z);
 #endif /* A_HAVE_INLINE */
 A_EXTERN void a_complex_asin_(a_complex *ctx);
-A_EXTERN void a_complex_asin_real(a_complex *ctx, a_float x);
+A_EXTERN void a_complex_asin_real(a_complex *ctx, a_real x);
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
 A_INTERN void a_complex_asin(a_complex *ctx, a_complex z)
 {
@@ -724,7 +724,7 @@ A_INTERN void a_complex_asin(a_complex *ctx, a_complex z)
 A_EXTERN void a_complex_acos(a_complex *ctx, a_complex z);
 #endif /* A_HAVE_INLINE */
 A_EXTERN void a_complex_acos_(a_complex *ctx);
-A_EXTERN void a_complex_acos_real(a_complex *ctx, a_float x);
+A_EXTERN void a_complex_acos_real(a_complex *ctx, a_real x);
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
 A_INTERN void a_complex_acos(a_complex *ctx, a_complex z)
 {
@@ -759,7 +759,7 @@ A_INTERN void a_complex_atan(a_complex *ctx, a_complex z)
 A_EXTERN void a_complex_asec(a_complex *ctx, a_complex z);
 #endif /* A_HAVE_INLINE */
 A_EXTERN void a_complex_asec_(a_complex *ctx);
-A_EXTERN void a_complex_asec_real(a_complex *ctx, a_float x);
+A_EXTERN void a_complex_asec_real(a_complex *ctx, a_real x);
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
 A_INTERN void a_complex_asec(a_complex *ctx, a_complex z)
 {
@@ -777,7 +777,7 @@ A_INTERN void a_complex_asec(a_complex *ctx, a_complex z)
 A_EXTERN void a_complex_acsc(a_complex *ctx, a_complex z);
 #endif /* A_HAVE_INLINE */
 A_EXTERN void a_complex_acsc_(a_complex *ctx);
-A_EXTERN void a_complex_acsc_real(a_complex *ctx, a_float x);
+A_EXTERN void a_complex_acsc_real(a_complex *ctx, a_real x);
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
 A_INTERN void a_complex_acsc(a_complex *ctx, a_complex z)
 {
@@ -935,7 +935,7 @@ A_INTERN void a_complex_asinh(a_complex *ctx, a_complex z)
 A_EXTERN void a_complex_acosh(a_complex *ctx, a_complex z);
 #endif /* A_HAVE_INLINE */
 A_EXTERN void a_complex_acosh_(a_complex *ctx);
-A_EXTERN void a_complex_acosh_real(a_complex *ctx, a_float x);
+A_EXTERN void a_complex_acosh_real(a_complex *ctx, a_real x);
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
 A_INTERN void a_complex_acosh(a_complex *ctx, a_complex z)
 {
@@ -953,7 +953,7 @@ A_INTERN void a_complex_acosh(a_complex *ctx, a_complex z)
 A_EXTERN void a_complex_atanh(a_complex *ctx, a_complex z);
 #endif /* A_HAVE_INLINE */
 A_EXTERN void a_complex_atanh_(a_complex *ctx);
-A_EXTERN void a_complex_atanh_real(a_complex *ctx, a_float x);
+A_EXTERN void a_complex_atanh_real(a_complex *ctx, a_real x);
 #if defined(A_HAVE_INLINE) || defined(LIBA_COMPLEX_C)
 A_INTERN void a_complex_atanh(a_complex *ctx, a_complex z)
 {

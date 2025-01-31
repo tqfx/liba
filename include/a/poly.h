@@ -26,11 +26,11 @@ extern "C" {
  @brief swap between \f$ \sum_{i=0}^{n}a_{i}x^{i} \f$ and \f$ \sum_{i=0}^{n}a_{i}x^{n-i} \f$
 */
 #if !defined A_HAVE_INLINE || defined(LIBA_POLY_C)
-A_EXTERN void a_poly_swap(a_float *a, a_size n);
+A_EXTERN void a_poly_swap(a_real *a, a_size n);
 #endif /* A_HAVE_INLINE */
-A_EXTERN void a_poly_swap_(a_float *a, a_float *b);
+A_EXTERN void a_poly_swap_(a_real *a, a_real *b);
 #if defined(A_HAVE_INLINE) || defined(LIBA_POLY_C)
-A_INTERN void a_poly_swap(a_float *a, a_size n)
+A_INTERN void a_poly_swap(a_real *a, a_size n)
 {
     if (n > 1) { a_poly_swap_(a, a + n); }
 }
@@ -47,11 +47,11 @@ A_INTERN void a_poly_swap(a_float *a, a_size n)
  \f]
 */
 #if !defined A_HAVE_INLINE || defined(LIBA_POLY_C)
-A_EXTERN a_float a_poly_eval(a_float const *a, a_size n, a_float x);
+A_EXTERN a_real a_poly_eval(a_real const *a, a_size n, a_real x);
 #endif /* A_HAVE_INLINE */
-A_EXTERN a_float a_poly_eval_(a_float const *a, a_float const *b, a_float x);
+A_EXTERN a_real a_poly_eval_(a_real const *a, a_real const *b, a_real x);
 #if defined(A_HAVE_INLINE) || defined(LIBA_POLY_C)
-A_INTERN a_float a_poly_eval(a_float const *a, a_size n, a_float x)
+A_INTERN a_real a_poly_eval(a_real const *a, a_size n, a_real x)
 {
     return n ? a_poly_eval_(a, a + n, x) : 0;
 }
@@ -68,11 +68,11 @@ A_INTERN a_float a_poly_eval(a_float const *a, a_size n, a_float x)
  \f]
 */
 #if !defined A_HAVE_INLINE || defined(LIBA_POLY_C)
-A_EXTERN a_float a_poly_evar(a_float const *a, a_size n, a_float x);
+A_EXTERN a_real a_poly_evar(a_real const *a, a_size n, a_real x);
 #endif /* A_HAVE_INLINE */
-A_EXTERN a_float a_poly_evar_(a_float const *a, a_float const *b, a_float x);
+A_EXTERN a_real a_poly_evar_(a_real const *a, a_real const *b, a_real x);
 #if defined(A_HAVE_INLINE) || defined(LIBA_POLY_C)
-A_INTERN a_float a_poly_evar(a_float const *a, a_size n, a_float x)
+A_INTERN a_real a_poly_evar(a_real const *a, a_size n, a_real x)
 {
     return n ? a_poly_evar_(a, a + n, x) : 0;
 }

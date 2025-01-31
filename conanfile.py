@@ -15,14 +15,14 @@ class Conan(ConanFile):
         "pkgconfig": [0, 1],
         "symlink": [0, 1],
         "shared": [0, 1],
-        "float": [4, 8],
+        "real": [4, 8],
         "ipo": [0, 1],
     }
     default_options = {
         "pkgconfig": 1,
         "symlink": 0,
         "shared": 0,
-        "float": 8,
+        "real": 8,
         "ipo": 0,
     }
     exports_sources = [
@@ -42,8 +42,8 @@ class Conan(ConanFile):
             cmake.variables["LIBA_INSTALL"] = "shared"
         else:
             cmake.variables["LIBA_INSTALL"] = "static"
-        if self.options.float != 8:
-            cmake.variables["LIBA_FLOAT"] = self.options.float
+        if self.options.real != 8:
+            cmake.variables["LIBA_REAL"] = self.options.real
         cmake.variables["LIBA_SYMLINK"] = self.options.symlink
         cmake.variables["LIBA_PKGCONFIG"] = self.options.pkgconfig
         if self.settings.build_type != "Debug":

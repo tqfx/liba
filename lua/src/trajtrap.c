@@ -35,19 +35,19 @@ int liba_trajtrap_new(lua_State *L)
 */
 int liba_trajtrap_gen(lua_State *L)
 {
-    a_float v0 = 0, v1 = 0;
-    a_float vm, ac, de, p0, p1;
+    a_real v0 = 0, v1 = 0;
+    a_real vm, ac, de, p0, p1;
     int const top = lua_gettop(L);
     a_trajtrap *const ctx = (a_trajtrap *)lua_touserdata(L, 1);
     if (ctx)
     {
-        vm = (a_float)luaL_checknumber(L, 2);
-        ac = (a_float)luaL_checknumber(L, 3);
-        de = (a_float)luaL_checknumber(L, 4);
-        p0 = (a_float)luaL_checknumber(L, 5);
-        p1 = (a_float)luaL_checknumber(L, 6);
-        if (top >= 7) { v0 = (a_float)luaL_checknumber(L, 7); }
-        if (top >= 8) { v1 = (a_float)luaL_checknumber(L, 8); }
+        vm = (a_real)luaL_checknumber(L, 2);
+        ac = (a_real)luaL_checknumber(L, 3);
+        de = (a_real)luaL_checknumber(L, 4);
+        p0 = (a_real)luaL_checknumber(L, 5);
+        p1 = (a_real)luaL_checknumber(L, 6);
+        if (top >= 7) { v0 = (a_real)luaL_checknumber(L, 7); }
+        if (top >= 8) { v1 = (a_real)luaL_checknumber(L, 8); }
         a_trajtrap_gen(ctx, vm, ac, de, p0, p1, v0, v1);
         lua_pushnumber(L, (lua_Number)ctx->t);
         return 1;
@@ -67,7 +67,7 @@ int liba_trajtrap_pos(lua_State *L)
     a_trajtrap const *const ctx = (a_trajtrap const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const x = (a_float)luaL_checknumber(L, 2);
+        a_real const x = (a_real)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_trajtrap_pos(ctx, x));
         return 1;
     }
@@ -86,7 +86,7 @@ int liba_trajtrap_vel(lua_State *L)
     a_trajtrap const *const ctx = (a_trajtrap const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const x = (a_float)luaL_checknumber(L, 2);
+        a_real const x = (a_real)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_trajtrap_vel(ctx, x));
         return 1;
     }
@@ -105,7 +105,7 @@ int liba_trajtrap_acc(lua_State *L)
     a_trajtrap const *const ctx = (a_trajtrap const *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const x = (a_float)luaL_checknumber(L, 2);
+        a_real const x = (a_real)luaL_checknumber(L, 2);
         lua_pushnumber(L, (lua_Number)a_trajtrap_acc(ctx, x));
         return 1;
     }

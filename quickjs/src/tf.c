@@ -7,8 +7,8 @@ static void liba_tf_finalizer(JSRuntime *rt, JSValue val)
 {
     union
     {
-        a_float const *p;
-        a_float *o;
+        a_real const *p;
+        a_real *o;
     } u;
     a_tf *const self = (a_tf *)JS_GetOpaque(val, liba_tf_class_id);
     js_free_rt(rt, ((void)(u.p = self->num_p), u.o));
@@ -20,8 +20,8 @@ static int liba_tf_set_num_(JSContext *ctx, a_tf *self, JSValueConst num)
 {
     union
     {
-        a_float const *p;
-        a_float *o;
+        a_real const *p;
+        a_real *o;
     } u;
     unsigned int n = 0;
     int r = js_array_num_len(ctx, num, &n, 1);
@@ -30,7 +30,7 @@ static int liba_tf_set_num_(JSContext *ctx, a_tf *self, JSValueConst num)
         u.p = self->num_p;
         if (n > self->num_n)
         {
-            u.o = (a_float *)js_realloc(ctx, u.o, sizeof(a_float) * n * 2);
+            u.o = (a_real *)js_realloc(ctx, u.o, sizeof(a_real) * n * 2);
             a_tf_set_num(self, n, u.o, u.o + n);
         }
         else { self->num_n = n; }
@@ -43,8 +43,8 @@ static int liba_tf_set_den_(JSContext *ctx, a_tf *self, JSValueConst den)
 {
     union
     {
-        a_float const *p;
-        a_float *o;
+        a_real const *p;
+        a_real *o;
     } u;
     unsigned int n = 0;
     int r = js_array_num_len(ctx, den, &n, 1);
@@ -53,7 +53,7 @@ static int liba_tf_set_den_(JSContext *ctx, a_tf *self, JSValueConst den)
         u.p = self->den_p;
         if (n > self->den_n)
         {
-            u.o = (a_float *)js_realloc(ctx, u.o, sizeof(a_float) * n * 2);
+            u.o = (a_real *)js_realloc(ctx, u.o, sizeof(a_real) * n * 2);
             a_tf_set_den(self, n, u.o, u.o + n);
         }
         else { self->den_n = n; }
@@ -90,7 +90,7 @@ static JSValue liba_tf_iter(JSContext *ctx, JSValueConst this_val, int argc, JSV
     if (!self) { return JS_EXCEPTION; }
     if (JS_ToFloat64(ctx, &x, argv[0])) { return JS_EXCEPTION; }
     (void)argc;
-    return JS_NewFloat64(ctx, (double)a_tf_iter(self, (a_float)x));
+    return JS_NewFloat64(ctx, (double)a_tf_iter(self, (a_real)x));
 }
 
 static JSValue liba_tf_zero(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)

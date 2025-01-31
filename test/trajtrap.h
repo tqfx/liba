@@ -4,8 +4,8 @@
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
-    a_float arg[7] = {0, 0, 0, 0, 0, 0, 0};
-    a_float t, x, delta;
+    a_real arg[7] = {0, 0, 0, 0, 0, 0, 0};
+    a_real t, x, delta;
     int i, start = 1;
     a_trajtrap ctx;
 
@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     t = a_trajtrap_gen(&ctx, arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6]);
     for ((void)(x = 0), delta = t / 1000; x < t; x += delta) /* NOLINT */
     {
-        debug("%+" A_FLOAT_PRI "f,%+" A_FLOAT_PRI "f,%+" A_FLOAT_PRI "f,%+" A_FLOAT_PRI "f\n",
+        debug("%+" A_REAL_PRI "f,%+" A_REAL_PRI "f,%+" A_REAL_PRI "f,%+" A_REAL_PRI "f\n",
               x, a_trajtrap_pos(&ctx, x), a_trajtrap_vel(&ctx, x), a_trajtrap_acc(&ctx, x));
     }
 

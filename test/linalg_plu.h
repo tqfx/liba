@@ -2,7 +2,7 @@
 #include "test.h"
 #include "a/linalg.h"
 
-static void show(a_float const *p, a_size m, a_size n)
+static void show(a_real const *p, a_size m, a_size n)
 {
     a_size r, c;
     for (r = 0; r < m; ++r)
@@ -10,9 +10,9 @@ static void show(a_float const *p, a_size m, a_size n)
         debug("\t");
         for (c = 0; c < n; ++c)
         {
-            a_float const x = *p++;
+            a_real const x = *p++;
             if (c) { debug(","); }
-            debug("%+.6" A_FLOAT_PRI "f", x);
+            debug("%+.6" A_REAL_PRI "f", x);
         }
         debug("\n");
     }
@@ -24,17 +24,17 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     int sign;
     int r, c;
     a_uint p[N];
-    a_float b[N];
-    a_float m[N * N];
-    a_float a[N * N] = {4, 3, 6, 8, 7, 5, 2, 1, 9};
+    a_real b[N];
+    a_real m[N * N];
+    a_real a[N * N] = {4, 3, 6, 8, 7, 5, 2, 1, 9};
     main_init(argc, argv, 1);
     debug("A=\n");
     show(a, N, N);
     if (a_linalg_plu(a, N, p, &sign) == 0)
     {
         debug("SGN=%i\n", a_linalg_plu_sgndet(a, N, sign));
-        debug("LN=%" A_FLOAT_PRI "g\n", a_linalg_plu_lndet(a, N));
-        debug("D=%" A_FLOAT_PRI "g\n", a_linalg_plu_det(a, N, sign));
+        debug("LN=%" A_REAL_PRI "g\n", a_linalg_plu_lndet(a, N));
+        debug("D=%" A_REAL_PRI "g\n", a_linalg_plu_det(a, N, sign));
         a_linalg_plu_get_P(p, N, m);
         debug("P=\n");
         show(m, N, N);
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         show(m, N, N);
         for (r = 0; r < N; ++r)
         {
-            a_float *x = m + a_size_c(r) * N;
+            a_real *x = m + a_size_c(r) * N;
             for (c = 0; c < N; ++c)
             {
                 b[c] = (c == r);
@@ -67,8 +67,8 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         if (a_linalg_plu(m, N, p, &sign) == 0)
         {
             debug("SGN=%i\n", a_linalg_plu_sgndet(m, N, sign));
-            debug("LN=%" A_FLOAT_PRI "g\n", a_linalg_plu_lndet(m, N));
-            debug("D=%" A_FLOAT_PRI "g\n", a_linalg_plu_det(m, N, sign));
+            debug("LN=%" A_REAL_PRI "g\n", a_linalg_plu_lndet(m, N));
+            debug("D=%" A_REAL_PRI "g\n", a_linalg_plu_det(m, N, sign));
             a_linalg_plu_get_P(p, N, a);
             debug("P=\n");
             show(a, N, N);

@@ -15,11 +15,11 @@
 #if !defined __STDC_VERSION__ || (defined(_MSC_VER) && (_MSC_VER < 1800))
 #if !defined isinf
 #define isinf(x) isinf_(x)
-static A_INLINE a_bool isinf_(a_float x) { return x + x == x && x; }
+static A_INLINE a_bool isinf_(a_real x) { return x + x == x && x; }
 #endif /* isinf */
 #if !defined isnan
 #define isnan(x) isnan_(x)
-static A_INLINE a_bool isnan_(a_float x) { return x != x; }
+static A_INLINE a_bool isnan_(a_real x) { return x != x; }
 #endif /* isnan */
 #define sqrtf(x) sqrt(x)
 #endif /* __STDC_VERSION__ */
@@ -111,7 +111,7 @@ static void test_f64_rsqrt(void)
 static void test_sum(int argc, char *argv[])
 {
     a_size i, n = a_cast_s(a_size, argc);
-    a_float *p = a_new(a_float, A_NULL, n);
+    a_real *p = a_new(a_real, A_NULL, n);
 
     for (i = 0; i < n; ++i)
     {
@@ -122,10 +122,10 @@ static void test_sum(int argc, char *argv[])
     debug("{");
     for (i = 0; i < n; ++i)
     {
-        debug("%c%" A_FLOAT_PRI "g", i ? ',' : 0, p[i]);
+        debug("%c%" A_REAL_PRI "g", i ? ',' : 0, p[i]);
     }
-    debug("}:%" A_FLOAT_PRI "g,%" A_FLOAT_PRI "g,%" A_FLOAT_PRI "g\n",
-          a_float_sum(p, n), a_float_sum1(p, n), a_float_sum2(p, n));
+    debug("}:%" A_REAL_PRI "g,%" A_REAL_PRI "g,%" A_REAL_PRI "g\n",
+          a_real_sum(p, n), a_real_sum1(p, n), a_real_sum2(p, n));
 
     a_die(p);
 }
@@ -133,7 +133,7 @@ static void test_sum(int argc, char *argv[])
 static void test_norm(int argc, char *argv[])
 {
     a_size i, n = a_cast_s(a_size, argc);
-    a_float *p = a_new(a_float, A_NULL, n);
+    a_real *p = a_new(a_real, A_NULL, n);
 
     for (i = 0; i < n; ++i)
     {
@@ -144,9 +144,9 @@ static void test_norm(int argc, char *argv[])
     debug("{");
     for (i = 0; i < n; ++i)
     {
-        debug("%c%" A_FLOAT_PRI "g", i ? ',' : 0, p[i]);
+        debug("%c%" A_REAL_PRI "g", i ? ',' : 0, p[i]);
     }
-    debug("}:%" A_FLOAT_PRI "g\n", a_float_norm(p, n));
+    debug("}:%" A_REAL_PRI "g\n", a_real_norm(p, n));
 
     a_die(p);
 }
@@ -154,7 +154,7 @@ static void test_norm(int argc, char *argv[])
 static void test_mean(int argc, char *argv[])
 {
     a_size i, n = a_cast_s(a_size, argc);
-    a_float *p = a_new(a_float, A_NULL, n);
+    a_real *p = a_new(a_real, A_NULL, n);
 
     for (i = 0; i < n; ++i)
     {
@@ -165,9 +165,9 @@ static void test_mean(int argc, char *argv[])
     debug("{");
     for (i = 0; i < n; ++i)
     {
-        debug("%c%" A_FLOAT_PRI "g", i ? ',' : 0, p[i]);
+        debug("%c%" A_REAL_PRI "g", i ? ',' : 0, p[i]);
     }
-    debug("}:%" A_FLOAT_PRI "g\n", a_float_mean(p, n));
+    debug("}:%" A_REAL_PRI "g\n", a_real_mean(p, n));
 
     a_die(p);
 }
@@ -175,52 +175,52 @@ static void test_mean(int argc, char *argv[])
 static void test_push(int argc, char *argv[])
 {
     a_size i;
-    a_float array[] = {0, 1, 2, 3, 4, 5, 6, 7};
+    a_real array[] = {0, 1, 2, 3, 4, 5, 6, 7};
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug("%+" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%+" A_REAL_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
-    a_float_push_fore(array, A_LEN(array), -1);
+    a_real_push_fore(array, A_LEN(array), -1);
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug("%+" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%+" A_REAL_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
-    a_float_push_back(array, A_LEN(array), -1);
+    a_real_push_back(array, A_LEN(array), -1);
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug("%+" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%+" A_REAL_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     {
-        a_float cache[] = {-1, -2};
-        a_float_push_fore_(array, A_LEN(array), cache, A_LEN(cache));
-    }
-    for (i = 0; i < A_LEN(array); ++i)
-    {
-        debug("%+" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
-    }
-    {
-        a_float cache[] = {-2, -1};
-        a_float_push_back_(array, A_LEN(array), cache, A_LEN(cache));
+        a_real cache[] = {-1, -2};
+        a_real_push_fore_(array, A_LEN(array), cache, A_LEN(cache));
     }
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug("%+" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%+" A_REAL_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     {
-        a_float cache[] = {-0, -1, -2, -3, -4, -5, -6, -7, -8, -9};
-        a_float_push_fore_(array, A_LEN(array), cache, A_LEN(cache));
-    }
-    for (i = 0; i < A_LEN(array); ++i)
-    {
-        debug("%+" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
-    }
-    {
-        a_float cache[] = {-9, -8, -7, -6, -5, -4, -3, -2, -1, -0};
-        a_float_push_fore_(array, A_LEN(array), cache, A_LEN(cache));
+        a_real cache[] = {-2, -1};
+        a_real_push_back_(array, A_LEN(array), cache, A_LEN(cache));
     }
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug("%+" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%+" A_REAL_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+    }
+    {
+        a_real cache[] = {-0, -1, -2, -3, -4, -5, -6, -7, -8, -9};
+        a_real_push_fore_(array, A_LEN(array), cache, A_LEN(cache));
+    }
+    for (i = 0; i < A_LEN(array); ++i)
+    {
+        debug("%+" A_REAL_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+    }
+    {
+        a_real cache[] = {-9, -8, -7, -6, -5, -4, -3, -2, -1, -0};
+        a_real_push_fore_(array, A_LEN(array), cache, A_LEN(cache));
+    }
+    for (i = 0; i < A_LEN(array); ++i)
+    {
+        debug("%+" A_REAL_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     (void)argc;
     (void)argv;
@@ -229,41 +229,41 @@ static void test_push(int argc, char *argv[])
 static void test_roll(int argc, char *argv[])
 {
     a_size i;
-    a_float array[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-    a_float shift[16];
+    a_real array[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    a_real shift[16];
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug("%" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%" A_REAL_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
-    a_float_roll_fore(array, A_LEN(array));
+    a_real_roll_fore(array, A_LEN(array));
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug("%" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%" A_REAL_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
-    a_float_roll_back(array, A_LEN(array));
+    a_real_roll_back(array, A_LEN(array));
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug("%" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%" A_REAL_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
-    a_float_roll_fore_(array, A_LEN(array), shift, 2);
+    a_real_roll_fore_(array, A_LEN(array), shift, 2);
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug("%" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%" A_REAL_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
-    a_float_roll_back_(array, A_LEN(array), shift, 2);
+    a_real_roll_back_(array, A_LEN(array), shift, 2);
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug("%" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%" A_REAL_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
-    a_float_roll_fore_(array, A_LEN(array), shift, 15);
+    a_real_roll_fore_(array, A_LEN(array), shift, 15);
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug("%" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%" A_REAL_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
-    a_float_roll_back_(array, A_LEN(array), shift, 15);
+    a_real_roll_back_(array, A_LEN(array), shift, 15);
     for (i = 0; i < A_LEN(array); ++i)
     {
-        debug("%" A_FLOAT_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
+        debug("%" A_REAL_PRI "g%c", array[i], i + 1 < A_LEN(array) ? ' ' : '\n');
     }
     (void)argc;
     (void)argv;
@@ -298,46 +298,46 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         debug("32 inf = %-12g nan = %g\n", inf, nan);
     }
     {
-        a_float min = A_FLOAT_MIN;
-        a_float max = A_FLOAT_MAX;
-        a_float inf = A_FLOAT_INF;
-        a_float nan = A_FLOAT_NAN;
-        debug("min = %-12" A_FLOAT_PRI "g max = %" A_FLOAT_PRI "g\n", min, max);
-        debug("inf = %-12" A_FLOAT_PRI "g nan = %" A_FLOAT_PRI "g\n", inf, nan);
+        a_real min = A_REAL_MIN;
+        a_real max = A_REAL_MAX;
+        a_real inf = A_REAL_INF;
+        a_real nan = A_REAL_NAN;
+        debug("min = %-12" A_REAL_PRI "g max = %" A_REAL_PRI "g\n", min, max);
+        debug("inf = %-12" A_REAL_PRI "g nan = %" A_REAL_PRI "g\n", inf, nan);
     }
     {
-#undef a_float_expm1
-        a_float x = A_FLOAT_EPSILON / 2;
-        TEST_BUG(isinf(a_float_expm1(A_FLOAT_INF)));
-        TEST_BUG(isnan(a_float_expm1(A_FLOAT_NAN)));
-        debug("expm1(%.15" A_FLOAT_PRI "g)=%.15" A_FLOAT_PRI "g\n", x, a_float_expm1(x));
-        debug("exp(%.15" A_FLOAT_PRI "g)-1=%.15" A_FLOAT_PRI "g\n", x, a_float_exp(x) - 1);
+#undef a_real_expm1
+        a_real x = A_REAL_EPSILON / 2;
+        TEST_BUG(isinf(a_real_expm1(A_REAL_INF)));
+        TEST_BUG(isnan(a_real_expm1(A_REAL_NAN)));
+        debug("expm1(%.15" A_REAL_PRI "g)=%.15" A_REAL_PRI "g\n", x, a_real_expm1(x));
+        debug("exp(%.15" A_REAL_PRI "g)-1=%.15" A_REAL_PRI "g\n", x, a_real_exp(x) - 1);
     }
     {
-#undef a_float_log1p
-        a_float x = A_FLOAT_EPSILON / 2;
-        TEST_BUG(isinf(a_float_log1p(A_FLOAT_INF)));
-        TEST_BUG(isnan(a_float_log1p(A_FLOAT_NAN)));
-        debug("log1p(%.15" A_FLOAT_PRI "g)=%.15" A_FLOAT_PRI "g\n", x, a_float_log1p(x));
-        debug("log(1+%.15" A_FLOAT_PRI "g)=%.15" A_FLOAT_PRI "g\n", x, a_float_log(x + 1));
+#undef a_real_log1p
+        a_real x = A_REAL_EPSILON / 2;
+        TEST_BUG(isinf(a_real_log1p(A_REAL_INF)));
+        TEST_BUG(isnan(a_real_log1p(A_REAL_NAN)));
+        debug("log1p(%.15" A_REAL_PRI "g)=%.15" A_REAL_PRI "g\n", x, a_real_log1p(x));
+        debug("log(1+%.15" A_REAL_PRI "g)=%.15" A_REAL_PRI "g\n", x, a_real_log(x + 1));
     }
     {
-        a_float x = A_FLOAT_MAX / A_FLOAT_SQRT2;
-        a_float y = A_FLOAT_MAX / A_FLOAT_SQRT2;
-        TEST_BUG(!isinf(a_float_norm2(x, y)));
-        TEST_BUG(isinf(a_float_norm2(A_FLOAT_INF, A_FLOAT_NAN)));
-        TEST_BUG(isinf(a_float_norm2(A_FLOAT_NAN, A_FLOAT_INF)));
-        TEST_BUG(isnan(a_float_norm2(A_FLOAT_NAN, A_FLOAT_NAN)));
+        a_real x = A_REAL_MAX / A_REAL_SQRT2;
+        a_real y = A_REAL_MAX / A_REAL_SQRT2;
+        TEST_BUG(!isinf(a_real_norm2(x, y)));
+        TEST_BUG(isinf(a_real_norm2(A_REAL_INF, A_REAL_NAN)));
+        TEST_BUG(isinf(a_real_norm2(A_REAL_NAN, A_REAL_INF)));
+        TEST_BUG(isnan(a_real_norm2(A_REAL_NAN, A_REAL_NAN)));
     }
     {
-        a_float x = A_FLOAT_MAX / A_FLOAT_SQRT3;
-        a_float y = A_FLOAT_MAX / A_FLOAT_SQRT3;
-        a_float z = A_FLOAT_MAX / A_FLOAT_SQRT3;
-        TEST_BUG(!isinf(a_float_norm3(x, y, z)));
-        TEST_BUG(isinf(a_float_norm3(A_FLOAT_INF, A_FLOAT_NAN, A_FLOAT_NAN)));
-        TEST_BUG(isinf(a_float_norm3(A_FLOAT_NAN, A_FLOAT_INF, A_FLOAT_NAN)));
-        TEST_BUG(isinf(a_float_norm3(A_FLOAT_NAN, A_FLOAT_NAN, A_FLOAT_INF)));
-        TEST_BUG(isnan(a_float_norm3(A_FLOAT_NAN, A_FLOAT_NAN, A_FLOAT_NAN)));
+        a_real x = A_REAL_MAX / A_REAL_SQRT3;
+        a_real y = A_REAL_MAX / A_REAL_SQRT3;
+        a_real z = A_REAL_MAX / A_REAL_SQRT3;
+        TEST_BUG(!isinf(a_real_norm3(x, y, z)));
+        TEST_BUG(isinf(a_real_norm3(A_REAL_INF, A_REAL_NAN, A_REAL_NAN)));
+        TEST_BUG(isinf(a_real_norm3(A_REAL_NAN, A_REAL_INF, A_REAL_NAN)));
+        TEST_BUG(isinf(a_real_norm3(A_REAL_NAN, A_REAL_NAN, A_REAL_INF)));
+        TEST_BUG(isnan(a_real_norm3(A_REAL_NAN, A_REAL_NAN, A_REAL_NAN)));
     }
     if (argc < 2)
     {

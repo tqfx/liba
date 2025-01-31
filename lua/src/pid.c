@@ -19,10 +19,10 @@ int liba_pid_new(lua_State *L)
     ctx->kp = 1;
     ctx->ki = 0;
     ctx->kd = 0;
-    ctx->summax = +A_FLOAT_INF;
-    ctx->summin = -A_FLOAT_INF;
-    ctx->outmax = +A_FLOAT_INF;
-    ctx->outmin = -A_FLOAT_INF;
+    ctx->summax = +A_REAL_INF;
+    ctx->summin = -A_REAL_INF;
+    ctx->outmax = +A_REAL_INF;
+    ctx->outmin = -A_REAL_INF;
     a_pid_init(ctx);
     return 1;
 }
@@ -41,10 +41,10 @@ int liba_pid_init(lua_State *L)
         ctx->kp = 1;
         ctx->ki = 0;
         ctx->kd = 0;
-        ctx->summax = +A_FLOAT_INF;
-        ctx->summin = -A_FLOAT_INF;
-        ctx->outmax = +A_FLOAT_INF;
-        ctx->outmin = -A_FLOAT_INF;
+        ctx->summax = +A_REAL_INF;
+        ctx->summin = -A_REAL_INF;
+        ctx->outmax = +A_REAL_INF;
+        ctx->outmin = -A_REAL_INF;
         a_pid_init(ctx);
         return 1;
     }
@@ -65,9 +65,9 @@ int liba_pid_set_kpid(lua_State *L)
     a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const kp = (a_float)luaL_checknumber(L, 2);
-        a_float const ki = (a_float)luaL_checknumber(L, 3);
-        a_float const kd = (a_float)luaL_checknumber(L, 4);
+        a_real const kp = (a_real)luaL_checknumber(L, 2);
+        a_real const ki = (a_real)luaL_checknumber(L, 3);
+        a_real const kd = (a_real)luaL_checknumber(L, 4);
         a_pid_set_kpid(ctx, kp, ki, kd);
         lua_pushvalue(L, 1);
         return 1;
@@ -88,8 +88,8 @@ int liba_pid_run(lua_State *L)
     a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const set = (a_float)luaL_checknumber(L, 2);
-        a_float const fdb = (a_float)luaL_checknumber(L, 3);
+        a_real const set = (a_real)luaL_checknumber(L, 2);
+        a_real const fdb = (a_real)luaL_checknumber(L, 3);
         lua_pushnumber(L, (lua_Number)a_pid_run(ctx, set, fdb));
         return 1;
     }
@@ -109,8 +109,8 @@ int liba_pid_pos(lua_State *L)
     a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const set = (a_float)luaL_checknumber(L, 2);
-        a_float const fdb = (a_float)luaL_checknumber(L, 3);
+        a_real const set = (a_real)luaL_checknumber(L, 2);
+        a_real const fdb = (a_real)luaL_checknumber(L, 3);
         lua_pushnumber(L, (lua_Number)a_pid_pos(ctx, set, fdb));
         return 1;
     }
@@ -130,8 +130,8 @@ int liba_pid_inc(lua_State *L)
     a_pid *const ctx = (a_pid *)lua_touserdata(L, 1);
     if (ctx)
     {
-        a_float const set = (a_float)luaL_checknumber(L, 2);
-        a_float const fdb = (a_float)luaL_checknumber(L, 3);
+        a_real const set = (a_real)luaL_checknumber(L, 2);
+        a_real const fdb = (a_real)luaL_checknumber(L, 3);
         lua_pushnumber(L, (lua_Number)a_pid_inc(ctx, set, fdb));
         return 1;
     }
@@ -161,25 +161,25 @@ static int liba_pid_set(lua_State *L)
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x00003731: /* kp */
-        ctx->kp = (a_float)luaL_checknumber(L, 3);
+        ctx->kp = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x0000372A: /* ki */
-        ctx->ki = (a_float)luaL_checknumber(L, 3);
+        ctx->ki = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x00003725: /* kd */
-        ctx->kd = (a_float)luaL_checknumber(L, 3);
+        ctx->kd = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x10E9FF9D: /* summax */
-        ctx->summax = (a_float)luaL_checknumber(L, 3);
+        ctx->summax = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x10EA03AB: /* summin */
-        ctx->summin = (a_float)luaL_checknumber(L, 3);
+        ctx->summin = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x23C8F10E: /* outmax */
-        ctx->outmax = (a_float)luaL_checknumber(L, 3);
+        ctx->outmax = (a_real)luaL_checknumber(L, 3);
         break;
     case 0x23C8F51C: /* outmin */
-        ctx->outmin = (a_float)luaL_checknumber(L, 3);
+        ctx->outmin = (a_real)luaL_checknumber(L, 3);
         break;
     case 0xE8859EEB: /* __name */
     case 0xE70C48C6: /* __call */
