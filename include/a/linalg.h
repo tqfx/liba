@@ -186,161 +186,161 @@ A_EXTERN void a_linalg_mulTT(a_real *__restrict Z, a_real const *__restrict X, a
  The result is stored in the original matrix A, with L stored below, and U stored in the diagonal and above.
  Additionally, it calculates a permutation matrix P that records the row exchanges made during partial pivoting,
  and determines the sign of the permutation (which can be used to find the determinant's sign).
+ @param[in] n the order of the square matrix A (number of rows and columns).
  @param[in,out] A an n x n square matrix.
   on input, contains the matrix to decompose. on output, contains the L and U matrices.
- @param[in] n the order of the square matrix A (number of rows and columns).
  @param[out] p the row permutation indices after partial pivoting.
  @param[out] sign store the sign of the permutation (+1 or -1).
  @return 0 on success, or a non-zero error code if the decomposition fails.
   @retval -1 on failure, A is a singular matrix.
  */
-A_EXTERN int a_linalg_plu(a_real *A, a_uint n, a_uint *p, int *sign);
+A_EXTERN int a_linalg_plu(a_uint n, a_real *A, a_uint *p, int *sign);
 
 /*!
  @brief construct the permutation matrix P from a permutation vector p.
- @param[in] p the row permutation indices after partial pivoting.
  @param[in] n the order of the square matrix that was decomposed.
+ @param[in] p the row permutation indices after partial pivoting.
  @param[out] P the output matrix where the permutation matrix will be stored.
 */
-A_EXTERN void a_linalg_plu_get_P(a_uint const *p, a_uint n, a_real *P);
+A_EXTERN void a_linalg_plu_get_P(a_uint n, a_uint const *p, a_real *P);
 
 /*!
  @brief extract the lower triangular matrix L from matrix A.
- @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[in] n the order of the square matrix that was decomposed.
+ @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[out] L the output matrix where the lower triangular matrix will be stored.
 */
-A_EXTERN void a_linalg_plu_get_L(a_real const *A, a_uint n, a_real *L);
+A_EXTERN void a_linalg_plu_get_L(a_uint n, a_real const *A, a_real *L);
 
 /*!
  @brief extract the upper triangular matrix U from matrix A.
- @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[in] n the order of the square matrix that was decomposed.
+ @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[out] U the output matrix where the upper triangular matrix will be stored.
 */
-A_EXTERN void a_linalg_plu_get_U(a_real const *A, a_uint n, a_real *U);
+A_EXTERN void a_linalg_plu_get_U(a_uint n, a_real const *A, a_real *U);
 
 /*!
  @brief apply the permutation P to the vector b, producing Pb.
- @param[in] p the row permutation indices after partial pivoting.
  @param[in] n the order of the square matrix that was decomposed.
+ @param[in] p the row permutation indices after partial pivoting.
  @param[in] b the input vector of size n that will be permuted.
  @param[out] Pb the output vector where the permuted result will be stored.
 */
-A_EXTERN void a_linalg_plu_apply(a_uint const *p, a_uint n, a_real const *b, a_real *Pb);
+A_EXTERN void a_linalg_plu_apply(a_uint n, a_uint const *p, a_real const *b, a_real *Pb);
 
 /*!
  @brief solve the lower triangular system Ly = Pb for y.
- @param[in] L the lower triangular matrix L, stored in row-major order.
  @param[in] n the order of the square matrix L (number of rows and columns).
+ @param[in] L the lower triangular matrix L, stored in row-major order.
  @param[in,out] y on input, contains the permuted vector Pb. on output, contains the solution vector y.
 */
-A_EXTERN void a_linalg_plu_lower(a_real const *L, a_uint n, a_real *y);
+A_EXTERN void a_linalg_plu_lower(a_uint n, a_real const *L, a_real *y);
 
 /*!
  @brief solve the upper triangular system Ux = y for x.
- @param[in] U the upper triangular matrix U, stored in row-major order.
  @param[in] n the order of the square matrix U (number of rows and columns).
+ @param[in] U the upper triangular matrix U, stored in row-major order.
  @param[in,out] x on input, contains the vector y. on output, contains the solution vector x.
 */
-A_EXTERN void a_linalg_plu_upper(a_real const *U, a_uint n, a_real *x);
+A_EXTERN void a_linalg_plu_upper(a_uint n, a_real const *U, a_real *x);
 
 /*!
  @brief solve the linear system Ax = b using LU decomposition with partial pivoting.
- @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[in] n the order of the square matrix A (number of rows and columns).
+ @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[in] p the permutation indices obtained during LU decomposition.
  @param[in] b the input vector b of the linear system.
  @param[out] x the output vector x where the solution will be stored.
 */
-A_EXTERN void a_linalg_plu_solve(a_real const *A, a_uint n, a_uint const *p, a_real const *b, a_real *x);
+A_EXTERN void a_linalg_plu_solve(a_uint n, a_real const *A, a_uint const *p, a_real const *b, a_real *x);
 
 /*!
  @brief compute the inverse of a matrix using its LU decomposition and permutation matrix.
- @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[in] n the order of the square matrix A (number of rows and columns).
+ @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[in] p the permutation indices obtained during LU decomposition.
  @param[in] b a pre-allocated temporary buffer of size n for intermediate computations.
  @param[out] I the output matrix where the inverse of A will be stored.
 */
-A_EXTERN void a_linalg_plu_inv(a_real const *A, a_uint n, a_uint const *p, a_real *b, a_real *I);
+A_EXTERN void a_linalg_plu_inv(a_uint n, a_real const *A, a_uint const *p, a_real *b, a_real *I);
 
 /*!
  @brief compute the determinant of a matrix using its LU decomposition.
- @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[in] n the order of the square matrix A (number of rows and columns).
+ @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[in] sign the sign of the permutation matrix P (+1 or -1).
  @return the determinant of matrix A.
 */
-A_EXTERN a_real a_linalg_plu_det(a_real const *A, a_uint n, int sign);
+A_EXTERN a_real a_linalg_plu_det(a_uint n, a_real const *A, int sign);
 
 /*!
  @brief compute the natural logarithm of the absolute value of the determinant of a matrix using its LU decomposition.
- @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[in] n the order of the square matrix A (number of rows and columns).
+ @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @return the natural logarithm of the absolute value of the determinant.
 */
-A_EXTERN a_real a_linalg_plu_lndet(a_real const *A, a_uint n);
+A_EXTERN a_real a_linalg_plu_lndet(a_uint n, a_real const *A);
 
 /*!
  @brief compute the sign of the determinant of a matrix using its LU decomposition.
- @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[in] n the order of the square matrix A (number of rows and columns).
+ @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[in] sign the sign of the permutation matrix P (+1 or -1).
  @return the sign of the determinant: -1, 0, +1.
 */
-A_EXTERN int a_linalg_plu_sgndet(a_real const *A, a_uint n, int sign);
+A_EXTERN int a_linalg_plu_sgndet(a_uint n, a_real const *A, int sign);
 
 /*!
  @brief compute Cholesky decomposition of a symmetric positive-definite matrix.
+ @param[in] n the order of the square matrix A (number of rows and columns).
  @param[in,out] A an n x n square matrix.
   on input, contains the matrix to decompose. on output, contains the L matrix.
- @param[in] n the order of the square matrix A (number of rows and columns).
  @return 0 on success, or a non-zero error code if the decomposition fails.
   @retval -1 on failure, A is a singular matrix.
 */
-A_EXTERN int a_linalg_cho(a_real *A, a_uint n);
+A_EXTERN int a_linalg_cho(a_uint n, a_real *A);
 
 /*!
  @brief extract the lower triangular matrix L from matrix A.
- @param[in] A the matrix containing L form after Cholesky decomposition.
  @param[in] n the order of the square matrix that was decomposed.
+ @param[in] A the matrix containing L form after Cholesky decomposition.
  @param[out] L the output matrix where the lower triangular matrix will be stored.
 */
-A_EXTERN void a_linalg_cho_get_L(a_real const *A, a_uint n, a_real *L);
+A_EXTERN void a_linalg_cho_get_L(a_uint n, a_real const *A, a_real *L);
 
 /*!
  @brief solve the lower triangular system Ly = b for y.
- @param[in] L the lower triangular matrix L, stored in row-major order.
  @param[in] n the order of the square matrix L (number of rows and columns).
+ @param[in] L the lower triangular matrix L, stored in row-major order.
  @param[in,out] y on input, contains the vector b. on output, contains the solution vector y.
 */
-A_EXTERN void a_linalg_cho_lower(a_real const *L, a_uint n, a_real *y);
+A_EXTERN void a_linalg_cho_lower(a_uint n, a_real const *L, a_real *y);
 
 /*!
  @brief solve the upper triangular system L^T x = y for x.
- @param[in] L the lower triangular matrix L, stored in row-major order.
  @param[in] n the order of the square matrix L (number of rows and columns).
+ @param[in] L the lower triangular matrix L, stored in row-major order.
  @param[in,out] x on input, contains the vector y. on output, contains the solution vector x.
 */
-A_EXTERN void a_linalg_cho_upper(a_real const *L, a_uint n, a_real *x);
+A_EXTERN void a_linalg_cho_upper(a_uint n, a_real const *L, a_real *x);
 
 /*!
  @brief solve the linear system Ax = b using the Cholesky factorization A = LL^T.
- @param[in] A the matrix containing L form after Cholesky decomposition.
  @param[in] n the order of the square matrix A (number of rows and columns).
+ @param[in] A the matrix containing L form after Cholesky decomposition.
  @param[in,out] x on input, contains the vector b. on output, contains the solution vector x.
 */
-A_EXTERN void a_linalg_cho_solve(a_real const *A, a_uint n, a_real *x);
+A_EXTERN void a_linalg_cho_solve(a_uint n, a_real const *A, a_real *x);
 
 /*!
  @brief compute the inverse of a matrix using its Cholesky factorization A = LL^T.
- @param[in] A the matrix containing L form after Cholesky decomposition.
  @param[in] n the order of the square matrix A (number of rows and columns).
+ @param[in] A the matrix containing L form after Cholesky decomposition.
  @param[in] b a pre-allocated temporary buffer of size n for intermediate computations.
  @param[out] I the output matrix where the inverse of A will be stored.
 */
-A_EXTERN void a_linalg_cho_inv(a_real const *A, a_uint n, a_real *b, a_real *I);
+A_EXTERN void a_linalg_cho_inv(a_uint n, a_real const *A, a_real *b, a_real *I);
 
 #if defined(__cplusplus)
 } /* extern "C" */

@@ -29,12 +29,12 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     main_init(argc, argv, 1);
     debug("A=\n");
     show(a, N, N);
-    if (a_linalg_cho(a, N) == 0)
+    if (a_linalg_cho(N, a) == 0)
     {
-        a_linalg_cho_get_L(a, N, m);
+        a_linalg_cho_get_L(N, a, m);
         debug("L=\n");
         show(m, N, N);
-        a_linalg_cho_inv(a, N, b, m);
+        a_linalg_cho_inv(N, a, b, m);
         debug("INV=\n");
         show(m, N, N);
         for (r = 0; r < N; ++r)
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
                 x[c] = 0;
             }
             x[r] = 1;
-            a_linalg_cho_solve(a, N, x);
+            a_linalg_cho_solve(N, a, x);
         }
         a_linalg_T1(m, N);
         debug("I=\n");
@@ -53,12 +53,12 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_linalg_T2(a, m, N, N);
         debug("T=\n");
         show(a, N, N);
-        if (a_linalg_cho(m, N) == 0)
+        if (a_linalg_cho(N, m) == 0)
         {
-            a_linalg_cho_get_L(m, N, a);
+            a_linalg_cho_get_L(N, m, a);
             debug("L=\n");
             show(a, N, N);
-            a_linalg_cho_inv(m, N, b, a);
+            a_linalg_cho_inv(N, m, b, a);
             debug("INV=\n");
             show(a, N, N);
         }

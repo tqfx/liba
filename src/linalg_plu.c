@@ -1,52 +1,52 @@
 #include "a/linalg.h"
 #include "a/math.h"
 
-int a_linalg_plu(a_real *A, a_uint n, a_uint *p, int *sign)
+int a_linalg_plu(a_uint n, a_real *A, a_uint *p, int *sign)
 {
-    a_uint r;
+    a_uint i;
     *sign = 1;
-    for (r = 0; r < n; ++r) { p[r] = r; }
-    for (r = 0; r < n; ++r)
+    for (i = 0; i < n; ++i) { p[i] = i; }
+    for (i = 0; i < n; ++i)
     {
-        a_real *const Ar = A + (a_size)n * r;
-        a_uint max_r = r, i, c;
-        a_real max_x = Ar[r];
+        a_real *const Ai = A + (a_size)n * i;
+        a_uint max_i = i, r, c;
+        a_real max_x = Ai[i];
         a_real abs_x = a_real_abs(max_x);
-        for (i = r + 1; i < n; ++i)
+        for (r = i + 1; r < n; ++r)
         {
-            a_real const max_i = A[(a_size)n * i + r];
-            a_real const abs_i = a_real_abs(max_i);
-            if (abs_i > abs_x)
+            a_real const max_r = A[(a_size)n * r + i];
+            a_real const abs_r = a_real_abs(max_r);
+            if (abs_r > abs_x)
             {
-                abs_x = abs_i;
-                max_x = max_i;
-                max_r = i;
+                abs_x = abs_r;
+                max_x = max_r;
+                max_i = r;
             }
         }
         if (abs_x < A_REAL_MIN) { return ~0; }
-        if (max_r != r)
+        if (max_i != i)
         {
-            a_uint u = p[r];
-            p[r] = p[max_r];
-            p[max_r] = u;
+            a_uint u = p[i];
+            p[i] = p[max_i];
+            p[max_i] = u;
             *sign = -*sign;
-            a_real_swap(Ar, A + (a_size)n * max_r, n);
+            a_real_swap(Ai, A + (a_size)n * max_i, n);
         }
-        for (i = r + 1; i < n; ++i)
+        for (r = i + 1; r < n; ++r)
         {
-            a_real *const Ai = A + (a_size)n * i;
-            a_real const x = Ai[r] / max_x;
-            for (c = r + 1; c < n; ++c)
+            a_real *const Ar = A + (a_size)n * r;
+            a_real const x = Ar[i] / max_x;
+            for (c = i + 1; c < n; ++c)
             {
-                Ai[c] -= Ar[c] * x;
+                Ar[c] -= Ai[c] * x;
             }
-            Ai[r] = x;
+            Ar[i] = x;
         }
     }
     return 0;
 }
 
-void a_linalg_plu_get_P(a_uint const *p, a_uint n, a_real *P)
+void a_linalg_plu_get_P(a_uint n, a_uint const *p, a_real *P)
 {
     a_uint r, c;
     for (r = 0; r < n; ++r)
@@ -58,7 +58,7 @@ void a_linalg_plu_get_P(a_uint const *p, a_uint n, a_real *P)
     }
 }
 
-void a_linalg_plu_get_L(a_real const *A, a_uint n, a_real *L)
+void a_linalg_plu_get_L(a_uint n, a_real const *A, a_real *L)
 {
     a_uint r, c;
     for (r = 0; r < n; ++r)
@@ -76,7 +76,7 @@ void a_linalg_plu_get_L(a_real const *A, a_uint n, a_real *L)
     }
 }
 
-void a_linalg_plu_get_U(a_real const *A, a_uint n, a_real *U)
+void a_linalg_plu_get_U(a_uint n, a_real const *A, a_real *U)
 {
     a_uint r, c;
     for (r = 0; r < n; ++r)
@@ -93,13 +93,13 @@ void a_linalg_plu_get_U(a_real const *A, a_uint n, a_real *U)
     }
 }
 
-void a_linalg_plu_apply(a_uint const *p, a_uint n, a_real const *b, a_real *Pb)
+void a_linalg_plu_apply(a_uint n, a_uint const *p, a_real const *b, a_real *Pb)
 {
     a_uint i;
     for (i = 0; i < n; ++i) { Pb[i] = b[p[i]]; }
 }
 
-void a_linalg_plu_lower(a_real const *L, a_uint n, a_real *y)
+void a_linalg_plu_lower(a_uint n, a_real const *L, a_real *y)
 {
     a_uint r, c; /* Ly = Pb */
     for (r = 0; r < n; ++r)
@@ -112,7 +112,7 @@ void a_linalg_plu_lower(a_real const *L, a_uint n, a_real *y)
     }
 }
 
-void a_linalg_plu_upper(a_real const *U, a_uint n, a_real *x)
+void a_linalg_plu_upper(a_uint n, a_real const *U, a_real *x)
 {
     a_uint r, c; /* Ux = y */
     for (r = n; r;)
@@ -126,14 +126,14 @@ void a_linalg_plu_upper(a_real const *U, a_uint n, a_real *x)
     }
 }
 
-void a_linalg_plu_solve(a_real const *A, a_uint n, a_uint const *p, a_real const *b, a_real *x)
+void a_linalg_plu_solve(a_uint n, a_real const *A, a_uint const *p, a_real const *b, a_real *x)
 {
-    a_linalg_plu_apply(p, n, b, x);
-    a_linalg_plu_lower(A, n, x);
-    a_linalg_plu_upper(A, n, x);
+    a_linalg_plu_apply(n, p, b, x);
+    a_linalg_plu_lower(n, A, x);
+    a_linalg_plu_upper(n, A, x);
 }
 
-void a_linalg_plu_inv(a_real const *A, a_uint n, a_uint const *p, a_real *b, a_real *I)
+void a_linalg_plu_inv(a_uint n, a_real const *A, a_uint const *p, a_real *b, a_real *I)
 {
     a_uint r, c;
     a_real *x = I;
@@ -153,8 +153,8 @@ void a_linalg_plu_inv(a_real const *A, a_uint n, a_uint const *p, a_real *b, a_r
             b[r] = *x;
             x += n;
         }
-        a_linalg_plu_lower(A, n, b);
-        a_linalg_plu_upper(A, n, b);
+        a_linalg_plu_lower(n, A, b);
+        a_linalg_plu_upper(n, A, b);
         x = I + c;
         for (r = 0; r < n; ++r)
         {
@@ -164,48 +164,47 @@ void a_linalg_plu_inv(a_real const *A, a_uint n, a_uint const *p, a_real *b, a_r
     }
 }
 
-a_real a_linalg_plu_det(a_real const *A, a_uint n, int sign)
+a_real a_linalg_plu_det(a_uint n, a_real const *A, int sign)
 {
     a_uint i;
-    a_real res = (a_real)sign;
+    a_real r = (a_real)sign;
     for (i = 0; i < n; ++i)
     {
-        res *= A[i];
+        r *= A[i];
         A += n;
     }
-    return res;
+    return r;
 }
 
-a_real a_linalg_plu_lndet(a_real const *A, a_uint n)
+a_real a_linalg_plu_lndet(a_uint n, a_real const *A)
 {
     a_uint i;
-    a_real res = 0;
+    a_real r = 0;
     for (i = 0; i < n; ++i)
     {
-        res += a_real_log(a_real_abs(A[i]));
+        r += a_real_log(a_real_abs(A[i]));
         A += n;
     }
-    return res;
+    return r;
 }
 
 #if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
 
-int a_linalg_plu_sgndet(a_real const *A, a_uint n, int sign)
+int a_linalg_plu_sgndet(a_uint n, a_real const *A, int sign)
 {
     a_uint i;
-    int res = sign;
     for (i = 0; i < n; ++i)
     {
         a_real const x = A[i];
-        if (x < 0) { res = -res; }
+        if (x < 0) { sign = -sign; }
         else if (x == 0)
         {
-            res = 0;
+            sign = 0;
             break;
         }
         A += n;
     }
-    return res;
+    return sign;
 }
