@@ -373,7 +373,7 @@ a_real a_real_norm3(a_real x, a_real y, a_real z)
     return a_real_sqrt(x * x + y * y + 1) * z;
 }
 
-a_real a_real_norm_(a_real const *p, a_size n, a_size c)
+a_real a_real_norm_(a_size n, a_real const *p, a_size c)
 {
     a_size i;
     a_real w = 0, s = 0;
@@ -393,7 +393,7 @@ a_real a_real_norm_(a_real const *p, a_size n, a_size c)
     return a_real_sqrt(s) * w;
 }
 
-a_real a_real_norm(a_real const *p, a_size n)
+a_real a_real_norm(a_size n, a_real const *p)
 {
     a_size i;
     a_real w = 0, s = 0;

@@ -288,8 +288,8 @@ A_EXTERN a_real a_real_log1p(a_real x);
 A_EXTERN a_real a_real_atan2(a_real y, a_real x);
 A_EXTERN a_real a_real_norm2(a_real x, a_real y);
 A_EXTERN a_real a_real_norm3(a_real x, a_real y, a_real z);
-A_EXTERN a_real a_real_norm_(a_real const *p, a_size n, a_size c);
-A_EXTERN a_real a_real_norm(a_real const *p, a_size n);
+A_EXTERN a_real a_real_norm_(a_size n, a_real const *p, a_size c);
+A_EXTERN a_real a_real_norm(a_size n, a_real const *p);
 
 /*!
  @brief calculate the sum of a float array

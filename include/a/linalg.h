@@ -20,28 +20,39 @@ extern "C" {
 
 /*!
  @brief transpose an n x n square matrix in-place.
- @param[in,out] A an n x n square matrix
  @param[in] n order of square matrix A
+ @param[in,out] A an n x n square matrix
  */
-A_EXTERN void a_linalg_T1(a_real *A, a_uint n);
+A_EXTERN void a_linalg_T1(a_uint n, a_real *A);
 
 /*!
  @brief transpose a given m x n matrix A into an n x m matrix T.
- @param[out] T the output matrix where the transposed matrix T (n x m) will be stored.
- @param[in] A the input matrix A (m x n), stored in row-major order.
  @param[in] m rows in the input matrix A.
  @param[in] n columns in the input matrix A.
+ @param[in] A the input matrix A (m x n), stored in row-major order.
+ @param[out] T the output matrix where the transposed matrix T (n x m) will be stored.
 */
-A_EXTERN void a_linalg_T2(a_real *__restrict T, a_real const *__restrict A, a_uint m, a_uint n);
+A_EXTERN void a_linalg_T2(a_uint m, a_uint n, a_real const *__restrict A, a_real *__restrict T);
 
 /*!
  @brief compute the dot product of two vectors.
+ @param[in] n number of elements in each of the vectors X and Y.
  @param[in] X points to the first vector.
  @param[in] Y points to the second vector.
- @param[in] n number of elements in each of the vectors X and Y.
  @return dot product of vectors X and Y.
 */
-A_EXTERN a_real a_linalg_dot(a_real const *X, a_real const *Y, a_size n);
+A_EXTERN a_real a_linalg_dot(a_size n, a_real const *X, a_real const *Y);
+
+/*!
+ @brief compute the dot product of two vectors.
+ @param[in] n number of elements in each of the vectors X and Y.
+ @param[in] X points to the first vector.
+ @param[in] Xc increment of the first vector.
+ @param[in] Y points to the second vector.
+ @param[in] Yc increment of the second vector.
+ @return dot product of vectors X and Y.
+*/
+A_EXTERN a_real a_linalg_dot_(a_size n, a_real const *X, a_size Xc, a_real const *Y, a_size Yc);
 
 /*!
  @brief multiply two matrices X and Y, storing the result in Z.
@@ -65,14 +76,14 @@ A_EXTERN a_real a_linalg_dot(a_real const *X, a_real const *Y, a_size n);
   (x_{r1}y_{11}+\ldots+x_{rn}y_{n1}) & \cdots & (x_{r1}y_{1c}+\ldots+x_{rn}y_{nc}) \\
   \end{bmatrix}
  \f}
- @param[out] Z the output matrix where the result will be stored.
- @param[in] X the first input matrix.
- @param[in] Y the second input matrix.
  @param[in] row rows matrix Z and rows in matrix X.
  @param[in] c_r columns in matrix X and rows in matrix Y.
  @param[in] col columns in matrix Z and columns in matrix Y.
+ @param[in] X the first input matrix.
+ @param[in] Y the second input matrix.
+ @param[out] Z the output matrix where the result will be stored.
 */
-A_EXTERN void a_linalg_mulmm(a_real *__restrict Z, a_real const *__restrict X, a_real const *__restrict Y, a_uint row, a_uint c_r, a_uint col);
+A_EXTERN void a_linalg_mulmm(a_uint row, a_uint c_r, a_uint col, a_real const *__restrict X, a_real const *__restrict Y, a_real *__restrict Z);
 
 /*!
  @brief multiply the transpose of matrix X with matrix Y, storing the result in Z.
@@ -107,14 +118,14 @@ A_EXTERN void a_linalg_mulmm(a_real *__restrict Z, a_real const *__restrict X, a
   x_{nr}y_{n1} & \cdots & x_{nr}y_{nc} \\
   \end{bmatrix}
  \f}
- @param[out] Z the output matrix where the result will be stored.
- @param[in] X the first input matrix that will be transposed during multiplication.
- @param[in] Y the second input matrix.
  @param[in] c_r rows in matrix X and rows in matrix Y.
  @param[in] row rows in matrix Z and columns in matrix X.
  @param[in] col columns in matrix Z and columns in matrix Y.
+ @param[in] X the first input matrix that will be transposed during multiplication.
+ @param[in] Y the second input matrix.
+ @param[out] Z the output matrix where the result will be stored.
 */
-A_EXTERN void a_linalg_mulTm(a_real *__restrict Z, a_real const *__restrict X, a_real const *__restrict Y, a_uint c_r, a_uint row, a_uint col);
+A_EXTERN void a_linalg_mulTm(a_uint c_r, a_uint row, a_uint col, a_real const *__restrict X, a_real const *__restrict Y, a_real *__restrict Z);
 
 /*!
  @brief multiply matrix X with the transpose of matrix Y, storing the result in Z.
@@ -138,14 +149,14 @@ A_EXTERN void a_linalg_mulTm(a_real *__restrict Z, a_real const *__restrict X, a
   (x_{r1}y_{11}+\ldots+x_{rn}y_{1n}) & \cdots & (x_{r1}y_{c1}+\ldots+x_{rn}y_{cn}) \\
   \end{bmatrix}
  \f}
- @param[out] Z the output matrix where the result will be stored.
- @param[in] X the first input matrix.
- @param[in] Y the second input matrix that will be transposed during multiplication.
  @param[in] row rows matrix Z and rows in matrix X.
  @param[in] col columns in matrix Z and rows in matrix Y.
  @param[in] c_r columns in matrix X and columns in matrix Y.
+ @param[in] X the first input matrix.
+ @param[in] Y the second input matrix that will be transposed during multiplication.
+ @param[out] Z the output matrix where the result will be stored.
 */
-A_EXTERN void a_linalg_mulmT(a_real *__restrict Z, a_real const *__restrict X, a_real const *__restrict Y, a_uint row, a_uint col, a_uint c_r);
+A_EXTERN void a_linalg_mulmT(a_uint row, a_uint col, a_uint c_r, a_real const *__restrict X, a_real const *__restrict Y, a_real *__restrict Z);
 
 /*!
  @brief multiply the transpose of matrix X with the transpose of matrix Y, storing the result in Z.
@@ -169,14 +180,14 @@ A_EXTERN void a_linalg_mulmT(a_real *__restrict Z, a_real const *__restrict X, a
   (x_{1r}y_{11}+\ldots+x_{nr}y_{1n}) & \cdots & (x_{1r}y_{c1}+\ldots+x_{nr}y_{cn}) \\
   \end{bmatrix}
  \f}
- @param[out] Z the output matrix where the result will be stored.
- @param[in] X the first input matrix that will be transposed during multiplication.
- @param[in] Y the second input matrix that will be transposed during multiplication.
  @param[in] row rows matrix Z and columns in matrix X.
  @param[in] c_r rows in matrix X and columns in matrix Y.
  @param[in] col columns in matrix Z and rows in matrix Y.
+ @param[in] X the first input matrix that will be transposed during multiplication.
+ @param[in] Y the second input matrix that will be transposed during multiplication.
+ @param[out] Z the output matrix where the result will be stored.
 */
-A_EXTERN void a_linalg_mulTT(a_real *__restrict Z, a_real const *__restrict X, a_real const *__restrict Y, a_uint row, a_uint c_r, a_uint col);
+A_EXTERN void a_linalg_mulTT(a_uint row, a_uint c_r, a_uint col, a_real const *__restrict X, a_real const *__restrict Y, a_real *__restrict Z);
 
 /*!
  @brief compute LU decomposition of a square matrix with partial pivoting.

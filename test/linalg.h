@@ -23,7 +23,7 @@ static void test_mul(void)
     }
     debug("\n");
 
-    a_linalg_mulmm(z, x, y, 3, 3, 3);
+    a_linalg_mulmm(3, 3, 3, x, y, z);
 
     debug("XY\t={");
     for (i = 0; i < 9; ++i)
@@ -32,7 +32,7 @@ static void test_mul(void)
     }
     debug("\n");
 
-    a_linalg_mulTm(z, x, y, 3, 3, 3);
+    a_linalg_mulTm(3, 3, 3, x, y, z);
 
     debug("X'Y\t={");
     for (i = 0; i < 9; ++i)
@@ -41,7 +41,7 @@ static void test_mul(void)
     }
     debug("\n");
 
-    a_linalg_mulmT(z, x, y, 3, 3, 3);
+    a_linalg_mulmT(3, 3, 3, x, y, z);
 
     debug("XY'\t={");
     for (i = 0; i < 9; ++i)
@@ -50,7 +50,7 @@ static void test_mul(void)
     }
     debug("\n");
 
-    a_linalg_mulTT(z, x, y, 3, 3, 3);
+    a_linalg_mulTT(3, 3, 3, x, y, z);
 
     debug("X'Y'\t={");
     for (i = 0; i < 9; ++i)
@@ -59,7 +59,7 @@ static void test_mul(void)
     }
     debug("\n");
 
-    debug("X.Y\t=%" A_REAL_PRI "g\n", a_linalg_dot(x, y, 9));
+    debug("X.Y\t=%" A_REAL_PRI "g\n", a_linalg_dot(9, x, y));
 }
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */

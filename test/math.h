@@ -146,7 +146,7 @@ static void test_norm(int argc, char *argv[])
     {
         debug("%c%" A_REAL_PRI "g", i ? ',' : 0, p[i]);
     }
-    debug("}:%" A_REAL_PRI "g\n", a_real_norm(p, n));
+    debug("}:%" A_REAL_PRI "g\n", a_real_norm(n, p));
 
     a_die(p);
 }

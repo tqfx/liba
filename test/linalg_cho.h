@@ -47,10 +47,10 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
             x[r] = 1;
             a_linalg_cho_solve(N, a, x);
         }
-        a_linalg_T1(m, N);
+        a_linalg_T1(N, m);
         debug("I=\n");
         show(m, N, N);
-        a_linalg_T2(a, m, N, N);
+        a_linalg_T2(N, N, m, a);
         debug("T=\n");
         show(a, N, N);
         if (a_linalg_cho(N, m) == 0)
