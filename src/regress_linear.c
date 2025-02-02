@@ -67,7 +67,7 @@ a_real a_regress_linear_mgd(a_regress_linear *ctx, a_size n, a_real const *x_, a
     a_size const q_ = n / batch, r_ = n % batch;
     a_size const xoffset = batch * ctx->coef_n;
     a_regress_linear_err(ctx, n, x_, y_, err);
-    r = a_real_sum2(err, n);
+    r = a_real_sum2(n, err);
     for (; epoch; --epoch)
     {
         a_size q;
@@ -84,7 +84,7 @@ a_real a_regress_linear_mgd(a_regress_linear *ctx, a_size n, a_real const *x_, a
             a_regress_linear_bgd(ctx, r_, x, err, alpha);
         }
         a_regress_linear_err(ctx, n, x_, y_, err);
-        s = a_real_sum2(err, n);
+        s = a_real_sum2(n, err);
         if (A_ABS_(r, s) < delta) { break; }
         lrcur += lrper;
         r = s;

@@ -125,7 +125,7 @@ static void test_sum(int argc, char *argv[])
         debug("%c%" A_REAL_PRI "g", i ? ',' : 0, p[i]);
     }
     debug("}:%" A_REAL_PRI "g,%" A_REAL_PRI "g,%" A_REAL_PRI "g\n",
-          a_real_sum(p, n), a_real_sum1(p, n), a_real_sum2(p, n));
+          a_real_sum(n, p), a_real_sum1(n, p), a_real_sum2(n, p));
 
     a_die(p);
 }
@@ -167,7 +167,7 @@ static void test_mean(int argc, char *argv[])
     {
         debug("%c%" A_REAL_PRI "g", i ? ',' : 0, p[i]);
     }
-    debug("}:%" A_REAL_PRI "g\n", a_real_mean(p, n));
+    debug("}:%" A_REAL_PRI "g\n", a_real_mean(n, p));
 
     a_die(p);
 }

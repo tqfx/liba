@@ -373,6 +373,25 @@ a_real a_real_norm3(a_real x, a_real y, a_real z)
     return a_real_sqrt(x * x + y * y + 1) * z;
 }
 
+a_real a_real_norm(a_size n, a_real const *p)
+{
+    a_size i;
+    a_real w = 0, s = 0;
+    for (i = 0; i < n; ++i)
+    {
+        a_real const x = a_real_abs(p[i]);
+        if (isinf(x)) { return A_REAL_INF; }
+        if (x > w) { w = x; }
+    }
+    if (w <= 0) { return 0; }
+    for (i = 0; i < n; ++i)
+    {
+        a_real const x = p[i] / w;
+        s += x * x;
+    }
+    return a_real_sqrt(s) * w;
+}
+
 a_real a_real_norm_(a_size n, a_real const *p, a_size c)
 {
     a_size i;
@@ -393,47 +412,49 @@ a_real a_real_norm_(a_size n, a_real const *p, a_size c)
     return a_real_sqrt(s) * w;
 }
 
-a_real a_real_norm(a_size n, a_real const *p)
-{
-    a_size i;
-    a_real w = 0, s = 0;
-    for (i = 0; i < n; ++i)
-    {
-        a_real const x = a_real_abs(p[i]);
-        if (isinf(x)) { return A_REAL_INF; }
-        if (x > w) { w = x; }
-    }
-    if (w <= 0) { return 0; }
-    for (i = 0; i < n; ++i)
-    {
-        a_real const x = p[i] / w;
-        s += x * x;
-    }
-    return a_real_sqrt(s) * w;
-}
-
-a_real a_real_sum(a_real const *p, a_size n)
+a_real a_real_sum(a_size n, a_real const *p)
 {
     a_real r = 0;
     for (; n; --n, ++p) { r += *p; }
     return r;
 }
 
-a_real a_real_sum1(a_real const *p, a_size n)
+a_real a_real_sum_(a_size n, a_real const *p, a_size c)
+{
+    a_real r = 0;
+    for (; n; --n, p += c) { r += *p; }
+    return r;
+}
+
+a_real a_real_sum1(a_size n, a_real const *p)
 {
     a_real r = 0;
     for (; n; --n, ++p) { r += A_ABS(*p); }
     return r;
 }
 
-a_real a_real_sum2(a_real const *p, a_size n)
+a_real a_real_sum1_(a_size n, a_real const *p, a_size c)
+{
+    a_real r = 0;
+    for (; n; --n, p += c) { r += A_ABS(*p); }
+    return r;
+}
+
+a_real a_real_sum2(a_size n, a_real const *p)
 {
     a_real r = 0;
     for (; n; --n, ++p) { r += A_SQ(*p); }
     return r;
 }
 
-a_real a_real_mean(a_real const *p, a_size n)
+a_real a_real_sum2_(a_size n, a_real const *p, a_size c)
+{
+    a_real r = 0;
+    for (; n; --n, p += c) { r += A_SQ(*p); }
+    return r;
+}
+
+a_real a_real_mean(a_size n, a_real const *p)
 {
     a_real r = 0;
     a_real const i = 1 / (a_real)n;
@@ -441,7 +462,15 @@ a_real a_real_mean(a_real const *p, a_size n)
     return r;
 }
 
-void a_real_swap(a_real *__restrict lhs, a_real *__restrict rhs, a_size n)
+a_real a_real_mean_(a_size n, a_real const *p, a_size c)
+{
+    a_real r = 0;
+    a_real const i = 1 / (a_real)n;
+    for (; n; --n, p += c) { r += *p * i; }
+    return r;
+}
+
+void a_real_swap(a_size n, a_real *__restrict lhs, a_real *__restrict rhs)
 {
     for (; n; --n, ++lhs, ++rhs)
     {

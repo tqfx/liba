@@ -434,16 +434,16 @@ def rsqrt_f64(object x):
     return a_f64_rsqrt(x)
 
 def real_sum(const a_real[::1] x):
-    return a_real_sum(&x[0], x.shape[0])
+    return a_real_sum(x.shape[0], &x[0])
 
 def real_sum1(const a_real[::1] x):
-    return a_real_sum1(&x[0], x.shape[0])
+    return a_real_sum1(x.shape[0], &x[0])
 
 def real_sum2(const a_real[::1] x):
-    return a_real_sum2(&x[0], x.shape[0])
+    return a_real_sum2(x.shape[0], &x[0])
 
 def real_mean(const a_real[::1] x):
-    return a_real_mean(&x[0], x.shape[0])
+    return a_real_mean(x.shape[0], &x[0])
 
 from a.mf cimport *
 

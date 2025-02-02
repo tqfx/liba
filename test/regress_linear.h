@@ -56,13 +56,13 @@ static void main_1(int m, a_real a, a_real b, a_size n, config const *cfg)
         a_real const lramp = (cfg->lrmax - cfg->lrmin) / 2;
         a_real const lrper = A_REAL_PI / a_real_c(cfg->lrtim);
         a_regress_linear_err(&ctx, n, x, y, e);
-        r = a_real_sum2(e, n);
+        r = a_real_sum2(n, e);
         for (i = 0; i < cfg->epoch; ++i)
         {
             a_real alpha = cfg->lrmin + lramp * (a_real_cos(lrcur) + 1);
             a_regress_linear_sgd(&ctx, n, x, y, alpha);
             a_regress_linear_err(&ctx, n, x, y, e);
-            s = a_real_sum2(e, n);
+            s = a_real_sum2(n, e);
             if (A_ABS_(r, s) < cfg->delta)
             {
                 break;
@@ -78,13 +78,13 @@ static void main_1(int m, a_real a, a_real b, a_size n, config const *cfg)
         a_real const lramp = (cfg->lrmax - cfg->lrmin) / 2;
         a_real const lrper = A_REAL_PI / a_real_c(cfg->lrtim);
         a_regress_linear_err(&ctx, n, x, y, e);
-        r = a_real_sum2(e, n);
+        r = a_real_sum2(n, e);
         for (i = 0; i < cfg->epoch; ++i)
         {
             a_real alpha = cfg->lrmin + lramp * (a_real_cos(lrcur) + 1);
             a_regress_linear_bgd(&ctx, n, x, e, alpha);
             a_regress_linear_err(&ctx, n, x, y, e);
-            s = a_real_sum2(e, n);
+            s = a_real_sum2(n, e);
             if (A_ABS_(r, s) < cfg->delta)
             {
                 break;
@@ -144,13 +144,13 @@ static void main_2(int m, a_real a, a_real b, a_real c, a_size n, config const *
         a_real const lramp = (cfg->lrmax - cfg->lrmin) / 2;
         a_real const lrper = A_REAL_PI / a_real_c(cfg->lrtim);
         a_regress_linear_err(&ctx, n, x, y, e);
-        r = a_real_sum2(e, n);
+        r = a_real_sum2(n, e);
         for (i = 0; i < cfg->epoch; ++i)
         {
             a_real alpha = cfg->lrmin + lramp * (a_real_cos(lrcur) + 1);
             a_regress_linear_sgd(&ctx, n, x, y, alpha);
             a_regress_linear_err(&ctx, n, x, y, e);
-            s = a_real_sum2(e, n);
+            s = a_real_sum2(n, e);
             if (A_ABS_(r, s) < cfg->delta)
             {
                 break;
@@ -166,13 +166,13 @@ static void main_2(int m, a_real a, a_real b, a_real c, a_size n, config const *
         a_real const lramp = (cfg->lrmax - cfg->lrmin) / 2;
         a_real const lrper = A_REAL_PI / a_real_c(cfg->lrtim);
         a_regress_linear_err(&ctx, n, x, y, e);
-        r = a_real_sum2(e, n);
+        r = a_real_sum2(n, e);
         for (i = 0; i < cfg->epoch; ++i)
         {
             a_real alpha = cfg->lrmin + lramp * (a_real_cos(lrcur) + 1);
             a_regress_linear_bgd(&ctx, n, x, e, alpha);
             a_regress_linear_err(&ctx, n, x, y, e);
-            s = a_real_sum2(e, n);
+            s = a_real_sum2(n, e);
             if (A_ABS_(r, s) < cfg->delta)
             {
                 break;

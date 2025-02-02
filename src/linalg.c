@@ -31,6 +31,13 @@ void a_linalg_T2(a_uint m, a_uint n, a_real const *__restrict A, a_real *__restr
     }
 }
 
+a_real a_linalg_dot(a_size n, a_real const *X, a_real const *Y)
+{
+    a_real r = 0;
+    for (; n; --n) { r += *X++ * *Y++; }
+    return r;
+}
+
 a_real a_linalg_dot_(a_size n, a_real const *X, a_size Xc, a_real const *Y, a_size Yc)
 {
     a_real r = 0;
@@ -40,13 +47,6 @@ a_real a_linalg_dot_(a_size n, a_real const *X, a_size Xc, a_real const *Y, a_si
         X += Xc;
         Y += Yc;
     }
-    return r;
-}
-
-a_real a_linalg_dot(a_size n, a_real const *X, a_real const *Y)
-{
-    a_real r = 0;
-    for (; n; --n) { r += *X++ * *Y++; }
     return r;
 }
 

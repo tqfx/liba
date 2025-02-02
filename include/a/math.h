@@ -288,48 +288,59 @@ A_EXTERN a_real a_real_log1p(a_real x);
 A_EXTERN a_real a_real_atan2(a_real y, a_real x);
 A_EXTERN a_real a_real_norm2(a_real x, a_real y);
 A_EXTERN a_real a_real_norm3(a_real x, a_real y, a_real z);
-A_EXTERN a_real a_real_norm_(a_size n, a_real const *p, a_size c);
+
+/*!
+ @brief calculate the magnitude of a vector
+ @param[in] n number of a float array
+ @param[in] p points to a float array
+ @return the magnitude of a vector
+*/
 A_EXTERN a_real a_real_norm(a_size n, a_real const *p);
+A_EXTERN a_real a_real_norm_(a_size n, a_real const *p, a_size c);
 
 /*!
  @brief calculate the sum of a float array
- @param[in] p points to a float array
  @param[in] n number of a float array
+ @param[in] p points to a float array
  @return sum of a float array
 */
-A_EXTERN a_real a_real_sum(a_real const *p, a_size n);
+A_EXTERN a_real a_real_sum(a_size n, a_real const *p);
+A_EXTERN a_real a_real_sum_(a_size n, a_real const *p, a_size c);
 
 /*!
  @brief calculate the absolute sum of a float array
- @param[in] p points to a float array
  @param[in] n number of a float array
+ @param[in] p points to a float array
  @return absolute sum of a float array
 */
-A_EXTERN a_real a_real_sum1(a_real const *p, a_size n);
+A_EXTERN a_real a_real_sum1(a_size n, a_real const *p);
+A_EXTERN a_real a_real_sum1_(a_size n, a_real const *p, a_size c);
 
 /*!
  @brief calculate the sum of squares of a float array
- @param[in] p points to a float array
  @param[in] n number of a float array
+ @param[in] p points to a float array
  @return sum of squares of a float array
 */
-A_EXTERN a_real a_real_sum2(a_real const *p, a_size n);
+A_EXTERN a_real a_real_sum2(a_size n, a_real const *p);
+A_EXTERN a_real a_real_sum2_(a_size n, a_real const *p, a_size c);
 
 /*!
  @brief calculate the mean of a float array
- @param[in] p points to a float array
  @param[in] n number of a float array
+ @param[in] p points to a float array
  @return mean of a float array
 */
-A_EXTERN a_real a_real_mean(a_real const *p, a_size n);
+A_EXTERN a_real a_real_mean(a_size n, a_real const *p);
+A_EXTERN a_real a_real_mean_(a_size n, a_real const *p, a_size c);
 
 /*!
  @brief swap two different a_real blocks of the same size
+ @param[in] n the number of a_real block being swapped
  @param[in,out] lhs points to a_real block on the left
  @param[in,out] rhs points to a_real block on the right
- @param[in] n the number of a_real block being swapped
 */
-A_EXTERN A_NONULL((1, 2)) void a_real_swap(a_real *__restrict lhs, a_real *__restrict rhs, a_size n);
+A_EXTERN A_NONULL((2, 3)) void a_real_swap(a_size n, a_real *__restrict lhs, a_real *__restrict rhs);
 
 /*!
  @brief push an element into the front of a float array

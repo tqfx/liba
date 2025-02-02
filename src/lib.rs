@@ -88,31 +88,31 @@ pub fn f64_rsqrt(x: f64) -> f64 {
 }
 
 extern "C" {
-    fn a_real_sum(p: *const real, n: usize) -> real;
-    fn a_real_sum1(p: *const real, n: usize) -> real;
-    fn a_real_sum2(p: *const real, n: usize) -> real;
-    fn a_real_mean(p: *const real, n: usize) -> real;
+    fn a_real_sum(n: usize, p: *const real) -> real;
+    fn a_real_sum1(n: usize, p: *const real) -> real;
+    fn a_real_sum2(n: usize, p: *const real) -> real;
+    fn a_real_mean(n: usize, p: *const real) -> real;
 }
 
 /// calculate the sum of a float array
 #[inline(always)]
 pub fn real_sum(x: &[real]) -> real {
-    unsafe { a_real_sum(x.as_ptr(), x.len()) }
+    unsafe { a_real_sum(x.len(), x.as_ptr()) }
 }
 /// calculate the absolute sum of a float array
 #[inline(always)]
 pub fn real_sum1(x: &[real]) -> real {
-    unsafe { a_real_sum1(x.as_ptr(), x.len()) }
+    unsafe { a_real_sum1(x.len(), x.as_ptr()) }
 }
 /// calculate the sum of squares of a float array
 #[inline(always)]
 pub fn real_sum2(x: &[real]) -> real {
-    unsafe { a_real_sum2(x.as_ptr(), x.len()) }
+    unsafe { a_real_sum2(x.len(), x.as_ptr()) }
 }
 /// calculate the mean of a float array
 #[inline(always)]
 pub fn real_mean(x: &[real]) -> real {
-    unsafe { a_real_mean(x.as_ptr(), x.len()) }
+    unsafe { a_real_mean(x.len(), x.as_ptr()) }
 }
 
 extern "C" {
@@ -917,12 +917,7 @@ extern "C" {
         pdm: *mut real,
         y_mean: real,
     );
-    fn a_regress_linear_gd(
-        ctx: *mut regress_linear,
-        input: *const real,
-        error: real,
-        alpha: real,
-    );
+    fn a_regress_linear_gd(ctx: *mut regress_linear, input: *const real, error: real, alpha: real);
     fn a_regress_linear_sgd(
         ctx: *mut regress_linear,
         n: usize,
@@ -1442,15 +1437,7 @@ impl trajpoly5 {
     /// initialize for quintic polynomial trajectory
     #[allow(clippy::too_many_arguments)]
     #[inline(always)]
-    pub fn new(
-        ts: real,
-        p0: real,
-        p1: real,
-        v0: real,
-        v1: real,
-        a0: real,
-        a1: real,
-    ) -> Self {
+    pub fn new(ts: real, p0: real, p1: real, v0: real, v1: real, a0: real, a1: real) -> Self {
         let mut ctx: Self = Self {
             p: [0.0; 6],
             v: [0.0; 5],

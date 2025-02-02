@@ -1,8 +1,8 @@
 #[test]
 #[allow(non_snake_case)]
 fn pid_fuzzy() {
-    use liba::real;
     use liba::mf::TRI;
+    use liba::real;
     let NL: real = -3.0;
     let NM: real = -2.0;
     let NS: real = -1.0;

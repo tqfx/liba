@@ -30,7 +30,7 @@ int a_linalg_plu(a_uint n, a_real *A, a_uint *p, int *sign)
             p[i] = p[max_i];
             p[max_i] = u;
             *sign = -*sign;
-            a_real_swap(Ai, A + (a_size)n * max_i, n);
+            a_real_swap(n, Ai, A + (a_size)n * max_i);
         }
         for (r = i + 1; r < n; ++r)
         {
