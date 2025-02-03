@@ -35,26 +35,6 @@ A_EXTERN void a_linalg_T1(a_uint n, a_real *A);
 A_EXTERN void a_linalg_T2(a_uint m, a_uint n, a_real const *__restrict A, a_real *__restrict T);
 
 /*!
- @brief compute the dot product of two vectors.
- @param[in] n number of elements in each of the vectors X and Y.
- @param[in] X points to the first vector.
- @param[in] Y points to the second vector.
- @return dot product of vectors X and Y.
-*/
-A_EXTERN a_real a_linalg_dot(a_size n, a_real const *X, a_real const *Y);
-
-/*!
- @brief compute the dot product of two vectors.
- @param[in] n number of elements in each of the vectors X and Y.
- @param[in] X points to the first vector.
- @param[in] Xc increment of the first vector.
- @param[in] Y points to the second vector.
- @param[in] Yc increment of the second vector.
- @return dot product of vectors X and Y.
-*/
-A_EXTERN a_real a_linalg_dot_(a_size n, a_real const *X, a_size Xc, a_real const *Y, a_size Yc);
-
-/*!
  @brief multiply two matrices X and Y, storing the result in Z.
  \f{aligned}{
   \pmb Z_{rc}&=\pmb X_{rn}\pmb Y_{nc}

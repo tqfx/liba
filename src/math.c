@@ -470,6 +470,25 @@ a_real a_real_mean_(a_size n, a_real const *p, a_size c)
     return r;
 }
 
+a_real a_real_dot(a_size n, a_real const *X, a_real const *Y)
+{
+    a_real r = 0;
+    for (; n; --n) { r += *X++ * *Y++; }
+    return r;
+}
+
+a_real a_real_dot_(a_size n, a_real const *X, a_size Xc, a_real const *Y, a_size Yc)
+{
+    a_real r = 0;
+    for (; n; --n)
+    {
+        r += *X * *Y;
+        X += Xc;
+        Y += Yc;
+    }
+    return r;
+}
+
 void a_real_swap(a_size n, a_real *__restrict lhs, a_real *__restrict rhs)
 {
     for (; n; --n, ++lhs, ++rhs)

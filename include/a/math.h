@@ -335,6 +335,26 @@ A_EXTERN a_real a_real_mean(a_size n, a_real const *p);
 A_EXTERN a_real a_real_mean_(a_size n, a_real const *p, a_size c);
 
 /*!
+ @brief compute the dot product of two vectors.
+ @param[in] n number of elements in each of the vectors X and Y.
+ @param[in] X points to the first vector.
+ @param[in] Y points to the second vector.
+ @return dot product of vectors X and Y.
+*/
+A_EXTERN a_real a_real_dot(a_size n, a_real const *X, a_real const *Y);
+
+/*!
+ @brief compute the dot product of two vectors.
+ @param[in] n number of elements in each of the vectors X and Y.
+ @param[in] X points to the first vector.
+ @param[in] Xc increment of the first vector.
+ @param[in] Y points to the second vector.
+ @param[in] Yc increment of the second vector.
+ @return dot product of vectors X and Y.
+*/
+A_EXTERN a_real a_real_dot_(a_size n, a_real const *X, a_size Xc, a_real const *Y, a_size Yc);
+
+/*!
  @brief swap two different a_real blocks of the same size
  @param[in] n the number of a_real block being swapped
  @param[in,out] lhs points to a_real block on the left

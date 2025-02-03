@@ -1,6 +1,7 @@
 #define MAIN(x) linalg##x
 #include "test.h"
 #include "a/linalg.h"
+#include "a/math.h"
 
 static void test_mul(void)
 {
@@ -59,7 +60,7 @@ static void test_mul(void)
     }
     debug("\n");
 
-    debug("X.Y\t=%" A_REAL_PRI "g\n", a_linalg_dot(9, x, y));
+    debug("X.Y\t=%" A_REAL_PRI "g\n", a_real_dot(9, x, y));
 }
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
