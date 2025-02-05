@@ -24,7 +24,7 @@ static void test_mul(void)
     }
     debug("\n");
 
-    a_linalg_mulmm(3, 3, 3, x, y, z);
+    a_real_mulmm(3, 3, 3, x, y, z);
 
     debug("XY\t={");
     for (i = 0; i < 9; ++i)
@@ -33,7 +33,7 @@ static void test_mul(void)
     }
     debug("\n");
 
-    a_linalg_mulTm(3, 3, 3, x, y, z);
+    a_real_mulTm(3, 3, 3, x, y, z);
 
     debug("X'Y\t={");
     for (i = 0; i < 9; ++i)
@@ -42,7 +42,7 @@ static void test_mul(void)
     }
     debug("\n");
 
-    a_linalg_mulmT(3, 3, 3, x, y, z);
+    a_real_mulmT(3, 3, 3, x, y, z);
 
     debug("XY'\t={");
     for (i = 0; i < 9; ++i)
@@ -51,7 +51,7 @@ static void test_mul(void)
     }
     debug("\n");
 
-    a_linalg_mulTT(3, 3, 3, x, y, z);
+    a_real_mulTT(3, 3, 3, x, y, z);
 
     debug("X'Y'\t={");
     for (i = 0; i < 9; ++i)

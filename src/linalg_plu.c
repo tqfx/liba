@@ -1,7 +1,7 @@
 #include "a/linalg.h"
 #include "a/math.h"
 
-int a_linalg_plu(a_uint n, a_real *A, a_uint *p, int *sign)
+int a_real_plu(a_uint n, a_real *A, a_uint *p, int *sign)
 {
     a_uint i;
     *sign = 1;
@@ -46,7 +46,7 @@ int a_linalg_plu(a_uint n, a_real *A, a_uint *p, int *sign)
     return 0;
 }
 
-void a_linalg_plu_get_P(a_uint n, a_uint const *p, a_real *P)
+void a_real_plu_get_P(a_uint n, a_uint const *p, a_real *P)
 {
     a_uint r, c;
     for (r = 0; r < n; ++r)
@@ -58,7 +58,7 @@ void a_linalg_plu_get_P(a_uint n, a_uint const *p, a_real *P)
     }
 }
 
-void a_linalg_plu_get_L(a_uint n, a_real const *A, a_real *L)
+void a_real_plu_get_L(a_uint n, a_real const *A, a_real *L)
 {
     a_uint r, c;
     for (r = 0; r < n; ++r)
@@ -76,7 +76,7 @@ void a_linalg_plu_get_L(a_uint n, a_real const *A, a_real *L)
     }
 }
 
-void a_linalg_plu_get_U(a_uint n, a_real const *A, a_real *U)
+void a_real_plu_get_U(a_uint n, a_real const *A, a_real *U)
 {
     a_uint r, c;
     for (r = 0; r < n; ++r)
@@ -93,13 +93,13 @@ void a_linalg_plu_get_U(a_uint n, a_real const *A, a_real *U)
     }
 }
 
-void a_linalg_plu_apply(a_uint n, a_uint const *p, a_real const *b, a_real *Pb)
+void a_real_plu_apply(a_uint n, a_uint const *p, a_real const *b, a_real *Pb)
 {
     a_uint i;
     for (i = 0; i < n; ++i) { Pb[i] = b[p[i]]; }
 }
 
-void a_linalg_plu_lower(a_uint n, a_real const *L, a_real *y)
+void a_real_plu_lower(a_uint n, a_real const *L, a_real *y)
 {
     a_uint r, c; /* Ly = Pb */
     for (r = 0; r < n; ++r)
@@ -112,7 +112,7 @@ void a_linalg_plu_lower(a_uint n, a_real const *L, a_real *y)
     }
 }
 
-void a_linalg_plu_upper(a_uint n, a_real const *U, a_real *x)
+void a_real_plu_upper(a_uint n, a_real const *U, a_real *x)
 {
     a_uint r, c; /* Ux = y */
     for (r = n; r;)
@@ -126,14 +126,14 @@ void a_linalg_plu_upper(a_uint n, a_real const *U, a_real *x)
     }
 }
 
-void a_linalg_plu_solve(a_uint n, a_real const *A, a_uint const *p, a_real const *b, a_real *x)
+void a_real_plu_solve(a_uint n, a_real const *A, a_uint const *p, a_real const *b, a_real *x)
 {
-    a_linalg_plu_apply(n, p, b, x);
-    a_linalg_plu_lower(n, A, x);
-    a_linalg_plu_upper(n, A, x);
+    a_real_plu_apply(n, p, b, x);
+    a_real_plu_lower(n, A, x);
+    a_real_plu_upper(n, A, x);
 }
 
-void a_linalg_plu_inv(a_uint n, a_real const *A, a_uint const *p, a_real *b, a_real *I)
+void a_real_plu_inv(a_uint n, a_real const *A, a_uint const *p, a_real *b, a_real *I)
 {
     a_uint r, c;
     a_real *x = I;
@@ -153,8 +153,8 @@ void a_linalg_plu_inv(a_uint n, a_real const *A, a_uint const *p, a_real *b, a_r
             b[r] = *x;
             x += n;
         }
-        a_linalg_plu_lower(n, A, b);
-        a_linalg_plu_upper(n, A, b);
+        a_real_plu_lower(n, A, b);
+        a_real_plu_upper(n, A, b);
         x = I + c;
         for (r = 0; r < n; ++r)
         {
@@ -164,7 +164,7 @@ void a_linalg_plu_inv(a_uint n, a_real const *A, a_uint const *p, a_real *b, a_r
     }
 }
 
-a_real a_linalg_plu_det(a_uint n, a_real const *A, int sign)
+a_real a_real_plu_det(a_uint n, a_real const *A, int sign)
 {
     a_uint i;
     a_real r = (a_real)sign;
@@ -176,7 +176,7 @@ a_real a_linalg_plu_det(a_uint n, a_real const *A, int sign)
     return r;
 }
 
-a_real a_linalg_plu_lndet(a_uint n, a_real const *A)
+a_real a_real_plu_lndet(a_uint n, a_real const *A)
 {
     a_uint i;
     a_real r = 0;
@@ -192,7 +192,7 @@ a_real a_linalg_plu_lndet(a_uint n, a_real const *A)
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
 
-int a_linalg_plu_sgndet(a_uint n, a_real const *A, int sign)
+int a_real_plu_sgndet(a_uint n, a_real const *A, int sign)
 {
     a_uint i;
     for (i = 0; i < n; ++i)

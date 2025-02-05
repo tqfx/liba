@@ -1,6 +1,6 @@
 #include "a/linalg.h"
 
-void a_linalg_T1(a_uint n, a_real *A)
+void a_real_T1(a_uint n, a_real *A)
 {
     a_uint r, c;
     for (r = 0; r < n; ++r)
@@ -17,7 +17,7 @@ void a_linalg_T1(a_uint n, a_real *A)
     }
 }
 
-void a_linalg_T2(a_uint m, a_uint n, a_real const *__restrict A, a_real *__restrict T)
+void a_real_T2(a_uint m, a_uint n, a_real const *__restrict A, a_real *__restrict T)
 {
     a_uint r, c;
     for (c = 0; c < n; ++c)
@@ -31,7 +31,7 @@ void a_linalg_T2(a_uint m, a_uint n, a_real const *__restrict A, a_real *__restr
     }
 }
 
-void a_linalg_mulmm(a_uint row, a_uint c_r, a_uint col, a_real const *__restrict X, a_real const *__restrict Y, a_real *__restrict Z)
+void a_real_mulmm(a_uint row, a_uint c_r, a_uint col, a_real const *__restrict X, a_real const *__restrict Y, a_real *__restrict Z)
 {
     a_real const *x, *x_, *y, *y_;
     a_real *z, *z_ = Z + (a_size)row * col;
@@ -50,7 +50,7 @@ void a_linalg_mulmm(a_uint row, a_uint c_r, a_uint col, a_real const *__restrict
     }
 }
 
-void a_linalg_mulTm(a_uint c_r, a_uint row, a_uint col, a_real const *__restrict X, a_real const *__restrict Y, a_real *__restrict Z)
+void a_real_mulTm(a_uint c_r, a_uint row, a_uint col, a_real const *__restrict X, a_real const *__restrict Y, a_real *__restrict Z)
 {
     a_real const *x, *x_, *y, *y_;
     a_real *z, *z_ = Z + (a_size)row * col;
@@ -69,7 +69,7 @@ void a_linalg_mulTm(a_uint c_r, a_uint row, a_uint col, a_real const *__restrict
     }
 }
 
-void a_linalg_mulmT(a_uint row, a_uint col, a_uint c_r, a_real const *__restrict X, a_real const *__restrict Y, a_real *__restrict Z)
+void a_real_mulmT(a_uint row, a_uint col, a_uint c_r, a_real const *__restrict X, a_real const *__restrict Y, a_real *__restrict Z)
 {
     a_real const *x, *x_, *y, *y_ = Y + (a_size)col * c_r;
     a_real *z, *z_ = Z + (a_size)row * col;
@@ -87,7 +87,7 @@ void a_linalg_mulmT(a_uint row, a_uint col, a_uint c_r, a_real const *__restrict
     }
 }
 
-void a_linalg_mulTT(a_uint row, a_uint c_r, a_uint col, a_real const *__restrict X, a_real const *__restrict Y, a_real *__restrict Z)
+void a_real_mulTT(a_uint row, a_uint c_r, a_uint col, a_real const *__restrict X, a_real const *__restrict Y, a_real *__restrict Z)
 {
     a_uint const n = c_r;
     a_real const *x, *x_, *y, *y_ = Y + (a_size)col * c_r;

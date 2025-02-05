@@ -30,23 +30,23 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     main_init(argc, argv, 1);
     debug("A=\n");
     show(a, N, N);
-    if (a_linalg_plu(N, a, p, &sign) == 0)
+    if (a_real_plu(N, a, p, &sign) == 0)
     {
-        debug("SGN=%i\n", a_linalg_plu_sgndet(N, a, sign));
-        debug("LN=%" A_REAL_PRI "g\n", a_linalg_plu_lndet(N, a));
-        debug("D=%" A_REAL_PRI "g\n", a_linalg_plu_det(N, a, sign));
-        a_linalg_plu_get_P(N, p, m);
+        debug("SGN=%i\n", a_real_plu_sgndet(N, a, sign));
+        debug("LN=%" A_REAL_PRI "g\n", a_real_plu_lndet(N, a));
+        debug("D=%" A_REAL_PRI "g\n", a_real_plu_det(N, a, sign));
+        a_real_plu_get_P(N, p, m);
         debug("P=\n");
         show(m, N, N);
         debug("LU=\n");
         show(a, N, N);
-        a_linalg_plu_get_L(N, a, m);
+        a_real_plu_get_L(N, a, m);
         debug("L=\n");
         show(m, N, N);
-        a_linalg_plu_get_U(N, a, m);
+        a_real_plu_get_U(N, a, m);
         debug("U=\n");
         show(m, N, N);
-        a_linalg_plu_inv(N, a, p, b, m);
+        a_real_plu_inv(N, a, p, b, m);
         debug("INV=\n");
         show(m, N, N);
         for (r = 0; r < N; ++r)
@@ -56,25 +56,25 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
             {
                 b[c] = (c == r);
             }
-            a_linalg_plu_solve(N, a, p, b, x);
+            a_real_plu_solve(N, a, p, b, x);
         }
-        a_linalg_T1(N, m);
+        a_real_T1(N, m);
         debug("I=\n");
         show(m, N, N);
-        a_linalg_T2(N, N, m, a);
+        a_real_T2(N, N, m, a);
         debug("T=\n");
         show(a, N, N);
-        if (a_linalg_plu(N, m, p, &sign) == 0)
+        if (a_real_plu(N, m, p, &sign) == 0)
         {
-            debug("SGN=%i\n", a_linalg_plu_sgndet(N, m, sign));
-            debug("LN=%" A_REAL_PRI "g\n", a_linalg_plu_lndet(N, m));
-            debug("D=%" A_REAL_PRI "g\n", a_linalg_plu_det(N, m, sign));
-            a_linalg_plu_get_P(N, p, a);
+            debug("SGN=%i\n", a_real_plu_sgndet(N, m, sign));
+            debug("LN=%" A_REAL_PRI "g\n", a_real_plu_lndet(N, m));
+            debug("D=%" A_REAL_PRI "g\n", a_real_plu_det(N, m, sign));
+            a_real_plu_get_P(N, p, a);
             debug("P=\n");
             show(a, N, N);
             debug("LU=\n");
             show(m, N, N);
-            a_linalg_plu_inv(N, m, p, b, a);
+            a_real_plu_inv(N, m, p, b, a);
             debug("INV=\n");
             show(a, N, N);
         }
