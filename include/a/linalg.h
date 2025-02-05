@@ -290,7 +290,7 @@ A_EXTERN int a_linalg_plu_sgndet(a_uint n, a_real const *A, int sign);
  @return 0 on success, or a non-zero error code if the decomposition fails.
   @retval -1 on failure, A is a singular matrix.
 */
-A_EXTERN int a_linalg_cho(a_uint n, a_real *A);
+A_EXTERN int a_linalg_llt(a_uint n, a_real *A);
 
 /*!
  @brief extract the lower triangular matrix L from matrix A.
@@ -298,7 +298,7 @@ A_EXTERN int a_linalg_cho(a_uint n, a_real *A);
  @param[in] A the matrix containing L form after Cholesky decomposition.
  @param[out] L the output matrix where the lower triangular matrix will be stored.
 */
-A_EXTERN void a_linalg_cho_get_L(a_uint n, a_real const *A, a_real *L);
+A_EXTERN void a_linalg_llt_get_L(a_uint n, a_real const *A, a_real *L);
 
 /*!
  @brief solve the lower triangular system Ly = b for y.
@@ -306,7 +306,7 @@ A_EXTERN void a_linalg_cho_get_L(a_uint n, a_real const *A, a_real *L);
  @param[in] L the lower triangular matrix L, stored in row-major order.
  @param[in,out] y on input, contains the vector b. on output, contains the solution vector y.
 */
-A_EXTERN void a_linalg_cho_lower(a_uint n, a_real const *L, a_real *y);
+A_EXTERN void a_linalg_llt_lower(a_uint n, a_real const *L, a_real *y);
 
 /*!
  @brief solve the upper triangular system L^T x = y for x.
@@ -314,7 +314,7 @@ A_EXTERN void a_linalg_cho_lower(a_uint n, a_real const *L, a_real *y);
  @param[in] L the lower triangular matrix L, stored in row-major order.
  @param[in,out] x on input, contains the vector y. on output, contains the solution vector x.
 */
-A_EXTERN void a_linalg_cho_upper(a_uint n, a_real const *L, a_real *x);
+A_EXTERN void a_linalg_llt_upper(a_uint n, a_real const *L, a_real *x);
 
 /*!
  @brief solve the linear system Ax = b using the Cholesky factorization A = LL^T.
@@ -322,7 +322,7 @@ A_EXTERN void a_linalg_cho_upper(a_uint n, a_real const *L, a_real *x);
  @param[in] A the matrix containing L form after Cholesky decomposition.
  @param[in,out] x on input, contains the vector b. on output, contains the solution vector x.
 */
-A_EXTERN void a_linalg_cho_solve(a_uint n, a_real const *A, a_real *x);
+A_EXTERN void a_linalg_llt_solve(a_uint n, a_real const *A, a_real *x);
 
 /*!
  @brief compute the inverse of a matrix using its Cholesky factorization A = LL^T.
@@ -331,7 +331,7 @@ A_EXTERN void a_linalg_cho_solve(a_uint n, a_real const *A, a_real *x);
  @param[in] b a pre-allocated temporary buffer of size n for intermediate computations.
  @param[out] I the output matrix where the inverse of A will be stored.
 */
-A_EXTERN void a_linalg_cho_inv(a_uint n, a_real const *A, a_real *b, a_real *I);
+A_EXTERN void a_linalg_llt_inv(a_uint n, a_real const *A, a_real *b, a_real *I);
 
 #if defined(__cplusplus)
 } /* extern "C" */
