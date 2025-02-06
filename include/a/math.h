@@ -355,12 +355,37 @@ A_EXTERN a_real a_real_dot(a_size n, a_real const *X, a_real const *Y);
 A_EXTERN a_real a_real_dot_(a_size n, a_real const *X, a_size Xc, a_real const *Y, a_size Yc);
 
 /*!
+ @brief copy `n` elements from the source array `src` to the destination array `dst`.
+ @param[in] n number of elements to copy
+ @param[out] dst points to the destination array
+ @param[in] src points to the source array
+*/
+A_EXTERN A_NONULL((2, 3)) void a_real_copy(a_size n, a_real *__restrict dst, a_real const *__restrict src);
+A_EXTERN void a_real_copy_(a_size n, a_real *dst, a_size dc, a_real const *src, a_size sc);
+
+/*!
  @brief swap two different a_real blocks of the same size
  @param[in] n the number of a_real block being swapped
  @param[in,out] lhs points to a_real block on the left
  @param[in,out] rhs points to a_real block on the right
 */
 A_EXTERN A_NONULL((2, 3)) void a_real_swap(a_size n, a_real *__restrict lhs, a_real *__restrict rhs);
+A_EXTERN void a_real_swap_(a_size n, a_real *lhs, a_size lc, a_real *rhs, a_size rc);
+
+/*!
+ @brief fill an array of `a_real` numbers with a specified value.
+ @param[in] n number of elements in the array to fill.
+ @param[out] p points to the array to fill with the value `v`.
+ @param[in] v the value to fill the array with.
+*/
+A_EXTERN void a_real_fill(a_size n, a_real *p, a_real v);
+
+/*!
+ @brief set all elements of an array of `a_real` numbers to zero.
+ @param[in] n the number of elements in the array to set to zero.
+ @param[out] p points to the array whose elements will be set to zero.
+*/
+A_EXTERN void a_real_zero(a_size n, a_real *p);
 
 /*!
  @brief push an element into the front of a float array

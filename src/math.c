@@ -473,20 +473,25 @@ a_real a_real_mean_(a_size n, a_real const *p, a_size c)
 a_real a_real_dot(a_size n, a_real const *X, a_real const *Y)
 {
     a_real r = 0;
-    for (; n; --n) { r += *X++ * *Y++; }
+    for (; n; --n, ++X, ++Y) { r += *X * *Y; }
     return r;
 }
 
 a_real a_real_dot_(a_size n, a_real const *X, a_size Xc, a_real const *Y, a_size Yc)
 {
     a_real r = 0;
-    for (; n; --n)
-    {
-        r += *X * *Y;
-        X += Xc;
-        Y += Yc;
-    }
+    for (; n; --n, X += Xc, Y += Yc) { r += *X * *Y; }
     return r;
+}
+
+void a_real_copy(a_size n, a_real *__restrict dst, a_real const *__restrict src)
+{
+    a_copy(dst, src, sizeof(a_real) * n);
+}
+
+void a_real_copy_(a_size n, a_real *dst, a_size dc, a_real const *src, a_size sc)
+{
+    for (; n; --n, dst += dc, src += sc) { *dst = *src; }
 }
 
 void a_real_swap(a_size n, a_real *__restrict lhs, a_real *__restrict rhs)
@@ -498,6 +503,27 @@ void a_real_swap(a_size n, a_real *__restrict lhs, a_real *__restrict rhs)
         *lhs = *rhs;
         *rhs = swap;
     }
+}
+
+void a_real_swap_(a_size n, a_real *lhs, a_size lc, a_real *rhs, a_size rc)
+{
+    for (; n; --n, lhs += lc, rhs += rc)
+    {
+        a_real swap;
+        swap = *lhs;
+        *lhs = *rhs;
+        *rhs = swap;
+    }
+}
+
+void a_real_fill(a_size n, a_real *p, a_real v)
+{
+    for (; n; --n, ++p) { *p = v; }
+}
+
+void a_real_zero(a_size n, a_real *p)
+{
+    for (; n; --n, ++p) { *p = 0; }
 }
 
 void a_real_push_fore(a_real *p, a_size n, a_real x)
