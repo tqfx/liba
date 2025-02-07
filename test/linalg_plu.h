@@ -35,15 +35,15 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         debug("SGN=%i\n", a_real_plu_sgndet(N, a, sign));
         debug("LN=%" A_REAL_PRI "g\n", a_real_plu_lndet(N, a));
         debug("D=%" A_REAL_PRI "g\n", a_real_plu_det(N, a, sign));
-        a_real_plu_get_P(N, p, m);
+        a_real_plu_P(N, p, m);
         debug("P=\n");
         show(m, N, N);
         debug("LU=\n");
         show(a, N, N);
-        a_real_plu_get_L(N, a, m);
+        a_real_plu_L(N, a, m);
         debug("L=\n");
         show(m, N, N);
-        a_real_plu_get_U(N, a, m);
+        a_real_plu_U(N, a, m);
         debug("U=\n");
         show(m, N, N);
         a_real_plu_inv(N, a, p, b, m);
@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
             debug("SGN=%i\n", a_real_plu_sgndet(N, m, sign));
             debug("LN=%" A_REAL_PRI "g\n", a_real_plu_lndet(N, m));
             debug("D=%" A_REAL_PRI "g\n", a_real_plu_det(N, m, sign));
-            a_real_plu_get_P(N, p, a);
+            a_real_plu_P(N, p, a);
             debug("P=\n");
             show(a, N, N);
             debug("LU=\n");

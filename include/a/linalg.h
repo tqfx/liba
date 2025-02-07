@@ -193,7 +193,8 @@ A_EXTERN int a_real_plu(a_uint n, a_real *A, a_uint *p, int *sign);
  @param[in] p the row permutation indices after partial pivoting.
  @param[out] P the output matrix where the permutation matrix will be stored.
 */
-A_EXTERN void a_real_plu_get_P(a_uint n, a_uint const *p, a_real *P);
+A_EXTERN void a_real_plu_P(a_uint n, a_uint const *p, a_real *P);
+A_EXTERN void a_real_plu_P_(a_uint n, a_uint const *p, a_real *P);
 
 /*!
  @brief extract the lower triangular matrix L from matrix A.
@@ -201,7 +202,7 @@ A_EXTERN void a_real_plu_get_P(a_uint n, a_uint const *p, a_real *P);
  @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[out] L the output matrix where the lower triangular matrix will be stored.
 */
-A_EXTERN void a_real_plu_get_L(a_uint n, a_real const *A, a_real *L);
+A_EXTERN void a_real_plu_L(a_uint n, a_real const *A, a_real *L);
 
 /*!
  @brief extract the upper triangular matrix U from matrix A.
@@ -209,7 +210,7 @@ A_EXTERN void a_real_plu_get_L(a_uint n, a_real const *A, a_real *L);
  @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[out] U the output matrix where the upper triangular matrix will be stored.
 */
-A_EXTERN void a_real_plu_get_U(a_uint n, a_real const *A, a_real *U);
+A_EXTERN void a_real_plu_U(a_uint n, a_real const *A, a_real *U);
 
 /*!
  @brief apply the permutation P to the vector b, producing Pb.
@@ -227,6 +228,7 @@ A_EXTERN void a_real_plu_apply(a_uint n, a_uint const *p, a_real const *b, a_rea
  @param[in,out] y on input, contains the permuted vector Pb. on output, contains the solution vector y.
 */
 A_EXTERN void a_real_plu_lower(a_uint n, a_real const *L, a_real *y);
+A_EXTERN void a_real_plu_lower_(a_uint n, a_real const *L, a_real *y);
 
 /*!
  @brief solve the upper triangular system Ux = y for x.
@@ -235,6 +237,7 @@ A_EXTERN void a_real_plu_lower(a_uint n, a_real const *L, a_real *y);
  @param[in,out] x on input, contains the vector y. on output, contains the solution vector x.
 */
 A_EXTERN void a_real_plu_upper(a_uint n, a_real const *U, a_real *x);
+A_EXTERN void a_real_plu_upper_(a_uint n, a_real const *U, a_real *x);
 
 /*!
  @brief solve the linear system Ax = b using LU decomposition with partial pivoting.
@@ -255,6 +258,7 @@ A_EXTERN void a_real_plu_solve(a_uint n, a_real const *A, a_uint const *p, a_rea
  @param[out] I the output matrix where the inverse of A will be stored.
 */
 A_EXTERN void a_real_plu_inv(a_uint n, a_real const *A, a_uint const *p, a_real *b, a_real *I);
+A_EXTERN void a_real_plu_inv_(a_uint n, a_real const *A, a_uint const *p, a_real *I);
 
 /*!
  @brief compute the determinant of a matrix using its LU decomposition.
@@ -298,7 +302,7 @@ A_EXTERN int a_real_llt(a_uint n, a_real *A);
  @param[in] A the matrix containing L form after Cholesky decomposition.
  @param[out] L the output matrix where the lower triangular matrix will be stored.
 */
-A_EXTERN void a_real_llt_get_L(a_uint n, a_real const *A, a_real *L);
+A_EXTERN void a_real_llt_L(a_uint n, a_real const *A, a_real *L);
 
 /*!
  @brief solve the lower triangular system Ly = b for y.
@@ -307,6 +311,7 @@ A_EXTERN void a_real_llt_get_L(a_uint n, a_real const *A, a_real *L);
  @param[in,out] y on input, contains the vector b. on output, contains the solution vector y.
 */
 A_EXTERN void a_real_llt_lower(a_uint n, a_real const *L, a_real *y);
+A_EXTERN void a_real_llt_lower_(a_uint n, a_real const *L, a_real *y);
 
 /*!
  @brief solve the upper triangular system L^T x = y for x.
@@ -315,6 +320,7 @@ A_EXTERN void a_real_llt_lower(a_uint n, a_real const *L, a_real *y);
  @param[in,out] x on input, contains the vector y. on output, contains the solution vector x.
 */
 A_EXTERN void a_real_llt_upper(a_uint n, a_real const *L, a_real *x);
+A_EXTERN void a_real_llt_upper_(a_uint n, a_real const *L, a_real *x);
 
 /*!
  @brief solve the linear system Ax = b using the Cholesky factorization A = LL^T.
@@ -332,6 +338,7 @@ A_EXTERN void a_real_llt_solve(a_uint n, a_real const *A, a_real *x);
  @param[out] I the output matrix where the inverse of A will be stored.
 */
 A_EXTERN void a_real_llt_inv(a_uint n, a_real const *A, a_real *b, a_real *I);
+A_EXTERN void a_real_llt_inv_(a_uint n, a_real const *A, a_real *I);
 
 #if defined(__cplusplus)
 } /* extern "C" */

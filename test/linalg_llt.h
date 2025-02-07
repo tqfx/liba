@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     show(a, N, N);
     if (a_real_llt(N, a) == 0)
     {
-        a_real_llt_get_L(N, a, m);
+        a_real_llt_L(N, a, m);
         debug("L=\n");
         show(m, N, N);
         a_real_llt_inv(N, a, b, m);
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         show(a, N, N);
         if (a_real_llt(N, m) == 0)
         {
-            a_real_llt_get_L(N, m, a);
+            a_real_llt_L(N, m, a);
             debug("L=\n");
             show(a, N, N);
             a_real_llt_inv(N, m, b, a);
