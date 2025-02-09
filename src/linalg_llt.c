@@ -157,3 +157,27 @@ void a_real_llt_inv_(a_uint n, a_real const *A, a_real *I)
         a_real_llt_upper_(n, A, I);
     }
 }
+
+a_real a_real_llt_det(a_uint n, a_real const *A)
+{
+    a_uint i;
+    a_real r = 1;
+    for (i = 0; i < n; ++i)
+    {
+        r *= A[i];
+        A += n;
+    }
+    return r * r;
+}
+
+a_real a_real_llt_lndet(a_uint n, a_real const *A)
+{
+    a_uint i;
+    a_real r = 0;
+    for (i = 0; i < n; ++i)
+    {
+        r += a_real_log(a_real_abs(A[i]));
+        A += n;
+    }
+    return r * 2;
+}

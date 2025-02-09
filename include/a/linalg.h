@@ -340,6 +340,22 @@ A_EXTERN void a_real_llt_solve(a_uint n, a_real const *A, a_real *x);
 A_EXTERN void a_real_llt_inv(a_uint n, a_real const *A, a_real *b, a_real *I);
 A_EXTERN void a_real_llt_inv_(a_uint n, a_real const *A, a_real *I);
 
+/*!
+ @brief compute the determinant of a matrix using its Cholesky decomposition.
+ @param[in] n the order of the square matrix A (number of rows and columns).
+ @param[in] A the matrix containing L form after Cholesky decomposition.
+ @return the determinant of matrix A.
+*/
+A_EXTERN a_real a_real_llt_det(a_uint n, a_real const *A);
+
+/*!
+ @brief compute the natural logarithm of the absolute value of the determinant of a matrix using its Cholesky decomposition.
+ @param[in] n the order of the square matrix A (number of rows and columns).
+ @param[in] A the matrix containing L form after Cholesky decomposition.
+ @return the natural logarithm of the absolute value of the determinant.
+*/
+A_EXTERN a_real a_real_llt_lndet(a_uint n, a_real const *A);
+
 #if defined(__cplusplus)
 } /* extern "C" */
 #endif /* __cplusplus */
