@@ -176,7 +176,7 @@ a_real a_real_llt_lndet(a_uint n, a_real const *A)
     a_real r = 0;
     for (i = 0; i < n; ++i)
     {
-        r += a_real_log(a_real_abs(A[i]));
+        r += a_real_log(A[i]);
         A += n;
     }
     return r * 2;
