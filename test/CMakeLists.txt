@@ -42,7 +42,7 @@ function(set_executable_options)
 endfunction()
 
 if(NOT CMAKE_EXECUTABLE_SUFFIX)
-  set(CMAKE_EXECUTABLE_SUFFIX .run)
+  set(CMAKE_EXECUTABLE_SUFFIX .out)
 endif()
 
 function(building target)
