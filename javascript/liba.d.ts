@@ -814,6 +814,7 @@ declare namespace liba {
     /** maximum deceleration */
     readonly dm: number;
     /**
+     * generate for bell-shaped velocity trajectory
      * @param jm defines the maximum jerk during system operation
      * @param am defines the maximum acceleration during system operation
      * @param vm defines the maximum velocity during system operation
@@ -854,11 +855,11 @@ declare namespace liba {
 
   interface trajpoly3 {
     /** coefficients of position */
-    readonly p: Float64Array | Float32Array;
+    readonly c0: Float64Array | Float32Array;
     /** coefficients of velocity */
-    readonly v: Float64Array | Float32Array;
+    readonly c1: Float64Array | Float32Array;
     /** coefficients of acceleration */
-    readonly a: Float64Array | Float32Array;
+    readonly c2: Float64Array | Float32Array;
     /**
      * calculate position for cubic polynomial trajectory
      * @param x difference between current time and initial time
@@ -897,11 +898,11 @@ declare namespace liba {
 
   interface trajpoly5 {
     /** coefficients of position */
-    readonly p: Float64Array | Float32Array;
+    readonly c0: Float64Array | Float32Array;
     /** coefficients of velocity */
-    readonly v: Float64Array | Float32Array;
+    readonly c1: Float64Array | Float32Array;
     /** coefficients of acceleration */
-    readonly a: Float64Array | Float32Array;
+    readonly c2: Float64Array | Float32Array;
     /**
      * calculate position for quintic polynomial trajectory
      * @param x difference between current time and initial time
@@ -950,13 +951,13 @@ declare namespace liba {
 
   interface trajpoly7 {
     /** coefficients of position */
-    readonly p: Float64Array | Float32Array;
+    readonly c0: Float64Array | Float32Array;
     /** coefficients of velocity */
-    readonly v: Float64Array | Float32Array;
+    readonly c1: Float64Array | Float32Array;
     /** coefficients of acceleration */
-    readonly a: Float64Array | Float32Array;
+    readonly c2: Float64Array | Float32Array;
     /** coefficients of jerk */
-    readonly j: Float64Array | Float32Array;
+    readonly c3: Float64Array | Float32Array;
     /**
      * calculate position for hepta polynomial trajectory
      * @param x difference between current time and initial time
@@ -1046,6 +1047,7 @@ declare namespace liba {
     /** acceleration after constant velocity */
     readonly de: number;
     /**
+     * generate for trapezoidal velocity trajectory
      * @param vm defines the maximum velocity during system operation
      * @param ac defines the acceleration before constant velocity
      * @param de defines the acceleration after constant velocity

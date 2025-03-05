@@ -10,10 +10,10 @@
 
 /***
  hepta polynomial trajectory
- @field p coefficients of position
- @field v coefficients of velocity
- @field a coefficients of acceleration
- @field j coefficients of jerk
+ @field c0 coefficients of position
+ @field c1 coefficients of velocity
+ @field c2 coefficients of acceleration
+ @field c3 coefficients of jerk
  @table a.trajpoly7
 */
 #if defined(__cplusplus)

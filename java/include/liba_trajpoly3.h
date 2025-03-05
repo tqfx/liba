@@ -17,26 +17,26 @@ JNIEXPORT void JNICALL Java_liba_trajpoly3_clinit
 
 /*
  * Class:     liba_trajpoly3
- * Method:    p
+ * Method:    c0
  * Signature: ()[D
  */
-JNIEXPORT jdoubleArray JNICALL Java_liba_trajpoly3_p
+JNIEXPORT jdoubleArray JNICALL Java_liba_trajpoly3_c0
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_trajpoly3
- * Method:    v
+ * Method:    c1
  * Signature: ()[D
  */
-JNIEXPORT jdoubleArray JNICALL Java_liba_trajpoly3_v
+JNIEXPORT jdoubleArray JNICALL Java_liba_trajpoly3_c1
   (JNIEnv *, jobject);
 
 /*
  * Class:     liba_trajpoly3
- * Method:    a
+ * Method:    c2
  * Signature: ()[D
  */
-JNIEXPORT jdoubleArray JNICALL Java_liba_trajpoly3_a
+JNIEXPORT jdoubleArray JNICALL Java_liba_trajpoly3_c2
   (JNIEnv *, jobject);
 
 /*

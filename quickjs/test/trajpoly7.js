@@ -6,10 +6,10 @@ function assert(expr) {
 }
 var ctx = new a.trajpoly7(1, 0, 0);
 ctx.gen(10, 0, 10, 0, 0);
-assert("ctx.p");
-assert("ctx.v");
-assert("ctx.a");
-assert("ctx.j");
+assert("ctx.c0");
+assert("ctx.c1");
+assert("ctx.c2");
+assert("ctx.c3");
 for (var i = 0; i < 10; i += 0.1) {
     console.log(i, ctx.pos(i), ctx.vel(i), ctx.acc(i), ctx.jer(0.5));
 }

@@ -17,9 +17,6 @@
 
 typedef struct a_trajpoly5 a_trajpoly5;
 
-#if !defined A_TRAJPOLY5
-#define A_TRAJPOLY5 3
-#endif /* A_TRAJPOLY5 */
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
@@ -51,16 +48,27 @@ A_EXTERN void a_trajpoly5_gen(a_trajpoly5 *ctx, a_real ts,
                               a_real p0, a_real p1,
                               a_real v0, a_real v1,
                               a_real a0, a_real a1);
-A_EXTERN void a_trajpoly5_gen0(a_trajpoly5 *ctx, a_real ts,
-                               a_real p0, a_real p1,
-                               a_real v0, a_real v1,
-                               a_real a0, a_real a1);
-#if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 1)
-A_EXTERN void a_trajpoly5_gen1(a_trajpoly5 *ctx);
-#endif /* A_TRAJPOLY5 */
-#if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 2)
-A_EXTERN void a_trajpoly5_gen2(a_trajpoly5 *ctx);
-#endif /* A_TRAJPOLY5 */
+
+/*!
+ @brief calculate coefficients of position for quintic polynomial trajectory
+ @param[in] ctx points to an instance of quintic polynomial trajectory
+ @param[out] c coefficients of position
+*/
+A_EXTERN void a_trajpoly5_c0(a_trajpoly5 const *ctx, a_real c[6]);
+
+/*!
+ @brief calculate coefficients of velocity for quintic polynomial trajectory
+ @param[in] ctx points to an instance of quintic polynomial trajectory
+ @param[out] c coefficients of velocity
+*/
+A_EXTERN void a_trajpoly5_c1(a_trajpoly5 const *ctx, a_real c[5]);
+
+/*!
+ @brief calculate coefficients of acceleration for quintic polynomial trajectory
+ @param[in] ctx points to an instance of quintic polynomial trajectory
+ @param[out] c coefficients of acceleration
+*/
+A_EXTERN void a_trajpoly5_c2(a_trajpoly5 const *ctx, a_real c[4]);
 
 /*!
  @brief calculate position for quintic polynomial trajectory
@@ -75,7 +83,6 @@ A_EXTERN void a_trajpoly5_gen2(a_trajpoly5 *ctx);
 */
 A_EXTERN a_real a_trajpoly5_pos(a_trajpoly5 const *ctx, a_real x);
 
-#if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 1)
 /*!
  @brief calculate velocity for quintic polynomial trajectory
  \f{aligned}{
@@ -88,9 +95,7 @@ A_EXTERN a_real a_trajpoly5_pos(a_trajpoly5 const *ctx, a_real x);
  @return velocity output
 */
 A_EXTERN a_real a_trajpoly5_vel(a_trajpoly5 const *ctx, a_real x);
-#endif /* A_TRAJPOLY5 */
 
-#if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 2)
 /*!
  @brief calculate acceleration for quintic polynomial trajectory
  \f{aligned}{
@@ -103,7 +108,6 @@ A_EXTERN a_real a_trajpoly5_vel(a_trajpoly5 const *ctx, a_real x);
  @return acceleration output
 */
 A_EXTERN a_real a_trajpoly5_acc(a_trajpoly5 const *ctx, a_real x);
-#endif /* A_TRAJPOLY5 */
 
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -125,13 +129,7 @@ typedef struct a_trajpoly5 trajpoly5;
 */
 struct a_trajpoly5
 {
-    a_real p[6]; /*!< coefficients of position */
-#if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 1)
-    a_real v[5]; /*!< coefficients of velocity */
-#endif /* A_TRAJPOLY5 */
-#if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 2)
-    a_real a[4]; /*!< coefficients of acceleration */
-#endif /* A_TRAJPOLY5 */
+    a_real c[6]; /*!< coefficients of position */
 #if defined(__cplusplus)
     A_INLINE void gen(a_real ts, a_real p0, a_real p1,
                       a_real v0 = 0, a_real v1 = 0,
@@ -139,30 +137,30 @@ struct a_trajpoly5
     {
         a_trajpoly5_gen(this, ts, p0, p1, v0, v1, a0, a1);
     }
-    A_INLINE void gen0(a_real ts, a_real p0, a_real p1,
-                       a_real v0 = 0, a_real v1 = 0,
-                       a_real a0 = 0, a_real a1 = 0)
-    {
-        a_trajpoly5_gen0(this, ts, p0, p1, v0, v1, a0, a1);
-    }
     A_INLINE a_real pos(a_real x) const
     {
         return a_trajpoly5_pos(this, x);
     }
-#if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 1)
-    A_INLINE void gen1() { a_trajpoly5_gen1(this); }
     A_INLINE a_real vel(a_real x) const
     {
         return a_trajpoly5_vel(this, x);
     }
-#endif /* A_TRAJPOLY5 */
-#if defined(A_TRAJPOLY5) && (A_TRAJPOLY5 + 0 > 2)
-    A_INLINE void gen2() { a_trajpoly5_gen2(this); }
     A_INLINE a_real acc(a_real x) const
     {
         return a_trajpoly5_acc(this, x);
     }
-#endif /* A_TRAJPOLY5 */
+    A_INLINE void c0(a_real x[6]) const
+    {
+        a_trajpoly5_c0(this, x);
+    }
+    A_INLINE void c1(a_real x[5]) const
+    {
+        a_trajpoly5_c1(this, x);
+    }
+    A_INLINE void c2(a_real x[4]) const
+    {
+        a_trajpoly5_c2(this, x);
+    }
 #endif /* __cplusplus */
 };
 

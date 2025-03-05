@@ -1456,9 +1456,9 @@ function liba.trajbell.jer(ctx, x) end
 function trajbell:jer(x) end
 
 ---@class a.trajpoly3
----@field p table
----@field v table
----@field a table
+---@field c0 table
+---@field c1 table
+---@field c2 table
 local trajpoly3 = {}
 ---@class liba.trajpoly3
 ---@overload fun(ts: number, p0: number, p1: number, v0?: number, v1?: number): a.trajpoly3
@@ -1525,9 +1525,9 @@ function liba.trajpoly3.acc(ctx, x) end
 function trajpoly3:acc(x) end
 
 ---@class a.trajpoly5
----@field p table
----@field v table
----@field a table
+---@field c0 table
+---@field c1 table
+---@field c2 table
 local trajpoly5 = {}
 ---@class liba.trajpoly5
 ---@overload fun(ts: number, p0: number, p1: number, v0?: number, v1?: number, a0?: number, a1?: number): a.trajpoly5
@@ -1602,10 +1602,10 @@ function liba.trajpoly5.acc(ctx, x) end
 function trajpoly5:acc(x) end
 
 ---@class a.trajpoly7
----@field p table
----@field v table
----@field a table
----@field j table
+---@field c0 table
+---@field c1 table
+---@field c2 table
+---@field c3 table
 local trajpoly7 = {}
 ---@class liba.trajpoly7
 ---@overload fun(ts: number, p0: number, p1: number, v0?: number, v1?: number, a0?: number, a1?: number, j0?: number, j1?: number): a.trajpoly7

@@ -17,21 +17,21 @@ public class trajpoly3 {
      *
      * @return coefficients of position
      */
-    public final native double[] p();
+    public final native double[] c0();
 
     /**
      * get coefficients of velocity for cubic polynomial trajectory
      *
      * @return coefficients of velocity
      */
-    public final native double[] v();
+    public final native double[] c1();
 
     /**
      * get coefficients of acceleration for cubic polynomial trajectory
      *
      * @return coefficients of acceleration
      */
-    public final native double[] a();
+    public final native double[] c2();
 
     /**
      * construct a new {@link trajpoly3} object

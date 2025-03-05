@@ -197,33 +197,40 @@ static int liba_trajpoly7_set(lua_State *L)
 static int liba_trajpoly7_get(lua_State *L)
 {
     a_trajpoly7 const *const ctx = (a_trajpoly7 const *)lua_touserdata(L, 1);
+    a_real c[A_LEN(ctx->c) - 1];
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
-    case 0x00000070: /* p */
-        lua_array_num_new(L, ctx->p, A_LEN(ctx->p));
+    case 0x000032D9: /* c0 */
+        lua_array_num_new(L, ctx->c, A_LEN(ctx->c));
         break;
-    case 0x00000076: /* v */
-        lua_array_num_new(L, ctx->v, A_LEN(ctx->v));
+    case 0x000032DA: /* c1 */
+        a_trajpoly7_c1(ctx, c);
+        lua_array_num_new(L, c, A_LEN(ctx->c) - 1);
         break;
-    case 0x00000061: /* a */
-        lua_array_num_new(L, ctx->a, A_LEN(ctx->a));
+    case 0x000032DB: /* c2 */
+        a_trajpoly7_c2(ctx, c);
+        lua_array_num_new(L, c, A_LEN(ctx->c) - 2);
         break;
-    case 0x0000006A: /* j */
-        lua_array_num_new(L, ctx->j, A_LEN(ctx->j));
+    case 0x000032DC: /* c3 */
+        a_trajpoly7_c3(ctx, c);
+        lua_array_num_new(L, c, A_LEN(ctx->c) - 3);
         break;
     case 0xA65758B2: /* __index */
         lua_registry_get(L, liba_trajpoly7_new);
-        lua_pushstring(L, "p");
-        lua_array_num_new(L, ctx->p, A_LEN(ctx->p));
+        lua_pushstring(L, "c0");
+        lua_array_num_new(L, ctx->c, A_LEN(ctx->c));
         lua_rawset(L, -3);
-        lua_pushstring(L, "v");
-        lua_array_num_new(L, ctx->v, A_LEN(ctx->v));
+        lua_pushstring(L, "c1");
+        a_trajpoly7_c1(ctx, c);
+        lua_array_num_new(L, c, A_LEN(ctx->c) - 1);
         lua_rawset(L, -3);
-        lua_pushstring(L, "a");
-        lua_array_num_new(L, ctx->a, A_LEN(ctx->a));
+        lua_pushstring(L, "c2");
+        a_trajpoly7_c2(ctx, c);
+        lua_array_num_new(L, c, A_LEN(ctx->c) - 2);
         lua_rawset(L, -3);
-        lua_pushstring(L, "j");
-        lua_array_num_new(L, ctx->j, A_LEN(ctx->j));
+        lua_pushstring(L, "c3");
+        a_trajpoly7_c3(ctx, c);
+        lua_array_num_new(L, c, A_LEN(ctx->c) - 3);
         lua_rawset(L, -3);
         break;
     default:

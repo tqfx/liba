@@ -939,9 +939,22 @@ struct trajpoly3: public a_trajpoly3
     A_INLINE a_real pos(a_real x) const { return a_trajpoly3::pos(x); }
     A_INLINE a_real vel(a_real x) const { return a_trajpoly3::vel(x); }
     A_INLINE a_real acc(a_real x) const { return a_trajpoly3::acc(x); }
-    A_INLINE emscripten::val p_r() const { return js_array_num_new(p, A_LEN(p)); }
-    A_INLINE emscripten::val v_r() const { return js_array_num_new(v, A_LEN(v)); }
-    A_INLINE emscripten::val a_r() const { return js_array_num_new(a, A_LEN(a)); }
+    A_INLINE emscripten::val c0_r() const
+    {
+        return js_array_num_new(c, A_LEN(c));
+    }
+    A_INLINE emscripten::val c1_r() const
+    {
+        a_real x[A_LEN(c) - 1];
+        a_trajpoly3::c1(x);
+        return js_array_num_new(x, A_LEN(x));
+    }
+    A_INLINE emscripten::val c2_r() const
+    {
+        a_real x[A_LEN(c) - 2];
+        a_trajpoly3::c2(x);
+        return js_array_num_new(x, A_LEN(x));
+    }
 };
 
 #include "a/trajpoly5.h"
@@ -957,9 +970,22 @@ struct trajpoly5: public a_trajpoly5
     A_INLINE a_real pos(a_real x) const { return a_trajpoly5::pos(x); }
     A_INLINE a_real vel(a_real x) const { return a_trajpoly5::vel(x); }
     A_INLINE a_real acc(a_real x) const { return a_trajpoly5::acc(x); }
-    A_INLINE emscripten::val p_r() const { return js_array_num_new(p, A_LEN(p)); }
-    A_INLINE emscripten::val v_r() const { return js_array_num_new(v, A_LEN(v)); }
-    A_INLINE emscripten::val a_r() const { return js_array_num_new(a, A_LEN(a)); }
+    A_INLINE emscripten::val c0_r() const
+    {
+        return js_array_num_new(c, A_LEN(c));
+    }
+    A_INLINE emscripten::val c1_r() const
+    {
+        a_real x[A_LEN(c) - 1];
+        a_trajpoly5::c1(x);
+        return js_array_num_new(x, A_LEN(x));
+    }
+    A_INLINE emscripten::val c2_r() const
+    {
+        a_real x[A_LEN(c) - 2];
+        a_trajpoly5::c2(x);
+        return js_array_num_new(x, A_LEN(x));
+    }
 };
 
 #include "a/trajpoly7.h"
@@ -977,10 +1003,28 @@ struct trajpoly7: public a_trajpoly7
     A_INLINE a_real vel(a_real x) const { return a_trajpoly7::vel(x); }
     A_INLINE a_real acc(a_real x) const { return a_trajpoly7::acc(x); }
     A_INLINE a_real jer(a_real x) const { return a_trajpoly7::jer(x); }
-    A_INLINE emscripten::val p_r() const { return js_array_num_new(p, A_LEN(p)); }
-    A_INLINE emscripten::val v_r() const { return js_array_num_new(v, A_LEN(v)); }
-    A_INLINE emscripten::val a_r() const { return js_array_num_new(a, A_LEN(a)); }
-    A_INLINE emscripten::val j_r() const { return js_array_num_new(j, A_LEN(j)); }
+    A_INLINE emscripten::val c0_r() const
+    {
+        return js_array_num_new(c, A_LEN(c));
+    }
+    A_INLINE emscripten::val c1_r() const
+    {
+        a_real x[A_LEN(c) - 1];
+        a_trajpoly7::c1(x);
+        return js_array_num_new(x, A_LEN(x));
+    }
+    A_INLINE emscripten::val c2_r() const
+    {
+        a_real x[A_LEN(c) - 2];
+        a_trajpoly7::c2(x);
+        return js_array_num_new(x, A_LEN(x));
+    }
+    A_INLINE emscripten::val c3_r() const
+    {
+        a_real x[A_LEN(c) - 3];
+        a_trajpoly7::c3(x);
+        return js_array_num_new(x, A_LEN(x));
+    }
 };
 
 #include "a/trajtrap.h"
@@ -1308,9 +1352,9 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .function("pos", &trajpoly3::pos)
         .function("vel", &trajpoly3::vel)
         .function("acc", &trajpoly3::acc)
-        .property("p", &trajpoly3::p_r)
-        .property("v", &trajpoly3::v_r)
-        .property("a", &trajpoly3::a_r);
+        .property("c0", &trajpoly3::c0_r)
+        .property("c1", &trajpoly3::c1_r)
+        .property("c2", &trajpoly3::c2_r);
     emscripten::class_<trajpoly5>("trajpoly5")
         .constructor<a_real, a_real, a_real>()
         .constructor<a_real, a_real, a_real, a_real, a_real>()
@@ -1318,9 +1362,9 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .function("pos", &trajpoly5::pos)
         .function("vel", &trajpoly5::vel)
         .function("acc", &trajpoly5::acc)
-        .property("p", &trajpoly5::p_r)
-        .property("v", &trajpoly5::v_r)
-        .property("a", &trajpoly5::a_r);
+        .property("c0", &trajpoly5::c0_r)
+        .property("c1", &trajpoly5::c1_r)
+        .property("c2", &trajpoly5::c2_r);
     emscripten::class_<trajpoly7>("trajpoly7")
         .constructor<a_real, a_real, a_real>()
         .constructor<a_real, a_real, a_real, a_real, a_real>()
@@ -1330,10 +1374,10 @@ EMSCRIPTEN_BINDINGS(liba) // NOLINT
         .function("vel", &trajpoly7::vel)
         .function("acc", &trajpoly7::acc)
         .function("jer", &trajpoly7::jer)
-        .property("p", &trajpoly7::p_r)
-        .property("v", &trajpoly7::v_r)
-        .property("a", &trajpoly7::a_r)
-        .property("j", &trajpoly7::j_r);
+        .property("c0", &trajpoly7::c0_r)
+        .property("c1", &trajpoly7::c1_r)
+        .property("c2", &trajpoly7::c2_r)
+        .property("c3", &trajpoly7::c3_r);
     emscripten::class_<trajtrap>("trajtrap")
         .constructor<>()
         .function("gen", &trajtrap::gen)

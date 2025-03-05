@@ -29,7 +29,7 @@ j = traj.jer(x)
 for i in range(N):
     print("%g,%g,%g,%g,%g" % (x[i], p[i], v[i], a[i], j[i]))
 
-traj.p
-traj.v
-traj.a
-traj.j
+traj.c0
+traj.c1
+traj.c2
+traj.c3

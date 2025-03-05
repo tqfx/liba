@@ -10,9 +10,9 @@
 
 /***
  quintic polynomial trajectory
- @field p coefficients of position
- @field v coefficients of velocity
- @field a coefficients of acceleration
+ @field c0 coefficients of position
+ @field c1 coefficients of velocity
+ @field c2 coefficients of acceleration
  @table a.trajpoly5
 */
 #if defined(__cplusplus)

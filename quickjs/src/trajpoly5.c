@@ -101,20 +101,25 @@ static JSValue liba_trajpoly5_acc(JSContext *ctx, JSValueConst this_val, int arg
 
 enum
 {
-    self_p,
-    self_v,
-    self_a
+    self_c0,
+    self_c1,
+    self_c2
 };
 
 static JSValue liba_trajpoly5_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
     a_trajpoly5 *const self = (a_trajpoly5 *)JS_GetOpaque2(ctx, this_val, liba_trajpoly5_class_id);
+    a_real c[A_LEN(self->c) - 1];
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_p: return js_array_num_new(ctx, self->p, A_LEN(self->p));
-    case self_v: return js_array_num_new(ctx, self->v, A_LEN(self->v));
-    case self_a: return js_array_num_new(ctx, self->a, A_LEN(self->a));
+    case self_c0: return js_array_num_new(ctx, self->c, A_LEN(self->c));
+    case self_c1:
+        a_trajpoly5_c1(self, c);
+        return js_array_num_new(ctx, c, A_LEN(self->c) - 1);
+    case self_c2:
+        a_trajpoly5_c2(self, c);
+        return js_array_num_new(ctx, c, A_LEN(self->c) - 2);
     default: return JS_UNDEFINED;
     }
 }
@@ -122,9 +127,9 @@ static JSValue liba_trajpoly5_get(JSContext *ctx, JSValueConst this_val, int mag
 static JSClassDef liba_trajpoly5_class;
 static JSCFunctionListEntry const liba_trajpoly5_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.trajpoly5", 0),
-    JS_CGETSET_MAGIC_DEF("p", liba_trajpoly5_get, NULL, self_p),
-    JS_CGETSET_MAGIC_DEF("v", liba_trajpoly5_get, NULL, self_v),
-    JS_CGETSET_MAGIC_DEF("a", liba_trajpoly5_get, NULL, self_a),
+    JS_CGETSET_MAGIC_DEF("c0", liba_trajpoly5_get, NULL, self_c0),
+    JS_CGETSET_MAGIC_DEF("c1", liba_trajpoly5_get, NULL, self_c1),
+    JS_CGETSET_MAGIC_DEF("c2", liba_trajpoly5_get, NULL, self_c2),
     JS_CFUNC_DEF("gen", 7, liba_trajpoly5_gen),
     JS_CFUNC_DEF("pos", 1, liba_trajpoly5_pos),
     JS_CFUNC_DEF("vel", 1, liba_trajpoly5_vel),

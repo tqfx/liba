@@ -17,9 +17,6 @@
 
 typedef struct a_trajpoly7 a_trajpoly7;
 
-#if !defined A_TRAJPOLY7
-#define A_TRAJPOLY7 4
-#endif /* A_TRAJPOLY7 */
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
@@ -56,20 +53,34 @@ A_EXTERN void a_trajpoly7_gen(a_trajpoly7 *ctx, a_real ts,
                               a_real v0, a_real v1,
                               a_real a0, a_real a1,
                               a_real j0, a_real j1);
-A_EXTERN void a_trajpoly7_gen0(a_trajpoly7 *ctx, a_real ts,
-                               a_real p0, a_real p1,
-                               a_real v0, a_real v1,
-                               a_real a0, a_real a1,
-                               a_real j0, a_real j1);
-#if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 1)
-A_EXTERN void a_trajpoly7_gen1(a_trajpoly7 *ctx);
-#endif /* A_TRAJPOLY7 */
-#if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 2)
-A_EXTERN void a_trajpoly7_gen2(a_trajpoly7 *ctx);
-#endif /* A_TRAJPOLY7 */
-#if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 3)
-A_EXTERN void a_trajpoly7_gen3(a_trajpoly7 *ctx);
-#endif /* A_TRAJPOLY7 */
+
+/*!
+ @brief calculate coefficients of position for hepta polynomial trajectory
+ @param[in] ctx points to an instance of hepta polynomial trajectory
+ @param[out] c coefficients of position
+*/
+A_EXTERN void a_trajpoly7_c0(a_trajpoly7 const *ctx, a_real c[8]);
+
+/*!
+ @brief calculate coefficients of velocity for hepta polynomial trajectory
+ @param[in] ctx points to an instance of hepta polynomial trajectory
+ @param[out] c coefficients of velocity
+*/
+A_EXTERN void a_trajpoly7_c1(a_trajpoly7 const *ctx, a_real c[7]);
+
+/*!
+ @brief calculate coefficients of acceleration for hepta polynomial trajectory
+ @param[in] ctx points to an instance of hepta polynomial trajectory
+ @param[out] c coefficients of acceleration
+*/
+A_EXTERN void a_trajpoly7_c2(a_trajpoly7 const *ctx, a_real c[6]);
+
+/*!
+ @brief calculate coefficients of jerk for hepta polynomial trajectory
+ @param[in] ctx points to an instance of hepta polynomial trajectory
+ @param[out] c coefficients of jerk
+*/
+A_EXTERN void a_trajpoly7_c3(a_trajpoly7 const *ctx, a_real c[5]);
 
 /*!
  @brief calculate position for hepta polynomial trajectory
@@ -84,7 +95,6 @@ A_EXTERN void a_trajpoly7_gen3(a_trajpoly7 *ctx);
 */
 A_EXTERN a_real a_trajpoly7_pos(a_trajpoly7 const *ctx, a_real x);
 
-#if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 1)
 /*!
  @brief calculate velocity for hepta polynomial trajectory
  \f{aligned}{
@@ -97,9 +107,7 @@ A_EXTERN a_real a_trajpoly7_pos(a_trajpoly7 const *ctx, a_real x);
  @return velocity output
 */
 A_EXTERN a_real a_trajpoly7_vel(a_trajpoly7 const *ctx, a_real x);
-#endif /* A_TRAJPOLY7 */
 
-#if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 2)
 /*!
  @brief calculate acceleration for hepta polynomial trajectory
  \f{aligned}{
@@ -112,9 +120,7 @@ A_EXTERN a_real a_trajpoly7_vel(a_trajpoly7 const *ctx, a_real x);
  @return acceleration output
 */
 A_EXTERN a_real a_trajpoly7_acc(a_trajpoly7 const *ctx, a_real x);
-#endif /* A_TRAJPOLY7 */
 
-#if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 3)
 /*!
  @brief calculate jerk for hepta polynomial trajectory
  \f{aligned}{
@@ -127,7 +133,6 @@ A_EXTERN a_real a_trajpoly7_acc(a_trajpoly7 const *ctx, a_real x);
  @return jerk output
 */
 A_EXTERN a_real a_trajpoly7_jer(a_trajpoly7 const *ctx, a_real x);
-#endif /* A_TRAJPOLY7 */
 
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -150,16 +155,7 @@ typedef struct a_trajpoly7 trajpoly7;
 */
 struct a_trajpoly7
 {
-    a_real p[8]; /*!< coefficients of position */
-#if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 1)
-    a_real v[7]; /*!< coefficients of velocity */
-#endif /* A_TRAJPOLY7 */
-#if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 2)
-    a_real a[6]; /*!< coefficients of acceleration */
-#endif /* A_TRAJPOLY7 */
-#if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 3)
-    a_real j[5]; /*!< coefficients of jerk */
-#endif /* A_TRAJPOLY7 */
+    a_real c[8]; /*!< coefficients of position */
 #if defined(__cplusplus)
     A_INLINE void gen(a_real ts, a_real p0, a_real p1,
                       a_real v0 = 0, a_real v1 = 0,
@@ -168,38 +164,38 @@ struct a_trajpoly7
     {
         a_trajpoly7_gen(this, ts, p0, p1, v0, v1, a0, a1, j0, j1);
     }
-    A_INLINE void gen0(a_real ts, a_real p0, a_real p1,
-                       a_real v0 = 0, a_real v1 = 0,
-                       a_real a0 = 0, a_real a1 = 0,
-                       a_real j0 = 0, a_real j1 = 0)
-    {
-        a_trajpoly7_gen0(this, ts, p0, p1, v0, v1, a0, a1, j0, j1);
-    }
     A_INLINE a_real pos(a_real x) const
     {
         return a_trajpoly7_pos(this, x);
     }
-#if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 1)
-    A_INLINE void gen1() { a_trajpoly7_gen1(this); }
     A_INLINE a_real vel(a_real x) const
     {
         return a_trajpoly7_vel(this, x);
     }
-#endif /* A_TRAJPOLY7 */
-#if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 2)
-    A_INLINE void gen2() { a_trajpoly7_gen2(this); }
     A_INLINE a_real acc(a_real x) const
     {
         return a_trajpoly7_acc(this, x);
     }
-#endif /* A_TRAJPOLY7 */
-#if defined(A_TRAJPOLY7) && (A_TRAJPOLY7 + 0 > 3)
-    A_INLINE void gen3() { a_trajpoly7_gen3(this); }
     A_INLINE a_real jer(a_real x) const
     {
         return a_trajpoly7_jer(this, x);
     }
-#endif /* A_TRAJPOLY7 */
+    A_INLINE void c0(a_real x[8]) const
+    {
+        a_trajpoly7_c0(this, x);
+    }
+    A_INLINE void c1(a_real x[7]) const
+    {
+        a_trajpoly7_c1(this, x);
+    }
+    A_INLINE void c2(a_real x[6]) const
+    {
+        a_trajpoly7_c2(this, x);
+    }
+    A_INLINE void c3(a_real x[5]) const
+    {
+        a_trajpoly7_c3(this, x);
+    }
 #endif /* __cplusplus */
 };
 

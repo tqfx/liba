@@ -1301,15 +1301,19 @@ cdef class trajpoly3:
                 q[i] = a_trajpoly3_acc(&self.ctx, p[i])
             return r
         return a_trajpoly3_acc(&self.ctx, x)
-    property p:
+    property c0:
         def __get__(self):
-            return self.ctx.p
-    property v:
+            return self.ctx.c
+    property c1:
         def __get__(self):
-            return self.ctx.v
-    property a:
+            cdef a_real[3] c
+            a_trajpoly3_c1(&self.ctx, c)
+            return c
+    property c2:
         def __get__(self):
-            return self.ctx.a
+            cdef a_real[2] c
+            a_trajpoly3_c2(&self.ctx, c)
+            return c
 
 from a.trajpoly5 cimport *
 
@@ -1362,15 +1366,19 @@ cdef class trajpoly5:
                 q[i] = a_trajpoly5_acc(&self.ctx, p[i])
             return r
         return a_trajpoly5_acc(&self.ctx, x)
-    property p:
+    property c0:
         def __get__(self):
-            return self.ctx.p
-    property v:
+            return self.ctx.c
+    property c1:
         def __get__(self):
-            return self.ctx.v
-    property a:
+            cdef a_real[5] c
+            a_trajpoly5_c1(&self.ctx, c)
+            return c
+    property c2:
         def __get__(self):
-            return self.ctx.a
+            cdef a_real[4] c
+            a_trajpoly5_c2(&self.ctx, c)
+            return c
 
 from a.trajpoly7 cimport *
 
@@ -1437,18 +1445,24 @@ cdef class trajpoly7:
                 q[i] = a_trajpoly7_jer(&self.ctx, p[i])
             return r
         return a_trajpoly7_jer(&self.ctx, x)
-    property p:
+    property c0:
         def __get__(self):
-            return self.ctx.p
-    property v:
+            return self.ctx.c
+    property c1:
         def __get__(self):
-            return self.ctx.v
-    property a:
+            cdef a_real[7] c
+            a_trajpoly7_c1(&self.ctx, c)
+            return c
+    property c2:
         def __get__(self):
-            return self.ctx.a
-    property j:
+            cdef a_real[6] c
+            a_trajpoly7_c2(&self.ctx, c)
+            return c
+    property c3:
         def __get__(self):
-            return self.ctx.j
+            cdef a_real[5] c
+            a_trajpoly7_c3(&self.ctx, c)
+            return c
 
 from a.trajtrap cimport *
 

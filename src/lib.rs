@@ -173,7 +173,7 @@ impl crc8 {
     }
     /// calculate for CRC-8
     #[inline(always)]
-    pub fn eval(self, block: &[u8], value: u8) -> u8 {
+    pub fn eval(&self, block: &[u8], value: u8) -> u8 {
         unsafe { a_crc8(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
     }
 }
@@ -230,7 +230,7 @@ impl crc16 {
     }
     /// calculate for CRC-16
     #[inline(always)]
-    pub fn eval(self, block: &[u8], value: u16) -> u16 {
+    pub fn eval(&self, block: &[u8], value: u16) -> u16 {
         unsafe { (self.eval)(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
     }
 }
@@ -287,7 +287,7 @@ impl crc32 {
     }
     /// calculate for CRC-32
     #[inline(always)]
-    pub fn eval(self, block: &[u8], value: u32) -> u32 {
+    pub fn eval(&self, block: &[u8], value: u32) -> u32 {
         unsafe { (self.eval)(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
     }
 }
@@ -344,7 +344,7 @@ impl crc64 {
     }
     /// calculate for CRC-64
     #[inline(always)]
-    pub fn eval(self, block: &[u8], value: u64) -> u64 {
+    pub fn eval(&self, block: &[u8], value: u64) -> u64 {
         unsafe { (self.eval)(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
     }
 }
@@ -1333,22 +1333,22 @@ impl trajbell {
     }
     /// calculate position for bell-shaped velocity trajectory
     #[inline(always)]
-    pub fn pos(&mut self, x: real) -> real {
+    pub fn pos(&self, x: real) -> real {
         unsafe { a_trajbell_pos(self, x) }
     }
     /// calculate velocity for bell-shaped velocity trajectory
     #[inline(always)]
-    pub fn vel(&mut self, x: real) -> real {
+    pub fn vel(&self, x: real) -> real {
         unsafe { a_trajbell_vel(self, x) }
     }
     /// calculate acceleration for bell-shaped velocity trajectory
     #[inline(always)]
-    pub fn acc(&mut self, x: real) -> real {
+    pub fn acc(&self, x: real) -> real {
         unsafe { a_trajbell_acc(self, x) }
     }
     /// calculate jerk for bell-shaped velocity trajectory
     #[inline(always)]
-    pub fn jer(&mut self, x: real) -> real {
+    pub fn jer(&self, x: real) -> real {
         unsafe { a_trajbell_jer(self, x) }
     }
 }
@@ -1357,11 +1357,7 @@ impl trajbell {
 #[repr(C)]
 pub struct trajpoly3 {
     /// coefficients of position
-    pub p: [real; 4],
-    /// coefficients of velocity
-    pub v: [real; 3],
-    /// coefficients of acceleration
-    pub a: [real; 2],
+    pub c: [real; 4],
 }
 
 extern "C" {
@@ -1369,17 +1365,16 @@ extern "C" {
     fn a_trajpoly3_pos(ctx: *const trajpoly3, x: real) -> real;
     fn a_trajpoly3_vel(ctx: *const trajpoly3, x: real) -> real;
     fn a_trajpoly3_acc(ctx: *const trajpoly3, x: real) -> real;
+    fn a_trajpoly3_c0(ctx: *const trajpoly3, c: *const real);
+    fn a_trajpoly3_c1(ctx: *const trajpoly3, c: *const real);
+    fn a_trajpoly3_c2(ctx: *const trajpoly3, c: *const real);
 }
 
 impl trajpoly3 {
     /// initialize for cubic polynomial trajectory
     #[inline(always)]
     pub fn new(ts: real, p0: real, p1: real, v0: real, v1: real) -> Self {
-        let mut ctx: Self = Self {
-            p: [0.0; 4],
-            v: [0.0; 3],
-            a: [0.0; 2],
-        };
+        let mut ctx: Self = Self { c: [0.0; 4] };
         unsafe { a_trajpoly3_gen(&mut ctx, ts, p0, p1, v0, v1) };
         ctx
     }
@@ -1389,19 +1384,34 @@ impl trajpoly3 {
         unsafe { a_trajpoly3_gen(self, ts, p0, p1, v0, v1) };
         self
     }
+    /// calculate coefficients of position for cubic polynomial trajectory
+    #[inline(always)]
+    pub fn c0(&self, c: &mut [real; 4]) {
+        unsafe { a_trajpoly3_c0(self, c.as_mut_ptr()) }
+    }
+    /// calculate coefficients of velocity for cubic polynomial trajectory
+    #[inline(always)]
+    pub fn c1(&self, c: &mut [real; 3]) {
+        unsafe { a_trajpoly3_c1(self, c.as_mut_ptr()) }
+    }
+    /// calculate coefficients of acceleration for cubic polynomial trajectory
+    #[inline(always)]
+    pub fn c2(&self, c: &mut [real; 2]) {
+        unsafe { a_trajpoly3_c2(self, c.as_mut_ptr()) }
+    }
     /// calculate position for cubic polynomial trajectory
     #[inline(always)]
-    pub fn pos(&mut self, x: real) -> real {
+    pub fn pos(&self, x: real) -> real {
         unsafe { a_trajpoly3_pos(self, x) }
     }
     /// calculate velocity for cubic polynomial trajectory
     #[inline(always)]
-    pub fn vel(&mut self, x: real) -> real {
+    pub fn vel(&self, x: real) -> real {
         unsafe { a_trajpoly3_vel(self, x) }
     }
     /// calculate acceleration for cubic polynomial trajectory
     #[inline(always)]
-    pub fn acc(&mut self, x: real) -> real {
+    pub fn acc(&self, x: real) -> real {
         unsafe { a_trajpoly3_acc(self, x) }
     }
 }
@@ -1410,11 +1420,7 @@ impl trajpoly3 {
 #[repr(C)]
 pub struct trajpoly5 {
     /// coefficients of position
-    pub p: [real; 6],
-    /// coefficients of velocity
-    pub v: [real; 5],
-    /// coefficients of acceleration
-    pub a: [real; 4],
+    pub c: [real; 6],
 }
 
 extern "C" {
@@ -1431,6 +1437,9 @@ extern "C" {
     fn a_trajpoly5_pos(ctx: *const trajpoly5, x: real) -> real;
     fn a_trajpoly5_vel(ctx: *const trajpoly5, x: real) -> real;
     fn a_trajpoly5_acc(ctx: *const trajpoly5, x: real) -> real;
+    fn a_trajpoly5_c0(ctx: *const trajpoly5, c: *const real);
+    fn a_trajpoly5_c1(ctx: *const trajpoly5, c: *const real);
+    fn a_trajpoly5_c2(ctx: *const trajpoly5, c: *const real);
 }
 
 impl trajpoly5 {
@@ -1438,11 +1447,7 @@ impl trajpoly5 {
     #[allow(clippy::too_many_arguments)]
     #[inline(always)]
     pub fn new(ts: real, p0: real, p1: real, v0: real, v1: real, a0: real, a1: real) -> Self {
-        let mut ctx: Self = Self {
-            p: [0.0; 6],
-            v: [0.0; 5],
-            a: [0.0; 4],
-        };
+        let mut ctx: Self = Self { c: [0.0; 6] };
         unsafe { a_trajpoly5_gen(&mut ctx, ts, p0, p1, v0, v1, a0, a1) };
         ctx
     }
@@ -1462,19 +1467,34 @@ impl trajpoly5 {
         unsafe { a_trajpoly5_gen(self, ts, p0, p1, v0, v1, a0, a1) };
         self
     }
+    /// calculate coefficients of position for quintic polynomial trajectory
+    #[inline(always)]
+    pub fn c0(&self, c: &mut [real; 6]) {
+        unsafe { a_trajpoly5_c0(self, c.as_mut_ptr()) }
+    }
+    /// calculate coefficients of velocity for quintic polynomial trajectory
+    #[inline(always)]
+    pub fn c1(&self, c: &mut [real; 5]) {
+        unsafe { a_trajpoly5_c1(self, c.as_mut_ptr()) }
+    }
+    /// calculate coefficients of acceleration for quintic polynomial trajectory
+    #[inline(always)]
+    pub fn c2(&self, c: &mut [real; 4]) {
+        unsafe { a_trajpoly5_c2(self, c.as_mut_ptr()) }
+    }
     /// calculate position for quintic polynomial trajectory
     #[inline(always)]
-    pub fn pos(&mut self, x: real) -> real {
+    pub fn pos(&self, x: real) -> real {
         unsafe { a_trajpoly5_pos(self, x) }
     }
     /// calculate velocity for quintic polynomial trajectory
     #[inline(always)]
-    pub fn vel(&mut self, x: real) -> real {
+    pub fn vel(&self, x: real) -> real {
         unsafe { a_trajpoly5_vel(self, x) }
     }
     /// calculate acceleration for quintic polynomial trajectory
     #[inline(always)]
-    pub fn acc(&mut self, x: real) -> real {
+    pub fn acc(&self, x: real) -> real {
         unsafe { a_trajpoly5_acc(self, x) }
     }
 }
@@ -1483,13 +1503,7 @@ impl trajpoly5 {
 #[repr(C)]
 pub struct trajpoly7 {
     /// coefficients of position
-    pub p: [real; 8],
-    /// coefficients of velocity
-    pub v: [real; 7],
-    /// coefficients of acceleration
-    pub a: [real; 6],
-    /// coefficients of jerk
-    pub j: [real; 5],
+    pub c: [real; 8],
 }
 
 extern "C" {
@@ -1509,6 +1523,10 @@ extern "C" {
     fn a_trajpoly7_vel(ctx: *const trajpoly7, x: real) -> real;
     fn a_trajpoly7_acc(ctx: *const trajpoly7, x: real) -> real;
     fn a_trajpoly7_jer(ctx: *const trajpoly7, x: real) -> real;
+    fn a_trajpoly7_c0(ctx: *const trajpoly7, c: *const real);
+    fn a_trajpoly7_c1(ctx: *const trajpoly7, c: *const real);
+    fn a_trajpoly7_c2(ctx: *const trajpoly7, c: *const real);
+    fn a_trajpoly7_c3(ctx: *const trajpoly7, c: *const real);
 }
 
 impl trajpoly7 {
@@ -1526,12 +1544,7 @@ impl trajpoly7 {
         j0: real,
         j1: real,
     ) -> Self {
-        let mut ctx: Self = Self {
-            p: [0.0; 8],
-            v: [0.0; 7],
-            a: [0.0; 6],
-            j: [0.0; 5],
-        };
+        let mut ctx: Self = Self { c: [0.0; 8] };
         unsafe { a_trajpoly7_gen(&mut ctx, ts, p0, p1, v0, v1, a0, a1, j0, j1) };
         ctx
     }
@@ -1553,24 +1566,44 @@ impl trajpoly7 {
         unsafe { a_trajpoly7_gen(self, ts, p0, p1, v0, v1, a0, a1, j0, j1) };
         self
     }
+    /// calculate coefficients of position for hepta polynomial trajectory
+    #[inline(always)]
+    pub fn c0(&self, c: &mut [real; 8]) {
+        unsafe { a_trajpoly7_c0(self, c.as_mut_ptr()) }
+    }
+    /// calculate coefficients of velocity for hepta polynomial trajectory
+    #[inline(always)]
+    pub fn c1(&self, c: &mut [real; 7]) {
+        unsafe { a_trajpoly7_c1(self, c.as_mut_ptr()) }
+    }
+    /// calculate coefficients of acceleration for hepta polynomial trajectory
+    #[inline(always)]
+    pub fn c2(&self, c: &mut [real; 6]) {
+        unsafe { a_trajpoly7_c2(self, c.as_mut_ptr()) }
+    }
+    /// calculate coefficients of jerk for hepta polynomial trajectory
+    #[inline(always)]
+    pub fn c3(&self, c: &mut [real; 5]) {
+        unsafe { a_trajpoly7_c3(self, c.as_mut_ptr()) }
+    }
     /// calculate position for hepta polynomial trajectory
     #[inline(always)]
-    pub fn pos(&mut self, x: real) -> real {
+    pub fn pos(&self, x: real) -> real {
         unsafe { a_trajpoly7_pos(self, x) }
     }
     /// calculate velocity for hepta polynomial trajectory
     #[inline(always)]
-    pub fn vel(&mut self, x: real) -> real {
+    pub fn vel(&self, x: real) -> real {
         unsafe { a_trajpoly7_vel(self, x) }
     }
     /// calculate acceleration for hepta polynomial trajectory
     #[inline(always)]
-    pub fn acc(&mut self, x: real) -> real {
+    pub fn acc(&self, x: real) -> real {
         unsafe { a_trajpoly7_acc(self, x) }
     }
     /// calculate jerk for hepta polynomial trajectory
     #[inline(always)]
-    pub fn jer(&mut self, x: real) -> real {
+    pub fn jer(&self, x: real) -> real {
         unsafe { a_trajpoly7_jer(self, x) }
     }
 }
@@ -1663,17 +1696,17 @@ impl trajtrap {
     }
     /// calculate position for trapezoidal velocity trajectory
     #[inline(always)]
-    pub fn pos(&mut self, x: real) -> real {
+    pub fn pos(&self, x: real) -> real {
         unsafe { a_trajtrap_pos(self, x) }
     }
     /// calculate velocity for trapezoidal velocity trajectory
     #[inline(always)]
-    pub fn vel(&mut self, x: real) -> real {
+    pub fn vel(&self, x: real) -> real {
         unsafe { a_trajtrap_vel(self, x) }
     }
     /// calculate acceleration for trapezoidal velocity trajectory
     #[inline(always)]
-    pub fn acc(&mut self, x: real) -> real {
+    pub fn acc(&self, x: real) -> real {
         unsafe { a_trajtrap_acc(self, x) }
     }
 }
@@ -1752,7 +1785,7 @@ impl version {
     }
     /// convert version to string
     #[inline(always)]
-    pub fn tostr(&mut self, ver: &mut [u8]) -> c_int {
+    pub fn tostr(&self, ver: &mut [u8]) -> c_int {
         unsafe { a_version_tostr(self, ver.as_mut_ptr(), ver.len()) }
     }
     /// algorithm library version check

@@ -28,6 +28,6 @@ a = traj.acc(x)
 for i in range(N):
     print("%g,%g,%g,%g" % (x[i], p[i], v[i], a[i]))
 
-traj.p
-traj.v
-traj.a
+traj.c0
+traj.c1
+traj.c2

@@ -26,30 +26,34 @@ JNIEXPORT jobject JNICALL Java_liba_trajpoly5_gen(JNIEnv *Env, jobject Obj, jdou
     return Obj;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_trajpoly5_p(JNIEnv *Env, jobject Obj)
+JNIEXPORT jobject JNICALL Java_liba_trajpoly5_c0(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_trajpoly5 *ctx = (a_trajpoly5 *)(*Env)->GetDirectBufferAddress(Env, Ctx);
-    jobject p = (*Env)->NewDoubleArray(Env, A_LEN(ctx->p));
-    (*Env)->SetDoubleArrayRegion(Env, p, 0, A_LEN(ctx->p), ctx->p);
+    jobject p = (*Env)->NewDoubleArray(Env, A_LEN(ctx->c));
+    (*Env)->SetDoubleArrayRegion(Env, p, 0, A_LEN(ctx->c), ctx->c);
     return p;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_trajpoly5_v(JNIEnv *Env, jobject Obj)
+JNIEXPORT jobject JNICALL Java_liba_trajpoly5_c1(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_trajpoly5 *ctx = (a_trajpoly5 *)(*Env)->GetDirectBufferAddress(Env, Ctx);
-    jobject v = (*Env)->NewDoubleArray(Env, A_LEN(ctx->v));
-    (*Env)->SetDoubleArrayRegion(Env, v, 0, A_LEN(ctx->v), ctx->v);
+    jdouble c[A_LEN(ctx->c) - 1];
+    jobject v = (*Env)->NewDoubleArray(Env, A_LEN(c));
+    a_trajpoly5_c1(ctx, c);
+    (*Env)->SetDoubleArrayRegion(Env, v, 0, A_LEN(c), c);
     return v;
 }
 
-JNIEXPORT jobject JNICALL Java_liba_trajpoly5_a(JNIEnv *Env, jobject Obj)
+JNIEXPORT jobject JNICALL Java_liba_trajpoly5_c2(JNIEnv *Env, jobject Obj)
 {
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     a_trajpoly5 *ctx = (a_trajpoly5 *)(*Env)->GetDirectBufferAddress(Env, Ctx);
-    jobject a = (*Env)->NewDoubleArray(Env, A_LEN(ctx->a));
-    (*Env)->SetDoubleArrayRegion(Env, a, 0, A_LEN(ctx->a), ctx->a);
+    jdouble c[A_LEN(ctx->c) - 2];
+    jobject a = (*Env)->NewDoubleArray(Env, A_LEN(c));
+    a_trajpoly5_c2(ctx, c);
+    (*Env)->SetDoubleArrayRegion(Env, a, 0, A_LEN(c), c);
     return a;
 }
 

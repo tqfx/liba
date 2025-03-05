@@ -17,28 +17,28 @@ public class trajpoly7 {
      *
      * @return coefficients of position
      */
-    public final native double[] p();
+    public final native double[] c0();
 
     /**
      * get coefficients of velocity for hepta polynomial trajectory
      *
      * @return coefficients of velocity
      */
-    public final native double[] v();
+    public final native double[] c1();
 
     /**
      * get coefficients of acceleration for hepta polynomial trajectory
      *
      * @return coefficients of acceleration
      */
-    public final native double[] a();
+    public final native double[] c2();
 
     /**
      * get coefficients of jerk for hepta polynomial trajectory
      *
      * @return coefficients of jerk
      */
-    public final native double[] j();
+    public final native double[] c3();
 
     /**
      * construct a new {@link trajpoly7} object
