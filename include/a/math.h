@@ -290,7 +290,7 @@ A_EXTERN a_real a_real_norm2(a_real x, a_real y);
 A_EXTERN a_real a_real_norm3(a_real x, a_real y, a_real z);
 
 /*!
- @brief calculate the magnitude of a vector
+ @brief compute the magnitude of a vector
  @param[in] n number of a float array
  @param[in] p points to a float array
  @return the magnitude of a vector
@@ -299,7 +299,7 @@ A_EXTERN a_real a_real_norm(a_size n, a_real const *p);
 A_EXTERN a_real a_real_norm_(a_size n, a_real const *p, a_size c);
 
 /*!
- @brief calculate the sum of a float array
+ @brief compute the sum of a float array
  @param[in] n number of a float array
  @param[in] p points to a float array
  @return sum of a float array
@@ -308,7 +308,7 @@ A_EXTERN a_real a_real_sum(a_size n, a_real const *p);
 A_EXTERN a_real a_real_sum_(a_size n, a_real const *p, a_size c);
 
 /*!
- @brief calculate the absolute sum of a float array
+ @brief compute the absolute sum of a float array
  @param[in] n number of a float array
  @param[in] p points to a float array
  @return absolute sum of a float array
@@ -317,7 +317,7 @@ A_EXTERN a_real a_real_sum1(a_size n, a_real const *p);
 A_EXTERN a_real a_real_sum1_(a_size n, a_real const *p, a_size c);
 
 /*!
- @brief calculate the sum of squares of a float array
+ @brief compute the sum of squares of a float array
  @param[in] n number of a float array
  @param[in] p points to a float array
  @return sum of squares of a float array
@@ -326,7 +326,7 @@ A_EXTERN a_real a_real_sum2(a_size n, a_real const *p);
 A_EXTERN a_real a_real_sum2_(a_size n, a_real const *p, a_size c);
 
 /*!
- @brief calculate the mean of a float array
+ @brief compute the mean of a float array
  @param[in] n number of a float array
  @param[in] p points to a float array
  @return mean of a float array

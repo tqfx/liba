@@ -37,7 +37,7 @@ int liba_regress_simple_new(lua_State *L);
 int liba_regress_simple_init(lua_State *L);
 
 /***
- calculate predicted value for simple linear regression
+ compute predicted value for simple linear regression
  @tparam number val independent variable
  @treturn number predicted value
  @function eval
@@ -45,7 +45,7 @@ int liba_regress_simple_init(lua_State *L);
 int liba_regress_simple_eval(lua_State *L);
 
 /***
- calculate predicted value for simple linear regression
+ compute predicted value for simple linear regression
  @tparam number val dependent variable
  @treturn number predicted value
  @function evar

@@ -95,7 +95,7 @@ A_INTERN void a_lpf_init(a_lpf *ctx, a_real alpha)
 }
 
 /*!
- @brief calculate for Low Pass Filter
+ @brief compute for Low Pass Filter
  \f[
   V_{\mathrm o}(n)=(1-\alpha)V_{\mathrm o}(n-1)+\alpha V_{\mathrm i}(n)
  \f]

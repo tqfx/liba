@@ -31,7 +31,7 @@ extern "C" {
 A_EXTERN void a_regress_linear_init(a_regress_linear *ctx, a_real *coef_p, a_size coef_n, a_real bias);
 
 /*!
- @brief calculate predicted value for linear regression
+ @brief compute predicted value for linear regression
  @param[in] ctx points to an instance of linear regression
  @param[in] val independent variables
  @return predicted value
@@ -39,7 +39,7 @@ A_EXTERN void a_regress_linear_init(a_regress_linear *ctx, a_real *coef_p, a_siz
 A_EXTERN a_real a_regress_linear_eval(a_regress_linear const *ctx, a_real const *val);
 
 /*!
- @brief calculate residuals for linear regression
+ @brief compute residuals for linear regression
  @param[in] ctx points to an instance of linear regression
  @param[in] n number of samples, x[n*coef_n], y[n], err[n]
  @param[in] x predictor data, specified as a numeric matrix
@@ -49,7 +49,7 @@ A_EXTERN a_real a_regress_linear_eval(a_regress_linear const *ctx, a_real const 
 A_EXTERN void a_regress_linear_err(a_regress_linear const *ctx, a_size n, a_real const *x, a_real const *y, a_real *err);
 
 /*!
- @brief calculate prediction deviation from mean for linear regression
+ @brief compute prediction deviation from mean for linear regression
  @param[in] ctx points to an instance of linear regression
  @param[in] n number of samples, x[n*coef_n], pdm[n]
  @param[in] x predictor data, specified as a numeric matrix

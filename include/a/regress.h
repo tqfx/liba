@@ -21,7 +21,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 /*!
- @brief calculate observation deviation from mean for regression
+ @brief compute observation deviation from mean for regression
  @param[in] n number of samples, p[n], odm[n]
  @param[in] p response data, specified as a numeric vector
  @param[in,out] odm deviation, specified as a numeric vector
@@ -30,7 +30,7 @@ extern "C" {
 A_EXTERN void a_regress_odm_(a_size n, a_real const *p, a_real *odm, a_real p_mean);
 
 /*!
- @brief calculate observation deviation from mean for regression
+ @brief compute observation deviation from mean for regression
  @param[in] n number of samples, p[n], odm[n]
  @param[in] p response data, specified as a numeric vector
  @param[in,out] odm deviation, specified as a numeric vector

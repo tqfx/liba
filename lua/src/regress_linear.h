@@ -43,7 +43,7 @@ int liba_regress_linear_new(lua_State *L);
 int liba_regress_linear_init(lua_State *L);
 
 /***
- calculate predicted value for linear regression
+ compute predicted value for linear regression
  @tparam number val independent variable
  @treturn number predicted value
  @function eval
@@ -51,7 +51,7 @@ int liba_regress_linear_init(lua_State *L);
 int liba_regress_linear_eval(lua_State *L);
 
 /***
- calculate residuals for linear regression
+ compute residuals for linear regression
  @tparam table x predictor data, specified as a numeric matrix
  @tparam table y response data, specified as a numeric vector
  @treturn table residuals, specified as a numeric vector

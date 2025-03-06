@@ -59,7 +59,7 @@ extern "C" {
 A_EXTERN void a_pid_set_kpid(a_pid *ctx, a_real kp, a_real ki, a_real kd);
 
 /*!
- @brief calculate for PID controller
+ @brief compute for PID controller
  @param[in,out] ctx points to an instance of PID controller
  @param[in] set setpoint value
  @param[in] fdb feedback value
@@ -68,7 +68,7 @@ A_EXTERN void a_pid_set_kpid(a_pid *ctx, a_real kp, a_real ki, a_real kd);
 A_EXTERN a_real a_pid_run(a_pid *ctx, a_real set, a_real fdb);
 
 /*!
- @brief calculate for positional PID controller
+ @brief compute for positional PID controller
  @param[in,out] ctx points to an instance of PID controller
  @param[in] set setpoint value
  @param[in] fdb feedback value
@@ -77,7 +77,7 @@ A_EXTERN a_real a_pid_run(a_pid *ctx, a_real set, a_real fdb);
 A_EXTERN a_real a_pid_pos(a_pid *ctx, a_real set, a_real fdb);
 
 /*!
- @brief calculate for incremental PID controller
+ @brief compute for incremental PID controller
  @param[in,out] ctx points to an instance of PID controller
  @param[in] set setpoint value
  @param[in] fdb feedback value

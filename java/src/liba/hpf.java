@@ -55,7 +55,7 @@ public class hpf {
     public final native hpf gen(double fc, double ts);
 
     /**
-     * calculate for High Pass Filter
+     * compute for High Pass Filter
      *
      * @param x input value
      * @return output value

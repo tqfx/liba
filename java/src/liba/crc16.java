@@ -50,7 +50,7 @@ public class crc16 {
     public final native crc16 gen(short poly, boolean reversed);
 
     /**
-     * calculate for 16-bit Cyclic Redundancy Check
+     * compute for 16-bit Cyclic Redundancy Check
      *
      * @param block block to be processed
      * @param value initial value
@@ -59,7 +59,7 @@ public class crc16 {
     public final native short eval(byte[] block, short value);
 
     /**
-     * calculate for 16-bit Cyclic Redundancy Check
+     * compute for 16-bit Cyclic Redundancy Check
      *
      * @param block block to be processed
      * @return output value

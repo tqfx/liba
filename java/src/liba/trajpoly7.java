@@ -76,7 +76,7 @@ public class trajpoly7 {
             double a0, double a1, double j0, double j1);
 
     /**
-     * calculate position for hepta polynomial trajectory
+     * compute position for hepta polynomial trajectory
      *
      * @param x difference between current time and initial time
      * @return position output
@@ -84,7 +84,7 @@ public class trajpoly7 {
     public final native double pos(double x);
 
     /**
-     * calculate velocity for hepta polynomial trajectory
+     * compute velocity for hepta polynomial trajectory
      *
      * @param x difference between current time and initial time
      * @return velocity output
@@ -92,7 +92,7 @@ public class trajpoly7 {
     public final native double vel(double x);
 
     /**
-     * calculate acceleration for hepta polynomial trajectory
+     * compute acceleration for hepta polynomial trajectory
      *
      * @param x difference between current time and initial time
      * @return acceleration output
@@ -100,7 +100,7 @@ public class trajpoly7 {
     public final native double acc(double x);
 
     /**
-     * calculate jerk for hepta polynomial trajectory
+     * compute jerk for hepta polynomial trajectory
      *
      * @param x difference between current time and initial time
      * @return jerk output

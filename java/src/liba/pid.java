@@ -165,7 +165,7 @@ public class pid {
     public final native pid set_kpid(double kp, double ki, double kd);
 
     /**
-     * calculate for PID controller
+     * compute for PID controller
      *
      * @param set setpoint value
      * @param fdb feedback value
@@ -174,7 +174,7 @@ public class pid {
     public final native double run(double set, double fdb);
 
     /**
-     * calculate for positional PID controller
+     * compute for positional PID controller
      *
      * @param set setpoint value
      * @param fdb feedback value
@@ -183,7 +183,7 @@ public class pid {
     public final native double pos(double set, double fdb);
 
     /**
-     * calculate for incremental PID controller
+     * compute for incremental PID controller
      *
      * @param set setpoint value
      * @param fdb feedback value

@@ -45,7 +45,7 @@ extern "C" {
  c. If \f$T_a\ge2T_j\f$, \f$T_d\ge2T_j\f$, then
  \f{aligned}{a_m&=+j_mT_{aj}\\d_m&=-j_mT_{dj}\\v_m&=v_0+(T_a-T_{aj})a_m=v_1-(T_d-T_{dj})d_m\f}
  d. If none of the above conditions are met, let \f$a_m=\alpha a_m, 0<\alpha<1\f$, and then repeat step 4.
- 5. Finally, use formulas to calculate position, velocity and acceleration.
+ 5. Finally, use formulas to compute position, velocity and acceleration.
  @param[in,out] ctx points to an instance of bell-shaped velocity trajectory
  @param[in] jm defines the maximum jerk during system operation
  @param[in] am defines the maximum acceleration during system operation
@@ -60,7 +60,7 @@ A_EXTERN a_real a_trajbell_gen(a_trajbell *ctx, a_real jm, a_real am, a_real vm,
                                a_real p0, a_real p1, a_real v0, a_real v1);
 
 /*!
- @brief calculate position for bell-shaped velocity trajectory
+ @brief compute position for bell-shaped velocity trajectory
  \f[
   p(t)=\begin{cases}
   p_0+v_0t+j_m\cfrac{t^3}{6},&t\in[0,T_{aj}]\\
@@ -80,7 +80,7 @@ A_EXTERN a_real a_trajbell_gen(a_trajbell *ctx, a_real jm, a_real am, a_real vm,
 A_EXTERN a_real a_trajbell_pos(a_trajbell const *ctx, a_real x);
 
 /*!
- @brief calculate velocity for bell-shaped velocity trajectory
+ @brief compute velocity for bell-shaped velocity trajectory
  \f[
   \dot{p}(t)=\begin{cases}
   v_0+j_m\frac{t^2}{2},&t\in[0,T_{aj}]\\
@@ -99,7 +99,7 @@ A_EXTERN a_real a_trajbell_pos(a_trajbell const *ctx, a_real x);
 A_EXTERN a_real a_trajbell_vel(a_trajbell const *ctx, a_real x);
 
 /*!
- @brief calculate acceleration for bell-shaped velocity trajectory
+ @brief compute acceleration for bell-shaped velocity trajectory
  \f[
   \ddot{p}(t)=\begin{cases}
   j_mt,&t\in[0,T_{aj}]\\
@@ -118,7 +118,7 @@ A_EXTERN a_real a_trajbell_vel(a_trajbell const *ctx, a_real x);
 A_EXTERN a_real a_trajbell_acc(a_trajbell const *ctx, a_real x);
 
 /*!
- @brief calculate jerk for bell-shaped velocity trajectory
+ @brief compute jerk for bell-shaped velocity trajectory
  \f[
   p^{(3)}(t)=\begin{cases}
   j_m,&t\in[0,T_{aj}]\\

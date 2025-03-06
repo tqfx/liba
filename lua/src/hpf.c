@@ -64,7 +64,7 @@ int liba_hpf_gen(lua_State *L)
 }
 
 /***
- calculate for High Pass Filter
+ compute for High Pass Filter
  @tparam a.hpf ctx High Pass Filter userdata
  @tparam number x input value
  @treturn number output value

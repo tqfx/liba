@@ -36,7 +36,7 @@ int liba_crc16_new(lua_State *L);
 int liba_crc16_gen(lua_State *L);
 
 /***
- calculate for 16-bit Cyclic Redundancy Check
+ compute for 16-bit Cyclic Redundancy Check
  @tparam string block block to be processed
  @tparam integer value initial value
  @treturn integer output value

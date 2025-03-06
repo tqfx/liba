@@ -44,7 +44,7 @@ static int liba_hash_sdbm(lua_State *L)
 /***
  square root of an unsigned integer
  @tparam integer ... independent variables
- @treturn integer calculated result
+ @treturn integer computed result
  @function isqrt
 */
 static int liba_isqrt(lua_State *L)
@@ -66,7 +66,7 @@ static int liba_isqrt(lua_State *L)
 /***
  reciprocal of square-root
  @tparam number ... independent variables
- @treturn number calculated result
+ @treturn number computed result
  @function rsqrt
 */
 static int liba_rsqrt(lua_State *L)

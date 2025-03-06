@@ -42,7 +42,7 @@ extern "C" {
 A_EXTERN void a_pid_expert_set_kpid(a_pid_expert *ctx, a_real kp, a_real ki, a_real kd);
 
 /*!
- @brief calculate for expert PID controller
+ @brief compute for expert PID controller
  @param[in,out] ctx points to an instance of expert PID controller
  @param[in] set setpoint value
  @param[in] fdb feedback value

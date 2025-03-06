@@ -45,7 +45,7 @@ int liba_tf_new(lua_State *L);
 int liba_tf_init(lua_State *L);
 
 /***
- calculate for transfer function
+ compute for transfer function
  @tparam number x input
  @treturn number output
  @function iter

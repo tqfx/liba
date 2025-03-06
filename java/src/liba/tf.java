@@ -73,7 +73,7 @@ public class tf {
     public final native double[] output();
 
     /**
-     * calculate for transfer function
+     * compute for transfer function
      *
      * @param x controller output
      * @return feedback

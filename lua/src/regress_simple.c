@@ -47,7 +47,7 @@ int liba_regress_simple_init(lua_State *L)
 }
 
 /***
- calculate predicted value for simple linear regression
+ compute predicted value for simple linear regression
  @tparam a.regress_simple ctx simple linear regression userdata
  @tparam number val independent variable
  @treturn number predicted value
@@ -66,7 +66,7 @@ int liba_regress_simple_eval(lua_State *L)
 }
 
 /***
- calculate predicted value for simple linear regression
+ compute predicted value for simple linear regression
  @tparam a.regress_simple ctx simple linear regression userdata
  @tparam number val dependent variable
  @treturn number predicted value

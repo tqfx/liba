@@ -38,7 +38,7 @@ int liba_hpf_new(lua_State *L);
 int liba_hpf_gen(lua_State *L);
 
 /***
- calculate for High Pass Filter
+ compute for High Pass Filter
  @tparam number x input value
  @treturn number output value
  @function iter

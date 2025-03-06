@@ -175,7 +175,7 @@ A_EXTERN void a_real_mulTT(a_uint row, a_uint c_r, a_uint col, a_real const *__r
  where L is a lower triangular matrix, and U is an upper triangular matrix.
  Partial pivoting is used to improve numerical stability during the decomposition process.
  The result is stored in the original matrix A, with L stored below, and U stored in the diagonal and above.
- Additionally, it calculates a permutation matrix P that records the row exchanges made during partial pivoting,
+ Additionally, it computes a permutation matrix P that records the row exchanges made during partial pivoting,
  and determines the sign of the permutation (which can be used to find the determinant's sign).
  @param[in] n the order of the square matrix A (number of rows and columns).
  @param[in,out] A an n x n square matrix.

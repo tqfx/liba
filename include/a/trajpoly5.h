@@ -50,28 +50,28 @@ A_EXTERN void a_trajpoly5_gen(a_trajpoly5 *ctx, a_real ts,
                               a_real a0, a_real a1);
 
 /*!
- @brief calculate coefficients of position for quintic polynomial trajectory
+ @brief compute coefficients of position for quintic polynomial trajectory
  @param[in] ctx points to an instance of quintic polynomial trajectory
  @param[out] c coefficients of position
 */
 A_EXTERN void a_trajpoly5_c0(a_trajpoly5 const *ctx, a_real c[6]);
 
 /*!
- @brief calculate coefficients of velocity for quintic polynomial trajectory
+ @brief compute coefficients of velocity for quintic polynomial trajectory
  @param[in] ctx points to an instance of quintic polynomial trajectory
  @param[out] c coefficients of velocity
 */
 A_EXTERN void a_trajpoly5_c1(a_trajpoly5 const *ctx, a_real c[5]);
 
 /*!
- @brief calculate coefficients of acceleration for quintic polynomial trajectory
+ @brief compute coefficients of acceleration for quintic polynomial trajectory
  @param[in] ctx points to an instance of quintic polynomial trajectory
  @param[out] c coefficients of acceleration
 */
 A_EXTERN void a_trajpoly5_c2(a_trajpoly5 const *ctx, a_real c[4]);
 
 /*!
- @brief calculate position for quintic polynomial trajectory
+ @brief compute position for quintic polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
   p(t)=c_{0}+c_{1}\left(t-t_{0}\right)+c_{2}\left(t-t_{0}\right)^{2}+c_{3}\left(t-t_{0}\right)^{3}+c_{4}\left(t-t_{0}\right)^{4}+c_{5}\left(t-t_{0}\right)^{5}\\
@@ -84,7 +84,7 @@ A_EXTERN void a_trajpoly5_c2(a_trajpoly5 const *ctx, a_real c[4]);
 A_EXTERN a_real a_trajpoly5_pos(a_trajpoly5 const *ctx, a_real x);
 
 /*!
- @brief calculate velocity for quintic polynomial trajectory
+ @brief compute velocity for quintic polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
   \dot{p}(t)=c_{1}+2 c_{2}\left(t-t_{0}\right)+3 c_{3}\left(t-t_{0}\right)^{2}+4 c_{4}\left(t-t_{0}\right)^{3}+5 c_{5}\left(t-t_{0}\right)^{4}\\
@@ -97,7 +97,7 @@ A_EXTERN a_real a_trajpoly5_pos(a_trajpoly5 const *ctx, a_real x);
 A_EXTERN a_real a_trajpoly5_vel(a_trajpoly5 const *ctx, a_real x);
 
 /*!
- @brief calculate acceleration for quintic polynomial trajectory
+ @brief compute acceleration for quintic polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
   \ddot{p}(t)=2 c_{2}+6 c_{3}\left(t-t_{0}\right)+12 c_{4}\left(t-t_{0}\right)^{2}+20 c_{5}\left(t-t_{0}\right)^{3}

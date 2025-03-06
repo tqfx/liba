@@ -61,7 +61,7 @@ A_EXTERN void a_pid_neuro_set_kpid(a_pid_neuro *ctx, a_real k, a_real kp, a_real
 A_EXTERN void a_pid_neuro_set_wpid(a_pid_neuro *ctx, a_real wp, a_real wi, a_real wd);
 
 /*!
- @brief calculate for single neuron PID controller
+ @brief compute for single neuron PID controller
  @param[in,out] ctx points to an instance of single neuron PID controller
  @param[in] set setpoint value
  @param[in] fdb feedback value
@@ -70,7 +70,7 @@ A_EXTERN void a_pid_neuro_set_wpid(a_pid_neuro *ctx, a_real wp, a_real wi, a_rea
 A_EXTERN a_real a_pid_neuro_run(a_pid_neuro *ctx, a_real set, a_real fdb);
 
 /*!
- @brief calculate for incremental single neuron PID controller
+ @brief compute for incremental single neuron PID controller
  @param[in,out] ctx points to an instance of single neuron PID controller
  @param[in] set setpoint value
  @param[in] fdb feedback value

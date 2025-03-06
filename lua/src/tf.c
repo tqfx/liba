@@ -101,7 +101,7 @@ int liba_tf_init(lua_State *L)
 }
 
 /***
- calculate for transfer function
+ compute for transfer function
  @tparam a.tf ctx transfer function userdata
  @tparam number x input
  @treturn number output

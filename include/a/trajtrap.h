@@ -36,7 +36,7 @@ extern "C" {
  \f[|v_1|=\sqrt{v_0^2+2d(p_1-p_0)}\f] \f{cases}{T_a=0\\T_c=0\\T_d=\cfrac{v_1-v_0}{d}\f}
  c. If \f$|v|>|v_0|\f$, \f$|v|>|v_1|\f$, then there are acceleration and deceleration phases.
  \f{cases}{T_a=\cfrac{v-v_0}{a}\\T_c=0\\T_d=\cfrac{v_1-v}{d}\f}
- 3. Finally, the position and velocity are calculated using the formula.
+ 3. Finally, the position and velocity are computed using the formula.
  @param[in,out] ctx points to an instance of trapezoidal velocity trajectory
  @param[in] vm defines the maximum velocity during system operation
  @param[in] ac defines the acceleration before constant velocity
@@ -51,7 +51,7 @@ A_EXTERN a_real a_trajtrap_gen(a_trajtrap *ctx, a_real vm, a_real ac, a_real de,
                                a_real p0, a_real p1, a_real v0, a_real v1);
 
 /*!
- @brief calculate position for trapezoidal velocity trajectory
+ @brief compute position for trapezoidal velocity trajectory
  \f[
   p(t)=\begin{cases}v_0+\frac{1}{2}at^2,&t\in[0,t_a)\\p_a+v_c(t-t_a),&t\in[t_a,t_d)\\
   p_d+v_c(t-t_d)+\frac{1}{2}d(t-t_d)^2,&t\in[t_d,T]\end{cases}
@@ -63,7 +63,7 @@ A_EXTERN a_real a_trajtrap_gen(a_trajtrap *ctx, a_real vm, a_real ac, a_real de,
 A_EXTERN a_real a_trajtrap_pos(a_trajtrap const *ctx, a_real x);
 
 /*!
- @brief calculate velocity for trapezoidal velocity trajectory
+ @brief compute velocity for trapezoidal velocity trajectory
  \f[
   \dot{p}(t)=\begin{cases}v_0+at,&t\in[0,t_a)\\v_c,&t\in[t_a,t_d)\\v_c+d(t-t_d),&t\in[t_d,T]\end{cases}
  \f]
@@ -74,7 +74,7 @@ A_EXTERN a_real a_trajtrap_pos(a_trajtrap const *ctx, a_real x);
 A_EXTERN a_real a_trajtrap_vel(a_trajtrap const *ctx, a_real x);
 
 /*!
- @brief calculate acceleration for trapezoidal velocity trajectory
+ @brief compute acceleration for trapezoidal velocity trajectory
  \f[
   \ddot{p}(t)=\begin{cases}a,&t\in[0,t_a)\\0,&t\in[t_a,t_d)\\d,&t\in[t_d,T]\end{cases}
  \f]

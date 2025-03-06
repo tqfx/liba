@@ -100,7 +100,7 @@ A_INTERN void a_hpf_init(a_hpf *ctx, a_real alpha)
 }
 
 /*!
- @brief calculate for High Pass Filter
+ @brief compute for High Pass Filter
  \f[
   V_{\mathrm o}(n)=\alpha[V_{\mathrm o}(n-1)+V_{\mathrm i}(n)-V_{\mathrm i}(n-1)]
  \f]

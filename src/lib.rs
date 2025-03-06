@@ -94,22 +94,22 @@ extern "C" {
     fn a_real_mean(n: usize, p: *const real) -> real;
 }
 
-/// calculate the sum of a float array
+/// compute the sum of a float array
 #[inline(always)]
 pub fn real_sum(x: &[real]) -> real {
     unsafe { a_real_sum(x.len(), x.as_ptr()) }
 }
-/// calculate the absolute sum of a float array
+/// compute the absolute sum of a float array
 #[inline(always)]
 pub fn real_sum1(x: &[real]) -> real {
     unsafe { a_real_sum1(x.len(), x.as_ptr()) }
 }
-/// calculate the sum of squares of a float array
+/// compute the sum of squares of a float array
 #[inline(always)]
 pub fn real_sum2(x: &[real]) -> real {
     unsafe { a_real_sum2(x.len(), x.as_ptr()) }
 }
-/// calculate the mean of a float array
+/// compute the mean of a float array
 #[inline(always)]
 pub fn real_mean(x: &[real]) -> real {
     unsafe { a_real_mean(x.len(), x.as_ptr()) }
@@ -171,7 +171,7 @@ impl crc8 {
         unsafe { a_crc8l_init(self.table.as_mut_ptr(), poly) };
         self
     }
-    /// calculate for CRC-8
+    /// compute for CRC-8
     #[inline(always)]
     pub fn eval(&self, block: &[u8], value: u8) -> u8 {
         unsafe { a_crc8(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
@@ -228,7 +228,7 @@ impl crc16 {
         self.eval = a_crc16l;
         self
     }
-    /// calculate for CRC-16
+    /// compute for CRC-16
     #[inline(always)]
     pub fn eval(&self, block: &[u8], value: u16) -> u16 {
         unsafe { (self.eval)(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
@@ -285,7 +285,7 @@ impl crc32 {
         self.eval = a_crc32l;
         self
     }
-    /// calculate for CRC-32
+    /// compute for CRC-32
     #[inline(always)]
     pub fn eval(&self, block: &[u8], value: u32) -> u32 {
         unsafe { (self.eval)(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
@@ -342,7 +342,7 @@ impl crc64 {
         self.eval = a_crc64l;
         self
     }
-    /// calculate for CRC-64
+    /// compute for CRC-64
     #[inline(always)]
     pub fn eval(&self, block: &[u8], value: u64) -> u64 {
         unsafe { (self.eval)(self.table.as_ptr(), block.as_ptr(), block.len(), value) }
@@ -379,7 +379,7 @@ impl hpf {
         self.alpha = 1.0 / (TAU * fc * ts + 1.0);
         self
     }
-    /// calculate for High Pass Filter
+    /// compute for High Pass Filter
     #[inline(always)]
     pub fn iter(&mut self, x: real) -> real {
         self.output = self.alpha * (self.output + x - self.input);
@@ -422,7 +422,7 @@ impl lpf {
         self.alpha = ts / (_1_TAU / fc + ts);
         self
     }
-    /// calculate for Low Pass Filter
+    /// compute for Low Pass Filter
     #[inline(always)]
     pub fn iter(&mut self, x: real) -> real {
         self.output *= 1.0 - self.alpha;
@@ -622,17 +622,17 @@ impl pid {
         unsafe { a_pid_set_kpid(self, kp, ki, kd) };
         self
     }
-    /// calculate for PID controller
+    /// compute for PID controller
     #[inline(always)]
     pub fn run(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_run(self, set, fdb) }
     }
-    /// calculate for positional PID controller
+    /// compute for positional PID controller
     #[inline(always)]
     pub fn pos(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_pos(self, set, fdb) }
     }
-    /// calculate for incremental PID controller
+    /// compute for incremental PID controller
     #[inline(always)]
     pub fn inc(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_inc(self, set, fdb) }
@@ -792,17 +792,17 @@ impl pid_fuzzy {
         unsafe { a_pid_fuzzy_set_kpid(self, kp, ki, kd) };
         self
     }
-    /// calculate for fuzzy PID controller
+    /// compute for fuzzy PID controller
     #[inline(always)]
     pub fn run(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_fuzzy_run(self, set, fdb) }
     }
-    /// calculate for positional fuzzy PID controller
+    /// compute for positional fuzzy PID controller
     #[inline(always)]
     pub fn pos(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_fuzzy_pos(self, set, fdb) }
     }
-    /// calculate for incremental fuzzy PID controller
+    /// compute for incremental fuzzy PID controller
     #[inline(always)]
     pub fn inc(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_fuzzy_inc(self, set, fdb) }
@@ -872,12 +872,12 @@ impl pid_neuro {
         unsafe { a_pid_neuro_set_wpid(self, wp, wi, wd) };
         self
     }
-    /// calculate for single neuron PID controller
+    /// compute for single neuron PID controller
     #[inline(always)]
     pub fn run(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_neuro_run(self, set, fdb) }
     }
-    /// calculate for incremental single neuron PID controller
+    /// compute for incremental single neuron PID controller
     #[inline(always)]
     pub fn inc(&mut self, set: real, fdb: real) -> real {
         unsafe { a_pid_neuro_inc(self, set, fdb) }
@@ -970,17 +970,17 @@ impl regress_linear {
         self.coef_n = coef.len();
         self
     }
-    /// calculate predicted value for linear regression
+    /// compute predicted value for linear regression
     #[inline(always)]
     pub fn eval(&self, val: &[real]) -> real {
         unsafe { a_regress_linear_eval(self, val.as_ptr()) }
     }
-    /// calculate residuals for linear regression
+    /// compute residuals for linear regression
     #[inline(always)]
     pub fn err(&self, x: &[real], y: &[real], err: &mut [real]) {
         unsafe { a_regress_linear_err(self, y.len(), x.as_ptr(), y.as_ptr(), err.as_mut_ptr()) }
     }
-    /// calculate prediction deviation from mean for linear regression
+    /// compute prediction deviation from mean for linear regression
     #[inline(always)]
     pub fn pdm(&self, x: &[real], pdm: &mut [real], y_mean: real) {
         let n = x.len() / self.coef_n;
@@ -1089,12 +1089,12 @@ impl regress_simple {
     pub fn new(coef: real, bias: real) -> Self {
         Self { coef, bias }
     }
-    /// calculate predicted value for simple linear regression
+    /// compute predicted value for simple linear regression
     #[inline(always)]
     pub fn eval(&self, val: real) -> real {
         unsafe { a_regress_simple_eval(self, val) }
     }
-    /// calculate predicted value for simple linear regression
+    /// compute predicted value for simple linear regression
     #[inline(always)]
     pub fn evar(&self, val: real) -> real {
         unsafe { a_regress_simple_evar(self, val) }
@@ -1193,7 +1193,7 @@ impl tf {
         };
         ctx
     }
-    /// calculate for transfer function
+    /// compute for transfer function
     #[inline(always)]
     pub fn iter(&mut self, x: real) -> real {
         unsafe { a_tf_iter(self, x) }
@@ -1331,22 +1331,22 @@ impl trajbell {
     ) -> real {
         unsafe { a_trajbell_gen(self, jm, am, vm, p0, p1, v0, v1) }
     }
-    /// calculate position for bell-shaped velocity trajectory
+    /// compute position for bell-shaped velocity trajectory
     #[inline(always)]
     pub fn pos(&self, x: real) -> real {
         unsafe { a_trajbell_pos(self, x) }
     }
-    /// calculate velocity for bell-shaped velocity trajectory
+    /// compute velocity for bell-shaped velocity trajectory
     #[inline(always)]
     pub fn vel(&self, x: real) -> real {
         unsafe { a_trajbell_vel(self, x) }
     }
-    /// calculate acceleration for bell-shaped velocity trajectory
+    /// compute acceleration for bell-shaped velocity trajectory
     #[inline(always)]
     pub fn acc(&self, x: real) -> real {
         unsafe { a_trajbell_acc(self, x) }
     }
-    /// calculate jerk for bell-shaped velocity trajectory
+    /// compute jerk for bell-shaped velocity trajectory
     #[inline(always)]
     pub fn jer(&self, x: real) -> real {
         unsafe { a_trajbell_jer(self, x) }
@@ -1384,32 +1384,32 @@ impl trajpoly3 {
         unsafe { a_trajpoly3_gen(self, ts, p0, p1, v0, v1) };
         self
     }
-    /// calculate coefficients of position for cubic polynomial trajectory
+    /// compute coefficients of position for cubic polynomial trajectory
     #[inline(always)]
     pub fn c0(&self, c: &mut [real; 4]) {
         unsafe { a_trajpoly3_c0(self, c.as_mut_ptr()) }
     }
-    /// calculate coefficients of velocity for cubic polynomial trajectory
+    /// compute coefficients of velocity for cubic polynomial trajectory
     #[inline(always)]
     pub fn c1(&self, c: &mut [real; 3]) {
         unsafe { a_trajpoly3_c1(self, c.as_mut_ptr()) }
     }
-    /// calculate coefficients of acceleration for cubic polynomial trajectory
+    /// compute coefficients of acceleration for cubic polynomial trajectory
     #[inline(always)]
     pub fn c2(&self, c: &mut [real; 2]) {
         unsafe { a_trajpoly3_c2(self, c.as_mut_ptr()) }
     }
-    /// calculate position for cubic polynomial trajectory
+    /// compute position for cubic polynomial trajectory
     #[inline(always)]
     pub fn pos(&self, x: real) -> real {
         unsafe { a_trajpoly3_pos(self, x) }
     }
-    /// calculate velocity for cubic polynomial trajectory
+    /// compute velocity for cubic polynomial trajectory
     #[inline(always)]
     pub fn vel(&self, x: real) -> real {
         unsafe { a_trajpoly3_vel(self, x) }
     }
-    /// calculate acceleration for cubic polynomial trajectory
+    /// compute acceleration for cubic polynomial trajectory
     #[inline(always)]
     pub fn acc(&self, x: real) -> real {
         unsafe { a_trajpoly3_acc(self, x) }
@@ -1467,32 +1467,32 @@ impl trajpoly5 {
         unsafe { a_trajpoly5_gen(self, ts, p0, p1, v0, v1, a0, a1) };
         self
     }
-    /// calculate coefficients of position for quintic polynomial trajectory
+    /// compute coefficients of position for quintic polynomial trajectory
     #[inline(always)]
     pub fn c0(&self, c: &mut [real; 6]) {
         unsafe { a_trajpoly5_c0(self, c.as_mut_ptr()) }
     }
-    /// calculate coefficients of velocity for quintic polynomial trajectory
+    /// compute coefficients of velocity for quintic polynomial trajectory
     #[inline(always)]
     pub fn c1(&self, c: &mut [real; 5]) {
         unsafe { a_trajpoly5_c1(self, c.as_mut_ptr()) }
     }
-    /// calculate coefficients of acceleration for quintic polynomial trajectory
+    /// compute coefficients of acceleration for quintic polynomial trajectory
     #[inline(always)]
     pub fn c2(&self, c: &mut [real; 4]) {
         unsafe { a_trajpoly5_c2(self, c.as_mut_ptr()) }
     }
-    /// calculate position for quintic polynomial trajectory
+    /// compute position for quintic polynomial trajectory
     #[inline(always)]
     pub fn pos(&self, x: real) -> real {
         unsafe { a_trajpoly5_pos(self, x) }
     }
-    /// calculate velocity for quintic polynomial trajectory
+    /// compute velocity for quintic polynomial trajectory
     #[inline(always)]
     pub fn vel(&self, x: real) -> real {
         unsafe { a_trajpoly5_vel(self, x) }
     }
-    /// calculate acceleration for quintic polynomial trajectory
+    /// compute acceleration for quintic polynomial trajectory
     #[inline(always)]
     pub fn acc(&self, x: real) -> real {
         unsafe { a_trajpoly5_acc(self, x) }
@@ -1566,42 +1566,42 @@ impl trajpoly7 {
         unsafe { a_trajpoly7_gen(self, ts, p0, p1, v0, v1, a0, a1, j0, j1) };
         self
     }
-    /// calculate coefficients of position for hepta polynomial trajectory
+    /// compute coefficients of position for hepta polynomial trajectory
     #[inline(always)]
     pub fn c0(&self, c: &mut [real; 8]) {
         unsafe { a_trajpoly7_c0(self, c.as_mut_ptr()) }
     }
-    /// calculate coefficients of velocity for hepta polynomial trajectory
+    /// compute coefficients of velocity for hepta polynomial trajectory
     #[inline(always)]
     pub fn c1(&self, c: &mut [real; 7]) {
         unsafe { a_trajpoly7_c1(self, c.as_mut_ptr()) }
     }
-    /// calculate coefficients of acceleration for hepta polynomial trajectory
+    /// compute coefficients of acceleration for hepta polynomial trajectory
     #[inline(always)]
     pub fn c2(&self, c: &mut [real; 6]) {
         unsafe { a_trajpoly7_c2(self, c.as_mut_ptr()) }
     }
-    /// calculate coefficients of jerk for hepta polynomial trajectory
+    /// compute coefficients of jerk for hepta polynomial trajectory
     #[inline(always)]
     pub fn c3(&self, c: &mut [real; 5]) {
         unsafe { a_trajpoly7_c3(self, c.as_mut_ptr()) }
     }
-    /// calculate position for hepta polynomial trajectory
+    /// compute position for hepta polynomial trajectory
     #[inline(always)]
     pub fn pos(&self, x: real) -> real {
         unsafe { a_trajpoly7_pos(self, x) }
     }
-    /// calculate velocity for hepta polynomial trajectory
+    /// compute velocity for hepta polynomial trajectory
     #[inline(always)]
     pub fn vel(&self, x: real) -> real {
         unsafe { a_trajpoly7_vel(self, x) }
     }
-    /// calculate acceleration for hepta polynomial trajectory
+    /// compute acceleration for hepta polynomial trajectory
     #[inline(always)]
     pub fn acc(&self, x: real) -> real {
         unsafe { a_trajpoly7_acc(self, x) }
     }
-    /// calculate jerk for hepta polynomial trajectory
+    /// compute jerk for hepta polynomial trajectory
     #[inline(always)]
     pub fn jer(&self, x: real) -> real {
         unsafe { a_trajpoly7_jer(self, x) }
@@ -1694,17 +1694,17 @@ impl trajtrap {
     ) -> real {
         unsafe { a_trajtrap_gen(self, vm, ac, de, p0, p1, v0, v1) }
     }
-    /// calculate position for trapezoidal velocity trajectory
+    /// compute position for trapezoidal velocity trajectory
     #[inline(always)]
     pub fn pos(&self, x: real) -> real {
         unsafe { a_trajtrap_pos(self, x) }
     }
-    /// calculate velocity for trapezoidal velocity trajectory
+    /// compute velocity for trapezoidal velocity trajectory
     #[inline(always)]
     pub fn vel(&self, x: real) -> real {
         unsafe { a_trajtrap_vel(self, x) }
     }
-    /// calculate acceleration for trapezoidal velocity trajectory
+    /// compute acceleration for trapezoidal velocity trajectory
     #[inline(always)]
     pub fn acc(&self, x: real) -> real {
         unsafe { a_trajtrap_acc(self, x) }

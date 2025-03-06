@@ -30,7 +30,7 @@ extern "C" {
 A_EXTERN void a_regress_simple_init(a_regress_simple *ctx, a_real coef, a_real bias);
 
 /*!
- @brief calculate predicted value for simple linear regression
+ @brief compute predicted value for simple linear regression
  @param[in] ctx points to an instance of simple linear regression
  @param[in] val independent variable
  @return predicted value
@@ -38,7 +38,7 @@ A_EXTERN void a_regress_simple_init(a_regress_simple *ctx, a_real coef, a_real b
 A_EXTERN a_real a_regress_simple_eval(a_regress_simple const *ctx, a_real val);
 
 /*!
- @brief calculate predicted value for simple linear regression
+ @brief compute predicted value for simple linear regression
  @param[in] ctx points to an instance of simple linear regression
  @param[in] val dependent variable
  @return predicted value

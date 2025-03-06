@@ -138,7 +138,7 @@ public class trajbell {
     public final native double gen(double jm, double am, double vm, double p0, double p1, double v0, double v1);
 
     /**
-     * calculate position for bell-shaped velocity trajectory
+     * compute position for bell-shaped velocity trajectory
      *
      * @param x difference between current time and initial time
      * @return position output
@@ -146,7 +146,7 @@ public class trajbell {
     public final native double pos(double x);
 
     /**
-     * calculate velocity for bell-shaped velocity trajectory
+     * compute velocity for bell-shaped velocity trajectory
      *
      * @param x difference between current time and initial time
      * @return velocity output
@@ -154,7 +154,7 @@ public class trajbell {
     public final native double vel(double x);
 
     /**
-     * calculate acceleration for bell-shaped velocity trajectory
+     * compute acceleration for bell-shaped velocity trajectory
      *
      * @param x difference between current time and initial time
      * @return acceleration output
@@ -162,7 +162,7 @@ public class trajbell {
     public final native double acc(double x);
 
     /**
-     * calculate jerk for bell-shaped velocity trajectory
+     * compute jerk for bell-shaped velocity trajectory
      *
      * @param x difference between current time and initial time
      * @return jerk output

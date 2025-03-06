@@ -34,7 +34,7 @@ extern "C" {
   \end{array}\right.
  \f}
  @param[in,out] ctx points to an instance of cubic polynomial trajectory
- @param[in] ts difference between current time and initial time
+ @param[in] ts difference between final time and initial time
  @param[in] p0 initial position
  @param[in] p1 final position
  @param[in] v0 initial velocity
@@ -45,28 +45,28 @@ A_EXTERN void a_trajpoly3_gen(a_trajpoly3 *ctx, a_real ts,
                               a_real v0, a_real v1);
 
 /*!
- @brief calculate coefficients of position for cubic polynomial trajectory
+ @brief compute coefficients of position for cubic polynomial trajectory
  @param[in] ctx points to an instance of cubic polynomial trajectory
  @param[out] c coefficients of position
 */
 A_EXTERN void a_trajpoly3_c0(a_trajpoly3 const *ctx, a_real c[4]);
 
 /*!
- @brief calculate coefficients of velocity for cubic polynomial trajectory
+ @brief compute coefficients of velocity for cubic polynomial trajectory
  @param[in] ctx points to an instance of cubic polynomial trajectory
  @param[out] c coefficients of velocity
 */
 A_EXTERN void a_trajpoly3_c1(a_trajpoly3 const *ctx, a_real c[3]);
 
 /*!
- @brief calculate coefficients of acceleration for cubic polynomial trajectory
+ @brief compute coefficients of acceleration for cubic polynomial trajectory
  @param[in] ctx points to an instance of cubic polynomial trajectory
  @param[out] c coefficients of acceleration
 */
 A_EXTERN void a_trajpoly3_c2(a_trajpoly3 const *ctx, a_real c[2]);
 
 /*!
- @brief calculate position for cubic polynomial trajectory
+ @brief compute position for cubic polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
   p(t)=c_{0}+c_{1}\left(t-t_{0}\right)+c_{2}\left(t-t_{0}\right)^{2}+c_{3}\left(t-t_{0}\right)^{3} \\
@@ -79,7 +79,7 @@ A_EXTERN void a_trajpoly3_c2(a_trajpoly3 const *ctx, a_real c[2]);
 A_EXTERN a_real a_trajpoly3_pos(a_trajpoly3 const *ctx, a_real x);
 
 /*!
- @brief calculate velocity for cubic polynomial trajectory
+ @brief compute velocity for cubic polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
   \dot{p}(t)=c_{1}+2 c_{2}\left(t-t_{0}\right)+3 c_{3}\left(t-t_{0}\right)^{2} \\
@@ -92,7 +92,7 @@ A_EXTERN a_real a_trajpoly3_pos(a_trajpoly3 const *ctx, a_real x);
 A_EXTERN a_real a_trajpoly3_vel(a_trajpoly3 const *ctx, a_real x);
 
 /*!
- @brief calculate acceleration for cubic polynomial trajectory
+ @brief compute acceleration for cubic polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
   \ddot{p}(t)=2 c_{2}+6 c_{3}\left(t-t_{0}\right)

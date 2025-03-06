@@ -50,7 +50,7 @@ public class crc8 {
     public final native crc8 gen(byte poly, boolean reversed);
 
     /**
-     * calculate for 8-bit Cyclic Redundancy Check
+     * compute for 8-bit Cyclic Redundancy Check
      *
      * @param block block to be processed
      * @param value initial value
@@ -59,7 +59,7 @@ public class crc8 {
     public final native byte eval(byte[] block, byte value);
 
     /**
-     * calculate for 8-bit Cyclic Redundancy Check
+     * compute for 8-bit Cyclic Redundancy Check
      *
      * @param block block to be processed
      * @return output value

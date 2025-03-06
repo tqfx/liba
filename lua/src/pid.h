@@ -52,7 +52,7 @@ int liba_pid_init(lua_State *L);
 int liba_pid_set_kpid(lua_State *L);
 
 /***
- calculate for PID controller
+ compute for PID controller
  @tparam number set setpoint value
  @tparam number fdb feedback value
  @treturn number setpoint value
@@ -61,7 +61,7 @@ int liba_pid_set_kpid(lua_State *L);
 int liba_pid_run(lua_State *L);
 
 /***
- calculate for positional PID controller
+ compute for positional PID controller
  @tparam number set setpoint value
  @tparam number fdb feedback value
  @treturn number output value
@@ -70,7 +70,7 @@ int liba_pid_run(lua_State *L);
 int liba_pid_pos(lua_State *L);
 
 /***
- calculate for incremental PID controller
+ compute for incremental PID controller
  @tparam number set setpoint value
  @tparam number fdb feedback value
  @treturn number output value

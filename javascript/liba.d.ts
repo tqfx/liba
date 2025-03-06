@@ -2,13 +2,13 @@ declare namespace liba {
   /**
    * square root of an unsigned integer
    * @param x independent variable
-   * @return calculated result
+   * @return computed result
    */
   function isqrt(x: number): number;
   /**
    * reciprocal of square-root
    * @param x independent variable
-   * @return calculated result
+   * @return computed result
    */
   function rsqrt(x: number): number;
   /**
@@ -36,7 +36,7 @@ declare namespace liba {
      */
     gen(poly: number, reversed?: boolean): crc8;
     /**
-     * calculate for 8-bit Cyclic Redundancy Check
+     * compute for 8-bit Cyclic Redundancy Check
      * @param block block to be processed
      * @param value initial value
      * @return output value
@@ -71,7 +71,7 @@ declare namespace liba {
      */
     gen(poly: number, reversed?: boolean): crc16;
     /**
-     * calculate for 16-bit Cyclic Redundancy Check
+     * compute for 16-bit Cyclic Redundancy Check
      * @param block block to be processed
      * @param value initial value
      * @return output value
@@ -106,7 +106,7 @@ declare namespace liba {
      */
     gen(poly: number, reversed?: boolean): crc32;
     /**
-     * calculate for 32-bit Cyclic Redundancy Check
+     * compute for 32-bit Cyclic Redundancy Check
      * @param block block to be processed
      * @param value initial value
      * @return output value
@@ -141,7 +141,7 @@ declare namespace liba {
      */
     gen(poly: bigint, reversed?: boolean): crc64;
     /**
-     * calculate for 64-bit Cyclic Redundancy Check
+     * compute for 64-bit Cyclic Redundancy Check
      * @param block block to be processed
      * @param value initial value
      * @return output value
@@ -180,7 +180,7 @@ declare namespace liba {
      */
     gen(fc: number, ts: number): hpf;
     /**
-     * calculate for High Pass Filter
+     * compute for High Pass Filter
      * @param x input value
      * @return output value
      */
@@ -215,7 +215,7 @@ declare namespace liba {
      */
     gen(fc: number, ts: number): lpf;
     /**
-     * calculate for Low Pass Filter
+     * compute for Low Pass Filter
      * @param x input value
      * @return output value
      */
@@ -417,21 +417,21 @@ declare namespace liba {
      */
     set_kpid(kp: number, ki: number, kd: number): pid;
     /**
-     * calculate for PID controller
+     * compute for PID controller
      * @param set setpoint value
      * @param fdb feedback value
      * @return setpoint value
      */
     run(set: number, fdb: number): number;
     /**
-     * calculate for positional PID controller
+     * compute for positional PID controller
      * @param set setpoint value
      * @param fdb feedback value
      * @return output value
      */
     pos(set: number, fdb: number): number;
     /**
-     * calculate for incremental PID controller
+     * compute for incremental PID controller
      * @param set setpoint value
      * @param fdb feedback value
      * @return output value
@@ -501,21 +501,21 @@ declare namespace liba {
      */
     set_kpid(kp: number, ki: number, kd: number): pid_fuzzy;
     /**
-     * calculate for fuzzy PID controller
+     * compute for fuzzy PID controller
      * @param set setpoint value
      * @param fdb feedback value
      * @return setpoint value
      */
     run(set: number, fdb: number): number;
     /**
-     * calculate for positional fuzzy PID controller
+     * compute for positional fuzzy PID controller
      * @param set setpoint value
      * @param fdb feedback value
      * @return output value
      */
     pos(set: number, fdb: number): number;
     /**
-     * calculate for incremental fuzzy PID controller
+     * compute for incremental fuzzy PID controller
      * @param set setpoint value
      * @param fdb feedback value
      * @return output value
@@ -588,14 +588,14 @@ declare namespace liba {
      */
     set_wpid(wp: number, wi: number, wd: number): pid_neuro;
     /**
-     * calculate for single neuron PID controller
+     * compute for single neuron PID controller
      * @param set setpoint value
      * @param fdb feedback value
      * @return setpoint value
      */
     run(set: number, fdb: number): number;
     /**
-     * calculate for incremental single neuron PID controller
+     * compute for incremental single neuron PID controller
      * @param set setpoint value
      * @param fdb feedback value
      * @return output value
@@ -617,13 +617,13 @@ declare namespace liba {
     /** intercept */
     bias: number;
     /**
-     * calculate predicted value for linear regression
+     * compute predicted value for linear regression
      * @param val independent variable
      * @return predicted value
      */
     eval(val: number[]): number;
     /**
-     * calculate residuals for linear regression
+     * compute residuals for linear regression
      * @param x predictor data, specified as a numeric matrix
      * @param y response data, specified as a numeric vector
      * @return residuals, specified as a numeric vector
@@ -687,13 +687,13 @@ declare namespace liba {
     /** intercept */
     bias: number;
     /**
-     * calculate predicted value for simple linear regression
+     * compute predicted value for simple linear regression
      * @param val independent variable
      * @return predicted value
      */
     eval(val: number): number;
     /**
-     * calculate predicted value for simple linear regression
+     * compute predicted value for simple linear regression
      * @param val dependent variable
      * @return predicted value
      */
@@ -765,7 +765,7 @@ declare namespace liba {
      */
     set_den(den: number[]): tf;
     /**
-     * calculate for transfer function
+     * compute for transfer function
      * @param x transfer function input
      * @return transfer function output
      */
@@ -826,22 +826,22 @@ declare namespace liba {
      */
     gen(jm: number, am: number, vm: number, p0: number, p1: number, v0: number, v1: number): number;
     /**
-     * calculate position for bell-shaped velocity trajectory
+     * compute position for bell-shaped velocity trajectory
      * @param x difference between current time and initial time
      */
     pos(x: number): number;
     /**
-     * calculate velocity for bell-shaped velocity trajectory
+     * compute velocity for bell-shaped velocity trajectory
      * @param x difference between current time and initial time
      */
     vel(x: number): number;
     /**
-     * calculate acceleration for bell-shaped velocity trajectory
+     * compute acceleration for bell-shaped velocity trajectory
      * @param x difference between current time and initial time
      */
     acc(x: number): number;
     /**
-     * calculate jerk for bell-shaped velocity trajectory
+     * compute jerk for bell-shaped velocity trajectory
      * @param x difference between current time and initial time
      */
     jer(x: number): number;
@@ -861,17 +861,17 @@ declare namespace liba {
     /** coefficients of acceleration */
     readonly c2: Float64Array | Float32Array;
     /**
-     * calculate position for cubic polynomial trajectory
+     * compute position for cubic polynomial trajectory
      * @param x difference between current time and initial time
      */
     pos(x: number): number;
     /**
-     * calculate velocity for cubic polynomial trajectory
+     * compute velocity for cubic polynomial trajectory
      * @param x difference between current time and initial time
      */
     vel(x: number): number;
     /**
-     * calculate acceleration for cubic polynomial trajectory
+     * compute acceleration for cubic polynomial trajectory
      * @param x difference between current time and initial time
      */
     acc(x: number): number;
@@ -904,17 +904,17 @@ declare namespace liba {
     /** coefficients of acceleration */
     readonly c2: Float64Array | Float32Array;
     /**
-     * calculate position for quintic polynomial trajectory
+     * compute position for quintic polynomial trajectory
      * @param x difference between current time and initial time
      */
     pos(x: number): number;
     /**
-     * calculate velocity for quintic polynomial trajectory
+     * compute velocity for quintic polynomial trajectory
      * @param x difference between current time and initial time
      */
     vel(x: number): number;
     /**
-     * calculate acceleration for quintic polynomial trajectory
+     * compute acceleration for quintic polynomial trajectory
      * @param x difference between current time and initial time
      */
     acc(x: number): number;
@@ -959,22 +959,22 @@ declare namespace liba {
     /** coefficients of jerk */
     readonly c3: Float64Array | Float32Array;
     /**
-     * calculate position for hepta polynomial trajectory
+     * compute position for hepta polynomial trajectory
      * @param x difference between current time and initial time
      */
     pos(x: number): number;
     /**
-     * calculate velocity for hepta polynomial trajectory
+     * compute velocity for hepta polynomial trajectory
      * @param x difference between current time and initial time
      */
     vel(x: number): number;
     /**
-     * calculate acceleration for hepta polynomial trajectory
+     * compute acceleration for hepta polynomial trajectory
      * @param x difference between current time and initial time
      */
     acc(x: number): number;
     /**
-     * calculate jerk for hepta polynomial trajectory
+     * compute jerk for hepta polynomial trajectory
      * @param x difference between current time and initial time
      */
     jer(x: number): number;
@@ -1059,17 +1059,17 @@ declare namespace liba {
      */
     gen(vm: number, ac: number, de: number, p0: number, p1: number, v0: number, v1: number): number;
     /**
-     * calculate position for trapezoidal velocity trajectory
+     * compute position for trapezoidal velocity trajectory
      * @param x difference between current time and initial time
      */
     pos(x: number): number;
     /**
-     * calculate velocity for trapezoidal velocity trajectory
+     * compute velocity for trapezoidal velocity trajectory
      * @param x difference between current time and initial time
      */
     vel(x: number): number;
     /**
-     * calculate acceleration for trapezoidal velocity trajectory
+     * compute acceleration for trapezoidal velocity trajectory
      * @param x difference between current time and initial time
      */
     acc(x: number): number;

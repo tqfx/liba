@@ -50,7 +50,7 @@ public class crc64 {
     public final native crc64 gen(long poly, boolean reversed);
 
     /**
-     * calculate for 64-bit Cyclic Redundancy Check
+     * compute for 64-bit Cyclic Redundancy Check
      *
      * @param block block to be processed
      * @param value initial value
@@ -59,7 +59,7 @@ public class crc64 {
     public final native long eval(byte[] block, long value);
 
     /**
-     * calculate for 64-bit Cyclic Redundancy Check
+     * compute for 64-bit Cyclic Redundancy Check
      *
      * @param block block to be processed
      * @return output value

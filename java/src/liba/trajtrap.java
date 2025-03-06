@@ -120,7 +120,7 @@ public class trajtrap {
     public final native double gen(double vm, double ac, double de, double p0, double p1, double v0, double v1);
 
     /**
-     * calculate position for trapezoidal velocity trajectory
+     * compute position for trapezoidal velocity trajectory
      *
      * @param x difference between current time and initial time
      * @return position output
@@ -128,7 +128,7 @@ public class trajtrap {
     public final native double pos(double x);
 
     /**
-     * calculate velocity for trapezoidal velocity trajectory
+     * compute velocity for trapezoidal velocity trajectory
      *
      * @param x difference between current time and initial time
      * @return velocity output
@@ -136,7 +136,7 @@ public class trajtrap {
     public final native double vel(double x);
 
     /**
-     * calculate acceleration for trapezoidal velocity trajectory
+     * compute acceleration for trapezoidal velocity trajectory
      *
      * @param x difference between current time and initial time
      * @return acceleration output

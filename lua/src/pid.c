@@ -28,7 +28,7 @@ int liba_pid_new(lua_State *L)
 }
 
 /***
- calculate for PID controller
+ compute for PID controller
  @tparam a.pid ctx PID controller userdata
  @treturn a.pid PID controller userdata
  @function init
@@ -76,7 +76,7 @@ int liba_pid_set_kpid(lua_State *L)
 }
 
 /***
- calculate for PID controller
+ compute for PID controller
  @tparam a.pid ctx PID controller userdata
  @tparam number set setpoint value
  @tparam number fdb feedback value
@@ -97,7 +97,7 @@ int liba_pid_run(lua_State *L)
 }
 
 /***
- calculate for positional PID controller
+ compute for positional PID controller
  @tparam a.pid ctx PID controller userdata
  @tparam number set setpoint value
  @tparam number fdb feedback value
@@ -118,7 +118,7 @@ int liba_pid_pos(lua_State *L)
 }
 
 /***
- calculate for incremental PID controller
+ compute for incremental PID controller
  @tparam a.pid ctx PID controller userdata
  @tparam number set setpoint value
  @tparam number fdb feedback value

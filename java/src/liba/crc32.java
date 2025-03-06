@@ -50,7 +50,7 @@ public class crc32 {
     public final native crc32 gen(int poly, boolean reversed);
 
     /**
-     * calculate for 32-bit Cyclic Redundancy Check
+     * compute for 32-bit Cyclic Redundancy Check
      *
      * @param block block to be processed
      * @param value initial value
@@ -59,7 +59,7 @@ public class crc32 {
     public final native int eval(byte[] block, int value);
 
     /**
-     * calculate for 32-bit Cyclic Redundancy Check
+     * compute for 32-bit Cyclic Redundancy Check
      *
      * @param block block to be processed
      * @return output value

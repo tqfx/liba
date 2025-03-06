@@ -16,7 +16,7 @@ public class liba {
      * square root of an unsigned integer
      *
      * @param x independent variable
-     * @return calculated result
+     * @return computed result
      */
     public static final native int isqrt(int x);
 
@@ -24,7 +24,7 @@ public class liba {
      * square root of an unsigned integer
      *
      * @param x independent variable
-     * @return calculated result
+     * @return computed result
      */
     public static final native int isqrt(long x);
 
@@ -32,7 +32,7 @@ public class liba {
      * reciprocal of square-root
      *
      * @param x independent variable
-     * @return calculated result
+     * @return computed result
      */
     public static final native float rsqrt(float x);
 
@@ -40,7 +40,7 @@ public class liba {
      * reciprocal of square-root
      *
      * @param x independent variable
-     * @return calculated result
+     * @return computed result
      */
     public static final native double rsqrt(double x);
 

@@ -209,7 +209,7 @@ public class pid_neuro {
     public final native pid_neuro set_wpid(double wp, double wi, double wd);
 
     /**
-     * calculate for single neuron PID controller
+     * compute for single neuron PID controller
      *
      * @param set setpoint value
      * @param fdb feedback value
@@ -218,7 +218,7 @@ public class pid_neuro {
     public final native double run(double set, double fdb);
 
     /**
-     * calculate for incremental single neuron PID controller
+     * compute for incremental single neuron PID controller
      *
      * @param set setpoint value
      * @param fdb feedback value

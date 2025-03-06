@@ -53,7 +53,7 @@ int liba_trajpoly7_new(lua_State *L);
 int liba_trajpoly7_gen(lua_State *L);
 
 /***
- calculate position for hepta polynomial trajectory
+ compute position for hepta polynomial trajectory
  @tparam number x difference between current time and initial time
  @treturn number position output
  @function pos
@@ -61,7 +61,7 @@ int liba_trajpoly7_gen(lua_State *L);
 int liba_trajpoly7_pos(lua_State *L);
 
 /***
- calculate velocity for hepta polynomial trajectory
+ compute velocity for hepta polynomial trajectory
  @tparam number x difference between current time and initial time
  @treturn number velocity output
  @function vel
@@ -69,7 +69,7 @@ int liba_trajpoly7_pos(lua_State *L);
 int liba_trajpoly7_vel(lua_State *L);
 
 /***
- calculate acceleration for hepta polynomial trajectory
+ compute acceleration for hepta polynomial trajectory
  @tparam number x difference between current time and initial time
  @treturn number acceleration output
  @function acc
@@ -77,7 +77,7 @@ int liba_trajpoly7_vel(lua_State *L);
 int liba_trajpoly7_acc(lua_State *L);
 
 /***
- calculate jerk for hepta polynomial trajectory
+ compute jerk for hepta polynomial trajectory
  @tparam number x difference between current time and initial time
  @treturn number jerk output
  @function jer

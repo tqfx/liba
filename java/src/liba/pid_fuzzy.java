@@ -235,7 +235,7 @@ public class pid_fuzzy {
     public final native pid_fuzzy set_kpid(double kp, double ki, double kd);
 
     /**
-     * calculate for fuzzy PID controller
+     * compute for fuzzy PID controller
      *
      * @param set setpoint value
      * @param fdb feedback value
@@ -244,7 +244,7 @@ public class pid_fuzzy {
     public final native double run(double set, double fdb);
 
     /**
-     * calculate for positional fuzzy PID controller
+     * compute for positional fuzzy PID controller
      *
      * @param set setpoint value
      * @param fdb feedback value
@@ -253,7 +253,7 @@ public class pid_fuzzy {
     public final native double pos(double set, double fdb);
 
     /**
-     * calculate for incremental fuzzy PID controller
+     * compute for incremental fuzzy PID controller
      *
      * @param set setpoint value
      * @param fdb feedback value

@@ -64,7 +64,7 @@ int liba_lpf_gen(lua_State *L)
 }
 
 /***
- calculate for Low Pass Filter
+ compute for Low Pass Filter
  @tparam a.lpf ctx Low Pass Filter userdata
  @tparam number x input value
  @treturn number output value

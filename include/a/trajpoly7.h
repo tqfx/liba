@@ -55,35 +55,35 @@ A_EXTERN void a_trajpoly7_gen(a_trajpoly7 *ctx, a_real ts,
                               a_real j0, a_real j1);
 
 /*!
- @brief calculate coefficients of position for hepta polynomial trajectory
+ @brief compute coefficients of position for hepta polynomial trajectory
  @param[in] ctx points to an instance of hepta polynomial trajectory
  @param[out] c coefficients of position
 */
 A_EXTERN void a_trajpoly7_c0(a_trajpoly7 const *ctx, a_real c[8]);
 
 /*!
- @brief calculate coefficients of velocity for hepta polynomial trajectory
+ @brief compute coefficients of velocity for hepta polynomial trajectory
  @param[in] ctx points to an instance of hepta polynomial trajectory
  @param[out] c coefficients of velocity
 */
 A_EXTERN void a_trajpoly7_c1(a_trajpoly7 const *ctx, a_real c[7]);
 
 /*!
- @brief calculate coefficients of acceleration for hepta polynomial trajectory
+ @brief compute coefficients of acceleration for hepta polynomial trajectory
  @param[in] ctx points to an instance of hepta polynomial trajectory
  @param[out] c coefficients of acceleration
 */
 A_EXTERN void a_trajpoly7_c2(a_trajpoly7 const *ctx, a_real c[6]);
 
 /*!
- @brief calculate coefficients of jerk for hepta polynomial trajectory
+ @brief compute coefficients of jerk for hepta polynomial trajectory
  @param[in] ctx points to an instance of hepta polynomial trajectory
  @param[out] c coefficients of jerk
 */
 A_EXTERN void a_trajpoly7_c3(a_trajpoly7 const *ctx, a_real c[5]);
 
 /*!
- @brief calculate position for hepta polynomial trajectory
+ @brief compute position for hepta polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
   p(t)=c_{0}+c_{1}\left(t-t_{0}\right)+c_{2}\left(t-t_{0}\right)^{2}+c_{3}\left(t-t_{0}\right)^{3}+c_{4}\left(t-t_{0}\right)^{4}+c_{5}\left(t-t_{0}\right)^{5}+c_{6}\left(t-t_{0}\right)^{6}+c_{7}\left(t-t_{0}\right)^{7}\\
@@ -96,7 +96,7 @@ A_EXTERN void a_trajpoly7_c3(a_trajpoly7 const *ctx, a_real c[5]);
 A_EXTERN a_real a_trajpoly7_pos(a_trajpoly7 const *ctx, a_real x);
 
 /*!
- @brief calculate velocity for hepta polynomial trajectory
+ @brief compute velocity for hepta polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
   \dot{p}(t)=c_{1}+2 c_{2}\left(t-t_{0}\right)+3 c_{3}\left(t-t_{0}\right)^{2}+4 c_{4}\left(t-t_{0}\right)^{3}+5 c_{5}\left(t-t_{0}\right)^{4}+6 c_{6}\left(t-t_{0}\right)^{5}+7 c_{7}\left(t-t_{0}\right)^{6}\\
@@ -109,7 +109,7 @@ A_EXTERN a_real a_trajpoly7_pos(a_trajpoly7 const *ctx, a_real x);
 A_EXTERN a_real a_trajpoly7_vel(a_trajpoly7 const *ctx, a_real x);
 
 /*!
- @brief calculate acceleration for hepta polynomial trajectory
+ @brief compute acceleration for hepta polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
   \ddot{p}(t)=2 c_{2}+6 c_{3}\left(t-t_{0}\right)+12 c_{4}\left(t-t_{0}\right)^{2}+20 c_{5}\left(t-t_{0}\right)^{3}+30 c_{6}\left(t-t_{0}\right)^{4}+42 c_{7}\left(t-t_{0}\right)^{5}\\
@@ -122,7 +122,7 @@ A_EXTERN a_real a_trajpoly7_vel(a_trajpoly7 const *ctx, a_real x);
 A_EXTERN a_real a_trajpoly7_acc(a_trajpoly7 const *ctx, a_real x);
 
 /*!
- @brief calculate jerk for hepta polynomial trajectory
+ @brief compute jerk for hepta polynomial trajectory
  \f{aligned}{
   \begin{array}{l}
   p^{(3)}(t)=6 c_{3}+24 c_{4}\left(t-t_{0}\right)+60 c_{5}\left(t-t_{0}\right)^{2}+120 c_{6}\left(t-t_{0}\right)^{3}+210 c_{7}\left(t-t_{0}\right)^{4}

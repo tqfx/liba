@@ -83,7 +83,7 @@ int liba_trajpoly3_gen(lua_State *L)
 }
 
 /***
- calculate position for cubic polynomial trajectory
+ compute position for cubic polynomial trajectory
  @tparam a.trajpoly3 ctx cubic polynomial trajectory userdata
  @tparam number x difference between current time and initial time
  @treturn number position output
@@ -102,7 +102,7 @@ int liba_trajpoly3_pos(lua_State *L)
 }
 
 /***
- calculate velocity for cubic polynomial trajectory
+ compute velocity for cubic polynomial trajectory
  @tparam a.trajpoly3 ctx cubic polynomial trajectory userdata
  @tparam number x difference between current time and initial time
  @treturn number velocity output
@@ -121,7 +121,7 @@ int liba_trajpoly3_vel(lua_State *L)
 }
 
 /***
- calculate acceleration for cubic polynomial trajectory
+ compute acceleration for cubic polynomial trajectory
  @tparam a.trajpoly3 ctx cubic polynomial trajectory userdata
  @tparam number x difference between current time and initial time
  @treturn number acceleration output

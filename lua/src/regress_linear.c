@@ -71,7 +71,7 @@ int liba_regress_linear_init(lua_State *L)
 }
 
 /***
- calculate predicted value for linear regression
+ compute predicted value for linear regression
  @tparam a.regress_linear ctx linear regression userdata
  @tparam number val independent variable
  @treturn number predicted value
@@ -93,7 +93,7 @@ int liba_regress_linear_eval(lua_State *L)
 }
 
 /***
- calculate residuals for linear regression
+ compute residuals for linear regression
  @tparam a.regress_linear ctx linear regression userdata
  @tparam table x predictor data, specified as a numeric matrix
  @tparam table y response data, specified as a numeric vector

@@ -135,7 +135,7 @@ void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_real ec, a_real e)
     unsigned int *idx, ne, nec;
     a_real *val, *mat, inv = 0;
     a_real kp = 0, ki = 0, kd = 0;
-    /* calculate membership */
+    /* compute membership */
     idx = ctx->idx;
     val = ctx->val;
     ne = a_pid_fuzzy_mf(e, ctx->nrule, ctx->me, idx, val);

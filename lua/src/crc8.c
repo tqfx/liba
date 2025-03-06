@@ -66,7 +66,7 @@ int liba_crc8_gen(lua_State *L)
 }
 
 /***
- calculate for 8-bit Cyclic Redundancy Check
+ compute for 8-bit Cyclic Redundancy Check
  @tparam a.crc8 ctx 8-bit Cyclic Redundancy Check userdata
  @tparam string block block to be processed
  @tparam integer value initial value

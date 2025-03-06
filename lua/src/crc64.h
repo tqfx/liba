@@ -36,7 +36,7 @@ int liba_crc64_new(lua_State *L);
 int liba_crc64_gen(lua_State *L);
 
 /***
- calculate for 64-bit Cyclic Redundancy Check
+ compute for 64-bit Cyclic Redundancy Check
  @tparam string block block to be processed
  @tparam integer value initial value
  @treturn integer output value

@@ -55,7 +55,7 @@ public class regress_simple {
     public final native regress_simple set_bias(double bias);
 
     /**
-     * calculate predicted value for simple linear regression
+     * compute predicted value for simple linear regression
      *
      * @param val independent variable
      * @return predicted value
@@ -63,7 +63,7 @@ public class regress_simple {
     public final native double eval(double val);
 
     /**
-     * calculate predicted value for simple linear regression
+     * compute predicted value for simple linear regression
      *
      * @param val dependent variable
      * @return predicted value
@@ -71,7 +71,7 @@ public class regress_simple {
     public final native double evar(double val);
 
     /**
-     * calculate predicted value for simple linear regression
+     * compute predicted value for simple linear regression
      *
      * @param x predictor data, specified as a numeric vector
      * @param y response data, specified as a numeric vector
@@ -82,7 +82,7 @@ public class regress_simple {
     public final native regress_simple ols_(double[] x, double[] y, double x_mean, double y_mean);
 
     /**
-     * calculate predicted value for simple linear regression
+     * compute predicted value for simple linear regression
      *
      * @param x predictor data, specified as a numeric vector
      * @param y response data, specified as a numeric vector
@@ -92,7 +92,7 @@ public class regress_simple {
     public final native regress_simple olsx(double[] x, double[] y, double x_mean);
 
     /**
-     * calculate predicted value for simple linear regression
+     * compute predicted value for simple linear regression
      *
      * @param x predictor data, specified as a numeric vector
      * @param y response data, specified as a numeric vector
@@ -102,7 +102,7 @@ public class regress_simple {
     public final native regress_simple olsy(double[] x, double[] y, double y_mean);
 
     /**
-     * calculate predicted value for simple linear regression
+     * compute predicted value for simple linear regression
      *
      * @param x predictor data, specified as a numeric vector
      * @param y response data, specified as a numeric vector

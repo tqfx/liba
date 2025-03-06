@@ -99,7 +99,7 @@ A_EXTERN void a_pid_fuzzy_set_rule(a_pid_fuzzy *ctx, unsigned int nrule, a_real 
 A_EXTERN void a_pid_fuzzy_set_kpid(a_pid_fuzzy *ctx, a_real kp, a_real ki, a_real kd);
 
 /*!
- @brief calculate for fuzzy PID controller
+ @brief compute for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
  @param[in] set setpoint value
  @param[in] fdb feedback value
@@ -108,7 +108,7 @@ A_EXTERN void a_pid_fuzzy_set_kpid(a_pid_fuzzy *ctx, a_real kp, a_real ki, a_rea
 A_EXTERN a_real a_pid_fuzzy_run(a_pid_fuzzy *ctx, a_real set, a_real fdb);
 
 /*!
- @brief calculate for positional fuzzy PID controller
+ @brief compute for positional fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
  @param[in] set setpoint value
  @param[in] fdb feedback value
@@ -117,7 +117,7 @@ A_EXTERN a_real a_pid_fuzzy_run(a_pid_fuzzy *ctx, a_real set, a_real fdb);
 A_EXTERN a_real a_pid_fuzzy_pos(a_pid_fuzzy *ctx, a_real set, a_real fdb);
 
 /*!
- @brief calculate for incremental fuzzy PID controller
+ @brief compute for incremental fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
  @param[in] set setpoint value
  @param[in] fdb feedback value

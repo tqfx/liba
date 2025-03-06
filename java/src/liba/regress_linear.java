@@ -56,7 +56,7 @@ public class regress_linear {
     public final native regress_linear set_bias(double bias);
 
     /**
-     * calculate predicted value for linear regression
+     * compute predicted value for linear regression
      *
      * @param val independent variable
      * @return predicted value
@@ -64,7 +64,7 @@ public class regress_linear {
     public final native double eval(double[] val);
 
     /**
-     * calculate residuals for linear regression
+     * compute residuals for linear regression
      *
      * @param x predictor data, specified as a numeric matrix
      * @param y response data, specified as a numeric vector

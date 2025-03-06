@@ -48,7 +48,7 @@ public class lpf {
     public final native lpf gen(double fc, double ts);
 
     /**
-     * calculate for Low Pass Filter
+     * compute for Low Pass Filter
      *
      * @param x input value
      * @return output value

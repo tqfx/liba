@@ -57,7 +57,7 @@ A_EXTERN void a_tf_init(a_tf *ctx,
                         unsigned int den_n, a_real const *den_p, a_real *output);
 
 /*!
- @brief calculate for transfer function
+ @brief compute for transfer function
  @param[in] ctx points to an instance of transfer function
  @param[in] x transfer function input
  @return transfer function output

@@ -59,7 +59,7 @@ public class trajpoly3 {
     public final native trajpoly3 gen(double ts, double p0, double p1, double v0, double v1);
 
     /**
-     * calculate position for cubic polynomial trajectory
+     * compute position for cubic polynomial trajectory
      *
      * @param x difference between current time and initial time
      * @return position output
@@ -67,7 +67,7 @@ public class trajpoly3 {
     public final native double pos(double x);
 
     /**
-     * calculate velocity for cubic polynomial trajectory
+     * compute velocity for cubic polynomial trajectory
      *
      * @param x difference between current time and initial time
      * @return velocity output
@@ -75,7 +75,7 @@ public class trajpoly3 {
     public final native double vel(double x);
 
     /**
-     * calculate acceleration for cubic polynomial trajectory
+     * compute acceleration for cubic polynomial trajectory
      *
      * @param x difference between current time and initial time
      * @return acceleration output
