@@ -42,14 +42,14 @@ a_real a_trajpoly3_pos(a_trajpoly3 const *ctx, a_real x)
 
 a_real a_trajpoly3_vel(a_trajpoly3 const *ctx, a_real x)
 {
-    a_real v[A_LEN(ctx->c) - 1];
-    a_trajpoly3_c1(ctx, v);
-    return a_poly_eval_(v, v + A_LEN(v), x);
+    a_real c[A_LEN(ctx->c) - 1];
+    a_trajpoly3_c1(ctx, c);
+    return a_poly_eval_(c, c + A_LEN(c), x);
 }
 
 a_real a_trajpoly3_acc(a_trajpoly3 const *ctx, a_real x)
 {
-    a_real a[A_LEN(ctx->c) - 2];
-    a_trajpoly3_c2(ctx, a);
-    return a_poly_eval_(a, a + A_LEN(a), x);
+    a_real c[A_LEN(ctx->c) - 2];
+    a_trajpoly3_c2(ctx, c);
+    return a_poly_eval_(c, c + A_LEN(c), x);
 }
