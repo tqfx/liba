@@ -144,6 +144,14 @@ if(NOT CMAKE_VERSION VERSION_LESS 3.14)
   check_pie_supported()
 endif()
 
+function(target_msvc_no_manifest)
+  foreach(target ${ARGN})
+    get_property(LINK_FLAGS TARGET ${target} PROPERTY LINK_FLAGS)
+    string_append(LINK_FLAGS /MANIFEST:NO)
+    set_property(TARGET ${ARGN} PROPERTY LINK_FLAGS "${LINK_FLAGS}")
+  endforeach()
+endfunction()
+
 function(set_library_options)
   if(LIBA_IWYU AND IWYU_FOUND)
     add_include_what_you_use(TARGETS ${ARGN})
@@ -163,6 +171,10 @@ function(set_library_options)
 
   if(CMAKE_C_COMPILER_ID MATCHES "TinyCC" AND CMAKE_STATIC_LIBRARY_SUFFIX STREQUAL .lib)
     set_property(TARGET ${ARGN} PROPERTY IMPORT_SUFFIX .def)
+  endif()
+
+  if(CMAKE_C_COMPILER_ID MATCHES "MSVC" AND NOT MSVC_VERSION LESS 1400)
+    target_msvc_no_manifest(${ARGN})
   endif()
 
   if(LIBA_WARNINGS)

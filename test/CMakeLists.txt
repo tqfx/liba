@@ -23,6 +23,10 @@ function(set_executable_options)
     add_cppcheck(TARGETS ${ARGN} OPTIONS --enable=warning,performance)
   endif()
 
+  if(CMAKE_C_COMPILER_ID MATCHES "MSVC" AND NOT MSVC_VERSION LESS 1400)
+    target_msvc_no_manifest(${ARGN})
+  endif()
+
   if(LIBA_WARNINGS)
     target_compile_warnings(${ARGN})
   endif()
