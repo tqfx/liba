@@ -82,6 +82,52 @@ jobs:
           _/vcpkg/bootstrap-vcpkg.bat -disableMetrics
           _/vcpkg/vcpkg install liba[ipo,pkgconfig]:${{ matrix.triple }}-windows
           _/vcpkg/vcpkg install liba[ipo,pkgconfig]:${{ matrix.triple }}-windows-static
+      - name: Run cmake
+        shell: cmd
+        env:
+          CC: cl
+          CXX: cl
+        run: |
+          "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/Tools/VsDevCmd.bat" -host_arch=x64 -arch=${{ matrix.triple }} >nul & ^
+          cmake -S . -B build.msvc -G "Ninja Multi-Config" ^
+            -DCMAKE_INSTALL_PREFIX=_ ^
+            -DBUILD_TESTING=1 ^
+            -DLIBA_WARNINGS=1 ^
+            -DLIBA_ANALYZER=1 ^
+            -DLIBA_SANITIZE=1 ^
+            -DLIBA_WITH_LUA=1 ^
+            -DLIBA_PYTHON=${{ matrix.arch == 'x64' }} ^
+            -DLIBA_JAVA=1
+      - name: Run build
+        shell: cmd
+        env:
+          LIBA_OPENMP: 1
+        run: |
+          "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/Tools/VsDevCmd.bat" -host_arch=x64 -arch=${{ matrix.triple }} >nul & ^
+          cmake --build build.msvc --config Debug --target package
+      - name: Run ctest
+        if: ${{ startsWith(matrix.triple, 'x') }}
+        shell: cmd
+        env:
+          CTEST_OUTPUT_ON_FAILURE: 1
+        run: |
+          "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/Tools/VsDevCmd.bat" -host_arch=x64 -arch=${{ matrix.triple }} >nul & ^
+          cmake --build build.msvc --config Debug --target test
+      - name: Run build
+        shell: cmd
+        env:
+          LIBA_OPENMP: 1
+        run: |
+          "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/Tools/VsDevCmd.bat" -host_arch=x64 -arch=${{ matrix.triple }} >nul & ^
+          cmake --build build.msvc --config RelWithDebInfo --target package
+      - name: Run ctest
+        if: ${{ startsWith(matrix.triple, 'x') }}
+        shell: cmd
+        env:
+          CTEST_OUTPUT_ON_FAILURE: 1
+        run: |
+          "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/Tools/VsDevCmd.bat" -host_arch=x64 -arch=${{ matrix.triple }} >nul & ^
+          cmake --build build.msvc --config RelWithDebInfo --target test
       - uses: actions/checkout@v4
         if: ${{ matrix.arch == 'x64' }}
         with:
@@ -98,7 +144,8 @@ jobs:
       - name: Run cmake
         if: ${{ matrix.arch == 'x64' }}
         env:
-          CMAKE_TOOLCHAIN_FILE: cmake/UseClang.cmake
+          CC: clang
+          CXX: clang++
           EMSDK_QUIET: 1
           LIBA_OPENMP: 1
         run: |
