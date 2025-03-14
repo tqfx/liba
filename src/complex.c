@@ -34,7 +34,7 @@ __extension__ typedef _Complex A_REAL A_COMPLEX;
 
 #if !defined __STDC_VERSION__ || (defined(_MSC_VER) && (_MSC_VER < 1800))
 #if !defined isinf
-#define isinf(x) ((x) + (x) == (x) && (x))
+#define isinf(x) ((x) + (x) == (x) && (x) != 0)
 #endif /* isinf */
 #endif /* __STDC_VERSION__ */
 

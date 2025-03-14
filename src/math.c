@@ -12,7 +12,7 @@
 
 #if !defined __STDC_VERSION__ || (defined(_MSC_VER) && (_MSC_VER < 1800))
 #if !defined isinf
-#define isinf(x) ((x) + (x) == (x) && (x))
+#define isinf(x) ((x) + (x) == (x) && (x) != 0)
 #endif /* isinf */
 #if !defined isnan
 #define isnan(x) ((x) != (x))
@@ -341,7 +341,7 @@ a_real a_real_norm2(a_real x, a_real y)
         x = y;
         y = w;
     }
-    if (!y) { return 0; }
+    if (y == 0) { return 0; }
     x /= y;
     return a_real_sqrt(x * x + 1) * y;
 }
@@ -367,7 +367,7 @@ a_real a_real_norm3(a_real x, a_real y, a_real z)
         y = z;
         z = w;
     }
-    if (!z) { return 0; }
+    if (z == 0) { return 0; }
     x /= z;
     y /= z;
     return a_real_sqrt(x * x + y * y + 1) * z;
