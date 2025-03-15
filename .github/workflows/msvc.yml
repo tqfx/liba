@@ -1,6 +1,8 @@
 name: msvc
 on:
   workflow_dispatch:
+env:
+  VsDevCmd: C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/Tools/VsDevCmd.bat
 jobs:
   MSVC:
     strategy:
@@ -23,6 +25,7 @@ jobs:
           _/Scripts/Activate.ps1
           python -m pip install ninja
           python -m pip install -r requirements.txt
+          Get-ChildItem "C:/*/Microsoft Visual Studio/*/*/Common7/Tools/VsDevCmd.bat"
           Get-ChildItem Env: | Sort Name
       - name: Run cmake
         run: |
@@ -88,7 +91,7 @@ jobs:
           CC: cl
           CXX: cl
         run: |
-          "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/Tools/VsDevCmd.bat" -host_arch=x64 -arch=${{ matrix.triple }} >nul & ^
+          "${{ env.VsDevCmd }}" -host_arch=x64 -arch=${{ matrix.triple }} >nul & ^
           cmake -S . -B build.msvc -G "Ninja Multi-Config" ^
             -DCMAKE_INSTALL_PREFIX=_ ^
             -DBUILD_TESTING=1 ^
@@ -103,7 +106,7 @@ jobs:
         env:
           LIBA_OPENMP: 1
         run: |
-          "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/Tools/VsDevCmd.bat" -host_arch=x64 -arch=${{ matrix.triple }} >nul & ^
+          "${{ env.VsDevCmd }}" -host_arch=x64 -arch=${{ matrix.triple }} >nul & ^
           cmake --build build.msvc --config Debug --target package
       - name: Run ctest
         if: ${{ startsWith(matrix.triple, 'x') }}
@@ -111,14 +114,14 @@ jobs:
         env:
           CTEST_OUTPUT_ON_FAILURE: 1
         run: |
-          "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/Tools/VsDevCmd.bat" -host_arch=x64 -arch=${{ matrix.triple }} >nul & ^
+          "${{ env.VsDevCmd }}" -host_arch=x64 -arch=${{ matrix.triple }} >nul & ^
           cmake --build build.msvc --config Debug --target test
       - name: Run build
         shell: cmd
         env:
           LIBA_OPENMP: 1
         run: |
-          "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/Tools/VsDevCmd.bat" -host_arch=x64 -arch=${{ matrix.triple }} >nul & ^
+          "${{ env.VsDevCmd }}" -host_arch=x64 -arch=${{ matrix.triple }} >nul & ^
           cmake --build build.msvc --config RelWithDebInfo --target package
       - name: Run ctest
         if: ${{ startsWith(matrix.triple, 'x') }}
@@ -126,7 +129,7 @@ jobs:
         env:
           CTEST_OUTPUT_ON_FAILURE: 1
         run: |
-          "C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Common7/Tools/VsDevCmd.bat" -host_arch=x64 -arch=${{ matrix.triple }} >nul & ^
+          "${{ env.VsDevCmd }}" -host_arch=x64 -arch=${{ matrix.triple }} >nul & ^
           cmake --build build.msvc --config RelWithDebInfo --target test
       - uses: actions/checkout@v4
         if: ${{ matrix.arch == 'x64' }}
