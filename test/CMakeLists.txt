@@ -198,6 +198,9 @@ endif()
 building(linalg linalg.c linalg.cc)
 unittest(linalg)
 
+building(linalg_ldl linalg_ldl.c linalg_ldl.cc)
+unittest(linalg_ldl)
+
 building(linalg_llt linalg_llt.c linalg_llt.cc)
 unittest(linalg_llt)
 

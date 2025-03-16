@@ -44,6 +44,10 @@ target("test/hpf")
 building({ "hpf.c", "hpf.cc" })
 target_end()
 
+target("test/linalg_ldl")
+building({ "linalg_ldl.c", "linalg_ldl.cc" })
+target_end()
+
 target("test/linalg_llt")
 building({ "linalg_llt.c", "linalg_llt.cc" })
 target_end()

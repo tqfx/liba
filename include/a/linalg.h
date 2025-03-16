@@ -287,6 +287,95 @@ A_EXTERN a_real a_real_plu_lndet(a_uint n, a_real const *A);
 A_EXTERN int a_real_plu_sgndet(a_uint n, a_real const *A, int sign);
 
 /*!
+ @brief compute LDL decomposition of a symmetric matrix.
+ @details The matrix A is modified in-place to store the lower triangular matrix L and the diagonal matrix D.
+ The decomposition satisfies the equation A = LDL^T, where L is a unit lower triangular matrix,
+ and D is a diagonal matrix. This function assumes that the input matrix A is symmetric.
+ @param[in] n the order of the square matrix A (number of rows and columns).
+ @param[in,out] A an n x n square matrix.
+  on input, contains the matrix to decompose. on output, contains the L and D matrices.
+ @return 0 on success, or a non-zero error code if the decomposition fails.
+  @retval -1 on failure, A is a singular matrix.
+*/
+A_EXTERN int a_real_ldl(a_uint n, a_real *A);
+
+/*!
+ @brief extract the lower triangular matrix L from matrix A.
+ @param[in] n the order of the square matrix that was decomposed.
+ @param[in] A the matrix containing L and D in a compact form after LDL decomposition.
+ @param[out] L the output matrix where the lower triangular matrix will be stored.
+*/
+A_EXTERN void a_real_ldl_L(a_uint n, a_real const *A, a_real *L);
+
+/*!
+ @brief extract the diagonal matrix D from matrix A.
+ @param[in] n the order of the square matrix that was decomposed.
+ @param[in] A the matrix containing L and D in a compact form after LDL decomposition.
+ @param[out] D the output matrix where the diagonal matrix will be stored.
+*/
+A_EXTERN void a_real_ldl_D(a_uint n, a_real const *A, a_real *D);
+
+/*!
+ @brief solve the lower triangular system Ly = b for y.
+ @param[in] n the order of the square matrix L (number of rows and columns).
+ @param[in] L the matrix containing L and D in a compact form after LDL decomposition.
+ @param[in,out] y on input, contains the vector b. on output, contains the solution vector y.
+*/
+A_EXTERN void a_real_ldl_lower(a_uint n, a_real const *L, a_real *y);
+A_EXTERN void a_real_ldl_lower_(a_uint n, a_real const *L, a_real *y);
+
+/*!
+ @brief solve the upper triangular system D L^T x = y for x.
+ @param[in] n the order of the square matrix L (number of rows and columns).
+ @param[in] L the matrix containing L and D in a compact form after LDL decomposition.
+ @param[in,out] x on input, contains the vector y. on output, contains the solution vector x.
+*/
+A_EXTERN void a_real_ldl_upper(a_uint n, a_real const *L, a_real *x);
+A_EXTERN void a_real_ldl_upper_(a_uint n, a_real const *L, a_real *x);
+
+/*!
+ @brief solve the linear system Ax = b using the LDL factorization A = LDL^T.
+ @param[in] n the order of the square matrix A (number of rows and columns).
+ @param[in] A the matrix containing L and D in a compact form after LDL decomposition.
+ @param[in,out] x on input, contains the vector b. on output, contains the solution vector x.
+*/
+A_EXTERN void a_real_ldl_solve(a_uint n, a_real const *A, a_real *x);
+
+/*!
+ @brief compute the inverse of a matrix using its LDL factorization A = LDL^T.
+ @param[in] n the order of the square matrix A (number of rows and columns).
+ @param[in] A the matrix containing L and D in a compact form after LDL decomposition.
+ @param[in] b a pre-allocated temporary buffer of size n for intermediate computations.
+ @param[out] I the output matrix where the inverse of A will be stored.
+*/
+A_EXTERN void a_real_ldl_inv(a_uint n, a_real const *A, a_real *b, a_real *I);
+A_EXTERN void a_real_ldl_inv_(a_uint n, a_real const *A, a_real *I);
+
+/*!
+ @brief compute the determinant of a matrix using its LDL decomposition.
+ @param[in] n the order of the square matrix A (number of rows and columns).
+ @param[in] A the matrix containing L and D in a compact form after LDL decomposition.
+ @return the determinant of matrix A.
+*/
+A_EXTERN a_real a_real_ldl_det(a_uint n, a_real const *A);
+
+/*!
+ @brief compute the natural logarithm of the absolute value of the determinant of a matrix using its LDL decomposition.
+ @param[in] n the order of the square matrix A (number of rows and columns).
+ @param[in] A the matrix containing L and D in a compact form after LDL decomposition.
+ @return the natural logarithm of the absolute value of the determinant.
+*/
+A_EXTERN a_real a_real_ldl_lndet(a_uint n, a_real const *A);
+
+/*!
+ @brief compute the sign of the determinant of a matrix using its LDL decomposition.
+ @param[in] n the order of the square matrix A (number of rows and columns).
+ @param[in] A the matrix containing L and D in a compact form after LDL decomposition.
+ @return the sign of the determinant: -1, 0, +1.
+*/
+A_EXTERN int a_real_ldl_sgndet(a_uint n, a_real const *A);
+
+/*!
  @brief compute Cholesky decomposition of a symmetric positive-definite matrix.
  @param[in] n the order of the square matrix A (number of rows and columns).
  @param[in,out] A an n x n square matrix.
