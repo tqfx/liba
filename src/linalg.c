@@ -3,13 +3,13 @@
 void a_real_T1(a_uint n, a_real *A)
 {
     a_uint r, c;
+    a_real value;
     for (r = 0; r < n; ++r)
     {
         a_real *const Ar = A + (a_size)n * r;
         for (c = r + 1; c < n; ++c)
         {
             a_real *const Ac = A + (a_size)n * c;
-            a_real value;
             value = Ac[r];
             Ac[r] = Ar[c];
             Ar[c] = value;
