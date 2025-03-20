@@ -31,6 +31,102 @@ void a_real_T2(a_uint m, a_uint n, a_real const *__restrict A, a_real *__restric
     }
 }
 
+void a_real_diag(a_uint n, a_real const *__restrict a, a_real *__restrict A)
+{
+    a_uint r, c;
+    a_size const N = (a_size)n + 1;
+    for (r = 0; r < n; ++r) { A[N * r] = a[r]; }
+    for (r = 0; r < n; ++r)
+    {
+        for (c = 0; c < r; ++c)
+        {
+            A[c] = 0;
+        }
+        while (++c < n)
+        {
+            A[c] = 0;
+        }
+        A += n;
+    }
+}
+
+void a_real_diagv(a_uint n, a_real const *__restrict A, a_real *__restrict a)
+{
+    a_uint i;
+    a_size const N = (a_size)n + 1;
+    for (i = 0; i < n; ++i) { a[i] = A[N * i]; }
+}
+
+void a_real_triL(a_uint n, a_real const *__restrict A, a_real *__restrict L)
+{
+    a_uint r, c;
+    for (r = 0; r < n; ++r)
+    {
+        for (c = 0; c <= r; ++c)
+        {
+            *L++ = A[c];
+        }
+        for (; c < n; ++c)
+        {
+            *L++ = 0;
+        }
+        A += n;
+    }
+}
+
+void a_real_triL1(a_uint n, a_real const *__restrict A, a_real *__restrict L)
+{
+    a_uint r, c;
+    for (r = 0; r < n; ++r)
+    {
+        for (c = 0; c < r; ++c)
+        {
+            *L++ = A[c];
+        }
+        *L++ = 1;
+        while (++c < n)
+        {
+            *L++ = 0;
+        }
+        A += n;
+    }
+}
+
+void a_real_triU(a_uint n, a_real const *__restrict A, a_real *__restrict U)
+{
+    a_uint r, c;
+    for (r = 0; r < n; ++r)
+    {
+        for (c = 0; c < r; ++c)
+        {
+            *U++ = 0;
+        }
+        for (; c < n; ++c)
+        {
+            *U++ = A[c];
+        }
+        A += n;
+    }
+}
+
+void a_real_triU1(a_uint n, a_real const *__restrict A, a_real *__restrict U)
+{
+    a_uint r, c;
+    for (r = 0; r < n; ++r)
+    {
+        for (c = 0; c < r; ++c)
+        {
+            *U++ = 0;
+        }
+        *U++ = 1;
+        while (++c < n)
+        {
+            *U++ = A[c];
+        }
+        A += n;
+    }
+}
+
 void a_real_mulmm(a_uint row, a_uint c_r, a_uint col, a_real const *__restrict X, a_real const *__restrict Y, a_real *__restrict Z)
 {
     a_real const *x, *x_, *y, *y_;

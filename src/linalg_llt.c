@@ -26,21 +26,9 @@ int a_real_llt(a_uint n, a_real *A)
     return 0;
 }
 
-void a_real_llt_L(a_uint n, a_real const *A, a_real *L)
+void a_real_llt_L(a_uint n, a_real const *__restrict A, a_real *__restrict L)
 {
-    a_uint r, c;
-    for (r = 0; r < n; ++r)
-    {
-        for (c = 0; c <= r; ++c)
-        {
-            *L++ = A[c];
-        }
-        for (; c < n; ++c)
-        {
-            *L++ = 0;
-        }
-        A += n;
-    }
+    a_real_triL(n, A, L);
 }
 
 void a_real_llt_lower(a_uint n, a_real const *L, a_real *y)

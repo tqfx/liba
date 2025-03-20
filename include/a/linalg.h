@@ -20,19 +20,67 @@ extern "C" {
 
 /*!
  @brief transpose an n x n square matrix in-place.
- @param[in] n order of square matrix A
- @param[in,out] A an n x n square matrix
+ @param[in] n the order of square matrix A.
+ @param[in,out] A an n x n square matrix.
  */
 A_EXTERN void a_real_T1(a_uint n, a_real *A);
 
 /*!
  @brief transpose a given m x n matrix A into an n x m matrix T.
- @param[in] m rows in the input matrix A.
- @param[in] n columns in the input matrix A.
+ @param[in] m the rows in the input matrix A.
+ @param[in] n the columns in the input matrix A.
  @param[in] A the input matrix A (m x n), stored in row-major order.
  @param[out] T the output matrix where the transposed matrix T (n x m) will be stored.
 */
 A_EXTERN void a_real_T2(a_uint m, a_uint n, a_real const *__restrict A, a_real *__restrict T);
+
+/*!
+ @brief compute a diagonal matrix from a given diagonal vector.
+ @param[in] n the order of the diagonal matrix (n x n).
+ @param[in] a the input diagonal vector.
+ @param[out] A the output diagonal matrix.
+*/
+A_EXTERN void a_real_diag(a_uint n, a_real const *__restrict a, a_real *__restrict A);
+
+/*!
+ @brief extract a diagonal vector from a given diagonal matrix.
+ @param[in] n the order of the diagonal matrix (n x n).
+ @param[in] A the input diagonal matrix.
+ @param[out] a the output diagonal vector.
+*/
+A_EXTERN void a_real_diagv(a_uint n, a_real const *__restrict A, a_real *__restrict a);
+
+/*!
+ @brief extract the lower triangular part of a square matrix, including the diagonal.
+ @param[in] n the order of square matrix A.
+ @param[in] A the input matrix A (n x n), stored in row-major order.
+ @param[out] L the output matrix where the lower triangular L (n x n) will be stored.
+*/
+A_EXTERN void a_real_triL(a_uint n, a_real const *__restrict A, a_real *__restrict L);
+
+/*!
+ @brief extract the lower triangular part of a square matrix, set the diagonal to 1.
+ @param[in] n the order of square matrix A.
+ @param[in] A the input matrix A (n x n), stored in row-major order.
+ @param[out] L the output matrix where the lower triangular L (n x n) will be stored.
+*/
+A_EXTERN void a_real_triL1(a_uint n, a_real const *__restrict A, a_real *__restrict L);
+
+/*!
+ @brief extract the upper triangular part of a square matrix, including the diagonal.
+ @param[in] n the order of square matrix A.
+ @param[in] A the input matrix A (n x n), stored in row-major order.
+ @param[out] U the output matrix where the upper triangular U (n x n) will be stored.
+*/
+A_EXTERN void a_real_triU(a_uint n, a_real const *__restrict A, a_real *__restrict U);
+
+/*!
+ @brief extract the upper triangular part of a square matrix, set the diagonal to 1.
+ @param[in] n the order of square matrix A.
+ @param[in] A the input matrix A (n x n), stored in row-major order.
+ @param[out] U the output matrix where the upper triangular U (n x n) will be stored.
+*/
+A_EXTERN void a_real_triU1(a_uint n, a_real const *__restrict A, a_real *__restrict U);
 
 /*!
  @brief multiply two matrices X and Y, storing the result in Z.
@@ -193,8 +241,8 @@ A_EXTERN int a_real_plu(a_uint n, a_real *A, a_uint *p, int *sign);
  @param[in] p the row permutation indices after partial pivoting.
  @param[out] P the output matrix where the permutation matrix will be stored.
 */
-A_EXTERN void a_real_plu_P(a_uint n, a_uint const *p, a_real *P);
-A_EXTERN void a_real_plu_P_(a_uint n, a_uint const *p, a_real *P);
+A_EXTERN void a_real_plu_P(a_uint n, a_uint const *__restrict p, a_real *__restrict P);
+A_EXTERN void a_real_plu_P_(a_uint n, a_uint const *__restrict p, a_real *__restrict P);
 
 /*!
  @brief extract the lower triangular matrix L from matrix A.
@@ -202,7 +250,7 @@ A_EXTERN void a_real_plu_P_(a_uint n, a_uint const *p, a_real *P);
  @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[out] L the output matrix where the lower triangular matrix will be stored.
 */
-A_EXTERN void a_real_plu_L(a_uint n, a_real const *A, a_real *L);
+A_EXTERN void a_real_plu_L(a_uint n, a_real const *__restrict A, a_real *__restrict L);
 
 /*!
  @brief extract the upper triangular matrix U from matrix A.
@@ -210,7 +258,7 @@ A_EXTERN void a_real_plu_L(a_uint n, a_real const *A, a_real *L);
  @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[out] U the output matrix where the upper triangular matrix will be stored.
 */
-A_EXTERN void a_real_plu_U(a_uint n, a_real const *A, a_real *U);
+A_EXTERN void a_real_plu_U(a_uint n, a_real const *__restrict A, a_real *__restrict U);
 
 /*!
  @brief apply the permutation P to the vector b, producing Pb.
@@ -219,7 +267,7 @@ A_EXTERN void a_real_plu_U(a_uint n, a_real const *A, a_real *U);
  @param[in] b the input vector of size n that will be permuted.
  @param[out] Pb the output vector where the permuted result will be stored.
 */
-A_EXTERN void a_real_plu_apply(a_uint n, a_uint const *p, a_real const *b, a_real *Pb);
+A_EXTERN void a_real_plu_apply(a_uint n, a_uint const *__restrict p, a_real const *__restrict b, a_real *__restrict Pb);
 
 /*!
  @brief solve the lower triangular system Ly = Pb for y.
@@ -305,15 +353,15 @@ A_EXTERN int a_real_ldl(a_uint n, a_real *A);
  @param[in] A the matrix containing L and D in a compact form after LDL decomposition.
  @param[out] L the output matrix where the lower triangular matrix will be stored.
 */
-A_EXTERN void a_real_ldl_L(a_uint n, a_real const *A, a_real *L);
+A_EXTERN void a_real_ldl_L(a_uint n, a_real const *__restrict A, a_real *__restrict L);
 
 /*!
- @brief extract the diagonal matrix D from matrix A.
+ @brief extract the diagonal vector D from matrix A.
  @param[in] n the order of the square matrix that was decomposed.
  @param[in] A the matrix containing L and D in a compact form after LDL decomposition.
- @param[out] D the output matrix where the diagonal matrix will be stored.
+ @param[out] d the output vector where the diagonal vector will be stored.
 */
-A_EXTERN void a_real_ldl_D(a_uint n, a_real const *A, a_real *D);
+A_EXTERN void a_real_ldl_D(a_uint n, a_real const *__restrict A, a_real *__restrict d);
 
 /*!
  @brief solve the lower triangular system Ly = b for y.
@@ -391,7 +439,7 @@ A_EXTERN int a_real_llt(a_uint n, a_real *A);
  @param[in] A the matrix containing L form after Cholesky decomposition.
  @param[out] L the output matrix where the lower triangular matrix will be stored.
 */
-A_EXTERN void a_real_llt_L(a_uint n, a_real const *A, a_real *L);
+A_EXTERN void a_real_llt_L(a_uint n, a_real const *__restrict A, a_real *__restrict L);
 
 /*!
  @brief solve the lower triangular system Ly = b for y.

@@ -46,7 +46,7 @@ int a_real_plu(a_uint n, a_real *A, a_uint *p, int *sign)
     return 0;
 }
 
-void a_real_plu_P(a_uint n, a_uint const *p, a_real *P)
+void a_real_plu_P(a_uint n, a_uint const *__restrict p, a_real *__restrict P)
 {
     a_uint r, c;
     for (r = 0; r < n; ++r)
@@ -59,7 +59,7 @@ void a_real_plu_P(a_uint n, a_uint const *p, a_real *P)
     }
 }
 
-void a_real_plu_P_(a_uint n, a_uint const *p, a_real *P)
+void a_real_plu_P_(a_uint n, a_uint const *__restrict p, a_real *__restrict P)
 {
     a_uint r, c;
     for (r = 0; r < n; ++r)
@@ -71,42 +71,17 @@ void a_real_plu_P_(a_uint n, a_uint const *p, a_real *P)
     }
 }
 
-void a_real_plu_L(a_uint n, a_real const *A, a_real *L)
+void a_real_plu_L(a_uint n, a_real const *__restrict A, a_real *__restrict L)
 {
-    a_uint r, c;
-    for (r = 0; r < n; ++r)
-    {
-        for (c = 0; c < r; ++c)
-        {
-            *L++ = A[c];
-        }
-        *L++ = 1;
-        while (++c < n)
-        {
-            *L++ = 0;
-        }
-        A += n;
-    }
+    a_real_triL1(n, A, L);
 }
 
-void a_real_plu_U(a_uint n, a_real const *A, a_real *U)
+void a_real_plu_U(a_uint n, a_real const *__restrict A, a_real *__restrict U)
 {
-    a_uint r, c;
-    for (r = 0; r < n; ++r)
-    {
-        for (c = 0; c < r; ++c)
-        {
-            *U++ = 0;
-        }
-        for (; c < n; ++c)
-        {
-            *U++ = A[c];
-        }
-        A += n;
-    }
+    a_real_triU(n, A, U);
 }
 
-void a_real_plu_apply(a_uint n, a_uint const *p, a_real const *b, a_real *Pb)
+void a_real_plu_apply(a_uint n, a_uint const *__restrict p, a_real const *__restrict b, a_real *__restrict Pb)
 {
     a_uint i;
     for (i = 0; i < n; ++i) { Pb[i] = b[p[i]]; }
