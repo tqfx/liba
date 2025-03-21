@@ -31,6 +31,88 @@ void a_real_T2(a_uint m, a_uint n, a_real const *__restrict A, a_real *__restric
     }
 }
 
+void a_real_eye1(a_uint n, a_real *E)
+{
+    a_uint r, c;
+    for (r = 0; r < n; ++r)
+    {
+        for (c = 0; c < r; ++c)
+        {
+            *E++ = 0;
+        }
+        *E++ = 1;
+        while (++c < n)
+        {
+            *E++ = 0;
+        }
+    }
+}
+
+void a_real_eye2(a_uint m, a_uint n, a_real *E)
+{
+    a_uint r, c;
+    a_uint const M = A_MIN(m, n);
+    for (r = 0; r < M; ++r)
+    {
+        for (c = 0; c < r; ++c)
+        {
+            *E++ = 0;
+        }
+        *E++ = 1;
+        while (++c < n)
+        {
+            *E++ = 0;
+        }
+    }
+    for (r = n; r < m; ++r)
+    {
+        for (c = 0; c < n; ++c)
+        {
+            *E++ = 0;
+        }
+    }
+}
+
+void a_real_tri1(a_uint n, a_real *L)
+{
+    a_uint r, c;
+    for (r = 0; r < n; ++r)
+    {
+        for (c = 0; c <= r; ++c)
+        {
+            *L++ = 1;
+        }
+        for (; c < n; ++c)
+        {
+            *L++ = 0;
+        }
+    }
+}
+
+void a_real_tri2(a_uint m, a_uint n, a_real *L)
+{
+    a_uint r, c;
+    a_uint const M = A_MIN(m, n);
+    for (r = 0; r < M; ++r)
+    {
+        for (c = 0; c <= r; ++c)
+        {
+            *L++ = 1;
+        }
+        for (; c < n; ++c)
+        {
+            *L++ = 0;
+        }
+    }
+    for (r = n; r < m; ++r)
+    {
+        for (c = 0; c < n; ++c)
+        {
+            *L++ = 1;
+        }
+    }
+}
+
 void a_real_diag(a_uint n, a_real const *__restrict a, a_real *__restrict A)
 {
     a_uint r, c;
@@ -50,11 +132,19 @@ void a_real_diag(a_uint n, a_real const *__restrict a, a_real *__restrict A)
     }
 }
 
-void a_real_diagv(a_uint n, a_real const *__restrict A, a_real *__restrict a)
+void a_real_diag1(a_uint n, a_real const *__restrict A, a_real *__restrict a)
 {
     a_uint i;
     a_size const N = (a_size)n + 1;
     for (i = 0; i < n; ++i) { a[i] = A[N * i]; }
+}
+
+void a_real_diag2(a_uint m, a_uint n, a_real const *__restrict A, a_real *__restrict a)
+{
+    a_uint i;
+    a_uint const M = A_MIN(m, n);
+    a_size const N = (a_size)n + 1;
+    for (i = 0; i < M; ++i) { a[i] = A[N * i]; }
 }
 
 void a_real_triL(a_uint n, a_real const *__restrict A, a_real *__restrict L)
@@ -92,6 +182,31 @@ void a_real_triL1(a_uint n, a_real const *__restrict A, a_real *__restrict L)
     }
 }
 
+void a_real_triL2(a_uint m, a_uint n, a_real const *__restrict A, a_real *__restrict L)
+{
+    a_uint r, c;
+    a_uint const M = A_MIN(m, n);
+    for (r = 0; r < M; ++r)
+    {
+        for (c = 0; c <= r; ++c)
+        {
+            *L++ = A[c];
+        }
+        for (; c < n; ++c)
+        {
+            *L++ = 0;
+        }
+        A += n;
+    }
+    for (r = n; r < m; ++r)
+    {
+        for (c = 0; c < n; ++c)
+        {
+            *L++ = *A++;
+        }
+    }
+}
+
 void a_real_triU(a_uint n, a_real const *__restrict A, a_real *__restrict U)
 {
     a_uint r, c;
@@ -124,6 +239,31 @@ void a_real_triU1(a_uint n, a_real const *__restrict A, a_real *__restrict U)
             *U++ = A[c];
         }
         A += n;
+    }
+}
+
+void a_real_triU2(a_uint m, a_uint n, a_real const *__restrict A, a_real *__restrict U)
+{
+    a_uint r, c;
+    a_uint const M = A_MIN(m, n);
+    for (r = 0; r < M; ++r)
+    {
+        for (c = 0; c < r; ++c)
+        {
+            *U++ = 0;
+        }
+        for (; c < n; ++c)
+        {
+            *U++ = A[c];
+        }
+        A += n;
+    }
+    for (r = n; r < m; ++r)
+    {
+        for (c = 0; c < n; ++c)
+        {
+            *U++ = 0;
+        }
     }
 }
 

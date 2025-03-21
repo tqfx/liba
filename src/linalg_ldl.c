@@ -32,7 +32,7 @@ void a_real_ldl_L(a_uint n, a_real const *__restrict A, a_real *__restrict L)
 
 void a_real_ldl_D(a_uint n, a_real const *__restrict A, a_real *__restrict d)
 {
-    a_real_diagv(n, A, d);
+    a_real_diag1(n, A, d);
 }
 
 void a_real_ldl_lower(a_uint n, a_real const *L, a_real *y)

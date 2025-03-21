@@ -35,6 +35,36 @@ A_EXTERN void a_real_T1(a_uint n, a_real *A);
 A_EXTERN void a_real_T2(a_uint m, a_uint n, a_real const *__restrict A, a_real *__restrict T);
 
 /*!
+ @brief generate an m x n matrix with ones on the diagonal and zeros elsewhere.
+ @param[in] n the order of the diagonal matrix (n x n).
+ @param[out] E the output matrix where the result will be stored.
+*/
+A_EXTERN void a_real_eye1(a_uint n, a_real *E);
+
+/*!
+ @brief generate an m x n matrix with ones on the diagonal and zeros elsewhere.
+ @param[in] m the rows in the input matrix A.
+ @param[in] n the columns in the input matrix A.
+ @param[out] E the output matrix where the result will be stored.
+*/
+A_EXTERN void a_real_eye2(a_uint m, a_uint n, a_real *E);
+
+/*!
+ @brief generate an m x n matrix with ones in the lower triangular part and zeros elsewhere.
+ @param[in] n the order of the diagonal matrix (n x n).
+ @param[out] L the output matrix where the result will be stored.
+*/
+A_EXTERN void a_real_tri1(a_uint n, a_real *L);
+
+/*!
+ @brief generate an m x n matrix with ones in the lower triangular part and zeros elsewhere.
+ @param[in] m the rows in the input matrix A.
+ @param[in] n the columns in the input matrix A.
+ @param[out] L the output matrix where the result will be stored.
+*/
+A_EXTERN void a_real_tri2(a_uint m, a_uint n, a_real *L);
+
+/*!
  @brief compute a diagonal matrix from a given diagonal vector.
  @param[in] n the order of the diagonal matrix (n x n).
  @param[in] a the input diagonal vector.
@@ -48,7 +78,16 @@ A_EXTERN void a_real_diag(a_uint n, a_real const *__restrict a, a_real *__restri
  @param[in] A the input diagonal matrix.
  @param[out] a the output diagonal vector.
 */
-A_EXTERN void a_real_diagv(a_uint n, a_real const *__restrict A, a_real *__restrict a);
+A_EXTERN void a_real_diag1(a_uint n, a_real const *__restrict A, a_real *__restrict a);
+
+/*!
+ @brief extract a diagonal vector from a given diagonal matrix.
+ @param[in] m the rows in the input matrix A.
+ @param[in] n the columns in the input matrix A.
+ @param[in] A the input diagonal matrix.
+ @param[out] a the output diagonal vector.
+*/
+A_EXTERN void a_real_diag2(a_uint m, a_uint n, a_real const *__restrict A, a_real *__restrict a);
 
 /*!
  @brief extract the lower triangular part of a square matrix, including the diagonal.
@@ -67,6 +106,15 @@ A_EXTERN void a_real_triL(a_uint n, a_real const *__restrict A, a_real *__restri
 A_EXTERN void a_real_triL1(a_uint n, a_real const *__restrict A, a_real *__restrict L);
 
 /*!
+ @brief extract the lower triangular part of a square matrix, including the diagonal.
+ @param[in] m the rows in the input matrix A.
+ @param[in] n the columns in the input matrix A.
+ @param[in] A the input matrix A (m x n), stored in row-major order.
+ @param[out] L the output matrix where the lower triangular L (m x n) will be stored.
+*/
+A_EXTERN void a_real_triL2(a_uint m, a_uint n, a_real const *__restrict A, a_real *__restrict L);
+
+/*!
  @brief extract the upper triangular part of a square matrix, including the diagonal.
  @param[in] n the order of square matrix A.
  @param[in] A the input matrix A (n x n), stored in row-major order.
@@ -81,6 +129,15 @@ A_EXTERN void a_real_triU(a_uint n, a_real const *__restrict A, a_real *__restri
  @param[out] U the output matrix where the upper triangular U (n x n) will be stored.
 */
 A_EXTERN void a_real_triU1(a_uint n, a_real const *__restrict A, a_real *__restrict U);
+
+/*!
+ @brief extract the upper triangular part of a square matrix, including the diagonal.
+ @param[in] m the rows in the input matrix A.
+ @param[in] n the columns in the input matrix A.
+ @param[in] A the input matrix A (m x n), stored in row-major order.
+ @param[out] U the output matrix where the upper triangular U (m x n) will be stored.
+*/
+A_EXTERN void a_real_triU2(a_uint m, a_uint n, a_real const *__restrict A, a_real *__restrict U);
 
 /*!
  @brief multiply two matrices X and Y, storing the result in Z.
