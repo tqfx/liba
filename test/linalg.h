@@ -120,13 +120,43 @@ static void test_mul(void)
     debug("X.Y=%" A_REAL_PRI "g\n", a_real_dot(9, x, y));
 }
 
+#include "a/hash.h"
+
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
-    main_init(argc, argv, 1);
-    test_eye();
-    test_tri();
-    test_triLU();
-    test_diag();
-    test_mul();
+    main_init(argc, argv, 2);
+    if (argc < 2)
+    {
+        test_eye();
+        test_tri();
+        test_triLU();
+        test_diag();
+        test_mul();
+        return 0;
+    }
+    switch (a_hash_bkdr(argv[1], 0))
+    {
+    case 0x001AB0DD: /* eye */
+        test_eye();
+        break;
+    case 0x001E9AD3: /* tri */
+        test_tri();
+        break;
+    case 0x0398D1A4: /* triLU */
+        test_triLU();
+        break;
+    case 0x0D820147: /* diag */
+        test_diag();
+        break;
+    case 0x001CC720: /* mul */
+        test_mul();
+        break;
+    default:
+        debug("eye\n");
+        debug("tri\n");
+        debug("triLU\n");
+        debug("diag\n");
+        debug("mul\n");
+    }
     return 0;
 }
