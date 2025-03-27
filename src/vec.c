@@ -148,34 +148,37 @@ void a_vec_sort_fore(a_vec const *ctx, int (*cmp)(void const *, void const *))
     if (ctx->num_ > 1)
     {
         a_byte *const end = (a_byte *)ctx->ptr_ + ctx->siz_ * ctx->num_;
-        a_byte *const top = end - ctx->siz_;
         a_byte *ptr = (a_byte *)ctx->ptr_;
         if (ctx->num_ < ctx->mem_)
         {
-            a_byte *const pos = ptr;
-            do {
-                a_byte *const cur = ptr + ctx->siz_;
-                if (cmp(pos, cur) <= 0) { break; }
-                ptr = cur;
-            } while (ptr != top);
-            if (ptr > pos)
+            a_size b = 1, i = ctx->num_ - 1;
+            while (b <= i)
             {
-                a_copy(end, pos, ctx->siz_);
-                a_move(pos, pos + ctx->siz_, (a_size)(ptr - pos));
-                a_copy(ptr, end, ctx->siz_);
+                a_size const m = b + ((i - b) >> 1);
+                a_byte *const cur = (a_byte *)ctx->ptr_ + ctx->siz_ * m;
+                if (cmp(cur, ptr) <= 0) { b = m + 1; }
+                else { i = m - 1; }
+            }
+            if (i > 0)
+            {
+                a_byte *const cur = (a_byte *)ctx->ptr_ + ctx->siz_ * i;
+                a_copy(end, ptr, ctx->siz_);
+                a_move(ptr, ptr + ctx->siz_, (a_size)(cur - ptr));
+                a_copy(cur, end, ctx->siz_);
             }
         }
         else
         {
-            do {
-                a_byte *const cur = ptr + ctx->siz_;
+            a_byte *cur = ptr + ctx->siz_;
+            for (; cur != end; cur += ctx->siz_)
+            {
                 if (cmp(ptr, cur) > 0)
                 {
                     a_swap(cur, ptr, ctx->siz_);
                 }
                 else { break; }
                 ptr = cur;
-            } while (ptr != top);
+            }
         }
     }
 }
@@ -188,17 +191,21 @@ void a_vec_sort_back(a_vec const *ctx, int (*cmp)(void const *, void const *))
         a_byte *ptr = end - ctx->siz_;
         if (ctx->num_ < ctx->mem_)
         {
-            a_byte *const pos = ptr;
-            do {
-                a_byte *const cur = ptr - ctx->siz_;
-                if (cmp(cur, pos) <= 0) { break; }
-                ptr = cur;
-            } while (ptr != ctx->ptr_);
-            if (ptr < pos)
+            a_size const idx = ctx->num_ - 1;
+            a_size i = 0, r = idx;
+            while (i < r)
             {
-                a_copy(end, pos, ctx->siz_);
-                a_move(ptr + ctx->siz_, ptr, (a_size)(pos - ptr));
-                a_copy(ptr, end, ctx->siz_);
+                a_size const m = i + ((r - i) >> 1);
+                a_byte *const cur = (a_byte *)ctx->ptr_ + ctx->siz_ * m;
+                if (cmp(cur, ptr) <= 0) { i = m + 1; }
+                else { r = m; }
+            }
+            if (i < idx)
+            {
+                a_byte *const cur = (a_byte *)ctx->ptr_ + ctx->siz_ * i;
+                a_copy(end, ptr, ctx->siz_);
+                a_move(cur + ctx->siz_, cur, (a_size)(ptr - cur));
+                a_copy(cur, end, ctx->siz_);
             }
         }
         else
@@ -220,19 +227,21 @@ void *a_vec_push_sort(a_vec *ctx, void const *key, int (*cmp)(void const *, void
 {
     if (a_vec_alloc(ctx, ctx->num_) == A_SUCCESS)
     {
+        a_size const idx = ctx->num_;
         a_byte *ptr = (a_byte *)a_vec_inc_(ctx);
-        if (ctx->num_ > 1)
+        a_size i = 0, r = idx;
+        while (i < r)
         {
-            a_byte *const pos = ptr;
-            do {
-                a_byte *const cur = ptr - ctx->siz_;
-                if (cmp(cur, key) <= 0) { break; }
-                ptr = cur;
-            } while (ptr != ctx->ptr_);
-            if (ptr < pos)
-            {
-                a_move(ptr + ctx->siz_, ptr, (a_size)(pos - ptr));
-            }
+            a_size const m = i + ((r - i) >> 1);
+            a_byte *const cur = (a_byte *)ctx->ptr_ + ctx->siz_ * m;
+            if (cmp(cur, key) <= 0) { i = m + 1; }
+            else { r = m; }
+        }
+        if (i < idx)
+        {
+            a_byte *const cur = (a_byte *)ctx->ptr_ + ctx->siz_ * i;
+            a_move(cur + ctx->siz_, cur, (a_size)(ptr - cur));
+            ptr = cur;
         }
         return ptr;
     }
