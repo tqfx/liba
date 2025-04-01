@@ -188,30 +188,33 @@ A_EXTERN int a_vec_copy(a_vec *ctx, a_vec const *obj, int (*dup)(void *, void co
 A_EXTERN void a_vec_move(a_vec *ctx, a_vec *obj);
 
 /*!
- @brief edit size of a element for a pointer to vector structure
- @param[in] ctx points to an instance of vector structure
- @param[in] size the size of the new element
- @param[in] dtor previous element destructor
-*/
-A_EXTERN void a_vec_edit(a_vec *ctx, a_size size, void (*dtor)(void *));
-
-/*!
- @brief modify element number for a pointer to string structure
+ @brief set memory of element for a pointer to string structure
  @param[in] ctx points to an instance of string structure
- @param[in] num number of all elements in the vector
- @param[in] dtor previous element destructor
+ @param[in] mem new memory of current element
  @return the execution state of the function
   @retval 0 success
   @retval 1 failure
 */
-A_EXTERN int a_vec_make(a_vec *ctx, a_size num, void (*dtor)(void *));
+A_EXTERN int a_vec_setm(a_vec *ctx, a_size mem);
 
 /*!
- @brief drop all the elements for a pointer to vector structure
- @param[in] ctx points to an instance of vector structure
+ @brief set number of element for a pointer to string structure
+ @param[in] ctx points to an instance of string structure
+ @param[in] num new number of current element
  @param[in] dtor current element destructor
+ @return the execution state of the function
+  @retval 0 success
+  @retval 1 failure
 */
-A_EXTERN void a_vec_drop(a_vec *ctx, void (*dtor)(void *));
+A_EXTERN int a_vec_setn(a_vec *ctx, a_size num, void (*dtor)(void *));
+
+/*!
+ @brief set size of a element for a pointer to vector structure
+ @param[in] ctx points to an instance of vector structure
+ @param[in] siz the size of the new element
+ @param[in] dtor previous element destructor
+*/
+A_EXTERN void a_vec_setz(a_vec *ctx, a_size siz, void (*dtor)(void *));
 
 /*!
  @brief swap elements lhs and rhs for a pointer to vector structure

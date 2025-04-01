@@ -25,7 +25,7 @@ static void test(void)
         a_u64 *obj = A_VEC_PUSH(a_u64, ctx);
         if (obj) { *obj = i; }
     }
-    a_vec_edit(ctx, sizeof(a_u32), A_NULL);
+    a_vec_setz(ctx, sizeof(a_u32), A_NULL);
     for (i = 0; i != 20; ++i)
     {
         a_u32 *obj = A_VEC_PUSH(a_u32, ctx);
@@ -174,7 +174,7 @@ static void test_sort(void)
     a_vec *ctx = a_vec_new(sizeof(int));
     int i, x, *it, *at;
 
-    a_vec_make(ctx, 10, A_NULL);
+    a_vec_setn(ctx, 10, A_NULL);
 
     x = -1;
     srand(t);
@@ -212,7 +212,7 @@ static void test_sort(void)
 
     x = -1;
     srand(t);
-    a_vec_drop(ctx, A_NULL);
+    a_vec_setn(ctx, 0, A_NULL);
     for (i = 0; i != 10; ++i)
     {
         int *obj = A_VEC_PUSH_FORE(int, ctx);
@@ -234,7 +234,7 @@ static void test_sort(void)
 
     x = -1;
     srand(t);
-    a_vec_drop(ctx, A_NULL);
+    a_vec_setn(ctx, 0, A_NULL);
     for (i = 0; i != 10; ++i)
     {
         int *obj = A_VEC_PUSH_BACK(int, ctx);
@@ -256,7 +256,7 @@ static void test_sort(void)
 
     x = -1;
     srand(t);
-    a_vec_drop(ctx, A_NULL);
+    a_vec_setn(ctx, 0, A_NULL);
     for (i = 0; i != 10; ++i)
     {
         int key = rand10();

@@ -50,8 +50,8 @@ void a_que_die(a_que *ctx, void (*dtor)(void *))
 
 void a_que_ctor(a_que *ctx, a_size size)
 {
-    if (!size) { size = sizeof(void *); }
     a_list_ctor(&ctx->head_);
+    if (!size) { size = 1; }
     ctx->ptr_ = A_NULL;
     ctx->siz_ = size;
     ctx->num_ = 0;
@@ -99,6 +99,52 @@ void a_que_move(a_que *ctx, a_que *obj)
     a_zero(obj, sizeof(*obj));
 }
 
+int a_que_drop(a_que *ctx, void (*dtor)(void *))
+{
+    a_list *const head = &ctx->head_, *node;
+    for (node = head->next; node != head; node = head->next)
+    {
+        if (a_que_die_(ctx, node) == 0)
+        {
+            a_list_del_node(node);
+            a_list_dtor(node);
+        }
+        else { return A_FAILURE; }
+    }
+    if (dtor)
+    {
+        a_size cur = ctx->cur_;
+        a_list **ptr = ctx->ptr_;
+        for (; cur; ++ptr, --cur)
+        {
+            dtor(*ptr + 1);
+        }
+    }
+    return A_SUCCESS;
+}
+
+int a_que_setz(a_que *ctx, a_size siz, void (*dtor)(void *))
+{
+    int ok = a_que_drop(ctx, dtor);
+    if (ok == 0)
+    {
+        if (!siz) { siz = 1; }
+        if (siz > ctx->siz_)
+        {
+            a_size cur = ctx->cur_;
+            a_list **ptr = ctx->ptr_;
+            for (; cur; ++ptr, --cur)
+            {
+                void *const p = a_alloc(*ptr, sizeof(a_list) + siz);
+                if (A_UNLIKELY(!p)) { return A_FAILURE; }
+                *ptr = (a_list *)p;
+            }
+        }
+        ctx->siz_ = siz;
+    }
+    return ok;
+}
+
 void *a_que_at(a_que const *ctx, a_diff idx)
 {
     a_diff cur = 0;
@@ -119,52 +165,6 @@ void *a_que_at(a_que const *ctx, a_diff idx)
         }
     }
     return A_NULL;
-}
-
-int a_que_drop(a_que *ctx, void (*dtor)(void *))
-{
-    a_list *const head = &ctx->head_, *node;
-    for (node = head->next; node != head; node = head->next)
-    {
-        if (a_que_die_(ctx, node) == A_SUCCESS)
-        {
-            a_list_del_node(node);
-            a_list_dtor(node);
-        }
-        else { return A_FAILURE; }
-    }
-    if (dtor)
-    {
-        a_size cur = ctx->cur_;
-        a_list **ptr = ctx->ptr_;
-        for (; cur; ++ptr, --cur)
-        {
-            dtor(*ptr + 1);
-        }
-    }
-    return A_SUCCESS;
-}
-
-int a_que_edit(a_que *ctx, a_size size, void (*dtor)(void *))
-{
-    int ok = a_que_drop(ctx, dtor);
-    if (ok == A_SUCCESS)
-    {
-        if (!size) { size = sizeof(void *); }
-        if (size > ctx->siz_)
-        {
-            a_size cur = ctx->cur_;
-            a_list **ptr = ctx->ptr_;
-            for (; cur; ++ptr, --cur)
-            {
-                void *const p = a_alloc(*ptr, sizeof(a_list) + size);
-                if (A_UNLIKELY(!p)) { return A_FAILURE; }
-                *ptr = (a_list *)p;
-            }
-        }
-        ctx->siz_ = size;
-    }
-    return ok;
 }
 
 int a_que_swap(a_que const *ctx, a_size lhs, a_size rhs)
@@ -271,7 +271,7 @@ void *a_que_pull_fore(a_que *ctx)
     if (ctx->head_.next != &ctx->head_)
     {
         a_list *const node = (a_list *)ctx->head_.next;
-        if (a_que_die_(ctx, node) == A_SUCCESS)
+        if (a_que_die_(ctx, node) == 0)
         {
             a_list_del_node(node);
             a_list_dtor(node);
@@ -286,7 +286,7 @@ void *a_que_pull_back(a_que *ctx)
     if (ctx->head_.prev != &ctx->head_)
     {
         a_list *const node = (a_list *)ctx->head_.prev;
-        if (a_que_die_(ctx, node) == A_SUCCESS)
+        if (a_que_die_(ctx, node) == 0)
         {
             a_list_del_node(node);
             a_list_dtor(node);
@@ -334,7 +334,7 @@ void *a_que_remove(a_que *ctx, a_size idx)
                 break;
             }
         }
-        if (a_que_die_(ctx, node) == A_SUCCESS)
+        if (a_que_die_(ctx, node) == 0)
         {
             a_list_del_node(node);
             a_list_dtor(node);

@@ -91,7 +91,7 @@ A_INTERN char a_str_idx(a_str const *ctx, a_diff idx)
  @param[in] num new length for a pointer to string structure
  @note length must less than memory
 */
-A_INTERN void a_str_setlen_(a_str *ctx, a_size num) { ctx->num_ = num; }
+A_INTERN void a_str_setn_(a_str *ctx, a_size num) { ctx->num_ = num; }
 
 /*!
  @brief set length for a pointer to string structure
@@ -101,16 +101,12 @@ A_INTERN void a_str_setlen_(a_str *ctx, a_size num) { ctx->num_ = num; }
   @retval 0 success
   @retval 1 failure
 */
-A_INTERN int a_str_setlen(a_str *ctx, a_size num)
+A_INTERN int a_str_setn(a_str *ctx, a_size num)
 {
-    return num < ctx->mem_ ? ((void)(ctx->num_ = num), A_SUCCESS) : A_FAILURE;
+    int const ok = (num <= ctx->mem_ ? A_SUCCESS : A_FAILURE);
+    if (ok == 0) { ctx->num_ = num; }
+    return ok;
 }
-
-/*!
- @brief drop all characters for a pointer to string structure
- @param[in] ctx points to an instance of string structure
-*/
-A_INTERN void a_str_drop(a_str *ctx) { ctx->num_ = 0; }
 
 #if defined(__cplusplus)
 extern "C" {
@@ -172,8 +168,8 @@ A_EXTERN char *a_str_exit(a_str *ctx);
   @retval 0 success
   @retval 1 failure
 */
-A_EXTERN int a_str_alloc(a_str *ctx, a_size mem);
-A_EXTERN int a_str_alloc_(a_str *ctx, a_size mem);
+A_EXTERN int a_str_setm(a_str *ctx, a_size mem);
+A_EXTERN int a_str_setm_(a_str *ctx, a_size mem);
 
 /*!
  @brief compare the memory block 0 with the memory block 1
@@ -252,18 +248,6 @@ A_EXTERN a_size a_str_getn(a_str *ctx, void *pdata, a_size nbyte);
 A_EXTERN a_size a_str_getn_(a_str *ctx, void *pdata, a_size nbyte);
 
 /*!
- @brief set memory block to a pointer to string structure
- @param[in] ctx points to an instance of string structure
- @param[in] pdata points to memory block to set
- @param[in] nbyte length of memory block to set
- @return the execution state of the function
-  @retval 0 success
-  @retval 1 failure
-*/
-A_EXTERN int a_str_setn(a_str *ctx, void const *pdata, a_size nbyte);
-A_EXTERN int a_str_setn_(a_str *ctx, void const *pdata, a_size nbyte);
-
-/*!
  @brief put memory block to a pointer to string structure
  @param[in] ctx points to an instance of string structure
  @param[in] pdata points to memory block to put
@@ -274,17 +258,6 @@ A_EXTERN int a_str_setn_(a_str *ctx, void const *pdata, a_size nbyte);
 */
 A_EXTERN int a_str_putn(a_str *ctx, void const *pdata, a_size nbyte);
 A_EXTERN int a_str_putn_(a_str *ctx, void const *pdata, a_size nbyte);
-
-/*!
- @brief set C string to a pointer to string structure
- @param[in] ctx points to an instance of string structure
- @param[in] str string terminated with a null character
- @return the execution state of the function
-  @retval 0 success
-  @retval 1 failure
-*/
-A_EXTERN int a_str_sets(a_str *ctx, void const *str);
-A_EXTERN int a_str_sets_(a_str *ctx, void const *str);
 
 /*!
  @brief put C string to a pointer to string structure
@@ -298,15 +271,6 @@ A_EXTERN int a_str_puts(a_str *ctx, void const *str);
 A_EXTERN int a_str_puts_(a_str *ctx, void const *str);
 
 /*!
- @brief format string to a pointer to string structure via va_list
- @param[in] ctx points to an instance of string structure
- @param[in] fmt format of string to be parsed
- @param[in] va instance of variable argument
- @return number of parsed characters
-*/
-A_EXTERN A_FORMAT(__printf__, 2, 0) int a_str_setv(a_str *ctx, char const *fmt, va_list va);
-
-/*!
  @brief format string append to a pointer to string structure via va_list
  @param[in] ctx points to an instance of string structure
  @param[in] fmt format of string to be parsed
@@ -316,31 +280,12 @@ A_EXTERN A_FORMAT(__printf__, 2, 0) int a_str_setv(a_str *ctx, char const *fmt, 
 A_EXTERN A_FORMAT(__printf__, 2, 0) int a_str_putv(a_str *ctx, char const *fmt, va_list va);
 
 /*!
- @brief format string to a pointer to string structure
- @param[in] ctx points to an instance of string structure
- @param[in] fmt format of string to be parsed
- @return number of parsed characters
-*/
-A_EXTERN A_FORMAT(__printf__, 2, 3) int a_str_setf(a_str *ctx, char const *fmt, ...);
-
-/*!
  @brief format string append to a pointer to string structure
  @param[in] ctx points to an instance of string structure
  @param[in] fmt format of string to be parsed
  @return number of parsed characters
 */
 A_EXTERN A_FORMAT(__printf__, 2, 3) int a_str_putf(a_str *ctx, char const *fmt, ...);
-
-/*!
- @brief set the string structure obj to the string structure ctx
- @param[in] ctx points to an instance of string structure
- @param[in] obj input source pointing to an instance
- @return the execution state of the function
-  @retval 0 success
-  @retval 1 failure
-*/
-A_EXTERN int a_str_set(a_str *ctx, a_str const *obj);
-A_EXTERN int a_str_set_(a_str *ctx, a_str const *obj);
 
 /*!
  @brief put the string structure obj to the string structure ctx

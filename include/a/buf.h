@@ -153,11 +153,12 @@ A_EXTERN void a_buf_dtor(a_buf *ctx, void (*dtor)(void *));
 A_EXTERN void a_buf_move(a_buf *ctx, a_buf *obj);
 
 /*!
- @brief drop all the elements for a pointer to buffer structure
+ @brief set number of element for a pointer to buffer structure
  @param[in] ctx points to an instance of buffer structure
+ @param[in] num new number of current element
  @param[in] dtor current element destructor
 */
-A_EXTERN void a_buf_drop(a_buf *ctx, void (*dtor)(void *));
+A_EXTERN void a_buf_setn(a_buf *ctx, a_size num, void (*dtor)(void *));
 
 /*!
  @brief swap elements lhs and rhs for a pointer to buffer structure

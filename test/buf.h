@@ -97,7 +97,7 @@ static void test_sort(void)
 
     x = -1;
     srand(t);
-    a_buf_drop(&ctx, A_NULL);
+    a_buf_setn(&ctx, 0, A_NULL);
     for (i = 0; i != 10; ++i)
     {
         int *obj = A_BUF_PUSH_FORE(int, &ctx);
@@ -119,7 +119,7 @@ static void test_sort(void)
 
     x = -1;
     srand(t);
-    a_buf_drop(&ctx, A_NULL);
+    a_buf_setn(&ctx, 0, A_NULL);
     for (i = 0; i != 10; ++i)
     {
         int *obj = A_BUF_PUSH_BACK(int, &ctx);
@@ -141,7 +141,7 @@ static void test_sort(void)
 
     x = -1;
     srand(t);
-    a_buf_drop(&ctx, A_NULL);
+    a_buf_setn(&ctx, 0, A_NULL);
     for (i = 0; i != 10; ++i)
     {
         int key = rand10();

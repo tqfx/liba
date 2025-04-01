@@ -11,15 +11,6 @@ static A_INLINE void *a_buf_dec_(a_buf *ctx)
     return (a_byte *)ctx->ptr_ + ctx->siz_ * --ctx->num_;
 }
 
-static void a_buf_drop_(a_buf *ctx, a_size bot, void (*dtor)(void *))
-{
-    if (dtor)
-    {
-        while (ctx->num_ > bot) { dtor(a_buf_dec_(ctx)); }
-    }
-    ctx->num_ = bot;
-}
-
 void a_buf_ctor(a_buf *ctx, void *ptr, a_size siz, a_size num)
 {
     ctx->ptr_ = ptr;
@@ -30,13 +21,7 @@ void a_buf_ctor(a_buf *ctx, void *ptr, a_size siz, a_size num)
 
 void a_buf_dtor(a_buf *ctx, void (*dtor)(void *))
 {
-    if (ctx->ptr_)
-    {
-        a_buf_drop_(ctx, 0, dtor);
-        ctx->ptr_ = A_NULL;
-    }
-    ctx->siz_ = 0;
-    ctx->mem_ = 0;
+    a_buf_setn(ctx, 0, dtor);
 }
 
 void a_buf_move(a_buf *ctx, a_buf *obj)
@@ -45,9 +30,20 @@ void a_buf_move(a_buf *ctx, a_buf *obj)
     a_zero(obj, sizeof(*obj));
 }
 
-void a_buf_drop(a_buf *ctx, void (*dtor)(void *))
+void a_buf_setn(a_buf *ctx, a_size num, void (*dtor)(void *))
 {
-    a_buf_drop_(ctx, 0, dtor);
+    if (dtor)
+    {
+        while (ctx->num_ > num)
+        {
+            dtor(a_buf_dec_(ctx));
+        }
+    }
+    if (num > ctx->mem_)
+    {
+        num = ctx->mem_;
+    }
+    ctx->num_ = num;
 }
 
 void a_buf_swap(a_buf const *ctx, a_size lhs, a_size rhs)
@@ -204,15 +200,26 @@ void *a_buf_push_back(a_buf *ctx)
 
 void *a_buf_remove(a_buf *ctx, a_size idx)
 {
-    a_size const num = ctx->num_ - 1;
-    if (ctx->num_ && idx < num)
+    if (idx + 1 < ctx->num_)
     {
-        a_byte *const ptr = (a_byte *)ctx->ptr_ + ctx->siz_ * num;
-        a_byte *const dst = (a_byte *)ctx->ptr_ + ctx->siz_ * (idx + 0);
-        a_byte *const src = (a_byte *)ctx->ptr_ + ctx->siz_ * (idx + 1);
-        a_swap(dst, src, (a_size)(ptr - dst));
-        --ctx->num_;
-        return ptr;
+        if (ctx->num_ < ctx->mem_)
+        {
+            a_byte *const ptr = (a_byte *)ctx->ptr_ + ctx->siz_ * ctx->num_--;
+            a_byte *const dst = (a_byte *)ctx->ptr_ + ctx->siz_ * (idx + 0);
+            a_byte *const src = (a_byte *)ctx->ptr_ + ctx->siz_ * (idx + 1);
+            a_size const siz = (a_size)(ptr - src);
+            a_copy(ptr, dst, ctx->siz_);
+            a_move(dst, src, siz);
+            return ptr;
+        }
+        else
+        {
+            a_byte *const ptr = (a_byte *)ctx->ptr_ + ctx->siz_ * --ctx->num_;
+            a_byte *const dst = (a_byte *)ctx->ptr_ + ctx->siz_ * (idx + 0);
+            a_byte *const src = (a_byte *)ctx->ptr_ + ctx->siz_ * (idx + 1);
+            a_swap(dst, src, (a_size)(ptr - dst));
+            return ptr;
+        }
     }
     return ctx->num_ ? a_buf_dec_(ctx) : A_NULL;
 }

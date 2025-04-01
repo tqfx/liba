@@ -42,7 +42,7 @@ static void test(void)
     {
         a_que_pull_fore(ctx);
     }
-    a_que_edit(ctx, sizeof(a_u32) + 8, A_NULL);
+    a_que_setz(ctx, sizeof(a_u32) + 8, A_NULL);
     for (i = 5; i--;)
     {
         a_u32 *obj = A_QUE_PUSH_FORE(a_u32, ctx);

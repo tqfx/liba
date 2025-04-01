@@ -136,16 +136,6 @@ A_EXTERN void a_que_dtor(a_que *ctx, void (*dtor)(void *));
 A_EXTERN void a_que_move(a_que *ctx, a_que *obj);
 
 /*!
- @brief access specified element for a pointer to queue structure
- @param[in] ctx points to an instance of queue structure
- @param[in] idx index of element, 0 ~ n-1, -n ~ -1
- @return element pointer
-  @retval 0 out of bounds
-*/
-A_EXTERN void *a_que_at(a_que const *ctx, a_diff idx);
-#define A_QUE_AT(T, ctx, idx) a_cast_s(T *, a_que_at(ctx, idx))
-
-/*!
  @brief drop all the elements for a pointer to queue structure
  @param[in] ctx points to an instance of queue structure
  @param[in] dtor current element destructor
@@ -156,15 +146,25 @@ A_EXTERN void *a_que_at(a_que const *ctx, a_diff idx);
 A_EXTERN int a_que_drop(a_que *ctx, void (*dtor)(void *));
 
 /*!
- @brief edit size of a element for a pointer to queue structure
+ @brief set size of a element for a pointer to queue structure
  @param[in] ctx points to an instance of queue structure
- @param[in] size the size of the new element
+ @param[in] siz the size of the new element
  @param[in] dtor previous element destructor
  @return the execution state of the function
   @retval 0 success
   @retval 1 failure
 */
-A_EXTERN int a_que_edit(a_que *ctx, a_size size, void (*dtor)(void *));
+A_EXTERN int a_que_setz(a_que *ctx, a_size siz, void (*dtor)(void *));
+
+/*!
+ @brief access specified element for a pointer to queue structure
+ @param[in] ctx points to an instance of queue structure
+ @param[in] idx index of element, 0 ~ n-1, -n ~ -1
+ @return element pointer
+  @retval 0 out of bounds
+*/
+A_EXTERN void *a_que_at(a_que const *ctx, a_diff idx);
+#define A_QUE_AT(T, ctx, idx) a_cast_s(T *, a_que_at(ctx, idx))
 
 /*!
  @brief swap elements lhs and rhs for a pointer to queue structure
