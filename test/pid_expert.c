@@ -19,12 +19,12 @@ a_real a_pid_expert_iter(a_pid_expert *ctx, a_real set, a_real fdb)
     if (-ctx->max1 > err)
     {
         out = -ctx->outmax;
-        goto out;
+        goto exit;
     }
     else if (err > ctx->max1)
     {
         out = ctx->outmax;
-        goto out;
+        goto exit;
     }
 
     if (err * ec > 0 || ec == 0)
@@ -41,7 +41,7 @@ a_real a_pid_expert_iter(a_pid_expert *ctx, a_real set, a_real fdb)
 
     if (abs < ctx->epsilon) { out = ctx->pid.kp * ec + ctx->pid.ki * err; }
 
-out:
+exit:
     ctx->pid.out = A_SAT(out, ctx->pid.outmin, ctx->pid.outmax);
     ctx->pid.fdb = fdb;
     ctx->pid.var = var;

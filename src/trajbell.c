@@ -56,7 +56,7 @@ a_real a_trajbell_gen(a_trajbell *ctx, a_real jm, a_real am, a_real vm,
     }
     p = p1 - p0;
     ctx->tv = p / vm - A_REAL_C(0.5) * ctx->ta * (1 + v0 / vm) - A_REAL_C(0.5) * ctx->td * (1 + v1 / vm);
-    if (ctx->tv > 0) { goto out; }
+    if (ctx->tv > 0) { goto exit; }
     ctx->tv = 0;
     _2v0 = 2 * v0;
     _2v1 = 2 * v1;
@@ -88,7 +88,7 @@ a_real a_trajbell_gen(a_trajbell *ctx, a_real jm, a_real am, a_real vm,
                 ctx->am = 0;
                 ctx->dm = -jm * ctx->tdj;
                 ctx->vm = v0;
-                goto out;
+                goto exit;
             }
             ac *= A_REAL_C(0.5);
             am += ac;
@@ -109,7 +109,7 @@ a_real a_trajbell_gen(a_trajbell *ctx, a_real jm, a_real am, a_real vm,
                 ctx->am = +jm * ctx->taj;
                 ctx->dm = 0;
                 ctx->vm = v0 + ctx->am * (ctx->ta - ctx->taj);
-                goto out;
+                goto exit;
             }
             ac *= A_REAL_C(0.5);
             am += ac;
@@ -122,7 +122,7 @@ a_real a_trajbell_gen(a_trajbell *ctx, a_real jm, a_real am, a_real vm,
                 ctx->am = +am;
                 ctx->dm = -am;
                 ctx->vm = v0 + ctx->am * (ctx->ta - tj);
-                goto out;
+                goto exit;
             }
             ac *= A_REAL_C(0.5);
             am += ac;
@@ -134,7 +134,7 @@ a_real a_trajbell_gen(a_trajbell *ctx, a_real jm, a_real am, a_real vm,
 fail:
     ctx->t = 0;
     return 0;
-out:
+exit:
     ctx->t = ctx->ta + ctx->tv + ctx->td;
     return ctx->t;
 }
@@ -160,27 +160,27 @@ a_real a_trajbell_pos(a_trajbell const *ctx, a_real x)
         {
             if (x <= 0) { return ctx->p0; }
             y = p0 + v0 * x + ctx->jm * x * x * x / 6;
-            goto out;
+            goto exit;
         }
         if (x < ctx->ta - ctx->taj)
         {
             y = p0 + v0 * x + ctx->am * (3 * x * x - 3 * x * ctx->taj + ctx->taj * ctx->taj) / 6;
-            goto out;
+            goto exit;
         }
         x = ctx->ta - x;
         y = p0 + A_REAL_C(0.5) * (ctx->vm + v0) * ctx->ta - ctx->vm * x + ctx->jm * x * x * x / 6;
-        goto out;
+        goto exit;
     }
     if (x < ctx->t - ctx->td + ctx->tdj)
     {
         if (x < ctx->ta + ctx->tv)
         {
             y = p0 + A_REAL_C(0.5) * (ctx->vm + v0) * ctx->ta + ctx->vm * (x - ctx->ta);
-            goto out;
+            goto exit;
         }
         x -= ctx->t - ctx->td;
         y = p1 - A_REAL_C(0.5) * (ctx->vm + v1) * ctx->td + ctx->vm * x - ctx->jm * x * x * x / 6;
-        goto out;
+        goto exit;
     }
     if (x < ctx->t)
     {
@@ -189,15 +189,16 @@ a_real a_trajbell_pos(a_trajbell const *ctx, a_real x)
             x -= ctx->t - ctx->td;
             y = p1 - A_REAL_C(0.5) * (ctx->vm + v1) * ctx->td + ctx->vm * x +
                 ctx->dm * (3 * x * x - 3 * x * ctx->tdj + ctx->tdj * ctx->tdj) / 6;
-            goto out;
+            goto exit;
         }
         x = ctx->t - x;
         y = p1 - v1 * x - ctx->jm * x * x * x / 6;
-        goto out;
+        goto exit;
     }
     return ctx->p1;
-out:
-    return rev ? -y : y;
+exit:
+    if (rev) { y = -y; }
+    return y;
 }
 
 a_real a_trajbell_vel(a_trajbell const *ctx, a_real x)
@@ -217,42 +218,43 @@ a_real a_trajbell_vel(a_trajbell const *ctx, a_real x)
         {
             if (x <= 0) { return ctx->v0; }
             y = v0 + A_REAL_C(0.5) * ctx->jm * x * x;
-            goto out;
+            goto exit;
         }
         if (x < ctx->ta - ctx->taj)
         {
             y = v0 + ctx->am * (x - A_REAL_C(0.5) * ctx->taj);
-            goto out;
+            goto exit;
         }
         x = ctx->ta - x;
         y = ctx->vm - A_REAL_C(0.5) * ctx->jm * x * x;
-        goto out;
+        goto exit;
     }
     if (x < ctx->t - ctx->td + ctx->tdj)
     {
         if (x < ctx->ta + ctx->tv)
         {
             y = ctx->vm;
-            goto out;
+            goto exit;
         }
         x -= ctx->t - ctx->td;
         y = ctx->vm - A_REAL_C(0.5) * ctx->jm * x * x;
-        goto out;
+        goto exit;
     }
     if (x < ctx->t)
     {
         if (x < ctx->t - ctx->tdj)
         {
             y = ctx->vm + ctx->dm * (x - ctx->t + ctx->td - A_REAL_C(0.5) * ctx->tdj);
-            goto out;
+            goto exit;
         }
         x = ctx->t - x;
         y = v1 + A_REAL_C(0.5) * ctx->jm * x * x;
-        goto out;
+        goto exit;
     }
     return ctx->v1;
-out:
-    return rev ? -y : y;
+exit:
+    if (rev) { y = -y; }
+    return y;
 }
 
 a_real a_trajbell_acc(a_trajbell const *ctx, a_real x)
@@ -265,15 +267,15 @@ a_real a_trajbell_acc(a_trajbell const *ctx, a_real x)
             if (x < ctx->ta - ctx->taj)
             {
                 y = ctx->am;
-                goto out;
+                goto exit;
             }
             y = ctx->jm * (ctx->ta - x);
-            goto out;
+            goto exit;
         }
         if (x > 0)
         {
             y = ctx->jm * x;
-            goto out;
+            goto exit;
         }
     }
     else if (x < ctx->t - ctx->td + ctx->tdj)
@@ -281,7 +283,7 @@ a_real a_trajbell_acc(a_trajbell const *ctx, a_real x)
         if (x >= ctx->ta + ctx->tv)
         {
             y = -ctx->jm * (x - ctx->t + ctx->td);
-            goto out;
+            goto exit;
         }
     }
     else if (x < ctx->t)
@@ -289,16 +291,16 @@ a_real a_trajbell_acc(a_trajbell const *ctx, a_real x)
         if (x < ctx->t - ctx->tdj)
         {
             y = ctx->dm;
-            goto out;
+            goto exit;
         }
         y = -ctx->jm * (ctx->t - x);
-        goto out;
+        goto exit;
     }
     return 0;
-out:
+exit:
     if (ctx->p0 > ctx->p1)
     {
-        return -y;
+        y = -y;
     }
     return y;
 }
@@ -311,12 +313,12 @@ a_real a_trajbell_jer(a_trajbell const *ctx, a_real x)
         if (x >= ctx->ta - ctx->taj)
         {
             y = -ctx->jm;
-            goto out;
+            goto exit;
         }
         if (x < ctx->taj && x >= 0)
         {
             y = +ctx->jm;
-            goto out;
+            goto exit;
         }
     }
     else if (x < ctx->t - ctx->td + ctx->tdj)
@@ -324,7 +326,7 @@ a_real a_trajbell_jer(a_trajbell const *ctx, a_real x)
         if (x >= ctx->ta + ctx->tv)
         {
             y = -ctx->jm;
-            goto out;
+            goto exit;
         }
     }
     else if (x <= ctx->t)
@@ -332,14 +334,14 @@ a_real a_trajbell_jer(a_trajbell const *ctx, a_real x)
         if (x >= ctx->t - ctx->tdj)
         {
             y = +ctx->jm;
-            goto out;
+            goto exit;
         }
     }
     return 0;
-out:
+exit:
     if (ctx->p0 > ctx->p1)
     {
-        return -y;
+        y = -y;
     }
     return y;
 }

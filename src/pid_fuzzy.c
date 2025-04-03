@@ -36,7 +36,7 @@ unsigned int a_pid_fuzzy_mf(a_real x, unsigned int n, a_real const *a, unsigned 
         switch ((int)*a++)
         {
         default:
-        case A_MF_NUL: goto out;
+        case A_MF_NUL: goto exit;
         case A_MF_GAUSS:
             y = a_mf_gauss(x, a[0], a[1]);
             a += 2;
@@ -97,7 +97,7 @@ unsigned int a_pid_fuzzy_mf(a_real x, unsigned int n, a_real const *a, unsigned 
             ++counter;
         }
     }
-out:
+exit:
     return counter;
 }
 
@@ -139,11 +139,11 @@ void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_real ec, a_real e)
     idx = ctx->idx;
     val = ctx->val;
     ne = a_pid_fuzzy_mf(e, ctx->nrule, ctx->me, idx, val);
-    if (!ne) { goto pid; }
+    if (!ne) { goto exit; }
     idx = idx + ne;
     val = val + ne;
     nec = a_pid_fuzzy_mf(ec, ctx->nrule, ctx->mec, idx, val);
-    if (!nec) { goto pid; }
+    if (!nec) { goto exit; }
     mat = val + nec;
     /* joint membership */
     {
@@ -207,7 +207,7 @@ void a_pid_fuzzy_out_(a_pid_fuzzy *ctx, a_real ec, a_real e)
         }
         kd *= inv;
     }
-pid:
+exit:
     a_pid_set_kpid(&ctx->pid, ctx->kp + kp, ctx->ki + ki, ctx->kd + kd);
 }
 
