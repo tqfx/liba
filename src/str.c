@@ -43,7 +43,7 @@ void a_str_dtor(a_str *ctx)
 int a_str_copy(a_str *ctx, a_str const *obj)
 {
     a_str_ctor(ctx);
-    return a_str_putn(ctx, obj->ptr_, obj->num_);
+    return a_str_catn(ctx, obj->ptr_, obj->num_);
 }
 
 void a_str_move(a_str *ctx, a_str *obj)
@@ -135,7 +135,7 @@ int a_str_getc(a_str *ctx)
     return c;
 }
 
-int a_str_putc_(a_str *ctx, int c)
+int a_str_catc_(a_str *ctx, int c)
 {
     if (a_str_setm(ctx, ctx->num_ + 1) == 0)
     {
@@ -145,7 +145,7 @@ int a_str_putc_(a_str *ctx, int c)
     return ~0;
 }
 
-int a_str_putc(a_str *ctx, int c)
+int a_str_catc(a_str *ctx, int c)
 {
     if (a_str_setm(ctx, ctx->num_ + 2) == 0)
     {
@@ -179,7 +179,7 @@ a_size a_str_getn(a_str *ctx, void *pdata, a_size nbyte)
     return nbyte;
 }
 
-int a_str_putn_(a_str *ctx, void const *pdata, a_size nbyte)
+int a_str_catn_(a_str *ctx, void const *pdata, a_size nbyte)
 {
     int rc = a_str_setm(ctx, ctx->num_ + nbyte);
     if (rc == 0 && nbyte)
@@ -190,7 +190,7 @@ int a_str_putn_(a_str *ctx, void const *pdata, a_size nbyte)
     return rc;
 }
 
-int a_str_putn(a_str *ctx, void const *pdata, a_size nbyte)
+int a_str_catn(a_str *ctx, void const *pdata, a_size nbyte)
 {
     int rc = a_str_setm(ctx, ctx->num_ + nbyte + 1);
     if (rc == 0)
@@ -205,22 +205,22 @@ int a_str_putn(a_str *ctx, void const *pdata, a_size nbyte)
     return rc;
 }
 
-int a_str_puts_(a_str *ctx, void const *str)
+int a_str_cats_(a_str *ctx, void const *str)
 {
-    return a_str_putn_(ctx, str, strlen((char const *)str));
+    return a_str_catn_(ctx, str, strlen((char const *)str));
 }
-int a_str_puts(a_str *ctx, void const *str)
+int a_str_cats(a_str *ctx, void const *str)
 {
-    return a_str_putn(ctx, str, strlen((char const *)str));
+    return a_str_catn(ctx, str, strlen((char const *)str));
 }
 
-int a_str_put_(a_str *ctx, a_str const *obj)
+int a_str_cat_(a_str *ctx, a_str const *obj)
 {
-    return a_str_putn_(ctx, obj->ptr_, obj->num_);
+    return a_str_catn_(ctx, obj->ptr_, obj->num_);
 }
-int a_str_put(a_str *ctx, a_str const *obj)
+int a_str_cat(a_str *ctx, a_str const *obj)
 {
-    return a_str_putn(ctx, obj->ptr_, obj->num_);
+    return a_str_catn(ctx, obj->ptr_, obj->num_);
 }
 
 #if !defined va_copy && \
@@ -231,7 +231,7 @@ int a_str_put(a_str *ctx, a_str const *obj)
 #endif /* va_copy */
 #include <stdio.h>
 
-int a_str_putv(a_str *ctx, char const *fmt, va_list va)
+int a_str_catv(a_str *ctx, char const *fmt, va_list va)
 {
     int res;
     va_list ap;
@@ -254,12 +254,12 @@ int a_str_putv(a_str *ctx, char const *fmt, va_list va)
     return res;
 }
 
-int a_str_putf(a_str *ctx, char const *fmt, ...)
+int a_str_catf(a_str *ctx, char const *fmt, ...)
 {
     int res;
     va_list va;
     va_start(va, fmt);
-    res = a_str_putv(ctx, fmt, va);
+    res = a_str_catv(ctx, fmt, va);
     va_end(va);
     return res;
 }

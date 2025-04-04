@@ -225,14 +225,14 @@ A_EXTERN int a_str_getc(a_str *ctx);
 A_EXTERN int a_str_getc_(a_str *ctx);
 
 /*!
- @brief put character to a pointer to string structure
+ @brief concatenate character to a pointer to string structure
  @param[in] ctx points to an instance of string structure
  @param[in] c character to be parsed
  @return parsed character
   @retval ~0 failure
 */
-A_EXTERN int a_str_putc(a_str *ctx, int c);
-A_EXTERN int a_str_putc_(a_str *ctx, int c);
+A_EXTERN int a_str_catc(a_str *ctx, int c);
+A_EXTERN int a_str_catc_(a_str *ctx, int c);
 
 /*!
  @brief get memory block to a pointer to string structure
@@ -245,25 +245,25 @@ A_EXTERN a_size a_str_getn(a_str *ctx, void *pdata, a_size nbyte);
 A_EXTERN a_size a_str_getn_(a_str *ctx, void *pdata, a_size nbyte);
 
 /*!
- @brief put memory block to a pointer to string structure
+ @brief concatenate memory block to a pointer to string structure
  @param[in] ctx points to an instance of string structure
  @param[in] pdata points to memory block to put
  @param[in] nbyte length of memory block to put
  @return error code value
   @retval 0 success
 */
-A_EXTERN int a_str_putn(a_str *ctx, void const *pdata, a_size nbyte);
-A_EXTERN int a_str_putn_(a_str *ctx, void const *pdata, a_size nbyte);
+A_EXTERN int a_str_catn(a_str *ctx, void const *pdata, a_size nbyte);
+A_EXTERN int a_str_catn_(a_str *ctx, void const *pdata, a_size nbyte);
 
 /*!
- @brief put C string to a pointer to string structure
+ @brief concatenate C string to a pointer to string structure
  @param[in] ctx points to an instance of string structure
  @param[in] str string terminated with a null character
  @return error code value
   @retval 0 success
 */
-A_EXTERN int a_str_puts(a_str *ctx, void const *str);
-A_EXTERN int a_str_puts_(a_str *ctx, void const *str);
+A_EXTERN int a_str_cats(a_str *ctx, void const *str);
+A_EXTERN int a_str_cats_(a_str *ctx, void const *str);
 
 /*!
  @brief format string append to a pointer to string structure via va_list
@@ -272,7 +272,7 @@ A_EXTERN int a_str_puts_(a_str *ctx, void const *str);
  @param[in] va instance of variable argument
  @return number of parsed characters
 */
-A_EXTERN A_FORMAT(__printf__, 2, 0) int a_str_putv(a_str *ctx, char const *fmt, va_list va);
+A_EXTERN A_FORMAT(__printf__, 2, 0) int a_str_catv(a_str *ctx, char const *fmt, va_list va);
 
 /*!
  @brief format string append to a pointer to string structure
@@ -280,17 +280,17 @@ A_EXTERN A_FORMAT(__printf__, 2, 0) int a_str_putv(a_str *ctx, char const *fmt, 
  @param[in] fmt format of string to be parsed
  @return number of parsed characters
 */
-A_EXTERN A_FORMAT(__printf__, 2, 3) int a_str_putf(a_str *ctx, char const *fmt, ...);
+A_EXTERN A_FORMAT(__printf__, 2, 3) int a_str_catf(a_str *ctx, char const *fmt, ...);
 
 /*!
- @brief put the string structure obj to the string structure ctx
+ @brief concatenate the string structure obj to the string structure ctx
  @param[in] ctx points to an instance of string structure
  @param[in] obj input source pointing to an instance
  @return error code value
   @retval 0 success
 */
-A_EXTERN int a_str_put(a_str *ctx, a_str const *obj);
-A_EXTERN int a_str_put_(a_str *ctx, a_str const *obj);
+A_EXTERN int a_str_cat(a_str *ctx, a_str const *obj);
+A_EXTERN int a_str_cat_(a_str *ctx, a_str const *obj);
 
 /*!
  @brief length for a pointer to string structure using UTF-8

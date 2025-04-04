@@ -42,7 +42,7 @@ static int test(unsigned long n)
     for (i = 0; i < n; ++i)
     {
         a_str_setn_(&str, 0);
-        a_str_putf(&str, "%u", i);
+        a_str_catf(&str, "%u", i);
         vec[i].data = sorted[i] = a_cast_s(int, a_hash_bkdr(a_str_ptr(&str), 0));
         a_rbt_insert(&root, &vec[i].node, int_cmp);
         if (i % 0x100 == 0)

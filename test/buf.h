@@ -198,18 +198,18 @@ static void test_sort(void)
     {
         a_str *ok = a_str_new();
         a_str *no = a_str_new();
-        a_str_puts(ok, "finding ");
-        a_str_puts(no, "missing ");
+        a_str_cats(ok, "finding ");
+        a_str_cats(no, "missing ");
         for (i = 0; i != 10; ++i)
         {
             int *obj = A_BUF_SEARCH(int, &ctx, &i, large);
             if (obj)
             {
-                a_str_putf(ok, "%i ", *obj);
+                a_str_catf(ok, "%i ", *obj);
             }
             else
             {
-                a_str_putf(no, "%i ", i);
+                a_str_catf(no, "%i ", i);
             }
         }
         printf("%s\n%s\n", a_str_ptr(ok), a_str_ptr(no));
