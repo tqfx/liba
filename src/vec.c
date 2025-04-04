@@ -163,7 +163,7 @@ void a_vec_sort_fore(a_vec const *ctx, int (*cmp)(void const *, void const *))
             {
                 a_size const m = b + ((i - b) >> 1);
                 a_byte *const cur = (a_byte *)ctx->ptr_ + ctx->siz_ * m;
-                if (cmp(cur, ptr) <= 0) { b = m + 1; }
+                if (cmp(ptr, cur) > 0) { b = m + 1; }
                 else { i = m - 1; }
             }
             if (i > 0)
@@ -204,8 +204,8 @@ void a_vec_sort_back(a_vec const *ctx, int (*cmp)(void const *, void const *))
             {
                 a_size const m = i + ((r - i) >> 1);
                 a_byte *const cur = (a_byte *)ctx->ptr_ + ctx->siz_ * m;
-                if (cmp(cur, ptr) <= 0) { i = m + 1; }
-                else { r = m; }
+                if (cmp(cur, ptr) > 0) { r = m; }
+                else { i = m + 1; }
             }
             if (i < idx)
             {
@@ -241,8 +241,8 @@ void *a_vec_push_sort(a_vec *ctx, void const *key, int (*cmp)(void const *, void
         {
             a_size const m = i + ((r - i) >> 1);
             a_byte *const cur = (a_byte *)ctx->ptr_ + ctx->siz_ * m;
-            if (cmp(cur, key) <= 0) { i = m + 1; }
-            else { r = m; }
+            if (cmp(cur, key) > 0) { r = m; }
+            else { i = m + 1; }
         }
         if (i < idx)
         {
