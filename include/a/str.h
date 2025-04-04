@@ -55,34 +55,34 @@ A_INTERN a_size a_str_mem(a_str const *ctx) { return ctx->mem_; }
  @brief access specified character for a pointer to string structure
  @param[in] ctx points to an instance of string structure
  @param[in] idx index of character less than memory
- @note should check if string is empty
- @return specified character
+ @note should check for out of bounds
+ @return specified character pointer
 */
-A_INTERN char a_str_at_(a_str const *ctx, a_size idx) { return ctx->ptr_[idx]; }
+A_INTERN char *a_str_at_(a_str const *ctx, a_size idx) { return ctx->ptr_ + idx; }
 
 /*!
  @brief access specified character for a pointer to string structure
  @param[in] ctx points to an instance of string structure
- @param[in] idx index of character less than length
- @return specified character
+ @param[in] idx index of character less than memory
+ @return specified character pointer
   @retval 0 out of bounds
 */
-A_INTERN char a_str_at(a_str const *ctx, a_size idx)
+A_INTERN char *a_str_at(a_str const *ctx, a_size idx)
 {
-    return idx < ctx->num_ ? ctx->ptr_[idx] : 0;
+    return idx < ctx->mem_ ? ctx->ptr_ + idx : A_NULL;
 }
 
 /*!
  @brief access specified character for a pointer to string structure
  @param[in] ctx points to an instance of string structure
  @param[in] idx index of character -length < idx < length
- @return specified character
+ @return specified character pointer
   @retval 0 out of bounds
 */
-A_INTERN char a_str_idx(a_str const *ctx, a_diff idx)
+A_INTERN char *a_str_idx(a_str const *ctx, a_diff idx)
 {
     a_size const num = idx >= 0 ? a_size_c(idx) : a_size_c(idx) + ctx->num_;
-    return num < ctx->num_ ? ctx->ptr_[num] : 0;
+    return num < ctx->mem_ ? ctx->ptr_ + num : A_NULL;
 }
 
 /*!
