@@ -97,15 +97,14 @@ A_INTERN void a_str_setn_(a_str *ctx, a_size num) { ctx->num_ = num; }
  @brief set length for a pointer to string structure
  @param[in] ctx points to an instance of string structure
  @param[in] num new length for a pointer to string structure
- @return the execution state of the function
+ @return error code value
   @retval 0 success
-  @retval 1 failure
 */
 A_INTERN int a_str_setn(a_str *ctx, a_size num)
 {
-    int const ok = (num <= ctx->mem_ ? A_SUCCESS : A_FAILURE);
-    if (ok == 0) { ctx->num_ = num; }
-    return ok;
+    int const rc = (num <= ctx->mem_ ? A_SUCCESS : A_INVALID);
+    if (rc == 0) { ctx->num_ = num; }
+    return rc;
 }
 
 #if defined(__cplusplus)
@@ -139,9 +138,8 @@ A_EXTERN void a_str_dtor(a_str *ctx);
  @brief initialize a pointer to string structure by copying
  @param[in] ctx points to an instance of string structure
  @param[in] obj input source pointing to an instance
- @return the execution state of the function
+ @return error code value
   @retval 0 success
-  @retval 1 failure
 */
 A_EXTERN int a_str_copy(a_str *ctx, a_str const *obj);
 
@@ -164,9 +162,8 @@ A_EXTERN char *a_str_exit(a_str *ctx);
  @brief allocate memory for a pointer to string structure
  @param[in] ctx points to an instance of string structure
  @param[in] mem new memory capacity of string
- @return the execution state of the function
+ @return error code value
   @retval 0 success
-  @retval 1 failure
 */
 A_EXTERN int a_str_setm(a_str *ctx, a_size mem);
 A_EXTERN int a_str_setm_(a_str *ctx, a_size mem);
@@ -252,9 +249,8 @@ A_EXTERN a_size a_str_getn_(a_str *ctx, void *pdata, a_size nbyte);
  @param[in] ctx points to an instance of string structure
  @param[in] pdata points to memory block to put
  @param[in] nbyte length of memory block to put
- @return the execution state of the function
+ @return error code value
   @retval 0 success
-  @retval 1 failure
 */
 A_EXTERN int a_str_putn(a_str *ctx, void const *pdata, a_size nbyte);
 A_EXTERN int a_str_putn_(a_str *ctx, void const *pdata, a_size nbyte);
@@ -263,9 +259,8 @@ A_EXTERN int a_str_putn_(a_str *ctx, void const *pdata, a_size nbyte);
  @brief put C string to a pointer to string structure
  @param[in] ctx points to an instance of string structure
  @param[in] str string terminated with a null character
- @return the execution state of the function
+ @return error code value
   @retval 0 success
-  @retval 1 failure
 */
 A_EXTERN int a_str_puts(a_str *ctx, void const *str);
 A_EXTERN int a_str_puts_(a_str *ctx, void const *str);
@@ -291,9 +286,8 @@ A_EXTERN A_FORMAT(__printf__, 2, 3) int a_str_putf(a_str *ctx, char const *fmt, 
  @brief put the string structure obj to the string structure ctx
  @param[in] ctx points to an instance of string structure
  @param[in] obj input source pointing to an instance
- @return the execution state of the function
+ @return error code value
   @retval 0 success
-  @retval 1 failure
 */
 A_EXTERN int a_str_put(a_str *ctx, a_str const *obj);
 A_EXTERN int a_str_put_(a_str *ctx, a_str const *obj);

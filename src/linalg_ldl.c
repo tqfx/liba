@@ -11,7 +11,7 @@ int a_real_ldl(a_uint n, a_real *A)
         {
             Ac[c] -= Ac[i] * Ac[i] * A[(a_size)n * i + i];
         }
-        if (a_real_abs(Ac[c]) < A_REAL_MIN) { return ~0; }
+        if (a_real_abs(Ac[c]) < A_REAL_MIN) { return A_FAILURE; }
         for (r = c + 1; r < n; ++r)
         {
             a_real *const Ar = A + (a_size)n * r;
@@ -22,7 +22,7 @@ int a_real_ldl(a_uint n, a_real *A)
             Ar[c] /= Ac[c];
         }
     }
-    return 0;
+    return A_SUCCESS;
 }
 
 void a_real_ldl_L(a_uint n, a_real const *__restrict A, a_real *__restrict L)

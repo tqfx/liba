@@ -1818,11 +1818,11 @@ impl version {
 impl PartialOrd for version {
     #[inline(always)]
     fn partial_cmp(&self, other: &version) -> Option<Ordering> {
-        let ok: c_int = unsafe { a_version_cmp(self, other) };
-        if ok > 0 {
+        let rc: c_int = unsafe { a_version_cmp(self, other) };
+        if rc > 0 {
             return Some(Ordering::Greater);
         }
-        if ok < 0 {
+        if rc < 0 {
             return Some(Ordering::Less);
         }
         Some(Ordering::Equal)

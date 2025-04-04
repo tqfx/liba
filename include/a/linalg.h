@@ -288,7 +288,7 @@ A_EXTERN void a_real_mulTT(a_uint row, a_uint c_r, a_uint col, a_real const *__r
  @param[out] p the row permutation indices after partial pivoting.
  @param[out] sign store the sign of the permutation (+1 or -1).
  @return 0 on success, or a non-zero error code if the decomposition fails.
-  @retval -1 on failure, A is a singular matrix.
+  @retval 1 on failure, A is a singular matrix.
  */
 A_EXTERN int a_real_plu(a_uint n, a_real *A, a_uint *p, int *sign);
 
@@ -400,7 +400,7 @@ A_EXTERN int a_real_plu_sgndet(a_uint n, a_real const *A, int sign);
  @param[in,out] A an n x n square matrix.
   on input, contains the matrix to decompose. on output, contains the L and D matrices.
  @return 0 on success, or a non-zero error code if the decomposition fails.
-  @retval -1 on failure, A is a singular matrix.
+  @retval 1 on failure, A is a singular matrix.
 */
 A_EXTERN int a_real_ldl(a_uint n, a_real *A);
 
@@ -486,7 +486,7 @@ A_EXTERN int a_real_ldl_sgndet(a_uint n, a_real const *A);
  @param[in,out] A an n x n square matrix.
   on input, contains the matrix to decompose. on output, contains the L matrix.
  @return 0 on success, or a non-zero error code if the decomposition fails.
-  @retval -1 on failure, A is a singular matrix.
+  @retval 1 on failure, A is a singular matrix.
 */
 A_EXTERN int a_real_llt(a_uint n, a_real *A);
 

@@ -51,7 +51,7 @@ void a_vec_dtor(a_vec *ctx, void (*dtor)(void *))
 int a_vec_copy(a_vec *ctx, a_vec const *obj, int (*dup)(void *, void const *))
 {
     ctx->ptr_ = a_alloc(A_NULL, obj->mem_ * obj->siz_);
-    if (A_UNLIKELY(!ctx->ptr_)) { return A_FAILURE; }
+    if (A_UNLIKELY(!ctx->ptr_)) { return A_OMEMORY; }
     ctx->num_ = obj->num_;
     ctx->mem_ = obj->mem_;
     ctx->siz_ = obj->siz_;
@@ -82,7 +82,7 @@ void a_vec_move(a_vec *ctx, a_vec *obj)
 
 int a_vec_setm(a_vec *ctx, a_size m)
 {
-    int ok = A_SUCCESS;
+    int rc = A_SUCCESS;
     if (m > ctx->mem_)
     {
         void *ptr;
@@ -100,16 +100,16 @@ int a_vec_setm(a_vec *ctx, a_size m)
         }
         else
         {
-            ok = A_FAILURE;
+            rc = A_OMEMORY;
         }
     }
-    return ok;
+    return rc;
 }
 
 int a_vec_setn(a_vec *ctx, a_size num, void (*dtor)(void *))
 {
-    int ok = a_vec_setm(ctx, num);
-    if (ok == 0)
+    int rc = a_vec_setm(ctx, num);
+    if (rc == 0)
     {
         if (dtor)
         {
@@ -120,7 +120,7 @@ int a_vec_setn(a_vec *ctx, a_size num, void (*dtor)(void *))
         }
         ctx->num_ = num;
     }
-    return ok;
+    return rc;
 }
 
 void a_vec_setz(a_vec *ctx, a_size siz, void (*dtor)(void *))

@@ -23,7 +23,7 @@ int a_real_plu(a_uint n, a_real *A, a_uint *p, int *sign)
                 max_i = r;
             }
         }
-        if (abs_x < A_REAL_MIN) { return ~0; }
+        if (abs_x < A_REAL_MIN) { return A_FAILURE; }
         if (max_i != i)
         {
             a_uint u = p[i];
@@ -43,7 +43,7 @@ int a_real_plu(a_uint n, a_real *A, a_uint *p, int *sign)
             Ar[i] = x;
         }
     }
-    return 0;
+    return A_SUCCESS;
 }
 
 void a_real_plu_P(a_uint n, a_uint const *__restrict p, a_real *__restrict P)

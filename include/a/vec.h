@@ -174,9 +174,8 @@ A_EXTERN void a_vec_dtor(a_vec *ctx, void (*dtor)(void *));
  @param[in] obj input source pointing to an instance
  @param[in] dup a function that copies elements
   @arg 0 use function a_copy to copy elements
- @return the execution state of the function
+ @return error code value
   @retval 0 success
-  @retval 1 failure
 */
 A_EXTERN int a_vec_copy(a_vec *ctx, a_vec const *obj, int (*dup)(void *, void const *));
 
@@ -191,9 +190,8 @@ A_EXTERN void a_vec_move(a_vec *ctx, a_vec *obj);
  @brief set memory of element for a pointer to string structure
  @param[in] ctx points to an instance of string structure
  @param[in] mem new memory of current element
- @return the execution state of the function
+ @return error code value
   @retval 0 success
-  @retval 1 failure
 */
 A_EXTERN int a_vec_setm(a_vec *ctx, a_size mem);
 
@@ -202,9 +200,8 @@ A_EXTERN int a_vec_setm(a_vec *ctx, a_size mem);
  @param[in] ctx points to an instance of string structure
  @param[in] num new number of current element
  @param[in] dtor current element destructor
- @return the execution state of the function
+ @return error code value
   @retval 0 success
-  @retval 1 failure
 */
 A_EXTERN int a_vec_setn(a_vec *ctx, a_size num, void (*dtor)(void *));
 

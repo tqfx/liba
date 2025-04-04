@@ -1212,11 +1212,12 @@ typedef union a_cast
 /*!
  @brief enumeration for return values
 */
-enum
+enum a_return_code
 {
-    A_SUCCESS /*!< return success */,
-    A_FAILURE /*!< return failure */,
-    A_INVALID /*!< return invalid */
+    A_SUCCESS,
+    A_FAILURE,
+    A_INVALID,
+    A_OMEMORY
 };
 
 #if defined(__cplusplus)

@@ -76,7 +76,7 @@ int a_str_setm_(a_str *ctx, a_size mem)
         ctx->mem_ = mem;
         return A_SUCCESS;
     }
-    return A_FAILURE;
+    return A_OMEMORY;
 }
 
 int a_str_setm(a_str *ctx, a_size mem)
@@ -91,11 +91,10 @@ int a_str_setm(a_str *ctx, a_size mem)
 
 int a_str_cmp_(void const *p0, a_size n0, void const *p1, a_size n1)
 {
-    int ok;
     if (p0 && p1)
     {
-        ok = memcmp(p0, p1, A_MIN(n0, n1));
-        if (ok) { return ok; }
+        int rc = memcmp(p0, p1, A_MIN(n0, n1));
+        if (rc) { return rc; }
     }
     return (n0 > n1) - (n0 < n1);
 }
@@ -182,19 +181,19 @@ a_size a_str_getn(a_str *ctx, void *pdata, a_size nbyte)
 
 int a_str_putn_(a_str *ctx, void const *pdata, a_size nbyte)
 {
-    int ok = a_str_setm(ctx, ctx->num_ + nbyte);
-    if (ok == 0 && nbyte)
+    int rc = a_str_setm(ctx, ctx->num_ + nbyte);
+    if (rc == 0 && nbyte)
     {
         a_copy(ctx->ptr_ + ctx->num_, pdata, nbyte);
         ctx->num_ += nbyte;
     }
-    return ok;
+    return rc;
 }
 
 int a_str_putn(a_str *ctx, void const *pdata, a_size nbyte)
 {
-    int ok = a_str_setm(ctx, ctx->num_ + nbyte + 1);
-    if (ok == 0)
+    int rc = a_str_setm(ctx, ctx->num_ + nbyte + 1);
+    if (rc == 0)
     {
         if (nbyte)
         {
@@ -203,7 +202,7 @@ int a_str_putn(a_str *ctx, void const *pdata, a_size nbyte)
         }
         ctx->ptr_[ctx->num_] = 0;
     }
-    return ok;
+    return rc;
 }
 
 int a_str_puts_(a_str *ctx, void const *str)

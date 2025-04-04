@@ -8,14 +8,14 @@
 
 static int liba_complex_isok(lua_State *L, int idx)
 {
-    int ok = 0;
+    int isok = 0;
     if (lua_getmetatable(L, idx))
     {
         lua_registry_get(L, liba_complex_new);
-        ok = lua_rawequal(L, -1, -2);
+        isok = lua_rawequal(L, -1, -2);
         lua_pop(L, 2);
     }
-    return ok;
+    return isok;
 }
 
 static int liba_complex_from(lua_State *L, a_complex *z, int idx)

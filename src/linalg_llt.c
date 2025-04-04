@@ -20,10 +20,10 @@ int a_real_llt(a_uint n, a_real *A)
         {
             Ar[r] -= Ar[i] * Ar[i];
         }
-        if (Ar[r] < A_REAL_MIN) { return ~0; }
+        if (Ar[r] < A_REAL_MIN) { return A_FAILURE; }
         Ar[r] = a_real_sqrt(Ar[r]);
     }
-    return 0;
+    return A_SUCCESS;
 }
 
 void a_real_llt_L(a_uint n, a_real const *__restrict A, a_real *__restrict L)
