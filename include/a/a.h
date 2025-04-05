@@ -1217,6 +1217,7 @@ enum a_return_code
     A_SUCCESS,
     A_FAILURE,
     A_INVALID,
+    A_OBOUNDS,
     A_OMEMORY
 };
 

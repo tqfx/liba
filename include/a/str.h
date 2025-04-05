@@ -102,7 +102,7 @@ A_INTERN void a_str_setn_(a_str *ctx, a_size num) { ctx->num_ = num; }
 */
 A_INTERN int a_str_setn(a_str *ctx, a_size num)
 {
-    int const rc = (num <= ctx->mem_ ? A_SUCCESS : A_INVALID);
+    int const rc = (num <= ctx->mem_ ? A_SUCCESS : A_OBOUNDS);
     if (rc == 0) { ctx->num_ = num; }
     return rc;
 }

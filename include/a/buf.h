@@ -304,6 +304,31 @@ A_EXTERN void *a_buf_pull_fore(a_buf *ctx);
 A_EXTERN void *a_buf_pull_back(a_buf *ctx);
 #define A_BUF_PULL_BACK(T, ctx) a_cast_s(T *, a_buf_pull_back(ctx))
 
+/*!
+ @brief store elements into the buffer
+ @param[in] ctx points to an instance of buffer structure
+ @param[in] idx index of element in this buffer
+ @param[in] ptr points to array elements
+ @param[in] num number of array elements
+ @param[in] copy a function that copies elements
+  @arg 0 use function a_copy to copy elements
+ @return error code value
+  @retval 0 success
+*/
+A_EXTERN int a_buf_store(a_buf *ctx, a_size idx, void *ptr, a_size num, int (*copy)(void *, void const *));
+
+/*!
+ @brief erase elements from the buffer
+ @param[in] ctx points to an instance of buffer structure
+ @param[in] idx index of element in this buffer
+ @param[in] num number of elements to erase
+ @param[in] dtor a function that erases elements
+  @arg 0 not erase these elements
+ @return error code value
+  @retval 0 success
+*/
+A_EXTERN int a_buf_erase(a_buf *ctx, a_size idx, a_size num, void (*dtor)(void *));
+
 #if defined(__cplusplus)
 } /* extern "C" */
 #endif /* __cplusplus */

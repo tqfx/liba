@@ -357,6 +357,31 @@ A_EXTERN void *a_vec_pull_fore(a_vec *ctx);
 A_EXTERN void *a_vec_pull_back(a_vec *ctx);
 #define A_VEC_PULL_BACK(T, ctx) a_cast_s(T *, a_vec_pull_back(ctx))
 
+/*!
+ @brief store elements into the vector
+ @param[in] ctx points to an instance of vector structure
+ @param[in] idx index of element in this vector
+ @param[in] ptr points to array elements
+ @param[in] num number of array elements
+ @param[in] copy a function that copies elements
+  @arg 0 use function a_copy to copy elements
+ @return error code value
+  @retval 0 success
+*/
+A_EXTERN int a_vec_store(a_vec *ctx, a_size idx, void *ptr, a_size num, int (*copy)(void *, void const *));
+
+/*!
+ @brief erase elements from the vector
+ @param[in] ctx points to an instance of vector structure
+ @param[in] idx index of element in this vector
+ @param[in] num number of elements to erase
+ @param[in] dtor a function that erases elements
+  @arg 0 not erase these elements
+ @return error code value
+  @retval 0 success
+*/
+A_EXTERN int a_vec_erase(a_vec *ctx, a_size idx, a_size num, void (*dtor)(void *));
+
 #if defined(__cplusplus)
 } /* extern "C" */
 #endif /* __cplusplus */

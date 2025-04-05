@@ -48,30 +48,10 @@ void a_vec_dtor(a_vec *ctx, void (*dtor)(void *))
     ctx->mem_ = 0;
 }
 
-int a_vec_copy(a_vec *ctx, a_vec const *obj, int (*dup)(void *, void const *))
+int a_vec_copy(a_vec *ctx, a_vec const *obj, int (*copy)(void *, void const *))
 {
-    ctx->ptr_ = a_alloc(A_NULL, obj->mem_ * obj->siz_);
-    if (A_UNLIKELY(!ctx->ptr_)) { return A_OMEMORY; }
-    ctx->num_ = obj->num_;
-    ctx->mem_ = obj->mem_;
-    ctx->siz_ = obj->siz_;
-    if (dup)
-    {
-        a_size num;
-        a_byte *dst = (a_byte *)ctx->ptr_;
-        a_byte *src = (a_byte *)obj->ptr_;
-        for (num = obj->num_; num; --num)
-        {
-            dup(dst, src);
-            dst += ctx->siz_;
-            src += ctx->siz_;
-        }
-    }
-    else
-    {
-        a_copy(ctx->ptr_, obj->ptr_, obj->num_ * obj->siz_);
-    }
-    return A_SUCCESS;
+    a_vec_ctor(ctx, obj->siz_);
+    return a_vec_store(ctx, 0, obj->ptr_, obj->num_, copy);
 }
 
 void a_vec_move(a_vec *ctx, a_vec *obj)
@@ -266,15 +246,14 @@ void *a_vec_insert(a_vec *ctx, a_size idx)
     {
         if (idx < ctx->num_)
         {
-            a_byte *const src = (a_byte *)ctx->ptr_ + ctx->siz_ * (idx + 0);
-            a_byte *const dst = (a_byte *)ctx->ptr_ + ctx->siz_ * (idx + 1);
-            a_move(dst, src, (ctx->num_ - idx) * ctx->siz_);
+            a_byte *const p = (a_byte *)ctx->ptr_ + ctx->siz_ * idx;
+            a_move(p + ctx->siz_, p, (ctx->num_ - idx) * ctx->siz_);
             ++ctx->num_;
-            return src;
+            return p;
         }
         return a_vec_inc_(ctx);
     }
-    return NULL;
+    return A_NULL;
 }
 
 void *a_vec_push_fore(a_vec *ctx) { return a_vec_insert(ctx, 0); }
@@ -285,29 +264,26 @@ void *a_vec_push_back(a_vec *ctx)
     {
         return a_vec_inc_(ctx);
     }
-    return NULL;
+    return A_NULL;
 }
 
 void *a_vec_remove(a_vec *ctx, a_size idx)
 {
     if (idx + 1 < ctx->num_)
     {
+        a_byte *const p = (a_byte *)ctx->ptr_ + ctx->siz_ * idx;
+        a_byte *const q = p + ctx->siz_;
         if (ctx->num_ < ctx->mem_)
         {
             a_byte *const ptr = (a_byte *)ctx->ptr_ + ctx->siz_ * ctx->num_--;
-            a_byte *const dst = (a_byte *)ctx->ptr_ + ctx->siz_ * (idx + 0);
-            a_byte *const src = (a_byte *)ctx->ptr_ + ctx->siz_ * (idx + 1);
-            a_size const siz = (a_size)(ptr - src);
-            a_copy(ptr, dst, ctx->siz_);
-            a_move(dst, src, siz);
+            a_copy(ptr, p, ctx->siz_);
+            a_move(p, q, (a_size)(ptr - q));
             return ptr;
         }
         else
         {
             a_byte *const ptr = (a_byte *)ctx->ptr_ + ctx->siz_ * --ctx->num_;
-            a_byte *const dst = (a_byte *)ctx->ptr_ + ctx->siz_ * (idx + 0);
-            a_byte *const src = (a_byte *)ctx->ptr_ + ctx->siz_ * (idx + 1);
-            a_swap(dst, src, (a_size)(ptr - dst));
+            a_swap(p, q, (a_size)(ptr - p));
             return ptr;
         }
     }
@@ -319,4 +295,57 @@ void *a_vec_pull_fore(a_vec *ctx) { return a_vec_remove(ctx, 0); }
 void *a_vec_pull_back(a_vec *ctx)
 {
     return ctx->num_ ? a_vec_dec_(ctx) : A_NULL;
+}
+
+int a_vec_store(a_vec *ctx, a_size idx, void *ptr, a_size num, int (*copy)(void *, void const *))
+{
+    int rc = a_vec_setm(ctx, ctx->num_ + num);
+    if (rc == 0 && num)
+    {
+        a_byte *p = (a_byte *)ctx->ptr_ + ctx->siz_ * ctx->num_;
+        a_size n = ctx->siz_ * num;
+        if (idx < ctx->num_)
+        {
+            a_byte *const q = p;
+            p = (a_byte *)ctx->ptr_ + ctx->siz_ * idx;
+            a_move(p + n, p, (a_size)(q - p));
+        }
+        if (!copy) { a_copy(p, ptr, n); }
+        else
+        {
+            a_byte *q = (a_byte *)ptr;
+            for (n = num; n; --n)
+            {
+                rc = copy(p, q);
+                p += ctx->siz_;
+                q += ctx->siz_;
+            }
+        }
+        ctx->num_ += num;
+    }
+    return rc;
+}
+
+int a_vec_erase(a_vec *ctx, a_size idx, a_size num, void (*dtor)(void *))
+{
+    int rc = A_SUCCESS;
+    a_size const n = idx + num;
+    if (dtor && ctx->num_)
+    {
+        a_size i = (n <= ctx->num_ ? n : ctx->num_);
+        a_byte *p = (a_byte *)ctx->ptr_ + ctx->siz_ * idx;
+        for (; i > idx; --i, p += ctx->siz_) { dtor(p); }
+    }
+    if (n < ctx->num_)
+    {
+        a_byte *const p = (a_byte *)ctx->ptr_ + ctx->siz_ * idx;
+        a_move(p, p + ctx->siz_ * num, (ctx->num_ - n) * ctx->siz_);
+        ctx->num_ -= num;
+    }
+    else if (idx < ctx->num_)
+    {
+        ctx->num_ = idx;
+    }
+    else { rc = A_OBOUNDS; }
+    return rc;
 }
