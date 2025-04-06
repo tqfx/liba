@@ -65,13 +65,12 @@ static void test(void)
     }
     {
         a_vec *ctx = a_vec_new(sizeof(a_u64));
-        a_vec *obj = a_vec_new(sizeof(a_u64));
-        TEST_BUG(a_vec_store(ctx, 0, a_vec_ptr(obj), a_vec_num(obj), copy) == 0);
-        TEST_BUG(a_vec_store(ctx, 0, a_vec_ptr(obj), a_vec_num(obj), A_NULL) == 0);
-        TEST_BUG(a_vec_store(ctx, ~0U, a_vec_ptr(obj), a_vec_num(obj), copy) == 0);
-        TEST_BUG(a_vec_store(ctx, ~0U, a_vec_ptr(obj), a_vec_num(obj), A_NULL) == 0);
+        TEST_BUG(a_vec_store(ctx, 0, A_NULL, 0, copy) == 0);
+        TEST_BUG(a_vec_store(ctx, 0, A_NULL, 0, A_NULL) == 0);
+        TEST_BUG(a_vec_store(ctx, ~0U, A_NULL, 0, copy) == 0);
+        TEST_BUG(a_vec_store(ctx, ~0U, A_NULL, 0, A_NULL) == 0);
+        TEST_BUG(a_vec_erase(ctx, 0, 0, dtor) != 0);
         a_vec_die(ctx, dtor);
-        a_vec_die(obj, A_NULL);
     }
     {
         a_u64 buf[] = {0, 1, 2, 3};

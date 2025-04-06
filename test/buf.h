@@ -66,13 +66,12 @@ static void test(void)
     }
     {
         a_buf *ctx = a_buf_new(sizeof(a_u64), 0);
-        a_buf *obj = a_buf_new(sizeof(a_u64), 0);
-        TEST_BUG(a_buf_store(ctx, 0, a_buf_ptr(obj), a_buf_num(obj), copy) == 0);
-        TEST_BUG(a_buf_store(ctx, 0, a_buf_ptr(obj), a_buf_num(obj), A_NULL) == 0);
-        TEST_BUG(a_buf_store(ctx, ~0U, a_buf_ptr(obj), a_buf_num(obj), copy) == 0);
-        TEST_BUG(a_buf_store(ctx, ~0U, a_buf_ptr(obj), a_buf_num(obj), A_NULL) == 0);
+        TEST_BUG(a_buf_store(ctx, 0, A_NULL, 0, copy) == 0);
+        TEST_BUG(a_buf_store(ctx, 0, A_NULL, 0, A_NULL) == 0);
+        TEST_BUG(a_buf_store(ctx, ~0U, A_NULL, 0, copy) == 0);
+        TEST_BUG(a_buf_store(ctx, ~0U, A_NULL, 0, A_NULL) == 0);
+        TEST_BUG(a_buf_erase(ctx, 0, 0, dtor) != 0);
         a_buf_die(ctx, dtor);
-        a_buf_die(obj, A_NULL);
     }
     {
         a_u64 buf[] = {0, 1, 2, 3};

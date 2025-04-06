@@ -81,7 +81,6 @@ int a_str_setm(a_str *ctx, a_size mem)
     {
         return a_str_setm_(ctx, mem);
     }
-    A_ASSUME(ctx->ptr_);
     return A_SUCCESS;
 }
 
