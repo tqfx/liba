@@ -864,7 +864,7 @@ typedef A_SIZE a_size;
 #define A_F32_MIN FLT_MIN
 #define A_F32_MIN_10_EXP FLT_MIN_10_EXP
 #define A_F32_MIN_EXP FLT_MIN_EXP
-#define A_F32_INF a_cast_s(a_f32, A_F64_INF)
+#define A_F32_INF a_cast_s(a_f32, DBL_MAX)
 #define A_F32_NAN (A_F32_C(0.0) * A_F32_INF)
 #define A_F32_NNAN A_U32_C(0xFFC00000)
 #define A_F32_PNAN A_U32_C(0x7FC00000)
