@@ -60,19 +60,18 @@ void a_vec_move(a_vec *ctx, a_vec *obj)
     a_zero(obj, sizeof(*obj));
 }
 
-int a_vec_setm(a_vec *ctx, a_size m)
+int a_vec_setm(a_vec *ctx, a_size mem)
 {
     int rc = A_SUCCESS;
-    if (m > ctx->mem_)
+    if (mem > ctx->mem_)
     {
         void *ptr;
-        a_size mem = ctx->mem_;
+        a_size m = ctx->mem_;
         do {
-            mem += (mem >> 1) + 1;
-        } while (mem < m);
-        m = ctx->siz_ * mem;
-        m = a_size_up(sizeof(void *), m);
-        ptr = a_alloc(ctx->ptr_, m);
+            m += (m >> 1) + 1;
+        } while (m < mem);
+        mem = a_size_up(sizeof(void *), m);
+        ptr = a_alloc(ctx->ptr_, ctx->siz_ * mem);
         if (ptr)
         {
             ctx->ptr_ = ptr;

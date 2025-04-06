@@ -21,8 +21,11 @@ static int a_que_die_(a_que *ctx, a_list *node)
     if (A_UNLIKELY(!node)) { return A_INVALID; }
     if (ctx->mem_ <= ctx->cur_)
     {
-        a_size const mem = ctx->mem_ + (ctx->mem_ >> 1) + 1;
-        a_list **const ptr = (a_list **)a_alloc((void *)ctx->ptr_, sizeof(void *) * mem);
+        a_list **ptr;
+        a_size mem = ctx->mem_;
+        mem += (ctx->mem_ >> 1) + 1;
+        mem = a_size_up(sizeof(void *), mem);
+        ptr = (a_list **)a_alloc((void *)ctx->ptr_, sizeof(void *) * mem);
         if (A_UNLIKELY(!ptr)) { return A_OMEMORY; }
         ctx->ptr_ = ptr;
         ctx->mem_ = mem;
