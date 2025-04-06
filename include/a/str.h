@@ -135,15 +135,6 @@ A_EXTERN void a_str_ctor(a_str *ctx);
 A_EXTERN void a_str_dtor(a_str *ctx);
 
 /*!
- @brief initialize a pointer to string structure by copying
- @param[in] ctx points to an instance of string structure
- @param[in] obj input source pointing to an instance
- @return error code value
-  @retval 0 success
-*/
-A_EXTERN int a_str_copy(a_str *ctx, a_str const *obj);
-
-/*!
  @brief swap the contents of two pointers to string structure
  @param[in] lhs points to an instance of string structure
  @param[in] rhs points to an instance of string structure

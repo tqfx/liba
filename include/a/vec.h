@@ -169,17 +169,6 @@ A_EXTERN void a_vec_ctor(a_vec *ctx, a_size size);
 A_EXTERN void a_vec_dtor(a_vec *ctx, void (*dtor)(void *));
 
 /*!
- @brief initialize a pointer to vector structure by copying
- @param[in] ctx points to an instance of vector structure
- @param[in] obj input source pointing to an instance
- @param[in] dup a function that copies elements
-  @arg 0 use function a_copy to copy elements
- @return error code value
-  @retval 0 success
-*/
-A_EXTERN int a_vec_copy(a_vec *ctx, a_vec const *obj, int (*dup)(void *, void const *));
-
-/*!
  @brief swap the contents of two pointers to vector structure
  @param[in] lhs points to an instance of vector structure
  @param[in] rhs points to an instance of vector structure

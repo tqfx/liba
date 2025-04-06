@@ -48,12 +48,6 @@ void a_vec_dtor(a_vec *ctx, void (*dtor)(void *))
     ctx->mem_ = 0;
 }
 
-int a_vec_copy(a_vec *ctx, a_vec const *obj, int (*copy)(void *, void const *))
-{
-    a_vec_ctor(ctx, obj->siz_);
-    return a_vec_store(ctx, 0, obj->ptr_, obj->num_, copy);
-}
-
 void a_vec_swap(a_vec *lhs, a_vec *rhs)
 {
     a_vec swap;

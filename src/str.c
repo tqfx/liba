@@ -40,12 +40,6 @@ void a_str_dtor(a_str *ctx)
     ctx->mem_ = 0;
 }
 
-int a_str_copy(a_str *ctx, a_str const *obj)
-{
-    a_str_ctor(ctx);
-    return a_str_catn(ctx, obj->ptr_, obj->num_);
-}
-
 void a_str_swap(a_str *lhs, a_str *rhs)
 {
     a_str swap;
