@@ -115,8 +115,8 @@ static void test_sum(int argc, char *argv[])
 
     for (i = 0; i < n; ++i)
     {
-        char *endptr;
-        p[i] = strtonum(argv[i], &endptr);
+        char *endptr = argv[i];
+        p[i] = a_str2num(argv[i], &endptr);
     }
 
     debug("{");
@@ -137,8 +137,8 @@ static void test_norm(int argc, char *argv[])
 
     for (i = 0; i < n; ++i)
     {
-        char *endptr;
-        p[i] = strtonum(argv[i], &endptr);
+        char *endptr = argv[i];
+        p[i] = a_str2num(argv[i], &endptr);
     }
 
     debug("{");
@@ -158,8 +158,8 @@ static void test_mean(int argc, char *argv[])
 
     for (i = 0; i < n; ++i)
     {
-        char *endptr;
-        p[i] = strtonum(argv[i], &endptr);
+        char *endptr = argv[i];
+        p[i] = a_str2num(argv[i], &endptr);
     }
 
     debug("{");

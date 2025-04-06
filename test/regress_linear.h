@@ -252,16 +252,16 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 
     if (dim == 1)
     {
-        if (argc > 2) { a = strtonum(argv[2], &endptr); }
-        if (argc > 3) { c = strtonum(argv[3], &endptr); }
+        if (argc > 2) { a = a_str2num(argv[2], &endptr); }
+        if (argc > 3) { c = a_str2num(argv[3], &endptr); }
         if (argc > 4) { n = strtoul(argv[4], &endptr, 0); }
         main_1(m, a, c, n, &cfg);
     }
     if (dim == 2)
     {
-        if (argc > 2) { a = strtonum(argv[2], &endptr); }
-        if (argc > 3) { b = strtonum(argv[3], &endptr); }
-        if (argc > 4) { c = strtonum(argv[4], &endptr); }
+        if (argc > 2) { a = a_str2num(argv[2], &endptr); }
+        if (argc > 3) { b = a_str2num(argv[3], &endptr); }
+        if (argc > 4) { c = a_str2num(argv[4], &endptr); }
         if (argc > 5) { n = strtoul(argv[5], &endptr, 0); }
         main_2(m, a, b, c, n, &cfg);
     }

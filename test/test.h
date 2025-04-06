@@ -26,14 +26,6 @@
 #endif /* A_REAL_TYPE + 0 == 0x04 */
 #endif /* -Wdouble-promotion */
 
-#if A_REAL_TYPE + 0 == A_REAL_SINGLE
-#define strtonum(string, endptr) strtof(string, endptr)
-#elif A_REAL_TYPE + 0 == A_REAL_DOUBLE
-#define strtonum(string, endptr) strtod(string, endptr)
-#elif A_REAL_TYPE + 0 == A_REAL_EXTEND
-#define strtonum(string, endptr) strtold(string, endptr)
-#endif /* A_REAL_TYPE */
-
 #define TEST_IS1(expression, message)                                         \
     do {                                                                      \
         if (!(expression))                                                    \

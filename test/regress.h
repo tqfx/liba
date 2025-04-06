@@ -11,8 +11,8 @@ static void test_odm(int argc, char *argv[])
     p = a_new(a_real, A_NULL, n);
     for (i = 0; i < n; ++i)
     {
-        char *endptr;
-        p[i] = strtonum(argv[i], &endptr);
+        char *endptr = argv[i];
+        p[i] = a_str2num(argv[i], &endptr);
     }
 
     odm = a_new(a_real, A_NULL, n);

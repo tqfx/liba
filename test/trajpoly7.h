@@ -11,8 +11,8 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 
     if (argc > 1)
     {
-        char *endptr = A_NULL;
-        (void)strtonum(argv[1], &endptr);
+        char *endptr = argv[1];
+        (void)strtod(argv[1], &endptr);
         if (argv[1] == endptr)
         {
             main_init(argc, argv, 1);
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 
     for (i = start; i < argc; ++i)
     {
-        arg[i - start] = strtonum(argv[i], A_NULL);
+        arg[i - start] = a_str2num(argv[i], A_NULL);
     }
     a_trajpoly7_gen(&ctx, arg[1] - arg[0], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7], arg[8], arg[9]);
     for ((void)(x = arg[0]), delta = (arg[1] - arg[0]) / 1000; x < arg[1]; x += delta) /* NOLINT */

@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     }
     for (i = 2; i < argc && i < 8; ++i)
     {
-        params[i - 2] = strtonum(argv[i], A_NULL);
+        params[i - 2] = a_str2num(argv[i], A_NULL);
     }
     if (e != A_MF_NUL)
     {

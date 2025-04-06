@@ -25,8 +25,8 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     a_real b = 12;
     a_regress_simple ctx;
 
-    if (argc > 2) { a = strtonum(argv[2], &endptr); }
-    if (argc > 3) { b = strtonum(argv[3], &endptr); }
+    if (argc > 2) { a = a_str2num(argv[2], &endptr); }
+    if (argc > 3) { b = a_str2num(argv[3], &endptr); }
     if (argc > 4) { n = strtoul(argv[4], &endptr, 0); }
 
     x = a_new(a_real, A_NULL, n);

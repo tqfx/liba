@@ -52,7 +52,7 @@ static void test_for(int argc, char *argv[])
 
     if (argc > 1)
     {
-        char *endptr = A_NULL;
+        char *endptr = argv[1];
         unsigned long u = strtoul(argv[1], &endptr, 0);
         if (u > n) { n = a_cast_s(unsigned int, u); }
     }

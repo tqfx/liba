@@ -46,13 +46,6 @@ void a_complex_polar(a_complex *ctx, a_real rho, a_real theta)
 
 unsigned int a_complex_parse(a_complex *ctx, char const *str)
 {
-#if A_REAL_TYPE + 0 == A_REAL_SINGLE
-#define strtonum(string, endptr) strtof(string, endptr)
-#elif A_REAL_TYPE + 0 == A_REAL_DOUBLE
-#define strtonum(string, endptr) strtod(string, endptr)
-#elif A_REAL_TYPE + 0 == A_REAL_EXTEND
-#define strtonum(string, endptr) strtold(string, endptr)
-#endif /* A_REAL_TYPE */
     union
     {
         char const *s;
@@ -64,7 +57,7 @@ unsigned int a_complex_parse(a_complex *ctx, char const *str)
     {
         if (*u.s == '+' || *u.s == '-' || ('0' <= *u.s && *u.s <= '9') || *u.s == '.')
         {
-            ctx->real = strtonum(u.s, &u.p);
+            ctx->real = a_str2num(u.s, &u.p);
             break;
         }
     }
@@ -72,7 +65,7 @@ unsigned int a_complex_parse(a_complex *ctx, char const *str)
     {
         if (*u.s == '+' || *u.s == '-' || ('0' <= *u.s && *u.s <= '9') || *u.s == '.')
         {
-            ctx->imag = strtonum(u.s, &u.p);
+            ctx->imag = a_str2num(u.s, &u.p);
             break;
         }
     }

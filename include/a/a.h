@@ -937,6 +937,7 @@ typedef A_F64 a_f64;
 #define A_REAL_F(F) A_CAST_2(F, f)
 #define A_REAL_PRI
 #define A_REAL_SCN
+#define a_str2num strtof
 
 #elif A_REAL_TYPE + 0 == A_REAL_DOUBLE
 
@@ -955,6 +956,7 @@ typedef A_F64 a_f64;
 #define A_REAL_F(F) F
 #define A_REAL_PRI
 #define A_REAL_SCN "l"
+#define a_str2num strtod
 
 #elif A_REAL_TYPE + 0 == A_REAL_EXTEND
 
@@ -973,6 +975,7 @@ typedef A_F64 a_f64;
 #define A_REAL_F(F) A_CAST_2(F, l)
 #define A_REAL_PRI "L"
 #define A_REAL_SCN "L"
+#define a_str2num strtold
 
 #else /* !A_REAL_TYPE */
 #error unsupported precision
