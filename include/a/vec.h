@@ -187,8 +187,8 @@ A_EXTERN int a_vec_copy(a_vec *ctx, a_vec const *obj, int (*dup)(void *, void co
 A_EXTERN void a_vec_move(a_vec *ctx, a_vec *obj);
 
 /*!
- @brief set memory of element for a pointer to string structure
- @param[in] ctx points to an instance of string structure
+ @brief set memory of element for a pointer to vector structure
+ @param[in] ctx points to an instance of vector structure
  @param[in] mem new memory of current element
  @return error code value
   @retval 0 success
@@ -196,8 +196,8 @@ A_EXTERN void a_vec_move(a_vec *ctx, a_vec *obj);
 A_EXTERN int a_vec_setm(a_vec *ctx, a_size mem);
 
 /*!
- @brief set number of element for a pointer to string structure
- @param[in] ctx points to an instance of string structure
+ @brief set number of element for a pointer to vector structure
+ @param[in] ctx points to an instance of vector structure
  @param[in] num new number of current element
  @param[in] dtor current element destructor
  @return error code value
