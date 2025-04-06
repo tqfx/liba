@@ -403,9 +403,11 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_str *ctx = a_str_new();
         a_str_catf(ctx, "0123");
         TEST_BUG(*a_str_at_(ctx, 0) == '0');
-        TEST_BUG(*a_str_at(ctx, 0) == '0');
-        TEST_BUG(*a_str_of(ctx, -1) == '3');
-        TEST_BUG(*a_str_at(ctx, 4) == 0);
+        TEST_BUG(*a_str_at_(ctx, 1) == '1');
+        TEST_BUG(*a_str_at_(ctx, 2) == '2');
+        TEST_BUG(*a_str_at_(ctx, 3) == '3');
+        TEST_BUG(*a_str_at_(ctx, 4) == 0);
+        TEST_BUG(a_str_at(ctx, 2) == a_str_of(ctx, -2));
         a_str_die(ctx);
     }
     for (i = 1; i < argc; ++i)

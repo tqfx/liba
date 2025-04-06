@@ -82,6 +82,7 @@ int a_vec_setm(a_vec *ctx, a_size mem)
             rc = A_OMEMORY;
         }
     }
+    A_ASSUME(ctx->ptr_);
     return rc;
 }
 
