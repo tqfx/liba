@@ -63,7 +63,6 @@ static void test(void)
     }
     a_que_remove(ctx, 0);
     a_que_remove(ctx, A_SIZE_MAX);
-    a_que_swap(ctx, 0, A_SIZE_MAX);
     {
         a_u32 *lhs = A_QUE_FORE_(a_u32, ctx);
         a_u32 *rhs = A_QUE_BACK_(a_u32, ctx);

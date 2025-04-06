@@ -96,10 +96,12 @@ void a_que_dtor(a_que *ctx, void (*dtor)(void *))
     ctx->mem_ = 0;
 }
 
-void a_que_move(a_que *ctx, a_que *obj)
+void a_que_swap(a_que *lhs, a_que *rhs)
 {
-    a_copy(ctx, obj, sizeof(*obj));
-    a_zero(obj, sizeof(*obj));
+    a_que swap;
+    swap = *lhs;
+    *lhs = *rhs;
+    *rhs = swap;
 }
 
 int a_que_drop(a_que *ctx, void (*dtor)(void *))
@@ -169,32 +171,6 @@ void *a_que_at(a_que const *ctx, a_diff idx)
         }
     }
     return A_NULL;
-}
-
-int a_que_swap(a_que const *ctx, a_size lhs, a_size rhs)
-{
-    a_size cur = 0;
-    int rc = A_FAILURE;
-    a_list *it, *at = A_NULL;
-    a_size const num = ctx->num_ - 1;
-    lhs = lhs < ctx->num_ ? lhs : num;
-    rhs = rhs < ctx->num_ ? rhs : num;
-    if (lhs == rhs) { return A_SUCCESS; }
-    A_LIST_FOREACH_NEXT(it, &ctx->head_)
-    {
-        if (cur == lhs || cur == rhs)
-        {
-            if (at)
-            {
-                a_list_swap_node(it, at);
-                rc = A_SUCCESS;
-                break;
-            }
-            else { at = it; }
-        }
-        ++cur;
-    }
-    return rc;
 }
 
 void a_que_sort_fore(a_que const *ctx, int (*cmp)(void const *, void const *))

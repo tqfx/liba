@@ -144,11 +144,11 @@ A_EXTERN void a_str_dtor(a_str *ctx);
 A_EXTERN int a_str_copy(a_str *ctx, a_str const *obj);
 
 /*!
- @brief initialize a pointer to string structure by moving
- @param[in] ctx points to an instance of string structure
- @param[in] obj input source pointing to an instance
+ @brief swap the contents of two pointers to string structure
+ @param[in] lhs points to an instance of string structure
+ @param[in] rhs points to an instance of string structure
 */
-A_EXTERN void a_str_move(a_str *ctx, a_str *obj);
+A_EXTERN void a_str_swap(a_str *lhs, a_str *rhs);
 
 /*!
  @brief terminate a pointer to string structure

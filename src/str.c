@@ -46,10 +46,12 @@ int a_str_copy(a_str *ctx, a_str const *obj)
     return a_str_catn(ctx, obj->ptr_, obj->num_);
 }
 
-void a_str_move(a_str *ctx, a_str *obj)
+void a_str_swap(a_str *lhs, a_str *rhs)
 {
-    a_copy(ctx, obj, sizeof(*obj));
-    a_zero(obj, sizeof(*obj));
+    a_str swap;
+    swap = *lhs;
+    *lhs = *rhs;
+    *rhs = swap;
 }
 
 char *a_str_exit(a_str *ctx)

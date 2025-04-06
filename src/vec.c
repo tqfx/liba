@@ -54,10 +54,12 @@ int a_vec_copy(a_vec *ctx, a_vec const *obj, int (*copy)(void *, void const *))
     return a_vec_store(ctx, 0, obj->ptr_, obj->num_, copy);
 }
 
-void a_vec_move(a_vec *ctx, a_vec *obj)
+void a_vec_swap(a_vec *lhs, a_vec *rhs)
 {
-    a_copy(ctx, obj, sizeof(*obj));
-    a_zero(obj, sizeof(*obj));
+    a_vec swap;
+    swap = *lhs;
+    *lhs = *rhs;
+    *rhs = swap;
 }
 
 int a_vec_setm(a_vec *ctx, a_size mem)
@@ -110,19 +112,6 @@ void a_vec_setz(a_vec *ctx, a_size siz, void (*dtor)(void *))
     if (!siz) { siz = 1; }
     ctx->mem_ /= siz;
     ctx->siz_ = siz;
-}
-
-void a_vec_swap(a_vec const *ctx, a_size lhs, a_size rhs)
-{
-    a_size const num = ctx->num_ - 1;
-    lhs = lhs < ctx->num_ ? lhs : num;
-    rhs = rhs < ctx->num_ ? rhs : num;
-    if (lhs != rhs)
-    {
-        a_swap((a_byte *)ctx->ptr_ + lhs * ctx->siz_,
-               (a_byte *)ctx->ptr_ + rhs * ctx->siz_,
-               ctx->siz_);
-    }
 }
 
 void a_vec_sort(a_vec const *ctx, int (*cmp)(void const *, void const *))

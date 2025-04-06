@@ -77,21 +77,6 @@ void a_buf_setz(void *ctx_, a_size siz, void (*dtor)(void *))
     ctx->siz_ = siz;
 }
 
-void a_buf_swap(void const *ctx_, a_size lhs, a_size rhs)
-{
-    a_buf const *const ctx = (a_buf const *)ctx_;
-    a_size const num = ctx->num_ - 1;
-    lhs = lhs < ctx->num_ ? lhs : num;
-    rhs = rhs < ctx->num_ ? rhs : num;
-    if (lhs != rhs)
-    {
-        a_byte *ptr = (a_byte *)a_buf_ptr(ctx);
-        a_swap(ptr + lhs * ctx->siz_,
-               ptr + rhs * ctx->siz_,
-               ctx->siz_);
-    }
-}
-
 void a_buf_sort(void const *ctx_, int (*cmp)(void const *, void const *))
 {
     a_buf const *const ctx = (a_buf const *)ctx_;

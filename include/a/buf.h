@@ -193,14 +193,6 @@ A_EXTERN void a_buf_setn(void *ctx, a_size num, void (*dtor)(void *));
 A_EXTERN void a_buf_setz(void *ctx, a_size siz, void (*dtor)(void *));
 
 /*!
- @brief swap elements lhs and rhs for a pointer to buffer structure
- @param[in] ctx points to an instance of buffer structure
- @param[in] lhs element index on the left
- @param[in] rhs element index on the right
-*/
-A_EXTERN void a_buf_swap(void const *ctx, a_size lhs, a_size rhs);
-
-/*!
  @brief sort all elements for a pointer to buffer structure
  @param[in] ctx points to an instance of buffer structure
  @param[in] cmp a function that compares two elements

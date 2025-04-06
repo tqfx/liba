@@ -180,11 +180,11 @@ A_EXTERN void a_vec_dtor(a_vec *ctx, void (*dtor)(void *));
 A_EXTERN int a_vec_copy(a_vec *ctx, a_vec const *obj, int (*dup)(void *, void const *));
 
 /*!
- @brief initialize a pointer to vector structure by moving
- @param[in] ctx points to an instance of vector structure
- @param[in] obj input source pointing to an instance
+ @brief swap the contents of two pointers to vector structure
+ @param[in] lhs points to an instance of vector structure
+ @param[in] rhs points to an instance of vector structure
 */
-A_EXTERN void a_vec_move(a_vec *ctx, a_vec *obj);
+A_EXTERN void a_vec_swap(a_vec *lhs, a_vec *rhs);
 
 /*!
  @brief set memory of element for a pointer to vector structure
@@ -212,14 +212,6 @@ A_EXTERN int a_vec_setn(a_vec *ctx, a_size num, void (*dtor)(void *));
  @param[in] dtor previous element destructor
 */
 A_EXTERN void a_vec_setz(a_vec *ctx, a_size siz, void (*dtor)(void *));
-
-/*!
- @brief swap elements lhs and rhs for a pointer to vector structure
- @param[in] ctx points to an instance of vector structure
- @param[in] lhs element index on the left
- @param[in] rhs element index on the right
-*/
-A_EXTERN void a_vec_swap(a_vec const *ctx, a_size lhs, a_size rhs);
 
 /*!
  @brief sort all elements for a pointer to vector structure
