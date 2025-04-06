@@ -14,41 +14,50 @@
  @{
 */
 
+#define A_BUF_DEF a_size num_, mem_, siz_
 /*!
  @brief instance structure for basic buffer
 */
 typedef struct a_buf
 {
-    void *ptr_; /*!< address of memory */
-    a_size siz_; /*!< size of a element */
-    a_size num_; /*!< number of element */
-    a_size mem_; /*!< memory of element */
+    A_BUF_DEF;
 } a_buf;
 
 /*!
- @brief access address of buffer for a pointer to buffer structure
- @param[in] ctx points to an instance of buffer structure
+ @brief cast a buffer pointer from another type pointer
+ @param[in] _ additional attributes of specified type
+ @param[in] x points to basic buffer
+ @return a pointer to basic buffer
 */
-A_INTERN void *a_buf_ptr(a_buf const *ctx) { return ctx->ptr_; }
-#define A_BUF_PTR(T, ctx) a_cast_s(T *, a_buf_ptr(ctx))
-
-/*!
- @brief access size of a element for a pointer to buffer structure
- @param[in] ctx points to an instance of buffer structure
-*/
-A_INTERN a_size a_buf_siz(a_buf const *ctx) { return ctx->siz_; }
+#define a_buf_(_, x) a_cast_s(a_buf _, a_cast_s(void _, x))
 
 /*!
  @brief access number of element for a pointer to buffer structure
  @param[in] ctx points to an instance of buffer structure
 */
-A_INTERN a_size a_buf_num(a_buf const *ctx) { return ctx->num_; }
+A_INTERN a_size a_buf_num(void const *ctx) { return a_buf_(const *, ctx)->num_; }
 
 /*!
  @brief access memory of element for a pointer to buffer structure
  @param[in] ctx points to an instance of buffer structure
 */
-A_INTERN a_size a_buf_mem(a_buf const *ctx) { return ctx->mem_; }
+A_INTERN a_size a_buf_mem(void const *ctx) { return a_buf_(const *, ctx)->mem_; }
+
+/*!
+ @brief access size of a element for a pointer to buffer structure
+ @param[in] ctx points to an instance of buffer structure
+*/
+A_INTERN a_size a_buf_siz(void const *ctx) { return a_buf_(const *, ctx)->siz_; }
+
+/*!
+ @brief access address of buffer for a pointer to buffer structure
+ @param[in] ctx points to an instance of buffer structure
+*/
+A_INTERN void *a_buf_ptr(void const *ctx)
+{
+    return a_cast_r(a_buf *, a_cast_r(a_uptr, ctx)) + 1;
+}
+#define A_BUF_PTR(T, ctx) a_cast_s(T *, a_buf_ptr(ctx))
 
 /*!
  @brief access specified element for a pointer to buffer structure
@@ -57,9 +66,9 @@ A_INTERN a_size a_buf_mem(a_buf const *ctx) { return ctx->mem_; }
  @note should check for out of bounds
  @return specified element pointer
 */
-A_INTERN void *a_buf_at_(a_buf const *ctx, a_size idx)
+A_INTERN void *a_buf_at_(void const *ctx, a_size idx)
 {
-    return a_byte_(*, ctx->ptr_) + ctx->siz_ * idx;
+    return a_byte_(*, a_buf_ptr(ctx)) + a_buf_siz(ctx) * idx;
 }
 #define A_BUF_AT_(T, ctx, idx) a_cast_s(T *, a_buf_at_(ctx, idx))
 
@@ -70,9 +79,9 @@ A_INTERN void *a_buf_at_(a_buf const *ctx, a_size idx)
  @return specified element pointer
   @retval 0 out of bounds
 */
-A_INTERN void *a_buf_at(a_buf const *ctx, a_size idx)
+A_INTERN void *a_buf_at(void const *ctx, a_size idx)
 {
-    return idx < ctx->mem_ ? a_buf_at_(ctx, idx) : A_NULL;
+    return idx < a_buf_mem(ctx) ? a_buf_at_(ctx, idx) : A_NULL;
 }
 #define A_BUF_AT(T, ctx, idx) a_cast_s(T *, a_buf_at(ctx, idx))
 
@@ -83,10 +92,10 @@ A_INTERN void *a_buf_at(a_buf const *ctx, a_size idx)
  @return specified element pointer
   @retval 0 out of bounds
 */
-A_INTERN void *a_buf_of(a_buf const *ctx, a_diff idx)
+A_INTERN void *a_buf_of(void const *ctx, a_diff idx)
 {
-    a_size const num = idx >= 0 ? a_size_c(idx) : a_size_c(idx) + ctx->num_;
-    return num < ctx->mem_ ? a_buf_at_(ctx, num) : A_NULL;
+    a_size const num = idx >= 0 ? a_size_c(idx) : a_size_c(idx) + a_buf_num(ctx);
+    return num < a_buf_mem(ctx) ? a_buf_at_(ctx, num) : A_NULL;
 }
 #define A_BUF_OF(T, ctx, idx) a_cast_s(T *, a_buf_of(ctx, idx))
 
@@ -96,9 +105,9 @@ A_INTERN void *a_buf_of(a_buf const *ctx, a_diff idx)
  @note should check if buffer is empty
  @return specified element pointer
 */
-A_INTERN void *a_buf_top_(a_buf const *ctx)
+A_INTERN void *a_buf_top_(void const *ctx)
 {
-    return a_byte_(*, ctx->ptr_) + ctx->siz_ * (ctx->num_ - 1);
+    return a_byte_(*, a_buf_ptr(ctx)) + a_buf_siz(ctx) * (a_buf_num(ctx) - 1);
 }
 #define A_BUF_TOP_(T, ctx) a_cast_s(T *, a_buf_top_(ctx))
 
@@ -108,9 +117,9 @@ A_INTERN void *a_buf_top_(a_buf const *ctx)
  @return specified element pointer
   @retval 0 empty buffer
 */
-A_INTERN void *a_buf_top(a_buf const *ctx)
+A_INTERN void *a_buf_top(void const *ctx)
 {
-    return ctx->num_ ? a_buf_top_(ctx) : A_NULL;
+    return a_buf_num(ctx) ? a_buf_top_(ctx) : A_NULL;
 }
 #define A_BUF_TOP(T, ctx) a_cast_s(T *, a_buf_top(ctx))
 
@@ -119,9 +128,9 @@ A_INTERN void *a_buf_top(a_buf const *ctx)
  @param[in] ctx points to an instance of buffer structure
  @return buffer end pointer
 */
-A_INTERN void *a_buf_end(a_buf const *ctx)
+A_INTERN void *a_buf_end(void const *ctx)
 {
-    return a_byte_(*, ctx->ptr_) + ctx->siz_ * ctx->num_;
+    return a_byte_(*, a_buf_ptr(ctx)) + a_buf_siz(ctx) * a_buf_num(ctx);
 }
 #define A_BUF_END(T, ctx) a_cast_s(T *, a_buf_end(ctx))
 
@@ -130,27 +139,42 @@ extern "C" {
 #endif /* __cplusplus */
 
 /*!
- @brief constructor for buffer structure
- @param[in] ctx points to an instance of buffer structure
- @param[in] ptr address of memory
+ @brief allocate a pointer to buffer structure from memory
  @param[in] siz size of a element
  @param[in] num number of element
 */
-A_EXTERN void a_buf_ctor(a_buf *ctx, void *ptr, a_size siz, a_size num);
+A_EXTERN a_buf *a_buf_new(a_size siz, a_size num);
+
+/*!
+ @brief deallocate a pointer to buffer structure
+ @param[in] ctx points to an instance of buffer structure
+ @param[in] dtor element destructor
+*/
+A_EXTERN void a_buf_die(a_buf *ctx, void (*dtor)(void *));
+
+/*!
+ @brief constructor for buffer structure
+ @param[in] ctx points to an instance of buffer structure
+ @param[in] siz size of a element
+ @param[in] num number of element
+*/
+A_EXTERN void a_buf_ctor(void *ctx, a_size siz, a_size num);
 
 /*!
  @brief destructor for buffer structure
  @param[in] ctx points to an instance of buffer structure
  @param[in] dtor element destructor
 */
-A_EXTERN void a_buf_dtor(a_buf *ctx, void (*dtor)(void *));
+A_EXTERN void a_buf_dtor(void *ctx, void (*dtor)(void *));
 
 /*!
- @brief initialize a pointer to buffer structure by moving
- @param[in] ctx points to an instance of buffer structure
- @param[in] obj input source pointing to an instance
+ @brief set memory of element for a pointer to buffer structure
+ @param[in] ctx points to an instance of string structure
+ @param[in] mem new memory of current element
+ @return error code value
+  @retval 0 success
 */
-A_EXTERN void a_buf_move(a_buf *ctx, a_buf *obj);
+A_EXTERN a_buf *a_buf_setm(a_buf *ctx, a_size mem);
 
 /*!
  @brief set number of element for a pointer to buffer structure
@@ -158,7 +182,15 @@ A_EXTERN void a_buf_move(a_buf *ctx, a_buf *obj);
  @param[in] num new number of current element
  @param[in] dtor current element destructor
 */
-A_EXTERN void a_buf_setn(a_buf *ctx, a_size num, void (*dtor)(void *));
+A_EXTERN void a_buf_setn(void *ctx, a_size num, void (*dtor)(void *));
+
+/*!
+ @brief set size of a element for a pointer to buffer structure
+ @param[in] ctx points to an instance of buffer structure
+ @param[in] siz the size of the new element
+ @param[in] dtor previous element destructor
+*/
+A_EXTERN void a_buf_setz(void *ctx, a_size siz, void (*dtor)(void *));
 
 /*!
  @brief swap elements lhs and rhs for a pointer to buffer structure
@@ -166,7 +198,7 @@ A_EXTERN void a_buf_setn(a_buf *ctx, a_size num, void (*dtor)(void *));
  @param[in] lhs element index on the left
  @param[in] rhs element index on the right
 */
-A_EXTERN void a_buf_swap(a_buf const *ctx, a_size lhs, a_size rhs);
+A_EXTERN void a_buf_swap(void const *ctx, a_size lhs, a_size rhs);
 
 /*!
  @brief sort all elements for a pointer to buffer structure
@@ -176,7 +208,7 @@ A_EXTERN void a_buf_swap(a_buf const *ctx, a_size lhs, a_size rhs);
   @arg cmp(lhs,rhs)<0 *lhs goes before *rhs
   @arg cmp(lhs,rhs)>0 *lhs goes after *rhs
 */
-A_EXTERN void a_buf_sort(a_buf const *ctx, int (*cmp)(void const *, void const *));
+A_EXTERN void a_buf_sort(void const *ctx, int (*cmp)(void const *, void const *));
 
 /*!
  @brief insert sort foremost element for a pointer to buffer structure
@@ -195,7 +227,7 @@ A_EXTERN void a_buf_sort(a_buf const *ctx, int (*cmp)(void const *, void const *
   @arg cmp(lhs,rhs)<0 *lhs goes before *rhs
   @arg cmp(lhs,rhs)>0 *lhs goes after *rhs
 */
-A_EXTERN void a_buf_sort_fore(a_buf const *ctx, int (*cmp)(void const *, void const *));
+A_EXTERN void a_buf_sort_fore(void const *ctx, int (*cmp)(void const *, void const *));
 
 /*!
  @brief insert sort backmost element for a pointer to buffer structure
@@ -214,7 +246,7 @@ A_EXTERN void a_buf_sort_fore(a_buf const *ctx, int (*cmp)(void const *, void co
   @arg cmp(lhs,rhs)<0 *lhs goes before *rhs
   @arg cmp(lhs,rhs)>0 *lhs goes after *rhs
 */
-A_EXTERN void a_buf_sort_back(a_buf const *ctx, int (*cmp)(void const *, void const *));
+A_EXTERN void a_buf_sort_back(void const *ctx, int (*cmp)(void const *, void const *));
 
 /*!
  @brief push an element into the buffer and sort it
@@ -227,7 +259,7 @@ A_EXTERN void a_buf_sort_back(a_buf const *ctx, int (*cmp)(void const *, void co
  @return element pointer
   @retval 0 failure
 */
-A_EXTERN void *a_buf_push_sort(a_buf *ctx, void const *key, int (*cmp)(void const *, void const *));
+A_EXTERN void *a_buf_push_sort(void *ctx, void const *key, int (*cmp)(void const *, void const *));
 #define A_BUF_PUSH_SORT(T, ctx, key, cmp) a_cast_s(T *, a_buf_push_sort(ctx, key, cmp))
 
 /*!
@@ -241,7 +273,7 @@ A_EXTERN void *a_buf_push_sort(a_buf *ctx, void const *key, int (*cmp)(void cons
  @return matching element pointer
   @retval 0 failure
 */
-A_EXTERN void *a_buf_search(a_buf const *ctx, void const *obj, int (*cmp)(void const *, void const *));
+A_EXTERN void *a_buf_search(void const *ctx, void const *obj, int (*cmp)(void const *, void const *));
 #define A_BUF_SEARCH(T, ctx, obj, cmp) a_cast_s(T *, a_buf_search(ctx, obj, cmp))
 
 /*!
@@ -253,7 +285,7 @@ A_EXTERN void *a_buf_search(a_buf const *ctx, void const *obj, int (*cmp)(void c
  @return element pointer
   @retval 0 failure
 */
-A_EXTERN void *a_buf_insert(a_buf *ctx, a_size idx);
+A_EXTERN void *a_buf_insert(void *ctx, a_size idx);
 #define A_BUF_INSERT(T, ctx, idx) a_cast_s(T *, a_buf_insert(ctx, idx))
 
 /*!
@@ -265,7 +297,7 @@ A_EXTERN void *a_buf_insert(a_buf *ctx, a_size idx);
  @return element pointer
   @retval 0 failure
 */
-A_EXTERN void *a_buf_remove(a_buf *ctx, a_size idx);
+A_EXTERN void *a_buf_remove(void *ctx, a_size idx);
 #define A_BUF_REMOVE(T, ctx, idx) a_cast_s(T *, a_buf_remove(ctx, idx))
 
 /*!
@@ -274,7 +306,7 @@ A_EXTERN void *a_buf_remove(a_buf *ctx, a_size idx);
  @return element pointer
   @retval 0 failure
 */
-A_EXTERN void *a_buf_push_fore(a_buf *ctx);
+A_EXTERN void *a_buf_push_fore(void *ctx);
 #define A_BUF_PUSH_FORE(T, ctx) a_cast_s(T *, a_buf_push_fore(ctx))
 
 /*!
@@ -283,7 +315,7 @@ A_EXTERN void *a_buf_push_fore(a_buf *ctx);
  @return element pointer
   @retval 0 failure
 */
-A_EXTERN void *a_buf_push_back(a_buf *ctx);
+A_EXTERN void *a_buf_push_back(void *ctx);
 #define A_BUF_PUSH_BACK(T, ctx) a_cast_s(T *, a_buf_push_back(ctx))
 
 /*!
@@ -292,7 +324,7 @@ A_EXTERN void *a_buf_push_back(a_buf *ctx);
  @return element pointer
   @retval 0 failure
 */
-A_EXTERN void *a_buf_pull_fore(a_buf *ctx);
+A_EXTERN void *a_buf_pull_fore(void *ctx);
 #define A_BUF_PULL_FORE(T, ctx) a_cast_s(T *, a_buf_pull_fore(ctx))
 
 /*!
@@ -301,7 +333,7 @@ A_EXTERN void *a_buf_pull_fore(a_buf *ctx);
  @return element pointer
   @retval 0 failure
 */
-A_EXTERN void *a_buf_pull_back(a_buf *ctx);
+A_EXTERN void *a_buf_pull_back(void *ctx);
 #define A_BUF_PULL_BACK(T, ctx) a_cast_s(T *, a_buf_pull_back(ctx))
 
 /*!
@@ -315,7 +347,7 @@ A_EXTERN void *a_buf_pull_back(a_buf *ctx);
  @return error code value
   @retval 0 success
 */
-A_EXTERN int a_buf_store(a_buf *ctx, a_size idx, void *ptr, a_size num, int (*copy)(void *, void const *));
+A_EXTERN int a_buf_store(void *ctx, a_size idx, void *ptr, a_size num, int (*copy)(void *, void const *));
 
 /*!
  @brief erase elements from the buffer
@@ -327,7 +359,7 @@ A_EXTERN int a_buf_store(a_buf *ctx, a_size idx, void *ptr, a_size num, int (*co
  @return error code value
   @retval 0 success
 */
-A_EXTERN int a_buf_erase(a_buf *ctx, a_size idx, a_size num, void (*dtor)(void *));
+A_EXTERN int a_buf_erase(void *ctx, a_size idx, a_size num, void (*dtor)(void *));
 
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -339,7 +371,7 @@ A_EXTERN int a_buf_erase(a_buf *ctx, a_size idx, a_size num, void (*dtor)(void *
  @return element pointer
   @retval 0 failure
 */
-A_INTERN void *a_buf_push(a_buf *ctx) { return a_buf_push_back(ctx); }
+A_INTERN void *a_buf_push(void *ctx) { return a_buf_push_back(ctx); }
 #define A_BUF_PUSH(T, ctx) a_cast_s(T *, a_buf_push(ctx))
 
 /*!
@@ -348,7 +380,7 @@ A_INTERN void *a_buf_push(a_buf *ctx) { return a_buf_push_back(ctx); }
  @return element pointer
   @retval 0 failure
 */
-A_INTERN void *a_buf_pull(a_buf *ctx) { return a_buf_pull_back(ctx); }
+A_INTERN void *a_buf_pull(void *ctx) { return a_buf_pull_back(ctx); }
 #define A_BUF_PULL(T, ctx) a_cast_s(T *, a_buf_pull(ctx))
 
 /*!
@@ -363,8 +395,8 @@ A_INTERN void *a_buf_pull(a_buf *ctx) { return a_buf_pull_back(ctx); }
  @param i index of elements in the buffer
  @param ctx points to an instance of buffer structure
 */
-#define a_buf_forenum(i, ctx) a_forenum(a_size, i, (ctx)->num_)
-#define A_BUF_FORENUM(I, i, ctx) A_FORENUM(I, i, (ctx)->num_)
+#define a_buf_forenum(i, ctx) a_forenum(a_size, i, a_buf_num(ctx))
+#define A_BUF_FORENUM(I, i, ctx) A_FORENUM(I, i, a_buf_num(ctx))
 
 /*!
  @brief iterate over a buffer in reverse
@@ -378,8 +410,8 @@ A_INTERN void *a_buf_pull(a_buf *ctx) { return a_buf_pull_back(ctx); }
  @param i index of elements in the buffer
  @param ctx points to an instance of buffer structure
 */
-#define a_buf_forenum_reverse(i, ctx) a_forenum_reverse(a_size, i, (ctx)->num_)
-#define A_BUF_FORENUM_REVERSE(I, i, ctx) A_FORENUM_REVERSE(I, i, (ctx)->num_)
+#define a_buf_forenum_reverse(i, ctx) a_forenum_reverse(a_size, i, a_buf_num(ctx))
+#define A_BUF_FORENUM_REVERSE(I, i, ctx) A_FORENUM_REVERSE(I, i, a_buf_num(ctx))
 
 /*!
  @brief iterate over a buffer
@@ -394,8 +426,8 @@ A_INTERN void *a_buf_pull(a_buf *ctx) { return a_buf_pull_back(ctx); }
  @param it the &a_buf to use as a loop counter
  @param ctx points to an instance of buffer structure
 */
-#define a_buf_foreach(T, S, it, ctx) a_foreach(T, S, it, (ctx)->ptr_, (ctx)->num_)
-#define A_BUF_FOREACH(T, it, at, ctx) A_FOREACH(T, it, at, (ctx)->ptr_, (ctx)->num_)
+#define a_buf_foreach(T, S, it, ctx) a_foreach(T, S, it, a_buf_ptr(ctx), a_buf_num(ctx))
+#define A_BUF_FOREACH(T, it, at, ctx) A_FOREACH(T, it, at, a_buf_ptr(ctx), a_buf_num(ctx))
 
 /*!
  @brief iterate over a buffer in reverse
@@ -410,8 +442,8 @@ A_INTERN void *a_buf_pull(a_buf *ctx) { return a_buf_pull_back(ctx); }
  @param it the &a_buf to use as a loop counter
  @param ctx points to an instance of buffer structure
 */
-#define a_buf_foreach_reverse(T, S, it, ctx) a_foreach_reverse(T, S, it, (ctx)->ptr_, (ctx)->num_)
-#define A_BUF_FOREACH_REVERSE(T, it, at, ctx) A_FOREACH_REVERSE(T, it, at, (ctx)->ptr_, (ctx)->num_)
+#define a_buf_foreach_reverse(T, S, it, ctx) a_foreach_reverse(T, S, it, a_buf_ptr(ctx), a_buf_num(ctx))
+#define A_BUF_FOREACH_REVERSE(T, it, at, ctx) A_FOREACH_REVERSE(T, it, at, a_buf_ptr(ctx), a_buf_num(ctx))
 
 /*! @} a_buf */
 
