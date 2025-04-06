@@ -83,12 +83,12 @@ A_INTERN void *a_vec_at(a_vec const *ctx, a_size idx)
  @return specified element pointer
   @retval 0 out of bounds
 */
-A_INTERN void *a_vec_idx(a_vec const *ctx, a_diff idx)
+A_INTERN void *a_vec_of(a_vec const *ctx, a_diff idx)
 {
     a_size const num = idx >= 0 ? a_size_c(idx) : a_size_c(idx) + ctx->num_;
     return num < ctx->mem_ ? a_vec_at_(ctx, num) : A_NULL;
 }
-#define A_VEC_IDX(T, ctx, idx) a_cast_s(T *, a_vec_idx(ctx, idx))
+#define A_VEC_OF(T, ctx, idx) a_cast_s(T *, a_vec_of(ctx, idx))
 
 /*!
  @brief access top element for a pointer to vector structure

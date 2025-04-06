@@ -83,12 +83,12 @@ A_INTERN void *a_buf_at(a_buf const *ctx, a_size idx)
  @return specified element pointer
   @retval 0 out of bounds
 */
-A_INTERN void *a_buf_idx(a_buf const *ctx, a_diff idx)
+A_INTERN void *a_buf_of(a_buf const *ctx, a_diff idx)
 {
     a_size const num = idx >= 0 ? a_size_c(idx) : a_size_c(idx) + ctx->num_;
     return num < ctx->mem_ ? a_buf_at_(ctx, num) : A_NULL;
 }
-#define A_BUF_IDX(T, ctx, idx) a_cast_s(T *, a_buf_idx(ctx, idx))
+#define A_BUF_OF(T, ctx, idx) a_cast_s(T *, a_buf_of(ctx, idx))
 
 /*!
  @brief access top element for a pointer to buffer structure

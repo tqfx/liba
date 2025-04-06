@@ -79,7 +79,7 @@ A_INTERN char *a_str_at(a_str const *ctx, a_size idx)
  @return specified character pointer
   @retval 0 out of bounds
 */
-A_INTERN char *a_str_idx(a_str const *ctx, a_diff idx)
+A_INTERN char *a_str_of(a_str const *ctx, a_diff idx)
 {
     a_size const num = idx >= 0 ? a_size_c(idx) : a_size_c(idx) + ctx->num_;
     return num < ctx->mem_ ? ctx->ptr_ + num : A_NULL;

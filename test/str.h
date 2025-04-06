@@ -402,9 +402,9 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     {
         a_str *ctx = a_str_new();
         a_str_catf(ctx, "0123");
-        TEST_BUG(*a_str_idx(ctx, -1) == '3');
         TEST_BUG(*a_str_at_(ctx, 0) == '0');
         TEST_BUG(*a_str_at(ctx, 0) == '0');
+        TEST_BUG(*a_str_of(ctx, -1) == '3');
         TEST_BUG(*a_str_at(ctx, 4) == 0);
         a_str_die(ctx);
     }
