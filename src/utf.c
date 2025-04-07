@@ -1,6 +1,6 @@
 #include "a/utf.h"
 
-unsigned int a_utf_encode(void *str_, a_u32 val)
+unsigned int a_utf_encode(a_u32 val, void *buf)
 {
     a_u32 mask = 0;
     unsigned int offset = 0;
@@ -46,9 +46,9 @@ unsigned int a_utf_encode(void *str_, a_u32 val)
             }
         }
     }
-    if (str_)
+    if (buf)
     {
-        a_byte *const str = (a_byte *)str_;
+        a_byte *const str = (a_byte *)buf;
         switch (offset)
         {
         case 6:
@@ -81,41 +81,45 @@ unsigned int a_utf_encode(void *str_, a_u32 val)
     return offset;
 }
 
-unsigned int a_utf_decode(void const *str_, a_u32 *val)
+unsigned int a_utf_decode(void const *ptr, a_size num, a_u32 *val)
 {
-    a_byte const *str = (a_byte const *)str_;
-    unsigned int offset = 0;
-    unsigned int chr = *str;
-    a_u32 res = 0;
+    a_u32 code = 0;
+    a_byte const *str = (a_byte const *)ptr;
+    unsigned int chr, offset = 0;
+    if (num) { chr = *str; }
+    else { return 0; }
     if (chr < 0x80)
     {
-        res = chr;
-        if (!chr) { return offset; }
+        if (!chr) { return 0; }
+        code = chr;
     }
     else
     {
+        a_byte const *const nul = str + num;
         for (; chr & 0x40; chr <<= 1)
         {
-            unsigned int c = *(++str);
-            if ((c & 0xC0) != 0x80) { return offset; }
-            res = (res << 6) | (c & 0x3F);
+            unsigned int const c = ++str < nul ? *str : 0;
+            if ((c & 0xC0) != 0x80) { return 0; }
+            code = (code << 6) | (c & 0x3F);
         }
-        offset = (unsigned int)(str - (a_byte const *)str_);
-        res |= (a_u32)(chr & 0x7F) << (offset * 5);
+        offset = (unsigned int)(str - (a_byte const *)ptr);
+        code |= (a_u32)(chr & 0x7F) << (offset * 5);
     }
-    if (val) { *val = res; }
+    if (val) { *val = code; }
     return offset + 1;
 }
 
-a_size a_utf_length(void const *str_)
+a_size a_utf_length(void const *ptr, a_size num, a_size *stop)
 {
     a_size length = 0;
-    char const *str = (char const *)str_;
-    unsigned int offset = a_utf_decode(str, A_NULL);
-    for (; offset; offset = a_utf_decode(str, A_NULL))
+    char const *str = (char const *)ptr;
+    unsigned int offset = a_utf_decode(str, num, A_NULL);
+    for (; offset; offset = a_utf_decode(str, num, A_NULL))
     {
         str += offset;
+        num -= offset;
         ++length;
     }
+    if (stop) { *stop = (a_size)(str - (char const *)ptr); }
     return length;
 }

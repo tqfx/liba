@@ -28,28 +28,32 @@ extern "C" {
 
 /*!
  @brief encode one unicode code point into UTF-8
- @param[in] str a buffer to store a UTF-8 character
- @param[in] val the unicode value to be encoded
- @return offset to the next character
+ @param[in] val the unicode code point to be encoded
+ @param[in] buf a buffer to store a UTF-8 character
+ @return number of bytes used in the UTF-8 encoding
 */
-A_EXTERN unsigned int a_utf_encode(void *str, a_u32 val);
+A_EXTERN unsigned int a_utf_encode(a_u32 val, void *buf);
 
 /*!
  @brief decode one unicode code point from UTF-8
- @param[in] str string terminated with a null character
- @param[in,out] val a pointer to a variable that stores unicode
+ @param[in] ptr points to the buffer containing the UTF-8 byte
+ @param[in] num number of the buffer containing the UTF-8 byte
+ @param[out] val store the unicode code point
+  @arg 0 don't return the unicode code point
  @return offset to the next character
   @retval 0 null character or invalid
 */
-A_EXTERN unsigned int a_utf_decode(void const *str, a_u32 *val);
+A_EXTERN unsigned int a_utf_decode(void const *ptr, a_size num, a_u32 *val);
 
 /*!
- @brief length of a UTF-8 string terminated with a null character
- @param[in] str string terminated with a null character
- @return length of the UTF-8 string
+ @brief number of unicode code points in a UTF-8 encoded byte sequence
+ @param[in] ptr points to the buffer containing the UTF-8 byte
+ @param[in] num number of the buffer containing the UTF-8 byte
+ @param[out] stop store the number of consumed bytes
+  @arg 0 don't return the number of consumed bytes
+ @return number of unicode code points
 */
-A_EXTERN a_size a_utf_length(void const *str);
-#define a_utf_len(str) a_utf_length(str)
+A_EXTERN a_size a_utf_length(void const *ptr, a_size num, a_size *stop);
 
 #if defined(__cplusplus)
 } /* extern "C" */

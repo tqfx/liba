@@ -319,9 +319,11 @@ A_EXTERN void a_str_trim_(a_str *ctx, char const *s, a_size n);
 /*!
  @brief length for a pointer to string structure using UTF-8
  @param[in] ctx points to an instance of string structure
- @return number of code points
+ @param[out] stop store the number of consumed bytes
+  @arg 0 don't return the number of consumed bytes
+ @return number of unicode code points
 */
-A_EXTERN a_size a_str_utflen(a_str const *ctx);
+A_EXTERN a_size a_utf_len(a_str const *ctx, a_size *stop);
 
 #if defined(__cplusplus)
 } /* extern "C" */

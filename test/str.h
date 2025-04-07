@@ -415,7 +415,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_str *ctx = a_str_new();
         a_str_cats(ctx, argv[i]);
         a_str_trim(ctx, A_NULL, 0);
-        printf("%s %" A_PRIz "u\n", a_str_ptr(ctx), a_str_utflen(ctx));
+        printf("%s %" A_PRIz "u\n", a_str_ptr(ctx), a_utf_len(ctx, A_NULL));
         a_str_die(ctx);
     }
     return 0;

@@ -336,20 +336,7 @@ void a_str_trim(a_str *ctx, char const *s, a_size n)
 
 #include "a/utf.h"
 
-a_size a_str_utflen(a_str const *ctx)
+a_size a_utf_len(a_str const *ctx, a_size *stop)
 {
-    a_size length = 0;
-    if (ctx->num_)
-    {
-        char const *head = ctx->ptr_;
-        char const *const tail = head + ctx->num_;
-        unsigned int offset = a_utf_decode(head, A_NULL);
-        for (; offset; offset = a_utf_decode(head, A_NULL))
-        {
-            ++length;
-            head += offset;
-            if (head >= tail) { break; }
-        }
-    }
-    return length;
+    return a_utf_length(ctx->ptr_, ctx->num_, stop);
 }
