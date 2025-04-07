@@ -284,6 +284,39 @@ A_EXTERN int a_str_cat(a_str *ctx, a_str const *obj);
 A_EXTERN int a_str_cat_(a_str *ctx, a_str const *obj);
 
 /*!
+ @brief trim a string by removing trailing characters.
+ If `n` is non-zero, the function uses the array `s` to specify the characters to remove.
+ If `n` is zero, the function removes all trailing whitespace characters.
+ @param[in] ctx points to an instance of string structure.
+ @param[in] s points to the characters to remove.
+ @param[in] n number of the characters to remove.
+*/
+A_EXTERN void a_str_rtrim(a_str *ctx, char const *s, a_size n);
+A_EXTERN void a_str_rtrim_(a_str *ctx, char const *s, a_size n);
+
+/*!
+ @brief trim a string by removing leading characters.
+ If `n` is non-zero, the function uses the array `s` to specify the characters to remove.
+ If `n` is zero, the function removes all leading whitespace characters.
+ @param[in] ctx points to an instance of string structure.
+ @param[in] s points to the characters to remove.
+ @param[in] n number of the characters to remove.
+*/
+A_EXTERN void a_str_ltrim(a_str *ctx, char const *s, a_size n);
+A_EXTERN void a_str_ltrim_(a_str *ctx, char const *s, a_size n);
+
+/*!
+ @brief trim a string by removing both leading and trailing characters.
+ If `n` is non-zero, the function uses the array `s` to specify the characters to remove.
+ If `n` is zero, the function removes all leading and trailing whitespace characters.
+ @param[in] ctx points to an instance of string structure.
+ @param[in] s points to the characters to remove.
+ @param[in] n number of the characters to remove.
+*/
+A_EXTERN void a_str_trim(a_str *ctx, char const *s, a_size n);
+A_EXTERN void a_str_trim_(a_str *ctx, char const *s, a_size n);
+
+/*!
  @brief length for a pointer to string structure using UTF-8
  @param[in] ctx points to an instance of string structure
  @return number of code points

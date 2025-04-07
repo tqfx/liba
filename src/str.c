@@ -259,6 +259,81 @@ int a_str_catf(a_str *ctx, char const *fmt, ...)
     return res;
 }
 
+#include <ctype.h>
+
+void a_str_rtrim_(a_str *ctx, char const *s, a_size n)
+{
+    char const *const p = ctx->ptr_;
+    a_size i = ctx->num_ - 1;
+    if (n)
+    {
+        while (ctx->num_ && memchr(s, p[i], n))
+        {
+            ctx->num_ = i--;
+        }
+    }
+    else
+    {
+        while (ctx->num_ && isspace(p[i]))
+        {
+            ctx->num_ = i--;
+        }
+    }
+}
+void a_str_rtrim(a_str *ctx, char const *s, a_size n)
+{
+    a_size const num = ctx->num_;
+    a_str_rtrim_(ctx, s, n);
+    if (ctx->num_ < num)
+    {
+        ctx->ptr_[ctx->num_] = 0;
+    }
+}
+
+void a_str_ltrim_(a_str *ctx, char const *s, a_size n)
+{
+    char const *p = ctx->ptr_;
+    a_size i = 0;
+    if (n)
+    {
+        for (; i < ctx->num_ && memchr(s, *p, n); ++i) { ++p; }
+    }
+    else
+    {
+        for (; i < ctx->num_ && isspace(*p); ++i) { ++p; }
+    }
+    if (i)
+    {
+        a_size const num = ctx->num_ - i;
+        a_move(ctx->ptr_, p, num);
+        ctx->num_ = num;
+    }
+}
+void a_str_ltrim(a_str *ctx, char const *s, a_size n)
+{
+    a_size const num = ctx->num_;
+    a_str_ltrim_(ctx, s, n);
+    if (ctx->num_ < num)
+    {
+        ctx->ptr_[ctx->num_] = 0;
+    }
+}
+
+void a_str_trim_(a_str *ctx, char const *s, a_size n)
+{
+    a_str_rtrim_(ctx, s, n);
+    a_str_ltrim_(ctx, s, n);
+}
+void a_str_trim(a_str *ctx, char const *s, a_size n)
+{
+    a_size const num = ctx->num_;
+    a_str_trim_(ctx, s, n);
+    if (ctx->num_ < num)
+    {
+        ctx->ptr_[ctx->num_] = 0;
+    }
+}
+
 #include "a/utf.h"
 
 a_size a_str_utflen(a_str const *ctx)
