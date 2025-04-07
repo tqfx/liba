@@ -266,6 +266,7 @@ int a_buf_store(void *ctx_, a_size idx, void *ptr, a_size num, int (*copy)(void 
         a_byte *const buf = (a_byte *)(ctx + 1);
         a_byte *p = buf + ctx->siz_ * ctx->num_;
         a_size n = ctx->siz_ * num;
+        if (!num) { return rc; }
         if (idx < ctx->num_)
         {
             a_byte *const q = p;
