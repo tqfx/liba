@@ -83,18 +83,18 @@ unsigned int a_utf_encode(a_u32 val, void *buf)
 
 unsigned int a_utf_decode(void const *ptr, a_size num, a_u32 *val)
 {
-    a_u32 code = 0;
     a_byte const *str = (a_byte const *)ptr;
     unsigned int chr, offset = 0;
     if (num) { chr = *str; }
     else { return 0; }
     if (chr < 0x80)
     {
-        if (!chr) { return 0; }
-        code = chr;
+        if (val) { *val = chr; }
+        return chr > 0;
     }
-    else
+    if (val)
     {
+        a_u32 code = 0;
         a_byte const *const nul = str + num;
         for (; chr & 0x40; chr <<= 1)
         {
@@ -104,8 +104,18 @@ unsigned int a_utf_decode(void const *ptr, a_size num, a_u32 *val)
         }
         offset = (unsigned int)(str - (a_byte const *)ptr);
         code |= (a_u32)(chr & 0x7F) << (offset * 5);
+        *val = code;
     }
-    if (val) { *val = code; }
+    else
+    {
+        a_byte const *const nul = str + num;
+        for (; chr & 0x40; chr <<= 1)
+        {
+            unsigned int const c = ++str < nul ? *str : 0;
+            if ((c & 0xC0) != 0x80) { return 0; }
+        }
+        offset = (unsigned int)(str - (a_byte const *)ptr);
+    }
     return offset + 1;
 }
 
