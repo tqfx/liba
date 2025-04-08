@@ -102,5 +102,6 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(a_utf_decode(buf, length, A_NULL) == length);
         TEST_BUG(A_U32_C(0x7FFFFFFF) == val);
     }
+    a_utf_length_(A_NULL, 0);
     return 0;
 }

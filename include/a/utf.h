@@ -54,6 +54,7 @@ A_EXTERN unsigned int a_utf_decode(void const *ptr, a_size num, a_u32 *val);
  @return number of unicode code points
 */
 A_EXTERN a_size a_utf_length(void const *ptr, a_size num, a_size *stop);
+A_EXTERN a_size a_utf_length_(void const *ptr, a_size num);
 
 #if defined(__cplusplus)
 } /* extern "C" */

@@ -134,3 +134,25 @@ a_size a_utf_length(void const *ptr, a_size num, a_size *stop)
     if (stop) { *stop = (a_size)(str - (char const *)ptr); }
     return length;
 }
+
+a_size a_utf_length_(void const *ptr, a_size num)
+{
+    a_size length = 0;
+    char const *str = (char const *)ptr;
+    for (; (a_size)(str - (char const *)ptr) < num && *str; ++length)
+    {
+        /* clang-format off */
+        if ((*str & 0xFE) == 0xFC) { str += 6; continue; }
+        if ((*str & 0xFC) == 0xF8) { str += 5; continue; }
+        if ((*str & 0xF8) == 0xF0) { str += 4; continue; }
+        if ((*str & 0xF0) == 0xE0) { str += 3; continue; }
+        if ((*str & 0xE0) == 0xC0) { str += 2; continue; }
+        /* clang-format on */
+        ++str;
+    }
+    if ((a_size)(str - (char const *)ptr) > num)
+    {
+        --length;
+    }
+    return length;
+}
