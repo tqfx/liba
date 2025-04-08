@@ -9,9 +9,9 @@ unsigned int a_utf_encode(a_u32 val, void *buf)
     {
         if (x < A_U32_C(0x0000800))
         {
-            if (x < A_U32_C(0x0000080) && x)
+            if (x < A_U32_C(0x0000080))
             {
-                offset = 1; /* U+0000001 ~ U+0000007F */
+                offset = x > 0; /* U+0000001 ~ U+0000007F */
             }
             else
             {
