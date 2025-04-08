@@ -92,6 +92,7 @@ unsigned int a_utf_decode(void const *ptr, a_size num, a_u32 *val)
         if (val) { *val = chr; }
         return chr > 0;
     }
+    if (num > 6) { num = 6; }
     if (val)
     {
         a_u32 code = 0;
