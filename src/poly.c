@@ -43,7 +43,7 @@ void a_poly_xTx(a_uint m, a_real const *x, a_uint n, a_real *A)
         for (c = 0; c <= r; ++c)
         {
             a_real *const Ac = A + (a_size)n * c;
-            a_real const d = r + c;
+            a_real const d = (a_real)(r + c);
             a_real val = 0;
             for (i = 0; i < m; ++i)
             {
@@ -62,7 +62,7 @@ void a_poly_xTy(a_uint m, a_real const *x, a_real const *y, a_uint n, a_real *b)
         a_real val = 0;
         for (i = 0; i < m; ++i)
         {
-            val += a_real_pow(x[i], d) * y[i];
+            val += a_real_pow(x[i], (a_real)d) * y[i];
         }
         b[d] = val;
     }

@@ -39,8 +39,8 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     a_poly_swap(x4, 3);
     for (i = 0; i < A_LEN(X); ++i)
     {
-        X[i] = i;
-        Y[i] = a_poly_eval(x4, A_LEN(x4), i);
+        X[i] = a_cast_s(a_real, i);
+        Y[i] = a_poly_eval(x4, A_LEN(x4), X[i]);
     }
     a_poly_xTy(A_LEN(X), X, Y, A_LEN(b), b);
     a_poly_xTx(A_LEN(X), X, A_LEN(b), A);
