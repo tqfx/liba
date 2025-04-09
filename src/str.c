@@ -340,3 +340,16 @@ a_size a_utf_len(a_str const *ctx, a_size *stop)
 {
     return a_utf_length(ctx->ptr_, ctx->num_, stop);
 }
+
+int a_utf_catc(a_str *ctx, a_u32 c)
+{
+    int rc = a_str_setm(ctx, ctx->num_ + 7);
+    if (rc == 0)
+    {
+        char *const p = ctx->ptr_ + ctx->num_;
+        unsigned int const n = a_utf_encode(c, p);
+        ctx->num_ += n;
+        p[n] = 0;
+    }
+    return rc;
+}

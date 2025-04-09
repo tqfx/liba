@@ -1,6 +1,7 @@
 #define MAIN(x) str##x
 #include "test.h"
 #include "a/str.h"
+#include <ctype.h>
 
 static void test_str(void)
 {
@@ -412,8 +413,22 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     }
     for (i = 1; i < argc; ++i)
     {
+        char *endptr = argv[i];
         a_str *ctx = a_str_new();
-        a_str_cats(ctx, argv[i]);
+        unsigned long n = strtoul(argv[i], &endptr, 0);
+        if (endptr > argv[i])
+        {
+            a_utf_catc(ctx, a_cast_s(a_u32, n));
+            for (; *endptr; a_utf_catc(ctx, a_cast_s(a_u32, n)))
+            {
+                while (*endptr && !isdigit(*endptr)) { ++endptr; }
+                n = strtoul(endptr, &endptr, 0);
+            }
+        }
+        else
+        {
+            a_str_cats(ctx, argv[i]);
+        }
         a_str_trim(ctx, A_NULL, 0);
         printf("%s %" A_PRIz "u\n", a_str_ptr(ctx), a_utf_len(ctx, A_NULL));
         a_str_die(ctx);

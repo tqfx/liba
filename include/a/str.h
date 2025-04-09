@@ -207,18 +207,18 @@ A_EXTERN int a_str_cmpn(a_str const *ctx, void const *pdata, a_size nbyte);
 A_EXTERN int a_str_cmps(a_str const *ctx, void const *str);
 
 /*!
- @brief get character for a pointer to string structure
+ @brief get a character for a pointer to string structure
  @param[in] ctx points to an instance of string structure
- @return parsed character
+ @return a parsed character
   @retval ~0 failure
 */
 A_EXTERN int a_str_getc(a_str *ctx);
 A_EXTERN int a_str_getc_(a_str *ctx);
 
 /*!
- @brief concatenate character to a pointer to string structure
+ @brief concatenate a character to a pointer to string structure
  @param[in] ctx points to an instance of string structure
- @param[in] c character to be parsed
+ @param[in] c a character to be parsed
  @return parsed character
   @retval ~0 failure
 */
@@ -324,6 +324,15 @@ A_EXTERN void a_str_trim_(a_str *ctx, char const *s, a_size n);
  @return number of unicode code points
 */
 A_EXTERN a_size a_utf_len(a_str const *ctx, a_size *stop);
+
+/*!
+ @brief concatenate a unicode character to a pointer to string structure
+ @param[in] ctx points to an instance of string structure
+ @param[in] c a unicode character to concatenate
+ @return error code value
+  @retval 0 success
+*/
+A_EXTERN int a_utf_catc(a_str *ctx, a_u32 c);
 
 #if defined(__cplusplus)
 } /* extern "C" */
