@@ -53,6 +53,10 @@
 #define A_SQRT3 1.73205080756887729352
 /*! \f$ \frac{1}{\sqrt{3}}=\frac{\sqrt{3}}{3} \f$ */
 #define A_SQRT1_3 0.57735026918962576450
+/*! \f$ \frac{180}{\pi} \f$ */
+#define A_RAD2DEG 57.2957795130823208768
+/*! \f$ \frac{\pi}{180} \f$ */
+#define A_DEG2RAD 0.01745329251994329576924
 
 #if defined(__cplusplus)
 extern "C" {
@@ -275,10 +279,17 @@ A_EXTERN a_f64 a_f64_rsqrt(a_f64 x);
 #define A_REAL_SQRT3 A_REAL_C(A_SQRT3)
 /*! \f$ \frac{1}{\sqrt{3}}=\frac{\sqrt{3}}{3} \f$ */
 #define A_REAL_SQRT1_3 A_REAL_C(A_SQRT1_3)
+/*! \f$ \frac{180}{\pi} \f$ */
+#define A_REAL_RAD2DEG A_REAL_C(A_RAD2DEG)
+/*! \f$ \frac{\pi}{180} \f$ */
+#define A_REAL_DEG2RAD A_REAL_C(A_DEG2RAD)
 
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
+
+A_EXTERN a_real a_real_rad2deg(a_real x);
+A_EXTERN a_real a_real_deg2rad(a_real x);
 
 A_EXTERN a_real a_real_asinh(a_real x);
 A_EXTERN a_real a_real_acosh(a_real x);

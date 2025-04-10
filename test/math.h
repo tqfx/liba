@@ -108,6 +108,26 @@ static void test_f64_rsqrt(void)
     }
 }
 
+static void test_1(int argc, char *argv[], a_real (*exec)(a_real))
+{
+    a_size i, n = a_cast_s(a_size, argc);
+    a_real *p = a_new(a_real, A_NULL, n);
+
+    for (i = 0; i < n; ++i)
+    {
+        char *endptr = argv[i];
+        p[i] = a_str2num(argv[i], &endptr);
+    }
+
+    for (i = 0; i < n; ++i)
+    {
+        debug("%c%" A_REAL_PRI "g", i ? ',' : 0, exec(p[i]));
+    }
+    debug("\n");
+
+    a_die(p);
+}
+
 static void test_sum(int argc, char *argv[])
 {
     a_size i, n = a_cast_s(a_size, argc);
@@ -279,8 +299,12 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     test_u64_lcm();
     test_u32_sqrt();
     test_u64_sqrt();
-    test_f32_rsqrt();
-    test_f64_rsqrt();
+    if (argc < 2)
+    {
+        test_f32_rsqrt();
+        test_f64_rsqrt();
+    }
+    if (argc < 2)
     {
         a_f64 min = A_F64_MIN;
         a_f64 max = A_F64_MAX;
@@ -289,6 +313,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         debug("64 min = %-12g max = %g\n", min, max);
         debug("64 inf = %-12g nan = %g\n", inf, nan);
     }
+    if (argc < 2)
     {
         a_f32 min = A_F32_MIN;
         a_f32 max = A_F32_MAX;
@@ -297,6 +322,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         debug("32 min = %-12g max = %g\n", min, max);
         debug("32 inf = %-12g nan = %g\n", inf, nan);
     }
+    if (argc < 2)
     {
         a_real min = A_REAL_MIN;
         a_real max = A_REAL_MAX;
@@ -305,6 +331,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         debug("min = %-12" A_REAL_PRI "g max = %" A_REAL_PRI "g\n", min, max);
         debug("inf = %-12" A_REAL_PRI "g nan = %" A_REAL_PRI "g\n", inf, nan);
     }
+    if (argc < 2)
     {
 #undef a_real_expm1
         a_real x = A_REAL_EPSILON / 2;
@@ -313,6 +340,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         debug("expm1(%.15" A_REAL_PRI "g)=%.15" A_REAL_PRI "g\n", x, a_real_expm1(x));
         debug("exp(%.15" A_REAL_PRI "g)-1=%.15" A_REAL_PRI "g\n", x, a_real_exp(x) - 1);
     }
+    if (argc < 2)
     {
 #undef a_real_log1p
         a_real x = A_REAL_EPSILON / 2;
@@ -321,6 +349,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         debug("log1p(%.15" A_REAL_PRI "g)=%.15" A_REAL_PRI "g\n", x, a_real_log1p(x));
         debug("log(1+%.15" A_REAL_PRI "g)=%.15" A_REAL_PRI "g\n", x, a_real_log(x + 1));
     }
+    if (argc < 2)
     {
         a_real x = A_REAL_MAX / A_REAL_SQRT2;
         a_real y = A_REAL_MAX / A_REAL_SQRT2;
@@ -329,6 +358,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(isinf(a_real_norm2(A_REAL_NAN, A_REAL_INF)));
         TEST_BUG(isnan(a_real_norm2(A_REAL_NAN, A_REAL_NAN)));
     }
+    if (argc < 2)
     {
         a_real x = A_REAL_MAX / A_REAL_SQRT3;
         a_real y = A_REAL_MAX / A_REAL_SQRT3;
@@ -349,6 +379,12 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     }
     switch (a_hash_bkdr(argv[1], 0))
     {
+    case 0xA6D2C0B9: /* rad2deg */
+        test_1(argc - 2, argv + 2, a_real_rad2deg);
+        break;
+    case 0xE7CC3409: /* deg2rad */
+        test_1(argc - 2, argv + 2, a_real_deg2rad);
+        break;
     case 0x001E5957: /* sum */
         test_sum(argc - 2, argv + 2);
         break;
@@ -359,12 +395,14 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         test_mean(argc - 2, argv + 2);
         break;
     case 0x0F20D22E: /* push */
-        test_push(argc - 1, argv + 1);
+        test_push(argc - 2, argv + 2);
         break;
     case 0x0F63D79D: /* roll */
-        test_roll(argc - 1, argv + 1);
+        test_roll(argc - 2, argv + 2);
         break;
     default:
+        debug("rad2deg\n");
+        debug("deg2rad\n");
         debug("sum\n");
         debug("norm\n");
         debug("mean\n");

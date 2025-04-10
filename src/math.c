@@ -210,6 +210,16 @@ a_f64 a_f64_rsqrt(a_f64 x)
     return x;
 }
 
+a_real a_real_rad2deg(a_real x)
+{
+    return x * A_REAL_RAD2DEG;
+}
+
+a_real a_real_deg2rad(a_real x)
+{
+    return x * A_REAL_DEG2RAD;
+}
+
 #undef a_real_asinh
 a_real a_real_asinh(a_real x)
 {
