@@ -291,6 +291,11 @@ extern "C" {
 A_EXTERN a_real a_real_rad2deg(a_real x);
 A_EXTERN a_real a_real_deg2rad(a_real x);
 
+A_EXTERN void a_real_cart2pol(a_real x, a_real y, a_real *rho, a_real *theta);
+A_EXTERN void a_real_pol2cart(a_real rho, a_real theta, a_real *x, a_real *y);
+A_EXTERN void a_real_cart2sph(a_real x, a_real y, a_real z, a_real *rho, a_real *theta, a_real *alpha);
+A_EXTERN void a_real_sph2cart(a_real rho, a_real theta, a_real alpha, a_real *x, a_real *y, a_real *z);
+
 A_EXTERN a_real a_real_asinh(a_real x);
 A_EXTERN a_real a_real_acosh(a_real x);
 A_EXTERN a_real a_real_atanh(a_real x);

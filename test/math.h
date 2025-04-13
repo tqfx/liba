@@ -128,6 +128,48 @@ static void test_1(int argc, char *argv[], a_real (*exec)(a_real))
     a_die(p);
 }
 
+static void test_cart2pol(int argc, char *argv[], void (*exec)(a_real, a_real, a_real *, a_real *))
+{
+    a_real a[2] = {0, 0}, b[2] = {0, 0};
+    a_size i, n = a_cast_s(a_size, argc);
+
+    if (n > 2) { n = 2; }
+    for (i = 0; i < n; ++i)
+    {
+        char *endptr = argv[i];
+        a[i] = a_str2num(argv[i], &endptr);
+    }
+
+    exec(a[0], a[1], b + 0, b + 1);
+
+    debug("%" A_REAL_PRI "g,", a[0]);
+    debug("%" A_REAL_PRI "g\t", a[1]);
+    debug("%" A_REAL_PRI "g,", b[0]);
+    debug("%" A_REAL_PRI "g\n", b[1]);
+}
+
+static void test_cart2sph(int argc, char *argv[], void (*exec)(a_real, a_real, a_real, a_real *, a_real *, a_real *))
+{
+    a_real a[3] = {0, 0, 0}, b[3] = {0, 0, 0};
+    a_size i, n = a_cast_s(a_size, argc);
+
+    if (n > 3) { n = 3; }
+    for (i = 0; i < n; ++i)
+    {
+        char *endptr = argv[i];
+        a[i] = a_str2num(argv[i], &endptr);
+    }
+
+    exec(a[0], a[1], a[2], b + 0, b + 1, b + 2);
+
+    debug("%" A_REAL_PRI "g,", a[0]);
+    debug("%" A_REAL_PRI "g,", a[1]);
+    debug("%" A_REAL_PRI "g\t", a[2]);
+    debug("%" A_REAL_PRI "g,", b[0]);
+    debug("%" A_REAL_PRI "g,", b[1]);
+    debug("%" A_REAL_PRI "g\n", b[2]);
+}
+
 static void test_sum(int argc, char *argv[])
 {
     a_size i, n = a_cast_s(a_size, argc);
@@ -385,6 +427,18 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     case 0xE7CC3409: /* deg2rad */
         test_1(argc - 2, argv + 2, a_real_deg2rad);
         break;
+    case 0x9FF73CD3: /* cart2pol */
+        test_cart2pol(argc - 2, argv + 2, a_real_cart2pol);
+        break;
+    case 0x2CD0AC61: /* pol2cart */
+        test_cart2pol(argc - 2, argv + 2, a_real_pol2cart);
+        break;
+    case 0x9FF8066D: /* cart2sph */
+        test_cart2sph(argc - 2, argv + 2, a_real_cart2sph);
+        break;
+    case 0x59A35A8F: /* sph2cart */
+        test_cart2sph(argc - 2, argv + 2, a_real_sph2cart);
+        break;
     case 0x001E5957: /* sum */
         test_sum(argc - 2, argv + 2);
         break;
@@ -403,6 +457,10 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     default:
         debug("rad2deg\n");
         debug("deg2rad\n");
+        debug("cart2pol\n");
+        debug("pol2cart\n");
+        debug("cart2sph\n");
+        debug("sph2cart\n");
         debug("sum\n");
         debug("norm\n");
         debug("mean\n");

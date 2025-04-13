@@ -220,6 +220,32 @@ a_real a_real_deg2rad(a_real x)
     return x * A_REAL_DEG2RAD;
 }
 
+void a_real_cart2pol(a_real x, a_real y, a_real *rho, a_real *theta)
+{
+    *rho = a_real_hypot(x, y);
+    *theta = a_real_atan2(y, x);
+}
+void a_real_pol2cart(a_real rho, a_real theta, a_real *x, a_real *y)
+{
+    *x = rho * a_real_cos(theta);
+    *y = rho * a_real_sin(theta);
+}
+void a_real_cart2sph(a_real x, a_real y, a_real z, a_real *rho, a_real *theta, a_real *alpha)
+{
+    a_real const r = a_real_hypot(x, y);
+    *rho = a_real_hypot(r, z);
+    *theta = a_real_atan2(y, x);
+    *alpha = a_real_atan2(z, r);
+}
+void a_real_sph2cart(a_real rho, a_real theta, a_real alpha, a_real *x, a_real *y, a_real *z)
+{
+    a_real const c = rho * a_real_cos(alpha);
+    a_real const s = rho * a_real_sin(alpha);
+    *x = c * a_real_cos(theta);
+    *y = c * a_real_sin(theta);
+    *z = s;
+}
+
 #undef a_real_asinh
 a_real a_real_asinh(a_real x)
 {
