@@ -70,6 +70,7 @@ sources = [
     'include/a/pid.h',
     'include/a/pid_fuzzy.h',
     'include/a/pid_neuro.h',
+    'include/a/point3.h',
     'include/a/poly.h',
     'include/a/que.h',
     'include/a/rbt.h',
@@ -86,6 +87,7 @@ sources = [
     'include/a/trajtrap.h',
     'include/a/utf.h',
     'include/a/vec.h',
+    'include/a/vector3.h',
     'include/a/version.h',
     'src/a.c',
     'src/avl.c',
@@ -103,6 +105,7 @@ sources = [
     'src/pid.c',
     'src/pid_fuzzy.c',
     'src/pid_neuro.c',
+    'src/point3.c',
     'src/poly.c',
     'src/que.c',
     'src/rbt.c',
@@ -118,6 +121,7 @@ sources = [
     'src/trajtrap.c',
     'src/utf.c',
     'src/vec.c',
+    'src/vector3.c',
     'src/version.c',
 ]
 

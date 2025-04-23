@@ -274,6 +274,9 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(pid_neuro 3.gp pid_neuro.csv)
 endif()
 
+building(point3 point3.c point3.cc)
+unittest(point3)
+
 building(poly poly.c poly.cc)
 unittest(poly)
 
@@ -361,6 +364,9 @@ unittest(utf)
 
 building(vec vec.c vec.cc)
 unittest(vec)
+
+building(vector3 vector3.c vector3.cc)
+unittest(vector3)
 
 building(version version.c version.cc)
 unittest(version)

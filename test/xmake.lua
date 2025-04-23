@@ -96,6 +96,10 @@ target("test/pid_neuro")
 building({ "pid_neuro.c", "pid_neuro.cc" })
 target_end()
 
+target("test/point3")
+building({ "point3.c", "point3.cc" })
+target_end()
+
 target("test/poly")
 building({ "poly.c", "poly.cc" })
 target_end()
@@ -162,6 +166,10 @@ target_end()
 
 target("test/vec")
 building({ "vec.c", "vec.cc" })
+target_end()
+
+target("test/vector3")
+building({ "vector3.c", "vector3.cc" })
 target_end()
 
 target("test/version")
