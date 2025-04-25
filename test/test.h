@@ -43,6 +43,7 @@
     } while (0)
 
 #define TEST_BUG(expression) TEST_IS1(expression, #expression)
+#define TEST_NOT(expression) TEST_IS0(expression, #expression)
 
 #if defined(MAIN)
 #if defined(__cplusplus)

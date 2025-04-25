@@ -1084,7 +1084,7 @@ typedef union a_cast
 /*!
  @brief saturation value of x, \f$ \texttt{sat}(x,min,max)=\begin{cases}min&min>x\\max&x>max\\x&else\end{cases} \f$
 */
-#define A_SAT(x, min, max) ((min) < (x) ? (x) < (max) ? (x) : (max) : (min))
+#define A_SAT(x, min, max) ((x) < (min) ? (min) : ((x) > (max) ? (max) : (x)))
 
 /*!
  @brief number of elements in a visible array
