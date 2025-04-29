@@ -60,6 +60,10 @@ target("test/linalg")
 building({ "linalg.c", "linalg.cc" })
 target_end()
 
+target("test/line3")
+building({ "line3.c", "line3.cc" })
+target_end()
+
 target("test/list")
 building({ "list.c", "list.cc" })
 target_end()

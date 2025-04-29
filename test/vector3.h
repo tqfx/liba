@@ -1,6 +1,6 @@
 #define MAIN(x) vector3##x
-#include "a/vector3.h"
 #include "test.h"
+#include "a/vector3.h"
 
 static A_INLINE a_bool iseq(a_real a, a_real b)
 {

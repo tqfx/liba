@@ -72,6 +72,7 @@ A_EXTERN void a_vector3_cross(a_vector3 const *lhs, a_vector3 const *rhs, a_vect
 } /* extern "C" */
 #endif /* __cplusplus */
 
+struct a_point3;
 /*!
  @brief instance structure for three-dimensional vector
 */
@@ -79,21 +80,22 @@ struct a_vector3
 {
     a_real x, y, z;
 #if defined(__cplusplus)
-    A_INLINE void xyz(a_real &ox, a_real &oy, a_real &oz) const
+    A_INLINE void set(a_point3 const &p, a_point3 const &q);
+    A_INLINE void xyz(a_real &x_, a_real &y_, a_real &z_) const
     {
-        a_vector3_xyz(this, &ox, &oy, &oz);
+        a_vector3_xyz(this, &x_, &y_, &z_);
     }
-    A_INLINE void set_xyz(a_real ix, a_real iy, a_real iz)
+    A_INLINE void set_xyz(a_real x_, a_real y_, a_real z_)
     {
-        a_vector3_set_xyz(this, ix, iy, iz);
+        a_vector3_set_xyz(this, x_, y_, z_);
     }
-    A_INLINE void pol(a_real &rho, a_real &theta, a_real &oz) const
+    A_INLINE void pol(a_real &rho, a_real &theta, a_real &z_) const
     {
-        a_vector3_pol(this, &rho, &theta, &oz);
+        a_vector3_pol(this, &rho, &theta, &z_);
     }
-    A_INLINE void set_pol(a_real rho, a_real theta, a_real iz)
+    A_INLINE void set_pol(a_real rho, a_real theta, a_real z_)
     {
-        a_vector3_set_pol(this, rho, theta, iz);
+        a_vector3_set_pol(this, rho, theta, z_);
     }
     A_INLINE void sph(a_real &rho, a_real &theta, a_real &alpha) const
     {
@@ -169,90 +171,70 @@ struct a_vector3
 #undef A_INTERN
 #define A_INTERN A_INLINE
 #endif /* LIBA_VECTOR3_C */
-
 #if defined(A_HAVE_INLINE) || defined(LIBA_VECTOR3_C)
+
 A_INTERN void a_vector3_xyz(a_vector3 const *ctx, a_real *x, a_real *y, a_real *z)
 {
     *x = ctx->x;
     *y = ctx->y;
     *z = ctx->z;
 }
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_VECTOR3_C)
 A_INTERN void a_vector3_set_xyz(a_vector3 *ctx, a_real x, a_real y, a_real z)
 {
     ctx->x = x;
     ctx->y = y;
     ctx->z = z;
 }
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_VECTOR3_C)
 A_INTERN void a_vector3_pol(a_vector3 const *ctx, a_real *rho, a_real *theta, a_real *z)
 {
     a_real_cart2pol(ctx->x, ctx->y, rho, theta);
     *z = ctx->z;
 }
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_VECTOR3_C)
 A_INTERN void a_vector3_set_pol(a_vector3 *ctx, a_real rho, a_real theta, a_real z)
 {
     a_real_pol2cart(rho, theta, &ctx->x, &ctx->y);
     ctx->z = z;
 }
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_VECTOR3_C)
 A_INTERN void a_vector3_sph(a_vector3 const *ctx, a_real *rho, a_real *theta, a_real *alpha)
 {
     a_real_cart2sph(ctx->x, ctx->y, ctx->z, rho, theta, alpha);
 }
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_VECTOR3_C)
 A_INTERN void a_vector3_set_sph(a_vector3 *ctx, a_real rho, a_real theta, a_real alpha)
 {
     a_real_sph2cart(rho, theta, alpha, &ctx->x, &ctx->y, &ctx->z);
 }
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_VECTOR3_C)
 A_INTERN void a_vector3_add(a_vector3 const *lhs, a_vector3 const *rhs, a_vector3 *res)
 {
     res->x = lhs->x + rhs->x;
     res->y = lhs->y + rhs->y;
     res->z = lhs->z + rhs->z;
 }
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_VECTOR3_C)
 A_INTERN void a_vector3_sub(a_vector3 const *lhs, a_vector3 const *rhs, a_vector3 *res)
 {
     res->x = lhs->x - rhs->x;
     res->y = lhs->y - rhs->y;
     res->z = lhs->z - rhs->z;
 }
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_VECTOR3_C)
 A_INTERN void a_vector3_mul(a_vector3 const *lhs, a_real rhs, a_vector3 *res)
 {
     res->x = lhs->x * rhs;
     res->y = lhs->y * rhs;
     res->z = lhs->z * rhs;
 }
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_VECTOR3_C)
 A_INTERN void a_vector3_div(a_vector3 const *lhs, a_real rhs, a_vector3 *res)
 {
     res->x = lhs->x / rhs;
     res->y = lhs->y / rhs;
     res->z = lhs->z / rhs;
 }
-#endif /* A_HAVE_INLINE */
-#if defined(A_HAVE_INLINE) || defined(LIBA_VECTOR3_C)
 A_INTERN void a_vector3_neg(a_vector3 const *ctx, a_vector3 *res)
 {
     res->x = -ctx->x;
     res->y = -ctx->y;
     res->z = -ctx->z;
 }
-#endif /* A_HAVE_INLINE */
 
+#endif /* A_HAVE_INLINE */
 #if defined(LIBA_VECTOR3_C)
 #undef A_INTERN
 #define A_INTERN static A_INLINE

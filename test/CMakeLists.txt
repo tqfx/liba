@@ -207,6 +207,9 @@ unittest(linalg_llt)
 building(linalg_plu linalg_plu.c linalg_plu.cc)
 unittest(linalg_plu)
 
+building(line3 line3.c line3.cc)
+unittest(line3)
+
 building(list list.c list.cc)
 unittest(list)
 

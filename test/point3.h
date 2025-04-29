@@ -1,6 +1,6 @@
 #define MAIN(x) point3##x
-#include "a/point3.h"
 #include "test.h"
+#include "a/point3.h"
 
 static A_INLINE a_bool iseq(a_real a, a_real b)
 {
@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_vector3 v = A_VECTOR3_C(1, 1, 1);
         a_point3 a = A_POINT3_C(1, 2, 3);
         a_point3 c = A_POINT3_C(2, 3, 4);
-        a_point3_tov(&a, &c, &v);
+        a_vector3_set(&v, &a, &c);
         TEST_BUG(iseq(v.x, 1));
         TEST_BUG(iseq(v.y, 1));
         TEST_BUG(iseq(v.z, 1));
