@@ -89,7 +89,39 @@ void a_vector3_cross(a_vector3 const *lhs, a_vector3 const *rhs, a_vector3 *res)
     a_real const x = lhs->y * rhs->z - lhs->z * rhs->y;
     a_real const y = lhs->z * rhs->x - lhs->x * rhs->z;
     a_real const z = lhs->x * rhs->y - lhs->y * rhs->x;
-    res->x = x;
-    res->y = y;
-    res->z = z;
+    res->x = 0 + x;
+    res->y = 0 + y;
+    res->z = 0 + z;
+}
+
+void a_vector3_basis(a_vector3 const *ctx, a_vector3 *a, a_vector3 *b)
+{
+    if (A_ABS(ctx->x) >= A_ABS(ctx->y))
+    {
+        a_real const n = a_real_hypot(ctx->x, ctx->z);
+        if (n > 0)
+        {
+            a->x = 0 + ctx->z / n;
+            a->y = 0;
+            a->z = 0 - ctx->x / n;
+        }
+        b->x = 0 + ctx->y * a->z;
+        b->y = ctx->z * a->x - ctx->x * a->z;
+        b->z = 0 - ctx->y * a->x;
+        a_vector3_unit(b);
+    }
+    else
+    {
+        a_real const n = a_real_hypot(ctx->y, ctx->z);
+        if (n > 0)
+        {
+            b->x = 0;
+            b->y = 0 + ctx->z / n;
+            b->z = 0 - ctx->y / n;
+        }
+        a->x = b->y * ctx->z - b->z * ctx->y;
+        a->y = 0 + b->z * ctx->x;
+        a->z = 0 - b->y * ctx->x;
+        a_vector3_unit(a);
+    }
 }
