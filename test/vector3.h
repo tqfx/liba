@@ -200,7 +200,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     {
         a_vector3 a, b, c;
         a_vector3_set_xyz(&c, +10, 0, 0);
-        a_vector3_basis(&c, &a, &b);
+        a_vector3_ortho(&c, &a, &b);
         TEST_BUG(iseq(a.x, +0));
         TEST_BUG(iseq(a.y, +0));
         TEST_BUG(iseq(a.z, -1));
@@ -208,7 +208,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(b.y, +1));
         TEST_BUG(iseq(b.z, +0));
         a_vector3_set_xyz(&c, 0, +10, 0);
-        a_vector3_basis(&c, &a, &b);
+        a_vector3_ortho(&c, &a, &b);
         TEST_BUG(iseq(a.x, +1));
         TEST_BUG(iseq(a.y, +0));
         TEST_BUG(iseq(a.z, +0));
@@ -216,7 +216,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(b.y, +0));
         TEST_BUG(iseq(b.z, -1));
         a_vector3_set_xyz(&c, 0, 0, +10);
-        a_vector3_basis(&c, &a, &b);
+        a_vector3_ortho(&c, &a, &b);
         TEST_BUG(iseq(a.x, +1));
         TEST_BUG(iseq(a.y, +0));
         TEST_BUG(iseq(a.z, +0));
@@ -224,7 +224,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(b.y, +1));
         TEST_BUG(iseq(b.z, +0));
         a_vector3_set_xyz(&c, -10, 0, 0);
-        a_vector3_basis(&c, &a, &b);
+        a_vector3_ortho(&c, &a, &b);
         TEST_BUG(iseq(a.x, +0));
         TEST_BUG(iseq(a.y, +0));
         TEST_BUG(iseq(a.z, +1));
@@ -232,7 +232,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(b.y, +1));
         TEST_BUG(iseq(b.z, +0));
         a_vector3_set_xyz(&c, 0, -10, 0);
-        a_vector3_basis(&c, &a, &b);
+        a_vector3_ortho(&c, &a, &b);
         TEST_BUG(iseq(a.x, +1));
         TEST_BUG(iseq(a.y, +0));
         TEST_BUG(iseq(a.z, +0));
@@ -240,7 +240,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(b.y, +0));
         TEST_BUG(iseq(b.z, +1));
         a_vector3_set_xyz(&c, 0, 0, -10);
-        a_vector3_basis(&c, &a, &b);
+        a_vector3_ortho(&c, &a, &b);
         TEST_BUG(iseq(a.x, -1));
         TEST_BUG(iseq(a.y, +0));
         TEST_BUG(iseq(a.z, +0));
@@ -248,7 +248,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(b.y, +1));
         TEST_BUG(iseq(b.z, +0));
         a_vector3_set_xyz(&c, 0, 10, 10);
-        a_vector3_basis(&c, &a, &b);
+        a_vector3_ortho(&c, &a, &b);
         TEST_BUG(iseq(a.x, +1));
         TEST_BUG(iseq(a.y, +0));
         TEST_BUG(iseq(a.z, +0));

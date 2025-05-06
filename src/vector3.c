@@ -94,7 +94,7 @@ void a_vector3_cross(a_vector3 const *lhs, a_vector3 const *rhs, a_vector3 *res)
     res->z = 0 + z;
 }
 
-void a_vector3_basis(a_vector3 const *ctx, a_vector3 *a, a_vector3 *b)
+void a_vector3_ortho(a_vector3 const *ctx, a_vector3 *a, a_vector3 *b)
 {
     if (A_ABS(ctx->x) >= A_ABS(ctx->y))
     {

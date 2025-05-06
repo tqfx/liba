@@ -63,7 +63,7 @@ A_EXTERN a_real a_vector3_angle(a_vector3 const *lhs, a_vector3 const *rhs);
 A_EXTERN a_bool a_vector3_isver(a_vector3 const *lhs, a_vector3 const *rhs);
 A_EXTERN a_bool a_vector3_ispar(a_vector3 const *lhs, a_vector3 const *rhs);
 A_EXTERN void a_vector3_cross(a_vector3 const *lhs, a_vector3 const *rhs, a_vector3 *res);
-A_EXTERN void a_vector3_basis(a_vector3 const *ctx, a_vector3 *a, a_vector3 *b);
+A_EXTERN void a_vector3_ortho(a_vector3 const *ctx, a_vector3 *a, a_vector3 *b);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_VECTOR3_C)
 #undef A_INTERN
