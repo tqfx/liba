@@ -38,8 +38,8 @@ A_INTERN void a_line3_org(a_line3 const *ctx, a_point3 *res);
 A_INTERN void a_line3_tgt(a_line3 const *ctx, a_point3 *res);
 A_INTERN void a_line3_dir(a_line3 const *ctx, a_vector3 *res);
 
-A_EXTERN int a_line3_set1(a_line3 *ctx, a_point3 const *p, a_vector3 const *v);
-A_EXTERN int a_line3_set2(a_line3 *ctx, a_point3 const *p, a_point3 const *q);
+A_EXTERN int a_line3_setv(a_line3 *ctx, a_point3 const *p, a_vector3 const *v);
+A_EXTERN int a_line3_set(a_line3 *ctx, a_point3 const *p, a_point3 const *q);
 A_EXTERN void a_line3_eval(a_line3 const *ctx, a_real val, a_point3 *res);
 A_EXTERN a_real a_line3_proj(a_line3 const *ctx, a_point3 const *p, a_point3 *q);
 
@@ -70,11 +70,11 @@ struct a_line3
     A_INLINE void tgt(a_point3 &res) const { a_line3_tgt(this, &res); }
     A_INLINE int set(a_point3 const &p, a_vector3 const &v)
     {
-        return a_line3_set1(this, &p, &v);
+        return a_line3_setv(this, &p, &v);
     }
     A_INLINE int set(a_point3 const &p, a_point3 const &q)
     {
-        return a_line3_set2(this, &p, &q);
+        return a_line3_set(this, &p, &q);
     }
     A_INLINE void eval(a_real val, a_point3 &res) const
     {

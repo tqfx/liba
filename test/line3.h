@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_vector3 u;
         a_point3 a = A_POINT3_C(0, 0, 0);
         a_point3 b = A_POINT3_C(0, 3, 4);
-        TEST_BUG(a_line3_set2(&ctx, &a, &b) == 0);
+        TEST_BUG(a_line3_set(&ctx, &a, &b) == 0);
         TEST_BUG(iseq(ctx.orig.x, 0));
         TEST_BUG(iseq(ctx.orig.y, 0));
         TEST_BUG(iseq(ctx.orig.z, 0));
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_line3 ctx;
         a_point3 p = A_POINT3_C(0, 0, 0);
         a_vector3 v = A_VECTOR3_C(0, 3, 4);
-        TEST_BUG(a_line3_set1(&ctx, &p, &v) == 0);
+        TEST_BUG(a_line3_setv(&ctx, &p, &v) == 0);
         TEST_BUG(iseq(ctx.orig.x, 0));
         TEST_BUG(iseq(ctx.orig.y, 0));
         TEST_BUG(iseq(ctx.orig.z, 0));
@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_point3 a = A_POINT3_C(0, 0, 0);
         a_point3 b = A_POINT3_C(1, 1, 0);
         a_point3 c = A_POINT3_C(2, 0, 0);
-        TEST_BUG(a_line3_set2(&ctx, &a, &b) == 0);
+        TEST_BUG(a_line3_set(&ctx, &a, &b) == 0);
         w = a_line3_proj(&ctx, &c, &c);
         TEST_BUG(iseq(c.x, 1));
         TEST_BUG(iseq(c.y, 1));
@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_point3 const a = A_POINT3_C(0, 0, 0);
         a_point3 const b = A_POINT3_C(1, 1, 1);
         a_point3 const c = A_POINT3_C(0, 1, 2);
-        TEST_BUG(a_line3_set2(&ctx, &a, &b) == 0);
+        TEST_BUG(a_line3_set(&ctx, &a, &b) == 0);
         TEST_BUG(iseq(a_line3_dist2(&ctx, &c), 2));
         TEST_BUG(iseq(a_line3_dist1(&ctx, &c), A_REAL_SQRT1_3 * 4));
         TEST_BUG(iseq(a_line3_dist(&ctx, &c), A_REAL_SQRT2));
