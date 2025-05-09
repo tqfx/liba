@@ -207,6 +207,9 @@ unittest(linalg_llt)
 building(linalg_plu linalg_plu.c linalg_plu.cc)
 unittest(linalg_plu)
 
+building(line2 line2.c line2.cc)
+unittest(line2)
+
 building(line3 line3.c line3.cc)
 unittest(line3)
 
@@ -276,6 +279,9 @@ unittest(pid_neuro)
 if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(pid_neuro 3.gp pid_neuro.csv)
 endif()
+
+building(point2 point2.c point2.cc)
+unittest(point2)
 
 building(point3 point3.c point3.cc)
 unittest(point3)
@@ -370,6 +376,9 @@ unittest(vec)
 
 building(vector3 vector3.c vector3.cc)
 unittest(vector3)
+
+building(vector2 vector2.c vector2.cc)
+unittest(vector2)
 
 building(version version.c version.cc)
 unittest(version)

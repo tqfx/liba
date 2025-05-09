@@ -60,6 +60,10 @@ target("test/linalg")
 building({ "linalg.c", "linalg.cc" })
 target_end()
 
+target("test/line2")
+building({ "line2.c", "line2.cc" })
+target_end()
+
 target("test/line3")
 building({ "line3.c", "line3.cc" })
 target_end()
@@ -98,6 +102,10 @@ target_end()
 
 target("test/pid_neuro")
 building({ "pid_neuro.c", "pid_neuro.cc" })
+target_end()
+
+target("test/point2")
+building({ "point2.c", "point2.cc" })
 target_end()
 
 target("test/point3")
@@ -170,6 +178,10 @@ target_end()
 
 target("test/vec")
 building({ "vec.c", "vec.cc" })
+target_end()
+
+target("test/vector2")
+building({ "vector2.c", "vector2.cc" })
 target_end()
 
 target("test/vector3")
