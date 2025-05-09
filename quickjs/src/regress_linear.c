@@ -42,17 +42,17 @@ fail:
 static JSValue liba_regress_linear_eval(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     a_real *p;
-    double res = A_REAL_NAN;
+    double y = A_REAL_NAN;
     a_regress_linear *const self = (a_regress_linear *)JS_GetOpaque2(ctx, this_val, liba_regress_linear_class_id);
     if (!self) { return JS_EXCEPTION; }
     p = js_array_num_get(ctx, argv[0], NULL, NULL, 1);
     if (p)
     {
-        res = a_regress_linear_eval(self, p);
+        y = a_regress_linear_eval(self, p);
         js_free(ctx, p);
     }
     (void)argc;
-    return JS_NewFloat64(ctx, res);
+    return JS_NewFloat64(ctx, y);
 }
 
 static JSValue liba_regress_linear_err(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)

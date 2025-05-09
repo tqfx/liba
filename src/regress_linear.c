@@ -11,13 +11,13 @@ void a_regress_linear_init(a_regress_linear *ctx, a_real *coef_p, a_size coef_n,
 a_real a_regress_linear_eval(a_regress_linear const *ctx, a_real const *val)
 {
     a_size n;
-    a_real res = ctx->bias;
+    a_real y = ctx->bias;
     a_real const *coef = ctx->coef_p;
     for (n = ctx->coef_n; n; --n)
     {
-        res += *coef++ * *val++;
+        y += *coef++ * *val++;
     }
-    return res;
+    return y;
 }
 
 void a_regress_linear_err(a_regress_linear const *ctx, a_size n, a_real const *x, a_real const *y, a_real *err)

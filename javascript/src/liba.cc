@@ -681,9 +681,9 @@ struct regress_linear: public a_regress_linear
     A_INLINE a_real eval(emscripten::val const &val_) const
     {
         a_real *val = js_array_num_get(val_, nullptr, nullptr, 1);
-        a_real res = a_regress_linear::eval(val);
+        a_real y = a_regress_linear::eval(val);
         a_alloc(val, 0);
-        return res;
+        return y;
     }
     A_INLINE emscripten::val err(emscripten::val const &x_, emscripten::val const &y_) const
     {
