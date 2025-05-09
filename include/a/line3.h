@@ -40,7 +40,7 @@ A_INTERN void a_line3_dir(a_line3 const *ctx, a_vector3 *res);
 
 A_EXTERN int a_line3_setv(a_line3 *ctx, a_point3 const *p, a_vector3 const *v);
 A_EXTERN int a_line3_set(a_line3 *ctx, a_point3 const *p, a_point3 const *q);
-A_EXTERN void a_line3_eval(a_line3 const *ctx, a_real val, a_point3 *res);
+A_EXTERN void a_line3_eval(a_line3 const *ctx, a_real w, a_point3 *res);
 A_EXTERN a_real a_line3_proj(a_line3 const *ctx, a_point3 const *p, a_point3 *q);
 
 A_EXTERN a_real a_line3_dist(a_line3 const *ctx, a_point3 const *p);
@@ -76,9 +76,9 @@ struct a_line3
     {
         return a_line3_set(this, &p, &q);
     }
-    A_INLINE void eval(a_real val, a_point3 &res) const
+    A_INLINE void eval(a_real w, a_point3 &res) const
     {
-        a_line3_eval(this, val, &res);
+        a_line3_eval(this, w, &res);
     }
     A_INLINE a_real proj(a_point3 const &p, a_point3 &q) const
     {

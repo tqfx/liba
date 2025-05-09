@@ -24,21 +24,23 @@ int a_line3_setv(a_line3 *ctx, a_point3 const *p, a_vector3 const *v)
     return A_FAILURE;
 }
 
-void a_line3_eval(a_line3 const *ctx, a_real val, a_point3 *res)
+void a_line3_eval(a_line3 const *ctx, a_real w, a_point3 *res)
 {
-    res->x = ctx->orig.x + ctx->dir.x * val;
-    res->y = ctx->orig.y + ctx->dir.y * val;
-    res->z = ctx->orig.z + ctx->dir.z * val;
+    a_point3 const *const o = &ctx->orig;
+    a_vector3 const *const u = &ctx->dir;
+    res->x = o->x + u->x * w;
+    res->y = o->y + u->y * w;
+    res->z = o->z + u->z * w;
 }
 
 a_real a_line3_proj(a_line3 const *ctx, a_point3 const *p, a_point3 *q)
 {
     a_point3 const *const o = &ctx->orig;
     a_vector3 const *const u = &ctx->dir;
-    a_vector3 v;
     a_real w;
-    a_vector3_set(&v, o, p);
-    w = a_vector3_dot(u, &v);
+    a_vector3 vec;
+    a_vector3_set(&vec, o, p);
+    w = a_vector3_dot(&vec, u);
     q->x = o->x + u->x * w;
     q->y = o->y + u->y * w;
     q->z = o->z + u->z * w;
