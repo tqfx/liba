@@ -82,12 +82,12 @@ JNIEXPORT jbyteArray JNICALL Java_liba_crc16_pack(JNIEnv *Env, jobject Obj, jbyt
     jobject Ctx = (*Env)->GetObjectField(Env, Obj, L.ctx);
     struct crc16 *ctx = (struct crc16 *)(*Env)->GetDirectBufferAddress(Env, Ctx);
     jsize block_n = (*Env)->GetArrayLength(Env, block);
-    jbyteArray res = (*Env)->NewByteArray(Env, block_n + 2);
+    jbyteArray New = (*Env)->NewByteArray(Env, block_n + 2);
     jbyte *block_p = (*Env)->GetByteArrayElements(Env, block, NULL);
     value = (jshort)ctx->eval(ctx->table, block_p, (a_size)block_n, (a_u16)value);
     ctx->eval == a_crc16m ? a_u16_setb(&value, (a_u16)value) : a_u16_setl(&value, (a_u16)value);
-    (*Env)->SetByteArrayRegion(Env, res, 0, block_n, block_p);
+    (*Env)->SetByteArrayRegion(Env, New, 0, block_n, block_p);
     (*Env)->ReleaseByteArrayElements(Env, block, block_p, JNI_ABORT);
-    (*Env)->SetByteArrayRegion(Env, res, block_n, 2, (jbyte *)&value);
-    return res;
+    (*Env)->SetByteArrayRegion(Env, New, block_n, 2, (jbyte *)&value);
+    return New;
 }
