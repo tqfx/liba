@@ -59,9 +59,9 @@ a_real a_vector3_dist2(a_vector3 const *lhs, a_vector3 const *rhs)
 
 a_real a_vector3_angle(a_vector3 const *lhs, a_vector3 const *rhs)
 {
-    a_real const na = a_real_norm3(lhs->x, lhs->y, lhs->z);
-    a_real const nb = a_real_norm3(rhs->x, rhs->y, rhs->z);
-    a_real r = a_vector3_dot(lhs, rhs) / (na * nb);
+    a_real const n1 = a_real_norm3(lhs->x, lhs->y, lhs->z);
+    a_real const n2 = a_real_norm3(rhs->x, rhs->y, rhs->z);
+    a_real r = a_vector3_dot(lhs, rhs) / (n1 * n2);
     if (r > +1) { r = +1; }
     if (r < -1) { r = -1; }
     return a_real_acos(r);
