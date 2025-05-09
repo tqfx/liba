@@ -280,6 +280,9 @@ if(LIBA_GNUPLOT AND GNUPLOT_FOUND)
   unitplot(pid_neuro 3.gp pid_neuro.csv)
 endif()
 
+building(plane plane.c plane.cc)
+unittest(plane)
+
 building(point2 point2.c point2.cc)
 unittest(point2)
 

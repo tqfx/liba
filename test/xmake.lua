@@ -104,6 +104,10 @@ target("test/pid_neuro")
 building({ "pid_neuro.c", "pid_neuro.cc" })
 target_end()
 
+target("test/plane")
+building({ "plane.c", "plane.cc" })
+target_end()
+
 target("test/point2")
 building({ "point2.c", "point2.cc" })
 target_end()
