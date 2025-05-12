@@ -44,7 +44,7 @@ A_EXTERN void a_plane_eval(a_plane const *ctx, a_real u, a_real v, a_point3 *res
 A_EXTERN void a_plane_parm(a_plane const *ctx, a_point3 const *p, a_real *u, a_real *v);
 A_EXTERN a_real a_plane_proj(a_plane const *ctx, a_point3 const *p, a_point3 *res);
 
-A_EXTERN a_real a_plane_dist_(a_plane const *ctx, a_point3 const *p);
+A_EXTERN a_real a_plane_sdist(a_plane const *ctx, a_point3 const *p);
 A_EXTERN a_real a_plane_dist(a_plane const *ctx, a_point3 const *p);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_PLANE_C)
@@ -87,9 +87,9 @@ struct a_plane
     {
         return a_plane_proj(this, &p, &res);
     }
-    A_INLINE a_real dist_(a_point3 const &p) const
+    A_INLINE a_real sdist(a_point3 const &p) const
     {
-        return a_plane_dist_(this, &p);
+        return a_plane_sdist(this, &p);
     }
     A_INLINE a_real dist(a_point3 const &p) const
     {

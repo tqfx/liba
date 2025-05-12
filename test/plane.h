@@ -66,9 +66,9 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_vector3 v = A_VECTOR3_C(0, 0, 10);
         TEST_BUG(a_plane_set(&ctx, &p, &v) == 0);
         TEST_BUG(iseq(a_plane_dist(&ctx, &a), 2));
-        TEST_BUG(iseq(a_plane_dist_(&ctx, &a), 2));
+        TEST_BUG(iseq(a_plane_sdist(&ctx, &a), +2));
         TEST_BUG(iseq(a_plane_dist(&ctx, &b), 2));
-        TEST_BUG(iseq(a_plane_dist_(&ctx, &b), -2));
+        TEST_BUG(iseq(a_plane_sdist(&ctx, &b), -2));
     }
     (void)argv;
     (void)argc;

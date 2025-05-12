@@ -74,8 +74,8 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_point2 const d = A_POINT2_C(1, 0);
         TEST_BUG(a_line2_set(&ctx, &a, &b) == 0);
         TEST_BUG(iseq(a_line2_dist(&ctx, &c), A_REAL_SQRT1_2));
-        TEST_BUG(iseq(a_line2_dist_(&ctx, &c), +A_REAL_SQRT1_2));
-        TEST_BUG(iseq(a_line2_dist_(&ctx, &d), -A_REAL_SQRT1_2));
+        TEST_BUG(iseq(a_line2_sdist(&ctx, &c), +A_REAL_SQRT1_2));
+        TEST_BUG(iseq(a_line2_sdist(&ctx, &d), -A_REAL_SQRT1_2));
     }
     (void)argv;
     (void)argc;

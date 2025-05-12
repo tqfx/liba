@@ -58,7 +58,7 @@ a_real a_plane_proj(a_plane const *ctx, a_point3 const *p, a_point3 *res)
     return 0 - w;
 }
 
-a_real a_plane_dist_(a_plane const *ctx, a_point3 const *p)
+a_real a_plane_sdist(a_plane const *ctx, a_point3 const *p)
 {
     a_vector3 vec;
     a_vector3_set(&vec, &ctx->orig, p);
@@ -67,6 +67,6 @@ a_real a_plane_dist_(a_plane const *ctx, a_point3 const *p)
 
 a_real a_plane_dist(a_plane const *ctx, a_point3 const *p)
 {
-    a_real const r = a_plane_dist_(ctx, p);
+    a_real const r = a_plane_sdist(ctx, p);
     return A_ABS(r);
 }

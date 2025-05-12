@@ -43,7 +43,7 @@ a_real a_line2_proj(a_line2 const *ctx, a_point2 const *p, a_point2 *res)
     return w;
 }
 
-a_real a_line2_dist_(a_line2 const *ctx, a_point2 const *p)
+a_real a_line2_sdist(a_line2 const *ctx, a_point2 const *p)
 {
     a_point2 const *const o = &ctx->orig;
     a_vector2 const *const u = &ctx->dir_;
@@ -54,6 +54,6 @@ a_real a_line2_dist_(a_line2 const *ctx, a_point2 const *p)
 
 a_real a_line2_dist(a_line2 const *ctx, a_point2 const *p)
 {
-    a_real const r = a_line2_dist_(ctx, p);
+    a_real const r = a_line2_sdist(ctx, p);
     return A_ABS(r);
 }

@@ -43,7 +43,7 @@ A_EXTERN int a_line2_set(a_line2 *ctx, a_point2 const *p, a_point2 const *q);
 A_EXTERN void a_line2_eval(a_line2 const *ctx, a_real w, a_point2 *res);
 A_EXTERN a_real a_line2_proj(a_line2 const *ctx, a_point2 const *p, a_point2 *res);
 
-A_EXTERN a_real a_line2_dist_(a_line2 const *ctx, a_point2 const *p);
+A_EXTERN a_real a_line2_sdist(a_line2 const *ctx, a_point2 const *p);
 A_EXTERN a_real a_line2_dist(a_line2 const *ctx, a_point2 const *p);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_LINE2_C)
@@ -84,9 +84,9 @@ struct a_line2
     {
         return a_line2_proj(this, &p, &res);
     }
-    A_INLINE a_real dist_(a_point2 const &p) const
+    A_INLINE a_real sdist(a_point2 const &p) const
     {
-        return a_line2_dist_(this, &p);
+        return a_line2_sdist(this, &p);
     }
     A_INLINE a_real dist(a_point2 const &p) const
     {
