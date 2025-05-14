@@ -26,6 +26,25 @@ int a_plane_set3(a_plane *ctx, a_point3 const *a, a_point3 const *b, a_point3 co
     return a_plane_set(ctx, a, &n);
 }
 
+int a_plane_set4(a_plane *ctx, a_real a, a_real b, a_real c, a_real d)
+{
+    a_real const s = a * a + b * b + c * c;
+    if (s > 0)
+    {
+        a_real const n = a_real_sqrt(s);
+        a_real const t = 0 - d / s;
+        ctx->orig.x = a * t;
+        ctx->orig.y = b * t;
+        ctx->orig.z = c * t;
+        ctx->nor_.x = a / n;
+        ctx->nor_.y = b / n;
+        ctx->nor_.z = c / n;
+        a_vector3_ortho(&ctx->nor_, &ctx->u_, &ctx->v_);
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
+}
+
 void a_plane_eval(a_plane const *ctx, a_real u, a_real v, a_point3 *res)
 {
     a_point3 const *const o = &ctx->orig;

@@ -48,6 +48,16 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     }
     {
         a_plane ctx;
+        TEST_BUG(a_plane_set4(&ctx, 1, 1, 1, -3) == 0);
+        TEST_BUG(iseq(ctx.orig.x, 1));
+        TEST_BUG(iseq(ctx.orig.y, 1));
+        TEST_BUG(iseq(ctx.orig.z, 1));
+        TEST_BUG(iseq(ctx.nor_.x, A_REAL_SQRT1_3));
+        TEST_BUG(iseq(ctx.nor_.y, A_REAL_SQRT1_3));
+        TEST_BUG(iseq(ctx.nor_.z, A_REAL_SQRT1_3));
+    }
+    {
+        a_plane ctx;
         a_point3 a = A_POINT3_C(0, 0, 0);
         a_point3 b = A_POINT3_C(1, 0, 0);
         a_point3 c = A_POINT3_C(1, 1, 0);

@@ -40,6 +40,7 @@ A_INTERN a_vector3 const *a_plane_v(a_plane const *ctx);
 
 A_EXTERN int a_plane_set(a_plane *ctx, a_point3 const *p, a_vector3 const *v);
 A_EXTERN int a_plane_set3(a_plane *ctx, a_point3 const *a, a_point3 const *b, a_point3 const *c);
+A_EXTERN int a_plane_set4(a_plane *ctx, a_real a, a_real b, a_real c, a_real d);
 A_EXTERN void a_plane_eval(a_plane const *ctx, a_real u, a_real v, a_point3 *res);
 A_EXTERN void a_plane_parm(a_plane const *ctx, a_point3 const *p, a_real *u, a_real *v);
 A_EXTERN a_real a_plane_proj(a_plane const *ctx, a_point3 const *p, a_point3 *res);
