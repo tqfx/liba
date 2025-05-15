@@ -865,7 +865,7 @@ typedef A_SIZE a_size;
 #define A_F32_MIN_10_EXP FLT_MIN_10_EXP
 #define A_F32_MIN_EXP FLT_MIN_EXP
 #define A_F32_INF a_cast_s(a_f32, DBL_MAX)
-#define A_F32_NAN (A_F32_C(0.0) * A_F32_INF)
+#define A_F32_NAN (A_F32_INF * 0)
 #define A_F32_NNAN A_U32_C(0xFFC00000)
 #define A_F32_PNAN A_U32_C(0x7FC00000)
 #define A_F32_NINF A_U32_C(0xFF800000)
@@ -889,7 +889,7 @@ typedef A_F32 a_f32;
 #define A_F64_MIN_10_EXP DBL_MIN_10_EXP
 #define A_F64_MIN_EXP DBL_MIN_EXP
 #define A_F64_INF (DBL_MAX * DBL_MAX)
-#define A_F64_NAN (A_F64_C(0.0) * A_F64_INF)
+#define A_F64_NAN (A_F64_INF * 0)
 #define A_F64_NNAN A_U64_C(0xFFF8000000000000)
 #define A_F64_PNAN A_U64_C(0x7FF8000000000000)
 #define A_F64_NINF A_U64_C(0xFFF0000000000000)
@@ -985,7 +985,7 @@ typedef A_F64 a_f64;
 #endif /* A_REAL_TYPE */
 
 #define A_REAL_INF a_cast_s(A_REAL, A_F64_INF)
-#define A_REAL_NAN (A_REAL_C(0.0) * A_REAL_INF)
+#define A_REAL_NAN (A_REAL_INF * 0)
 /*!
  @def A_REAL_C(X)
  @brief expands to a floating-point constant expression having the value specified by its argument and the type \ref a_real
