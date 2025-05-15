@@ -40,8 +40,8 @@ extern "C" {
 
 A_INTERN void a_vector3_set(a_vector3 *ctx, a_point3 const *p, a_point3 const *q);
 
-A_INTERN void a_point3_xyz(a_point3 const *ctx, a_real *x, a_real *y, a_real *z);
-A_INTERN void a_point3_set_xyz(a_point3 *ctx, a_real x, a_real y, a_real z);
+A_INTERN void a_point3_val(a_point3 const *ctx, a_real *x, a_real *y, a_real *z);
+A_INTERN void a_point3_set_val(a_point3 *ctx, a_real x, a_real y, a_real z);
 A_INTERN void a_point3_pol(a_point3 const *ctx, a_real *rho, a_real *theta, a_real *z);
 A_INTERN void a_point3_set_pol(a_point3 *ctx, a_real rho, a_real theta, a_real z);
 A_INTERN void a_point3_sph(a_point3 const *ctx, a_real *rho, a_real *theta, a_real *alpha);
@@ -75,13 +75,13 @@ struct a_point3
 {
     a_real x, y, z;
 #if defined(__cplusplus)
-    A_INLINE void xyz(a_real &x_, a_real &y_, a_real &z_) const
+    A_INLINE void val(a_real &x_, a_real &y_, a_real &z_) const
     {
-        a_point3_xyz(this, &x_, &y_, &z_);
+        a_point3_val(this, &x_, &y_, &z_);
     }
-    A_INLINE void set_xyz(a_real x_, a_real y_, a_real z_)
+    A_INLINE void set_val(a_real x_, a_real y_, a_real z_)
     {
-        a_point3_set_xyz(this, x_, y_, z_);
+        a_point3_set_val(this, x_, y_, z_);
     }
     A_INLINE void pol(a_real &rho, a_real &theta, a_real &z_) const
     {
@@ -156,13 +156,13 @@ A_INTERN void a_vector3_set(a_vector3 *ctx, a_point3 const *p, a_point3 const *q
     ctx->y = q->y - p->y;
     ctx->z = q->z - p->z;
 }
-A_INTERN void a_point3_xyz(a_point3 const *ctx, a_real *x, a_real *y, a_real *z)
+A_INTERN void a_point3_val(a_point3 const *ctx, a_real *x, a_real *y, a_real *z)
 {
     *x = ctx->x;
     *y = ctx->y;
     *z = ctx->z;
 }
-A_INTERN void a_point3_set_xyz(a_point3 *ctx, a_real x, a_real y, a_real z)
+A_INTERN void a_point3_set_val(a_point3 *ctx, a_real x, a_real y, a_real z)
 {
     ctx->x = x;
     ctx->y = y;

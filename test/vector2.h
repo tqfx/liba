@@ -12,19 +12,19 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     {
         a_vector2 a;
         a_real x, y;
-        a_vector2_set_xy(&a, 1, 2);
+        a_vector2_set_val(&a, 1, 2);
         TEST_BUG(iseq(a.x, 1));
         TEST_BUG(iseq(a.y, 2));
 #if defined(__cplusplus)
-        a.set_xy(1, 2);
+        a.set_val(1, 2);
         TEST_BUG(iseq(a.x, 1));
         TEST_BUG(iseq(a.y, 2));
 #endif /* __cplusplus */
-        a_vector2_xy(&a, &x, &y);
+        a_vector2_val(&a, &x, &y);
         TEST_BUG(iseq(x, 1));
         TEST_BUG(iseq(y, 2));
 #if defined(__cplusplus)
-        a.xy(x, y);
+        a.val(x, y);
         TEST_BUG(iseq(x, 1));
         TEST_BUG(iseq(y, 2));
 #endif /* __cplusplus */
@@ -124,7 +124,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(a_vector2_unit(&a), 5));
         TEST_BUG(iseq(a_vector2_norm2(&a), 1));
 #if defined(__cplusplus)
-        a.set_xy(3, -4);
+        a.set_val(3, -4);
         TEST_BUG(iseq(a.unit(), 5));
         TEST_BUG(iseq(a.norm2(), 1));
 #endif /* __cplusplus */

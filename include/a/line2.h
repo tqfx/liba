@@ -9,6 +9,7 @@
 #include "a.h"
 #include "point2.h"
 
+#undef max
 /*!
  @ingroup liba
  @addtogroup a_line2 two-dimensional line
@@ -37,7 +38,11 @@ A_INTERN a_real a_line2_len(a_line2 const *ctx);
 A_INTERN a_point2 const *a_line2_org(a_line2 const *ctx);
 A_INTERN a_vector2 const *a_line2_dir(a_line2 const *ctx);
 A_INTERN void a_line2_tgt(a_line2 const *ctx, a_point2 *res);
+A_INTERN void a_line2_set_org(a_line2 *ctx, a_real x, a_real y);
+A_INTERN void a_line2_set_len(a_line2 *ctx, a_real max);
 
+A_EXTERN int a_line2_set_dir(a_line2 *ctx, a_real x, a_real y);
+A_EXTERN int a_line2_set_tgt(a_line2 *ctx, a_real x, a_real y);
 A_EXTERN int a_line2_setv(a_line2 *ctx, a_point2 const *p, a_vector2 const *v);
 A_EXTERN int a_line2_set(a_line2 *ctx, a_point2 const *p, a_point2 const *q);
 A_EXTERN void a_line2_eval(a_line2 const *ctx, a_real w, a_point2 *res);
@@ -54,7 +59,6 @@ A_EXTERN a_real a_line2_dist(a_line2 const *ctx, a_point2 const *p);
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#undef max
 /*!
  @brief instance structure for two-dimensional line
 */
@@ -65,9 +69,22 @@ struct a_line2
     a_real max;
 #if defined(__cplusplus)
     A_INLINE a_real len() const { return max; }
+    A_INLINE void len(a_real max_) { max = max_; }
     A_INLINE a_point2 const &org() const { return orig; }
+    A_INLINE void set_org(a_real x, a_real y)
+    {
+        a_line2_set_org(this, x, y);
+    }
     A_INLINE a_vector2 const &dir() const { return dir_; }
+    A_INLINE int set_dir(a_real x, a_real y)
+    {
+        return a_line2_set_dir(this, x, y);
+    }
     A_INLINE void tgt(a_point2 &res) const { a_line2_tgt(this, &res); }
+    A_INLINE int set_tgt(a_real x, a_real y)
+    {
+        return a_line2_set_tgt(this, x, y);
+    }
     A_INLINE int set(a_point2 const &p, a_vector2 const &v)
     {
         return a_line2_setv(this, &p, &v);
@@ -116,6 +133,15 @@ A_INTERN a_vector2 const *a_line2_dir(a_line2 const *ctx)
 A_INTERN void a_line2_tgt(a_line2 const *ctx, a_point2 *res)
 {
     a_line2_eval(ctx, ctx->max, res);
+}
+A_INTERN void a_line2_set_org(a_line2 *ctx, a_real x, a_real y)
+{
+    ctx->orig.x = x;
+    ctx->orig.y = y;
+}
+A_INTERN void a_line2_set_len(a_line2 *ctx, a_real max)
+{
+    ctx->max = max;
 }
 
 #endif /* A_HAVE_INLINE */

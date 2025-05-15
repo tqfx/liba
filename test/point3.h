@@ -12,22 +12,22 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     {
         a_point3 a;
         a_real x, y, z;
-        a_point3_set_xyz(&a, 1, 2, 3);
+        a_point3_set_val(&a, 1, 2, 3);
         TEST_BUG(iseq(a.x, 1));
         TEST_BUG(iseq(a.y, 2));
         TEST_BUG(iseq(a.z, 3));
 #if defined(__cplusplus)
-        a.set_xyz(1, 2, 3);
+        a.set_val(1, 2, 3);
         TEST_BUG(iseq(a.x, 1));
         TEST_BUG(iseq(a.y, 2));
         TEST_BUG(iseq(a.z, 3));
 #endif /* __cplusplus */
-        a_point3_xyz(&a, &x, &y, &z);
+        a_point3_val(&a, &x, &y, &z);
         TEST_BUG(iseq(x, 1));
         TEST_BUG(iseq(y, 2));
         TEST_BUG(iseq(z, 3));
 #if defined(__cplusplus)
-        a.xyz(x, y, z);
+        a.val(x, y, z);
         TEST_BUG(iseq(x, 1));
         TEST_BUG(iseq(y, 2));
         TEST_BUG(iseq(z, 3));

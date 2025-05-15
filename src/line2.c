@@ -1,25 +1,34 @@
 #include "a/line2.h"
 
+int a_line2_set_dir(a_line2 *ctx, a_real x, a_real y)
+{
+    ctx->max = a_real_hypot(x, y);
+    if (ctx->max > 0)
+    {
+        ctx->dir_.x = x / ctx->max;
+        ctx->dir_.y = y / ctx->max;
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
+}
+
+int a_line2_set_tgt(a_line2 *ctx, a_real x, a_real y)
+{
+    x -= ctx->orig.x;
+    y -= ctx->orig.y;
+    return a_line2_set_dir(ctx, x, y);
+}
+
 int a_line2_set(a_line2 *ctx, a_point2 const *p, a_point2 const *q)
 {
-    a_vector2 v;
-    a_vector2_set(&v, p, q);
-    return a_line2_setv(ctx, p, &v);
+    a_line2_set_org(ctx, p->x, p->y);
+    return a_line2_set_tgt(ctx, q->x, q->y);
 }
 
 int a_line2_setv(a_line2 *ctx, a_point2 const *p, a_vector2 const *v)
 {
-    a_real const max = a_real_hypot(v->x, v->y);
-    if (max > 0)
-    {
-        ctx->orig.x = p->x;
-        ctx->orig.y = p->y;
-        ctx->dir_.x = v->x / max;
-        ctx->dir_.y = v->y / max;
-        ctx->max = max;
-        return A_SUCCESS;
-    }
-    return A_FAILURE;
+    a_line2_set_org(ctx, p->x, p->y);
+    return a_line2_set_dir(ctx, v->x, v->y);
 }
 
 void a_line2_eval(a_line2 const *ctx, a_real w, a_point2 *res)

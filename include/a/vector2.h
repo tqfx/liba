@@ -38,8 +38,8 @@ extern "C" {
 #define A_INTERN A_PUBLIC extern
 #endif /* A_HAVE_INLINE */
 
-A_INTERN void a_vector2_xy(a_vector2 const *ctx, a_real *x, a_real *y);
-A_INTERN void a_vector2_set_xy(a_vector2 *ctx, a_real x, a_real y);
+A_INTERN void a_vector2_val(a_vector2 const *ctx, a_real *x, a_real *y);
+A_INTERN void a_vector2_set_val(a_vector2 *ctx, a_real x, a_real y);
 A_INTERN void a_vector2_pol(a_vector2 const *ctx, a_real *rho, a_real *theta);
 A_INTERN void a_vector2_set_pol(a_vector2 *ctx, a_real rho, a_real theta);
 
@@ -79,13 +79,13 @@ struct a_vector2
     a_real x, y;
 #if defined(__cplusplus)
     A_INLINE void set(a_point2 const &p, a_point2 const &q);
-    A_INLINE void xy(a_real &x_, a_real &y_) const
+    A_INLINE void val(a_real &x_, a_real &y_) const
     {
-        a_vector2_xy(this, &x_, &y_);
+        a_vector2_val(this, &x_, &y_);
     }
-    A_INLINE void set_xy(a_real x_, a_real y_)
+    A_INLINE void set_val(a_real x_, a_real y_)
     {
-        a_vector2_set_xy(this, x_, y_);
+        a_vector2_set_val(this, x_, y_);
     }
     A_INLINE void pol(a_real &rho, a_real &theta) const
     {
@@ -158,12 +158,12 @@ struct a_vector2
 #endif /* LIBA_VECTOR2_C */
 #if defined(A_HAVE_INLINE) || defined(LIBA_VECTOR2_C)
 
-A_INTERN void a_vector2_xy(a_vector2 const *ctx, a_real *x, a_real *y)
+A_INTERN void a_vector2_val(a_vector2 const *ctx, a_real *x, a_real *y)
 {
     *x = ctx->x;
     *y = ctx->y;
 }
-A_INTERN void a_vector2_set_xy(a_vector2 *ctx, a_real x, a_real y)
+A_INTERN void a_vector2_set_val(a_vector2 *ctx, a_real x, a_real y)
 {
     ctx->x = x;
     ctx->y = y;

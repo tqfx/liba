@@ -38,8 +38,8 @@ extern "C" {
 #define A_INTERN A_PUBLIC extern
 #endif /* A_HAVE_INLINE */
 
-A_INTERN void a_vector3_xyz(a_vector3 const *ctx, a_real *x, a_real *y, a_real *z);
-A_INTERN void a_vector3_set_xyz(a_vector3 *ctx, a_real x, a_real y, a_real z);
+A_INTERN void a_vector3_val(a_vector3 const *ctx, a_real *x, a_real *y, a_real *z);
+A_INTERN void a_vector3_set_val(a_vector3 *ctx, a_real x, a_real y, a_real z);
 A_INTERN void a_vector3_pol(a_vector3 const *ctx, a_real *rho, a_real *theta, a_real *z);
 A_INTERN void a_vector3_set_pol(a_vector3 *ctx, a_real rho, a_real theta, a_real z);
 A_INTERN void a_vector3_sph(a_vector3 const *ctx, a_real *rho, a_real *theta, a_real *alpha);
@@ -82,13 +82,13 @@ struct a_vector3
     a_real x, y, z;
 #if defined(__cplusplus)
     A_INLINE void set(a_point3 const &p, a_point3 const &q);
-    A_INLINE void xyz(a_real &x_, a_real &y_, a_real &z_) const
+    A_INLINE void val(a_real &x_, a_real &y_, a_real &z_) const
     {
-        a_vector3_xyz(this, &x_, &y_, &z_);
+        a_vector3_val(this, &x_, &y_, &z_);
     }
-    A_INLINE void set_xyz(a_real x_, a_real y_, a_real z_)
+    A_INLINE void set_val(a_real x_, a_real y_, a_real z_)
     {
-        a_vector3_set_xyz(this, x_, y_, z_);
+        a_vector3_set_val(this, x_, y_, z_);
     }
     A_INLINE void pol(a_real &rho, a_real &theta, a_real &z_) const
     {
@@ -174,13 +174,13 @@ struct a_vector3
 #endif /* LIBA_VECTOR3_C */
 #if defined(A_HAVE_INLINE) || defined(LIBA_VECTOR3_C)
 
-A_INTERN void a_vector3_xyz(a_vector3 const *ctx, a_real *x, a_real *y, a_real *z)
+A_INTERN void a_vector3_val(a_vector3 const *ctx, a_real *x, a_real *y, a_real *z)
 {
     *x = ctx->x;
     *y = ctx->y;
     *z = ctx->z;
 }
-A_INTERN void a_vector3_set_xyz(a_vector3 *ctx, a_real x, a_real y, a_real z)
+A_INTERN void a_vector3_set_val(a_vector3 *ctx, a_real x, a_real y, a_real z)
 {
     ctx->x = x;
     ctx->y = y;

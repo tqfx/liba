@@ -34,10 +34,12 @@ extern "C" {
 #endif /* A_HAVE_INLINE */
 
 A_INTERN a_point3 const *a_plane_org(a_plane const *ctx);
-A_INTERN a_vector3 const *a_plane_nor(a_plane const *ctx);
+A_INTERN a_vector3 const *a_plane_dir(a_plane const *ctx);
 A_INTERN a_vector3 const *a_plane_u(a_plane const *ctx);
 A_INTERN a_vector3 const *a_plane_v(a_plane const *ctx);
+A_INTERN void a_plane_set_org(a_plane *ctx, a_real x, a_real y, a_real z);
 
+A_EXTERN int a_plane_set_dir(a_plane *ctx, a_real x, a_real y, a_real z);
 A_EXTERN int a_plane_set(a_plane *ctx, a_point3 const *p, a_vector3 const *v);
 A_EXTERN int a_plane_set3(a_plane *ctx, a_point3 const *a, a_point3 const *b, a_point3 const *c);
 A_EXTERN int a_plane_set4(a_plane *ctx, a_real a, a_real b, a_real c, a_real d);
@@ -62,10 +64,18 @@ A_EXTERN a_real a_plane_dist(a_plane const *ctx, a_point3 const *p);
 struct a_plane
 {
     a_point3 orig;
-    a_vector3 nor_, u_, v_;
+    a_vector3 dir_, u_, v_;
 #if defined(__cplusplus)
     A_INLINE a_point3 const &org() const { return orig; }
-    A_INLINE a_vector3 const &nor() const { return nor_; }
+    A_INLINE void set_org(a_real x, a_real y, a_real z)
+    {
+        a_plane_set_org(this, x, y, z);
+    }
+    A_INLINE a_vector3 const &dir() const { return dir_; }
+    A_INLINE int set_dir(a_real x, a_real y, a_real z)
+    {
+        return a_plane_set_dir(this, x, y, z);
+    }
     A_INLINE a_vector3 const &u() const { return u_; }
     A_INLINE a_vector3 const &v() const { return v_; }
     A_INLINE int set(a_point3 const &p, a_vector3 const &v)
@@ -109,9 +119,9 @@ A_INTERN a_point3 const *a_plane_org(a_plane const *ctx)
 {
     return &ctx->orig;
 }
-A_INTERN a_vector3 const *a_plane_nor(a_plane const *ctx)
+A_INTERN a_vector3 const *a_plane_dir(a_plane const *ctx)
 {
-    return &ctx->nor_;
+    return &ctx->dir_;
 }
 A_INTERN a_vector3 const *a_plane_u(a_plane const *ctx)
 {
@@ -120,6 +130,12 @@ A_INTERN a_vector3 const *a_plane_u(a_plane const *ctx)
 A_INTERN a_vector3 const *a_plane_v(a_plane const *ctx)
 {
     return &ctx->v_;
+}
+A_INTERN void a_plane_set_org(a_plane *ctx, a_real x, a_real y, a_real z)
+{
+    ctx->orig.x = x;
+    ctx->orig.y = y;
+    ctx->orig.z = z;
 }
 
 #endif /* A_HAVE_INLINE */

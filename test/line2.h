@@ -30,6 +30,14 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(u.x, A_REAL_C(0.6)));
         TEST_BUG(iseq(u.y, A_REAL_C(0.8)));
         TEST_BUG(iseq(a_line2_len(&ctx), 5));
+#if defined(__cplusplus)
+        ctx.set_org(1, 2);
+        TEST_BUG(iseq(ctx.orig.x, 1));
+        TEST_BUG(iseq(ctx.orig.y, 2));
+        TEST_BUG(ctx.set_dir(1, 0) == 0);
+        TEST_BUG(iseq(ctx.dir_.x, 1));
+        TEST_BUG(iseq(ctx.dir_.y, 0));
+#endif /* __cplusplus */
     }
     {
         a_line2 ctx;

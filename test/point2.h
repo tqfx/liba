@@ -12,19 +12,19 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     {
         a_point2 a;
         a_real x, y;
-        a_point2_set_xy(&a, 1, 2);
+        a_point2_set_val(&a, 1, 2);
         TEST_BUG(iseq(a.x, 1));
         TEST_BUG(iseq(a.y, 2));
 #if defined(__cplusplus)
-        a.set_xy(1, 2);
+        a.set_val(1, 2);
         TEST_BUG(iseq(a.x, 1));
         TEST_BUG(iseq(a.y, 2));
 #endif /* __cplusplus */
-        a_point2_xy(&a, &x, &y);
+        a_point2_val(&a, &x, &y);
         TEST_BUG(iseq(x, 1));
         TEST_BUG(iseq(y, 2));
 #if defined(__cplusplus)
-        a.xy(x, y);
+        a.val(x, y);
         TEST_BUG(iseq(x, 1));
         TEST_BUG(iseq(y, 2));
 #endif /* __cplusplus */
