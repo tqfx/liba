@@ -40,10 +40,11 @@ static void test_sgn(void)
 
 static void test_sat(void)
 {
+    a_real const nan = A_REAL_NAN;
     A_BUILD_ASSERT(A_SAT(0, -10, +10) == 0);
     A_BUILD_ASSERT(A_SAT(+100, -10, +10) <= +10);
     A_BUILD_ASSERT(A_SAT(-100, -10, +10) >= -10);
-    TEST_NOT(A_SAT(A_REAL_NAN, -10, +10) <= 100);
+    TEST_NOT(A_SAT(nan, -10, +10) <= 100);
 }
 
 static void test_for(int argc, char *argv[])
