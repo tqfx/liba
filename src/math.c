@@ -249,7 +249,7 @@ void a_real_sph2cart(a_real rho, a_real theta, a_real alpha, a_real *x, a_real *
 #undef a_real_asinh
 a_real a_real_asinh(a_real x)
 {
-    a_real const a = a_real_abs(x);
+    a_real const a = x < 0 ? -x : x;
     a_real const s = x < 0 ? -1 : 1;
     if (a > 1 / A_REAL_SQRT_EPSILON)
     {
@@ -290,7 +290,7 @@ a_real a_real_acosh(a_real x)
 #undef a_real_atanh
 a_real a_real_atanh(a_real x)
 {
-    a_real const a = a_real_abs(x);
+    a_real const a = x < 0 ? -x : x;
     a_real const s = x < 0 ? A_REAL_C(-0.5) : A_REAL_C(0.5);
     if (a > 1) { return A_REAL_NAN; }
     if (a == 1)
@@ -367,9 +367,9 @@ a_real a_real_atan2(a_real y, a_real x)
 a_real a_real_norm2(a_real x, a_real y)
 {
     a_real w;
-    x = a_real_abs(x);
+    if (x < 0) { x = -x; }
     if (isinf(x)) { return A_REAL_INF; }
-    y = a_real_abs(y);
+    if (y < 0) { y = -y; }
     if (isinf(y)) { return A_REAL_INF; }
     if (x > y)
     {
@@ -385,11 +385,11 @@ a_real a_real_norm2(a_real x, a_real y)
 a_real a_real_norm3(a_real x, a_real y, a_real z)
 {
     a_real w;
-    x = a_real_abs(x);
+    if (x < 0) { x = -x; }
     if (isinf(x)) { return A_REAL_INF; }
-    y = a_real_abs(y);
+    if (y < 0) { y = -y; }
     if (isinf(y)) { return A_REAL_INF; }
-    z = a_real_abs(z);
+    if (z < 0) { z = -z; }
     if (isinf(z)) { return A_REAL_INF; }
     if (x > y)
     {
@@ -415,11 +415,11 @@ a_real a_real_norm(a_size n, a_real const *p)
     a_real w = 0, s = 0;
     for (i = 0; i < n; ++i)
     {
-        a_real const x = a_real_abs(p[i]);
-        if (isinf(x)) { return A_REAL_INF; }
+        a_real const x = A_ABS(p[i]);
         if (x > w) { w = x; }
     }
-    if (w <= 0) { return 0; }
+    if (isinf(w)) { return A_REAL_INF; }
+    if (w == 0) { return 0; }
     for (i = 0; i < n; ++i)
     {
         a_real const x = p[i] / w;
@@ -435,11 +435,11 @@ a_real a_real_norm_(a_size n, a_real const *p, a_size c)
     a_size const nc = n * c;
     for (i = 0; i < nc; i += c)
     {
-        a_real const x = a_real_abs(p[i]);
-        if (isinf(x)) { return A_REAL_INF; }
+        a_real const x = A_ABS(p[i]);
         if (x > w) { w = x; }
     }
-    if (w <= 0) { return 0; }
+    if (isinf(w)) { return A_REAL_INF; }
+    if (w == 0) { return 0; }
     for (i = 0; i < nc; i += c)
     {
         a_real const x = p[i] / w;
