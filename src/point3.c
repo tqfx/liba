@@ -6,7 +6,7 @@ a_real a_point3_dist(a_point3 const *lhs, a_point3 const *rhs)
     a_real const x = rhs->x - lhs->x;
     a_real const y = rhs->y - lhs->y;
     a_real const z = rhs->z - lhs->z;
-    return a_real_norm3(x, y, z);
+    return a_real_sqrt(x * x + y * y + z * z);
 }
 
 a_real a_point3_dist1(a_point3 const *lhs, a_point3 const *rhs)

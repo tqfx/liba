@@ -1,16 +1,29 @@
 #include "a/line3.h"
 
+#if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif /* -Wfloat-equal */
+
 int a_line3_set_dir(a_line3 *ctx, a_real x, a_real y, a_real z)
 {
-    ctx->max = a_real_norm3(x, y, z);
-    if (ctx->max > 0)
+    a_real s = x * x + y * y + z * z;
+    if (s == 1)
     {
-        ctx->dir_.x = x / ctx->max;
-        ctx->dir_.y = y / ctx->max;
-        ctx->dir_.z = z / ctx->max;
-        return A_SUCCESS;
+        ctx->max = 1;
+        ctx->dir_.x = x;
+        ctx->dir_.y = y;
+        ctx->dir_.z = z;
     }
-    return A_FAILURE;
+    else if (s > 0)
+    {
+        ctx->max = a_real_sqrt(s);
+        s = 1 / ctx->max;
+        ctx->dir_.x = x * s;
+        ctx->dir_.y = y * s;
+        ctx->dir_.z = z * s;
+    }
+    else { return A_FAILURE; }
+    return A_SUCCESS;
 }
 
 int a_line3_set_tgt(a_line3 *ctx, a_real x, a_real y, a_real z)

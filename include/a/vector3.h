@@ -63,7 +63,7 @@ A_EXTERN a_real a_vector3_angle(a_vector3 const *lhs, a_vector3 const *rhs);
 A_EXTERN a_bool a_vector3_isver(a_vector3 const *lhs, a_vector3 const *rhs);
 A_EXTERN a_bool a_vector3_ispar(a_vector3 const *lhs, a_vector3 const *rhs);
 A_EXTERN void a_vector3_cross(a_vector3 const *lhs, a_vector3 const *rhs, a_vector3 *res);
-A_EXTERN void a_vector3_ortho(a_vector3 const *ctx, a_vector3 *a, a_vector3 *b);
+A_EXTERN int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *a, a_vector3 *b);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_VECTOR3_C)
 #undef A_INTERN
@@ -152,6 +152,10 @@ struct a_vector3
         a_vector3 res;
         a_vector3_cross(this, &rhs, &res);
         return res;
+    }
+    A_INLINE int ortho(a_vector3 &a, a_vector3 &b) const
+    {
+        return a_vector3_ortho(this, &a, &b);
     }
     friend A_INLINE a_vector3 operator^(a_vector3 const &lhs, a_vector3 const &rhs) { return lhs.cross(rhs); }
     friend A_INLINE a_vector3 operator+(a_vector3 const &lhs, a_vector3 const &rhs) { return lhs.add(rhs); }

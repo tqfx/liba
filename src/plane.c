@@ -1,17 +1,27 @@
 #include "a/plane.h"
 
+#if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif /* -Wfloat-equal */
+
 int a_plane_set_dir(a_plane *ctx, a_real x, a_real y, a_real z)
 {
-    a_real const n = a_real_norm3(x, y, z);
-    if (n > 0)
+    a_real s = x * x + y * y + z * z;
+    if (s == 1)
     {
-        ctx->dir_.x = x / n;
-        ctx->dir_.y = y / n;
-        ctx->dir_.z = z / n;
-        a_vector3_ortho(&ctx->dir_, &ctx->u_, &ctx->v_);
-        return A_SUCCESS;
+        ctx->dir_.x = x;
+        ctx->dir_.y = y;
+        ctx->dir_.z = z;
     }
-    return A_FAILURE;
+    else if (s > 0)
+    {
+        s = 1 / a_real_sqrt(s);
+        ctx->dir_.x = x * s;
+        ctx->dir_.y = y * s;
+        ctx->dir_.z = z * s;
+    }
+    else { return A_FAILURE; }
+    return a_vector3_ortho(&ctx->dir_, &ctx->u_, &ctx->v_);
 }
 
 int a_plane_set(a_plane *ctx, a_point3 const *p, a_vector3 const *v)
@@ -37,21 +47,27 @@ int a_plane_set3(a_plane *ctx, a_point3 const *a, a_point3 const *b, a_point3 co
 
 int a_plane_set4(a_plane *ctx, a_real a, a_real b, a_real c, a_real d)
 {
-    a_real const s = a * a + b * b + c * c;
-    if (s > 0)
+    a_real s = a * a + b * b + c * c;
+    if (s == 1)
     {
-        a_real const n = a_real_sqrt(s);
-        a_real const t = 0 - d / s;
-        ctx->orig.x = a * t;
-        ctx->orig.y = b * t;
-        ctx->orig.z = c * t;
-        ctx->dir_.x = a / n;
-        ctx->dir_.y = b / n;
-        ctx->dir_.z = c / n;
-        a_vector3_ortho(&ctx->dir_, &ctx->u_, &ctx->v_);
-        return A_SUCCESS;
+        d = 0 - d;
+        ctx->dir_.x = a;
+        ctx->dir_.y = b;
+        ctx->dir_.z = c;
     }
-    return A_FAILURE;
+    else if (s > 0)
+    {
+        d = 0 - d / s;
+        s = 1 / a_real_sqrt(s);
+        ctx->dir_.x = a * s;
+        ctx->dir_.y = b * s;
+        ctx->dir_.z = c * s;
+    }
+    else { return A_FAILURE; }
+    ctx->orig.x = a * d;
+    ctx->orig.y = b * d;
+    ctx->orig.z = c * d;
+    return a_vector3_ortho(&ctx->dir_, &ctx->u_, &ctx->v_);
 }
 
 void a_plane_eval(a_plane const *ctx, a_real u, a_real v, a_point3 *res)

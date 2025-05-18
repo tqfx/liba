@@ -1,20 +1,26 @@
 #define LIBA_VECTOR2_C
 #include "a/vector2.h"
 
+#if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif /* -Wfloat-equal */
+
 a_real a_vector2_unit(a_vector2 *ctx)
 {
-    a_real const n = a_real_hypot(ctx->x, ctx->y);
-    if (n > 0)
+    a_real r = ctx->x * ctx->x + ctx->y * ctx->y, s;
+    if (r != 1 && r > 0)
     {
-        ctx->x /= n;
-        ctx->y /= n;
+        r = a_real_sqrt(r);
+        s = 1 / r;
+        ctx->x *= s;
+        ctx->y *= s;
     }
-    return n;
+    return r;
 }
 
 a_real a_vector2_norm(a_vector2 const *ctx)
 {
-    return a_real_hypot(ctx->x, ctx->y);
+    return a_real_sqrt(ctx->x * ctx->x + ctx->y * ctx->y);
 }
 
 a_real a_vector2_norm1(a_vector2 const *ctx)
@@ -36,7 +42,7 @@ a_real a_vector2_dist(a_vector2 const *lhs, a_vector2 const *rhs)
 {
     a_real const x = rhs->x - lhs->x;
     a_real const y = rhs->y - lhs->y;
-    return a_real_hypot(x, y);
+    return a_real_sqrt(x * x + y * y);
 }
 
 a_real a_vector2_dist1(a_vector2 const *lhs, a_vector2 const *rhs)
@@ -55,8 +61,7 @@ a_real a_vector2_dist2(a_vector2 const *lhs, a_vector2 const *rhs)
 
 a_real a_vector2_angle(a_vector2 const *lhs, a_vector2 const *rhs)
 {
-    a_real const n1 = a_real_hypot(lhs->x, lhs->y);
-    a_real const n2 = a_real_hypot(rhs->x, rhs->y);
+    a_real const n1 = a_vector2_norm(lhs), n2 = a_vector2_norm(rhs);
     a_real r = a_vector2_dot(lhs, rhs) / (n1 * n2);
     if (r > +1) { r = +1; }
     if (r < -1) { r = -1; }

@@ -5,7 +5,7 @@ a_real a_point2_dist(a_point2 const *lhs, a_point2 const *rhs)
 {
     a_real const x = rhs->x - lhs->x;
     a_real const y = rhs->y - lhs->y;
-    return a_real_hypot(x, y);
+    return a_real_sqrt(x * x + y * y);
 }
 
 a_real a_point2_dist1(a_point2 const *lhs, a_point2 const *rhs)
