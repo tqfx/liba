@@ -348,28 +348,28 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     }
     if (argc < 2)
     {
-        a_f64 min = A_F64_MIN;
-        a_f64 max = A_F64_MAX;
-        a_f64 inf = A_F64_INF;
-        a_f64 nan = A_F64_NAN;
+        a_f64 const min = A_F64_MIN;
+        a_f64 const max = A_F64_MAX;
+        a_f64 const inf = A_F64_INF;
+        a_f64 const nan = A_F64_NAN;
         debug("64 min = %-12g max = %g\n", min, max);
         debug("64 inf = %-12g nan = %g\n", inf, nan);
     }
     if (argc < 2)
     {
-        a_f32 min = A_F32_MIN;
-        a_f32 max = A_F32_MAX;
-        a_f32 inf = A_F32_INF;
-        a_f32 nan = A_F32_NAN;
+        a_f32 const min = A_F32_MIN;
+        a_f32 const max = A_F32_MAX;
+        a_f32 const inf = A_F32_INF;
+        a_f32 const nan = A_F32_NAN;
         debug("32 min = %-12g max = %g\n", min, max);
         debug("32 inf = %-12g nan = %g\n", inf, nan);
     }
     if (argc < 2)
     {
-        a_real min = A_REAL_MIN;
-        a_real max = A_REAL_MAX;
-        a_real inf = A_REAL_INF;
-        a_real nan = A_REAL_NAN;
+        a_real const min = A_REAL_MIN;
+        a_real const max = A_REAL_MAX;
+        a_real const inf = A_REAL_INF;
+        a_real const nan = A_REAL_NAN;
         debug("min = %-12" A_REAL_PRI "g max = %" A_REAL_PRI "g\n", min, max);
         debug("inf = %-12" A_REAL_PRI "g nan = %" A_REAL_PRI "g\n", inf, nan);
     }
