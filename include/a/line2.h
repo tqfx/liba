@@ -9,7 +9,6 @@
 #include "a.h"
 #include "point2.h"
 
-#undef max
 /*!
  @ingroup liba
  @addtogroup a_line2 two-dimensional line
@@ -50,6 +49,11 @@ A_EXTERN a_real a_line2_proj(a_line2 const *ctx, a_point2 const *p, a_point2 *re
 
 A_EXTERN a_real a_line2_sdist(a_line2 const *ctx, a_point2 const *p);
 A_EXTERN a_real a_line2_dist(a_line2 const *ctx, a_point2 const *p);
+
+A_EXTERN int a_line2_int0(a_line2 const *ctx, a_point2 const *rhs, a_real min, a_real max, a_real *res);
+A_EXTERN int a_line2_int1(a_line2 const *ctx, a_line2 const *rhs,
+                          a_real min1, a_real max1, a_real min2, a_real max2,
+                          a_real *res1, a_real *res2);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_LINE2_C)
 #undef A_INTERN
@@ -108,6 +112,16 @@ struct a_line2
     A_INLINE a_real dist(a_point2 const &p) const
     {
         return a_line2_dist(this, &p);
+    }
+    A_INLINE int int0(a_point2 const &rhs, a_real min, a_real max_, a_real &res) const
+    {
+        return a_line2_int0(this, &rhs, min, max_, &res);
+    }
+    A_INLINE int int1(a_line2 const &rhs, a_real min1,
+                      a_real max1, a_real min2, a_real max2,
+                      a_real &res1, a_real &res2) const
+    {
+        return a_line2_int1(this, &rhs, min1, max1, min2, max2, &res1, &res2);
     }
 #endif /* __cplusplus */
 };

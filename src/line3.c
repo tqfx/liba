@@ -60,9 +60,9 @@ a_real a_line3_proj(a_line3 const *ctx, a_point3 const *p, a_point3 *res)
     a_point3 const *const o = &ctx->orig;
     a_vector3 const *const u = &ctx->dir_;
     a_real w;
-    a_vector3 vec;
-    a_vector3_set(&vec, o, p);
-    w = a_vector3_dot(&vec, u);
+    a_vector3 v;
+    a_vector3_set(&v, o, p);
+    w = a_vector3_dot(&v, u);
     res->x = o->x + u->x * w;
     res->y = o->y + u->y * w;
     res->z = o->z + u->z * w;
@@ -97,4 +97,75 @@ a_real a_line3_dist2(a_line3 const *ctx, a_point3 const *p)
     a_vector3_set(&v, o, p);
     a_vector3_cross(&v, u, &v);
     return a_vector3_norm2(&v);
+}
+
+int a_line3_int0(a_line3 const *ctx, a_point3 const *rhs, a_real min, a_real max, a_real *res)
+{
+    a_point3 const *const o = &ctx->orig;
+    a_vector3 const *const u = &ctx->dir_;
+    a_vector3 v;
+    a_vector3_set(&v, o, rhs);
+    if (a_vector3_ispar(&v, u))
+    {
+        *res = a_vector3_dot(&v, u);
+        if (*res > min - A_REAL_EPS &&
+            *res < max + A_REAL_EPS)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int a_line3_int1(a_line3 const *ctx, a_line3 const *rhs,
+                 a_real min1, a_real max1, a_real min2, a_real max2,
+                 a_real *res1, a_real *res2)
+{
+    a_vector3 p12, v12, v;
+    a_vector3_set(&p12, &ctx->orig, &rhs->orig);
+    a_vector3_cross(&ctx->dir_, &rhs->dir_, &v12);
+    if (A_ABS(v12.x) >= A_REAL_EPS ||
+        A_ABS(v12.y) >= A_REAL_EPS ||
+        A_ABS(v12.z) >= A_REAL_EPS)
+    {
+        if (a_vector3_isver(&p12, &v12))
+        {
+            a_real const s = 1 / a_vector3_norm2(&v12);
+            a_vector3_cross(&p12, &rhs->dir_, &v);
+            *res1 = a_vector3_dot(&v, &v12) * s;
+            a_vector3_cross(&p12, &ctx->dir_, &v);
+            *res2 = a_vector3_dot(&v, &v12) * s;
+            if (*res1 > min1 - A_REAL_EPS &&
+                *res1 < max1 + A_REAL_EPS &&
+                *res2 > min2 - A_REAL_EPS &&
+                *res2 < max2 + A_REAL_EPS) { return 1; }
+        }
+    }
+    else if (a_vector3_ispar(&ctx->dir_, &p12))
+    {
+        a_real const s = a_vector3_dot(&ctx->dir_, &rhs->dir_);
+        a_real const w = a_vector3_dot(&ctx->dir_, &p12);
+        if (s < 0)
+        {
+            a_real const min = min2;
+            a_real const max = max2;
+            min2 = w - max;
+            max2 = w - min;
+        }
+        else
+        {
+            min2 += w;
+            max2 += w;
+        }
+        *res1 = (min2 > min1 ? min2 : min1);
+        *res2 = (max2 < max1 ? max2 : max1);
+        if (*res2 - *res1 >= A_REAL_EPS) { return 2; }
+        if (*res2 - *res1 > -A_REAL_EPS)
+        {
+            *res1 = (*res1 + *res2) * A_REAL_C(0.5);
+            *res2 = s < 0 ? (w - *res1) : (*res1 - w);
+            return 1;
+        }
+    }
+    return 0;
 }

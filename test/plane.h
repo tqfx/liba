@@ -90,6 +90,37 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(a_plane_dist(&ctx, &b), 2));
         TEST_BUG(iseq(a_plane_sdist(&ctx, &b), -2));
     }
+    {
+        a_line3 l;
+        a_point3 o;
+        a_plane ctx;
+        a_real s, t;
+        a_point3 const p = A_POINT3_C(0, 0, 0);
+        a_point3 const q = A_POINT3_C(0, 0, -4);
+        a_vector3 const n = A_VECTOR3_C(0, 0, 1);
+        a_vector3 const u = A_VECTOR3_C(0, 3, 4);
+        a_vector3 const v = A_VECTOR3_C(1, 0, 0);
+        a_plane_set(&ctx, &p, &n);
+        a_line3_setv(&l, &p, &v);
+        TEST_BUG(a_plane_int1(&ctx, &l, 0, 10, &t) == 2);
+        a_line3_setv(&l, &q, &v);
+        TEST_BUG(a_plane_int1(&ctx, &l, 0, 10, &t) == 0);
+        a_line3_setv(&l, &q, &u);
+        TEST_BUG(a_plane_int1(&ctx, &l, 0, 10, &t) == 1);
+        a_line3_eval(&l, t, &o);
+        TEST_BUG(iseq(o.x, 0));
+        TEST_BUG(iseq(o.y, 3));
+        TEST_BUG(iseq(o.z, 0));
+        TEST_BUG(iseq(t, 5));
+        TEST_BUG(a_plane_int0(&ctx, &q, &s, &t) == 0);
+        TEST_BUG(a_plane_int0(&ctx, &o, &s, &t) == 1);
+        a_plane_eval(&ctx, s, t, &o);
+        TEST_BUG(iseq(o.x, 0));
+        TEST_BUG(iseq(o.y, 3));
+        TEST_BUG(iseq(o.z, 0));
+        TEST_BUG(iseq(s, 0));
+        TEST_BUG(iseq(t, 3));
+    }
     (void)argv;
     (void)argc;
     return 0;

@@ -98,6 +98,48 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(a_line3_dist1(&ctx, &c), A_REAL_SQRT1_3 * 4));
         TEST_BUG(iseq(a_line3_dist(&ctx, &c), A_REAL_SQRT2));
     }
+    {
+        a_real t1, t2;
+        a_line3 l1, l2;
+        a_point3 p1, p2;
+        a_point3 const p = A_POINT3_C(0, 0, 0);
+        a_point3 const q = A_POINT3_C(5, 3, 0);
+        a_vector3 const u = A_VECTOR3_C(1, 1, 0);
+        a_vector3 const v = A_VECTOR3_C(0, 1, 0);
+        a_point3 const w = A_POINT3_C(5, 5, 0);
+        a_line3_setv(&l1, &p, &u);
+        a_line3_setv(&l2, &p, &u);
+        TEST_BUG(a_line3_int1(&l1, &l2, 0, +1, 0, +1, &t1, &t2) == 2);
+        TEST_BUG(a_line3_int1(&l1, &l2, -1, 0, 0, +1, &t1, &t2) == 1);
+        TEST_BUG(iseq(t1, 0));
+        TEST_BUG(iseq(t2, 0));
+        a_line3_setv(&l2, &p, &v);
+        TEST_BUG(a_line3_int1(&l1, &l2, -1, 0, -1, 0, &t1, &t2) == 1);
+        TEST_BUG(iseq(t1, 0));
+        TEST_BUG(iseq(t2, 0));
+        a_line3_setv(&l2, &q, &u);
+        TEST_BUG(a_line3_int1(&l1, &l2, 0, 10, 0, 10, &t1, &t2) == 0);
+        a_line3_setv(&l2, &q, &v);
+        TEST_BUG(a_line3_int1(&l1, &l2, 0, 10, 0, 10, &t1, &t2) == 1);
+        a_line3_eval(&l1, t1, &p1);
+        TEST_BUG(iseq(p1.x, w.x));
+        TEST_BUG(iseq(p1.y, w.y));
+        TEST_BUG(iseq(p1.z, w.z));
+        a_line3_eval(&l2, t2, &p2);
+        TEST_BUG(iseq(p2.x, w.x));
+        TEST_BUG(iseq(p2.y, w.y));
+        TEST_BUG(iseq(p2.z, w.z));
+        TEST_BUG(a_line3_int0(&l1, &w, 0, 10, &t1) == 1);
+        TEST_BUG(a_line3_int0(&l2, &w, 0, 10, &t2) == 1);
+        a_line3_eval(&l1, t1, &p1);
+        TEST_BUG(iseq(p1.x, w.x));
+        TEST_BUG(iseq(p1.y, w.y));
+        TEST_BUG(iseq(p1.z, w.z));
+        a_line3_eval(&l2, t2, &p2);
+        TEST_BUG(iseq(p2.x, w.x));
+        TEST_BUG(iseq(p2.y, w.y));
+        TEST_BUG(iseq(p2.z, w.z));
+    }
     (void)argv;
     (void)argc;
     return 0;

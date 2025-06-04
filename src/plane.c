@@ -93,24 +93,62 @@ a_real a_plane_proj(a_plane const *ctx, a_point3 const *p, a_point3 *res)
     a_point3 const *const o = &ctx->orig;
     a_vector3 const *const n = &ctx->dir_;
     a_real w;
-    a_vector3 vec;
-    a_vector3_set(&vec, p, o);
-    w = a_vector3_dot(&vec, n);
-    res->x = p->x + n->x * w;
-    res->y = p->y + n->y * w;
-    res->z = p->z + n->z * w;
-    return 0 - w;
+    a_vector3 v;
+    a_vector3_set(&v, o, p);
+    w = a_vector3_dot(&v, n);
+    res->x = p->x - n->x * w;
+    res->y = p->y - n->y * w;
+    res->z = p->z - n->z * w;
+    return w;
 }
 
 a_real a_plane_sdist(a_plane const *ctx, a_point3 const *p)
 {
-    a_vector3 vec;
-    a_vector3_set(&vec, &ctx->orig, p);
-    return a_vector3_dot(&vec, &ctx->dir_);
+    a_vector3 v;
+    a_vector3_set(&v, &ctx->orig, p);
+    return a_vector3_dot(&v, &ctx->dir_);
 }
 
 a_real a_plane_dist(a_plane const *ctx, a_point3 const *p)
 {
     a_real const r = a_plane_sdist(ctx, p);
     return A_ABS(r);
+}
+
+int a_plane_int0(a_plane const *ctx, a_point3 const *rhs, a_real *u, a_real *v)
+{
+    a_real w;
+    a_vector3 vec;
+    a_vector3_set(&vec, &ctx->orig, rhs);
+    w = a_vector3_dot(&vec, &ctx->dir_);
+    if (A_ABS(w) < A_REAL_EPS)
+    {
+        *u = a_vector3_dot(&vec, &ctx->u_);
+        *v = a_vector3_dot(&vec, &ctx->v_);
+        return 1;
+    }
+    return 0;
+}
+
+int a_plane_int1(a_plane const *ctx, a_line3 const *rhs, a_real min, a_real max, a_real *res)
+{
+    a_real u, w;
+    a_vector3 v;
+    a_vector3_set(&v, &rhs->orig, &ctx->orig);
+    w = a_vector3_dot(&ctx->dir_, &rhs->dir_);
+    u = a_vector3_dot(&ctx->dir_, &v);
+    if (A_ABS(w) >= A_REAL_EPS)
+    {
+        *res = u / w;
+        if (*res > min - A_REAL_EPS &&
+            *res < max + A_REAL_EPS)
+        {
+            return 1;
+        }
+    }
+    else if (A_ABS(u) < A_REAL_EPS)
+    {
+        return 2;
+    }
+    return 0;
 }

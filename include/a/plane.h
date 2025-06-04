@@ -7,7 +7,7 @@
 #define LIBA_PLANE_H
 
 #include "a.h"
-#include "point3.h"
+#include "line3.h"
 
 /*!
  @ingroup liba
@@ -49,6 +49,9 @@ A_EXTERN a_real a_plane_proj(a_plane const *ctx, a_point3 const *p, a_point3 *re
 
 A_EXTERN a_real a_plane_sdist(a_plane const *ctx, a_point3 const *p);
 A_EXTERN a_real a_plane_dist(a_plane const *ctx, a_point3 const *p);
+
+A_EXTERN int a_plane_int0(a_plane const *ctx, a_point3 const *rhs, a_real *u, a_real *v);
+A_EXTERN int a_plane_int1(a_plane const *ctx, a_line3 const *rhs, a_real min, a_real max, a_real *res);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_PLANE_C)
 #undef A_INTERN
@@ -105,6 +108,14 @@ struct a_plane
     A_INLINE a_real dist(a_point3 const &p) const
     {
         return a_plane_dist(this, &p);
+    }
+    A_INLINE int int0(a_point3 const &rhs, a_real &u, a_real &v) const
+    {
+        return a_plane_int0(this, &rhs, &u, &v);
+    }
+    A_INLINE int int1(a_line3 const &rhs, a_real min, a_real max, a_real &res) const
+    {
+        return a_plane_int1(this, &rhs, min, max, &res);
     }
 #endif /* __cplusplus */
 };
