@@ -74,7 +74,8 @@ a_real a_vector3_angle(a_vector3 const *lhs, a_vector3 const *rhs)
 
 a_bool a_vector3_isver(a_vector3 const *lhs, a_vector3 const *rhs)
 {
-    return a_vector3_dot(lhs, rhs) < A_REAL_EPS;
+    a_real const r = a_vector3_dot(lhs, rhs);
+    return A_ABS(r) < A_REAL_EPS;
 }
 
 a_bool a_vector3_ispar(a_vector3 const *lhs, a_vector3 const *rhs)
