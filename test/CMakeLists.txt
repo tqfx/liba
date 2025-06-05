@@ -377,11 +377,11 @@ unittest(utf)
 building(vec vec.c vec.cc)
 unittest(vec)
 
-building(vector3 vector3.c vector3.cc)
-unittest(vector3)
-
 building(vector2 vector2.c vector2.cc)
 unittest(vector2)
+
+building(vector3 vector3.c vector3.cc)
+unittest(vector3)
 
 building(version version.c version.cc)
 unittest(version)
