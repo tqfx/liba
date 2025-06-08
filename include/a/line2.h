@@ -45,15 +45,16 @@ A_EXTERN int a_line2_set_tgt(a_line2 *ctx, a_real x, a_real y);
 A_EXTERN int a_line2_setv(a_line2 *ctx, a_point2 const *p, a_vector2 const *v);
 A_EXTERN int a_line2_set(a_line2 *ctx, a_point2 const *p, a_point2 const *q);
 A_EXTERN void a_line2_eval(a_line2 const *ctx, a_real w, a_point2 *res);
+A_EXTERN a_real a_line2_parm(a_line2 const *ctx, a_point2 const *p);
 A_EXTERN a_real a_line2_proj(a_line2 const *ctx, a_point2 const *p, a_point2 *res);
 
-A_EXTERN a_real a_line2_sdist(a_line2 const *ctx, a_point2 const *p);
-A_EXTERN a_real a_line2_dist(a_line2 const *ctx, a_point2 const *p);
+A_EXTERN a_real a_line2_sdist(a_line2 const *ctx, a_point2 const *rhs);
+A_EXTERN a_real a_line2_dist(a_line2 const *ctx, a_point2 const *rhs);
 
-A_EXTERN int a_line2_int0(a_line2 const *ctx, a_point2 const *rhs, a_real min, a_real max, a_real *res);
+A_EXTERN int a_line2_int0(a_line2 const *ctx, a_point2 const *rhs, a_real min, a_real max, a_real *w);
 A_EXTERN int a_line2_int1(a_line2 const *ctx, a_line2 const *rhs,
                           a_real min1, a_real max1, a_real min2, a_real max2,
-                          a_real *res1, a_real *res2);
+                          a_real *w1, a_real *w2);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_LINE2_C)
 #undef A_INTERN
@@ -101,27 +102,31 @@ struct a_line2
     {
         a_line2_eval(this, w, &res);
     }
+    A_INLINE a_real parm(a_point2 const &p) const
+    {
+        return a_line2_parm(this, &p);
+    }
     A_INLINE a_real proj(a_point2 const &p, a_point2 &res) const
     {
         return a_line2_proj(this, &p, &res);
     }
-    A_INLINE a_real sdist(a_point2 const &p) const
+    A_INLINE a_real sdist(a_point2 const &rhs) const
     {
-        return a_line2_sdist(this, &p);
+        return a_line2_sdist(this, &rhs);
     }
-    A_INLINE a_real dist(a_point2 const &p) const
+    A_INLINE a_real dist(a_point2 const &rhs) const
     {
-        return a_line2_dist(this, &p);
+        return a_line2_dist(this, &rhs);
     }
-    A_INLINE int int0(a_point2 const &rhs, a_real min, a_real max_, a_real &res) const
+    A_INLINE int int0(a_point2 const &rhs, a_real min, a_real max_, a_real &w) const
     {
-        return a_line2_int0(this, &rhs, min, max_, &res);
+        return a_line2_int0(this, &rhs, min, max_, &w);
     }
-    A_INLINE int int1(a_line2 const &rhs, a_real min1,
-                      a_real max1, a_real min2, a_real max2,
-                      a_real &res1, a_real &res2) const
+    A_INLINE int int1(a_line2 const &rhs,
+                      a_real min1, a_real max1, a_real min2, a_real max2,
+                      a_real &w1, a_real &w2) const
     {
-        return a_line2_int1(this, &rhs, min1, max1, min2, max2, &res1, &res2);
+        return a_line2_int1(this, &rhs, min1, max1, min2, max2, &w1, &w2);
     }
 #endif /* __cplusplus */
 };
