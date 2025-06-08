@@ -2,6 +2,7 @@ set(JAVA_EXECUTABLE ${Java_JAVA_EXECUTABLE} -ea -Djava.library.path=.)
 
 function(building target)
   add_jar(java.test.${target} INCLUDE_JARS ajar
+    MANIFEST ${CMAKE_CURRENT_LIST_DIR}/../manifest
     SOURCES _${target}.java ${SOURCES}
     ENTRY_POINT _${target}
     OUTPUT_NAME ${target}
