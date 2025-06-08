@@ -47,11 +47,12 @@ A_EXTERN void a_plane_eval(a_plane const *ctx, a_real u, a_real v, a_point3 *res
 A_EXTERN void a_plane_parm(a_plane const *ctx, a_point3 const *p, a_real *u, a_real *v);
 A_EXTERN a_real a_plane_proj(a_plane const *ctx, a_point3 const *p, a_point3 *res);
 
-A_EXTERN a_real a_plane_sdist(a_plane const *ctx, a_point3 const *p);
-A_EXTERN a_real a_plane_dist(a_plane const *ctx, a_point3 const *p);
+A_EXTERN a_real a_plane_sdist(a_plane const *ctx, a_point3 const *rhs);
+A_EXTERN a_real a_plane_dist(a_plane const *ctx, a_point3 const *rhs);
 
 A_EXTERN int a_plane_int0(a_plane const *ctx, a_point3 const *rhs, a_real *u, a_real *v);
-A_EXTERN int a_plane_int1(a_plane const *ctx, a_line3 const *rhs, a_real min, a_real max, a_real *res);
+A_EXTERN int a_plane_int1(a_plane const *ctx, a_line3 const *rhs, a_real min, a_real max, a_real *w);
+A_EXTERN int a_plane_int2(a_plane const *ctx, a_plane const *rhs, a_line3 *res);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_PLANE_C)
 #undef A_INTERN
@@ -101,21 +102,25 @@ struct a_plane
     {
         return a_plane_proj(this, &p, &res);
     }
-    A_INLINE a_real sdist(a_point3 const &p) const
+    A_INLINE a_real sdist(a_point3 const &rhs) const
     {
-        return a_plane_sdist(this, &p);
+        return a_plane_sdist(this, &rhs);
     }
-    A_INLINE a_real dist(a_point3 const &p) const
+    A_INLINE a_real dist(a_point3 const &rhs) const
     {
-        return a_plane_dist(this, &p);
+        return a_plane_dist(this, &rhs);
     }
     A_INLINE int int0(a_point3 const &rhs, a_real &u, a_real &v) const
     {
         return a_plane_int0(this, &rhs, &u, &v);
     }
-    A_INLINE int int1(a_line3 const &rhs, a_real min, a_real max, a_real &res) const
+    A_INLINE int int1(a_line3 const &rhs, a_real min, a_real max, a_real &w) const
     {
-        return a_plane_int1(this, &rhs, min, max, &res);
+        return a_plane_int1(this, &rhs, min, max, &w);
+    }
+    A_INLINE int int2(a_plane const &rhs, a_line3 &res) const
+    {
+        return a_plane_int2(this, &rhs, &res);
     }
 #endif /* __cplusplus */
 };

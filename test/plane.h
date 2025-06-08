@@ -121,6 +121,28 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(s, 0));
         TEST_BUG(iseq(t, 3));
     }
+    {
+        a_line3 res;
+        a_plane ctx, rhs;
+        a_point3 o = A_POINT3_C(0, 1, 0);
+        a_point3 p = A_POINT3_C(1, 2, 3);
+        a_vector3 u = A_VECTOR3_C(1, 0, 0);
+        a_vector3 v = A_VECTOR3_C(1, 1, 0);
+        a_plane_set(&ctx, &o, &u);
+        a_plane_set(&rhs, &p, &u);
+        TEST_BUG(a_plane_int2(&ctx, &rhs, &res) == 0);
+        a_plane_set(&rhs, &o, &u);
+        TEST_BUG(a_plane_int2(&ctx, &rhs, &res) == 2);
+        a_plane_set(&rhs, &p, &v);
+        TEST_BUG(a_plane_int2(&ctx, &rhs, &res) == 1);
+        TEST_BUG(iseq(res.orig.x, 0));
+        TEST_BUG(iseq(res.orig.y, 3));
+        TEST_BUG(iseq(res.orig.z, 0));
+        TEST_BUG(iseq(res.dir_.x, 0));
+        TEST_BUG(iseq(res.dir_.y, 0));
+        TEST_BUG(iseq(res.dir_.z, 1));
+        TEST_BUG(iseq(res.max, 1));
+    }
     (void)argv;
     (void)argc;
     return 0;
