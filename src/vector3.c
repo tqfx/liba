@@ -100,51 +100,51 @@ void a_vector3_cross(a_vector3 const *lhs, a_vector3 const *rhs, a_vector3 *res)
     res->z = z;
 }
 
-int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *a, a_vector3 *b)
+int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v)
 {
     if (A_ABS(ctx->x) >= A_ABS(ctx->y))
     {
         a_real const n = ctx->x * ctx->x + ctx->z * ctx->z;
         if (n == 1)
         {
-            a->x = 0 + ctx->z;
-            a->y = 0;
-            a->z = 0 - ctx->x;
+            u->x = 0 + ctx->z;
+            u->y = 0;
+            u->z = 0 - ctx->x;
         }
         else if (n > 0)
         {
             a_real const s = 1 / a_real_sqrt(n);
-            a->x = 0 + ctx->z * s;
-            a->y = 0;
-            a->z = 0 - ctx->x * s;
+            u->x = 0 + ctx->z * s;
+            u->y = 0;
+            u->z = 0 - ctx->x * s;
         }
         else { return A_FAILURE; }
-        b->x = 0 + ctx->y * a->z;
-        b->y = ctx->z * a->x - ctx->x * a->z;
-        b->z = 0 - ctx->y * a->x;
-        a_vector3_unit(b);
+        v->x = 0 + ctx->y * u->z;
+        v->y = ctx->z * u->x - ctx->x * u->z;
+        v->z = 0 - ctx->y * u->x;
+        a_vector3_unit(v);
     }
     else
     {
         a_real const n = ctx->y * ctx->y + ctx->z * ctx->z;
         if (n == 1)
         {
-            b->x = 0;
-            b->y = 0 + ctx->z;
-            b->z = 0 - ctx->y;
+            v->x = 0;
+            v->y = 0 + ctx->z;
+            v->z = 0 - ctx->y;
         }
         else if (n > 0)
         {
             a_real const s = 1 / a_real_sqrt(n);
-            b->x = 0;
-            b->y = 0 + ctx->z * s;
-            b->z = 0 - ctx->y * s;
+            v->x = 0;
+            v->y = 0 + ctx->z * s;
+            v->z = 0 - ctx->y * s;
         }
         else { return A_FAILURE; }
-        a->x = b->y * ctx->z - b->z * ctx->y;
-        a->y = 0 + b->z * ctx->x;
-        a->z = 0 - b->y * ctx->x;
-        a_vector3_unit(a);
+        u->x = v->y * ctx->z - v->z * ctx->y;
+        u->y = 0 + v->z * ctx->x;
+        u->z = 0 - v->y * ctx->x;
+        a_vector3_unit(u);
     }
     return A_SUCCESS;
 }
