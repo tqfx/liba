@@ -4,7 +4,7 @@ function assert(expr) {
         throw Error(expr);
     }
 }
-var ctx = new a.trajtrap();
+var ctx = new a.trajbell();
 assert("ctx.gen(3, 2, 3, 0, 10) != undefined");
 assert("ctx.t != undefined");
 assert("ctx.tv != undefined");

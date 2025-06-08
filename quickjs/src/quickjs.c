@@ -81,7 +81,7 @@ int js_array_num_len(JSContext *ctx, JSValueConst val, unsigned int *num, int di
         JSValueConst v = JS_GetPropertyUint32(ctx, val, i);
         int tag = JS_VALUE_GET_TAG(v);
         if (tag == JS_TAG_FLOAT64 || tag == JS_TAG_INT ||
-            tag <= JS_TAG_BIG_FLOAT) { ++*num; }
+            tag < JS_TAG_SYMBOL) { ++*num; }
         else if (JS_IsArray(ctx, v) && dim > 0)
         {
             js_array_num_len(ctx, v, num, dim);
@@ -102,7 +102,7 @@ a_real *js_array_num_ptr(JSContext *ctx, JSValueConst val, a_real *ptr, int dim)
         JSValueConst v = JS_GetPropertyUint32(ctx, val, i);
         int tag = JS_VALUE_GET_TAG(v);
         if (tag == JS_TAG_FLOAT64 || tag == JS_TAG_INT ||
-            tag <= JS_TAG_BIG_FLOAT)
+            tag < JS_TAG_SYMBOL)
         {
             double x = 0;
             JS_ToFloat64(ctx, &x, v);
