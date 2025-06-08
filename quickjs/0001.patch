@@ -1,6 +1,6 @@
 --- a/quickjs-libc.c
 +++ b/quickjs-libc.c
-@@ -457,8 +457,50 @@ typedef JSModuleDef *(JSInitModuleFunc)(JSContext *ctx,
+@@ -476,8 +476,50 @@ typedef JSModuleDef *(JSInitModuleFunc)(JSContext *ctx,
  static JSModuleDef *js_module_loader_so(JSContext *ctx,
                                          const char *module_name)
  {

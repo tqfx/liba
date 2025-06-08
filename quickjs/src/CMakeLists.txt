@@ -73,7 +73,7 @@ find_package(Threads)
 function(quickjs_compile target)
   add_library(${target} STATIC
     cutils.c
-    libbf.c
+    dtoa.c
     libregexp.c
     libunicode.c
     quickjs.c
@@ -134,12 +134,7 @@ if(NOT QUICKJS_CROSSCOMPILING)
     WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
     COMMAND ${QJSC_EXECUTABLE} -m -o repl.c -c repl.js
   )
-  add_custom_command(DEPENDS ${QJS_DEPENDS}
-    OUTPUT ${CMAKE_CURRENT_LIST_DIR}/qjscalc.c
-    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
-    COMMAND ${QJSC_EXECUTABLE} -fbignum -o qjscalc.c -c qjscalc.js
-  )
-  add_executable(qjs qjs.c repl.c qjscalc.c)
+  add_executable(qjs qjs.c repl.c)
   set_target_properties(qjs PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION "${CONFIG_LTO}"
   )
