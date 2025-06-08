@@ -54,6 +54,8 @@ A_EXTERN int a_plane_int0(a_plane const *ctx, a_point3 const *rhs, a_real *u, a_
 A_EXTERN int a_plane_int1(a_plane const *ctx, a_line3 const *rhs, a_real min, a_real max, a_real *w);
 A_EXTERN int a_plane_int2(a_plane const *ctx, a_plane const *rhs, a_line3 *res);
 
+A_EXTERN void a_plane_rotuv(a_plane *ctx, a_real angle);
+
 #if !defined A_HAVE_INLINE || defined(LIBA_PLANE_C)
 #undef A_INTERN
 #define A_INTERN static A_INLINE
@@ -121,6 +123,10 @@ struct a_plane
     A_INLINE int int2(a_plane const &rhs, a_line3 &res) const
     {
         return a_plane_int2(this, &rhs, &res);
+    }
+    A_INLINE void rotuv(a_real angle)
+    {
+        a_plane_rotuv(this, angle);
     }
 #endif /* __cplusplus */
 };

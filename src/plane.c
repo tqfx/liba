@@ -195,3 +195,9 @@ int a_plane_int2(a_plane const *ctx, a_plane const *rhs, a_line3 *res)
     }
     return 0;
 }
+
+void a_plane_rotuv(a_plane *ctx, a_real angle)
+{
+    a_vector3 *u = &ctx->u_, *v = &ctx->v_;
+    a_vector3_rotuv(u, v, angle, u, v);
+}

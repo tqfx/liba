@@ -26,6 +26,19 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(a_plane_dir(&ctx)->x, 0));
         TEST_BUG(iseq(a_plane_dir(&ctx)->y, 0));
         TEST_BUG(iseq(a_plane_dir(&ctx)->z, 1));
+        TEST_BUG(iseq(ctx.u_.x, +1));
+        TEST_BUG(iseq(ctx.u_.y, 0));
+        TEST_BUG(iseq(ctx.u_.z, 0));
+        TEST_BUG(iseq(ctx.v_.x, 0));
+        TEST_BUG(iseq(ctx.v_.y, +1));
+        TEST_BUG(iseq(ctx.v_.z, 0));
+        a_plane_rotuv(&ctx, A_REAL_PI);
+        TEST_BUG(iseq(ctx.u_.x, -1));
+        TEST_BUG(iseq(ctx.u_.y, 0));
+        TEST_BUG(iseq(ctx.u_.z, 0));
+        TEST_BUG(iseq(ctx.v_.x, 0));
+        TEST_BUG(iseq(ctx.v_.y, -1));
+        TEST_BUG(iseq(ctx.v_.z, 0));
 #if defined(__cplusplus)
         ctx.set_org(1, 2, 3);
         TEST_BUG(iseq(ctx.orig.x, 1));

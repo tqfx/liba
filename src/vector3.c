@@ -148,3 +148,19 @@ int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v)
     }
     return A_SUCCESS;
 }
+
+void a_vector3_rotuv(a_vector3 const *iu, a_vector3 const *iv, a_real angle,
+                     a_vector3 *ou, a_vector3 *ov)
+{
+    a_vector3 u, v;
+    a_real const s = a_real_sin(angle);
+    a_real const c = a_real_cos(angle);
+    u.x = c * iu->x + s * iv->x;
+    u.y = c * iu->y + s * iv->y;
+    u.z = c * iu->z + s * iv->z;
+    v.x = c * iv->x - s * iu->x;
+    v.y = c * iv->y - s * iu->y;
+    v.z = c * iv->z - s * iu->z;
+    *ou = u;
+    *ov = v;
+}
