@@ -52,7 +52,7 @@ A_INTERN void a_vector3_div(a_vector3 const *lhs, a_real rhs, a_vector3 *res);
 A_INTERN void a_vector3_neg(a_vector3 const *ctx, a_vector3 *res);
 
 A_EXTERN a_real a_vector3_unit(a_vector3 *ctx);
-A_EXTERN a_real a_vector3_norm(a_vector3 const *cxt);
+A_EXTERN a_real a_vector3_norm(a_vector3 const *ctx);
 A_EXTERN a_real a_vector3_norm1(a_vector3 const *ctx);
 A_EXTERN a_real a_vector3_norm2(a_vector3 const *ctx);
 A_EXTERN a_real a_vector3_dot(a_vector3 const *lhs, a_vector3 const *rhs);
