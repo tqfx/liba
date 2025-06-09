@@ -38,6 +38,7 @@ extern "C" {
 #define A_INTERN A_PUBLIC extern
 #endif /* A_HAVE_INLINE */
 
+A_INTERN a_real a_vector3_set_dir(a_vector3 *ctx, a_real x, a_real y, a_real z);
 A_INTERN void a_vector3_val(a_vector3 const *ctx, a_real *x, a_real *y, a_real *z);
 A_INTERN void a_vector3_set_val(a_vector3 *ctx, a_real x, a_real y, a_real z);
 A_INTERN void a_vector3_pol(a_vector3 const *ctx, a_real *rho, a_real *theta, a_real *z);
@@ -84,6 +85,10 @@ struct a_vector3
     a_real x, y, z;
 #if defined(__cplusplus)
     A_INLINE void set(a_point3 const &p, a_point3 const &q);
+    A_INLINE a_real set_dir(a_real x_, a_real y_, a_real z_)
+    {
+        return a_vector3_set_dir(this, x_, y_, z_);
+    }
     A_INLINE void val(a_real &x_, a_real &y_, a_real &z_) const
     {
         a_vector3_val(this, &x_, &y_, &z_);
@@ -177,6 +182,13 @@ struct a_vector3
 #endif /* LIBA_VECTOR3_C */
 #if defined(A_HAVE_INLINE) || defined(LIBA_VECTOR3_C)
 
+A_INLINE a_real a_vector3_set_dir(a_vector3 *ctx, a_real x, a_real y, a_real z)
+{
+    ctx->x = x;
+    ctx->y = y;
+    ctx->z = z;
+    return a_vector3_unit(ctx);
+}
 A_INTERN void a_vector3_val(a_vector3 const *ctx, a_real *x, a_real *y, a_real *z)
 {
     *x = ctx->x;
