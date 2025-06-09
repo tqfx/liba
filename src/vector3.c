@@ -149,6 +149,18 @@ int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v)
     return A_SUCCESS;
 }
 
+void a_vector3_rot(a_vector3 const *ctx, a_vector3 const *dir, a_real angle, a_vector3 *res)
+{
+    a_vector3 vec;
+    a_real const s = a_real_sin(angle);
+    a_real const c = a_real_cos(angle);
+    a_real const t = a_vector3_dot(dir, ctx) * (1 - c);
+    a_vector3_cross(dir, ctx, &vec);
+    res->x = ctx->x * c + vec.x * s + dir->x * t;
+    res->y = ctx->y * c + vec.y * s + dir->y * t;
+    res->z = ctx->z * c + vec.z * s + dir->z * t;
+}
+
 void a_vector3_rotuv(a_vector3 const *iu, a_vector3 const *iv, a_real angle,
                      a_vector3 *ou, a_vector3 *ov)
 {

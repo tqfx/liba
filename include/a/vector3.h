@@ -65,6 +65,7 @@ A_EXTERN a_bool a_vector3_isver(a_vector3 const *lhs, a_vector3 const *rhs);
 A_EXTERN a_bool a_vector3_ispar(a_vector3 const *lhs, a_vector3 const *rhs);
 A_EXTERN void a_vector3_cross(a_vector3 const *lhs, a_vector3 const *rhs, a_vector3 *res);
 A_EXTERN int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v);
+A_EXTERN void a_vector3_rot(a_vector3 const *ctx, a_vector3 const *dir, a_real angle, a_vector3 *res);
 A_EXTERN void a_vector3_rotuv(a_vector3 const *iu, a_vector3 const *iv, a_real angle,
                               a_vector3 *ou, a_vector3 *ov);
 
@@ -158,6 +159,12 @@ struct a_vector3
     {
         a_vector3 res;
         a_vector3_cross(this, &rhs, &res);
+        return res;
+    }
+    A_INLINE a_vector3 rot(a_vector3 const &dir, a_real angle) const
+    {
+        a_vector3 res;
+        a_vector3_rot(this, &dir, angle, &res);
         return res;
     }
     A_INLINE int ortho(a_vector3 &u, a_vector3 &v) const { return a_vector3_ortho(this, &u, &v); }
