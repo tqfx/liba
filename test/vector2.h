@@ -153,6 +153,21 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(a.isver(b));
 #endif /* __cplusplus */
     }
+    {
+        a_vector2 ctx = A_VECTOR2_C(1, 0);
+        a_vector2_rot(&ctx, A_REAL_PI_2, &ctx);
+        TEST_BUG(iseq(ctx.x, 0));
+        TEST_BUG(iseq(ctx.y, 1));
+        a_vector2_rot(&ctx, A_REAL_PI_2, &ctx);
+        TEST_BUG(iseq(ctx.x, -1));
+        TEST_BUG(iseq(ctx.y, 0));
+        a_vector2_rot(&ctx, A_REAL_PI_2, &ctx);
+        TEST_BUG(iseq(ctx.x, 0));
+        TEST_BUG(iseq(ctx.y, -1));
+        a_vector2_rot(&ctx, A_REAL_PI_2, &ctx);
+        TEST_BUG(iseq(ctx.x, 1));
+        TEST_BUG(iseq(ctx.y, 0));
+    }
     (void)argv;
     (void)argc;
     return 0;
