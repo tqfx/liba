@@ -161,6 +161,10 @@ struct a_vector3
         a_vector3_cross(this, &rhs, &res);
         return res;
     }
+    A_INLINE void rot(a_vector3 const &dir, a_real angle, a_vector3 &res) const
+    {
+        a_vector3_rot(this, &dir, angle, &res);
+    }
     A_INLINE a_vector3 rot(a_vector3 const &dir, a_real angle) const
     {
         a_vector3 res;

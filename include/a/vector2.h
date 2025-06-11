@@ -144,6 +144,13 @@ struct a_vector2
     A_INLINE a_bool isver(a_vector2 const &rhs) const { return a_vector2_isver(this, &rhs); }
     A_INLINE a_bool ispar(a_vector2 const &rhs) const { return a_vector2_ispar(this, &rhs); }
     A_INLINE a_real cross(a_vector2 const &rhs) const { return a_vector2_cross(this, &rhs); }
+    A_INLINE void rot(a_real angle, a_vector2 &res) const { a_vector2_rot(this, angle, &res); }
+    A_INLINE a_vector2 rot(a_real angle) const
+    {
+        a_vector2 res;
+        a_vector2_rot(this, angle, &res);
+        return res;
+    }
     friend A_INLINE a_real operator^(a_vector2 const &lhs, a_vector2 const &rhs) { return lhs.cross(rhs); }
     friend A_INLINE a_vector2 operator+(a_vector2 const &lhs, a_vector2 const &rhs) { return lhs.add(rhs); }
     friend A_INLINE void operator+=(a_vector2 &lhs, a_vector2 const &rhs) { a_vector2_add(&lhs, &rhs, &lhs); }
