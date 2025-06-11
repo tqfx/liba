@@ -123,6 +123,24 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(p2.x, w.x));
         TEST_BUG(iseq(p2.y, w.y));
     }
+    {
+        a_line2 ctx;
+        a_point2 o = A_POINT2_C(1, 1);
+        a_point2 p = A_POINT2_C(3, 3);
+        a_vector2 u = A_POINT2_C(1, 1);
+        a_line2_setv(&ctx, &o, &u);
+        a_line2_rot(&ctx, &p, +A_REAL_PI_2, &ctx);
+        a_line2_rot(&ctx, &p, +A_REAL_PI_2, &ctx);
+        TEST_BUG(iseq(ctx.dir_.x, -A_REAL_SQRT1_2));
+        TEST_BUG(iseq(ctx.dir_.y, -A_REAL_SQRT1_2));
+        TEST_BUG(iseq(ctx.orig.x, +5));
+        TEST_BUG(iseq(ctx.orig.y, +5));
+        a_line2_rot(&ctx, &p, -A_REAL_PI, &ctx);
+        TEST_BUG(iseq(ctx.dir_.x, +A_REAL_SQRT1_2));
+        TEST_BUG(iseq(ctx.dir_.y, +A_REAL_SQRT1_2));
+        TEST_BUG(iseq(ctx.orig.x, +1));
+        TEST_BUG(iseq(ctx.orig.y, +1));
+    }
     (void)argv;
     (void)argc;
     return 0;

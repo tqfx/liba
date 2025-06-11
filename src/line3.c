@@ -169,3 +169,15 @@ int a_line3_int1(a_line3 const *ctx, a_line3 const *rhs,
     }
     return 0;
 }
+
+void a_line3_rot(a_line3 const *ctx, a_line3 const *rhs, a_real angle, a_line3 *res)
+{
+    a_real const s = a_real_sin(angle);
+    a_real const c = a_real_cos(angle);
+    a_vector3 vec;
+    a_vector3_rot_(&ctx->dir_, &rhs->dir_, s, c, &res->dir_);
+    a_vector3_set(&vec, &rhs->orig, &ctx->orig);
+    a_vector3_rot_(&vec, &rhs->dir_, s, c, &vec);
+    a_point3_add(&rhs->orig, &vec, &res->orig);
+    res->max = ctx->max;
+}

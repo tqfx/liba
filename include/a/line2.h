@@ -56,6 +56,8 @@ A_EXTERN int a_line2_int1(a_line2 const *ctx, a_line2 const *rhs,
                           a_real min1, a_real max1, a_real min2, a_real max2,
                           a_real *w1, a_real *w2);
 
+A_EXTERN void a_line2_rot(a_line2 const *ctx, a_point2 const *rhs, a_real angle, a_line2 *res);
+
 #if !defined A_HAVE_INLINE || defined(LIBA_LINE2_C)
 #undef A_INTERN
 #define A_INTERN static A_INLINE
@@ -127,6 +129,10 @@ struct a_line2
                       a_real &w1, a_real &w2) const
     {
         return a_line2_int1(this, &rhs, min1, max1, min2, max2, &w1, &w2);
+    }
+    A_INLINE void rot(a_point2 const &rhs, a_real angle, a_line2 &res) const
+    {
+        a_line2_rot(this, &rhs, angle, &res);
     }
 #endif /* __cplusplus */
 };

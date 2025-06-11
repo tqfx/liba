@@ -142,3 +142,15 @@ int a_line2_int1(a_line2 const *ctx, a_line2 const *rhs,
     }
     return 0;
 }
+
+void a_line2_rot(a_line2 const *ctx, a_point2 const *rhs, a_real angle, a_line2 *res)
+{
+    a_real const s = a_real_sin(angle);
+    a_real const c = a_real_cos(angle);
+    a_vector2 vec;
+    a_vector2_rot_(&ctx->dir_, s, c, &res->dir_);
+    a_vector2_set(&vec, rhs, &ctx->orig);
+    a_vector2_rot_(&vec, s, c, &vec);
+    a_point2_add(rhs, &vec, &res->orig);
+    res->max = ctx->max;
+}

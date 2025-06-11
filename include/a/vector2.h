@@ -63,6 +63,7 @@ A_EXTERN a_bool a_vector2_isver(a_vector2 const *lhs, a_vector2 const *rhs);
 A_EXTERN a_bool a_vector2_ispar(a_vector2 const *lhs, a_vector2 const *rhs);
 A_EXTERN a_real a_vector2_cross(a_vector2 const *lhs, a_vector2 const *rhs);
 
+A_EXTERN void a_vector2_rot_(a_vector2 const *ctx, a_real sin, a_real cos, a_vector2 *res);
 A_EXTERN void a_vector2_rot(a_vector2 const *ctx, a_real angle, a_vector2 *res);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_VECTOR2_C)

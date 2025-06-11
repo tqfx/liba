@@ -140,6 +140,30 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(p2.y, w.y));
         TEST_BUG(iseq(p2.z, w.z));
     }
+    {
+        a_line3 ctx, rhs;
+        a_point3 o = A_POINT3_C(1, 1, 0);
+        a_point3 p = A_POINT3_C(3, 3, 3);
+        a_vector3 u = A_POINT3_C(1, 1, 0);
+        a_vector3 v = A_POINT3_C(0, 0, 1);
+        a_line3_setv(&ctx, &o, &u);
+        a_line3_setv(&rhs, &p, &v);
+        a_line3_rot(&ctx, &rhs, +A_REAL_PI_2, &ctx);
+        a_line3_rot(&ctx, &rhs, +A_REAL_PI_2, &ctx);
+        TEST_BUG(iseq(ctx.dir_.x, -A_REAL_SQRT1_2));
+        TEST_BUG(iseq(ctx.dir_.y, -A_REAL_SQRT1_2));
+        TEST_BUG(iseq(ctx.dir_.z, 0));
+        TEST_BUG(iseq(ctx.orig.x, +5));
+        TEST_BUG(iseq(ctx.orig.y, +5));
+        TEST_BUG(iseq(ctx.orig.z, 0));
+        a_line3_rot(&ctx, &rhs, -A_REAL_PI, &ctx);
+        TEST_BUG(iseq(ctx.dir_.x, +A_REAL_SQRT1_2));
+        TEST_BUG(iseq(ctx.dir_.y, +A_REAL_SQRT1_2));
+        TEST_BUG(iseq(ctx.dir_.z, 0));
+        TEST_BUG(iseq(ctx.orig.x, +1));
+        TEST_BUG(iseq(ctx.orig.y, +1));
+        TEST_BUG(iseq(ctx.orig.z, 0));
+    }
     (void)argv;
     (void)argc;
     return 0;
