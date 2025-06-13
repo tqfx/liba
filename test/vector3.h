@@ -265,7 +265,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(b.x, +0));
         TEST_BUG(iseq(b.y, +A_REAL_SQRT1_2));
         TEST_BUG(iseq(b.z, -A_REAL_SQRT1_2));
-        a_vector3_rotuv(&a, &b, A_REAL_PI_2, &a, &b);
+        a_vector3_rot2d(&a, &b, A_REAL_PI_2, &a, &b);
         TEST_BUG(iseq(a.x, +0));
         TEST_BUG(iseq(a.y, +A_REAL_SQRT1_2));
         TEST_BUG(iseq(a.z, -A_REAL_SQRT1_2));

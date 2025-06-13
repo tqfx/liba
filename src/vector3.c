@@ -166,7 +166,7 @@ void a_vector3_rot(a_vector3 const *ctx, a_vector3 const *dir, a_real angle, a_v
     a_vector3_rot_(ctx, dir, s, c, res);
 }
 
-void a_vector3_rotuv(a_vector3 const *iu, a_vector3 const *iv, a_real angle,
+void a_vector3_rot2d(a_vector3 const *iu, a_vector3 const *iv, a_real angle,
                      a_vector3 *ou, a_vector3 *ov)
 {
     a_real const s = a_real_sin(angle);

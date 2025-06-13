@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(ctx.v_.x, 0));
         TEST_BUG(iseq(ctx.v_.y, +1));
         TEST_BUG(iseq(ctx.v_.z, 0));
-        a_plane_rotuv(&ctx, A_REAL_PI);
+        a_plane_rot2d(&ctx, A_REAL_PI);
         TEST_BUG(iseq(ctx.u_.x, -1));
         TEST_BUG(iseq(ctx.u_.y, 0));
         TEST_BUG(iseq(ctx.u_.z, 0));
