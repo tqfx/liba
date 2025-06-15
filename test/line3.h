@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(u.x, 0));
         TEST_BUG(iseq(u.y, A_REAL_C(0.6)));
         TEST_BUG(iseq(u.z, A_REAL_C(0.8)));
-        TEST_BUG(iseq(a_line3_len(&ctx), 5));
+        TEST_BUG(iseq(a_line3_lim(&ctx), 5));
 #if defined(__cplusplus)
         ctx.set_org(1, 2, 3);
         TEST_BUG(iseq(ctx.orig.x, 1));
@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(v.x, 0));
         TEST_BUG(iseq(v.y, A_REAL_C(0.6)));
         TEST_BUG(iseq(v.z, A_REAL_C(0.8)));
-        TEST_BUG(iseq(a_line3_len(&ctx), 5));
+        TEST_BUG(iseq(a_line3_lim(&ctx), 5));
     }
     {
         a_real w;

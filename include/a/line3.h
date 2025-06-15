@@ -33,12 +33,12 @@ extern "C" {
 #define A_INTERN A_PUBLIC extern
 #endif /* A_HAVE_INLINE */
 
-A_INTERN a_real a_line3_len(a_line3 const *ctx);
+A_INTERN a_real a_line3_lim(a_line3 const *ctx);
 A_INTERN a_point3 const *a_line3_org(a_line3 const *ctx);
 A_INTERN a_vector3 const *a_line3_dir(a_line3 const *ctx);
 A_INTERN void a_line3_tgt(a_line3 const *ctx, a_point3 *res);
 A_INTERN void a_line3_set_org(a_line3 *ctx, a_real x, a_real y, a_real z);
-A_INTERN void a_line3_set_len(a_line3 *ctx, a_real max);
+A_INTERN void a_line3_set_lim(a_line3 *ctx, a_real max);
 
 A_EXTERN int a_line3_set_dir(a_line3 *ctx, a_real x, a_real y, a_real z);
 A_EXTERN int a_line3_set_tgt(a_line3 *ctx, a_real x, a_real y, a_real z);
@@ -76,8 +76,8 @@ struct a_line3
     a_vector3 dir_;
     a_real max;
 #if defined(__cplusplus)
-    A_INLINE a_real len() const { return max; }
-    A_INLINE void set_len(a_real max_) { max = max_; }
+    A_INLINE a_real lim() const { return max; }
+    A_INLINE void set_lim(a_real max_) { max = max_; }
     A_INLINE a_point3 const &org() const { return orig; }
     A_INLINE void set_org(a_real x, a_real y, a_real z)
     {
@@ -148,7 +148,7 @@ struct a_line3
 #endif /* LIBA_LINE3_C */
 #if defined(A_HAVE_INLINE) || defined(LIBA_LINE3_C)
 
-A_INTERN a_real a_line3_len(a_line3 const *ctx)
+A_INTERN a_real a_line3_lim(a_line3 const *ctx)
 {
     return ctx->max;
 }
@@ -170,7 +170,7 @@ A_INTERN void a_line3_set_org(a_line3 *ctx, a_real x, a_real y, a_real z)
     ctx->orig.y = y;
     ctx->orig.z = z;
 }
-A_INTERN void a_line3_set_len(a_line3 *ctx, a_real max)
+A_INTERN void a_line3_set_lim(a_line3 *ctx, a_real max)
 {
     ctx->max = max;
 }
