@@ -51,6 +51,8 @@ A_INTERN void a_point3_add(a_point3 const *lhs, a_vector3 const *rhs, a_point3 *
 A_INTERN void a_point3_sub(a_point3 const *lhs, a_vector3 const *rhs, a_point3 *res);
 A_INTERN void a_point3_mul(a_point3 const *lhs, a_real rhs, a_point3 *res);
 A_INTERN void a_point3_div(a_point3 const *lhs, a_real rhs, a_point3 *res);
+A_INTERN void a_point3_pos(a_point3 const *ctx, a_vector3 *res);
+A_INTERN void a_point3_neg(a_point3 const *ctx, a_vector3 *res);
 
 A_EXTERN a_real a_point3_dist(a_point3 const *lhs, a_point3 const *rhs);
 A_EXTERN a_real a_point3_dist1(a_point3 const *lhs, a_point3 const *rhs);
@@ -99,46 +101,83 @@ struct a_point3
     {
         a_point3_set_sph(this, rho, theta, alpha);
     }
-    A_INLINE a_point3 add(a_vector3 const &rhs) const
+    A_INLINE void add(a_vector3 const &rhs, a_point3 &res) const
     {
-        a_point3 res;
         a_point3_add(this, &rhs, &res);
-        return res;
     }
-    A_INLINE a_point3 sub(a_vector3 const &rhs) const
+    A_INLINE void sub(a_vector3 const &rhs, a_point3 &res) const
     {
-        a_point3 res;
         a_point3_sub(this, &rhs, &res);
-        return res;
     }
-    A_INLINE a_point3 mul(a_real rhs) const
+    A_INLINE void mul(a_real rhs, a_point3 &res) const
     {
-        a_point3 res;
         a_point3_mul(this, rhs, &res);
-        return res;
     }
-    A_INLINE a_point3 div(a_real rhs) const
+    A_INLINE void div(a_real rhs, a_point3 &res) const
     {
-        a_point3 res;
         a_point3_div(this, rhs, &res);
-        return res;
+    }
+    A_INLINE void pos(a_vector3 &res) const
+    {
+        a_point3_pos(this, &res);
+    }
+    A_INLINE void neg(a_vector3 &res) const
+    {
+        a_point3_neg(this, &res);
     }
     A_INLINE a_real dist(a_point3 const &rhs) const { return a_point3_dist(this, &rhs); }
     A_INLINE a_real dist1(a_point3 const &rhs) const { return a_point3_dist1(this, &rhs); }
     A_INLINE a_real dist2(a_point3 const &rhs) const { return a_point3_dist2(this, &rhs); }
-    friend A_INLINE a_point3 operator+(a_point3 const &lhs, a_vector3 const &rhs) { return lhs.add(rhs); }
     friend A_INLINE void operator+=(a_point3 &lhs, a_vector3 const &rhs) { a_point3_add(&lhs, &rhs, &lhs); }
-    friend A_INLINE a_point3 operator-(a_point3 const &lhs, a_vector3 const &rhs) { return lhs.sub(rhs); }
+    friend A_INLINE a_point3 operator+(a_point3 const &lhs, a_vector3 const &rhs)
+    {
+        a_point3 res;
+        a_point3_add(&lhs, &rhs, &res);
+        return res;
+    }
     friend A_INLINE void operator-=(a_point3 &lhs, a_vector3 const &rhs) { a_point3_sub(&lhs, &rhs, &lhs); }
-    friend A_INLINE a_point3 operator*(a_real lhs, a_point3 const &rhs) { return rhs.mul(lhs); }
-    friend A_INLINE a_point3 operator*(a_point3 const &lhs, a_real rhs) { return lhs.mul(rhs); }
-    friend A_INLINE void operator*=(a_point3 &lhs, a_real rhs) { a_point3_mul(&lhs, rhs, &lhs); }
-    friend A_INLINE a_point3 operator/(a_point3 const &lhs, a_real rhs) { return lhs.div(rhs); }
-    friend A_INLINE void operator/=(a_point3 &lhs, a_real rhs) { a_point3_div(&lhs, rhs, &lhs); }
+    friend A_INLINE a_point3 operator-(a_point3 const &lhs, a_vector3 const &rhs)
+    {
+        a_point3 res;
+        a_point3_sub(&lhs, &rhs, &res);
+        return res;
+    }
     friend A_INLINE a_vector3 operator-(a_point3 const &lhs, a_point3 const &rhs)
     {
         a_vector3 res;
         a_vector3_set(&res, &rhs, &lhs);
+        return res;
+    }
+    friend A_INLINE void operator*=(a_point3 &lhs, a_real rhs) { a_point3_mul(&lhs, rhs, &lhs); }
+    friend A_INLINE a_point3 operator*(a_real lhs, a_point3 const &rhs)
+    {
+        a_point3 res;
+        a_point3_mul(&rhs, lhs, &res);
+        return res;
+    }
+    friend A_INLINE a_point3 operator*(a_point3 const &lhs, a_real rhs)
+    {
+        a_point3 res;
+        a_point3_mul(&lhs, rhs, &res);
+        return res;
+    }
+    friend A_INLINE void operator/=(a_point3 &lhs, a_real rhs) { a_point3_div(&lhs, rhs, &lhs); }
+    friend A_INLINE a_point3 operator/(a_point3 const &lhs, a_real rhs)
+    {
+        a_point3 res;
+        a_point3_div(&lhs, rhs, &res);
+        return res;
+    }
+    friend A_INLINE a_vector3 operator+(a_point3 const &rhs)
+    {
+        a_vector3 res;
+        a_point3_pos(&rhs, &res);
+        return res;
+    }
+    friend A_INLINE a_vector3 operator-(a_point3 const &rhs)
+    {
+        a_vector3 res;
+        a_point3_neg(&rhs, &res);
         return res;
     }
 #endif /* __cplusplus */
@@ -209,6 +248,18 @@ A_INTERN void a_point3_div(a_point3 const *lhs, a_real rhs, a_point3 *res)
     res->x = lhs->x / rhs;
     res->y = lhs->y / rhs;
     res->z = lhs->z / rhs;
+}
+A_INTERN void a_point3_pos(a_point3 const *ctx, a_vector3 *res)
+{
+    res->x = +ctx->x;
+    res->y = +ctx->y;
+    res->z = +ctx->z;
+}
+A_INTERN void a_point3_neg(a_point3 const *ctx, a_vector3 *res)
+{
+    res->x = -ctx->x;
+    res->y = -ctx->y;
+    res->z = -ctx->z;
 }
 
 #endif /* A_HAVE_INLINE */

@@ -49,6 +49,8 @@ A_INTERN void a_point2_add(a_point2 const *lhs, a_vector2 const *rhs, a_point2 *
 A_INTERN void a_point2_sub(a_point2 const *lhs, a_vector2 const *rhs, a_point2 *res);
 A_INTERN void a_point2_mul(a_point2 const *lhs, a_real rhs, a_point2 *res);
 A_INTERN void a_point2_div(a_point2 const *lhs, a_real rhs, a_point2 *res);
+A_INTERN void a_point2_pos(a_point2 const *ctx, a_vector2 *res);
+A_INTERN void a_point2_neg(a_point2 const *ctx, a_vector2 *res);
 
 A_EXTERN a_real a_point2_dist(a_point2 const *lhs, a_point2 const *rhs);
 A_EXTERN a_real a_point2_dist1(a_point2 const *lhs, a_point2 const *rhs);
@@ -89,46 +91,83 @@ struct a_point2
     {
         a_point2_set_pol(this, rho, theta);
     }
-    A_INLINE a_point2 add(a_vector2 const &rhs) const
+    A_INLINE void add(a_vector2 const &rhs, a_point2 &res) const
     {
-        a_point2 res;
         a_point2_add(this, &rhs, &res);
-        return res;
     }
-    A_INLINE a_point2 sub(a_vector2 const &rhs) const
+    A_INLINE void sub(a_vector2 const &rhs, a_point2 &res) const
     {
-        a_point2 res;
         a_point2_sub(this, &rhs, &res);
-        return res;
     }
-    A_INLINE a_point2 mul(a_real rhs) const
+    A_INLINE void mul(a_real rhs, a_point2 &res) const
     {
-        a_point2 res;
         a_point2_mul(this, rhs, &res);
-        return res;
     }
-    A_INLINE a_point2 div(a_real rhs) const
+    A_INLINE void div(a_real rhs, a_point2 &res) const
     {
-        a_point2 res;
         a_point2_div(this, rhs, &res);
-        return res;
+    }
+    A_INLINE void pos(a_vector2 &res) const
+    {
+        a_point2_pos(this, &res);
+    }
+    A_INLINE void neg(a_vector2 &res) const
+    {
+        a_point2_neg(this, &res);
     }
     A_INLINE a_real dist(a_point2 const &rhs) const { return a_point2_dist(this, &rhs); }
     A_INLINE a_real dist1(a_point2 const &rhs) const { return a_point2_dist1(this, &rhs); }
     A_INLINE a_real dist2(a_point2 const &rhs) const { return a_point2_dist2(this, &rhs); }
-    friend A_INLINE a_point2 operator+(a_point2 const &lhs, a_vector2 const &rhs) { return lhs.add(rhs); }
     friend A_INLINE void operator+=(a_point2 &lhs, a_vector2 const &rhs) { a_point2_add(&lhs, &rhs, &lhs); }
-    friend A_INLINE a_point2 operator-(a_point2 const &lhs, a_vector2 const &rhs) { return lhs.sub(rhs); }
+    friend A_INLINE a_point2 operator+(a_point2 const &lhs, a_vector2 const &rhs)
+    {
+        a_point2 res;
+        a_point2_add(&lhs, &rhs, &res);
+        return res;
+    }
     friend A_INLINE void operator-=(a_point2 &lhs, a_vector2 const &rhs) { a_point2_sub(&lhs, &rhs, &lhs); }
-    friend A_INLINE a_point2 operator*(a_real lhs, a_point2 const &rhs) { return rhs.mul(lhs); }
-    friend A_INLINE a_point2 operator*(a_point2 const &lhs, a_real rhs) { return lhs.mul(rhs); }
-    friend A_INLINE void operator*=(a_point2 &lhs, a_real rhs) { a_point2_mul(&lhs, rhs, &lhs); }
-    friend A_INLINE a_point2 operator/(a_point2 const &lhs, a_real rhs) { return lhs.div(rhs); }
-    friend A_INLINE void operator/=(a_point2 &lhs, a_real rhs) { a_point2_div(&lhs, rhs, &lhs); }
+    friend A_INLINE a_point2 operator-(a_point2 const &lhs, a_vector2 const &rhs)
+    {
+        a_point2 res;
+        a_point2_sub(&lhs, &rhs, &res);
+        return res;
+    }
     friend A_INLINE a_vector2 operator-(a_point2 const &lhs, a_point2 const &rhs)
     {
         a_vector2 res;
         a_vector2_set(&res, &rhs, &lhs);
+        return res;
+    }
+    friend A_INLINE void operator*=(a_point2 &lhs, a_real rhs) { a_point2_mul(&lhs, rhs, &lhs); }
+    friend A_INLINE a_point2 operator*(a_real lhs, a_point2 const &rhs)
+    {
+        a_point2 res;
+        a_point2_mul(&rhs, lhs, &res);
+        return res;
+    }
+    friend A_INLINE a_point2 operator*(a_point2 const &lhs, a_real rhs)
+    {
+        a_point2 res;
+        a_point2_mul(&lhs, rhs, &res);
+        return res;
+    }
+    friend A_INLINE void operator/=(a_point2 &lhs, a_real rhs) { a_point2_div(&lhs, rhs, &lhs); }
+    friend A_INLINE a_point2 operator/(a_point2 const &lhs, a_real rhs)
+    {
+        a_point2 res;
+        a_point2_div(&lhs, rhs, &res);
+        return res;
+    }
+    friend A_INLINE a_vector2 operator+(a_point2 const &rhs)
+    {
+        a_vector2 res;
+        a_point2_pos(&rhs, &res);
+        return res;
+    }
+    friend A_INLINE a_vector2 operator-(a_point2 const &rhs)
+    {
+        a_vector2 res;
+        a_point2_neg(&rhs, &res);
         return res;
     }
 #endif /* __cplusplus */
@@ -182,6 +221,16 @@ A_INTERN void a_point2_div(a_point2 const *lhs, a_real rhs, a_point2 *res)
 {
     res->x = lhs->x / rhs;
     res->y = lhs->y / rhs;
+}
+A_INTERN void a_point2_pos(a_point2 const *ctx, a_vector2 *res)
+{
+    res->x = +ctx->x;
+    res->y = +ctx->y;
+}
+A_INTERN void a_point2_neg(a_point2 const *ctx, a_vector2 *res)
+{
+    res->x = -ctx->x;
+    res->y = -ctx->y;
 }
 
 #endif /* A_HAVE_INLINE */

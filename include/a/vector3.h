@@ -115,35 +115,25 @@ struct a_vector3
     {
         a_vector3_set_sph(this, rho, theta, alpha);
     }
-    A_INLINE a_vector3 add(a_vector3 const &rhs) const
+    A_INLINE void add(a_vector3 const &rhs, a_vector3 &res) const
     {
-        a_vector3 res;
         a_vector3_add(this, &rhs, &res);
-        return res;
     }
-    A_INLINE a_vector3 sub(a_vector3 const &rhs) const
+    A_INLINE void sub(a_vector3 const &rhs, a_vector3 &res) const
     {
-        a_vector3 res;
         a_vector3_sub(this, &rhs, &res);
-        return res;
     }
-    A_INLINE a_vector3 mul(a_real rhs) const
+    A_INLINE void mul(a_real rhs, a_vector3 &res) const
     {
-        a_vector3 res;
         a_vector3_mul(this, rhs, &res);
-        return res;
     }
-    A_INLINE a_vector3 div(a_real rhs) const
+    A_INLINE void div(a_real rhs, a_vector3 &res) const
     {
-        a_vector3 res;
         a_vector3_div(this, rhs, &res);
-        return res;
     }
-    A_INLINE a_vector3 neg() const
+    A_INLINE void neg(a_vector3 &res) const
     {
-        a_vector3 res;
         a_vector3_neg(this, &res);
-        return res;
     }
     A_INLINE a_real unit() { return a_vector3_unit(this); }
     A_INLINE a_real norm() const { return a_vector3_norm(this); }
@@ -156,35 +146,74 @@ struct a_vector3
     A_INLINE a_real angle(a_vector3 const &rhs) const { return a_vector3_angle(this, &rhs); }
     A_INLINE a_bool isver(a_vector3 const &rhs) const { return a_vector3_isver(this, &rhs); }
     A_INLINE a_bool ispar(a_vector3 const &rhs) const { return a_vector3_ispar(this, &rhs); }
-    A_INLINE a_vector3 cross(a_vector3 const &rhs) const
+    A_INLINE void cross(a_vector3 const &rhs, a_vector3 &res) const
     {
-        a_vector3 res;
         a_vector3_cross(this, &rhs, &res);
-        return res;
+    }
+    A_INLINE int ortho(a_vector3 &u, a_vector3 &v) const
+    {
+        return a_vector3_ortho(this, &u, &v);
     }
     A_INLINE void rot(a_vector3 const &dir, a_real angle, a_vector3 &res) const
     {
         a_vector3_rot(this, &dir, angle, &res);
     }
-    A_INLINE a_vector3 rot(a_vector3 const &dir, a_real angle) const
+    static A_INLINE void rot2d(a_vector3 const &iu, a_vector3 const &iv, a_real angle,
+                               a_vector3 &ou, a_vector3 &ov)
+    {
+        a_vector3_rot2d(&iu, &iv, angle, &ou, &ov);
+    }
+    friend A_INLINE a_vector3 operator^(a_vector3 const &lhs, a_vector3 const &rhs)
     {
         a_vector3 res;
-        a_vector3_rot(this, &dir, angle, &res);
+        a_vector3_cross(&lhs, &rhs, &res);
         return res;
     }
-    A_INLINE int ortho(a_vector3 &u, a_vector3 &v) const { return a_vector3_ortho(this, &u, &v); }
-    friend A_INLINE a_vector3 operator^(a_vector3 const &lhs, a_vector3 const &rhs) { return lhs.cross(rhs); }
-    friend A_INLINE a_vector3 operator+(a_vector3 const &lhs, a_vector3 const &rhs) { return lhs.add(rhs); }
     friend A_INLINE void operator+=(a_vector3 &lhs, a_vector3 const &rhs) { a_vector3_add(&lhs, &rhs, &lhs); }
-    friend A_INLINE a_vector3 operator-(a_vector3 const &lhs, a_vector3 const &rhs) { return lhs.sub(rhs); }
+    friend A_INLINE a_vector3 operator+(a_vector3 const &lhs, a_vector3 const &rhs)
+    {
+        a_vector3 res;
+        a_vector3_add(&lhs, &rhs, &res);
+        return res;
+    }
     friend A_INLINE void operator-=(a_vector3 &lhs, a_vector3 const &rhs) { a_vector3_sub(&lhs, &rhs, &lhs); }
-    friend A_INLINE a_real operator*(a_vector3 const &lhs, a_vector3 const &rhs) { return lhs.dot(rhs); }
-    friend A_INLINE a_vector3 operator*(a_real lhs, a_vector3 const &rhs) { return rhs.mul(lhs); }
-    friend A_INLINE a_vector3 operator*(a_vector3 const &lhs, a_real rhs) { return lhs.mul(rhs); }
+    friend A_INLINE a_vector3 operator-(a_vector3 const &lhs, a_vector3 const &rhs)
+    {
+        a_vector3 res;
+        a_vector3_sub(&lhs, &rhs, &res);
+        return res;
+    }
     friend A_INLINE void operator*=(a_vector3 &lhs, a_real rhs) { a_vector3_mul(&lhs, rhs, &lhs); }
-    friend A_INLINE a_vector3 operator/(a_vector3 const &lhs, a_real rhs) { return lhs.div(rhs); }
+    friend A_INLINE a_real operator*(a_vector3 const &lhs, a_vector3 const &rhs)
+    {
+        return a_vector3_dot(&lhs, &rhs);
+    }
+    friend A_INLINE a_vector3 operator*(a_real lhs, a_vector3 const &rhs)
+    {
+        a_vector3 res;
+        a_vector3_mul(&rhs, lhs, &res);
+        return res;
+    }
+    friend A_INLINE a_vector3 operator*(a_vector3 const &lhs, a_real rhs)
+    {
+        a_vector3 res;
+        a_vector3_mul(&lhs, rhs, &res);
+        return res;
+    }
     friend A_INLINE void operator/=(a_vector3 &lhs, a_real rhs) { a_vector3_div(&lhs, rhs, &lhs); }
-    friend A_INLINE a_vector3 operator-(a_vector3 const &ctx) { return ctx.neg(); }
+    friend A_INLINE a_vector3 operator/(a_vector3 const &lhs, a_real rhs)
+    {
+        a_vector3 res;
+        a_vector3_div(&lhs, rhs, &res);
+        return res;
+    }
+    friend A_INLINE a_vector3 operator+(a_vector3 const &rhs) { return rhs; }
+    friend A_INLINE a_vector3 operator-(a_vector3 const &rhs)
+    {
+        a_vector3 res;
+        a_vector3_neg(&rhs, &res);
+        return res;
+    }
 #endif /* __cplusplus */
 };
 

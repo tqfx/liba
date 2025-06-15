@@ -103,35 +103,25 @@ struct a_vector2
     {
         a_vector2_set_pol(this, rho, theta);
     }
-    A_INLINE a_vector2 add(a_vector2 const &rhs) const
+    A_INLINE void add(a_vector2 const &rhs, a_vector2 &res) const
     {
-        a_vector2 res;
         a_vector2_add(this, &rhs, &res);
-        return res;
     }
-    A_INLINE a_vector2 sub(a_vector2 const &rhs) const
+    A_INLINE void sub(a_vector2 const &rhs, a_vector2 &res) const
     {
-        a_vector2 res;
         a_vector2_sub(this, &rhs, &res);
-        return res;
     }
-    A_INLINE a_vector2 mul(a_real rhs) const
+    A_INLINE void mul(a_real rhs, a_vector2 &res) const
     {
-        a_vector2 res;
         a_vector2_mul(this, rhs, &res);
-        return res;
     }
-    A_INLINE a_vector2 div(a_real rhs) const
+    A_INLINE void div(a_real rhs, a_vector2 &res) const
     {
-        a_vector2 res;
         a_vector2_div(this, rhs, &res);
-        return res;
     }
-    A_INLINE a_vector2 neg() const
+    A_INLINE void neg(a_vector2 &res) const
     {
-        a_vector2 res;
         a_vector2_neg(this, &res);
-        return res;
     }
     A_INLINE a_real unit() { return a_vector2_unit(this); }
     A_INLINE a_real norm() const { return a_vector2_norm(this); }
@@ -146,24 +136,55 @@ struct a_vector2
     A_INLINE a_bool ispar(a_vector2 const &rhs) const { return a_vector2_ispar(this, &rhs); }
     A_INLINE a_real cross(a_vector2 const &rhs) const { return a_vector2_cross(this, &rhs); }
     A_INLINE void rot(a_real angle, a_vector2 &res) const { a_vector2_rot(this, angle, &res); }
-    A_INLINE a_vector2 rot(a_real angle) const
+    friend A_INLINE a_real operator^(a_vector2 const &lhs, a_vector2 const &rhs)
+    {
+        return a_vector2_cross(&lhs, &rhs);
+    }
+    friend A_INLINE void operator+=(a_vector2 &lhs, a_vector2 const &rhs) { a_vector2_add(&lhs, &rhs, &lhs); }
+    friend A_INLINE a_vector2 operator+(a_vector2 const &lhs, a_vector2 const &rhs)
     {
         a_vector2 res;
-        a_vector2_rot(this, angle, &res);
+        a_vector2_add(&lhs, &rhs, &res);
         return res;
     }
-    friend A_INLINE a_real operator^(a_vector2 const &lhs, a_vector2 const &rhs) { return lhs.cross(rhs); }
-    friend A_INLINE a_vector2 operator+(a_vector2 const &lhs, a_vector2 const &rhs) { return lhs.add(rhs); }
-    friend A_INLINE void operator+=(a_vector2 &lhs, a_vector2 const &rhs) { a_vector2_add(&lhs, &rhs, &lhs); }
-    friend A_INLINE a_vector2 operator-(a_vector2 const &lhs, a_vector2 const &rhs) { return lhs.sub(rhs); }
     friend A_INLINE void operator-=(a_vector2 &lhs, a_vector2 const &rhs) { a_vector2_sub(&lhs, &rhs, &lhs); }
-    friend A_INLINE a_real operator*(a_vector2 const &lhs, a_vector2 const &rhs) { return lhs.dot(rhs); }
-    friend A_INLINE a_vector2 operator*(a_real lhs, a_vector2 const &rhs) { return rhs.mul(lhs); }
-    friend A_INLINE a_vector2 operator*(a_vector2 const &lhs, a_real rhs) { return lhs.mul(rhs); }
+    friend A_INLINE a_vector2 operator-(a_vector2 const &lhs, a_vector2 const &rhs)
+    {
+        a_vector2 res;
+        a_vector2_sub(&lhs, &rhs, &res);
+        return res;
+    }
     friend A_INLINE void operator*=(a_vector2 &lhs, a_real rhs) { a_vector2_mul(&lhs, rhs, &lhs); }
-    friend A_INLINE a_vector2 operator/(a_vector2 const &lhs, a_real rhs) { return lhs.div(rhs); }
+    friend A_INLINE a_real operator*(a_vector2 const &lhs, a_vector2 const &rhs)
+    {
+        return a_vector2_dot(&lhs, &rhs);
+    }
+    friend A_INLINE a_vector2 operator*(a_real lhs, a_vector2 const &rhs)
+    {
+        a_vector2 res;
+        a_vector2_mul(&rhs, lhs, &res);
+        return res;
+    }
+    friend A_INLINE a_vector2 operator*(a_vector2 const &lhs, a_real rhs)
+    {
+        a_vector2 res;
+        a_vector2_mul(&lhs, rhs, &res);
+        return res;
+    }
     friend A_INLINE void operator/=(a_vector2 &lhs, a_real rhs) { a_vector2_div(&lhs, rhs, &lhs); }
-    friend A_INLINE a_vector2 operator-(a_vector2 const &ctx) { return ctx.neg(); }
+    friend A_INLINE a_vector2 operator/(a_vector2 const &lhs, a_real rhs)
+    {
+        a_vector2 res;
+        a_vector2_div(&lhs, rhs, &res);
+        return res;
+    }
+    friend A_INLINE a_vector2 operator+(a_vector2 const &rhs) { return rhs; }
+    friend A_INLINE a_vector2 operator-(a_vector2 const &rhs)
+    {
+        a_vector2 res;
+        a_vector2_neg(&rhs, &res);
+        return res;
+    }
 #endif /* __cplusplus */
 };
 
