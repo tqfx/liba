@@ -13,7 +13,7 @@ int a_plane_set_dir(a_plane *ctx, a_real x, a_real y, a_real z)
         ctx->dir_.y = y;
         ctx->dir_.z = z;
     }
-    else if (s > 0)
+    else if (s >= A_REAL_EPS2)
     {
         s = 1 / a_real_sqrt(s);
         ctx->dir_.x = x * s;
@@ -24,16 +24,60 @@ int a_plane_set_dir(a_plane *ctx, a_real x, a_real y, a_real z)
     return a_vector3_ortho(&ctx->dir_, &ctx->u_, &ctx->v_);
 }
 
-int a_plane_set(a_plane *ctx, a_point3 const *p, a_vector3 const *v)
+int a_plane_set_uv(a_plane *ctx, a_vector3 const *u, a_vector3 const *v)
 {
-    int rc = a_plane_set_dir(ctx, v->x, v->y, v->z);
-    if (rc == 0)
+    a_vector3 u_, v_, n_;
+    u_ = *u;
+    if (a_vector3_unit(&u_) < A_REAL_EPS2) { return A_FAILURE; }
+    v_ = *v;
+    if (a_vector3_unit(&v_) < A_REAL_EPS2) { return A_FAILURE; }
+    a_vector3_cross(&u_, &v_, &n_);
+    if (a_vector3_unit(&n_) >= 1 - A_REAL_EPS2)
+    {
+        ctx->dir_ = n_;
+        ctx->u_ = u_;
+        ctx->v_ = v_;
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
+}
+
+int a_plane_set_u(a_plane *ctx, a_vector3 const *n, a_vector3 const *u)
+{
+    a_vector3 u_, v_;
+    a_vector3_cross(n, u, &v_);
+    if (a_vector3_unit(&v_) < A_REAL_EPS2) { return A_FAILURE; }
+    a_vector3_cross(&v_, n, &u_);
+    if (a_vector3_unit(&u_) < A_REAL_EPS2) { return A_FAILURE; }
+    a_vector3_cross(&u_, &v_, &ctx->dir_);
+    ctx->u_ = u_;
+    ctx->v_ = v_;
+    return A_SUCCESS;
+}
+
+int a_plane_set_v(a_plane *ctx, a_vector3 const *n, a_vector3 const *v)
+{
+    a_vector3 u_, v_;
+    a_vector3_cross(v, n, &u_);
+    if (a_vector3_unit(&u_) < A_REAL_EPS2) { return A_FAILURE; }
+    a_vector3_cross(n, &u_, &v_);
+    if (a_vector3_unit(&v_) < A_REAL_EPS2) { return A_FAILURE; }
+    a_vector3_cross(&u_, &v_, &ctx->dir_);
+    ctx->u_ = u_;
+    ctx->v_ = v_;
+    return A_SUCCESS;
+}
+
+int a_plane_set(a_plane *ctx, a_point3 const *p, a_vector3 const *n)
+{
+    if (a_plane_set_dir(ctx, n->x, n->y, n->z) == 0)
     {
         ctx->orig.x = p->x;
         ctx->orig.y = p->y;
         ctx->orig.z = p->z;
+        return A_SUCCESS;
     }
-    return rc;
+    return A_FAILURE;
 }
 
 int a_plane_set3(a_plane *ctx, a_point3 const *a, a_point3 const *b, a_point3 const *c)
@@ -42,7 +86,14 @@ int a_plane_set3(a_plane *ctx, a_point3 const *a, a_point3 const *b, a_point3 co
     a_vector3_set(&u, a, b);
     a_vector3_set(&v, b, c);
     a_vector3_cross(&u, &v, &n);
-    return a_plane_set(ctx, a, &n);
+    if (a_plane_set_u(ctx, &n, &u) == 0)
+    {
+        ctx->orig.x = a->x;
+        ctx->orig.y = a->y;
+        ctx->orig.z = a->z;
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
 }
 
 int a_plane_set4(a_plane *ctx, a_real a, a_real b, a_real c, a_real d)
@@ -55,7 +106,7 @@ int a_plane_set4(a_plane *ctx, a_real a, a_real b, a_real c, a_real d)
         ctx->dir_.y = b;
         ctx->dir_.z = c;
     }
-    else if (s > 0)
+    else if (s >= A_REAL_EPS2)
     {
         d = 0 - d / s;
         s = 1 / a_real_sqrt(s);

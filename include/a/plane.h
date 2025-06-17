@@ -40,7 +40,10 @@ A_INTERN a_vector3 const *a_plane_v(a_plane const *ctx);
 A_INTERN void a_plane_set_org(a_plane *ctx, a_real x, a_real y, a_real z);
 
 A_EXTERN int a_plane_set_dir(a_plane *ctx, a_real x, a_real y, a_real z);
-A_EXTERN int a_plane_set(a_plane *ctx, a_point3 const *p, a_vector3 const *v);
+A_EXPORT int a_plane_set_uv(a_plane *ctx, a_vector3 const *u, a_vector3 const *v);
+A_EXPORT int a_plane_set_u(a_plane *ctx, a_vector3 const *n, a_vector3 const *u);
+A_EXPORT int a_plane_set_v(a_plane *ctx, a_vector3 const *n, a_vector3 const *v);
+A_EXTERN int a_plane_set(a_plane *ctx, a_point3 const *p, a_vector3 const *n);
 A_EXTERN int a_plane_set3(a_plane *ctx, a_point3 const *a, a_point3 const *b, a_point3 const *c);
 A_EXTERN int a_plane_set4(a_plane *ctx, a_real a, a_real b, a_real c, a_real d);
 A_EXTERN void a_plane_eval(a_plane const *ctx, a_real u, a_real v, a_point3 *res);
@@ -82,11 +85,23 @@ struct a_plane
     {
         return a_plane_set_dir(this, x, y, z);
     }
+    A_INLINE int set_uv(a_vector3 const &u, a_vector3 const &v)
+    {
+        return a_plane_set_uv(this, &u, &v);
+    }
+    A_INLINE int set_u(a_vector3 const &n, a_vector3 const &u)
+    {
+        return a_plane_set_u(this, &n, &u);
+    }
+    A_INLINE int set_v(a_vector3 const &n, a_vector3 const &v)
+    {
+        return a_plane_set_v(this, &n, &v);
+    }
     A_INLINE a_vector3 const &u() const { return u_; }
     A_INLINE a_vector3 const &v() const { return v_; }
-    A_INLINE int set(a_point3 const &p, a_vector3 const &v)
+    A_INLINE int set(a_point3 const &p, a_vector3 const &n)
     {
-        return a_plane_set(this, &p, &v);
+        return a_plane_set(this, &p, &n);
     }
     A_INLINE int set(a_point3 const &a, a_point3 const &b, a_point3 const &c)
     {
