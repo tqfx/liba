@@ -8,7 +8,7 @@
 a_real a_vector3_unit(a_vector3 *ctx)
 {
     a_real r = ctx->x * ctx->x + ctx->y * ctx->y + ctx->z * ctx->z, s;
-    if (r != 1 && r > 0)
+    if (r != 1 && r >= A_REAL_EPS2)
     {
         r = a_real_sqrt(r);
         s = 1 / r;
@@ -111,7 +111,7 @@ int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v)
             u->y = 0;
             u->z = 0 - ctx->x;
         }
-        else if (n > 0)
+        else if (n >= A_REAL_EPS2)
         {
             a_real const s = 1 / a_real_sqrt(n);
             u->x = 0 + ctx->z * s;
@@ -133,7 +133,7 @@ int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v)
             v->y = 0 + ctx->z;
             v->z = 0 - ctx->y;
         }
-        else if (n > 0)
+        else if (n >= A_REAL_EPS2)
         {
             a_real const s = 1 / a_real_sqrt(n);
             v->x = 0;
@@ -151,12 +151,12 @@ int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v)
 
 void a_vector3_rot_(a_vector3 const *ctx, a_vector3 const *dir, a_real sin, a_real cos, a_vector3 *res)
 {
-    a_real const tmp = a_vector3_dot(dir, ctx) * (1 - cos);
+    a_real const dot = a_vector3_dot(dir, ctx) * (1 - cos);
     a_vector3 vec;
     a_vector3_cross(dir, ctx, &vec);
-    res->x = ctx->x * cos + vec.x * sin + dir->x * tmp;
-    res->y = ctx->y * cos + vec.y * sin + dir->y * tmp;
-    res->z = ctx->z * cos + vec.z * sin + dir->z * tmp;
+    res->x = ctx->x * cos + vec.x * sin + dir->x * dot;
+    res->y = ctx->y * cos + vec.y * sin + dir->y * dot;
+    res->z = ctx->z * cos + vec.z * sin + dir->z * dot;
 }
 
 void a_vector3_rot(a_vector3 const *ctx, a_vector3 const *dir, a_real angle, a_vector3 *res)

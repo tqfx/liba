@@ -8,7 +8,7 @@
 a_real a_vector2_unit(a_vector2 *ctx)
 {
     a_real r = ctx->x * ctx->x + ctx->y * ctx->y, s;
-    if (r != 1 && r > 0)
+    if (r != 1 && r >= A_REAL_EPS2)
     {
         r = a_real_sqrt(r);
         s = 1 / r;
