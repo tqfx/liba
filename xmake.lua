@@ -66,6 +66,10 @@ set_category("liba")
 set_description("dynamic library search path")
 option_end()
 
+builddir = "$(builddir)"
+if xmake.version():lt("3.0.0") then
+    builddir = "$(buildir)"
+end
 if xmake.version():ge("2.8.5") then
     includes("@builtin/check")
 else
@@ -118,7 +122,7 @@ local funcs = { "csqrt",
 }
 check_math(funcs, { includes = "complex.h" })
 -- set the auto-generated a.xmake.h
-a_have_h = path.relative(os.projectdir() .. "/$(buildir)/a.xmake.h", "include/a")
+a_have_h = path.relative(os.projectdir() .. "/" .. builddir .. "/a.xmake.h", "include/a")
 add_defines('A_HAVE_H="' .. a_have_h .. '"', { public = true })
 set_configvar("XMAKE_VERSION", tostring(xmake.version()))
 set_configvar("A_SIZE_REAL", real, { quote = false })
@@ -150,7 +154,7 @@ set_basename("a")
 -- make as a static library
 set_kind("static")
 -- add the header files for installing
-add_headerfiles("$(buildir)/a.xmake.h", { prefixdir = "a" })
+add_headerfiles(builddir .. "/a.xmake.h", { prefixdir = "a" })
 if has_config("liba-cxx") then
     add_headerfiles("include/(a/**.h*)")
 else
