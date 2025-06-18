@@ -33,14 +33,23 @@ int a_line2_set_tgt(a_line2 *ctx, a_real x, a_real y)
 
 int a_line2_set(a_line2 *ctx, a_point2 const *p, a_point2 const *q)
 {
-    a_line2_set_org(ctx, p->x, p->y);
-    return a_line2_set_tgt(ctx, q->x, q->y);
+    a_real const x = q->x - p->x, y = q->y - p->y;
+    if (a_line2_set_dir(ctx, x, y) == 0)
+    {
+        a_line2_set_org(ctx, p->x, p->y);
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
 }
 
 int a_line2_setv(a_line2 *ctx, a_point2 const *p, a_vector2 const *v)
 {
-    a_line2_set_org(ctx, p->x, p->y);
-    return a_line2_set_dir(ctx, v->x, v->y);
+    if (a_line2_set_dir(ctx, v->x, v->y) == 0)
+    {
+        a_line2_set_org(ctx, p->x, p->y);
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
 }
 
 void a_line2_eval(a_line2 const *ctx, a_real w, a_point2 *res)

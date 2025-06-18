@@ -36,14 +36,23 @@ int a_line3_set_tgt(a_line3 *ctx, a_real x, a_real y, a_real z)
 
 int a_line3_set(a_line3 *ctx, a_point3 const *p, a_point3 const *q)
 {
-    a_line3_set_org(ctx, p->x, p->y, p->z);
-    return a_line3_set_tgt(ctx, q->x, q->y, q->z);
+    a_real const x = q->x - p->x, y = q->y - p->y, z = q->z - p->z;
+    if (a_line3_set_dir(ctx, x, y, z) == 0)
+    {
+        a_line3_set_org(ctx, p->x, p->y, p->z);
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
 }
 
 int a_line3_setv(a_line3 *ctx, a_point3 const *p, a_vector3 const *v)
 {
-    a_line3_set_org(ctx, p->x, p->y, p->z);
-    return a_line3_set_dir(ctx, v->x, v->y, v->z);
+    if (a_line3_set_dir(ctx, v->x, v->y, v->z) == 0)
+    {
+        a_line3_set_org(ctx, p->x, p->y, p->z);
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
 }
 
 void a_line3_eval(a_line3 const *ctx, a_real w, a_point3 *res)
