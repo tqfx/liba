@@ -347,7 +347,7 @@ int a_utf_catc(a_str *ctx, a_u32 c)
     if (rc == 0)
     {
         char *const p = ctx->ptr_ + ctx->num_;
-        unsigned int const n = a_utf_encode(c, p);
+        a_size const n = a_utf_encode(c, p);
         ctx->num_ += n;
         p[n] = 0;
     }
