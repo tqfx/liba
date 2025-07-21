@@ -47,10 +47,16 @@ A_EXTERN int a_line3_set(a_line3 *ctx, a_point3 const *p, a_point3 const *q);
 A_EXTERN void a_line3_eval(a_line3 const *ctx, a_real w, a_point3 *res);
 A_EXTERN a_real a_line3_parm(a_line3 const *ctx, a_point3 const *p);
 A_EXTERN a_real a_line3_proj(a_line3 const *ctx, a_point3 const *p, a_point3 *res);
+A_EXTERN a_real a_line3_limparm(a_line3 const *ctx, a_real min, a_real max, a_point3 const *p);
+A_EXTERN a_real a_line3_limproj(a_line3 const *ctx, a_real min, a_real max, a_point3 const *p, a_point3 *res);
 
-A_EXTERN a_real a_line3_dist(a_line3 const *ctx, a_point3 const *p);
-A_EXTERN a_real a_line3_dist1(a_line3 const *ctx, a_point3 const *p);
-A_EXTERN a_real a_line3_dist2(a_line3 const *ctx, a_point3 const *p);
+A_EXTERN a_real a_line3_dist(a_line3 const *ctx, a_point3 const *rhs);
+A_EXTERN a_real a_line3_dist1(a_line3 const *ctx, a_point3 const *rhs);
+A_EXTERN a_real a_line3_dist2(a_line3 const *ctx, a_point3 const *rhs);
+
+A_EXTERN a_real a_line3_limdist(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs, a_real *w, a_point3 *res);
+A_EXTERN a_real a_line3_limdist1(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs, a_real *w, a_point3 *res);
+A_EXTERN a_real a_line3_limdist2(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs, a_real *w, a_point3 *res);
 
 A_EXTERN int a_line3_int0(a_line3 const *ctx, a_point3 const *rhs, a_real min, a_real max, a_real *w);
 A_EXTERN int a_line3_int1(a_line3 const *ctx, a_line3 const *rhs,
