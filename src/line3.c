@@ -101,33 +101,31 @@ a_real a_line3_limproj(a_line3 const *ctx, a_real min, a_real max, a_point3 cons
     return w;
 }
 
+void a_line3_sdist(a_line3 const *ctx, a_point3 const *rhs, a_vector3 *res)
+{
+    a_vector3 v;
+    a_vector3_set(&v, &ctx->orig, rhs);
+    a_vector3_cross(&ctx->dir_, &v, res);
+}
+
 a_real a_line3_dist(a_line3 const *ctx, a_point3 const *rhs)
 {
-    a_point3 const *const o = &ctx->orig;
-    a_vector3 const *const u = &ctx->dir_;
     a_vector3 v;
-    a_vector3_set(&v, o, rhs);
-    a_vector3_cross(u, &v, &v);
+    a_line3_sdist(ctx, rhs, &v);
     return a_vector3_norm(&v);
 }
 
 a_real a_line3_dist1(a_line3 const *ctx, a_point3 const *rhs)
 {
-    a_point3 const *const o = &ctx->orig;
-    a_vector3 const *const u = &ctx->dir_;
     a_vector3 v;
-    a_vector3_set(&v, o, rhs);
-    a_vector3_cross(u, &v, &v);
+    a_line3_sdist(ctx, rhs, &v);
     return a_vector3_norm1(&v);
 }
 
 a_real a_line3_dist2(a_line3 const *ctx, a_point3 const *rhs)
 {
-    a_point3 const *const o = &ctx->orig;
-    a_vector3 const *const u = &ctx->dir_;
     a_vector3 v;
-    a_vector3_set(&v, o, rhs);
-    a_vector3_cross(u, &v, &v);
+    a_line3_sdist(ctx, rhs, &v);
     return a_vector3_norm2(&v);
 }
 
