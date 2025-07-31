@@ -75,7 +75,7 @@ a_real a_line2_limparm(a_line2 const *ctx, a_real min, a_real max, a_point2 cons
         if (w > max) { w = max; }
         return w;
     }
-    if (min >= max)
+    if (min > max)
     {
         if (w > min) { w = min; }
         if (w < max) { w = max; }
