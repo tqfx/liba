@@ -130,6 +130,118 @@ a_real a_line2_limdist2(a_line2 const *ctx, a_real min, a_real max, a_point2 con
     return a_point2_dist2(rhs, res);
 }
 
+a_real a_line2_segdist(a_line2 const *ctx, a_line2 const *rhs,
+                       a_real min1, a_real max1, a_real min2, a_real max2,
+                       a_real *w1, a_real *w2, a_point2 *p1, a_point2 *p2)
+{
+    a_real s = a_line2_segdist2(ctx, rhs, min1, max1, min2, max2, w1, w2, p1, p2);
+    return a_real_sqrt(s);
+}
+
+a_real a_line2_segdist2(a_line2 const *ctx, a_line2 const *rhs,
+                        a_real min1, a_real max1, a_real min2, a_real max2,
+                        a_real *w1, a_real *w2, a_point2 *p1, a_point2 *p2)
+{
+    a_real res, w12, v12;
+    a_point2 pt1, pt2;
+    if (min1 > max1)
+    {
+        w12 = min1;
+        min1 = max1;
+        max1 = w12;
+    }
+    if (min2 > max2)
+    {
+        w12 = min2;
+        min2 = max2;
+        max2 = w12;
+    }
+    v12 = a_vector2_dot(&ctx->dir_, &rhs->dir_);
+    if (A_ABS(v12) < 1 - A_REAL_EPS2)
+    {
+        int win = 1;
+        a_vector2 p12;
+        a_real pv1, pv2;
+        a_real const s = 1 / (1 - v12 * v12);
+        a_vector2_set(&p12, &ctx->orig, &rhs->orig);
+        pv1 = a_vector2_dot(&p12, &ctx->dir_);
+        pv2 = a_vector2_dot(&p12, &rhs->dir_);
+        *w1 = (pv1 - pv2 * v12) * s;
+        *w2 = (pv1 * v12 - pv2) * s;
+        if (*w1 < min1)
+        {
+            *w1 = min1;
+            win = 0;
+        }
+        else if (*w1 > max1)
+        {
+            *w1 = max1;
+            win = 0;
+        }
+        if (*w2 < min2)
+        {
+            *w2 = min2;
+            win = 0;
+        }
+        else if (*w2 > max2)
+        {
+            *w2 = max2;
+            win = 0;
+        }
+        a_line2_eval(ctx, *w1, p1);
+        a_line2_eval(rhs, *w2, p2);
+        if (win) { return a_point2_dist2(p1, p2); }
+        res = a_line2_limdist2(rhs, min2, max2, p1, &pv2, &pt2);
+        v12 = a_line2_limdist2(ctx, min1, max1, p2, &pv1, &pt1);
+        if (v12 < res)
+        {
+            res = v12;
+            *w1 = pv1;
+            *p1 = pt1;
+        }
+        else
+        {
+            *w2 = pv2;
+            *p2 = pt2;
+        }
+        return res;
+    }
+    *w1 = min1;
+    a_line2_eval(ctx, min1, p1);
+    res = a_line2_limdist2(rhs, min2, max2, p1, w2, p2);
+    a_line2_eval(ctx, max1, &pt1);
+    v12 = a_line2_limdist2(rhs, min2, max2, &pt1, &w12, &pt2);
+    if (v12 < res)
+    {
+        res = v12;
+        *w1 = max1;
+        *w2 = w12;
+        *p1 = pt1;
+        *p2 = pt2;
+    }
+    a_line2_eval(rhs, min2, &pt2);
+    v12 = a_line2_limdist2(ctx, min1, max1, &pt2, &w12, &pt1);
+    if (v12 < res)
+    {
+        res = v12;
+        *w1 = w12;
+        *w2 = min2;
+        *p1 = pt1;
+        *p2 = pt2;
+    }
+    a_line2_eval(rhs, max2, &pt2);
+    v12 = a_line2_limdist2(ctx, min1, max1, &pt2, &w12, &pt1);
+    if (v12 < res)
+    {
+        res = v12;
+        *w1 = w12;
+        *w2 = max2;
+        *p1 = pt1;
+        *p2 = pt2;
+    }
+    return res;
+}
+
 int a_line2_int0(a_line2 const *ctx, a_point2 const *rhs, a_real min, a_real max, a_real *w)
 {
     a_point2 const *const o = &ctx->orig;
