@@ -4,7 +4,7 @@
 
 static A_INLINE a_bool iseq(a_real a, a_real b)
 {
-    return A_ABS_(a, b) < A_REAL_EPS;
+    return A_ABS_(a, b) < A_REAL_TOL;
 }
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */

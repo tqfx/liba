@@ -172,7 +172,7 @@ a_real a_line3_segdist2(a_line3 const *ctx, a_line3 const *rhs,
         max2 = w12;
     }
     v12 = a_vector3_dot(&ctx->dir_, &rhs->dir_);
-    if (A_ABS(v12) < 1 - A_REAL_EPS2)
+    if (A_ABS(v12) < 1 - A_REAL_EPS)
     {
         int win = 1;
         a_vector3 p12;
@@ -266,8 +266,8 @@ int a_line3_int0(a_line3 const *ctx, a_point3 const *rhs, a_real min, a_real max
     if (a_vector3_ispar(&v, u))
     {
         *w = a_vector3_dot(&v, u);
-        if (*w > min - A_REAL_EPS &&
-            *w < max + A_REAL_EPS)
+        if (*w > min - A_REAL_TOL &&
+            *w < max + A_REAL_TOL)
         {
             return 1;
         }
@@ -282,9 +282,9 @@ int a_line3_int1(a_line3 const *ctx, a_line3 const *rhs,
     a_vector3 p12, v12, v;
     a_vector3_set(&p12, &ctx->orig, &rhs->orig);
     a_vector3_cross(&ctx->dir_, &rhs->dir_, &v12);
-    if (A_ABS(v12.x) >= A_REAL_EPS ||
-        A_ABS(v12.y) >= A_REAL_EPS ||
-        A_ABS(v12.z) >= A_REAL_EPS)
+    if (A_ABS(v12.x) >= A_REAL_TOL ||
+        A_ABS(v12.y) >= A_REAL_TOL ||
+        A_ABS(v12.z) >= A_REAL_TOL)
     {
         if (a_vector3_isver(&p12, &v12))
         {
@@ -293,10 +293,10 @@ int a_line3_int1(a_line3 const *ctx, a_line3 const *rhs,
             *w1 = a_vector3_dot(&v, &v12) * s;
             a_vector3_cross(&p12, &ctx->dir_, &v);
             *w2 = a_vector3_dot(&v, &v12) * s;
-            if (*w1 > min1 - A_REAL_EPS &&
-                *w1 < max1 + A_REAL_EPS &&
-                *w2 > min2 - A_REAL_EPS &&
-                *w2 < max2 + A_REAL_EPS) { return 1; }
+            if (*w1 > min1 - A_REAL_TOL &&
+                *w1 < max1 + A_REAL_TOL &&
+                *w2 > min2 - A_REAL_TOL &&
+                *w2 < max2 + A_REAL_TOL) { return 1; }
         }
     }
     else if (a_vector3_ispar(&ctx->dir_, &p12))
@@ -317,8 +317,8 @@ int a_line3_int1(a_line3 const *ctx, a_line3 const *rhs,
         }
         *w1 = (min2 > min1 ? min2 : min1);
         *w2 = (max2 < max1 ? max2 : max1);
-        if (*w2 - *w1 >= A_REAL_EPS) { return 2; }
-        if (*w2 - *w1 > -A_REAL_EPS)
+        if (*w2 - *w1 >= A_REAL_TOL) { return 2; }
+        if (*w2 - *w1 > -A_REAL_TOL)
         {
             *w1 = (*w1 + *w2) * A_REAL_C(0.5);
             if (s < 0) { *w2 = w - *w1; }

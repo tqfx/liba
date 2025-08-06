@@ -8,7 +8,7 @@
 a_real a_vector3_unit(a_vector3 *ctx)
 {
     a_real r = ctx->x * ctx->x + ctx->y * ctx->y + ctx->z * ctx->z, s;
-    if (r != 1 && r >= A_REAL_EPS2)
+    if (r != 1 && r >= A_REAL_EPS)
     {
         r = a_real_sqrt(r);
         s = 1 / r;
@@ -75,18 +75,18 @@ a_real a_vector3_angle(a_vector3 const *lhs, a_vector3 const *rhs)
 a_bool a_vector3_isver(a_vector3 const *lhs, a_vector3 const *rhs)
 {
     a_real const r = a_vector3_dot(lhs, rhs);
-    return A_ABS(r) < A_REAL_EPS;
+    return A_ABS(r) < A_REAL_TOL;
 }
 
 a_bool a_vector3_ispar(a_vector3 const *lhs, a_vector3 const *rhs)
 {
     a_real x, y, z;
     x = lhs->y * rhs->z - lhs->z * rhs->y;
-    if (!(A_ABS(x) < A_REAL_EPS)) { return 0; }
+    if (!(A_ABS(x) < A_REAL_TOL)) { return 0; }
     y = lhs->z * rhs->x - lhs->x * rhs->z;
-    if (!(A_ABS(y) < A_REAL_EPS)) { return 0; }
+    if (!(A_ABS(y) < A_REAL_TOL)) { return 0; }
     z = lhs->x * rhs->y - lhs->y * rhs->x;
-    if (!(A_ABS(z) < A_REAL_EPS)) { return 0; }
+    if (!(A_ABS(z) < A_REAL_TOL)) { return 0; }
     return 1;
 }
 
@@ -111,7 +111,7 @@ int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v)
             u->y = 0;
             u->z = 0 - ctx->x;
         }
-        else if (n >= A_REAL_EPS2)
+        else if (n >= A_REAL_EPS)
         {
             a_real const s = 1 / a_real_sqrt(n);
             u->x = 0 + ctx->z * s;
@@ -133,7 +133,7 @@ int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v)
             v->y = 0 + ctx->z;
             v->z = 0 - ctx->y;
         }
-        else if (n >= A_REAL_EPS2)
+        else if (n >= A_REAL_EPS)
         {
             a_real const s = 1 / a_real_sqrt(n);
             v->x = 0;

@@ -157,7 +157,7 @@ a_real a_line2_segdist2(a_line2 const *ctx, a_line2 const *rhs,
         max2 = w12;
     }
     v12 = a_vector2_dot(&ctx->dir_, &rhs->dir_);
-    if (A_ABS(v12) < 1 - A_REAL_EPS2)
+    if (A_ABS(v12) < 1 - A_REAL_EPS)
     {
         int win = 1;
         a_vector2 p12;
@@ -251,8 +251,8 @@ int a_line2_int0(a_line2 const *ctx, a_point2 const *rhs, a_real min, a_real max
     if (a_vector2_ispar(&v, u))
     {
         *w = a_vector2_dot(&v, u);
-        if (*w > min - A_REAL_EPS &&
-            *w < max + A_REAL_EPS)
+        if (*w > min - A_REAL_TOL &&
+            *w < max + A_REAL_TOL)
         {
             return 1;
         }
@@ -267,14 +267,14 @@ int a_line2_int1(a_line2 const *ctx, a_line2 const *rhs,
     a_vector2 v;
     a_real const z = a_vector2_cross(&ctx->dir_, &rhs->dir_);
     a_vector2_set(&v, &ctx->orig, &rhs->orig);
-    if (A_ABS(z) >= A_REAL_EPS)
+    if (A_ABS(z) >= A_REAL_TOL)
     {
         *w1 = a_vector2_cross(&v, &rhs->dir_) / z;
         *w2 = a_vector2_cross(&v, &ctx->dir_) / z;
-        if (*w1 > min1 - A_REAL_EPS &&
-            *w1 < max1 + A_REAL_EPS &&
-            *w2 > min2 - A_REAL_EPS &&
-            *w2 < max2 + A_REAL_EPS) { return 1; }
+        if (*w1 > min1 - A_REAL_TOL &&
+            *w1 < max1 + A_REAL_TOL &&
+            *w2 > min2 - A_REAL_TOL &&
+            *w2 < max2 + A_REAL_TOL) { return 1; }
     }
     else if (a_vector2_ispar(&ctx->dir_, &v))
     {
@@ -294,8 +294,8 @@ int a_line2_int1(a_line2 const *ctx, a_line2 const *rhs,
         }
         *w1 = (min2 > min1 ? min2 : min1);
         *w2 = (max2 < max1 ? max2 : max1);
-        if (*w2 - *w1 >= A_REAL_EPS) { return 2; }
-        if (*w2 - *w1 > -A_REAL_EPS)
+        if (*w2 - *w1 >= A_REAL_TOL) { return 2; }
+        if (*w2 - *w1 > -A_REAL_TOL)
         {
             *w1 = (*w1 + *w2) * A_REAL_C(0.5);
             *w2 = s < 0 ? (w - *w1) : (*w1 - w);

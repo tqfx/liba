@@ -13,7 +13,7 @@ int a_plane_set_dir(a_plane *ctx, a_real x, a_real y, a_real z)
         ctx->dir_.y = y;
         ctx->dir_.z = z;
     }
-    else if (s >= A_REAL_EPS2)
+    else if (s >= A_REAL_EPS)
     {
         s = 1 / a_real_sqrt(s);
         ctx->dir_.x = x * s;
@@ -28,11 +28,11 @@ int a_plane_set_uv(a_plane *ctx, a_vector3 const *u, a_vector3 const *v)
 {
     a_vector3 u_, v_, n_;
     u_ = *u;
-    if (a_vector3_unit(&u_) < A_REAL_EPS2) { return A_FAILURE; }
+    if (a_vector3_unit(&u_) < A_REAL_EPS) { return A_FAILURE; }
     v_ = *v;
-    if (a_vector3_unit(&v_) < A_REAL_EPS2) { return A_FAILURE; }
+    if (a_vector3_unit(&v_) < A_REAL_EPS) { return A_FAILURE; }
     a_vector3_cross(&u_, &v_, &n_);
-    if (a_vector3_unit(&n_) >= 1 - A_REAL_EPS2)
+    if (a_vector3_unit(&n_) >= 1 - A_REAL_EPS)
     {
         ctx->dir_ = n_;
         ctx->u_ = u_;
@@ -46,9 +46,9 @@ int a_plane_set_u(a_plane *ctx, a_vector3 const *n, a_vector3 const *u)
 {
     a_vector3 u_, v_;
     a_vector3_cross(n, u, &v_);
-    if (a_vector3_unit(&v_) < A_REAL_EPS2) { return A_FAILURE; }
+    if (a_vector3_unit(&v_) < A_REAL_EPS) { return A_FAILURE; }
     a_vector3_cross(&v_, n, &u_);
-    if (a_vector3_unit(&u_) < A_REAL_EPS2) { return A_FAILURE; }
+    if (a_vector3_unit(&u_) < A_REAL_EPS) { return A_FAILURE; }
     a_vector3_cross(&u_, &v_, &ctx->dir_);
     ctx->u_ = u_;
     ctx->v_ = v_;
@@ -59,9 +59,9 @@ int a_plane_set_v(a_plane *ctx, a_vector3 const *n, a_vector3 const *v)
 {
     a_vector3 u_, v_;
     a_vector3_cross(v, n, &u_);
-    if (a_vector3_unit(&u_) < A_REAL_EPS2) { return A_FAILURE; }
+    if (a_vector3_unit(&u_) < A_REAL_EPS) { return A_FAILURE; }
     a_vector3_cross(n, &u_, &v_);
-    if (a_vector3_unit(&v_) < A_REAL_EPS2) { return A_FAILURE; }
+    if (a_vector3_unit(&v_) < A_REAL_EPS) { return A_FAILURE; }
     a_vector3_cross(&u_, &v_, &ctx->dir_);
     ctx->u_ = u_;
     ctx->v_ = v_;
@@ -106,7 +106,7 @@ int a_plane_set4(a_plane *ctx, a_real a, a_real b, a_real c, a_real d)
         ctx->dir_.y = b;
         ctx->dir_.z = c;
     }
-    else if (s >= A_REAL_EPS2)
+    else if (s >= A_REAL_EPS)
     {
         d = 0 - d / s;
         s = 1 / a_real_sqrt(s);
@@ -172,7 +172,7 @@ int a_plane_int0(a_plane const *ctx, a_point3 const *rhs, a_real *u, a_real *v)
     a_vector3 vec;
     a_vector3_set(&vec, &ctx->orig, rhs);
     w = a_vector3_dot(&vec, &ctx->dir_);
-    if (A_ABS(w) < A_REAL_EPS)
+    if (A_ABS(w) < A_REAL_TOL)
     {
         *u = a_vector3_dot(&vec, &ctx->u_);
         *v = a_vector3_dot(&vec, &ctx->v_);
@@ -188,16 +188,16 @@ int a_plane_int1(a_plane const *ctx, a_line3 const *rhs, a_real min, a_real max,
     a_vector3_set(&v, &rhs->orig, &ctx->orig);
     u = a_vector3_dot(&ctx->dir_, &rhs->dir_);
     s = a_vector3_dot(&ctx->dir_, &v);
-    if (A_ABS(u) >= A_REAL_EPS)
+    if (A_ABS(u) >= A_REAL_TOL)
     {
         *w = s / u;
-        if (*w > min - A_REAL_EPS &&
-            *w < max + A_REAL_EPS)
+        if (*w > min - A_REAL_TOL &&
+            *w < max + A_REAL_TOL)
         {
             return 1;
         }
     }
-    else if (A_ABS(s) < A_REAL_EPS)
+    else if (A_ABS(s) < A_REAL_TOL)
     {
         return 2;
     }
@@ -212,7 +212,7 @@ int a_plane_int2(a_plane const *ctx, a_plane const *rhs, a_line3 *res)
     a_vector3 const *v1 = &ctx->dir_, *v2 = &rhs->dir_;
     a_vector3_cross(v1, v2, v3);
     w = a_vector3_norm2(v3);
-    if (w >= A_REAL_EPS)
+    if (w >= A_REAL_TOL)
     {
         a_real u, v;
         a_vector3 v23, v31;
@@ -240,7 +240,7 @@ int a_plane_int2(a_plane const *ctx, a_plane const *rhs, a_line3 *res)
     }
     a_vector3_set(v3, p1, p2);
     w = a_vector3_dot(v1, v3);
-    if (A_ABS(w) < A_REAL_EPS)
+    if (A_ABS(w) < A_REAL_TOL)
     {
         return 2;
     }

@@ -8,7 +8,7 @@
 a_real a_vector2_unit(a_vector2 *ctx)
 {
     a_real r = ctx->x * ctx->x + ctx->y * ctx->y, s;
-    if (r != 1 && r >= A_REAL_EPS2)
+    if (r != 1 && r >= A_REAL_EPS)
     {
         r = a_real_sqrt(r);
         s = 1 / r;
@@ -71,13 +71,13 @@ a_real a_vector2_angle(a_vector2 const *lhs, a_vector2 const *rhs)
 a_bool a_vector2_isver(a_vector2 const *lhs, a_vector2 const *rhs)
 {
     a_real const r = a_vector2_dot(lhs, rhs);
-    return A_ABS(r) < A_REAL_EPS;
+    return A_ABS(r) < A_REAL_TOL;
 }
 
 a_bool a_vector2_ispar(a_vector2 const *lhs, a_vector2 const *rhs)
 {
     a_real const r = lhs->x * rhs->y - lhs->y * rhs->x;
-    return A_ABS(r) < A_REAL_EPS;
+    return A_ABS(r) < A_REAL_TOL;
 }
 
 a_real a_vector2_cross(a_vector2 const *lhs, a_vector2 const *rhs)
