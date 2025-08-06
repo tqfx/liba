@@ -55,7 +55,7 @@ A_INTERN a_size a_buf_siz(void const *ctx) { return a_buf_(const *, ctx)->siz_; 
 */
 A_INTERN void *a_buf_ptr(void const *ctx)
 {
-    return a_cast_r(a_buf *, a_cast_r(a_uptr, ctx)) + 1;
+    return a_cast_r(void *, a_cast_r(a_uptr, ctx) + sizeof(a_buf));
 }
 #define A_BUF_PTR(T, ctx) a_cast_s(T *, a_buf_ptr(ctx))
 
