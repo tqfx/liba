@@ -64,15 +64,15 @@ void a_line3_eval(a_line3 const *ctx, a_real w, a_point3 *res)
     res->z = o->z + u->z * w;
 }
 
-a_real a_line3_parm(a_line3 const *ctx, a_point3 const *p)
+a_real a_line3_parm(a_line3 const *ctx, a_point3 const *rhs)
 {
     a_vector3 v;
-    a_vector3_set(&v, &ctx->orig, p);
+    a_vector3_set(&v, &ctx->orig, rhs);
     return a_vector3_dot(&v, &ctx->dir_);
 }
-a_real a_line3_limparm(a_line3 const *ctx, a_real min, a_real max, a_point3 const *p)
+a_real a_line3_limparm(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs)
 {
-    a_real w = a_line3_parm(ctx, p);
+    a_real w = a_line3_parm(ctx, rhs);
     if (min <= max)
     {
         if (w < min) { w = min; }
@@ -86,15 +86,15 @@ a_real a_line3_limparm(a_line3 const *ctx, a_real min, a_real max, a_point3 cons
     return w;
 }
 
-a_real a_line3_proj(a_line3 const *ctx, a_point3 const *p, a_point3 *res)
+a_real a_line3_proj(a_line3 const *ctx, a_point3 const *rhs, a_point3 *res)
 {
-    a_real w = a_line3_parm(ctx, p);
+    a_real w = a_line3_parm(ctx, rhs);
     a_line3_eval(ctx, w, res);
     return w;
 }
-a_real a_line3_limproj(a_line3 const *ctx, a_real min, a_real max, a_point3 const *p, a_point3 *res)
+a_real a_line3_limproj(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs, a_point3 *res)
 {
-    a_real w = a_line3_limparm(ctx, min, max, p);
+    a_real w = a_line3_limparm(ctx, min, max, rhs);
     a_line3_eval(ctx, w, res);
     return w;
 }
@@ -127,22 +127,22 @@ a_real a_line3_dist2(a_line3 const *ctx, a_point3 const *rhs)
     return a_vector3_norm2(&v);
 }
 
-a_real a_line3_limdist(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs, a_real *w, a_point3 *res)
+a_real a_line3_limdist(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs, a_real *w, a_point3 *p)
 {
-    *w = a_line3_limproj(ctx, min, max, rhs, res);
-    return a_point3_dist(rhs, res);
+    *w = a_line3_limproj(ctx, min, max, rhs, p);
+    return a_point3_dist(rhs, p);
 }
 
-a_real a_line3_limdist1(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs, a_real *w, a_point3 *res)
+a_real a_line3_limdist1(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs, a_real *w, a_point3 *p)
 {
-    *w = a_line3_limproj(ctx, min, max, rhs, res);
-    return a_point3_dist1(rhs, res);
+    *w = a_line3_limproj(ctx, min, max, rhs, p);
+    return a_point3_dist1(rhs, p);
 }
 
-a_real a_line3_limdist2(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs, a_real *w, a_point3 *res)
+a_real a_line3_limdist2(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs, a_real *w, a_point3 *p)
 {
-    *w = a_line3_limproj(ctx, min, max, rhs, res);
-    return a_point3_dist2(rhs, res);
+    *w = a_line3_limproj(ctx, min, max, rhs, p);
+    return a_point3_dist2(rhs, p);
 }
 
 a_real a_line3_segdist(a_line3 const *ctx, a_line3 const *rhs,
