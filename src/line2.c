@@ -251,8 +251,8 @@ int a_line2_int0(a_line2 const *ctx, a_point2 const *rhs, a_real min, a_real max
     if (a_vector2_ispar(&v, u))
     {
         *w = a_vector2_dot(&v, u);
-        if (*w > min - A_REAL_TOL &&
-            *w < max + A_REAL_TOL)
+        if (*w - min > -A_REAL_TOL &&
+            *w - max < +A_REAL_TOL)
         {
             return 1;
         }
@@ -271,10 +271,10 @@ int a_line2_int1(a_line2 const *ctx, a_line2 const *rhs,
     {
         *w1 = a_vector2_cross(&v, &rhs->dir_) / z;
         *w2 = a_vector2_cross(&v, &ctx->dir_) / z;
-        if (*w1 > min1 - A_REAL_TOL &&
-            *w1 < max1 + A_REAL_TOL &&
-            *w2 > min2 - A_REAL_TOL &&
-            *w2 < max2 + A_REAL_TOL) { return 1; }
+        if (*w1 - min1 > -A_REAL_TOL &&
+            *w1 - max1 < +A_REAL_TOL &&
+            *w2 - min2 > -A_REAL_TOL &&
+            *w2 - max2 < +A_REAL_TOL) { return 1; }
     }
     else if (a_vector2_ispar(&ctx->dir_, &v))
     {

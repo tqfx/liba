@@ -191,8 +191,8 @@ int a_plane_int1(a_plane const *ctx, a_line3 const *rhs, a_real min, a_real max,
     if (A_ABS(u) >= A_REAL_TOL)
     {
         *w = s / u;
-        if (*w > min - A_REAL_TOL &&
-            *w < max + A_REAL_TOL)
+        if (*w - min > -A_REAL_TOL &&
+            *w - max < +A_REAL_TOL)
         {
             return 1;
         }

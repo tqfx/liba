@@ -266,8 +266,8 @@ int a_line3_int0(a_line3 const *ctx, a_point3 const *rhs, a_real min, a_real max
     if (a_vector3_ispar(&v, u))
     {
         *w = a_vector3_dot(&v, u);
-        if (*w > min - A_REAL_TOL &&
-            *w < max + A_REAL_TOL)
+        if (*w - min > -A_REAL_TOL &&
+            *w - max < +A_REAL_TOL)
         {
             return 1;
         }
@@ -293,10 +293,10 @@ int a_line3_int1(a_line3 const *ctx, a_line3 const *rhs,
             *w1 = a_vector3_dot(&v, &v12) * s;
             a_vector3_cross(&p12, &ctx->dir_, &v);
             *w2 = a_vector3_dot(&v, &v12) * s;
-            if (*w1 > min1 - A_REAL_TOL &&
-                *w1 < max1 + A_REAL_TOL &&
-                *w2 > min2 - A_REAL_TOL &&
-                *w2 < max2 + A_REAL_TOL) { return 1; }
+            if (*w1 - min1 > -A_REAL_TOL &&
+                *w1 - max1 < +A_REAL_TOL &&
+                *w2 - min2 > -A_REAL_TOL &&
+                *w2 - max2 < +A_REAL_TOL) { return 1; }
         }
     }
     else if (a_vector3_ispar(&ctx->dir_, &p12))
