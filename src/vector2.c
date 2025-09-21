@@ -85,6 +85,14 @@ a_real a_vector2_cross(a_vector2 const *lhs, a_vector2 const *rhs)
     return lhs->x * rhs->y - lhs->y * rhs->x;
 }
 
+void a_vector2_outer(a_vector2 const *lhs, a_vector2 const *rhs, a_real res[4])
+{
+    res[0] = lhs->x * rhs->x;
+    res[1] = lhs->x * rhs->y;
+    res[2] = lhs->y * rhs->x;
+    res[3] = lhs->y * rhs->y;
+}
+
 void a_vector2_rot_(a_vector2 const *ctx, a_real sin, a_real cos, a_vector2 *res)
 {
     a_real const x = cos * ctx->x - sin * ctx->y;

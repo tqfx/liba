@@ -100,6 +100,19 @@ void a_vector3_cross(a_vector3 const *lhs, a_vector3 const *rhs, a_vector3 *res)
     res->z = z;
 }
 
+void a_vector3_outer(a_vector3 const *lhs, a_vector3 const *rhs, a_real res[9])
+{
+    res[0] = lhs->x * rhs->x;
+    res[1] = lhs->x * rhs->y;
+    res[2] = lhs->x * rhs->z;
+    res[3] = lhs->y * rhs->x;
+    res[4] = lhs->y * rhs->y;
+    res[5] = lhs->y * rhs->z;
+    res[6] = lhs->z * rhs->x;
+    res[7] = lhs->z * rhs->y;
+    res[8] = lhs->z * rhs->z;
+}
+
 int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v)
 {
     if (A_ABS(ctx->x) >= A_ABS(ctx->y))

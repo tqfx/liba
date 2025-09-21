@@ -152,6 +152,33 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 #endif /* __cplusplus */
     }
     {
+        a_real c[9];
+        a_vector3 a = A_VECTOR3_C(1, 2, 3);
+        a_vector3 b = A_VECTOR3_C(2, 3, 4);
+        a_vector3_outer(&a, &b, c);
+        TEST_BUG(iseq(c[0], 2));
+        TEST_BUG(iseq(c[1], 3));
+        TEST_BUG(iseq(c[2], 4));
+        TEST_BUG(iseq(c[3], 4));
+        TEST_BUG(iseq(c[4], 6));
+        TEST_BUG(iseq(c[5], 8));
+        TEST_BUG(iseq(c[6], 6));
+        TEST_BUG(iseq(c[7], 9));
+        TEST_BUG(iseq(c[8], 12));
+#if defined(__cplusplus)
+        a.outer(b, c);
+        TEST_BUG(iseq(c[0], 2));
+        TEST_BUG(iseq(c[1], 3));
+        TEST_BUG(iseq(c[2], 4));
+        TEST_BUG(iseq(c[3], 4));
+        TEST_BUG(iseq(c[4], 6));
+        TEST_BUG(iseq(c[5], 8));
+        TEST_BUG(iseq(c[6], 6));
+        TEST_BUG(iseq(c[7], 9));
+        TEST_BUG(iseq(c[8], 12));
+#endif /* __cplusplus */
+    }
+    {
         a_vector3 a = A_VECTOR3_C(3, 4, -12);
         TEST_BUG(iseq(a_vector3_norm(&a), 13));
 #if defined(__cplusplus)

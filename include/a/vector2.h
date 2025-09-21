@@ -62,6 +62,7 @@ A_EXTERN a_real a_vector2_angle(a_vector2 const *lhs, a_vector2 const *rhs);
 A_EXTERN a_bool a_vector2_isver(a_vector2 const *lhs, a_vector2 const *rhs);
 A_EXTERN a_bool a_vector2_ispar(a_vector2 const *lhs, a_vector2 const *rhs);
 A_EXTERN a_real a_vector2_cross(a_vector2 const *lhs, a_vector2 const *rhs);
+A_EXTERN void a_vector2_outer(a_vector2 const *lhs, a_vector2 const *rhs, a_real res[4]);
 
 A_EXTERN void a_vector2_rot_(a_vector2 const *ctx, a_real sin, a_real cos, a_vector2 *res);
 A_EXTERN void a_vector2_rot(a_vector2 const *ctx, a_real angle, a_vector2 *res);
@@ -135,6 +136,7 @@ struct a_vector2
     A_INLINE a_bool isver(a_vector2 const &rhs) const { return a_vector2_isver(this, &rhs); }
     A_INLINE a_bool ispar(a_vector2 const &rhs) const { return a_vector2_ispar(this, &rhs); }
     A_INLINE a_real cross(a_vector2 const &rhs) const { return a_vector2_cross(this, &rhs); }
+    A_INLINE void outer(a_vector2 const &rhs, a_real res[4]) const { a_vector2_outer(this, &rhs, res); }
     A_INLINE void rot(a_real angle, a_vector2 &res) const { a_vector2_rot(this, angle, &res); }
     friend A_INLINE a_real operator^(a_vector2 const &lhs, a_vector2 const &rhs)
     {
