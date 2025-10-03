@@ -80,18 +80,35 @@ int a_plane_set(a_plane *ctx, a_point3 const *p, a_vector3 const *n)
     return A_FAILURE;
 }
 
-int a_plane_set3(a_plane *ctx, a_point3 const *a, a_point3 const *b, a_point3 const *c)
+int a_plane_set3(a_plane *ctx, a_point3 const *p1, a_point3 const *p2, a_point3 const *p3)
 {
-    a_vector3 u, v, n;
-    a_vector3_set(&u, a, b);
-    a_vector3_set(&v, b, c);
-    a_vector3_cross(&u, &v, &n);
-    if (a_plane_set_u(ctx, &n, &u) == 0)
+    a_point3 o;
+    a_vector3 v12, v13, n;
+    a_real a, b, c, d, u, v;
+    a_vector3_set(&v12, p1, p2);
+    a_vector3_set(&v13, p1, p3);
+    a = a_vector3_dot(&v12, &v12);
+    b = a_vector3_dot(&v12, &v13);
+    c = a_vector3_dot(&v13, &v13);
+    d = a * c - b * b;
+    if (A_ABS(d) >= A_REAL_EPS)
     {
-        ctx->orig.x = a->x;
-        ctx->orig.y = a->y;
-        ctx->orig.z = a->z;
-        return A_SUCCESS;
+        d = A_REAL_C(0.5) / d;
+        u = c * (a - b) * d;
+        v = a * (c - b) * d;
+        o.x = p1->x + u * v12.x + v * v13.x;
+        o.y = p1->y + u * v12.y + v * v13.y;
+        o.z = p1->z + u * v12.z + v * v13.z;
+        a_vector3_set(&n, p2, p3);
+        a_vector3_cross(&v12, &n, &n);
+        a_vector3_set(&v12, &o, p1);
+        if (a_plane_set_u(ctx, &n, &v12) == 0)
+        {
+            ctx->orig.x = o.x;
+            ctx->orig.y = o.y;
+            ctx->orig.z = o.z;
+            return A_SUCCESS;
+        }
     }
     return A_FAILURE;
 }
