@@ -2,8 +2,14 @@ set(LIBA_JAVASCRIPT_SUFFIX ".js" CACHE STRING "The suffix for JavaScript output 
 set_property(CACHE LIBA_JAVASCRIPT_SUFFIX PROPERTY STRINGS ".js" ".mjs" ".html" ".wasm")
 set(CMAKE_EXECUTABLE_SUFFIX ${LIBA_JAVASCRIPT_SUFFIX})
 set(CMAKE_CXX_STANDARD_REQUIRED 1)
-set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_C_STANDARD 99)
+
+# https://github.com/emscripten-core/emscripten/pull/25424
+if(EMSCRIPTEN_VERSION VERSION_GREATER 4.0.15)
+  set(CMAKE_CXX_STANDARD 17)
+else()
+  set(CMAKE_CXX_STANDARD 11)
+endif()
 
 if(NOT LIBA_CXX)
   enable_language(CXX)
