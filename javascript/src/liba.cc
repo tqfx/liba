@@ -678,6 +678,7 @@ struct regress_linear: public a_regress_linear
         set_coef_(coef, nullptr, 0);
         bias = bias_;
     }
+    A_INLINE ~regress_linear() { a_alloc(coef_p, 0); }
     A_INLINE a_real eval(emscripten::val const &val_) const
     {
         a_real *val = js_array_num_get(val_, nullptr, nullptr, 1);
