@@ -4,10 +4,11 @@ set(CMAKE_EXECUTABLE_SUFFIX ${LIBA_JAVASCRIPT_SUFFIX})
 set(CMAKE_CXX_STANDARD_REQUIRED 1)
 set(CMAKE_C_STANDARD 99)
 
-# https://github.com/emscripten-core/emscripten/pull/25424
 if(EMSCRIPTEN_VERSION VERSION_GREATER 4.0.15)
+  # https://github.com/emscripten-core/emscripten/pull/25424
   set(CMAKE_CXX_STANDARD 17)
 else()
+  # https://github.com/emscripten-core/emscripten/pull/4647
   set(CMAKE_CXX_STANDARD 11)
 endif()
 
