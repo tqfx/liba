@@ -8,6 +8,9 @@
 #if A_PREREQ_GNUC(2, 95) || __has_warning("-Waggregate-return")
 #pragma GCC diagnostic ignored "-Waggregate-return"
 #endif /* -Waggregate-return */
+#if A_PREREQ_GNUC(14, 0) || __has_warning("-Wnrvo")
+#pragma GCC diagnostic ignored "-Wnrvo"
+#endif /* -Wnrvo */
 #undef inline
 #define inline __inline
 #include "quickjs.h"
