@@ -143,8 +143,8 @@ static JSValue liba_regress_simple_zero(JSContext *ctx, JSValueConst this_val, i
 
 enum
 {
-    self_coef,
-    self_bias
+    regress_simple_coef,
+    regress_simple_bias
 };
 
 static JSValue liba_regress_simple_get(JSContext *ctx, JSValueConst this_val, int magic)
@@ -154,8 +154,8 @@ static JSValue liba_regress_simple_get(JSContext *ctx, JSValueConst this_val, in
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_coef: x = (double)self->coef; break;
-    case self_bias: x = (double)self->bias; break;
+    case regress_simple_coef: x = (double)self->coef; break;
+    case regress_simple_bias: x = (double)self->bias; break;
     default: return JS_UNDEFINED;
     }
     return JS_NewFloat64(ctx, x);
@@ -169,10 +169,9 @@ static JSValue liba_regress_simple_set(JSContext *ctx, JSValueConst this_val, JS
     if (JS_ToFloat64(ctx, &x, val)) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_coef: self->coef = (a_real)x; break;
-    case self_bias: self->bias = (a_real)x; break;
-    default:
-        break;
+    case regress_simple_coef: self->coef = (a_real)x; break;
+    case regress_simple_bias: self->bias = (a_real)x; break;
+    default: break;
     }
     return JS_UNDEFINED;
 }
@@ -180,8 +179,8 @@ static JSValue liba_regress_simple_set(JSContext *ctx, JSValueConst this_val, JS
 static JSClassDef liba_regress_simple_class;
 static JSCFunctionListEntry const liba_regress_simple_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.regress_simple", 0),
-    JS_CGETSET_MAGIC_DEF("coef", liba_regress_simple_get, liba_regress_simple_set, self_coef),
-    JS_CGETSET_MAGIC_DEF("bias", liba_regress_simple_get, liba_regress_simple_set, self_bias),
+    JS_CGETSET_MAGIC_DEF("coef", liba_regress_simple_get, liba_regress_simple_set, regress_simple_coef),
+    JS_CGETSET_MAGIC_DEF("bias", liba_regress_simple_get, liba_regress_simple_set, regress_simple_bias),
     JS_CFUNC_DEF("eval", 1, liba_regress_simple_eval),
     JS_CFUNC_DEF("evar", 1, liba_regress_simple_evar),
     JS_CFUNC_DEF("ols_", 4, liba_regress_simple_ols_),

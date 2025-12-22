@@ -79,9 +79,9 @@ static JSValue liba_hpf_zero(JSContext *ctx, JSValueConst this_val, int argc, JS
 
 enum
 {
-    self_alpha,
-    self_output,
-    self_input
+    hpf_alpha,
+    hpf_output,
+    hpf_input
 };
 
 static JSValue liba_hpf_get(JSContext *ctx, JSValueConst this_val, int magic)
@@ -91,9 +91,9 @@ static JSValue liba_hpf_get(JSContext *ctx, JSValueConst this_val, int magic)
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_alpha: x = (double)self->alpha; break;
-    case self_output: x = (double)self->output; break;
-    case self_input: x = (double)self->input; break;
+    case hpf_alpha: x = (double)self->alpha; break;
+    case hpf_output: x = (double)self->output; break;
+    case hpf_input: x = (double)self->input; break;
     default: return JS_UNDEFINED;
     }
     return JS_NewFloat64(ctx, x);
@@ -102,9 +102,9 @@ static JSValue liba_hpf_get(JSContext *ctx, JSValueConst this_val, int magic)
 static JSClassDef liba_hpf_class;
 static JSCFunctionListEntry const liba_hpf_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.hpf", 0),
-    JS_CGETSET_MAGIC_DEF("alpha", liba_hpf_get, NULL, self_alpha),
-    JS_CGETSET_MAGIC_DEF("output", liba_hpf_get, NULL, self_output),
-    JS_CGETSET_MAGIC_DEF("input", liba_hpf_get, NULL, self_input),
+    JS_CGETSET_MAGIC_DEF("alpha", liba_hpf_get, NULL, hpf_alpha),
+    JS_CGETSET_MAGIC_DEF("output", liba_hpf_get, NULL, hpf_output),
+    JS_CGETSET_MAGIC_DEF("input", liba_hpf_get, NULL, hpf_input),
     JS_CFUNC_DEF("gen", 2, liba_hpf_gen),
     JS_CFUNC_DEF("iter", 1, liba_hpf_iter),
     JS_CFUNC_DEF("zero", 0, liba_hpf_zero),

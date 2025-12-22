@@ -86,18 +86,18 @@ static JSValue liba_trajtrap_acc(JSContext *ctx, JSValueConst this_val, int argc
 
 enum
 {
-    self_t,
-    self_p0,
-    self_p1,
-    self_v0,
-    self_v1,
-    self_vc,
-    self_ta,
-    self_td,
-    self_pa,
-    self_pd,
-    self_ac,
-    self_de
+    trajtrap_t,
+    trajtrap_p0,
+    trajtrap_p1,
+    trajtrap_v0,
+    trajtrap_v1,
+    trajtrap_vc,
+    trajtrap_ta,
+    trajtrap_td,
+    trajtrap_pa,
+    trajtrap_pd,
+    trajtrap_ac,
+    trajtrap_de
 };
 
 static JSValue liba_trajtrap_get(JSContext *ctx, JSValueConst this_val, int magic)
@@ -107,18 +107,18 @@ static JSValue liba_trajtrap_get(JSContext *ctx, JSValueConst this_val, int magi
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_t: x = (double)self->t; break;
-    case self_p0: x = (double)self->p0; break;
-    case self_p1: x = (double)self->p1; break;
-    case self_v0: x = (double)self->v0; break;
-    case self_v1: x = (double)self->v1; break;
-    case self_vc: x = (double)self->vc; break;
-    case self_ta: x = (double)self->ta; break;
-    case self_td: x = (double)self->td; break;
-    case self_pa: x = (double)self->pa; break;
-    case self_pd: x = (double)self->pd; break;
-    case self_ac: x = (double)self->ac; break;
-    case self_de: x = (double)self->de; break;
+    case trajtrap_t: x = (double)self->t; break;
+    case trajtrap_p0: x = (double)self->p0; break;
+    case trajtrap_p1: x = (double)self->p1; break;
+    case trajtrap_v0: x = (double)self->v0; break;
+    case trajtrap_v1: x = (double)self->v1; break;
+    case trajtrap_vc: x = (double)self->vc; break;
+    case trajtrap_ta: x = (double)self->ta; break;
+    case trajtrap_td: x = (double)self->td; break;
+    case trajtrap_pa: x = (double)self->pa; break;
+    case trajtrap_pd: x = (double)self->pd; break;
+    case trajtrap_ac: x = (double)self->ac; break;
+    case trajtrap_de: x = (double)self->de; break;
     default: return JS_UNDEFINED;
     }
     return JS_NewFloat64(ctx, x);
@@ -127,18 +127,18 @@ static JSValue liba_trajtrap_get(JSContext *ctx, JSValueConst this_val, int magi
 static JSClassDef liba_trajtrap_class;
 static JSCFunctionListEntry const liba_trajtrap_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.trajtrap", 0),
-    JS_CGETSET_MAGIC_DEF("t", liba_trajtrap_get, NULL, self_t),
-    JS_CGETSET_MAGIC_DEF("p0", liba_trajtrap_get, NULL, self_p0),
-    JS_CGETSET_MAGIC_DEF("p1", liba_trajtrap_get, NULL, self_p1),
-    JS_CGETSET_MAGIC_DEF("v0", liba_trajtrap_get, NULL, self_v0),
-    JS_CGETSET_MAGIC_DEF("v1", liba_trajtrap_get, NULL, self_v1),
-    JS_CGETSET_MAGIC_DEF("vc", liba_trajtrap_get, NULL, self_vc),
-    JS_CGETSET_MAGIC_DEF("ta", liba_trajtrap_get, NULL, self_ta),
-    JS_CGETSET_MAGIC_DEF("td", liba_trajtrap_get, NULL, self_td),
-    JS_CGETSET_MAGIC_DEF("pa", liba_trajtrap_get, NULL, self_pa),
-    JS_CGETSET_MAGIC_DEF("pd", liba_trajtrap_get, NULL, self_pd),
-    JS_CGETSET_MAGIC_DEF("ac", liba_trajtrap_get, NULL, self_ac),
-    JS_CGETSET_MAGIC_DEF("de", liba_trajtrap_get, NULL, self_de),
+    JS_CGETSET_MAGIC_DEF("t", liba_trajtrap_get, NULL, trajtrap_t),
+    JS_CGETSET_MAGIC_DEF("p0", liba_trajtrap_get, NULL, trajtrap_p0),
+    JS_CGETSET_MAGIC_DEF("p1", liba_trajtrap_get, NULL, trajtrap_p1),
+    JS_CGETSET_MAGIC_DEF("v0", liba_trajtrap_get, NULL, trajtrap_v0),
+    JS_CGETSET_MAGIC_DEF("v1", liba_trajtrap_get, NULL, trajtrap_v1),
+    JS_CGETSET_MAGIC_DEF("vc", liba_trajtrap_get, NULL, trajtrap_vc),
+    JS_CGETSET_MAGIC_DEF("ta", liba_trajtrap_get, NULL, trajtrap_ta),
+    JS_CGETSET_MAGIC_DEF("td", liba_trajtrap_get, NULL, trajtrap_td),
+    JS_CGETSET_MAGIC_DEF("pa", liba_trajtrap_get, NULL, trajtrap_pa),
+    JS_CGETSET_MAGIC_DEF("pd", liba_trajtrap_get, NULL, trajtrap_pd),
+    JS_CGETSET_MAGIC_DEF("ac", liba_trajtrap_get, NULL, trajtrap_ac),
+    JS_CGETSET_MAGIC_DEF("de", liba_trajtrap_get, NULL, trajtrap_de),
     JS_CFUNC_DEF("gen", 7, liba_trajtrap_gen),
     JS_CFUNC_DEF("pos", 1, liba_trajtrap_pos),
     JS_CFUNC_DEF("vel", 1, liba_trajtrap_vel),

@@ -103,17 +103,17 @@ static JSValue liba_pid_inc(JSContext *ctx, JSValueConst this_val, int argc, JSV
 
 enum
 {
-    self_kp,
-    self_ki,
-    self_kd,
-    self_summax,
-    self_summin,
-    self_sum,
-    self_outmax,
-    self_outmin,
-    self_out,
-    self_fdb,
-    self_err
+    pid_kp,
+    pid_ki,
+    pid_kd,
+    pid_summax,
+    pid_summin,
+    pid_sum,
+    pid_outmax,
+    pid_outmin,
+    pid_out,
+    pid_fdb,
+    pid_err
 };
 
 static JSValue liba_pid_get(JSContext *ctx, JSValueConst this_val, int magic)
@@ -123,17 +123,17 @@ static JSValue liba_pid_get(JSContext *ctx, JSValueConst this_val, int magic)
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_kp: x = (double)self->kp; break;
-    case self_ki: x = (double)self->ki; break;
-    case self_kd: x = (double)self->kd; break;
-    case self_summax: x = (double)self->summax; break;
-    case self_summin: x = (double)self->summin; break;
-    case self_sum: x = (double)self->sum; break;
-    case self_outmax: x = (double)self->outmax; break;
-    case self_outmin: x = (double)self->outmin; break;
-    case self_out: x = (double)self->out; break;
-    case self_fdb: x = (double)self->fdb; break;
-    case self_err: x = (double)self->err; break;
+    case pid_kp: x = (double)self->kp; break;
+    case pid_ki: x = (double)self->ki; break;
+    case pid_kd: x = (double)self->kd; break;
+    case pid_summax: x = (double)self->summax; break;
+    case pid_summin: x = (double)self->summin; break;
+    case pid_sum: x = (double)self->sum; break;
+    case pid_outmax: x = (double)self->outmax; break;
+    case pid_outmin: x = (double)self->outmin; break;
+    case pid_out: x = (double)self->out; break;
+    case pid_fdb: x = (double)self->fdb; break;
+    case pid_err: x = (double)self->err; break;
     default: return JS_UNDEFINED;
     }
     return JS_NewFloat64(ctx, x);
@@ -147,13 +147,13 @@ static JSValue liba_pid_set(JSContext *ctx, JSValueConst this_val, JSValueConst 
     if (JS_ToFloat64(ctx, &x, val)) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_kp: self->kp = (a_real)x; break;
-    case self_ki: self->ki = (a_real)x; break;
-    case self_kd: self->kd = (a_real)x; break;
-    case self_summax: self->summax = (a_real)x; break;
-    case self_summin: self->summin = (a_real)x; break;
-    case self_outmax: self->outmax = (a_real)x; break;
-    case self_outmin: self->outmin = (a_real)x; break;
+    case pid_kp: self->kp = (a_real)x; break;
+    case pid_ki: self->ki = (a_real)x; break;
+    case pid_kd: self->kd = (a_real)x; break;
+    case pid_summax: self->summax = (a_real)x; break;
+    case pid_summin: self->summin = (a_real)x; break;
+    case pid_outmax: self->outmax = (a_real)x; break;
+    case pid_outmin: self->outmin = (a_real)x; break;
     default: break;
     }
     return JS_UNDEFINED;
@@ -162,17 +162,17 @@ static JSValue liba_pid_set(JSContext *ctx, JSValueConst this_val, JSValueConst 
 static JSClassDef liba_pid_class;
 static JSCFunctionListEntry const liba_pid_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.pid", 0),
-    JS_CGETSET_MAGIC_DEF("kp", liba_pid_get, liba_pid_set, self_kp),
-    JS_CGETSET_MAGIC_DEF("ki", liba_pid_get, liba_pid_set, self_ki),
-    JS_CGETSET_MAGIC_DEF("kd", liba_pid_get, liba_pid_set, self_kd),
-    JS_CGETSET_MAGIC_DEF("summax", liba_pid_get, liba_pid_set, self_summax),
-    JS_CGETSET_MAGIC_DEF("summin", liba_pid_get, liba_pid_set, self_summin),
-    JS_CGETSET_MAGIC_DEF("sum", liba_pid_get, NULL, self_sum),
-    JS_CGETSET_MAGIC_DEF("outmax", liba_pid_get, liba_pid_set, self_outmax),
-    JS_CGETSET_MAGIC_DEF("outmin", liba_pid_get, liba_pid_set, self_outmin),
-    JS_CGETSET_MAGIC_DEF("out", liba_pid_get, NULL, self_out),
-    JS_CGETSET_MAGIC_DEF("fdb", liba_pid_get, NULL, self_fdb),
-    JS_CGETSET_MAGIC_DEF("err", liba_pid_get, NULL, self_err),
+    JS_CGETSET_MAGIC_DEF("kp", liba_pid_get, liba_pid_set, pid_kp),
+    JS_CGETSET_MAGIC_DEF("ki", liba_pid_get, liba_pid_set, pid_ki),
+    JS_CGETSET_MAGIC_DEF("kd", liba_pid_get, liba_pid_set, pid_kd),
+    JS_CGETSET_MAGIC_DEF("summax", liba_pid_get, liba_pid_set, pid_summax),
+    JS_CGETSET_MAGIC_DEF("summin", liba_pid_get, liba_pid_set, pid_summin),
+    JS_CGETSET_MAGIC_DEF("sum", liba_pid_get, NULL, pid_sum),
+    JS_CGETSET_MAGIC_DEF("outmax", liba_pid_get, liba_pid_set, pid_outmax),
+    JS_CGETSET_MAGIC_DEF("outmin", liba_pid_get, liba_pid_set, pid_outmin),
+    JS_CGETSET_MAGIC_DEF("out", liba_pid_get, NULL, pid_out),
+    JS_CGETSET_MAGIC_DEF("fdb", liba_pid_get, NULL, pid_fdb),
+    JS_CGETSET_MAGIC_DEF("err", liba_pid_get, NULL, pid_err),
     JS_CFUNC_DEF("set_kpid", 3, liba_pid_set_kpid),
     JS_CFUNC_DEF("zero", 0, liba_pid_zero),
     JS_CFUNC_DEF("run", 2, liba_pid_run),

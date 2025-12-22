@@ -107,19 +107,19 @@ static JSValue liba_pid_neuro_inc(JSContext *ctx, JSValueConst this_val, int arg
 
 enum
 {
-    self_k,
-    self_kp,
-    self_ki,
-    self_kd,
-    self_wp,
-    self_wi,
-    self_wd,
-    self_outmax,
-    self_outmin,
-    self_out,
-    self_fdb,
-    self_err,
-    self_ec
+    pid_neuro_k,
+    pid_neuro_kp,
+    pid_neuro_ki,
+    pid_neuro_kd,
+    pid_neuro_wp,
+    pid_neuro_wi,
+    pid_neuro_wd,
+    pid_neuro_outmax,
+    pid_neuro_outmin,
+    pid_neuro_out,
+    pid_neuro_fdb,
+    pid_neuro_err,
+    pid_neuro_ec
 };
 
 static JSValue liba_pid_neuro_get(JSContext *ctx, JSValueConst this_val, int magic)
@@ -129,19 +129,19 @@ static JSValue liba_pid_neuro_get(JSContext *ctx, JSValueConst this_val, int mag
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_k: x = (double)self->k; break;
-    case self_kp: x = (double)self->pid.kp; break;
-    case self_ki: x = (double)self->pid.ki; break;
-    case self_kd: x = (double)self->pid.kd; break;
-    case self_wp: x = (double)self->wp; break;
-    case self_wi: x = (double)self->wi; break;
-    case self_wd: x = (double)self->wd; break;
-    case self_outmax: x = (double)self->pid.outmax; break;
-    case self_outmin: x = (double)self->pid.outmin; break;
-    case self_out: x = (double)self->pid.out; break;
-    case self_fdb: x = (double)self->pid.fdb; break;
-    case self_err: x = (double)self->pid.err; break;
-    case self_ec: x = (double)self->ec; break;
+    case pid_neuro_k: x = (double)self->k; break;
+    case pid_neuro_kp: x = (double)self->pid.kp; break;
+    case pid_neuro_ki: x = (double)self->pid.ki; break;
+    case pid_neuro_kd: x = (double)self->pid.kd; break;
+    case pid_neuro_wp: x = (double)self->wp; break;
+    case pid_neuro_wi: x = (double)self->wi; break;
+    case pid_neuro_wd: x = (double)self->wd; break;
+    case pid_neuro_outmax: x = (double)self->pid.outmax; break;
+    case pid_neuro_outmin: x = (double)self->pid.outmin; break;
+    case pid_neuro_out: x = (double)self->pid.out; break;
+    case pid_neuro_fdb: x = (double)self->pid.fdb; break;
+    case pid_neuro_err: x = (double)self->pid.err; break;
+    case pid_neuro_ec: x = (double)self->ec; break;
     default: return JS_UNDEFINED;
     }
     return JS_NewFloat64(ctx, x);
@@ -155,15 +155,15 @@ static JSValue liba_pid_neuro_set(JSContext *ctx, JSValueConst this_val, JSValue
     if (JS_ToFloat64(ctx, &x, val)) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_k: self->k = (a_real)x; break;
-    case self_kp: self->pid.kp = (a_real)x; break;
-    case self_ki: self->pid.ki = (a_real)x; break;
-    case self_kd: self->pid.kd = (a_real)x; break;
-    case self_wp: self->wp = (a_real)x; break;
-    case self_wi: self->wi = (a_real)x; break;
-    case self_wd: self->wd = (a_real)x; break;
-    case self_outmax: self->pid.outmax = (a_real)x; break;
-    case self_outmin: self->pid.outmin = (a_real)x; break;
+    case pid_neuro_k: self->k = (a_real)x; break;
+    case pid_neuro_kp: self->pid.kp = (a_real)x; break;
+    case pid_neuro_ki: self->pid.ki = (a_real)x; break;
+    case pid_neuro_kd: self->pid.kd = (a_real)x; break;
+    case pid_neuro_wp: self->wp = (a_real)x; break;
+    case pid_neuro_wi: self->wi = (a_real)x; break;
+    case pid_neuro_wd: self->wd = (a_real)x; break;
+    case pid_neuro_outmax: self->pid.outmax = (a_real)x; break;
+    case pid_neuro_outmin: self->pid.outmin = (a_real)x; break;
     default: break;
     }
     return JS_UNDEFINED;
@@ -172,19 +172,19 @@ static JSValue liba_pid_neuro_set(JSContext *ctx, JSValueConst this_val, JSValue
 static JSClassDef liba_pid_neuro_class;
 static JSCFunctionListEntry const liba_pid_neuro_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.pid.neuron", 0),
-    JS_CGETSET_MAGIC_DEF("k", liba_pid_neuro_get, liba_pid_neuro_set, self_k),
-    JS_CGETSET_MAGIC_DEF("kp", liba_pid_neuro_get, liba_pid_neuro_set, self_kp),
-    JS_CGETSET_MAGIC_DEF("ki", liba_pid_neuro_get, liba_pid_neuro_set, self_ki),
-    JS_CGETSET_MAGIC_DEF("kd", liba_pid_neuro_get, liba_pid_neuro_set, self_kd),
-    JS_CGETSET_MAGIC_DEF("wp", liba_pid_neuro_get, liba_pid_neuro_set, self_wp),
-    JS_CGETSET_MAGIC_DEF("wi", liba_pid_neuro_get, liba_pid_neuro_set, self_wi),
-    JS_CGETSET_MAGIC_DEF("wd", liba_pid_neuro_get, liba_pid_neuro_set, self_wd),
-    JS_CGETSET_MAGIC_DEF("outmax", liba_pid_neuro_get, liba_pid_neuro_set, self_outmax),
-    JS_CGETSET_MAGIC_DEF("outmin", liba_pid_neuro_get, liba_pid_neuro_set, self_outmin),
-    JS_CGETSET_MAGIC_DEF("out", liba_pid_neuro_get, NULL, self_out),
-    JS_CGETSET_MAGIC_DEF("fdb", liba_pid_neuro_get, NULL, self_fdb),
-    JS_CGETSET_MAGIC_DEF("err", liba_pid_neuro_get, NULL, self_err),
-    JS_CGETSET_MAGIC_DEF("ec", liba_pid_neuro_get, NULL, self_ec),
+    JS_CGETSET_MAGIC_DEF("k", liba_pid_neuro_get, liba_pid_neuro_set, pid_neuro_k),
+    JS_CGETSET_MAGIC_DEF("kp", liba_pid_neuro_get, liba_pid_neuro_set, pid_neuro_kp),
+    JS_CGETSET_MAGIC_DEF("ki", liba_pid_neuro_get, liba_pid_neuro_set, pid_neuro_ki),
+    JS_CGETSET_MAGIC_DEF("kd", liba_pid_neuro_get, liba_pid_neuro_set, pid_neuro_kd),
+    JS_CGETSET_MAGIC_DEF("wp", liba_pid_neuro_get, liba_pid_neuro_set, pid_neuro_wp),
+    JS_CGETSET_MAGIC_DEF("wi", liba_pid_neuro_get, liba_pid_neuro_set, pid_neuro_wi),
+    JS_CGETSET_MAGIC_DEF("wd", liba_pid_neuro_get, liba_pid_neuro_set, pid_neuro_wd),
+    JS_CGETSET_MAGIC_DEF("outmax", liba_pid_neuro_get, liba_pid_neuro_set, pid_neuro_outmax),
+    JS_CGETSET_MAGIC_DEF("outmin", liba_pid_neuro_get, liba_pid_neuro_set, pid_neuro_outmin),
+    JS_CGETSET_MAGIC_DEF("out", liba_pid_neuro_get, NULL, pid_neuro_out),
+    JS_CGETSET_MAGIC_DEF("fdb", liba_pid_neuro_get, NULL, pid_neuro_fdb),
+    JS_CGETSET_MAGIC_DEF("err", liba_pid_neuro_get, NULL, pid_neuro_err),
+    JS_CGETSET_MAGIC_DEF("ec", liba_pid_neuro_get, NULL, pid_neuro_ec),
     JS_CFUNC_DEF("set_kpid", 4, liba_pid_neuro_set_kpid),
     JS_CFUNC_DEF("set_wpid", 3, liba_pid_neuro_set_wpid),
     JS_CFUNC_DEF("zero", 0, liba_pid_neuro_zero),

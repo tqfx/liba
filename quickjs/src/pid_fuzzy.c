@@ -199,19 +199,19 @@ static JSValue liba_pid_fuzzy_inc(JSContext *ctx, JSValueConst this_val, int arg
 
 enum
 {
-    self_kp,
-    self_ki,
-    self_kd,
-    self_summax,
-    self_summin,
-    self_sum,
-    self_outmax,
-    self_outmin,
-    self_out,
-    self_fdb,
-    self_err,
-    self_nrule,
-    self_nfuzz
+    pid_fuzzy_kp,
+    pid_fuzzy_ki,
+    pid_fuzzy_kd,
+    pid_fuzzy_summax,
+    pid_fuzzy_summin,
+    pid_fuzzy_sum,
+    pid_fuzzy_outmax,
+    pid_fuzzy_outmin,
+    pid_fuzzy_out,
+    pid_fuzzy_fdb,
+    pid_fuzzy_err,
+    pid_fuzzy_nrule,
+    pid_fuzzy_nfuzz
 };
 
 static JSValue liba_pid_fuzzy_get(JSContext *ctx, JSValueConst this_val, int magic)
@@ -221,19 +221,19 @@ static JSValue liba_pid_fuzzy_get(JSContext *ctx, JSValueConst this_val, int mag
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_kp: x = (double)self->kp; break;
-    case self_ki: x = (double)self->ki; break;
-    case self_kd: x = (double)self->kd; break;
-    case self_summax: x = (double)self->pid.summax; break;
-    case self_summin: x = (double)self->pid.summin; break;
-    case self_sum: x = (double)self->pid.sum; break;
-    case self_outmax: x = (double)self->pid.outmax; break;
-    case self_outmin: x = (double)self->pid.outmin; break;
-    case self_out: x = (double)self->pid.out; break;
-    case self_fdb: x = (double)self->pid.fdb; break;
-    case self_err: x = (double)self->pid.err; break;
-    case self_nrule: return JS_NewUint32(ctx, self->nrule);
-    case self_nfuzz: return JS_NewUint32(ctx, self->nfuzz);
+    case pid_fuzzy_kp: x = (double)self->kp; break;
+    case pid_fuzzy_ki: x = (double)self->ki; break;
+    case pid_fuzzy_kd: x = (double)self->kd; break;
+    case pid_fuzzy_summax: x = (double)self->pid.summax; break;
+    case pid_fuzzy_summin: x = (double)self->pid.summin; break;
+    case pid_fuzzy_sum: x = (double)self->pid.sum; break;
+    case pid_fuzzy_outmax: x = (double)self->pid.outmax; break;
+    case pid_fuzzy_outmin: x = (double)self->pid.outmin; break;
+    case pid_fuzzy_out: x = (double)self->pid.out; break;
+    case pid_fuzzy_fdb: x = (double)self->pid.fdb; break;
+    case pid_fuzzy_err: x = (double)self->pid.err; break;
+    case pid_fuzzy_nrule: return JS_NewUint32(ctx, self->nrule);
+    case pid_fuzzy_nfuzz: return JS_NewUint32(ctx, self->nfuzz);
     default: return JS_UNDEFINED;
     }
     return JS_NewFloat64(ctx, x);
@@ -245,7 +245,7 @@ static JSValue liba_pid_fuzzy_set(JSContext *ctx, JSValueConst this_val, JSValue
     double x;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
-    if (magic == self_nfuzz)
+    if (magic == pid_fuzzy_nfuzz)
     {
         if (JS_ToUint32(ctx, &u, val)) { return JS_EXCEPTION; }
         if (liba_pid_fuzzy_set_nfuzz_(ctx, self, (unsigned int)u)) { return JS_EXCEPTION; }
@@ -254,13 +254,13 @@ static JSValue liba_pid_fuzzy_set(JSContext *ctx, JSValueConst this_val, JSValue
     if (JS_ToFloat64(ctx, &x, val)) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_kp: self->pid.kp = self->kp = (a_real)x; break;
-    case self_ki: self->pid.ki = self->ki = (a_real)x; break;
-    case self_kd: self->pid.kd = self->kd = (a_real)x; break;
-    case self_summax: self->pid.summax = (a_real)x; break;
-    case self_summin: self->pid.summin = (a_real)x; break;
-    case self_outmax: self->pid.outmax = (a_real)x; break;
-    case self_outmin: self->pid.outmin = (a_real)x; break;
+    case pid_fuzzy_kp: self->pid.kp = self->kp = (a_real)x; break;
+    case pid_fuzzy_ki: self->pid.ki = self->ki = (a_real)x; break;
+    case pid_fuzzy_kd: self->pid.kd = self->kd = (a_real)x; break;
+    case pid_fuzzy_summax: self->pid.summax = (a_real)x; break;
+    case pid_fuzzy_summin: self->pid.summin = (a_real)x; break;
+    case pid_fuzzy_outmax: self->pid.outmax = (a_real)x; break;
+    case pid_fuzzy_outmin: self->pid.outmin = (a_real)x; break;
     default: break;
     }
     return JS_UNDEFINED;
@@ -269,19 +269,19 @@ static JSValue liba_pid_fuzzy_set(JSContext *ctx, JSValueConst this_val, JSValue
 static JSClassDef liba_pid_fuzzy_class;
 static JSCFunctionListEntry const liba_pid_fuzzy_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.pid.fuzzy", 0),
-    JS_CGETSET_MAGIC_DEF("kp", liba_pid_fuzzy_get, liba_pid_fuzzy_set, self_kp),
-    JS_CGETSET_MAGIC_DEF("ki", liba_pid_fuzzy_get, liba_pid_fuzzy_set, self_ki),
-    JS_CGETSET_MAGIC_DEF("kd", liba_pid_fuzzy_get, liba_pid_fuzzy_set, self_kd),
-    JS_CGETSET_MAGIC_DEF("summax", liba_pid_fuzzy_get, liba_pid_fuzzy_set, self_summax),
-    JS_CGETSET_MAGIC_DEF("summin", liba_pid_fuzzy_get, liba_pid_fuzzy_set, self_summin),
-    JS_CGETSET_MAGIC_DEF("sum", liba_pid_fuzzy_get, NULL, self_sum),
-    JS_CGETSET_MAGIC_DEF("outmax", liba_pid_fuzzy_get, liba_pid_fuzzy_set, self_outmax),
-    JS_CGETSET_MAGIC_DEF("outmin", liba_pid_fuzzy_get, liba_pid_fuzzy_set, self_outmin),
-    JS_CGETSET_MAGIC_DEF("out", liba_pid_fuzzy_get, NULL, self_out),
-    JS_CGETSET_MAGIC_DEF("fdb", liba_pid_fuzzy_get, NULL, self_fdb),
-    JS_CGETSET_MAGIC_DEF("err", liba_pid_fuzzy_get, NULL, self_err),
-    JS_CGETSET_MAGIC_DEF("nrule", liba_pid_fuzzy_get, NULL, self_nrule),
-    JS_CGETSET_MAGIC_DEF("nfuzz", liba_pid_fuzzy_get, liba_pid_fuzzy_set, self_nfuzz),
+    JS_CGETSET_MAGIC_DEF("kp", liba_pid_fuzzy_get, liba_pid_fuzzy_set, pid_fuzzy_kp),
+    JS_CGETSET_MAGIC_DEF("ki", liba_pid_fuzzy_get, liba_pid_fuzzy_set, pid_fuzzy_ki),
+    JS_CGETSET_MAGIC_DEF("kd", liba_pid_fuzzy_get, liba_pid_fuzzy_set, pid_fuzzy_kd),
+    JS_CGETSET_MAGIC_DEF("summax", liba_pid_fuzzy_get, liba_pid_fuzzy_set, pid_fuzzy_summax),
+    JS_CGETSET_MAGIC_DEF("summin", liba_pid_fuzzy_get, liba_pid_fuzzy_set, pid_fuzzy_summin),
+    JS_CGETSET_MAGIC_DEF("sum", liba_pid_fuzzy_get, NULL, pid_fuzzy_sum),
+    JS_CGETSET_MAGIC_DEF("outmax", liba_pid_fuzzy_get, liba_pid_fuzzy_set, pid_fuzzy_outmax),
+    JS_CGETSET_MAGIC_DEF("outmin", liba_pid_fuzzy_get, liba_pid_fuzzy_set, pid_fuzzy_outmin),
+    JS_CGETSET_MAGIC_DEF("out", liba_pid_fuzzy_get, NULL, pid_fuzzy_out),
+    JS_CGETSET_MAGIC_DEF("fdb", liba_pid_fuzzy_get, NULL, pid_fuzzy_fdb),
+    JS_CGETSET_MAGIC_DEF("err", liba_pid_fuzzy_get, NULL, pid_fuzzy_err),
+    JS_CGETSET_MAGIC_DEF("nrule", liba_pid_fuzzy_get, NULL, pid_fuzzy_nrule),
+    JS_CGETSET_MAGIC_DEF("nfuzz", liba_pid_fuzzy_get, liba_pid_fuzzy_set, pid_fuzzy_nfuzz),
     JS_CFUNC_DEF("set_opr", 1, liba_pid_fuzzy_set_opr),
     JS_CFUNC_DEF("set_nfuzz", 1, liba_pid_fuzzy_set_nfuzz),
     JS_CFUNC_DEF("set_rule", 5, liba_pid_fuzzy_set_rule),

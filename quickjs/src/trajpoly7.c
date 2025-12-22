@@ -115,10 +115,10 @@ static JSValue liba_trajpoly7_jer(JSContext *ctx, JSValueConst this_val, int arg
 
 enum
 {
-    self_c0,
-    self_c1,
-    self_c2,
-    self_c3
+    trajpoly7_c0,
+    trajpoly7_c1,
+    trajpoly7_c2,
+    trajpoly7_c3
 };
 
 static JSValue liba_trajpoly7_get(JSContext *ctx, JSValueConst this_val, int magic)
@@ -128,14 +128,14 @@ static JSValue liba_trajpoly7_get(JSContext *ctx, JSValueConst this_val, int mag
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_c0: return js_array_num_new(ctx, self->c, A_LEN(self->c));
-    case self_c1:
+    case trajpoly7_c0: return js_array_num_new(ctx, self->c, A_LEN(self->c));
+    case trajpoly7_c1:
         a_trajpoly7_c1(self, c);
         return js_array_num_new(ctx, c, A_LEN(self->c) - 1);
-    case self_c2:
+    case trajpoly7_c2:
         a_trajpoly7_c2(self, c);
         return js_array_num_new(ctx, c, A_LEN(self->c) - 2);
-    case self_c3:
+    case trajpoly7_c3:
         a_trajpoly7_c3(self, c);
         return js_array_num_new(ctx, c, A_LEN(self->c) - 3);
     default: return JS_UNDEFINED;
@@ -145,10 +145,10 @@ static JSValue liba_trajpoly7_get(JSContext *ctx, JSValueConst this_val, int mag
 static JSClassDef liba_trajpoly7_class;
 static JSCFunctionListEntry const liba_trajpoly7_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.trajpoly7", 0),
-    JS_CGETSET_MAGIC_DEF("c0", liba_trajpoly7_get, NULL, self_c0),
-    JS_CGETSET_MAGIC_DEF("c1", liba_trajpoly7_get, NULL, self_c1),
-    JS_CGETSET_MAGIC_DEF("c2", liba_trajpoly7_get, NULL, self_c2),
-    JS_CGETSET_MAGIC_DEF("c3", liba_trajpoly7_get, NULL, self_c3),
+    JS_CGETSET_MAGIC_DEF("c0", liba_trajpoly7_get, NULL, trajpoly7_c0),
+    JS_CGETSET_MAGIC_DEF("c1", liba_trajpoly7_get, NULL, trajpoly7_c1),
+    JS_CGETSET_MAGIC_DEF("c2", liba_trajpoly7_get, NULL, trajpoly7_c2),
+    JS_CGETSET_MAGIC_DEF("c3", liba_trajpoly7_get, NULL, trajpoly7_c3),
     JS_CFUNC_DEF("gen", 9, liba_trajpoly7_gen),
     JS_CFUNC_DEF("pos", 1, liba_trajpoly7_pos),
     JS_CFUNC_DEF("vel", 1, liba_trajpoly7_vel),

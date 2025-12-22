@@ -190,19 +190,19 @@ static JSValue liba_regress_linear_zero(JSContext *ctx, JSValueConst this_val, i
 
 enum
 {
-    self_coef,
-    self_bias
+    regress_linear_coef,
+    regress_linear_bias
 };
 
 static JSValue liba_regress_linear_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
     a_regress_linear *const self = (a_regress_linear *)JS_GetOpaque2(ctx, this_val, liba_regress_linear_class_id);
     if (!self) { return JS_EXCEPTION; }
-    if (magic == self_coef)
+    if (magic == regress_linear_coef)
     {
         return js_array_num_new(ctx, self->coef_p, (a_u32)self->coef_n);
     }
-    if (magic == self_bias)
+    if (magic == regress_linear_bias)
     {
         return JS_NewFloat64(ctx, (double)self->bias);
     }
@@ -213,7 +213,7 @@ static JSValue liba_regress_linear_set(JSContext *ctx, JSValueConst this_val, JS
 {
     a_regress_linear *const self = (a_regress_linear *)JS_GetOpaque2(ctx, this_val, liba_regress_linear_class_id);
     if (!self) { return JS_EXCEPTION; }
-    if (magic == self_coef)
+    if (magic == regress_linear_coef)
     {
         unsigned int n = (unsigned int)self->coef_n;
         self->coef_p = js_array_num_get(ctx, val, self->coef_p, &n, 1);
@@ -231,8 +231,8 @@ static JSValue liba_regress_linear_set(JSContext *ctx, JSValueConst this_val, JS
 static JSClassDef liba_regress_linear_class;
 static JSCFunctionListEntry const liba_regress_linear_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.regress_linear", 0),
-    JS_CGETSET_MAGIC_DEF("coef", liba_regress_linear_get, liba_regress_linear_set, self_coef),
-    JS_CGETSET_MAGIC_DEF("bias", liba_regress_linear_get, liba_regress_linear_set, self_bias),
+    JS_CGETSET_MAGIC_DEF("coef", liba_regress_linear_get, liba_regress_linear_set, regress_linear_coef),
+    JS_CGETSET_MAGIC_DEF("bias", liba_regress_linear_get, liba_regress_linear_set, regress_linear_bias),
     JS_CFUNC_DEF("eval", 1, liba_regress_linear_eval),
     JS_CFUNC_DEF("err", 1, liba_regress_linear_err),
     JS_CFUNC_DEF("gd", 3, liba_regress_linear_gd),

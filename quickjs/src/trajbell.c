@@ -98,20 +98,20 @@ static JSValue liba_trajbell_jer(JSContext *ctx, JSValueConst this_val, int argc
 
 enum
 {
-    self_t,
-    self_tv,
-    self_ta,
-    self_td,
-    self_taj,
-    self_tdj,
-    self_p0,
-    self_p1,
-    self_v0,
-    self_v1,
-    self_vm,
-    self_jm,
-    self_am,
-    self_dm
+    trajbell_t,
+    trajbell_tv,
+    trajbell_ta,
+    trajbell_td,
+    trajbell_taj,
+    trajbell_tdj,
+    trajbell_p0,
+    trajbell_p1,
+    trajbell_v0,
+    trajbell_v1,
+    trajbell_vm,
+    trajbell_jm,
+    trajbell_am,
+    trajbell_dm
 };
 
 static JSValue liba_trajbell_get(JSContext *ctx, JSValueConst this_val, int magic)
@@ -121,20 +121,20 @@ static JSValue liba_trajbell_get(JSContext *ctx, JSValueConst this_val, int magi
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_t: x = (double)self->t; break;
-    case self_tv: x = (double)self->tv; break;
-    case self_ta: x = (double)self->ta; break;
-    case self_td: x = (double)self->td; break;
-    case self_taj: x = (double)self->taj; break;
-    case self_tdj: x = (double)self->tdj; break;
-    case self_p0: x = (double)self->p0; break;
-    case self_p1: x = (double)self->p1; break;
-    case self_v0: x = (double)self->v0; break;
-    case self_v1: x = (double)self->v1; break;
-    case self_vm: x = (double)self->vm; break;
-    case self_jm: x = (double)self->jm; break;
-    case self_am: x = (double)self->am; break;
-    case self_dm: x = (double)self->dm; break;
+    case trajbell_t: x = (double)self->t; break;
+    case trajbell_tv: x = (double)self->tv; break;
+    case trajbell_ta: x = (double)self->ta; break;
+    case trajbell_td: x = (double)self->td; break;
+    case trajbell_taj: x = (double)self->taj; break;
+    case trajbell_tdj: x = (double)self->tdj; break;
+    case trajbell_p0: x = (double)self->p0; break;
+    case trajbell_p1: x = (double)self->p1; break;
+    case trajbell_v0: x = (double)self->v0; break;
+    case trajbell_v1: x = (double)self->v1; break;
+    case trajbell_vm: x = (double)self->vm; break;
+    case trajbell_jm: x = (double)self->jm; break;
+    case trajbell_am: x = (double)self->am; break;
+    case trajbell_dm: x = (double)self->dm; break;
     default: return JS_UNDEFINED;
     }
     return JS_NewFloat64(ctx, x);
@@ -143,20 +143,20 @@ static JSValue liba_trajbell_get(JSContext *ctx, JSValueConst this_val, int magi
 static JSClassDef liba_trajbell_class;
 static JSCFunctionListEntry const liba_trajbell_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.trajbell", 0),
-    JS_CGETSET_MAGIC_DEF("t", liba_trajbell_get, NULL, self_t),
-    JS_CGETSET_MAGIC_DEF("tv", liba_trajbell_get, NULL, self_tv),
-    JS_CGETSET_MAGIC_DEF("ta", liba_trajbell_get, NULL, self_ta),
-    JS_CGETSET_MAGIC_DEF("td", liba_trajbell_get, NULL, self_td),
-    JS_CGETSET_MAGIC_DEF("taj", liba_trajbell_get, NULL, self_taj),
-    JS_CGETSET_MAGIC_DEF("tdj", liba_trajbell_get, NULL, self_tdj),
-    JS_CGETSET_MAGIC_DEF("p0", liba_trajbell_get, NULL, self_p0),
-    JS_CGETSET_MAGIC_DEF("p1", liba_trajbell_get, NULL, self_p1),
-    JS_CGETSET_MAGIC_DEF("v0", liba_trajbell_get, NULL, self_v0),
-    JS_CGETSET_MAGIC_DEF("v1", liba_trajbell_get, NULL, self_v1),
-    JS_CGETSET_MAGIC_DEF("vm", liba_trajbell_get, NULL, self_vm),
-    JS_CGETSET_MAGIC_DEF("jm", liba_trajbell_get, NULL, self_jm),
-    JS_CGETSET_MAGIC_DEF("am", liba_trajbell_get, NULL, self_am),
-    JS_CGETSET_MAGIC_DEF("dm", liba_trajbell_get, NULL, self_dm),
+    JS_CGETSET_MAGIC_DEF("t", liba_trajbell_get, NULL, trajbell_t),
+    JS_CGETSET_MAGIC_DEF("tv", liba_trajbell_get, NULL, trajbell_tv),
+    JS_CGETSET_MAGIC_DEF("ta", liba_trajbell_get, NULL, trajbell_ta),
+    JS_CGETSET_MAGIC_DEF("td", liba_trajbell_get, NULL, trajbell_td),
+    JS_CGETSET_MAGIC_DEF("taj", liba_trajbell_get, NULL, trajbell_taj),
+    JS_CGETSET_MAGIC_DEF("tdj", liba_trajbell_get, NULL, trajbell_tdj),
+    JS_CGETSET_MAGIC_DEF("p0", liba_trajbell_get, NULL, trajbell_p0),
+    JS_CGETSET_MAGIC_DEF("p1", liba_trajbell_get, NULL, trajbell_p1),
+    JS_CGETSET_MAGIC_DEF("v0", liba_trajbell_get, NULL, trajbell_v0),
+    JS_CGETSET_MAGIC_DEF("v1", liba_trajbell_get, NULL, trajbell_v1),
+    JS_CGETSET_MAGIC_DEF("vm", liba_trajbell_get, NULL, trajbell_vm),
+    JS_CGETSET_MAGIC_DEF("jm", liba_trajbell_get, NULL, trajbell_jm),
+    JS_CGETSET_MAGIC_DEF("am", liba_trajbell_get, NULL, trajbell_am),
+    JS_CGETSET_MAGIC_DEF("dm", liba_trajbell_get, NULL, trajbell_dm),
     JS_CFUNC_DEF("gen", 7, liba_trajbell_gen),
     JS_CFUNC_DEF("pos", 1, liba_trajbell_pos),
     JS_CFUNC_DEF("vel", 1, liba_trajbell_vel),

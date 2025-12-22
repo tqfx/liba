@@ -79,8 +79,8 @@ static JSValue liba_lpf_zero(JSContext *ctx, JSValueConst this_val, int argc, JS
 
 enum
 {
-    self_alpha,
-    self_output
+    lpf_alpha,
+    lpf_output
 };
 
 static JSValue liba_lpf_get(JSContext *ctx, JSValueConst this_val, int magic)
@@ -90,8 +90,8 @@ static JSValue liba_lpf_get(JSContext *ctx, JSValueConst this_val, int magic)
     if (!self) { return JS_EXCEPTION; }
     switch (magic)
     {
-    case self_alpha: x = (double)self->alpha; break;
-    case self_output: x = (double)self->output; break;
+    case lpf_alpha: x = (double)self->alpha; break;
+    case lpf_output: x = (double)self->output; break;
     default: return JS_UNDEFINED;
     }
     return JS_NewFloat64(ctx, x);
@@ -100,8 +100,8 @@ static JSValue liba_lpf_get(JSContext *ctx, JSValueConst this_val, int magic)
 static JSClassDef liba_lpf_class;
 static JSCFunctionListEntry const liba_lpf_proto[] = {
     JS_PROP_STRING_DEF("[Symbol.toStringTag]", "a.lpf", 0),
-    JS_CGETSET_MAGIC_DEF("alpha", liba_lpf_get, NULL, self_alpha),
-    JS_CGETSET_MAGIC_DEF("output", liba_lpf_get, NULL, self_output),
+    JS_CGETSET_MAGIC_DEF("alpha", liba_lpf_get, NULL, lpf_alpha),
+    JS_CGETSET_MAGIC_DEF("output", liba_lpf_get, NULL, lpf_output),
     JS_CFUNC_DEF("gen", 2, liba_lpf_gen),
     JS_CFUNC_DEF("iter", 1, liba_lpf_iter),
     JS_CFUNC_DEF("zero", 0, liba_lpf_zero),
