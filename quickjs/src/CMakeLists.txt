@@ -11,6 +11,7 @@ set(PROJECT_DESCRIPTION "QuickJS is a small and embeddable Javascript engine.")
 set(PROJECT_HOMEPAGE_URL "https://bellard.org/quickjs")
 set(CMAKE_C_EXTENSIONS 1)
 set(CMAKE_C_STANDARD 99)
+set(CMAKE_UNITY_BUILD 0)
 set(QJS_DEPENDS qjsc)
 
 if(CMAKE_HOST_WIN32)
