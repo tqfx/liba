@@ -1,3 +1,9 @@
+#if !defined _CRT_SECURE_NO_WARNINGS && defined(_MSC_VER)
+#define _CRT_SECURE_NO_WARNINGS /* NOLINT */
+#endif /* _CRT_SECURE_NO_WARNINGS */
+#if !defined _GNU_SOURCE && defined(__linux__)
+#define _GNU_SOURCE /* NOLINT */
+#endif /* _GNU_SOURCE */
 #define LIBA_A_C
 #include "a/a.h"
 #include <string.h>
