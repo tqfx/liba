@@ -360,10 +360,10 @@ A_EXTERN void a_real_plu_solve(a_uint n, a_real const *A, a_uint const *p, a_rea
  @param[in] A the matrix containing L and U in a compact form after LU decomposition.
  @param[in] p the permutation indices obtained during LU decomposition.
  @param[in] b a pre-allocated temporary buffer of size n for intermediate computations.
- @param[out] I the output matrix where the inverse of A will be stored.
+ @param[out] oI the output matrix where the inverse of A will be stored.
 */
-A_EXTERN void a_real_plu_inv(a_uint n, a_real const *A, a_uint const *p, a_real *b, a_real *I);
-A_EXTERN void a_real_plu_inv_(a_uint n, a_real const *A, a_uint const *p, a_real *I);
+A_EXTERN void a_real_plu_inv(a_uint n, a_real const *A, a_uint const *p, a_real *b, a_real *oI);
+A_EXTERN void a_real_plu_inv_(a_uint n, a_real const *A, a_uint const *p, a_real *oI);
 
 /*!
  @brief compute the determinant of a matrix using its LU decomposition.
@@ -451,10 +451,10 @@ A_EXTERN void a_real_ldl_solve(a_uint n, a_real const *A, a_real *x);
  @param[in] n the order of the square matrix A (number of rows and columns).
  @param[in] A the matrix containing L and D in a compact form after LDL decomposition.
  @param[in] b a pre-allocated temporary buffer of size n for intermediate computations.
- @param[out] I the output matrix where the inverse of A will be stored.
+ @param[out] oI the output matrix where the inverse of A will be stored.
 */
-A_EXTERN void a_real_ldl_inv(a_uint n, a_real const *A, a_real *b, a_real *I);
-A_EXTERN void a_real_ldl_inv_(a_uint n, a_real const *A, a_real *I);
+A_EXTERN void a_real_ldl_inv(a_uint n, a_real const *A, a_real *b, a_real *oI);
+A_EXTERN void a_real_ldl_inv_(a_uint n, a_real const *A, a_real *oI);
 
 /*!
  @brief compute the determinant of a matrix using its LDL decomposition.
@@ -529,10 +529,10 @@ A_EXTERN void a_real_llt_solve(a_uint n, a_real const *A, a_real *x);
  @param[in] n the order of the square matrix A (number of rows and columns).
  @param[in] A the matrix containing L form after Cholesky decomposition.
  @param[in] b a pre-allocated temporary buffer of size n for intermediate computations.
- @param[out] I the output matrix where the inverse of A will be stored.
+ @param[out] oI the output matrix where the inverse of A will be stored.
 */
-A_EXTERN void a_real_llt_inv(a_uint n, a_real const *A, a_real *b, a_real *I);
-A_EXTERN void a_real_llt_inv_(a_uint n, a_real const *A, a_real *I);
+A_EXTERN void a_real_llt_inv(a_uint n, a_real const *A, a_real *b, a_real *oI);
+A_EXTERN void a_real_llt_inv_(a_uint n, a_real const *A, a_real *oI);
 
 /*!
  @brief compute the determinant of a matrix using its Cholesky decomposition.

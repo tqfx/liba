@@ -150,33 +150,33 @@ void a_real_plu_solve(a_uint n, a_real const *A, a_uint const *p, a_real const *
     a_real_plu_upper(n, A, x);
 }
 
-void a_real_plu_inv(a_uint n, a_real const *A, a_uint const *p, a_real *b, a_real *I)
+void a_real_plu_inv(a_uint n, a_real const *A, a_uint const *p, a_real *b, a_real *oI)
 {
     a_uint r, c;
-    a_real_plu_P(n, p, I);
-    for (c = 0; c < n; ++c, ++I)
+    a_real_plu_P(n, p, oI);
+    for (c = 0; c < n; ++c, ++oI)
     {
         for (r = 0; r < n; ++r)
         {
-            b[r] = I[(a_size)n * r];
+            b[r] = oI[(a_size)n * r];
         }
         a_real_plu_lower(n, A, b);
         a_real_plu_upper(n, A, b);
         for (r = 0; r < n; ++r)
         {
-            I[(a_size)n * r] = b[r];
+            oI[(a_size)n * r] = b[r];
         }
     }
 }
 
-void a_real_plu_inv_(a_uint n, a_real const *A, a_uint const *p, a_real *I)
+void a_real_plu_inv_(a_uint n, a_real const *A, a_uint const *p, a_real *oI)
 {
     a_uint i;
-    a_real_plu_P(n, p, I);
-    for (i = 0; i < n; ++i, ++I)
+    a_real_plu_P(n, p, oI);
+    for (i = 0; i < n; ++i, ++oI)
     {
-        a_real_plu_lower_(n, A, I);
-        a_real_plu_upper_(n, A, I);
+        a_real_plu_lower_(n, A, oI);
+        a_real_plu_upper_(n, A, oI);
     }
 }
 

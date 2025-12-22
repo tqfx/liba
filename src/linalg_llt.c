@@ -99,10 +99,10 @@ void a_real_llt_solve(a_uint n, a_real const *A, a_real *x)
     a_real_llt_upper(n, A, x);
 }
 
-void a_real_llt_inv(a_uint n, a_real const *A, a_real *b, a_real *I)
+void a_real_llt_inv(a_uint n, a_real const *A, a_real *b, a_real *oI)
 {
     a_uint i, r, c;
-    for (i = 0; i < n; ++i, ++I)
+    for (i = 0; i < n; ++i, ++oI)
     {
         for (r = 0; r < n; ++r) { b[r] = 0; }
         b[i] = 1;
@@ -118,31 +118,31 @@ void a_real_llt_inv(a_uint n, a_real const *A, a_real *b, a_real *I)
         a_real_llt_upper(n, A, b);
         for (r = 0; r < n; ++r)
         {
-            I[(a_size)n * r] = b[r];
+            oI[(a_size)n * r] = b[r];
         }
     }
 }
 
-void a_real_llt_inv_(a_uint n, a_real const *A, a_real *I)
+void a_real_llt_inv_(a_uint n, a_real const *A, a_real *oI)
 {
     a_uint i, r, c;
-    for (i = 0; i < n; ++i, ++I)
+    for (i = 0; i < n; ++i, ++oI)
     {
         for (r = 0; r < n; ++r)
         {
-            I[(a_size)n * r] = (r == i);
+            oI[(a_size)n * r] = (r == i);
         }
         for (r = i; r < n; ++r) /* Ly = b */
         {
             a_real const *const Ar = A + (a_size)n * r;
-            a_real *const yr = I + (a_size)n * r;
+            a_real *const yr = oI + (a_size)n * r;
             for (c = i; c < r; ++c)
             {
-                *yr -= Ar[c] * I[(a_size)n * c];
+                *yr -= Ar[c] * oI[(a_size)n * c];
             }
             *yr /= Ar[r];
         }
-        a_real_llt_upper_(n, A, I);
+        a_real_llt_upper_(n, A, oI);
     }
 }
 
