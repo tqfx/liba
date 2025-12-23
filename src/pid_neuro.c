@@ -13,28 +13,19 @@ void a_pid_neuro_set_wpid(a_pid_neuro *ctx, a_real wp, a_real wi, a_real wd)
     ctx->wd = wd;
 }
 
-A_HIDDEN a_real a_pid_neuro_run_(a_pid_neuro *ctx, a_real set, a_real fdb, a_real err, a_real ec);
 a_real a_pid_neuro_run(a_pid_neuro *ctx, a_real set, a_real fdb)
 {
     a_real const err = set - fdb;
-    return a_pid_neuro_run_(ctx, set, fdb, err, err - ctx->pid.err);
-}
-A_HIDDEN a_real a_pid_run_(a_pid *ctx, a_real set, a_real fdb, a_real err);
-a_real a_pid_neuro_run_(a_pid_neuro *ctx, a_real set, a_real fdb, a_real err, a_real ec)
-{
-    a_pid_run_(&ctx->pid, set, fdb, err);
+    a_real const ec = err - ctx->pid.err;
+    a_pid_run(&ctx->pid, set, fdb);
     ctx->ec = ec;
     return ctx->pid.out;
 }
 
-A_HIDDEN a_real a_pid_neuro_inc_(a_pid_neuro *ctx, a_real fdb, a_real err, a_real ec);
 a_real a_pid_neuro_inc(a_pid_neuro *ctx, a_real set, a_real fdb)
 {
     a_real const err = set - fdb;
-    return a_pid_neuro_inc_(ctx, fdb, err, err - ctx->pid.err);
-}
-a_real a_pid_neuro_inc_(a_pid_neuro *ctx, a_real fdb, a_real err, a_real ec)
-{
+    a_real const ec = err - ctx->pid.err;
     a_real const var = ec - ctx->ec;
     a_real out = err * ctx->pid.out;
     ctx->wp += ctx->pid.kp * out * ctx->ec;

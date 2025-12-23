@@ -211,28 +211,25 @@ exit:
     a_pid_set_kpid(&ctx->pid, ctx->kp + kp, ctx->ki + ki, ctx->kd + kd);
 }
 
-A_HIDDEN a_real a_pid_run_(a_pid *ctx, a_real set, a_real fdb, a_real err);
 a_real a_pid_fuzzy_run(a_pid_fuzzy *ctx, a_real set, a_real fdb)
 {
     a_real const err = set - fdb;
     a_pid_fuzzy_out_(ctx, err - ctx->pid.err, err);
-    return a_pid_run_(&ctx->pid, set, fdb, err);
+    return a_pid_run(&ctx->pid, set, fdb);
 }
 
-A_HIDDEN a_real a_pid_pos_(a_pid *ctx, a_real fdb, a_real err);
 a_real a_pid_fuzzy_pos(a_pid_fuzzy *ctx, a_real set, a_real fdb)
 {
     a_real const err = set - fdb;
     a_pid_fuzzy_out_(ctx, err - ctx->pid.err, err);
-    return a_pid_pos_(&ctx->pid, fdb, err);
+    return a_pid_pos(&ctx->pid, set, fdb);
 }
 
-A_HIDDEN a_real a_pid_inc_(a_pid *ctx, a_real fdb, a_real err);
 a_real a_pid_fuzzy_inc(a_pid_fuzzy *ctx, a_real set, a_real fdb)
 {
     a_real const err = set - fdb;
     a_pid_fuzzy_out_(ctx, err - ctx->pid.err, err);
-    return a_pid_inc_(&ctx->pid, fdb, err);
+    return a_pid_inc(&ctx->pid, set, fdb);
 }
 
 void a_pid_fuzzy_zero(a_pid_fuzzy *ctx) { a_pid_zero(&ctx->pid); }

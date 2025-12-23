@@ -7,13 +7,9 @@ void a_pid_set_kpid(a_pid *ctx, a_real kp, a_real ki, a_real kd)
     ctx->kd = kd;
 }
 
-A_HIDDEN a_real a_pid_run_(a_pid *ctx, a_real set, a_real fdb, a_real err);
 a_real a_pid_run(a_pid *ctx, a_real set, a_real fdb)
 {
-    return a_pid_run_(ctx, set, fdb, set - fdb);
-}
-a_real a_pid_run_(a_pid *ctx, a_real set, a_real fdb, a_real err)
-{
+    a_real const err = set - fdb;
     a_real const var = ctx->fdb - fdb;
     ctx->out = A_SAT(set, ctx->outmin, ctx->outmax);
     ctx->var = var;
@@ -22,13 +18,9 @@ a_real a_pid_run_(a_pid *ctx, a_real set, a_real fdb, a_real err)
     return ctx->out;
 }
 
-A_HIDDEN a_real a_pid_pos_(a_pid *ctx, a_real fdb, a_real err);
 a_real a_pid_pos(a_pid *ctx, a_real set, a_real fdb)
 {
-    return a_pid_pos_(ctx, fdb, set - fdb);
-}
-a_real a_pid_pos_(a_pid *ctx, a_real fdb, a_real err)
-{
+    a_real const err = set - fdb;
     a_real const var = ctx->fdb - fdb;
     /* When the limit of integration is exceeded or the direction of integration is the same, the integration stops. */
     if ((ctx->sum > ctx->summin && ctx->sum < ctx->summax) || ctx->sum * err < 0)
@@ -48,13 +40,9 @@ a_real a_pid_pos_(a_pid *ctx, a_real fdb, a_real err)
     return ctx->out;
 }
 
-A_HIDDEN a_real a_pid_inc_(a_pid *ctx, a_real fdb, a_real err);
 a_real a_pid_inc(a_pid *ctx, a_real set, a_real fdb)
 {
-    return a_pid_inc_(ctx, fdb, set - fdb);
-}
-a_real a_pid_inc_(a_pid *ctx, a_real fdb, a_real err)
-{
+    a_real const err = set - fdb;
     a_real const var = ctx->fdb - fdb;
     ctx->out += ctx->kp * (err - ctx->err) + ctx->ki * err + ctx->kd * (var - ctx->var);
     ctx->out = A_SAT(ctx->out, ctx->outmin, ctx->outmax);
