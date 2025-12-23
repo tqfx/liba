@@ -98,6 +98,8 @@ A_EXTERN void a_pid_fuzzy_set_rule(a_pid_fuzzy *ctx, unsigned int nrule, a_real 
 */
 A_EXTERN void a_pid_fuzzy_set_kpid(a_pid_fuzzy *ctx, a_real kp, a_real ki, a_real kd);
 
+A_EXTERN void a_pid_fuzzy_iter(a_pid_fuzzy *ctx, a_real err, a_real ec);
+
 /*!
  @brief compute for fuzzy PID controller
  @param[in,out] ctx points to an instance of fuzzy PID controller
