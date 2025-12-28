@@ -13,7 +13,7 @@ int a_plane_set_dir(a_plane *ctx, a_real x, a_real y, a_real z)
         ctx->dir_.y = y;
         ctx->dir_.z = z;
     }
-    else if (s >= A_REAL_EPS)
+    else if (s > 0)
     {
         s = 1 / a_real_sqrt(s);
         ctx->dir_.x = x * s;
@@ -26,11 +26,9 @@ int a_plane_set_dir(a_plane *ctx, a_real x, a_real y, a_real z)
 
 int a_plane_set_uv(a_plane *ctx, a_vector3 const *u, a_vector3 const *v)
 {
-    a_vector3 u_, v_, n_;
-    u_ = *u;
-    if (a_vector3_unit(&u_) < A_REAL_EPS) { return A_FAILURE; }
-    v_ = *v;
-    if (a_vector3_unit(&v_) < A_REAL_EPS) { return A_FAILURE; }
+    a_vector3 u_ = *u, v_ = *v, n_;
+    a_vector3_unit(&u_);
+    a_vector3_unit(&v_);
     a_vector3_cross(&u_, &v_, &n_);
     if (a_vector3_unit(&n_) >= 1 - A_REAL_EPS)
     {
@@ -46,9 +44,9 @@ int a_plane_set_u(a_plane *ctx, a_vector3 const *n, a_vector3 const *u)
 {
     a_vector3 u_, v_;
     a_vector3_cross(n, u, &v_);
-    if (a_vector3_unit(&v_) < A_REAL_EPS) { return A_FAILURE; }
+    if (!(a_vector3_unit(&v_) > 0)) { return A_FAILURE; }
     a_vector3_cross(&v_, n, &u_);
-    if (a_vector3_unit(&u_) < A_REAL_EPS) { return A_FAILURE; }
+    if (!(a_vector3_unit(&u_) > 0)) { return A_FAILURE; }
     a_vector3_cross(&u_, &v_, &ctx->dir_);
     ctx->u_ = u_;
     ctx->v_ = v_;
@@ -59,9 +57,9 @@ int a_plane_set_v(a_plane *ctx, a_vector3 const *n, a_vector3 const *v)
 {
     a_vector3 u_, v_;
     a_vector3_cross(v, n, &u_);
-    if (a_vector3_unit(&u_) < A_REAL_EPS) { return A_FAILURE; }
+    if (!(a_vector3_unit(&u_) > 0)) { return A_FAILURE; }
     a_vector3_cross(n, &u_, &v_);
-    if (a_vector3_unit(&v_) < A_REAL_EPS) { return A_FAILURE; }
+    if (!(a_vector3_unit(&v_) > 0)) { return A_FAILURE; }
     a_vector3_cross(&u_, &v_, &ctx->dir_);
     ctx->u_ = u_;
     ctx->v_ = v_;
@@ -123,7 +121,7 @@ int a_plane_set4(a_plane *ctx, a_real a, a_real b, a_real c, a_real d)
         ctx->dir_.y = b;
         ctx->dir_.z = c;
     }
-    else if (s >= A_REAL_EPS)
+    else if (s > 0)
     {
         d = 0 - d / s;
         s = 1 / a_real_sqrt(s);
