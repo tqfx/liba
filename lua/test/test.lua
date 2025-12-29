@@ -9,7 +9,9 @@ function m.dir(...)
         else
             io_write_cache[str] = true
             if type(x) == "table" then
-                for idx, val in pairs(x) do
+                for idx_, val_ in pairs(x) do
+                    local idx = idx_
+                    local val = val_
                     if type(idx) ~= "string" then
                         idx = "[" .. tostring(idx) .. "]"
                     elseif idx:find('"') then

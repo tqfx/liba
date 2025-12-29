@@ -13,6 +13,11 @@
 void ic_history_add(char const *entry);
 char *ic_readline(char const *prompt_text);
 #define lua_initreadline(L) lua_initline(L)
+#if defined(LUA_VERSION_NUM) && (LUA_VERSION_NUM > 504)
+#define lua_readline(b, p) ic_readline(p)
+#define lua_saveline(line) ic_history_add(line)
+#define lua_freeline(b) free(b)
+#else /* !LUA_VERSION_NUM */
 #define lua_readline(L, b, p) (((b) = ic_readline(p)) != NULL)
 #if defined(LUA_VERSION_NUM) && (LUA_VERSION_NUM > 502)
 #define lua_saveline(L, line) ic_history_add(line)
@@ -22,6 +27,7 @@ char *ic_readline(char const *prompt_text);
         ic_history_add(lua_tostring(L, idx));
 #endif /* LUA_VERSION_NUM */
 #define lua_freeline(L, b) free(b)
+#endif /* LUA_VERSION_NUM */
 static char const *keywords[] = {
     "and", "break", "do", "else", "elseif", "end",
     "false", "for", "function", "goto", "if", "in",
