@@ -61,7 +61,7 @@
 include(${CMAKE_ROOT}/Modules/FindPackageHandleStandardArgs.cmake)
 list(APPEND LUA_REQUIRED_VARS LUA_LIBRARIES LUA_INCLUDE_DIR)
 
-foreach(VERSION ${Lua_FIND_VERSION} 5.4 5.3 5.2 5.1 5.0)
+foreach(VERSION ${Lua_FIND_VERSION} 5.5 5.4 5.3 5.2 5.1 5.0)
   string(REGEX MATCH "^([0-9]+)\\.([0-9]+)" VERSION "${VERSION}")
   find_path(LUA_INCLUDE_DIR lua.h PATH_SUFFIXES
     include/lua${CMAKE_MATCH_1}${CMAKE_MATCH_2}
