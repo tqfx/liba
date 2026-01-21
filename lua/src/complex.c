@@ -37,9 +37,14 @@ static int liba_complex_from(lua_State *L, a_complex *z, int idx)
             break;
         }
         A_FALLTHROUGH;
+    case LUA_TTABLE:
     default:
-        z->real = 0;
-        z->imag = 0;
+        lua_geti(L, 1, 1);
+        z->real = (a_real)luaL_optnumber(L, -1, 0);
+        lua_pop(L, 1);
+        lua_geti(L, 1, 2);
+        z->imag = (a_real)luaL_optnumber(L, -1, 0);
+        lua_pop(L, 1);
     }
     return type;
 }
@@ -562,6 +567,15 @@ F1(acoth)
 static int liba_complex_set(lua_State *L)
 {
     a_complex *const ctx = (a_complex *)lua_touserdata(L, 1);
+    if (lua_type(L, 2) == LUA_TNUMBER)
+    {
+        switch (lua_tointeger(L, 2))
+        {
+        case 1: ctx->real = (a_real)luaL_checknumber(L, 3); return 0;
+        case 2: ctx->imag = (a_real)luaL_checknumber(L, 3); return 0;
+        default: return 0;
+        }
+    }
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x0F6133A2: /* real */
@@ -608,6 +622,15 @@ static int liba_complex_set(lua_State *L)
 static int liba_complex_get(lua_State *L)
 {
     a_complex const *const ctx = (a_complex const *)lua_touserdata(L, 1);
+    if (lua_type(L, 2) == LUA_TNUMBER)
+    {
+        switch (lua_tointeger(L, 2))
+        {
+        case 1: lua_pushnumber(L, (lua_Number)ctx->real); return 1;
+        case 2: lua_pushnumber(L, (lua_Number)ctx->imag); return 1;
+        default: return 0;
+        }
+    }
     switch (a_hash_bkdr(lua_tostring(L, 2), 0))
     {
     case 0x0F6133A2: /* real */
