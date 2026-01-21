@@ -24,11 +24,6 @@ a_real a_vector3_norm(a_vector3 const *ctx)
     return a_real_sqrt(ctx->x * ctx->x + ctx->y * ctx->y + ctx->z * ctx->z);
 }
 
-a_real a_vector3_norm1(a_vector3 const *ctx)
-{
-    return A_ABS(ctx->x) + A_ABS(ctx->y) + A_ABS(ctx->z);
-}
-
 a_real a_vector3_norm2(a_vector3 const *ctx)
 {
     return ctx->x * ctx->x + ctx->y * ctx->y + ctx->z * ctx->z;
@@ -45,14 +40,6 @@ a_real a_vector3_dist(a_vector3 const *lhs, a_vector3 const *rhs)
     a_real const y = rhs->y - lhs->y;
     a_real const z = rhs->z - lhs->z;
     return a_real_sqrt(x * x + y * y + z * z);
-}
-
-a_real a_vector3_dist1(a_vector3 const *lhs, a_vector3 const *rhs)
-{
-    a_real const x = rhs->x - lhs->x;
-    a_real const y = rhs->y - lhs->y;
-    a_real const z = rhs->z - lhs->z;
-    return A_ABS(x) + A_ABS(y) + A_ABS(z);
 }
 
 a_real a_vector3_dist2(a_vector3 const *lhs, a_vector3 const *rhs)

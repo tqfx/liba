@@ -139,10 +139,6 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 #if defined(__cplusplus)
         TEST_BUG(iseq(a.dist(b), 13));
 #endif /* __cplusplus */
-        TEST_BUG(iseq(a_point3_dist1(&a, &b), 19));
-#if defined(__cplusplus)
-        TEST_BUG(iseq(a.dist1(b), 19));
-#endif /* __cplusplus */
         TEST_BUG(iseq(a_point3_dist2(&a, &b), 13 * 13));
 #if defined(__cplusplus)
         TEST_BUG(iseq(a.dist2(b), 13 * 13));

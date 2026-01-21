@@ -184,10 +184,6 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 #if defined(__cplusplus)
         TEST_BUG(iseq(a.norm(), 13));
 #endif /* __cplusplus */
-        TEST_BUG(iseq(a_vector3_norm1(&a), 19));
-#if defined(__cplusplus)
-        TEST_BUG(iseq(a.norm1(), 19));
-#endif /* __cplusplus */
         TEST_BUG(iseq(a_vector3_norm2(&a), 13 * 13));
 #if defined(__cplusplus)
         TEST_BUG(iseq(a.norm2(), 13 * 13));
@@ -206,10 +202,6 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(a_vector3_dist(&a, &b), 13));
 #if defined(__cplusplus)
         TEST_BUG(iseq(a.dist(b), 13));
-#endif /* __cplusplus */
-        TEST_BUG(iseq(a_vector3_dist1(&a, &b), 19));
-#if defined(__cplusplus)
-        TEST_BUG(iseq(a.dist1(b), 19));
 #endif /* __cplusplus */
         TEST_BUG(iseq(a_vector3_dist2(&a, &b), 13 * 13));
 #if defined(__cplusplus)

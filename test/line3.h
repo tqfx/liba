@@ -95,7 +95,6 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_point3 const c = A_POINT3_C(0, 1, 2);
         TEST_BUG(a_line3_set(&ctx, &a, &b) == 0);
         TEST_BUG(iseq(a_line3_dist2(&ctx, &c), 2));
-        TEST_BUG(iseq(a_line3_dist1(&ctx, &c), A_REAL_SQRT1_3 * 4));
         TEST_BUG(iseq(a_line3_dist(&ctx, &c), A_REAL_SQRT2));
     }
     {

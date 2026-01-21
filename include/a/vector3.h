@@ -54,11 +54,9 @@ A_INTERN void a_vector3_neg(a_vector3 const *ctx, a_vector3 *res);
 
 A_EXTERN a_real a_vector3_unit(a_vector3 *ctx);
 A_EXTERN a_real a_vector3_norm(a_vector3 const *ctx);
-A_EXTERN a_real a_vector3_norm1(a_vector3 const *ctx);
 A_EXTERN a_real a_vector3_norm2(a_vector3 const *ctx);
 A_EXTERN a_real a_vector3_dot(a_vector3 const *lhs, a_vector3 const *rhs);
 A_EXTERN a_real a_vector3_dist(a_vector3 const *lhs, a_vector3 const *rhs);
-A_EXTERN a_real a_vector3_dist1(a_vector3 const *lhs, a_vector3 const *rhs);
 A_EXTERN a_real a_vector3_dist2(a_vector3 const *lhs, a_vector3 const *rhs);
 A_EXTERN a_real a_vector3_angle(a_vector3 const *lhs, a_vector3 const *rhs);
 A_EXTERN a_bool a_vector3_isver(a_vector3 const *lhs, a_vector3 const *rhs);
@@ -138,11 +136,9 @@ struct a_vector3
     }
     A_INLINE a_real unit() { return a_vector3_unit(this); }
     A_INLINE a_real norm() const { return a_vector3_norm(this); }
-    A_INLINE a_real norm1() const { return a_vector3_norm1(this); }
     A_INLINE a_real norm2() const { return a_vector3_norm2(this); }
     A_INLINE a_real dot(a_vector3 const &rhs) const { return a_vector3_dot(this, &rhs); }
     A_INLINE a_real dist(a_vector3 const &rhs) const { return a_vector3_dist(this, &rhs); }
-    A_INLINE a_real dist1(a_vector3 const &rhs) const { return a_vector3_dist1(this, &rhs); }
     A_INLINE a_real dist2(a_vector3 const &rhs) const { return a_vector3_dist2(this, &rhs); }
     A_INLINE a_real angle(a_vector3 const &rhs) const { return a_vector3_angle(this, &rhs); }
     A_INLINE a_bool isver(a_vector3 const &rhs) const { return a_vector3_isver(this, &rhs); }

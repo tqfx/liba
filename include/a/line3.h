@@ -52,11 +52,9 @@ A_EXTERN a_real a_line3_limproj(a_line3 const *ctx, a_real min, a_real max, a_po
 
 A_EXTERN void a_line3_sdist(a_line3 const *ctx, a_point3 const *rhs, a_vector3 *res);
 A_EXTERN a_real a_line3_dist(a_line3 const *ctx, a_point3 const *rhs);
-A_EXTERN a_real a_line3_dist1(a_line3 const *ctx, a_point3 const *rhs);
 A_EXTERN a_real a_line3_dist2(a_line3 const *ctx, a_point3 const *rhs);
 
 A_EXTERN a_real a_line3_limdist(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs, a_real *w, a_point3 *p);
-A_EXTERN a_real a_line3_limdist1(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs, a_real *w, a_point3 *p);
 A_EXTERN a_real a_line3_limdist2(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs, a_real *w, a_point3 *p);
 
 A_EXTERN a_real a_line3_segdist(a_line3 const *ctx, a_line3 const *rhs,
@@ -139,10 +137,6 @@ struct a_line3
     {
         return a_line3_dist(this, &rhs);
     }
-    A_INLINE a_real dist1(a_point3 const &rhs) const
-    {
-        return a_line3_dist1(this, &rhs);
-    }
     A_INLINE a_real dist2(a_point3 const &rhs) const
     {
         return a_line3_dist2(this, &rhs);
@@ -150,10 +144,6 @@ struct a_line3
     A_INLINE a_real limdist(a_real min, a_real max_, a_point3 const &rhs, a_real &w, a_point3 &p)
     {
         return a_line3_limdist(this, min, max_, &rhs, &w, &p);
-    }
-    A_INLINE a_real limdist1(a_real min, a_real max_, a_point3 const &rhs, a_real &w, a_point3 &p)
-    {
-        return a_line3_limdist1(this, min, max_, &rhs, &w, &p);
     }
     A_INLINE a_real limdist2(a_real min, a_real max_, a_point3 const &rhs, a_real &w, a_point3 &p)
     {

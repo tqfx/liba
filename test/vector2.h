@@ -130,10 +130,6 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 #if defined(__cplusplus)
         TEST_BUG(iseq(a.norm(), 5));
 #endif /* __cplusplus */
-        TEST_BUG(iseq(a_vector2_norm1(&a), 7));
-#if defined(__cplusplus)
-        TEST_BUG(iseq(a.norm1(), 7));
-#endif /* __cplusplus */
         TEST_BUG(iseq(a_vector2_norm2(&a), 5 * 5));
 #if defined(__cplusplus)
         TEST_BUG(iseq(a.norm2(), 5 * 5));
@@ -152,10 +148,6 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(a_vector2_dist(&a, &b), 5));
 #if defined(__cplusplus)
         TEST_BUG(iseq(a.dist(b), 5));
-#endif /* __cplusplus */
-        TEST_BUG(iseq(a_vector2_dist1(&a, &b), 7));
-#if defined(__cplusplus)
-        TEST_BUG(iseq(a.dist1(b), 7));
 #endif /* __cplusplus */
         TEST_BUG(iseq(a_vector2_dist2(&a, &b), 5 * 5));
 #if defined(__cplusplus)

@@ -100,10 +100,6 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 #if defined(__cplusplus)
         TEST_BUG(iseq(a.dist(b), 5));
 #endif /* __cplusplus */
-        TEST_BUG(iseq(a_point2_dist1(&a, &b), 7));
-#if defined(__cplusplus)
-        TEST_BUG(iseq(a.dist1(b), 7));
-#endif /* __cplusplus */
         TEST_BUG(iseq(a_point2_dist2(&a, &b), 5 * 5));
 #if defined(__cplusplus)
         TEST_BUG(iseq(a.dist2(b), 5 * 5));

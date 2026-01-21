@@ -113,13 +113,6 @@ a_real a_line3_dist(a_line3 const *ctx, a_point3 const *rhs)
     return a_vector3_norm(&v);
 }
 
-a_real a_line3_dist1(a_line3 const *ctx, a_point3 const *rhs)
-{
-    a_vector3 v;
-    a_line3_sdist(ctx, rhs, &v);
-    return a_vector3_norm1(&v);
-}
-
 a_real a_line3_dist2(a_line3 const *ctx, a_point3 const *rhs)
 {
     a_vector3 v;
@@ -131,12 +124,6 @@ a_real a_line3_limdist(a_line3 const *ctx, a_real min, a_real max, a_point3 cons
 {
     *w = a_line3_limproj(ctx, min, max, rhs, p);
     return a_point3_dist(rhs, p);
-}
-
-a_real a_line3_limdist1(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs, a_real *w, a_point3 *p)
-{
-    *w = a_line3_limproj(ctx, min, max, rhs, p);
-    return a_point3_dist1(rhs, p);
 }
 
 a_real a_line3_limdist2(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs, a_real *w, a_point3 *p)

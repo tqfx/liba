@@ -118,12 +118,6 @@ a_real a_line2_limdist(a_line2 const *ctx, a_real min, a_real max, a_point2 cons
     return a_point2_dist(rhs, p);
 }
 
-a_real a_line2_limdist1(a_line2 const *ctx, a_real min, a_real max, a_point2 const *rhs, a_real *w, a_point2 *p)
-{
-    *w = a_line2_limproj(ctx, min, max, rhs, p);
-    return a_point2_dist1(rhs, p);
-}
-
 a_real a_line2_limdist2(a_line2 const *ctx, a_real min, a_real max, a_point2 const *rhs, a_real *w, a_point2 *p)
 {
     *w = a_line2_limproj(ctx, min, max, rhs, p);

@@ -55,7 +55,6 @@ A_INTERN void a_point3_pos(a_point3 const *ctx, a_vector3 *res);
 A_INTERN void a_point3_neg(a_point3 const *ctx, a_vector3 *res);
 
 A_EXTERN a_real a_point3_dist(a_point3 const *lhs, a_point3 const *rhs);
-A_EXTERN a_real a_point3_dist1(a_point3 const *lhs, a_point3 const *rhs);
 A_EXTERN a_real a_point3_dist2(a_point3 const *lhs, a_point3 const *rhs);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_POINT3_C)
@@ -126,7 +125,6 @@ struct a_point3
         a_point3_neg(this, &res);
     }
     A_INLINE a_real dist(a_point3 const &rhs) const { return a_point3_dist(this, &rhs); }
-    A_INLINE a_real dist1(a_point3 const &rhs) const { return a_point3_dist1(this, &rhs); }
     A_INLINE a_real dist2(a_point3 const &rhs) const { return a_point3_dist2(this, &rhs); }
     friend A_INLINE void operator+=(a_point3 &lhs, a_vector3 const &rhs) { a_point3_add(&lhs, &rhs, &lhs); }
     friend A_INLINE a_point3 operator+(a_point3 const &lhs, a_vector3 const &rhs)
