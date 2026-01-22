@@ -38,13 +38,15 @@ static int liba_complex_from(lua_State *L, a_complex *z, int idx)
         }
         A_FALLTHROUGH;
     case LUA_TTABLE:
-    default:
         lua_geti(L, idx, 1);
         z->real = (a_real)luaL_optnumber(L, -1, 0);
         lua_pop(L, 1);
         lua_geti(L, idx, 2);
         z->imag = (a_real)luaL_optnumber(L, -1, 0);
         lua_pop(L, 1);
+        break;
+    default:
+        luaL_error(L, "not support %s value", lua_typename(L, type));
     }
     return type;
 }
