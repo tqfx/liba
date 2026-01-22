@@ -55,19 +55,15 @@ unsigned int a_complex_parse(a_complex *ctx, char const *str)
     if (!str) { return 0; }
     for (ctx->real = 0; *u.s; ++u.s)
     {
-        if (*u.s == '+' || *u.s == '-' || ('0' <= *u.s && *u.s <= '9') || *u.s == '.')
-        {
-            ctx->real = a_str2num(u.s, &u.p);
-            break;
-        }
+        char const *s = u.s;
+        ctx->real = a_str2num(u.s, &u.p);
+        if (s < u.s) { break; }
     }
     for (ctx->imag = 0; *u.s; ++u.s)
     {
-        if (*u.s == '+' || *u.s == '-' || ('0' <= *u.s && *u.s <= '9') || *u.s == '.')
-        {
-            ctx->imag = a_str2num(u.s, &u.p);
-            break;
-        }
+        char const *s = u.s;
+        ctx->imag = a_str2num(u.s, &u.p);
+        if (s < u.s) { break; }
     }
     return (unsigned int)(u.s - str);
 }
