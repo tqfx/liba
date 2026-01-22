@@ -46,7 +46,7 @@ static int liba_complex_from(lua_State *L, a_complex *z, int idx)
         lua_pop(L, 1);
         break;
     default:
-        luaL_error(L, "not support %s value", lua_typename(L, type));
+        luaL_typerror(L, idx, "complex");
     }
     return type;
 }
