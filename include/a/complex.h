@@ -28,8 +28,8 @@
 */
 typedef struct a_complex
 {
-    a_real real; /*! real part of complex number */
-    a_real imag; /*! imaginary part of complex number */
+    a_real real; /*!< real part of complex number */
+    a_real imag; /*!< imaginary part of complex number */
 } a_complex;
 
 #if defined(__cplusplus)
