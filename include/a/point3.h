@@ -54,7 +54,33 @@ A_INTERN void a_point3_div(a_point3 const *lhs, a_real rhs, a_point3 *res);
 A_INTERN void a_point3_pos(a_point3 const *ctx, a_vector3 *res);
 A_INTERN void a_point3_neg(a_point3 const *ctx, a_vector3 *res);
 
+/*!
+ @brief compute the distance between two 3D points.
+ @details In three dimensions,
+ let point \f$p\f$ have coordinates \f$(p_1,p_2,p_3)\f$ and
+ let point \f$q\f$ have coordinates \f$(q_1,q_2,q_3)\f$.
+ Then the distance between \f$p\f$ and \f$q\f$ is given by:
+ \f[
+  d(p,q)=\sqrt{(p_1-q_1)^2+(p_2-q_2)^2+(p_3-q_3)^2}
+ \f]
+ @param[in] lhs is left-hand side 3D point
+ @param[in] rhs is right-hand side 3D point
+ @return the distance between two 3D points
+*/
 A_EXTERN a_real a_point3_dist(a_point3 const *lhs, a_point3 const *rhs);
+/*!
+ @brief compute the squared distance between two 3D points.
+ @details In three dimensions,
+ let point \f$p\f$ have coordinates \f$(p_1,p_2,p_3)\f$ and
+ let point \f$q\f$ have coordinates \f$(q_1,q_2,q_3)\f$.
+ Then the squared distance between \f$p\f$ and \f$q\f$ is given by:
+ \f[
+  d(p,q)^2=(p_1-q_1)^2+(p_2-q_2)^2+(p_3-q_3)^2
+ \f]
+ @param[in] lhs is left-hand side 3D point
+ @param[in] rhs is right-hand side 3D point
+ @return the squared distance between two 3D points
+*/
 A_EXTERN a_real a_point3_dist2(a_point3 const *lhs, a_point3 const *rhs);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_POINT3_C)
@@ -124,7 +150,9 @@ struct a_point3
     {
         a_point3_neg(this, &res);
     }
+    /*! @copybrief a_point3_dist @see a_point3_dist */
     A_INLINE a_real dist(a_point3 const &rhs) const { return a_point3_dist(this, &rhs); }
+    /*! @copybrief a_point3_dist2 @see a_point3_dist2 */
     A_INLINE a_real dist2(a_point3 const &rhs) const { return a_point3_dist2(this, &rhs); }
     friend A_INLINE void operator+=(a_point3 &lhs, a_vector3 const &rhs) { a_point3_add(&lhs, &rhs, &lhs); }
     friend A_INLINE a_point3 operator+(a_point3 const &lhs, a_vector3 const &rhs)

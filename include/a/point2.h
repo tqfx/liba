@@ -52,7 +52,33 @@ A_INTERN void a_point2_div(a_point2 const *lhs, a_real rhs, a_point2 *res);
 A_INTERN void a_point2_pos(a_point2 const *ctx, a_vector2 *res);
 A_INTERN void a_point2_neg(a_point2 const *ctx, a_vector2 *res);
 
+/*!
+ @brief compute the distance between two 2D points.
+ @details In two dimensions,
+ let point \f$p\f$ have coordinates \f$(p_1,p_2)\f$ and
+ let point \f$q\f$ have coordinates \f$(q_1,q_2)\f$.
+ Then the distance between \f$p\f$ and \f$q\f$ is given by:
+ \f[
+  d(p,q)=\sqrt{(p_1-q_1)^2+(p_2-q_2)^2}
+ \f]
+ @param[in] lhs is left-hand side 2D point
+ @param[in] rhs is right-hand side 2D point
+ @return the distance between two 2D points
+*/
 A_EXTERN a_real a_point2_dist(a_point2 const *lhs, a_point2 const *rhs);
+/*!
+ @brief compute the squared distance between two 2D points.
+ @details In two dimensions,
+ let point \f$p\f$ have coordinates \f$(p_1,p_2)\f$ and
+ let point \f$q\f$ have coordinates \f$(q_1,q_2)\f$.
+ Then the squared distance between \f$p\f$ and \f$q\f$ is given by:
+ \f[
+  d(p,q)^2=(p_1-q_1)^2+(p_2-q_2)^2
+ \f]
+ @param[in] lhs is left-hand side 2D point
+ @param[in] rhs is right-hand side 2D point
+ @return the squared distance between two 2D points
+*/
 A_EXTERN a_real a_point2_dist2(a_point2 const *lhs, a_point2 const *rhs);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_POINT2_C)
@@ -114,7 +140,9 @@ struct a_point2
     {
         a_point2_neg(this, &res);
     }
+    /*! @copybrief a_point2_dist @see a_point2_dist */
     A_INLINE a_real dist(a_point2 const &rhs) const { return a_point2_dist(this, &rhs); }
+    /*! @copybrief a_point2_dist2 @see a_point2_dist2 */
     A_INLINE a_real dist2(a_point2 const &rhs) const { return a_point2_dist2(this, &rhs); }
     friend A_INLINE void operator+=(a_point2 &lhs, a_vector2 const &rhs) { a_point2_add(&lhs, &rhs, &lhs); }
     friend A_INLINE a_point2 operator+(a_point2 const &lhs, a_vector2 const &rhs)
