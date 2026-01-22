@@ -64,7 +64,7 @@ extern "C" {
 #endif /* LUA_VERSION_NUM */
 
 #if !defined LUA_VERSION_NUM || (LUA_VERSION_NUM < 503)
-#define lua_geti(L, idx, i) (lua_pushinteger(L, i), lua_gettable(L, (idx) - 1))
+#define lua_geti(L, idx, i) (lua_pushinteger(L, i), lua_gettable(L, (idx) - ((idx) < 0)))
 #endif /* LUA_VERSION_NUM */
 
 #if defined(LUA_VERSION_NUM) && (LUA_VERSION_NUM > 501)
