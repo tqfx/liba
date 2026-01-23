@@ -32,22 +32,22 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(y, 2));
         TEST_BUG(iseq(z, 3));
 #endif /* __cplusplus */
-        a_point3_set_pol(&a, A_REAL_SQRT2, A_REAL_PI_4, 1);
+        a_point3_set_cyl(&a, A_REAL_SQRT2, A_REAL_PI_4, 1);
         TEST_BUG(iseq(a.x, 1));
         TEST_BUG(iseq(a.y, 1));
         TEST_BUG(iseq(a.z, 1));
 #if defined(__cplusplus)
-        a.set_pol(A_REAL_SQRT2, A_REAL_PI_4, 1);
+        a.set_cyl(A_REAL_SQRT2, A_REAL_PI_4, 1);
         TEST_BUG(iseq(a.x, 1));
         TEST_BUG(iseq(a.y, 1));
         TEST_BUG(iseq(a.z, 1));
 #endif /* __cplusplus */
-        a_point3_pol(&a, &x, &y, &z);
+        a_point3_cyl(&a, &x, &y, &z);
         TEST_BUG(iseq(x, A_REAL_SQRT2));
         TEST_BUG(iseq(y, A_REAL_PI_4));
         TEST_BUG(iseq(z, 1));
 #if defined(__cplusplus)
-        a.pol(x, y, z);
+        a.cyl(x, y, z);
         TEST_BUG(iseq(x, A_REAL_SQRT2));
         TEST_BUG(iseq(y, A_REAL_PI_4));
         TEST_BUG(iseq(z, 1));
