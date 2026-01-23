@@ -19,7 +19,7 @@
 #define A_COMPLEX_C(real, imag) {a_real_c(real), a_real_c(imag)}
 /* clang-format on */
 
-/*! static cast to \ref a_complex */
+/*! static cast to @ref a_complex */
 #define a_complex_c(x) a_cast_s(a_complex, x)
 #define a_complex_(_, x) a_cast_s(a_complex _, x)
 

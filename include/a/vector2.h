@@ -20,7 +20,7 @@
 #define A_VECTOR2_C(x, y) {a_real_c(x), a_real_c(y)}
 /* clang-format on */
 
-/*! static cast to \ref a_vector2 */
+/*! static cast to @ref a_vector2 */
 #define a_vector2_c(x) a_cast_s(a_vector2, x)
 #define a_vector2_(_, x) a_cast_s(a_vector2 _, x)
 

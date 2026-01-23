@@ -15,7 +15,7 @@
  @{
 */
 
-/*! static cast to \ref a_line2 */
+/*! static cast to @ref a_line2 */
 #define a_line2_c(x) a_cast_s(a_line2, x)
 #define a_line2_(_, x) a_cast_s(a_line2 _, x)
 

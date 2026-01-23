@@ -20,7 +20,7 @@
 #define A_VECTOR3_C(x, y, z) {a_real_c(x), a_real_c(y), a_real_c(z)}
 /* clang-format on */
 
-/*! static cast to \ref a_vector3 */
+/*! static cast to @ref a_vector3 */
 #define a_vector3_c(x) a_cast_s(a_vector3, x)
 #define a_vector3_(_, x) a_cast_s(a_vector3 _, x)
 

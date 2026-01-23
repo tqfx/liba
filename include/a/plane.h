@@ -15,7 +15,7 @@
  @{
 */
 
-/*! static cast to \ref a_plane */
+/*! static cast to @ref a_plane */
 #define a_plane_c(x) a_cast_s(a_plane, x)
 #define a_plane_(_, x) a_cast_s(a_plane _, x)
 

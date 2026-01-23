@@ -253,24 +253,24 @@ A_EXTERN a_real a_mf_pi(a_real x, a_real a, a_real b, a_real c, a_real d);
  @param[in] e enumeration for membership function
  |                   |                                        |
  | :---------------- | -------------------------------------- |
- | \ref A_MF_GAUSS   | a_mf_gauss(x, sigma, c)                |
- | \ref A_MF_GAUSS2  | a_mf_gauss2(x, sigma1, c1, sigma2, c2) |
- | \ref A_MF_GBELL   | a_mf_gbell(x, a, b, c)                 |
- | \ref A_MF_SIG     | a_mf_sig(x, a, c)                      |
- | \ref A_MF_DSIG    | a_mf_dsig(x, a1, c1, a2, c2)           |
- | \ref A_MF_PSIG    | a_mf_psig(x, a1, c1, a2, c2)           |
- | \ref A_MF_TRAP    | a_mf_trap(x, a, b, c, d)               |
- | \ref A_MF_TRI     | a_mf_tri(x, a, b, c)                   |
- | \ref A_MF_LINS    | a_mf_lins(x, a, b)                     |
- | \ref A_MF_LINZ    | a_mf_linz(x, a, b)                     |
- | \ref A_MF_S       | a_mf_s(x, a, b)                        |
- | \ref A_MF_Z       | a_mf_z(x, a, b)                        |
- | \ref A_MF_PI      | a_mf_pi(x, a, b, c, d)                 |
+ | @ref A_MF_GAUSS   | a_mf_gauss(x, sigma, c)                |
+ | @ref A_MF_GAUSS2  | a_mf_gauss2(x, sigma1, c1, sigma2, c2) |
+ | @ref A_MF_GBELL   | a_mf_gbell(x, a, b, c)                 |
+ | @ref A_MF_SIG     | a_mf_sig(x, a, c)                      |
+ | @ref A_MF_DSIG    | a_mf_dsig(x, a1, c1, a2, c2)           |
+ | @ref A_MF_PSIG    | a_mf_psig(x, a1, c1, a2, c2)           |
+ | @ref A_MF_TRAP    | a_mf_trap(x, a, b, c, d)               |
+ | @ref A_MF_TRI     | a_mf_tri(x, a, b, c)                   |
+ | @ref A_MF_LINS    | a_mf_lins(x, a, b)                     |
+ | @ref A_MF_LINZ    | a_mf_linz(x, a, b)                     |
+ | @ref A_MF_S       | a_mf_s(x, a, b)                        |
+ | @ref A_MF_Z       | a_mf_z(x, a, b)                        |
+ | @ref A_MF_PI      | a_mf_pi(x, a, b, c, d)                 |
  @param[in] x input value for which to compute membership value.
  @param[in] a is an array that stores parameters.
-  @arg \b a[2] \ref a_mf_gauss \ref a_mf_sig \ref a_mf_lins \ref a_mf_linz \ref a_mf_s \ref a_mf_z
-  @arg \b a[3] \ref a_mf_gbell \ref a_mf_tri
-  @arg \b a[4] \ref a_mf_gauss2 \ref a_mf_dsig \ref a_mf_psig \ref a_mf_trap \ref a_mf_pi
+  @arg \b a[2] @ref a_mf_gauss @ref a_mf_sig @ref a_mf_lins @ref a_mf_linz @ref a_mf_s @ref a_mf_z
+  @arg \b a[3] @ref a_mf_gbell @ref a_mf_tri
+  @arg \b a[4] @ref a_mf_gauss2 @ref a_mf_dsig @ref a_mf_psig @ref a_mf_trap @ref a_mf_pi
  @return membership value.
 */
 A_EXTERN a_real a_mf(unsigned int e, a_real x, a_real const *a);

@@ -20,7 +20,7 @@
 #define A_POINT2_C(x, y) {a_real_c(x), a_real_c(y)}
 /* clang-format on */
 
-/*! static cast to \ref a_point2 */
+/*! static cast to @ref a_point2 */
 #define a_point2_c(x) a_cast_s(a_point2, x)
 #define a_point2_(_, x) a_cast_s(a_point2 _, x)
 

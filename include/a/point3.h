@@ -20,7 +20,7 @@
 #define A_POINT3_C(x, y, z) {a_real_c(x), a_real_c(y), a_real_c(z)}
 /* clang-format on */
 
-/*! static cast to \ref a_point3 */
+/*! static cast to @ref a_point3 */
 #define a_point3_c(x) a_cast_s(a_point3, x)
 #define a_point3_(_, x) a_cast_s(a_point3 _, x)
 

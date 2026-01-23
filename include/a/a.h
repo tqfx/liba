@@ -291,7 +291,7 @@
 #else /* !__cplusplus */
 #define A_NULL NULL
 #endif /* __cplusplus */
-/*! @brief static cast to \ref a_void */
+/*! @brief static cast to @ref a_void */
 #define a_void_c(x) a_cast_s(void, x)
 #define a_void_(_, x) a_cast_s(void _, x)
 /*! @brief incomplete type or no parameter or no return value */
@@ -314,7 +314,7 @@
 #endif /* __STDC_VERSION__ */
 #endif /* A_BOOL */
 #endif /* __cplusplus */
-/*! @brief static cast to \ref a_bool */
+/*! @brief static cast to @ref a_bool */
 #define a_bool_c(x) (!!(x))
 /*! @brief type, capable of holding one of the two values: 1 and 0 */
 typedef A_BOOL a_bool;
@@ -322,7 +322,7 @@ typedef A_BOOL a_bool;
 #define A_INT int
 #define A_INT_MAX INT_MAX
 #define A_INT_MIN INT_MIN
-/*! @brief static cast to \ref a_int */
+/*! @brief static cast to @ref a_int */
 #define a_int_c(x) a_cast_s(a_int, x)
 #define a_int_(_, x) a_cast_s(a_int _, x)
 /*! @brief signed integer type is guaranteed to be at least 16 bits */
@@ -330,7 +330,7 @@ typedef A_INT a_int;
 
 #define A_UINT unsigned int
 #define A_UINT_MAX UINT_MAX
-/*! @brief static cast to \ref a_uint */
+/*! @brief static cast to @ref a_uint */
 #define a_uint_c(x) a_cast_s(a_uint, x)
 #define a_uint_(_, x) a_cast_s(a_uint _, x)
 /*! @brief unsigned integer type is guaranteed to be at least 16 bits */
@@ -339,7 +339,7 @@ typedef A_UINT a_uint;
 #define A_SHRT short
 #define A_SHRT_MAX SHRT_MAX
 #define A_SHRT_MIN SHRT_MIN
-/*! @brief static cast to \ref a_shrt */
+/*! @brief static cast to @ref a_shrt */
 #define a_shrt_c(x) a_cast_s(a_shrt, x)
 #define a_shrt_(_, x) a_cast_s(a_shrt _, x)
 /*! @brief signed integer type is guaranteed to be at least 16 bits */
@@ -347,7 +347,7 @@ typedef A_SHRT a_shrt;
 
 #define A_USHRT unsigned short
 #define A_USHRT_MAX USHRT_MAX
-/*! @brief static cast to \ref a_ushrt */
+/*! @brief static cast to @ref a_ushrt */
 #define a_ushrt_c(x) a_cast_s(a_ushrt, x)
 #define a_ushrt_(_, x) a_cast_s(a_ushrt _, x)
 /*! @brief unsigned integer type is guaranteed to be at least 16 bits */
@@ -356,7 +356,7 @@ typedef A_USHRT a_ushrt;
 #define A_LONG long
 #define A_LONG_MIN LONG_MIN
 #define A_LONG_MAX LONG_MAX
-/*! @brief static cast to \ref a_long */
+/*! @brief static cast to @ref a_long */
 #define a_long_c(x) a_cast_s(a_long, x)
 #define a_long_(_, x) a_cast_s(a_long _, x)
 /*! @brief signed integer type is guaranteed to be at least 32 bits */
@@ -364,7 +364,7 @@ typedef A_LONG a_long;
 
 #define A_ULONG unsigned long
 #define A_ULONG_MAX ULONG_MAX
-/*! @brief static cast to \ref a_ulong */
+/*! @brief static cast to @ref a_ulong */
 #define a_ulong_c(x) a_cast_s(a_ulong, x)
 #define a_ulong_(_, x) a_cast_s(a_ulong _, x)
 /*! @brief unsigned integer type is guaranteed to be at least 32 bits */
@@ -375,7 +375,7 @@ typedef A_ULONG a_ulong;
 #define A_LLONG long long
 #define A_LLONG_MAX LLONG_MAX
 #define A_LLONG_MIN LLONG_MIN
-/*! @brief static cast to \ref a_llong */
+/*! @brief static cast to @ref a_llong */
 #define a_llong_c(x) a_cast_s(a_llong, x)
 #define a_llong_(_, x) a_cast_s(a_llong _, x)
 /*! @brief signed integer type is guaranteed to be at least 64 bits */
@@ -383,7 +383,7 @@ typedef A_LLONG a_llong;
 
 #define A_ULLONG unsigned long long
 #define A_ULLONG_MAX ULLONG_MAX
-/*! @brief static cast to \ref a_ullong */
+/*! @brief static cast to @ref a_ullong */
 #define a_ullong_c(x) a_cast_s(a_ullong, x)
 #define a_ullong_(_, x) a_cast_s(a_ullong _, x)
 /*! @brief unsigned integer type is guaranteed to be at least 64 bits */
@@ -393,7 +393,7 @@ typedef A_ULLONG a_ullong;
 
 #define A_BYTE unsigned char
 #define A_BYTE_MAX UCHAR_MAX
-/*! @brief static cast to \ref a_byte */
+/*! @brief static cast to @ref a_byte */
 #define a_byte_c(x) a_cast_s(a_byte, x)
 #define a_byte_(_, x) a_cast_s(a_byte _, x)
 /*! @brief type for unsigned character representation */
@@ -402,7 +402,7 @@ typedef A_BYTE a_byte;
 #define A_C8 char
 #define A_C8_MAX CHAR_MAX
 #define A_C8_MIN CHAR_MIN
-/*! @brief static cast to \ref a_c8 */
+/*! @brief static cast to @ref a_c8 */
 #define a_c8_c(x) a_cast_s(a_c8, x)
 #define a_c8_(_, x) a_cast_s(a_c8 _, x)
 /*! @brief type for character representation */
@@ -420,7 +420,7 @@ typedef A_C8 a_c8;
 #if !defined A_I8_MIN
 #define A_I8_MIN A_I8_C(~0x7F)
 #endif /* A_I8_MIN */
-/*! @brief static cast to \ref a_i8 */
+/*! @brief static cast to @ref a_i8 */
 #define a_i8_c(x) a_cast_s(a_i8, x)
 #define a_i8_(_, x) a_cast_s(a_i8 _, x)
 /*! @brief signed integer type with width of exactly 8 bits */
@@ -435,7 +435,7 @@ typedef A_I8 a_i8;
 #if !defined A_U8_MAX
 #define A_U8_MAX A_U8_C(0xFF)
 #endif /* A_U8_MAX */
-/*! @brief static cast to \ref a_u8 */
+/*! @brief static cast to @ref a_u8 */
 #define a_u8_c(x) a_cast_s(a_u8, x)
 #define a_u8_(_, x) a_cast_s(a_u8 _, x)
 /*! @brief unsigned integer type with width of exactly 8 bits */
@@ -462,7 +462,7 @@ typedef A_U8 a_u8;
 #if !defined A_I16_MIN
 #define A_I16_MIN A_I16_C(~0x7FFF)
 #endif /* A_I16_MIN */
-/*! @brief static cast to \ref a_i16 */
+/*! @brief static cast to @ref a_i16 */
 #define a_i16_c(x) a_cast_s(a_i16, x)
 #define a_i16_(_, x) a_cast_s(a_i16 _, x)
 /*! @brief signed integer type with width of exactly 16 bits */
@@ -479,7 +479,7 @@ typedef A_I16 a_i16;
 #if !defined A_U16_MAX
 #define A_U16_MAX A_U16_C(0xFFFF)
 #endif /* A_U16_MAX */
-/*! @brief static cast to \ref a_u16 */
+/*! @brief static cast to @ref a_u16 */
 #define a_u16_c(x) a_cast_s(a_u16, x)
 #define a_u16_(_, x) a_cast_s(a_u16 _, x)
 /*! @brief unsigned integer type with width of exactly 16 bits */
@@ -512,7 +512,7 @@ typedef A_U16 a_u16;
 #if !defined A_I32_MIN
 #define A_I32_MIN A_I32_C(~0x7FFFFFFF)
 #endif /* A_I32_MIN */
-/*! @brief static cast to \ref a_i32 */
+/*! @brief static cast to @ref a_i32 */
 #define a_i32_c(x) a_cast_s(a_i32, x)
 #define a_i32_(_, x) a_cast_s(a_i32 _, x)
 /*! @brief signed integer type with width of exactly 32 bits */
@@ -531,7 +531,7 @@ typedef A_I32 a_i32;
 #if !defined A_U32_MAX
 #define A_U32_MAX A_U32_C(0xFFFFFFFF)
 #endif /* A_U32_MAX */
-/*! @brief static cast to \ref a_u32 */
+/*! @brief static cast to @ref a_u32 */
 #define a_u32_c(x) a_cast_s(a_u32, x)
 #define a_u32_(_, x) a_cast_s(a_u32 _, x)
 /*! @brief unsigned integer type with width of exactly 32 bits */
@@ -578,7 +578,7 @@ typedef A_U32 a_u32;
 #if !defined A_I64_MIN
 #define A_I64_MIN A_I64_C(~0x7FFFFFFFFFFFFFFF)
 #endif /* A_I64_MIN */
-/*! @brief static cast to \ref a_i64 */
+/*! @brief static cast to @ref a_i64 */
 #define a_i64_c(x) a_cast_s(a_i64, x)
 #define a_i64_(_, x) a_cast_s(a_i64 _, x)
 /* clang-format off */
@@ -616,7 +616,7 @@ typedef A_I64 a_i64;
 #if !defined A_U64_MAX
 #define A_U64_MAX A_U64_C(0xFFFFFFFFFFFFFFFF)
 #endif /* A_U64_MAX */
-/*! @brief static cast to \ref a_u64 */
+/*! @brief static cast to @ref a_u64 */
 #define a_u64_c(x) a_cast_s(a_u64, x)
 #define a_u64_(_, x) a_cast_s(a_u64 _, x)
 /* clang-format off */
@@ -662,7 +662,7 @@ typedef A_U64 a_u64;
 #if !defined A_IMAX_MIN
 #define A_IMAX_MIN A_I64_MIN
 #endif /* A_IMAX_MIN */
-/*! @brief static cast to \ref a_imax */
+/*! @brief static cast to @ref a_imax */
 #define a_imax_c(x) a_cast_s(a_imax, x)
 #define a_imax_(_, x) a_cast_s(a_imax _, x)
 /*! @brief maximum-width signed integer type */
@@ -677,7 +677,7 @@ typedef A_IMAX a_imax;
 #if !defined A_UMAX_MAX
 #define A_UMAX_MAX A_U64_MAX
 #endif /* A_UMAX_MAX */
-/*! @brief static cast to \ref a_umax */
+/*! @brief static cast to @ref a_umax */
 #define a_umax_c(x) a_cast_s(a_umax, x)
 #define a_umax_(_, x) a_cast_s(a_umax _, x)
 /*! @brief maximum-width unsigned integer type */
@@ -711,7 +711,7 @@ typedef A_UMAX a_umax;
 #elif !defined A_IPTR_MIN
 #define A_IPTR_MIN A_I64_MIN
 #endif /* A_IPTR_MIN */
-/*! @brief static cast to \ref a_iptr */
+/*! @brief static cast to @ref a_iptr */
 #define a_iptr_c(x) a_cast_s(a_iptr, x)
 #define a_iptr_(_, x) a_cast_s(a_iptr _, x)
 /*! @brief signed integer type capable of holding a pointer to void */
@@ -731,7 +731,7 @@ typedef A_IPTR a_iptr;
 #elif !defined A_UPTR_MAX
 #define A_UPTR_MAX A_U64_MAX
 #endif /* A_UPTR_MAX */
-/*! @brief static cast to \ref a_uptr */
+/*! @brief static cast to @ref a_uptr */
 #define a_uptr_c(x) a_cast_s(a_uptr, x)
 #define a_uptr_(_, x) a_cast_s(a_uptr _, x)
 /*! @brief unsigned integer type capable of holding a pointer to void */
@@ -773,7 +773,7 @@ typedef A_UPTR a_uptr;
 #elif !defined A_DIFF_MIN
 #define A_DIFF_MIN A_I64_MIN
 #endif /* A_DIFF_MIN */
-/*! @brief static cast to \ref a_diff */
+/*! @brief static cast to @ref a_diff */
 #define a_diff_c(x) a_cast_s(a_diff, x)
 #define a_diff_(_, x) a_cast_s(a_diff _, x)
 /*! @brief signed integer type returned when subtracting two pointers */
@@ -816,7 +816,7 @@ typedef A_DIFF a_diff;
 #elif !defined A_SIZE_MAX
 #define A_SIZE_MAX A_U64_MAX
 #endif /* A_SIZE_MAX */
-/*! @brief static cast to \ref a_size */
+/*! @brief static cast to @ref a_size */
 #define a_size_c(x) a_cast_s(a_size, x)
 #define a_size_(_, x) a_cast_s(a_size _, x)
 /*! @brief unsigned integer type returned by the sizeof operator */
@@ -870,7 +870,7 @@ typedef A_SIZE a_size;
 #define A_F32_PNAN A_U32_C(0x7FC00000)
 #define A_F32_NINF A_U32_C(0xFF800000)
 #define A_F32_PINF A_U32_C(0x7F800000)
-/*! @brief static cast to \ref a_f32 */
+/*! @brief static cast to @ref a_f32 */
 #define a_f32_c(x) a_cast_s(a_f32, x)
 #define a_f32_(_, x) a_cast_s(a_f32 _, x)
 /*! @brief single precision floating point type. Matches IEEE-754 binary32 format if supported. */
@@ -894,7 +894,7 @@ typedef A_F32 a_f32;
 #define A_F64_PNAN A_U64_C(0x7FF8000000000000)
 #define A_F64_NINF A_U64_C(0xFFF0000000000000)
 #define A_F64_PINF A_U64_C(0x7FF0000000000000)
-/*! @brief static cast to \ref a_f64 */
+/*! @brief static cast to @ref a_f64 */
 #define a_f64_c(x) a_cast_s(a_f64, x)
 #define a_f64_(_, x) a_cast_s(a_f64 _, x)
 /*! @brief double precision floating point type. Matches IEEE-754 binary64 format if supported. */
@@ -991,11 +991,11 @@ typedef A_F64 a_f64;
 #define A_REAL_NAN a_cast_s(A_REAL, A_F32_NAN)
 /*!
  @def A_REAL_C(X)
- @brief expands to a floating-point constant expression having the value specified by its argument and the type \ref a_real
+ @brief expands to a floating-point constant expression having the value specified by its argument and the type @ref a_real
 */
 /*!
  @def A_REAL_F(F)
- @brief expands to a floating-point function expression having the value specified by its argument and the type \ref a_real
+ @brief expands to a floating-point function expression having the value specified by its argument and the type @ref a_real
 */
 /*!
  @def A_REAL_SCN
@@ -1005,7 +1005,7 @@ typedef A_F64 a_f64;
  @def A_REAL_PRI
  @brief format constants for the fprintf family of functions
 */
-/*! @brief static cast to \ref a_real */
+/*! @brief static cast to @ref a_real */
 #define a_real_c(x) a_cast_s(a_real, x)
 #define a_real_(_, x) a_cast_s(a_real _, x)
 /*! @brief compiler built-in floating-point number type */
