@@ -38,20 +38,59 @@ extern "C" {
 #define A_INTERN A_PUBLIC extern
 #endif /* A_HAVE_INLINE */
 
+/*!
+ @brief set a 3D vector as the difference from point p to point q.
+*/
 A_INTERN void a_vector3_set(a_vector3 *ctx, a_point3 const *p, a_point3 const *q);
 
+/*!
+ @brief get the cartesian coordinates of a 3D point.
+*/
 A_INTERN void a_point3_val(a_point3 const *ctx, a_real *x, a_real *y, a_real *z);
+/*!
+ @brief set the cartesian coordinates of a 3D point.
+*/
 A_INTERN void a_point3_set_val(a_point3 *ctx, a_real x, a_real y, a_real z);
+/*!
+ @brief get the cylindrical coordinates of a 3D point.
+*/
 A_INTERN void a_point3_cyl(a_point3 const *ctx, a_real *rho, a_real *theta, a_real *z);
+/*!
+ @brief set the cylindrical coordinates of a 3D point.
+*/
 A_INTERN void a_point3_set_cyl(a_point3 *ctx, a_real rho, a_real theta, a_real z);
+/*!
+ @brief get the spherical coordinates of a 3D point.
+*/
 A_INTERN void a_point3_sph(a_point3 const *ctx, a_real *rho, a_real *theta, a_real *alpha);
+/*!
+ @brief set the spherical coordinates of a 3D point.
+*/
 A_INTERN void a_point3_set_sph(a_point3 *ctx, a_real rho, a_real theta, a_real alpha);
 
+/*!
+ @brief add a 3D vector to a 3D point.
+*/
 A_INTERN void a_point3_add(a_point3 const *lhs, a_vector3 const *rhs, a_point3 *res);
+/*!
+ @brief subtract a 3D vector from a 3D point.
+*/
 A_INTERN void a_point3_sub(a_point3 const *lhs, a_vector3 const *rhs, a_point3 *res);
+/*!
+ @brief multiplie a 3D point by a scalar.
+*/
 A_INTERN void a_point3_mul(a_point3 const *lhs, a_real rhs, a_point3 *res);
+/*!
+ @brief divide a 3D point by a scalar.
+*/
 A_INTERN void a_point3_div(a_point3 const *lhs, a_real rhs, a_point3 *res);
+/*!
+ @brief convert it into a vector from the origin to the point.
+*/
 A_INTERN void a_point3_pos(a_point3 const *ctx, a_vector3 *res);
+/*!
+ @brief convert it into a vector from the point to the origin.
+*/
 A_INTERN void a_point3_neg(a_point3 const *ctx, a_vector3 *res);
 
 /*!
@@ -102,50 +141,62 @@ struct a_point3
 {
     a_real x, y, z;
 #if defined(__cplusplus)
+    /*! @copybrief a_point3_val @see a_point3_val */
     A_INLINE void val(a_real &x_, a_real &y_, a_real &z_) const
     {
         a_point3_val(this, &x_, &y_, &z_);
     }
+    /*! @copybrief a_point3_set_val @see a_point3_set_val */
     A_INLINE void set_val(a_real x_, a_real y_, a_real z_)
     {
         a_point3_set_val(this, x_, y_, z_);
     }
+    /*! @copybrief a_point3_cyl @see a_point3_cyl */
     A_INLINE void cyl(a_real &rho, a_real &theta, a_real &z_) const
     {
         a_point3_cyl(this, &rho, &theta, &z_);
     }
+    /*! @copybrief a_point3_set_cyl @see a_point3_set_cyl */
     A_INLINE void set_cyl(a_real rho, a_real theta, a_real z_)
     {
         a_point3_set_cyl(this, rho, theta, z_);
     }
+    /*! @copybrief a_point3_sph @see a_point3_sph */
     A_INLINE void sph(a_real &rho, a_real &theta, a_real &alpha) const
     {
         a_point3_sph(this, &rho, &theta, &alpha);
     }
+    /*! @copybrief a_point3_set_sph @see a_point3_set_sph */
     A_INLINE void set_sph(a_real rho, a_real theta, a_real alpha)
     {
         a_point3_set_sph(this, rho, theta, alpha);
     }
+    /*! @copybrief a_point3_add @see a_point3_add */
     A_INLINE void add(a_vector3 const &rhs, a_point3 &res) const
     {
         a_point3_add(this, &rhs, &res);
     }
+    /*! @copybrief a_point3_sub @see a_point3_sub */
     A_INLINE void sub(a_vector3 const &rhs, a_point3 &res) const
     {
         a_point3_sub(this, &rhs, &res);
     }
+    /*! @copybrief a_point3_mul @see a_point3_mul */
     A_INLINE void mul(a_real rhs, a_point3 &res) const
     {
         a_point3_mul(this, rhs, &res);
     }
+    /*! @copybrief a_point3_div @see a_point3_div */
     A_INLINE void div(a_real rhs, a_point3 &res) const
     {
         a_point3_div(this, rhs, &res);
     }
+    /*! @copybrief a_point3_pos @see a_point3_pos */
     A_INLINE void pos(a_vector3 &res) const
     {
         a_point3_pos(this, &res);
     }
+    /*! @copybrief a_point3_neg @see a_point3_neg */
     A_INLINE void neg(a_vector3 &res) const
     {
         a_point3_neg(this, &res);
@@ -154,52 +205,64 @@ struct a_point3
     A_INLINE a_real dist(a_point3 const &rhs) const { return a_point3_dist(this, &rhs); }
     /*! @copybrief a_point3_dist2 @see a_point3_dist2 */
     A_INLINE a_real dist2(a_point3 const &rhs) const { return a_point3_dist2(this, &rhs); }
+    /*! @copybrief a_point3_add @see a_point3_add */
     friend A_INLINE void operator+=(a_point3 &lhs, a_vector3 const &rhs) { a_point3_add(&lhs, &rhs, &lhs); }
+    /*! @copybrief a_point3_add @see a_point3_add */
     friend A_INLINE a_point3 operator+(a_point3 const &lhs, a_vector3 const &rhs)
     {
         a_point3 res;
         a_point3_add(&lhs, &rhs, &res);
         return res;
     }
+    /*! @copybrief a_point3_sub @see a_point3_sub */
     friend A_INLINE void operator-=(a_point3 &lhs, a_vector3 const &rhs) { a_point3_sub(&lhs, &rhs, &lhs); }
+    /*! @copybrief a_point3_sub @see a_point3_sub */
     friend A_INLINE a_point3 operator-(a_point3 const &lhs, a_vector3 const &rhs)
     {
         a_point3 res;
         a_point3_sub(&lhs, &rhs, &res);
         return res;
     }
+    /*! @copybrief a_vector3_set @see a_vector3_set */
     friend A_INLINE a_vector3 operator-(a_point3 const &lhs, a_point3 const &rhs)
     {
         a_vector3 res;
         a_vector3_set(&res, &rhs, &lhs);
         return res;
     }
+    /*! @copybrief a_point3_mul @see a_point3_mul */
     friend A_INLINE void operator*=(a_point3 &lhs, a_real rhs) { a_point3_mul(&lhs, rhs, &lhs); }
+    /*! @copybrief a_point3_mul @see a_point3_mul */
     friend A_INLINE a_point3 operator*(a_real lhs, a_point3 const &rhs)
     {
         a_point3 res;
         a_point3_mul(&rhs, lhs, &res);
         return res;
     }
+    /*! @copybrief a_point3_mul @see a_point3_mul */
     friend A_INLINE a_point3 operator*(a_point3 const &lhs, a_real rhs)
     {
         a_point3 res;
         a_point3_mul(&lhs, rhs, &res);
         return res;
     }
+    /*! @copybrief a_point3_div @see a_point3_div */
     friend A_INLINE void operator/=(a_point3 &lhs, a_real rhs) { a_point3_div(&lhs, rhs, &lhs); }
+    /*! @copybrief a_point3_div @see a_point3_div */
     friend A_INLINE a_point3 operator/(a_point3 const &lhs, a_real rhs)
     {
         a_point3 res;
         a_point3_div(&lhs, rhs, &res);
         return res;
     }
+    /*! @copybrief a_point3_pos @see a_point3_pos */
     friend A_INLINE a_vector3 operator+(a_point3 const &rhs)
     {
         a_vector3 res;
         a_point3_pos(&rhs, &res);
         return res;
     }
+    /*! @copybrief a_point3_neg @see a_point3_neg */
     friend A_INLINE a_vector3 operator-(a_point3 const &rhs)
     {
         a_vector3 res;

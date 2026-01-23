@@ -85,6 +85,7 @@ struct a_vector3
 {
     a_real x, y, z;
 #if defined(__cplusplus)
+    /*! @copybrief a_vector3_set @see a_vector3_set */
     A_INLINE void set(a_point3 const &p, a_point3 const &q);
     A_INLINE a_real set_dir(a_real x_, a_real y_, a_real z_)
     {

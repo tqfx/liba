@@ -38,18 +38,51 @@ extern "C" {
 #define A_INTERN A_PUBLIC extern
 #endif /* A_HAVE_INLINE */
 
+/*!
+ @brief set a 2D vector as the difference from point p to point q.
+*/
 A_INTERN void a_vector2_set(a_vector2 *ctx, a_point2 const *p, a_point2 const *q);
 
+/*!
+ @brief get the cartesian coordinates of a 2D point.
+*/
 A_INTERN void a_point2_val(a_point2 const *ctx, a_real *x, a_real *y);
+/*!
+ @brief set the cartesian coordinates of a 2D point.
+*/
 A_INTERN void a_point2_set_val(a_point2 *ctx, a_real x, a_real y);
+/*!
+ @brief get the polar coordinates of a 2D point.
+*/
 A_INTERN void a_point2_pol(a_point2 const *ctx, a_real *rho, a_real *theta);
+/*!
+ @brief set the polar coordinates of a 2D point.
+*/
 A_INTERN void a_point2_set_pol(a_point2 *ctx, a_real rho, a_real theta);
 
+/*!
+ @brief add a 2D vector to a 2D point.
+*/
 A_INTERN void a_point2_add(a_point2 const *lhs, a_vector2 const *rhs, a_point2 *res);
+/*!
+ @brief subtract a 2D vector from a 2D point.
+*/
 A_INTERN void a_point2_sub(a_point2 const *lhs, a_vector2 const *rhs, a_point2 *res);
+/*!
+ @brief multiplie a 2D point by a scalar.
+*/
 A_INTERN void a_point2_mul(a_point2 const *lhs, a_real rhs, a_point2 *res);
+/*!
+ @brief divide a 2D point by a scalar.
+*/
 A_INTERN void a_point2_div(a_point2 const *lhs, a_real rhs, a_point2 *res);
+/*!
+ @brief convert it into a vector from the origin to the point.
+*/
 A_INTERN void a_point2_pos(a_point2 const *ctx, a_vector2 *res);
+/*!
+ @brief convert it into a vector from the point to the origin.
+*/
 A_INTERN void a_point2_neg(a_point2 const *ctx, a_vector2 *res);
 
 /*!
@@ -100,42 +133,52 @@ struct a_point2
 {
     a_real x, y;
 #if defined(__cplusplus)
+    /*! @copybrief a_point2_val @see a_point2_val */
     A_INLINE void val(a_real &x_, a_real &y_) const
     {
         a_point2_val(this, &x_, &y_);
     }
+    /*! @copybrief a_point2_set_val @see a_point2_set_val */
     A_INLINE void set_val(a_real x_, a_real y_)
     {
         a_point2_set_val(this, x_, y_);
     }
+    /*! @copybrief a_point2_pol @see a_point2_pol */
     A_INLINE void pol(a_real &rho, a_real &theta) const
     {
         a_point2_pol(this, &rho, &theta);
     }
+    /*! @copybrief a_point2_set_pol @see a_point2_set_pol */
     A_INLINE void set_pol(a_real rho, a_real theta)
     {
         a_point2_set_pol(this, rho, theta);
     }
+    /*! @copybrief a_point2_add @see a_point2_add */
     A_INLINE void add(a_vector2 const &rhs, a_point2 &res) const
     {
         a_point2_add(this, &rhs, &res);
     }
+    /*! @copybrief a_point2_sub @see a_point2_sub */
     A_INLINE void sub(a_vector2 const &rhs, a_point2 &res) const
     {
         a_point2_sub(this, &rhs, &res);
     }
+    /*! @copybrief a_point2_mul @see a_point2_mul */
     A_INLINE void mul(a_real rhs, a_point2 &res) const
     {
         a_point2_mul(this, rhs, &res);
     }
+    /*! @copybrief a_point2_div @see a_point2_div */
     A_INLINE void div(a_real rhs, a_point2 &res) const
     {
         a_point2_div(this, rhs, &res);
     }
+    /*! @copybrief a_point2_pos @see a_point2_pos */
     A_INLINE void pos(a_vector2 &res) const
     {
         a_point2_pos(this, &res);
     }
+    /*! @copybrief a_point2_neg @see a_point2_neg */
     A_INLINE void neg(a_vector2 &res) const
     {
         a_point2_neg(this, &res);
@@ -144,52 +187,64 @@ struct a_point2
     A_INLINE a_real dist(a_point2 const &rhs) const { return a_point2_dist(this, &rhs); }
     /*! @copybrief a_point2_dist2 @see a_point2_dist2 */
     A_INLINE a_real dist2(a_point2 const &rhs) const { return a_point2_dist2(this, &rhs); }
+    /*! @copybrief a_point2_add @see a_point2_add */
     friend A_INLINE void operator+=(a_point2 &lhs, a_vector2 const &rhs) { a_point2_add(&lhs, &rhs, &lhs); }
+    /*! @copybrief a_point2_add @see a_point2_add */
     friend A_INLINE a_point2 operator+(a_point2 const &lhs, a_vector2 const &rhs)
     {
         a_point2 res;
         a_point2_add(&lhs, &rhs, &res);
         return res;
     }
+    /*! @copybrief a_point2_sub @see a_point2_sub */
     friend A_INLINE void operator-=(a_point2 &lhs, a_vector2 const &rhs) { a_point2_sub(&lhs, &rhs, &lhs); }
+    /*! @copybrief a_point2_sub @see a_point2_sub */
     friend A_INLINE a_point2 operator-(a_point2 const &lhs, a_vector2 const &rhs)
     {
         a_point2 res;
         a_point2_sub(&lhs, &rhs, &res);
         return res;
     }
+    /*! @copybrief a_vector2_set @see a_vector2_set */
     friend A_INLINE a_vector2 operator-(a_point2 const &lhs, a_point2 const &rhs)
     {
         a_vector2 res;
         a_vector2_set(&res, &rhs, &lhs);
         return res;
     }
+    /*! @copybrief a_point2_mul @see a_point2_mul */
     friend A_INLINE void operator*=(a_point2 &lhs, a_real rhs) { a_point2_mul(&lhs, rhs, &lhs); }
+    /*! @copybrief a_point2_mul @see a_point2_mul */
     friend A_INLINE a_point2 operator*(a_real lhs, a_point2 const &rhs)
     {
         a_point2 res;
         a_point2_mul(&rhs, lhs, &res);
         return res;
     }
+    /*! @copybrief a_point2_mul @see a_point2_mul */
     friend A_INLINE a_point2 operator*(a_point2 const &lhs, a_real rhs)
     {
         a_point2 res;
         a_point2_mul(&lhs, rhs, &res);
         return res;
     }
+    /*! @copybrief a_point2_div @see a_point2_div */
     friend A_INLINE void operator/=(a_point2 &lhs, a_real rhs) { a_point2_div(&lhs, rhs, &lhs); }
+    /*! @copybrief a_point2_div @see a_point2_div */
     friend A_INLINE a_point2 operator/(a_point2 const &lhs, a_real rhs)
     {
         a_point2 res;
         a_point2_div(&lhs, rhs, &res);
         return res;
     }
+    /*! @copybrief a_point2_pos @see a_point2_pos */
     friend A_INLINE a_vector2 operator+(a_point2 const &rhs)
     {
         a_vector2 res;
         a_point2_pos(&rhs, &res);
         return res;
     }
+    /*! @copybrief a_point2_neg @see a_point2_neg */
     friend A_INLINE a_vector2 operator-(a_point2 const &rhs)
     {
         a_vector2 res;

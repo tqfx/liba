@@ -81,6 +81,7 @@ struct a_vector2
 {
     a_real x, y;
 #if defined(__cplusplus)
+    /*! @copybrief a_vector2_set @see a_vector2_set */
     A_INLINE void set(a_point2 const &p, a_point2 const &q);
     A_INLINE a_real set_dir(a_real x_, a_real y_)
     {
