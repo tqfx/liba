@@ -84,21 +84,20 @@ LUALIB_API void luaL_register(lua_State *L, char const *libname, lua_fun const *
 LUALIB_API int luaL_callmeta(lua_State *L, int obj, const char *e);
 LUALIB_API int luaL_getmetafield(lua_State *L, int obj, const char *e);
 
-LUALIB_API char const *luaL_checklstring(lua_State *L, int numArg, size_t *l);
-LUALIB_API char const *luaL_optlstring(lua_State *L, int numArg, char const *def, size_t *l);
+LUALIB_API char const *luaL_checklstring(lua_State *L, int arg, size_t *l);
+LUALIB_API char const *luaL_optlstring(lua_State *L, int arg, char const *def, size_t *l);
 
-LUALIB_API lua_Integer luaL_checkinteger(lua_State *L, int numArg);
-LUALIB_API lua_Integer luaL_optinteger(lua_State *L, int nArg, lua_Integer def);
+LUALIB_API lua_Integer luaL_checkinteger(lua_State *L, int arg);
+LUALIB_API lua_Integer luaL_optinteger(lua_State *L, int arg, lua_Integer def);
 
-LUALIB_API lua_Number luaL_checknumber(lua_State *L, int numArg);
-LUALIB_API lua_Number luaL_optnumber(lua_State *L, int nArg, lua_Number def);
+LUALIB_API lua_Number luaL_checknumber(lua_State *L, int arg);
+LUALIB_API lua_Number luaL_optnumber(lua_State *L, int arg, lua_Number def);
 
 LUALIB_API void luaL_checkstack(lua_State *L, int sz, char const *msg);
-LUALIB_API void luaL_checktype(lua_State *L, int narg, int t);
-LUALIB_API void luaL_checkany(lua_State *L, int narg);
+LUALIB_API void luaL_checktype(lua_State *L, int arg, int t);
+LUALIB_API void luaL_checkany(lua_State *L, int arg);
 
-LUALIB_API int luaL_argerror(lua_State *L, int numarg, const char *extramsg);
-LUALIB_API int luaL_typerror(lua_State *L, int narg, const char *tname);
+LUALIB_API int luaL_argerror(lua_State *L, int arg, const char *extramsg);
 LUALIB_API int luaL_error(lua_State *L, char const *fmt, ...);
 
 void lua_u8_new(lua_State *L, a_u8 value);
