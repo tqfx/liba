@@ -122,6 +122,32 @@ A_EXTERN a_real a_point3_dist(a_point3 const *lhs, a_point3 const *rhs);
 */
 A_EXTERN a_real a_point3_dist2(a_point3 const *lhs, a_point3 const *rhs);
 
+/*!
+ @brief compute the minimum distance from a reference point to a point set.
+ @param[in] ctx points to the reference point
+ @param[in] i_p points to the points in memory
+ @param[in] i_n number of the points in memory
+ @param[out] o_p stores the nearest point; may be NULL
+ @param[out] o_i stores the index of the nearest point; may be NULL
+ @return the minimum distance from a reference point to a point set
+  @retval +inf failure
+*/
+A_EXTERN a_real a_point3_mindist(a_point3 const *ctx, a_point3 const *i_p, a_size i_n,
+                                 a_point3 *o_p /*=A_NULL*/, a_size *o_i /*=A_NULL*/);
+
+/*!
+ @brief compute the maximum distance from a reference point to a point set.
+ @param[in] ctx points to the reference point
+ @param[in] i_p points to the points in memory
+ @param[in] i_n number of the points in memory
+ @param[out] o_p stores the farthest point; may be NULL
+ @param[out] o_i stores the index of the farthest point; may be NULL
+ @return the maximum distance from a reference point to a point set
+  @retval -inf failure
+*/
+A_EXTERN a_real a_point3_maxdist(a_point3 const *ctx, a_point3 const *i_p, a_size i_n,
+                                 a_point3 *o_p /*=A_NULL*/, a_size *o_i /*=A_NULL*/);
+
 #if !defined A_HAVE_INLINE || defined(LIBA_POINT3_C)
 #undef A_INTERN
 #define A_INTERN static A_INLINE
@@ -205,6 +231,16 @@ struct a_point3
     A_INLINE a_real dist(a_point3 const &rhs) const { return a_point3_dist(this, &rhs); }
     /*! @copybrief a_point3_dist2 @see a_point3_dist2 */
     A_INLINE a_real dist2(a_point3 const &rhs) const { return a_point3_dist2(this, &rhs); }
+    /*! @copybrief a_point3_mindist @see a_point3_mindist */
+    A_INLINE a_real mindist(a_point3 const *i_p, a_size i_n, a_point3 *o_p = A_NULL, a_size *o_i = A_NULL) const
+    {
+        return a_point3_mindist(this, i_p, i_n, o_p, o_i);
+    }
+    /*! @copybrief a_point3_maxdist @see a_point3_maxdist */
+    A_INLINE a_real maxdist(a_point3 const *i_p, a_size i_n, a_point3 *o_p = A_NULL, a_size *o_i = A_NULL) const
+    {
+        return a_point3_maxdist(this, i_p, i_n, o_p, o_i);
+    }
     /*! @copybrief a_point3_add @see a_point3_add */
     friend A_INLINE void operator+=(a_point3 &lhs, a_vector3 const &rhs) { a_point3_add(&lhs, &rhs, &lhs); }
     /*! @copybrief a_point3_add @see a_point3_add */

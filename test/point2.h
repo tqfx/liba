@@ -105,6 +105,37 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(a.dist2(b), 5 * 5));
 #endif /* __cplusplus */
     }
+    {
+        a_size i;
+        a_point2 p;
+        a_point2 const o = A_POINT2_C(0, 0);
+        a_point2 const a[4] = {
+            A_POINT2_C(2, 0),
+            A_POINT2_C(0, 2),
+            A_POINT2_C(3, 0),
+            A_POINT2_C(0, 3),
+        };
+        TEST_BUG(a_point2_mindist(&o, a, 0, A_NULL, A_NULL) > +A_REAL_MAX);
+        TEST_BUG(iseq(a_point2_mindist(&o, a, A_LEN(a), A_NULL, A_NULL), 2));
+        TEST_BUG(iseq(a_point2_mindist(&o, a, A_LEN(a), &p, &i), 2));
+#if defined(__cplusplus)
+        TEST_BUG(iseq(o.mindist(a, A_LEN(a)), 2));
+        TEST_BUG(iseq(o.mindist(a, A_LEN(a), &p, &i), 2));
+#endif /* __cplusplus */
+        TEST_BUG(iseq(p.x, 2));
+        TEST_BUG(iseq(p.y, 0));
+        TEST_BUG(i == 0);
+        TEST_BUG(a_point2_maxdist(&o, a, 0, A_NULL, A_NULL) < -A_REAL_MAX);
+        TEST_BUG(iseq(a_point2_maxdist(&o, a, A_LEN(a), A_NULL, A_NULL), 3));
+        TEST_BUG(iseq(a_point2_maxdist(&o, a, A_LEN(a), &p, &i), 3));
+#if defined(__cplusplus)
+        TEST_BUG(iseq(o.maxdist(a, A_LEN(a)), 3));
+        TEST_BUG(iseq(o.maxdist(a, A_LEN(a), &p, &i), 3));
+#endif /* __cplusplus */
+        TEST_BUG(iseq(p.x, 3));
+        TEST_BUG(iseq(p.y, 0));
+        TEST_BUG(i == 2);
+    }
     (void)argv;
     (void)argc;
     return 0;
