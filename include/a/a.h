@@ -1223,11 +1223,11 @@ typedef union a_cast
 */
 enum a_return_code
 {
-    A_SUCCESS,
-    A_FAILURE,
-    A_INVALID,
-    A_OBOUNDS,
-    A_OMEMORY
+    A_SUCCESS = 0,
+    A_FAILURE = -1,
+    A_INVALID = -2,
+    A_OBOUNDS = -3,
+    A_OMEMORY = -4
 };
 
 #if defined(__cplusplus)
