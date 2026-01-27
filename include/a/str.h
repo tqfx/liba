@@ -210,7 +210,7 @@ A_EXTERN int a_str_cmps(a_str const *ctx, void const *str);
  @brief get a character for a pointer to string structure
  @param[in] ctx points to an instance of string structure
  @return a parsed character
-  @retval ~0 failure
+  @retval <0 failure
 */
 A_EXTERN int a_str_getc(a_str *ctx);
 A_EXTERN int a_str_getc_(a_str *ctx);
@@ -220,7 +220,7 @@ A_EXTERN int a_str_getc_(a_str *ctx);
  @param[in] ctx points to an instance of string structure
  @param[in] c a character to be parsed
  @return parsed character
-  @retval ~0 failure
+  @retval <0 failure
 */
 A_EXTERN int a_str_catc(a_str *ctx, int c);
 A_EXTERN int a_str_catc_(a_str *ctx, int c);
