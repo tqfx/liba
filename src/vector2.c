@@ -49,11 +49,15 @@ a_real a_vector2_dist2(a_vector2 const *lhs, a_vector2 const *rhs)
 
 a_real a_vector2_angle(a_vector2 const *lhs, a_vector2 const *rhs)
 {
-    a_real const n1 = a_vector2_norm(lhs), n2 = a_vector2_norm(rhs);
-    a_real r = a_vector2_dot(lhs, rhs) / (n1 * n2);
-    if (r > +1) { r = +1; }
-    if (r < -1) { r = -1; }
-    return a_real_acos(r);
+    a_real const nn = a_vector2_norm2(lhs) * a_vector2_norm2(rhs);
+    if (nn > 0)
+    {
+        a_real r = a_vector2_dot(lhs, rhs) / a_real_sqrt(nn);
+        if (r > +1) { r = +1; }
+        if (r < -1) { r = -1; }
+        return a_real_acos(r);
+    }
+    return 0;
 }
 
 a_bool a_vector2_isver(a_vector2 const *lhs, a_vector2 const *rhs)
