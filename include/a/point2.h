@@ -87,12 +87,12 @@ A_INTERN void a_point2_neg(a_point2 const *ctx, a_vector2 *res);
 
 /*!
  @brief compute the distance between two 2D points.
- @details In two dimensions,
- let point \f$p\f$ have coordinates \f$(p_1,p_2)\f$ and
- let point \f$q\f$ have coordinates \f$(q_1,q_2)\f$.
+ @details In two-dimensional space,
+ let point \f$p\f$ have coordinates \f$(p_x,p_y)\f$ and
+ let point \f$q\f$ have coordinates \f$(q_x,q_y)\f$.
  Then the distance between \f$p\f$ and \f$q\f$ is given by:
  \f[
-  d(p,q)=\sqrt{(p_1-q_1)^2+(p_2-q_2)^2}
+  d(p,q)=\sqrt{(p_x-q_x)^2+(p_y-q_y)^2}
  \f]
  @param[in] lhs is left-hand side 2D point
  @param[in] rhs is right-hand side 2D point
@@ -101,12 +101,12 @@ A_INTERN void a_point2_neg(a_point2 const *ctx, a_vector2 *res);
 A_EXTERN a_real a_point2_dist(a_point2 const *lhs, a_point2 const *rhs);
 /*!
  @brief compute the squared distance between two 2D points.
- @details In two dimensions,
- let point \f$p\f$ have coordinates \f$(p_1,p_2)\f$ and
- let point \f$q\f$ have coordinates \f$(q_1,q_2)\f$.
+ @details In two-dimensional space,
+ let point \f$p\f$ have coordinates \f$(p_x,p_y)\f$ and
+ let point \f$q\f$ have coordinates \f$(q_x,q_y)\f$.
  Then the squared distance between \f$p\f$ and \f$q\f$ is given by:
  \f[
-  d(p,q)^2=(p_1-q_1)^2+(p_2-q_2)^2
+  d(p,q)^2=(p_x-q_x)^2+(p_y-q_y)^2
  \f]
  @param[in] lhs is left-hand side 2D point
  @param[in] rhs is right-hand side 2D point

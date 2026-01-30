@@ -95,12 +95,12 @@ A_INTERN void a_point3_neg(a_point3 const *ctx, a_vector3 *res);
 
 /*!
  @brief compute the distance between two 3D points.
- @details In three dimensions,
- let point \f$p\f$ have coordinates \f$(p_1,p_2,p_3)\f$ and
- let point \f$q\f$ have coordinates \f$(q_1,q_2,q_3)\f$.
+ @details In three-dimensional space,
+ let point \f$p\f$ have coordinates \f$(p_x,p_y,p_z)\f$ and
+ let point \f$q\f$ have coordinates \f$(q_x,q_y,q_z)\f$.
  Then the distance between \f$p\f$ and \f$q\f$ is given by:
  \f[
-  d(p,q)=\sqrt{(p_1-q_1)^2+(p_2-q_2)^2+(p_3-q_3)^2}
+  d(p,q)=\sqrt{(p_x-q_x)^2+(p_y-q_y)^2+(p_z-q_z)^2}
  \f]
  @param[in] lhs is left-hand side 3D point
  @param[in] rhs is right-hand side 3D point
@@ -109,12 +109,12 @@ A_INTERN void a_point3_neg(a_point3 const *ctx, a_vector3 *res);
 A_EXTERN a_real a_point3_dist(a_point3 const *lhs, a_point3 const *rhs);
 /*!
  @brief compute the squared distance between two 3D points.
- @details In three dimensions,
- let point \f$p\f$ have coordinates \f$(p_1,p_2,p_3)\f$ and
- let point \f$q\f$ have coordinates \f$(q_1,q_2,q_3)\f$.
+ @details In three-dimensional space,
+ let point \f$p\f$ have coordinates \f$(p_x,p_y,p_z)\f$ and
+ let point \f$q\f$ have coordinates \f$(q_x,q_y,q_z)\f$.
  Then the squared distance between \f$p\f$ and \f$q\f$ is given by:
  \f[
-  d(p,q)^2=(p_1-q_1)^2+(p_2-q_2)^2+(p_3-q_3)^2
+  d(p,q)^2=(p_x-q_x)^2+(p_y-q_y)^2+(p_z-q_z)^2
  \f]
  @param[in] lhs is left-hand side 3D point
  @param[in] rhs is right-hand side 3D point
