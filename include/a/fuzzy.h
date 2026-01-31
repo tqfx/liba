@@ -18,8 +18,10 @@
 extern "C" {
 #endif /* __cplusplus */
 #if defined(LIBA_FUZZY_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN A_INLINE
+/*! @endcond */
 #endif /* LIBA_FUZZY_C */
 
 /*!
@@ -138,8 +140,10 @@ A_EXTERN a_real a_fuzzy_equ(a_real a, a_real b);
 A_EXTERN a_real a_fuzzy_equ_(a_real gamma, a_real a, a_real b);
 
 #if defined(LIBA_FUZZY_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN static A_INLINE
+/*! @endcond */
 #endif /* LIBA_FUZZY_C */
 #if defined(__cplusplus)
 } /* extern "C" */

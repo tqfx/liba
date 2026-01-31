@@ -36,8 +36,10 @@ typedef struct a_complex
 extern "C" {
 #endif /* __cplusplus */
 #if defined(LIBA_COMPLEX_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN A_INLINE
+/*! @endcond */
 #endif /* LIBA_COMPLEX_C */
 
 /*!
@@ -1014,8 +1016,10 @@ A_INTERN void a_complex_acoth(a_complex *ctx, a_complex z)
 #endif /* A_HAVE_INLINE */
 
 #if defined(LIBA_COMPLEX_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN static A_INLINE
+/*! @endcond */
 #endif /* LIBA_COMPLEX_C */
 #if defined(__cplusplus)
 } /* extern "C" */

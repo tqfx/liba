@@ -34,8 +34,10 @@ typedef struct a_vector3 vector3;
 extern "C" {
 #endif /* __cplusplus */
 #if !defined A_HAVE_INLINE || defined(LIBA_VECTOR3_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN A_PUBLIC extern
+/*! @endcond */
 #endif /* A_HAVE_INLINE */
 
 /*!
@@ -301,8 +303,10 @@ A_EXTERN void a_vector3_rot2d(a_vector3 const *iu, a_vector3 const *iv, a_real a
                               a_vector3 *ou, a_vector3 *ov);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_VECTOR3_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN static A_INLINE
+/*! @endcond */
 #endif /* A_HAVE_INLINE */
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -494,8 +498,10 @@ struct a_vector3
 };
 
 #if defined(LIBA_VECTOR3_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN A_INLINE
+/*! @endcond */
 #endif /* LIBA_VECTOR3_C */
 #if defined(A_HAVE_INLINE) || defined(LIBA_VECTOR3_C)
 
@@ -569,8 +575,10 @@ A_INTERN void a_vector3_neg(a_vector3 const *ctx, a_vector3 *res)
 
 #endif /* A_HAVE_INLINE */
 #if defined(LIBA_VECTOR3_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN static A_INLINE
+/*! @endcond */
 #endif /* LIBA_VECTOR3_C */
 
 /*! @} a_vector3 */

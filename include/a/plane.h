@@ -29,8 +29,10 @@ typedef struct a_plane plane;
 extern "C" {
 #endif /* __cplusplus */
 #if !defined A_HAVE_INLINE || defined(LIBA_PLANE_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN A_PUBLIC extern
+/*! @endcond */
 #endif /* A_HAVE_INLINE */
 
 A_INTERN a_point3 const *a_plane_org(a_plane const *ctx);
@@ -60,8 +62,10 @@ A_EXTERN int a_plane_int2(a_plane const *ctx, a_plane const *rhs, a_line3 *res);
 A_EXTERN void a_plane_rot2d(a_plane *ctx, a_real angle);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_PLANE_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN static A_INLINE
+/*! @endcond */
 #endif /* A_HAVE_INLINE */
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -147,8 +151,10 @@ struct a_plane
 };
 
 #if defined(LIBA_PLANE_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN A_INLINE
+/*! @endcond */
 #endif /* LIBA_PLANE_C */
 #if defined(A_HAVE_INLINE) || defined(LIBA_PLANE_C)
 
@@ -177,8 +183,10 @@ A_INTERN void a_plane_set_org(a_plane *ctx, a_real x, a_real y, a_real z)
 
 #endif /* A_HAVE_INLINE */
 #if defined(LIBA_PLANE_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN static A_INLINE
+/*! @endcond */
 #endif /* LIBA_PLANE_C */
 
 /*! @} a_plane */

@@ -1042,9 +1042,9 @@ typedef union a_cast
     a_uptr uptr;
     a_diff diff;
     a_size size;
-    void const *PTR;
+    void const *cptr;
     void *ptr;
-    char const *STR;
+    char const *cstr;
     char *str;
 #if defined(A_REAL_TYPE) && (A_REAL_TYPE + 0 < A_REAL_EXTEND)
     a_real f;
@@ -1234,8 +1234,10 @@ enum a_return_code
 extern "C" {
 #endif /* __cplusplus */
 #if defined(LIBA_A_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN A_INLINE
+/*! @endcond */
 #endif /* LIBA_A_C */
 
 /*!
@@ -1538,8 +1540,10 @@ A_EXTERN void *(*a_alloc)(void *addr, a_size size);
 A_EXTERN void *a_alloc_(void *addr, a_size size);
 
 #if defined(LIBA_A_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN static A_INLINE
+/*! @endcond */
 #endif /* LIBA_A_C */
 #if defined(__cplusplus)
 } /* extern "C" */

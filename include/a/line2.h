@@ -29,8 +29,10 @@ typedef struct a_line2 line2;
 extern "C" {
 #endif /* __cplusplus */
 #if !defined A_HAVE_INLINE || defined(LIBA_LINE2_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN A_PUBLIC extern
+/*! @endcond */
 #endif /* A_HAVE_INLINE */
 
 A_INTERN a_real a_line2_lim(a_line2 const *ctx);
@@ -71,8 +73,10 @@ A_EXTERN int a_line2_int1(a_line2 const *ctx, a_line2 const *rhs,
 A_EXTERN void a_line2_rot(a_line2 const *ctx, a_point2 const *rhs, a_real angle, a_line2 *res);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_LINE2_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN static A_INLINE
+/*! @endcond */
 #endif /* A_HAVE_INLINE */
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -175,8 +179,10 @@ struct a_line2
 };
 
 #if defined(LIBA_LINE2_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN A_INLINE
+/*! @endcond */
 #endif /* LIBA_LINE2_C */
 #if defined(A_HAVE_INLINE) || defined(LIBA_LINE2_C)
 
@@ -208,8 +214,10 @@ A_INTERN void a_line2_set_lim(a_line2 *ctx, a_real max)
 
 #endif /* A_HAVE_INLINE */
 #if defined(LIBA_LINE2_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN static A_INLINE
+/*! @endcond */
 #endif /* LIBA_LINE2_C */
 
 /*! @} a_line2 */

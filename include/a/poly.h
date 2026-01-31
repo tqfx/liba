@@ -18,8 +18,10 @@
 extern "C" {
 #endif /* __cplusplus */
 #if defined(LIBA_POLY_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN A_INLINE
+/*! @endcond */
 #endif /* LIBA_POLY_C */
 
 /*!
@@ -104,8 +106,10 @@ A_EXTERN void a_poly_xTx(a_uint m, a_real const *x, a_uint n, a_real *A);
 A_EXTERN void a_poly_xTy(a_uint m, a_real const *x, a_real const *y, a_uint n, a_real *b);
 
 #if defined(LIBA_POLY_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN static A_INLINE
+/*! @endcond */
 #endif /* LIBA_POLY_C */
 #if defined(__cplusplus)
 } /* extern "C" */

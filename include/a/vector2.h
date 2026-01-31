@@ -34,8 +34,10 @@ typedef struct a_vector2 vector2;
 extern "C" {
 #endif /* __cplusplus */
 #if !defined A_HAVE_INLINE || defined(LIBA_VECTOR2_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN A_PUBLIC extern
+/*! @endcond */
 #endif /* A_HAVE_INLINE */
 
 A_INTERN a_real a_vector2_set_dir(a_vector2 *ctx, a_real x, a_real y);
@@ -66,8 +68,10 @@ A_EXTERN void a_vector2_rot_(a_vector2 const *ctx, a_real sin, a_real cos, a_vec
 A_EXTERN void a_vector2_rot(a_vector2 const *ctx, a_real angle, a_vector2 *res);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_VECTOR2_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN static A_INLINE
+/*! @endcond */
 #endif /* A_HAVE_INLINE */
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -188,8 +192,10 @@ struct a_vector2
 };
 
 #if defined(LIBA_VECTOR2_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN A_INLINE
+/*! @endcond */
 #endif /* LIBA_VECTOR2_C */
 #if defined(A_HAVE_INLINE) || defined(LIBA_VECTOR2_C)
 
@@ -245,8 +251,10 @@ A_INTERN void a_vector2_neg(a_vector2 const *ctx, a_vector2 *res)
 
 #endif /* A_HAVE_INLINE */
 #if defined(LIBA_VECTOR2_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN static A_INLINE
+/*! @endcond */
 #endif /* LIBA_VECTOR2_C */
 
 /*! @} a_vector2 */

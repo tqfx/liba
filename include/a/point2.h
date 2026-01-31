@@ -34,8 +34,10 @@ typedef struct a_point2 point2;
 extern "C" {
 #endif /* __cplusplus */
 #if !defined A_HAVE_INLINE || defined(LIBA_POINT2_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN A_PUBLIC extern
+/*! @endcond */
 #endif /* A_HAVE_INLINE */
 
 /*!
@@ -141,8 +143,10 @@ A_EXTERN a_real a_point2_maxdist(a_point2 const *ctx, a_point2 const *i_p, a_siz
                                  a_point2 *o_p /*=A_NULL*/, a_size *o_i /*=A_NULL*/);
 
 #if !defined A_HAVE_INLINE || defined(LIBA_POINT2_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN static A_INLINE
+/*! @endcond */
 #endif /* A_HAVE_INLINE */
 #if defined(__cplusplus)
 } /* extern "C" */
@@ -291,8 +295,10 @@ struct a_point2
 };
 
 #if defined(LIBA_POINT2_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN A_INLINE
+/*! @endcond */
 #endif /* LIBA_POINT2_C */
 #if defined(A_HAVE_INLINE) || defined(LIBA_POINT2_C)
 
@@ -352,8 +358,10 @@ A_INTERN void a_point2_neg(a_point2 const *ctx, a_vector2 *res)
 
 #endif /* A_HAVE_INLINE */
 #if defined(LIBA_POINT2_C)
+/*! @cond */
 #undef A_INTERN
 #define A_INTERN static A_INLINE
+/*! @endcond */
 #endif /* LIBA_POINT2_C */
 
 /*! @} a_point2 */
