@@ -230,7 +230,7 @@ A_EXTERN void a_vector3_outer(a_vector3 const *lhs, a_vector3 const *rhs, a_real
 /*!
  @brief construct an orthonormal basis from a given 3D direction vector.
  @details Let \f$\vec{n}\f$ be a non-zero 3D vector. The orthonormal vectors \f$\vec{u}\f$ and \f$\vec{v}\f$
- such that \f$\{\vec{u},\vec{v},\vec{n}\}\f$ forms a right-handed orthogonal basis are given by: \n
+ such that \f$\{\vec{u},\vec{v},\vec{n}\}\f$ forms a right-handed orthogonal basis are given by:<br><br>
  If \f$|c_x| \ge |c_y|\f$:
  \f[
   \vec{u} = \frac{\mathbf{j}\times\vec{n}}{\|\mathbf{j}\times\vec{n}\|} \quad
