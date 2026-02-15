@@ -1,15 +1,14 @@
 #if !defined _GNU_SOURCE && defined(__linux__)
 #define _GNU_SOURCE /* NOLINT */
 #endif /* _GNU_SOURCE */
-#include "a/a.h"
+#define LIBA_COMPLEX_C
+#include "a/complex.h"
 #if A_PREREQ_GNUC(3, 0)
 #pragma GCC diagnostic ignored "-Wfloat-conversion"
 #endif /* -Wfloat-conversion */
 #if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */
-#define LIBA_COMPLEX_C
-#include "a/complex.h"
 /* compiler built-in complex number type */
 #if A_PREREQ_MSVC(18, 0)
 #include <complex.h> /* 12.0 */
