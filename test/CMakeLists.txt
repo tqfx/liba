@@ -182,6 +182,9 @@ unittest(buf)
 building(complex complex.c complex.cc)
 unittest(complex ARGS -4,3 -2,1)
 
+building(convexhull convexhull.c convexhull.cc)
+unittest(convexhull)
+
 building(crc crc.c crc.cc)
 unittest(crc ARGS crc.c)
 

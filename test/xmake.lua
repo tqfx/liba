@@ -32,6 +32,10 @@ target("test/complex")
 building({ "complex.c", "complex.cc" })
 target_end()
 
+target("test/convexhull")
+building({ "convexhull.c", "convexhull.cc" })
+target_end()
+
 target("test/crc")
 building({ "crc.c", "crc.cc" })
 target_end()
