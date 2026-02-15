@@ -150,6 +150,28 @@ A_EXTERN a_real a_point3_mindist(a_point3 const *ctx, a_point3 const *i_p, a_siz
 A_EXTERN a_real a_point3_maxdist(a_point3 const *ctx, a_point3 const *i_p, a_size i_n,
                                  a_point3 *o_p /*=A_NULL*/, a_size *o_i /*=A_NULL*/);
 
+/*!
+ @brief compare two 3D points primarily by X, then by Y, and finally by Z.
+ @param[in] lhs is left-hand side 3D point
+ @param[in] rhs is right-hand side 3D point
+ @return relationship between 3D points
+  @retval >0 if lhs is greater than rhs
+  @retval <0 if lhs is less than rhs
+  @retval 0 if lhs is equal to rhs
+*/
+A_EXTERN int a_point3_cmpxy(a_point3 const *lhs, a_point3 const *rhs);
+
+/*!
+ @brief compare two 3D points primarily by Y, then by X, and finally by Z.
+ @param[in] lhs is left-hand side 3D point
+ @param[in] rhs is right-hand side 3D point
+ @return relationship between 3D points
+  @retval >0 if lhs is greater than rhs
+  @retval <0 if lhs is less than rhs
+  @retval 0 if lhs is equal to rhs
+*/
+A_EXTERN int a_point3_cmpyx(a_point3 const *lhs, a_point3 const *rhs);
+
 #if !defined A_HAVE_INLINE || defined(LIBA_POINT3_C)
 /*! @cond */
 #undef A_INTERN

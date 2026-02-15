@@ -142,6 +142,28 @@ A_EXTERN a_real a_point2_mindist(a_point2 const *ctx, a_point2 const *i_p, a_siz
 A_EXTERN a_real a_point2_maxdist(a_point2 const *ctx, a_point2 const *i_p, a_size i_n,
                                  a_point2 *o_p /*=A_NULL*/, a_size *o_i /*=A_NULL*/);
 
+/*!
+ @brief compare two 2D points primarily by X-coordinate, then by Y-coordinate.
+ @param[in] lhs is left-hand side 2D point
+ @param[in] rhs is right-hand side 2D point
+ @return relationship between 2D points
+  @retval >0 if lhs is greater than rhs
+  @retval <0 if lhs is less than rhs
+  @retval 0 if lhs is equal to rhs
+*/
+A_EXTERN int a_point2_cmpx(a_point2 const *lhs, a_point2 const *rhs);
+
+/*!
+ @brief compare two 2D points primarily by Y-coordinate, then by X-coordinate.
+ @param[in] lhs is left-hand side 2D point
+ @param[in] rhs is right-hand side 2D point
+ @return relationship between 2D points
+  @retval >0 if lhs is greater than rhs
+  @retval <0 if lhs is less than rhs
+  @retval 0 if lhs is equal to rhs
+*/
+A_EXTERN int a_point2_cmpy(a_point2 const *lhs, a_point2 const *rhs);
+
 #if !defined A_HAVE_INLINE || defined(LIBA_POINT2_C)
 /*! @cond */
 #undef A_INTERN

@@ -62,3 +62,24 @@ a_real a_point3_maxdist(a_point3 const *ctx, a_point3 const *i_p, a_size i_n,
     if (o_i) { *o_i = idx; }
     return val;
 }
+
+#if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif /* -Wfloat-equal */
+#if A_PREREQ_MSVC(19, 30)
+#pragma warning(disable : 5250)
+#endif /* msvc 17.0+ */
+
+int a_point3_cmpxy(a_point3 const *lhs, a_point3 const *rhs)
+{
+    if (lhs->x != rhs->x) { return A_SGN_(lhs->x, rhs->x); }
+    if (lhs->y != rhs->y) { return A_SGN_(lhs->y, rhs->y); }
+    return A_SGN_(lhs->z, rhs->z);
+}
+
+int a_point3_cmpyx(a_point3 const *lhs, a_point3 const *rhs)
+{
+    if (lhs->y != rhs->y) { return A_SGN_(lhs->y, rhs->y); }
+    if (lhs->x != rhs->x) { return A_SGN_(lhs->x, rhs->x); }
+    return A_SGN_(lhs->z, rhs->z);
+}
