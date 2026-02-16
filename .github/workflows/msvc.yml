@@ -25,6 +25,7 @@ jobs:
           _/Scripts/Activate.ps1
           python -m pip install ninja
           python -m pip install -r requirements.txt
+          choco install nsis
           Get-ChildItem "C:/*/Microsoft Visual Studio/*/*/Common7/Tools/VsDevCmd.bat"
           Get-ChildItem Env: | Sort Name
       - name: Run cmake
