@@ -24,7 +24,7 @@ extern "C" {
  @brief compute the convex hull of a set of 2D points using the Monotone Chain algorithm.
  @param[in,out] i_p points to the input 2D points in memory
  @param[in] i_n number of the input 2D points in memory
- @param[in,out] o_p points to the output memory where the convex hull points will be stored
+ @param[out] o_p points to the output memory where the convex hull points will be stored
  @param[in] o_n number of the output memory where the convex hull points will be stored
  @param[in] opt In-place sort option for the pre-processing step.
  If the following values are not used, assume the input points are ordered.
