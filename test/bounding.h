@@ -9,11 +9,10 @@ static A_INLINE a_bool iseq(a_real a, a_real b)
 
 int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 {
-    TEST_BUG(a_bounding_box2(A_NULL, 0, A_NULL, A_NULL, A_NULL, A_NULL) < 0);
-    TEST_BUG(a_bounding_box3(A_NULL, 0, A_NULL, A_NULL, A_NULL, A_NULL, A_NULL, A_NULL) < 0);
     {
         a_real xmin, xmax, ymin, ymax;
         a_point2 p[2] = {A_POINT2_C(0, 0), A_POINT2_C(1, 2)};
+        TEST_BUG(a_bounding_box2(A_NULL, 0, A_NULL, A_NULL, A_NULL, A_NULL) < 0);
         TEST_BUG(a_bounding_box2(p, 1, &xmin, &xmax, &ymin, &ymax) == 0);
         TEST_BUG(iseq(xmin, 0));
         TEST_BUG(iseq(xmax, 0));
@@ -28,6 +27,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     {
         a_real xmin, xmax, ymin, ymax, zmin, zmax;
         a_point3 p[2] = {A_POINT3_C(0, 0, 0), A_POINT3_C(1, 2, 3)};
+        TEST_BUG(a_bounding_box3(A_NULL, 0, A_NULL, A_NULL, A_NULL, A_NULL, A_NULL, A_NULL) < 0);
         TEST_BUG(a_bounding_box3(p, 1, &xmin, &xmax, &ymin, &ymax, &zmin, &zmax) == 0);
         TEST_BUG(iseq(xmin, 0));
         TEST_BUG(iseq(xmax, 0));
@@ -42,6 +42,40 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(ymax, 2));
         TEST_BUG(iseq(zmin, 0));
         TEST_BUG(iseq(zmax, 3));
+    }
+    {
+        a_point2 o;
+        a_vector2 u, v;
+        a_real umax = 1, vmax = 1;
+        a_point2 p[3] = {A_POINT2_C(0, 0), A_POINT2_C(1, 1), A_POINT2_C(0, 10)}, q[4];
+        TEST_BUG(a_bounding_obb2(p, 0, q, 4, &o, &u, &v, &umax, &vmax) == 0);
+        TEST_BUG(a_bounding_obb2(p, 1, q, 4, &o, &u, &v, &umax, &vmax) > 0);
+        TEST_BUG(iseq(o.x, 0));
+        TEST_BUG(iseq(o.y, 0));
+        TEST_BUG(iseq(u.x, 1));
+        TEST_BUG(iseq(u.y, 0));
+        TEST_BUG(iseq(v.x, 0));
+        TEST_BUG(iseq(v.y, 1));
+        TEST_BUG(iseq(umax, 0));
+        TEST_BUG(iseq(vmax, 0));
+        TEST_BUG(a_bounding_obb2(p, 2, q, 4, &o, &u, &v, &umax, &vmax) > 0);
+        TEST_BUG(iseq(o.x, 0));
+        TEST_BUG(iseq(o.y, 0));
+        TEST_BUG(iseq(u.x, +A_REAL_SQRT1_2));
+        TEST_BUG(iseq(u.y, +A_REAL_SQRT1_2));
+        TEST_BUG(iseq(v.x, -A_REAL_SQRT1_2));
+        TEST_BUG(iseq(v.y, +A_REAL_SQRT1_2));
+        TEST_BUG(iseq(umax, A_REAL_SQRT2));
+        TEST_BUG(iseq(vmax, 0));
+        TEST_BUG(a_bounding_obb2(p, 3, q, 4, &o, &u, &v, &umax, &vmax) > 0);
+        TEST_BUG(iseq(o.x, 0));
+        TEST_BUG(iseq(o.y, 0));
+        TEST_BUG(iseq(u.x, 1));
+        TEST_BUG(iseq(u.y, 0));
+        TEST_BUG(iseq(v.x, 0));
+        TEST_BUG(iseq(v.y, 1));
+        TEST_BUG(iseq(umax, 1));
+        TEST_BUG(iseq(vmax, 10));
     }
     (void)argc;
     (void)argv;
