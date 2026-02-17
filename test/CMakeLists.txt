@@ -176,6 +176,9 @@ unittest(a)
 building(avl avl.c avl.cc)
 unittest(avl)
 
+building(bounding bounding.c bounding.cc)
+unittest(bounding)
+
 building(buf buf.c buf.cc)
 unittest(buf)
 

@@ -24,6 +24,10 @@ target("test/avl")
 building({ "avl.c", "avl.cc" })
 target_end()
 
+target("test/bounding")
+building({ "bounding.c", "bounding.cc" })
+target_end()
+
 target("test/buf")
 building({ "buf.c", "buf.cc" })
 target_end()
