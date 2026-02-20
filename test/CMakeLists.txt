@@ -301,6 +301,9 @@ unittest(poly)
 building(que que.c que.cc)
 unittest(que)
 
+building(random random.c random.cc)
+unittest(random)
+
 building(rbt rbt.c rbt.cc)
 unittest(rbt)
 

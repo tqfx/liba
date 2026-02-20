@@ -136,6 +136,10 @@ target("test/rbt")
 building({ "rbt.c", "rbt.cc" })
 target_end()
 
+target("test/random")
+building({ "random.c", "random.cc" })
+target_end()
+
 target("test/regress")
 building({ "regress.c", "regress.cc" })
 target_end()
