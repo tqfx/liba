@@ -43,14 +43,15 @@
 #define A_VERSION A_VERSION_TOSTR(A_VERSION_MAJOR) "." A_VERSION_TOSTR(A_VERSION_MINOR) "." A_VERSION_TOSTR(A_VERSION_PATCH)
 #endif /* A_VERSION */
 
-typedef struct a_version a_version;
-#define A_VERSION_0() A_VERSION_1(0)
-#define A_VERSION_1(major) A_VERSION_2(major, 0)
-#define A_VERSION_2(major, minor) A_VERSION_3(major, minor, 0)
-#define A_VERSION_3(major, minor, third) A_VERSION_4(major, minor, third, 0)
 /* clang-format off */
 #define A_VERSION_4(major, minor, third, extra) {major, minor, third, extra, {'.', 0, 0, 0}}
 /* clang-format on */
+#define A_VERSION_3(major, minor, third) A_VERSION_4(major, minor, third, 0)
+#define A_VERSION_2(major, minor) A_VERSION_3(major, minor, 0)
+#define A_VERSION_1(major) A_VERSION_2(major, 0)
+#define A_VERSION_0() A_VERSION_1(0)
+
+typedef struct a_version a_version;
 
 #if defined(__cplusplus)
 namespace a
