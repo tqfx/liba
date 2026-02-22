@@ -94,6 +94,10 @@ a_real a_regress_linear_mgd(a_regress_linear *ctx, a_size n, a_real const *x_, a
 
 void a_regress_linear_zero(a_regress_linear *ctx)
 {
-    a_zero(ctx->coef_p, sizeof(a_real) * ctx->coef_n);
+    a_size i;
+    for (i = 0; i < ctx->coef_n; ++i)
+    {
+        ctx->coef_p[i] = 1;
+    }
     ctx->bias = 0;
 }

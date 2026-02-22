@@ -15,6 +15,13 @@
  @{
 */
 
+/* clang-format off */
+#define A_REGRESS_LINEAR_3(coef_p, coef_n, bias) {coef_p, coef_n, a_real_c(bias)}
+/* clang-format on */
+#define A_REGRESS_LINEAR_2(coef_p, coef_n) A_REGRESS_LINEAR_3(coef_p, coef_n, 0)
+#define A_REGRESS_LINEAR_1(coef) A_REGRESS_LINEAR_2(coef, A_LEN(coef))
+#define A_REGRESS_LINEAR_0() A_REGRESS_LINEAR_2(A_NULL, 0)
+
 typedef struct a_regress_linear a_regress_linear;
 
 #if defined(__cplusplus)
