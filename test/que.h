@@ -92,7 +92,7 @@ static void test(void)
     (void)putchar('\n');
 }
 
-#include <time.h>
+#include "a/rand.h"
 
 static int small(void const *lhs, void const *rhs)
 {
@@ -108,26 +108,22 @@ static int large(void const *lhs, void const *rhs)
     return (a < b) - (a > b);
 }
 
-static int rand10(void)
-{
-    return a_cast_s(int, rand() / a_cast_s(double, RAND_MAX) * 10); /* NOLINT */
-}
-
 static void test_sort(void)
 {
-    unsigned int t = a_cast_s(unsigned int, time(A_NULL));
+    a_rand_lcg48 lcg = A_RAND_LCG48_INIT;
+    a_i64 seed = a_cast_r(a_iptr, &lcg);
     a_que *ctx = a_que_new(sizeof(int));
     int i, x, *it, *at;
 
     x = -1;
-    srand(t);
+    a_rand_lcg48_init(&lcg, seed);
     a_que_drop(ctx, A_NULL);
     for (i = 0; i != 10; ++i)
     {
         int *obj = A_QUE_PUSH_FORE(int, ctx);
         if (obj)
         {
-            *obj = rand10();
+            *obj = a_cast_s(int, a_rand_lcg48f(&lcg) * 10);
             printf("%i ", *obj);
             a_que_sort_fore(ctx, small);
         }
@@ -141,7 +137,7 @@ static void test_sort(void)
     }
 
     x = -1;
-    srand(t);
+    a_rand_lcg48_init(&lcg, seed);
     printf("-> ");
     a_que_drop(ctx, dtor);
     (void)putchar('\n');
@@ -150,7 +146,7 @@ static void test_sort(void)
         int *obj = A_QUE_PUSH_BACK(int, ctx);
         if (obj)
         {
-            *obj = rand10();
+            *obj = a_cast_s(int, a_rand_lcg48f(&lcg) * 10);
             printf("%i ", *obj);
             a_que_sort_back(ctx, large);
         }
@@ -164,13 +160,13 @@ static void test_sort(void)
     }
 
     x = -1;
-    srand(t);
+    a_rand_lcg48_init(&lcg, seed);
     printf("-> ");
     a_que_drop(ctx, dtor);
     (void)putchar('\n');
     for (i = 0; i != 10; ++i)
     {
-        int key = rand10();
+        int key = a_cast_s(int, a_rand_lcg48f(&lcg) * 10);
         int *obj = A_QUE_PUSH_SORT(int, ctx, &key, small);
         if (obj)
         {

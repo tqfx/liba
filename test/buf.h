@@ -153,8 +153,8 @@ static void test(void)
     }
 }
 
+#include "a/rand.h"
 #include "a/str.h"
-#include <time.h>
 
 typedef struct kv kv;
 struct kv
@@ -177,14 +177,10 @@ static int large(void const *lhs, void const *rhs)
     return (a->key < b->key) - (a->key > b->key);
 }
 
-static int rand10(void)
-{
-    return a_cast_s(int, rand() / a_cast_s(double, RAND_MAX) * 10); /* NOLINT */
-}
-
 static void test_sort(void)
 {
-    unsigned int t = a_cast_s(unsigned int, time(A_NULL));
+    a_rand_lcg48 lcg = A_RAND_LCG48_INIT;
+    a_i64 seed = a_cast_r(a_iptr, &lcg);
     struct a_buf_kv
     {
         A_BUF_DEF;
@@ -197,10 +193,10 @@ static void test_sort(void)
     a_buf_setn(ctx, 10, A_NULL);
 
     i = 0;
-    srand(t);
+    a_rand_lcg48_init(&lcg, seed);
     A_BUF_FOREACH(kv *, it, at, ctx)
     {
-        it->key = rand10();
+        it->key = a_cast_s(int, a_rand_lcg48f(&lcg) * 10);
         it->val = i++;
     }
     a_buf_sort(ctx, large);
@@ -213,10 +209,10 @@ static void test_sort(void)
     }
 
     i = 0;
-    srand(t);
+    a_rand_lcg48_init(&lcg, seed);
     A_BUF_FOREACH(kv *, it, at, ctx)
     {
-        it->key = rand10();
+        it->key = a_cast_s(int, a_rand_lcg48f(&lcg) * 10);
         it->val = i++;
     }
     a_buf_sort(ctx, small);
@@ -228,7 +224,7 @@ static void test_sort(void)
         x = *it;
     }
 
-    srand(t);
+    a_rand_lcg48_init(&lcg, seed);
     a_buf_setn(ctx, 0, A_NULL);
     for (i = 0; i != 10; ++i)
     {
@@ -236,7 +232,7 @@ static void test_sort(void)
         if (obj)
         {
             obj->val = 10 - i;
-            obj->key = rand10();
+            obj->key = a_cast_s(int, a_rand_lcg48f(&lcg) * 10);
             a_buf_sort_fore(ctx, small);
         }
     }
@@ -249,7 +245,7 @@ static void test_sort(void)
         x = *it;
     }
 
-    srand(t);
+    a_rand_lcg48_init(&lcg, seed);
     a_buf_setn(ctx, 0, A_NULL);
     for (i = 0; i != 10; ++i)
     {
@@ -257,7 +253,7 @@ static void test_sort(void)
         if (obj)
         {
             obj->val = i;
-            obj->key = rand10();
+            obj->key = a_cast_s(int, a_rand_lcg48f(&lcg) * 10);
             a_buf_sort_back(ctx, small);
         }
     }
@@ -270,12 +266,12 @@ static void test_sort(void)
         x = *it;
     }
 
-    srand(t);
+    a_rand_lcg48_init(&lcg, seed);
     a_buf_setn(ctx, 0, A_NULL);
     for (i = 0; i != 10; ++i)
     {
         kv *obj;
-        x.key = rand10();
+        x.key = a_cast_s(int, a_rand_lcg48f(&lcg) * 10);
         x.val = i;
         obj = A_BUF_PUSH_SORT(kv, ctx, &x, small);
         if (obj) { *obj = x; }

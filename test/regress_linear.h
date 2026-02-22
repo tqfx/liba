@@ -1,21 +1,9 @@
 #define MAIN(x) regress_linear##x
 #include "test.h"
 #include "a/regress_linear.h"
+#include "a/rand.h"
 #include "a/math.h"
 #include <string.h>
-#include <time.h>
-
-#define RAND_MAX_ 2147483647
-static unsigned long rand_seed = 1;
-static void srand_(unsigned long seed)
-{
-    rand_seed = seed;
-}
-static long rand_(void)
-{
-    rand_seed = (rand_seed * 1103515245UL + 12345) % 2147483648UL;
-    return a_cast_s(long, rand_seed);
-}
 
 typedef struct config
 {
@@ -32,19 +20,20 @@ static void main_1(int m, a_real a, a_real b, a_size n, config const *cfg)
     a_real *x = a_new(a_real, A_NULL, n);
     a_real *y = a_new(a_real, A_NULL, n);
     a_real *e = a_new(a_real, A_NULL, n);
-    long x_n = a_cast_s(long, n) * 10;
-    long y_n = a_cast_s(long, n) * 2;
+    int x_n = a_cast_s(int, n * 10);
+    int y_n = a_cast_s(int, n * 2);
     a_real coef[] = {1};
-    a_regress_linear ctx;
+    a_regress_linear ctx = A_REGRESS_LINEAR_0();
+    a_rand_lcg48 lcg = A_RAND_LCG48_INIT;
     a_size i;
 
     for (i = 0; i < n; ++i)
     {
-        x[i] = a_cast_s(a_real, rand_() % x_n);
-        y[i] = a * x[i] + b + a_cast_s(a_real, rand_() % y_n) - a_cast_s(a_real, y_n >> 1);
+        x[i] = a_cast_s(a_real, a_rand_lcg48f(&lcg) * x_n);
+        y[i] = a * x[i] + b + a_cast_s(a_real, a_rand_lcg48f(&lcg) * y_n) - a_cast_s(a_real, y_n >> 1);
     }
 
-    a_regress_linear_init(&ctx, coef, 1, 1);
+    a_regress_linear_init(&ctx, coef, A_LEN(coef), 1);
     a_regress_linear_zero(&ctx);
 
     switch (m)
@@ -118,21 +107,22 @@ static void main_2(int m, a_real a, a_real b, a_real c, a_size n, config const *
     a_real *x = a_new(a_real, A_NULL, n * 2);
     a_real *y = a_new(a_real, A_NULL, n);
     a_real *e = a_new(a_real, A_NULL, n);
-    long x_n = a_cast_s(long, n) * 10;
-    long y_n = a_cast_s(long, n) * 2;
+    int x_n = a_cast_s(int, n * 10);
+    int y_n = a_cast_s(int, n * 2);
     a_real coef[2] = {1, 1};
-    a_regress_linear ctx;
+    a_rand_lcg48 lcg = A_RAND_LCG48_INIT;
+    a_regress_linear ctx = A_REGRESS_LINEAR_0();
     a_size i, ii;
 
     for (i = 0; i < n; ++i)
     {
-        x[i * 2 + 0] = a_cast_s(a_real, rand_() % x_n);
-        x[i * 2 + 1] = a_cast_s(a_real, rand_() % x_n);
+        x[i * 2 + 0] = a_cast_s(a_real, a_rand_lcg48f(&lcg) * x_n);
+        x[i * 2 + 1] = a_cast_s(a_real, a_rand_lcg48f(&lcg) * x_n);
         y[i] = a * x[i * 2 + 0] + b * x[i * 2 + 1] + c +
-               a_cast_s(a_real, rand_() % y_n) - a_cast_s(a_real, y_n >> 1);
+               a_cast_s(a_real, a_rand_lcg48f(&lcg) * y_n) - a_cast_s(a_real, y_n >> 1);
     }
 
-    a_regress_linear_init(&ctx, coef, 2, 1);
+    a_regress_linear_init(&ctx, coef, A_LEN(coef), 1);
     a_regress_linear_zero(&ctx);
 
     switch (m)
@@ -231,7 +221,6 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     cfg.epoch = 1000;
     cfg.batch = 16;
 
-    srand_(a_cast_s(a_ulong, time(A_NULL)));
     main_init(argc, argv, 1);
 
     if (argc > 1)
