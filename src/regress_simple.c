@@ -52,6 +52,6 @@ void a_regress_simple_ols(a_regress_simple *ctx, a_size n, a_real const *x, a_re
 
 void a_regress_simple_zero(a_regress_simple *ctx)
 {
-    ctx->coef = 0;
+    ctx->coef = 1;
     ctx->bias = 0;
 }

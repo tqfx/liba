@@ -15,6 +15,12 @@
  @{
 */
 
+/* clang-format off */
+#define A_REGRESS_SIMPLE_2(coef, bias) {a_real_c(coef), a_real_c(bias)}
+/* clang-format on */
+#define A_REGRESS_SIMPLE_1(coef) A_REGRESS_SIMPLE_2(coef, 0)
+#define A_REGRESS_SIMPLE_0() A_REGRESS_SIMPLE_1(1)
+
 typedef struct a_regress_simple a_regress_simple;
 
 #if defined(__cplusplus)
