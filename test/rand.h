@@ -49,8 +49,10 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     a_rand_lcg48_shuf(&ctx, v, A_LEN(v), sizeof(*v));
     for (i = 0; i < A_LEN(v); ++i)
     {
-        debug("%g\n", v[i]);
+        if (i) { debug(" "); }
+        debug("%g", v[i]);
     }
+    debug("\n");
     (void)argc;
     (void)argv;
     return 0;
