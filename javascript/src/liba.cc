@@ -3,6 +3,9 @@
 #if defined(__has_feature) && __has_feature(address_sanitizer)
 #include <sanitizer/lsan_interface.h>
 #endif /* -fsanitize=address */
+#if __has_warning("-Wlifetime-safety-intra-tu-suggestions")
+#pragma clang diagnostic ignored "-Wlifetime-safety-intra-tu-suggestions"
+#endif /* -Wlifetime-safety-intra-tu-suggestions */
 
 namespace
 {
