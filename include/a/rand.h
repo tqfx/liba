@@ -53,7 +53,7 @@ A_EXTERN A_NONULL((1)) void a_rand_lcg48_seed(a_rand_lcg48 *ctx, a_u16 const x[3
  @param[in,out] x points to the state array
  @return the result before being truncated
 */
-A_EXTERN A_NONULL((1, 2)) a_u64 a_rand_lcg48_iter(a_rand_lcg48 *ctx, a_u16 x[3]);
+A_EXTERN A_NONULL((1, 2)) a_u64 a_rand_lcg48_next(a_rand_lcg48 *ctx, a_u16 x[3]);
 
 /*!
  @brief generate a signed 32-bit random integer.
@@ -127,8 +127,8 @@ struct a_rand_lcg48
     A_INLINE void init(a_i64 x_) { a_rand_lcg48_init(this, x_); }
     /*! @copybrief a_rand_lcg48_seed @see a_rand_lcg48_seed */
     A_INLINE void seed(a_u16 const x_[3] = A_NULL) { a_rand_lcg48_seed(this, x_); }
-    /*! @copybrief a_rand_lcg48_iter @see a_rand_lcg48_iter */
-    A_INLINE A_NONULL((2)) a_u64 iter(a_u16 x_[3]) { return a_rand_lcg48_iter(this, x_); }
+    /*! @copybrief a_rand_lcg48_next @see a_rand_lcg48_next */
+    A_INLINE A_NONULL((2)) a_u64 next(a_u16 x_[3]) { return a_rand_lcg48_next(this, x_); }
     /*! @copybrief a_rand_lcg48i @see a_rand_lcg48i @see a_rand_lcg48i_ */
     A_INLINE a_i32 i(a_u16 x_[3] = A_NULL)
     {

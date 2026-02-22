@@ -28,7 +28,7 @@ void a_rand_lcg48_seed(a_rand_lcg48 *ctx, a_u16 const x[3])
     }
 }
 
-a_u64 a_rand_lcg48_iter(a_rand_lcg48 *ctx, a_u16 x[3])
+a_u64 a_rand_lcg48_next(a_rand_lcg48 *ctx, a_u16 x[3])
 {
     a_u64 r = ((a_u64)x[2] << 32) | ((a_u32)x[1] << 16) | x[0];
     r *= ctx->a;
@@ -41,19 +41,19 @@ a_u64 a_rand_lcg48_iter(a_rand_lcg48 *ctx, a_u16 x[3])
 
 a_i32 a_rand_lcg48i_(a_rand_lcg48 *ctx, a_u16 x[3])
 {
-    a_rand_lcg48_iter(ctx, x);
+    a_rand_lcg48_next(ctx, x);
     return (a_i32)((a_u32)x[2] << 16) | x[1];
 }
 
 a_u32 a_rand_lcg48u_(a_rand_lcg48 *ctx, a_u16 x[3])
 {
-    a_rand_lcg48_iter(ctx, x);
+    a_rand_lcg48_next(ctx, x);
     return ((a_u32)x[2] << 15) | (x[1] >> 1);
 }
 
 a_f64 a_rand_lcg48f_(a_rand_lcg48 *ctx, a_u16 x[3])
 {
-    a_u64 r = a_rand_lcg48_iter(ctx, x);
+    a_u64 r = a_rand_lcg48_next(ctx, x);
     return (a_f64)(r & 0xFFFFFFFFFFFFU) * (1.0 / 0x1000000000000);
 }
 
