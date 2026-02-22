@@ -132,12 +132,12 @@ target("test/que")
 building({ "que.c", "que.cc" })
 target_end()
 
-target("test/rbt")
-building({ "rbt.c", "rbt.cc" })
+target("test/rand")
+building({ "rand.c", "rand.cc" })
 target_end()
 
-target("test/random")
-building({ "random.c", "random.cc" })
+target("test/rbt")
+building({ "rbt.c", "rbt.cc" })
 target_end()
 
 target("test/regress")
