@@ -5,19 +5,25 @@
 #pragma GCC diagnostic ignored "-Wcast-function-type"
 #endif /* -Wfloat-equal */
 
-a_size a_convexhull2(a_point2 *i_p, a_size i_n, a_point2 *o_p, a_size o_n, a_uint opt, a_real tol)
+a_size a_convexhull2(a_point2 *__restrict i_p, a_size i_n,
+                     a_point2 *__restrict o_p, a_size o_n,
+                     a_uint opt, a_real tol)
 {
     a_real x;
     a_size b, i, r = 0;
     a_vector2 v21, v10;
-    switch (opt & 0x7F)
+    if (i_p && i_n && o_p && o_n)
     {
-    case 'x':
-    case 'X': qsort(i_p, i_n, sizeof(*i_p), (int (*)(void const *, void const *))a_point2_cmpx); break;
-    case 'y':
-    case 'Y': qsort(i_p, i_n, sizeof(*i_p), (int (*)(void const *, void const *))a_point2_cmpy); break;
-    default: break;
+        switch (opt & 0x7F)
+        {
+        case 'x':
+        case 'X': qsort(i_p, i_n, sizeof(a_point2), (int (*)(void const *, void const *))a_point2_cmpx); break;
+        case 'y':
+        case 'Y': qsort(i_p, i_n, sizeof(a_point2), (int (*)(void const *, void const *))a_point2_cmpy); break;
+        default: break;
+        }
     }
+    else { return 0; }
     if (tol < 0) { tol = 0; }
     for (i = 0; i < i_n; ++i)
     {

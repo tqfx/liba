@@ -34,7 +34,9 @@ extern "C" {
  @return the number of points in the computed convex hull
   @retval 0 if the output memory is too small to hold the result
 */
-A_EXTERN a_size a_convexhull2(a_point2 *i_p, a_size i_n, a_point2 *o_p, a_size o_n, a_uint opt, a_real tol);
+A_EXTERN a_size a_convexhull2(a_point2 *__restrict i_p, a_size i_n,
+                              a_point2 *__restrict o_p, a_size o_n,
+                              a_uint opt, a_real tol);
 
 #if defined(__cplusplus)
 } /* extern "C" */
