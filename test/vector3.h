@@ -294,6 +294,27 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     }
     {
         a_vector3 u, v;
+        a_vector3_set_val(&u, 2, 4, 6);
+        a_vector3_set_val(&v, 1, 2, 3);
+        TEST_BUG(a_vector3_proj(&v, &u, &v) == 0);
+        TEST_BUG(iseq(v.x, +1));
+        TEST_BUG(iseq(v.y, +2));
+        TEST_BUG(iseq(v.z, +3));
+        a_vector3_set_val(&u, 0, 0, 3);
+        a_vector3_set_val(&v, 1, 2, 3);
+        TEST_BUG(a_vector3_perp(&v, &u, &v) == 0);
+        TEST_BUG(iseq(v.x, 1));
+        TEST_BUG(iseq(v.y, 2));
+        TEST_BUG(iseq(v.z, 0));
+        a_vector3_set_val(&u, 2, 4, 6);
+        a_vector3_set_val(&v, 1, 2, 3);
+        TEST_BUG(a_vector3_refl(&v, &u, &v) == 0);
+        TEST_BUG(iseq(v.x, -1));
+        TEST_BUG(iseq(v.y, -2));
+        TEST_BUG(iseq(v.z, -3));
+    }
+    {
+        a_vector3 u, v;
         a_vector3_set_dir(&v, 1, 1, 1);
         a_vector3_set_val(&u, 1, 2, 3);
         a_vector3_rot(&u, &v, A_REAL_PI_2, &u);

@@ -227,6 +227,7 @@ A_EXTERN void a_vector3_cross(a_vector3 const *lhs, a_vector3 const *rhs, a_vect
  @param[out] res stores the 3×3 matrix in row-major order
 */
 A_EXTERN void a_vector3_outer(a_vector3 const *lhs, a_vector3 const *rhs, a_real res[9]);
+
 /*!
  @brief construct an orthonormal basis from a given 3D direction vector.
  @details Let \f$\vec{n}\f$ be a non-zero 3D vector. The orthonormal vectors \f$\vec{u}\f$ and \f$\vec{v}\f$
@@ -249,6 +250,56 @@ A_EXTERN void a_vector3_outer(a_vector3 const *lhs, a_vector3 const *rhs, a_real
   @retval 0 success
 */
 A_EXTERN int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v);
+
+/*!
+ @brief project vector onto the direction of vector.
+ @details In three-dimensional space, let \f$\vec{v}\f$ be the vector to be projected,
+ and let \f$\vec{d}\f$ be the direction vector for projection.
+ Then the projection of \f$\vec{v}\f$ onto the direction of \f$\vec{d}\f$ is defined as:
+ \f[
+  \vec{v}' = \frac{\vec{d}\cdot\vec{v}}{\|\vec{d}\|^2}\vec{d}
+ \f]
+ @param[in] ctx points to the vector to be projected
+ @param[in] dir points to the direction vector for projection
+ @param[out] res stores the projection vector onto the direction of vector
+ @return error code value
+  @retval <0 failure
+  @retval 0 success
+*/
+A_EXTERN int a_vector3_proj(a_vector3 const *ctx, a_vector3 const *dir, a_vector3 *res);
+/*!
+ @brief project vector onto the plane perpendicular to normal vector.
+ @details In three-dimensional space, let \f$\vec{v}\f$ be the vector to be projected,
+ and let \f$\vec{n}\f$ be the normal vector of the plane.
+ Then the perpendicular projection of \f$\vec{v}\f$ about the plane normal \f$\vec{n}\f$ is defined as:
+ \f[
+  \vec{v}' = \vec{v}-\frac{\vec{n}\cdot\vec{v}}{\|\vec{n}\|^2}\vec{n}
+ \f]
+ @param[in] ctx points to the vector to be projected
+ @param[in] dir points to the normal vector of the plane
+ @param[out] res stores the perpendicular projection vector about the plane normal
+ @return error code value
+  @retval <0 failure
+  @retval 0 success
+*/
+A_EXTERN int a_vector3_perp(a_vector3 const *ctx, a_vector3 const *dir, a_vector3 *res);
+/*!
+ @brief reflect vector across the plane perpendicular to normal vector.
+ @details In three-dimensional space, let \f$\vec{v}\f$ be the vector to be reflected,
+ and let \f$\vec{n}\f$ be the normal vector of the reflection plane.
+ Then the reflection of \f$\vec{v}\f$ about the plane with normal \f$\vec{n}\f$ is defined as:
+ \f[
+  \vec{v}' = \vec{v}-2\frac{\vec{n}\cdot\vec{v}}{\|\vec{n}\|^2}\vec{n}
+ \f]
+ @param[in] ctx points to the vector to be reflected
+ @param[in] dir points to the normal vector of the reflection plane
+ @param[out] res stores the reflection vector about the plane with normal
+ @return error code value
+  @retval <0 failure
+  @retval 0 success
+*/
+A_EXTERN int a_vector3_refl(a_vector3 const *ctx, a_vector3 const *dir, a_vector3 *res);
+
 /*!
  @brief rotate a 3D vector around an arbitrary unit axis using Rodrigues' rotation formula.
  @details In three-dimensional space, let \f$u\f$ be a unit vector defining a rotation axis and
@@ -282,7 +333,7 @@ A_EXTERN void a_vector3_rot_(a_vector3 const *ctx, a_vector3 const *dir, a_real 
 A_EXTERN void a_vector3_rot(a_vector3 const *ctx, a_vector3 const *dir, a_real angle, a_vector3 *res);
 /*!
  @brief rotate a 2D basis in the plane spanned by two orthogonal vectors.
- @details Let \f$\vec{u}\f$ and \f$\vec{v}\f$ be an orthonormal basis in the plane,
+ @details In three-dimensional space, let \f$\vec{u}\f$ and \f$\vec{v}\f$ be an orthonormal basis in the plane,
  and let \f$\theta\f$ be the counterclockwise rotation angle about the origin.
  The new basis vectors \f$\vec{u}'\f$ and \f$\vec{v}'\f$ after rotation are given by:
  \f{aligned}{
@@ -414,6 +465,21 @@ struct a_vector3
     A_INLINE int ortho(a_vector3 &u, a_vector3 &v) const
     {
         return a_vector3_ortho(this, &u, &v);
+    }
+    /*! @copybrief a_vector3_proj @see a_vector3_proj */
+    A_INLINE int proj(a_vector3 const &dir, a_vector3 &res) const
+    {
+        return a_vector3_proj(this, &dir, &res);
+    }
+    /*! @copybrief a_vector3_perp @see a_vector3_perp */
+    A_INLINE int perp(a_vector3 const &dir, a_vector3 &res) const
+    {
+        return a_vector3_perp(this, &dir, &res);
+    }
+    /*! @copybrief a_vector3_refl @see a_vector3_refl */
+    A_INLINE int refl(a_vector3 const &dir, a_vector3 &res) const
+    {
+        return a_vector3_refl(this, &dir, &res);
     }
     /*! @copybrief a_vector3_rot @see a_vector3_rot */
     A_INLINE void rot(a_vector3 const &dir, a_real angle, a_vector3 &res) const

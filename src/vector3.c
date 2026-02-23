@@ -153,6 +153,48 @@ int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v)
     return A_SUCCESS;
 }
 
+int a_vector3_proj(a_vector3 const *ctx, a_vector3 const *dir, a_vector3 *res)
+{
+    a_real n = a_vector3_norm2(dir);
+    if (n > 0)
+    {
+        a_real d = a_vector3_dot(dir, ctx) / n;
+        res->x = dir->x * d;
+        res->y = dir->y * d;
+        res->z = dir->z * d;
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
+}
+
+int a_vector3_perp(a_vector3 const *ctx, a_vector3 const *dir, a_vector3 *res)
+{
+    a_real n = a_vector3_norm2(dir);
+    if (n > 0)
+    {
+        a_real d = a_vector3_dot(dir, ctx) / n;
+        res->x = ctx->x - dir->x * d;
+        res->y = ctx->y - dir->y * d;
+        res->z = ctx->z - dir->z * d;
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
+}
+
+int a_vector3_refl(a_vector3 const *ctx, a_vector3 const *dir, a_vector3 *res)
+{
+    a_real n = a_vector3_norm2(dir);
+    if (n > 0)
+    {
+        a_real d = a_vector3_dot(dir, ctx) * 2 / n;
+        res->x = ctx->x - dir->x * d;
+        res->y = ctx->y - dir->y * d;
+        res->z = ctx->z - dir->z * d;
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
+}
+
 void a_vector3_rot_(a_vector3 const *ctx, a_vector3 const *dir, a_real sin, a_real cos, a_vector3 *res)
 {
     a_real const dot = a_vector3_dot(dir, ctx) * (1 - cos);

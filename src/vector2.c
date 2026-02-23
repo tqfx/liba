@@ -85,6 +85,45 @@ void a_vector2_outer(a_vector2 const *lhs, a_vector2 const *rhs, a_real res[4])
     res[3] = lhs->y * rhs->y;
 }
 
+int a_vector2_proj(a_vector2 const *ctx, a_vector2 const *dir, a_vector2 *res)
+{
+    a_real n = a_vector2_norm2(dir);
+    if (n > 0)
+    {
+        a_real d = a_vector2_dot(dir, ctx) / n;
+        res->x = dir->x * d;
+        res->y = dir->y * d;
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
+}
+
+int a_vector2_perp(a_vector2 const *ctx, a_vector2 const *dir, a_vector2 *res)
+{
+    a_real n = a_vector2_norm2(dir);
+    if (n > 0)
+    {
+        a_real d = a_vector2_dot(dir, ctx) / n;
+        res->x = ctx->x - dir->x * d;
+        res->y = ctx->y - dir->y * d;
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
+}
+
+int a_vector2_refl(a_vector2 const *ctx, a_vector2 const *dir, a_vector2 *res)
+{
+    a_real n = a_vector2_norm2(dir);
+    if (n > 0)
+    {
+        a_real d = a_vector2_dot(dir, ctx) * 2 / n;
+        res->x = dir->x * d - ctx->x;
+        res->y = dir->y * d - ctx->y;
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
+}
+
 void a_vector2_rot_(a_vector2 const *ctx, a_real sin, a_real cos, a_vector2 *res)
 {
     a_real const x = cos * ctx->x - sin * ctx->y;

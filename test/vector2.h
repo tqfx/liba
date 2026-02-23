@@ -163,6 +163,24 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 #endif /* __cplusplus */
     }
     {
+        a_vector2 u, v;
+        a_vector2_set_val(&u, 2, 4);
+        a_vector2_set_val(&v, 1, 2);
+        TEST_BUG(a_vector2_proj(&v, &u, &v) == 0);
+        TEST_BUG(iseq(v.x, +1));
+        TEST_BUG(iseq(v.y, +2));
+        a_vector2_set_val(&u, 0, 1);
+        a_vector2_set_val(&v, 1, 2);
+        TEST_BUG(a_vector2_perp(&v, &u, &v) == 0);
+        TEST_BUG(iseq(v.x, 1));
+        TEST_BUG(iseq(v.y, 0));
+        a_vector2_set_val(&u, 0, 1);
+        a_vector2_set_val(&v, 1, 2);
+        TEST_BUG(a_vector2_refl(&v, &u, &v) == 0);
+        TEST_BUG(iseq(v.x, -1));
+        TEST_BUG(iseq(v.y, +2));
+    }
+    {
         a_vector2 ctx = A_VECTOR2_C(1, 0);
         a_vector2_rot(&ctx, A_REAL_PI_2, &ctx);
         TEST_BUG(iseq(ctx.x, 0));

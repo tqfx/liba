@@ -219,6 +219,55 @@ A_EXTERN a_real a_vector2_cross(a_vector2 const *lhs, a_vector2 const *rhs);
 A_EXTERN void a_vector2_outer(a_vector2 const *lhs, a_vector2 const *rhs, a_real res[4]);
 
 /*!
+ @brief project vector onto the direction of vector.
+ @details In two-dimensional space, let \f$\vec{v}\f$ be the vector to be projected,
+ and let \f$\vec{d}\f$ be the direction vector for projection.
+ Then the projection of \f$\vec{v}\f$ onto the direction of \f$\vec{d}\f$ is defined as:
+ \f[
+  \vec{v}' = \frac{\vec{d}\cdot\vec{v}}{\|\vec{d}\|^2}\vec{d}
+ \f]
+ @param[in] ctx points to the vector to be projected
+ @param[in] dir points to the direction vector for projection
+ @param[out] res stores the projection vector onto the direction of vector
+ @return error code value
+  @retval <0 failure
+  @retval 0 success
+*/
+A_EXTERN int a_vector2_proj(a_vector2 const *ctx, a_vector2 const *dir, a_vector2 *res);
+/*!
+ @brief project vector onto the line perpendicular to vector.
+ @details In two-dimensional space, let \f$\vec{v}\f$ be the vector to be projected,
+ and let \f$\vec{d}\f$ be the reference direction vector.
+ Then the perpendicular projection of \f$\vec{v}\f$ about the direction \f$\vec{d}\f$ is defined as:
+ \f[
+  \vec{v}' = \vec{v}-\frac{\vec{d}\cdot\vec{v}}{\|\vec{d}\|^2}\vec{d}
+ \f]
+ @param[in] ctx points to the vector to be projected
+ @param[in] dir points to the reference direction vector
+ @param[out] res stores the perpendicular projection vector about the direction
+ @return error code value
+  @retval <0 failure
+  @retval 0 success
+*/
+A_EXTERN int a_vector2_perp(a_vector2 const *ctx, a_vector2 const *dir, a_vector2 *res);
+/*!
+ @brief reflect vector across the line with direction vector.
+ @details In two-dimensional space, let \f$\vec{v}\f$ be the vector to be reflected,
+ and let \f$\vec{d}\f$ be the direction vector defining the reflection line.
+ Then the reflection of \f$\vec{v}\f$ about the line with direction \f$\vec{d}\f$ is defined as:
+ \f[
+  \vec{v}' = 2\frac{\vec{d}\cdot\vec{v}}{\|\vec{d}\|^2}\vec{d}-\vec{v}
+ \f]
+ @param[in] ctx points to the vector to be reflected
+ @param[in] dir points to the direction vector defining the reflection line
+ @param[out] res stores the reflection vector about the line with direction
+ @return error code value
+  @retval <0 failure
+  @retval 0 success
+*/
+A_EXTERN int a_vector2_refl(a_vector2 const *ctx, a_vector2 const *dir, a_vector2 *res);
+
+/*!
  @brief rotate a 2D vector by a specified angle (in radians).
  @details In two-dimensional space,
  let \f$v\f$ be any vector to rotate by angle \f$\theta\f$ (right hand rule, anticlockwise).
@@ -340,6 +389,21 @@ struct a_vector2
     A_INLINE a_real cross(a_vector2 const &rhs) const { return a_vector2_cross(this, &rhs); }
     /*! @copybrief a_vector2_outer @see a_vector2_outer */
     A_INLINE void outer(a_vector2 const &rhs, a_real res[4]) const { a_vector2_outer(this, &rhs, res); }
+    /*! @copybrief a_vector2_proj @see a_vector2_proj */
+    A_INLINE int proj(a_vector2 const &dir, a_vector2 &res) const
+    {
+        return a_vector2_proj(this, &dir, &res);
+    }
+    /*! @copybrief a_vector2_perp @see a_vector2_perp */
+    A_INLINE int perp(a_vector2 const &dir, a_vector2 &res) const
+    {
+        return a_vector2_perp(this, &dir, &res);
+    }
+    /*! @copybrief a_vector2_refl @see a_vector2_refl */
+    A_INLINE int refl(a_vector2 const &dir, a_vector2 &res) const
+    {
+        return a_vector2_refl(this, &dir, &res);
+    }
     /*! @copybrief a_vector2_rot @see a_vector2_rot */
     A_INLINE void rot(a_real angle, a_vector2 &res) const { a_vector2_rot(this, angle, &res); }
     /*! @copybrief a_vector2_rot_ @see a_vector2_rot_ */
