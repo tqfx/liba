@@ -312,6 +312,12 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(v.x, -1));
         TEST_BUG(iseq(v.y, -2));
         TEST_BUG(iseq(v.z, -3));
+        a_vector3_set_val(&u, 0, 0, 3);
+        a_vector3_set_val(&v, 1, 2, 3);
+        TEST_BUG(a_vector3_sym1(&v, &u, &v) == 0);
+        TEST_BUG(iseq(v.x, -1));
+        TEST_BUG(iseq(v.y, -2));
+        TEST_BUG(iseq(v.z, +3));
     }
     {
         a_vector3 u, v;

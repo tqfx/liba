@@ -195,6 +195,20 @@ int a_vector3_refl(a_vector3 const *ctx, a_vector3 const *dir, a_vector3 *res)
     return A_FAILURE;
 }
 
+int a_vector3_sym1(a_vector3 const *ctx, a_vector3 const *dir, a_vector3 *res)
+{
+    a_real n = a_vector3_norm2(dir);
+    if (n > 0)
+    {
+        a_real d = a_vector3_dot(dir, ctx) * 2 / n;
+        res->x = dir->x * d - ctx->x;
+        res->y = dir->y * d - ctx->y;
+        res->z = dir->z * d - ctx->z;
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
+}
+
 void a_vector3_rot_(a_vector3 const *ctx, a_vector3 const *dir, a_real sin, a_real cos, a_vector3 *res)
 {
     a_real const dot = a_vector3_dot(dir, ctx) * (1 - cos);

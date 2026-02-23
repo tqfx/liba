@@ -299,6 +299,22 @@ A_EXTERN int a_vector3_perp(a_vector3 const *ctx, a_vector3 const *dir, a_vector
   @retval 0 success
 */
 A_EXTERN int a_vector3_refl(a_vector3 const *ctx, a_vector3 const *dir, a_vector3 *res);
+/*!
+ @brief reflect vector across the line with direction vector.
+ @details In three-dimensional space, let \f$\vec{v}\f$ be the vector to be reflected,
+ and let \f$\vec{d}\f$ be the direction vector defining the reflection line.
+ Then the reflection of \f$\vec{v}\f$ about the line with direction \f$\vec{d}\f$ is defined as:
+ \f[
+  \vec{v}' = 2\frac{\vec{d}\cdot\vec{v}}{\|\vec{d}\|^2}\vec{d}-\vec{v}
+ \f]
+ @param[in] ctx points to the vector to be reflected
+ @param[in] dir points to the direction vector defining the reflection line
+ @param[out] res stores the reflection vector about the line with direction
+ @return error code value
+  @retval <0 failure
+  @retval 0 success
+*/
+A_EXTERN int a_vector3_sym1(a_vector3 const *ctx, a_vector3 const *dir, a_vector3 *res);
 
 /*!
  @brief rotate a 3D vector around an arbitrary unit axis using Rodrigues' rotation formula.
@@ -480,6 +496,11 @@ struct a_vector3
     A_INLINE int refl(a_vector3 const &dir, a_vector3 &res) const
     {
         return a_vector3_refl(this, &dir, &res);
+    }
+    /*! @copybrief a_vector3_sym1 @see a_vector3_sym1 */
+    A_INLINE int sym1(a_vector3 const &dir, a_vector3 &res) const
+    {
+        return a_vector3_sym1(this, &dir, &res);
     }
     /*! @copybrief a_vector3_rot @see a_vector3_rot */
     A_INLINE void rot(a_vector3 const &dir, a_real angle, a_vector3 &res) const
