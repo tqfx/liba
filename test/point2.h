@@ -136,6 +136,14 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(p.y, 0));
         TEST_BUG(i == 2);
     }
+    {
+        a_point2 a, b, p;
+        a_point2_set_val(&a, -1, -2);
+        a_point2_set_val(&b, +1, +2);
+        a_point2_lerp(&a, &b, A_REAL_C(0.5), &p);
+        TEST_BUG(iseq(p.x, 0));
+        TEST_BUG(iseq(p.y, 0));
+    }
     (void)argv;
     (void)argc;
     return 0;

@@ -63,6 +63,13 @@ a_real a_point3_maxdist(a_point3 const *ctx, a_point3 const *i_p, a_size i_n,
     return val;
 }
 
+void a_point3_lerp(a_point3 const *lhs, a_point3 const *rhs, a_real val, a_point3 *res)
+{
+    res->x = lhs->x + (rhs->x - lhs->x) * val;
+    res->y = lhs->y + (rhs->y - lhs->y) * val;
+    res->z = lhs->z + (rhs->z - lhs->z) * val;
+}
+
 #if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif /* -Wfloat-equal */

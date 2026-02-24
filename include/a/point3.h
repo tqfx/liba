@@ -151,6 +151,20 @@ A_EXTERN a_real a_point3_maxdist(a_point3 const *ctx, a_point3 const *i_p, a_siz
                                  a_point3 *o_p /*=A_NULL*/, a_size *o_i /*=A_NULL*/);
 
 /*!
+ @brief compute linear interpolation (LERP) between two 3D points.
+ @details Let \f$\vec{a}\f$ and \f$\vec{b}\f$ be two 3D points and let \f$t\f$ be the interpolation factor.
+ Then the linear interpolation \f$\vec{p}\f$ between \f$\vec{a}\f$ and \f$\vec{b}\f$ is given by:
+ \f[
+  \vec{p} = \vec{a} + (\vec{b} - \vec{a}) * t
+ \f]
+ @param[in] lhs points to the starting point
+ @param[in] rhs points to the ending point
+ @param[in] val is the interpolation factor
+ @param[out] res stores the interpolated point
+*/
+A_EXTERN void a_point3_lerp(a_point3 const *lhs, a_point3 const *rhs, a_real val, a_point3 *res);
+
+/*!
  @brief compare two 3D points primarily by X, then by Y, and finally by Z.
  @param[in] lhs is left-hand side 3D point
  @param[in] rhs is right-hand side 3D point
@@ -266,6 +280,11 @@ struct a_point3
     A_INLINE a_real maxdist(a_point3 const *i_p, a_size i_n, a_point3 *o_p = A_NULL, a_size *o_i = A_NULL) const
     {
         return a_point3_maxdist(this, i_p, i_n, o_p, o_i);
+    }
+    /*! @copybrief a_point3_lerp @see a_point3_lerp */
+    A_INLINE void lerp(a_point3 const &rhs, a_real val, a_point3 &res) const
+    {
+        a_point3_lerp(this, &rhs, val, &res);
     }
     /*! @copybrief a_point3_add @see a_point3_add */
     friend A_INLINE void operator+=(a_point3 &lhs, a_vector3 const &rhs) { a_point3_add(&lhs, &rhs, &lhs); }
