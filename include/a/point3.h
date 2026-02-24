@@ -165,6 +165,61 @@ A_EXTERN a_real a_point3_maxdist(a_point3 const *ctx, a_point3 const *i_p, a_siz
 A_EXTERN void a_point3_lerp(a_point3 const *lhs, a_point3 const *rhs, a_real val, a_point3 *res);
 
 /*!
+ @brief compute the circumcenter and circumradius of a triangle defined by three 3D points.
+ @param[in] p1 is the first 3D point on circle
+ @param[in] p2 is the second 3D point on circle
+ @param[in] p3 is the third 3D point on circle
+ @param[out] pc stores the circumcenter
+ @return the circumradius
+  @retval 0 if points are collinear
+ @see a_point3_tricir2
+*/
+A_EXTERN a_real a_point3_tricir(a_point3 const *p1, a_point3 const *p2, a_point3 const *p3, a_point3 *pc);
+/*!
+ @brief compute the circumcenter and squared circumradius of a triangle defined by three 3D points.
+ @details Solves for center (x,y,z) where distances to all three points are equal:
+ \f[ (x_1-x)^2+(y_1-y)^2+(z_1-z)^2=(x_2-x)^2+(y_2-y)^2+(z_2-z)^2=(x_3-x)^2+(y_3-y)^2+(z_3-z)^2 \f]
+ This simplifies to:
+ \f{cases}{
+  2(x_2−x_1)x + 2(y_2−y_1)y + 2(z_2−z_1)z = (x_2^2−x_1^2) + (y_2^2−y_1^2) + (z_2^2−z_1^2) \\
+  2(x_3−x_1)x + 2(y_3−y_1)y + 2(z_3−z_1)z = (x_3^2−x_1^2) + (y_3^2−y_1^2) + (z_3^2−z_1^2)
+ \f}
+ The solution can be expressed in terms of parameters \f$k_1\f$ and \f$k_2\f$:
+ \f{cases}{
+  x=x_1+k_1(x_2−x_1)+k_2(x_2−x_1) \\
+  y=y_1+k_1(y_2−y_1)+k_2(y_2−y_1) \\
+  z=z_1+k_1(z_2−z_1)+k_2(z_2−z_1)
+ \f}
+ The parameters \f$k_1\f$ and \f$k_2\f$ are found by solving:
+ \f{aligned}{
+  2(\vec{v_1}\cdot\vec{v_1})k_1+2(\vec{v_1}\cdot\vec{v_2})k_2=\vec{v_1}\cdot\vec{v_1} \\
+  2(\vec{v_1}\cdot\vec{v_2})k_1+2(\vec{v_2}\cdot\vec{v_2})k_2=\vec{v_2}\cdot\vec{v_2}
+ \f}
+ Where
+ \f{aligned}{ \vec{v_1}&=(x_2−x_1,y_2−y_1,z_2−z_1) \\ \vec{v_2}&=(x_3−x_1,y_3−y_1,z_3−z_1) \f}
+ Matrix form:
+ \f[
+  2\begin{bmatrix} a & b \\ b & c \end{bmatrix} \begin{bmatrix} k_1 \\ k_2 \end{bmatrix}
+  =\begin{bmatrix} a \\ c \end{bmatrix}
+ \f]
+ Where
+ \f{aligned}{
+  a&=\vec{v_1}\cdot\vec{v_1} \\ b&=\vec{v_1}\cdot\vec{v_2} \\ c&=\vec{v_2}\cdot\vec{v_2}
+ \f}
+ Explicit Solution (Cramer's Rule):
+ \f{aligned}{ k_1=\frac{c(a-b)}{2(ac-b^2)} \\ k_2=\frac{a(c-b)}{2(ac-b^2)} \f}
+ Radius (r):
+ \f[ r = \sqrt{(x_1-x)^2+(y_1-y)^2+(z_1-z)^2} \f]
+ @param[in] p1 is the first 3D point on circle
+ @param[in] p2 is the second 3D point on circle
+ @param[in] p3 is the third 3D point on circle
+ @param[out] pc stores the circumcenter
+ @return the squared circumradius
+  @retval 0 if points are collinear
+*/
+A_EXTERN a_real a_point3_tricir2(a_point3 const *p1, a_point3 const *p2, a_point3 const *p3, a_point3 *pc);
+
+/*!
  @brief compare two 3D points primarily by X, then by Y, and finally by Z.
  @param[in] lhs is left-hand side 3D point
  @param[in] rhs is right-hand side 3D point
@@ -285,6 +340,16 @@ struct a_point3
     A_INLINE void lerp(a_point3 const &rhs, a_real val, a_point3 &res) const
     {
         a_point3_lerp(this, &rhs, val, &res);
+    }
+    /*! @copybrief a_point3_tricir @see a_point3_tricir */
+    A_INLINE a_real tricir(a_point3 const &p2, a_point3 const &p3, a_point3 &pc) const
+    {
+        return a_point3_tricir(this, &p2, &p3, &pc);
+    }
+    /*! @copybrief a_point3_tricir2 @see a_point3_tricir2 */
+    A_INLINE a_real tricir2(a_point3 const &p2, a_point3 const &p3, a_point3 &pc) const
+    {
+        return a_point3_tricir2(this, &p2, &p3, &pc);
     }
     /*! @copybrief a_point3_add @see a_point3_add */
     friend A_INLINE void operator+=(a_point3 &lhs, a_vector3 const &rhs) { a_point3_add(&lhs, &rhs, &lhs); }

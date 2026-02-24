@@ -144,6 +144,17 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(p.x, 0));
         TEST_BUG(iseq(p.y, 0));
     }
+    {
+        a_real r;
+        a_point2 a, b, c, p;
+        a_point2_set_val(&a, +2, 0);
+        a_point2_set_val(&b, -2, 0);
+        a_point2_set_val(&c, 0, +2);
+        r = a_point2_tricir(&a, &b, &c, &p);
+        TEST_BUG(iseq(p.x, 0));
+        TEST_BUG(iseq(p.y, 0));
+        TEST_BUG(iseq(r, 2));
+    }
     (void)argv;
     (void)argc;
     return 0;

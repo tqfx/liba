@@ -157,6 +157,49 @@ A_EXTERN a_real a_point2_maxdist(a_point2 const *ctx, a_point2 const *i_p, a_siz
 A_EXTERN void a_point2_lerp(a_point2 const *lhs, a_point2 const *rhs, a_real val, a_point2 *res);
 
 /*!
+ @brief compute the circumcenter and circumradius of a triangle defined by three 2D points.
+ @param[in] p1 is the first 2D point on circle
+ @param[in] p2 is the second 2D point on circle
+ @param[in] p3 is the third 2D point on circle
+ @param[out] pc stores the circumcenter
+ @return the circumradius
+  @retval 0 if points are collinear
+ @see a_point2_tricir2
+*/
+A_EXTERN a_real a_point2_tricir(a_point2 const *p1, a_point2 const *p2, a_point2 const *p3, a_point2 *pc);
+/*!
+ @brief compute the circumcenter and squared circumradius of a triangle defined by three 2D points.
+ @details Solves for center (x,y) where distances to all three points are equal:
+ \f[ (x_1-x)^2+(y_1-y)^2=(x_2-x)^2+(y_2-y)^2=(x_3-x)^2+(y_3-y)^2 \f]
+ Linear system from equating distances:
+ \f{cases}{
+  2(x_2−x_1)x + 2(y_2−y_1)y = (x_2-x_1)(x_2+x_1) + (y_2-y_1)(y_2+y_1) \\
+  2(x_3−x_1)x + 2(y_3−y_1)y = (x_3-x_1)(x_3+x_1) + (y_3-y_1)(y_3+y_1)
+ \f}
+ Matrix form:
+ \f[
+  2\begin{bmatrix} x_{21}&y_{21} \\ x_{31}&y_{31} \end{bmatrix} \begin{bmatrix} x\\y \end{bmatrix}
+  =\begin{bmatrix} b_{21} \\ b_{31} \end{bmatrix}
+ \f]
+ Where
+ \f{aligned}{ x_{ji}&=x_j-x_i \\ y_{ji}&=y_j-y_i \\ b_{ji}&=x_{ji}(x_j+x_i)+y_{ji}(y_j+y_i) \f}
+ Explicit Solution (Cramer's Rule):
+ \f{aligned}{
+  x=\frac{b_{21}y_{31}-y_{21}b_{31}}{2(x_{21}y_{31}-y_{21}x_{31})} \\
+  y=\frac{x_{21}b_{31}-b_{21}x_{31}}{2(x_{21}y_{31}-y_{21}x_{31})}
+ \f}
+ Radius (r):
+ \f[ r = \sqrt{(x_1-x)^2+(y_1-y)^2} \f]
+ @param[in] p1 is the first 2D point on circle
+ @param[in] p2 is the second 2D point on circle
+ @param[in] p3 is the third 2D point on circle
+ @param[out] pc stores the circumcenter
+ @return the squared circumradius
+  @retval 0 if points are collinear
+*/
+A_EXTERN a_real a_point2_tricir2(a_point2 const *p1, a_point2 const *p2, a_point2 const *p3, a_point2 *pc);
+
+/*!
  @brief compare two 2D points primarily by X-coordinate, then by Y-coordinate.
  @param[in] lhs is left-hand side 2D point
  @param[in] rhs is right-hand side 2D point
@@ -267,6 +310,16 @@ struct a_point2
     A_INLINE void lerp(a_point2 const &rhs, a_real val, a_point2 &res) const
     {
         a_point2_lerp(this, &rhs, val, &res);
+    }
+    /*! @copybrief a_point2_tricir @see a_point2_tricir */
+    A_INLINE a_real tricir(a_point2 const &p2, a_point2 const &p3, a_point2 &pc) const
+    {
+        return a_point2_tricir(this, &p2, &p3, &pc);
+    }
+    /*! @copybrief a_point2_tricir2 @see a_point2_tricir2 */
+    A_INLINE a_real tricir2(a_point2 const &p2, a_point2 const &p3, a_point2 &pc) const
+    {
+        return a_point2_tricir2(this, &p2, &p3, &pc);
     }
     /*! @copybrief a_point2_add @see a_point2_add */
     friend A_INLINE void operator+=(a_point2 &lhs, a_vector2 const &rhs) { a_point2_add(&lhs, &rhs, &lhs); }
