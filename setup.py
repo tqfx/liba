@@ -121,9 +121,7 @@ def configure(config):
 #if !defined A_BYTE_ORDER
 #define A_BYTE_ORDER {}
 #endif /* A_BYTE_ORDER */
-{}""".format(
-        version, major, minor, patch, vsize, order, check_math()
-    )
+{}""".format(version, major, minor, patch, vsize, order, check_math())
     with open(config, "wb") as f:
         f.write(text.encode("UTF-8"))
 
