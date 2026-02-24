@@ -67,3 +67,58 @@ void a_rand_lcg48_shuf(a_rand_lcg48 *ctx, void *ptr, a_size num, a_size siz)
         a_swap(p + i * siz, p + n * siz, siz);
     }
 }
+
+void a_rand_pcg32_init(a_rand_pcg32 *ctx, a_u64 x, a_u64 c)
+{
+    ctx->a = A_U64_C(0x5851F42D4C957F2D);
+    ctx->c = (c << 1) | 1;
+    ctx->x = x + ctx->c;
+    ctx->x *= ctx->a;
+    ctx->x += ctx->c;
+}
+
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4146)
+#endif /* _MSC_VER */
+
+a_u32 a_rand_pcg32u(a_rand_pcg32 *ctx)
+{
+    a_u64 x = ctx->x;
+    a_u32 rot = (a_u32)(x >> 59);
+    a_u32 xsh = (a_u32)((x ^ (x >> 18)) >> 27);
+    ctx->x = ctx->a * x + ctx->c;
+    return (xsh >> rot) | (xsh << (-rot & 31));
+}
+
+a_u32 a_rand_pcg32n(a_rand_pcg32 *ctx, a_u32 n)
+{
+    a_u32 m;
+    if (!n) { n = 1; }
+    for (m = -n % n;;)
+    {
+        a_u32 r = a_rand_pcg32u(ctx);
+        if (r >= m) { return r % n; }
+    }
+}
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif /* _MSC_VER */
+
+a_f64 a_rand_pcg32f(a_rand_pcg32 *ctx)
+{
+    a_u32 r = a_rand_pcg32u(ctx);
+    return (a_f64)r * (1.0 / 0x100000000);
+}
+
+void a_rand_pcg32_shuf(a_rand_pcg32 *ctx, void *ptr, a_size num, a_size siz)
+{
+    a_byte *p = (a_byte *)ptr;
+    a_size n = num;
+    while (n > 1)
+    {
+        a_u32 i = a_rand_pcg32n(ctx, (a_u32)n--);
+        a_swap(p + i * siz, p + n * siz, siz);
+    }
+}

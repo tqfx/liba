@@ -17,14 +17,17 @@
 
 /* clang-format off */
 #define A_RAND_LCG48_INIT {A_U64_C(0x5DEECE66D), A_U16_C(0xB), {A_U16_C(0x330E), A_U16_C(0xABCD), A_U16_C(0x1234)}}
+#define A_RAND_PCG32_INIT {A_U64_C(0x5851F42D4C957F2D), A_U64_C(0xDA3E39CB94B95BDB), A_U64_C(0x853C49E6748FEA9B)}
 /* clang-format on */
 
 typedef struct a_rand_lcg48 a_rand_lcg48;
+typedef struct a_rand_pcg32 a_rand_pcg32;
 
 #if defined(__cplusplus)
 namespace a
 {
 typedef struct a_rand_lcg48 rand_lcg48;
+typedef struct a_rand_pcg32 rand_pcg32;
 } /* namespace a */
 extern "C" {
 #endif /* __cplusplus */
@@ -104,6 +107,45 @@ A_EXTERN A_NONULL((1, 2)) a_f64 a_rand_lcg48f_(a_rand_lcg48 *ctx, a_u16 x[3]);
 */
 A_EXTERN A_NONULL((1)) void a_rand_lcg48_shuf(a_rand_lcg48 *ctx, void *ptr, a_size num, a_size siz);
 
+/*!
+ @brief initialize with initial value for the permuted congruential generator and 64-bit integer arithmetic.
+ @param[in,out] ctx points to an instance of the permuted congruential generator and 64-bit integer arithmetic
+ @param[in] x is the state initializer
+ @param[in] c is the sequence selector
+*/
+A_EXTERN A_NONULL((1)) void a_rand_pcg32_init(a_rand_pcg32 *ctx, a_u64 x, a_u64 c);
+
+/*!
+ @brief generate an unsigned 32-bit random integer.
+ @param[in,out] ctx points to an instance of the permuted congruential generator and 64-bit integer arithmetic
+ @return an unsigned 32-bit random integer
+*/
+A_EXTERN A_NONULL((1)) a_u32 a_rand_pcg32u(a_rand_pcg32 *ctx);
+
+/*!
+ @brief generate an unsigned 32-bit random integer in [0,n).
+ @param[in,out] ctx points to an instance of the permuted congruential generator and 64-bit integer arithmetic
+ @param[in] n is the upper bound (exclusive)
+ @return an unsigned 32-bit random integer in [0,n)
+*/
+A_EXTERN A_NONULL((1)) a_u32 a_rand_pcg32n(a_rand_pcg32 *ctx, a_u32 n);
+
+/*!
+ @brief generate a 64-bit floating-point random number in [0,1).
+ @param[in,out] ctx points to an instance of the permuted congruential generator and 64-bit integer arithmetic
+ @return a 64-bit floating-point random number in [0,1)
+*/
+A_EXTERN A_NONULL((1)) a_f64 a_rand_pcg32f(a_rand_pcg32 *ctx);
+
+/*!
+ @brief shuffle the elements of an array in place using the Fisher-Yates (Knuth) shuffle algorithm.
+ @param[in,out] ctx points to an instance of the permuted congruential generator and 64-bit integer arithmetic
+ @param[in] ptr points to the elements in the array
+ @param[in] num number of the elements in the array
+ @param[in] siz size of each element in the array
+*/
+A_EXTERN A_NONULL((1)) void a_rand_pcg32_shuf(a_rand_pcg32 *ctx, void *ptr, a_size num, a_size siz);
+
 #if !defined A_HAVE_INLINE || defined(LIBA_RAND_C)
 /*! @cond */
 #undef A_INTERN
@@ -121,7 +163,7 @@ struct a_rand_lcg48
 {
     a_u64 a; /*!< multiplier term */
     a_u16 c; /*!< increment term */
-    a_u16 x[3]; /*!< random value */
+    a_u16 x[3]; /*!< random state */
 #if defined(__cplusplus)
     /*! @copybrief a_rand_lcg48_init @see a_rand_lcg48_init */
     A_INLINE void init(a_i64 x_) { a_rand_lcg48_init(this, x_); }
@@ -152,6 +194,18 @@ struct a_rand_lcg48
     {
         a_rand_lcg48_shuf(this, ptr, num, siz);
     }
+#endif /* __cplusplus */
+};
+
+/*!
+ @brief instance structure for the permuted congruential generator and 64-bit integer arithmetic
+*/
+struct a_rand_pcg32
+{
+    a_u64 a; /*!< multiplier term */
+    a_u64 c; /*!< increment term */
+    a_u64 x; /*!< random state */
+#if defined(__cplusplus)
 #endif /* __cplusplus */
 };
 
