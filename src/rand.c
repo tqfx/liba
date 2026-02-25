@@ -93,13 +93,13 @@ a_u32 a_rand_pcg32u(a_rand_pcg32 *ctx)
 
 a_u32 a_rand_pcg32n(a_rand_pcg32 *ctx, a_u32 n)
 {
-    a_u32 m;
+    a_u32 m, r;
     if (!n) { n = 1; }
-    for (m = -n % n;;)
-    {
-        a_u32 r = a_rand_pcg32u(ctx);
-        if (r >= m) { return r % n; }
-    }
+    m = -n % n;
+    do {
+        r = a_rand_pcg32u(ctx);
+    } while (r < m);
+    return r % n;
 }
 
 #if defined(_MSC_VER)
