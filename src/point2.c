@@ -77,17 +77,19 @@ a_real a_point2_tricir2(a_point2 const *p1, a_point2 const *p2, a_point2 const *
 {
     a_real const x21 = p2->x - p1->x, y21 = p2->y - p1->y;
     a_real const x31 = p3->x - p1->x, y31 = p3->y - p1->y;
-    a_real d = x21 * y31 - y21 * x31;
+    a_real d = x21 * y31 - y21 * x31, r = 0;
     if (A_ABS(d) >= A_REAL_EPS)
     {
-        a_real const b21 = x21 * (p2->x + p1->x) + y21 * (p2->y + p1->y);
-        a_real const b31 = x31 * (p3->x + p1->x) + y31 * (p3->y + p1->y);
+        a_real const b21 = x21 * x21 + y21 * y21;
+        a_real const b31 = x31 * x31 + y31 * y31;
         d = A_REAL_C(0.5) / d;
         pc->x = (b21 * y31 - y21 * b31) * d;
         pc->y = (x21 * b31 - b21 * x31) * d;
-        return a_point2_dist2(pc, p1);
+        r = pc->x * pc->x + pc->y * pc->y;
+        pc->x += p1->x;
+        pc->y += p1->y;
     }
-    return 0;
+    return r;
 }
 
 #if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")

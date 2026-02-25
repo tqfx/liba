@@ -171,25 +171,25 @@ A_EXTERN a_real a_point2_tricir(a_point2 const *p1, a_point2 const *p2, a_point2
  @brief compute the circumcenter and squared circumradius of a triangle defined by three 2D points.
  @details Solves for center (x,y) where distances to all three points are equal:
  \f[ (x_1-x)^2+(y_1-y)^2=(x_2-x)^2+(y_2-y)^2=(x_3-x)^2+(y_3-y)^2 \f]
- Linear system from equating distances:
+ This simplifies to:
  \f{cases}{
-  2(x_2−x_1)x + 2(y_2−y_1)y = (x_2-x_1)(x_2+x_1) + (y_2-y_1)(y_2+y_1) \\
-  2(x_3−x_1)x + 2(y_3−y_1)y = (x_3-x_1)(x_3+x_1) + (y_3-y_1)(y_3+y_1)
+  2(x_2−x_1)dx + 2(y_2−y_1)dy = (x_2-x_1)^2 + (y_2-y_1)^2 \\
+  2(x_3−x_1)dx + 2(y_3−y_1)dy = (x_3-x_1)^2 + (y_3-y_1)^2
  \f}
+ Where \f{aligned}{ dx &= x - x_1 \\ dy &= y - y_1 \f}
  Matrix form:
  \f[
-  2\begin{bmatrix} x_{21}&y_{21} \\ x_{31}&y_{31} \end{bmatrix} \begin{bmatrix} x\\y \end{bmatrix}
+  2\begin{bmatrix} x_{21}&y_{21} \\ x_{31}&y_{31} \end{bmatrix} \begin{bmatrix} dx\\dy \end{bmatrix}
   =\begin{bmatrix} b_{21} \\ b_{31} \end{bmatrix}
  \f]
  Where
- \f{aligned}{ x_{ji}&=x_j-x_i \\ y_{ji}&=y_j-y_i \\ b_{ji}&=x_{ji}(x_j+x_i)+y_{ji}(y_j+y_i) \f}
+ \f{aligned}{ x_{ji}&=x_j-x_i \\ y_{ji}&=y_j-y_i \\ b_{ji}&=x_{ji}^2+y_{ji}^2 \f}
  Explicit Solution (Cramer's Rule):
  \f{aligned}{
-  x=\frac{b_{21}y_{31}-y_{21}b_{31}}{2(x_{21}y_{31}-y_{21}x_{31})} \\
-  y=\frac{x_{21}b_{31}-b_{21}x_{31}}{2(x_{21}y_{31}-y_{21}x_{31})}
+  dx=\frac{b_{21}y_{31}-y_{21}b_{31}}{2(x_{21}y_{31}-y_{21}x_{31})} \\
+  dy=\frac{x_{21}b_{31}-b_{21}x_{31}}{2(x_{21}y_{31}-y_{21}x_{31})}
  \f}
- Radius (r):
- \f[ r = \sqrt{(x_1-x)^2+(y_1-y)^2} \f]
+ Radius (r): \f[ r = \sqrt{dx^2+dy^2} \f]
  @param[in] p1 is the first 2D point on circle
  @param[in] p2 is the second 2D point on circle
  @param[in] p3 is the third 2D point on circle

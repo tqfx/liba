@@ -186,14 +186,14 @@ A_EXTERN a_real a_point3_tricir(a_point3 const *p1, a_point3 const *p2, a_point3
  \f}
  The solution can be expressed in terms of parameters \f$k_1\f$ and \f$k_2\f$:
  \f{cases}{
-  x=x_1+k_1(x_2−x_1)+k_2(x_2−x_1) \\
-  y=y_1+k_1(y_2−y_1)+k_2(y_2−y_1) \\
-  z=z_1+k_1(z_2−z_1)+k_2(z_2−z_1)
+  x = x_1 + dx = x_1 + k_1(x_2−x_1) + k_2(x_2−x_1) \\
+  y = y_1 + dy = y_1 + k_1(y_2−y_1) + k_2(y_2−y_1) \\
+  z = z_1 + dz = z_1 + k_1(z_2−z_1) + k_2(z_2−z_1)
  \f}
  The parameters \f$k_1\f$ and \f$k_2\f$ are found by solving:
  \f{aligned}{
-  2(\vec{v_1}\cdot\vec{v_1})k_1+2(\vec{v_1}\cdot\vec{v_2})k_2=\vec{v_1}\cdot\vec{v_1} \\
-  2(\vec{v_1}\cdot\vec{v_2})k_1+2(\vec{v_2}\cdot\vec{v_2})k_2=\vec{v_2}\cdot\vec{v_2}
+  2(\vec{v_1}\cdot\vec{v_1})k_1 + 2(\vec{v_1}\cdot\vec{v_2})k_2 = \vec{v_1}\cdot\vec{v_1} \\
+  2(\vec{v_1}\cdot\vec{v_2})k_1 + 2(\vec{v_2}\cdot\vec{v_2})k_2 = \vec{v_2}\cdot\vec{v_2}
  \f}
  Where
  \f{aligned}{ \vec{v_1}&=(x_2−x_1,y_2−y_1,z_2−z_1) \\ \vec{v_2}&=(x_3−x_1,y_3−y_1,z_3−z_1) \f}
@@ -208,8 +208,7 @@ A_EXTERN a_real a_point3_tricir(a_point3 const *p1, a_point3 const *p2, a_point3
  \f}
  Explicit Solution (Cramer's Rule):
  \f{aligned}{ k_1=\frac{c(a-b)}{2(ac-b^2)} \\ k_2=\frac{a(c-b)}{2(ac-b^2)} \f}
- Radius (r):
- \f[ r = \sqrt{(x_1-x)^2+(y_1-y)^2+(z_1-z)^2} \f]
+ Radius (r): \f[ r = \sqrt{dx^2+dy^2+dz^2} \f]
  @param[in] p1 is the first 3D point on circle
  @param[in] p2 is the second 3D point on circle
  @param[in] p3 is the third 3D point on circle
@@ -242,22 +241,22 @@ A_EXTERN a_real a_point3_tetsph(a_point3 const *p1, a_point3 const *p2,
  \f}
  This simplifies to:
  \f{cases}{
-  2(x_2−x_1)x+2(y_2−y_1)y+2(z_2−z_1)z = (x_2−x_1)(x_2+x_1)+(y_2−y_1)(y_2+y_1)+(z_2−z_1)(z_2+z_1) \\
-  2(x_3−x_1)x+2(y_3−y_1)y+2(z_3−z_1)z = (x_3−x_1)(x_3+x_1)+(y_3−y_1)(y_3+y_1)+(z_3−z_1)(z_3+z_1) \\
-  2(x_4−x_1)x+2(y_4−y_1)y+2(z_4−z_1)z = (x_4−x_1)(x_4+x_1)+(y_4−y_1)(y_4+y_1)+(z_4−z_1)(z_4+z_1)
+  2(x_2−x_1)dx + 2(y_2−y_1)dy + 2(z_2−z_1)dz = (x_2−x_1)^2 + (y_2−y_1)^2 + (z_2−z_1)^2 \\
+  2(x_3−x_1)dx + 2(y_3−y_1)dy + 2(z_3−z_1)dz = (x_3−x_1)^2 + (y_3−y_1)^2 + (z_3−z_1)^2 \\
+  2(x_4−x_1)dx + 2(y_4−y_1)dy + 2(z_4−z_1)dz = (x_4−x_1)^2 + (y_4−y_1)^2 + (z_4−z_1)^2
  \f}
+ Where \f{aligned}{ dx &= x - x_1 \\ dy &= y - y_1 \\ dz &= z - z_1 \f}
  Matrix form:
  \f[
   2\begin{bmatrix} x_{21}&y_{21}&z_{21} \\ x_{31}&y_{31}&z_{31} \\ x_{41}&y_{41}&z_{41} \end{bmatrix}
-  \begin{bmatrix} x\\y\\z \end{bmatrix} = \begin{bmatrix} b_{21}\\b_{31}\\b_{41} \end{bmatrix}
+  \begin{bmatrix} dx\\dy\\dz \end{bmatrix} = \begin{bmatrix} b_{21}\\b_{31}\\b_{41} \end{bmatrix}
  \f]
  Where
  \f{aligned}{
-  x_{ji} &= x_j - x_i \\ y_{ji} &= y_j - y_i \\ z_{ji} &= z_j - z_i \\
-  b_{ji} &= x_{ji}(x_j + x_i) + y_{ji}(y_j + y_i) + z_{ji}(z_j + z_i)
+  x_{ji} &= x_j-x_i \\ y_{ji} &= y_j-y_i \\ z_{ji} &= z_j-z_i \\ b_{ji} &= x_{ji}^2+y_{ji}^2+z_{ji}^2
  \f}
  Explicit Solution (Cramer's Rule):
- \f{aligned}{ x&=\frac{D_x}{2D} \\ y&=\frac{D_y}{2D} \\ z&=\frac{D_z}{2D} \f}
+ \f{aligned}{ dx &= \frac{D_x}{2D} \\ dy &= \frac{D_y}{2D} \\ dz &= \frac{D_z}{2D} \f}
  Where
  \f{aligned}{
   D   &= x_{41} \begin{vmatrix} y_{21}&z_{21}\\y_{31}&z_{31} \end{vmatrix} +
@@ -273,8 +272,7 @@ A_EXTERN a_real a_point3_tetsph(a_point3 const *p1, a_point3 const *p2,
          y_{41} \begin{vmatrix} b_{21}&x_{21}\\b_{31}&x_{31} \end{vmatrix} +
          b_{41} \begin{vmatrix} x_{21}&y_{21}\\x_{31}&y_{31} \end{vmatrix}
  \f}
- Radius (r):
- \f[ r = \sqrt{(x_1-x)^2+(y_1-y)^2+(z_1-z)^2} \f]
+ Radius (r): \f[ r = \sqrt{dx^2+dy^2+dz^2} \f]
  @param[in] p1 is the first 3D point on sphere
  @param[in] p2 is the second 3D point on sphere
  @param[in] p3 is the third 3D point on sphere
