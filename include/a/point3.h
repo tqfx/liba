@@ -220,6 +220,74 @@ A_EXTERN a_real a_point3_tricir(a_point3 const *p1, a_point3 const *p2, a_point3
 A_EXTERN a_real a_point3_tricir2(a_point3 const *p1, a_point3 const *p2, a_point3 const *p3, a_point3 *pc);
 
 /*!
+ @brief compute the circumcenter and circumradius of a tetrahedron defined by four 3D points.
+ @param[in] p1 is the first 3D point on sphere
+ @param[in] p2 is the second 3D point on sphere
+ @param[in] p3 is the third 3D point on sphere
+ @param[in] p4 is the fourth 3D point on sphere
+ @param[out] pc stores the circumcenter
+ @return the circumradius
+  @retval 0 if points are coplanar
+ @see a_point3_tetsph2
+*/
+A_EXTERN a_real a_point3_tetsph(a_point3 const *p1, a_point3 const *p2,
+                                a_point3 const *p3, a_point3 const *p4,
+                                a_point3 *pc);
+/*!
+ @brief compute the circumcenter and squared circumradius of a tetrahedron defined by four 3D points.
+ @details Solves for center (x,y,z) where distances to all four points are equal:
+ \f{aligned}{
+  (x_1 - x)^2 + (y_1 - y)^2 + (z_1 - z)^2 &= \\ (x_2 - x)^2 + (y_2 - y)^2 + (z_2 - z)^2 &= \\
+  (x_3 - x)^2 + (y_3 - y)^2 + (z_3 - z)^2 &= \\ (x_4 - x)^2 + (y_4 - y)^2 + (z_4 - z)^2
+ \f}
+ This simplifies to:
+ \f{cases}{
+  2(x_2−x_1)x+2(y_2−y_1)y+2(z_2−z_1)z = (x_2−x_1)(x_2+x_1)+(y_2−y_1)(y_2+y_1)+(z_2−z_1)(z_2+z_1) \\
+  2(x_3−x_1)x+2(y_3−y_1)y+2(z_3−z_1)z = (x_3−x_1)(x_3+x_1)+(y_3−y_1)(y_3+y_1)+(z_3−z_1)(z_3+z_1) \\
+  2(x_4−x_1)x+2(y_4−y_1)y+2(z_4−z_1)z = (x_4−x_1)(x_4+x_1)+(y_4−y_1)(y_4+y_1)+(z_4−z_1)(z_4+z_1)
+ \f}
+ Matrix form:
+ \f[
+  2\begin{bmatrix} x_{21}&y_{21}&z_{21} \\ x_{31}&y_{31}&z_{31} \\ x_{41}&y_{41}&z_{41} \end{bmatrix}
+  \begin{bmatrix} x\\y\\z \end{bmatrix} = \begin{bmatrix} b_{21}\\b_{31}\\b_{41} \end{bmatrix}
+ \f]
+ Where
+ \f{aligned}{
+  x_{ji} &= x_j - x_i \\ y_{ji} &= y_j - y_i \\ z_{ji} &= z_j - z_i \\
+  b_{ji} &= x_{ji}(x_j + x_i) + y_{ji}(y_j + y_i) + z_{ji}(z_j + z_i)
+ \f}
+ Explicit Solution (Cramer's Rule):
+ \f{aligned}{ x&=\frac{D_x}{2D} \\ y&=\frac{D_y}{2D} \\ z&=\frac{D_z}{2D} \f}
+ Where
+ \f{aligned}{
+  D   &= x_{41} \begin{vmatrix} y_{21}&z_{21}\\y_{31}&z_{31} \end{vmatrix} +
+         y_{41} \begin{vmatrix} z_{21}&x_{21}\\z_{31}&x_{31} \end{vmatrix} +
+         z_{41} \begin{vmatrix} x_{21}&y_{21}\\x_{31}&y_{31} \end{vmatrix} \\
+  D_x &= b_{41} \begin{vmatrix} y_{21}&z_{21}\\y_{31}&z_{31} \end{vmatrix} +
+         y_{41} \begin{vmatrix} z_{21}&b_{21}\\z_{31}&b_{31} \end{vmatrix} +
+         z_{41} \begin{vmatrix} b_{21}&y_{21}\\b_{31}&y_{31} \end{vmatrix} \\
+  D_y &= x_{41} \begin{vmatrix} b_{21}&z_{21}\\b_{31}&z_{31} \end{vmatrix} +
+         b_{41} \begin{vmatrix} z_{21}&x_{21}\\z_{31}&x_{31} \end{vmatrix} +
+         z_{41} \begin{vmatrix} x_{21}&b_{21}\\x_{31}&b_{31} \end{vmatrix} \\
+  D_z &= x_{41} \begin{vmatrix} y_{21}&b_{21}\\y_{31}&b_{31} \end{vmatrix} +
+         y_{41} \begin{vmatrix} b_{21}&x_{21}\\b_{31}&x_{31} \end{vmatrix} +
+         b_{41} \begin{vmatrix} x_{21}&y_{21}\\x_{31}&y_{31} \end{vmatrix}
+ \f}
+ Radius (r):
+ \f[ r = \sqrt{(x_1-x)^2+(y_1-y)^2+(z_1-z)^2} \f]
+ @param[in] p1 is the first 3D point on sphere
+ @param[in] p2 is the second 3D point on sphere
+ @param[in] p3 is the third 3D point on sphere
+ @param[in] p4 is the fourth 3D point on sphere
+ @param[out] pc stores the circumcenter
+ @return the squared circumradius
+  @retval 0 if points are coplanar
+*/
+A_EXTERN a_real a_point3_tetsph2(a_point3 const *p1, a_point3 const *p2,
+                                 a_point3 const *p3, a_point3 const *p4,
+                                 a_point3 *pc);
+
+/*!
  @brief compare two 3D points primarily by X, then by Y, and finally by Z.
  @param[in] lhs is left-hand side 3D point
  @param[in] rhs is right-hand side 3D point
@@ -350,6 +418,16 @@ struct a_point3
     A_INLINE a_real tricir2(a_point3 const &p2, a_point3 const &p3, a_point3 &pc) const
     {
         return a_point3_tricir2(this, &p2, &p3, &pc);
+    }
+    /*! @copybrief a_point3_tetsph @see a_point3_tetsph */
+    A_INLINE a_real tetsph(a_point3 const &p2, a_point3 const &p3, a_point3 const &p4, a_point3 &pc) const
+    {
+        return a_point3_tetsph(this, &p2, &p3, &p4, &pc);
+    }
+    /*! @copybrief a_point3_tetsph2 @see a_point3_tetsph2 */
+    A_INLINE a_real tetsph2(a_point3 const &p2, a_point3 const &p3, a_point3 const &p4, a_point3 &pc) const
+    {
+        return a_point3_tetsph2(this, &p2, &p3, &p4, &pc);
     }
     /*! @copybrief a_point3_add @see a_point3_add */
     friend A_INLINE void operator+=(a_point3 &lhs, a_vector3 const &rhs) { a_point3_add(&lhs, &rhs, &lhs); }
