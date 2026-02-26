@@ -320,6 +320,15 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(v.z, +3));
     }
     {
+        a_vector3 a, b, v;
+        a_vector3_set_val(&a, -1, -2, -3);
+        a_vector3_set_val(&b, +1, +2, +3);
+        a_vector3_lerp(&a, &b, A_REAL_C(0.5), &v);
+        TEST_BUG(iseq(v.x, 0));
+        TEST_BUG(iseq(v.y, 0));
+        TEST_BUG(iseq(v.z, 0));
+    }
+    {
         a_vector3 u, v;
         a_vector3_set_dir(&v, 1, 1, 1);
         a_vector3_set_val(&u, 1, 2, 3);

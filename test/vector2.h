@@ -181,6 +181,14 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(v.y, +2));
     }
     {
+        a_vector2 a, b, v;
+        a_vector2_set_val(&a, -1, -2);
+        a_vector2_set_val(&b, +1, +2);
+        a_vector2_lerp(&a, &b, A_REAL_C(0.5), &v);
+        TEST_BUG(iseq(v.x, 0));
+        TEST_BUG(iseq(v.y, 0));
+    }
+    {
         a_vector2 ctx = A_VECTOR2_C(1, 0);
         a_vector2_rot(&ctx, A_REAL_PI_2, &ctx);
         TEST_BUG(iseq(ctx.x, 0));
