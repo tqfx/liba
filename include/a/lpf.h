@@ -12,9 +12,10 @@
  \f[
   V_{\mathrm o}(n)=\frac{RC}{RC+T_s}V_{\mathrm o}(n-1)+\frac{T_s}{RC+T_s}V_{\mathrm i}(n)
  \f]
- \f[
-  V_{\mathrm o}(n)=(1-\alpha)V_{\mathrm o}(n-1)+\alpha V_{\mathrm i}(n)
- \f]
+ \f{aligned}{
+  V_{\mathrm o}(n)&=(1-\alpha)V_{\mathrm o}(n-1)+\alpha V_{\mathrm i}(n) \\
+  &=V_{\mathrm o}(n-1)+(V_{\mathrm i}(n)-V_{\mathrm o}(n-1))\alpha
+ \f}
  \f[
   \alpha=\frac{T_s}{RC+T_s}=\frac{T_s}{{\frac{1}{2\pi f_c}}+T_s}
  \f]
@@ -46,8 +47,7 @@ typedef struct a_lpf
     }
     A_INLINE a_real operator()(a_real x)
     {
-        output *= 1 - alpha;
-        output += x * alpha;
+        output += (x - output) * alpha;
         return output;
     }
     A_INLINE void zero() { output = 0; }
@@ -96,17 +96,17 @@ A_INTERN void a_lpf_init(a_lpf *ctx, a_real alpha)
 
 /*!
  @brief compute for Low Pass Filter
- \f[
-  V_{\mathrm o}(n)=(1-\alpha)V_{\mathrm o}(n-1)+\alpha V_{\mathrm i}(n)
- \f]
+ \f{aligned}{
+  V_{\mathrm o}(n)&=(1-\alpha)V_{\mathrm o}(n-1)+\alpha V_{\mathrm i}(n) \\
+  &=V_{\mathrm o}(n-1)+(V_{\mathrm i}(n)-V_{\mathrm o}(n-1))\alpha
+ \f}
  @param[in,out] ctx points to an instance of Low Pass Filter
  @param[in] x input value
  @return output value
 */
 A_INTERN a_real a_lpf_iter(a_lpf *ctx, a_real x)
 {
-    ctx->output *= 1 - ctx->alpha;
-    ctx->output += x * ctx->alpha;
+    ctx->output += (x - ctx->output) * ctx->alpha;
     return ctx->output;
 }
 
