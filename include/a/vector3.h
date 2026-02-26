@@ -118,21 +118,7 @@ A_EXTERN a_real a_vector3_norm(a_vector3 const *ctx);
  @param[in] ctx points to the input vector
  @return the squared magnitude of the vector
 */
-A_EXTERN a_real a_vector3_norm2(a_vector3 const *ctx);
-/*!
- @brief compute the dot product (scalar product) of two 3D vectors.
- @details In three-dimensional space,
- let vector \f$\vec{a}\f$ have coordinates \f$(a_x,a_y,a_z)\f$ and
- let vector \f$\vec{b}\f$ have coordinates \f$(b_x,b_y,b_z)\f$.
- Then the dot product of vectors \f$\vec{a}\f$ and \f$\vec{b}\f$ is defined as:
- \f[
-  \vec{a} \cdot \vec{b} = a_x b_x + a_y b_y + a_z b_z
- \f]
- @param[in] lhs is left-hand side 3D vector
- @param[in] rhs is right-hand side 3D vector
- @return the dot product of two 3D vectors
-*/
-A_EXTERN a_real a_vector3_dot(a_vector3 const *lhs, a_vector3 const *rhs);
+A_INTERN a_real a_vector3_norm2(a_vector3 const *ctx);
 /*!
  @brief compute the distance between two 3D vectors.
  @details In three-dimensional space,
@@ -160,39 +146,21 @@ A_EXTERN a_real a_vector3_dist(a_vector3 const *lhs, a_vector3 const *rhs);
  @param[in] rhs is right-hand side 3D vector
  @return the squared distance between two 3D vectors
 */
-A_EXTERN a_real a_vector3_dist2(a_vector3 const *lhs, a_vector3 const *rhs);
+A_INTERN a_real a_vector3_dist2(a_vector3 const *lhs, a_vector3 const *rhs);
 /*!
- @brief compute the angle between two 3D vectors in radians.
+ @brief compute the dot product (scalar product) of two 3D vectors.
  @details In three-dimensional space,
  let vector \f$\vec{a}\f$ have coordinates \f$(a_x,a_y,a_z)\f$ and
  let vector \f$\vec{b}\f$ have coordinates \f$(b_x,b_y,b_z)\f$.
- Then the angle between \f$\vec{a}\f$ and \f$\vec{b}\f$ is given by:
+ Then the dot product of vectors \f$\vec{a}\f$ and \f$\vec{b}\f$ is defined as:
  \f[
-  \theta=\arccos\left(\frac{\vec{a}\cdot\vec{b}}{\|\vec{a}\|\|\vec{b}\|}\right)
-        =\arccos\left(\frac{\vec{a}\cdot\vec{b}}{\sqrt{\|\vec{a}\|^2\|\vec{b}\|^2}}\right)
+  \vec{a} \cdot \vec{b} = a_x b_x + a_y b_y + a_z b_z
  \f]
  @param[in] lhs is left-hand side 3D vector
  @param[in] rhs is right-hand side 3D vector
- @return the angle between two 3D vectors in radians, in the range \f$[0,\pi]\f$
-  @retval 0 if the vector is null
+ @return the dot product of two 3D vectors
 */
-A_EXTERN a_real a_vector3_angle(a_vector3 const *lhs, a_vector3 const *rhs);
-/*!
- @brief check if two 3D vectors are orthogonal.
- @param[in] lhs is left-hand side 3D vector
- @param[in] rhs is right-hand side 3D vector
- @return whether the vectors are nearly orthogonal
-  @retval true if the vector is null
-*/
-A_EXTERN a_bool a_vector3_isver(a_vector3 const *lhs, a_vector3 const *rhs);
-/*!
- @brief check if two 3D vectors are parallel or anti-parallel.
- @param[in] lhs is left-hand side 3D vector
- @param[in] rhs is right-hand side 3D vector
- @return whether the vectors are nearly parallel or anti-parallel
-  @retval true if the vector is null
-*/
-A_EXTERN a_bool a_vector3_ispar(a_vector3 const *lhs, a_vector3 const *rhs);
+A_INTERN a_real a_vector3_dot(a_vector3 const *lhs, a_vector3 const *rhs);
 /*!
  @brief compute the cross product (vector product) of two 3D vectors
  @details In three-dimensional space,
@@ -209,7 +177,7 @@ A_EXTERN a_bool a_vector3_ispar(a_vector3 const *lhs, a_vector3 const *rhs);
  @param[in] rhs is right-hand side 3D vector
  @param[out] res stores the result vector
 */
-A_EXTERN void a_vector3_cross(a_vector3 const *lhs, a_vector3 const *rhs, a_vector3 *res);
+A_INTERN void a_vector3_cross(a_vector3 const *lhs, a_vector3 const *rhs, a_vector3 *res);
 /*!
  @brief compute the outer product (tensor product) of two 3D vectors.
  @details In three-dimensional space,
@@ -226,7 +194,39 @@ A_EXTERN void a_vector3_cross(a_vector3 const *lhs, a_vector3 const *rhs, a_vect
  @param[in] rhs is right-hand side 3D vector
  @param[out] res stores the 3×3 matrix in row-major order
 */
-A_EXTERN void a_vector3_outer(a_vector3 const *lhs, a_vector3 const *rhs, a_real res[9]);
+A_INTERN void a_vector3_outer(a_vector3 const *lhs, a_vector3 const *rhs, a_real res[9]);
+/*!
+ @brief check if two 3D vectors are orthogonal.
+ @param[in] lhs is left-hand side 3D vector
+ @param[in] rhs is right-hand side 3D vector
+ @return whether the vectors are nearly orthogonal
+  @retval true if the vector is null
+*/
+A_INTERN a_bool a_vector3_isver(a_vector3 const *lhs, a_vector3 const *rhs);
+/*!
+ @brief check if two 3D vectors are parallel or anti-parallel.
+ @param[in] lhs is left-hand side 3D vector
+ @param[in] rhs is right-hand side 3D vector
+ @return whether the vectors are nearly parallel or anti-parallel
+  @retval true if the vector is null
+*/
+A_INTERN a_bool a_vector3_ispar(a_vector3 const *lhs, a_vector3 const *rhs);
+/*!
+ @brief compute the angle between two 3D vectors in radians.
+ @details In three-dimensional space,
+ let vector \f$\vec{a}\f$ have coordinates \f$(a_x,a_y,a_z)\f$ and
+ let vector \f$\vec{b}\f$ have coordinates \f$(b_x,b_y,b_z)\f$.
+ Then the angle between \f$\vec{a}\f$ and \f$\vec{b}\f$ is given by:
+ \f[
+  \theta=\arccos\left(\frac{\vec{a}\cdot\vec{b}}{\|\vec{a}\|\|\vec{b}\|}\right)
+        =\arccos\left(\frac{\vec{a}\cdot\vec{b}}{\sqrt{\|\vec{a}\|^2\|\vec{b}\|^2}}\right)
+ \f]
+ @param[in] lhs is left-hand side 3D vector
+ @param[in] rhs is right-hand side 3D vector
+ @return the angle between two 3D vectors in radians, in the range \f$[0,\pi]\f$
+  @retval 0 if the vector is null
+*/
+A_EXTERN a_real a_vector3_angle(a_vector3 const *lhs, a_vector3 const *rhs);
 
 /*!
  @brief construct an orthonormal basis from a given 3D direction vector.
@@ -315,6 +315,20 @@ A_EXTERN int a_vector3_refl(a_vector3 const *ctx, a_vector3 const *dir, a_vector
   @retval 0 success
 */
 A_EXTERN int a_vector3_sym1(a_vector3 const *ctx, a_vector3 const *dir, a_vector3 *res);
+
+/*!
+ @brief compute linear interpolation (LERP) between two 3D vectors.
+ @details Let \f$\vec{a}\f$ and \f$\vec{b}\f$ be two 3D vectors and let \f$t\f$ be the interpolation factor.
+ Then the linear interpolation \f$\vec{v}\f$ between \f$\vec{a}\f$ and \f$\vec{b}\f$ is given by:
+ \f[
+  \vec{v} = \vec{a} + (\vec{b} - \vec{a}) * t
+ \f]
+ @param[in] lhs points to the starting vector
+ @param[in] rhs points to the ending vector
+ @param[in] val is the interpolation factor
+ @param[out] res stores the interpolated vector
+*/
+A_INTERN void a_vector3_lerp(a_vector3 const *lhs, a_vector3 const *rhs, a_real val, a_vector3 *res);
 
 /*!
  @brief rotate a 3D vector around an arbitrary unit axis using Rodrigues' rotation formula.
@@ -455,18 +469,21 @@ struct a_vector3
     A_INLINE a_real norm() const { return a_vector3_norm(this); }
     /*! @copybrief a_vector3_norm2 @see a_vector3_norm2 */
     A_INLINE a_real norm2() const { return a_vector3_norm2(this); }
-    /*! @copybrief a_vector3_dot @see a_vector3_dot */
-    A_INLINE a_real dot(a_vector3 const &rhs) const { return a_vector3_dot(this, &rhs); }
     /*! @copybrief a_vector3_dist @see a_vector3_dist */
-    A_INLINE a_real dist(a_vector3 const &rhs) const { return a_vector3_dist(this, &rhs); }
+    A_INLINE a_real dist(a_vector3 const &rhs) const
+    {
+        return a_vector3_dist(this, &rhs);
+    }
     /*! @copybrief a_vector3_dist2 @see a_vector3_dist2 */
-    A_INLINE a_real dist2(a_vector3 const &rhs) const { return a_vector3_dist2(this, &rhs); }
-    /*! @copybrief a_vector3_angle @see a_vector3_angle */
-    A_INLINE a_real angle(a_vector3 const &rhs) const { return a_vector3_angle(this, &rhs); }
-    /*! @copybrief a_vector3_isver @see a_vector3_isver */
-    A_INLINE a_bool isver(a_vector3 const &rhs) const { return a_vector3_isver(this, &rhs); }
-    /*! @copybrief a_vector3_ispar @see a_vector3_ispar */
-    A_INLINE a_bool ispar(a_vector3 const &rhs) const { return a_vector3_ispar(this, &rhs); }
+    A_INLINE a_real dist2(a_vector3 const &rhs) const
+    {
+        return a_vector3_dist2(this, &rhs);
+    }
+    /*! @copybrief a_vector3_dot @see a_vector3_dot */
+    A_INLINE a_real dot(a_vector3 const &rhs) const
+    {
+        return a_vector3_dot(this, &rhs);
+    }
     /*! @copybrief a_vector3_cross @see a_vector3_cross */
     A_INLINE void cross(a_vector3 const &rhs, a_vector3 &res) const
     {
@@ -476,6 +493,21 @@ struct a_vector3
     A_INLINE void outer(a_vector3 const &rhs, a_real res[9]) const
     {
         a_vector3_outer(this, &rhs, res);
+    }
+    /*! @copybrief a_vector3_isver @see a_vector3_isver */
+    A_INLINE a_bool isver(a_vector3 const &rhs) const
+    {
+        return a_vector3_isver(this, &rhs);
+    }
+    /*! @copybrief a_vector3_ispar @see a_vector3_ispar */
+    A_INLINE a_bool ispar(a_vector3 const &rhs) const
+    {
+        return a_vector3_ispar(this, &rhs);
+    }
+    /*! @copybrief a_vector3_angle @see a_vector3_angle */
+    A_INLINE a_real angle(a_vector3 const &rhs) const
+    {
+        return a_vector3_angle(this, &rhs);
     }
     /*! @copybrief a_vector3_ortho @see a_vector3_ortho */
     A_INLINE int ortho(a_vector3 &u, a_vector3 &v) const
@@ -501,6 +533,11 @@ struct a_vector3
     A_INLINE int sym1(a_vector3 const &dir, a_vector3 &res) const
     {
         return a_vector3_sym1(this, &dir, &res);
+    }
+    /*! @copybrief a_vector3_lerp @see a_vector3_lerp */
+    A_INLINE void lerp(a_vector3 const &rhs, a_real val, a_vector3 &res) const
+    {
+        a_vector3_lerp(this, &rhs, val, &res);
     }
     /*! @copybrief a_vector3_rot @see a_vector3_rot */
     A_INLINE void rot(a_vector3 const &dir, a_real angle, a_vector3 &res) const
@@ -658,6 +695,72 @@ A_INTERN void a_vector3_neg(a_vector3 const *ctx, a_vector3 *res)
     res->x = -ctx->x;
     res->y = -ctx->y;
     res->z = -ctx->z;
+}
+
+A_INTERN a_real a_vector3_norm2(a_vector3 const *ctx)
+{
+    return ctx->x * ctx->x + ctx->y * ctx->y + ctx->z * ctx->z;
+}
+
+A_INTERN a_real a_vector3_dist2(a_vector3 const *lhs, a_vector3 const *rhs)
+{
+    a_real const x = rhs->x - lhs->x;
+    a_real const y = rhs->y - lhs->y;
+    a_real const z = rhs->z - lhs->z;
+    return x * x + y * y + z * z;
+}
+
+A_INTERN a_real a_vector3_dot(a_vector3 const *lhs, a_vector3 const *rhs)
+{
+    return lhs->x * rhs->x + lhs->y * rhs->y + lhs->z * rhs->z;
+}
+
+A_INTERN void a_vector3_cross(a_vector3 const *lhs, a_vector3 const *rhs, a_vector3 *res)
+{
+    a_real const x = lhs->y * rhs->z - lhs->z * rhs->y;
+    a_real const y = lhs->z * rhs->x - lhs->x * rhs->z;
+    a_real const z = lhs->x * rhs->y - lhs->y * rhs->x;
+    res->x = x;
+    res->y = y;
+    res->z = z;
+}
+
+A_INTERN void a_vector3_outer(a_vector3 const *lhs, a_vector3 const *rhs, a_real res[9])
+{
+    res[0] = lhs->x * rhs->x;
+    res[1] = lhs->x * rhs->y;
+    res[2] = lhs->x * rhs->z;
+    res[3] = lhs->y * rhs->x;
+    res[4] = lhs->y * rhs->y;
+    res[5] = lhs->y * rhs->z;
+    res[6] = lhs->z * rhs->x;
+    res[7] = lhs->z * rhs->y;
+    res[8] = lhs->z * rhs->z;
+}
+
+A_INTERN a_bool a_vector3_isver(a_vector3 const *lhs, a_vector3 const *rhs)
+{
+    a_real const r = lhs->x * rhs->x + lhs->y * rhs->y + lhs->z * rhs->z;
+    return A_ABS(r) < A_REAL_TOL;
+}
+
+A_INTERN a_bool a_vector3_ispar(a_vector3 const *lhs, a_vector3 const *rhs)
+{
+    a_real x, y, z;
+    z = lhs->x * rhs->y - lhs->y * rhs->x;
+    if (!(A_ABS(z) < A_REAL_TOL)) { return 0; }
+    y = lhs->z * rhs->x - lhs->x * rhs->z;
+    if (!(A_ABS(y) < A_REAL_TOL)) { return 0; }
+    x = lhs->y * rhs->z - lhs->z * rhs->y;
+    if (!(A_ABS(x) < A_REAL_TOL)) { return 0; }
+    return 1;
+}
+
+A_INTERN void a_vector3_lerp(a_vector3 const *lhs, a_vector3 const *rhs, a_real val, a_vector3 *res)
+{
+    res->x = lhs->x + (rhs->x - lhs->x) * val;
+    res->y = lhs->y + (rhs->y - lhs->y) * val;
+    res->z = lhs->z + (rhs->z - lhs->z) * val;
 }
 
 #endif /* A_HAVE_INLINE */

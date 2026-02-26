@@ -136,16 +136,6 @@ int a_plane_set4(a_plane *ctx, a_real a, a_real b, a_real c, a_real d)
     return a_vector3_ortho(&ctx->dir_, &ctx->u_, &ctx->v_);
 }
 
-void a_plane_eval(a_plane const *ctx, a_real u, a_real v, a_point3 *res)
-{
-    a_point3 const *const o = &ctx->orig;
-    a_vector3 const *const U = &ctx->u_;
-    a_vector3 const *const V = &ctx->v_;
-    res->x = o->x + U->x * u + V->x * v;
-    res->y = o->y + U->y * u + V->y * v;
-    res->z = o->z + U->z * u + V->z * v;
-}
-
 void a_plane_parm(a_plane const *ctx, a_point3 const *p, a_real *u, a_real *v)
 {
     a_vector3 vec;

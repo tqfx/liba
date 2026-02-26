@@ -96,6 +96,28 @@ A_INTERN void a_point3_pos(a_point3 const *ctx, a_vector3 *res);
 A_INTERN void a_point3_neg(a_point3 const *ctx, a_vector3 *res);
 
 /*!
+ @brief compute the magnitude of a 3D point.
+ @details In three-dimensional space,
+ a point \f$\vec{p}\f$ with coordinates \f$(x,y,z)\f$ has a magnitude defined as:
+ \f[
+  \|\vec{p}\|=\sqrt{x^2+y^2+z^2}
+ \f]
+ @param[in] ctx points to the input point
+ @return the magnitude of the point
+*/
+A_EXTERN a_real a_point3_norm(a_point3 const *ctx);
+/*!
+ @brief compute the squared magnitude of a 3D point.
+ @details In three-dimensional space,
+ a point \f$\vec{p}\f$ with coordinates \f$(x,y,z)\f$ has a squared magnitude defined as:
+ \f[
+  \|\vec{p}\|^2=x^2+y^2+z^2
+ \f]
+ @param[in] ctx points to the input point
+ @return the squared magnitude of the point
+*/
+A_INTERN a_real a_point3_norm2(a_point3 const *ctx);
+/*!
  @brief compute the distance between two 3D points.
  @details In three-dimensional space,
  let point \f$p\f$ have coordinates \f$(p_x,p_y,p_z)\f$ and
@@ -122,7 +144,7 @@ A_EXTERN a_real a_point3_dist(a_point3 const *lhs, a_point3 const *rhs);
  @param[in] rhs is right-hand side 3D point
  @return the squared distance between two 3D points
 */
-A_EXTERN a_real a_point3_dist2(a_point3 const *lhs, a_point3 const *rhs);
+A_INTERN a_real a_point3_dist2(a_point3 const *lhs, a_point3 const *rhs);
 
 /*!
  @brief compute the minimum distance from a reference point to a point set.
@@ -162,7 +184,7 @@ A_EXTERN a_real a_point3_maxdist(a_point3 const *ctx, a_point3 const *i_p, a_siz
  @param[in] val is the interpolation factor
  @param[out] res stores the interpolated point
 */
-A_EXTERN void a_point3_lerp(a_point3 const *lhs, a_point3 const *rhs, a_real val, a_point3 *res);
+A_INTERN void a_point3_lerp(a_point3 const *lhs, a_point3 const *rhs, a_real val, a_point3 *res);
 
 /*!
  @brief compute the circumcenter and circumradius of a triangle defined by three 3D points.
@@ -388,10 +410,20 @@ struct a_point3
     {
         a_point3_neg(this, &res);
     }
+    /*! @copybrief a_point3_norm @see a_point3_norm */
+    A_INLINE a_real norm() const { return a_point3_norm(this); }
+    /*! @copybrief a_point3_norm2 @see a_point3_norm2 */
+    A_INLINE a_real norm2() const { return a_point3_norm2(this); }
     /*! @copybrief a_point3_dist @see a_point3_dist */
-    A_INLINE a_real dist(a_point3 const &rhs) const { return a_point3_dist(this, &rhs); }
+    A_INLINE a_real dist(a_point3 const &rhs) const
+    {
+        return a_point3_dist(this, &rhs);
+    }
     /*! @copybrief a_point3_dist2 @see a_point3_dist2 */
-    A_INLINE a_real dist2(a_point3 const &rhs) const { return a_point3_dist2(this, &rhs); }
+    A_INLINE a_real dist2(a_point3 const &rhs) const
+    {
+        return a_point3_dist2(this, &rhs);
+    }
     /*! @copybrief a_point3_mindist @see a_point3_mindist */
     A_INLINE a_real mindist(a_point3 const *i_p, a_size i_n, a_point3 *o_p = A_NULL, a_size *o_i = A_NULL) const
     {
@@ -573,6 +605,26 @@ A_INTERN void a_point3_neg(a_point3 const *ctx, a_vector3 *res)
     res->x = -ctx->x;
     res->y = -ctx->y;
     res->z = -ctx->z;
+}
+
+A_INTERN a_real a_point3_norm2(a_point3 const *ctx)
+{
+    return ctx->x * ctx->x + ctx->y * ctx->y + ctx->z * ctx->z;
+}
+
+A_INTERN a_real a_point3_dist2(a_point3 const *lhs, a_point3 const *rhs)
+{
+    a_real const x = rhs->x - lhs->x;
+    a_real const y = rhs->y - lhs->y;
+    a_real const z = rhs->z - lhs->z;
+    return x * x + y * y + z * z;
+}
+
+A_INTERN void a_point3_lerp(a_point3 const *lhs, a_point3 const *rhs, a_real val, a_point3 *res)
+{
+    res->x = lhs->x + (rhs->x - lhs->x) * val;
+    res->y = lhs->y + (rhs->y - lhs->y) * val;
+    res->z = lhs->z + (rhs->z - lhs->z) * val;
 }
 
 #endif /* A_HAVE_INLINE */

@@ -46,7 +46,7 @@ A_EXTERN int a_line2_set_dir(a_line2 *ctx, a_real x, a_real y);
 A_EXTERN int a_line2_set_tgt(a_line2 *ctx, a_real x, a_real y);
 A_EXTERN int a_line2_setv(a_line2 *ctx, a_point2 const *p, a_vector2 const *v);
 A_EXTERN int a_line2_set(a_line2 *ctx, a_point2 const *p, a_point2 const *q);
-A_EXTERN void a_line2_eval(a_line2 const *ctx, a_real w, a_point2 *res);
+A_INTERN void a_line2_eval(a_line2 const *ctx, a_real w, a_point2 *res);
 A_EXTERN a_real a_line2_parm(a_line2 const *ctx, a_point2 const *rhs);
 A_EXTERN a_real a_line2_proj(a_line2 const *ctx, a_point2 const *rhs, a_point2 *res);
 A_EXTERN a_real a_line2_limparm(a_line2 const *ctx, a_real min, a_real max, a_point2 const *rhs);
@@ -210,6 +210,14 @@ A_INTERN void a_line2_set_org(a_line2 *ctx, a_real x, a_real y)
 A_INTERN void a_line2_set_lim(a_line2 *ctx, a_real max)
 {
     ctx->max = max;
+}
+
+A_INTERN void a_line2_eval(a_line2 const *ctx, a_real w, a_point2 *res)
+{
+    a_point2 const *const o = &ctx->orig;
+    a_vector2 const *const d = &ctx->dir_;
+    res->x = o->x + d->x * w;
+    res->y = o->y + d->y * w;
 }
 
 #endif /* A_HAVE_INLINE */

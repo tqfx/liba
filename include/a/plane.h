@@ -48,7 +48,7 @@ A_EXPORT int a_plane_set_v(a_plane *ctx, a_vector3 const *n, a_vector3 const *v)
 A_EXTERN int a_plane_set(a_plane *ctx, a_point3 const *p, a_vector3 const *n);
 A_EXTERN int a_plane_set3(a_plane *ctx, a_point3 const *p1, a_point3 const *p2, a_point3 const *p3);
 A_EXTERN int a_plane_set4(a_plane *ctx, a_real a, a_real b, a_real c, a_real d);
-A_EXTERN void a_plane_eval(a_plane const *ctx, a_real u, a_real v, a_point3 *res);
+A_INTERN void a_plane_eval(a_plane const *ctx, a_real u, a_real v, a_point3 *res);
 A_EXTERN void a_plane_parm(a_plane const *ctx, a_point3 const *p, a_real *u, a_real *v);
 A_EXTERN a_real a_plane_proj(a_plane const *ctx, a_point3 const *p, a_point3 *res);
 
@@ -179,6 +179,16 @@ A_INTERN void a_plane_set_org(a_plane *ctx, a_real x, a_real y, a_real z)
     ctx->orig.x = x;
     ctx->orig.y = y;
     ctx->orig.z = z;
+}
+
+A_INTERN void a_plane_eval(a_plane const *ctx, a_real u, a_real v, a_point3 *res)
+{
+    a_point3 const *const o = &ctx->orig;
+    a_vector3 const *const a = &ctx->u_;
+    a_vector3 const *const b = &ctx->v_;
+    res->x = o->x + a->x * u + b->x * v;
+    res->y = o->y + a->y * u + b->y * v;
+    res->z = o->z + a->z * u + b->z * v;
 }
 
 #endif /* A_HAVE_INLINE */

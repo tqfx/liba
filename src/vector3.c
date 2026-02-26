@@ -21,33 +21,14 @@ a_real a_vector3_unit(a_vector3 *ctx)
 
 a_real a_vector3_norm(a_vector3 const *ctx)
 {
-    return a_real_sqrt(ctx->x * ctx->x + ctx->y * ctx->y + ctx->z * ctx->z);
-}
-
-a_real a_vector3_norm2(a_vector3 const *ctx)
-{
-    return ctx->x * ctx->x + ctx->y * ctx->y + ctx->z * ctx->z;
-}
-
-a_real a_vector3_dot(a_vector3 const *lhs, a_vector3 const *rhs)
-{
-    return lhs->x * rhs->x + lhs->y * rhs->y + lhs->z * rhs->z;
+    a_real const r = a_vector3_norm2(ctx);
+    return a_real_sqrt(r);
 }
 
 a_real a_vector3_dist(a_vector3 const *lhs, a_vector3 const *rhs)
 {
-    a_real const x = rhs->x - lhs->x;
-    a_real const y = rhs->y - lhs->y;
-    a_real const z = rhs->z - lhs->z;
-    return a_real_sqrt(x * x + y * y + z * z);
-}
-
-a_real a_vector3_dist2(a_vector3 const *lhs, a_vector3 const *rhs)
-{
-    a_real const x = rhs->x - lhs->x;
-    a_real const y = rhs->y - lhs->y;
-    a_real const z = rhs->z - lhs->z;
-    return x * x + y * y + z * z;
+    a_real const r = a_vector3_dist2(lhs, rhs);
+    return a_real_sqrt(r);
 }
 
 a_real a_vector3_angle(a_vector3 const *lhs, a_vector3 const *rhs)
@@ -61,47 +42,6 @@ a_real a_vector3_angle(a_vector3 const *lhs, a_vector3 const *rhs)
         return a_real_acos(r);
     }
     return 0;
-}
-
-a_bool a_vector3_isver(a_vector3 const *lhs, a_vector3 const *rhs)
-{
-    a_real const r = a_vector3_dot(lhs, rhs);
-    return A_ABS(r) < A_REAL_TOL;
-}
-
-a_bool a_vector3_ispar(a_vector3 const *lhs, a_vector3 const *rhs)
-{
-    a_real x, y, z;
-    x = lhs->y * rhs->z - lhs->z * rhs->y;
-    if (!(A_ABS(x) < A_REAL_TOL)) { return 0; }
-    y = lhs->z * rhs->x - lhs->x * rhs->z;
-    if (!(A_ABS(y) < A_REAL_TOL)) { return 0; }
-    z = lhs->x * rhs->y - lhs->y * rhs->x;
-    if (!(A_ABS(z) < A_REAL_TOL)) { return 0; }
-    return 1;
-}
-
-void a_vector3_cross(a_vector3 const *lhs, a_vector3 const *rhs, a_vector3 *res)
-{
-    a_real const x = lhs->y * rhs->z - lhs->z * rhs->y;
-    a_real const y = lhs->z * rhs->x - lhs->x * rhs->z;
-    a_real const z = lhs->x * rhs->y - lhs->y * rhs->x;
-    res->x = x;
-    res->y = y;
-    res->z = z;
-}
-
-void a_vector3_outer(a_vector3 const *lhs, a_vector3 const *rhs, a_real res[9])
-{
-    res[0] = lhs->x * rhs->x;
-    res[1] = lhs->x * rhs->y;
-    res[2] = lhs->x * rhs->z;
-    res[3] = lhs->y * rhs->x;
-    res[4] = lhs->y * rhs->y;
-    res[5] = lhs->y * rhs->z;
-    res[6] = lhs->z * rhs->x;
-    res[7] = lhs->z * rhs->y;
-    res[8] = lhs->z * rhs->z;
 }
 
 int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v)

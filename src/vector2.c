@@ -20,17 +20,8 @@ a_real a_vector2_unit(a_vector2 *ctx)
 
 a_real a_vector2_norm(a_vector2 const *ctx)
 {
-    return a_real_sqrt(ctx->x * ctx->x + ctx->y * ctx->y);
-}
-
-a_real a_vector2_norm2(a_vector2 const *ctx)
-{
-    return ctx->x * ctx->x + ctx->y * ctx->y;
-}
-
-a_real a_vector2_dot(a_vector2 const *lhs, a_vector2 const *rhs)
-{
-    return lhs->x * rhs->x + lhs->y * rhs->y;
+    a_real const r = a_vector2_norm2(ctx);
+    return a_real_sqrt(r);
 }
 
 a_real a_vector2_dist(a_vector2 const *lhs, a_vector2 const *rhs)
@@ -38,13 +29,6 @@ a_real a_vector2_dist(a_vector2 const *lhs, a_vector2 const *rhs)
     a_real const x = rhs->x - lhs->x;
     a_real const y = rhs->y - lhs->y;
     return a_real_sqrt(x * x + y * y);
-}
-
-a_real a_vector2_dist2(a_vector2 const *lhs, a_vector2 const *rhs)
-{
-    a_real const x = rhs->x - lhs->x;
-    a_real const y = rhs->y - lhs->y;
-    return x * x + y * y;
 }
 
 a_real a_vector2_angle(a_vector2 const *lhs, a_vector2 const *rhs)
@@ -58,31 +42,6 @@ a_real a_vector2_angle(a_vector2 const *lhs, a_vector2 const *rhs)
         return a_real_acos(r);
     }
     return 0;
-}
-
-a_bool a_vector2_isver(a_vector2 const *lhs, a_vector2 const *rhs)
-{
-    a_real const r = a_vector2_dot(lhs, rhs);
-    return A_ABS(r) < A_REAL_TOL;
-}
-
-a_bool a_vector2_ispar(a_vector2 const *lhs, a_vector2 const *rhs)
-{
-    a_real const r = lhs->x * rhs->y - lhs->y * rhs->x;
-    return A_ABS(r) < A_REAL_TOL;
-}
-
-a_real a_vector2_cross(a_vector2 const *lhs, a_vector2 const *rhs)
-{
-    return lhs->x * rhs->y - lhs->y * rhs->x;
-}
-
-void a_vector2_outer(a_vector2 const *lhs, a_vector2 const *rhs, a_real res[4])
-{
-    res[0] = lhs->x * rhs->x;
-    res[1] = lhs->x * rhs->y;
-    res[2] = lhs->y * rhs->x;
-    res[3] = lhs->y * rhs->y;
 }
 
 int a_vector2_proj(a_vector2 const *ctx, a_vector2 const *dir, a_vector2 *res)
@@ -122,14 +81,6 @@ int a_vector2_refl(a_vector2 const *ctx, a_vector2 const *dir, a_vector2 *res)
         return A_SUCCESS;
     }
     return A_FAILURE;
-}
-
-void a_vector2_rot_(a_vector2 const *ctx, a_real sin, a_real cos, a_vector2 *res)
-{
-    a_real const x = cos * ctx->x - sin * ctx->y;
-    a_real const y = sin * ctx->x + cos * ctx->y;
-    res->x = x;
-    res->y = y;
 }
 
 void a_vector2_rot(a_vector2 const *ctx, a_real angle, a_vector2 *res)

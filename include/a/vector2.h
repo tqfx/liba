@@ -110,21 +110,7 @@ A_EXTERN a_real a_vector2_norm(a_vector2 const *ctx);
  @param[in] ctx points to the input vector
  @return the squared magnitude of the vector
 */
-A_EXTERN a_real a_vector2_norm2(a_vector2 const *ctx);
-/*!
- @brief compute the dot product (scalar product) of two 2D vectors.
- @details In two-dimensional space,
- let vector \f$\vec{a}\f$ have coordinates \f$(a_x,a_y)\f$ and
- let vector \f$\vec{b}\f$ have coordinates \f$(b_x,b_y)\f$.
- Then the dot product of vectors \f$\vec{a}\f$ and \f$\vec{b}\f$ is defined as:
- \f[
-  \vec{a} \cdot \vec{b} = a_x b_x + a_y b_y
- \f]
- @param[in] lhs is left-hand side 2D vector
- @param[in] rhs is right-hand side 2D vector
- @return the dot product of two 2D vectors
-*/
-A_EXTERN a_real a_vector2_dot(a_vector2 const *lhs, a_vector2 const *rhs);
+A_INTERN a_real a_vector2_norm2(a_vector2 const *ctx);
 /*!
  @brief compute the distance between two 2D vectors.
  @details In two-dimensional space,
@@ -152,39 +138,21 @@ A_EXTERN a_real a_vector2_dist(a_vector2 const *lhs, a_vector2 const *rhs);
  @param[in] rhs is right-hand side 2D vector
  @return the squared distance between two 2D vectors
 */
-A_EXTERN a_real a_vector2_dist2(a_vector2 const *lhs, a_vector2 const *rhs);
+A_INTERN a_real a_vector2_dist2(a_vector2 const *lhs, a_vector2 const *rhs);
 /*!
- @brief compute the angle between two 2D vectors in radians.
+ @brief compute the dot product (scalar product) of two 2D vectors.
  @details In two-dimensional space,
  let vector \f$\vec{a}\f$ have coordinates \f$(a_x,a_y)\f$ and
  let vector \f$\vec{b}\f$ have coordinates \f$(b_x,b_y)\f$.
- Then the angle between \f$\vec{a}\f$ and \f$\vec{b}\f$ is given by:
+ Then the dot product of vectors \f$\vec{a}\f$ and \f$\vec{b}\f$ is defined as:
  \f[
-  \theta=\arccos\left(\frac{\vec{a}\cdot\vec{b}}{\|\vec{a}\|\|\vec{b}\|}\right)
-        =\arccos\left(\frac{\vec{a}\cdot\vec{b}}{\sqrt{\|\vec{a}\|^2\|\vec{b}\|^2}}\right)
+  \vec{a} \cdot \vec{b} = a_x b_x + a_y b_y
  \f]
  @param[in] lhs is left-hand side 2D vector
  @param[in] rhs is right-hand side 2D vector
- @return the angle between two 2D vectors in radians, in the range \f$[0,\pi]\f$
-  @retval 0 if the vector is null
+ @return the dot product of two 2D vectors
 */
-A_EXTERN a_real a_vector2_angle(a_vector2 const *lhs, a_vector2 const *rhs);
-/*!
- @brief check if two 2D vectors are orthogonal.
- @param[in] lhs is left-hand side 2D vector
- @param[in] rhs is right-hand side 2D vector
- @return whether the vectors are nearly orthogonal
-  @retval true if the vector is null
-*/
-A_EXTERN a_bool a_vector2_isver(a_vector2 const *lhs, a_vector2 const *rhs);
-/*!
- @brief check if two 2D vectors are parallel or anti-parallel.
- @param[in] lhs is left-hand side 2D vector
- @param[in] rhs is right-hand side 2D vector
- @return whether the vectors are nearly parallel or anti-parallel
-  @retval true if the vector is null
-*/
-A_EXTERN a_bool a_vector2_ispar(a_vector2 const *lhs, a_vector2 const *rhs);
+A_INTERN a_real a_vector2_dot(a_vector2 const *lhs, a_vector2 const *rhs);
 /*!
  @brief compute the cross product (vector product) of two 2D vectors
  @details In two-dimensional space,
@@ -199,7 +167,7 @@ A_EXTERN a_bool a_vector2_ispar(a_vector2 const *lhs, a_vector2 const *rhs);
  @param[in] rhs is right-hand side 2D vector
  @return the cross product of two 2D vectors
 */
-A_EXTERN a_real a_vector2_cross(a_vector2 const *lhs, a_vector2 const *rhs);
+A_INTERN a_real a_vector2_cross(a_vector2 const *lhs, a_vector2 const *rhs);
 /*!
  @brief compute the outer product (tensor product) of two 2D vectors.
  @details In two-dimensional space,
@@ -216,7 +184,39 @@ A_EXTERN a_real a_vector2_cross(a_vector2 const *lhs, a_vector2 const *rhs);
  @param[in] rhs is right-hand side 2D vector
  @param[out] res stores the 2×2 matrix in row-major order
 */
-A_EXTERN void a_vector2_outer(a_vector2 const *lhs, a_vector2 const *rhs, a_real res[4]);
+A_INTERN void a_vector2_outer(a_vector2 const *lhs, a_vector2 const *rhs, a_real res[4]);
+/*!
+ @brief check if two 2D vectors are orthogonal.
+ @param[in] lhs is left-hand side 2D vector
+ @param[in] rhs is right-hand side 2D vector
+ @return whether the vectors are nearly orthogonal
+  @retval true if the vector is null
+*/
+A_INTERN a_bool a_vector2_isver(a_vector2 const *lhs, a_vector2 const *rhs);
+/*!
+ @brief check if two 2D vectors are parallel or anti-parallel.
+ @param[in] lhs is left-hand side 2D vector
+ @param[in] rhs is right-hand side 2D vector
+ @return whether the vectors are nearly parallel or anti-parallel
+  @retval true if the vector is null
+*/
+A_INTERN a_bool a_vector2_ispar(a_vector2 const *lhs, a_vector2 const *rhs);
+/*!
+ @brief compute the angle between two 2D vectors in radians.
+ @details In two-dimensional space,
+ let vector \f$\vec{a}\f$ have coordinates \f$(a_x,a_y)\f$ and
+ let vector \f$\vec{b}\f$ have coordinates \f$(b_x,b_y)\f$.
+ Then the angle between \f$\vec{a}\f$ and \f$\vec{b}\f$ is given by:
+ \f[
+  \theta=\arccos\left(\frac{\vec{a}\cdot\vec{b}}{\|\vec{a}\|\|\vec{b}\|}\right)
+        =\arccos\left(\frac{\vec{a}\cdot\vec{b}}{\sqrt{\|\vec{a}\|^2\|\vec{b}\|^2}}\right)
+ \f]
+ @param[in] lhs is left-hand side 2D vector
+ @param[in] rhs is right-hand side 2D vector
+ @return the angle between two 2D vectors in radians, in the range \f$[0,\pi]\f$
+  @retval 0 if the vector is null
+*/
+A_EXTERN a_real a_vector2_angle(a_vector2 const *lhs, a_vector2 const *rhs);
 
 /*!
  @brief project vector onto the direction of vector.
@@ -268,6 +268,20 @@ A_EXTERN int a_vector2_perp(a_vector2 const *ctx, a_vector2 const *dir, a_vector
 A_EXTERN int a_vector2_refl(a_vector2 const *ctx, a_vector2 const *dir, a_vector2 *res);
 
 /*!
+ @brief compute linear interpolation (LERP) between two 2D vectors.
+ @details Let \f$\vec{a}\f$ and \f$\vec{b}\f$ be two 2D vectors and let \f$t\f$ be the interpolation factor.
+ Then the linear interpolation \f$\vec{v}\f$ between \f$\vec{a}\f$ and \f$\vec{b}\f$ is given by:
+ \f[
+  \vec{v} = \vec{a} + (\vec{b} - \vec{a}) * t
+ \f]
+ @param[in] lhs points to the starting vector
+ @param[in] rhs points to the ending vector
+ @param[in] val is the interpolation factor
+ @param[out] res stores the interpolated vector
+*/
+A_INTERN void a_vector2_lerp(a_vector2 const *lhs, a_vector2 const *rhs, a_real val, a_vector2 *res);
+
+/*!
  @brief rotate a 2D vector by a specified angle (in radians).
  @details In two-dimensional space,
  let \f$v\f$ be any vector to rotate by angle \f$\theta\f$ (right hand rule, anticlockwise).
@@ -281,7 +295,7 @@ A_EXTERN int a_vector2_refl(a_vector2 const *ctx, a_vector2 const *dir, a_vector
  @param[in] cos is precomputed \f$\cos(\theta)\f$
  @param[out] res stores the result vector
 */
-A_EXTERN void a_vector2_rot_(a_vector2 const *ctx, a_real sin, a_real cos, a_vector2 *res);
+A_INTERN void a_vector2_rot_(a_vector2 const *ctx, a_real sin, a_real cos, a_vector2 *res);
 /*!
  @brief rotate a 2D vector by a specified angle (in radians).
  @details In two-dimensional space,
@@ -373,22 +387,46 @@ struct a_vector2
     A_INLINE a_real norm() const { return a_vector2_norm(this); }
     /*! @copybrief a_vector2_norm2 @see a_vector2_norm2 */
     A_INLINE a_real norm2() const { return a_vector2_norm2(this); }
-    /*! @copybrief a_vector2_dot @see a_vector2_dot */
-    A_INLINE a_real dot(a_vector2 const &rhs) const { return a_vector2_dot(this, &rhs); }
     /*! @copybrief a_vector2_dist @see a_vector2_dist */
-    A_INLINE a_real dist(a_vector2 const &rhs) const { return a_vector2_dist(this, &rhs); }
+    A_INLINE a_real dist(a_vector2 const &rhs) const
+    {
+        return a_vector2_dist(this, &rhs);
+    }
     /*! @copybrief a_vector2_dist2 @see a_vector2_dist2 */
-    A_INLINE a_real dist2(a_vector2 const &rhs) const { return a_vector2_dist2(this, &rhs); }
-    /*! @copybrief a_vector2_dist2 @see a_vector2_dist2 */
-    A_INLINE a_real angle(a_vector2 const &rhs) const { return a_vector2_angle(this, &rhs); }
-    /*! @copybrief a_vector2_isver @see a_vector2_isver */
-    A_INLINE a_bool isver(a_vector2 const &rhs) const { return a_vector2_isver(this, &rhs); }
-    /*! @copybrief a_vector2_ispar @see a_vector2_ispar */
-    A_INLINE a_bool ispar(a_vector2 const &rhs) const { return a_vector2_ispar(this, &rhs); }
+    A_INLINE a_real dist2(a_vector2 const &rhs) const
+    {
+        return a_vector2_dist2(this, &rhs);
+    }
+    /*! @copybrief a_vector2_dot @see a_vector2_dot */
+    A_INLINE a_real dot(a_vector2 const &rhs) const
+    {
+        return a_vector2_dot(this, &rhs);
+    }
     /*! @copybrief a_vector2_cross @see a_vector2_cross */
-    A_INLINE a_real cross(a_vector2 const &rhs) const { return a_vector2_cross(this, &rhs); }
+    A_INLINE a_real cross(a_vector2 const &rhs) const
+    {
+        return a_vector2_cross(this, &rhs);
+    }
     /*! @copybrief a_vector2_outer @see a_vector2_outer */
-    A_INLINE void outer(a_vector2 const &rhs, a_real res[4]) const { a_vector2_outer(this, &rhs, res); }
+    A_INLINE void outer(a_vector2 const &rhs, a_real res[4]) const
+    {
+        a_vector2_outer(this, &rhs, res);
+    }
+    /*! @copybrief a_vector2_isver @see a_vector2_isver */
+    A_INLINE a_bool isver(a_vector2 const &rhs) const
+    {
+        return a_vector2_isver(this, &rhs);
+    }
+    /*! @copybrief a_vector2_ispar @see a_vector2_ispar */
+    A_INLINE a_bool ispar(a_vector2 const &rhs) const
+    {
+        return a_vector2_ispar(this, &rhs);
+    }
+    /*! @copybrief a_vector2_dist2 @see a_vector2_dist2 */
+    A_INLINE a_real angle(a_vector2 const &rhs) const
+    {
+        return a_vector2_angle(this, &rhs);
+    }
     /*! @copybrief a_vector2_proj @see a_vector2_proj */
     A_INLINE int proj(a_vector2 const &dir, a_vector2 &res) const
     {
@@ -404,10 +442,21 @@ struct a_vector2
     {
         return a_vector2_refl(this, &dir, &res);
     }
+    /*! @copybrief a_vector2_lerp @see a_vector2_lerp */
+    A_INLINE void lerp(a_vector2 const &rhs, a_real val, a_vector2 &res) const
+    {
+        a_vector2_lerp(this, &rhs, val, &res);
+    }
     /*! @copybrief a_vector2_rot @see a_vector2_rot */
-    A_INLINE void rot(a_real angle, a_vector2 &res) const { a_vector2_rot(this, angle, &res); }
+    A_INLINE void rot(a_real angle, a_vector2 &res) const
+    {
+        a_vector2_rot(this, angle, &res);
+    }
     /*! @copybrief a_vector2_rot_ @see a_vector2_rot_ */
-    A_INLINE void rot(a_real sin, a_real cos, a_vector2 &res) const { a_vector2_rot_(this, sin, cos, &res); }
+    A_INLINE void rot(a_real sin, a_real cos, a_vector2 &res) const
+    {
+        a_vector2_rot_(this, sin, cos, &res);
+    }
     /*! @copybrief a_vector2_cross @see a_vector2_cross */
     friend A_INLINE a_real operator^(a_vector2 const &lhs, a_vector2 const &rhs)
     {
@@ -528,6 +577,62 @@ A_INTERN void a_vector2_neg(a_vector2 const *ctx, a_vector2 *res)
 {
     res->x = -ctx->x;
     res->y = -ctx->y;
+}
+
+A_INTERN a_real a_vector2_norm2(a_vector2 const *ctx)
+{
+    return ctx->x * ctx->x + ctx->y * ctx->y;
+}
+
+A_INTERN a_real a_vector2_dist2(a_vector2 const *lhs, a_vector2 const *rhs)
+{
+    a_real const x = rhs->x - lhs->x;
+    a_real const y = rhs->y - lhs->y;
+    return x * x + y * y;
+}
+
+A_INTERN a_real a_vector2_dot(a_vector2 const *lhs, a_vector2 const *rhs)
+{
+    return lhs->x * rhs->x + lhs->y * rhs->y;
+}
+
+A_INTERN a_real a_vector2_cross(a_vector2 const *lhs, a_vector2 const *rhs)
+{
+    return lhs->x * rhs->y - lhs->y * rhs->x;
+}
+
+A_INTERN void a_vector2_outer(a_vector2 const *lhs, a_vector2 const *rhs, a_real res[4])
+{
+    res[0] = lhs->x * rhs->x;
+    res[1] = lhs->x * rhs->y;
+    res[2] = lhs->y * rhs->x;
+    res[3] = lhs->y * rhs->y;
+}
+
+A_INTERN a_bool a_vector2_isver(a_vector2 const *lhs, a_vector2 const *rhs)
+{
+    a_real const r = lhs->x * rhs->x + lhs->y * rhs->y;
+    return A_ABS(r) < A_REAL_TOL;
+}
+
+A_INTERN a_bool a_vector2_ispar(a_vector2 const *lhs, a_vector2 const *rhs)
+{
+    a_real const r = lhs->x * rhs->y - lhs->y * rhs->x;
+    return A_ABS(r) < A_REAL_TOL;
+}
+
+A_INTERN void a_vector2_lerp(a_vector2 const *lhs, a_vector2 const *rhs, a_real val, a_vector2 *res)
+{
+    res->x = lhs->x + (rhs->x - lhs->x) * val;
+    res->y = lhs->y + (rhs->y - lhs->y) * val;
+}
+
+A_INTERN void a_vector2_rot_(a_vector2 const *ctx, a_real sin, a_real cos, a_vector2 *res)
+{
+    a_real const x = cos * ctx->x - sin * ctx->y;
+    a_real const y = sin * ctx->x + cos * ctx->y;
+    res->x = x;
+    res->y = y;
 }
 
 #endif /* A_HAVE_INLINE */

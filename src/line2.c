@@ -52,14 +52,6 @@ int a_line2_setv(a_line2 *ctx, a_point2 const *p, a_vector2 const *v)
     return A_FAILURE;
 }
 
-void a_line2_eval(a_line2 const *ctx, a_real w, a_point2 *res)
-{
-    a_point2 const *const o = &ctx->orig;
-    a_vector2 const *const u = &ctx->dir_;
-    res->x = o->x + u->x * w;
-    res->y = o->y + u->y * w;
-}
-
 a_real a_line2_parm(a_line2 const *ctx, a_point2 const *rhs)
 {
     a_vector2 v;

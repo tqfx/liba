@@ -55,15 +55,6 @@ int a_line3_setv(a_line3 *ctx, a_point3 const *p, a_vector3 const *v)
     return A_FAILURE;
 }
 
-void a_line3_eval(a_line3 const *ctx, a_real w, a_point3 *res)
-{
-    a_point3 const *const o = &ctx->orig;
-    a_vector3 const *const u = &ctx->dir_;
-    res->x = o->x + u->x * w;
-    res->y = o->y + u->y * w;
-    res->z = o->z + u->z * w;
-}
-
 a_real a_line3_parm(a_line3 const *ctx, a_point3 const *rhs)
 {
     a_vector3 v;

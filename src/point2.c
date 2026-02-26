@@ -1,18 +1,16 @@
 #define LIBA_POINT2_C
 #include "a/point2.h"
 
-a_real a_point2_dist(a_point2 const *lhs, a_point2 const *rhs)
+a_real a_point2_norm(a_point2 const *ctx)
 {
-    a_real const x = rhs->x - lhs->x;
-    a_real const y = rhs->y - lhs->y;
-    return a_real_sqrt(x * x + y * y);
+    a_real const r = a_point2_norm2(ctx);
+    return a_real_sqrt(r);
 }
 
-a_real a_point2_dist2(a_point2 const *lhs, a_point2 const *rhs)
+a_real a_point2_dist(a_point2 const *lhs, a_point2 const *rhs)
 {
-    a_real const x = rhs->x - lhs->x;
-    a_real const y = rhs->y - lhs->y;
-    return x * x + y * y;
+    a_real const r = a_point2_dist2(lhs, rhs);
+    return a_real_sqrt(r);
 }
 
 a_real a_point2_mindist(a_point2 const *ctx, a_point2 const *i_p, a_size i_n,
@@ -59,12 +57,6 @@ a_real a_point2_maxdist(a_point2 const *ctx, a_point2 const *i_p, a_size i_n,
     }
     if (o_i) { *o_i = idx; }
     return val;
-}
-
-void a_point2_lerp(a_point2 const *lhs, a_point2 const *rhs, a_real val, a_point2 *res)
-{
-    res->x = lhs->x + (rhs->x - lhs->x) * val;
-    res->y = lhs->y + (rhs->y - lhs->y) * val;
 }
 
 a_real a_point2_tricir(a_point2 const *p1, a_point2 const *p2, a_point2 const *p3, a_point2 *pc)
