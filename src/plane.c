@@ -21,7 +21,7 @@ int a_plane_set_dir(a_plane *ctx, a_real x, a_real y, a_real z)
         ctx->dir_.z = z * s;
     }
     else { return A_FAILURE; }
-    return a_vector3_ortho(&ctx->dir_, &ctx->u_, &ctx->v_);
+    return a_vector3_basis(&ctx->dir_, &ctx->u_, &ctx->v_);
 }
 
 int a_plane_set_uv(a_plane *ctx, a_vector3 const *u, a_vector3 const *v)
@@ -133,7 +133,7 @@ int a_plane_set4(a_plane *ctx, a_real a, a_real b, a_real c, a_real d)
     ctx->orig.x = a * d;
     ctx->orig.y = b * d;
     ctx->orig.z = c * d;
-    return a_vector3_ortho(&ctx->dir_, &ctx->u_, &ctx->v_);
+    return a_vector3_basis(&ctx->dir_, &ctx->u_, &ctx->v_);
 }
 
 void a_plane_parm(a_plane const *ctx, a_point3 const *p, a_real *u, a_real *v)

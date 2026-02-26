@@ -44,7 +44,7 @@ a_real a_vector3_angle(a_vector3 const *lhs, a_vector3 const *rhs)
     return 0;
 }
 
-int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v)
+int a_vector3_basis(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v)
 {
     if (A_ABS(ctx->x) >= A_ABS(ctx->y))
     {

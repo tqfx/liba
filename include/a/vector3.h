@@ -249,7 +249,7 @@ A_EXTERN a_real a_vector3_angle(a_vector3 const *lhs, a_vector3 const *rhs);
   @retval <0 failure
   @retval 0 success
 */
-A_EXTERN int a_vector3_ortho(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v);
+A_EXTERN int a_vector3_basis(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v);
 
 /*!
  @brief project vector onto the direction of vector.
@@ -509,10 +509,10 @@ struct a_vector3
     {
         return a_vector3_angle(this, &rhs);
     }
-    /*! @copybrief a_vector3_ortho @see a_vector3_ortho */
-    A_INLINE int ortho(a_vector3 &u, a_vector3 &v) const
+    /*! @copybrief a_vector3_basis @see a_vector3_basis */
+    A_INLINE int basis(a_vector3 &u, a_vector3 &v) const
     {
-        return a_vector3_ortho(this, &u, &v);
+        return a_vector3_basis(this, &u, &v);
     }
     /*! @copybrief a_vector3_proj @see a_vector3_proj */
     A_INLINE int proj(a_vector3 const &dir, a_vector3 &res) const
