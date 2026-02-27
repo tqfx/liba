@@ -163,7 +163,14 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
 #endif /* __cplusplus */
     }
     {
-        a_vector2 u, v;
+        a_vector2 a, b, u, v;
+        a_vector2_set_val(&a, 2, 4);
+        a_vector2_set_val(&b, 5, 0);
+        TEST_BUG(a_vector2_decom(&a, &b, &u, &v) == 0);
+        TEST_BUG(iseq(u.x, 2));
+        TEST_BUG(iseq(u.y, 0));
+        TEST_BUG(iseq(v.x, 0));
+        TEST_BUG(iseq(v.y, 4));
         a_vector2_set_val(&u, 2, 4);
         a_vector2_set_val(&v, 1, 2);
         TEST_BUG(a_vector2_proj(&v, &u, &v) == 0);

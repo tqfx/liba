@@ -293,7 +293,16 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(b.z, +0));
     }
     {
-        a_vector3 u, v;
+        a_vector3 a, b, u, v;
+        a_vector3_set_val(&a, 2, 4, 0);
+        a_vector3_set_val(&b, 5, 0, 0);
+        TEST_BUG(a_vector3_decom(&a, &b, &u, &v) == 0);
+        TEST_BUG(iseq(u.x, 2));
+        TEST_BUG(iseq(u.y, 0));
+        TEST_BUG(iseq(u.z, 0));
+        TEST_BUG(iseq(v.x, 0));
+        TEST_BUG(iseq(v.y, 4));
+        TEST_BUG(iseq(v.z, 0));
         a_vector3_set_val(&u, 2, 4, 6);
         a_vector3_set_val(&v, 1, 2, 3);
         TEST_BUG(a_vector3_proj(&v, &u, &v) == 0);

@@ -44,6 +44,21 @@ a_real a_vector2_angle(a_vector2 const *lhs, a_vector2 const *rhs)
     return 0;
 }
 
+int a_vector2_decom(a_vector2 const *ctx, a_vector2 const *dir, a_vector2 *u, a_vector2 *v)
+{
+    a_real n = a_vector2_norm2(dir);
+    if (n > 0)
+    {
+        a_real d = a_vector2_dot(dir, ctx) / n;
+        u->x = dir->x * d;
+        u->y = dir->y * d;
+        v->x = ctx->x - u->x;
+        v->y = ctx->y - u->y;
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
+}
+
 int a_vector2_proj(a_vector2 const *ctx, a_vector2 const *dir, a_vector2 *res)
 {
     a_real n = a_vector2_norm2(dir);

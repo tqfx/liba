@@ -219,6 +219,20 @@ A_INTERN a_bool a_vector2_ispar(a_vector2 const *lhs, a_vector2 const *rhs);
 A_EXTERN a_real a_vector2_angle(a_vector2 const *lhs, a_vector2 const *rhs);
 
 /*!
+ @brief decompose a 2D vector into two orthogonal components relative to a given direction.
+ @param[in] ctx points to the source vector to be decomposed
+ @param[in] dir points to the reference direction vector
+ @param[out] u stores the parallel component
+ @param[out] v stores the orthogonal component
+ @return error code value
+  @retval <0 failure
+  @retval 0 success
+ @see a_vector2_proj
+ @see a_vector2_perp
+*/
+A_EXTERN int a_vector2_decom(a_vector2 const *ctx, a_vector2 const *dir, a_vector2 *u, a_vector2 *v);
+
+/*!
  @brief project vector onto the direction of vector.
  @details In two-dimensional space, let \f$\vec{v}\f$ be the vector to be projected,
  and let \f$\vec{d}\f$ be the direction vector for projection.
@@ -426,6 +440,11 @@ struct a_vector2
     A_INLINE a_real angle(a_vector2 const &rhs) const
     {
         return a_vector2_angle(this, &rhs);
+    }
+    /*! @copybrief a_vector2_decom @see a_vector2_decom */
+    A_INLINE int decom(a_vector2 const &dir, a_vector2 &u, a_vector2 &v) const
+    {
+        return a_vector2_decom(this, &dir, &u, &v);
     }
     /*! @copybrief a_vector2_proj @see a_vector2_proj */
     A_INLINE int proj(a_vector2 const &dir, a_vector2 &res) const

@@ -252,6 +252,20 @@ A_EXTERN a_real a_vector3_angle(a_vector3 const *lhs, a_vector3 const *rhs);
 A_EXTERN int a_vector3_basis(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v);
 
 /*!
+ @brief decompose a 3D vector into two orthogonal components relative to a given direction.
+ @param[in] ctx points to the source vector to be decomposed
+ @param[in] dir points to the reference direction vector
+ @param[out] u stores the parallel component
+ @param[out] v stores the orthogonal component
+ @return error code value
+  @retval <0 failure
+  @retval 0 success
+ @see a_vector3_proj
+ @see a_vector3_perp
+*/
+A_EXTERN int a_vector3_decom(a_vector3 const *ctx, a_vector3 const *dir, a_vector3 *u, a_vector3 *v);
+
+/*!
  @brief project vector onto the direction of vector.
  @details In three-dimensional space, let \f$\vec{v}\f$ be the vector to be projected,
  and let \f$\vec{d}\f$ be the direction vector for projection.
@@ -513,6 +527,11 @@ struct a_vector3
     A_INLINE int basis(a_vector3 &u, a_vector3 &v) const
     {
         return a_vector3_basis(this, &u, &v);
+    }
+    /*! @copybrief a_vector3_decom @see a_vector3_decom */
+    A_INLINE int decom(a_vector3 const &dir, a_vector3 &u, a_vector3 &v) const
+    {
+        return a_vector3_decom(this, &dir, &u, &v);
     }
     /*! @copybrief a_vector3_proj @see a_vector3_proj */
     A_INLINE int proj(a_vector3 const &dir, a_vector3 &res) const

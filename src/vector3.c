@@ -93,6 +93,23 @@ int a_vector3_basis(a_vector3 const *ctx, a_vector3 *u, a_vector3 *v)
     return A_SUCCESS;
 }
 
+int a_vector3_decom(a_vector3 const *ctx, a_vector3 const *dir, a_vector3 *u, a_vector3 *v)
+{
+    a_real n = a_vector3_norm2(dir);
+    if (n > 0)
+    {
+        a_real d = a_vector3_dot(dir, ctx) / n;
+        u->x = dir->x * d;
+        u->y = dir->y * d;
+        u->z = dir->z * d;
+        v->x = ctx->x - u->x;
+        v->y = ctx->y - u->y;
+        v->z = ctx->z - u->z;
+        return A_SUCCESS;
+    }
+    return A_FAILURE;
+}
+
 int a_vector3_proj(a_vector3 const *ctx, a_vector3 const *dir, a_vector3 *res)
 {
     a_real n = a_vector3_norm2(dir);
