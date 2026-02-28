@@ -35,12 +35,12 @@ extern "C" {
 /*! @endcond */
 #endif /* A_HAVE_INLINE */
 
-A_INTERN a_real a_line3_lim(a_line3 const *ctx);
+A_INTERN a_real a_line3_max(a_line3 const *ctx);
 A_INTERN a_point3 const *a_line3_org(a_line3 const *ctx);
 A_INTERN a_vector3 const *a_line3_dir(a_line3 const *ctx);
 A_INTERN void a_line3_tgt(a_line3 const *ctx, a_point3 *res);
 A_INTERN void a_line3_set_org(a_line3 *ctx, a_real x, a_real y, a_real z);
-A_INTERN void a_line3_set_lim(a_line3 *ctx, a_real max);
+A_INTERN void a_line3_set_max(a_line3 *ctx, a_real max);
 
 A_EXTERN int a_line3_set_dir(a_line3 *ctx, a_real x, a_real y, a_real z);
 A_EXTERN int a_line3_set_tgt(a_line3 *ctx, a_real x, a_real y, a_real z);
@@ -88,13 +88,11 @@ A_EXTERN void a_line3_rot(a_line3 const *ctx, a_line3 const *rhs, a_real angle, 
 */
 struct a_line3
 {
-    a_point3 orig;
+    a_point3 org;
     a_vector3 dir_;
     a_real max;
 #if defined(__cplusplus)
-    A_INLINE a_real lim() const { return max; }
-    A_INLINE void set_lim(a_real max_) { max = max_; }
-    A_INLINE a_point3 const &org() const { return orig; }
+    A_INLINE void set_max(a_real max_) { max = max_; }
     A_INLINE void set_org(a_real x, a_real y, a_real z)
     {
         a_line3_set_org(this, x, y, z);
@@ -129,13 +127,13 @@ struct a_line3
     {
         return a_line3_proj(this, &rhs, &res);
     }
-    A_INLINE a_real limparm(a_real min, a_real max_, a_point3 const &rhs) const
+    A_INLINE a_real limparm(a_real min_, a_real max_, a_point3 const &rhs) const
     {
-        return a_line3_limparm(this, min, max_, &rhs);
+        return a_line3_limparm(this, min_, max_, &rhs);
     }
-    A_INLINE a_real limproj(a_real min, a_real max_, a_point3 const &rhs, a_point3 &res) const
+    A_INLINE a_real limproj(a_real min_, a_real max_, a_point3 const &rhs, a_point3 &res) const
     {
-        return a_line3_limproj(this, min, max_, &rhs, &res);
+        return a_line3_limproj(this, min_, max_, &rhs, &res);
     }
     A_INLINE a_real dist(a_point3 const &rhs) const
     {
@@ -145,13 +143,13 @@ struct a_line3
     {
         return a_line3_dist2(this, &rhs);
     }
-    A_INLINE a_real limdist(a_real min, a_real max_, a_point3 const &rhs, a_real &w, a_point3 &p)
+    A_INLINE a_real limdist(a_real min_, a_real max_, a_point3 const &rhs, a_real &w, a_point3 &p)
     {
-        return a_line3_limdist(this, min, max_, &rhs, &w, &p);
+        return a_line3_limdist(this, min_, max_, &rhs, &w, &p);
     }
-    A_INLINE a_real limdist2(a_real min, a_real max_, a_point3 const &rhs, a_real &w, a_point3 &p)
+    A_INLINE a_real limdist2(a_real min_, a_real max_, a_point3 const &rhs, a_real &w, a_point3 &p)
     {
-        return a_line3_limdist2(this, min, max_, &rhs, &w, &p);
+        return a_line3_limdist2(this, min_, max_, &rhs, &w, &p);
     }
     A_INLINE a_real segdist(a_line3 const &rhs, a_real min1, a_real max1, a_real min2, a_real max2,
                             a_real &w1, a_real &w2, a_point3 &p1, a_point3 &p2) const
@@ -163,9 +161,9 @@ struct a_line3
     {
         return a_line3_segdist2(this, &rhs, min1, max1, min2, max2, &w1, &w2, &p1, &p2);
     }
-    A_INLINE int int0(a_point3 const &rhs, a_real min, a_real max_, a_real &w) const
+    A_INLINE int int0(a_point3 const &rhs, a_real min_, a_real max_, a_real &w) const
     {
-        return a_line3_int0(this, &rhs, min, max_, &w);
+        return a_line3_int0(this, &rhs, min_, max_, &w);
     }
     A_INLINE int int1(a_line3 const &rhs, a_real min1, a_real max1, a_real min2, a_real max2,
                       a_real &w1, a_real &w2) const
@@ -187,13 +185,13 @@ struct a_line3
 #endif /* LIBA_LINE3_C */
 #if defined(A_HAVE_INLINE) || defined(LIBA_LINE3_C)
 
-A_INTERN a_real a_line3_lim(a_line3 const *ctx)
+A_INTERN a_real a_line3_max(a_line3 const *ctx)
 {
     return ctx->max;
 }
 A_INTERN a_point3 const *a_line3_org(a_line3 const *ctx)
 {
-    return &ctx->orig;
+    return &ctx->org;
 }
 A_INTERN a_vector3 const *a_line3_dir(a_line3 const *ctx)
 {
@@ -205,18 +203,18 @@ A_INTERN void a_line3_tgt(a_line3 const *ctx, a_point3 *res)
 }
 A_INTERN void a_line3_set_org(a_line3 *ctx, a_real x, a_real y, a_real z)
 {
-    ctx->orig.x = x;
-    ctx->orig.y = y;
-    ctx->orig.z = z;
+    ctx->org.x = x;
+    ctx->org.y = y;
+    ctx->org.z = z;
 }
-A_INTERN void a_line3_set_lim(a_line3 *ctx, a_real max)
+A_INTERN void a_line3_set_max(a_line3 *ctx, a_real max)
 {
     ctx->max = max;
 }
 
 A_INTERN void a_line3_eval(a_line3 const *ctx, a_real w, a_point3 *res)
 {
-    a_point3 const *const o = &ctx->orig;
+    a_point3 const *const o = &ctx->org;
     a_vector3 const *const d = &ctx->dir_;
     res->x = o->x + d->x * w;
     res->y = o->y + d->y * w;

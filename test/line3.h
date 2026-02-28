@@ -15,9 +15,9 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_point3 a = A_POINT3_C(0, 0, 0);
         a_point3 b = A_POINT3_C(0, 3, 4);
         TEST_BUG(a_line3_set(&ctx, &a, &b) == 0);
-        TEST_BUG(iseq(ctx.orig.x, 0));
-        TEST_BUG(iseq(ctx.orig.y, 0));
-        TEST_BUG(iseq(ctx.orig.z, 0));
+        TEST_BUG(iseq(ctx.org.x, 0));
+        TEST_BUG(iseq(ctx.org.y, 0));
+        TEST_BUG(iseq(ctx.org.z, 0));
         TEST_BUG(iseq(ctx.dir_.x, 0));
         TEST_BUG(iseq(ctx.dir_.y, A_REAL_C(0.6)));
         TEST_BUG(iseq(ctx.dir_.z, A_REAL_C(0.8)));
@@ -34,12 +34,12 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(u.x, 0));
         TEST_BUG(iseq(u.y, A_REAL_C(0.6)));
         TEST_BUG(iseq(u.z, A_REAL_C(0.8)));
-        TEST_BUG(iseq(a_line3_lim(&ctx), 5));
+        TEST_BUG(iseq(a_line3_max(&ctx), 5));
 #if defined(__cplusplus)
         ctx.set_org(1, 2, 3);
-        TEST_BUG(iseq(ctx.orig.x, 1));
-        TEST_BUG(iseq(ctx.orig.y, 2));
-        TEST_BUG(iseq(ctx.orig.z, 3));
+        TEST_BUG(iseq(ctx.org.x, 1));
+        TEST_BUG(iseq(ctx.org.y, 2));
+        TEST_BUG(iseq(ctx.org.z, 3));
         TEST_BUG(ctx.set_dir(1, 0, 0) == 0);
         TEST_BUG(iseq(ctx.dir_.x, 1));
         TEST_BUG(iseq(ctx.dir_.y, 0));
@@ -51,9 +51,9 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_point3 p = A_POINT3_C(0, 0, 0);
         a_vector3 v = A_VECTOR3_C(0, 3, 4);
         TEST_BUG(a_line3_setv(&ctx, &p, &v) == 0);
-        TEST_BUG(iseq(ctx.orig.x, 0));
-        TEST_BUG(iseq(ctx.orig.y, 0));
-        TEST_BUG(iseq(ctx.orig.z, 0));
+        TEST_BUG(iseq(ctx.org.x, 0));
+        TEST_BUG(iseq(ctx.org.y, 0));
+        TEST_BUG(iseq(ctx.org.z, 0));
         TEST_BUG(iseq(ctx.dir_.x, 0));
         TEST_BUG(iseq(ctx.dir_.y, A_REAL_C(0.6)));
         TEST_BUG(iseq(ctx.dir_.z, A_REAL_C(0.8)));
@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(v.x, 0));
         TEST_BUG(iseq(v.y, A_REAL_C(0.6)));
         TEST_BUG(iseq(v.z, A_REAL_C(0.8)));
-        TEST_BUG(iseq(a_line3_lim(&ctx), 5));
+        TEST_BUG(iseq(a_line3_max(&ctx), 5));
     }
     {
         a_real w;
@@ -152,16 +152,16 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(ctx.dir_.x, -A_REAL_SQRT1_2));
         TEST_BUG(iseq(ctx.dir_.y, -A_REAL_SQRT1_2));
         TEST_BUG(iseq(ctx.dir_.z, 0));
-        TEST_BUG(iseq(ctx.orig.x, +5));
-        TEST_BUG(iseq(ctx.orig.y, +5));
-        TEST_BUG(iseq(ctx.orig.z, 0));
+        TEST_BUG(iseq(ctx.org.x, +5));
+        TEST_BUG(iseq(ctx.org.y, +5));
+        TEST_BUG(iseq(ctx.org.z, 0));
         a_line3_rot(&ctx, &rhs, -A_REAL_PI, &ctx);
         TEST_BUG(iseq(ctx.dir_.x, +A_REAL_SQRT1_2));
         TEST_BUG(iseq(ctx.dir_.y, +A_REAL_SQRT1_2));
         TEST_BUG(iseq(ctx.dir_.z, 0));
-        TEST_BUG(iseq(ctx.orig.x, +1));
-        TEST_BUG(iseq(ctx.orig.y, +1));
-        TEST_BUG(iseq(ctx.orig.z, 0));
+        TEST_BUG(iseq(ctx.org.x, +1));
+        TEST_BUG(iseq(ctx.org.y, +1));
+        TEST_BUG(iseq(ctx.org.z, 0));
     }
     {
         a_vector3 v1 = A_VECTOR3_C(1, 0, 0);

@@ -70,9 +70,9 @@ int a_plane_set(a_plane *ctx, a_point3 const *p, a_vector3 const *n)
 {
     if (a_plane_set_dir(ctx, n->x, n->y, n->z) == 0)
     {
-        ctx->orig.x = p->x;
-        ctx->orig.y = p->y;
-        ctx->orig.z = p->z;
+        ctx->org.x = p->x;
+        ctx->org.y = p->y;
+        ctx->org.z = p->z;
         return A_SUCCESS;
     }
     return A_FAILURE;
@@ -102,9 +102,9 @@ int a_plane_set3(a_plane *ctx, a_point3 const *p1, a_point3 const *p2, a_point3 
         a_vector3_set(&v12, &o, p1);
         if (a_plane_set_u(ctx, &n, &v12) == 0)
         {
-            ctx->orig.x = o.x;
-            ctx->orig.y = o.y;
-            ctx->orig.z = o.z;
+            ctx->org.x = o.x;
+            ctx->org.y = o.y;
+            ctx->org.z = o.z;
             return A_SUCCESS;
         }
     }
@@ -130,27 +130,26 @@ int a_plane_set4(a_plane *ctx, a_real a, a_real b, a_real c, a_real d)
         ctx->dir_.z = c * s;
     }
     else { return A_FAILURE; }
-    ctx->orig.x = a * d;
-    ctx->orig.y = b * d;
-    ctx->orig.z = c * d;
+    ctx->org.x = a * d;
+    ctx->org.y = b * d;
+    ctx->org.z = c * d;
     return a_vector3_basis(&ctx->dir_, &ctx->u_, &ctx->v_);
 }
 
 void a_plane_parm(a_plane const *ctx, a_point3 const *p, a_real *u, a_real *v)
 {
     a_vector3 vec;
-    a_vector3_set(&vec, &ctx->orig, p);
+    a_vector3_set(&vec, &ctx->org, p);
     *u = a_vector3_dot(&vec, &ctx->u_);
     *v = a_vector3_dot(&vec, &ctx->v_);
 }
 
 a_real a_plane_proj(a_plane const *ctx, a_point3 const *p, a_point3 *res)
 {
-    a_point3 const *const o = &ctx->orig;
     a_vector3 const *const n = &ctx->dir_;
     a_real w;
     a_vector3 v;
-    a_vector3_set(&v, o, p);
+    a_vector3_set(&v, &ctx->org, p);
     w = a_vector3_dot(&v, n);
     res->x = p->x - n->x * w;
     res->y = p->y - n->y * w;
@@ -161,7 +160,7 @@ a_real a_plane_proj(a_plane const *ctx, a_point3 const *p, a_point3 *res)
 a_real a_plane_sdist(a_plane const *ctx, a_point3 const *rhs)
 {
     a_vector3 v;
-    a_vector3_set(&v, &ctx->orig, rhs);
+    a_vector3_set(&v, &ctx->org, rhs);
     return a_vector3_dot(&v, &ctx->dir_);
 }
 
@@ -175,7 +174,7 @@ int a_plane_int0(a_plane const *ctx, a_point3 const *rhs, a_real *u, a_real *v)
 {
     a_real w;
     a_vector3 vec;
-    a_vector3_set(&vec, &ctx->orig, rhs);
+    a_vector3_set(&vec, &ctx->org, rhs);
     w = a_vector3_dot(&vec, &ctx->dir_);
     if (A_ABS(w) < A_REAL_TOL)
     {
@@ -190,7 +189,7 @@ int a_plane_int1(a_plane const *ctx, a_line3 const *rhs, a_real min, a_real max,
 {
     a_real s, u;
     a_vector3 v;
-    a_vector3_set(&v, &rhs->orig, &ctx->orig);
+    a_vector3_set(&v, &rhs->org, &ctx->org);
     u = a_vector3_dot(&ctx->dir_, &rhs->dir_);
     s = a_vector3_dot(&ctx->dir_, &v);
     if (A_ABS(u) >= A_REAL_TOL)
@@ -213,7 +212,7 @@ int a_plane_int2(a_plane const *ctx, a_plane const *rhs, a_line3 *res)
 {
     a_real w;
     a_vector3 *v3 = &res->dir_;
-    a_point3 const *p1 = &ctx->orig, *p2 = &rhs->orig;
+    a_point3 const *p1 = &ctx->org, *p2 = &rhs->org;
     a_vector3 const *v1 = &ctx->dir_, *v2 = &rhs->dir_;
     a_vector3_cross(v1, v2, v3);
     w = a_vector3_norm2(v3);
@@ -221,7 +220,7 @@ int a_plane_int2(a_plane const *ctx, a_plane const *rhs, a_line3 *res)
     {
         a_real u, v;
         a_vector3 v23, v31;
-        a_point3 *p3 = &res->orig;
+        a_point3 *p3 = &res->org;
         u = a_vector3_dot((a_vector3 const *)p1, v1);
         v = a_vector3_dot((a_vector3 const *)p2, v2);
         a_vector3_cross(v2, v3, &v23);

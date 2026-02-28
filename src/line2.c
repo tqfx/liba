@@ -26,8 +26,8 @@ int a_line2_set_dir(a_line2 *ctx, a_real x, a_real y)
 
 int a_line2_set_tgt(a_line2 *ctx, a_real x, a_real y)
 {
-    x -= ctx->orig.x;
-    y -= ctx->orig.y;
+    x -= ctx->org.x;
+    y -= ctx->org.y;
     return a_line2_set_dir(ctx, x, y);
 }
 
@@ -55,7 +55,7 @@ int a_line2_setv(a_line2 *ctx, a_point2 const *p, a_vector2 const *v)
 a_real a_line2_parm(a_line2 const *ctx, a_point2 const *rhs)
 {
     a_vector2 v;
-    a_vector2_set(&v, &ctx->orig, rhs);
+    a_vector2_set(&v, &ctx->org, rhs);
     return a_vector2_dot(&v, &ctx->dir_);
 }
 a_real a_line2_limparm(a_line2 const *ctx, a_real min, a_real max, a_point2 const *rhs)
@@ -91,11 +91,9 @@ a_real a_line2_limproj(a_line2 const *ctx, a_real min, a_real max, a_point2 cons
 
 a_real a_line2_sdist(a_line2 const *ctx, a_point2 const *rhs)
 {
-    a_point2 const *const o = &ctx->orig;
-    a_vector2 const *const u = &ctx->dir_;
     a_vector2 v;
-    a_vector2_set(&v, o, rhs);
-    return a_vector2_cross(u, &v);
+    a_vector2_set(&v, &ctx->org, rhs);
+    return a_vector2_cross(&ctx->dir_, &v);
 }
 
 a_real a_line2_dist(a_line2 const *ctx, a_point2 const *rhs)
@@ -128,7 +126,7 @@ a_real a_line2_segdist2(a_line2 const *ctx, a_line2 const *rhs,
                         a_real min1, a_real max1, a_real min2, a_real max2,
                         a_real *w1, a_real *w2, a_point2 *p1, a_point2 *p2)
 {
-    a_real res, w12, v12;
+    a_real res, w12, d12;
     a_point2 pt1, pt2;
     if (min1 > max1)
     {
@@ -142,18 +140,18 @@ a_real a_line2_segdist2(a_line2 const *ctx, a_line2 const *rhs,
         min2 = max2;
         max2 = w12;
     }
-    v12 = a_vector2_dot(&ctx->dir_, &rhs->dir_);
-    if (A_ABS(v12) < 1 - A_REAL_EPS)
+    d12 = a_vector2_dot(&ctx->dir_, &rhs->dir_);
+    if (A_ABS(d12) < 1 - A_REAL_EPS)
     {
         int win = 1;
         a_vector2 p12;
         a_real pv1, pv2;
-        a_real const s = 1 / (1 - v12 * v12);
-        a_vector2_set(&p12, &ctx->orig, &rhs->orig);
+        a_real const s = 1 / (1 - d12 * d12);
+        a_vector2_set(&p12, &ctx->org, &rhs->org);
         pv1 = a_vector2_dot(&p12, &ctx->dir_);
         pv2 = a_vector2_dot(&p12, &rhs->dir_);
-        *w1 = (pv1 - pv2 * v12) * s;
-        *w2 = (pv1 * v12 - pv2) * s;
+        *w1 = (pv1 - pv2 * d12) * s;
+        *w2 = (pv1 * d12 - pv2) * s;
         if (*w1 < min1)
         {
             *w1 = min1;
@@ -178,10 +176,10 @@ a_real a_line2_segdist2(a_line2 const *ctx, a_line2 const *rhs,
         a_line2_eval(rhs, *w2, p2);
         if (win) { return a_point2_dist2(p1, p2); }
         res = a_line2_limdist2(rhs, min2, max2, p1, &pv2, &pt2);
-        v12 = a_line2_limdist2(ctx, min1, max1, p2, &pv1, &pt1);
-        if (v12 < res)
+        d12 = a_line2_limdist2(ctx, min1, max1, p2, &pv1, &pt1);
+        if (d12 < res)
         {
-            res = v12;
+            res = d12;
             *w1 = pv1;
             *p1 = pt1;
         }
@@ -196,30 +194,30 @@ a_real a_line2_segdist2(a_line2 const *ctx, a_line2 const *rhs,
     a_line2_eval(ctx, min1, p1);
     res = a_line2_limdist2(rhs, min2, max2, p1, w2, p2);
     a_line2_eval(ctx, max1, &pt1);
-    v12 = a_line2_limdist2(rhs, min2, max2, &pt1, &w12, &pt2);
-    if (v12 < res)
+    d12 = a_line2_limdist2(rhs, min2, max2, &pt1, &w12, &pt2);
+    if (d12 < res)
     {
-        res = v12;
+        res = d12;
         *w1 = max1;
         *w2 = w12;
         *p1 = pt1;
         *p2 = pt2;
     }
     a_line2_eval(rhs, min2, &pt2);
-    v12 = a_line2_limdist2(ctx, min1, max1, &pt2, &w12, &pt1);
-    if (v12 < res)
+    d12 = a_line2_limdist2(ctx, min1, max1, &pt2, &w12, &pt1);
+    if (d12 < res)
     {
-        res = v12;
+        res = d12;
         *w1 = w12;
         *w2 = min2;
         *p1 = pt1;
         *p2 = pt2;
     }
     a_line2_eval(rhs, max2, &pt2);
-    v12 = a_line2_limdist2(ctx, min1, max1, &pt2, &w12, &pt1);
-    if (v12 < res)
+    d12 = a_line2_limdist2(ctx, min1, max1, &pt2, &w12, &pt1);
+    if (d12 < res)
     {
-        res = v12;
+        res = d12;
         *w1 = w12;
         *w2 = max2;
         *p1 = pt1;
@@ -230,10 +228,9 @@ a_real a_line2_segdist2(a_line2 const *ctx, a_line2 const *rhs,
 
 int a_line2_int0(a_line2 const *ctx, a_point2 const *rhs, a_real min, a_real max, a_real *w)
 {
-    a_point2 const *const o = &ctx->orig;
     a_vector2 const *const u = &ctx->dir_;
     a_vector2 v;
-    a_vector2_set(&v, o, rhs);
+    a_vector2_set(&v, &ctx->org, rhs);
     if (a_vector2_ispar(&v, u))
     {
         *w = a_vector2_dot(&v, u);
@@ -252,7 +249,7 @@ int a_line2_int1(a_line2 const *ctx, a_line2 const *rhs,
 {
     a_vector2 v;
     a_real const z = a_vector2_cross(&ctx->dir_, &rhs->dir_);
-    a_vector2_set(&v, &ctx->orig, &rhs->orig);
+    a_vector2_set(&v, &ctx->org, &rhs->org);
     if (A_ABS(z) >= A_REAL_TOL)
     {
         *w1 = a_vector2_cross(&v, &rhs->dir_) / z;
@@ -297,8 +294,8 @@ void a_line2_rot(a_line2 const *ctx, a_point2 const *rhs, a_real angle, a_line2 
     a_real const c = a_real_cos(angle);
     a_vector2 vec;
     a_vector2_rot_(&ctx->dir_, s, c, &res->dir_);
-    a_vector2_set(&vec, rhs, &ctx->orig);
+    a_vector2_set(&vec, rhs, &ctx->org);
     a_vector2_rot_(&vec, s, c, &vec);
-    a_point2_add(rhs, &vec, &res->orig);
+    a_point2_add(rhs, &vec, &res->org);
     res->max = ctx->max;
 }

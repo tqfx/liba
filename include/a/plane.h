@@ -76,10 +76,9 @@ A_EXTERN void a_plane_rot2d(a_plane *ctx, a_real angle);
 */
 struct a_plane
 {
-    a_point3 orig;
+    a_point3 org;
     a_vector3 dir_, u_, v_;
 #if defined(__cplusplus)
-    A_INLINE a_point3 const &org() const { return orig; }
     A_INLINE void set_org(a_real x, a_real y, a_real z)
     {
         a_plane_set_org(this, x, y, z);
@@ -160,7 +159,7 @@ struct a_plane
 
 A_INTERN a_point3 const *a_plane_org(a_plane const *ctx)
 {
-    return &ctx->orig;
+    return &ctx->org;
 }
 A_INTERN a_vector3 const *a_plane_dir(a_plane const *ctx)
 {
@@ -176,14 +175,14 @@ A_INTERN a_vector3 const *a_plane_v(a_plane const *ctx)
 }
 A_INTERN void a_plane_set_org(a_plane *ctx, a_real x, a_real y, a_real z)
 {
-    ctx->orig.x = x;
-    ctx->orig.y = y;
-    ctx->orig.z = z;
+    ctx->org.x = x;
+    ctx->org.y = y;
+    ctx->org.z = z;
 }
 
 A_INTERN void a_plane_eval(a_plane const *ctx, a_real u, a_real v, a_point3 *res)
 {
-    a_point3 const *const o = &ctx->orig;
+    a_point3 const *const o = &ctx->org;
     a_vector3 const *const a = &ctx->u_;
     a_vector3 const *const b = &ctx->v_;
     res->x = o->x + a->x * u + b->x * v;

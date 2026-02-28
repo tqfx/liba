@@ -15,8 +15,8 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_point2 a = A_POINT2_C(0, 0);
         a_point2 b = A_POINT2_C(3, 4);
         TEST_BUG(a_line2_set(&ctx, &a, &b) == 0);
-        TEST_BUG(iseq(ctx.orig.x, 0));
-        TEST_BUG(iseq(ctx.orig.y, 0));
+        TEST_BUG(iseq(ctx.org.x, 0));
+        TEST_BUG(iseq(ctx.org.y, 0));
         TEST_BUG(iseq(ctx.dir_.x, A_REAL_C(0.6)));
         TEST_BUG(iseq(ctx.dir_.y, A_REAL_C(0.8)));
         TEST_BUG(iseq(ctx.max, 5));
@@ -29,11 +29,11 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         u = *a_line2_dir(&ctx);
         TEST_BUG(iseq(u.x, A_REAL_C(0.6)));
         TEST_BUG(iseq(u.y, A_REAL_C(0.8)));
-        TEST_BUG(iseq(a_line2_lim(&ctx), 5));
+        TEST_BUG(iseq(a_line2_max(&ctx), 5));
 #if defined(__cplusplus)
         ctx.set_org(1, 2);
-        TEST_BUG(iseq(ctx.orig.x, 1));
-        TEST_BUG(iseq(ctx.orig.y, 2));
+        TEST_BUG(iseq(ctx.org.x, 1));
+        TEST_BUG(iseq(ctx.org.y, 2));
         TEST_BUG(ctx.set_dir(1, 0) == 0);
         TEST_BUG(iseq(ctx.dir_.x, 1));
         TEST_BUG(iseq(ctx.dir_.y, 0));
@@ -44,8 +44,8 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_point2 p = A_POINT2_C(0, 0);
         a_vector2 v = A_VECTOR2_C(3, 4);
         TEST_BUG(a_line2_setv(&ctx, &p, &v) == 0);
-        TEST_BUG(iseq(ctx.orig.x, 0));
-        TEST_BUG(iseq(ctx.orig.y, 0));
+        TEST_BUG(iseq(ctx.org.x, 0));
+        TEST_BUG(iseq(ctx.org.y, 0));
         TEST_BUG(iseq(ctx.dir_.x, A_REAL_C(0.6)));
         TEST_BUG(iseq(ctx.dir_.y, A_REAL_C(0.8)));
         TEST_BUG(iseq(ctx.max, 5));
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         v = *a_line2_dir(&ctx);
         TEST_BUG(iseq(v.x, A_REAL_C(0.6)));
         TEST_BUG(iseq(v.y, A_REAL_C(0.8)));
-        TEST_BUG(iseq(a_line2_lim(&ctx), 5));
+        TEST_BUG(iseq(a_line2_max(&ctx), 5));
     }
     {
         a_real w;
@@ -133,13 +133,13 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_line2_rot(&ctx, &p, +A_REAL_PI_2, &ctx);
         TEST_BUG(iseq(ctx.dir_.x, -A_REAL_SQRT1_2));
         TEST_BUG(iseq(ctx.dir_.y, -A_REAL_SQRT1_2));
-        TEST_BUG(iseq(ctx.orig.x, +5));
-        TEST_BUG(iseq(ctx.orig.y, +5));
+        TEST_BUG(iseq(ctx.org.x, +5));
+        TEST_BUG(iseq(ctx.org.y, +5));
         a_line2_rot(&ctx, &p, -A_REAL_PI, &ctx);
         TEST_BUG(iseq(ctx.dir_.x, +A_REAL_SQRT1_2));
         TEST_BUG(iseq(ctx.dir_.y, +A_REAL_SQRT1_2));
-        TEST_BUG(iseq(ctx.orig.x, +1));
-        TEST_BUG(iseq(ctx.orig.y, +1));
+        TEST_BUG(iseq(ctx.org.x, +1));
+        TEST_BUG(iseq(ctx.org.y, +1));
     }
     {
         a_vector2 v1 = A_VECTOR2_C(1, 0);

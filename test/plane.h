@@ -16,9 +16,9 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_vector3 v = A_VECTOR3_C(0, 10, 0);
         a_vector3 n = A_VECTOR3_C(0, 0, 10);
         TEST_BUG(a_plane_set(&ctx, &p, &n) == 0);
-        TEST_BUG(iseq(ctx.orig.x, 0));
-        TEST_BUG(iseq(ctx.orig.y, 0));
-        TEST_BUG(iseq(ctx.orig.z, 0));
+        TEST_BUG(iseq(ctx.org.x, 0));
+        TEST_BUG(iseq(ctx.org.y, 0));
+        TEST_BUG(iseq(ctx.org.z, 0));
         TEST_BUG(iseq(ctx.dir_.x, 0));
         TEST_BUG(iseq(ctx.dir_.y, 0));
         TEST_BUG(iseq(ctx.dir_.z, 1));
@@ -81,9 +81,9 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(iseq(ctx.v_.z, 0));
 #if defined(__cplusplus)
         ctx.set_org(1, 2, 3);
-        TEST_BUG(iseq(ctx.orig.x, 1));
-        TEST_BUG(iseq(ctx.orig.y, 2));
-        TEST_BUG(iseq(ctx.orig.z, 3));
+        TEST_BUG(iseq(ctx.org.x, 1));
+        TEST_BUG(iseq(ctx.org.y, 2));
+        TEST_BUG(iseq(ctx.org.z, 3));
         TEST_BUG(ctx.set_dir(0, 0, 1) == 0);
         TEST_BUG(iseq(ctx.dir_.x, 0));
         TEST_BUG(iseq(ctx.dir_.y, 0));
@@ -96,9 +96,9 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         a_point3 b = A_POINT3_C(2, 0, 0);
         a_point3 c = A_POINT3_C(2, 2, 0);
         TEST_BUG(a_plane_set3(&ctx, &a, &b, &c) == 0);
-        TEST_BUG(iseq(ctx.orig.x, 1));
-        TEST_BUG(iseq(ctx.orig.y, 1));
-        TEST_BUG(iseq(ctx.orig.z, 0));
+        TEST_BUG(iseq(ctx.org.x, 1));
+        TEST_BUG(iseq(ctx.org.y, 1));
+        TEST_BUG(iseq(ctx.org.z, 0));
         TEST_BUG(iseq(ctx.dir_.x, 0));
         TEST_BUG(iseq(ctx.dir_.y, 0));
         TEST_BUG(iseq(ctx.dir_.z, 1));
@@ -124,9 +124,9 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
     {
         a_plane ctx;
         TEST_BUG(a_plane_set4(&ctx, 1, 1, 1, -3) == 0);
-        TEST_BUG(iseq(ctx.orig.x, 1));
-        TEST_BUG(iseq(ctx.orig.y, 1));
-        TEST_BUG(iseq(ctx.orig.z, 1));
+        TEST_BUG(iseq(ctx.org.x, 1));
+        TEST_BUG(iseq(ctx.org.y, 1));
+        TEST_BUG(iseq(ctx.org.z, 1));
         TEST_BUG(iseq(ctx.dir_.x, A_REAL_SQRT1_3));
         TEST_BUG(iseq(ctx.dir_.y, A_REAL_SQRT1_3));
         TEST_BUG(iseq(ctx.dir_.z, A_REAL_SQRT1_3));
@@ -200,9 +200,9 @@ int main(int argc, char *argv[]) /* NOLINT(misc-definitions-in-headers) */
         TEST_BUG(a_plane_int2(&ctx, &rhs, &res) == 2);
         a_plane_set(&rhs, &p, &v);
         TEST_BUG(a_plane_int2(&ctx, &rhs, &res) == 1);
-        TEST_BUG(iseq(res.orig.x, 0));
-        TEST_BUG(iseq(res.orig.y, 3));
-        TEST_BUG(iseq(res.orig.z, 0));
+        TEST_BUG(iseq(res.org.x, 0));
+        TEST_BUG(iseq(res.org.y, 3));
+        TEST_BUG(iseq(res.org.z, 0));
         TEST_BUG(iseq(res.dir_.x, 0));
         TEST_BUG(iseq(res.dir_.y, 0));
         TEST_BUG(iseq(res.dir_.z, 1));
