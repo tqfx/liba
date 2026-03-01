@@ -34,10 +34,9 @@ int a_line3_set_tgt(a_line3 *ctx, a_real x, a_real y, a_real z)
     return a_line3_set_dir(ctx, x, y, z);
 }
 
-int a_line3_set(a_line3 *ctx, a_point3 const *p, a_point3 const *q)
+int a_line3_setv(a_line3 *ctx, a_point3 const *p, a_vector3 const *v)
 {
-    a_real const x = q->x - p->x, y = q->y - p->y, z = q->z - p->z;
-    if (a_line3_set_dir(ctx, x, y, z) == 0)
+    if (a_line3_set_dir(ctx, v->x, v->y, v->z) == 0)
     {
         a_line3_set_org(ctx, p->x, p->y, p->z);
         return A_SUCCESS;
@@ -45,9 +44,9 @@ int a_line3_set(a_line3 *ctx, a_point3 const *p, a_point3 const *q)
     return A_FAILURE;
 }
 
-int a_line3_setv(a_line3 *ctx, a_point3 const *p, a_vector3 const *v)
+int a_line3_set(a_line3 *ctx, a_point3 const *p, a_point3 const *q)
 {
-    if (a_line3_set_dir(ctx, v->x, v->y, v->z) == 0)
+    if (a_line3_set_dir(ctx, q->x - p->x, q->y - p->y, q->z - p->z) == 0)
     {
         a_line3_set_org(ctx, p->x, p->y, p->z);
         return A_SUCCESS;
@@ -90,24 +89,19 @@ a_real a_line3_limproj(a_line3 const *ctx, a_real min, a_real max, a_point3 cons
     return w;
 }
 
-void a_line3_sdist(a_line3 const *ctx, a_point3 const *rhs, a_vector3 *res)
-{
-    a_vector3 v;
-    a_vector3_set(&v, &ctx->org, rhs);
-    a_vector3_cross(&ctx->dir_, &v, res);
-}
-
 a_real a_line3_dist(a_line3 const *ctx, a_point3 const *rhs)
 {
     a_vector3 v;
-    a_line3_sdist(ctx, rhs, &v);
+    a_vector3_set(&v, &ctx->org, rhs);
+    a_vector3_cross(&ctx->dir_, &v, &v);
     return a_vector3_norm(&v);
 }
 
 a_real a_line3_dist2(a_line3 const *ctx, a_point3 const *rhs)
 {
     a_vector3 v;
-    a_line3_sdist(ctx, rhs, &v);
+    a_vector3_set(&v, &ctx->org, rhs);
+    a_vector3_cross(&ctx->dir_, &v, &v);
     return a_vector3_norm2(&v);
 }
 
@@ -123,17 +117,17 @@ a_real a_line3_limdist2(a_line3 const *ctx, a_real min, a_real max, a_point3 con
     return a_point3_dist2(rhs, p);
 }
 
-a_real a_line3_segdist(a_line3 const *ctx, a_line3 const *rhs,
-                       a_real min1, a_real max1, a_real min2, a_real max2,
-                       a_real *w1, a_real *w2, a_point3 *p1, a_point3 *p2)
+a_real a_line3_segdist(a_line3 const *ctx, a_real min1, a_real max1,
+                       a_line3 const *rhs, a_real min2, a_real max2,
+                       a_real *w1, a_point3 *p1, a_real *w2, a_point3 *p2)
 {
-    a_real s = a_line3_segdist2(ctx, rhs, min1, max1, min2, max2, w1, w2, p1, p2);
+    a_real s = a_line3_segdist2(ctx, min1, max1, rhs, min2, max2, w1, p1, w2, p2);
     return a_real_sqrt(s);
 }
 
-a_real a_line3_segdist2(a_line3 const *ctx, a_line3 const *rhs,
-                        a_real min1, a_real max1, a_real min2, a_real max2,
-                        a_real *w1, a_real *w2, a_point3 *p1, a_point3 *p2)
+a_real a_line3_segdist2(a_line3 const *ctx, a_real min1, a_real max1,
+                        a_line3 const *rhs, a_real min2, a_real max2,
+                        a_real *w1, a_point3 *p1, a_real *w2, a_point3 *p2)
 {
     a_real res, w12, d12;
     a_point3 pt1, pt2;
@@ -235,7 +229,7 @@ a_real a_line3_segdist2(a_line3 const *ctx, a_line3 const *rhs,
     return res;
 }
 
-int a_line3_int0(a_line3 const *ctx, a_point3 const *rhs, a_real min, a_real max, a_real *w)
+int a_line3_int0(a_line3 const *ctx, a_real min, a_real max, a_point3 const *rhs, a_real *w)
 {
     a_vector3 const *const u = &ctx->dir_;
     a_vector3 v;
@@ -252,8 +246,8 @@ int a_line3_int0(a_line3 const *ctx, a_point3 const *rhs, a_real min, a_real max
     return 0;
 }
 
-int a_line3_int1(a_line3 const *ctx, a_line3 const *rhs,
-                 a_real min1, a_real max1, a_real min2, a_real max2,
+int a_line3_int1(a_line3 const *ctx, a_real min1, a_real max1,
+                 a_line3 const *rhs, a_real min2, a_real max2,
                  a_real *w1, a_real *w2)
 {
     a_vector3 p12, v12, v;
@@ -278,9 +272,9 @@ int a_line3_int1(a_line3 const *ctx, a_line3 const *rhs,
     }
     else if (a_vector3_ispar(&ctx->dir_, &p12))
     {
-        a_real const s = a_vector3_dot(&ctx->dir_, &rhs->dir_);
+        a_bool const s = a_vector3_dot(&ctx->dir_, &rhs->dir_) < 0;
         a_real const w = a_vector3_dot(&ctx->dir_, &p12);
-        if (s < 0)
+        if (s)
         {
             a_real const min = min2;
             a_real const max = max2;
@@ -298,22 +292,25 @@ int a_line3_int1(a_line3 const *ctx, a_line3 const *rhs,
         if (*w2 - *w1 > -A_REAL_TOL)
         {
             *w1 = (*w1 + *w2) * A_REAL_C(0.5);
-            if (s < 0) { *w2 = w - *w1; }
-            else { *w2 = *w1 - w; }
+            *w2 = s ? (w - *w1) : (*w1 - w);
             return 1;
         }
     }
     return 0;
 }
 
+void a_line3_rot_(a_line3 const *ctx, a_line3 const *rhs, a_real sin, a_real cos, a_line3 *res)
+{
+    a_vector3 vec;
+    a_vector3_rot_(&ctx->dir_, &rhs->dir_, sin, cos, &res->dir_);
+    a_vector3_set(&vec, &rhs->org, &ctx->org);
+    a_vector3_rot_(&vec, &rhs->dir_, sin, cos, &vec);
+    a_point3_add(&rhs->org, &vec, &res->org);
+    res->max = ctx->max;
+}
 void a_line3_rot(a_line3 const *ctx, a_line3 const *rhs, a_real angle, a_line3 *res)
 {
     a_real const s = a_real_sin(angle);
     a_real const c = a_real_cos(angle);
-    a_vector3 vec;
-    a_vector3_rot_(&ctx->dir_, &rhs->dir_, s, c, &res->dir_);
-    a_vector3_set(&vec, &rhs->org, &ctx->org);
-    a_vector3_rot_(&vec, &rhs->dir_, s, c, &vec);
-    a_point3_add(&rhs->org, &vec, &res->org);
-    res->max = ctx->max;
+    a_line3_rot_(ctx, rhs, s, c, res);
 }
