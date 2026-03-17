@@ -1,6 +1,13 @@
 #define LIBA_POINT3_C
 #include "a/point3.h"
 
+#if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif /* -Wfloat-equal */
+#if A_PREREQ_MSVC(19, 30)
+#pragma warning(disable : 5250)
+#endif /* msvc 17.0+ */
+
 a_real a_point3_norm(a_point3 const *ctx)
 {
     a_real const r = a_point3_norm2(ctx);
@@ -25,6 +32,10 @@ a_real a_point3_mindist(a_point3 const *ctx, a_point3 const *i_p, a_size i_n,
         {
             val = d;
             idx = i;
+            if (d == 0)
+            {
+                break;
+            }
         }
     }
     if (idx < i_n)
@@ -126,13 +137,6 @@ a_real a_point3_tetsph2(a_point3 const *p1, a_point3 const *p2, a_point3 const *
     }
     return r;
 }
-
-#if A_PREREQ_GNUC(3, 0) || __has_warning("-Wfloat-equal")
-#pragma GCC diagnostic ignored "-Wfloat-equal"
-#endif /* -Wfloat-equal */
-#if A_PREREQ_MSVC(19, 30)
-#pragma warning(disable : 5250)
-#endif /* msvc 17.0+ */
 
 int a_point3_cmpxy(a_point3 const *lhs, a_point3 const *rhs)
 {
