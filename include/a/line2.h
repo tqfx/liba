@@ -11,7 +11,7 @@
 
 /*!
  @ingroup liba
- @addtogroup a_line2 two-dimensional line defined by an origin, a direction vector, and a length
+ @addtogroup a_line2 two-dimensional line
  @{
 */
 
@@ -115,6 +115,10 @@ A_EXTERN int a_line2_setv(a_line2 *ctx, a_point2 const *p, a_vector2 const *v);
 A_EXTERN int a_line2_set(a_line2 *ctx, a_point2 const *p, a_point2 const *q);
 /*!
  @brief evaluate a point on the line at a given parameter.
+ @details Let a line be defined by origin point \f$\vec{o}\f$
+ with direction vector \f$\vec{v}\f$ (where \f$\|\vec{v}\| = 1\f$).
+ The point \f$\vec{p}\f$ on the line at parameter \f$w\f$ is given by:
+ \f[ \vec{p}=\vec{o}+\vec{v}w \f]
  @param[in] ctx points to an instance of the two-dimensional line
  @param[in] w is the scalar parameter
  @param[out] res stores the result
@@ -122,6 +126,10 @@ A_EXTERN int a_line2_set(a_line2 *ctx, a_point2 const *p, a_point2 const *q);
 A_INTERN void a_line2_eval(a_line2 const *ctx, a_real w, a_point2 *res);
 /*!
  @brief compute the scalar projection parameter of a point onto the infinite line.
+ @details Let \f$\vec{p}\f$ be a point and let a line be defined by origin point
+ \f$\vec{o}\f$ with direction vector \f$\vec{v}\f$ (where \f$\|\vec{v}\| = 1\f$).
+ The scalar projection \f$w'\f$ of vector \f$(\vec{p}-\vec{o})\f$ onto the line is given by:
+ \f[ w'=\frac{(\vec{p}-\vec{o})\cdot\vec{v}}{\|\vec{v}\|}=(\vec{p}-\vec{o})\cdot\vec{v} \f]
  @param[in] ctx points to an instance of the two-dimensional line
  @param[in] rhs points to the point to project
  @return the scalar parameter
@@ -129,6 +137,13 @@ A_INTERN void a_line2_eval(a_line2 const *ctx, a_real w, a_point2 *res);
 A_EXTERN a_real a_line2_parm(a_line2 const *ctx, a_point2 const *rhs);
 /*!
  @brief project a point onto the infinite line.
+ @details Let \f$\vec{p}\f$ be a point and let a line be defined by origin point
+ \f$\vec{o}\f$ with direction vector \f$\vec{v}\f$ (where \f$\|\vec{v}\| = 1\f$).
+ The projection \f$\vec{p}'\f$ of point \f$\vec{p}\f$ onto the line is given by:
+ \f{aligned}{
+  \vec{p}'&=\vec{o}+\frac{\vec{v}}{\|\vec{v}\|}\frac{(\vec{p}-\vec{o})\cdot\vec{v}}{\|\vec{v}\|}
+        \\&=\vec{o}+\vec{v}\left[(\vec{p}-\vec{o})\cdot\vec{v}\right]
+ \f}
  @param[in] ctx points to an instance of the two-dimensional line
  @param[in] rhs points to the point to project
  @param[in] res stores the projection result
