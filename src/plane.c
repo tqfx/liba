@@ -97,8 +97,7 @@ int a_plane_set3(a_plane *ctx, a_point3 const *p1, a_point3 const *p2, a_point3 
         o.x = p1->x + u * v12.x + v * v13.x;
         o.y = p1->y + u * v12.y + v * v13.y;
         o.z = p1->z + u * v12.z + v * v13.z;
-        a_vector3_set(&n, p2, p3);
-        a_vector3_cross(&v12, &n, &n);
+        a_vector3_cross(&v12, &v13, &n);
         a_vector3_set(&v12, &o, p1);
         if (a_plane_set_u(ctx, &n, &v12) == 0)
         {
