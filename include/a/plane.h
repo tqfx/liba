@@ -46,7 +46,8 @@ A_EXPORT int a_plane_set_uv(a_plane *ctx, a_vector3 const *u, a_vector3 const *v
 A_EXPORT int a_plane_set_u(a_plane *ctx, a_vector3 const *n, a_vector3 const *u);
 A_EXPORT int a_plane_set_v(a_plane *ctx, a_vector3 const *n, a_vector3 const *v);
 A_EXTERN int a_plane_set(a_plane *ctx, a_point3 const *p, a_vector3 const *n);
-A_EXTERN int a_plane_set3(a_plane *ctx, a_point3 const *p1, a_point3 const *p2, a_point3 const *p3);
+A_EXTERN int a_plane_seto(a_plane *ctx, a_point3 const *p1, a_point3 const *p2, a_point3 const *p3);
+A_EXTERN int a_plane_set3(a_plane *ctx, a_point3 const *o, a_point3 const *u, a_point3 const *v);
 A_EXTERN int a_plane_set4(a_plane *ctx, a_real a, a_real b, a_real c, a_real d);
 A_INTERN void a_plane_eval(a_plane const *ctx, a_real u, a_real v, a_point3 *res);
 A_EXTERN void a_plane_parm(a_plane const *ctx, a_point3 const *p, a_real *u, a_real *v);
@@ -106,9 +107,17 @@ struct a_plane
     {
         return a_plane_set(this, &p, &n);
     }
-    A_INLINE int set(a_point3 const &p1, a_point3 const &p2, a_point3 const &p3)
+    A_INLINE int seto(a_point3 const &p1, a_point3 const &p2, a_point3 const &p3)
     {
-        return a_plane_set3(this, &p1, &p2, &p3);
+        return a_plane_seto(this, &p1, &p2, &p3);
+    }
+    A_INLINE int set(a_point3 const &o, a_point3 const &u, a_point3 const &v)
+    {
+        return a_plane_set3(this, &o, &u, &v);
+    }
+    A_INLINE int set(a_real a, a_real b, a_real c, a_real d)
+    {
+        return a_plane_set4(this, a, b, c, d);
     }
     A_INLINE void eval(a_real u, a_real v, a_point3 &res) const
     {

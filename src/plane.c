@@ -78,7 +78,7 @@ int a_plane_set(a_plane *ctx, a_point3 const *p, a_vector3 const *n)
     return A_FAILURE;
 }
 
-int a_plane_set3(a_plane *ctx, a_point3 const *p1, a_point3 const *p2, a_point3 const *p3)
+int a_plane_seto(a_plane *ctx, a_point3 const *p1, a_point3 const *p2, a_point3 const *p3)
 {
     a_point3 o;
     a_vector3 v12, v13, n;
@@ -99,13 +99,33 @@ int a_plane_set3(a_plane *ctx, a_point3 const *p1, a_point3 const *p2, a_point3 
         o.z = p1->z + u * v12.z + v * v13.z;
         a_vector3_cross(&v12, &v13, &n);
         a_vector3_set(&v12, &o, p1);
-        if (a_plane_set_u(ctx, &n, &v12) == 0)
+        if (a_vector3_unit(&n) > 0 && a_vector3_unit(&v12) > 0)
         {
-            ctx->org.x = o.x;
-            ctx->org.y = o.y;
-            ctx->org.z = o.z;
+            a_vector3_cross(&n, &v12, &v13);
+            ctx->org = o;
+            ctx->dir_ = n;
+            ctx->u_ = v12;
+            ctx->v_ = v13;
             return A_SUCCESS;
         }
+    }
+    return A_FAILURE;
+}
+
+int a_plane_set3(a_plane *ctx, a_point3 const *o, a_point3 const *u, a_point3 const *v)
+{
+    a_vector3 ou, ov, n;
+    a_vector3_set(&ou, o, u);
+    a_vector3_set(&ov, o, v);
+    a_vector3_cross(&ou, &ov, &n);
+    if (a_vector3_unit(&n) > 0 && a_vector3_unit(&ou) > 0)
+    {
+        a_vector3_cross(&n, &ou, &ov);
+        ctx->org = *o;
+        ctx->dir_ = n;
+        ctx->u_ = ou;
+        ctx->v_ = ov;
+        return A_SUCCESS;
     }
     return A_FAILURE;
 }
