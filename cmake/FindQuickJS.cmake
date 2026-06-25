@@ -59,11 +59,11 @@ elseif(EXISTS "${QJSC_EXECUTABLE}")
   execute_process(COMMAND ${QJSC_EXECUTABLE} -h OUTPUT_VARIABLE QUICKJS_VERSION)
 endif()
 if(QUICKJS_VERSION)
-  string(REGEX REPLACE ".*version[ ]+([^\n ]+).*" "\\1" QUICKJS_VERSION "${QUICKJS_VERSION}")
+  string(REGEX REPLACE "[^\n]*version[ ]+([^\n ]+).*" "\\1" QUICKJS_VERSION "${QUICKJS_VERSION}")
 endif()
 
 find_library(QUICKJS_LTO_LIBRARY NAMES quickjs.lto PATH_SUFFIXES quickjs)
-find_library(QUICKJS_LIBRARY NAMES quickjs PATH_SUFFIXES quickjs)
+find_library(QUICKJS_LIBRARY NAMES quickjs qjs PATH_SUFFIXES quickjs)
 mark_as_advanced(QUICKJS_LTO_LIBRARY QUICKJS_LIBRARY)
 
 set(QUICKJS_LIBRARY2)
