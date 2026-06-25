@@ -148,11 +148,12 @@ static JSCFunctionListEntry const liba_trajtrap_proto[] = {
 int js_liba_trajtrap_init(JSContext *ctx, JSModuleDef *m)
 {
     JSValue proto, clazz;
+    JSRuntime *rt = JS_GetRuntime(ctx);
     liba_trajtrap_class.class_name = "trajtrap";
     liba_trajtrap_class.finalizer = liba_trajtrap_finalizer;
 
-    JS_NewClassID(&liba_trajtrap_class_id);
-    JS_NewClass(JS_GetRuntime(ctx), liba_trajtrap_class_id, &liba_trajtrap_class);
+    JS_NewClassID(rt, &liba_trajtrap_class_id);
+    JS_NewClass(rt, liba_trajtrap_class_id, &liba_trajtrap_class);
 
     proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_trajtrap_proto, A_LEN(liba_trajtrap_proto));

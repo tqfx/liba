@@ -167,11 +167,12 @@ static JSCFunctionListEntry const liba_trajbell_proto[] = {
 int js_liba_trajbell_init(JSContext *ctx, JSModuleDef *m)
 {
     JSValue proto, clazz;
+    JSRuntime *rt = JS_GetRuntime(ctx);
     liba_trajbell_class.class_name = "trajbell";
     liba_trajbell_class.finalizer = liba_trajbell_finalizer;
 
-    JS_NewClassID(&liba_trajbell_class_id);
-    JS_NewClass(JS_GetRuntime(ctx), liba_trajbell_class_id, &liba_trajbell_class);
+    JS_NewClassID(rt, &liba_trajbell_class_id);
+    JS_NewClass(rt, liba_trajbell_class_id, &liba_trajbell_class);
 
     proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_trajbell_proto, A_LEN(liba_trajbell_proto));

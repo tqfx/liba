@@ -183,11 +183,12 @@ static JSCFunctionListEntry const liba_pid_proto[] = {
 int js_liba_pid_init(JSContext *ctx, JSModuleDef *m)
 {
     JSValue proto, clazz;
+    JSRuntime *rt = JS_GetRuntime(ctx);
     liba_pid_class.class_name = "pid";
     liba_pid_class.finalizer = liba_pid_finalizer;
 
-    JS_NewClassID(&liba_pid_class_id);
-    JS_NewClass(JS_GetRuntime(ctx), liba_pid_class_id, &liba_pid_class);
+    JS_NewClassID(rt, &liba_pid_class_id);
+    JS_NewClass(rt, liba_pid_class_id, &liba_pid_class);
 
     proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_pid_proto, A_LEN(liba_pid_proto));

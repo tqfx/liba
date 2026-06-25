@@ -150,11 +150,12 @@ static JSCFunctionListEntry const liba_crc64_proto[] = {
 int js_liba_crc64_init(JSContext *ctx, JSModuleDef *m)
 {
     JSValue proto, clazz;
+    JSRuntime *rt = JS_GetRuntime(ctx);
     liba_crc64_class.class_name = "crc64";
     liba_crc64_class.finalizer = liba_crc64_finalizer;
 
-    JS_NewClassID(&liba_crc64_class_id);
-    JS_NewClass(JS_GetRuntime(ctx), liba_crc64_class_id, &liba_crc64_class);
+    JS_NewClassID(rt, &liba_crc64_class_id);
+    JS_NewClass(rt, liba_crc64_class_id, &liba_crc64_class);
 
     proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_crc64_proto, A_LEN(liba_crc64_proto));

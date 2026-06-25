@@ -137,11 +137,12 @@ static JSCFunctionListEntry const liba_trajpoly3_proto[] = {
 int js_liba_trajpoly3_init(JSContext *ctx, JSModuleDef *m)
 {
     JSValue proto, clazz;
+    JSRuntime *rt = JS_GetRuntime(ctx);
     liba_trajpoly3_class.class_name = "trajpoly3";
     liba_trajpoly3_class.finalizer = liba_trajpoly3_finalizer;
 
-    JS_NewClassID(&liba_trajpoly3_class_id);
-    JS_NewClass(JS_GetRuntime(ctx), liba_trajpoly3_class_id, &liba_trajpoly3_class);
+    JS_NewClassID(rt, &liba_trajpoly3_class_id);
+    JS_NewClass(rt, liba_trajpoly3_class_id, &liba_trajpoly3_class);
 
     proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_trajpoly3_proto, A_LEN(liba_trajpoly3_proto));

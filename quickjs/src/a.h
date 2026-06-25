@@ -15,6 +15,12 @@
 #define inline __inline
 #include "quickjs.h"
 
+#ifdef QUICKJS_NG
+#define JS_IsArray(ctx, val) JS_IsArray(val)
+#else
+#define JS_NewClassID(rt, pclass_id) JS_NewClassID(pclass_id)
+#endif
+
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */

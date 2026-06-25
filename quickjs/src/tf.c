@@ -152,11 +152,12 @@ static JSCFunctionListEntry const liba_tf_proto[] = {
 int js_liba_tf_init(JSContext *ctx, JSModuleDef *m)
 {
     JSValue proto, clazz;
+    JSRuntime *rt = JS_GetRuntime(ctx);
     liba_tf_class.class_name = "tf";
     liba_tf_class.finalizer = liba_tf_finalizer;
 
-    JS_NewClassID(&liba_tf_class_id);
-    JS_NewClass(JS_GetRuntime(ctx), liba_tf_class_id, &liba_tf_class);
+    JS_NewClassID(rt, &liba_tf_class_id);
+    JS_NewClass(rt, liba_tf_class_id, &liba_tf_class);
 
     proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_tf_proto, A_LEN(liba_tf_proto));

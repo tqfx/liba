@@ -133,11 +133,12 @@ static JSCFunctionListEntry const liba_crc8_proto[] = {
 int js_liba_crc8_init(JSContext *ctx, JSModuleDef *m)
 {
     JSValue proto, clazz;
+    JSRuntime *rt = JS_GetRuntime(ctx);
     liba_crc8_class.class_name = "crc8";
     liba_crc8_class.finalizer = liba_crc8_finalizer;
 
-    JS_NewClassID(&liba_crc8_class_id);
-    JS_NewClass(JS_GetRuntime(ctx), liba_crc8_class_id, &liba_crc8_class);
+    JS_NewClassID(rt, &liba_crc8_class_id);
+    JS_NewClass(rt, liba_crc8_class_id, &liba_crc8_class);
 
     proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_crc8_proto, A_LEN(liba_crc8_proto));

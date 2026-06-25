@@ -110,11 +110,12 @@ static JSCFunctionListEntry const liba_lpf_proto[] = {
 int js_liba_lpf_init(JSContext *ctx, JSModuleDef *m)
 {
     JSValue proto, clazz;
+    JSRuntime *rt = JS_GetRuntime(ctx);
     liba_lpf_class.class_name = "lpf";
     liba_lpf_class.finalizer = liba_lpf_finalizer;
 
-    JS_NewClassID(&liba_lpf_class_id);
-    JS_NewClass(JS_GetRuntime(ctx), liba_lpf_class_id, &liba_lpf_class);
+    JS_NewClassID(rt, &liba_lpf_class_id);
+    JS_NewClass(rt, liba_lpf_class_id, &liba_lpf_class);
 
     proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_lpf_proto, A_LEN(liba_lpf_proto));

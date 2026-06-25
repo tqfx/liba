@@ -245,11 +245,12 @@ static JSCFunctionListEntry const liba_version_proto[] = {
 int js_liba_version_init(JSContext *ctx, JSModuleDef *m)
 {
     JSValue proto, clazz, check;
+    JSRuntime *rt = JS_GetRuntime(ctx);
     liba_version_class.class_name = "version";
     liba_version_class.finalizer = liba_version_finalizer;
 
-    JS_NewClassID(&liba_version_class_id);
-    JS_NewClass(JS_GetRuntime(ctx), liba_version_class_id, &liba_version_class);
+    JS_NewClassID(rt, &liba_version_class_id);
+    JS_NewClass(rt, liba_version_class_id, &liba_version_class);
 
     proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_version_proto, A_LEN(liba_version_proto));

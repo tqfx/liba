@@ -193,11 +193,12 @@ static JSCFunctionListEntry const liba_regress_simple_proto[] = {
 int js_liba_regress_simple_init(JSContext *ctx, JSModuleDef *m)
 {
     JSValue proto, clazz;
+    JSRuntime *rt = JS_GetRuntime(ctx);
     liba_regress_simple_class.class_name = "regress_simple";
     liba_regress_simple_class.finalizer = liba_regress_simple_finalizer;
 
-    JS_NewClassID(&liba_regress_simple_class_id);
-    JS_NewClass(JS_GetRuntime(ctx), liba_regress_simple_class_id, &liba_regress_simple_class);
+    JS_NewClassID(rt, &liba_regress_simple_class_id);
+    JS_NewClass(rt, liba_regress_simple_class_id, &liba_regress_simple_class);
 
     proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_regress_simple_proto, A_LEN(liba_regress_simple_proto));

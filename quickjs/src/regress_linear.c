@@ -245,11 +245,12 @@ static JSCFunctionListEntry const liba_regress_linear_proto[] = {
 int js_liba_regress_linear_init(JSContext *ctx, JSModuleDef *m)
 {
     JSValue proto, clazz;
+    JSRuntime *rt = JS_GetRuntime(ctx);
     liba_regress_linear_class.class_name = "regress_linear";
     liba_regress_linear_class.finalizer = liba_regress_linear_finalizer;
 
-    JS_NewClassID(&liba_regress_linear_class_id);
-    JS_NewClass(JS_GetRuntime(ctx), liba_regress_linear_class_id, &liba_regress_linear_class);
+    JS_NewClassID(rt, &liba_regress_linear_class_id);
+    JS_NewClass(rt, liba_regress_linear_class_id, &liba_regress_linear_class);
 
     proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, proto, liba_regress_linear_proto, A_LEN(liba_regress_linear_proto));
