@@ -69,38 +69,23 @@ static JSValue liba_pid_fuzzy_set_rule(JSContext *ctx, JSValueConst this_val, in
     unsigned int nrule = 0;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
-    if (JS_IsArray(ctx, argv[0]))
-    {
-        u.p = self->me;
-        u.o = js_array_num_get(ctx, argv[0], u.o, NULL, 2);
-        if (!u.o) { goto fail; }
-        self->me = u.o;
-    }
-    if (JS_IsArray(ctx, argv[1]))
-    {
-        u.p = self->mec;
-        u.o = js_array_num_get(ctx, argv[1], u.o, NULL, 2);
-        if (!u.o) { goto fail; }
-        self->mec = u.o;
-    }
-    if (JS_IsArray(ctx, argv[2]))
-    {
-        u.p = self->mkp;
-        u.o = js_array_num_get(ctx, argv[2], u.o, &nrule, 2);
-        nrule = a_u32_sqrt(nrule);
-        if (!u.o) { goto fail; }
-        self->mkp = u.o;
-    }
-    if (JS_IsArray(ctx, argv[3]))
-    {
-        u.p = self->mki;
-        self->mki = js_array_num_get(ctx, argv[3], u.o, NULL, 2);
-    }
-    if (JS_IsArray(ctx, argv[4]))
-    {
-        u.p = self->mkd;
-        self->mkd = js_array_num_get(ctx, argv[4], u.o, NULL, 2);
-    }
+    u.p = self->me;
+    u.o = js_array_num_get(ctx, argv[0], u.o, NULL, 2);
+    if (!u.o) { goto fail; }
+    self->me = u.o;
+    u.p = self->mec;
+    u.o = js_array_num_get(ctx, argv[1], u.o, NULL, 2);
+    if (!u.o) { goto fail; }
+    self->mec = u.o;
+    u.p = self->mkp;
+    u.o = js_array_num_get(ctx, argv[2], u.o, &nrule, 2);
+    nrule = a_u32_sqrt(nrule);
+    if (!u.o) { goto fail; }
+    self->mkp = u.o;
+    u.p = self->mki;
+    self->mki = js_array_num_get(ctx, argv[3], u.o, NULL, 2);
+    u.p = self->mkd;
+    self->mkd = js_array_num_get(ctx, argv[4], u.o, NULL, 2);
     self->nrule = nrule;
 fail:
     (void)argc;

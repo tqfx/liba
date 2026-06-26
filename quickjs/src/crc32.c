@@ -85,16 +85,16 @@ static JSValue liba_crc32_eval(JSContext *ctx, JSValueConst this_val, int argc, 
     {
         if (JS_ToUint32(ctx, &value, argv[1])) { return JS_EXCEPTION; }
     }
-    if (JS_IsArray(ctx, argv[0]))
-    {
-        a_byte *p = JS_GetArrayBuffer(ctx, &n, argv[0]);
-        if (p) { value = self->eval(self->table, p, n, value); }
-    }
-    else
+    if (JS_IsString(argv[0]))
     {
         char const *const p = JS_ToCStringLen(ctx, &n, argv[0]);
         value = self->eval(self->table, p, n, value);
         JS_FreeCString(ctx, p);
+    }
+    else
+    {
+        a_byte *p = JS_GetArrayBuffer(ctx, &n, argv[0]);
+        if (p) { value = self->eval(self->table, p, n, value); }
     }
     return JS_NewUint32(ctx, value);
 }
@@ -120,7 +120,7 @@ static JSValue liba_crc32_pack(JSContext *ctx, JSValueConst this_val, int argc, 
     self->eval == a_crc32m
         ? a_u32_setb(p + n, value)
         : a_u32_setl(p + n, value);
-    val = js_array_u8_new(ctx, p, (uint32_t)n + 4);
+    val = JS_NewArrayBufferCopy(ctx, p, n + 4);
 fail:
     JS_FreeCString(ctx, s);
     js_free(ctx, p);
@@ -129,9 +129,17 @@ fail:
 
 static JSValue liba_crc32_get(JSContext *ctx, JSValueConst this_val)
 {
+    unsigned int i;
+    JSValue val = JS_UNDEFINED;
     struct crc32 *const self = (struct crc32 *)JS_GetOpaque2(ctx, this_val, liba_crc32_class_id);
     if (!self) { return JS_EXCEPTION; }
-    return js_array_u32_new(ctx, self->table, 0x100);
+    val = JS_NewUint32(ctx, 0x100);
+    val = JS_NewTypedArray(ctx, 1, &val, JS_TYPED_ARRAY_UINT32);
+    for (i = 0; i < 0x100; ++i)
+    {
+        JS_SetPropertyUint32(ctx, val, i, JS_NewUint32(ctx, self->table[i]));
+    }
+    return val;
 }
 
 static JSClassDef liba_crc32_class;

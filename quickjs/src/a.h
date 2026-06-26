@@ -15,21 +15,15 @@
 #define inline __inline
 #include "quickjs.h"
 
-#ifdef QUICKJS_NG
-#define JS_IsArray(ctx, val) JS_IsArray(val)
-#else
+#if !defined QUICKJS_NG
 #define JS_NewClassID(rt, pclass_id) JS_NewClassID(pclass_id)
-#endif
+#endif /* QUICKJS_NG */
 
 #if defined(__cplusplus)
 extern "C" {
 #endif /* __cplusplus */
 
 int js_array_length(JSContext *ctx, JSValueConst val, a_u32 *plen);
-JSValue js_array_u8_new(JSContext *ctx, a_u8 const *ptr, a_u32 len);
-JSValue js_array_u16_new(JSContext *ctx, a_u16 const *ptr, a_u32 len);
-JSValue js_array_u32_new(JSContext *ctx, a_u32 const *ptr, a_u32 len);
-JSValue js_array_u64_new(JSContext *ctx, a_u64 const *ptr, a_u32 len);
 JSValue js_array_num_new(JSContext *ctx, a_real const *ptr, a_u32 len);
 
 int js_array_num_len(JSContext *ctx, JSValueConst val, unsigned int *num, int dim);

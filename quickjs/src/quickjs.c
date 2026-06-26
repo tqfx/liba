@@ -9,54 +9,6 @@ int js_array_length(JSContext *ctx, JSValueConst val, a_u32 *plen)
     return 0;
 }
 
-JSValue js_array_u8_new(JSContext *ctx, a_u8 const *ptr, a_u32 len)
-{
-    unsigned int i;
-    JSValue val = JS_NewArray(ctx);
-    if (JS_IsException(val)) { return val; }
-    for (i = 0; i < len; ++i)
-    {
-        JS_SetPropertyUint32(ctx, val, i, JS_NewInt32(ctx, (a_u8)ptr[i]));
-    }
-    return val;
-}
-
-JSValue js_array_u16_new(JSContext *ctx, a_u16 const *ptr, a_u32 len)
-{
-    unsigned int i;
-    JSValue val = JS_NewArray(ctx);
-    if (JS_IsException(val)) { return val; }
-    for (i = 0; i < len; ++i)
-    {
-        JS_SetPropertyUint32(ctx, val, i, JS_NewInt32(ctx, (a_u8)ptr[i]));
-    }
-    return val;
-}
-
-JSValue js_array_u32_new(JSContext *ctx, a_u32 const *ptr, a_u32 len)
-{
-    unsigned int i;
-    JSValue val = JS_NewArray(ctx);
-    if (JS_IsException(val)) { return val; }
-    for (i = 0; i < len; ++i)
-    {
-        JS_SetPropertyUint32(ctx, val, i, JS_NewUint32(ctx, ptr[i]));
-    }
-    return val;
-}
-
-JSValue js_array_u64_new(JSContext *ctx, a_u64 const *ptr, a_u32 len)
-{
-    unsigned int i;
-    JSValue val = JS_NewArray(ctx);
-    if (JS_IsException(val)) { return val; }
-    for (i = 0; i < len; ++i)
-    {
-        JS_SetPropertyUint32(ctx, val, i, JS_NewBigUint64(ctx, ptr[i]));
-    }
-    return val;
-}
-
 JSValue js_array_num_new(JSContext *ctx, a_real const *ptr, a_u32 len)
 {
     unsigned int i;
@@ -82,7 +34,7 @@ int js_array_num_len(JSContext *ctx, JSValueConst val, unsigned int *num, int di
         int tag = JS_VALUE_GET_TAG(v);
         if (tag == JS_TAG_FLOAT64 || tag == JS_TAG_INT ||
             tag < JS_TAG_SYMBOL) { ++*num; }
-        else if (dim > 0 && JS_IsArray(ctx, v))
+        else if (dim > 0)
         {
             js_array_num_len(ctx, v, num, dim);
         }
@@ -95,6 +47,7 @@ a_real *js_array_num_ptr(JSContext *ctx, JSValueConst val, a_real *ptr, int dim)
 {
     a_u32 i = 0, n = 0;
     JSValueConst length = JS_GetPropertyStr(ctx, val, "length");
+    if (JS_IsUndefined(length)) { return ptr; }
     JS_ToUint32(ctx, &n, length);
     JS_FreeValue(ctx, length);
     for (--dim; i < n; ++i)
@@ -108,7 +61,7 @@ a_real *js_array_num_ptr(JSContext *ctx, JSValueConst val, a_real *ptr, int dim)
             JS_ToFloat64(ctx, &x, v);
             *ptr++ = (a_real)x;
         }
-        else if (dim > 0 && JS_IsArray(ctx, v))
+        else if (dim > 0)
         {
             ptr = js_array_num_ptr(ctx, v, ptr, dim);
         }
