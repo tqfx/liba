@@ -12,8 +12,8 @@ int js_array_length(JSContext *ctx, JSValueConst val, a_u32 *plen)
 JSValue js_array_num_new(JSContext *ctx, a_real const *ptr, a_u32 len)
 {
     unsigned int i;
-    JSValue val = JS_NewArray(ctx);
-    if (JS_IsException(val)) { return val; }
+    JSValue val = JS_NewUint32(ctx, len);
+    val = JS_NewTypedArray(ctx, 1, &val, JS_TYPED_ARRAY_FLOAT64);
     for (i = 0; i < len; ++i)
     {
         JS_SetPropertyUint32(ctx, val, i, JS_NewFloat64(ctx, (double)ptr[i]));
