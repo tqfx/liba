@@ -17,7 +17,7 @@ static unsigned int js_array_num_len(emscripten::val const &val, int dim) // NOL
     {
         emscripten::val const &v = val[i];
         if (v.isNumber()) { ++num; }
-        else if (v.isArray() && dim > 0)
+        else if (dim > 0 && v.isArray())
         {
             num += js_array_num_len(v, dim);
         }
@@ -34,7 +34,7 @@ static a_real *js_array_num_ptr(emscripten::val const &val, a_real *ptr, int dim
         {
             *ptr++ = v.as<a_real>();
         }
-        else if (v.isArray() && dim > 0)
+        else if (dim > 0 && v.isArray())
         {
             ptr = js_array_num_ptr(v, ptr, dim);
         }

@@ -244,7 +244,7 @@ unsigned int lua_array_num_len(lua_State *L, int idx, int dim) /* NOLINT(misc-no
         lua_geti(L, idx, (lua_Integer)i);
         e = lua_type(L, -1);
         if (e == LUA_TNUMBER) { ++num; }
-        else if (e == LUA_TTABLE && dim > 0)
+        else if (dim > 0 && e == LUA_TTABLE)
         {
             num += lua_array_num_len(L, -1, dim);
         }
@@ -265,7 +265,7 @@ LUA_NUM *lua_array_num_ptr(lua_State *L, int idx, LUA_NUM *ptr, int dim) /* NOLI
         {
             *ptr++ = (LUA_NUM)lua_tonumber(L, -1);
         }
-        else if (e == LUA_TTABLE && dim > 0)
+        else if (dim > 0 && e == LUA_TTABLE)
         {
             ptr = lua_array_num_ptr(L, -1, ptr, dim);
         }
