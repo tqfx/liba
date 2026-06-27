@@ -50,7 +50,7 @@ fail:
 
 static JSValue liba_pid_fuzzy_set_opr(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    a_u32 opr;
+    uint32_t opr;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (JS_ToUint32(ctx, &opr, argv[0])) { return JS_EXCEPTION; }
@@ -106,7 +106,7 @@ static int liba_pid_fuzzy_set_nfuzz_(JSContext *ctx, a_pid_fuzzy *self, unsigned
 
 static JSValue liba_pid_fuzzy_set_nfuzz(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    a_u32 n;
+    uint32_t n;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (JS_ToUint32(ctx, &n, argv[0])) { return JS_EXCEPTION; }
@@ -226,12 +226,12 @@ static JSValue liba_pid_fuzzy_get(JSContext *ctx, JSValueConst this_val, int mag
 
 static JSValue liba_pid_fuzzy_set(JSContext *ctx, JSValueConst this_val, JSValueConst val, int magic)
 {
-    a_u32 u;
     double x;
     a_pid_fuzzy *const self = (a_pid_fuzzy *)JS_GetOpaque2(ctx, this_val, liba_pid_fuzzy_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (magic == pid_fuzzy_nfuzz)
     {
+        uint32_t u;
         if (JS_ToUint32(ctx, &u, val)) { return JS_EXCEPTION; }
         if (liba_pid_fuzzy_set_nfuzz_(ctx, self, (unsigned int)u)) { return JS_EXCEPTION; }
         return JS_UNDEFINED;

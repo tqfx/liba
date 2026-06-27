@@ -2,7 +2,10 @@ if(LIBA_WITH_QUICKJS)
   include(${CMAKE_CURRENT_LIST_DIR}/quickjs.cmake)
   add_subdirectory(${QUICKJS_SOURCE_DIR} ${QUICKJS_BINARY_DIR})
   set(QJS_EXECUTABLE ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:qjs>)
+  list(APPEND CMAKE_REQUIRED_INCLUDES ${QUICKJS_SOURCE_DIR})
 else()
+  list(APPEND CMAKE_REQUIRED_INCLUDES ${QUICKJS_INCLUDE_DIR})
+  list(APPEND CMAKE_REQUIRED_LIBRARIES ${QUICKJS_LIBRARIES})
   include(../cmake/QuickJSPIC.cmake)
 endif()
 
@@ -25,6 +28,18 @@ set_target_properties(aqjs PROPERTIES DEFINE_SYMBOL A_EXPORTS OUTPUT_NAME ${PROJ
 target_include_directories(aqjs PRIVATE ${QUICKJS_INCLUDE_DIR})
 add_library_properties(aqjs PRIVATE alib)
 set_library_options(aqjs)
+
+function(HAVE_JS_NEWTYPEDARRAY)
+  include(CheckSymbolExists)
+  set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+  check_symbol_exists(JS_NewTypedArray "quickjs.h" HAVE_JS_NEWTYPEDARRAY)
+endfunction()
+
+HAVE_JS_NEWTYPEDARRAY()
+
+if(HAVE_JS_NEWTYPEDARRAY)
+  target_compile_definitions(aqjs PRIVATE HAVE_JS_NEWTYPEDARRAY)
+endif()
 
 if(NOT LIBA_REAL EQUAL 8)
   target_compile_definitions(aqjs PRIVATE A_SIZE_REAL=8)

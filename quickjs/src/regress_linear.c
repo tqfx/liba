@@ -143,7 +143,7 @@ static JSValue liba_regress_linear_mgd(JSContext *ctx, JSValueConst this_val, in
     JSValue r = JS_EXCEPTION;
     unsigned int m = 0, n = 0;
     double delta, lrmax, lrmin;
-    a_u32 lrtim = 100, epoch = 1000, batch = 10;
+    uint32_t lrtim = 100, epoch = 1000, batch = 10;
     a_regress_linear *const self = (a_regress_linear *)JS_GetOpaque2(ctx, this_val, liba_regress_linear_class_id);
     if (!self) { return JS_EXCEPTION; }
     x = js_array_num_get(ctx, argv[0], NULL, &m, 1);

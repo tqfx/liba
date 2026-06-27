@@ -16,8 +16,8 @@ static void liba_crc16_finalizer(JSRuntime *rt, JSValue val)
 
 static JSValue liba_crc16_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
-    a_u32 poly = 0;
     int reversed = 0;
+    uint32_t poly = 0;
     JSValue proto, clazz = JS_UNDEFINED;
     struct crc16 *const self = (struct crc16 *)js_mallocz(ctx, sizeof(struct crc16));
     if (!self) { return JS_EXCEPTION; }
@@ -52,8 +52,8 @@ fail:
 
 static JSValue liba_crc16_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    a_u32 poly = 0;
     int reversed = 0;
+    uint32_t poly = 0;
     struct crc16 *const self = (struct crc16 *)JS_GetOpaque2(ctx, this_val, liba_crc16_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (JS_ToUint32(ctx, &poly, argv[0])) { return JS_EXCEPTION; }
@@ -83,7 +83,7 @@ static JSValue liba_crc16_eval(JSContext *ctx, JSValueConst this_val, int argc, 
     if (!self) { return JS_EXCEPTION; }
     if (argc > 1)
     {
-        a_u32 x = 0;
+        uint32_t x = 0;
         if (JS_ToUint32(ctx, &x, argv[1])) { return JS_EXCEPTION; }
         value = (a_u16)x;
     }
@@ -98,7 +98,7 @@ static JSValue liba_crc16_eval(JSContext *ctx, JSValueConst this_val, int argc, 
         a_byte *p = JS_GetArrayBuffer(ctx, &n, argv[0]);
         if (p) { value = self->eval(self->table, p, n, value); }
     }
-    return JS_NewUint32(ctx, value);
+    return JS_NewInt32(ctx, (int32_t)value);
 }
 
 static JSValue liba_crc16_pack(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
@@ -112,7 +112,7 @@ static JSValue liba_crc16_pack(JSContext *ctx, JSValueConst this_val, int argc, 
     if (!self) { return JS_EXCEPTION; }
     if (argc > 1)
     {
-        a_u32 x = 0;
+        uint32_t x = 0;
         if (JS_ToUint32(ctx, &x, argv[1])) { return JS_EXCEPTION; }
         value = (a_u16)x;
     }
@@ -133,17 +133,9 @@ fail:
 
 static JSValue liba_crc16_get(JSContext *ctx, JSValueConst this_val)
 {
-    unsigned int i;
-    JSValue val = JS_UNDEFINED;
     struct crc16 *const self = (struct crc16 *)JS_GetOpaque2(ctx, this_val, liba_crc16_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    val = JS_NewUint32(ctx, 0x100);
-    val = JS_NewTypedArray(ctx, 1, &val, JS_TYPED_ARRAY_UINT16);
-    for (i = 0; i < 0x100; ++i)
-    {
-        JS_SetPropertyUint32(ctx, val, i, JS_NewUint32(ctx, self->table[i]));
-    }
-    return val;
+    if (self) { return js_array_u16_new(ctx, self->table, 0x100); }
+    return JS_EXCEPTION;
 }
 
 static JSClassDef liba_crc16_class;

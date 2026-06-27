@@ -10,7 +10,7 @@ static void liba_version_finalizer(JSRuntime *rt, JSValue val)
 
 static JSValue liba_version_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
-    a_u32 arg[] = {0, 0, 0, 0};
+    uint32_t arg[] = {0, 0, 0, 0};
     int i = (int)A_LEN(arg);
     char const *ver = NULL;
     JSValue proto, clazz = JS_UNDEFINED;
@@ -57,7 +57,7 @@ fail:
 
 static JSValue liba_version_check(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    a_u32 arg[] = {0, 0, 0};
+    uint32_t arg[] = {0, 0, 0};
     int i = (int)A_LEN(arg);
     if (argc > i) { argc = i; }
     for (i = 0; i < argc; ++i)
@@ -180,7 +180,7 @@ enum
 
 static JSValue liba_version_get(JSContext *ctx, JSValueConst this_val, int magic)
 {
-    a_u32 x;
+    uint32_t x;
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (magic == version_alpha)
@@ -202,7 +202,7 @@ static JSValue liba_version_get(JSContext *ctx, JSValueConst this_val, int magic
 
 static JSValue liba_version_set(JSContext *ctx, JSValueConst this_val, JSValueConst val, int magic)
 {
-    a_u32 x;
+    uint32_t x;
     a_version *const self = (a_version *)JS_GetOpaque2(ctx, this_val, liba_version_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (magic == version_alpha)

@@ -16,8 +16,8 @@ static void liba_crc32_finalizer(JSRuntime *rt, JSValue val)
 
 static JSValue liba_crc32_ctor(JSContext *ctx, JSValueConst new_target, int argc, JSValueConst *argv)
 {
-    a_u32 poly = 0;
     int reversed = 0;
+    uint32_t poly = 0;
     JSValue proto, clazz = JS_UNDEFINED;
     struct crc32 *const self = (struct crc32 *)js_mallocz(ctx, sizeof(struct crc32));
     if (!self) { return JS_EXCEPTION; }
@@ -52,8 +52,8 @@ fail:
 
 static JSValue liba_crc32_gen(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    a_u32 poly = 0;
     int reversed = 0;
+    uint32_t poly = 0;
     struct crc32 *const self = (struct crc32 *)JS_GetOpaque2(ctx, this_val, liba_crc32_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (JS_ToUint32(ctx, &poly, argv[0])) { return JS_EXCEPTION; }
@@ -78,7 +78,7 @@ static JSValue liba_crc32_gen(JSContext *ctx, JSValueConst this_val, int argc, J
 static JSValue liba_crc32_eval(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     size_t n = 0;
-    a_u32 value = 0;
+    uint32_t value = 0;
     struct crc32 *const self = (struct crc32 *)JS_GetOpaque2(ctx, this_val, liba_crc32_class_id);
     if (!self) { return JS_EXCEPTION; }
     if (argc > 1)
@@ -102,7 +102,7 @@ static JSValue liba_crc32_eval(JSContext *ctx, JSValueConst this_val, int argc, 
 static JSValue liba_crc32_pack(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
     JSValue val = JS_UNDEFINED;
-    a_u32 value = 0;
+    uint32_t value = 0;
     size_t n = 0;
     char const *s;
     a_byte *p;
@@ -129,17 +129,9 @@ fail:
 
 static JSValue liba_crc32_get(JSContext *ctx, JSValueConst this_val)
 {
-    unsigned int i;
-    JSValue val = JS_UNDEFINED;
     struct crc32 *const self = (struct crc32 *)JS_GetOpaque2(ctx, this_val, liba_crc32_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    val = JS_NewUint32(ctx, 0x100);
-    val = JS_NewTypedArray(ctx, 1, &val, JS_TYPED_ARRAY_UINT32);
-    for (i = 0; i < 0x100; ++i)
-    {
-        JS_SetPropertyUint32(ctx, val, i, JS_NewUint32(ctx, self->table[i]));
-    }
-    return val;
+    if (self) { return js_array_u32_new(ctx, self->table, 0x100); }
+    return JS_EXCEPTION;
 }
 
 static JSClassDef liba_crc32_class;

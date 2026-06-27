@@ -3,7 +3,7 @@
 
 static JSValue liba_hash_bkdr(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    a_u32 x = 0;
+    uint32_t x = 0;
     if (argc > 1)
     {
         if (JS_ToUint32(ctx, &x, argv[1])) { return JS_EXCEPTION; }
@@ -20,7 +20,7 @@ static JSValue liba_hash_bkdr(JSContext *ctx, JSValueConst this_val, int argc, J
 
 static JSValue liba_hash_sdbm(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv)
 {
-    a_u32 x = 0;
+    uint32_t x = 0;
     if (argc > 1)
     {
         if (JS_ToUint32(ctx, &x, argv[1])) { return JS_EXCEPTION; }

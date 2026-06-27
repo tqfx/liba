@@ -133,17 +133,9 @@ fail:
 
 static JSValue liba_crc64_get(JSContext *ctx, JSValueConst this_val)
 {
-    unsigned int i;
-    JSValue val = JS_UNDEFINED;
     struct crc64 *const self = (struct crc64 *)JS_GetOpaque2(ctx, this_val, liba_crc64_class_id);
-    if (!self) { return JS_EXCEPTION; }
-    val = JS_NewUint32(ctx, 0x100);
-    val = JS_NewTypedArray(ctx, 1, &val, JS_TYPED_ARRAY_BIG_UINT64);
-    for (i = 0; i < 0x100; ++i)
-    {
-        JS_SetPropertyUint32(ctx, val, i, JS_NewBigUint64(ctx, self->table[i]));
-    }
-    return val;
+    if (self) { return js_array_u64_new(ctx, self->table, 0x100); }
+    return JS_EXCEPTION;
 }
 
 static JSClassDef liba_crc64_class;

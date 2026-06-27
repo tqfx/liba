@@ -4,16 +4,84 @@ int js_array_length(JSContext *ctx, JSValueConst val, a_u32 *plen)
 {
     JSValue length = JS_GetPropertyStr(ctx, val, "length");
     if (JS_IsUndefined(length)) { return ~0; }
-    JS_ToUint32(ctx, plen, length);
+    JS_ToUint32(ctx, (uint32_t *)plen, length);
     JS_FreeValue(ctx, length);
     return 0;
+}
+
+JSValue js_array_u8_new(JSContext *ctx, a_u8 const *ptr, a_u32 len)
+{
+    unsigned int i;
+#if defined(HAVE_JS_NEWTYPEDARRAY)
+    JSValue val = JS_NewUint32(ctx, len);
+    val = JS_NewTypedArray(ctx, 1, &val, JS_TYPED_ARRAY_UINT8);
+#else /* !HAVE_JS_NEWTYPEDARRAY */
+    JSValue val = JS_NewArray(ctx);
+#endif /* HAVE_JS_NEWTYPEDARRAY */
+    for (i = 0; i < len; ++i)
+    {
+        JS_SetPropertyUint32(ctx, val, i, JS_NewUint32(ctx, ptr[i]));
+    }
+    return val;
+}
+
+JSValue js_array_u16_new(JSContext *ctx, a_u16 const *ptr, a_u32 len)
+{
+    unsigned int i;
+#if defined(HAVE_JS_NEWTYPEDARRAY)
+    JSValue val = JS_NewUint32(ctx, len);
+    val = JS_NewTypedArray(ctx, 1, &val, JS_TYPED_ARRAY_UINT16);
+#else /* !HAVE_JS_NEWTYPEDARRAY */
+    JSValue val = JS_NewArray(ctx);
+#endif /* HAVE_JS_NEWTYPEDARRAY */
+    for (i = 0; i < len; ++i)
+    {
+        JS_SetPropertyUint32(ctx, val, i, JS_NewUint32(ctx, ptr[i]));
+    }
+    return val;
+}
+
+JSValue js_array_u32_new(JSContext *ctx, a_u32 const *ptr, a_u32 len)
+{
+    unsigned int i;
+#if defined(HAVE_JS_NEWTYPEDARRAY)
+    JSValue val = JS_NewUint32(ctx, len);
+    val = JS_NewTypedArray(ctx, 1, &val, JS_TYPED_ARRAY_UINT32);
+#else /* !HAVE_JS_NEWTYPEDARRAY */
+    JSValue val = JS_NewArray(ctx);
+#endif /* HAVE_JS_NEWTYPEDARRAY */
+    for (i = 0; i < len; ++i)
+    {
+        JS_SetPropertyUint32(ctx, val, i, JS_NewUint32(ctx, ptr[i]));
+    }
+    return val;
+}
+
+JSValue js_array_u64_new(JSContext *ctx, a_u64 const *ptr, a_u32 len)
+{
+    unsigned int i;
+#if defined(HAVE_JS_NEWTYPEDARRAY)
+    JSValue val = JS_NewUint32(ctx, len);
+    val = JS_NewTypedArray(ctx, 1, &val, JS_TYPED_ARRAY_BIG_UINT64);
+#else /* !HAVE_JS_NEWTYPEDARRAY */
+    JSValue val = JS_NewArray(ctx);
+#endif /* HAVE_JS_NEWTYPEDARRAY */
+    for (i = 0; i < len; ++i)
+    {
+        JS_SetPropertyUint32(ctx, val, i, JS_NewBigUint64(ctx, ptr[i]));
+    }
+    return val;
 }
 
 JSValue js_array_num_new(JSContext *ctx, a_real const *ptr, a_u32 len)
 {
     unsigned int i;
+#if defined(HAVE_JS_NEWTYPEDARRAY)
     JSValue val = JS_NewUint32(ctx, len);
     val = JS_NewTypedArray(ctx, 1, &val, JS_TYPED_ARRAY_FLOAT64);
+#else /* !HAVE_JS_NEWTYPEDARRAY */
+    JSValue val = JS_NewArray(ctx);
+#endif /* HAVE_JS_NEWTYPEDARRAY */
     for (i = 0; i < len; ++i)
     {
         JS_SetPropertyUint32(ctx, val, i, JS_NewFloat64(ctx, (double)ptr[i]));
@@ -23,7 +91,7 @@ JSValue js_array_num_new(JSContext *ctx, a_real const *ptr, a_u32 len)
 
 int js_array_num_len(JSContext *ctx, JSValueConst val, unsigned int *num, int dim) /* NOLINT(misc-no-recursion) */
 {
-    a_u32 i = 0, n = 0;
+    uint32_t i = 0, n = 0;
     JSValueConst length = JS_GetPropertyStr(ctx, val, "length");
     if (JS_IsUndefined(length)) { return ~0; }
     JS_ToUint32(ctx, &n, length);
@@ -45,7 +113,7 @@ int js_array_num_len(JSContext *ctx, JSValueConst val, unsigned int *num, int di
 
 a_real *js_array_num_ptr(JSContext *ctx, JSValueConst val, a_real *ptr, int dim) /* NOLINT(misc-no-recursion) */
 {
-    a_u32 i = 0, n = 0;
+    uint32_t i = 0, n = 0;
     JSValueConst length = JS_GetPropertyStr(ctx, val, "length");
     if (JS_IsUndefined(length)) { return ptr; }
     JS_ToUint32(ctx, &n, length);
